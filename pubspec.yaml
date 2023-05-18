@@ -1,0 +1,89 @@
+name: homemakers_merchant
+description: A Very Good Project created by Very Good CLI.
+version: 1.0.0+1
+publish_to: none
+
+environment:
+  sdk: ">=3.0.0 <4.0.0"
+
+dependencies:
+  ac_connectivity:
+    git:
+      url: 'https://github.com/prasant10050/flutter-connectivity.git'
+      ref: main
+  app_runner: ^2.1.2
+  async: ^2.11.0
+  bloc: ^8.1.1
+  cached_network_image: ^3.2.3
+  cloud_firestore: ^4.7.1
+  collection: ^1.17.1
+  connectivity_plus: ^4.0.0
+  crypto: ^3.0.3
+  cupertino_icons: ^1.0.5
+  device_info_plus: ^9.0.0
+  equatable: ^2.0.5
+  firebase_analytics: ^10.4.1
+  firebase_auth: ^4.6.1
+  firebase_core: ^2.13.0
+  firebase_messaging: ^14.6.1
+  flex_color_scheme: ^7.1.1
+  flex_seed_scheme: ^1.3.0
+  flutter:
+    sdk: flutter
+  flutter_animarker: ^3.4.0-beta.1
+  flutter_bloc: ^8.1.2
+  flutter_html: ^3.0.0-alpha.6
+  flutter_launcher_icons: ^0.13.1
+  flutter_localizations:
+    sdk: flutter
+  flutter_native_splash: ^2.3.0
+  flutter_secure_storage: ^8.0.0
+  font_awesome_flutter: ^10.4.0
+  freezed_annotation: ^2.2.0
+  geocoder_buddy:
+    git:
+      url: 'https://github.com/prasant10050/geocoder_buddy.git'
+      ref: main
+  geolocator: ^9.0.2
+  get_it: ^7.6.0
+  get_it_mixin: ^4.1.1
+  google_fonts: ^4.0.4
+  google_maps_flutter: ^2.2.6
+  google_sign_in: ^6.1.0
+  hive: ^2.2.3
+  image_picker: ^0.8.7+5
+  intl: ^0.18.0
+  json_annotation: ^4.8.1
+  location: ^4.4.0
+  logger: ^1.3.0
+  path: ^1.8.3
+  path_provider: ^2.0.15
+  permission_handler: ^10.2.0
+  phone_form_field:
+    git:
+      url: 'https://github.com/prasant10050/phone_form_field.git'
+      ref: dev
+  phone_number: ^1.0.0
+  responsive_framework: ^1.0.0
+  rxdart: ^0.27.7
+  timelines:
+    git:
+      url: 'https://github.com/prasant10050/timelines.git'
+      ref: main
+  url_launcher: ^6.1.11
+  uuid: ^3.0.7
+
+
+dev_dependencies:
+  bloc_test: ^9.1.1
+  build_runner: ^2.4.4
+  flutter_test:
+    sdk: flutter
+  freezed: ^2.3.4
+  json_serializable: ^6.6.2
+  mocktail: ^0.3.0
+  very_good_analysis: ^4.0.0+1
+
+flutter:
+  uses-material-design: true
+  generate: true
