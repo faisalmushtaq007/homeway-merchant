@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 
 import 'package:homemakers_merchant/app/shared/const/adaptive_theme.dart';
 import 'package:homemakers_merchant/app/shared/const/store.dart';
-import 'package:homemakers_merchant/app/shared/service/theme_service.dart';
+import 'package:homemakers_merchant/app/shared/service/theme/theme_service.dart';
 
 /// Enum to indicate which palette we are using.
 ///

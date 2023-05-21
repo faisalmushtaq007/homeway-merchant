@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:hive/hive.dart';
 
-import '../utils/app_data_dir/app_data_dir.dart';
+import '../../utils/app_data_dir/app_data_dir.dart';
 import 'theme_service.dart';
 import 'theme_service_hive_adapters.dart';
 

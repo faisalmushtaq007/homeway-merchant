@@ -530,9 +530,9 @@ FlexColorScheme flexColorSchemeLightTheme(Color source) {
     // contrast for whatever primary color is used. FlexColorScheme also retains
     // the correct opacities on text style if M2 Typography is used, and removes
     // it from style when M3 Typography is used.
-    fontFamily: App.font,
-    textTheme: App.textTheme,
-    primaryTextTheme: App.textTheme,
+    fontFamily: GlobalApp.font,
+    textTheme: GlobalApp.textTheme,
+    primaryTextTheme: GlobalApp.textTheme,
     //
     // To test manual typography override use this:
     typography: Typography.material2021(platform: _platform),
@@ -621,9 +621,9 @@ FlexColorScheme flexColorSchemeDarkTheme(Color source) {
     // contrast for whatever primary color is used. FlexColorScheme also retains
     // the correct opacities on text style if M2 Typography is used, and removes
     // it from style when M3 Typography is used.
-    fontFamily: App.font,
-    textTheme: App.textTheme,
-    primaryTextTheme: App.textTheme,
+    fontFamily: GlobalApp.font,
+    textTheme: GlobalApp.textTheme,
+    primaryTextTheme: GlobalApp.textTheme,
     //
     // To test manual typography override use this:
     typography: Typography.material2021(platform: _platform),

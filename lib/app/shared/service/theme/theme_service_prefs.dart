@@ -3,7 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:homemakers_merchant/app/shared/const/adaptive_theme.dart';
-import 'package:homemakers_merchant/app/shared/service/theme_service.dart';
+import 'package:homemakers_merchant/app/shared/service/theme/theme_service.dart';
 import 'package:homemakers_merchant/app/shared/utils/same_types.dart';
 // ignore_for_file: comment_references
 

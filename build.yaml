@@ -4,6 +4,9 @@ targets:
       json_serializable:
         options:
           explicit_to_json: true
+          field_rename: none
+          generic_argument_factories: true
       freezed:
         options:
           generic_argument_factories: true
+          explicit_to_json: true

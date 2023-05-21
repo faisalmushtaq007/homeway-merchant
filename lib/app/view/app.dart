@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:homemakers_merchant/app/shared/service/connectivity_bloc/connectivity_bloc.dart';
@@ -29,6 +30,33 @@ class App extends StatelessWidget {
       child: ListenableBuilder(
         listenable: controller,
         builder: (BuildContext context, Widget? child) {
+          final materialLightTheme = flexThemeLight(controller);
+          final materialDarkTheme = flexThemeDark(controller);
+
+          const darkDefaultCupertinoTheme =
+              CupertinoThemeData(brightness: Brightness.dark);
+          final cupertinoDarkTheme = MaterialBasedCupertinoThemeData(
+            materialTheme: materialDarkTheme.copyWith(
+              cupertinoOverrideTheme: CupertinoThemeData(
+                brightness: Brightness.dark,
+                barBackgroundColor:
+                    darkDefaultCupertinoTheme.barBackgroundColor,
+                textTheme: CupertinoTextThemeData(
+                  primaryColor: Colors.white,
+                  navActionTextStyle: darkDefaultCupertinoTheme
+                      .textTheme.navActionTextStyle
+                      .copyWith(
+                    color: const Color(0xF0F9F9F9),
+                  ),
+                  navLargeTitleTextStyle: darkDefaultCupertinoTheme
+                      .textTheme.navLargeTitleTextStyle
+                      .copyWith(color: const Color(0xF0F9F9F9)),
+                ),
+              ),
+            ),
+          );
+          final cupertinoLightTheme = MaterialBasedCupertinoThemeData(
+              materialTheme: materialLightTheme);
           return ConnectivityAppWrapper(
             showNetworkUpdates: true,
             persistNoInternetNotification: false,

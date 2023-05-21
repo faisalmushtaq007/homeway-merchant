@@ -5,7 +5,11 @@ analyzer:
     - "**/*.freezed.dart"
   errors:
     invalid_annotation_target: ignore
+    argument_type_not_assignable: ignore
+    generic_argument_factories: true
 linter:
   rules:
     public_member_api_docs: false
     omit_local_variable_types: false
+    argument_type_not_assignable: false
+    generic_argument_factories: true

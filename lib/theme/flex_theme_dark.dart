@@ -412,7 +412,7 @@ FlexColorScheme flexColorSchemeDark(ThemeController controller, Color source) {
     surfaceTint: controller.surfaceTintDark,
     //
     // Modify the value in the App class to change it.
-    visualDensity: App.visualDensity,
+    visualDensity: GlobalApp.visualDensity,
     //
     // Custom font, modify in App class to change it.
     // For demonstration purposes the custom font is defined via Google fonts
@@ -425,9 +425,9 @@ FlexColorScheme flexColorSchemeDark(ThemeController controller, Color source) {
     // contrast for whatever primary color is used. FlexColorScheme also retains
     // the correct opacities on text style if M2 Typography is used, and removes
     // it from style when M3 Typography is used.
-    fontFamily: controller.useAppFont ? App.font : null,
-    textTheme: controller.useAppFont ? App.textTheme : null,
-    primaryTextTheme: controller.useAppFont ? App.textTheme : null,
+    fontFamily: controller.useAppFont ? GlobalApp.font : null,
+    textTheme: controller.useAppFont ? GlobalApp.textTheme : null,
+    primaryTextTheme: controller.useAppFont ? GlobalApp.textTheme : null,
     //
     // To test manual typography override use this:
     typography: Typography.material2021(platform: controller.platform),

@@ -32,11 +32,15 @@ dependencies:
     sdk: flutter
   flutter_animarker: ^3.4.0-beta.1
   flutter_bloc: ^8.1.2
-  flutter_html: ^3.0.0-alpha.6
+  flutter_html: ^3.0.0-beta.1
   flutter_launcher_icons: ^0.13.1
   flutter_localizations:
     sdk: flutter
   flutter_native_splash: ^2.3.0
+  flutter_platform_widgets:
+    git:
+      url: 'https://github.com/prasant10050/flutter_platform_widgets.git'
+      ref: master
   flutter_secure_storage: ^8.0.0
   font_awesome_flutter: ^10.4.0
   freezed_annotation: ^2.2.0
@@ -56,6 +60,11 @@ dependencies:
   json_annotation: ^4.8.1
   location: ^4.4.0
   logger: ^1.3.0
+  network_manager:
+    git:
+      url: 'git@bitbucket.org:prasant72/homemakers_commons.git'
+      ref: master
+      path: network_manager
   path: ^1.8.3
   path_provider: ^2.0.15
   permission_handler: ^10.2.0
@@ -80,7 +89,7 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   freezed: ^2.3.4
-  json_serializable: ^6.6.2
+  json_serializable: ^6.7.0
   mocktail: ^0.3.0
   very_good_analysis: ^4.0.0+1
 

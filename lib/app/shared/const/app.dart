@@ -10,10 +10,10 @@ import 'package:google_fonts/google_fonts.dart';
 /// classes that serves your application's usage. For these examples I
 /// put them all in the same class, except the colors that are in their
 /// own class.
-class App {
+class GlobalApp {
   // This class is not meant to be instantiated or extended; this constructor
   // prevents instantiation and extension.
-  App._();
+  GlobalApp._();
 
   // Info about the app.
 
@@ -165,4 +165,7 @@ class App {
   /// default one. The default Flutter one is too dense imo.
   static VisualDensity get visualDensity =>
       FlexColorScheme.comfortablePlatformDensity;
+
+  static String baseUrl = '';
+  static int port = 8080;
 }
