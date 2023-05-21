@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.homemakers.homemakers_merchant">
+    package="com.homemakers.merchant">
    <application
-        android:label="Merchant"
+        android:label="HomeMakers Merchant"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

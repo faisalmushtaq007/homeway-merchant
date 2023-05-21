@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:homemakers_merchant/app/shared/utils/app_scroll_behavior.dart';
 import 'package:homemakers_merchant/app/shared/widgets/universal/theme_mode_switch_list_tile.dart';
 import 'package:homemakers_merchant/counter/counter.dart';
@@ -7,8 +8,8 @@ import 'package:homemakers_merchant/l10n/l10n.dart';
 import 'package:homemakers_merchant/theme/theme_controller.dart';
 
 class CounterPage extends StatelessWidget {
-  const CounterPage({super.key, required this.controller});
-  final ThemeController controller;
+  const CounterPage({super.key, this.controller});
+  final ThemeController? controller;
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
@@ -20,7 +21,7 @@ class CounterPage extends StatelessWidget {
 
 class CounterView extends StatelessWidget {
   const CounterView({super.key, required this.controller});
-  final ThemeController controller;
+  final ThemeController? controller;
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +35,6 @@ class CounterView extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.end,
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
-            ThemeModeSwitchListTile(controller: controller),
             FloatingActionButton(
               onPressed: () => context.read<CounterCubit>().increment(),
               child: const Icon(Icons.add),

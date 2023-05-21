@@ -90,12 +90,12 @@ BEGIN
         BLOCK "040904e4"
         BEGIN
             VALUE "CompanyName", "com.homemakers.merchant" "\0"
-            VALUE "FileDescription", "Merchant" "\0"
+            VALUE "FileDescription", "HomeMakers Merchant" "\0"
             VALUE "FileVersion", VERSION_AS_STRING "\0"
-            VALUE "InternalName", "Merchant" "\0"
+            VALUE "InternalName", "HomeMakers Merchant" "\0"
             VALUE "LegalCopyright", "Copyright (C) 2022 com.homemakers.merchant. All rights reserved." "\0"
             VALUE "OriginalFilename", "homemakers_merchant.exe" "\0"
-            VALUE "ProductName", "Merchant" "\0"
+            VALUE "ProductName", "HomeMakers Merchant" "\0"
             VALUE "ProductVersion", VERSION_AS_STRING "\0"
         END
     END

@@ -96,7 +96,7 @@ Future<void> bootstrap(FutureOr<dynamic> Function() builder) async {
     GestureBinding.instance.resamplingEnabled = true;
     // AppStartConfig
     await AppStartConfig.shared.startApp();
-    //await Firebase.initializeApp();
+    await builder();
     //final ThemeService themeService = ThemeServicePrefs();
     final ThemeService themeService = ThemeServiceHive('app_color_scheme_box');
     // Initialize the theme service.
@@ -107,7 +107,7 @@ Future<void> bootstrap(FutureOr<dynamic> Function() builder) async {
     // is created, this prevents a theme change when the app is first displayed.
     await themeController.loadAll();
     // Only use Google fonts via asset provided fonts.
-    GoogleFonts.config.allowRuntimeFetching = false;
+    GoogleFonts.config.allowRuntimeFetching = true;
     runApp(
       App(
         controller: themeController,

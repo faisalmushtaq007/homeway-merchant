@@ -3,11 +3,20 @@ buildscript {
     repositories {
         google()
         mavenCentral()
+        maven {
+            url 'https://google.bintray.com/exoplayer/'
+        }
     }
 
     dependencies {
         classpath 'com.android.tools.build:gradle:7.2.0'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath 'com.google.gms:google-services:4.3.15'
+    }
+    configurations.all {
+        resolutionStrategy {
+            force "com.google.android.gms:play-services-location:21.0.1"
+        }
     }
 }
 

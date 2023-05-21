@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "297962461340",
+    "firebase_url": "https://homemakers-merchant-prod-default-rtdb.europe-west1.firebasedatabase.app",
+    "project_id": "homemakers-merchant-prod",
+    "storage_bucket": "homemakers-merchant-prod.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:297962461340:android:ee371866e177d3d5907559",
+        "android_client_info": {
+          "package_name": "com.homemakers.merchant.prod"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "297962461340-ctcfsbousftlrs1gbph5p7esvvikvlbn.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAsshYbCGvkVfdzBcfME7GfAXwTTqQh60A"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "297962461340-ctcfsbousftlrs1gbph5p7esvvikvlbn.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "297962461340-eg5c9bjk88s09bbnaqq9alglhtpbrd77.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.homemakers.merchant.RunnerTests.prod"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

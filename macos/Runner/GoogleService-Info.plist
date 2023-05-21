@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>1027413623024-qi6035ab0cgm7ps8uunooq500ing8h0e.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.1027413623024-qi6035ab0cgm7ps8uunooq500ing8h0e</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>1027413623024-0engva5jcgt6mv9vj0u3d0ivpu2otegd.apps.googleusercontent.com</string>
+	<key>API_KEY</key>
+	<string>AIzaSyB4ydlSb5Q0UBfrb1TgXDfrceXmpwXptMY</string>
+	<key>GCM_SENDER_ID</key>
+	<string>1027413623024</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.homemakers.homemakersMerchant.RunnerTests</string>
+	<key>PROJECT_ID</key>
+	<string>homemaker-customer</string>
+	<key>STORAGE_BUCKET</key>
+	<string>homemaker-customer.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:1027413623024:ios:c19c1c317dcfedaa194235</string>
+	<key>DATABASE_URL</key>
+	<string>https://homemaker-customer-default-rtdb.europe-west1.firebasedatabase.app</string>
+</dict>
+</plist>
