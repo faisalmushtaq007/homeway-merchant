@@ -1,9 +1,9 @@
 import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/material.dart';
 import 'package:homemakers_merchant/theme/theme_controller.dart';
-import 'package:homemakers_merchant/app/shared/const/app.dart';
-import 'package:homemakers_merchant/app/shared/const/app_color.dart';
-import 'package:homemakers_merchant/app/shared/const/flex_tone.dart';
+import 'package:homemakers_merchant/core/constants/app.dart';
+import 'package:homemakers_merchant/core/constants/app_color.dart';
+import 'package:homemakers_merchant/core/constants/flex_tone.dart';
 import 'code_theme.dart';
 
 /// This function calls [flexColorSchemeLight] and uses

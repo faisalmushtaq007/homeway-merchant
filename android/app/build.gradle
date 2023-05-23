@@ -52,6 +52,7 @@ android {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
         applicationId "com.homemakers.merchant"
         minSdkVersion localProperties.getProperty('minSdkVersion')
+        //compileSdkVersion localProperties.getProperty('compileSdkVersion')
         targetSdkVersion localProperties.getProperty('targetSdkVersion')
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName

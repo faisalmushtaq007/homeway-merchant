@@ -11,7 +11,10 @@ dependencies:
     git:
       url: 'https://github.com/prasant10050/flutter-connectivity.git'
       ref: main
+  animations: ^2.0.7
+  app_links: ^3.4.3
   app_runner: ^2.1.2
+  app_settings: ^4.2.0
   async: ^2.11.0
   bloc: ^8.1.1
   cached_network_image: ^3.2.3
@@ -20,7 +23,7 @@ dependencies:
   connectivity_plus: ^4.0.0
   crypto: ^3.0.3
   cupertino_icons: ^1.0.5
-  device_info_plus: ^9.0.0
+  device_info_plus: ^9.0.1
   equatable: ^2.0.5
   firebase_analytics: ^10.4.1
   firebase_auth: ^4.6.1
@@ -66,9 +69,14 @@ dependencies:
       url: 'git@bitbucket.org:prasant72/homemakers_commons.git'
       ref: master
       path: network_manager
+  open_settings_plus: ^0.0.2
   path: ^1.8.3
   path_provider: ^2.0.15
-  permission_handler: ^10.2.0
+  permission_handler:
+    git:
+      url: 'https://github.com/prasant10050/flutter-permission-handler.git'
+      ref: master
+      path: permission_handler
   phone_form_field:
     git:
       url: 'https://github.com/prasant10050/phone_form_field.git'

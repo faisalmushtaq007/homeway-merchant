@@ -1,15 +1,25 @@
+import 'package:app_settings/app_settings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
-import 'package:homemakers_merchant/app/shared/utils/app_scroll_behavior.dart';
-import 'package:homemakers_merchant/app/shared/widgets/universal/theme_mode_switch_list_tile.dart';
+import 'package:get_it_mixin/get_it_mixin.dart';
+import 'package:homemakers_merchant/bootup/bootstrap.dart';
+import 'package:homemakers_merchant/bootup/injection_container.dart';
+import 'package:homemakers_merchant/config/permission/permission_controller.dart';
+import 'package:homemakers_merchant/config/permission/permission_service.dart';
+import 'package:homemakers_merchant/config/permission/permission_service.dart';
+import 'package:homemakers_merchant/utils/app_scroll_behavior.dart';
 import 'package:homemakers_merchant/counter/counter.dart';
 import 'package:homemakers_merchant/l10n/l10n.dart';
 import 'package:homemakers_merchant/theme/theme_controller.dart';
+import 'package:location/location.dart' as loc;
+import 'package:permission_handler/permission_handler.dart';
 
 class CounterPage extends StatelessWidget {
   const CounterPage({super.key, this.controller});
+
   final ThemeController? controller;
+
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
@@ -19,9 +29,61 @@ class CounterPage extends StatelessWidget {
   }
 }
 
-class CounterView extends StatelessWidget {
-  const CounterView({super.key, required this.controller});
+class CounterView extends StatefulWidget with GetItStatefulWidgetMixin {
+  CounterView({super.key, required this.controller});
+
   final ThemeController? controller;
+
+  @override
+  State<CounterView> createState() => _CounterViewState();
+}
+
+class _CounterViewState extends State<CounterView> with GetItStateMixin {
+  var permissionController = serviceLocator<PermissionController>();
+
+  @override
+  void initState() {
+    super.initState();
+    initPermission();
+  }
+
+  Future<void> initPermission() async {
+    (Permission, PermissionStatus) permissionCall =
+        await serviceLocator<IPermissionService>().checkPermission(
+      Permission.locationWhenInUse,
+    );
+    print("Status - ${permissionCall.$2}");
+    switch (permissionCall.$2) {
+      case PermissionStatus.denied:
+        {
+          log('Denied');
+        }
+      case PermissionStatus.granted || PermissionStatus.limited:
+        {
+          loc.Location location = loc.Location();
+          final loc.LocationData locationData = await location.getLocation();
+          log('Your location ${locationData.longitude}, ${locationData.longitude}');
+        }
+      case PermissionStatus.permanentlyDenied:
+        {
+          log('permanentlyDenied');
+          await serviceLocator<IPermissionService>().openAppSetting(
+            androidBuilder: (openSettingsPlusAndroid) async {
+              //final status = await openSettingsPlusAndroid.applicationDetails();
+              await AppSettings.openAppSettings();
+            },
+            iOSBuilder: (openSettingsPlusIOS) async {
+              //final status = await openSettingsPlusIOS.settings();
+              await AppSettings.openAppSettings();
+            },
+          );
+        }
+      case PermissionStatus.restricted:
+        {
+          log('Os restricted');
+        }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
