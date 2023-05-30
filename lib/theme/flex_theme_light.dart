@@ -1,7 +1,7 @@
 import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/material.dart';
 import 'package:homemakers_merchant/theme/theme_controller.dart';
-import 'package:homemakers_merchant/core/constants/app.dart';
+import 'package:homemakers_merchant/core/constants/global_app_constants.dart';
 import 'package:homemakers_merchant/core/constants/app_color.dart';
 import 'package:homemakers_merchant/core/constants/flex_tone.dart';
 import 'code_theme.dart';

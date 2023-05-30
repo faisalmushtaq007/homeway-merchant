@@ -95,6 +95,25 @@ class InMemoryTokenStorage<T> implements TokenStorage<T> {
   }
 }
 
+class HiveTokenStorage<T> implements TokenStorage<T> {
+  T? _token;
+
+  @override
+  Future<void> delete() async {
+    _token = null;
+  }
+
+  @override
+  Future<T?> read() async {
+    return _token;
+  }
+
+  @override
+  Future<void> write(T token) async {
+    _token = token;
+  }
+}
+
 /// {@template fresh_mixin}
 /// A mixin which handles core token refresh functionality.
 /// {@endtemplate}

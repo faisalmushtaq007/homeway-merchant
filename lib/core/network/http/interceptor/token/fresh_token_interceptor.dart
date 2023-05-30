@@ -7,5 +7,6 @@ export 'src/base_fresh_token.dart'
         TokenStorage,
         TokenHeaderBuilder,
         FreshTokenMixin,
-        InMemoryTokenStorage;
+        InMemoryTokenStorage,
+        HiveTokenStorage;
 export 'src/fresh_token_implement.dart';

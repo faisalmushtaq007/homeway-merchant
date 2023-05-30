@@ -13,3 +13,5 @@ linter:
     omit_local_variable_types: false
     argument_type_not_assignable: false
     generic_argument_factories: true
+    one_member_abstracts: false
+    library_private_types_in_public_api: false

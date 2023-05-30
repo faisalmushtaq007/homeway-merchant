@@ -2,12 +2,16 @@ import 'dart:async';
 
 import 'package:dio/dio.dart';
 import 'package:homemakers_merchant/core/network/http/interceptor/token/fresh_token_interceptor.dart';
+import 'package:network_manager/network_manager.dart';
 
 /// Signature for `shouldRefresh` on [FreshTokenInterceptor].
 typedef ShouldRefresh = bool Function(Response? response);
 
 /// Signature for `refreshToken` on [FreshTokenInterceptor].
-typedef RefreshToken<T> = Future<T> Function(T? token, Dio httpClient);
+typedef RefreshToken<T> = Future<T> Function(
+  T? token,
+  Dio httpClient,
+);
 
 /// {@template fresh}
 /// A Dio Interceptor for automatic token refresh.
@@ -31,10 +35,12 @@ class FreshTokenInterceptor<T> extends Interceptor with FreshTokenMixin<T> {
     required RefreshToken<T> refreshToken,
     ShouldRefresh? shouldRefresh,
     Dio? httpClient,
+    NetworkManager? networkManager,
   })  : _refreshToken = refreshToken,
         _tokenHeader = tokenHeader,
         _shouldRefresh = shouldRefresh ?? _defaultShouldRefresh,
-        _httpClient = httpClient ?? Dio() {
+        _httpClient = httpClient ?? Dio(),
+        _networkManager = networkManager {
     this.tokenStorage = tokenStorage;
   }
 
@@ -55,6 +61,7 @@ class FreshTokenInterceptor<T> extends Interceptor with FreshTokenMixin<T> {
     ShouldRefresh? shouldRefresh,
     Dio? httpClient,
     TokenHeaderBuilder<OAuth2Token>? tokenHeader,
+    NetworkManager? networkManager,
   }) {
     return FreshTokenInterceptor<OAuth2Token>(
       refreshToken: refreshToken,
@@ -84,6 +91,7 @@ class FreshTokenInterceptor<T> extends Interceptor with FreshTokenMixin<T> {
   final TokenHeaderBuilder<T> _tokenHeader;
   final ShouldRefresh _shouldRefresh;
   final RefreshToken<T> _refreshToken;
+  final NetworkManager? _networkManager;
 
   @override
   Future<dynamic> onRequest(

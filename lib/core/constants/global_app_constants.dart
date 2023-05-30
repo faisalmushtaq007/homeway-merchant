@@ -168,4 +168,12 @@ class GlobalApp {
 
   static String baseUrl = '';
   static int port = 8080;
+
+  static String userModelKey = 'userModelKey';
+  static String userAccessTokenKey = 'userAccessToken';
+  static const String defaultMessageDuringLoading =
+      'Please wait while we are fetching';
+  static const String defaultSomethingWentWrong =
+      'Something went wrong, please try again later';
+  static const String defaultFailure = 'Failure';
 }

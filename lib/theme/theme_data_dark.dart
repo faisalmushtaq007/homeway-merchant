@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:homemakers_merchant/core/constants/app.dart';
+import 'package:homemakers_merchant/core/constants/global_app_constants.dart';
 import 'package:homemakers_merchant/theme/theme_controller.dart';
 
 import 'code_theme.dart';

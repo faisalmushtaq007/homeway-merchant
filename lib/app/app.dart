@@ -2,6 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
+import 'package:homemakers_merchant/app/features/onboarding/presentation/pages/splash_page.dart';
+import 'package:homemakers_merchant/app/features/profile/domain/entities/user_model.dart';
+import 'package:homemakers_merchant/app/features/profile/presentation/manager/user_model_storage_controller.dart';
 import 'package:homemakers_merchant/config/permission/permission_controller.dart';
 import 'package:homemakers_merchant/core/service/connectivity_bloc/connectivity_bloc.dart';
 import 'package:homemakers_merchant/core/service/connectivity_bloc/src/widget/connectivity_app_wrapper.dart';
@@ -28,6 +31,10 @@ class App extends StatelessWidget with GetItMixin {
     final PermissionController permissionController = watchOnly(
       (PermissionController permissionController) => permissionController,
     );
+    final UserModelStorageController userModelStorageController = watchOnly(
+      (UserModelStorageController userModelStorageController) =>
+          userModelStorageController,
+    );
     return MultiBlocProvider(
       providers: [
         BlocProvider<ConnectivityBloc>(
@@ -39,6 +46,7 @@ class App extends StatelessWidget with GetItMixin {
         listenables: [
           themeController,
           permissionController,
+          userModelStorageController,
         ],
         builder: (BuildContext context, Widget? child) {
           final materialLightTheme = flexThemeLight(themeController);
@@ -191,7 +199,7 @@ class App extends StatelessWidget with GetItMixin {
                     // The code that one need to use the same theme is also updated
                     // interactively for each change when the cod gent panel is
                     // in view.
-                    child: CounterPage(controller: themeController),
+                    child: SplashPage(),
                   ),
                 ),
               ),

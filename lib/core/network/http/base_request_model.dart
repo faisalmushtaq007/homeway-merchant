@@ -8,7 +8,7 @@ class BaseRequestModel<T> {
     this.jsonrpc = '2.0',
     this.data,
   });
-  factory BaseRequestModel.fromMap(
+  factory BaseRequestModel.fromJson(
     Map<String, dynamic> json,
     T Function(Object? json) fromJsonT,
   ) =>
@@ -19,7 +19,7 @@ class BaseRequestModel<T> {
   @JsonKey(name: 'params')
   final T? data;
 
-  Map<String, dynamic> toMap(
+  Map<String, dynamic> toJson(
     Object Function(T value) toJsonT,
   ) =>
       _$BaseRequestModelToJson(this, toJsonT);

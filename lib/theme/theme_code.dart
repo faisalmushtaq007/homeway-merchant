@@ -2,7 +2,7 @@ import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:homemakers_merchant/core/constants/app.dart';
+import 'package:homemakers_merchant/core/constants/global_app_constants.dart';
 import 'package:homemakers_merchant/core/constants/flex_tone.dart';
 import 'package:homemakers_merchant/core/constants/store.dart';
 import 'package:homemakers_merchant/theme/theme_controller.dart';

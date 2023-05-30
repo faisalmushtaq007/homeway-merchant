@@ -4,12 +4,12 @@ import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:hive/hive.dart';
 import 'package:homemakers_merchant/config/permission/permission_service_hive_adapters.dart';
-import 'package:homemakers_merchant/utils/universal_platform/src/universal_platform.dart';
-import 'package:permission_handler/permission_handler.dart';
 import 'package:homemakers_merchant/utils/app_data_dir/app_data_dir.dart';
+import 'package:homemakers_merchant/utils/universal_platform/src/universal_platform.dart';
+import 'package:location/location.dart' as loc;
 import 'package:open_settings_plus/android/open_settings_plus_android.dart';
 import 'package:open_settings_plus/ios/open_settings_plus_ios.dart';
-import 'package:location/location.dart' as loc;
+import 'package:permission_handler/permission_handler.dart';
 
 /// properties.
 abstract interface class IPermissionService {
@@ -59,10 +59,7 @@ abstract interface class IPermissionService {
   });
 
   /// Request location service
-  Future<bool> requestLocationService(
-    String key,
-    PermissionStatus value,
-  );
+  Future<bool> requestLocationService();
 }
 
 // Debug
@@ -147,8 +144,7 @@ class PermissionServiceHive implements IPermissionService {
   }
 
   @override
-  Future<bool> requestLocationService(
-      String key, PermissionStatus value) async {
+  Future<bool> requestLocationService() async {
     final loc.Location location = loc.Location();
     final bool serviceEnabledStatus = await location.serviceEnabled();
     if (!serviceEnabledStatus) {

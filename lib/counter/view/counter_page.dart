@@ -8,6 +8,7 @@ import 'package:homemakers_merchant/bootup/injection_container.dart';
 import 'package:homemakers_merchant/config/permission/permission_controller.dart';
 import 'package:homemakers_merchant/config/permission/permission_service.dart';
 import 'package:homemakers_merchant/config/permission/permission_service.dart';
+import 'package:homemakers_merchant/core/mixins/lifecycle_mixin.dart';
 import 'package:homemakers_merchant/utils/app_scroll_behavior.dart';
 import 'package:homemakers_merchant/counter/counter.dart';
 import 'package:homemakers_merchant/l10n/l10n.dart';
@@ -38,9 +39,10 @@ class CounterView extends StatefulWidget with GetItStatefulWidgetMixin {
   State<CounterView> createState() => _CounterViewState();
 }
 
-class _CounterViewState extends State<CounterView> with GetItStateMixin {
-  var permissionController = serviceLocator<PermissionController>();
-
+class _CounterViewState extends State<CounterView>
+    with GetItStateMixin, LifecycleMixin {
+  final permissionController = serviceLocator<PermissionController>();
+  bool _isAppInBackground = false;
   @override
   void initState() {
     super.initState();
@@ -48,40 +50,49 @@ class _CounterViewState extends State<CounterView> with GetItStateMixin {
   }
 
   Future<void> initPermission() async {
-    (Permission, PermissionStatus) permissionCall =
-        await serviceLocator<IPermissionService>().checkPermission(
-      Permission.locationWhenInUse,
-    );
-    print("Status - ${permissionCall.$2}");
-    switch (permissionCall.$2) {
-      case PermissionStatus.denied:
-        {
-          log('Denied');
-        }
-      case PermissionStatus.granted || PermissionStatus.limited:
-        {
-          loc.Location location = loc.Location();
-          final loc.LocationData locationData = await location.getLocation();
-          log('Your location ${locationData.longitude}, ${locationData.longitude}');
-        }
-      case PermissionStatus.permanentlyDenied:
-        {
-          log('permanentlyDenied');
-          await serviceLocator<IPermissionService>().openAppSetting(
-            androidBuilder: (openSettingsPlusAndroid) async {
-              //final status = await openSettingsPlusAndroid.applicationDetails();
-              await AppSettings.openAppSettings();
-            },
-            iOSBuilder: (openSettingsPlusIOS) async {
-              //final status = await openSettingsPlusIOS.settings();
-              await AppSettings.openAppSettings();
-            },
-          );
-        }
-      case PermissionStatus.restricted:
-        {
-          log('Os restricted');
-        }
+    if (await serviceLocator<IPermissionService>().requestLocationService()) {
+      final (Permission, PermissionStatus) permissionCall =
+          await serviceLocator<IPermissionService>().checkPermission(
+        Permission.locationWhenInUse,
+      );
+      log('Status - ${permissionCall.$2}');
+      switch (permissionCall.$2) {
+        case PermissionStatus.denied:
+          {
+            log('Denied');
+            permissionController.setLocationWhenInUsePermission(
+              permissionCall.$2,
+            );
+          }
+        case PermissionStatus.granted || PermissionStatus.limited:
+          {
+            final loc.Location location = loc.Location();
+            final loc.LocationData locationData = await location.getLocation();
+            log('Your location ${locationData.latitude}, ${locationData.longitude}');
+          }
+        case PermissionStatus.permanentlyDenied:
+          {
+            log('permanentlyDenied');
+            await serviceLocator<IPermissionService>().openAppSetting(
+              androidBuilder: (openSettingsPlusAndroid) async {
+                //final status = await openSettingsPlusAndroid.applicationDetails();
+                final bool hasOpened = await openAppSettings();
+                //await initPermission();
+              },
+              iOSBuilder: (openSettingsPlusIOS) async {
+                //final status = await openSettingsPlusIOS.settings();
+                final bool hasOpened = await openAppSettings();
+                //await initPermission();
+              },
+            );
+          }
+        case PermissionStatus.restricted:
+          {
+            log('Os restricted');
+          }
+      }
+    } else {
+      // User enable location service
     }
   }
 
@@ -110,6 +121,19 @@ class _CounterViewState extends State<CounterView> with GetItStateMixin {
         ),
       ),
     );
+  }
+
+  @override
+  void onPause() {
+    if (_isAppInBackground) return;
+    _isAppInBackground = true;
+  }
+
+  @override
+  void onResume() {
+    if (!_isAppInBackground) return;
+    _isAppInBackground = false;
+    initPermission();
   }
 }
 
