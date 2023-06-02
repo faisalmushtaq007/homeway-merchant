@@ -29,8 +29,8 @@ class UserModelStorageController with ChangeNotifier {
     // If false, notifyListeners is not called.
     bool doNotify = true,
   }) async {
-    setUserModel(GlobalApp.userModelKey, false);
-    setUserAccessToken(GlobalApp.userModelKey, false);
+    setUserModel(GlobalApp.defaultUserModel, false);
+    setUserAccessToken(GlobalApp.defaultUserAccessToken, false);
     // Only notify at end, if asked to do so, to do so is default.
     if (doNotify) notifyListeners();
   }

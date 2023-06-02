@@ -14,6 +14,7 @@ import 'package:synchronized/synchronized.dart';
 
 class AutoLocalizationException implements Exception {
   String cause;
+
   AutoLocalizationException(this.cause);
 }
 
@@ -23,6 +24,7 @@ typedef IdentifiedPossibleLanguageTypeDef = void Function(
 
 class TranslateApi {
   TranslateApi({required this.languageService, required this.boxName});
+
   final ILanguageService languageService;
   final String boxName;
   static List<IdentifiedLanguage> _identifiedLanguages = <IdentifiedLanguage>[];
@@ -48,8 +50,9 @@ class TranslateApi {
 
   ///This parameter control the time between every request so you don't exceed the maximum amount of request. If you don't know what you are doing don't change it!
   static int _delayTime = 300;
+
   static int get delayTime => _delayTime;
-  static Lock _lock = new Lock();
+  static Lock _lock = Lock();
 
   /// The Active Locale at the Moment while
   /// the String is translated
@@ -232,7 +235,10 @@ class TranslateApi {
   }
 
   Future<void> identifyLanguage(
-      String text, IdentifiedLanguageTypeDef identifiedLanguage) async {
+    String text,
+    IdentifiedLanguageTypeDef identifiedLanguage, {
+    bool updateCurrentIdentifiedLanguage = true,
+  }) async {
     if (text == '') return;
     String language;
     try {
@@ -245,21 +251,25 @@ class TranslateApi {
     } catch (e) {
       language = 'error: ${e.toString()}';
     }
-    _identifiedLanguage = language;
+    if (updateCurrentIdentifiedLanguage) {
+      _identifiedLanguage = language;
+    }
     identifiedLanguage(language);
   }
 
-  Future<void> identifyPossibleLanguages(
-      String text,
-      IdentifiedPossibleLanguageTypeDef
-          identifiedPossibleLanguageTypeDef) async {
+  Future<void> identifyPossibleLanguages(String text,
+      IdentifiedPossibleLanguageTypeDef identifiedPossibleLanguageTypeDef,
+      {bool updateCurrentIdentifiedLanguage = true,
+      bool updateCurrentPossibleIdentifiedLanguages = true}) async {
     if (text == '') return;
     String error;
     try {
       final possibleLanguages =
           await _languageIdentifier.identifyPossibleLanguages(text);
+      if (updateCurrentPossibleIdentifiedLanguages) {
+        _identifiedLanguages = possibleLanguages;
+      }
 
-      _identifiedLanguages = possibleLanguages;
       identifiedPossibleLanguageTypeDef(possibleLanguages, '');
       return;
     } on PlatformException catch (pe) {
@@ -270,8 +280,11 @@ class TranslateApi {
     } catch (e) {
       error = 'error: ${e.toString()}';
     }
-    _identifiedLanguages = [];
-    _identifiedLanguage = error;
+    if (updateCurrentPossibleIdentifiedLanguages ||
+        updateCurrentIdentifiedLanguage) {
+      _identifiedLanguages = [];
+      _identifiedLanguage = error;
+    }
     identifiedPossibleLanguageTypeDef([], error);
     return;
   }
@@ -358,6 +371,58 @@ class TranslateApi {
 
   static Future<String> _translateText(String text) async {
     final result = await _onDeviceTranslator.translateText(text);
+    return result;
+  }
+
+  Future<String?> translateToEnglishText(String text) async {
+    var languageCode = '';
+    Lock _lock = Lock();
+    final result = await _lock.synchronized(() async {
+      await identifyLanguage(
+        text,
+        (language) {
+          languageCode = language;
+        },
+        updateCurrentIdentifiedLanguage: false,
+      );
+      TranslateLanguage sourceLanguage = TranslateLanguage.values
+          .firstWhere((element) => element.bcpCode == languageCode);
+      if (sourceLanguage == TranslateLanguage.english) {
+        return text;
+      }
+      final onDeviceTranslator = OnDeviceTranslator(
+        sourceLanguage: sourceLanguage,
+        targetLanguage: TranslateLanguage.english,
+      );
+      final result = await onDeviceTranslator.translateText(text);
+      return result;
+    });
+    return result;
+  }
+
+  Future<String?> translateToArabicText(String text) async {
+    var languageCode = '';
+    Lock _lock = Lock();
+    final result = await _lock.synchronized(() async {
+      await identifyLanguage(
+        text,
+        (language) {
+          languageCode = language;
+        },
+        updateCurrentIdentifiedLanguage: false,
+      );
+      TranslateLanguage sourceLanguage = TranslateLanguage.values
+          .firstWhere((element) => element.bcpCode == languageCode);
+      if (sourceLanguage == TranslateLanguage.arabic) {
+        return text;
+      }
+      final onDeviceTranslator = OnDeviceTranslator(
+        sourceLanguage: sourceLanguage,
+        targetLanguage: TranslateLanguage.arabic,
+      );
+      final result = await onDeviceTranslator.translateText(text);
+      return result;
+    });
     return result;
   }
 

@@ -178,7 +178,7 @@ class GlobalApp {
 
   static String userModelKey = 'userModelKey';
   static String userAccessTokenKey = 'userAccessToken';
-  static UserModel? defaultUserModel = serviceLocator<UserModel>();
+  static UserModel defaultUserModel = serviceLocator<UserModel>();
   static String defaultUserAccessToken =
       serviceLocator<UserModel>().token ?? '';
   static const String defaultMessageDuringLoading =

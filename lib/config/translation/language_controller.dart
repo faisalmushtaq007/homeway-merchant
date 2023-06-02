@@ -77,9 +77,9 @@ class LanguageController with ChangeNotifier {
     // If false, notifyListeners is not called.
     bool doNotify = true,
   }) async {
-    setLanguage(GlobalApp.keyLanguage, false);
-    setSourceTranslateLanguage(GlobalApp.keySourceTranslateLanguage, false);
-    setTargetTranslateLanguage(GlobalApp.keyTargetTranslateLanguage, false);
+    setLanguage(GlobalApp.defaultLanguageSelect, false);
+    setSourceTranslateLanguage(GlobalApp.defaultSourceTranslateLanguage, false);
+    setTargetTranslateLanguage(GlobalApp.defaultTargetTranslateLanguage, false);
     // Only notify at end, if asked to do so, to do so is default.
     if (doNotify) notifyListeners();
   }
