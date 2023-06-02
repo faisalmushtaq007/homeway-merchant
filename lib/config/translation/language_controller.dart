@@ -85,50 +85,32 @@ class LanguageController with ChangeNotifier {
   }
 
   Future<void> identifyLanguage(String text) async {
-    if (text == '') return;
-    String language;
-    try {
-      language = await _languageIdentifier.identifyLanguage(text);
-    } on PlatformException catch (pe) {
-      if (pe.code == _languageIdentifier.undeterminedLanguageCode) {
-        language = 'error: no language identified!';
-      }
-      language = 'error: ${pe.code}: ${pe.message}';
-    } catch (e) {
-      language = 'error: ${e.toString()}';
-    }
-    _identifiedLanguage = language;
-    notifyListeners();
+    await serviceLocator<TranslateApi>().identifyLanguage(text,
+        (String language) {
+      _identifiedLanguage = language;
+      notifyListeners();
+    });
+    return;
   }
 
   Future<void> identifyPossibleLanguages(String text) async {
     if (text == '') return;
     String error;
-    try {
-      final possibleLanguages =
-          await _languageIdentifier.identifyPossibleLanguages(text);
-
+    await serviceLocator<TranslateApi>().identifyPossibleLanguages(text,
+        (List<IdentifiedLanguage> possibleLanguages, String language) {
+      if (language.isNotEmpty) {
+        _identifiedLanguage = language;
+      }
       _identifiedLanguages = possibleLanguages;
       notifyListeners();
-
-      return;
-    } on PlatformException catch (pe) {
-      if (pe.code == _languageIdentifier.undeterminedLanguageCode) {
-        error = 'error: no languages identified!';
-      }
-      error = 'error: ${pe.code}: ${pe.message}';
-    } catch (e) {
-      error = 'error: ${e.toString()}';
-    }
-    _identifiedLanguages = [];
-    _identifiedLanguage = error;
-    notifyListeners();
+    });
+    return;
   }
 
   Future<bool> downloadSourceModel() async {
     log('Downloading model (${_sourceLanguage.name})...');
-    final bool hasDownloaded = await _modelManager
-        .downloadModel(_sourceLanguage.bcpCode, isWifiRequired: false);
+    final bool hasDownloaded =
+        await serviceLocator<TranslateApi>().downloadSourceModel();
     hasSourceModelDownloadedSuccess = hasDownloaded;
     notifyListeners();
     return hasDownloaded;
@@ -136,8 +118,8 @@ class LanguageController with ChangeNotifier {
 
   Future<bool> downloadTargetModel() async {
     log('Downloading model (${_targetLanguage.name})...');
-    final bool hasDownloaded = await _modelManager
-        .downloadModel(_targetLanguage.bcpCode, isWifiRequired: false);
+    final bool hasDownloaded =
+        await serviceLocator<TranslateApi>().downloadTargetModel();
     hasTargetModelDownloadedSuccess = hasDownloaded;
     notifyListeners();
     return hasDownloaded;
@@ -146,7 +128,7 @@ class LanguageController with ChangeNotifier {
   Future<bool> deleteSourceModel() async {
     log('Deleting model (${_sourceLanguage.name})...');
     final bool hasDeleted =
-        await _modelManager.deleteModel(_sourceLanguage.bcpCode);
+        await serviceLocator<TranslateApi>().deleteSourceModel();
     hasSourceModelDeleted = hasDeleted;
     notifyListeners();
     return hasDeleted;
@@ -155,7 +137,7 @@ class LanguageController with ChangeNotifier {
   Future<bool> deleteTargetModel() async {
     log('Deleting model (${_targetLanguage.name})...');
     final bool hasDeleted =
-        await _modelManager.deleteModel(_targetLanguage.bcpCode);
+        await serviceLocator<TranslateApi>().deleteTargetModel();
     hasTargetModelDeleted = hasDeleted;
     notifyListeners();
     return hasDeleted;
@@ -164,7 +146,7 @@ class LanguageController with ChangeNotifier {
   Future<bool> isSourceModelDownloaded() async {
     log('Checking if model (${_sourceLanguage.name}) is downloaded...');
     final bool hasDownloaded =
-        await _modelManager.isModelDownloaded(_sourceLanguage.bcpCode);
+        await serviceLocator<TranslateApi>().isSourceModelDownloaded();
     hasSourceModelDownloaded = hasDownloaded;
     notifyListeners();
     return hasDownloaded;
@@ -173,7 +155,7 @@ class LanguageController with ChangeNotifier {
   Future<bool> isTargetModelDownloaded() async {
     log('Checking if model (${_targetLanguage.name}) is downloaded...');
     final bool hasDownloaded =
-        await _modelManager.isModelDownloaded(_targetLanguage.bcpCode);
+        await serviceLocator<TranslateApi>().isTargetModelDownloaded();
     hasTargetModelDownloaded = hasDownloaded;
     notifyListeners();
     return hasDownloaded;
@@ -186,11 +168,15 @@ class LanguageController with ChangeNotifier {
 
   void changeSourceLanguage(TranslateLanguage newSourceLanguage) {
     _sourceLanguage = newSourceLanguage;
+    serviceLocator<TranslateApi>()
+        .changeSourceTranslateLanguage(newSourceLanguage);
     notifyListeners();
   }
 
   void changeTargetLanguage(TranslateLanguage newTargetLanguage) {
     _targetLanguage = newTargetLanguage;
+    serviceLocator<TranslateApi>()
+        .changeTargetTranslateLanguage(newTargetLanguage);
     notifyListeners();
   }
 
@@ -200,12 +186,17 @@ class LanguageController with ChangeNotifier {
   }) {
     _sourceLanguage = newSourceLanguage;
     _targetLanguage = newTargetLanguage;
+    serviceLocator<TranslateApi>()
+        .changeSourceTranslateLanguage(newSourceLanguage);
+    serviceLocator<TranslateApi>()
+        .changeTargetTranslateLanguage(newTargetLanguage);
     notifyListeners();
   }
 
   void switchCurrentSourceAndTargetLanguage() {
     _sourceLanguage = _targetLanguage;
     _targetLanguage = _sourceLanguage;
+    serviceLocator<TranslateApi>().switchCurrentSourceAndTargetLanguage();
     notifyListeners();
   }
 

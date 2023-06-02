@@ -17,6 +17,10 @@ class AutoLocalizationException implements Exception {
   AutoLocalizationException(this.cause);
 }
 
+typedef IdentifiedLanguageTypeDef = void Function(String language);
+typedef IdentifiedPossibleLanguageTypeDef = void Function(
+    List<IdentifiedLanguage> languages, String language);
+
 class TranslateApi {
   TranslateApi({required this.languageService, required this.boxName});
   final ILanguageService languageService;
@@ -227,7 +231,8 @@ class TranslateApi {
     _onDeviceTranslator.close();
   }
 
-  Future<void> identifyLanguage(String text) async {
+  Future<void> identifyLanguage(
+      String text, IdentifiedLanguageTypeDef identifiedLanguage) async {
     if (text == '') return;
     String language;
     try {
@@ -241,9 +246,13 @@ class TranslateApi {
       language = 'error: ${e.toString()}';
     }
     _identifiedLanguage = language;
+    identifiedLanguage(language);
   }
 
-  Future<void> identifyPossibleLanguages(String text) async {
+  Future<void> identifyPossibleLanguages(
+      String text,
+      IdentifiedPossibleLanguageTypeDef
+          identifiedPossibleLanguageTypeDef) async {
     if (text == '') return;
     String error;
     try {
@@ -251,7 +260,7 @@ class TranslateApi {
           await _languageIdentifier.identifyPossibleLanguages(text);
 
       _identifiedLanguages = possibleLanguages;
-
+      identifiedPossibleLanguageTypeDef(possibleLanguages, '');
       return;
     } on PlatformException catch (pe) {
       if (pe.code == _languageIdentifier.undeterminedLanguageCode) {
@@ -263,6 +272,8 @@ class TranslateApi {
     }
     _identifiedLanguages = [];
     _identifiedLanguage = error;
+    identifiedPossibleLanguageTypeDef([], error);
+    return;
   }
 
   Future<bool> downloadSourceModel() async {
@@ -325,11 +336,11 @@ class TranslateApi {
     return result;
   }
 
-  void changeSourceLanguage(TranslateLanguage newSourceLanguage) {
+  void changeSourceTranslateLanguage(TranslateLanguage newSourceLanguage) {
     _sourceLanguage = newSourceLanguage;
   }
 
-  void changeTargetLanguage(TranslateLanguage newTargetLanguage) {
+  void changeTargetTranslateLanguage(TranslateLanguage newTargetLanguage) {
     _targetLanguage = newTargetLanguage;
   }
 
