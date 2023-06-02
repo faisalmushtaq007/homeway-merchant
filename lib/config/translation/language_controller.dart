@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:collection' show HashMap;
+import 'dart:ui';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:homemakers_merchant/bootup/bootstrap.dart';
@@ -23,7 +24,7 @@ class LanguageController with ChangeNotifier {
   var _identifiedLanguage = '';
   String? _translatedText;
   final _modelManager = OnDeviceTranslatorModelManager();
-  var _sourceLanguage = TranslateLanguage.arabic;
+  var _sourceLanguage = TranslateLanguage.english;
   var _targetLanguage = TranslateLanguage.hindi;
   late var _onDeviceTranslator = OnDeviceTranslator(
     sourceLanguage: _sourceLanguage,
@@ -35,6 +36,12 @@ class LanguageController with ChangeNotifier {
   bool hasTargetModelDeleted = false;
   bool hasSourceModelDownloadedSuccess = false;
   bool hasTargetModelDownloadedSuccess = false;
+  Locale _activeAppLocale = Locale('en');
+
+  Locale get activeLocale => _activeAppLocale;
+  Locale _defaultLocale = Locale('en');
+
+  Locale get defaultAppLocale => _defaultLocale;
 
   List<String>? _translation = [];
   Map<String, String> _translated = {};
@@ -42,25 +49,35 @@ class LanguageController with ChangeNotifier {
   late final HashMap<String, String> _translations = HashMap.from(_translated);
 
   double get percentage => _percentage;
+
   List<String> get startingTexts => _translation ?? [];
 
   String get(String key) => _translations[key]!;
+
   String getById(int id) => _translations[_translations.keys.elementAt(id)]!;
 
   Future<void> loadAll() async {
-    _language = await _languageService.load(
+    _language = await _languageService.load<Language>(
       GlobalApp.keyLanguage,
       GlobalApp.defaultLanguageSelect,
     );
     // _sourceTranslateLanguage
-    _sourceTranslateLanguage = await _languageService.load(
+    _sourceTranslateLanguage = await _languageService.load<TranslateLanguage>(
       GlobalApp.keySourceTranslateLanguage,
       GlobalApp.defaultSourceTranslateLanguage,
     );
     // _targetTranslateLanguage
-    _targetTranslateLanguage = await _languageService.load(
+    _targetTranslateLanguage = await _languageService.load<TranslateLanguage>(
       GlobalApp.keyTargetTranslateLanguage,
       GlobalApp.defaultTargetTranslateLanguage,
+    );
+    _sourceLocale = await _languageService.load<Locale>(
+      GlobalApp.keySourceLocale,
+      GlobalApp.defaultSourceLocale,
+    );
+    _targetLocale = await _languageService.load<Locale>(
+      GlobalApp.keyTargetLocale,
+      GlobalApp.defaultTargetLocale,
     );
   }
 
@@ -80,6 +97,8 @@ class LanguageController with ChangeNotifier {
     setLanguage(GlobalApp.defaultLanguageSelect, false);
     setSourceTranslateLanguage(GlobalApp.defaultSourceTranslateLanguage, false);
     setTargetTranslateLanguage(GlobalApp.defaultTargetTranslateLanguage, false);
+    setTargetLocale(GlobalApp.defaultTargetLocale, false);
+    setSourceLocale(GlobalApp.defaultSourceLocale, false);
     // Only notify at end, if asked to do so, to do so is default.
     if (doNotify) notifyListeners();
   }
@@ -200,6 +219,7 @@ class LanguageController with ChangeNotifier {
     notifyListeners();
   }
 
+  // App Language
   late Language _language;
 
   Language get language => _language;
@@ -209,6 +229,30 @@ class LanguageController with ChangeNotifier {
     _language = value;
     if (notify) notifyListeners();
     unawaited(_languageService.save(GlobalApp.keyLanguage, value));
+  }
+
+  // App Locale
+  late Locale _targetLocale;
+
+  Locale get appLocale => _targetLocale;
+
+  void setTargetLocale(Locale value, [bool notify = true]) {
+    if (value == _targetLocale) return;
+    _targetLocale = value;
+    if (notify) notifyListeners();
+    unawaited(_languageService.save(GlobalApp.keyTargetLocale, value));
+  }
+
+  // User Locale
+  late Locale _sourceLocale;
+
+  Locale get userLocale => _targetLocale;
+
+  void setSourceLocale(Locale value, [bool notify = true]) {
+    if (value == _sourceLocale) return;
+    _sourceLocale = value;
+    if (notify) notifyListeners();
+    unawaited(_languageService.save(GlobalApp.keySourceLocale, value));
   }
 
   // Source language

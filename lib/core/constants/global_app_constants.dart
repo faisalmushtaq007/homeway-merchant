@@ -176,9 +176,9 @@ class GlobalApp {
   static String baseUrl = '';
   static int port = 8080;
 
-  static String userModelKey = 'userModelKey';
-  static String userAccessTokenKey = 'userAccessToken';
+  static const String userModelKey = 'userModelKey';
   static UserModel defaultUserModel = serviceLocator<UserModel>();
+  static const String userAccessTokenKey = 'userAccessToken';
   static String defaultUserAccessToken =
       serviceLocator<UserModel>().token ?? '';
   static const String defaultMessageDuringLoading =
@@ -195,10 +195,28 @@ class GlobalApp {
         'English',
         TranslateLanguage.english,
       ),
+      /*Language(
+        const Locale('sd', 'SA'),
+        Assets.svg.flags.sa,
+        'Arabic',
+        TranslateLanguage.arabic,
+      ),
+      Language(
+        const Locale('hi', 'IN'),
+        Assets.svg.flags.ind,
+        'Hindi',
+        TranslateLanguage.hindi,
+      ),
+      Language(
+        const Locale('hi-Latn', 'IN'),
+        Assets.svg.flags.ind,
+        'Hindi-Latin',
+        TranslateLanguage.hindi,
+      ),*/
       Language(
         const Locale('ar', 'SA'),
         Assets.svg.flags.sa,
-        'Saudi Arabia',
+        'Arabic',
         TranslateLanguage.arabic,
       ),
     ],
@@ -209,12 +227,16 @@ class GlobalApp {
   static final Language defaultLanguageSelect = defaultLanguages[0];
   static const String keySourceTranslateLanguage = 'sourceTranslateLanguage';
   static TranslateLanguage defaultSourceTranslateLanguage =
-      TranslateLanguage.english;
+      defaultLanguages[0].sourceLanguage;
   static const String keyTargetTranslateLanguage = 'targetTranslateLanguage';
   static TranslateLanguage defaultTargetTranslateLanguage =
-      TranslateLanguage.arabic;
+      defaultLanguages[1].sourceLanguage;
   static const String permissionBoxName = 'permission_box';
   static const String storageBoxName = 'user_model_box';
   static const String languageBoxName = 'user_language_box';
   static const String translationBoxName = 'user_translation_box';
+  static const String keyTargetLocale = 'targetLocale';
+  static const String keySourceLocale = 'sourceLocale';
+  static Locale defaultTargetLocale = defaultLanguages[0].value;
+  static Locale defaultSourceLocale = defaultLanguages[1].value;
 }

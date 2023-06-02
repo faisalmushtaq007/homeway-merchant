@@ -80,7 +80,7 @@ class TranslateApi {
   static final HashMap<String, String> _translations =
       HashMap.from(_translationsMap);
 
-  static void changeLanguage(Locale newLocale) {
+  static void changeLocale(Locale newLocale) {
     _activeLocale = newLocale;
   }
 

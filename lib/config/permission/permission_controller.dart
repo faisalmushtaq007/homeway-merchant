@@ -72,6 +72,6 @@ class PermissionController with ChangeNotifier {
     if (value == _cameraPermission) return;
     _cameraPermission = value;
     if (notify) notifyListeners();
-    unawaited(_permissionService.save(PermissionStore.location, value));
+    unawaited(_permissionService.save(PermissionStore.camera, value));
   }
 }

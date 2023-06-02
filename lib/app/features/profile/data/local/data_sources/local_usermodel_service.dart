@@ -17,14 +17,14 @@ class LocalUserModelService implements IStorageService {
   @override
   Future<void> init() async {
     final String appDataDir = await getAppDataDir();
-    log('Hive using storage path: $appDataDir and file name: $boxName');
+    log('LocalUserModel Hive using storage path: $appDataDir and file name: $boxName');
     // Init the Hive box box giving it the platform usable folder.
     Hive.init(appDataDir);
     // Open the Hive box with passed in name, we just keep it open all the
     // time in this demo app.
-    await Hive.openBox<UserModel>(boxName);
+    await Hive.openBox<dynamic>(boxName);
     // Assign the box to our instance.
-    _hiveBox = Hive.box<UserModel>(boxName);
+    _hiveBox = Hive.box<dynamic>(boxName);
   }
 
   @override
@@ -65,17 +65,17 @@ class LocalUserModelService implements IStorageService {
       final T loaded = _hiveBox.get(key, defaultValue: defaultValue) as T;
 
       if (kDebugMode) {
-        log('Permission Hive type   : $key as ${defaultValue.runtimeType}');
-        log('Permission Hive loaded : $key as $loaded with ${loaded.runtimeType}');
+        log('LocalUserModel Hive type   : $key as ${defaultValue.runtimeType}');
+        log('LocalUserModel Hive loaded : $key as $loaded with ${loaded.runtimeType}');
       }
-      return Future.value(loaded);
+      return loaded;
     } catch (e) {
-      log('Permission Hive load (get) ERROR');
-      log(' Permission Error message ...... : $e');
-      log(' Permission Store key .......... : $key');
-      log(' Permission defaultValue ....... : $defaultValue');
+      log('LocalUserModel Hive load (get) ERROR');
+      log('LocalUserModel Error message ...... : $e');
+      log('LocalUserModel Store key .......... : $key');
+      log('LocalUserModel defaultValue ....... : $defaultValue');
       // If something goes wrong we return the default value.
-      return Future.value(defaultValue);
+      return defaultValue;
     }
   }
 
@@ -84,14 +84,14 @@ class LocalUserModelService implements IStorageService {
     try {
       await _hiveBox.put(key, value);
       if (kDebugMode) {
-        log('Hive type   : $key as ${value.runtimeType}');
-        log('Hive saved  : $key as $value');
+        log('LocalUserModel Hive type   : $key as ${value.runtimeType}');
+        log('LocalUserModel Hive saved  : $key as $value');
       }
     } catch (e) {
-      log('Hive save (put) ERROR');
-      log(' Error message ...... : $e');
-      log(' Store key .......... : $key');
-      log(' Save value ......... : $value');
+      log('LocalUserModel Hive save (put) ERROR');
+      log('LocalUserModel Error message ...... : $e');
+      log('LocalUserModel Store key .......... : $key');
+      log('LocalUserModel Save value ......... : $value');
     }
   }
 }

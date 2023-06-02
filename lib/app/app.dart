@@ -8,6 +8,8 @@ import 'package:homemakers_merchant/app/features/onboarding/presentation/pages/s
 import 'package:homemakers_merchant/app/features/profile/domain/entities/user_model.dart';
 import 'package:homemakers_merchant/app/features/profile/presentation/manager/user_model_storage_controller.dart';
 import 'package:homemakers_merchant/config/permission/permission_controller.dart';
+import 'package:homemakers_merchant/config/permission/permission_service.dart';
+import 'package:homemakers_merchant/config/translation/language_controller.dart';
 import 'package:homemakers_merchant/core/service/connectivity_bloc/connectivity_bloc.dart';
 import 'package:homemakers_merchant/core/service/connectivity_bloc/src/widget/connectivity_app_wrapper.dart';
 import 'package:homemakers_merchant/bootup/injection_container.dart';
@@ -21,22 +23,33 @@ import 'package:homemakers_merchant/utils/multi/multi_listenable_buillder.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 import 'package:get_it_mixin/get_it_mixin.dart';
 
-class App extends StatelessWidget with GetItMixin {
+class App extends StatefulWidget with GetItStatefulWidgetMixin {
   App({super.key, required this.themeController});
 
   final ThemeController themeController;
 
   @override
+  State<App> createState() => _AppState();
+}
+
+class _AppState extends State<App> with GetItStateMixin {
+  @override
   Widget build(BuildContext context) {
     // Whenever the theme controller notifies the listenable in the
     // ListenableBuilder, the MaterialApp is rebuilt.
-    final PermissionController permissionController = watchOnly(
-      (PermissionController permissionController) => permissionController,
-    );
-    final UserModelStorageController userModelStorageController = watchOnly(
-      (UserModelStorageController userModelStorageController) =>
-          userModelStorageController,
-    );
+    final PermissionController initPermissionController =
+        get<PermissionController>();
+    final UserModelStorageController initUserModelStorageController =
+        get<UserModelStorageController>();
+    final LanguageController initLanguageController = get<LanguageController>();
+
+    final permissionController =
+        watchOnly((PermissionController controller) => controller);
+    final userModelStorageController =
+        watchOnly((UserModelStorageController controller) => controller);
+    final languageController =
+        watchOnly((LanguageController controller) => controller);
+
     return MultiBlocProvider(
       providers: [
         BlocProvider<ConnectivityBloc>(
@@ -46,13 +59,14 @@ class App extends StatelessWidget with GetItMixin {
       ],
       child: MultiListenableBuilder(
         listenables: [
-          themeController,
+          widget.themeController,
           permissionController,
           userModelStorageController,
+          languageController,
         ],
         builder: (BuildContext context, Widget? child) {
-          final materialLightTheme = flexThemeLight(themeController);
-          final materialDarkTheme = flexThemeDark(themeController);
+          final materialLightTheme = flexThemeLight(widget.themeController);
+          final materialDarkTheme = flexThemeDark(widget.themeController);
 
           const darkDefaultCupertinoTheme =
               CupertinoThemeData(brightness: Brightness.dark);
@@ -92,7 +106,7 @@ class App extends StatelessWidget with GetItMixin {
                 iosUseZeroPaddingForAppbarPlatformIcon: true,
               ),
               builder: (context) => PlatformTheme(
-                themeMode: themeController.themeMode,
+                themeMode: widget.themeController.themeMode,
                 materialLightTheme: materialLightTheme,
                 materialDarkTheme: materialDarkTheme,
                 cupertinoLightTheme: cupertinoLightTheme,
@@ -114,6 +128,7 @@ class App extends StatelessWidget with GetItMixin {
                     GlobalWidgetsLocalizations.delegate,
                     GlobalCupertinoLocalizations.delegate,
                   ],
+                  locale: languageController.language.value,
                   supportedLocales: AppLocalizations.supportedLocales,
                   builder: (context, child) => ResponsiveBreakpoints.builder(
                     child: child!,

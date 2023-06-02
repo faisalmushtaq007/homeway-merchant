@@ -3,6 +3,7 @@ import 'dart:async';
 
 import 'package:flutter/foundation.dart';
 import 'package:hive/hive.dart';
+import 'package:homemakers_merchant/bootup/bootstrap.dart';
 import 'package:homemakers_merchant/config/permission/permission_service_hive_adapters.dart';
 import 'package:homemakers_merchant/utils/app_data_dir/app_data_dir.dart';
 import 'package:homemakers_merchant/utils/universal_platform/src/universal_platform.dart';
@@ -77,8 +78,7 @@ class PermissionServiceHive implements IPermissionService {
     registerHiveAdapters();
     final String appDataDir = await getAppDataDir();
     if (_debug) {
-      debugPrint(
-          'Hive using storage path: $appDataDir and file name: $boxName');
+      log('Permission Hive using storage path: $appDataDir and file name: $boxName');
     }
     // Init the Hive box box giving it the platform usable folder.
     Hive.init(appDataDir);
@@ -111,17 +111,15 @@ class PermissionServiceHive implements IPermissionService {
       final PermissionStatus loaded =
           _hiveBox.get(key, defaultValue: defaultValue) as PermissionStatus;
       if (_debug) {
-        debugPrint(
-            'Permission Hive type   : $key as ${defaultValue.runtimeType}');
-        debugPrint(
-            'Permission Hive loaded : $key as $loaded with ${loaded.runtimeType}');
+        log('Permission Hive type   : $key as ${defaultValue.runtimeType}');
+        log('Permission Hive loaded : $key as $loaded with ${loaded.runtimeType}');
       }
       return Future.value(loaded);
     } catch (e) {
-      debugPrint('Permission Hive load (get) ERROR');
-      debugPrint(' Permission Error message ...... : $e');
-      debugPrint(' Permission Store key .......... : $key');
-      debugPrint(' Permission defaultValue ....... : $defaultValue');
+      log('Permission Hive load (get) ERROR');
+      log('Permission Error message ...... : $e');
+      log('Permission Store key .......... : $key');
+      log('Permission defaultValue ....... : $defaultValue');
       // If something goes wrong we return the default value.
       return Future.value(defaultValue);
     }
@@ -224,14 +222,14 @@ class PermissionServiceHive implements IPermissionService {
     try {
       await _hiveBox.put(key, value);
       if (_debug) {
-        debugPrint('Permission Hive type   : $key as ${value.runtimeType}');
-        debugPrint('Permission Hive saved  : $key as $value');
+        log('Permission Hive type   : $key as ${value.runtimeType}');
+        log('Permission Hive saved  : $key as $value');
       }
     } catch (e) {
-      debugPrint('Permission Hive save (put) ERROR');
-      debugPrint(' Permission Error message ...... : $e');
-      debugPrint(' Permission Store key .......... : $key');
-      debugPrint(' Permission Save value ......... : $value');
+      log('Permission Hive save (put) ERROR');
+      log(' Permission Error message ...... : $e');
+      log(' Permission Store key .......... : $key');
+      log(' Permission Save value ......... : $value');
     }
   }
 

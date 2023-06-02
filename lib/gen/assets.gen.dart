@@ -23,11 +23,14 @@ class $AssetsSvgFlagsGen {
   /// File path: assets/svg/flags/gb.svg
   SvgGenImage get gb => const SvgGenImage('assets/svg/flags/gb.svg');
 
+  /// File path: assets/svg/flags/ind.svg
+  SvgGenImage get ind => const SvgGenImage('assets/svg/flags/ind.svg');
+
   /// File path: assets/svg/flags/sa.svg
   SvgGenImage get sa => const SvgGenImage('assets/svg/flags/sa.svg');
 
   /// List of all assets
-  List<SvgGenImage> get values => [gb, sa];
+  List<SvgGenImage> get values => [gb, ind, sa];
 }
 
 class Assets {

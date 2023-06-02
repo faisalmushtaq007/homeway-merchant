@@ -19,10 +19,10 @@ import 'package:network_manager/network_manager.dart';
 
 GetIt serviceLocator = GetIt.instance;
 
-void setupGetIt() {
+Future<void> setupGetIt() async {
   _setupGetIt();
   _setUpModel();
-  _setUpAppSetting();
+  await _setUpAppSetting();
   _setUpService();
   _setUpRepository();
   _setUpStateManagement();
@@ -31,47 +31,50 @@ void setupGetIt() {
 
 void _setupGetIt() {
   serviceLocator.allowReassignment = true;
+  serviceLocator.registerSingleton<AppKey>(AppKey());
 }
 
 void _setUpModel() {
   serviceLocator.registerSingleton<UserModel>(UserModel());
 }
 
-void _setUpAppSetting() {
-  serviceLocator
-    ..registerSingleton<AppKey>(AppKey())
-    // Init permission service
-    ..registerSingleton<IPermissionService>(
-      PermissionServiceHive(GlobalApp.permissionBoxName),
-    );
-  serviceLocator<IPermissionService>().init();
+Future<void> _setUpAppSetting() async {
+  // Init permission service
+  serviceLocator.registerSingleton<IPermissionService>(
+    PermissionServiceHive(GlobalApp.permissionBoxName),
+  );
+  await serviceLocator<IPermissionService>().init();
   serviceLocator.registerSingleton<PermissionController>(
     PermissionController(serviceLocator()),
   );
-  serviceLocator<PermissionController>().loadAll();
+  await serviceLocator<PermissionController>().loadAll();
   // User Model service
   serviceLocator.registerSingleton<IStorageService>(
       LocalUserModelService(GlobalApp.storageBoxName));
-  serviceLocator<IStorageService>().init();
+  await serviceLocator<IStorageService>().init();
+
   serviceLocator.registerSingleton<UserModelStorageController>(
     UserModelStorageController(serviceLocator()),
   );
-  serviceLocator<UserModelStorageController>().loadAll();
+  await serviceLocator<UserModelStorageController>().loadAll();
+
   //Language selection
   serviceLocator.registerSingleton<ILanguageService>(
     LanguageServiceHive(GlobalApp.languageBoxName),
   );
-  serviceLocator<ILanguageService>().init();
+  await serviceLocator<ILanguageService>().init();
   serviceLocator.registerSingleton<LanguageController>(
     LanguageController(serviceLocator()),
   );
-  serviceLocator<LanguageController>().loadAll();
+  await serviceLocator<LanguageController>().loadAll();
   serviceLocator.registerSingleton<TranslateApi>(
     TranslateApi(
       languageService: serviceLocator(),
       boxName: GlobalApp.languageBoxName,
     ),
   );
+  await serviceLocator<TranslateApi>()
+      .init(sourceLanguage: GlobalApp.defaultSourceTranslateLanguage);
 }
 
 void _setUpService() {

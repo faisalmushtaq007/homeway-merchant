@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/foundation.dart';
 import 'package:hive/hive.dart';
+import 'package:homemakers_merchant/bootup/bootstrap.dart';
 import 'package:homemakers_merchant/config/translation/language_service.dart';
 import 'package:homemakers_merchant/config/translation/language_service_hive_adapter.dart';
 import 'package:homemakers_merchant/utils/app_data_dir/app_data_dir.dart';
@@ -19,8 +20,7 @@ class LanguageServiceHive implements ILanguageService {
     registerHiveAdapters();
     final String appDataDir = await getAppDataDir();
     if (kDebugMode) {
-      debugPrint(
-          'Hive using storage path: $appDataDir and file name: $boxName');
+      log('Language Hive using storage path: $appDataDir and file name: $boxName');
     }
     Hive.init(appDataDir);
     await Hive.openBox<dynamic>(boxName);
@@ -35,6 +35,8 @@ class LanguageServiceHive implements ILanguageService {
     if (!Hive.isAdapterRegistered(206)) {
       Hive.registerAdapter(SaveTranslationObjectAdapter());
     }
+    Hive.registerAdapter(SourceLanguageAdapter());
+    Hive.registerAdapter(TargetLanguageAdapter());
   }
 
   @override
@@ -42,15 +44,15 @@ class LanguageServiceHive implements ILanguageService {
     try {
       final T loaded = _hiveBox.get(key, defaultValue: defaultValue) as T;
       if (kDebugMode) {
-        debugPrint('Hive type   : $key as ${defaultValue.runtimeType}');
-        debugPrint('Hive loaded : $key as $loaded with ${loaded.runtimeType}');
+        log('Language Hive type   : $key as ${defaultValue.runtimeType}');
+        log('Language Hive loaded : $key as $loaded with ${loaded.runtimeType}');
       }
       return loaded;
     } catch (e) {
-      debugPrint('Hive load (get) ERROR');
-      debugPrint(' Error message ...... : $e');
-      debugPrint(' Store key .......... : $key');
-      debugPrint(' defaultValue ....... : $defaultValue');
+      log('Language Hive load (get) ERROR');
+      log('Language Error message ...... : $e');
+      log('Language Store key .......... : $key');
+      log('Language defaultValue ....... : $defaultValue');
       // If something goes wrong we return the default value.
       return defaultValue;
     }
@@ -61,14 +63,14 @@ class LanguageServiceHive implements ILanguageService {
     try {
       await _hiveBox.put(key, value);
       if (kDebugMode) {
-        debugPrint('Permission Hive type   : $key as ${value.runtimeType}');
-        debugPrint('Permission Hive saved  : $key as $value');
+        log('Language Hive type   : $key as ${value.runtimeType}');
+        log('Language Hive saved  : $key as $value');
       }
     } catch (e) {
-      debugPrint('Permission Hive save (put) ERROR');
-      debugPrint(' Permission Error message ...... : $e');
-      debugPrint(' Permission Store key .......... : $key');
-      debugPrint(' Permission Save value ......... : $value');
+      log('Language Hive save (put) ERROR');
+      log('Language Error message ...... : $e');
+      log('Language Store key .......... : $key');
+      log('Language Save value ......... : $value');
     }
   }
 }

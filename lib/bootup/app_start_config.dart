@@ -17,7 +17,7 @@ class AppStartConfig {
     if (UniversalPlatform.isAndroid) {
       await FlutterDisplayMode.setHighRefreshRate();
     }
-    setupGetIt();
+    await setupGetIt();
     return;
   }
 

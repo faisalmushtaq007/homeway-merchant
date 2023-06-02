@@ -1,19 +1,15 @@
-library auto_direction;
-
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart' as intl;
 
 class AutoDirection extends StatefulWidget {
+  const AutoDirection(
+      {super.key,
+      required this.text,
+      required this.child,
+      this.onDirectionChange});
   final String text;
   final Widget child;
   final void Function(bool isRTL)? onDirectionChange;
-
-  AutoDirection(
-      {Key? key,
-      required this.text,
-      required this.child,
-      this.onDirectionChange})
-      : super(key: key);
 
   @override
   _AutoDirectionState createState() => _AutoDirectionState();

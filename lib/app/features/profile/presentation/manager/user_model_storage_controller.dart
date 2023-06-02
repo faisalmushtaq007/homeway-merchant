@@ -13,12 +13,12 @@ class UserModelStorageController with ChangeNotifier {
   final IStorageService _userModelStorageService;
 
   Future<void> loadAll() async {
-    _userModel = await _userModelStorageService.load(
+    _userModel = await _userModelStorageService.load<UserModel>(
       GlobalApp.userModelKey,
       GlobalApp.defaultUserModel,
     );
-    _accessToken = await _userModelStorageService.load(
-      GlobalApp.userModelKey,
+    _accessToken = await _userModelStorageService.load<String>(
+      GlobalApp.userAccessTokenKey,
       GlobalApp.defaultUserAccessToken,
     );
   }

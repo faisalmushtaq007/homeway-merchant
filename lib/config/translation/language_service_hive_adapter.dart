@@ -56,7 +56,7 @@ class SaveTranslationObject {
 
 class SaveTranslationObjectAdapter extends TypeAdapter<SaveTranslationObject> {
   @override
-  final typeId = 202;
+  final typeId = 206;
 
   @override
   SaveTranslationObject read(BinaryReader reader) {
@@ -76,5 +76,37 @@ class SaveTranslationObjectAdapter extends TypeAdapter<SaveTranslationObject> {
       obj.startText,
       obj.resultText,
     ]);
+  }
+}
+
+class SourceLanguageAdapter extends TypeAdapter<TranslateLanguage> {
+  @override
+  TranslateLanguage read(BinaryReader reader) {
+    final dynamic languageStatus = reader.read();
+    return languageStatus as TranslateLanguage;
+  }
+
+  @override
+  int get typeId => 203;
+
+  @override
+  void write(BinaryWriter writer, TranslateLanguage obj) {
+    writer.write<TranslateLanguage>(obj);
+  }
+}
+
+class TargetLanguageAdapter extends TypeAdapter<TranslateLanguage> {
+  @override
+  TranslateLanguage read(BinaryReader reader) {
+    final dynamic languageStatus = reader.read();
+    return languageStatus as TranslateLanguage;
+  }
+
+  @override
+  int get typeId => 204;
+
+  @override
+  void write(BinaryWriter writer, TranslateLanguage obj) {
+    writer.write<TranslateLanguage>(obj);
   }
 }
