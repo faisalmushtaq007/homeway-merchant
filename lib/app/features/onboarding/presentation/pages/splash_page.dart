@@ -50,7 +50,13 @@ class _PageView extends WidgetView<SplashPage, _SplashPageViewController> {
       ),
       child: PageBody(
         controller: state.scrollController,
-        child: Container(),
+        child: SizedBox(
+          child: ListView(
+            controller: state.scrollController,
+            shrinkWrap: true,
+            children: [],
+          ),
+        ),
       ),
     );
   }

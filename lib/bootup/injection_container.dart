@@ -4,8 +4,13 @@ import 'package:homemakers_merchant/app/features/profile/domain/entities/user_mo
 import 'package:homemakers_merchant/app/features/profile/presentation/manager/user_model_storage_controller.dart';
 import 'package:homemakers_merchant/config/permission/permission_controller.dart';
 import 'package:homemakers_merchant/config/permission/permission_service.dart';
+import 'package:homemakers_merchant/config/translation/language_controller.dart';
+import 'package:homemakers_merchant/config/translation/language_service.dart';
+import 'package:homemakers_merchant/config/translation/language_service_hive.dart';
+import 'package:homemakers_merchant/config/translation/translate_api.dart';
 import 'package:homemakers_merchant/core/constants/global_app_constants.dart';
 import 'package:homemakers_merchant/core/interface/storage_interface.dart';
+import 'package:homemakers_merchant/core/keys/app_key.dart';
 import 'package:homemakers_merchant/core/network/http/base_response_error_model.dart';
 import 'package:homemakers_merchant/core/network/http/interceptor/token/fresh_token_interceptor.dart';
 import 'package:homemakers_merchant/core/service/connectivity_bloc/connectivity_bloc.dart';
@@ -33,10 +38,12 @@ void _setUpModel() {
 }
 
 void _setUpAppSetting() {
-  // Init permission service
-  serviceLocator.registerSingleton<IPermissionService>(
-    PermissionServiceHive('permission_box'),
-  );
+  serviceLocator
+    ..registerSingleton<AppKey>(AppKey())
+    // Init permission service
+    ..registerSingleton<IPermissionService>(
+      PermissionServiceHive(GlobalApp.permissionBoxName),
+    );
   serviceLocator<IPermissionService>().init();
   serviceLocator.registerSingleton<PermissionController>(
     PermissionController(serviceLocator()),
@@ -44,12 +51,27 @@ void _setUpAppSetting() {
   serviceLocator<PermissionController>().loadAll();
   // User Model service
   serviceLocator.registerSingleton<IStorageService>(
-      LocalUserModelService('user_model_box'));
+      LocalUserModelService(GlobalApp.storageBoxName));
   serviceLocator<IStorageService>().init();
   serviceLocator.registerSingleton<UserModelStorageController>(
     UserModelStorageController(serviceLocator()),
   );
   serviceLocator<UserModelStorageController>().loadAll();
+  //Language selection
+  serviceLocator.registerSingleton<ILanguageService>(
+    LanguageServiceHive(GlobalApp.languageBoxName),
+  );
+  serviceLocator<ILanguageService>().init();
+  serviceLocator.registerSingleton<LanguageController>(
+    LanguageController(serviceLocator()),
+  );
+  serviceLocator<LanguageController>().loadAll();
+  serviceLocator.registerSingleton<TranslateApi>(
+    TranslateApi(
+      languageService: serviceLocator(),
+      boxName: GlobalApp.languageBoxName,
+    ),
+  );
 }
 
 void _setUpService() {

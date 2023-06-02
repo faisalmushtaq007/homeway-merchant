@@ -1,7 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
+import 'package:homemakers_merchant/app/features/authentication/presentation/pages/login_page.dart';
 import 'package:homemakers_merchant/app/features/onboarding/presentation/pages/splash_page.dart';
 import 'package:homemakers_merchant/app/features/profile/domain/entities/user_model.dart';
 import 'package:homemakers_merchant/app/features/profile/presentation/manager/user_model_storage_controller.dart';
@@ -104,10 +106,13 @@ class App extends StatelessWidget with GetItMixin {
                   title: 'Merchant',
                   localizationsDelegates: const <LocalizationsDelegate<
                       dynamic>>[
+                    ...AppLocalizations.localizationsDelegates,
                     DefaultMaterialLocalizations.delegate,
                     DefaultWidgetsLocalizations.delegate,
                     DefaultCupertinoLocalizations.delegate,
-                    ...AppLocalizations.localizationsDelegates,
+                    GlobalMaterialLocalizations.delegate,
+                    GlobalWidgetsLocalizations.delegate,
+                    GlobalCupertinoLocalizations.delegate,
                   ],
                   supportedLocales: AppLocalizations.supportedLocales,
                   builder: (context, child) => ResponsiveBreakpoints.builder(
@@ -199,7 +204,7 @@ class App extends StatelessWidget with GetItMixin {
                     // The code that one need to use the same theme is also updated
                     // interactively for each change when the cod gent panel is
                     // in view.
-                    child: SplashPage(),
+                    child: LoginPage(),
                   ),
                 ),
               ),

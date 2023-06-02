@@ -18,6 +18,7 @@ import 'package:homemakers_merchant/bootup/app_start_config.dart';
 import 'package:homemakers_merchant/l10n/l10n.dart';
 import 'package:homemakers_merchant/theme/theme_code.dart';
 import 'package:homemakers_merchant/theme/theme_controller.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 
 // ignore_for_file: public_member_api_docs
 
@@ -93,12 +94,15 @@ Future<void> bootstrap(FutureOr<dynamic> Function() builder) async {
 
   Bloc.observer = const AppBlocObserver();
   await Zone.current.fork().run(() async {
-    WidgetsFlutterBinding.ensureInitialized();
+    final WidgetsBinding widgetsBinding =
+        WidgetsFlutterBinding.ensureInitialized();
     GestureBinding.instance.resamplingEnabled = true;
     // Portrait Orientation
     await SystemChrome.setPreferredOrientations(
       <DeviceOrientation>[DeviceOrientation.portraitUp],
     );
+    // Keep native splash screen up until app is finished bootstrapping
+    FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
     // AppStartConfig
     await AppStartConfig.shared.startApp();
     await builder();
@@ -118,5 +122,7 @@ Future<void> bootstrap(FutureOr<dynamic> Function() builder) async {
         themeController: themeController,
       ),
     );
+    // Remove splash screen when bootstrap is complete
+    FlutterNativeSplash.remove();
   });
 }

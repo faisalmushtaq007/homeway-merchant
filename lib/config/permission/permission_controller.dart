@@ -33,7 +33,13 @@ class PermissionController with ChangeNotifier {
     bool resetMode = true,
     // If false, notifyListeners is not called.
     bool doNotify = true,
-  }) async {}
+  }) async {
+    setLocationPermission(PermissionStore.location, false);
+    setLocationWhenInUsePermission(PermissionStore.locationWhenInUse, false);
+    setCameraPermission(PermissionStore.location, false);
+    // Only notify at end, if asked to do so, to do so is default.
+    if (doNotify) notifyListeners();
+  }
 
   late PermissionStatus _locationPermission;
   PermissionStatus get locationPermission => _locationPermission;

@@ -252,7 +252,7 @@ class NetworkException with _$NetworkException {
     ErrorBean? error,
   }) = BadCertificate;
 
-  static Future<NetworkException> getDioException(dynamic error) async {
+  static NetworkException getDioException(dynamic error) {
     if (error is Exception) {
       try {
         NetworkException networkException = const NetworkException.notFound();

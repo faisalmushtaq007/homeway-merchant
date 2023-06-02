@@ -1,6 +1,11 @@
 import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:google_mlkit_translation/google_mlkit_translation.dart';
+import 'package:homemakers_merchant/app/features/profile/domain/entities/user_model.dart';
+import 'package:homemakers_merchant/bootup/injection_container.dart';
+import 'package:homemakers_merchant/config/translation/language.dart';
+import 'package:homemakers_merchant/gen/assets.gen.dart';
 
 // ignore_for_file: comment_references
 
@@ -33,6 +38,7 @@ class GlobalApp {
   //
   // The name of the package this app demonstrates.
   static const String packageName = 'homemakers_merchant';
+
   // Version of the WEB build, usually same as package, but it also has a
   // build numbers.
   static const String versionMajor = '1';
@@ -156,6 +162,7 @@ class GlobalApp {
   // the correct opacities on text style if M2 Typography is used, and removes
   // it from style when M3 Typography is used.
   static String? get font => GoogleFonts.poppins().fontFamily;
+
   static TextTheme get textTheme => GoogleFonts.poppinsTextTheme();
 
   /// Defining the visual density here to so we can change it in one spot when
@@ -171,9 +178,43 @@ class GlobalApp {
 
   static String userModelKey = 'userModelKey';
   static String userAccessTokenKey = 'userAccessToken';
+  static UserModel? defaultUserModel = serviceLocator<UserModel>();
+  static String defaultUserAccessToken =
+      serviceLocator<UserModel>().token ?? '';
   static const String defaultMessageDuringLoading =
       'Please wait while we are fetching';
   static const String defaultSomethingWentWrong =
       'Something went wrong, please try again later';
   static const String defaultFailure = 'Failure';
+
+  static final defaultLanguages = List<Language>.unmodifiable(
+    <Language>[
+      Language(
+        const Locale('en', 'US'),
+        Assets.svg.flags.gb,
+        'English',
+        TranslateLanguage.english,
+      ),
+      Language(
+        const Locale('ar', 'SA'),
+        Assets.svg.flags.sa,
+        'Saudi Arabia',
+        TranslateLanguage.arabic,
+      ),
+    ],
+  );
+
+  // Key used to read and save the keyLanguage value.
+  static const String keyLanguage = 'language';
+  static final Language defaultLanguageSelect = defaultLanguages[0];
+  static const String keySourceTranslateLanguage = 'sourceTranslateLanguage';
+  static TranslateLanguage defaultSourceTranslateLanguage =
+      TranslateLanguage.english;
+  static const String keyTargetTranslateLanguage = 'targetTranslateLanguage';
+  static TranslateLanguage defaultTargetTranslateLanguage =
+      TranslateLanguage.arabic;
+  static const String permissionBoxName = 'permission_box';
+  static const String storageBoxName = 'user_model_box';
+  static const String languageBoxName = 'user_language_box';
+  static const String translationBoxName = 'user_translation_box';
 }

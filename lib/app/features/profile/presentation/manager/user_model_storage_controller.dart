@@ -15,12 +15,24 @@ class UserModelStorageController with ChangeNotifier {
   Future<void> loadAll() async {
     _userModel = await _userModelStorageService.load(
       GlobalApp.userModelKey,
-      serviceLocator<UserModel>(),
+      GlobalApp.defaultUserModel,
     );
     _accessToken = await _userModelStorageService.load(
       GlobalApp.userModelKey,
-      serviceLocator<UserModel>().token ?? '',
+      GlobalApp.defaultUserAccessToken,
     );
+  }
+
+  Future<void> resetAllToDefaults({
+    /// If false,user model & scheme index are not reset.
+    bool resetMode = true,
+    // If false, notifyListeners is not called.
+    bool doNotify = true,
+  }) async {
+    setUserModel(GlobalApp.userModelKey, false);
+    setUserAccessToken(GlobalApp.userModelKey, false);
+    // Only notify at end, if asked to do so, to do so is default.
+    if (doNotify) notifyListeners();
   }
 
   // Private value, getter and setter for the UserModel
@@ -60,6 +72,7 @@ class UserModelStorageController with ChangeNotifier {
     // Inform all listeners a change has occurred, if notify flag is true.
     if (notify) notifyListeners();
     // Persist the change to whatever storage is used with the ThemeService.
-    unawaited(_userModelStorageService.save(GlobalApp.userModelKey, value));
+    unawaited(
+        _userModelStorageService.save(GlobalApp.userAccessTokenKey, value));
   }
 }

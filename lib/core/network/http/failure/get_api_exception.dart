@@ -8,10 +8,9 @@ import 'package:network_manager/network_manager.dart';
 mixin class ExceptionMixins {
   void handleUnCaughtException(Exception exception) {}
 
-  Future<BaseResponseErrorModel> handleHttpApiException(
-      Exception exception) async {
+  BaseResponseErrorModel handleHttpApiException(Exception exception) {
     final NetworkException networkException =
-        await NetworkException.getDioException(exception);
+        NetworkException.getDioException(exception);
     return networkException.when(
       defaultError: _getHttpApiExceptionResponse,
       movedPermanently: (statusCode, data) =>
@@ -130,6 +129,7 @@ mixin class ExceptionMixins {
         code: 0,
         message: defaultMessage ?? GlobalApp.defaultSomethingWentWrong,
         status: GlobalApp.defaultFailure,
+        error: <String, dynamic>{},
       );
     }
   }

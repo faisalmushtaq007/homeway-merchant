@@ -1,10 +1,11 @@
 part of 'authentication_remote_data_source.dart';
 
 abstract class AuthenticationDataSource {
-  Future<void> sendOTP(String mobileNumber, {String dialCode = '+61'});
+  Future<ApiResultState<SendOtpResponseModel>> sendPhoneAuthenticationOTP(
+      {required SendOtpEntity sendOtpEntity});
 
-  Future<void> verifyOTP(String mobileNumber, String verificationCode,
-      {String dialCode = '+61'});
+  Future<ApiResultState<VerifyOtpResponseModel>> verifyPhoneAuthenticationOTP(
+      {required VerifyOtpEntity verifyOtpEntity});
 
   Future<ApiResultState<UserModel>> getUserProfile({String userID = ''});
 }
