@@ -33,8 +33,8 @@ class TranslateApi {
   static var _identifiedLanguage = '';
   String? _translatedText;
   static final _modelManager = OnDeviceTranslatorModelManager();
-  static var _sourceLanguage = TranslateLanguage.arabic;
-  static var _targetLanguage = TranslateLanguage.hindi;
+  static var _sourceLanguage = TranslateLanguage.english;
+  static var _targetLanguage = TranslateLanguage.arabic;
   static late var _onDeviceTranslator = OnDeviceTranslator(
     sourceLanguage: _sourceLanguage,
     targetLanguage: _targetLanguage,
@@ -150,8 +150,7 @@ class TranslateApi {
       bool returnJSON = false}) async {
     //CACHE CHECK
     await _doInit();
-    Box<SaveTranslationObject> dbHive =
-        Hive.box(boxName) as Box<SaveTranslationObject>;
+    Box<dynamic> dbHive = Hive.box(boxName);
     if (_clearCache) {
       await dbHive.deleteAll(dbHive.keys);
       _clearCache = false;
@@ -160,8 +159,10 @@ class TranslateApi {
         appLanguage: startingLanguage ?? _sourceLanguage,
         userLanguage: targetLanguage ?? _targetLanguage,
         startText: text);
-    List<SaveTranslationObject> search =
+    List<dynamic> dynamicSearch =
         dbHive.values.where((element) => element == result).toList();
+    List<SaveTranslationObject> search =
+        List<SaveTranslationObject>.from(dynamicSearch);
 
     //CACHE NOT FOUND
     if (search.isEmpty || !cache) {

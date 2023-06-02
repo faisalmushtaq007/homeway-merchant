@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:homemakers_merchant/base/widget_view.dart';
+import 'package:homemakers_merchant/bootup/injection_container.dart';
 import 'package:homemakers_merchant/config/translation/auto_locale_builder.dart';
+import 'package:homemakers_merchant/config/translation/language_controller.dart';
 import 'package:homemakers_merchant/core/constants/global_app_constants.dart';
 import 'package:homemakers_merchant/shared/widgets/app/activity_indicator.dart';
 import 'package:homemakers_merchant/shared/widgets/app/page_body.dart';
@@ -12,6 +14,7 @@ import 'package:google_mlkit_translation/google_mlkit_translation.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
+
   @override
   _LoginPageController createState() => _LoginPageController();
 }
@@ -29,6 +32,7 @@ class _LoginPageController extends State<LoginPage> {
   final _targetLanguage = TranslateLanguage.hindi;
   late final _onDeviceTranslator = OnDeviceTranslator(
       sourceLanguage: _sourceLanguage, targetLanguage: _targetLanguage);
+
   @override
   void initState() {
     super.initState();
@@ -155,6 +159,94 @@ class _LoginPageController extends State<LoginPage> {
     });
   }
 
+  void showLanguageBottomSheet(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(20.0),
+          topRight: Radius.circular(20.0),
+        ),
+      ),
+      builder: (context) {
+        return ListenableBuilder(
+          listenable: serviceLocator<LanguageController>(),
+          builder: (context, child) {
+            return AutoLocalBuilder(
+              text: ['Choose Preferred Language'],
+              //translationWorker: serviceLocator<LanguageController>(),
+              builder: (languageController) {
+                return Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        languageController.get('Choose Preferred Language'),
+                      ),
+                      const SizedBox(height: 16.0),
+                      ListView.separated(
+                        shrinkWrap: true,
+                        itemCount: GlobalApp.defaultLanguages.length,
+                        itemBuilder: (context, index) {
+                          return ListTile(
+                            onTap: () {
+                              languageController
+                                ..setLanguage(GlobalApp.defaultLanguages[index])
+                                ..switchCurrentSourceAndTargetLanguage();
+                              Future.delayed(
+                                const Duration(milliseconds: 300),
+                                () {},
+                              ).then((value) => Navigator.of(context).pop());
+                            },
+                            leading: ClipOval(
+                              child:
+                                  GlobalApp.defaultLanguages[index].image.svg(
+                                height: 32.0,
+                                width: 32.0,
+                              ),
+                            ),
+                            title: Text(GlobalApp.defaultLanguages[index].text),
+                            trailing: GlobalApp.defaultLanguages[index] ==
+                                    languageController.language
+                                ? Icon(
+                                    Icons.check_circle_rounded,
+                                    color: Theme.of(context).primaryColorLight,
+                                  )
+                                : null,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10.0),
+                              side: GlobalApp.defaultLanguages[index] ==
+                                      languageController.language
+                                  ? BorderSide(
+                                      color:
+                                          Theme.of(context).primaryColorLight,
+                                      width: 1.5)
+                                  : BorderSide(color: Colors.grey[300]!),
+                            ),
+                            tileColor: GlobalApp.defaultLanguages[index] ==
+                                    languageController.language
+                                ? Theme.of(context)
+                                    .primaryColorLight
+                                    .withOpacity(0.05)
+                                : null,
+                          );
+                        },
+                        separatorBuilder: (context, index) {
+                          return const SizedBox(height: 16.0);
+                        },
+                      )
+                    ],
+                  ),
+                );
+              },
+            );
+          },
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) => _LoginPageView(this);
 }
@@ -177,136 +269,186 @@ class _LoginPageView extends WidgetView<LoginPage, _LoginPageController> {
         useDivider: false,
         opacity: 0.60,
       ),
-      child: AutoLocalBuilder(
-        builder: (languageController) {
-          return PlatformScaffold(
-            appBar: PlatformAppBar(
-              title: Text('Login'),
-            ),
-            body: PageBody(
-              controller: state.scrollController,
-              child: ListView(
-                controller: state.scrollController,
-                padding: EdgeInsets.fromLTRB(
-                    margins, topPadding, margins, bottomPadding),
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(15),
-                    child: TextField(
-                      controller: state._controller,
-                    ),
-                  ),
-                  const SizedBox(height: 15),
-                  state._identifiedLanguage == ''
-                      ? Container()
-                      : Container(
-                          margin: const EdgeInsets.only(bottom: 5),
-                          child: Text(
-                            'Identified Language: ${state._identifiedLanguage}',
-                            style: const TextStyle(fontSize: 20),
-                          )),
-                  PlatformElevatedButton(
-                      onPressed: state._identifyLanguage,
-                      child: Text('Identify Language')),
-                  const SizedBox(height: 15),
-                  PlatformElevatedButton(
-                    onPressed: state._identifyPossibleLanguages,
-                    child: Text('Identify possible languages'),
-                  ),
-                  ListView.builder(
-                      shrinkWrap: true,
-                      itemCount: state._identifiedLanguages.length,
-                      itemBuilder: (context, index) {
-                        return ListTile(
-                          title: Text(
-                              'Language: ${state._identifiedLanguages[index].languageTag}  Confidence: ${state._identifiedLanguages[index].confidence.toString()}'),
-                        );
-                      }),
-                  const SizedBox(height: 30),
-                  Center(
-                      child: Text(
-                          'Enter text (source: ${state._sourceLanguage.name})')),
-                  Padding(
-                    padding: const EdgeInsets.all(20.0),
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 20),
-                      decoration: BoxDecoration(
-                          border: Border.all(
-                        width: 2,
-                      )),
-                      child: TextField(
-                        controller: state._controller1,
-                        decoration:
-                            const InputDecoration(border: InputBorder.none),
-                        maxLines: null,
+      child: ListenableBuilder(
+        listenable: serviceLocator<LanguageController>(),
+        builder: (context, child) {
+          return AutoLocalBuilder(
+            text: const [
+              'Login',
+              'Identify possible languages',
+              'Identify Language',
+              'Identified Language'
+            ],
+            //translationWorker: serviceLocator<LanguageController>(),
+            builder: (languageController) {
+              return PlatformScaffold(
+                appBar: PlatformAppBar(
+                  title: Text(languageController.get('Login')),
+                  trailingActions: [
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 16.0,
+                        vertical: 8.0,
+                      ),
+                      child: OutlinedButton(
+                        onPressed: () => state.showLanguageBottomSheet(context),
+                        style: OutlinedButton.styleFrom(
+                          padding: const EdgeInsets.all(8.0),
+                          foregroundColor: Colors.grey.withOpacity(0.6),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10.0),
+                          ),
+                        ),
+                        child: Row(
+                          children: [
+                            ClipOval(
+                              child: serviceLocator<LanguageController>()
+                                  .language
+                                  .image
+                                  .svg(),
+                            ),
+                            Icon(
+                              Icons.arrow_drop_down_rounded,
+                              color: Theme.of(context).primaryColorDark,
+                            ),
+                          ],
+                        ),
                       ),
                     ),
-                  ),
-                  Center(
-                      child: Text(
-                          'Translated Text (target: ${state._targetLanguage.name})')),
-                  const SizedBox(height: 30),
-                  Padding(
-                    padding: const EdgeInsets.all(20.0),
-                    child: Container(
-                        width: MediaQuery.of(context).size.width / 1.3,
-                        padding: const EdgeInsets.all(20),
-                        decoration: BoxDecoration(
-                            border: Border.all(
-                          width: 2,
-                        )),
-                        child: Text(state._translatedText ?? '')),
-                  ),
-                  const SizedBox(height: 30),
-                  Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                    PlatformElevatedButton(
-                        onPressed: state._translateText,
-                        child: Text(
-                          'Translate',
-                        ))
-                  ]),
-                  const SizedBox(height: 20),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    mainAxisSize: MainAxisSize.min,
+                  ],
+                ),
+                body: PageBody(
+                  controller: state.scrollController,
+                  child: ListView(
+                    controller: state.scrollController,
+                    //padding: EdgeInsets.fromLTRB(margins, topPadding, margins, bottomPadding),
                     children: [
+                      Padding(
+                        padding: const EdgeInsets.all(15),
+                        child: TextField(
+                          controller: state._controller,
+                        ),
+                      ),
+                      const SizedBox(height: 15),
+                      state._identifiedLanguage == ''
+                          ? Container()
+                          : Container(
+                              margin: const EdgeInsets.only(bottom: 5),
+                              child: Text(
+                                languageController.get(
+                                    'Identified Language: ${state._identifiedLanguage}'),
+                                style: const TextStyle(fontSize: 20),
+                              )),
                       PlatformElevatedButton(
-                          onPressed: state._downloadSourceModel,
-                          child: Text('Download Source Model')),
+                          onPressed: state._identifyLanguage,
+                          child: Text(
+                              languageController.get('Identify Language'))),
+                      const SizedBox(height: 15),
                       PlatformElevatedButton(
-                          onPressed: state._downloadTargetModel,
-                          child: Text('Download Target Model')),
+                        onPressed: state._identifyPossibleLanguages,
+                        child: Text(languageController
+                            .get('Identify possible languages')),
+                      ),
+                      ListView.builder(
+                          shrinkWrap: true,
+                          itemCount: state._identifiedLanguages.length,
+                          itemBuilder: (context, index) {
+                            return ListTile(
+                              title: Text(
+                                languageController.get(
+                                    'Language: ${state._identifiedLanguages[index].languageTag}  Confidence: ${state._identifiedLanguages[index].confidence.toString()}'),
+                              ),
+                            );
+                          }),
+                      const SizedBox(height: 30),
+                      Center(
+                          child: Text(
+                              'Enter text (source: ${state._sourceLanguage.name})')),
+                      Padding(
+                        padding: const EdgeInsets.all(20.0),
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 20),
+                          decoration: BoxDecoration(
+                              border: Border.all(
+                            width: 2,
+                          )),
+                          child: TextField(
+                            controller: state._controller1,
+                            decoration:
+                                const InputDecoration(border: InputBorder.none),
+                            maxLines: null,
+                          ),
+                        ),
+                      ),
+                      Center(
+                          child: Text(
+                              'Translated Text (target: ${state._targetLanguage.name})')),
+                      const SizedBox(height: 30),
+                      Padding(
+                        padding: const EdgeInsets.all(20.0),
+                        child: Container(
+                            width: MediaQuery.of(context).size.width / 1.3,
+                            padding: const EdgeInsets.all(20),
+                            decoration: BoxDecoration(
+                                border: Border.all(
+                              width: 2,
+                            )),
+                            child: Text(state._translatedText ?? '')),
+                      ),
+                      const SizedBox(height: 30),
+                      Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            PlatformElevatedButton(
+                                onPressed: state._translateText,
+                                child: Text(
+                                  'Translate',
+                                ))
+                          ]),
+                      const SizedBox(height: 20),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          PlatformElevatedButton(
+                              onPressed: state._downloadSourceModel,
+                              child: Text('Download Source Model')),
+                          PlatformElevatedButton(
+                              onPressed: state._downloadTargetModel,
+                              child: Text('Download Target Model')),
+                        ],
+                      ),
+                      const SizedBox(height: 20),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          PlatformElevatedButton(
+                              onPressed: state._deleteSourceModel,
+                              child: Text('Delete Source Model')),
+                          PlatformElevatedButton(
+                              onPressed: state._deleteTargetModel,
+                              child: Text('Delete Target Model')),
+                        ],
+                      ),
+                      const SizedBox(height: 20),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          PlatformElevatedButton(
+                              onPressed: state._isSourceModelDownloaded,
+                              child: Text('Source Downloaded?')),
+                          PlatformElevatedButton(
+                              onPressed: state._isTargetModelDownloaded,
+                              child: Text('Target Downloaded?')),
+                        ],
+                      ),
                     ],
                   ),
-                  const SizedBox(height: 20),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      PlatformElevatedButton(
-                          onPressed: state._deleteSourceModel,
-                          child: Text('Delete Source Model')),
-                      PlatformElevatedButton(
-                          onPressed: state._deleteTargetModel,
-                          child: Text('Delete Target Model')),
-                    ],
-                  ),
-                  const SizedBox(height: 20),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      PlatformElevatedButton(
-                          onPressed: state._isSourceModelDownloaded,
-                          child: Text('Source Downloaded?')),
-                      PlatformElevatedButton(
-                          onPressed: state._isTargetModelDownloaded,
-                          child: Text('Target Downloaded?')),
-                    ],
-                  ),
-                ],
-              ),
-            ),
+                ),
+              );
+            },
           );
         },
       ),
