@@ -31,12 +31,12 @@ class LanguageServiceHive implements ILanguageService {
   }
 
   void registerHiveAdapters() {
-    Hive.registerAdapter(LanguageAdapter());
-    if (!Hive.isAdapterRegistered(206)) {
-      Hive.registerAdapter(SaveTranslationObjectAdapter());
-    }
-    Hive.registerAdapter(SourceLanguageAdapter());
-    Hive.registerAdapter(TargetLanguageAdapter());
+    Hive
+      ..registerAdapter(TranslateLanguageAdapter())
+      ..registerAdapter(LanguageAdapter())
+      ..registerAdapter(SaveTranslationObjectAdapter());
+
+    //Hive.registerAdapter(TargetTranslateLanguageAdapter());
   }
 
   @override

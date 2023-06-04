@@ -11,6 +11,7 @@ import 'package:homemakers_merchant/bootup/injection_container.dart';
 import 'package:homemakers_merchant/config/translation/language_service.dart';
 import 'package:homemakers_merchant/config/translation/language_service_hive_adapter.dart';
 import 'package:synchronized/synchronized.dart';
+import 'package:isolate_manager/isolate_manager.dart';
 
 class AutoLocalizationException implements Exception {
   String cause;
@@ -107,7 +108,7 @@ class TranslateApi {
     }
   }
 
-  Future<bool> _doInit() async {
+  Future<bool> _doInit({bool clearCache = false}) async {
     if (_delayTime < 100) {
       throw AutoLocalizationException('Delay time is too low.');
     } else if (_delayTime < 300) {
@@ -124,6 +125,7 @@ class TranslateApi {
     /*if (!Hive.isBoxOpen(boxName)) {
       await Hive.openBox<SaveTranslationObject>(boxName);
     }*/
+
     _isInitialized = true;
     return true;
   }
@@ -308,6 +310,14 @@ class TranslateApi {
     return hasDownloaded;
   }
 
+  Future<bool> downloadNewSourceModel(
+      TranslateLanguage newTranslateLanguage) async {
+    log('Downloading model (${newTranslateLanguage.name})...');
+    final bool hasDownloaded = await _modelManager
+        .downloadModel(newTranslateLanguage.bcpCode, isWifiRequired: false);
+    return hasDownloaded;
+  }
+
   Future<bool> deleteSourceModel() async {
     log('Deleting model (${_sourceLanguage.name})...');
     final bool hasDeleted =
@@ -326,6 +336,14 @@ class TranslateApi {
     return hasDeleted;
   }
 
+  Future<bool> deleteExistingSourceModel(
+      TranslateLanguage existingTranslateLanguage) async {
+    log('Deleting model (${existingTranslateLanguage.name})...');
+    final bool hasDeleted =
+        await _modelManager.deleteModel(existingTranslateLanguage.bcpCode);
+    return hasDeleted;
+  }
+
   Future<bool> isSourceModelDownloaded() async {
     log('Checking if model (${_sourceLanguage.name}) is downloaded...');
     final bool hasDownloaded =
@@ -341,6 +359,14 @@ class TranslateApi {
         await _modelManager.isModelDownloaded(_targetLanguage.bcpCode);
     hasTargetModelDownloaded = hasDownloaded;
 
+    return hasDownloaded;
+  }
+
+  Future<bool> isTranslateModelDownloaded(
+      TranslateLanguage translateLanguage) async {
+    log('Checking if model (${translateLanguage.name}) is downloaded...');
+    final bool hasDownloaded =
+        await _modelManager.isModelDownloaded(translateLanguage.bcpCode);
     return hasDownloaded;
   }
 
@@ -436,6 +462,102 @@ class TranslateApi {
       return input;
     }
   }
+
+  final IsolateManager<bool> isolateManagerSourceModelDownload =
+      IsolateManager.createOwnIsolate(
+    concurrent: 2,
+    isolateSourceModelDownloadedFunction,
+    isDebug: true,
+    workerName: 'sourceModelDownloadedFunction',
+  );
+
+  final IsolateManager<bool> isolateManagerTargetModelDownload =
+      IsolateManager.createOwnIsolate(
+    concurrent: 2,
+    isolateTargetModelDownloadedFunction,
+    isDebug: true,
+    workerName: 'sourceModelDownloadedFunction',
+  );
+
+  final IsolateManager<bool> isolateManagerNewSourceModelDownload =
+      IsolateManager.createOwnIsolate(
+    concurrent: 2,
+    isolateSourceModelDownloadedFunction,
+    isDebug: true,
+    workerName: 'sourceModelDownloadedFunction',
+  );
+
+  final IsolateManager<bool> isolateManagerNewTranslateModelDownload =
+      IsolateManager.createOwnIsolate(
+    concurrent: 2,
+    isolateNewTranslateModelDownloadedFunction,
+    isDebug: true,
+    workerName: 'sourceModelDownloadedFunction',
+  );
+
+  void stopSourceModelDownload() {
+    isolateManagerNewSourceModelDownload.stop();
+  }
+
+  void stopTargetModelDownload() {
+    isolateManagerTargetModelDownload.stop();
+  }
+
+  void stopNewTranslateModelDownload() {
+    isolateManagerNewTranslateModelDownload.stop();
+  }
+
+  Future<void> startSourceModelDownload() async {
+    await isolateManagerSourceModelDownload.start();
+  }
+
+  Future<void> startTargetModelDownload() async {
+    await isolateManagerTargetModelDownload.start();
+  }
+
+  Future<void> startNewTranslateModelDownload(
+      TranslateLanguage newTranslateLanguage) async {
+    await isolateManagerNewTranslateModelDownload.start();
+    await isolateManagerNewTranslateModelDownload
+        .sendMessage(newTranslateLanguage);
+  }
+}
+
+@pragma('vm:entry-point')
+void isolateSourceModelDownloadedFunction(dynamic params) {
+  final channel = IsolateManagerController<bool>(params);
+  channel.onIsolateMessage.listen((message) async {
+    // Do more stuff here
+    final bool hasSourceModelDownloaded =
+        await serviceLocator<TranslateApi>().downloadSourceModel();
+    // Send the result to your [onMessage] stream
+    channel.sendResult(hasSourceModelDownloaded);
+  });
+}
+
+@pragma('vm:entry-point')
+void isolateTargetModelDownloadedFunction(dynamic params) {
+  final channel = IsolateManagerController<bool>(params);
+  channel.onIsolateMessage.listen((message) async {
+    // Do more stuff here
+    final bool hasTargetModelDownloaded =
+        await serviceLocator<TranslateApi>().downloadTargetModel();
+    // Send the result to your [onMessage] stream
+    channel.sendResult(hasTargetModelDownloaded);
+  });
+}
+
+@pragma('vm:entry-point')
+void isolateNewTranslateModelDownloadedFunction(dynamic params) {
+  final channel = IsolateManagerController<bool>(params);
+  channel.onIsolateMessage.listen((message) async {
+    // Do more stuff here
+    final bool hasNewTargetModelDownloaded =
+        await serviceLocator<TranslateApi>()
+            .downloadNewSourceModel(message as TranslateLanguage);
+    // Send the result to your [onMessage] stream
+    channel.sendResult(hasNewTargetModelDownloaded);
+  });
 }
 
 /// Extension on String to Translate the String.

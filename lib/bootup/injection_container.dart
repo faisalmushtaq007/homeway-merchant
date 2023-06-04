@@ -15,6 +15,7 @@ import 'package:homemakers_merchant/core/network/http/base_response_error_model.
 import 'package:homemakers_merchant/core/network/http/interceptor/token/fresh_token_interceptor.dart';
 import 'package:homemakers_merchant/core/service/connectivity_bloc/connectivity_bloc.dart';
 import 'package:homemakers_merchant/core/service/connectivity_bloc/src/connectivity_bloc/connectivity_service.dart';
+import 'package:isolate_manager/isolate_manager.dart';
 import 'package:network_manager/network_manager.dart';
 
 GetIt serviceLocator = GetIt.instance;

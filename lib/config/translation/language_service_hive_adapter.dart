@@ -1,7 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:google_mlkit_translation/google_mlkit_translation.dart';
 import 'package:hive/hive.dart';
+import 'package:homemakers_merchant/bootup/bootstrap.dart';
 import 'package:homemakers_merchant/config/translation/language.dart';
+import 'package:homemakers_merchant/utils/app_equatable/app_equatable.dart';
 
 class LanguageAdapter extends TypeAdapter<Language> {
   @override
@@ -19,39 +21,26 @@ class LanguageAdapter extends TypeAdapter<Language> {
   }
 }
 
-@HiveType(typeId: 202)
-class SaveTranslationObject {
+class SaveTranslationObject with AppEquatable {
   SaveTranslationObject(
       {required this.appLanguage,
       required this.userLanguage,
       required this.startText,
       this.resultText});
-  @HiveField(0)
   final TranslateLanguage appLanguage;
-  @HiveField(1)
+
   final TranslateLanguage userLanguage;
-  @HiveField(2)
+
   final String startText;
-  @HiveField(3)
+
   String? resultText;
 
   @override
-  bool operator ==(Object other) {
-    if (other is SaveTranslationObject) {
-      return (other.appLanguage == appLanguage &&
-              other.userLanguage == userLanguage &&
-              other.startText.toLowerCase().trim() ==
-                  startText.toLowerCase().trim()) ||
-          (other.appLanguage == userLanguage &&
-              other.userLanguage == appLanguage &&
-              other.startText.toLowerCase().trim() ==
-                  resultText?.toLowerCase().trim());
-    }
-    return false;
-  }
+  bool get cacheHash => true;
 
   @override
-  int get hashCode => super.hashCode;
+  List<Object?> get hashParameters =>
+      [appLanguage, userLanguage, startText, resultText];
 }
 
 class SaveTranslationObjectAdapter extends TypeAdapter<SaveTranslationObject> {
@@ -60,53 +49,62 @@ class SaveTranslationObjectAdapter extends TypeAdapter<SaveTranslationObject> {
 
   @override
   SaveTranslationObject read(BinaryReader reader) {
-    var data = reader.read();
-    return SaveTranslationObject(
-        appLanguage: data[0],
-        userLanguage: data[1],
-        startText: data[2],
-        resultText: data[3]);
+    try {
+      var data = reader.read();
+      return SaveTranslationObject(
+          appLanguage: data[0],
+          userLanguage: data[1],
+          startText: data[2],
+          resultText: data[3]);
+      final dynamic saveTranslationObjectStatus = reader.read();
+      return saveTranslationObjectStatus as SaveTranslationObject;
+    } catch (e) {
+      log('Error : SaveTranslationObject read- ${e.toString()}');
+      return SaveTranslationObject(
+        appLanguage: TranslateLanguage.english,
+        userLanguage: TranslateLanguage.arabic,
+        startText: '',
+      );
+    }
   }
 
   @override
   void write(BinaryWriter writer, SaveTranslationObject obj) {
-    writer.write([
-      obj.appLanguage,
-      obj.userLanguage,
-      obj.startText,
-      obj.resultText,
-    ]);
+    try {
+      writer.write([
+        obj.appLanguage,
+        obj.userLanguage,
+        obj.startText,
+        obj.resultText,
+      ]);
+      /* writer.write(obj.appLanguage.index);
+      writer.write(obj.appLanguage.bcpCode);
+      writer.write(obj.appLanguage.name);
+      writer.write(obj.userLanguage.index);
+      writer.write(obj.userLanguage.bcpCode);
+      writer.write(obj.userLanguage.name);
+      writer.write(obj.startText);
+      writer.write(obj.resultText);*/
+    } catch (e) {
+      log('Error : SaveTranslationObject write- ${e.toString()}');
+    }
   }
 }
 
-class SourceLanguageAdapter extends TypeAdapter<TranslateLanguage> {
+class TranslateLanguageAdapter extends TypeAdapter<TranslateLanguage> {
   @override
-  TranslateLanguage read(BinaryReader reader) {
-    final dynamic languageStatus = reader.read();
-    return languageStatus as TranslateLanguage;
-  }
+  final typeId = 207;
 
   @override
-  int get typeId => 203;
+  TranslateLanguage read(BinaryReader reader) {
+    final dynamic translateLanguage = reader.read();
+    return translateLanguage as TranslateLanguage;
+  }
 
   @override
   void write(BinaryWriter writer, TranslateLanguage obj) {
-    writer.write<TranslateLanguage>(obj);
-  }
-}
-
-class TargetLanguageAdapter extends TypeAdapter<TranslateLanguage> {
-  @override
-  TranslateLanguage read(BinaryReader reader) {
-    final dynamic languageStatus = reader.read();
-    return languageStatus as TranslateLanguage;
-  }
-
-  @override
-  int get typeId => 204;
-
-  @override
-  void write(BinaryWriter writer, TranslateLanguage obj) {
-    writer.write<TranslateLanguage>(obj);
+    writer.write(obj.index);
+    writer.write(obj.bcpCode);
+    writer.write(obj.name);
   }
 }

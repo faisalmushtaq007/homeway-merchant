@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
@@ -10,11 +11,14 @@ import 'package:homemakers_merchant/app/features/profile/presentation/manager/us
 import 'package:homemakers_merchant/config/permission/permission_controller.dart';
 import 'package:homemakers_merchant/config/permission/permission_service.dart';
 import 'package:homemakers_merchant/config/translation/language_controller.dart';
+import 'package:homemakers_merchant/config/translation/translate_api.dart';
 import 'package:homemakers_merchant/core/service/connectivity_bloc/connectivity_bloc.dart';
 import 'package:homemakers_merchant/core/service/connectivity_bloc/src/widget/connectivity_app_wrapper.dart';
 import 'package:homemakers_merchant/bootup/injection_container.dart';
 import 'package:homemakers_merchant/counter/counter.dart';
 import 'package:homemakers_merchant/l10n/l10n.dart';
+import 'package:homemakers_merchant/shared/widgets/app/activity_indicator.dart';
+import 'package:homemakers_merchant/shared/widgets/universal/async_builder/async_builder.dart';
 import 'package:homemakers_merchant/theme/flex_theme_dark.dart';
 import 'package:homemakers_merchant/theme/flex_theme_light.dart';
 import 'package:homemakers_merchant/theme/theme_code.dart';
@@ -118,6 +122,11 @@ class _AppState extends State<App> with GetItStateMixin {
                 builder: (context) => PlatformApp(
                   debugShowCheckedModeBanner: false,
                   title: 'Merchant',
+                  // Providing a restorationScopeId allows the Navigator built by the
+                  // MaterialApp to restore the navigation stack when a user leaves and
+                  // returns to the app after it has been killed while running in the
+                  // background.
+                  restorationScopeId: 'merchant_app',
                   localizationsDelegates: const <LocalizationsDelegate<
                       dynamic>>[
                     ...AppLocalizations.localizationsDelegates,
@@ -219,7 +228,72 @@ class _AppState extends State<App> with GetItStateMixin {
                     // The code that one need to use the same theme is also updated
                     // interactively for each change when the cod gent panel is
                     // in view.
-                    child: LoginPage(),
+                    child: AsyncBuilder<bool>(
+                      stream: serviceLocator<TranslateApi>()
+                          .isolateManagerSourceModelDownload
+                          .onMessage,
+                      waiting: (context) {
+                        Toast().show(
+                          'While we are downloading your default app language...',
+                          Future.value(''),
+                          context,
+                          this,
+                        );
+                        return const LoginPage(
+                          key: Key('login-page'),
+                        );
+                      },
+                      builder: (context, value) {
+                        //Navigator.of(context).pop();
+                        serviceLocator<LanguageController>()
+                            .hasSourceModelDownloadedSuccess = value!;
+                        serviceLocator<LanguageController>()
+                            .hasSourceModelDownloaded = value!;
+                        serviceLocator<TranslateApi>()
+                            .stopSourceModelDownload();
+                        Navigator.of(context).pop();
+                        return const LoginPage(
+                          key: Key('login-page'),
+                        );
+                      },
+                      error: (context, error, stackTrace) {
+                        Toast().show(
+                          'Error: ',
+                          Future.value(error.toString()),
+                          context,
+                          this,
+                        );
+                        serviceLocator<LanguageController>()
+                            .hasSourceModelDownloadedSuccess = false;
+                        serviceLocator<LanguageController>()
+                            .hasSourceModelDownloaded = false;
+                        serviceLocator<TranslateApi>()
+                            .stopSourceModelDownload();
+                        Navigator.of(context).pop();
+                        return const LoginPage(
+                          key: Key('login-page'),
+                        );
+                      },
+                      closed: (context, value) {
+                        Toast().show(
+                          'Download: ',
+                          Future.value(
+                              (value!) ? 'completed' : 'not completed'),
+                          context,
+                          this,
+                        );
+                        serviceLocator<LanguageController>()
+                            .hasSourceModelDownloadedSuccess = value!;
+                        serviceLocator<LanguageController>()
+                            .hasSourceModelDownloaded = value!;
+                        serviceLocator<TranslateApi>()
+                            .stopSourceModelDownload();
+                        Navigator.of(context).pop();
+                        return const LoginPage(
+                          key: Key('login-page'),
+                        );
+                      },
+                    ),
                   ),
                 ),
               ),

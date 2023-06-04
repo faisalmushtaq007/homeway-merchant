@@ -52,9 +52,9 @@ class LanguageController with ChangeNotifier {
 
   List<String> get startingTexts => _translation ?? [];
 
-  String get(String key) => _translations[key]!;
+  String get(String key) => _translated[key]!;
 
-  String getById(int id) => _translations[_translations.keys.elementAt(id)]!;
+  String getById(int id) => _translated[_translated.keys.elementAt(id)]!;
 
   Future<void> loadAll() async {
     _language = await _languageService.load<Language>(
@@ -213,10 +213,14 @@ class LanguageController with ChangeNotifier {
   }
 
   void switchCurrentSourceAndTargetLanguage() {
-    _sourceLanguage = _targetLanguage;
-    _targetLanguage = _sourceLanguage;
-    serviceLocator<TranslateApi>().switchCurrentSourceAndTargetLanguage();
-    notifyListeners();
+    if (_sourceLanguage == _targetLanguage) {
+      return;
+    } else {
+      _sourceLanguage = _targetLanguage;
+      _targetLanguage = _sourceLanguage;
+      serviceLocator<TranslateApi>().switchCurrentSourceAndTargetLanguage();
+      notifyListeners();
+    }
   }
 
   // App Language
@@ -291,22 +295,22 @@ class LanguageController with ChangeNotifier {
 
   void set(List<String> translation) {
     this._translation?.addAll(translation);
-    _translations.addEntries(
+    _translated.addEntries(
       translation
-          .where((element) => !_translations.keys.contains(translation))
+          .where((element) => !_translated.keys.contains(translation))
           .map((e) => MapEntry(e, e)),
     );
   }
 
   Future<void> run({bool useCache = false}) async {
-    if (_translations.isNotEmpty) {
-      for (int i = 0; i < _translations.length; i++) {
-        _translations[_translations.keys.elementAt(i)] =
+    if (_translated.isNotEmpty) {
+      for (int i = 0; i < _translated.length; i++) {
+        _translated[_translations.keys.elementAt(i)] =
             await serviceLocator<TranslateApi>().translate(
-          _translations[_translations.keys.elementAt(i)]!,
+          _translated[_translated.keys.elementAt(i)]!,
           cache: useCache,
         );
-        _percentage = i / _translations.length;
+        _percentage = i / _translated.length;
         notifyListeners();
       }
     }

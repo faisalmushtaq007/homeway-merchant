@@ -3,6 +3,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_displaymode/flutter_displaymode.dart';
 import 'package:homemakers_merchant/bootup/injection_container.dart';
+import 'package:homemakers_merchant/config/translation/language_controller.dart';
+import 'package:homemakers_merchant/config/translation/translate_api.dart';
 import 'dart:async';
 import 'dart:ui';
 
@@ -18,6 +20,7 @@ class AppStartConfig {
       await FlutterDisplayMode.setHighRefreshRate();
     }
     await setupGetIt();
+    await hasSourceTranslateLanguageDownload();
     return;
   }
 
@@ -32,12 +35,14 @@ class AppStartConfig {
   /// Allow a view to override the currently supported orientations. For example, [FullscreenVideoViewer] always wants to enable both landscape and portrait.
   /// If a view sets this override, they are responsible for setting it back to null when finished.
   List<Axis>? _supportedOrientationsOverride;
+
   set supportedOrientationsOverride(List<Axis>? value) {
     if (_supportedOrientationsOverride != value) {
       _supportedOrientationsOverride = value;
       _updateSystemOrientation();
     }
   }
+
   /*Future<T?> showFullscreenDialogRoute<T>(BuildContext context, Widget child, {bool transparent = false}) async {
     return await Navigator.of(context).push<T>(
       PageRoutes.dialog<T>(child, duration: $styles.times.pageTransition),
@@ -64,6 +69,88 @@ class AppStartConfig {
       ]);
     }
     SystemChrome.setPreferredOrientations(orientations);
+  }
+
+  Future<void> hasSourceTranslateLanguageDownload() async {
+    final bool hasDownloaded =
+        await serviceLocator<TranslateApi>().isSourceModelDownloaded();
+    if (hasDownloaded) {
+      return;
+    } else {
+      // Start downloading
+      await serviceLocator<TranslateApi>().startSourceModelDownload();
+      // Listen downloading
+/*      serviceLocator<TranslateApi>()
+          .isolateManagerSourceModelDownload
+          .onMessage
+          .listen(
+        (status) {
+          if (status) {
+            serviceLocator<LanguageController>()
+                .hasSourceModelDownloadedSuccess = true;
+            serviceLocator<LanguageController>().hasSourceModelDownloaded =
+                true;
+          } else {
+            serviceLocator<LanguageController>()
+                .hasSourceModelDownloadedSuccess = false;
+            serviceLocator<LanguageController>().hasSourceModelDownloaded =
+                false;
+          }
+          serviceLocator<TranslateApi>().stopSourceModelDownload();
+        },
+        onError: (e) {
+          serviceLocator<LanguageController>().hasSourceModelDownloadedSuccess =
+              false;
+          serviceLocator<LanguageController>().hasSourceModelDownloaded = false;
+          serviceLocator<TranslateApi>().stopSourceModelDownload();
+        },
+        onDone: () {
+          serviceLocator<TranslateApi>().stopSourceModelDownload();
+        },
+
+      );*/
+    }
+  }
+
+  Future<void> hasTargetTranslateLanguageDownload() async {
+    final bool hasDownloaded =
+        await serviceLocator<TranslateApi>().isTargetModelDownloaded();
+    if (hasDownloaded) {
+      return;
+    } else {
+      // Start downloading
+      await serviceLocator<TranslateApi>().startTargetModelDownload();
+      // Listen downloading
+/*      serviceLocator<TranslateApi>()
+          .isolateManagerTargetModelDownload
+          .onMessage
+          .listen(
+        (status) {
+          if (status) {
+            serviceLocator<LanguageController>()
+                .hasTargetModelDownloadedSuccess = true;
+            serviceLocator<LanguageController>().hasTargetModelDownloaded =
+                true;
+          } else {
+            serviceLocator<LanguageController>()
+                .hasTargetModelDownloadedSuccess = false;
+            serviceLocator<LanguageController>().hasTargetModelDownloaded =
+                false;
+          }
+          serviceLocator<TranslateApi>().stopTargetModelDownload();
+        },
+        onError: (e) {
+          serviceLocator<LanguageController>().hasTargetModelDownloadedSuccess =
+              false;
+          serviceLocator<LanguageController>().hasTargetModelDownloaded = false;
+          serviceLocator<TranslateApi>().stopTargetModelDownload();
+        },
+        onDone: () {
+          serviceLocator<TranslateApi>().stopTargetModelDownload();
+        },
+
+      );*/
+    }
   }
 }
 
