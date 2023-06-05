@@ -25,7 +25,7 @@ class LanguageController with ChangeNotifier {
   String? _translatedText;
   final _modelManager = OnDeviceTranslatorModelManager();
   var _sourceLanguage = TranslateLanguage.english;
-  var _targetLanguage = TranslateLanguage.hindi;
+  var _targetLanguage = TranslateLanguage.english;
   late var _onDeviceTranslator = OnDeviceTranslator(
     sourceLanguage: _sourceLanguage,
     targetLanguage: _targetLanguage,
@@ -305,7 +305,7 @@ class LanguageController with ChangeNotifier {
   Future<void> run({bool useCache = false}) async {
     if (_translated.isNotEmpty) {
       for (int i = 0; i < _translated.length; i++) {
-        _translated[_translations.keys.elementAt(i)] =
+        _translated[_translated.keys.elementAt(i)] =
             await serviceLocator<TranslateApi>().translate(
           _translated[_translated.keys.elementAt(i)]!,
           cache: useCache,

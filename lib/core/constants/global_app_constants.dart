@@ -230,7 +230,7 @@ class GlobalApp {
       defaultLanguages[0].sourceLanguage;
   static const String keyTargetTranslateLanguage = 'targetTranslateLanguage';
   static TranslateLanguage defaultTargetTranslateLanguage =
-      defaultLanguages[1].sourceLanguage;
+      defaultLanguages[0].sourceLanguage;
   static const String permissionBoxName = 'permission_box';
   static const String storageBoxName = 'user_model_box';
   static const String languageBoxName = 'user_language_box';
@@ -238,5 +238,5 @@ class GlobalApp {
   static const String keyTargetLocale = 'targetLocale';
   static const String keySourceLocale = 'sourceLocale';
   static Locale defaultTargetLocale = defaultLanguages[0].value;
-  static Locale defaultSourceLocale = defaultLanguages[1].value;
+  static Locale defaultSourceLocale = defaultLanguages[0].value;
 }

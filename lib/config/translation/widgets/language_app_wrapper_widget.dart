@@ -28,22 +28,25 @@ class LanguageAppWrapper extends StatelessWidget {
         serviceLocator<TranslateApi>().newSourceModelDownloadStream,
       ),
       initialData: InitialDataTuple3(
-        LanguageModelStatus.exists,
-        LanguageDownloadStatus.downloaded,
-        NewLanguageDownloadStatus.downloaded,
+        LanguageModelStatus.notExists,
+        LanguageDownloadStatus.downloading,
+        NewLanguageDownloadStatus.notDownloaded,
       ),
       builder: (context, snapshots) {
         final child = builder(
           context,
-          snapshots.snapshot1.data,
-          snapshots.snapshot2.data,
-          snapshots.snapshot3.data,
+          snapshots.snapshot1.data ?? LanguageModelStatus.notExists,
+          snapshots.snapshot2.data ?? LanguageDownloadStatus.downloading,
+          snapshots.snapshot3.data ?? NewLanguageDownloadStatus.notDownloaded,
         );
         return LanguageInheritedWidget(
           isConnected: true,
-          sourceModelStatus: snapshots.snapshot1.data,
-          sourceLanguageDownloadStatus: snapshots.snapshot2.data,
-          newSourceLanguageDownloadStatus: snapshots.snapshot3.data,
+          sourceModelStatus:
+              snapshots.snapshot1.data ?? LanguageModelStatus.notExists,
+          sourceLanguageDownloadStatus:
+              snapshots.snapshot2.data ?? LanguageDownloadStatus.downloading,
+          newSourceLanguageDownloadStatus: snapshots.snapshot3.data ??
+              NewLanguageDownloadStatus.notDownloaded,
           child: LanguageScreenWrapper(child: child),
         );
       },

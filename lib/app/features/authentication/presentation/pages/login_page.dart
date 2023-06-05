@@ -4,10 +4,12 @@ import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:homemakers_merchant/base/widget_view.dart';
+import 'package:homemakers_merchant/bootup/bootstrap.dart';
 import 'package:homemakers_merchant/bootup/injection_container.dart';
 import 'package:homemakers_merchant/config/translation/auto_locale_builder.dart';
 import 'package:homemakers_merchant/config/translation/language_controller.dart';
 import 'package:homemakers_merchant/config/translation/translate_api.dart';
+import 'package:homemakers_merchant/config/translation/widgets/constants.dart';
 import 'package:homemakers_merchant/core/constants/global_app_constants.dart';
 import 'package:homemakers_merchant/shared/widgets/app/activity_indicator.dart';
 import 'package:homemakers_merchant/shared/widgets/app/page_body.dart';
@@ -210,34 +212,43 @@ class _LoginPageController extends State<LoginPage> {
                                 GlobalApp
                                     .defaultLanguages[index].sourceLanguage,
                               )) {
-                                // Start downloading
                                 await serviceLocator<TranslateApi>()
-                                    .startNewTranslateModelDownload(
+                                    .newTargetTranslateLanguageDownload(
                                   GlobalApp
                                       .defaultLanguages[index].sourceLanguage,
+                                  GlobalApp.defaultLanguages[index],
                                 );
-                                WidgetsBinding.instance
-                                    .addPostFrameCallback((timeStamp) {
-                                  Toast().showLoadingIndicator(
-                                    context,
-                                    'While we are downloading your default app language...',
-                                  );
-                                });
                                 serviceLocator<TranslateApi>()
-                                    .isolateManagerNewTranslateModelDownload
-                                    .onMessage
+                                    .newSourceModelDownloadStream
                                     .listen(
-                                  (status) {
-                                    if (status) {
-                                      Navigator.of(context).pop();
-                                      // Save user selected language into local db
+                                  (event) {
+                                    if (event
+                                        case NewLanguageDownloadStatus
+                                            .downloading) {
+                                      log('New language downloading');
+                                      Toast().showLoadingIndicator(
+                                        context,
+                                        'While we are downloading your default app language...',
+                                      );
+                                    } else if (event
+                                        case NewLanguageDownloadStatus
+                                            .downloaded) {
+                                      log('New language downloaded');
                                       languageController
                                         ..setLanguage(
                                             GlobalApp.defaultLanguages[index])
                                         // Switch source and target language
                                         ..switchCurrentSourceAndTargetLanguage();
-                                    } else {
-                                      Navigator.of(context).pop();
+                                      Toast().show(
+                                        'New language Downloaded',
+                                        Future.value(''),
+                                        context,
+                                        this,
+                                      );
+                                    } else if (event
+                                        case NewLanguageDownloadStatus
+                                            .notDownloaded) {
+                                      log('New language downloaded failed');
                                       Toast().show(
                                         'Downloading failed',
                                         Future.value(''),
@@ -245,32 +256,28 @@ class _LoginPageController extends State<LoginPage> {
                                         this,
                                       );
                                     }
-                                    serviceLocator<TranslateApi>()
-                                        .stopNewTranslateModelDownload();
                                   },
-                                  onDone: () {
-                                    Navigator.of(context).pop();
-                                    Toast().show(
-                                      'Downloading finished, Thank you for your patience',
-                                      Future.value(''),
-                                      context,
-                                      this,
-                                    );
-                                    serviceLocator<TranslateApi>()
-                                        .stopNewTranslateModelDownload();
-                                  },
-                                  onError: (er) {
-                                    Navigator.of(context).pop();
+                                  onError: (Object e,
+                                      [StackTrace? stackTrace]) {
+                                    //
+                                    log('New language downloaded error $e');
                                     Toast().show(
                                       'Downloading failed, something went wrong. Try again',
                                       Future.value(''),
                                       context,
                                       this,
                                     );
-                                    serviceLocator<TranslateApi>()
-                                        .stopNewTranslateModelDownload();
+                                  },
+                                  onDone: () {
+                                    log('New language downloaded or failed');
                                   },
                                 );
+                              } else {
+                                languageController
+                                  ..setLanguage(
+                                      GlobalApp.defaultLanguages[index])
+                                  // Switch source and target language
+                                  ..switchCurrentSourceAndTargetLanguage();
                               }
                               // Close bottom sheet
                               Future.delayed(
@@ -338,7 +345,6 @@ class _LoginPageController extends State<LoginPage> {
               status;
           serviceLocator<LanguageController>().hasSourceModelDownloaded =
               status;
-          serviceLocator<TranslateApi>().stopSourceModelDownload();
           if (status) {
             // Show dialog for success
           } else {

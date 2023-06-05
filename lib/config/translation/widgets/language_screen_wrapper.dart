@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:homemakers_merchant/base/app_base.dart';
+import 'package:homemakers_merchant/bootup/bootstrap.dart';
+import 'package:homemakers_merchant/config/translation/auto_locale_builder.dart';
 import 'package:homemakers_merchant/config/translation/widgets/constants.dart';
 import 'package:homemakers_merchant/config/translation/widgets/language_inherited_widget.dart';
+import 'package:homemakers_merchant/core/constants/global_app_constants.dart';
 import 'package:provider/provider.dart';
 
 enum PositionOnScreen {
@@ -80,8 +84,10 @@ class LanguageScreenWrapper extends StatelessWidget {
                     ?.newSourceLanguageDownloadStatus !=
                 NewLanguageDownloadStatus.exists;
     //
+    final MediaQueryData media = MediaQuery.of(context);
+    final double margins = GlobalApp.responsiveInsets(media.size.width);
     double height = this.height ?? defaultHeight;
-
+    log('message ${hasNotDownloaded}, ${sourceModelNotStartDownload}, ${newSourceModelNotStartDownload}');
     final Widget offlineWidget = AnimatedPositioned(
       top: positionOnScreen.top(height, hasNotDownloaded),
       bottom: positionOnScreen.bottom(height, hasNotDownloaded),
@@ -91,6 +97,8 @@ class LanguageScreenWrapper extends StatelessWidget {
         width: MediaQuery.of(context).size.width,
         decoration:
             decoration ?? BoxDecoration(color: color ?? Colors.red.shade500),
+        margin:
+            EdgeInsets.only(top: media.padding.top + kToolbarHeight + margins),
         duration: duration ?? const Duration(milliseconds: 300),
         child: Center(
           child: Text(
@@ -104,13 +112,21 @@ class LanguageScreenWrapper extends StatelessWidget {
 
     return AbsorbPointer(
       absorbing: (disableInteraction && hasNotDownloaded),
-      child: Stack(
-        children: [
-          if (child != null) child!,
-          if (disableInteraction && hasNotDownloaded)
-            if (disableWidget != null) disableWidget!,
-          offlineWidget,
-        ],
+      child: AutoLocalBuilder(
+        text: ['Language Screen Wrapper'],
+        builder: (languageController) {
+          return AutoDirection(
+            text: languageController.get('Language Screen Wrapper'),
+            child: Stack(
+              children: [
+                if (child != null) child!,
+                if (disableInteraction && hasNotDownloaded)
+                  if (disableWidget != null) disableWidget!,
+                offlineWidget,
+              ],
+            ),
+          );
+        },
       ),
     );
   }

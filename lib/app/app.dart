@@ -12,6 +12,8 @@ import 'package:homemakers_merchant/config/permission/permission_controller.dart
 import 'package:homemakers_merchant/config/permission/permission_service.dart';
 import 'package:homemakers_merchant/config/translation/language_controller.dart';
 import 'package:homemakers_merchant/config/translation/translate_api.dart';
+import 'package:homemakers_merchant/config/translation/widgets/constants.dart';
+import 'package:homemakers_merchant/config/translation/widgets/language_app_wrapper_widget.dart';
 import 'package:homemakers_merchant/core/service/connectivity_bloc/connectivity_bloc.dart';
 import 'package:homemakers_merchant/core/service/connectivity_bloc/src/widget/connectivity_app_wrapper.dart';
 import 'package:homemakers_merchant/bootup/injection_container.dart';
@@ -104,136 +106,146 @@ class _AppState extends State<App> with GetItStateMixin {
             persistNoInternetNotification: false,
             bottomInternetNotificationPadding: 16.0,
             disableInteraction: true,
-            child: PlatformProvider(
-              settings: PlatformSettingsData(
-                iosUsesMaterialWidgets: true,
-                iosUseZeroPaddingForAppbarPlatformIcon: true,
-              ),
-              builder: (context) => PlatformTheme(
-                themeMode: widget.themeController.themeMode,
-                materialLightTheme: materialLightTheme,
-                materialDarkTheme: materialDarkTheme,
-                cupertinoLightTheme: cupertinoLightTheme,
-                cupertinoDarkTheme: cupertinoDarkTheme,
-                matchCupertinoSystemChromeBrightness: true,
-                onThemeModeChanged: (themeMode) {
-                  //this.themeMode = themeMode; /* you can save to storage */
-                },
-                builder: (context) => PlatformApp(
-                  debugShowCheckedModeBanner: false,
-                  title: 'Merchant',
-                  // Providing a restorationScopeId allows the Navigator built by the
-                  // MaterialApp to restore the navigation stack when a user leaves and
-                  // returns to the app after it has been killed while running in the
-                  // background.
-                  restorationScopeId: 'merchant_app',
-                  localizationsDelegates: const <LocalizationsDelegate<
-                      dynamic>>[
-                    ...AppLocalizations.localizationsDelegates,
-                    DefaultMaterialLocalizations.delegate,
-                    DefaultWidgetsLocalizations.delegate,
-                    DefaultCupertinoLocalizations.delegate,
-                    GlobalMaterialLocalizations.delegate,
-                    GlobalWidgetsLocalizations.delegate,
-                    GlobalCupertinoLocalizations.delegate,
-                  ],
-                  locale: languageController.language.value,
-                  supportedLocales: AppLocalizations.supportedLocales,
-                  builder: (context, child) => ResponsiveBreakpoints.builder(
-                    child: child!,
-                    breakpoints: [
-                      const Breakpoint(
-                        start: 0,
-                        end: 149,
-                        name: 'XSMALLWATCH',
-                      ),
-                      const Breakpoint(
-                        start: 150,
-                        end: 320,
-                        name: 'WATCH',
-                      ),
-                      const Breakpoint(
-                        start: 321,
-                        end: 399,
-                        name: 'MEDIUMMOBILE',
-                      ),
-                      const Breakpoint(
-                        start: 400,
-                        end: 480,
-                        name: 'LARGEMOBILE',
-                      ),
-                      const Breakpoint(
-                        start: 481,
-                        end: 600,
-                        name: 'XSMALLTABLET',
-                      ),
-                      const Breakpoint(
-                        start: 601,
-                        end: 719,
-                        name: 'MEDIUMTABLET',
-                      ),
-                      const Breakpoint(
-                        start: 720,
-                        end: 839,
-                        name: 'LARGETABLET',
-                      ),
-                      const Breakpoint(
-                        start: 840,
-                        end: 959,
-                        name: 'XLARGETABLET',
-                      ),
-                      const Breakpoint(
-                        start: 960,
-                        end: 1023,
-                        name: 'NORMALDESKTOP',
-                      ),
-                      const Breakpoint(
-                        start: 1024,
-                        end: 1279,
-                        name: 'MEDIUMDESKTOP',
-                      ),
-                      const Breakpoint(
-                        start: 1440,
-                        end: 1599,
-                        name: 'LARGEDESKTOP',
-                      ),
-                      const Breakpoint(
-                        start: 1600,
-                        end: 1920,
-                        name: 'XLARGEDESKTOP',
-                      ),
-                      const Breakpoint(
-                        start: 1921,
-                        end: double.infinity,
-                        name: '4K',
-                      ),
-                    ],
+            child: LanguageAppWrapper(
+              builder: (
+                BuildContext context,
+                LanguageModelStatus sourceLanguageModelStatus,
+                LanguageDownloadStatus sourceLanguageDownloadStatus,
+                NewLanguageDownloadStatus newLanguageDownloadStatus,
+              ) {
+                return PlatformProvider(
+                  settings: PlatformSettingsData(
+                    iosUsesMaterialWidgets: true,
+                    iosUseZeroPaddingForAppbarPlatformIcon: true,
                   ),
-                  home: GestureDetector(
-                    // This allows us to un-focus a widget, typically a TextField
-                    // with focus by tapping somewhere outside it. It is no longer
-                    // needed on desktop builds, it is done automatically there for
-                    // TextField, but not on tablet and phone app. In this app we
-                    // want it on them too and to unfocus other widgets with focus
-                    // on desktop too.
-                    onTap: () => FocusScope.of(context).unfocus(),
-                    // Pass the controller to the HomePage where we use it to change
-                    // the theme settings that will cause themes above to change and
-                    // rebuild the entire look of the app based on modified theme.
-                    //
-                    // There are more than 250 properties in the controller that can
-                    // be used to control the two light and dark mode themes.
-                    // Every time one of them is modified, the themed app is rebuilt
-                    // with the new ThemeData applied.
-                    // The code that one need to use the same theme is also updated
-                    // interactively for each change when the cod gent panel is
-                    // in view.
-                    child: LoginPage(
-                      key: Key('login-page'),
+                  builder: (context) => PlatformTheme(
+                    themeMode: widget.themeController.themeMode,
+                    materialLightTheme: materialLightTheme,
+                    materialDarkTheme: materialDarkTheme,
+                    cupertinoLightTheme: cupertinoLightTheme,
+                    cupertinoDarkTheme: cupertinoDarkTheme,
+                    matchCupertinoSystemChromeBrightness: true,
+                    onThemeModeChanged: (themeMode) {
+                      //this.themeMode = themeMode; /* you can save to storage */
+                    },
+                    builder: (context) => PlatformApp(
+                      debugShowCheckedModeBanner: false,
+                      title: 'Merchant',
+                      // Providing a restorationScopeId allows the Navigator built by the
+                      // MaterialApp to restore the navigation stack when a user leaves and
+                      // returns to the app after it has been killed while running in the
+                      // background.
+                      restorationScopeId: 'merchant_app',
+                      localizationsDelegates: const <LocalizationsDelegate<
+                          dynamic>>[
+                        ...AppLocalizations.localizationsDelegates,
+                        DefaultMaterialLocalizations.delegate,
+                        DefaultWidgetsLocalizations.delegate,
+                        DefaultCupertinoLocalizations.delegate,
+                        GlobalMaterialLocalizations.delegate,
+                        GlobalWidgetsLocalizations.delegate,
+                        GlobalCupertinoLocalizations.delegate,
+                      ],
+                      locale: languageController.language.value,
+                      supportedLocales: AppLocalizations.supportedLocales,
+                      builder: (context, child) =>
+                          ResponsiveBreakpoints.builder(
+                        child: child!,
+                        breakpoints: [
+                          const Breakpoint(
+                            start: 0,
+                            end: 149,
+                            name: 'XSMALLWATCH',
+                          ),
+                          const Breakpoint(
+                            start: 150,
+                            end: 320,
+                            name: 'WATCH',
+                          ),
+                          const Breakpoint(
+                            start: 321,
+                            end: 399,
+                            name: 'MEDIUMMOBILE',
+                          ),
+                          const Breakpoint(
+                            start: 400,
+                            end: 480,
+                            name: 'LARGEMOBILE',
+                          ),
+                          const Breakpoint(
+                            start: 481,
+                            end: 600,
+                            name: 'XSMALLTABLET',
+                          ),
+                          const Breakpoint(
+                            start: 601,
+                            end: 719,
+                            name: 'MEDIUMTABLET',
+                          ),
+                          const Breakpoint(
+                            start: 720,
+                            end: 839,
+                            name: 'LARGETABLET',
+                          ),
+                          const Breakpoint(
+                            start: 840,
+                            end: 959,
+                            name: 'XLARGETABLET',
+                          ),
+                          const Breakpoint(
+                            start: 960,
+                            end: 1023,
+                            name: 'NORMALDESKTOP',
+                          ),
+                          const Breakpoint(
+                            start: 1024,
+                            end: 1279,
+                            name: 'MEDIUMDESKTOP',
+                          ),
+                          const Breakpoint(
+                            start: 1440,
+                            end: 1599,
+                            name: 'LARGEDESKTOP',
+                          ),
+                          const Breakpoint(
+                            start: 1600,
+                            end: 1920,
+                            name: 'XLARGEDESKTOP',
+                          ),
+                          const Breakpoint(
+                            start: 1921,
+                            end: double.infinity,
+                            name: '4K',
+                          ),
+                        ],
+                      ),
+                      home: GestureDetector(
+                        // This allows us to un-focus a widget, typically a TextField
+                        // with focus by tapping somewhere outside it. It is no longer
+                        // needed on desktop builds, it is done automatically there for
+                        // TextField, but not on tablet and phone app. In this app we
+                        // want it on them too and to unfocus other widgets with focus
+                        // on desktop too.
+                        onTap: () => FocusScope.of(context).unfocus(),
+                        // Pass the controller to the HomePage where we use it to change
+                        // the theme settings that will cause themes above to change and
+                        // rebuild the entire look of the app based on modified theme.
+                        //
+                        // There are more than 250 properties in the controller that can
+                        // be used to control the two light and dark mode themes.
+                        // Every time one of them is modified, the themed app is rebuilt
+                        // with the new ThemeData applied.
+                        // The code that one need to use the same theme is also updated
+                        // interactively for each change when the cod gent panel is
+                        // in view.
+                        child: LoginPage(
+                          key: Key('login-page'),
+                        ),
+                      ),
                     ),
                   ),
-                ),
-              ),
+                );
+              },
             ),
           );
         },
