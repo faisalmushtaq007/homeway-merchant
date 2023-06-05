@@ -205,11 +205,11 @@ Future<void> _showNetworkStateWidget(NetworkState state,
         persistNotification: _persistNoInternetToast,
       ),
     );
-    _printLog("Network change: " +
-        (messenger ?? NetworkStateDefaultMessage()).message(state));
+    _printLog(
+        'Network change: ${(messenger ?? NetworkStateDefaultMessage()).message(state)}');
     if (_OverlayType.NetworkStatus.isShowing()) {
-      _printLog("An internet overlay is being currently shown, "
-          "hiding it before showing new overlay");
+      _printLog('An internet overlay is being currently shown, '
+          'hiding it before showing new overlay');
       await _hideNetworkStateWidget();
     }
 
@@ -469,15 +469,15 @@ extension OverlayTypeExtension on _OverlayType? {
   String name() {
     switch (this) {
       case _OverlayType.Notification:
-        return "Notification";
+        return 'Notification';
       case _OverlayType.Loader:
-        return "Loader";
+        return 'Loader';
       case _OverlayType.NetworkStatus:
-        return "NetworkStatus";
+        return 'NetworkStatus';
       case _OverlayType.Toast:
-        return "Toast";
+        return 'Toast';
       default:
-        return "Overlay";
+        return 'Overlay';
     }
   }
 

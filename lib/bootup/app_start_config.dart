@@ -20,7 +20,6 @@ class AppStartConfig {
       await FlutterDisplayMode.setHighRefreshRate();
     }
     await setupGetIt();
-    await hasSourceTranslateLanguageDownload();
     return;
   }
 
@@ -69,88 +68,6 @@ class AppStartConfig {
       ]);
     }
     SystemChrome.setPreferredOrientations(orientations);
-  }
-
-  Future<void> hasSourceTranslateLanguageDownload() async {
-    final bool hasDownloaded =
-        await serviceLocator<TranslateApi>().isSourceModelDownloaded();
-    if (hasDownloaded) {
-      return;
-    } else {
-      // Start downloading
-      await serviceLocator<TranslateApi>().startSourceModelDownload();
-      // Listen downloading
-/*      serviceLocator<TranslateApi>()
-          .isolateManagerSourceModelDownload
-          .onMessage
-          .listen(
-        (status) {
-          if (status) {
-            serviceLocator<LanguageController>()
-                .hasSourceModelDownloadedSuccess = true;
-            serviceLocator<LanguageController>().hasSourceModelDownloaded =
-                true;
-          } else {
-            serviceLocator<LanguageController>()
-                .hasSourceModelDownloadedSuccess = false;
-            serviceLocator<LanguageController>().hasSourceModelDownloaded =
-                false;
-          }
-          serviceLocator<TranslateApi>().stopSourceModelDownload();
-        },
-        onError: (e) {
-          serviceLocator<LanguageController>().hasSourceModelDownloadedSuccess =
-              false;
-          serviceLocator<LanguageController>().hasSourceModelDownloaded = false;
-          serviceLocator<TranslateApi>().stopSourceModelDownload();
-        },
-        onDone: () {
-          serviceLocator<TranslateApi>().stopSourceModelDownload();
-        },
-
-      );*/
-    }
-  }
-
-  Future<void> hasTargetTranslateLanguageDownload() async {
-    final bool hasDownloaded =
-        await serviceLocator<TranslateApi>().isTargetModelDownloaded();
-    if (hasDownloaded) {
-      return;
-    } else {
-      // Start downloading
-      await serviceLocator<TranslateApi>().startTargetModelDownload();
-      // Listen downloading
-/*      serviceLocator<TranslateApi>()
-          .isolateManagerTargetModelDownload
-          .onMessage
-          .listen(
-        (status) {
-          if (status) {
-            serviceLocator<LanguageController>()
-                .hasTargetModelDownloadedSuccess = true;
-            serviceLocator<LanguageController>().hasTargetModelDownloaded =
-                true;
-          } else {
-            serviceLocator<LanguageController>()
-                .hasTargetModelDownloadedSuccess = false;
-            serviceLocator<LanguageController>().hasTargetModelDownloaded =
-                false;
-          }
-          serviceLocator<TranslateApi>().stopTargetModelDownload();
-        },
-        onError: (e) {
-          serviceLocator<LanguageController>().hasTargetModelDownloadedSuccess =
-              false;
-          serviceLocator<LanguageController>().hasTargetModelDownloaded = false;
-          serviceLocator<TranslateApi>().stopTargetModelDownload();
-        },
-        onDone: () {
-          serviceLocator<TranslateApi>().stopTargetModelDownload();
-        },
-
-      );*/
-    }
   }
 }
 

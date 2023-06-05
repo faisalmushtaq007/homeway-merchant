@@ -228,71 +228,8 @@ class _AppState extends State<App> with GetItStateMixin {
                     // The code that one need to use the same theme is also updated
                     // interactively for each change when the cod gent panel is
                     // in view.
-                    child: AsyncBuilder<bool>(
-                      stream: serviceLocator<TranslateApi>()
-                          .isolateManagerSourceModelDownload
-                          .onMessage,
-                      waiting: (context) {
-                        Toast().show(
-                          'While we are downloading your default app language...',
-                          Future.value(''),
-                          context,
-                          this,
-                        );
-                        return const LoginPage(
-                          key: Key('login-page'),
-                        );
-                      },
-                      builder: (context, value) {
-                        //Navigator.of(context).pop();
-                        serviceLocator<LanguageController>()
-                            .hasSourceModelDownloadedSuccess = value!;
-                        serviceLocator<LanguageController>()
-                            .hasSourceModelDownloaded = value!;
-                        serviceLocator<TranslateApi>()
-                            .stopSourceModelDownload();
-                        Navigator.of(context).pop();
-                        return const LoginPage(
-                          key: Key('login-page'),
-                        );
-                      },
-                      error: (context, error, stackTrace) {
-                        Toast().show(
-                          'Error: ',
-                          Future.value(error.toString()),
-                          context,
-                          this,
-                        );
-                        serviceLocator<LanguageController>()
-                            .hasSourceModelDownloadedSuccess = false;
-                        serviceLocator<LanguageController>()
-                            .hasSourceModelDownloaded = false;
-                        serviceLocator<TranslateApi>()
-                            .stopSourceModelDownload();
-                        Navigator.of(context).pop();
-                        return const LoginPage(
-                          key: Key('login-page'),
-                        );
-                      },
-                      closed: (context, value) {
-                        Toast().show(
-                          'Download: ',
-                          Future.value(
-                              (value!) ? 'completed' : 'not completed'),
-                          context,
-                          this,
-                        );
-                        serviceLocator<LanguageController>()
-                            .hasSourceModelDownloadedSuccess = value!;
-                        serviceLocator<LanguageController>()
-                            .hasSourceModelDownloaded = value!;
-                        serviceLocator<TranslateApi>()
-                            .stopSourceModelDownload();
-                        Navigator.of(context).pop();
-                        return const LoginPage(
-                          key: Key('login-page'),
-                        );
-                      },
+                    child: LoginPage(
+                      key: Key('login-page'),
                     ),
                   ),
                 ),

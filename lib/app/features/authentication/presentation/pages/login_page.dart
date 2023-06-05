@@ -42,6 +42,7 @@ class _LoginPageController extends State<LoginPage> {
   void initState() {
     super.initState();
     scrollController = ScrollController();
+    _listenSourceLanguageDownload();
   }
 
   @override
@@ -323,6 +324,36 @@ class _LoginPageController extends State<LoginPage> {
           },
         );
       },
+    );
+  }
+
+  void _listenSourceLanguageDownload() {
+    serviceLocator<TranslateApi>()
+        .isolateManagerSourceModelDownload
+        .onMessage
+        .listen(
+      (status) {
+        if (status) {
+          serviceLocator<LanguageController>().hasSourceModelDownloadedSuccess =
+              status;
+          serviceLocator<LanguageController>().hasSourceModelDownloaded =
+              status;
+          serviceLocator<TranslateApi>().stopSourceModelDownload();
+          if (status) {
+            // Show dialog for success
+          } else {
+            // Show dialog for error
+          }
+        }
+      },
+      onError: (e) {
+        serviceLocator<LanguageController>().hasSourceModelDownloadedSuccess =
+            false;
+        serviceLocator<LanguageController>().hasSourceModelDownloaded = false;
+        serviceLocator<TranslateApi>().stopSourceModelDownload();
+        // Show Dialog
+      },
+      onDone: () {},
     );
   }
 
