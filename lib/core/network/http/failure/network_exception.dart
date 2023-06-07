@@ -257,7 +257,7 @@ class NetworkException with _$NetworkException {
       try {
         NetworkException networkException = const NetworkException.notFound();
         // Dio Error
-        if (error is DioError) {
+        if (error is DioException) {
           var errorData = error.response?.data;
           if (errorData == null) {
             errorData = const ErrorBean(
@@ -279,42 +279,42 @@ class NetworkException with _$NetworkException {
             );
           }
           switch (error.type) {
-            case DioErrorType.cancel:
+            case DioExceptionType.cancel:
               networkException = NetworkException.requestCancelled(
                 error: errorData,
               );
               break;
-            case DioErrorType.sendTimeout:
+            case DioExceptionType.sendTimeout:
               networkException = NetworkException.requestTimeout(
                 error: errorData,
               );
               break;
-            case DioErrorType.unknown:
+            case DioExceptionType.unknown:
               networkException = NetworkException.noInternetConnection(
                 error: errorData,
               );
               break;
-            case DioErrorType.receiveTimeout:
+            case DioExceptionType.receiveTimeout:
               networkException = NetworkException.sendTimeout(
                 error: errorData,
               );
               break;
-            case DioErrorType.connectionTimeout:
+            case DioExceptionType.connectionTimeout:
               networkException = NetworkException.networkConnectTimeoutError(
                 error: errorData,
               );
               break;
-            case DioErrorType.badCertificate:
+            case DioExceptionType.badCertificate:
               networkException = NetworkException.badCertificate(
                 error: errorData,
               );
               break;
-            case DioErrorType.connectionError:
+            case DioExceptionType.connectionError:
               networkException = NetworkException.serviceUnavailable(
                 error: errorData,
               );
               break;
-            case DioErrorType.badResponse:
+            case DioExceptionType.badResponse:
               switch (error.response?.statusCode) {
                 case HttpResponseCode.movedPermanently:
                   networkException = NetworkException.movedPermanently(
@@ -481,7 +481,7 @@ class NetworkException with _$NetworkException {
                   );
               }
               break;
-            case DioErrorType.sendTimeout:
+            case DioExceptionType.sendTimeout:
               networkException = NetworkException.sendTimeout(
                 error: errorData,
               );

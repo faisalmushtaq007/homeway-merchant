@@ -60,11 +60,11 @@ dependencies:
   get_it_mixin: ^4.2.0
   go_router: ^7.1.1
   google_fonts: ^5.0.0
-  google_maps_flutter: ^2.2.8
+  google_maps_flutter: ^2.3.0
   google_ml_kit: ^0.15.0
   google_mlkit_language_id: ^0.7.0
   google_mlkit_translation: ^0.7.0
-  google_sign_in: ^6.1.0
+  google_sign_in: ^6.1.3
   hive: ^2.2.3
   image_fade: ^0.6.2
   image_picker: ^0.8.7+5
@@ -75,7 +75,7 @@ dependencies:
       ref: main
   json_annotation: ^4.8.1
   location: ^4.4.0
-  logger: ^1.3.0
+  logger: ^1.4.0
   network_manager:
     git:
       url: 'git@bitbucket.org:prasant72/homemakers_commons.git'

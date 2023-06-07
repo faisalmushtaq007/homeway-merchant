@@ -205,40 +205,47 @@ class _LoginPageController extends State<LoginPage> {
                         itemBuilder: (context, index) {
                           return ListTile(
                             onTap: () async {
+                              languageController
+                                ..setLanguage(GlobalApp.defaultLanguages[index])
+                                // Switch source and target language
+                                ..switchCurrentSourceAndTargetLanguage();
                               // Check has target language downloaded?
                               // If false, download new language
-                              if (!await serviceLocator<TranslateApi>()
+                              if (!await TranslateApi.instance
                                   .isTranslateModelDownloaded(
                                 GlobalApp
                                     .defaultLanguages[index].sourceLanguage,
                               )) {
-                                await serviceLocator<TranslateApi>()
+                                await TranslateApi.instance
+                                    .startNewTranslateModelDownload(GlobalApp
+                                        .defaultLanguages[index]
+                                        .sourceLanguage);
+                                var newLanguageDownloadingStream = TranslateApi
+                                    .instance
                                     .newTargetTranslateLanguageDownload(
                                   GlobalApp
                                       .defaultLanguages[index].sourceLanguage,
                                   GlobalApp.defaultLanguages[index],
                                 );
-                                serviceLocator<TranslateApi>()
-                                    .newSourceModelDownloadStream
-                                    .listen(
+                                newLanguageDownloadingStream.listen(
                                   (event) {
                                     if (event
-                                        case NewLanguageDownloadStatus
-                                            .downloading) {
+                                        case (
+                                          LanguageModelStatus.notExists,
+                                          LanguageDownloadStatus.downloading
+                                        )) {
                                       log('New language downloading');
                                       Toast().showLoadingIndicator(
                                         context,
                                         'While we are downloading your default app language...',
                                       );
                                     } else if (event
-                                        case NewLanguageDownloadStatus
-                                            .downloaded) {
+                                        case (
+                                          LanguageModelStatus.exists,
+                                          LanguageDownloadStatus.downloaded
+                                        )) {
                                       log('New language downloaded');
-                                      languageController
-                                        ..setLanguage(
-                                            GlobalApp.defaultLanguages[index])
-                                        // Switch source and target language
-                                        ..switchCurrentSourceAndTargetLanguage();
+
                                       Toast().show(
                                         'New language Downloaded',
                                         Future.value(''),
@@ -246,11 +253,26 @@ class _LoginPageController extends State<LoginPage> {
                                         this,
                                       );
                                     } else if (event
-                                        case NewLanguageDownloadStatus
-                                            .notDownloaded) {
+                                        case (
+                                          LanguageModelStatus.notExists,
+                                          LanguageDownloadStatus
+                                              .downloadingFailed
+                                        )) {
                                       log('New language downloaded failed');
                                       Toast().show(
                                         'Downloading failed',
+                                        Future.value(''),
+                                        context,
+                                        this,
+                                      );
+                                    } else if (event
+                                        case (
+                                          LanguageModelStatus.notExists,
+                                          LanguageDownloadStatus.error
+                                        )) {
+                                      log('New language downloaded failed or error');
+                                      Toast().show(
+                                        'Downloading failed or error,',
                                         Future.value(''),
                                         context,
                                         this,
@@ -272,12 +294,6 @@ class _LoginPageController extends State<LoginPage> {
                                     log('New language downloaded or failed');
                                   },
                                 );
-                              } else {
-                                languageController
-                                  ..setLanguage(
-                                      GlobalApp.defaultLanguages[index])
-                                  // Switch source and target language
-                                  ..switchCurrentSourceAndTargetLanguage();
                               }
                               // Close bottom sheet
                               Future.delayed(
@@ -335,10 +351,7 @@ class _LoginPageController extends State<LoginPage> {
   }
 
   void _listenSourceLanguageDownload() {
-    serviceLocator<TranslateApi>()
-        .isolateManagerSourceModelDownload
-        .onMessage
-        .listen(
+    TranslateApi.instance.isolateManagerSourceModelDownload.onMessage.listen(
       (status) {
         if (status) {
           serviceLocator<LanguageController>().hasSourceModelDownloadedSuccess =
@@ -356,7 +369,7 @@ class _LoginPageController extends State<LoginPage> {
         serviceLocator<LanguageController>().hasSourceModelDownloadedSuccess =
             false;
         serviceLocator<LanguageController>().hasSourceModelDownloaded = false;
-        serviceLocator<TranslateApi>().stopSourceModelDownload();
+        TranslateApi.instance.stopSourceModelDownload();
         // Show Dialog
       },
       onDone: () {},

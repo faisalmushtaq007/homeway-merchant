@@ -14,7 +14,7 @@ class LanguageInheritedWidget extends InheritedWidget {
   final bool? isConnected;
   final LanguageModelStatus sourceModelStatus;
   final LanguageDownloadStatus sourceLanguageDownloadStatus;
-  final NewLanguageDownloadStatus newSourceLanguageDownloadStatus;
+  final LanguageDownloadStatus newSourceLanguageDownloadStatus;
 
   @override
   bool updateShouldNotify(LanguageInheritedWidget oldWidget) {

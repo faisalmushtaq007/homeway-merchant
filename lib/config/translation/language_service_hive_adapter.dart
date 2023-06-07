@@ -103,8 +103,8 @@ class TranslateLanguageAdapter extends TypeAdapter<TranslateLanguage> {
 
   @override
   void write(BinaryWriter writer, TranslateLanguage obj) {
-    writer.write(obj.index);
-    writer.write(obj.bcpCode);
+    //writer.write(obj.index);
+    //writer.write(obj.bcpCode);
     writer.write(obj.name);
   }
 }

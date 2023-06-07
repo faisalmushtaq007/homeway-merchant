@@ -14,7 +14,7 @@ typedef LanguageWidgetBuilder = Widget Function(
   BuildContext context,
   LanguageModelStatus sourceLanguageModelStatus,
   LanguageDownloadStatus sourceLanguageDownloadStatus,
-  NewLanguageDownloadStatus newLanguageDownloadStatus,
+  LanguageDownloadStatus newLanguageDownloadStatus,
 );
 
 class LanguageAppWrapper extends StatefulWidget with GetItStatefulWidgetMixin {
@@ -30,23 +30,23 @@ class _LanguageAppWrapperState extends State<LanguageAppWrapper>
   @override
   Widget build(BuildContext context) {
     return StreamBuilder3<LanguageModelStatus, LanguageDownloadStatus,
-        NewLanguageDownloadStatus>(
+        (LanguageModelStatus, LanguageDownloadStatus)>(
       streams: StreamTuple3(
-        serviceLocator<TranslateApi>().appSourceModelStream,
-        serviceLocator<TranslateApi>().appDefaultSourceModelDownloadStream,
-        serviceLocator<TranslateApi>().newSourceModelDownloadStream,
+        TranslateApi.instance.appSourceModelStream,
+        TranslateApi.instance.appDefaultSourceModelDownloadStream,
+        TranslateApi.instance.targetLanguageModelDownloadStream,
       ),
       initialData: InitialDataTuple3(
         LanguageModelStatus.notExists,
         LanguageDownloadStatus.downloading,
-        NewLanguageDownloadStatus.notDownloaded,
+        (LanguageModelStatus.notExists, LanguageDownloadStatus.notDownloaded),
       ),
       builder: (context, snapshots) {
         final child = widget.builder(
           context,
           snapshots.snapshot1.data ?? LanguageModelStatus.notExists,
           snapshots.snapshot2.data ?? LanguageDownloadStatus.downloading,
-          snapshots.snapshot3.data ?? NewLanguageDownloadStatus.notDownloaded,
+          snapshots.snapshot3.data?.$2 ?? LanguageDownloadStatus.notDownloaded,
         );
         return LanguageInheritedWidget(
           isConnected: true,
@@ -54,8 +54,8 @@ class _LanguageAppWrapperState extends State<LanguageAppWrapper>
               snapshots.snapshot1.data ?? LanguageModelStatus.notExists,
           sourceLanguageDownloadStatus:
               snapshots.snapshot2.data ?? LanguageDownloadStatus.downloading,
-          newSourceLanguageDownloadStatus: snapshots.snapshot3.data ??
-              NewLanguageDownloadStatus.notDownloaded,
+          newSourceLanguageDownloadStatus: snapshots.snapshot3.data?.$2 ??
+              LanguageDownloadStatus.notDownloaded,
           child: LanguageScreenWrapper(child: child),
         );
       },

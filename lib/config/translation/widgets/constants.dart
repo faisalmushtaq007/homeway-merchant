@@ -53,6 +53,7 @@ enum LanguageDownloadStatus {
   downloaded,
   error,
   uncaughtException,
+  notDownloaded,
   none
 }
 

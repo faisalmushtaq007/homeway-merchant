@@ -90,6 +90,13 @@ class _CounterViewState extends State<CounterView>
           {
             log('Os restricted');
           }
+        case PermissionStatus.provisional:
+          {
+            log('Denied');
+            permissionController.setLocationWhenInUsePermission(
+              permissionCall.$2,
+            );
+          }
       }
     } else {
       // User enable location service
