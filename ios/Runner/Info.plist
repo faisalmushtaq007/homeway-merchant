@@ -75,5 +75,16 @@
     <string>description</string>
     <key>NSLocationAlwaysUsageDescription</key>
     <string>description</string>
+	<key>UIBackgroundModes</key>
+	<array>
+		<!-- <string>fetch</string> -->
+		<string>processing</string>
+	</array>
+	<key>BGTaskSchedulerPermittedIdentifiers</key>
+	<array>
+		<string>com.homemakers.merchant.source_language_download.task</string>
+		<string>com.homemakers.merchant.target_language_download.task</string>
+		<string>com.homemakers.merchant.new_language_download.task</string>
+	</array>
 </dict>
 </plist>

@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'dart:developer';
-
+import 'dart:ui' as ui;
 import 'package:bloc/bloc.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/gestures.dart';
@@ -97,6 +97,8 @@ Future<void> bootstrap(FutureOr<dynamic> Function() builder) async {
     final WidgetsBinding widgetsBinding =
         WidgetsFlutterBinding.ensureInitialized();
     GestureBinding.instance.resamplingEnabled = true;
+    final ui.RootIsolateToken rootIsolateToken = ui.RootIsolateToken.instance!;
+    BackgroundIsolateBinaryMessenger.ensureInitialized(rootIsolateToken);
     // Portrait Orientation
     await SystemChrome.setPreferredOrientations(
       <DeviceOrientation>[DeviceOrientation.portraitUp],

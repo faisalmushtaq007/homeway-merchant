@@ -68,14 +68,14 @@ Future<void> _setUpAppSetting() async {
     LanguageController(serviceLocator()),
   );
   await serviceLocator<LanguageController>().loadAll();
-  serviceLocator.registerSingleton<TranslateApi>(
-    TranslateApi(
-      languageService: serviceLocator(),
-      boxName: GlobalApp.languageBoxName,
-    ),
+  // TranslateApi
+  final TranslateApi translateApi = TranslateApi(
+    languageService: serviceLocator<ILanguageService>(),
+    boxName: GlobalApp.languageBoxName,
   );
-  await serviceLocator<TranslateApi>()
-      .init(sourceLanguage: GlobalApp.defaultSourceTranslateLanguage);
+  serviceLocator.registerSingleton<TranslateApi>(
+    translateApi,
+  );
 }
 
 void _setUpService() {

@@ -16,3 +16,4 @@ linter:
     one_member_abstracts: false
     library_private_types_in_public_api: false
     sort_constructors_first: true
+    cascade_invocations: false

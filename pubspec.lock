@@ -631,6 +631,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.4.0-beta.1"
+  flutter_background_executor:
+    dependency: "direct main"
+    description:
+      name: flutter_background_executor
+      sha256: ff7461a52ac198e6b57c31780ed53f737b6863cc5774619302368124848363b4
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.0"
   flutter_bloc:
     dependency: "direct main"
     description:

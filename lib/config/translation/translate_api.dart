@@ -3,6 +3,7 @@ import 'dart:collection' show HashMap;
 import 'dart:convert';
 import 'dart:developer';
 import 'dart:ui';
+import 'dart:ui' as ui;
 import 'package:flutter/services.dart';
 import 'package:google_mlkit_language_id/google_mlkit_language_id.dart';
 import 'package:google_mlkit_translation/google_mlkit_translation.dart';
@@ -14,8 +15,10 @@ import 'package:homemakers_merchant/config/translation/language_controller.dart'
 import 'package:homemakers_merchant/config/translation/language_service.dart';
 import 'package:homemakers_merchant/config/translation/language_service_hive_adapter.dart';
 import 'package:homemakers_merchant/config/translation/widgets/constants.dart';
+import 'package:homemakers_merchant/main_development.dart';
 import 'package:synchronized/synchronized.dart';
 import 'package:isolate_manager/isolate_manager.dart';
+import 'package:flutter_background_executor/flutter_background_executor.dart';
 
 class AutoLocalizationException implements Exception {
   String cause;
@@ -26,56 +29,83 @@ class AutoLocalizationException implements Exception {
 typedef IdentifiedLanguageTypeDef = void Function(String language);
 typedef IdentifiedPossibleLanguageTypeDef = void Function(
     List<IdentifiedLanguage> languages, String language);
+final backgroundSourceLanguageExecutor = FlutterBackgroundExecutor();
+final _backgroundTargetExecutor = FlutterBackgroundExecutor();
+final _backgroundNewLanguageExecutor = FlutterBackgroundExecutor();
 
 class TranslateApi {
-  TranslateApi({required this.languageService, required this.boxName});
+  static final TranslateApi _instance = TranslateApi._privateConstructor();
+  static TranslateApi get instance => _instance;
+  TranslateApi._privateConstructor();
+  factory TranslateApi(
+      {required ILanguageService languageService, required String boxName}) {
+    _instance.languageService = languageService;
+    _instance.boxName = boxName;
+    return _instance;
+  }
+  //TranslateApi({required this.languageService, required this.boxName});
 
-  final ILanguageService languageService;
-  final String boxName;
+  late final ILanguageService languageService;
+  late final String boxName;
   static List<IdentifiedLanguage> _identifiedLanguages = <IdentifiedLanguage>[];
   static final _languageIdentifier =
       LanguageIdentifier(confidenceThreshold: 0.5);
   static var _identifiedLanguage = '';
   String? _translatedText;
-  static final _modelManager = OnDeviceTranslatorModelManager();
-  static var _sourceLanguage = TranslateLanguage.english;
-  static var _targetLanguage = TranslateLanguage.english;
-  static late var _onDeviceTranslator = OnDeviceTranslator(
+  late final OnDeviceTranslatorModelManager _modelManager =
+      OnDeviceTranslatorModelManager();
+
+  OnDeviceTranslatorModelManager get modelManager => _modelManager;
+  var _sourceLanguage = TranslateLanguage.arabic;
+  TranslateLanguage get sourceLanguage => _sourceLanguage;
+
+  set sourceLanguage(TranslateLanguage value) {
+    _sourceLanguage = value;
+  }
+
+  var _targetLanguage = TranslateLanguage.arabic;
+  TranslateLanguage get targetLanguage => _targetLanguage;
+
+  set targetLanguage(TranslateLanguage value) {
+    _sourceLanguage = value;
+  }
+
+  late var _onDeviceTranslator = OnDeviceTranslator(
     sourceLanguage: _sourceLanguage,
     targetLanguage: _targetLanguage,
   );
-  static bool hasSourceModelDownloaded = false;
-  static bool hasTargetModelDownloaded = false;
-  static bool hasSourceModelDeleted = false;
-  static bool hasTargetModelDeleted = false;
-  static bool hasSourceModelDownloadedSuccess = false;
-  static bool hasTargetModelDownloadedSuccess = false;
-  static bool _isInitialized = false;
-  static bool _clearCache = false;
+  bool hasSourceModelDownloaded = false;
+  bool hasTargetModelDownloaded = false;
+  bool hasSourceModelDeleted = false;
+  bool hasTargetModelDeleted = false;
+  bool hasSourceModelDownloadedSuccess = false;
+  bool hasTargetModelDownloadedSuccess = false;
+  bool _isInitialized = false;
+  bool _clearCache = false;
 
   ///This parameter control the time between every request so you don't exceed the maximum amount of request. If you don't know what you are doing don't change it!
-  static int _delayTime = 300;
+  int _delayTime = 300;
 
-  static int get delayTime => _delayTime;
-  static Lock _lock = Lock();
+  int get delayTime => _delayTime;
+  Lock _lock = Lock();
 
   /// The Active Locale at the Moment while
   /// the String is translated
-  static Locale _activeLocale = Locale('en');
+  Locale _activeLocale = Locale('en');
 
   /// Getter for the Active Locale at the Moment while
   /// the String is translated
-  static Locale get activeLocale => _activeLocale;
+  Locale get activeLocale => _activeLocale;
 
   /// The Default Locale, the Language in which
   /// you write your Text / Strings in the Code
-  static Locale _defaultLocale = Locale('en');
+  Locale _defaultLocale = Locale('en');
 
   /// The Default Locale, the Language in which
   /// you write your Text / Strings in the Code.
   /// This is hidden behind a getter because you have to
   /// set it in the [init] method and can't change it later
-  static Locale get defaultLocation => _defaultLocale;
+  Locale get defaultLocation => _defaultLocale;
 
   /// The Map with the Translations. From this map the HashMap is created
   static Map<String, String> _translationsMap = {};
@@ -84,22 +114,33 @@ class TranslateApi {
   /// A HashMap has a constant Iteration Time.
   static final HashMap<String, String> _translations =
       HashMap.from(_translationsMap);
+
   // AppDefault SourceModel Availability StreamController
   late StreamController<LanguageModelStatus>
       _appDefaultSourceModelAvailabilityStreamController;
+
   Stream<LanguageModelStatus> get appSourceModelStream =>
       _appDefaultSourceModelAvailabilityStreamController.stream;
+
   // AppDefault SourceModel Download StreamController
   late StreamController<LanguageDownloadStatus>
       _appDefaultSourceModelDownloadStreamController;
+
   Stream<LanguageDownloadStatus> get appDefaultSourceModelDownloadStream =>
       _appDefaultSourceModelDownloadStreamController.stream;
+
   // New SourceModel Download StreamController
   late StreamController<NewLanguageDownloadStatus>
       _newSourceModelDownloadStreamController;
+
   Stream<NewLanguageDownloadStatus> get newSourceModelDownloadStream =>
       _newSourceModelDownloadStreamController.stream;
-  static void changeLocale(Locale newLocale) {
+
+  StreamController<(LanguageModelStatus, LanguageDownloadStatus)>
+      downloadStreamController = StreamController<
+          (LanguageModelStatus, LanguageDownloadStatus)>.broadcast();
+
+  void changeLocale(Locale newLocale) {
     _activeLocale = newLocale;
   }
 
@@ -111,14 +152,86 @@ class TranslateApi {
     _targetLanguage = targetLanguage ?? _targetLanguage;
     _delayTime = delayTime ?? _delayTime;
     _appDefaultSourceModelAvailabilityStreamController =
-        StreamController<LanguageModelStatus>();
+        StreamController<LanguageModelStatus>.broadcast();
     _appDefaultSourceModelDownloadStreamController =
-        StreamController<LanguageDownloadStatus>();
+        StreamController<LanguageDownloadStatus>.broadcast();
     //_newSourceModelDownloadStreamController
     _newSourceModelDownloadStreamController =
-        StreamController<NewLanguageDownloadStatus>();
-    await hasSourceTranslateLanguageDownload();
-    _startLookUpAppSourceModel();
+        StreamController<NewLanguageDownloadStatus>.broadcast();
+    // start SourceModelDownload
+    await TranslateApi.instance.startSourceModelDownload();
+    //
+    final Stream<(LanguageModelStatus, LanguageDownloadStatus)>
+        sourceTranslateDownloadStream = hasSourceTranslateLanguageDownload();
+    //
+    sourceTranslateDownloadStream.listen((event) {
+      log('Translate Api - sourceTranslateDownloadStream ${event}');
+      if (event
+          case (
+            LanguageModelStatus.exists,
+            LanguageDownloadStatus.downloaded
+          )) {
+        log('Translate Api - downloaded sourceTranslateDownloadStream ${event}');
+        serviceLocator<LanguageController>().hasSourceModelDownloadedSuccess =
+            true;
+        serviceLocator<LanguageController>().hasSourceModelDownloaded = true;
+        hasSourceModelDownloaded = true;
+        hasSourceModelDownloadedSuccess = true;
+        _appDefaultSourceModelAvailabilityStreamController.add(event.$1);
+        _appDefaultSourceModelDownloadStreamController.add(event.$2);
+      } else if (event
+          case (
+            LanguageModelStatus.notExists,
+            LanguageDownloadStatus.downloadingFailed
+          )) {
+        log('Translate Api - downloadedFailed sourceTranslateDownloadStream ${event}');
+        serviceLocator<LanguageController>().hasSourceModelDownloadedSuccess =
+            false;
+        serviceLocator<LanguageController>().hasSourceModelDownloaded = false;
+        hasSourceModelDownloaded = false;
+        hasSourceModelDownloadedSuccess = false;
+        _appDefaultSourceModelAvailabilityStreamController.add(event.$1);
+        _appDefaultSourceModelDownloadStreamController.add(event.$2);
+      } else if (event
+          case (
+            LanguageModelStatus.notExists,
+            LanguageDownloadStatus.downloading
+          )) {
+        log('Translate Api - downloading sourceTranslateDownloadStream ${event}');
+        serviceLocator<LanguageController>().hasSourceModelDownloadedSuccess =
+            false;
+        serviceLocator<LanguageController>().hasSourceModelDownloaded = false;
+        hasSourceModelDownloaded = false;
+        hasSourceModelDownloadedSuccess = false;
+        _appDefaultSourceModelAvailabilityStreamController.add(event.$1);
+        _appDefaultSourceModelDownloadStreamController.add(event.$2);
+      } else if (event
+          case (LanguageModelStatus.notExists, LanguageDownloadStatus.error)) {
+        log('Translate Api - downloaded error sourceTranslateDownloadStream ${event}');
+        serviceLocator<LanguageController>().hasSourceModelDownloadedSuccess =
+            false;
+        serviceLocator<LanguageController>().hasSourceModelDownloaded = false;
+        hasSourceModelDownloaded = false;
+        hasSourceModelDownloadedSuccess = false;
+        _appDefaultSourceModelAvailabilityStreamController.add(event.$1);
+        _appDefaultSourceModelDownloadStreamController.add(event.$2);
+      }
+    });
+    //
+    _appDefaultSourceModelAvailabilityStreamController
+        .add(LanguageModelStatus.notExists);
+    _appDefaultSourceModelDownloadStreamController
+        .add(LanguageDownloadStatus.downloading);
+    //
+    Stream<LanguageModelStatus> lookUpAppSourceModel =
+        startLookUpAppSourceModel();
+
+    //use AsyncGenerator
+    lookUpAppSourceModel.listen((LanguageModelStatus value) {
+      print('Value lookUpAppSourceModel: $value');
+      _appDefaultSourceModelAvailabilityStreamController.add(value);
+    });
+
     await _doInit();
   }
 
@@ -131,7 +244,7 @@ class TranslateApi {
   }
 
   ///SET APP LANGUAGE
-  static set setDelayTime(int delayTime) {
+  set setDelayTime(int delayTime) {
     _delayTime = delayTime;
     if (_delayTime < 100) {
       throw AutoLocalizationException('Delay time is too low.');
@@ -164,7 +277,7 @@ class TranslateApi {
     return true;
   }
 
-  static void lazyClearCache() {
+  void lazyClearCache() {
     _clearCache = true;
   }
 
@@ -326,7 +439,7 @@ class TranslateApi {
     final bool hasDownloaded = await _modelManager
         .downloadModel(_sourceLanguage.bcpCode, isWifiRequired: false);
     hasSourceModelDownloadedSuccess = hasDownloaded;
-
+    //await TranslateApi.instance.isolateManagerSourceModelDownload.sendMessage(hasDownloaded);
     return hasDownloaded;
   }
 
@@ -425,7 +538,7 @@ class TranslateApi {
     _targetLanguage = _sourceLanguage;
   }
 
-  static Future<String> _translateText(String text) async {
+  Future<String> _translateText(String text) async {
     final result = await _onDeviceTranslator.translateText(text);
     return result;
   }
@@ -482,7 +595,7 @@ class TranslateApi {
     return result;
   }
 
-  static Future<String> _translate(String input) async {
+  Future<String> _translate(String input) async {
     final translatedMap = _translations[input];
     if (translatedMap != null) {
       final result = await _translateText(input);
@@ -505,27 +618,27 @@ class TranslateApi {
     concurrent: 2,
     isolateTargetModelDownloadedFunction,
     isDebug: true,
-    workerName: 'sourceModelDownloadedFunction',
+    workerName: 'targetModelDownloadedFunction',
   );
 
-  final IsolateManager<bool> isolateManagerNewSourceModelDownload =
+  /*final IsolateManager<bool> isolateManagerNewSourceModelDownload =
       IsolateManager.createOwnIsolate(
     concurrent: 2,
     isolateSourceModelDownloadedFunction,
     isDebug: true,
-    workerName: 'sourceModelDownloadedFunction',
-  );
+    workerName: 'newSourceModelDownloadedFunction',
+  );*/
 
   final IsolateManager<bool> isolateManagerNewTranslateModelDownload =
       IsolateManager.createOwnIsolate(
     concurrent: 2,
     isolateNewTranslateModelDownloadedFunction,
     isDebug: true,
-    workerName: 'sourceModelDownloadedFunction',
+    workerName: 'newTranslateModelDownloadedFunction',
   );
 
   void stopSourceModelDownload() {
-    isolateManagerNewSourceModelDownload.stop();
+    isolateManagerSourceModelDownload.stop();
   }
 
   void stopTargetModelDownload() {
@@ -538,10 +651,12 @@ class TranslateApi {
 
   Future<void> startSourceModelDownload() async {
     await isolateManagerSourceModelDownload.start();
+    await isolateManagerSourceModelDownload.sendMessage(sourceLanguage);
   }
 
   Future<void> startTargetModelDownload() async {
     await isolateManagerTargetModelDownload.start();
+    await isolateManagerSourceModelDownload.sendMessage(targetLanguage);
   }
 
   Future<void> startNewTranslateModelDownload(
@@ -551,91 +666,76 @@ class TranslateApi {
         .sendMessage(newTranslateLanguage);
   }
 
-  void _startLookUpAppSourceModel() {
-    final lookupStream =
-        Stream.periodic(const Duration(seconds: 1), (value) async {
-      final bool hasDownloaded = await isSourceModelDownloaded();
+  Stream<LanguageModelStatus> startLookUpAppSourceModel() async* {
+    log('Translate Api - startLookUpAppSourceModel');
+    yield* Stream.periodic(const Duration(seconds: 5), (_) {
+      return isSourceModelDownloaded();
+    }).asyncMap((event) async => await event).map((hasDownloaded) {
       if (hasDownloaded) {
+        log('Translate Api - startLookUpAppSourceModel if');
         hasSourceModelDownloaded = true;
-        _appDefaultSourceModelAvailabilityStreamController
-            .add(LanguageModelStatus.exists);
+        //_appDefaultSourceModelAvailabilityStreamController.add(LanguageModelStatus.exists);
         return LanguageModelStatus.exists;
       } else {
+        log('Translate Api - startLookUpAppSourceModel else');
         hasSourceModelDownloaded = false;
-        _appDefaultSourceModelAvailabilityStreamController
-            .add(LanguageModelStatus.notExists);
+        //_appDefaultSourceModelAvailabilityStreamController.add(LanguageModelStatus.notExists);
         return LanguageModelStatus.notExists;
       }
     });
   }
 
-  Future<void> hasSourceTranslateLanguageDownload() async {
-    _appDefaultSourceModelAvailabilityStreamController
-        .add(LanguageModelStatus.notExists);
-    final bool hasDownloaded = await isSourceModelDownloaded();
-    if (hasDownloaded) {
-      _appDefaultSourceModelAvailabilityStreamController
-          .add(LanguageModelStatus.exists);
-      _appDefaultSourceModelDownloadStreamController
-          .add(LanguageDownloadStatus.downloaded);
-      hasSourceModelDownloaded = true;
-      return;
-    } else {
-      await serviceLocator<TranslateApi>().startSourceModelDownload();
-      // Listen downloading
-      serviceLocator<TranslateApi>()
-          .isolateManagerSourceModelDownload
-          .onMessage
-          .listen(
-        (status) {
-          if (status) {
-            serviceLocator<LanguageController>()
-                .hasSourceModelDownloadedSuccess = true;
-            serviceLocator<LanguageController>().hasSourceModelDownloaded =
-                true;
-            _appDefaultSourceModelDownloadStreamController
-                .add(LanguageDownloadStatus.downloaded);
-            hasSourceModelDownloaded = true;
-            hasSourceModelDownloadedSuccess = true;
-          } else {
-            serviceLocator<LanguageController>()
-                .hasSourceModelDownloadedSuccess = false;
-            serviceLocator<LanguageController>().hasSourceModelDownloaded =
-                false;
-            _appDefaultSourceModelDownloadStreamController
-                .add(LanguageDownloadStatus.downloadingFailed);
-            hasSourceModelDownloaded = false;
-            hasSourceModelDownloadedSuccess = false;
-          }
-        },
-        onError: (e) {
-          serviceLocator<LanguageController>().hasSourceModelDownloadedSuccess =
-              false;
-          serviceLocator<LanguageController>().hasSourceModelDownloaded = false;
-          _appDefaultSourceModelDownloadStreamController
-              .add(LanguageDownloadStatus.error);
-          hasSourceModelDownloaded = false;
-          hasSourceModelDownloadedSuccess = false;
-          serviceLocator<TranslateApi>().stopSourceModelDownload();
-        },
-        onDone: () {
-          //serviceLocator<TranslateApi>().stopSourceModelDownload();
-        },
-      );
-    }
+  Stream<(LanguageModelStatus, LanguageDownloadStatus)>
+      hasSourceTranslateLanguageDownload() async* {
+    // _appDefaultSourceModelAvailabilityStreamController.add(LanguageModelStatus.notExists);
+    log('Translate Api - hasSourceTranslateLanguageDownload - else ');
+
+    log('Translate Api - hasSourceTranslateLanguageDownload - else start download');
+    downloadStreamController.add(
+        (LanguageModelStatus.notExists, LanguageDownloadStatus.downloading));
+    // Listen downloading
+    TranslateApi.instance.isolateManagerSourceModelDownload.onMessage.listen(
+      (status) {
+        log('Translate Api - hasSourceTranslateLanguageDownload - else start status - ${status}');
+        if (status) {
+          log('Translate Api - hasSourceTranslateLanguageDownload - else start status - if');
+          downloadStreamController.add(
+              (LanguageModelStatus.exists, LanguageDownloadStatus.downloaded));
+        } else {
+          log('Translate Api - hasSourceTranslateLanguageDownload - else start status - else');
+          downloadStreamController.add((
+            LanguageModelStatus.notExists,
+            LanguageDownloadStatus.downloadingFailed
+          ));
+        }
+      },
+      onError: (e) {
+        log('Translate Api - hasSourceTranslateLanguageDownload - else start error $e');
+        downloadStreamController
+            .add((LanguageModelStatus.notExists, LanguageDownloadStatus.error));
+      },
+      onDone: () {
+        log('Translate Api - hasSourceTranslateLanguageDownload - else start done');
+        downloadStreamController.add(
+            (LanguageModelStatus.exists, LanguageDownloadStatus.downloaded));
+        //TranslateApi.instance.stopSourceModelDownload();
+      },
+    );
+    log('Translate Api - hasSourceTranslateLanguageDownload - outside');
+    yield* downloadStreamController.stream.map((event) => event);
   }
 
   Future<void> hasTargetTranslateLanguageDownload() async {
     //_newSourceModelDownloadStreamController
     final bool hasDownloaded =
-        await serviceLocator<TranslateApi>().isTargetModelDownloaded();
+        await TranslateApi.instance.isTargetModelDownloaded();
     if (hasDownloaded) {
       return;
     } else {
       // Start downloading
-      await serviceLocator<TranslateApi>().startTargetModelDownload();
+      await TranslateApi.instance.startTargetModelDownload();
       // Listen downloading
-/*      serviceLocator<TranslateApi>()
+/*      TranslateApi.instance
           .isolateManagerTargetModelDownload
           .onMessage
           .listen(
@@ -651,16 +751,16 @@ class TranslateApi {
             serviceLocator<LanguageController>().hasTargetModelDownloaded =
                 false;
           }
-          serviceLocator<TranslateApi>().stopTargetModelDownload();
+          TranslateApi.instance.stopTargetModelDownload();
         },
         onError: (e) {
           serviceLocator<LanguageController>().hasTargetModelDownloadedSuccess =
               false;
           serviceLocator<LanguageController>().hasTargetModelDownloaded = false;
-          serviceLocator<TranslateApi>().stopTargetModelDownload();
+          TranslateApi.instance.stopTargetModelDownload();
         },
         onDone: () {
-          serviceLocator<TranslateApi>().stopTargetModelDownload();
+          TranslateApi.instance.stopTargetModelDownload();
         },
 
       );*/
@@ -669,18 +769,16 @@ class TranslateApi {
 
   Future<void> newTargetTranslateLanguageDownload(
       TranslateLanguage newTranslateLanguage, Language language) async {
-    if (!await serviceLocator<TranslateApi>().isTranslateModelDownloaded(
+    if (!await TranslateApi.instance.isTranslateModelDownloaded(
       newTranslateLanguage,
     )) {
       // Start downloading
-      await serviceLocator<TranslateApi>().startNewTranslateModelDownload(
+      await TranslateApi.instance.startNewTranslateModelDownload(
         newTranslateLanguage,
       );
       _newSourceModelDownloadStreamController
           .add(NewLanguageDownloadStatus.downloading);
-      serviceLocator<TranslateApi>()
-          .isolateManagerNewTranslateModelDownload
-          .onMessage
+      TranslateApi.instance.isolateManagerNewTranslateModelDownload.onMessage
           .listen(
         (status) {
           if (status) {
@@ -693,12 +791,12 @@ class TranslateApi {
           }
         },
         onDone: () {
-          //serviceLocator<TranslateApi>().stopNewTranslateModelDownload();
+          //TranslateApi.instance.stopNewTranslateModelDownload();
         },
         onError: (er) {
           _newSourceModelDownloadStreamController
               .add(NewLanguageDownloadStatus.error);
-          serviceLocator<TranslateApi>().stopNewTranslateModelDownload();
+          TranslateApi.instance.stopNewTranslateModelDownload();
         },
       );
     } else {
@@ -710,12 +808,20 @@ class TranslateApi {
 
 @pragma('vm:entry-point')
 void isolateSourceModelDownloadedFunction(dynamic params) {
+  BackgroundIsolateBinaryMessenger.ensureInitialized(rootIsolateToken);
   final channel = IsolateManagerController<bool>(params);
   channel.onIsolateMessage.listen((message) async {
     // Do more stuff here
-    final bool hasSourceModelDownloaded =
-        await serviceLocator<TranslateApi>().downloadSourceModel();
+    BackgroundIsolateBinaryMessenger.ensureInitialized(rootIsolateToken);
+    final bool hasSourceModelDownloaded = await TranslateApi
+        .instance.modelManager
+        .downloadModel(TranslateApi.instance.sourceLanguage.bcpCode,
+            isWifiRequired: false);
+    TranslateApi.instance.hasSourceModelDownloadedSuccess =
+        hasSourceModelDownloaded;
+    //final bool hasSourceModelDownloaded = await TranslateApi.instance.downloadSourceModel();
     // Send the result to your [onMessage] stream
+    log('isolateSourceModelDownloadedFunction ${hasSourceModelDownloaded}');
     channel.sendResult(hasSourceModelDownloaded);
   });
 }
@@ -726,7 +832,7 @@ void isolateTargetModelDownloadedFunction(dynamic params) {
   channel.onIsolateMessage.listen((message) async {
     // Do more stuff here
     final bool hasTargetModelDownloaded =
-        await serviceLocator<TranslateApi>().downloadTargetModel();
+        await TranslateApi.instance.downloadTargetModel();
     // Send the result to your [onMessage] stream
     channel.sendResult(hasTargetModelDownloaded);
   });
@@ -737,9 +843,8 @@ void isolateNewTranslateModelDownloadedFunction(dynamic params) {
   final channel = IsolateManagerController<bool>(params);
   channel.onIsolateMessage.listen((message) async {
     // Do more stuff here
-    final bool hasNewTargetModelDownloaded =
-        await serviceLocator<TranslateApi>()
-            .downloadNewSourceModel(message as TranslateLanguage);
+    final bool hasNewTargetModelDownloaded = await TranslateApi.instance
+        .downloadNewSourceModel(message as TranslateLanguage);
     // Send the result to your [onMessage] stream
     channel.sendResult(hasNewTargetModelDownloaded);
   });
@@ -752,10 +857,11 @@ extension Translate on String {
   /// This method takes no time when calling it with the default Locale
   /// because then it just returns the String you called it on
   Future<String> tr() async {
-    if (TranslateApi._activeLocale == TranslateApi.defaultLocation) {
+    if (TranslateApi.instance.activeLocale ==
+        TranslateApi.instance.defaultLocation) {
       return Future.value(this);
     } else {
-      return Future.value(await serviceLocator<TranslateApi>().translate(this));
+      return Future.value(await TranslateApi.instance.translate(this));
     }
   }
 }

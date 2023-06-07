@@ -224,19 +224,19 @@ class GlobalApp {
 
   // Key used to read and save the keyLanguage value.
   static const String keyLanguage = 'language';
-  static final Language defaultLanguageSelect = defaultLanguages[0];
+  static final Language defaultLanguageSelect = defaultLanguages[1];
   static const String keySourceTranslateLanguage = 'sourceTranslateLanguage';
   static TranslateLanguage defaultSourceTranslateLanguage =
-      defaultLanguages[0].sourceLanguage;
+      defaultLanguages[1].sourceLanguage;
   static const String keyTargetTranslateLanguage = 'targetTranslateLanguage';
   static TranslateLanguage defaultTargetTranslateLanguage =
-      defaultLanguages[0].sourceLanguage;
+      defaultLanguages[1].sourceLanguage;
   static const String permissionBoxName = 'permission_box';
   static const String storageBoxName = 'user_model_box';
   static const String languageBoxName = 'user_language_box';
   static const String translationBoxName = 'user_translation_box';
   static const String keyTargetLocale = 'targetLocale';
   static const String keySourceLocale = 'sourceLocale';
-  static Locale defaultTargetLocale = defaultLanguages[0].value;
-  static Locale defaultSourceLocale = defaultLanguages[0].value;
+  static Locale defaultTargetLocale = defaultLanguages[1].value;
+  static Locale defaultSourceLocale = defaultLanguages[1].value;
 }

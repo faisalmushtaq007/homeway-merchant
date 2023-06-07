@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:get_it_mixin/get_it_mixin.dart';
 import 'package:homemakers_merchant/base/app_base.dart';
 import 'package:homemakers_merchant/bootup/bootstrap.dart';
 import 'package:homemakers_merchant/config/translation/auto_locale_builder.dart';
 import 'package:homemakers_merchant/config/translation/widgets/constants.dart';
 import 'package:homemakers_merchant/config/translation/widgets/language_inherited_widget.dart';
 import 'package:homemakers_merchant/core/constants/global_app_constants.dart';
+import 'package:homemakers_merchant/core/mixins/lifecycle_mixin.dart';
 import 'package:provider/provider.dart';
 
 enum PositionOnScreen {
@@ -12,8 +14,9 @@ enum PositionOnScreen {
   BOTTOM,
 }
 
-class LanguageScreenWrapper extends StatelessWidget {
-  const LanguageScreenWrapper({
+class LanguageScreenWrapper extends StatefulWidget
+    with GetItStatefulWidgetMixin {
+  LanguageScreenWrapper({
     super.key,
     this.child,
     this.color,
@@ -65,6 +68,12 @@ class LanguageScreenWrapper extends StatelessWidget {
   final TextAlign? textAlign;
 
   @override
+  State<LanguageScreenWrapper> createState() => _LanguageScreenWrapperState();
+}
+
+class _LanguageScreenWrapperState extends State<LanguageScreenWrapper>
+    with LifecycleMixin, GetItStateMixin {
+  @override
   Widget build(BuildContext context) {
     // hasNotDownloaded
     final bool hasNotDownloaded =
@@ -84,34 +93,37 @@ class LanguageScreenWrapper extends StatelessWidget {
                     ?.newSourceLanguageDownloadStatus !=
                 NewLanguageDownloadStatus.exists;
     //
+    log('LanguageInheritedWidget.of(context)?.sourceModelStatus - ${LanguageInheritedWidget.of(context)?.sourceModelStatus}');
+    log('LanguageInheritedWidget.of(context)?.sourceLanguageDownloadStatus - ${LanguageInheritedWidget.of(context)?.sourceLanguageDownloadStatus}');
+    log('LanguageInheritedWidget.of(context)?.newSourceLanguageDownloadStatus ${LanguageInheritedWidget.of(context)?.newSourceLanguageDownloadStatus}');
     final MediaQueryData media = MediaQuery.of(context);
     final double margins = GlobalApp.responsiveInsets(media.size.width);
-    double height = this.height ?? defaultHeight;
+    double height = this.widget.height ?? defaultHeight;
     log('message ${hasNotDownloaded}, ${sourceModelNotStartDownload}, ${newSourceModelNotStartDownload}');
     final Widget offlineWidget = AnimatedPositioned(
-      top: positionOnScreen.top(height, hasNotDownloaded),
-      bottom: positionOnScreen.bottom(height, hasNotDownloaded),
-      duration: duration ?? const Duration(milliseconds: 300),
+      top: widget.positionOnScreen.top(height, hasNotDownloaded),
+      bottom: widget.positionOnScreen.bottom(height, hasNotDownloaded),
+      duration: widget.duration ?? const Duration(milliseconds: 300),
       child: AnimatedContainer(
         height: height,
         width: MediaQuery.of(context).size.width,
-        decoration:
-            decoration ?? BoxDecoration(color: color ?? Colors.red.shade500),
+        decoration: widget.decoration ??
+            BoxDecoration(color: widget.color ?? Colors.red.shade500),
         margin:
             EdgeInsets.only(top: media.padding.top + kToolbarHeight + margins),
-        duration: duration ?? const Duration(milliseconds: 300),
+        duration: widget.duration ?? const Duration(milliseconds: 300),
         child: Center(
           child: Text(
-            message ?? disconnectedMessage,
-            style: messageStyle ?? defaultMessageStyle,
-            textAlign: textAlign,
+            widget.message ?? disconnectedMessage,
+            style: widget.messageStyle ?? defaultMessageStyle,
+            textAlign: widget.textAlign,
           ),
         ),
       ),
     );
 
     return AbsorbPointer(
-      absorbing: (disableInteraction && hasNotDownloaded),
+      absorbing: (widget.disableInteraction && hasNotDownloaded),
       child: AutoLocalBuilder(
         text: ['Language Screen Wrapper'],
         builder: (languageController) {
@@ -119,9 +131,9 @@ class LanguageScreenWrapper extends StatelessWidget {
             text: languageController.get('Language Screen Wrapper'),
             child: Stack(
               children: [
-                if (child != null) child!,
-                if (disableInteraction && hasNotDownloaded)
-                  if (disableWidget != null) disableWidget!,
+                if (widget.child != null) widget.child!,
+                if (widget.disableInteraction && hasNotDownloaded)
+                  if (widget.disableWidget != null) widget.disableWidget!,
                 offlineWidget,
               ],
             ),
@@ -129,5 +141,15 @@ class LanguageScreenWrapper extends StatelessWidget {
         },
       ),
     );
+  }
+
+  @override
+  void onPause() {
+    // TODO: implement onPause
+  }
+
+  @override
+  void onResume() {
+    // TODO: implement onResume
   }
 }

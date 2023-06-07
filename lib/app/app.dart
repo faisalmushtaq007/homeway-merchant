@@ -14,6 +14,7 @@ import 'package:homemakers_merchant/config/translation/language_controller.dart'
 import 'package:homemakers_merchant/config/translation/translate_api.dart';
 import 'package:homemakers_merchant/config/translation/widgets/constants.dart';
 import 'package:homemakers_merchant/config/translation/widgets/language_app_wrapper_widget.dart';
+import 'package:homemakers_merchant/core/constants/global_app_constants.dart';
 import 'package:homemakers_merchant/core/service/connectivity_bloc/connectivity_bloc.dart';
 import 'package:homemakers_merchant/core/service/connectivity_bloc/src/widget/connectivity_app_wrapper.dart';
 import 'package:homemakers_merchant/bootup/injection_container.dart';
@@ -55,7 +56,9 @@ class _AppState extends State<App> with GetItStateMixin {
         watchOnly((UserModelStorageController controller) => controller);
     final languageController =
         watchOnly((LanguageController controller) => controller);
-
+    // TranslateApi init
+    TranslateApi.instance
+        .init(sourceLanguage: GlobalApp.defaultSourceTranslateLanguage);
     return MultiBlocProvider(
       providers: [
         BlocProvider<ConnectivityBloc>(

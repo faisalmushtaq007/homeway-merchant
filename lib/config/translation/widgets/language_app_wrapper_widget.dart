@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:get_it_mixin/get_it_mixin.dart';
 import 'package:homemakers_merchant/bootup/injection_container.dart';
 import 'package:homemakers_merchant/config/translation/translate_api.dart';
 import 'package:homemakers_merchant/config/translation/widgets/constants.dart';
 import 'package:homemakers_merchant/config/translation/widgets/language_inherited_widget.dart';
 import 'package:homemakers_merchant/config/translation/widgets/language_screen_wrapper.dart';
+import 'package:homemakers_merchant/core/mixins/lifecycle_mixin.dart';
 import 'package:homemakers_merchant/shared/widgets/universal/multi_stream_builder/stream_builder_3.dart';
 import 'package:provider/provider.dart';
 
@@ -15,9 +17,16 @@ typedef LanguageWidgetBuilder = Widget Function(
   NewLanguageDownloadStatus newLanguageDownloadStatus,
 );
 
-class LanguageAppWrapper extends StatelessWidget {
-  const LanguageAppWrapper({required this.builder, super.key});
+class LanguageAppWrapper extends StatefulWidget with GetItStatefulWidgetMixin {
+  LanguageAppWrapper({required this.builder, super.key});
   final LanguageWidgetBuilder builder;
+
+  @override
+  State<LanguageAppWrapper> createState() => _LanguageAppWrapperState();
+}
+
+class _LanguageAppWrapperState extends State<LanguageAppWrapper>
+    with GetItStateMixin, LifecycleMixin {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder3<LanguageModelStatus, LanguageDownloadStatus,
@@ -33,7 +42,7 @@ class LanguageAppWrapper extends StatelessWidget {
         NewLanguageDownloadStatus.notDownloaded,
       ),
       builder: (context, snapshots) {
-        final child = builder(
+        final child = widget.builder(
           context,
           snapshots.snapshot1.data ?? LanguageModelStatus.notExists,
           snapshots.snapshot2.data ?? LanguageDownloadStatus.downloading,
@@ -51,5 +60,15 @@ class LanguageAppWrapper extends StatelessWidget {
         );
       },
     );
+  }
+
+  @override
+  void onPause() {
+    // TODO: implement onPause
+  }
+
+  @override
+  void onResume() {
+    // TODO: implement onResume
   }
 }

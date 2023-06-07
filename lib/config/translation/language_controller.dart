@@ -24,8 +24,8 @@ class LanguageController with ChangeNotifier {
   var _identifiedLanguage = '';
   String? _translatedText;
   final _modelManager = OnDeviceTranslatorModelManager();
-  var _sourceLanguage = TranslateLanguage.english;
-  var _targetLanguage = TranslateLanguage.english;
+  var _sourceLanguage = TranslateLanguage.arabic;
+  var _targetLanguage = TranslateLanguage.arabic;
   late var _onDeviceTranslator = OnDeviceTranslator(
     sourceLanguage: _sourceLanguage,
     targetLanguage: _targetLanguage,
