@@ -56,9 +56,7 @@ class _AppState extends State<App> with GetItStateMixin {
         watchOnly((UserModelStorageController controller) => controller);
     final languageController =
         watchOnly((LanguageController controller) => controller);
-    // TranslateApi init
-    TranslateApi.instance
-        .init(sourceLanguage: GlobalApp.defaultSourceTranslateLanguage);
+
     return MultiBlocProvider(
       providers: [
         BlocProvider<ConnectivityBloc>(

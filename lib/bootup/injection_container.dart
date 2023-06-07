@@ -76,6 +76,9 @@ Future<void> _setUpAppSetting() async {
   serviceLocator.registerSingleton<TranslateApi>(
     translateApi,
   );
+  // TranslateApi init
+  await translateApi.init(
+      sourceLanguage: GlobalApp.defaultSourceTranslateLanguage);
 }
 
 void _setUpService() {
