@@ -1,17 +1,14 @@
 import 'dart:async';
-import 'dart:collection' show HashMap;
+
+//import 'dart:collection' show HashMap;
 import 'dart:ui';
 import 'package:flutter/foundation.dart';
-import 'package:flutter/services.dart';
 import 'package:homemakers_merchant/bootup/bootstrap.dart';
 import 'package:homemakers_merchant/bootup/injection_container.dart';
 import 'package:homemakers_merchant/config/translation/language.dart';
 import 'package:homemakers_merchant/config/translation/language_service.dart';
 import 'package:homemakers_merchant/config/translation/translate_api.dart';
 import 'package:homemakers_merchant/core/constants/global_app_constants.dart';
-import 'package:homemakers_merchant/core/keys/app_key.dart';
-import 'package:homemakers_merchant/shared/widgets/app/activity_indicator.dart';
-import 'package:homemakers_merchant/shared/widgets/app/page_body.dart';
 import 'package:google_mlkit_language_id/google_mlkit_language_id.dart';
 import 'package:google_mlkit_translation/google_mlkit_translation.dart';
 
@@ -26,7 +23,7 @@ class LanguageController with ChangeNotifier {
   final _modelManager = OnDeviceTranslatorModelManager();
   var _sourceLanguage = GlobalApp.defaultSourceTranslateLanguage;
   var _targetLanguage = GlobalApp.defaultTargetTranslateLanguage;
-  late var _onDeviceTranslator = OnDeviceTranslator(
+  late final _onDeviceTranslator = OnDeviceTranslator(
     sourceLanguage: _sourceLanguage,
     targetLanguage: _targetLanguage,
   );
@@ -36,21 +33,22 @@ class LanguageController with ChangeNotifier {
   bool hasTargetModelDeleted = false;
   bool hasSourceModelDownloadedSuccess = false;
   bool hasTargetModelDownloadedSuccess = false;
-  Locale _activeAppLocale = Locale('en');
+  final Locale _activeAppLocale = const Locale('en');
 
   Locale get activeLocale => _activeAppLocale;
-  Locale _defaultLocale = Locale('en');
+  final Locale _defaultLocale = const Locale('en');
 
   Locale get defaultAppLocale => _defaultLocale;
 
-  List<String>? _translation = [];
-  Map<String, String> _translated = {};
+  final List<String> _translation = [];
+  final Map<String, String> _translated = {};
   double _percentage = 0.0;
-  late final HashMap<String, String> _translations = HashMap.from(_translated);
+
+  //late final HashMap<String, String> _translations = HashMap.from(_translated);
 
   double get percentage => _percentage;
 
-  List<String> get startingTexts => _translation ?? [];
+  List<String> get startingTexts => _translation;
 
   String get(String key) => _translated[key]!;
 
@@ -104,8 +102,7 @@ class LanguageController with ChangeNotifier {
   }
 
   Future<void> identifyLanguage(String text) async {
-    await serviceLocator<TranslateApi>().identifyLanguage(text,
-        (String language) {
+    await TranslateApi.instance.identifyLanguage(text, (String language) {
       _identifiedLanguage = language;
       notifyListeners();
     });
@@ -115,7 +112,7 @@ class LanguageController with ChangeNotifier {
   Future<void> identifyPossibleLanguages(String text) async {
     if (text == '') return;
     String error;
-    await serviceLocator<TranslateApi>().identifyPossibleLanguages(text,
+    await TranslateApi.instance.identifyPossibleLanguages(text,
         (List<IdentifiedLanguage> possibleLanguages, String language) {
       if (language.isNotEmpty) {
         _identifiedLanguage = language;
@@ -129,7 +126,7 @@ class LanguageController with ChangeNotifier {
   Future<bool> downloadSourceModel() async {
     log('Downloading model (${_sourceLanguage.name})...');
     final bool hasDownloaded =
-        await serviceLocator<TranslateApi>().downloadSourceModel();
+        await TranslateApi.instance.downloadSourceModel();
     hasSourceModelDownloadedSuccess = hasDownloaded;
     notifyListeners();
     return hasDownloaded;
@@ -138,7 +135,7 @@ class LanguageController with ChangeNotifier {
   Future<bool> downloadTargetModel() async {
     log('Downloading model (${_targetLanguage.name})...');
     final bool hasDownloaded =
-        await serviceLocator<TranslateApi>().downloadTargetModel();
+        await TranslateApi.instance.downloadTargetModel();
     hasTargetModelDownloadedSuccess = hasDownloaded;
     notifyListeners();
     return hasDownloaded;
@@ -146,8 +143,7 @@ class LanguageController with ChangeNotifier {
 
   Future<bool> deleteSourceModel() async {
     log('Deleting model (${_sourceLanguage.name})...');
-    final bool hasDeleted =
-        await serviceLocator<TranslateApi>().deleteSourceModel();
+    final bool hasDeleted = await TranslateApi.instance.deleteSourceModel();
     hasSourceModelDeleted = hasDeleted;
     notifyListeners();
     return hasDeleted;
@@ -155,8 +151,7 @@ class LanguageController with ChangeNotifier {
 
   Future<bool> deleteTargetModel() async {
     log('Deleting model (${_targetLanguage.name})...');
-    final bool hasDeleted =
-        await serviceLocator<TranslateApi>().deleteTargetModel();
+    final bool hasDeleted = await TranslateApi.instance.deleteTargetModel();
     hasTargetModelDeleted = hasDeleted;
     notifyListeners();
     return hasDeleted;
@@ -165,7 +160,7 @@ class LanguageController with ChangeNotifier {
   Future<bool> isSourceModelDownloaded() async {
     log('Checking if model (${_sourceLanguage.name}) is downloaded...');
     final bool hasDownloaded =
-        await serviceLocator<TranslateApi>().isSourceModelDownloaded();
+        await TranslateApi.instance.isSourceModelDownloaded();
     hasSourceModelDownloaded = hasDownloaded;
     notifyListeners();
     return hasDownloaded;
@@ -174,7 +169,7 @@ class LanguageController with ChangeNotifier {
   Future<bool> isTargetModelDownloaded() async {
     log('Checking if model (${_targetLanguage.name}) is downloaded...');
     final bool hasDownloaded =
-        await serviceLocator<TranslateApi>().isTargetModelDownloaded();
+        await TranslateApi.instance.isTargetModelDownloaded();
     hasTargetModelDownloaded = hasDownloaded;
     notifyListeners();
     return hasDownloaded;
@@ -187,28 +182,31 @@ class LanguageController with ChangeNotifier {
 
   void changeSourceLanguage(TranslateLanguage newSourceLanguage) {
     _sourceLanguage = newSourceLanguage;
-    serviceLocator<TranslateApi>()
-        .changeSourceTranslateLanguage(newSourceLanguage);
+    TranslateApi.instance.changeSourceTranslateLanguage(newSourceLanguage);
     notifyListeners();
   }
 
   void changeTargetLanguage(TranslateLanguage newTargetLanguage) {
     _targetLanguage = newTargetLanguage;
-    serviceLocator<TranslateApi>()
-        .changeTargetTranslateLanguage(newTargetLanguage);
+    TranslateApi.instance.changeTargetTranslateLanguage(newTargetLanguage);
     notifyListeners();
   }
 
   void updateSourceAndTargetLanguage({
-    required TranslateLanguage newSourceLanguage,
+    TranslateLanguage? newSourceLanguage,
     required TranslateLanguage newTargetLanguage,
+    String currentText = '',
+    required Language language,
   }) {
-    _sourceLanguage = newSourceLanguage;
+    setLanguage(language);
+    //_sourceLanguage = newSourceLanguage;
     _targetLanguage = newTargetLanguage;
-    serviceLocator<TranslateApi>()
-        .changeSourceTranslateLanguage(newSourceLanguage);
-    serviceLocator<TranslateApi>()
-        .changeTargetTranslateLanguage(newTargetLanguage);
+    //TranslateApi.instance.changeSourceTranslateLanguage(newSourceLanguage);
+    TranslateApi.instance.updateSourceAndTargetLanguage(
+      newTargetLanguage: newTargetLanguage,
+      newSourceLanguage: newSourceLanguage,
+      currentText: currentText,
+    );
     notifyListeners();
   }
 
@@ -218,7 +216,7 @@ class LanguageController with ChangeNotifier {
     } else {
       _sourceLanguage = _targetLanguage;
       _targetLanguage = _sourceLanguage;
-      serviceLocator<TranslateApi>().switchCurrentSourceAndTargetLanguage();
+      TranslateApi.instance.switchCurrentSourceAndTargetLanguage();
       notifyListeners();
     }
   }
@@ -306,7 +304,7 @@ class LanguageController with ChangeNotifier {
     if (_translated.isNotEmpty) {
       for (int i = 0; i < _translated.length; i++) {
         _translated[_translated.keys.elementAt(i)] =
-            await serviceLocator<TranslateApi>().translate(
+            await TranslateApi.instance.translate(
           _translated[_translated.keys.elementAt(i)]!,
           cache: useCache,
         );

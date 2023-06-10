@@ -33,6 +33,8 @@ class LanguageServiceHive implements ILanguageService {
   void registerHiveAdapters() {
     Hive
       ..registerAdapter(TranslateLanguageAdapter())
+      ..registerAdapter(LocaleAdapter())
+      ..registerAdapter(SvgGenImageAdapter())
       ..registerAdapter(LanguageAdapter())
       ..registerAdapter(SaveTranslationObjectAdapter());
 

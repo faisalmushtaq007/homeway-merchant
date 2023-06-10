@@ -113,6 +113,10 @@ class _AppState extends State<App> with GetItStateMixin {
                 LanguageModelStatus sourceLanguageModelStatus,
                 LanguageDownloadStatus sourceLanguageDownloadStatus,
                 LanguageDownloadStatus newLanguageDownloadStatus,
+                (
+                  LanguageModelStatus,
+                  LanguageDownloadStatus
+                ) secondarySourceLanguageDownloadStatus,
               ) {
                 return PlatformProvider(
                   settings: PlatformSettingsData(

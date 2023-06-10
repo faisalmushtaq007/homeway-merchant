@@ -92,10 +92,15 @@ class _LanguageScreenWrapperState extends State<LanguageScreenWrapper>
             LanguageInheritedWidget.of(context)
                     ?.newSourceLanguageDownloadStatus !=
                 NewLanguageDownloadStatus.exists;
+    final bool secondarySourceLanguageDownload =
+        LanguageInheritedWidget.of(context)
+                ?.secondarySourceLanguageDownloadStatus !=
+            (LanguageModelStatus.exists, LanguageDownloadStatus.downloaded);
     //
     log('LanguageInheritedWidget.of(context)?.sourceModelStatus - ${LanguageInheritedWidget.of(context)?.sourceModelStatus}');
     log('LanguageInheritedWidget.of(context)?.sourceLanguageDownloadStatus - ${LanguageInheritedWidget.of(context)?.sourceLanguageDownloadStatus}');
     log('LanguageInheritedWidget.of(context)?.newSourceLanguageDownloadStatus ${LanguageInheritedWidget.of(context)?.newSourceLanguageDownloadStatus}');
+    log('LanguageInheritedWidget.of(context)?.secondarySourceLanguageDownloadStatus ${LanguageInheritedWidget.of(context)?.secondarySourceLanguageDownloadStatus}');
     final MediaQueryData media = MediaQuery.of(context);
     final double margins = GlobalApp.responsiveInsets(media.size.width);
     double height = this.widget.height ?? defaultHeight;

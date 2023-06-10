@@ -3,13 +3,15 @@ import 'package:google_mlkit_translation/google_mlkit_translation.dart';
 import 'package:hive/hive.dart';
 import 'package:homemakers_merchant/bootup/bootstrap.dart';
 import 'package:homemakers_merchant/config/translation/language.dart';
+import 'package:homemakers_merchant/gen/assets.gen.dart';
 import 'package:homemakers_merchant/utils/app_equatable/app_equatable.dart';
 
 class LanguageAdapter extends TypeAdapter<Language> {
   @override
   Language read(BinaryReader reader) {
-    final dynamic languageStatus = reader.read();
-    return languageStatus as Language;
+    var data = reader.read();
+    return Language(data[0] as Locale, data[1] as SvgGenImage,
+        data[2] as String, TranslateLanguage.values.byName(data[3]));
   }
 
   @override
@@ -17,7 +19,13 @@ class LanguageAdapter extends TypeAdapter<Language> {
 
   @override
   void write(BinaryWriter writer, Language obj) {
-    writer.write<Language>(obj);
+    writer.write([
+      obj.value,
+      obj.image,
+      obj.text,
+      obj.sourceLanguage.name,
+    ]);
+    writer.write(obj);
   }
 }
 
@@ -52,8 +60,8 @@ class SaveTranslationObjectAdapter extends TypeAdapter<SaveTranslationObject> {
     try {
       var data = reader.read();
       return SaveTranslationObject(
-          appLanguage: data[0],
-          userLanguage: data[1],
+          appLanguage: TranslateLanguage.values.byName(data[0]),
+          userLanguage: TranslateLanguage.values.byName(data[1]),
           startText: data[2],
           resultText: data[3]);
       final dynamic saveTranslationObjectStatus = reader.read();
@@ -72,8 +80,8 @@ class SaveTranslationObjectAdapter extends TypeAdapter<SaveTranslationObject> {
   void write(BinaryWriter writer, SaveTranslationObject obj) {
     try {
       writer.write([
-        obj.appLanguage,
-        obj.userLanguage,
+        obj.appLanguage.name,
+        obj.userLanguage.name,
         obj.startText,
         obj.resultText,
       ]);
@@ -98,7 +106,7 @@ class TranslateLanguageAdapter extends TypeAdapter<TranslateLanguage> {
   @override
   TranslateLanguage read(BinaryReader reader) {
     final dynamic translateLanguage = reader.read();
-    return translateLanguage as TranslateLanguage;
+    return TranslateLanguage.values.byName(translateLanguage);
   }
 
   @override
@@ -106,5 +114,41 @@ class TranslateLanguageAdapter extends TypeAdapter<TranslateLanguage> {
     //writer.write(obj.index);
     //writer.write(obj.bcpCode);
     writer.write(obj.name);
+  }
+}
+
+class SvgGenImageAdapter extends TypeAdapter<SvgGenImage> {
+  @override
+  final typeId = 209;
+
+  @override
+  SvgGenImage read(BinaryReader reader) {
+    final dynamic svgGenImage = reader.read();
+    return svgGenImage as SvgGenImage;
+  }
+
+  @override
+  void write(BinaryWriter writer, SvgGenImage obj) {
+    //writer.write(obj.index);
+    //writer.write(obj.bcpCode);
+    writer.write(obj);
+  }
+}
+
+class LocaleAdapter extends TypeAdapter<Locale> {
+  @override
+  final typeId = 210;
+
+  @override
+  Locale read(BinaryReader reader) {
+    final dynamic locale = reader.read();
+    return locale as Locale;
+  }
+
+  @override
+  void write(BinaryWriter writer, Locale obj) {
+    //writer.write(obj.index);
+    //writer.write(obj.bcpCode);
+    writer.write(obj);
   }
 }

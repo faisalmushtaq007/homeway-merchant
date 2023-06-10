@@ -7,6 +7,7 @@ import 'package:homemakers_merchant/config/translation/widgets/language_inherite
 import 'package:homemakers_merchant/config/translation/widgets/language_screen_wrapper.dart';
 import 'package:homemakers_merchant/core/mixins/lifecycle_mixin.dart';
 import 'package:homemakers_merchant/shared/widgets/universal/multi_stream_builder/stream_builder_3.dart';
+import 'package:homemakers_merchant/shared/widgets/universal/multi_stream_builder/stream_builder_4.dart';
 import 'package:provider/provider.dart';
 
 ///[LanguageyAppWrapper] is a StatelessWidget.
@@ -15,10 +16,15 @@ typedef LanguageWidgetBuilder = Widget Function(
   LanguageModelStatus sourceLanguageModelStatus,
   LanguageDownloadStatus sourceLanguageDownloadStatus,
   LanguageDownloadStatus newLanguageDownloadStatus,
+  (
+    LanguageModelStatus,
+    LanguageDownloadStatus
+  ) secondarySourceLanguageDownloadStatus,
 );
 
 class LanguageAppWrapper extends StatefulWidget with GetItStatefulWidgetMixin {
   LanguageAppWrapper({required this.builder, super.key});
+
   final LanguageWidgetBuilder builder;
 
   @override
@@ -29,16 +35,21 @@ class _LanguageAppWrapperState extends State<LanguageAppWrapper>
     with GetItStateMixin, LifecycleMixin {
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder3<LanguageModelStatus, LanguageDownloadStatus,
+    return StreamBuilder4<
+        LanguageModelStatus,
+        LanguageDownloadStatus,
+        (LanguageModelStatus, LanguageDownloadStatus),
         (LanguageModelStatus, LanguageDownloadStatus)>(
-      streams: StreamTuple3(
+      streams: StreamTuple4(
         TranslateApi.instance.appSourceModelStream,
         TranslateApi.instance.appDefaultSourceModelDownloadStream,
         TranslateApi.instance.targetLanguageModelDownloadStream,
+        TranslateApi.instance.secondaryLanguageModelDownloadStream,
       ),
-      initialData: InitialDataTuple3(
+      initialData: InitialDataTuple4(
         LanguageModelStatus.notExists,
         LanguageDownloadStatus.downloading,
+        (LanguageModelStatus.notExists, LanguageDownloadStatus.notDownloaded),
         (LanguageModelStatus.notExists, LanguageDownloadStatus.notDownloaded),
       ),
       builder: (context, snapshots) {
@@ -47,6 +58,11 @@ class _LanguageAppWrapperState extends State<LanguageAppWrapper>
           snapshots.snapshot1.data ?? LanguageModelStatus.notExists,
           snapshots.snapshot2.data ?? LanguageDownloadStatus.downloading,
           snapshots.snapshot3.data?.$2 ?? LanguageDownloadStatus.notDownloaded,
+          snapshots.snapshot4.data ??
+              (
+                LanguageModelStatus.notExists,
+                LanguageDownloadStatus.notDownloaded
+              ),
         );
         return LanguageInheritedWidget(
           isConnected: true,
@@ -56,6 +72,11 @@ class _LanguageAppWrapperState extends State<LanguageAppWrapper>
               snapshots.snapshot2.data ?? LanguageDownloadStatus.downloading,
           newSourceLanguageDownloadStatus: snapshots.snapshot3.data?.$2 ??
               LanguageDownloadStatus.notDownloaded,
+          secondarySourceLanguageDownloadStatus: snapshots.snapshot4.data ??
+              (
+                LanguageModelStatus.notExists,
+                LanguageDownloadStatus.notDownloaded
+              ),
           child: LanguageScreenWrapper(child: child),
         );
       },

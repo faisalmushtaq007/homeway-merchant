@@ -8,6 +8,7 @@ class LanguageInheritedWidget extends InheritedWidget {
     required this.sourceModelStatus,
     required this.sourceLanguageDownloadStatus,
     required this.newSourceLanguageDownloadStatus,
+    required this.secondarySourceLanguageDownloadStatus,
     required super.child,
   });
 
@@ -15,6 +16,10 @@ class LanguageInheritedWidget extends InheritedWidget {
   final LanguageModelStatus sourceModelStatus;
   final LanguageDownloadStatus sourceLanguageDownloadStatus;
   final LanguageDownloadStatus newSourceLanguageDownloadStatus;
+  final (
+    LanguageModelStatus,
+    LanguageDownloadStatus
+  ) secondarySourceLanguageDownloadStatus;
 
   @override
   bool updateShouldNotify(LanguageInheritedWidget oldWidget) {
@@ -23,7 +28,9 @@ class LanguageInheritedWidget extends InheritedWidget {
         oldWidget.sourceLanguageDownloadStatus !=
             sourceLanguageDownloadStatus ||
         oldWidget.newSourceLanguageDownloadStatus !=
-            newSourceLanguageDownloadStatus;
+            newSourceLanguageDownloadStatus ||
+        oldWidget.secondarySourceLanguageDownloadStatus !=
+            secondarySourceLanguageDownloadStatus;
   }
 
   static LanguageInheritedWidget? of(BuildContext context) {

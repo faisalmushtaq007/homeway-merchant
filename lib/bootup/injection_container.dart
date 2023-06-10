@@ -78,7 +78,8 @@ Future<void> _setUpAppSetting() async {
   );
   // TranslateApi init
   await translateApi.init(
-      sourceLanguage: GlobalApp.defaultSourceTranslateLanguage);
+      sourceLanguage: GlobalApp.defaultSourceTranslateLanguage,
+      targetLanguage: GlobalApp.defaultSourceTranslateLanguage);
 }
 
 void _setUpService() {

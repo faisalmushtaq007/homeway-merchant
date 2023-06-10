@@ -178,8 +178,8 @@ class _LoginPageController extends State<LoginPage> {
       context: context,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(20.0),
-          topRight: Radius.circular(20.0),
+          topLeft: Radius.circular(20),
+          topRight: Radius.circular(20),
         ),
       ),
       builder: (context) {
@@ -191,7 +191,7 @@ class _LoginPageController extends State<LoginPage> {
               //translationWorker: serviceLocator<LanguageController>(),
               builder: (languageController) {
                 return Padding(
-                  padding: const EdgeInsets.all(16.0),
+                  padding: const EdgeInsets.all(16),
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
@@ -205,107 +205,28 @@ class _LoginPageController extends State<LoginPage> {
                         itemBuilder: (context, index) {
                           return ListTile(
                             onTap: () async {
-                              languageController
-                                ..setLanguage(GlobalApp.defaultLanguages[index])
-                                // Switch source and target language
-                                ..switchCurrentSourceAndTargetLanguage();
+                              // Switch source and target language
+                              languageController.updateSourceAndTargetLanguage(
+                                newTargetLanguage: GlobalApp
+                                    .defaultLanguages[index].sourceLanguage,
+                                language: GlobalApp.defaultLanguages[index],
+                              );
+
                               // Check has target language downloaded?
                               // If false, download new language
-                              if (!await TranslateApi.instance
-                                  .isTranslateModelDownloaded(
-                                GlobalApp
-                                    .defaultLanguages[index].sourceLanguage,
-                              )) {
-                                await TranslateApi.instance
-                                    .startNewTranslateModelDownload(GlobalApp
-                                        .defaultLanguages[index]
-                                        .sourceLanguage);
-                                var newLanguageDownloadingStream = TranslateApi
-                                    .instance
-                                    .newTargetTranslateLanguageDownload(
-                                  GlobalApp
-                                      .defaultLanguages[index].sourceLanguage,
-                                  GlobalApp.defaultLanguages[index],
-                                );
-                                newLanguageDownloadingStream.listen(
-                                  (event) {
-                                    if (event
-                                        case (
-                                          LanguageModelStatus.notExists,
-                                          LanguageDownloadStatus.downloading
-                                        )) {
-                                      log('New language downloading');
-                                      Toast().showLoadingIndicator(
-                                        context,
-                                        'While we are downloading your default app language...',
-                                      );
-                                    } else if (event
-                                        case (
-                                          LanguageModelStatus.exists,
-                                          LanguageDownloadStatus.downloaded
-                                        )) {
-                                      log('New language downloaded');
 
-                                      Toast().show(
-                                        'New language Downloaded',
-                                        Future.value(''),
-                                        context,
-                                        this,
-                                      );
-                                    } else if (event
-                                        case (
-                                          LanguageModelStatus.notExists,
-                                          LanguageDownloadStatus
-                                              .downloadingFailed
-                                        )) {
-                                      log('New language downloaded failed');
-                                      Toast().show(
-                                        'Downloading failed',
-                                        Future.value(''),
-                                        context,
-                                        this,
-                                      );
-                                    } else if (event
-                                        case (
-                                          LanguageModelStatus.notExists,
-                                          LanguageDownloadStatus.error
-                                        )) {
-                                      log('New language downloaded failed or error');
-                                      Toast().show(
-                                        'Downloading failed or error,',
-                                        Future.value(''),
-                                        context,
-                                        this,
-                                      );
-                                    }
-                                  },
-                                  onError: (Object e,
-                                      [StackTrace? stackTrace]) {
-                                    //
-                                    log('New language downloaded error $e');
-                                    Toast().show(
-                                      'Downloading failed, something went wrong. Try again',
-                                      Future.value(''),
-                                      context,
-                                      this,
-                                    );
-                                  },
-                                  onDone: () {
-                                    log('New language downloaded or failed');
-                                  },
-                                );
-                              }
-                              // Close bottom sheet
-                              Future.delayed(
+                              await Future.delayed(
                                 const Duration(milliseconds: 300),
                                 () {},
                               ).then((value) => Navigator.of(context).pop());
+
+                              // Close bottom sheet
                             },
                             leading: ClipOval(
                               child:
                                   GlobalApp.defaultLanguages[index].image.svg(
-                                height: 32.0,
-                                width: 32.0,
+                                height: 32,
+                                width: 32,
                               ),
                             ),
                             title: Text(GlobalApp.defaultLanguages[index].text),
@@ -317,7 +238,7 @@ class _LoginPageController extends State<LoginPage> {
                                   )
                                 : null,
                             shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10.0),
+                              borderRadius: BorderRadius.circular(10),
                               side: GlobalApp.defaultLanguages[index] ==
                                       languageController.language
                                   ? BorderSide(
@@ -336,7 +257,7 @@ class _LoginPageController extends State<LoginPage> {
                           );
                         },
                         separatorBuilder: (context, index) {
-                          return const SizedBox(height: 16.0);
+                          return const SizedBox(height: 16);
                         },
                       )
                     ],
@@ -427,7 +348,7 @@ class _LoginPageView extends WidgetView<LoginPage, _LoginPageController> {
                             minimumSize: Size(55, 38),
                             foregroundColor: Colors.grey.withOpacity(0.6),
                             shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(8.0),
+                              borderRadius: BorderRadius.circular(8),
                             ),
                           ),
                           child: Row(
@@ -445,8 +366,8 @@ class _LoginPageView extends WidgetView<LoginPage, _LoginPageController> {
                                         .language
                                         .image
                                         .svg(
-                                          height: 32.0,
-                                          width: 32.0,
+                                          height: 32,
+                                          width: 32,
                                         ),
                                   ),
                                 ),
@@ -531,7 +452,7 @@ class _LoginPageView extends WidgetView<LoginPage, _LoginPageController> {
                         ),
                       ),
                       Padding(
-                        padding: const EdgeInsets.all(20.0),
+                        padding: const EdgeInsets.all(20),
                         child: Container(
                           padding: const EdgeInsets.symmetric(horizontal: 20),
                           decoration: BoxDecoration(
@@ -554,7 +475,7 @@ class _LoginPageView extends WidgetView<LoginPage, _LoginPageController> {
                       ),
                       const SizedBox(height: 30),
                       Padding(
-                        padding: const EdgeInsets.all(20.0),
+                        padding: const EdgeInsets.all(20),
                         child: Container(
                           width: MediaQuery.of(context).size.width / 1.3,
                           padding: const EdgeInsets.all(20),
