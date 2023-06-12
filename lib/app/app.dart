@@ -148,7 +148,7 @@ class _AppState extends State<App> with GetItStateMixin {
                         GlobalWidgetsLocalizations.delegate,
                         GlobalCupertinoLocalizations.delegate,
                       ],
-                      locale: languageController.sourceApplanguage.value,
+                      locale: languageController.targetAppLanguage.value,
                       supportedLocales: AppLocalizations.supportedLocales,
                       builder: (context, child) =>
                           ResponsiveBreakpoints.builder(

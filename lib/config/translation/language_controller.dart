@@ -192,9 +192,10 @@ class LanguageController with ChangeNotifier {
     notifyListeners();
   }
 
-  void changeTargetLanguage(TranslateLanguage newTargetLanguage) {
-    AppTranslator.instance.changeTargetTranslateLanguage(newTargetLanguage);
-    _targetLanguage = newTargetLanguage;
+  void changeTargetLanguage(Language language) {
+    AppTranslator.instance.changeTargetTranslateLanguage(language);
+    _targetLanguage = language.sourceLanguage;
+    setTargetLanguage(language);
     notifyListeners();
   }
 

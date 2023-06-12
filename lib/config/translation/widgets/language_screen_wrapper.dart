@@ -104,7 +104,6 @@ class _LanguageScreenWrapperState extends State<LanguageScreenWrapper>
           return false;
         }) ??
         false;
-    appLog.d('message ${hasAtleastSourceLanguage}');
     final MediaQueryData media = MediaQuery.of(context);
     final double margins = GlobalApp.responsiveInsets(media.size.width);
     double height = this.widget.height ?? defaultHeight;

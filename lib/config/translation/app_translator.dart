@@ -344,8 +344,9 @@ class AppTranslator {
     sourceTranslateLanguage = newSourceLanguage;
   }
 
-  void changeTargetTranslateLanguage(TranslateLanguage newTargetLanguage) {
-    targetTranslateLanguage = newTargetLanguage;
+  void changeTargetTranslateLanguage(Language language) {
+    targetTranslateLanguage = language.sourceLanguage;
+    targetAppLanguage = language;
   }
 
   (TranslateLanguage, TranslateLanguage)

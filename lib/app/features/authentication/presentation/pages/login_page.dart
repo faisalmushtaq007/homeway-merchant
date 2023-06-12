@@ -208,8 +208,7 @@ class _LoginPageController extends State<LoginPage> {
                               // Change target language
                               serviceLocator<LanguageController>()
                                   .changeTargetLanguage(
-                                GlobalApp
-                                    .defaultLanguages[index].sourceLanguage,
+                                GlobalApp.defaultLanguages[index],
                               );
                               await Future.delayed(
                                 const Duration(milliseconds: 300),
@@ -227,7 +226,7 @@ class _LoginPageController extends State<LoginPage> {
                             ),
                             title: Text(GlobalApp.defaultLanguages[index].text),
                             trailing: GlobalApp.defaultLanguages[index] ==
-                                    languageController.sourceApplanguage
+                                    languageController.targetAppLanguage
                                 ? Icon(
                                     Icons.check_circle_rounded,
                                     color: Theme.of(context).primaryColorLight,
@@ -236,7 +235,7 @@ class _LoginPageController extends State<LoginPage> {
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(10),
                               side: GlobalApp.defaultLanguages[index] ==
-                                      languageController.sourceApplanguage
+                                      languageController.targetAppLanguage
                                   ? BorderSide(
                                       color:
                                           Theme.of(context).primaryColorLight,
@@ -245,7 +244,7 @@ class _LoginPageController extends State<LoginPage> {
                                   : BorderSide(color: Colors.grey[300]!),
                             ),
                             tileColor: GlobalApp.defaultLanguages[index] ==
-                                    languageController.sourceApplanguage
+                                    languageController.targetAppLanguage
                                 ? Theme.of(context)
                                     .primaryColorLight
                                     .withOpacity(0.05)
