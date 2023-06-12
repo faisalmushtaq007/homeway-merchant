@@ -187,15 +187,14 @@ class GlobalApp {
       'Something went wrong, please try again later';
   static const String defaultFailure = 'Failure';
 
-  static final defaultLanguages = List<Language>.unmodifiable(
-    <Language>[
-      Language(
-        const Locale('en', 'US'),
-        Assets.svg.flags.gb,
-        'English',
-        TranslateLanguage.english,
-      ),
-      /*Language(
+  static final defaultLanguages = <Language>[
+    Language(
+      const Locale('en', 'US'),
+      Assets.svg.flags.gb,
+      'English',
+      TranslateLanguage.english,
+    ),
+    /*Language(
         const Locale('sd', 'SA'),
         Assets.svg.flags.sa,
         'Arabic',
@@ -213,24 +212,25 @@ class GlobalApp {
         'Hindi-Latin',
         TranslateLanguage.hindi,
       ),*/
-      Language(
-        const Locale('ar', 'SA'),
-        Assets.svg.flags.sa,
-        'Arabic',
-        TranslateLanguage.arabic,
-      ),
-    ],
-  );
+    Language(
+      const Locale('ar', 'SA'),
+      Assets.svg.flags.sa,
+      'Arabic',
+      TranslateLanguage.arabic,
+    ),
+  ];
 
   // Key used to read and save the keyLanguage value.
-  static const String keyLanguage = 'language';
+  static const String keyLanguage = 'sourceAppLanguage';
+  static const String keyTargetAppLanguage = 'targetAppLanguage';
   static final Language defaultLanguageSelect = defaultLanguages[0];
+  static final Language defaultTargetLanguageSelect = defaultLanguages[0];
   static const String keySourceTranslateLanguage = 'sourceTranslateLanguage';
   static TranslateLanguage defaultSourceTranslateLanguage =
       defaultLanguages[0].sourceLanguage;
   static const String keyTargetTranslateLanguage = 'targetTranslateLanguage';
   static TranslateLanguage defaultTargetTranslateLanguage =
-      defaultLanguages[1].sourceLanguage;
+      defaultLanguages[0].sourceLanguage;
   static const String permissionBoxName = 'permission_box';
   static const String storageBoxName = 'user_model_box';
   static const String languageBoxName = 'user_language_box';
@@ -238,5 +238,5 @@ class GlobalApp {
   static const String keyTargetLocale = 'targetLocale';
   static const String keySourceLocale = 'sourceLocale';
   static Locale defaultTargetLocale = defaultLanguages[0].value;
-  static Locale defaultSourceLocale = defaultLanguages[1].value;
+  static Locale defaultSourceLocale = defaultLanguages[0].value;
 }

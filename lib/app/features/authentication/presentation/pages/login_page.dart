@@ -205,16 +205,12 @@ class _LoginPageController extends State<LoginPage> {
                         itemBuilder: (context, index) {
                           return ListTile(
                             onTap: () async {
-                              // Switch source and target language
-                              languageController.updateSourceAndTargetLanguage(
-                                newTargetLanguage: GlobalApp
+                              // Change target language
+                              serviceLocator<LanguageController>()
+                                  .changeTargetLanguage(
+                                GlobalApp
                                     .defaultLanguages[index].sourceLanguage,
-                                language: GlobalApp.defaultLanguages[index],
                               );
-
-                              // Check has target language downloaded?
-                              // If false, download new language
-
                               await Future.delayed(
                                 const Duration(milliseconds: 300),
                                 () {},
@@ -231,7 +227,7 @@ class _LoginPageController extends State<LoginPage> {
                             ),
                             title: Text(GlobalApp.defaultLanguages[index].text),
                             trailing: GlobalApp.defaultLanguages[index] ==
-                                    languageController.language
+                                    languageController.sourceApplanguage
                                 ? Icon(
                                     Icons.check_circle_rounded,
                                     color: Theme.of(context).primaryColorLight,
@@ -240,7 +236,7 @@ class _LoginPageController extends State<LoginPage> {
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(10),
                               side: GlobalApp.defaultLanguages[index] ==
-                                      languageController.language
+                                      languageController.sourceApplanguage
                                   ? BorderSide(
                                       color:
                                           Theme.of(context).primaryColorLight,
@@ -249,7 +245,7 @@ class _LoginPageController extends State<LoginPage> {
                                   : BorderSide(color: Colors.grey[300]!),
                             ),
                             tileColor: GlobalApp.defaultLanguages[index] ==
-                                    languageController.language
+                                    languageController.sourceApplanguage
                                 ? Theme.of(context)
                                     .primaryColorLight
                                     .withOpacity(0.05)
@@ -363,7 +359,7 @@ class _LoginPageView extends WidgetView<LoginPage, _LoginPageController> {
                                   height: 32,
                                   child: ClipOval(
                                     child: serviceLocator<LanguageController>()
-                                        .language
+                                        .sourceApplanguage
                                         .image
                                         .svg(
                                           height: 32,

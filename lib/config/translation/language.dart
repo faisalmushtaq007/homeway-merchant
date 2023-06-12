@@ -1,29 +1,75 @@
 import 'dart:ui';
 
 import 'package:google_mlkit_translation/google_mlkit_translation.dart';
+import 'package:homemakers_merchant/config/translation/widgets/constants.dart';
 import 'package:homemakers_merchant/gen/assets.gen.dart';
 import 'package:homemakers_merchant/utils/app_equatable/app_equatable.dart';
 
 class Language with AppEquatable {
+  factory Language.fromMap(Map<String, dynamic> map) {
+    return Language(
+      map['value'] as Locale,
+      map['image'] as SvgGenImage,
+      map['text'] as String,
+      map['sourceLanguage'] as TranslateLanguage,
+      map['languageDownloadStatus'] as LanguageDownloadStatus,
+    );
+  }
+
   /// Add another languages support here
   Language(
     this.value,
     this.image,
     this.text,
-    this.sourceLanguage,
-  );
+    this.sourceLanguage, [
+    this.languageDownloadStatus = LanguageDownloadStatus.notDownloaded,
+  ]);
 
   final Locale value;
   final SvgGenImage image;
   final String text;
   final TranslateLanguage sourceLanguage;
+  final LanguageDownloadStatus languageDownloadStatus;
 
   @override
-  String toString() => 'Language($value, $text, $sourceLanguage, $image)';
+  String toString() =>
+      'Language($value, $text, $sourceLanguage, $image, $languageDownloadStatus)';
 
   @override
   bool get cacheHash => true;
 
   @override
-  List<Object?> get hashParameters => [value, image, text, sourceLanguage];
+  List<Object?> get hashParameters => [
+        value,
+        image,
+        text,
+        sourceLanguage,
+        languageDownloadStatus,
+      ];
+
+  Language copyWith({
+    Locale? value,
+    SvgGenImage? image,
+    String? text,
+    TranslateLanguage? sourceLanguage,
+    LanguageDownloadStatus? languageDownloadStatus,
+  }) {
+    return Language(
+      value ?? this.value,
+      image ?? this.image,
+      text ?? this.text,
+      sourceLanguage ?? this.sourceLanguage,
+      languageDownloadStatus ?? this.languageDownloadStatus,
+    );
+  }
+
+  Map<String, dynamic> toMap() {
+    return {
+      'value': this.value,
+      'image': this.image,
+      'text': this.text,
+      'sourceLanguage': this.sourceLanguage,
+      'languageDownloadStatus': this.languageDownloadStatus,
+    };
+  }
 }

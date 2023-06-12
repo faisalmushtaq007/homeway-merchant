@@ -1,25 +1,30 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:get_it_mixin/get_it_mixin.dart';
+import 'package:google_ml_kit/google_ml_kit.dart';
 import 'package:homemakers_merchant/bootup/injection_container.dart';
+import 'package:homemakers_merchant/config/translation/app_translator.dart';
+import 'package:homemakers_merchant/config/translation/language.dart';
+import 'package:homemakers_merchant/config/translation/language_controller.dart';
+import 'package:homemakers_merchant/config/translation/multiple_language_download.dart';
 import 'package:homemakers_merchant/config/translation/translate_api.dart';
 import 'package:homemakers_merchant/config/translation/widgets/constants.dart';
 import 'package:homemakers_merchant/config/translation/widgets/language_inherited_widget.dart';
 import 'package:homemakers_merchant/config/translation/widgets/language_screen_wrapper.dart';
+import 'package:homemakers_merchant/core/constants/global_app_constants.dart';
 import 'package:homemakers_merchant/core/mixins/lifecycle_mixin.dart';
+import 'package:homemakers_merchant/shared/widgets/universal/multi_stream_builder/stream_builder_2.dart';
 import 'package:homemakers_merchant/shared/widgets/universal/multi_stream_builder/stream_builder_3.dart';
 import 'package:homemakers_merchant/shared/widgets/universal/multi_stream_builder/stream_builder_4.dart';
+import 'package:homemakers_merchant/utils/app_log.dart';
 import 'package:provider/provider.dart';
 
 ///[LanguageyAppWrapper] is a StatelessWidget.
 typedef LanguageWidgetBuilder = Widget Function(
   BuildContext context,
-  LanguageModelStatus sourceLanguageModelStatus,
-  LanguageDownloadStatus sourceLanguageDownloadStatus,
-  LanguageDownloadStatus newLanguageDownloadStatus,
-  (
-    LanguageModelStatus,
-    LanguageDownloadStatus
-  ) secondarySourceLanguageDownloadStatus,
+  Map<TranslateLanguage, Language> allLanguages,
+  Map<TranslateLanguage, Language> arabicLanguage,
 );
 
 class LanguageAppWrapper extends StatefulWidget with GetItStatefulWidgetMixin {
@@ -35,48 +40,43 @@ class _LanguageAppWrapperState extends State<LanguageAppWrapper>
     with GetItStateMixin, LifecycleMixin {
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder4<
-        LanguageModelStatus,
-        LanguageDownloadStatus,
-        (LanguageModelStatus, LanguageDownloadStatus),
-        (LanguageModelStatus, LanguageDownloadStatus)>(
-      streams: StreamTuple4(
-        TranslateApi.instance.appSourceModelStream,
-        TranslateApi.instance.appDefaultSourceModelDownloadStream,
-        TranslateApi.instance.targetLanguageModelDownloadStream,
-        TranslateApi.instance.secondaryLanguageModelDownloadStream,
-      ),
-      initialData: InitialDataTuple4(
-        LanguageModelStatus.notExists,
-        LanguageDownloadStatus.downloading,
-        (LanguageModelStatus.notExists, LanguageDownloadStatus.notDownloaded),
-        (LanguageModelStatus.notExists, LanguageDownloadStatus.notDownloaded),
-      ),
+    return StreamBuilder2<Map<TranslateLanguage, Language>,
+        Map<TranslateLanguage, Language>>(
+      streams: StreamTuple2(
+          MultipleLanguageDownload.instance.allLanguageSteam
+              .map((event) => event),
+          MultipleLanguageDownload.instance.allLanguageSteam
+              .map((event) => event)
+              .where(
+                (event) => event.containsKey(TranslateLanguage.arabic),
+              )),
+      initialData: InitialDataTuple2({
+        TranslateLanguage.english: GlobalApp.defaultLanguages[0],
+      }, {
+        TranslateLanguage.arabic: GlobalApp.defaultLanguages[1],
+      }),
       builder: (context, snapshots) {
         final child = widget.builder(
-          context,
-          snapshots.snapshot1.data ?? LanguageModelStatus.notExists,
-          snapshots.snapshot2.data ?? LanguageDownloadStatus.downloading,
-          snapshots.snapshot3.data?.$2 ?? LanguageDownloadStatus.notDownloaded,
-          snapshots.snapshot4.data ??
-              (
-                LanguageModelStatus.notExists,
-                LanguageDownloadStatus.notDownloaded
-              ),
-        );
+            context,
+            snapshots.snapshot1.data ??
+                {
+                  TranslateLanguage.english: GlobalApp.defaultLanguages[0],
+                },
+            snapshots.snapshot2.data ??
+                {
+                  TranslateLanguage.arabic: GlobalApp.defaultLanguages[1],
+                });
         return LanguageInheritedWidget(
           isConnected: true,
-          sourceModelStatus:
-              snapshots.snapshot1.data ?? LanguageModelStatus.notExists,
-          sourceLanguageDownloadStatus:
-              snapshots.snapshot2.data ?? LanguageDownloadStatus.downloading,
-          newSourceLanguageDownloadStatus: snapshots.snapshot3.data?.$2 ??
-              LanguageDownloadStatus.notDownloaded,
-          secondarySourceLanguageDownloadStatus: snapshots.snapshot4.data ??
-              (
-                LanguageModelStatus.notExists,
-                LanguageDownloadStatus.notDownloaded
-              ),
+          allLanguageModelStatus: snapshots.snapshot1.data ??
+              {
+                TranslateLanguage.english: GlobalApp.defaultLanguages[0],
+              },
+          arabicLanguage: snapshots.snapshot2.data ??
+              snapshots.snapshot2.data ??
+              {
+                TranslateLanguage.arabic: GlobalApp.defaultLanguages[1],
+              },
           child: LanguageScreenWrapper(child: child),
         );
       },

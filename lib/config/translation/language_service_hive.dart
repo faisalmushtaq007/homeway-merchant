@@ -35,6 +35,7 @@ class LanguageServiceHive implements ILanguageService {
       ..registerAdapter(TranslateLanguageAdapter())
       ..registerAdapter(LocaleAdapter())
       ..registerAdapter(SvgGenImageAdapter())
+      ..registerAdapter(LanguageDownloadStatusAdapter())
       ..registerAdapter(LanguageAdapter())
       ..registerAdapter(SaveTranslationObjectAdapter());
 

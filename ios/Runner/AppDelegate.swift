@@ -17,6 +17,8 @@ import flutter_background_executor
     SwiftFlutterBackgroundExecutorPlugin.taskIdentifier = "com.homemakers.merchant.source_language_download.task"
     SwiftFlutterBackgroundExecutorPlugin.taskIdentifier = "com.homemakers.merchant.target_language_download.task"
     SwiftFlutterBackgroundExecutorPlugin.taskIdentifier = "com.homemakers.merchant.new_language_download.task"
+     SwiftFlutterBackgroundExecutorPlugin.taskIdentifier = "com.homemakers.merchant.english_language_download.task"
+      SwiftFlutterBackgroundExecutorPlugin.taskIdentifier = "com.homemakers.merchant.arabic_language_download.task"
     GeneratedPluginRegistrant.register(with: self)
     return super.application(application, didFinishLaunchingWithOptions: launchOptions)
   }

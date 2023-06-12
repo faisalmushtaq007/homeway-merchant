@@ -3,6 +3,7 @@ import 'package:google_mlkit_translation/google_mlkit_translation.dart';
 import 'package:hive/hive.dart';
 import 'package:homemakers_merchant/bootup/bootstrap.dart';
 import 'package:homemakers_merchant/config/translation/language.dart';
+import 'package:homemakers_merchant/config/translation/widgets/constants.dart';
 import 'package:homemakers_merchant/gen/assets.gen.dart';
 import 'package:homemakers_merchant/utils/app_equatable/app_equatable.dart';
 
@@ -150,5 +151,23 @@ class LocaleAdapter extends TypeAdapter<Locale> {
     //writer.write(obj.index);
     //writer.write(obj.bcpCode);
     writer.write(obj);
+  }
+}
+
+//LanguageDownloadStatus
+class LanguageDownloadStatusAdapter
+    extends TypeAdapter<LanguageDownloadStatus> {
+  @override
+  final typeId = 211;
+
+  @override
+  LanguageDownloadStatus read(BinaryReader reader) {
+    final dynamic languageDownloadStatus = reader.read();
+    return LanguageDownloadStatus.values.byName(languageDownloadStatus);
+  }
+
+  @override
+  void write(BinaryWriter writer, LanguageDownloadStatus obj) {
+    writer.write(obj.name);
   }
 }

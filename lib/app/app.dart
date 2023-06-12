@@ -4,12 +4,14 @@ import 'package:flutter/scheduler.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
+import 'package:google_mlkit_translation/google_mlkit_translation.dart';
 import 'package:homemakers_merchant/app/features/authentication/presentation/pages/login_page.dart';
 import 'package:homemakers_merchant/app/features/onboarding/presentation/pages/splash_page.dart';
 import 'package:homemakers_merchant/app/features/profile/domain/entities/user_model.dart';
 import 'package:homemakers_merchant/app/features/profile/presentation/manager/user_model_storage_controller.dart';
 import 'package:homemakers_merchant/config/permission/permission_controller.dart';
 import 'package:homemakers_merchant/config/permission/permission_service.dart';
+import 'package:homemakers_merchant/config/translation/language.dart';
 import 'package:homemakers_merchant/config/translation/language_controller.dart';
 import 'package:homemakers_merchant/config/translation/translate_api.dart';
 import 'package:homemakers_merchant/config/translation/widgets/constants.dart';
@@ -110,13 +112,8 @@ class _AppState extends State<App> with GetItStateMixin {
             child: LanguageAppWrapper(
               builder: (
                 BuildContext context,
-                LanguageModelStatus sourceLanguageModelStatus,
-                LanguageDownloadStatus sourceLanguageDownloadStatus,
-                LanguageDownloadStatus newLanguageDownloadStatus,
-                (
-                  LanguageModelStatus,
-                  LanguageDownloadStatus
-                ) secondarySourceLanguageDownloadStatus,
+                Map<TranslateLanguage, Language> allLanguages,
+                Map<TranslateLanguage, Language> arabicLanguages,
               ) {
                 return PlatformProvider(
                   settings: PlatformSettingsData(
@@ -151,7 +148,7 @@ class _AppState extends State<App> with GetItStateMixin {
                         GlobalWidgetsLocalizations.delegate,
                         GlobalCupertinoLocalizations.delegate,
                       ],
-                      locale: languageController.language.value,
+                      locale: languageController.sourceApplanguage.value,
                       supportedLocales: AppLocalizations.supportedLocales,
                       builder: (context, child) =>
                           ResponsiveBreakpoints.builder(

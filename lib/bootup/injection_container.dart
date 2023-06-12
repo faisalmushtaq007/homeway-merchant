@@ -7,7 +7,9 @@ import 'package:homemakers_merchant/config/permission/permission_service.dart';
 import 'package:homemakers_merchant/config/translation/language_controller.dart';
 import 'package:homemakers_merchant/config/translation/language_service.dart';
 import 'package:homemakers_merchant/config/translation/language_service_hive.dart';
+import 'package:homemakers_merchant/config/translation/multiple_language_download.dart';
 import 'package:homemakers_merchant/config/translation/translate_api.dart';
+import 'package:homemakers_merchant/config/translation/app_translator.dart';
 import 'package:homemakers_merchant/core/constants/global_app_constants.dart';
 import 'package:homemakers_merchant/core/interface/storage_interface.dart';
 import 'package:homemakers_merchant/core/keys/app_key.dart';
@@ -80,6 +82,21 @@ Future<void> _setUpAppSetting() async {
   await translateApi.init(
       sourceLanguage: GlobalApp.defaultSourceTranslateLanguage,
       targetLanguage: GlobalApp.defaultSourceTranslateLanguage);
+  // Multiple language download
+  final MultipleLanguageDownload multipleLanguageDownload =
+      MultipleLanguageDownload(
+    languageService: serviceLocator<ILanguageService>(),
+    boxName: GlobalApp.languageBoxName,
+  );
+  await multipleLanguageDownload.init();
+  final AppTranslator appTranslator = AppTranslator(
+    languageService: serviceLocator<ILanguageService>(),
+    boxName: GlobalApp.languageBoxName,
+    multipleLanguageDownload: multipleLanguageDownload,
+  );
+  await appTranslator.init(
+    languageController: serviceLocator(),
+  );
 }
 
 void _setUpService() {

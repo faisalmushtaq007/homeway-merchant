@@ -5,6 +5,7 @@ import 'dart:ui';
 import 'package:flutter/foundation.dart';
 import 'package:homemakers_merchant/bootup/bootstrap.dart';
 import 'package:homemakers_merchant/bootup/injection_container.dart';
+import 'package:homemakers_merchant/config/translation/app_translator.dart';
 import 'package:homemakers_merchant/config/translation/language.dart';
 import 'package:homemakers_merchant/config/translation/language_service.dart';
 import 'package:homemakers_merchant/config/translation/translate_api.dart';
@@ -55,9 +56,13 @@ class LanguageController with ChangeNotifier {
   String getById(int id) => _translated[_translated.keys.elementAt(id)]!;
 
   Future<void> loadAll() async {
-    _language = await _languageService.load<Language>(
+    _sourceAppLanguage = await _languageService.load<Language>(
       GlobalApp.keyLanguage,
       GlobalApp.defaultLanguageSelect,
+    );
+    _targetAppLanguage = await _languageService.load<Language>(
+      GlobalApp.keyTargetAppLanguage,
+      GlobalApp.defaultTargetLanguageSelect,
     );
     // _sourceTranslateLanguage
     _sourceTranslateLanguage = await _languageService.load<TranslateLanguage>(
@@ -93,6 +98,7 @@ class LanguageController with ChangeNotifier {
     bool doNotify = true,
   }) async {
     setLanguage(GlobalApp.defaultLanguageSelect, false);
+    setTargetLanguage(GlobalApp.defaultTargetLanguageSelect, false);
     setSourceTranslateLanguage(GlobalApp.defaultSourceTranslateLanguage, false);
     setTargetTranslateLanguage(GlobalApp.defaultTargetTranslateLanguage, false);
     setTargetLocale(GlobalApp.defaultTargetLocale, false);
@@ -102,7 +108,7 @@ class LanguageController with ChangeNotifier {
   }
 
   Future<void> identifyLanguage(String text) async {
-    await TranslateApi.instance.identifyLanguage(text, (String language) {
+    await AppTranslator.instance.identifyLanguage(text, (String language) {
       _identifiedLanguage = language;
       notifyListeners();
     });
@@ -112,7 +118,7 @@ class LanguageController with ChangeNotifier {
   Future<void> identifyPossibleLanguages(String text) async {
     if (text == '') return;
     String error;
-    await TranslateApi.instance.identifyPossibleLanguages(text,
+    await AppTranslator.instance.identifyPossibleLanguages(text,
         (List<IdentifiedLanguage> possibleLanguages, String language) {
       if (language.isNotEmpty) {
         _identifiedLanguage = language;
@@ -123,10 +129,10 @@ class LanguageController with ChangeNotifier {
     return;
   }
 
-  Future<bool> downloadSourceModel() async {
+/*  Future<bool> downloadSourceModel() async {
     log('Downloading model (${_sourceLanguage.name})...');
     final bool hasDownloaded =
-        await TranslateApi.instance.downloadSourceModel();
+        await AppTranslator.instance.downloadSourceModel();
     hasSourceModelDownloadedSuccess = hasDownloaded;
     notifyListeners();
     return hasDownloaded;
@@ -135,7 +141,7 @@ class LanguageController with ChangeNotifier {
   Future<bool> downloadTargetModel() async {
     log('Downloading model (${_targetLanguage.name})...');
     final bool hasDownloaded =
-        await TranslateApi.instance.downloadTargetModel();
+        await AppTranslator.instance.downloadTargetModel();
     hasTargetModelDownloadedSuccess = hasDownloaded;
     notifyListeners();
     return hasDownloaded;
@@ -143,7 +149,7 @@ class LanguageController with ChangeNotifier {
 
   Future<bool> deleteSourceModel() async {
     log('Deleting model (${_sourceLanguage.name})...');
-    final bool hasDeleted = await TranslateApi.instance.deleteSourceModel();
+    final bool hasDeleted = await AppTranslator.instance.deleteSourceModel();
     hasSourceModelDeleted = hasDeleted;
     notifyListeners();
     return hasDeleted;
@@ -151,7 +157,7 @@ class LanguageController with ChangeNotifier {
 
   Future<bool> deleteTargetModel() async {
     log('Deleting model (${_targetLanguage.name})...');
-    final bool hasDeleted = await TranslateApi.instance.deleteTargetModel();
+    final bool hasDeleted = await AppTranslator.instance.deleteTargetModel();
     hasTargetModelDeleted = hasDeleted;
     notifyListeners();
     return hasDeleted;
@@ -160,7 +166,7 @@ class LanguageController with ChangeNotifier {
   Future<bool> isSourceModelDownloaded() async {
     log('Checking if model (${_sourceLanguage.name}) is downloaded...');
     final bool hasDownloaded =
-        await TranslateApi.instance.isSourceModelDownloaded();
+        await AppTranslator.instance.isSourceModelDownloaded();
     hasSourceModelDownloaded = hasDownloaded;
     notifyListeners();
     return hasDownloaded;
@@ -169,11 +175,11 @@ class LanguageController with ChangeNotifier {
   Future<bool> isTargetModelDownloaded() async {
     log('Checking if model (${_targetLanguage.name}) is downloaded...');
     final bool hasDownloaded =
-        await TranslateApi.instance.isTargetModelDownloaded();
+        await AppTranslator.instance.isTargetModelDownloaded();
     hasTargetModelDownloaded = hasDownloaded;
     notifyListeners();
     return hasDownloaded;
-  }
+  }*/
 
   Future<void> translateText(String text) async {
     final result = await _onDeviceTranslator.translateText(text);
@@ -181,54 +187,45 @@ class LanguageController with ChangeNotifier {
   }
 
   void changeSourceLanguage(TranslateLanguage newSourceLanguage) {
+    AppTranslator.instance.changeSourceTranslateLanguage(newSourceLanguage);
     _sourceLanguage = newSourceLanguage;
-    TranslateApi.instance.changeSourceTranslateLanguage(newSourceLanguage);
     notifyListeners();
   }
 
   void changeTargetLanguage(TranslateLanguage newTargetLanguage) {
+    AppTranslator.instance.changeTargetTranslateLanguage(newTargetLanguage);
     _targetLanguage = newTargetLanguage;
-    TranslateApi.instance.changeTargetTranslateLanguage(newTargetLanguage);
-    notifyListeners();
-  }
-
-  void updateSourceAndTargetLanguage({
-    TranslateLanguage? newSourceLanguage,
-    required TranslateLanguage newTargetLanguage,
-    String currentText = '',
-    required Language language,
-  }) {
-    setLanguage(language);
-    //_sourceLanguage = newSourceLanguage;
-    _targetLanguage = newTargetLanguage;
-    //TranslateApi.instance.changeSourceTranslateLanguage(newSourceLanguage);
-    TranslateApi.instance.updateSourceAndTargetLanguage(
-      newTargetLanguage: newTargetLanguage,
-      newSourceLanguage: newSourceLanguage,
-      currentText: currentText,
-    );
     notifyListeners();
   }
 
   void switchCurrentSourceAndTargetLanguage() {
-    if (_sourceLanguage == _targetLanguage) {
-      return;
-    } else {
-      _sourceLanguage = _targetLanguage;
-      _targetLanguage = _sourceLanguage;
-      TranslateApi.instance.switchCurrentSourceAndTargetLanguage();
-      notifyListeners();
-    }
+    final languageRecord =
+        AppTranslator.instance.switchCurrentSourceAndTargetLanguage();
+    _sourceLanguage = languageRecord.$1;
+    _targetLanguage = languageRecord.$2;
+    notifyListeners();
   }
 
   // App Language
-  late Language _language;
+  late Language _sourceAppLanguage;
 
-  Language get language => _language;
+  Language get sourceApplanguage => _sourceAppLanguage;
 
   void setLanguage(Language value, [bool notify = true]) {
-    if (value == _language) return;
-    _language = value;
+    if (value == _sourceAppLanguage) return;
+    _sourceAppLanguage = value;
+    if (notify) notifyListeners();
+    unawaited(_languageService.save(GlobalApp.keyLanguage, value));
+  }
+
+  // Target App Language
+  late Language _targetAppLanguage;
+
+  Language get targetAppLanguage => _targetAppLanguage;
+
+  void setTargetLanguage(Language value, [bool notify = true]) {
+    if (value == _targetAppLanguage) return;
+    _targetAppLanguage = value;
     if (notify) notifyListeners();
     unawaited(_languageService.save(GlobalApp.keyLanguage, value));
   }
@@ -304,7 +301,7 @@ class LanguageController with ChangeNotifier {
     if (_translated.isNotEmpty) {
       for (int i = 0; i < _translated.length; i++) {
         _translated[_translated.keys.elementAt(i)] =
-            await TranslateApi.instance.translate(
+            await AppTranslator.instance.translate(
           _translated[_translated.keys.elementAt(i)]!,
           cache: useCache,
         );
