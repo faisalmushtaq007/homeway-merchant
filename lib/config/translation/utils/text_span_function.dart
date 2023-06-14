@@ -3,7 +3,7 @@ import 'package:flutter/widgets.dart';
 List<String> getTextsFromSpan(InlineSpan textSpan) {
   List<String> list = [];
   if (textSpan is TextSpan && textSpan.text != null) {
-    list.add(textSpan.text);
+    list.add(textSpan.text!);
   }
   if (textSpan is TextSpan && textSpan.children != null) {
     textSpan.children?.forEach((e) {

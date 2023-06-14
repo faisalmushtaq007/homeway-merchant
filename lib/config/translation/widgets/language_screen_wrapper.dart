@@ -79,20 +79,6 @@ class _LanguageScreenWrapperState extends State<LanguageScreenWrapper>
     with LifecycleMixin, GetItStateMixin {
   @override
   Widget build(BuildContext context) {
-    LanguageInheritedWidget.of(context)
-        ?.allLanguageModelStatus
-        .entries
-        .forEach((element) {
-      appLog.d(
-          'LanguageInheritedWidget.of(context)?.sourceModelStatus - ${element.key}-${element.value.languageDownloadStatus}');
-    });
-    LanguageInheritedWidget.of(context)
-        ?.arabicLanguage
-        .entries
-        .forEach((element) {
-      appLog.d(
-          'LanguageInheritedWidget.of(context)?.sourceModelStatus - ${element.key}-${element.value.languageDownloadStatus}');
-    });
     final bool hasAtleastSourceLanguage = LanguageInheritedWidget.of(context)
             ?.allLanguageModelStatus
             .entries

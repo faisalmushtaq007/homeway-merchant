@@ -36,17 +36,6 @@ class _AutoLocalBuilderState extends State<AutoLocalBuilder>
       }
     });
   }
-/*
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    widget.translationWorker.set(widget.text);
-    WidgetsBinding.instance?.addPostFrameCallback((_) {
-      if (!widget._extInit) {
-        widget.translationWorker.run(useCache: widget.cache);
-      }
-    });
-  }*/
 
   @override
   Widget build(BuildContext context) {

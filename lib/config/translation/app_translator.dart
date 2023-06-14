@@ -218,7 +218,7 @@ class AppTranslator {
   }) async {
     final result = await _lock.synchronized(() async {
       // Identify the language of text
-      var identifiedSourceLanguage = sourceTranslateLanguage;
+/*      var identifiedSourceLanguage = sourceTranslateLanguage;
       await AppTranslator.instance.identifyLanguage(text, (language) {
         log('translate: Identify Language ${language}');
         if (language.contains('en')) {
@@ -232,12 +232,12 @@ class AppTranslator {
                 serviceLocator<LanguageController>().sourceTranslateLanguage,
           );
         }
-      });
+      });*/
       // Execute the translation process
       final executeTranslate = await _executeTranslate(
         text,
         cache: cache,
-        startingLanguage: identifiedSourceLanguage,
+        startingLanguage: startingLanguage,
         targetLanguage: targetLanguage,
         returnJSON: returnJSON,
       );
@@ -344,9 +344,13 @@ class AppTranslator {
     sourceTranslateLanguage = newSourceLanguage;
   }
 
-  void changeTargetTranslateLanguage(Language language) {
+  Future<void> changeTargetTranslateLanguage(Language language) async {
     targetTranslateLanguage = language.sourceLanguage;
     targetAppLanguage = language;
+    await init(
+        languageController: serviceLocator<LanguageController>(),
+        targetAppLanguage: targetAppLanguage,
+        targetLanguage: targetTranslateLanguage);
   }
 
   (TranslateLanguage, TranslateLanguage)

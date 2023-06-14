@@ -13,6 +13,8 @@ import 'package:homemakers_merchant/core/constants/global_app_constants.dart';
 import 'package:google_mlkit_language_id/google_mlkit_language_id.dart';
 import 'package:google_mlkit_translation/google_mlkit_translation.dart';
 
+import '../../utils/app_log.dart';
+
 class LanguageController with ChangeNotifier {
   LanguageController(this._languageService);
 
@@ -291,6 +293,7 @@ class LanguageController with ChangeNotifier {
 
   void set(List<String> translation) {
     this._translation?.addAll(translation);
+    appLog.d('Length of _translation ${_translation.length}');
     _translated.addEntries(
       translation
           .where((element) => !_translated.keys.contains(translation))
@@ -306,8 +309,9 @@ class LanguageController with ChangeNotifier {
           _translated[_translated.keys.elementAt(i)]!,
           cache: useCache,
         );
+        appLog.d('Run ${_translated[_translated.keys.elementAt(i)]}');
         _percentage = i / _translated.length;
-        notifyListeners();
+        //notifyListeners();
       }
     }
   }

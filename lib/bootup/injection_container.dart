@@ -17,6 +17,9 @@ import 'package:homemakers_merchant/core/network/http/base_response_error_model.
 import 'package:homemakers_merchant/core/network/http/interceptor/token/fresh_token_interceptor.dart';
 import 'package:homemakers_merchant/core/service/connectivity_bloc/connectivity_bloc.dart';
 import 'package:homemakers_merchant/core/service/connectivity_bloc/src/connectivity_bloc/connectivity_service.dart';
+import 'package:homemakers_merchant/theme/theme_controller.dart';
+import 'package:homemakers_merchant/theme/theme_service.dart';
+import 'package:homemakers_merchant/theme/theme_service_hive.dart';
 import 'package:isolate_manager/isolate_manager.dart';
 import 'package:network_manager/network_manager.dart';
 
@@ -42,6 +45,21 @@ void _setUpModel() {
 }
 
 Future<void> _setUpAppSetting() async {
+  serviceLocator.registerSingleton<ThemeService>(
+      ThemeServiceHive('app_color_scheme_box'));
+  //final ThemeService themeService = ThemeServicePrefs();
+  //final ThemeService themeService = ThemeServiceHive('app_color_scheme_box');
+  // Initialize the theme service.
+  await serviceLocator<ThemeService>().init();
+  serviceLocator
+      .registerSingleton<ThemeController>(ThemeController(serviceLocator()));
+  // Create a ThemeController that uses the ThemeService.
+  //final ThemeController themeController = ThemeController(themeService);
+  // Load preferred theme settings, while the app is loading, before MaterialApp
+  // is created, this prevents a theme change when the app is first displayed.
+  await serviceLocator<ThemeController>().loadAll();
+  //await themeController.loadAll();
+  // Only use Google fonts via asset provided fonts.
   // Init permission service
   serviceLocator.registerSingleton<IPermissionService>(
     PermissionServiceHive(GlobalApp.permissionBoxName),

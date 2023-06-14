@@ -7,6 +7,7 @@ import 'package:homemakers_merchant/base/widget_view.dart';
 import 'package:homemakers_merchant/bootup/bootstrap.dart';
 import 'package:homemakers_merchant/bootup/injection_container.dart';
 import 'package:homemakers_merchant/config/translation/auto_locale_builder.dart';
+import 'package:homemakers_merchant/config/translation/extension/text_extension.dart';
 import 'package:homemakers_merchant/config/translation/language_controller.dart';
 import 'package:homemakers_merchant/config/translation/translate_api.dart';
 import 'package:homemakers_merchant/config/translation/widgets/constants.dart';
@@ -15,6 +16,8 @@ import 'package:homemakers_merchant/shared/widgets/app/activity_indicator.dart';
 import 'package:homemakers_merchant/shared/widgets/app/page_body.dart';
 import 'package:google_mlkit_language_id/google_mlkit_language_id.dart';
 import 'package:google_mlkit_translation/google_mlkit_translation.dart';
+import 'package:homemakers_merchant/shared/widgets/universal/theme_mode_switch_list_tile.dart';
+import 'package:homemakers_merchant/theme/theme_controller.dart';
 import 'package:isolate_manager/isolate_manager.dart';
 
 class LoginPage extends StatefulWidget {
@@ -186,79 +189,80 @@ class _LoginPageController extends State<LoginPage> {
         return ListenableBuilder(
           listenable: serviceLocator<LanguageController>(),
           builder: (context, child) {
-            return AutoLocalBuilder(
-              text: ['Choose Preferred Language'],
-              //translationWorker: serviceLocator<LanguageController>(),
-              builder: (languageController) {
-                return Padding(
-                  padding: const EdgeInsets.all(16),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Text(
-                        languageController.get('Choose Preferred Language'),
-                      ),
-                      const SizedBox(height: 16),
-                      ListView.separated(
-                        shrinkWrap: true,
-                        itemCount: GlobalApp.defaultLanguages.length,
-                        itemBuilder: (context, index) {
-                          return ListTile(
-                            onTap: () async {
-                              // Change target language
-                              serviceLocator<LanguageController>()
-                                  .changeTargetLanguage(
-                                GlobalApp.defaultLanguages[index],
-                              );
-                              await Future.delayed(
-                                const Duration(milliseconds: 300),
-                                () {},
-                              ).then((value) => Navigator.of(context).pop());
+            return Padding(
+              padding: const EdgeInsets.all(16),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    'Choose Preferred Language',
+                  ).translate(),
+                  const SizedBox(height: 16),
+                  ListView.separated(
+                    shrinkWrap: true,
+                    itemCount: GlobalApp.defaultLanguages.length,
+                    itemBuilder: (context, index) {
+                      return ListTile(
+                        onTap: () async {
+                          if (serviceLocator<LanguageController>()
+                                  .targetAppLanguage ==
+                              GlobalApp.defaultLanguages[index]) {
+                            return;
+                          } else {
+                            // Change target language
+                            serviceLocator<LanguageController>()
+                                .changeTargetLanguage(
+                              GlobalApp.defaultLanguages[index],
+                            );
+                          }
+                          await Future.delayed(
+                            const Duration(milliseconds: 300),
+                            () {},
+                          ).then((value) => Navigator.of(context).pop());
 
-                              // Close bottom sheet
-                            },
-                            leading: ClipOval(
-                              child:
-                                  GlobalApp.defaultLanguages[index].image.svg(
-                                height: 32,
-                                width: 32,
-                              ),
-                            ),
-                            title: Text(GlobalApp.defaultLanguages[index].text),
-                            trailing: GlobalApp.defaultLanguages[index] ==
-                                    languageController.targetAppLanguage
-                                ? Icon(
-                                    Icons.check_circle_rounded,
-                                    color: Theme.of(context).primaryColorLight,
-                                  )
-                                : null,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10),
-                              side: GlobalApp.defaultLanguages[index] ==
-                                      languageController.targetAppLanguage
-                                  ? BorderSide(
-                                      color:
-                                          Theme.of(context).primaryColorLight,
-                                      width: 1.5,
-                                    )
-                                  : BorderSide(color: Colors.grey[300]!),
-                            ),
-                            tileColor: GlobalApp.defaultLanguages[index] ==
-                                    languageController.targetAppLanguage
-                                ? Theme.of(context)
-                                    .primaryColorLight
-                                    .withOpacity(0.05)
-                                : null,
-                          );
+                          // Close bottom sheet
                         },
-                        separatorBuilder: (context, index) {
-                          return const SizedBox(height: 16);
-                        },
-                      )
-                    ],
-                  ),
-                );
-              },
+                        leading: ClipOval(
+                          child: GlobalApp.defaultLanguages[index].image.svg(
+                            height: 32,
+                            width: 32,
+                          ),
+                        ),
+                        title: Text(GlobalApp.defaultLanguages[index].text),
+                        trailing: GlobalApp.defaultLanguages[index] ==
+                                serviceLocator<LanguageController>()
+                                    .targetAppLanguage
+                            ? Icon(
+                                Icons.check_circle_rounded,
+                                color: Theme.of(context).primaryColorLight,
+                              )
+                            : null,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          side: GlobalApp.defaultLanguages[index] ==
+                                  serviceLocator<LanguageController>()
+                                      .targetAppLanguage
+                              ? BorderSide(
+                                  color: Theme.of(context).primaryColorLight,
+                                  width: 1.5,
+                                )
+                              : BorderSide(color: Colors.grey[300]!),
+                        ),
+                        tileColor: GlobalApp.defaultLanguages[index] ==
+                                serviceLocator<LanguageController>()
+                                    .targetAppLanguage
+                            ? Theme.of(context)
+                                .primaryColorLight
+                                .withOpacity(0.05)
+                            : null,
+                      );
+                    },
+                    separatorBuilder: (context, index) {
+                      return const SizedBox(height: 16);
+                    },
+                  )
+                ],
+              ),
             );
           },
         );
@@ -317,245 +321,231 @@ class _LoginPageView extends WidgetView<LoginPage, _LoginPageController> {
       child: ListenableBuilder(
         listenable: serviceLocator<LanguageController>(),
         builder: (context, child) {
-          return AutoLocalBuilder(
-            text: const [
-              'Login',
-              'Identify possible languages',
-              'Identify Language',
-              'Identified Language'
-            ],
-            //translationWorker: serviceLocator<LanguageController>(),
-            builder: (languageController) {
-              return PlatformScaffold(
-                appBar: PlatformAppBar(
-                  title: Text(languageController.get('Login')),
-                  trailingActions: [
-                    Container(
-                      height: 38,
-                      width: 55,
-                      margin: EdgeInsets.only(right: 8, left: 8),
-                      child: Center(
-                        child: OutlinedButton(
-                          onPressed: () =>
-                              state.showLanguageBottomSheet(context),
-                          style: OutlinedButton.styleFrom(
-                            padding: const EdgeInsets.only(top: 8, bottom: 8),
-                            minimumSize: Size(55, 38),
-                            foregroundColor: Colors.grey.withOpacity(0.6),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(8),
-                            ),
-                          ),
-                          child: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Flexible(
-                                flex: 2,
-                                child: SizedBox(
-                                  width: 32,
-                                  height: 32,
-                                  child: ClipOval(
-                                    child: serviceLocator<LanguageController>()
-                                        .sourceApplanguage
-                                        .image
-                                        .svg(
-                                          height: 32,
-                                          width: 32,
-                                        ),
-                                  ),
-                                ),
-                              ),
-                              Flexible(
-                                flex: 1,
-                                child: Icon(
-                                  Icons.arrow_drop_down_rounded,
-                                  color: Theme.of(context).primaryColorDark,
-                                ),
-                              ),
-                            ],
-                          ),
+          return PlatformScaffold(
+            appBar: PlatformAppBar(
+              title: Text('Login').translate(),
+              trailingActions: [
+                Container(
+                  height: 38,
+                  width: 55,
+                  margin: EdgeInsets.only(right: 8, left: 8),
+                  child: Center(
+                    child: OutlinedButton(
+                      onPressed: () => state.showLanguageBottomSheet(context),
+                      style: OutlinedButton.styleFrom(
+                        padding: const EdgeInsets.only(top: 8, bottom: 8),
+                        minimumSize: Size(55, 38),
+                        foregroundColor: Colors.grey.withOpacity(0.6),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8),
                         ),
                       ),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Flexible(
+                            flex: 2,
+                            child: SizedBox(
+                              width: 32,
+                              height: 32,
+                              child: ClipOval(
+                                child: serviceLocator<LanguageController>()
+                                    .sourceApplanguage
+                                    .image
+                                    .svg(
+                                      height: 32,
+                                      width: 32,
+                                    ),
+                              ),
+                            ),
+                          ),
+                          Flexible(
+                            flex: 1,
+                            child: Icon(
+                              Icons.arrow_drop_down_rounded,
+                              color: Theme.of(context).primaryColorDark,
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
-                  ],
-                ),
-                body: PageBody(
-                  controller: state.scrollController,
-                  constraints: BoxConstraints(
-                    minWidth: double.infinity,
-                    minHeight: double.infinity,
                   ),
-                  child: ListView(
-                    controller: state.scrollController,
-                    padding: EdgeInsets.fromLTRB(
-                      margins,
-                      topPadding,
-                      margins,
-                      bottomPadding,
+                ),
+              ],
+            ),
+            body: PageBody(
+              controller: state.scrollController,
+              constraints: BoxConstraints(
+                minWidth: double.infinity,
+                minHeight: double.infinity,
+              ),
+              child: ListView(
+                controller: state.scrollController,
+                padding: EdgeInsets.fromLTRB(
+                  margins,
+                  topPadding,
+                  margins,
+                  bottomPadding,
+                ),
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(15),
+                    child: TextField(
+                      controller: state._controller,
                     ),
+                  ),
+                  const SizedBox(height: 15),
+                  state._identifiedLanguage == ''
+                      ? Container()
+                      : Container(
+                          margin: const EdgeInsets.only(bottom: 5),
+                          child: Text(
+                            'Identified Language: ${state._identifiedLanguage}',
+                            style: const TextStyle(fontSize: 20),
+                          ).translate(),
+                        ),
+                  PlatformElevatedButton(
+                    onPressed: state._identifyLanguage,
+                    child: Text(
+                      'Identify Language',
+                    ).translate(),
+                  ),
+                  const SizedBox(height: 15),
+                  PlatformElevatedButton(
+                    onPressed: state._identifyPossibleLanguages,
+                    child: Text(
+                      'Identify possible languages',
+                    ).translate(),
+                  ),
+                  ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: state._identifiedLanguages.length,
+                    itemBuilder: (context, index) {
+                      return ListTile(
+                        title: Text(
+                          'Language: ${state._identifiedLanguages[index].languageTag}  Confidence: ${state._identifiedLanguages[index].confidence.toString()}',
+                        ).translate(),
+                      );
+                    },
+                  ),
+                  ThemeModeSwitchListTile(
+                      controller: serviceLocator<ThemeController>()),
+                  const SizedBox(height: 30),
+                  Center(
+                    child: Text(
+                      'Enter text (source: ${state._sourceLanguage.name})',
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(20),
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          width: 2,
+                        ),
+                      ),
+                      child: TextField(
+                        controller: state._controller1,
+                        decoration:
+                            const InputDecoration(border: InputBorder.none),
+                        maxLines: null,
+                      ),
+                    ),
+                  ),
+                  Center(
+                    child: Text(
+                      'Translated Text (target: ${state._targetLanguage.name})',
+                    ),
+                  ),
+                  const SizedBox(height: 30),
+                  Padding(
+                    padding: const EdgeInsets.all(20),
+                    child: Container(
+                      width: MediaQuery.of(context).size.width / 1.3,
+                      padding: const EdgeInsets.all(20),
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          width: 2,
+                        ),
+                      ),
+                      child: Text(state._translatedText ?? ''),
+                    ),
+                  ),
+                  const SizedBox(height: 30),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Padding(
-                        padding: const EdgeInsets.all(15),
-                        child: TextField(
-                          controller: state._controller,
-                        ),
-                      ),
-                      const SizedBox(height: 15),
-                      state._identifiedLanguage == ''
-                          ? Container()
-                          : Container(
-                              margin: const EdgeInsets.only(bottom: 5),
-                              child: Text(
-                                languageController.get(
-                                  'Identified Language: ${state._identifiedLanguage}',
-                                ),
-                                style: const TextStyle(fontSize: 20),
-                              ),
-                            ),
                       PlatformElevatedButton(
-                        onPressed: state._identifyLanguage,
+                        onPressed: state._translateText,
                         child: Text(
-                          languageController.get('Identify Language'),
+                          'Translate',
+                        ),
+                      )
+                    ],
+                  ),
+                  const SizedBox(height: 20),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Flexible(
+                        child: PlatformElevatedButton(
+                          onPressed: state._downloadSourceModel,
+                          child: Text('Download Source Model'),
                         ),
                       ),
-                      const SizedBox(height: 15),
-                      PlatformElevatedButton(
-                        onPressed: state._identifyPossibleLanguages,
-                        child: Text(
-                          languageController.get('Identify possible languages'),
+                      Flexible(
+                        child: PlatformElevatedButton(
+                          onPressed: state._downloadTargetModel,
+                          child: Text('Download Target Model'),
                         ),
-                      ),
-                      ListView.builder(
-                        shrinkWrap: true,
-                        itemCount: state._identifiedLanguages.length,
-                        itemBuilder: (context, index) {
-                          return ListTile(
-                            title: Text(
-                              languageController.get(
-                                'Language: ${state._identifiedLanguages[index].languageTag}  Confidence: ${state._identifiedLanguages[index].confidence.toString()}',
-                              ),
-                            ),
-                          );
-                        },
-                      ),
-                      const SizedBox(height: 30),
-                      Center(
-                        child: Text(
-                          'Enter text (source: ${state._sourceLanguage.name})',
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(20),
-                        child: Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 20),
-                          decoration: BoxDecoration(
-                            border: Border.all(
-                              width: 2,
-                            ),
-                          ),
-                          child: TextField(
-                            controller: state._controller1,
-                            decoration:
-                                const InputDecoration(border: InputBorder.none),
-                            maxLines: null,
-                          ),
-                        ),
-                      ),
-                      Center(
-                        child: Text(
-                          'Translated Text (target: ${state._targetLanguage.name})',
-                        ),
-                      ),
-                      const SizedBox(height: 30),
-                      Padding(
-                        padding: const EdgeInsets.all(20),
-                        child: Container(
-                          width: MediaQuery.of(context).size.width / 1.3,
-                          padding: const EdgeInsets.all(20),
-                          decoration: BoxDecoration(
-                            border: Border.all(
-                              width: 2,
-                            ),
-                          ),
-                          child: Text(state._translatedText ?? ''),
-                        ),
-                      ),
-                      const SizedBox(height: 30),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          PlatformElevatedButton(
-                            onPressed: state._translateText,
-                            child: Text(
-                              'Translate',
-                            ),
-                          )
-                        ],
-                      ),
-                      const SizedBox(height: 20),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Flexible(
-                            child: PlatformElevatedButton(
-                              onPressed: state._downloadSourceModel,
-                              child: Text('Download Source Model'),
-                            ),
-                          ),
-                          Flexible(
-                            child: PlatformElevatedButton(
-                              onPressed: state._downloadTargetModel,
-                              child: Text('Download Target Model'),
-                            ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 20),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Flexible(
-                            child: PlatformElevatedButton(
-                              onPressed: state._deleteSourceModel,
-                              child: Text('Delete Source Model'),
-                            ),
-                          ),
-                          Flexible(
-                            child: PlatformElevatedButton(
-                              onPressed: state._deleteTargetModel,
-                              child: Text('Delete Target Model'),
-                            ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 20),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Flexible(
-                            child: PlatformElevatedButton(
-                              onPressed: state._isSourceModelDownloaded,
-                              child: Text('Source Downloaded?'),
-                            ),
-                          ),
-                          Flexible(
-                            child: PlatformElevatedButton(
-                              onPressed: state._isTargetModelDownloaded,
-                              child: Text('Target Downloaded?'),
-                            ),
-                          ),
-                        ],
                       ),
                     ],
                   ),
-                ),
-              );
-            },
+                  const SizedBox(height: 20),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Flexible(
+                        child: PlatformElevatedButton(
+                          onPressed: state._deleteSourceModel,
+                          child: Text('Delete Source Model'),
+                        ),
+                      ),
+                      Flexible(
+                        child: PlatformElevatedButton(
+                          onPressed: state._deleteTargetModel,
+                          child: Text('Delete Target Model'),
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 20),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Flexible(
+                        child: PlatformElevatedButton(
+                          onPressed: state._isSourceModelDownloaded,
+                          child: Text('Source Downloaded?'),
+                        ),
+                      ),
+                      Flexible(
+                        child: PlatformElevatedButton(
+                          onPressed: state._isTargetModelDownloaded,
+                          child: Text('Target Downloaded?'),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
           );
         },
       ),

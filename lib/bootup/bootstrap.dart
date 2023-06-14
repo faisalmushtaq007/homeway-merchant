@@ -10,6 +10,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/widgets.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:homemakers_merchant/app/app.dart';
+import 'package:homemakers_merchant/bootup/injection_container.dart';
 import 'package:homemakers_merchant/theme/theme_service.dart';
 import 'package:homemakers_merchant/theme/theme_service_hive.dart';
 import 'package:homemakers_merchant/theme/theme_service_prefs.dart';
@@ -109,19 +110,19 @@ Future<void> bootstrap(FutureOr<dynamic> Function() builder) async {
     await AppStartConfig.shared.startApp();
     await builder();
     //final ThemeService themeService = ThemeServicePrefs();
-    final ThemeService themeService = ThemeServiceHive('app_color_scheme_box');
+    //final ThemeService themeService = ThemeServiceHive('app_color_scheme_box');
     // Initialize the theme service.
-    await themeService.init();
+    //await themeService.init();
     // Create a ThemeController that uses the ThemeService.
-    final ThemeController themeController = ThemeController(themeService);
+    //final ThemeController themeController = ThemeController(themeService);
     // Load preferred theme settings, while the app is loading, before MaterialApp
     // is created, this prevents a theme change when the app is first displayed.
-    await themeController.loadAll();
+    //await themeController.loadAll();
     // Only use Google fonts via asset provided fonts.
     GoogleFonts.config.allowRuntimeFetching = true;
     runApp(
       App(
-        themeController: themeController,
+        themeController: serviceLocator<ThemeController>(),
       ),
     );
     // Remove splash screen when bootstrap is complete

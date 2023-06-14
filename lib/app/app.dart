@@ -51,6 +51,7 @@ class _AppState extends State<App> with GetItStateMixin {
     final UserModelStorageController initUserModelStorageController =
         get<UserModelStorageController>();
     final LanguageController initLanguageController = get<LanguageController>();
+    final ThemeController initThemeController = get<ThemeController>();
 
     final permissionController =
         watchOnly((PermissionController controller) => controller);
@@ -58,6 +59,8 @@ class _AppState extends State<App> with GetItStateMixin {
         watchOnly((UserModelStorageController controller) => controller);
     final languageController =
         watchOnly((LanguageController controller) => controller);
+    final themeController =
+        watchOnly((ThemeController controller) => controller);
 
     return MultiBlocProvider(
       providers: [
@@ -68,14 +71,14 @@ class _AppState extends State<App> with GetItStateMixin {
       ],
       child: MultiListenableBuilder(
         listenables: [
-          widget.themeController,
+          themeController,
           permissionController,
           userModelStorageController,
           languageController,
         ],
         builder: (BuildContext context, Widget? child) {
-          final materialLightTheme = flexThemeLight(widget.themeController);
-          final materialDarkTheme = flexThemeDark(widget.themeController);
+          final materialLightTheme = flexThemeLight(themeController);
+          final materialDarkTheme = flexThemeDark(themeController);
 
           const darkDefaultCupertinoTheme =
               CupertinoThemeData(brightness: Brightness.dark);
@@ -121,7 +124,7 @@ class _AppState extends State<App> with GetItStateMixin {
                     iosUseZeroPaddingForAppbarPlatformIcon: true,
                   ),
                   builder: (context) => PlatformTheme(
-                    themeMode: widget.themeController.themeMode,
+                    themeMode: themeController.themeMode,
                     materialLightTheme: materialLightTheme,
                     materialDarkTheme: materialDarkTheme,
                     cupertinoLightTheme: cupertinoLightTheme,
