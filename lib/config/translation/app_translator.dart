@@ -216,34 +216,30 @@ class AppTranslator {
     TranslateLanguage? targetLanguage,
     bool returnJSON = false,
   }) async {
-    final result = await _lock.synchronized(() async {
-      // Identify the language of text
-/*      var identifiedSourceLanguage = sourceTranslateLanguage;
-      await AppTranslator.instance.identifyLanguage(text, (language) {
-        log('translate: Identify Language ${language}');
-        if (language.contains('en')) {
-          identifiedSourceLanguage = TranslateLanguage.english;
-        } else if (language.contains('ar')) {
-          identifiedSourceLanguage = TranslateLanguage.arabic;
-        } else {
-          identifiedSourceLanguage = TranslateLanguage.values.firstWhere(
-            (element) => element.bcpCode == language,
-            orElse: () =>
-                serviceLocator<LanguageController>().sourceTranslateLanguage,
-          );
-        }
-      });*/
-      // Execute the translation process
-      final executeTranslate = await _executeTranslate(
-        text,
-        cache: cache,
-        startingLanguage: startingLanguage,
-        targetLanguage: targetLanguage,
-        returnJSON: returnJSON,
-      );
-      return executeTranslate;
+    var identifiedSourceLanguage = sourceTranslateLanguage;
+    await AppTranslator.instance.identifyLanguage(text, (language) {
+      log('translate: Identify Language ${language}');
+      if (language.contains('en')) {
+        identifiedSourceLanguage = TranslateLanguage.english;
+      } else if (language.contains('ar')) {
+        identifiedSourceLanguage = TranslateLanguage.arabic;
+      } else {
+        identifiedSourceLanguage = TranslateLanguage.values.firstWhere(
+          (element) => element.bcpCode == language,
+          orElse: () =>
+              serviceLocator<LanguageController>().sourceTranslateLanguage,
+        );
+      }
     });
-    return result;
+    // Execute the translation process
+    final executeTranslate = await _executeTranslate(
+      text,
+      cache: cache,
+      startingLanguage: identifiedSourceLanguage,
+      targetLanguage: targetLanguage,
+      returnJSON: returnJSON,
+    );
+    return executeTranslate;
   }
 
   Future<String> autoDetectTranslate(
