@@ -352,7 +352,7 @@ class _LoginPageView extends WidgetView<LoginPage, _LoginPageController> {
                               height: 32,
                               child: ClipOval(
                                 child: serviceLocator<LanguageController>()
-                                    .sourceApplanguage
+                                    .targetAppLanguage
                                     .image
                                     .svg(
                                       height: 32,

@@ -293,7 +293,6 @@ class LanguageController with ChangeNotifier {
 
   void set(List<String> translation) {
     this._translation?.addAll(translation);
-    appLog.d('Length of _translation ${_translation.length}');
     _translated.addEntries(
       translation
           .where((element) => !_translated.keys.contains(translation))
@@ -309,7 +308,6 @@ class LanguageController with ChangeNotifier {
           _translated[_translated.keys.elementAt(i)]!,
           cache: useCache,
         );
-        appLog.d('Run ${_translated[_translated.keys.elementAt(i)]}');
         _percentage = i / _translated.length;
         //notifyListeners();
       }
