@@ -11,6 +11,38 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter/services.dart';
 
+class $AssetsImageGen {
+  const $AssetsImageGen();
+
+  /// File path: assets/image/merchant_onboarding_01.png
+  AssetGenImage get merchantOnboarding01 =>
+      const AssetGenImage('assets/image/merchant_onboarding_01.png');
+
+  /// File path: assets/image/merchant_onboarding_02.png
+  AssetGenImage get merchantOnboarding02 =>
+      const AssetGenImage('assets/image/merchant_onboarding_02.png');
+
+  /// File path: assets/image/merchant_onboarding_03.png
+  AssetGenImage get merchantOnboarding03 =>
+      const AssetGenImage('assets/image/merchant_onboarding_03.png');
+
+  /// File path: assets/image/merchant_onboarding_04.png
+  AssetGenImage get merchantOnboarding04 =>
+      const AssetGenImage('assets/image/merchant_onboarding_04.png');
+
+  /// File path: assets/image/splash.png
+  AssetGenImage get splash => const AssetGenImage('assets/image/splash.png');
+
+  /// List of all assets
+  List<AssetGenImage> get values => [
+        merchantOnboarding01,
+        merchantOnboarding02,
+        merchantOnboarding03,
+        merchantOnboarding04,
+        splash
+      ];
+}
+
 class $AssetsSvgGen {
   const $AssetsSvgGen();
 
@@ -36,6 +68,7 @@ class $AssetsSvgFlagsGen {
 class Assets {
   Assets._();
 
+  static const $AssetsImageGen image = $AssetsImageGen();
   static const $AssetsSvgGen svg = $AssetsSvgGen();
 }
 

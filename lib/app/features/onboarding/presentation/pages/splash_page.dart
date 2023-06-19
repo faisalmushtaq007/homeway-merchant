@@ -39,13 +39,7 @@ class _PageView extends WidgetView<SplashPage, _SplashPageViewController> {
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: FlexColorScheme.themedSystemNavigationBar(
         context,
-        // You can use a top divider on the navigation bar, but it does
-        // add an extra scrim, which becomes visible when using bars with
-        // opacity or fully transparent.
         useDivider: false,
-        // You can set opacity on the Android system navigation bar, this will
-        // result in content being visible behind it if Scaffold uses
-        // extendBody.
         opacity: 0.60,
       ),
       child: PageBody(

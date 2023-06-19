@@ -70,9 +70,9 @@ class AppTranslator {
     required LanguageController languageController,
   }) async {
     sourceTranslateLanguage =
-        sourceLanguage ?? languageController.targetTranslateLanguage;
+        sourceLanguage ?? languageController.sourceTranslateLanguage;
     targetTranslateLanguage =
-        targetLanguage ?? languageController.sourceTranslateLanguage;
+        targetLanguage ?? languageController.targetTranslateLanguage;
     this.sourceAppLanguage = languageController.sourceApplanguage;
     this.targetAppLanguage = languageController.targetAppLanguage;
     onDeviceTranslator = OnDeviceTranslator(
@@ -216,7 +216,7 @@ class AppTranslator {
     TranslateLanguage? targetLanguage,
     bool returnJSON = false,
   }) async {
-    var identifiedSourceLanguage = sourceTranslateLanguage;
+    /*var identifiedSourceLanguage = sourceTranslateLanguage;
     await AppTranslator.instance.identifyLanguage(text, (language) {
       log('translate: Identify Language ${language}');
       if (language.contains('en')) {
@@ -230,12 +230,12 @@ class AppTranslator {
               serviceLocator<LanguageController>().sourceTranslateLanguage,
         );
       }
-    });
+    });*/
     // Execute the translation process
     final executeTranslate = await _executeTranslate(
       text,
       cache: cache,
-      startingLanguage: identifiedSourceLanguage,
+      startingLanguage: sourceTranslateLanguage,
       targetLanguage: targetLanguage,
       returnJSON: returnJSON,
     );
@@ -252,7 +252,6 @@ class AppTranslator {
       // Identify the language of text
       var identifiedSourceLanguage = TranslateLanguage.english;
       await AppTranslator.instance.identifyLanguage(text, (language) {
-        log('autoDetectTranslate: Identify Language ${language}');
         if (language.contains('en')) {
           identifiedSourceLanguage = TranslateLanguage.english;
         } else if (language.contains('ar')) {

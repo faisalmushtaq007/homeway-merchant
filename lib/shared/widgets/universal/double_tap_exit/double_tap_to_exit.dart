@@ -1,3 +1,5 @@
+library double_tap_to_exit;
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 

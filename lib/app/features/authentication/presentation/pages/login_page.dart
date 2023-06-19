@@ -194,7 +194,7 @@ class _LoginPageController extends State<LoginPage> {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Text(
+                  const Text(
                     'Choose Preferred Language',
                   ).translate(),
                   const SizedBox(height: 16),

@@ -5,6 +5,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:google_mlkit_translation/google_mlkit_translation.dart';
+import 'package:homemakers_merchant/app/features/authentication/presentation/manager/otp_verification/otp_verification_bloc.dart';
+import 'package:homemakers_merchant/app/features/authentication/presentation/manager/phone_number_verification_bloc.dart';
 import 'package:homemakers_merchant/app/features/authentication/presentation/pages/login_page.dart';
 import 'package:homemakers_merchant/app/features/onboarding/presentation/pages/splash_page.dart';
 import 'package:homemakers_merchant/app/features/profile/domain/entities/user_model.dart';
@@ -20,15 +22,18 @@ import 'package:homemakers_merchant/core/constants/global_app_constants.dart';
 import 'package:homemakers_merchant/core/service/connectivity_bloc/connectivity_bloc.dart';
 import 'package:homemakers_merchant/core/service/connectivity_bloc/src/widget/connectivity_app_wrapper.dart';
 import 'package:homemakers_merchant/bootup/injection_container.dart';
-import 'package:homemakers_merchant/counter/counter.dart';
 import 'package:homemakers_merchant/l10n/l10n.dart';
+import 'package:homemakers_merchant/shared/router/app_pages.dart';
 import 'package:homemakers_merchant/shared/widgets/app/activity_indicator.dart';
 import 'package:homemakers_merchant/shared/widgets/universal/async_builder/async_builder.dart';
+import 'package:homemakers_merchant/shared/widgets/universal/double_tap_exit/double_tap_to_exit.dart';
+import 'package:homemakers_merchant/shared/widgets/universal/phone_number_text_field/phone_form_field_bloc.dart';
 import 'package:homemakers_merchant/theme/flex_theme_dark.dart';
 import 'package:homemakers_merchant/theme/flex_theme_light.dart';
 import 'package:homemakers_merchant/theme/theme_code.dart';
 import 'package:homemakers_merchant/theme/theme_controller.dart';
 import 'package:homemakers_merchant/utils/multi/multi_listenable_buillder.dart';
+import 'package:phone_form_field/phone_form_field.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 import 'package:get_it_mixin/get_it_mixin.dart';
 
@@ -66,6 +71,18 @@ class _AppState extends State<App> with GetItStateMixin {
       providers: [
         BlocProvider<ConnectivityBloc>(
           key: const Key('connectivity_bloc_provider'),
+          create: (context) => serviceLocator(),
+        ),
+        BlocProvider<PhoneFormFieldBloc>(
+          key: const Key('phone_form_field_bloc_provider'),
+          create: (context) => serviceLocator(),
+        ),
+        BlocProvider<PhoneNumberVerificationBloc>(
+          key: const Key('phone_number_verification_bloc_provider'),
+          create: (context) => serviceLocator(),
+        ),
+        BlocProvider<OtpVerificationBloc>(
+          key: const Key('otp_verification_bloc_provider'),
           create: (context) => serviceLocator(),
         ),
       ],
@@ -107,17 +124,20 @@ class _AppState extends State<App> with GetItStateMixin {
           );
           final cupertinoDarkTheme =
               MaterialBasedCupertinoThemeData(materialTheme: materialDarkTheme);
+          // Connectivity app wrapper
           return ConnectivityAppWrapper(
             showNetworkUpdates: true,
             persistNoInternetNotification: false,
             bottomInternetNotificationPadding: 16.0,
             disableInteraction: true,
+            // Language app wrapper
             child: LanguageAppWrapper(
               builder: (
                 BuildContext context,
                 Map<TranslateLanguage, Language> allLanguages,
                 Map<TranslateLanguage, Language> arabicLanguages,
               ) {
+                // Platform provider
                 return PlatformProvider(
                   settings: PlatformSettingsData(
                     iosUsesMaterialWidgets: true,
@@ -133,7 +153,7 @@ class _AppState extends State<App> with GetItStateMixin {
                     onThemeModeChanged: (themeMode) {
                       //this.themeMode = themeMode; /* you can save to storage */
                     },
-                    builder: (context) => PlatformApp(
+                    builder: (context) => PlatformApp.router(
                       debugShowCheckedModeBanner: false,
                       title: 'Merchant',
                       // Providing a restorationScopeId allows the Navigator built by the
@@ -150,6 +170,7 @@ class _AppState extends State<App> with GetItStateMixin {
                         GlobalMaterialLocalizations.delegate,
                         GlobalWidgetsLocalizations.delegate,
                         GlobalCupertinoLocalizations.delegate,
+                        PhoneFieldLocalization.delegate
                       ],
                       locale: languageController.targetAppLanguage.value,
                       supportedLocales: AppLocalizations.supportedLocales,
@@ -224,29 +245,10 @@ class _AppState extends State<App> with GetItStateMixin {
                           ),
                         ],
                       ),
-                      home: GestureDetector(
-                        // This allows us to un-focus a widget, typically a TextField
-                        // with focus by tapping somewhere outside it. It is no longer
-                        // needed on desktop builds, it is done automatically there for
-                        // TextField, but not on tablet and phone app. In this app we
-                        // want it on them too and to unfocus other widgets with focus
-                        // on desktop too.
-                        onTap: () => FocusScope.of(context).unfocus(),
-                        // Pass the controller to the HomePage where we use it to change
-                        // the theme settings that will cause themes above to change and
-                        // rebuild the entire look of the app based on modified theme.
-                        //
-                        // There are more than 250 properties in the controller that can
-                        // be used to control the two light and dark mode themes.
-                        // Every time one of them is modified, the themed app is rebuilt
-                        // with the new ThemeData applied.
-                        // The code that one need to use the same theme is also updated
-                        // interactively for each change when the cod gent panel is
-                        // in view.
-                        child: LoginPage(
-                          key: Key('login-page'),
-                        ),
-                      ),
+                      routerConfig: AppRouter.router,
+                      //routeInformationParser: AppPages.router.routeInformationParser,
+                      //routerDelegate: AppPages.router.routerDelegate,
+                      //routeInformationProvider: AppRouter.router.routeInformationProvider,
                     ),
                   ),
                 );

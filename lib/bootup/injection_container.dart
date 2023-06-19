@@ -1,4 +1,6 @@
 import 'package:get_it/get_it.dart';
+import 'package:homemakers_merchant/app/features/authentication/presentation/manager/otp_verification/otp_verification_bloc.dart';
+import 'package:homemakers_merchant/app/features/authentication/presentation/manager/phone_number_verification_bloc.dart';
 import 'package:homemakers_merchant/app/features/profile/data/local/data_sources/local_usermodel_service.dart';
 import 'package:homemakers_merchant/app/features/profile/domain/entities/user_model.dart';
 import 'package:homemakers_merchant/app/features/profile/presentation/manager/user_model_storage_controller.dart';
@@ -17,6 +19,7 @@ import 'package:homemakers_merchant/core/network/http/base_response_error_model.
 import 'package:homemakers_merchant/core/network/http/interceptor/token/fresh_token_interceptor.dart';
 import 'package:homemakers_merchant/core/service/connectivity_bloc/connectivity_bloc.dart';
 import 'package:homemakers_merchant/core/service/connectivity_bloc/src/connectivity_bloc/connectivity_service.dart';
+import 'package:homemakers_merchant/shared/widgets/universal/phone_number_text_field/phone_form_field_bloc.dart';
 import 'package:homemakers_merchant/theme/theme_controller.dart';
 import 'package:homemakers_merchant/theme/theme_service.dart';
 import 'package:homemakers_merchant/theme/theme_service_hive.dart';
@@ -97,9 +100,7 @@ Future<void> _setUpAppSetting() async {
     translateApi,
   );
   // TranslateApi init
-  await translateApi.init(
-      sourceLanguage: GlobalApp.defaultSourceTranslateLanguage,
-      targetLanguage: GlobalApp.defaultSourceTranslateLanguage);
+  //await translateApi.init(sourceLanguage: GlobalApp.defaultSourceTranslateLanguage, targetLanguage: GlobalApp.defaultSourceTranslateLanguage);
   // Multiple language download
   final MultipleLanguageDownload multipleLanguageDownload =
       MultipleLanguageDownload(
@@ -152,4 +153,11 @@ void _setUpRepository() {}
 
 void _setUpStateManagement() {
   serviceLocator.registerFactory<ConnectivityBloc>(ConnectivityBloc.new);
+  serviceLocator.registerFactory<PhoneFormFieldBloc>(PhoneFormFieldBloc.new);
+  serviceLocator.registerFactory<PhoneNumberVerificationBloc>(
+    () => PhoneNumberVerificationBloc(
+      phoneFormFieldBloc: serviceLocator(),
+    ),
+  );
+  serviceLocator.registerFactory<OtpVerificationBloc>(OtpVerificationBloc.new);
 }

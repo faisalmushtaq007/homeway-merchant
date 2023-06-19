@@ -1,0 +1,32 @@
+part of 'phone_number_verification_bloc.dart';
+
+@freezed
+class PhoneNumberVerificationEvent with _$PhoneNumberVerificationEvent {
+  const factory PhoneNumberVerificationEvent.started() = _Started;
+
+  const factory PhoneNumberVerificationEvent.phoneNumberChanged({
+    required String phoneNumber,
+    required String countryDialCode,
+    required String country,
+    PhoneNumberInputValidator? phoneNumberInputValidator,
+    String? phoneValidation,
+    PhoneNumber? enteredPhoneNumber,
+  }) = PhoneNumberChanged;
+
+  const factory PhoneNumberVerificationEvent.verifyPhoneNumber({
+    required String phoneNumber,
+    required String countryDialCode,
+    required String country,
+  }) = VerifyPhoneNumber;
+
+  const factory PhoneNumberVerificationEvent.validatePhoneNumber({
+    required String phoneNumber,
+    required String countryDialCode,
+    required String country,
+    PhoneNumberInputValidator? phoneNumberInputValidator,
+    String? phoneValidation,
+    PhoneNumber? enteredPhoneNumber,
+    @Default(PhoneNumberVerification.none)
+    PhoneNumberVerification phoneNumberVerification,
+  }) = ValidatePhoneNumber;
+}

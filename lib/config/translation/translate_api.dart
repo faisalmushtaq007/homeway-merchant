@@ -1001,7 +1001,7 @@ extension Translate on String {
   /// the String
   /// This method takes no time when calling it with the default Locale
   /// because then it just returns the String you called it on
-  Future<String> tr() async {
+  Future<String> trans() async {
     if (TranslateApi.instance.activeLocale ==
         TranslateApi.instance.defaultLocation) {
       return Future.value(this);

@@ -198,6 +198,7 @@ class LanguageController with ChangeNotifier {
     AppTranslator.instance.changeTargetTranslateLanguage(language);
     _targetLanguage = language.sourceLanguage;
     setTargetLanguage(language);
+    setTargetTranslateLanguage(language.sourceLanguage);
     notifyListeners();
   }
 
@@ -230,7 +231,7 @@ class LanguageController with ChangeNotifier {
     if (value == _targetAppLanguage) return;
     _targetAppLanguage = value;
     if (notify) notifyListeners();
-    unawaited(_languageService.save(GlobalApp.keyLanguage, value));
+    unawaited(_languageService.save(GlobalApp.keyTargetAppLanguage, value));
   }
 
   // App Locale

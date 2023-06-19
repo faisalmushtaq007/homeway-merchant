@@ -8,6 +8,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/widgets.dart';
+import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:homemakers_merchant/app/app.dart';
 import 'package:homemakers_merchant/bootup/injection_container.dart';
@@ -120,6 +121,7 @@ Future<void> bootstrap(FutureOr<dynamic> Function() builder) async {
     //await themeController.loadAll();
     // Only use Google fonts via asset provided fonts.
     GoogleFonts.config.allowRuntimeFetching = true;
+    GoRouter.optionURLReflectsImperativeAPIs = true;
     runApp(
       App(
         themeController: serviceLocator<ThemeController>(),
