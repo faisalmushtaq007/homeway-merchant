@@ -46,6 +46,7 @@ abstract class Routes {
   static const String UPLOAD_IDENTITY_PAGE = _Paths.UPLOAD_IDENTITY_PAGE;
   static const String AUTH_PHONE_NUMBER_VERIFICATION =
       _Paths.AUTH_PHONE_NUMBER_VERIFICATION;
+  static const String AUTH_OTP_VERIFICATION = _Paths.AUTH_OTP_VERIFICATION;
 }
 
 abstract class _Paths {
@@ -91,4 +92,5 @@ abstract class _Paths {
   static const String UPLOAD_IDENTITY_PAGE = '/upload-vendor-identity';
   static const String AUTH_PHONE_NUMBER_VERIFICATION =
       '/auth-phone-number-verification-page';
+  static const String AUTH_OTP_VERIFICATION = '/auth-otp-verification-page';
 }

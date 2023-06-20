@@ -7,17 +7,28 @@ class PhoneNumberVerificationState with _$PhoneNumberVerificationState {
           PhoneNumberVerification phoneNumberVerification}) =
       PhoneNumberVerificationInitialState;
 
-  const factory PhoneNumberVerificationState.success(
-      {@Default(PhoneNumberVerification.otpSent)
-      PhoneNumberVerification phoneNumberVerification,
-      required String phoneNumber,
-      required String countryDialCode,
-      required String country}) = PhoneNumberVerificationSuccessState;
+  const factory PhoneNumberVerificationState.success({
+    @Default(PhoneNumberVerification.otpSent)
+    PhoneNumberVerification phoneNumberVerification,
+    required String phoneNumber,
+    required String countryDialCode,
+    required String country,
+    required PhoneController phoneController,
+    @Default(
+      AsyncBtnState.success,
+    )
+    AsyncBtnState asyncBtnState,
+  }) = PhoneNumberVerificationSuccessState;
 
-  const factory PhoneNumberVerificationState.error(
-      {@Default(PhoneNumberVerification.error)
-      PhoneNumberVerification phoneNumberVerification,
-      required String reason}) = PhoneNumberVerificationErrorState;
+  const factory PhoneNumberVerificationState.error({
+    @Default(PhoneNumberVerification.error)
+    PhoneNumberVerification phoneNumberVerification,
+    required String reason,
+    @Default(
+      AsyncBtnState.failure,
+    )
+    AsyncBtnState asyncBtnState,
+  }) = PhoneNumberVerificationErrorState;
 
   const factory PhoneNumberVerificationState.loading() =
       PhoneNumberVerificationLoadingState;
@@ -25,26 +36,28 @@ class PhoneNumberVerificationState with _$PhoneNumberVerificationState {
   const factory PhoneNumberVerificationState.processing() =
       PhoneNumberVerificationProcessingState;
 
-  const factory PhoneNumberVerificationState.valid(
-          {@Default(PhoneNumberVerification.valid)
-          PhoneNumberVerification phoneNumberVerification}) =
-      PhoneNumberVerificationValidState;
+  const factory PhoneNumberVerificationState.valid({
+    @Default(PhoneNumberVerification.valid)
+    PhoneNumberVerification phoneNumberVerification,
+  }) = PhoneNumberVerificationValidState;
 
   const factory PhoneNumberVerificationState.invalid(
       {@Default(PhoneNumberVerification.invalid)
       PhoneNumberVerification phoneNumberVerification,
       required String reason}) = PhoneNumberVerificationInvalidState;
 
-  const factory PhoneNumberVerificationState.validatePhoneNumber(
-          {required String phoneNumber,
-          required String countryDialCode,
-          required String country,
-          PhoneNumberInputValidator? phoneNumberInputValidator,
-          String? phoneValidation,
-          PhoneNumber? enteredPhoneNumber,
-          @Default(PhoneNumberVerification.none)
-          PhoneNumberVerification phoneNumberVerification}) =
-      PhoneNumberVerificationValidatePhoneNumber;
+  const factory PhoneNumberVerificationState.validatePhoneNumber({
+    required String phoneNumber,
+    required String countryDialCode,
+    required String country,
+    PhoneNumberInputValidator? phoneNumberInputValidator,
+    String? phoneValidation,
+    PhoneNumber? enteredPhoneNumber,
+    @Default(PhoneNumberVerification.none)
+    PhoneNumberVerification phoneNumberVerification,
+    required PhoneController phoneController,
+  }) = PhoneNumberVerificationValidatePhoneNumber;
+
   const factory PhoneNumberVerificationState.phoneNumberChanged({
     required String phoneNumber,
     required String countryDialCode,
@@ -52,5 +65,6 @@ class PhoneNumberVerificationState with _$PhoneNumberVerificationState {
     PhoneNumberInputValidator? phoneNumberInputValidator,
     String? phoneValidation,
     PhoneNumber? enteredPhoneNumber,
+    required PhoneController phoneController,
   }) = PhoneNumberVerificationPhoneNumberChanged;
 }

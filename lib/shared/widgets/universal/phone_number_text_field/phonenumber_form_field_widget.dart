@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:homemakers_merchant/app/features/authentication/presentation/manager/phone_number_verification_bloc.dart';
 import 'package:homemakers_merchant/app/features/authentication/presentation/pages/phone_number_verification_page.dart';
 import 'package:homemakers_merchant/shared/widgets/universal/phone_number_text_field/phone_form_field_bloc.dart';
+import 'package:homemakers_merchant/utils/app_log.dart';
 import 'package:phone_form_field/phone_form_field.dart';
 
 class PhoneNumberFieldWidget extends StatefulWidget {
@@ -117,58 +119,111 @@ class _PhoneNumberFieldWidgetState extends State<PhoneNumberFieldWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return AutofillGroup(
-      child: Directionality(
-        textDirection: widget.useRtl ? TextDirection.rtl : TextDirection.ltr,
-        child: PhoneFormField(
-          key: phoneKey,
-          controller: controller,
-          //initialValue: initialPhoneNumberValue,
-          shouldFormat: widget.shouldFormat && !widget.useRtl,
-          autofocus: widget.autofocus,
-          focusNode: phoneNumberFocusNode,
-          autofillHints: const [AutofillHints.telephoneNumber],
-          countrySelectorNavigator: widget.selectorNavigator,
-          defaultCountry: defaultCountry,
-          decoration: widget.decoration ??
-              InputDecoration(
-                label: widget.withLabel ? const Text('Phone') : null,
-                border: widget.outlineBorder
-                    ? const OutlineInputBorder()
-                    : const UnderlineInputBorder(),
-                hintText: widget.withLabel ? '' : 'Phone',
-                errorText: phoneValidation,
-              ),
-          enabled: widget.enabled,
-          showFlagInInput: widget.showFlagInInput,
-          validator: (PhoneNumber? phoneNumber) {
-            final result = widget.validator ??
-                getValidator(isAllowEmpty: widget.isAllowEmpty);
-            phoneValidation = result?.call(phoneNumber);
-            context.read<PhoneFormFieldBloc>().add(
-                  PhoneFormFieldValidate(
-                    phoneNumberInputValidator: result,
+    return BlocBuilder<PhoneFormFieldBloc, PhoneNumberFormFieldState>(
+      bloc: context.read<PhoneFormFieldBloc>(),
+      buildWhen: (previous, current) => previous != current,
+      builder: (context, state) {
+        state.maybeWhen(
+          orElse: () {},
+          validate: (isAllowEmpty, mobileOnly, phoneNumberInputValidator,
+              phoneValidation, phoneController, phoneNumber) {
+            PhoneNumberVerification phoneNumberVerification =
+                PhoneNumberVerification.none;
+            if (phoneValidation != null && phoneValidation.isNotEmpty) {
+              phoneNumberVerification = PhoneNumberVerification.invalid;
+            } else {
+              if (phoneValidation == null &&
+                  phoneController.value != null &&
+                  phoneController.value!.getFormattedNsn().trim().isNotEmpty) {
+                phoneNumberVerification = PhoneNumberVerification.valid;
+              } else {
+                phoneNumberVerification = PhoneNumberVerification.none;
+              }
+            }
+            context.read<PhoneNumberVerificationBloc>().add(
+                  ValidatePhoneNumber(
+                    phoneNumber:
+                        '+${phoneController?.value?.countryCode} ${phoneController?.value?.getFormattedNsn().trim()}',
+                    countryDialCode:
+                        '+${phoneController?.value?.countryCode ?? '+966'}',
+                    country: phoneController?.value?.isoCode.name ?? 'SA',
                     phoneValidation: phoneValidation,
-                    phoneController: controller,
+                    phoneNumberInputValidator: phoneNumberInputValidator,
+                    enteredPhoneNumber: phoneNumber,
+                    phoneNumberVerification: phoneNumberVerification,
+                    phoneController: phoneController,
                   ),
                 );
-            return phoneValidation;
           },
-          autovalidateMode:
-              widget.autovalidateMode ?? AutovalidateMode.onUserInteraction,
-          cursorColor: Theme.of(context).colorScheme.primary,
-          onSaved: (PhoneNumber? p) => context.read<PhoneFormFieldBloc>().add(
-                PhoneFormFieldOnSave(phoneNumber: p, controller: controller),
-              ),
-          onChanged: (PhoneNumber? p) => context.read<PhoneFormFieldBloc>().add(
-                PhoneFormFieldOnChange(phoneNumber: p, controller: controller),
-              ),
-          //print('changed $p'),
-          isCountryChipPersistent: widget.isCountryChipPersistent,
-          style: widget.style,
-          countryCodeStyle: widget.countryCodeStyle,
-        ),
-      ),
+          onChange: (phoneNumber, controller) {
+            context.read<PhoneNumberVerificationBloc>().add(
+                  PhoneNumberChanged(
+                    phoneNumber:
+                        '+${controller?.value?.countryCode} ${controller?.value?.getFormattedNsn().trim()}',
+                    countryDialCode:
+                        '+${controller?.value?.countryCode ?? '+966'}',
+                    country: controller?.value?.isoCode.name ?? 'SA',
+                    enteredPhoneNumber: phoneNumber,
+                    phoneController: controller!,
+                  ),
+                );
+          },
+        );
+        return AutofillGroup(
+          child: Directionality(
+            textDirection:
+                widget.useRtl ? TextDirection.rtl : TextDirection.ltr,
+            child: PhoneFormField(
+              key: phoneKey,
+              controller: controller,
+              //initialValue: initialPhoneNumberValue,
+              shouldFormat: widget.shouldFormat && !widget.useRtl,
+              autofocus: widget.autofocus,
+              focusNode: phoneNumberFocusNode,
+              autofillHints: const [AutofillHints.telephoneNumber],
+              countrySelectorNavigator: widget.selectorNavigator,
+              defaultCountry: defaultCountry,
+              decoration: widget.decoration ??
+                  InputDecoration(
+                    label: widget.withLabel ? const Text('Phone') : null,
+                    border: widget.outlineBorder
+                        ? const OutlineInputBorder()
+                        : const UnderlineInputBorder(),
+                    hintText: widget.withLabel ? '' : 'Phone',
+                    errorText: phoneValidation,
+                  ),
+              enabled: widget.enabled,
+              showFlagInInput: widget.showFlagInInput,
+              validator: (PhoneNumber? phoneNumber) {
+                final result = widget.validator ??
+                    getValidator(isAllowEmpty: widget.isAllowEmpty);
+                phoneValidation = result?.call(phoneNumber);
+                context.read<PhoneFormFieldBloc>().add(
+                      PhoneFormFieldValidate(
+                        phoneNumberInputValidator: result,
+                        phoneValidation: phoneValidation,
+                        phoneController: controller,
+                      ),
+                    );
+                return phoneValidation;
+              },
+              autovalidateMode:
+                  widget.autovalidateMode ?? AutovalidateMode.onUserInteraction,
+              cursorColor: Theme.of(context).colorScheme.primary,
+              onSaved: (PhoneNumber? p) {
+                //return context.read<PhoneFormFieldBloc>().add(PhoneFormFieldOnSave(phoneNumber: p, controller: controller),);
+              },
+              onChanged: (PhoneNumber? p) {
+                //return context.read<PhoneFormFieldBloc>().add(PhoneFormFieldOnChange(phoneNumber: p, controller: controller),);
+              },
+              //print('changed $p'),
+              isCountryChipPersistent: widget.isCountryChipPersistent,
+              style: widget.style,
+              countryCodeStyle: widget.countryCodeStyle,
+            ),
+          ),
+        );
+      },
     );
   }
 }

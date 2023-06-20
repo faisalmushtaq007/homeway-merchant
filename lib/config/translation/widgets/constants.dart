@@ -9,7 +9,7 @@ const EdgeInsetsGeometry defaultPadding = EdgeInsets.all(8);
 
 ///default message
 const String disconnectedMessage =
-    'Please connect to an active internet connection!';
+    'Please install default language of app arabic and english';
 
 ///default message Style
 const TextStyle defaultMessageStyle = TextStyle(
