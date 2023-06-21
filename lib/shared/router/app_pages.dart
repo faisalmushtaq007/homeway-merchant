@@ -11,6 +11,7 @@ import 'package:homemakers_merchant/app/features/authentication/presentation/pag
 import 'package:homemakers_merchant/app/features/authentication/presentation/pages/terms_and_conditions_view.dart';
 import 'package:homemakers_merchant/app/features/onboarding/presentation/pages/onboarding_page.dart';
 import 'package:homemakers_merchant/app/features/onboarding/presentation/pages/splash_page.dart';
+import 'package:homemakers_merchant/app/features/profile/presentation/pages/create_business_profile_page.dart';
 
 part 'app_routes.dart';
 
@@ -22,7 +23,7 @@ class AppRouter {
 
   AppRouter._();
 
-  static const String INITIAL = Routes.AUTH_PHONE_NUMBER_VERIFICATION;
+  static const String INITIAL = Routes.CREATE_BUSINESS_PROFILE_PAGE;
 
   static final GoRouter _router = GoRouter(
     debugLogDiagnostics: true,
@@ -62,6 +63,10 @@ class AppRouter {
       GoRoute(
         path: Routes.ABOUT_US,
         builder: (context, state) => const AboutUsPage(),
+      ),
+      GoRoute(
+        path: Routes.CREATE_BUSINESS_PROFILE_PAGE,
+        builder: (context, state) => const CreateBusinessProfilePage(),
       ),
     ],
   );

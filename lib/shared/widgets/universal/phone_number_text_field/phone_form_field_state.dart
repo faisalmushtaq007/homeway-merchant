@@ -12,6 +12,11 @@ class PhoneNumberFormFieldState with _$PhoneNumberFormFieldState {
     String? phoneValidation,
     required PhoneController phoneController,
     PhoneNumber? phoneNumber,
+    @Default(PhoneNumberVerification.none)
+    PhoneNumberVerification phoneNumberVerification,
+    @Default('') String userEnteredPhoneNumber,
+    @Default('+966') String countryDialCode,
+    @Default('SA') String country,
   }) = PhoneNumberFormFieldStateValidate;
 
   const factory PhoneNumberFormFieldState.onChange(
@@ -21,4 +26,7 @@ class PhoneNumberFormFieldState with _$PhoneNumberFormFieldState {
   const factory PhoneNumberFormFieldState.onSave(
       {PhoneNumber? phoneNumber,
       PhoneController? controller}) = PhoneNumberFormFieldStateOnSave;
+  const factory PhoneNumberFormFieldState.setPhoneNumber(
+          String userPhoneNumber, String countryDialCode, String country) =
+      PhoneNumberFormFieldStateSetPhoneNumber;
 }

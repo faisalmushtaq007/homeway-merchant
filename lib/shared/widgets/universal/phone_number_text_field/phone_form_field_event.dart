@@ -20,4 +20,7 @@ class PhoneFormFieldEvent with _$PhoneFormFieldEvent {
   const factory PhoneFormFieldEvent.onSave(
       {PhoneNumber? phoneNumber,
       PhoneController? controller}) = PhoneFormFieldOnSave;
+  const factory PhoneFormFieldEvent.setPhoneNumber(
+          String userPhoneNumber, String countryDialCode, String country) =
+      PhoneFormFieldSetPhoneNumber;
 }

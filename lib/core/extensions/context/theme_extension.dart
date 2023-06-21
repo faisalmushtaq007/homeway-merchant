@@ -6,6 +6,9 @@ extension ThemeExt on BuildContext {
   /// performs a simple [Theme.of(context)] action and returns given [result]
   ThemeData get theme => Theme.of(this);
   TextTheme get textTheme => Theme.of(this).textTheme;
+  ColorScheme get colorScheme => theme.colorScheme;
+
+  DefaultTextStyle get defaultTextStyle => DefaultTextStyle.of(this);
 
   /// performs a simple [Theme.of(context).primaryTextTheme] action and returns given [primaryTextTheme]
   TextTheme get primaryTextTheme => Theme.of(this).primaryTextTheme;

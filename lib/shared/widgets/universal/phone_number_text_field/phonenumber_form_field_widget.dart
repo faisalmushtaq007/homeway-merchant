@@ -125,9 +125,19 @@ class _PhoneNumberFieldWidgetState extends State<PhoneNumberFieldWidget> {
       builder: (context, state) {
         state.maybeWhen(
           orElse: () {},
-          validate: (isAllowEmpty, mobileOnly, phoneNumberInputValidator,
-              phoneValidation, phoneController, phoneNumber) {
-            PhoneNumberVerification phoneNumberVerification =
+          validate: (
+            isAllowEmpty,
+            mobileOnly,
+            phoneNumberInputValidator,
+            phoneValidation,
+            phoneController,
+            phoneNumber,
+            phoneNumberVerification,
+            userEnteredPhoneNumber,
+            countryDialCode,
+            String country,
+          ) {
+            /*PhoneNumberVerification phoneNumberVerification =
                 PhoneNumberVerification.none;
             if (phoneValidation != null && phoneValidation.isNotEmpty) {
               phoneNumberVerification = PhoneNumberVerification.invalid;
@@ -139,14 +149,14 @@ class _PhoneNumberFieldWidgetState extends State<PhoneNumberFieldWidget> {
               } else {
                 phoneNumberVerification = PhoneNumberVerification.none;
               }
-            }
+            }*/
             context.read<PhoneNumberVerificationBloc>().add(
                   ValidatePhoneNumber(
                     phoneNumber:
-                        '+${phoneController?.value?.countryCode} ${phoneController?.value?.getFormattedNsn().trim()}',
+                        '+${phoneController.value?.countryCode} ${phoneController.value?.getFormattedNsn().trim()}',
                     countryDialCode:
-                        '+${phoneController?.value?.countryCode ?? '+966'}',
-                    country: phoneController?.value?.isoCode.name ?? 'SA',
+                        '+${phoneController.value?.countryCode ?? '+966'}',
+                    country: phoneController.value?.isoCode.name ?? 'SA',
                     phoneValidation: phoneValidation,
                     phoneNumberInputValidator: phoneNumberInputValidator,
                     enteredPhoneNumber: phoneNumber,
@@ -168,6 +178,15 @@ class _PhoneNumberFieldWidgetState extends State<PhoneNumberFieldWidget> {
                   ),
                 );
           },
+          setPhoneNumber: (userPhoneNumber, countryDialCode, country) {
+            initialPhoneNumberValue = PhoneNumber(
+              isoCode: isoCodeNameMap.values.byName(country),
+              nsn: userPhoneNumber,
+            );
+            controller.value = initialPhoneNumberValue;
+            defaultCountry = isoCodeNameMap.values.byName(country);
+            phoneValidation = phoneKey.currentState?.errorText;
+          },
         );
         return AutofillGroup(
           child: Directionality(
@@ -183,14 +202,18 @@ class _PhoneNumberFieldWidgetState extends State<PhoneNumberFieldWidget> {
               autofillHints: const [AutofillHints.telephoneNumber],
               countrySelectorNavigator: widget.selectorNavigator,
               defaultCountry: defaultCountry,
-              decoration: widget.decoration ??
+              decoration: widget.decoration?.copyWith(
+                    suffixIcon: const PhoneNumberValidationIconWidget(),
+                  ) ??
                   InputDecoration(
-                    label: widget.withLabel ? const Text('Phone') : null,
+                    label:
+                        widget.withLabel ? const Text('Mobile number') : null,
                     border: widget.outlineBorder
                         ? const OutlineInputBorder()
                         : const UnderlineInputBorder(),
-                    hintText: widget.withLabel ? '' : 'Phone',
+                    hintText: widget.withLabel ? '' : 'Mobile number',
                     errorText: phoneValidation,
+                    suffixIcon: const PhoneNumberValidationIconWidget(),
                   ),
               enabled: widget.enabled,
               showFlagInInput: widget.showFlagInInput,

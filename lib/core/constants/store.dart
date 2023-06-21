@@ -459,7 +459,7 @@ class Store {
   // Default value for the inputDecoratorSchemeColorLight, reset settings.
   // We use NULL as default, on nullable settings.
   static const SchemeColor? defaultInputDecoratorSchemeColorLight =
-      SchemeColor.primary;
+      SchemeColor.outline;
 
   // Key used to read and save the inputDecoratorSchemeColorDark value.
   static const String keyInputDecoratorSchemeColorDark =
@@ -467,7 +467,7 @@ class Store {
   // Default value for the inputDecoratorSchemeColorDark, reset settings.
   // We use NULL as default, on nullable settings.
   static const SchemeColor? defaultInputDecoratorSchemeColorDark =
-      SchemeColor.primary;
+      SchemeColor.outline;
 
   // Key used to read and save the inputDecoratorBorderSchemeColorLight value.
   static const String keyInputDecoratorBorderSchemeColorLight =
