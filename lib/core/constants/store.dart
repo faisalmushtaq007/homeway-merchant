@@ -337,7 +337,7 @@ class Store {
   // Key used to read and save the useMaterial3 value.
   static const String keyUseMaterial3 = 'useMaterial3';
   // Default value for the useMaterial3, also to reset settings.
-  static const bool defaultUseMaterial3 = true;
+  static const bool defaultUseMaterial3 = false;
 
   // Key used to read and save the useKeyColors value.
   static const String keyUseKeyColors = 'useKeyColors';
@@ -486,7 +486,7 @@ class Store {
   // Key used to read and save the inputDecoratorIsFilled value.
   static const String keyInputDecoratorIsFilled = 'inputDecoratorIsFilled';
   // Default value for the inputDecoratorIsFilled, also used to reset settings.
-  static const bool defaultInputDecoratorIsFilled = true;
+  static const bool defaultInputDecoratorIsFilled = false;
 
   // Key used to read and save the inputDecoratorBackgroundAlphaLight value.
   static const String keyInputDecoratorBackgroundAlphaLight =
@@ -513,7 +513,7 @@ class Store {
       'inputDecoratorBorderRadius';
   // Default value for the inputDecoratorBorderRadius, also to reset settings.
   // We use NULL as default, on nullable settings.
-  static const double? defaultInputDecoratorBorderRadius = null;
+  static const double defaultInputDecoratorBorderRadius = 10.0;
 
   // Key used to read and save the inputDecoratorUnfocusedHasBorder value.
   static const String keyInputDecoratorUnfocusedHasBorder =
@@ -1211,7 +1211,7 @@ class Store {
   // Default value for the elevatedButtonBorderRadius, also used to
   // reset settings.
   // We use NULL as default, on nullable settings.
-  static const double? defaultElevatedButtonBorderRadius = null;
+  static const double defaultElevatedButtonBorderRadius = 10.0;
 
   // Key used to read and save the outlinedButtonSchemeColor value.
   static const String keyOutlinedButtonSchemeColor =

@@ -46,12 +46,11 @@ class AppRouter {
         builder: (context, state) => const PhoneNumberVerificationPage(),
       ),
       GoRoute(
-        path: Routes.AUTH_OTP_VERIFICATION,
-        builder: (context, state) => OTPVerificationPage(
-          phoneNumber:
-              jsonDecode(state.extra as String)['mobileNumber'].toString(),
-        ),
-      ),
+          path: Routes.AUTH_OTP_VERIFICATION,
+          builder: (context, state) => OTPVerificationPage(
+                phoneNumber: jsonDecode(state.extra as String)['mobileNumber']
+                    .toString(),
+              )),
       GoRoute(
         path: Routes.TERMS_AND_CONDITIONS,
         builder: (context, state) => const TermsAndConditionsPage(),

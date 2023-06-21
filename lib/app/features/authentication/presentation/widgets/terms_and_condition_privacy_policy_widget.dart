@@ -19,15 +19,17 @@ class TermsConditionStatementWidget extends StatelessWidget {
         TextSpan(
             text: 'By continuing, you agree to our '.tr(),
             style: const TextStyle(
-              fontSize: 12,
+              fontSize: 11,
+              color: Color.fromRGBO(127, 129, 132, 1),
             ),
             children: <TextSpan>[
               TextSpan(
                   text: 'Terms of Service'.tr(),
                   style: const TextStyle(
-                    fontSize: 13,
+                    fontSize: 11,
                     decoration: TextDecoration.underline,
                     fontWeight: FontWeight.w500,
+                    color: Color.fromRGBO(42, 45, 50, 1),
                   ),
                   recognizer: TapGestureRecognizer()
                     ..onTap = () {
@@ -37,15 +39,17 @@ class TermsConditionStatementWidget extends StatelessWidget {
               TextSpan(
                   text: ' and '.tr(),
                   style: const TextStyle(
-                    fontSize: 12,
+                    fontSize: 11,
+                    color: Color.fromRGBO(127, 129, 132, 1),
                   ),
                   children: <TextSpan>[
                     TextSpan(
                         text: 'Privacy Policy'.tr(),
                         style: const TextStyle(
-                          fontSize: 13,
+                          fontSize: 11,
                           decoration: TextDecoration.underline,
                           fontWeight: FontWeight.w500,
+                          color: Color.fromRGBO(42, 45, 50, 1),
                         ),
                         recognizer: TapGestureRecognizer()
                           ..onTap = () {

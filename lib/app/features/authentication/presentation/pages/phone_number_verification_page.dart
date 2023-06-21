@@ -9,6 +9,7 @@ import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:go_router/go_router.dart';
 import 'package:homemakers_merchant/app/features/authentication/presentation/manager/phone_number_verification_bloc.dart';
 import 'package:homemakers_merchant/app/features/authentication/presentation/widgets/terms_and_condition_privacy_policy_widget.dart';
+import 'package:homemakers_merchant/config/translation/extension/string_extension.dart';
 import 'package:homemakers_merchant/core/constants/global_app_constants.dart';
 import 'package:homemakers_merchant/core/extensions/app_extension.dart';
 import 'package:homemakers_merchant/shared/router/app_pages.dart';
@@ -139,19 +140,18 @@ class _PhoneNumberVerificationPageState
                   );
                   return Container(
                     margin: EdgeInsets.fromLTRB(
-                      margins * 1.5,
+                      margins * 2.5,
                       topPadding,
-                      margins * 1.5,
+                      margins * 2.5,
                       bottomPadding,
                     ),
-                    decoration: BoxDecoration(),
                     height: context.height,
                     width: double.infinity,
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         Padding(
-                          padding: const EdgeInsets.only(bottom: 8),
+                          padding: const EdgeInsets.only(bottom: 32),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
@@ -162,7 +162,7 @@ class _PhoneNumberVerificationPageState
                             ],
                           ),
                         ),
-                        Padding(
+                        /*Padding(
                           padding: const EdgeInsets.only(top: 12, bottom: 8),
                           child: Row(
                             children: [
@@ -173,7 +173,7 @@ class _PhoneNumberVerificationPageState
                             ],
                           ),
                         ),
-                        const SizedBox(height: 8),
+                        const SizedBox(height: 8),*/
                         Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [
@@ -186,10 +186,13 @@ class _PhoneNumberVerificationPageState
                                 useRtl: false,
                                 withLabel: true,
                                 decoration: InputDecoration(
-                                  hintText: 'Required',
+                                  labelText: 'Mobile number',
+                                  alignLabelWithHint: true,
+                                  //hintText: 'Mobile number',
                                   errorText: phoneValidation,
                                   suffixIcon:
                                       const PhoneNumberValidationIconWidget(),
+                                  isDense: true,
                                 ),
                                 isAllowEmpty: false,
                                 autofocus: false,
@@ -200,72 +203,65 @@ class _PhoneNumberVerificationPageState
                             ),
                           ],
                         ),
-                        const SizedBox(height: 24),
-                        const TermsConditionStatementWidget(),
-                        const SizedBox(height: 16),
-                        const Spacer(),
-                        AsyncElevatedBtn(
-                          asyncBtnStatesController:
-                              phoneNumberVerificationButtonController,
-                          key:
-                              const Key('phone-number_verification-button-key'),
-                          style: ElevatedButton.styleFrom(),
-                          loadingStyle: AsyncBtnStateStyle(
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.amber,
-                            ),
-                            widget: const SizedBox.square(
-                              dimension: 24,
-                              child: CircularProgressIndicator(
-                                color: Colors.white,
+
+                        const SizedBox(height: 32),
+                        //const Spacer(),
+                        SizedBox(
+                          width: context.width,
+                          child: AsyncElevatedBtn(
+                            asyncBtnStatesController:
+                                phoneNumberVerificationButtonController,
+                            key: const Key(
+                                'phone-number_verification-button-key'),
+                            /*style: ElevatedButton.styleFrom(
+                              disabledBackgroundColor: ,
+                              disabledForegroundColor: ,
+                            ),*/
+                            loadingStyle: AsyncBtnStateStyle(
+                              style: ElevatedButton.styleFrom(
+                                  //backgroundColor: Colors.amber,
+                                  ),
+                              widget: const SizedBox.square(
+                                dimension: 24,
+                                child: CircularProgressIndicator(
+                                  color: Colors.white,
+                                ),
                               ),
                             ),
-                          ),
-                          successStyle: AsyncBtnStateStyle(
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.green,
-                              foregroundColor: Colors.white,
+                            successStyle: AsyncBtnStateStyle(
+                              style: ElevatedButton.styleFrom(
+                                //backgroundColor: Colors.green,
+                                foregroundColor: Colors.white,
+                              ),
+                              widget: const Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Icon(Icons.check),
+                                  SizedBox(width: 4),
+                                  Text('Success!')
+                                ],
+                              ),
                             ),
-                            widget: const Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Icon(Icons.check),
-                                SizedBox(width: 4),
-                                Text('Success!')
-                              ],
+                            failureStyle: AsyncBtnStateStyle(
+                              style: ElevatedButton.styleFrom(
+                                //backgroundColor: Colors.red,
+                                foregroundColor: Colors.white,
+                              ),
+                              widget: Text('Get OTP'.tr()),
                             ),
+/*                            onPressed: () async => phoneNumberVerification ==
+                                    PhoneNumberVerification.valid
+                                ? verifyPhoneNumber()
+                                : null,*/
+                            child: Text('Get OTP'.tr()),
+                            onPressed: phoneNumberVerification ==
+                                    PhoneNumberVerification.valid
+                                ? verifyPhoneNumber
+                                : null,
                           ),
-                          failureStyle: AsyncBtnStateStyle(
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.red,
-                              foregroundColor: Colors.white,
-                            ),
-                            widget: const Text('Send OTP'),
-                          ),
-                          onPressed: () async {
-                            if (phoneNumberVerification ==
-                                PhoneNumberVerification.valid) {
-                              if (requestOTPFormKey.currentState!.validate()) {
-                                requestOTPFormKey.currentState?.save();
-                                context.read<PhoneNumberVerificationBloc>().add(
-                                      VerifyPhoneNumber(
-                                        phoneNumber: userEnteredPhoneNumber,
-                                        countryDialCode: phoneController
-                                                .value?.countryCode ??
-                                            '+966',
-                                        country: phoneController
-                                                .value?.isoCode.name ??
-                                            'SA',
-                                        phoneController: phoneController,
-                                      ),
-                                    );
-                              }
-                              return;
-                            }
-                            return null;
-                          },
-                          child: const Text('Send OTP'),
                         ),
+                        const SizedBox(height: 32),
+                        const TermsConditionStatementWidget(),
                       ],
                     ),
                   );
@@ -276,6 +272,22 @@ class _PhoneNumberVerificationPageState
         ),
       ),
     );
+  }
+
+  Future<void> verifyPhoneNumber() async {
+    if (requestOTPFormKey.currentState!.validate()) {
+      requestOTPFormKey.currentState?.save();
+      context.read<PhoneNumberVerificationBloc>().add(
+            VerifyPhoneNumber(
+              phoneNumber: userEnteredPhoneNumber,
+              countryDialCode: phoneController.value?.countryCode ?? '+966',
+              country: phoneController.value?.isoCode.name ?? 'SA',
+              phoneController: phoneController,
+            ),
+          );
+      return;
+    }
+    return;
   }
 }
 

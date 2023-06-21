@@ -5,6 +5,7 @@ import 'package:get_it_mixin/get_it_mixin.dart';
 import 'package:homemakers_merchant/base/app_base.dart';
 import 'package:homemakers_merchant/bootup/bootstrap.dart';
 import 'package:homemakers_merchant/config/translation/auto_locale_builder.dart';
+import 'package:homemakers_merchant/config/translation/extension/string_extension.dart';
 import 'package:homemakers_merchant/config/translation/language.dart';
 import 'package:homemakers_merchant/config/translation/widgets/constants.dart';
 import 'package:homemakers_merchant/config/translation/widgets/language_inherited_widget.dart';
@@ -119,14 +120,14 @@ class _LanguageScreenWrapperState extends State<LanguageScreenWrapper>
     return AbsorbPointer(
       absorbing: (hasAtleastSourceLanguage),
       child: AutoLocalBuilder(
-        text: ['Language Screen Wrapper'],
+        text: ['Language Screen Wrapper'.tr()],
         builder: (languageController) {
           return AutoDirection(
-            text: languageController.get('Language Screen Wrapper'),
+            text: 'Language Screen Wrapper'.tr(),
             child: Stack(
               children: [
                 if (widget.child != null) widget.child!,
-                if (hasAtleastSourceLanguage) offlineWidget,
+                //if (hasAtleastSourceLanguage) offlineWidget,
               ],
             ),
           );

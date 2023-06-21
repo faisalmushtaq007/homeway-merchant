@@ -202,9 +202,9 @@ class _OTPVerificationPageState extends State<OTPVerificationPage> {
             child: ListView(
               controller: scrollController,
               padding: EdgeInsets.fromLTRB(
-                margins,
+                margins * 2.5,
                 topPadding,
-                margins,
+                margins * 2.5,
                 bottomPadding,
               ),
               children: [
@@ -217,22 +217,18 @@ class _OTPVerificationPageState extends State<OTPVerificationPage> {
                       Flexible(
                         child: Text(
                           widget.phoneNumber,
-                          style: Theme.of(context)
-                              .textTheme
-                              .titleLarge!
-                              .copyWith(color: Colors.white),
+                          style: Theme.of(context).textTheme.titleLarge,
                         ),
                       ),
                       Transform.translate(
-                        offset: Offset(-8, -4),
+                        offset: Offset(-8, -2),
                         child: IconButton(
                           onPressed: () {
                             //editPhoneNumber();
 
                             return;
                           },
-                          icon: Icon(Icons.edit_outlined,
-                              color: Colors.white, size: 20),
+                          icon: Icon(Icons.edit_outlined, size: 20),
                         ),
                       ),
                     ],
