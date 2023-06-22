@@ -91,7 +91,6 @@ class _CreateBusinessProfilePageState extends State<CreateBusinessProfilePage>
         noAppBar: true,
       ),
       child: PlatformScaffold(
-        appBar: PlatformAppBar(),
         body: PageBody(
           controller: scrollController,
           constraints: BoxConstraints(
@@ -109,238 +108,251 @@ class _CreateBusinessProfilePageState extends State<CreateBusinessProfilePage>
                 ),
                 child: Form(
                   key: _createBusinessProfileFormKey,
-                  child: ListView(
-                    controller: scrollController,
-                    padding: EdgeInsets.fromLTRB(margins * 2.5, topPadding,
-                        margins * 2.5, bottomPadding),
-                    children: [
-                      Row(
-                        children: [
-                          Text(
-                            'Enter the business details'.tr(),
-                            style: context.titleLarge,
-                          )
-                        ],
-                      ),
-                      const AnimatedGap(
-                        16,
-                        duration: Duration(
-                          milliseconds: 300,
-                        ),
-                      ),
-                      TextFormField(
-                        controller: _usernameController,
-                        decoration: InputDecoration(
-                          labelText: 'Full name'.tr(),
-                          isDense: true,
-                        ),
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Please enter a full name'.tr();
-                          }
-                          return null;
-                        },
-                      ),
-                      const AnimatedGap(
-                        16,
-                        duration: Duration(
-                          milliseconds: 300,
-                        ),
-                      ),
-                      TextFormField(
-                        controller: _businessNameController,
-                        decoration: InputDecoration(
-                          labelText: 'Business name'.tr(),
-                          isDense: true,
-                        ),
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Please enter a business name'.tr();
-                          }
-                          return null;
-                        },
-                      ),
-                      const AnimatedGap(
-                        16,
-                        duration: Duration(
-                          milliseconds: 300,
-                        ),
-                      ),
-                      TextFormField(
-                        controller: _emailController,
-                        decoration: InputDecoration(
-                          labelText: 'Business email address'.tr(),
-                          isDense: true,
-                        ),
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Please enter an email address'.tr();
-                          }
-                          /*else if (!value.contains('@')) {
-                            return 'Please enter a valid email address'.tr();
-                          }*/
-                          else if (!value.hasValidEmailAddress(value)) {
-                            return 'Please enter a valid email address'.tr();
-                          }
-                          return null;
-                        },
-                      ),
-                      const AnimatedGap(
-                        16,
-                        duration: Duration(
-                          milliseconds: 300,
-                        ),
-                      ),
-                      Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Flexible(
-                            child: BlocBuilder<PhoneFormFieldBloc,
-                                PhoneNumberFormFieldState>(
-                              bloc: context.read<PhoneFormFieldBloc>(),
-                              buildWhen: (previous, current) =>
-                                  previous != current,
-                              builder: (context, state) {
-                                state.maybeWhen(
-                                  orElse: () {},
-                                  validate: (
-                                    isAllowEmpty,
-                                    mobileOnly,
-                                    phoneNumberInputValidator,
-                                    phoneValidation,
-                                    phoneController,
-                                    phoneNumber,
-                                    phoneNumberVerification,
-                                    userEnteredPhoneNumber,
-                                    countryDialCode,
-                                    country,
-                                  ) {
-                                    this.phoneNumberVerification =
-                                        phoneNumberVerification;
-                                    this.userEnteredPhoneNumber =
-                                        userEnteredPhoneNumber;
-                                  },
-                                );
-                                return PhoneNumberFieldWidget(
-                                  key: const Key(
-                                      'user-business-phone-number-widget-key'),
-                                  isCountryChipPersistent: false,
-                                  outlineBorder: true,
-                                  shouldFormat: true,
-                                  useRtl: false,
-                                  withLabel: true,
-                                  decoration: InputDecoration(
-                                    labelText: 'Business phone number'.tr(),
-                                    alignLabelWithHint: true,
-                                    //hintText: 'Mobile number',
-                                    errorText: phoneValidation,
-                                    isDense: true,
-                                  ),
-                                  isAllowEmpty: false,
-                                  autofocus: false,
-                                  style: context.bodyLarge,
-                                  showFlagInInput: false,
-                                  countryCodeStyle: context.bodyLarge,
-                                );
+                  child: Padding(
+                    padding: EdgeInsets.fromLTRB(
+                      margins * 2.5,
+                      topPadding,
+                      margins * 2.5,
+                      bottomPadding,
+                    ),
+                    child: Stack(
+                      children: [
+                        ListView(
+                          controller: scrollController,
+                          children: [
+                            Row(
+                              children: [
+                                Text(
+                                  'Enter the business details'.tr(),
+                                  style: context.titleLarge,
+                                )
+                              ],
+                            ),
+                            const AnimatedGap(
+                              16,
+                              duration: Duration(
+                                milliseconds: 300,
+                              ),
+                            ),
+                            TextFormField(
+                              controller: _usernameController,
+                              decoration: InputDecoration(
+                                labelText: 'Full name'.tr(),
+                                isDense: true,
+                              ),
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'Please enter a full name'.tr();
+                                }
+                                return null;
                               },
                             ),
-                          ),
-                        ],
-                      ),
-                      /* TextFormField(
-                        controller: _phoneController,
-                        decoration: InputDecoration(
-                          labelText: 'Business phone number'.tr(),
-                          isDense: true,
-                        ),
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Please enter a phone number'.tr();
-                          }
-                          return null;
-                        },
-                      ),*/
-                      const AnimatedGap(
-                        16,
-                        duration: Duration(
-                          milliseconds: 300,
-                        ),
-                      ),
-                      TextFormField(
-                        controller: _addressController,
-                        decoration: InputDecoration(
-                          labelText: 'Business address'.tr(),
-                          isDense: true,
-                        ),
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Please enter an address'.tr();
-                          }
-                          return null;
-                        },
-                      ),
-                      const AnimatedGap(
-                        16,
-                        duration: Duration(
-                          milliseconds: 300,
-                        ),
-                      ),
-                      DropdownButtonFormField<String>(
-                        decoration: InputDecoration(
-                          labelText: 'Gender'.tr(),
-                          isDense: true,
-                        ),
-                        value: _selectedGender,
-                        items: [
-                          DropdownMenuItem<String>(
-                            value: 'Male'.tr(),
-                            child: Text('Male'.tr()),
-                          ),
-                          DropdownMenuItem<String>(
-                            value: 'Female'.tr(),
-                            child: Text('Female'.tr()),
-                          ),
-                          DropdownMenuItem<String>(
-                            value: 'Other'.tr(),
-                            child: Text('Other'.tr()),
-                          ),
-                        ],
-                        onChanged: (String? value) {
-                          setState(() {
-                            _selectedGender = value!;
-                          });
-                        },
-                      ),
-                      const AnimatedGap(
-                        32,
-                        duration: Duration(
-                          milliseconds: 300,
-                        ),
-                      ),
-                      SizedBox(
-                        width: context.width,
-                        child: ElevatedButton(
-                          onPressed: () {
-                            if (_createBusinessProfileFormKey.currentState!
-                                .validate()) {
-                              // Registration logic here
-                              final username = _usernameController.text;
-                              final email = _emailController.text;
-                              final phone = _phoneController.text;
-                              final address = _addressController.text;
+                            const AnimatedGap(
+                              16,
+                              duration: Duration(
+                                milliseconds: 300,
+                              ),
+                            ),
+                            TextFormField(
+                              controller: _businessNameController,
+                              decoration: InputDecoration(
+                                labelText: 'Business name'.tr(),
+                                isDense: true,
+                              ),
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'Please enter a business name'.tr();
+                                }
+                                return null;
+                              },
+                            ),
+                            const AnimatedGap(
+                              16,
+                              duration: Duration(
+                                milliseconds: 300,
+                              ),
+                            ),
+                            TextFormField(
+                              controller: _emailController,
+                              decoration: InputDecoration(
+                                labelText: 'Business email address'.tr(),
+                                isDense: true,
+                              ),
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'Please enter an email address'.tr();
+                                }
+                                /*else if (!value.contains('@')) {
+                                  return 'Please enter a valid email address'.tr();
+                                }*/
+                                else if (!value.hasValidEmailAddress(value)) {
+                                  return 'Please enter a valid email address'
+                                      .tr();
+                                }
+                                return null;
+                              },
+                            ),
+                            const AnimatedGap(
+                              16,
+                              duration: Duration(
+                                milliseconds: 300,
+                              ),
+                            ),
+                            Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Flexible(
+                                  child: BlocBuilder<PhoneFormFieldBloc,
+                                      PhoneNumberFormFieldState>(
+                                    bloc: context.read<PhoneFormFieldBloc>(),
+                                    buildWhen: (previous, current) =>
+                                        previous != current,
+                                    builder: (context, state) {
+                                      state.maybeWhen(
+                                        orElse: () {},
+                                        validate: (
+                                          isAllowEmpty,
+                                          mobileOnly,
+                                          phoneNumberInputValidator,
+                                          phoneValidation,
+                                          phoneController,
+                                          phoneNumber,
+                                          phoneNumberVerification,
+                                          userEnteredPhoneNumber,
+                                          countryDialCode,
+                                          country,
+                                        ) {
+                                          this.phoneNumberVerification =
+                                              phoneNumberVerification;
+                                          this.userEnteredPhoneNumber =
+                                              userEnteredPhoneNumber;
+                                        },
+                                      );
+                                      return PhoneNumberFieldWidget(
+                                        key: const Key(
+                                            'user-business-phone-number-widget-key'),
+                                        isCountryChipPersistent: false,
+                                        outlineBorder: true,
+                                        shouldFormat: true,
+                                        useRtl: false,
+                                        withLabel: true,
+                                        decoration: InputDecoration(
+                                          labelText:
+                                              'Business phone number'.tr(),
+                                          alignLabelWithHint: true,
+                                          //hintText: 'Mobile number',
+                                          errorText: phoneValidation,
+                                          isDense: true,
+                                        ),
+                                        isAllowEmpty: false,
+                                        autofocus: false,
+                                        style: context.bodyLarge,
+                                        showFlagInInput: false,
+                                        countryCodeStyle: context.bodyLarge,
+                                      );
+                                    },
+                                  ),
+                                ),
+                              ],
+                            ),
+                            /* TextFormField(
+                              controller: _phoneController,
+                              decoration: InputDecoration(
+                                labelText: 'Business phone number'.tr(),
+                                isDense: true,
+                              ),
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'Please enter a phone number'.tr();
+                                }
+                                return null;
+                              },
+                            ),*/
+                            const AnimatedGap(
+                              16,
+                              duration: Duration(
+                                milliseconds: 300,
+                              ),
+                            ),
+                            TextFormField(
+                              controller: _addressController,
+                              decoration: InputDecoration(
+                                labelText: 'Business address'.tr(),
+                                isDense: true,
+                              ),
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'Please enter an address'.tr();
+                                }
+                                return null;
+                              },
+                            ),
+                            const AnimatedGap(
+                              16,
+                              duration: Duration(
+                                milliseconds: 300,
+                              ),
+                            ),
+                            DropdownButtonFormField<String>(
+                              decoration: InputDecoration(
+                                labelText: 'Gender'.tr(),
+                                isDense: true,
+                              ),
+                              value: _selectedGender,
+                              items: [
+                                DropdownMenuItem<String>(
+                                  value: 'Male'.tr(),
+                                  child: Text('Male'.tr()),
+                                ),
+                                DropdownMenuItem<String>(
+                                  value: 'Female'.tr(),
+                                  child: Text('Female'.tr()),
+                                ),
+                                DropdownMenuItem<String>(
+                                  value: 'Other'.tr(),
+                                  child: Text('Other'.tr()),
+                                ),
+                              ],
+                              onChanged: (String? value) {
+                                setState(() {
+                                  _selectedGender = value!;
+                                });
+                              },
+                            ),
+                            const AnimatedGap(
+                              32,
+                              duration: Duration(
+                                milliseconds: 300,
+                              ),
+                            ),
+                            SizedBox(
+                              width: context.width,
+                              child: ElevatedButton(
+                                onPressed: () {
+                                  if (_createBusinessProfileFormKey
+                                      .currentState!
+                                      .validate()) {
+                                    // Registration logic here
+                                    final username = _usernameController.text;
+                                    final email = _emailController.text;
+                                    final phone = _phoneController.text;
+                                    final address = _addressController.text;
 
-                              // Print the entered information
-                              print('Username: $username');
-                              print('Email: $email');
-                              print('Phone: $phone');
-                              print('Address: $address');
-                              print('Gender: $_selectedGender');
-                            }
-                          },
-                          child: Text('Next'.tr()),
+                                    // Print the entered information
+                                    print('Username: $username');
+                                    print('Email: $email');
+                                    print('Phone: $phone');
+                                    print('Address: $address');
+                                    print('Gender: $_selectedGender');
+                                  }
+                                },
+                                child: Text('Next'.tr()),
+                              ),
+                            ),
+                          ],
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
               );
