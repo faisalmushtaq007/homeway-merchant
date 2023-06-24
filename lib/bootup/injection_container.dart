@@ -115,6 +115,13 @@ Future<void> _setUpAppSetting() async {
   );
   await appTranslator.init(
     languageController: serviceLocator(),
+    sourceLanguage:
+        serviceLocator<LanguageController>().sourceTranslateLanguage,
+    targetLanguage:
+        serviceLocator<LanguageController>().targetTranslateLanguage,
+    sourceAppLanguage: serviceLocator<LanguageController>().sourceApplanguage,
+    targetAppLanguage: serviceLocator<LanguageController>().targetAppLanguage,
+    initTextDirection: serviceLocator<LanguageController>().targetTextDirection,
   );
 }
 

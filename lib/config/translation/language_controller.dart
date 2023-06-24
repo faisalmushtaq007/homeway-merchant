@@ -24,11 +24,11 @@ class LanguageController with ChangeNotifier {
   var _identifiedLanguage = '';
   String? _translatedText;
   final _modelManager = OnDeviceTranslatorModelManager();
-  var _sourceLanguage = GlobalApp.defaultSourceTranslateLanguage;
-  var _targetLanguage = GlobalApp.defaultTargetTranslateLanguage;
+  var _sourceLanguage = GlobalApp.defaultLanguageSelect;
+  var _targetLanguage = GlobalApp.defaultTargetLanguageSelect;
   late final _onDeviceTranslator = OnDeviceTranslator(
-    sourceLanguage: _sourceLanguage,
-    targetLanguage: _targetLanguage,
+    sourceLanguage: _sourceLanguage.sourceLanguage,
+    targetLanguage: _targetLanguage.sourceLanguage,
   );
   bool hasSourceModelDownloaded = false;
   bool hasTargetModelDownloaded = false;
@@ -84,6 +84,10 @@ class LanguageController with ChangeNotifier {
       GlobalApp.keyTargetLocale,
       GlobalApp.defaultTargetLocale,
     );
+    _targetTextDirection = await _languageService.load<TextDirection>(
+      GlobalApp.keyTargetTextDirection,
+      GlobalApp.defaultTargetTextDirection,
+    );
   }
 
   @override
@@ -105,6 +109,7 @@ class LanguageController with ChangeNotifier {
     setTargetTranslateLanguage(GlobalApp.defaultTargetTranslateLanguage, false);
     setTargetLocale(GlobalApp.defaultTargetLocale, false);
     setSourceLocale(GlobalApp.defaultSourceLocale, false);
+    setTargetTextDirection(GlobalApp.defaultTargetTextDirection, false);
     // Only notify at end, if asked to do so, to do so is default.
     if (doNotify) notifyListeners();
   }
@@ -190,23 +195,39 @@ class LanguageController with ChangeNotifier {
 
   void changeSourceLanguage(TranslateLanguage newSourceLanguage) {
     AppTranslator.instance.changeSourceTranslateLanguage(newSourceLanguage);
-    _sourceLanguage = newSourceLanguage;
+    _sourceTranslateLanguage = newSourceLanguage;
     notifyListeners();
   }
 
   void changeTargetLanguage(Language language) {
     AppTranslator.instance.changeTargetTranslateLanguage(language);
-    _targetLanguage = language.sourceLanguage;
+    var cacheTargetTranslateLanguage = _targetTranslateLanguage;
+    var cacheTargetAppLanguage = _targetLanguage;
+    setLanguage(cacheTargetAppLanguage);
+    setSourceTranslateLanguage(cacheTargetTranslateLanguage);
+    _sourceLanguage = _targetLanguage;
+    _sourceTranslateLanguage = _targetTranslateLanguage;
+    _targetLanguage = language;
+    _targetTranslateLanguage = language.sourceLanguage;
     setTargetLanguage(language);
     setTargetTranslateLanguage(language.sourceLanguage);
+    setTargetTextDirection(language.textDirection);
+    appLog.e(
+        'language controller: changeTargetLanguage: ${_sourceTranslateLanguage}->${_targetTranslateLanguage}');
     notifyListeners();
   }
 
   void switchCurrentSourceAndTargetLanguage() {
     final languageRecord =
         AppTranslator.instance.switchCurrentSourceAndTargetLanguage();
-    _sourceLanguage = languageRecord.$1;
-    _targetLanguage = languageRecord.$2;
+    _sourceLanguage = languageRecord.$3;
+    _targetLanguage = languageRecord.$4;
+    _sourceTranslateLanguage = languageRecord.$1;
+    _targetTranslateLanguage = languageRecord.$2;
+    setLanguage(_sourceLanguage);
+    setSourceTranslateLanguage(_sourceTranslateLanguage);
+    setTargetLanguage(_targetLanguage);
+    setTargetTranslateLanguage(_targetTranslateLanguage);
     notifyListeners();
   }
 
@@ -313,5 +334,22 @@ class LanguageController with ChangeNotifier {
         //notifyListeners();
       }
     }
+  }
+
+  // TextDirection language
+  late TextDirection _targetTextDirection;
+
+  TextDirection get targetTextDirection => _targetTextDirection;
+
+  void setTargetTextDirection(
+    TextDirection value, [
+    bool notify = true,
+  ]) {
+    if (value == _targetTextDirection) return;
+    _targetTextDirection = value;
+    if (notify) notifyListeners();
+    unawaited(
+      _languageService.save(GlobalApp.keySourceTranslateLanguage, value),
+    );
   }
 }

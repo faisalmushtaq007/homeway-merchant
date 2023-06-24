@@ -150,7 +150,7 @@ class _TermsAndConditionsPageState extends State<TermsAndConditionsPage> {
                                 child: Container(
                                   width: context.width,
                                   height: constraints.maxHeight - 70,
-                                  margin: const EdgeInsets.symmetric(
+                                  margin: const EdgeInsetsDirectional.symmetric(
                                       horizontal: 20),
                                   decoration: BoxDecoration(
                                     color: Theme.of(context).primaryColor,
@@ -169,7 +169,7 @@ class _TermsAndConditionsPageState extends State<TermsAndConditionsPage> {
                                     child: SingleChildScrollView(
                                       controller:
                                           termsAndConditionListViewController,
-                                      padding: EdgeInsets.symmetric(
+                                      padding: EdgeInsetsDirectional.symmetric(
                                           horizontal: 12, vertical: 6),
                                       child: Html(
                                         anchorKey: staticAnchorKey,
@@ -194,8 +194,8 @@ class _TermsAndConditionsPageState extends State<TermsAndConditionsPage> {
                               ),
                               const SizedBox(height: 5),
                               ListTileTheme(
-                                contentPadding:
-                                    EdgeInsets.symmetric(horizontal: 15),
+                                contentPadding: EdgeInsetsDirectional.symmetric(
+                                    horizontal: 15),
                                 minVerticalPadding: 2,
                                 horizontalTitleGap: 0,
                                 child: CheckboxListTile(

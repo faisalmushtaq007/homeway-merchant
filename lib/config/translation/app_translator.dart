@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:async/async.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:google_ml_kit/google_ml_kit.dart';
 import 'package:hive/hive.dart';
@@ -12,6 +14,7 @@ import 'package:homemakers_merchant/config/translation/language_service_hive_ada
 import 'package:homemakers_merchant/config/translation/multiple_language_download.dart';
 import 'package:homemakers_merchant/config/translation/translate_api.dart';
 import 'package:homemakers_merchant/core/constants/global_app_constants.dart';
+import 'package:homemakers_merchant/utils/app_log.dart';
 import 'package:synchronized/synchronized.dart';
 
 class AppTranslator {
@@ -52,6 +55,7 @@ class AppTranslator {
   late Language targetAppLanguage;
   bool _isInitialized = false;
   bool _clearCache = false;
+  TextDirection targetTextDirection = TextDirection.ltr;
 
   //This parameter control the time between every request so you
   // don't exceed the maximum amount of request. If you don't know
@@ -60,6 +64,7 @@ class AppTranslator {
 
   int get delayTime => _delayTime;
   final Lock _lock = Lock();
+  late AsyncCache<String> asyncCache;
 
   Future<void> init({
     TranslateLanguage? sourceLanguage,
@@ -68,18 +73,27 @@ class AppTranslator {
     Language? targetAppLanguage,
     int? delayTime,
     required LanguageController languageController,
+    TextDirection? initTextDirection,
+    bool hasInitCall = true,
   }) async {
     sourceTranslateLanguage =
         sourceLanguage ?? languageController.sourceTranslateLanguage;
     targetTranslateLanguage =
         targetLanguage ?? languageController.targetTranslateLanguage;
-    this.sourceAppLanguage = languageController.sourceApplanguage;
-    this.targetAppLanguage = languageController.targetAppLanguage;
+    this.sourceAppLanguage =
+        sourceAppLanguage ?? languageController.sourceApplanguage;
+    this.targetAppLanguage =
+        targetAppLanguage ?? languageController.targetAppLanguage;
     onDeviceTranslator = OnDeviceTranslator(
       sourceLanguage: sourceTranslateLanguage,
       targetLanguage: targetTranslateLanguage,
     );
     _delayTime = delayTime ?? _delayTime;
+    targetTextDirection =
+        initTextDirection ?? languageController.targetTextDirection;
+    asyncCache = AsyncCache(const Duration(hours: 1));
+    debugPrint(
+        'app_translator - init: ${sourceTranslateLanguage},${targetTranslateLanguage}');
     await _doInit();
   }
 
@@ -165,10 +179,10 @@ class AppTranslator {
         return jsonEncode({
           'text': text,
           'translation': result.resultText!,
-          'cache': false,
+          'cache': true,
           'reverse_cache': false,
           'lang_start': startingLanguage ?? sourceTranslateLanguage,
-          'lang_end': targetLanguage ?? targetLanguage,
+          'lang_end': targetLanguage ?? targetTranslateLanguage,
           'time': DateTime.now().toIso8601String()
         });
       }
@@ -179,23 +193,24 @@ class AppTranslator {
     if (returnJSON) {
       return jsonEncode({
         'text': text,
-        'translation':
-            (search.first.appLanguage == (targetLanguage ?? targetLanguage) &&
-                    search.first.userLanguage ==
-                        (startingLanguage ?? sourceTranslateLanguage))
-                ? (search.first.startText)
-                : (search.first.resultText!),
-        'cache': true,
-        'reverse_cache':
-            search.first.appLanguage == (targetLanguage ?? targetLanguage) &&
+        'translation': (search.first.appLanguage ==
+                    (targetLanguage ?? targetTranslateLanguage) &&
                 search.first.userLanguage ==
-                    (startingLanguage ?? sourceTranslateLanguage),
+                    (startingLanguage ?? sourceTranslateLanguage))
+            ? (search.first.startText)
+            : (search.first.resultText!),
+        'cache': true,
+        'reverse_cache': search.first.appLanguage ==
+                (targetLanguage ?? targetTranslateLanguage) &&
+            search.first.userLanguage ==
+                (startingLanguage ?? sourceTranslateLanguage),
         'lang_start': startingLanguage ?? sourceTranslateLanguage,
-        'lang_end': targetLanguage ?? targetLanguage,
+        'lang_end': targetLanguage ?? targetTranslateLanguage,
         'time': DateTime.now().toIso8601String()
       });
     }
-    if (search.first.appLanguage == (targetLanguage ?? targetLanguage) &&
+    if (search.first.appLanguage ==
+            (targetLanguage ?? targetTranslateLanguage) &&
         search.first.userLanguage ==
             (startingLanguage ?? sourceTranslateLanguage)) {
       return search.first.startText;
@@ -210,7 +225,7 @@ class AppTranslator {
 
   //Execute an async translation
   Future<String> translate(
-    String text, {
+    String? text, {
     bool cache = true,
     TranslateLanguage? startingLanguage,
     TranslateLanguage? targetLanguage,
@@ -232,11 +247,14 @@ class AppTranslator {
       }
     });*/
     // Execute the translation process
+    if (text == null && text!.isEmpty) {
+      return text;
+    }
     final executeTranslate = await _executeTranslate(
       text,
       cache: cache,
       startingLanguage: sourceTranslateLanguage,
-      targetLanguage: targetLanguage,
+      targetLanguage: targetTranslateLanguage, //targetLanguage,
       returnJSON: returnJSON,
     );
     return executeTranslate;
@@ -340,20 +358,39 @@ class AppTranslator {
   }
 
   Future<void> changeTargetTranslateLanguage(Language language) async {
+    appLog.e('app translator: changeTargetTranslateLanguage: $language');
+    var cacheTargetTranslateLanguage = targetTranslateLanguage;
+    var cacheTargetAppLanguage = targetAppLanguage;
+    var cacheTargetTextDirection = targetTextDirection;
+    sourceAppLanguage = cacheTargetAppLanguage;
+    sourceTranslateLanguage = cacheTargetTranslateLanguage;
     targetTranslateLanguage = language.sourceLanguage;
     targetAppLanguage = language;
+    targetTextDirection = language.textDirection;
+    appLog.e(
+        'app translator: changeTargetTranslateLanguage: ${sourceTranslateLanguage}->${targetTranslateLanguage}');
     await init(
-        languageController: serviceLocator<LanguageController>(),
-        targetAppLanguage: targetAppLanguage,
-        targetLanguage: targetTranslateLanguage);
+      languageController: serviceLocator<LanguageController>(),
+      targetAppLanguage: targetAppLanguage,
+      targetLanguage: targetTranslateLanguage,
+      initTextDirection: targetTextDirection,
+      sourceLanguage: sourceTranslateLanguage,
+      sourceAppLanguage: sourceAppLanguage,
+      hasInitCall: false,
+    );
   }
 
-  (TranslateLanguage, TranslateLanguage)
+  (TranslateLanguage, TranslateLanguage, Language, Language)
       switchCurrentSourceAndTargetLanguage() {
     var tempSourceLanguage = sourceTranslateLanguage;
     sourceTranslateLanguage = targetTranslateLanguage;
     targetTranslateLanguage = tempSourceLanguage;
-    return (sourceTranslateLanguage, targetTranslateLanguage);
+    return (
+      sourceTranslateLanguage,
+      targetTranslateLanguage,
+      sourceAppLanguage,
+      targetAppLanguage
+    );
   }
 
   void dispose() {

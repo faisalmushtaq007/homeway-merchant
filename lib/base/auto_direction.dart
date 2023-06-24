@@ -1,14 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:homemakers_merchant/bootup/injection_container.dart';
+import 'package:homemakers_merchant/config/translation/language_controller.dart';
 import 'package:intl/intl.dart' as intl;
 
 class AutoDirection extends StatefulWidget {
-  const AutoDirection(
-      {super.key,
-      required this.text,
-      required this.child,
-      this.onDirectionChange});
+  const AutoDirection({
+    super.key,
+    required this.text,
+    required this.child,
+    this.onDirectionChange,
+    this.hasTextDirection = true,
+    this.forceTextDirection = TextDirection.ltr,
+  });
   final String text;
   final Widget child;
+  final bool hasTextDirection;
+  final TextDirection forceTextDirection;
   final void Function(bool isRTL)? onDirectionChange;
 
   @override
@@ -38,7 +45,10 @@ class _AutoDirectionState extends State<AutoDirection> {
   }
 
   bool isRTL(String text) {
-    if (text.isEmpty) return Directionality.of(context) == TextDirection.rtl;
+    if (text.isEmpty)
+      return Directionality.of(context) ==
+          serviceLocator<LanguageController>()
+              .targetTextDirection; //TextDirection.rtl;
     return intl.Bidi.detectRtlDirectionality(text);
   }
 }

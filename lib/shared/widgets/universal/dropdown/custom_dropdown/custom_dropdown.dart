@@ -151,8 +151,8 @@ class _CustomDropDownState extends State<CustomDropDown>
         child: Card(
           elevation: widget.elevation,
           color: widget.dropDownBGColor,
-          margin: const EdgeInsets.only(
-              top: 10.0, left: 10.0, right: 10.0, bottom: 0),
+          margin: const EdgeInsetsDirectional.only(
+              top: 10.0, start: 10.0, end: 10.0, bottom: 0),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.only(
               topLeft: Radius.circular(widget.dropDownTopBorderRadius),
@@ -162,15 +162,15 @@ class _CustomDropDownState extends State<CustomDropDown>
             ),
           ),
           child: Container(
-            // padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
-            padding: EdgeInsets.all(widget.padding),
+            // padding: const EdgeInsetsDirectional.symmetric(horizontal: 20, vertical: 16),
+            padding: EdgeInsetsDirectional.all(widget.padding),
             height: 50,
             child: Row(
               children: <Widget>[
                 Expanded(
                   flex: 8,
                   child: Padding(
-                      padding: EdgeInsets.only(left: 8),
+                      padding: EdgeInsetsDirectional.only(start: 8),
                       child: SingleChildScrollView(
                         child: Text(
                           widget.selectedItem == ''
@@ -190,7 +190,7 @@ class _CustomDropDownState extends State<CustomDropDown>
                   child: Align(
                     alignment: Alignment.centerRight,
                     child: Container(
-                      margin: EdgeInsets.only(right: 5),
+                      margin: EdgeInsetsDirectional.only(end: 5),
                       color: (widget.dropDownIconBGColor != null)
                           ? widget.dropDownIconBGColor
                           : Colors.transparent,
@@ -249,7 +249,8 @@ class _CustomDropDownState extends State<CustomDropDown>
                 ? fourItemsHeight + MediaQuery.of(context).padding.top
                 : overlayHeight + MediaQuery.of(context).padding.top,
         child: Container(
-          margin: const EdgeInsets.only(left: 10.0, right: 8.0, bottom: 10.0),
+          margin: const EdgeInsetsDirectional.only(
+              start: 10.0, end: 8.0, bottom: 10.0),
           transform: Matrix4.translationValues(
               0, -MediaQuery.of(context).padding.top, 0),
           child: SafeArea(
@@ -387,7 +388,7 @@ class DropDownOverlay extends StatelessWidget {
     /// Create the overlay-ed body of the dropdown.
     return Card(
       elevation: 5,
-      margin: EdgeInsets.only(top: 1, bottom: 0),
+      margin: EdgeInsetsDirectional.only(top: 1, bottom: 0),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.only(
             topLeft: Radius.circular(0),
@@ -398,7 +399,7 @@ class DropDownOverlay extends StatelessWidget {
       color: overlayBGColor,
       child: Container(
         transform: Matrix4.translationValues(0, -2.5, 0),
-        padding: EdgeInsets.only(top: 10, bottom: 5),
+        padding: EdgeInsetsDirectional.only(top: 10, bottom: 5),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.only(
               topLeft: Radius.circular(0),
@@ -439,8 +440,8 @@ class DropDownOverlay extends StatelessWidget {
                             child: InkWell(
                               splashColor: Colors.black12,
                               child: Padding(
-                                padding: EdgeInsets.only(
-                                    left: 8, right: 8, top: 4, bottom: 4),
+                                padding: EdgeInsetsDirectional.only(
+                                    start: 8, end: 8, top: 4, bottom: 4),
                                 child: Text(
                                   x,
                                   textAlign: TextAlign.left,

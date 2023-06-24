@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:homemakers_merchant/app/features/authentication/presentation/manager/phone_number_verification_bloc.dart';
 import 'package:homemakers_merchant/app/features/authentication/presentation/pages/phone_number_verification_page.dart';
+import 'package:homemakers_merchant/bootup/injection_container.dart';
+import 'package:homemakers_merchant/config/translation/language_controller.dart';
 import 'package:homemakers_merchant/shared/widgets/universal/phone_number_text_field/phone_form_field_bloc.dart';
 import 'package:homemakers_merchant/utils/app_log.dart';
 import 'package:phone_form_field/phone_form_field.dart';
@@ -191,7 +193,8 @@ class _PhoneNumberFieldWidgetState extends State<PhoneNumberFieldWidget> {
         return AutofillGroup(
           child: Directionality(
             textDirection:
-                widget.useRtl ? TextDirection.rtl : TextDirection.ltr,
+                serviceLocator<LanguageController>().targetTextDirection,
+            //widget.useRtl ? TextDirection.rtl : TextDirection.ltr,
             child: PhoneFormField(
               key: phoneKey,
               controller: controller,

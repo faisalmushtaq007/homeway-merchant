@@ -1971,7 +1971,7 @@ class ThemeController with ChangeNotifier {
       setBlendLightTextTheme(false, false);
       setBlendDarkTextTheme(false, false);
       // AppBar settings
-      setAppBarStyleLight(FlexAppBarStyle.primary, false);
+      setAppBarStyleLight(FlexAppBarStyle.material, false);
       setAppBarStyleDark(FlexAppBarStyle.material, false);
       setAppBarElevationLight(4, false);
       setAppBarElevationDark(4, false);

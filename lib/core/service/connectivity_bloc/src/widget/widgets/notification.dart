@@ -123,7 +123,7 @@ class NotificationWidgetState extends State<NotificationWidget>
                 borderRadius: BorderRadius.circular(8.0)),
             color: widget.backgroundColor,
             child: Padding(
-              padding: const EdgeInsets.all(16.0),
+              padding: const EdgeInsetsDirectional.all(16.0),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.start,

@@ -190,7 +190,7 @@ class _LoginPageController extends State<LoginPage> {
           listenable: serviceLocator<LanguageController>(),
           builder: (context, child) {
             return Padding(
-              padding: const EdgeInsets.all(16),
+              padding: const EdgeInsetsDirectional.all(16),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
@@ -328,12 +328,13 @@ class _LoginPageView extends WidgetView<LoginPage, _LoginPageController> {
                 Container(
                   height: 38,
                   width: 55,
-                  margin: EdgeInsets.only(right: 8, left: 8),
+                  margin: EdgeInsetsDirectional.only(end: 8, start: 8),
                   child: Center(
                     child: OutlinedButton(
                       onPressed: () => state.showLanguageBottomSheet(context),
                       style: OutlinedButton.styleFrom(
-                        padding: const EdgeInsets.only(top: 8, bottom: 8),
+                        padding:
+                            const EdgeInsetsDirectional.only(top: 8, bottom: 8),
                         minimumSize: Size(55, 38),
                         foregroundColor: Colors.grey.withOpacity(0.6),
                         shape: RoundedRectangleBorder(
@@ -383,7 +384,7 @@ class _LoginPageView extends WidgetView<LoginPage, _LoginPageController> {
               ),
               child: ListView(
                 controller: state.scrollController,
-                padding: EdgeInsets.fromLTRB(
+                padding: EdgeInsetsDirectional.fromSTEB(
                   margins,
                   topPadding,
                   margins,
@@ -391,7 +392,7 @@ class _LoginPageView extends WidgetView<LoginPage, _LoginPageController> {
                 ),
                 children: [
                   Padding(
-                    padding: const EdgeInsets.all(15),
+                    padding: const EdgeInsetsDirectional.all(15),
                     child: TextField(
                       controller: state._controller,
                     ),
@@ -400,7 +401,7 @@ class _LoginPageView extends WidgetView<LoginPage, _LoginPageController> {
                   state._identifiedLanguage == ''
                       ? Container()
                       : Container(
-                          margin: const EdgeInsets.only(bottom: 5),
+                          margin: const EdgeInsetsDirectional.only(bottom: 5),
                           child: Text(
                             'Identified Language: ${state._identifiedLanguage}',
                             style: const TextStyle(fontSize: 20),
@@ -439,9 +440,10 @@ class _LoginPageView extends WidgetView<LoginPage, _LoginPageController> {
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.all(20),
+                    padding: const EdgeInsetsDirectional.all(20),
                     child: Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                      padding:
+                          const EdgeInsetsDirectional.symmetric(horizontal: 20),
                       decoration: BoxDecoration(
                         border: Border.all(
                           width: 2,
@@ -462,10 +464,10 @@ class _LoginPageView extends WidgetView<LoginPage, _LoginPageController> {
                   ),
                   const SizedBox(height: 30),
                   Padding(
-                    padding: const EdgeInsets.all(20),
+                    padding: const EdgeInsetsDirectional.all(20),
                     child: Container(
                       width: MediaQuery.of(context).size.width / 1.3,
-                      padding: const EdgeInsets.all(20),
+                      padding: const EdgeInsetsDirectional.all(20),
                       decoration: BoxDecoration(
                         border: Border.all(
                           width: 2,

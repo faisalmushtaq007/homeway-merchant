@@ -42,7 +42,7 @@ class LoadingIndicator extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-        padding: EdgeInsets.all(16),
+        padding: EdgeInsetsDirectional.all(16),
         color: Colors.black.withOpacity(0.8),
         child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -52,7 +52,7 @@ class LoadingIndicator extends StatelessWidget {
 
   Widget _getLoadingIndicator() {
     return Padding(
-        padding: EdgeInsets.only(bottom: 16),
+        padding: EdgeInsetsDirectional.only(bottom: 16),
         child: SizedBox(
             width: 32,
             height: 32,
@@ -61,7 +61,7 @@ class LoadingIndicator extends StatelessWidget {
 
   Widget _getHeading() {
     return Padding(
-        padding: EdgeInsets.only(bottom: 4),
+        padding: EdgeInsetsDirectional.only(bottom: 4),
         child: Text(
           'Please wait …',
           style: TextStyle(color: Colors.white, fontSize: 16),

@@ -6,6 +6,7 @@ import 'package:homemakers_merchant/bootup/bootstrap.dart';
 import 'package:homemakers_merchant/config/translation/language_service.dart';
 import 'package:homemakers_merchant/config/translation/language_service_hive_adapter.dart';
 import 'package:homemakers_merchant/utils/app_data_dir/app_data_dir.dart';
+import 'package:synchronized/synchronized.dart';
 
 class LanguageServiceHive implements ILanguageService {
   LanguageServiceHive(this.boxName);
@@ -14,6 +15,7 @@ class LanguageServiceHive implements ILanguageService {
   late final Box<dynamic> _hiveBox;
 
   Box<dynamic> get hiveBox => _hiveBox;
+  var lock = Lock();
 
   @override
   Future<void> init() async {
@@ -32,6 +34,7 @@ class LanguageServiceHive implements ILanguageService {
 
   void registerHiveAdapters() {
     Hive
+      ..registerAdapter(TextDirectionAdapter())
       ..registerAdapter(TranslateLanguageAdapter())
       ..registerAdapter(LocaleAdapter())
       ..registerAdapter(SvgGenImageAdapter())
@@ -64,11 +67,14 @@ class LanguageServiceHive implements ILanguageService {
   @override
   Future<void> save<T>(String key, T value) async {
     try {
-      await _hiveBox.put(key, value);
-      if (kDebugMode) {
-        log('Language Hive type   : $key as ${value.runtimeType}');
-        log('Language Hive saved  : $key as $value');
-      }
+      await lock.synchronized(() async {
+        // Only this block can run (once) until done
+        await _hiveBox.put(key, value);
+        if (kDebugMode) {
+          log('Language Hive type   : $key as ${value.runtimeType}');
+          log('Language Hive saved  : $key as $value');
+        }
+      });
     } catch (e) {
       log('Language Hive save (put) ERROR');
       log('Language Error message ...... : $e');

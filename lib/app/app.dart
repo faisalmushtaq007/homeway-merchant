@@ -27,6 +27,7 @@ import 'package:homemakers_merchant/shared/router/app_pages.dart';
 import 'package:homemakers_merchant/shared/widgets/app/activity_indicator.dart';
 import 'package:homemakers_merchant/shared/widgets/universal/async_builder/async_builder.dart';
 import 'package:homemakers_merchant/shared/widgets/universal/double_tap_exit/double_tap_to_exit.dart';
+import 'package:homemakers_merchant/shared/widgets/universal/one_context/one_context.dart';
 import 'package:homemakers_merchant/shared/widgets/universal/phone_number_text_field/phone_form_field_bloc.dart';
 import 'package:homemakers_merchant/theme/flex_theme_dark.dart';
 import 'package:homemakers_merchant/theme/flex_theme_light.dart';
@@ -153,102 +154,109 @@ class _AppState extends State<App> with GetItStateMixin {
                     onThemeModeChanged: (themeMode) {
                       //this.themeMode = themeMode; /* you can save to storage */
                     },
-                    builder: (context) => PlatformApp.router(
-                      debugShowCheckedModeBanner: false,
-                      title: 'Merchant',
-                      // Providing a restorationScopeId allows the Navigator built by the
-                      // MaterialApp to restore the navigation stack when a user leaves and
-                      // returns to the app after it has been killed while running in the
-                      // background.
-                      restorationScopeId: 'merchant_app',
-                      localizationsDelegates: const <LocalizationsDelegate<
-                          dynamic>>[
-                        ...AppLocalizations.localizationsDelegates,
-                        DefaultMaterialLocalizations.delegate,
-                        DefaultWidgetsLocalizations.delegate,
-                        DefaultCupertinoLocalizations.delegate,
-                        GlobalMaterialLocalizations.delegate,
-                        GlobalWidgetsLocalizations.delegate,
-                        GlobalCupertinoLocalizations.delegate,
-                        PhoneFieldLocalization.delegate
-                      ],
-                      locale: languageController.targetAppLanguage.value,
-                      supportedLocales: AppLocalizations.supportedLocales,
-                      builder: (context, child) =>
-                          ResponsiveBreakpoints.builder(
-                        child: child!,
-                        breakpoints: [
-                          const Breakpoint(
-                            start: 0,
-                            end: 149,
-                            name: 'XSMALLWATCH',
-                          ),
-                          const Breakpoint(
-                            start: 150,
-                            end: 320,
-                            name: 'WATCH',
-                          ),
-                          const Breakpoint(
-                            start: 321,
-                            end: 399,
-                            name: 'MEDIUMMOBILE',
-                          ),
-                          const Breakpoint(
-                            start: 400,
-                            end: 480,
-                            name: 'LARGEMOBILE',
-                          ),
-                          const Breakpoint(
-                            start: 481,
-                            end: 600,
-                            name: 'XSMALLTABLET',
-                          ),
-                          const Breakpoint(
-                            start: 601,
-                            end: 719,
-                            name: 'MEDIUMTABLET',
-                          ),
-                          const Breakpoint(
-                            start: 720,
-                            end: 839,
-                            name: 'LARGETABLET',
-                          ),
-                          const Breakpoint(
-                            start: 840,
-                            end: 959,
-                            name: 'XLARGETABLET',
-                          ),
-                          const Breakpoint(
-                            start: 960,
-                            end: 1023,
-                            name: 'NORMALDESKTOP',
-                          ),
-                          const Breakpoint(
-                            start: 1024,
-                            end: 1279,
-                            name: 'MEDIUMDESKTOP',
-                          ),
-                          const Breakpoint(
-                            start: 1440,
-                            end: 1599,
-                            name: 'LARGEDESKTOP',
-                          ),
-                          const Breakpoint(
-                            start: 1600,
-                            end: 1920,
-                            name: 'XLARGEDESKTOP',
-                          ),
-                          const Breakpoint(
-                            start: 1921,
-                            end: double.infinity,
-                            name: '4K',
-                          ),
+                    builder: (context) => Directionality(
+                      textDirection: serviceLocator<LanguageController>()
+                          .targetTextDirection,
+                      child: PlatformApp.router(
+                        debugShowCheckedModeBanner: false,
+                        title: 'Merchant',
+                        // Providing a restorationScopeId allows the Navigator built by the
+                        // MaterialApp to restore the navigation stack when a user leaves and
+                        // returns to the app after it has been killed while running in the
+                        // background.
+                        restorationScopeId: 'merchant_app',
+                        localizationsDelegates: const <LocalizationsDelegate<
+                            dynamic>>[
+                          ...AppLocalizations.localizationsDelegates,
+                          DefaultMaterialLocalizations.delegate,
+                          DefaultWidgetsLocalizations.delegate,
+                          DefaultCupertinoLocalizations.delegate,
+                          GlobalMaterialLocalizations.delegate,
+                          GlobalWidgetsLocalizations.delegate,
+                          GlobalCupertinoLocalizations.delegate,
+                          PhoneFieldLocalization.delegate,
                         ],
+                        locale: languageController.targetAppLanguage.value,
+                        supportedLocales: AppLocalizations.supportedLocales,
+                        builder: (context, child) => Directionality(
+                          textDirection: serviceLocator<LanguageController>()
+                              .targetTextDirection,
+                          child: ResponsiveBreakpoints.builder(
+                            child: OneContext().builder(context, child),
+                            breakpoints: [
+                              const Breakpoint(
+                                start: 0,
+                                end: 149,
+                                name: 'XSMALLWATCH',
+                              ),
+                              const Breakpoint(
+                                start: 150,
+                                end: 320,
+                                name: 'WATCH',
+                              ),
+                              const Breakpoint(
+                                start: 321,
+                                end: 399,
+                                name: 'MEDIUMMOBILE',
+                              ),
+                              const Breakpoint(
+                                start: 400,
+                                end: 480,
+                                name: 'LARGEMOBILE',
+                              ),
+                              const Breakpoint(
+                                start: 481,
+                                end: 600,
+                                name: 'XSMALLTABLET',
+                              ),
+                              const Breakpoint(
+                                start: 601,
+                                end: 719,
+                                name: 'MEDIUMTABLET',
+                              ),
+                              const Breakpoint(
+                                start: 720,
+                                end: 839,
+                                name: 'LARGETABLET',
+                              ),
+                              const Breakpoint(
+                                start: 840,
+                                end: 959,
+                                name: 'XLARGETABLET',
+                              ),
+                              const Breakpoint(
+                                start: 960,
+                                end: 1023,
+                                name: 'NORMALDESKTOP',
+                              ),
+                              const Breakpoint(
+                                start: 1024,
+                                end: 1279,
+                                name: 'MEDIUMDESKTOP',
+                              ),
+                              const Breakpoint(
+                                start: 1440,
+                                end: 1599,
+                                name: 'LARGEDESKTOP',
+                              ),
+                              const Breakpoint(
+                                start: 1600,
+                                end: 1920,
+                                name: 'XLARGEDESKTOP',
+                              ),
+                              const Breakpoint(
+                                start: 1921,
+                                end: double.infinity,
+                                name: '4K',
+                              ),
+                            ],
+                          ),
+                        ),
+                        routerConfig: AppRouter.router,
+                        //routeInformationParser: AppPages.router.routeInformationParser,
+                        //routerDelegate: AppPages.router.routerDelegate,
+                        //routeInformationProvider: AppRouter.router.routeInformationProvider,
                       ),
-                      routerConfig: AppRouter.router,
-                      //routeInformationParser: AppPages.router.routeInformationParser,
-                      //routerDelegate: AppPages.router.routerDelegate,
-                      //routeInformationProvider: AppRouter.router.routeInformationProvider,
                     ),
                   ),
                 );

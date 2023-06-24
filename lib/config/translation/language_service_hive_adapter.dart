@@ -11,8 +11,17 @@ class LanguageAdapter extends TypeAdapter<Language> {
   @override
   Language read(BinaryReader reader) {
     var data = reader.read();
-    return Language(data[0] as Locale, data[1] as SvgGenImage,
-        data[2] as String, TranslateLanguage.values.byName(data[3]));
+    return Language(
+      data[0] as Locale,
+      data[1] as SvgGenImage,
+      data[2] as String,
+      TranslateLanguage.values.byName(data[3]),
+      languageDownloadStatus: LanguageDownloadStatus.values.byName(data[4])
+          as LanguageDownloadStatus,
+      textDirection: TextDirection.values.byName(
+        data[5],
+      ) as TextDirection,
+    );
   }
 
   @override
@@ -25,6 +34,8 @@ class LanguageAdapter extends TypeAdapter<Language> {
       obj.image,
       obj.text,
       obj.sourceLanguage.name,
+      obj.languageDownloadStatus.name,
+      obj.textDirection.name,
     ]);
     writer.write(obj);
   }
@@ -36,6 +47,7 @@ class SaveTranslationObject with AppEquatable {
       required this.userLanguage,
       required this.startText,
       this.resultText});
+
   final TranslateLanguage appLanguage;
 
   final TranslateLanguage userLanguage;
@@ -71,8 +83,9 @@ class SaveTranslationObjectAdapter extends TypeAdapter<SaveTranslationObject> {
       log('Error : SaveTranslationObject read- ${e.toString()}');
       return SaveTranslationObject(
         appLanguage: TranslateLanguage.english,
-        userLanguage: TranslateLanguage.arabic,
+        userLanguage: TranslateLanguage.english,
         startText: '',
+        resultText: '',
       );
     }
   }
@@ -112,8 +125,6 @@ class TranslateLanguageAdapter extends TypeAdapter<TranslateLanguage> {
 
   @override
   void write(BinaryWriter writer, TranslateLanguage obj) {
-    //writer.write(obj.index);
-    //writer.write(obj.bcpCode);
     writer.write(obj.name);
   }
 }
@@ -148,8 +159,6 @@ class LocaleAdapter extends TypeAdapter<Locale> {
 
   @override
   void write(BinaryWriter writer, Locale obj) {
-    //writer.write(obj.index);
-    //writer.write(obj.bcpCode);
     writer.write(obj);
   }
 }
@@ -168,6 +177,26 @@ class LanguageDownloadStatusAdapter
 
   @override
   void write(BinaryWriter writer, LanguageDownloadStatus obj) {
+    //writer.write(obj.hashCode);
+    //writer.write(obj.index);
+    writer.write(obj.name);
+  }
+}
+
+class TextDirectionAdapter extends TypeAdapter<TextDirection> {
+  @override
+  final typeId = 212;
+
+  @override
+  TextDirection read(BinaryReader reader) {
+    final dynamic translateLanguage = reader.read();
+    return TextDirection.values.byName(translateLanguage);
+  }
+
+  @override
+  void write(BinaryWriter writer, TextDirection obj) {
+    //writer.write(obj.hashCode);
+    //writer.write(obj.index);
     writer.write(obj.name);
   }
 }

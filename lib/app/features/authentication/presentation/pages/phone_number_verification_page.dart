@@ -139,7 +139,7 @@ class _PhoneNumberVerificationPageState
                     orElse: () {},
                   );
                   return Container(
-                    margin: EdgeInsets.fromLTRB(
+                    margin: EdgeInsetsDirectional.fromSTEB(
                       margins * 2.5,
                       topPadding,
                       margins * 2.5,
@@ -151,7 +151,7 @@ class _PhoneNumberVerificationPageState
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         Padding(
-                          padding: const EdgeInsets.only(bottom: 32),
+                          padding: const EdgeInsetsDirectional.only(bottom: 32),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
@@ -163,7 +163,7 @@ class _PhoneNumberVerificationPageState
                           ),
                         ),
                         /*Padding(
-                          padding: const EdgeInsets.only(top: 12, bottom: 8),
+                          padding: const EdgeInsetsDirectional.only(top: 12, bottom: 8),
                           child: Row(
                             children: [
                               Text(

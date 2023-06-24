@@ -16,9 +16,8 @@ import 'package:homemakers_merchant/app/features/profile/presentation/pages/crea
 part 'app_routes.dart';
 
 class AppRouter {
-  static final _rootNavigatorKey =
-      GlobalKey<NavigatorState>(debugLabel: 'root');
-  static final _shellNavigatorKey =
+  static final rootNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'root');
+  static final shellNavigatorKey =
       GlobalKey<NavigatorState>(debugLabel: 'shell');
 
   AppRouter._();
@@ -28,7 +27,7 @@ class AppRouter {
   static final GoRouter _router = GoRouter(
     debugLogDiagnostics: true,
     initialLocation: INITIAL,
-    navigatorKey: _rootNavigatorKey,
+    navigatorKey: rootNavigatorKey,
     routes: [
       GoRoute(
         path: Routes.SPLASH,

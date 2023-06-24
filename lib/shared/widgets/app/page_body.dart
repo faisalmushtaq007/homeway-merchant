@@ -23,7 +23,7 @@ class PageBody extends StatelessWidget {
     super.key,
     this.controller,
     this.constraints = const BoxConstraints(maxWidth: 1000),
-    this.padding = EdgeInsets.zero,
+    this.padding = EdgeInsetsDirectional.zero,
     required this.child,
   });
 

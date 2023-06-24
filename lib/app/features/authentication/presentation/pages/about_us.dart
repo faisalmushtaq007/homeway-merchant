@@ -141,7 +141,7 @@ class _AboutUsPageState extends State<AboutUsPage> {
                                 child: Container(
                                   width: context.width,
                                   height: constraints.maxHeight - 70,
-                                  margin: const EdgeInsets.symmetric(
+                                  margin: const EdgeInsetsDirectional.symmetric(
                                       horizontal: 20),
                                   decoration: BoxDecoration(
                                     color: Theme.of(context).primaryColor,
@@ -159,7 +159,7 @@ class _AboutUsPageState extends State<AboutUsPage> {
                                   child: Scrollbar(
                                     child: SingleChildScrollView(
                                       controller: aboutUsListViewController,
-                                      padding: EdgeInsets.symmetric(
+                                      padding: EdgeInsetsDirectional.symmetric(
                                           horizontal: 12, vertical: 6),
                                       child: Html(
                                         anchorKey: aboutUsStaticAnchorKey,

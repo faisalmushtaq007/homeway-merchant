@@ -5,7 +5,7 @@ import 'package:homemakers_merchant/config/translation/widgets/language_screen_w
 const double defaultHeight = 40;
 
 ///default padding
-const EdgeInsetsGeometry defaultPadding = EdgeInsets.all(8);
+const EdgeInsetsGeometry defaultPadding = EdgeInsetsDirectional.all(8);
 
 ///default message
 const String disconnectedMessage =

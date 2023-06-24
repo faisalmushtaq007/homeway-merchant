@@ -110,7 +110,7 @@ class _PageView
             Container(
               alignment: Alignment.center,
               width: MediaQuery.of(context).size.width,
-              padding: const EdgeInsets.symmetric(horizontal: 40),
+              padding: const EdgeInsetsDirectional.symmetric(horizontal: 40),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -145,7 +145,7 @@ class _PageView
             Container(
               alignment: Alignment.center,
               width: MediaQuery.of(context).size.width,
-              padding: const EdgeInsets.symmetric(horizontal: 40),
+              padding: const EdgeInsetsDirectional.symmetric(horizontal: 40),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -180,7 +180,7 @@ class _PageView
             Container(
               alignment: Alignment.center,
               width: MediaQuery.of(context).size.width,
-              padding: const EdgeInsets.symmetric(horizontal: 40),
+              padding: const EdgeInsetsDirectional.symmetric(horizontal: 40),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -215,7 +215,7 @@ class _PageView
             Container(
               alignment: Alignment.center,
               width: MediaQuery.of(context).size.width,
-              padding: const EdgeInsets.symmetric(horizontal: 40),
+              padding: const EdgeInsetsDirectional.symmetric(horizontal: 40),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.center,

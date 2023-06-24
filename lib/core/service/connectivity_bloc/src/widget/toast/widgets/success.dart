@@ -65,7 +65,8 @@ class _SuccessToastState extends State<SuccessToast>
         color: widget.backgroundColor,
         shadowColor: Colors.grey,
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 32.0, vertical: 12.0),
+          padding: const EdgeInsetsDirectional.symmetric(
+              horizontal: 32.0, vertical: 12.0),
           child: Row(
             mainAxisSize: MainAxisSize.min,
             children: [

@@ -65,8 +65,8 @@ class BackgroundFinalButton extends StatelessWidget {
         ? hasSkip
             ? AnimatedContainer(
                 padding: currentPage == totalPage - 1
-                    ? EdgeInsets.symmetric(horizontal: 30)
-                    : EdgeInsets.all(0),
+                    ? EdgeInsetsDirectional.symmetric(horizontal: 30)
+                    : EdgeInsetsDirectional.all(0),
                 width: currentPage == totalPage - 1
                     ? MediaQuery.of(context).size.width - 30
                     : 60,
@@ -111,7 +111,7 @@ class BackgroundFinalButton extends StatelessWidget {
                       ),
               )
             : Container(
-                padding: EdgeInsets.symmetric(horizontal: 30),
+                padding: EdgeInsetsDirectional.symmetric(horizontal: 30),
                 width: MediaQuery.of(context).size.width - 30,
                 child: FloatingActionButton.extended(
                   shape: finishButtonStyle?.shape,

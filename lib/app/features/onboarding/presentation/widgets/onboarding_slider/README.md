@@ -64,7 +64,7 @@ class OnBoarding extends StatelessWidget {
         speed: 1.8,
         pageBodies: [
           Container(
-            padding: EdgeInsets.symmetric(horizontal: 40),
+            padding: EdgeInsetsDirectional.symmetric(horizontal: 40),
             child: Column(
               children: <Widget>[
                 SizedBox(
@@ -75,7 +75,7 @@ class OnBoarding extends StatelessWidget {
             ),
           ),
           Container(
-            padding: EdgeInsets.symmetric(horizontal: 40),
+            padding: EdgeInsetsDirectional.symmetric(horizontal: 40),
             child: Column(
               children: <Widget>[
                 SizedBox(

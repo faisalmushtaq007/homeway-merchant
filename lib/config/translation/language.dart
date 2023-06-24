@@ -12,7 +12,9 @@ class Language with AppEquatable {
       map['image'] as SvgGenImage,
       map['text'] as String,
       map['sourceLanguage'] as TranslateLanguage,
-      map['languageDownloadStatus'] as LanguageDownloadStatus,
+      languageDownloadStatus:
+          map['languageDownloadStatus'] as LanguageDownloadStatus,
+      textDirection: map['textDirection'] as TextDirection,
     );
   }
 
@@ -21,19 +23,21 @@ class Language with AppEquatable {
     this.value,
     this.image,
     this.text,
-    this.sourceLanguage, [
+    this.sourceLanguage, {
     this.languageDownloadStatus = LanguageDownloadStatus.notDownloaded,
-  ]);
+    this.textDirection = TextDirection.ltr,
+  });
 
   final Locale value;
   final SvgGenImage image;
   final String text;
   final TranslateLanguage sourceLanguage;
   final LanguageDownloadStatus languageDownloadStatus;
+  final TextDirection textDirection;
 
   @override
   String toString() =>
-      'Language($value, $text, $sourceLanguage, $image, $languageDownloadStatus)';
+      'Language($value, $text, $sourceLanguage, $image, $languageDownloadStatus, $textDirection)';
 
   @override
   bool get cacheHash => true;
@@ -45,6 +49,7 @@ class Language with AppEquatable {
         text,
         sourceLanguage,
         languageDownloadStatus,
+        textDirection
       ];
 
   Language copyWith({
@@ -53,13 +58,16 @@ class Language with AppEquatable {
     String? text,
     TranslateLanguage? sourceLanguage,
     LanguageDownloadStatus? languageDownloadStatus,
+    TextDirection? textDirection,
   }) {
     return Language(
       value ?? this.value,
       image ?? this.image,
       text ?? this.text,
       sourceLanguage ?? this.sourceLanguage,
-      languageDownloadStatus ?? this.languageDownloadStatus,
+      languageDownloadStatus:
+          languageDownloadStatus ?? this.languageDownloadStatus,
+      textDirection: textDirection ?? this.textDirection,
     );
   }
 
@@ -70,6 +78,7 @@ class Language with AppEquatable {
       'text': this.text,
       'sourceLanguage': this.sourceLanguage,
       'languageDownloadStatus': this.languageDownloadStatus,
+      'textDirection': this.textDirection,
     };
   }
 }

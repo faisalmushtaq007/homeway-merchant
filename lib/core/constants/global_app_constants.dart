@@ -193,6 +193,7 @@ class GlobalApp {
       Assets.svg.flags.gb,
       'English',
       TranslateLanguage.english,
+      textDirection: TextDirection.ltr,
     ),
     /*Language(
         const Locale('sd', 'SA'),
@@ -217,6 +218,7 @@ class GlobalApp {
       Assets.svg.flags.sa,
       'Arabic',
       TranslateLanguage.arabic,
+      textDirection: TextDirection.rtl,
     ),
   ];
 
@@ -239,4 +241,7 @@ class GlobalApp {
   static const String keySourceLocale = 'sourceLocale';
   static Locale defaultTargetLocale = defaultLanguages[0].value;
   static Locale defaultSourceLocale = defaultLanguages[0].value;
+  static const String keyTargetTextDirection = 'targetTextDirection';
+  static final TextDirection defaultTargetTextDirection =
+      defaultLanguages[0].textDirection;
 }

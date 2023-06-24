@@ -6,17 +6,7 @@ import 'package:flutter/widgets.dart';
 import 'package:rxdart/streams.dart';
 
 /// MultiStreamBuilder widget allowing to combine both multiple stream and value listenables
-class MultiStreamBuilder extends StatefulWidget {
-  const MultiStreamBuilder({
-    super.key,
-    this.controller,
-    this.streams,
-    this.valuesListenable,
-    required this.builder,
-    this.buildWhen,
-    this.eventFilter,
-    this.initialStreamValue = const [],
-  });
+class MultiStreamBuilders extends StatefulWidget {
   static bool buildWhenAnyIsNotEqual(List previousDataList, List dataList) =>
       const DeepCollectionEquality().equals(previousDataList, dataList) ==
       false;
@@ -26,18 +16,27 @@ class MultiStreamBuilder extends StatefulWidget {
   final MultiStreamBuilderController? controller;
   final List<Stream?>? streams;
   final List<ValueListenable?>? valuesListenable;
-  final List<dynamic> initialStreamValue;
   final Widget Function(BuildContext context, List dataList) builder;
   final bool Function(List previousDataList, List latestDataList)? buildWhen;
   final bool Function(dynamic event, int index)? eventFilter;
 
+  const MultiStreamBuilders({
+    Key? key,
+    this.controller,
+    this.streams,
+    this.valuesListenable,
+    required this.builder,
+    this.buildWhen,
+    this.eventFilter,
+  }) : super(key: key);
+
   @override
-  State createState() => _MultiStreamBuilderState();
+  State createState() => _MultiStreamBuildersState();
 }
 
 /// MultiStreamBuilder controller
 class MultiStreamBuilderController {
-  _MultiStreamBuilderState? _currentState;
+  _MultiStreamBuildersState? _currentState;
 
   Future<void> withAtomicUpdate(FutureOr<void> Function() bloc) async {
     final state = _currentState;
@@ -50,7 +49,7 @@ class MultiStreamBuilderController {
 }
 
 /// MultiStreamBuilder widget state
-class _MultiStreamBuilderState extends State<MultiStreamBuilder> {
+class _MultiStreamBuildersState extends State<MultiStreamBuilders> {
   List<StreamSubscription?> streamSubscriptionList = [];
   List<VoidCallback> valueListenableListenerList = [];
   List shownDataList = [];
@@ -66,7 +65,7 @@ class _MultiStreamBuilderState extends State<MultiStreamBuilder> {
   }
 
   @override
-  void didUpdateWidget(MultiStreamBuilder oldWidget) {
+  void didUpdateWidget(MultiStreamBuilders oldWidget) {
     super.didUpdateWidget(oldWidget);
     widget.controller?._currentState = this;
     if (const DeepCollectionEquality()
@@ -103,7 +102,7 @@ class _MultiStreamBuilderState extends State<MultiStreamBuilder> {
         if (stream is ValueStream) {
           return stream.value;
         } else {
-          return widget.initialStreamValue[index];
+          return null;
         }
       } else {
         return widget.valuesListenable![index - streamCount]?.value;
@@ -129,7 +128,7 @@ class _MultiStreamBuilderState extends State<MultiStreamBuilder> {
     });
   }
 
-  void _unsubscribe([MultiStreamBuilder? widget]) {
+  void _unsubscribe([MultiStreamBuilders? widget]) {
     widget ??= this.widget;
     for (final subscription in streamSubscriptionList) {
       subscription?.cancel();

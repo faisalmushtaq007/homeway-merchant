@@ -201,7 +201,7 @@ class _OTPVerificationPageState extends State<OTPVerificationPage> {
           child: Form(
             child: ListView(
               controller: scrollController,
-              padding: EdgeInsets.fromLTRB(
+              padding: EdgeInsetsDirectional.fromSTEB(
                 margins * 2.5,
                 topPadding,
                 margins * 2.5,
@@ -247,7 +247,8 @@ class _OTPVerificationPageState extends State<OTPVerificationPage> {
                   ],
                 ),
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  padding:
+                      const EdgeInsetsDirectional.symmetric(horizontal: 16),
                   child: Pinput(
                     length: 6,
                     controller: otpController,

@@ -19,7 +19,7 @@ class BackgroundController extends StatelessWidget {
   Widget build(BuildContext context) {
     return indicatorAbove
         ? Container(
-            padding: EdgeInsets.only(bottom: 10),
+            padding: EdgeInsetsDirectional.only(bottom: 10),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: _buildPageIndicator(context),
@@ -28,7 +28,7 @@ class BackgroundController extends StatelessWidget {
         : currentPage == totalPage - 1
             ? SizedBox.shrink()
             : Container(
-                padding: EdgeInsets.only(bottom: 10),
+                padding: EdgeInsetsDirectional.only(bottom: 10),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: _buildPageIndicator(context),
@@ -51,9 +51,9 @@ class BackgroundController extends StatelessWidget {
   Widget _indicator(bool isActive, BuildContext context) {
     return AnimatedContainer(
       duration: Duration(milliseconds: 150),
-      margin: EdgeInsets.only(
-          left: 8.0,
-          right: 8.0,
+      margin: EdgeInsetsDirectional.only(
+          start: 8.0,
+          end: 8.0,
           bottom: indicatorAbove ? indicatorPosition : 28),
       height: 8.0,
       width: isActive ? 28.0 : 8.0,

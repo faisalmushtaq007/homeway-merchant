@@ -13,7 +13,7 @@ class TermsConditionStatementWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       alignment: Alignment.centerLeft,
-      //padding: const EdgeInsets.only(top: 5, bottom: 18, left: 30, right: 30),
+      //padding: const EdgeInsetsDirectional.only(top: 5, bottom: 18, left: 30, right: 30),
       child: Center(
           child: Text.rich(
         TextSpan(

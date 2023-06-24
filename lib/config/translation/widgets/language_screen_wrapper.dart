@@ -4,9 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:get_it_mixin/get_it_mixin.dart';
 import 'package:homemakers_merchant/base/app_base.dart';
 import 'package:homemakers_merchant/bootup/bootstrap.dart';
+import 'package:homemakers_merchant/bootup/injection_container.dart';
 import 'package:homemakers_merchant/config/translation/auto_locale_builder.dart';
 import 'package:homemakers_merchant/config/translation/extension/string_extension.dart';
 import 'package:homemakers_merchant/config/translation/language.dart';
+import 'package:homemakers_merchant/config/translation/language_controller.dart';
 import 'package:homemakers_merchant/config/translation/widgets/constants.dart';
 import 'package:homemakers_merchant/config/translation/widgets/language_inherited_widget.dart';
 import 'package:homemakers_merchant/core/constants/global_app_constants.dart';
@@ -104,8 +106,8 @@ class _LanguageScreenWrapperState extends State<LanguageScreenWrapper>
         width: MediaQuery.of(context).size.width,
         decoration: widget.decoration ??
             BoxDecoration(color: widget.color ?? Colors.red.shade500),
-        margin:
-            EdgeInsets.only(top: media.padding.top + kToolbarHeight + margins),
+        margin: EdgeInsetsDirectional.only(
+            top: media.padding.top + kToolbarHeight + margins),
         duration: widget.duration ?? const Duration(milliseconds: 300),
         child: Center(
           child: Text(
@@ -120,10 +122,12 @@ class _LanguageScreenWrapperState extends State<LanguageScreenWrapper>
     return AbsorbPointer(
       absorbing: (hasAtleastSourceLanguage),
       child: AutoLocalBuilder(
-        text: ['Language Screen Wrapper'.tr()],
+        text: ['Language Screen Wrapper'.tr().toString()],
         builder: (languageController) {
           return AutoDirection(
             text: 'Language Screen Wrapper'.tr(),
+            //hasTextDirection: false,
+            //forceTextDirection: serviceLocator<LanguageController>().targetTextDirection,
             child: Stack(
               children: [
                 if (widget.child != null) widget.child!,

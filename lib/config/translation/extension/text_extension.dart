@@ -72,36 +72,45 @@ extension TranslateText on Text {
         }
 
         if (this.textSpan == null) {
-          return Text(response,
-              key: this.key,
-              locale: this.locale,
-              maxLines: this.maxLines,
-              overflow: this.overflow,
-              semanticsLabel: this.semanticsLabel,
-              softWrap: this.softWrap,
-              strutStyle: this.strutStyle,
-              style: this.style,
-              textAlign: this.textAlign,
-              textDirection: this.textDirection,
-              textHeightBehavior: this.textHeightBehavior,
-              textScaleFactor: this.textScaleFactor,
-              textWidthBasis: this.textWidthBasis);
+          return Directionality(
+            textDirection:
+                serviceLocator<LanguageController>().targetTextDirection,
+            child: Text(response,
+                key: this.key,
+                locale: this.locale,
+                maxLines: this.maxLines,
+                overflow: this.overflow,
+                semanticsLabel: this.semanticsLabel,
+                softWrap: this.softWrap,
+                strutStyle: this.strutStyle,
+                style: this.style,
+                textAlign: this.textAlign,
+                textDirection: this.textDirection,
+                textHeightBehavior: this.textHeightBehavior,
+                textScaleFactor: this.textScaleFactor,
+                textWidthBasis: this.textWidthBasis),
+          );
         } else {
-          return Text.rich(
-              getSpansFromTexts(response.split(splitKeyWord!), this.textSpan!),
-              key: this.key,
-              locale: this.locale,
-              maxLines: this.maxLines,
-              overflow: this.overflow,
-              semanticsLabel: this.semanticsLabel,
-              softWrap: this.softWrap,
-              strutStyle: this.strutStyle,
-              style: this.style,
-              textAlign: this.textAlign,
-              textDirection: this.textDirection,
-              textHeightBehavior: this.textHeightBehavior,
-              textScaleFactor: this.textScaleFactor,
-              textWidthBasis: this.textWidthBasis);
+          return Directionality(
+            textDirection:
+                serviceLocator<LanguageController>().targetTextDirection,
+            child: Text.rich(
+                getSpansFromTexts(
+                    response.split(splitKeyWord!), this.textSpan!),
+                key: this.key,
+                locale: this.locale,
+                maxLines: this.maxLines,
+                overflow: this.overflow,
+                semanticsLabel: this.semanticsLabel,
+                softWrap: this.softWrap,
+                strutStyle: this.strutStyle,
+                style: this.style,
+                textAlign: this.textAlign,
+                textDirection: this.textDirection,
+                textHeightBehavior: this.textHeightBehavior,
+                textScaleFactor: this.textScaleFactor,
+                textWidthBasis: this.textWidthBasis),
+          );
         }
       },
     );

@@ -70,7 +70,7 @@ class _AppImageState extends State<AppImage> {
                 value: widget.progress ? value : null, color: widget.color));
       },
       errorBuilder: (_, __) => Container(
-        padding: const EdgeInsets.all(8),
+        padding: const EdgeInsetsDirectional.all(8),
         alignment: Alignment.center,
         child: LayoutBuilder(builder: (_, constraints) {
           final double size =
