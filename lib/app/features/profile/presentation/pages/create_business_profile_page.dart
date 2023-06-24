@@ -189,21 +189,26 @@ class _CreateBusinessProfilePageState extends State<CreateBusinessProfilePage>
                                         snapshot[2] as String;
                                     debugPrint(
                                         'Username translate language $translateString');
-                                    return TextFormField(
-                                      controller: _usernameController,
+                                    return Directionality(
                                       textDirection:
                                           serviceLocator<LanguageController>()
                                               .targetTextDirection,
-                                      decoration: InputDecoration(
-                                        labelText: snapshot[0],
-                                        isDense: true,
+                                      child: TextFormField(
+                                        controller: _usernameController,
+                                        textDirection:
+                                            serviceLocator<LanguageController>()
+                                                .targetTextDirection,
+                                        decoration: InputDecoration(
+                                          labelText: snapshot[0],
+                                          isDense: true,
+                                        ),
+                                        validator: (value) {
+                                          if (value == null || value.isEmpty) {
+                                            return '${snapshot[1]}';
+                                          }
+                                          return null;
+                                        },
                                       ),
-                                      validator: (value) {
-                                        if (value == null || value.isEmpty) {
-                                          return '${snapshot[1]}';
-                                        }
-                                        return null;
-                                      },
                                     );
                                   },
                                 ),
@@ -213,22 +218,27 @@ class _CreateBusinessProfilePageState extends State<CreateBusinessProfilePage>
                                     milliseconds: 300,
                                   ),
                                 ),
-                                TextFormField(
-                                  controller: _businessNameController,
+                                Directionality(
                                   textDirection:
                                       serviceLocator<LanguageController>()
                                           .targetTextDirection,
-                                  decoration: InputDecoration(
-                                    labelText: 'Business name'.tr(),
-                                    isDense: true,
+                                  child: TextFormField(
+                                    controller: _businessNameController,
+                                    textDirection:
+                                        serviceLocator<LanguageController>()
+                                            .targetTextDirection,
+                                    decoration: InputDecoration(
+                                      labelText: 'Business name'.tr(),
+                                      isDense: true,
+                                    ),
+                                    validator: (value) {
+                                      if (value == null || value.isEmpty) {
+                                        return 'Please enter a business name'
+                                            .tr();
+                                      }
+                                      return null;
+                                    },
                                   ),
-                                  validator: (value) {
-                                    if (value == null || value.isEmpty) {
-                                      return 'Please enter a business name'
-                                          .tr();
-                                    }
-                                    return null;
-                                  },
                                 ),
                                 const AnimatedGap(
                                   16,
@@ -236,30 +246,35 @@ class _CreateBusinessProfilePageState extends State<CreateBusinessProfilePage>
                                     milliseconds: 300,
                                   ),
                                 ),
-                                TextFormField(
-                                  controller: _emailController,
+                                Directionality(
                                   textDirection:
                                       serviceLocator<LanguageController>()
                                           .targetTextDirection,
-                                  decoration: InputDecoration(
-                                    labelText: 'Business email address'.tr(),
-                                    isDense: true,
+                                  child: TextFormField(
+                                    controller: _emailController,
+                                    textDirection:
+                                        serviceLocator<LanguageController>()
+                                            .targetTextDirection,
+                                    decoration: InputDecoration(
+                                      labelText: 'Business email address'.tr(),
+                                      isDense: true,
+                                    ),
+                                    validator: (value) {
+                                      if (value == null || value.isEmpty) {
+                                        return 'Please enter an email address'
+                                            .tr();
+                                      }
+                                      /*else if (!value.contains('@')) {
+                                        return 'Please enter a valid email address'.tr();
+                                      }*/
+                                      else if (!value
+                                          .hasValidEmailAddress(value)) {
+                                        return 'Please enter a valid email address'
+                                            .tr();
+                                      }
+                                      return null;
+                                    },
                                   ),
-                                  validator: (value) {
-                                    if (value == null || value.isEmpty) {
-                                      return 'Please enter an email address'
-                                          .tr();
-                                    }
-                                    /*else if (!value.contains('@')) {
-                                      return 'Please enter a valid email address'.tr();
-                                    }*/
-                                    else if (!value
-                                        .hasValidEmailAddress(value)) {
-                                      return 'Please enter a valid email address'
-                                          .tr();
-                                    }
-                                    return null;
-                                  },
                                 ),
                                 const AnimatedGap(
                                   16,
@@ -298,27 +313,34 @@ class _CreateBusinessProfilePageState extends State<CreateBusinessProfilePage>
                                                   userEnteredPhoneNumber;
                                             },
                                           );
-                                          return PhoneNumberFieldWidget(
-                                            key: const Key(
-                                                'user-business-phone-number-widget-key'),
-                                            isCountryChipPersistent: false,
-                                            outlineBorder: true,
-                                            shouldFormat: true,
-                                            useRtl: false,
-                                            withLabel: true,
-                                            decoration: InputDecoration(
-                                              labelText:
-                                                  'Business phone number'.tr(),
-                                              alignLabelWithHint: true,
-                                              //hintText: 'Mobile number',
-                                              errorText: phoneValidation,
-                                              isDense: true,
+                                          return Directionality(
+                                            textDirection: serviceLocator<
+                                                    LanguageController>()
+                                                .targetTextDirection,
+                                            child: PhoneNumberFieldWidget(
+                                              key: const Key(
+                                                  'user-business-phone-number-widget-key'),
+                                              isCountryChipPersistent: false,
+                                              outlineBorder: true,
+                                              shouldFormat: true,
+                                              useRtl: false,
+                                              withLabel: true,
+                                              decoration: InputDecoration(
+                                                labelText:
+                                                    'Business phone number'
+                                                        .tr(),
+                                                alignLabelWithHint: true,
+                                                //hintText: 'Mobile number',
+                                                errorText: phoneValidation,
+                                                isDense: true,
+                                              ),
+                                              isAllowEmpty: false,
+                                              autofocus: false,
+                                              style: context.bodyLarge,
+                                              showFlagInInput: false,
+                                              countryCodeStyle:
+                                                  context.bodyLarge,
                                             ),
-                                            isAllowEmpty: false,
-                                            autofocus: false,
-                                            style: context.bodyLarge,
-                                            showFlagInInput: false,
-                                            countryCodeStyle: context.bodyLarge,
                                           );
                                         },
                                       ),
@@ -331,46 +353,52 @@ class _CreateBusinessProfilePageState extends State<CreateBusinessProfilePage>
                                     milliseconds: 300,
                                   ),
                                 ),
-                                TextFormField(
-                                  controller: _addressController,
+                                Directionality(
                                   textDirection:
                                       serviceLocator<LanguageController>()
                                           .targetTextDirection,
-                                  maxLines: 3,
-                                  decoration: InputDecoration(
-                                    labelText: 'Business address'.tr(),
-                                    isDense: true,
-                                    suffixIcon: Container(
-                                      width: kMinInteractiveDimension * 1.05,
-                                      constraints: BoxConstraints(
-                                        minWidth:
-                                            kMinInteractiveDimension * 1.05,
-                                        minHeight: kMinInteractiveDimension * 2,
-                                      ),
-                                      decoration: BoxDecoration(
-                                        border: Border(
-                                          left: BorderSide(
-                                            width: 1.0,
+                                  child: TextFormField(
+                                    controller: _addressController,
+                                    textDirection:
+                                        serviceLocator<LanguageController>()
+                                            .targetTextDirection,
+                                    maxLines: 3,
+                                    decoration: InputDecoration(
+                                      labelText: 'Business address'.tr(),
+                                      isDense: true,
+                                      suffixIcon: Container(
+                                        width: kMinInteractiveDimension * 1.05,
+                                        constraints: BoxConstraints(
+                                          minWidth:
+                                              kMinInteractiveDimension * 1.05,
+                                          minHeight:
+                                              kMinInteractiveDimension * 2,
+                                        ),
+                                        decoration: BoxDecoration(
+                                          border: Border(
+                                            left: BorderSide(
+                                              width: 1.0,
+                                            ),
                                           ),
                                         ),
-                                      ),
-                                      child: Row(
-                                        children: [
-                                          IconButton(
-                                              onPressed: () {},
-                                              icon: Icon(
-                                                Icons.my_location,
-                                              )),
-                                        ],
+                                        child: Row(
+                                          children: [
+                                            IconButton(
+                                                onPressed: () {},
+                                                icon: Icon(
+                                                  Icons.my_location,
+                                                )),
+                                          ],
+                                        ),
                                       ),
                                     ),
+                                    validator: (value) {
+                                      if (value == null || value.isEmpty) {
+                                        return 'Please enter an address'.tr();
+                                      }
+                                      return null;
+                                    },
                                   ),
-                                  validator: (value) {
-                                    if (value == null || value.isEmpty) {
-                                      return 'Please enter an address'.tr();
-                                    }
-                                    return null;
-                                  },
                                 ),
                                 const AnimatedGap(
                                   16,
