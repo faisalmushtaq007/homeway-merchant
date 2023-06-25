@@ -1194,7 +1194,7 @@ packages:
     source: hosted
     version: "0.7.0"
   google_mlkit_text_recognition:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: google_mlkit_text_recognition
       sha256: a3d30e8ba87c88fb9b7c3b7d81d524153ea32497ac37be490f4992f2902dbabb
@@ -1329,6 +1329,15 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "4.0.17"
+  image_crop:
+    dependency: "direct overridden"
+    description:
+      path: "."
+      ref: rewrite
+      resolved-ref: "1c142913badcbfcf760aab73395879571ac61791"
+      url: "https://github.com/iazel/image_crop.git"
+    source: git
+    version: "5.0.0"
   image_fade:
     dependency: "direct main"
     description:
@@ -1570,6 +1579,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.3.0"
+  multi_image_crop:
+    dependency: "direct main"
+    description:
+      name: multi_image_crop
+      sha256: cdfeb9169843f828c4d39794c9af08be37e30ff24934d8335da71f836e88ef12
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.0.3"
   nested:
     dependency: transitive
     description:
@@ -1789,6 +1806,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "7.0.2"
+  photo_view:
+    dependency: "direct main"
+    description:
+      name: photo_view
+      sha256: "8036802a00bae2a78fc197af8a158e3e2f7b500561ed23b4c458107685e645bb"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.14.0"
   pinput:
     dependency: "direct main"
     description:
@@ -1830,6 +1855,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.5.1"
+  preload_page_view:
+    dependency: "direct overridden"
+    description:
+      name: preload_page_view
+      sha256: "488a10c158c5c2e9ba9d77e5dbc09b1e49e37a20df2301e5ba02992eac802b7a"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.2.0"
   process:
     dependency: transitive
     description:
@@ -1902,6 +1935,22 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.0.0"
+  saver_gallery:
+    dependency: "direct main"
+    description:
+      name: saver_gallery
+      sha256: "3131bba4257f69901437c0f1ebd692201ca5f34512d42667513a3802f1c171d1"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.0.1"
+  scroll_to_index:
+    dependency: "direct overridden"
+    description:
+      name: scroll_to_index
+      sha256: b707546e7500d9f070d63e5acf74fd437ec7eeeb68d3412ef7b0afada0b4f176
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.0.1"
   sembast:
     dependency: transitive
     description:

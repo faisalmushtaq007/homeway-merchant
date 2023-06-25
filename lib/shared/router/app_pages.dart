@@ -3,6 +3,7 @@ import 'dart:convert';
 
 import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
+import 'package:homemakers_merchant/app/features/address/presentation/pages/address_form_page.dart';
 import 'package:homemakers_merchant/app/features/authentication/presentation/pages/about_us.dart';
 import 'package:homemakers_merchant/app/features/authentication/presentation/pages/login_page.dart';
 import 'package:homemakers_merchant/app/features/authentication/presentation/pages/otp_verification_page.dart';
@@ -12,6 +13,8 @@ import 'package:homemakers_merchant/app/features/authentication/presentation/pag
 import 'package:homemakers_merchant/app/features/onboarding/presentation/pages/onboarding_page.dart';
 import 'package:homemakers_merchant/app/features/onboarding/presentation/pages/splash_page.dart';
 import 'package:homemakers_merchant/app/features/profile/presentation/pages/create_business_profile_page.dart';
+import 'package:homemakers_merchant/app/features/profile/presentation/pages/document/document_list_page.dart';
+import 'package:homemakers_merchant/app/features/profile/presentation/pages/document/upload_document_page.dart';
 
 part 'app_routes.dart';
 
@@ -22,7 +25,7 @@ class AppRouter {
 
   AppRouter._();
 
-  static const String INITIAL = Routes.CREATE_BUSINESS_PROFILE_PAGE;
+  static const String INITIAL = Routes.ADDRESS_FORM_PAGE;
 
   static final GoRouter _router = GoRouter(
     debugLogDiagnostics: true,
@@ -66,6 +69,18 @@ class AppRouter {
       GoRoute(
         path: Routes.CREATE_BUSINESS_PROFILE_PAGE,
         builder: (context, state) => const CreateBusinessProfilePage(),
+      ),
+      GoRoute(
+        path: Routes.DOCUMENT_LIST_PAGE,
+        builder: (context, state) => const DocumentListPage(),
+      ),
+      GoRoute(
+        path: Routes.UPLOAD_DOCUMENT_PAGE,
+        builder: (context, state) => const UploadDocumentPage(),
+      ),
+      GoRoute(
+        path: Routes.ADDRESS_FORM_PAGE,
+        builder: (context, state) => const AddressFormPage(),
       ),
     ],
   );

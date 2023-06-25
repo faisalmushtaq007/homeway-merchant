@@ -1,6 +1,7 @@
 import 'package:get_it/get_it.dart';
 import 'package:homemakers_merchant/app/features/authentication/presentation/manager/otp_verification/otp_verification_bloc.dart';
 import 'package:homemakers_merchant/app/features/authentication/presentation/manager/phone_number_verification_bloc.dart';
+import 'package:homemakers_merchant/app/features/permission/presentation/bloc/permission_bloc.dart';
 import 'package:homemakers_merchant/app/features/profile/data/local/data_sources/local_usermodel_service.dart';
 import 'package:homemakers_merchant/app/features/profile/domain/entities/user_model.dart';
 import 'package:homemakers_merchant/app/features/profile/presentation/manager/user_model_storage_controller.dart';
@@ -167,4 +168,5 @@ void _setUpStateManagement() {
     ),
   );
   serviceLocator.registerFactory<OtpVerificationBloc>(OtpVerificationBloc.new);
+  serviceLocator.registerFactory<PermissionBloc>(PermissionBloc.new);
 }

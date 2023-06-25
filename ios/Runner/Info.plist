@@ -68,13 +68,13 @@
 		<string>Used to save image to gallery</string>
 		<!-- PermissionType.location, PermissionType.locationAlways -->
 		<key>NSLocationWhenInUseUsageDescription</key>
-		<string>description</string>
+		<string>Need location when in use</string>
 		<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-		<string>description</string>
+		<string>Always and when in use</string>
 		<key>NSLocationUsageDescription</key>
-		<string>description</string>
+		<string>Older devices need location</string>
 		<key>NSLocationAlwaysUsageDescription</key>
-		<string>description</string>
+		<string>Can I have location always</string>
 		<key>UIBackgroundModes</key>
 		<array>
 			<!-- <string>fetch</string> -->

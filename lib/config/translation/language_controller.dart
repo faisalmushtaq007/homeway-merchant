@@ -201,12 +201,12 @@ class LanguageController with ChangeNotifier {
 
   void changeTargetLanguage(Language language) {
     AppTranslator.instance.changeTargetTranslateLanguage(language);
-    var cacheTargetTranslateLanguage = _targetTranslateLanguage;
+/*    var cacheTargetTranslateLanguage = _targetTranslateLanguage;
     var cacheTargetAppLanguage = _targetLanguage;
     setLanguage(cacheTargetAppLanguage);
     setSourceTranslateLanguage(cacheTargetTranslateLanguage);
     _sourceLanguage = _targetLanguage;
-    _sourceTranslateLanguage = _targetTranslateLanguage;
+    _sourceTranslateLanguage = _targetTranslateLanguage;*/
     _targetLanguage = language;
     _targetTranslateLanguage = language.sourceLanguage;
     setTargetLanguage(language);

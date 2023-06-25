@@ -358,12 +358,12 @@ class AppTranslator {
   }
 
   Future<void> changeTargetTranslateLanguage(Language language) async {
-    appLog.e('app translator: changeTargetTranslateLanguage: $language');
+    /*appLog.e('app translator: changeTargetTranslateLanguage: $language');
     var cacheTargetTranslateLanguage = targetTranslateLanguage;
     var cacheTargetAppLanguage = targetAppLanguage;
     var cacheTargetTextDirection = targetTextDirection;
     sourceAppLanguage = cacheTargetAppLanguage;
-    sourceTranslateLanguage = cacheTargetTranslateLanguage;
+    sourceTranslateLanguage = cacheTargetTranslateLanguage;*/
     targetTranslateLanguage = language.sourceLanguage;
     targetAppLanguage = language;
     targetTextDirection = language.textDirection;

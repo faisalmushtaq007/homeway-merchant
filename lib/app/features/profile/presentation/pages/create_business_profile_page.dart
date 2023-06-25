@@ -90,389 +90,534 @@ class _CreateBusinessProfilePageState extends State<CreateBusinessProfilePage>
     final double width = media.size.width;
     final ThemeData theme = Theme.of(context);
     final bool isLight = theme.brightness == Brightness.light;
-    return Directionality(
-      textDirection: serviceLocator<LanguageController>().targetTextDirection,
-      child: AutoDirection(
-        text: 'Create Business'.tr(),
-        child: AnnotatedRegion<SystemUiOverlayStyle>(
-          value: FlexColorScheme.themedSystemNavigationBar(
-            context,
-            useDivider: false,
-            opacity: 0.60,
-            noAppBar: true,
-          ),
-          child: PlatformScaffold(
-            appBar: PlatformAppBar(
-              trailingActions: const [
-                Padding(
-                  padding: EdgeInsetsDirectional.symmetric(horizontal: 14),
-                  child: LanguageSelectionWidget(),
-                ),
-              ],
+    return AnnotatedRegion<SystemUiOverlayStyle>(
+      value: FlexColorScheme.themedSystemNavigationBar(
+        context,
+        useDivider: false,
+        opacity: 0.60,
+        noAppBar: true,
+      ),
+      child: PlatformScaffold(
+        material: (context, platform) {
+          return MaterialScaffoldData(
+            resizeToAvoidBottomInset: false,
+          );
+        },
+        cupertino: (context, platform) {
+          return CupertinoPageScaffoldData(
+            resizeToAvoidBottomInset: false,
+          );
+        },
+        appBar: PlatformAppBar(
+          trailingActions: const [
+            Padding(
+              padding: EdgeInsetsDirectional.symmetric(horizontal: 14),
+              child: LanguageSelectionWidget(),
             ),
-            body: PageBody(
-              controller: scrollController,
-              constraints: BoxConstraints(
-                minWidth: double.infinity,
-                minHeight: media.size.height,
-              ),
-              child: AnimatedBuilder(
-                animation: _animationController,
-                builder: (BuildContext context, Widget? child) {
-                  return Transform(
-                    transform: Matrix4.translationValues(
-                      _animation.value * width,
-                      0.0,
-                      0.0,
-                    ),
-                    child: Form(
-                      key: _createBusinessProfileFormKey,
-                      child: Padding(
-                        padding: EdgeInsetsDirectional.only(
-                          top: topPadding,
-                          bottom: bottomPadding,
-                        ),
-                        child: Stack(
-                          alignment: Alignment.topLeft,
-                          clipBehavior: Clip.none,
-                          textDirection: serviceLocator<LanguageController>()
-                              .targetTextDirection,
-                          children: [
-                            ListView(
-                              controller: scrollController,
-                              shrinkWrap: true,
-                              padding: EdgeInsetsDirectional.only(
-                                  start: margins * 2.5, end: margins * 2.5),
-                              children: [
-                                Text(
-                                  'Enter the business details',
-                                  style: context.titleLarge,
-                                  textDirection:
-                                      serviceLocator<LanguageController>()
-                                          .targetTextDirection,
-                                ).translate(),
-                                const AnimatedGap(
-                                  16,
-                                  duration: Duration(
-                                    milliseconds: 300,
-                                  ),
+          ],
+        ),
+        body: Directionality(
+          textDirection:
+              serviceLocator<LanguageController>().targetTextDirection,
+          child: PageBody(
+            controller: scrollController,
+            constraints: BoxConstraints(
+              minWidth: double.infinity,
+              minHeight: media.size.height,
+            ),
+            child: AnimatedBuilder(
+              animation: _animationController,
+              builder: (BuildContext context, Widget? child) {
+                return Transform(
+                  transform: Matrix4.translationValues(
+                    _animation.value * width,
+                    0.0,
+                    0.0,
+                  ),
+                  child: Form(
+                    key: _createBusinessProfileFormKey,
+                    child: Padding(
+                      padding: EdgeInsetsDirectional.only(
+                        top: topPadding,
+                        bottom: bottomPadding,
+                      ),
+                      child: Stack(
+                        alignment: Alignment.topLeft,
+                        clipBehavior: Clip.none,
+                        textDirection: serviceLocator<LanguageController>()
+                            .targetTextDirection,
+                        children: [
+                          ListView(
+                            controller: scrollController,
+                            shrinkWrap: true,
+                            padding: EdgeInsetsDirectional.only(
+                              start: margins * 2.5,
+                              end: margins * 2.5,
+                            ),
+                            children: [
+                              Text(
+                                'Enter the business details',
+                                style: context.titleLarge,
+                                textDirection:
+                                    serviceLocator<LanguageController>()
+                                        .targetTextDirection,
+                              ).translate(),
+                              const AnimatedGap(
+                                16,
+                                duration: Duration(
+                                  milliseconds: 300,
                                 ),
-                                MultiStreamBuilder(
-                                  key: const Key(
-                                    'business-fullname-textFormField-key',
+                              ),
+                              MultiStreamBuilder(
+                                key: const Key(
+                                  'business-fullname-textFormField-key',
+                                ),
+                                buildWhen: (previousDataList, latestDataList) =>
+                                    previousDataList != latestDataList,
+                                streams: [
+                                  Stream.fromFuture(
+                                    AppTranslator.instance
+                                        .translate('Full name'),
                                   ),
-                                  buildWhen:
-                                      (previousDataList, latestDataList) =>
-                                          previousDataList != latestDataList,
-                                  streams: [
-                                    Stream.fromFuture(
-                                      AppTranslator.instance
-                                          .translate('Full name'),
+                                  Stream.fromFuture(
+                                    AppTranslator.instance
+                                        .translate('Please enter a full name'),
+                                  ),
+                                  Stream.fromFuture(
+                                    AppTranslator.instance.translate(
+                                      _usernameController.value.text.trim(),
                                     ),
-                                    Stream.fromFuture(
-                                      AppTranslator.instance.translate(
-                                          'Please enter a full name'),
-                                    ),
-                                    Stream.fromFuture(
-                                      AppTranslator.instance.translate(
-                                        _usernameController.value.text.trim(),
-                                      ),
-                                    ),
-                                  ],
-                                  initialStreamValue: const [
-                                    'Full name',
-                                    'Please enter a full name',
-                                    ''
-                                  ],
-                                  builder: (context, snapshot) {
-                                    final String translateString =
-                                        snapshot[2] as String;
-                                    debugPrint(
-                                        'Username translate language $translateString');
-                                    return Directionality(
+                                  ),
+                                ],
+                                initialStreamValue: const [
+                                  'Full name',
+                                  'Please enter a full name',
+                                  ''
+                                ],
+                                builder: (context, snapshot) {
+                                  final String translateString =
+                                      snapshot[2] as String;
+                                  return Directionality(
+                                    textDirection:
+                                        serviceLocator<LanguageController>()
+                                            .targetTextDirection,
+                                    child: TextFormField(
+                                      controller: _usernameController,
                                       textDirection:
                                           serviceLocator<LanguageController>()
                                               .targetTextDirection,
-                                      child: TextFormField(
-                                        controller: _usernameController,
-                                        textDirection:
-                                            serviceLocator<LanguageController>()
-                                                .targetTextDirection,
-                                        decoration: InputDecoration(
-                                          labelText: snapshot[0],
-                                          isDense: true,
-                                        ),
-                                        validator: (value) {
-                                          if (value == null || value.isEmpty) {
-                                            return '${snapshot[1]}';
-                                          }
-                                          return null;
-                                        },
+                                      decoration: InputDecoration(
+                                        labelText: snapshot[0],
+                                        isDense: true,
                                       ),
-                                    );
-                                  },
+                                      validator: (value) {
+                                        if (value == null || value.isEmpty) {
+                                          return '${snapshot[1]}';
+                                        }
+                                        return null;
+                                      },
+                                    ),
+                                  );
+                                },
+                              ),
+                              const AnimatedGap(
+                                16,
+                                duration: Duration(
+                                  milliseconds: 300,
                                 ),
-                                const AnimatedGap(
-                                  16,
-                                  duration: Duration(
-                                    milliseconds: 300,
+                              ),
+                              MultiStreamBuilder(
+                                key: const Key(
+                                  'business-name-textFormField-key',
+                                ),
+                                buildWhen: (previousDataList, latestDataList) =>
+                                    previousDataList != latestDataList,
+                                streams: [
+                                  Stream.fromFuture(
+                                    AppTranslator.instance
+                                        .translate('Business name'),
                                   ),
-                                ),
-                                Directionality(
-                                  textDirection:
-                                      serviceLocator<LanguageController>()
-                                          .targetTextDirection,
-                                  child: TextFormField(
-                                    controller: _businessNameController,
+                                  Stream.fromFuture(
+                                    AppTranslator.instance.translate(
+                                      'Please enter a business name',
+                                    ),
+                                  ),
+                                  Stream.fromFuture(
+                                    AppTranslator.instance.translate(
+                                      _businessNameController.value.text.trim(),
+                                    ),
+                                  ),
+                                ],
+                                initialStreamValue: const [
+                                  'Business name',
+                                  'Please enter a business name',
+                                  ''
+                                ],
+                                builder: (context, snapshot) {
+                                  return Directionality(
                                     textDirection:
                                         serviceLocator<LanguageController>()
                                             .targetTextDirection,
-                                    decoration: InputDecoration(
-                                      labelText: 'Business name'.tr(),
-                                      isDense: true,
+                                    child: TextFormField(
+                                      controller: _businessNameController,
+                                      textDirection:
+                                          serviceLocator<LanguageController>()
+                                              .targetTextDirection,
+                                      decoration: InputDecoration(
+                                        labelText: snapshot[0],
+                                        isDense: true,
+                                      ),
+                                      validator: (value) {
+                                        if (value == null || value.isEmpty) {
+                                          return '${snapshot[1]}';
+                                        }
+                                        return null;
+                                      },
                                     ),
-                                    validator: (value) {
-                                      if (value == null || value.isEmpty) {
-                                        return 'Please enter a business name'
-                                            .tr();
-                                      }
-                                      return null;
-                                    },
-                                  ),
+                                  );
+                                },
+                              ),
+                              const AnimatedGap(
+                                16,
+                                duration: Duration(
+                                  milliseconds: 300,
                                 ),
-                                const AnimatedGap(
-                                  16,
-                                  duration: Duration(
-                                    milliseconds: 300,
-                                  ),
+                              ),
+                              MultiStreamBuilder(
+                                key: const Key(
+                                  'business-email-address-textFormField-key',
                                 ),
-                                Directionality(
-                                  textDirection:
-                                      serviceLocator<LanguageController>()
-                                          .targetTextDirection,
-                                  child: TextFormField(
-                                    controller: _emailController,
+                                buildWhen: (previousDataList, latestDataList) =>
+                                    previousDataList != latestDataList,
+                                streams: [
+                                  Stream.fromFuture(
+                                    AppTranslator.instance
+                                        .translate('Business email address'),
+                                  ),
+                                  Stream.fromFuture(
+                                    AppTranslator.instance.translate(
+                                      'Please enter an email address',
+                                    ),
+                                  ),
+                                  Stream.fromFuture(
+                                    AppTranslator.instance.translate(
+                                      'Please enter a valid email address',
+                                    ),
+                                  ),
+                                  Stream.fromFuture(
+                                    AppTranslator.instance.translate(
+                                      _emailController.value.text.trim(),
+                                    ),
+                                  ),
+                                ],
+                                initialStreamValue: const [
+                                  'Business email address',
+                                  'Please enter an email address',
+                                  'Please enter a valid email address',
+                                  ''
+                                ],
+                                builder: (context, snapshot) {
+                                  return Directionality(
                                     textDirection:
                                         serviceLocator<LanguageController>()
                                             .targetTextDirection,
-                                    decoration: InputDecoration(
-                                      labelText: 'Business email address'.tr(),
-                                      isDense: true,
+                                    child: TextFormField(
+                                      controller: _emailController,
+                                      textDirection:
+                                          serviceLocator<LanguageController>()
+                                              .targetTextDirection,
+                                      decoration: InputDecoration(
+                                        labelText: snapshot[0],
+                                        isDense: true,
+                                      ),
+                                      validator: (value) {
+                                        if (value == null || value.isEmpty) {
+                                          return '${snapshot[1]}';
+                                        }
+                                        /*else if (!value.contains('@')) {
+                                          return 'Please enter a valid email address'.tr();
+                                        }*/
+                                        else if (!value
+                                            .hasValidEmailAddress(value)) {
+                                          return '${snapshot[2]}';
+                                        }
+                                        return null;
+                                      },
                                     ),
-                                    validator: (value) {
-                                      if (value == null || value.isEmpty) {
-                                        return 'Please enter an email address'
-                                            .tr();
-                                      }
-                                      /*else if (!value.contains('@')) {
-                                        return 'Please enter a valid email address'.tr();
-                                      }*/
-                                      else if (!value
-                                          .hasValidEmailAddress(value)) {
-                                        return 'Please enter a valid email address'
-                                            .tr();
-                                      }
-                                      return null;
-                                    },
-                                  ),
+                                  );
+                                },
+                              ),
+                              const AnimatedGap(
+                                16,
+                                duration: Duration(
+                                  milliseconds: 300,
                                 ),
-                                const AnimatedGap(
-                                  16,
-                                  duration: Duration(
-                                    milliseconds: 300,
-                                  ),
-                                ),
-                                Row(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    Flexible(
-                                      child: BlocBuilder<PhoneFormFieldBloc,
-                                          PhoneNumberFormFieldState>(
-                                        bloc:
-                                            context.read<PhoneFormFieldBloc>(),
-                                        buildWhen: (previous, current) =>
-                                            previous != current,
-                                        builder: (context, state) {
-                                          state.maybeWhen(
-                                            orElse: () {},
-                                            validate: (
-                                              isAllowEmpty,
-                                              mobileOnly,
-                                              phoneNumberInputValidator,
-                                              phoneValidation,
-                                              phoneController,
-                                              phoneNumber,
-                                              phoneNumberVerification,
-                                              userEnteredPhoneNumber,
-                                              countryDialCode,
-                                              country,
-                                            ) {
-                                              this.phoneNumberVerification =
-                                                  phoneNumberVerification;
-                                              this.userEnteredPhoneNumber =
-                                                  userEnteredPhoneNumber;
-                                            },
-                                          );
-                                          return Directionality(
-                                            textDirection: serviceLocator<
-                                                    LanguageController>()
-                                                .targetTextDirection,
-                                            child: PhoneNumberFieldWidget(
-                                              key: const Key(
-                                                  'user-business-phone-number-widget-key'),
-                                              isCountryChipPersistent: false,
-                                              outlineBorder: true,
-                                              shouldFormat: true,
-                                              useRtl: false,
-                                              withLabel: true,
-                                              decoration: InputDecoration(
-                                                labelText:
-                                                    'Business phone number'
-                                                        .tr(),
-                                                alignLabelWithHint: true,
-                                                //hintText: 'Mobile number',
-                                                errorText: phoneValidation,
-                                                isDense: true,
+                              ),
+                              Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Flexible(
+                                    child: BlocBuilder<PhoneFormFieldBloc,
+                                        PhoneNumberFormFieldState>(
+                                      bloc: context.read<PhoneFormFieldBloc>(),
+                                      buildWhen: (previous, current) =>
+                                          previous != current,
+                                      builder: (context, state) {
+                                        state.maybeWhen(
+                                          orElse: () {},
+                                          validate: (
+                                            isAllowEmpty,
+                                            mobileOnly,
+                                            phoneNumberInputValidator,
+                                            phoneValidation,
+                                            phoneController,
+                                            phoneNumber,
+                                            phoneNumberVerification,
+                                            userEnteredPhoneNumber,
+                                            countryDialCode,
+                                            country,
+                                          ) {
+                                            this.phoneNumberVerification =
+                                                phoneNumberVerification;
+                                            this.userEnteredPhoneNumber =
+                                                userEnteredPhoneNumber;
+                                          },
+                                        );
+                                        return MultiStreamBuilder(
+                                          key: const Key(
+                                            'business-phone-number-textFormField-key',
+                                          ),
+                                          buildWhen: (
+                                            previousDataList,
+                                            latestDataList,
+                                          ) =>
+                                              previousDataList !=
+                                              latestDataList,
+                                          streams: [
+                                            Stream.fromFuture(
+                                              AppTranslator.instance.translate(
+                                                'Business phone number',
                                               ),
-                                              isAllowEmpty: false,
-                                              autofocus: false,
-                                              style: context.bodyLarge,
-                                              showFlagInInput: false,
-                                              countryCodeStyle:
-                                                  context.bodyLarge,
                                             ),
-                                          );
-                                        },
-                                      ),
+                                            Stream.fromFuture(
+                                              AppTranslator.instance.translate(
+                                                '$phoneValidation',
+                                              ),
+                                            ),
+                                          ],
+                                          initialStreamValue: [
+                                            'Business phone number',
+                                            phoneValidation,
+                                          ],
+                                          builder: (context, snapshot) {
+                                            return Directionality(
+                                              textDirection: serviceLocator<
+                                                      LanguageController>()
+                                                  .targetTextDirection,
+                                              child: PhoneNumberFieldWidget(
+                                                key: const Key(
+                                                  'user-business-phone-number-widget-key',
+                                                ),
+                                                isCountryChipPersistent: false,
+                                                outlineBorder: true,
+                                                shouldFormat: true,
+                                                useRtl: false,
+                                                withLabel: true,
+                                                decoration: InputDecoration(
+                                                  labelText: snapshot[0],
+                                                  alignLabelWithHint: true,
+                                                  //hintText: 'Mobile number',
+                                                  errorText: phoneValidation,
+                                                  isDense: true,
+                                                ),
+                                                isAllowEmpty: false,
+                                                autofocus: false,
+                                                style: context.bodyLarge,
+                                                showFlagInInput: false,
+                                                countryCodeStyle:
+                                                    context.bodyLarge,
+                                              ),
+                                            );
+                                          },
+                                        );
+                                      },
                                     ),
-                                  ],
-                                ),
-                                const AnimatedGap(
-                                  16,
-                                  duration: Duration(
-                                    milliseconds: 300,
                                   ),
+                                ],
+                              ),
+                              const AnimatedGap(
+                                16,
+                                duration: Duration(
+                                  milliseconds: 300,
                                 ),
-                                Directionality(
-                                  textDirection:
-                                      serviceLocator<LanguageController>()
-                                          .targetTextDirection,
-                                  child: TextFormField(
-                                    controller: _addressController,
+                              ),
+                              MultiStreamBuilder(
+                                key: const Key(
+                                  'business-address-textFormField-key',
+                                ),
+                                buildWhen: (previousDataList, latestDataList) =>
+                                    previousDataList != latestDataList,
+                                streams: [
+                                  Stream.fromFuture(
+                                    AppTranslator.instance
+                                        .translate('Business address'),
+                                  ),
+                                  Stream.fromFuture(
+                                    AppTranslator.instance
+                                        .translate('Please enter an address'),
+                                  ),
+                                  Stream.fromFuture(
+                                    AppTranslator.instance.translate(
+                                      _addressController.value.text.trim(),
+                                    ),
+                                  ),
+                                ],
+                                initialStreamValue: const [
+                                  'Business address',
+                                  'Please enter an address',
+                                  ''
+                                ],
+                                builder: (context, snapshot) {
+                                  return Directionality(
                                     textDirection:
                                         serviceLocator<LanguageController>()
                                             .targetTextDirection,
-                                    maxLines: 3,
-                                    decoration: InputDecoration(
-                                      labelText: 'Business address'.tr(),
-                                      isDense: true,
-                                      suffixIcon: Container(
-                                        width: kMinInteractiveDimension * 1.05,
-                                        constraints: BoxConstraints(
-                                          minWidth:
+                                    child: TextFormField(
+                                      controller: _addressController,
+                                      textDirection:
+                                          serviceLocator<LanguageController>()
+                                              .targetTextDirection,
+                                      maxLines: 3,
+                                      decoration: InputDecoration(
+                                        labelText: snapshot[0],
+                                        isDense: true,
+                                        suffixIcon: Container(
+                                          width:
                                               kMinInteractiveDimension * 1.05,
-                                          minHeight:
-                                              kMinInteractiveDimension * 2,
-                                        ),
-                                        decoration: BoxDecoration(
-                                          border: Border(
-                                            left: BorderSide(
-                                              width: 1.0,
+                                          constraints: BoxConstraints(
+                                            minWidth:
+                                                kMinInteractiveDimension * 1.05,
+                                            minHeight:
+                                                kMinInteractiveDimension * 2,
+                                          ),
+                                          decoration: BoxDecoration(
+                                            border: BorderDirectional(
+                                              start: BorderSide(
+                                                width: 1.0,
+                                                color: Color.fromRGBO(
+                                                  201,
+                                                  201,
+                                                  203,
+                                                  1.0,
+                                                ),
+                                              ),
                                             ),
                                           ),
-                                        ),
-                                        child: Row(
-                                          children: [
-                                            IconButton(
+                                          child: Row(
+                                            children: [
+                                              IconButton(
                                                 onPressed: () {},
                                                 icon: Icon(
                                                   Icons.my_location,
-                                                )),
-                                          ],
+                                                ),
+                                              ),
+                                            ],
+                                          ),
                                         ),
                                       ),
+                                      validator: (value) {
+                                        if (value == null || value.isEmpty) {
+                                          return '${snapshot[1]}';
+                                        }
+                                        return null;
+                                      },
                                     ),
-                                    validator: (value) {
-                                      if (value == null || value.isEmpty) {
-                                        return 'Please enter an address'.tr();
-                                      }
-                                      return null;
+                                  );
+                                },
+                              ),
+/*                              const AnimatedGap(
+                                16,
+                                duration: Duration(
+                                  milliseconds: 300,
+                                ),
+                              ),
+                              MultiStreamBuilder(
+                                key: const Key(
+                                  'business-fullname-textFormField-key',
+                                ),
+                                buildWhen: (previousDataList, latestDataList) =>
+                                    previousDataList != latestDataList,
+                                streams: [
+                                  Stream.fromFuture(
+                                    AppTranslator.instance.translate('Gender'),
+                                  ),
+                                  Stream.fromFuture(
+                                    AppTranslator.instance.translate('Male'),
+                                  ),
+                                  Stream.fromFuture(
+                                    AppTranslator.instance.translate(
+                                      'Female',
+                                    ),
+                                  ),
+                                  Stream.fromFuture(
+                                    AppTranslator.instance.translate(
+                                      'Other',
+                                    ),
+                                  ),
+                                  Stream.fromFuture(
+                                    AppTranslator.instance.translate(
+                                      _selectedGender,
+                                    ),
+                                  ),
+                                ],
+                                initialStreamValue: [
+                                  'Gender',
+                                  'Male',
+                                  'Female',
+                                  'Other',
+                                  _selectedGender
+                                ],
+                                builder: (context, snapshot) {
+                                  return DropdownButtonFormField<String>(
+                                    decoration: InputDecoration(
+                                      labelText: snapshot[0],
+                                      isDense: true,
+                                    ),
+                                    value: snapshot[4],
+                                    items: [
+                                      DropdownMenuItem<String>(
+                                        value: snapshot[1],
+                                        child: Text('Male').translate(),
+                                      ),
+                                      DropdownMenuItem<String>(
+                                        value: snapshot[2],
+                                        child: Text('Female').translate(),
+                                      ),
+                                      DropdownMenuItem<String>(
+                                        value: snapshot[3],
+                                        child: Text('Other').translate(),
+                                      ),
+                                    ],
+                                    onChanged: (String? value) {
+                                      setState(() {
+                                        _selectedGender = value!;
+                                      });
                                     },
-                                  ),
+                                  );
+                                },
+                              ),*/
+                              AnimatedGap(
+                                context.height / 3.15 - bottomPadding,
+                                duration: Duration(
+                                  milliseconds: 300,
                                 ),
-                                const AnimatedGap(
-                                  16,
-                                  duration: Duration(
-                                    milliseconds: 300,
-                                  ),
-                                ),
-                                /* DropdownButtonFormField<String>(
-                                  decoration: InputDecoration(
-                                    labelText: 'Gender'.tr(),
-                                    isDense: true,
-                                  ),
-                                  value: _selectedGender,
-                                  items: [
-                                    DropdownMenuItem<String>(
-                                      value: 'Male'.tr(),
-                                      child: Text('Male'.tr()),
-                                    ),
-                                    DropdownMenuItem<String>(
-                                      value: 'Female'.tr(),
-                                      child: Text('Female'.tr()),
-                                    ),
-                                    DropdownMenuItem<String>(
-                                      value: 'Other'.tr(),
-                                      child: Text('Other'.tr()),
-                                    ),
-                                  ],
-                                  onChanged: (String? value) {
-                                    setState(() {
-                                      _selectedGender = value!;
-                                    });
-                                  },
-                                ),*/
-                                AnimatedGap(
-                                  context.height / 4.5 - bottomPadding,
-                                  duration: Duration(
-                                    milliseconds: 300,
-                                  ),
-                                ),
-                                SizedBox(
-                                  width: context.width - margins * 5,
-                                  child: ElevatedButton(
-                                    onPressed: () {
-                                      if (_createBusinessProfileFormKey
-                                          .currentState!
-                                          .validate()) {
-                                        // Registration logic here
-                                        final username =
-                                            _usernameController.text;
-                                        final email = _emailController.text;
-                                        final phone = userEnteredPhoneNumber;
-                                        final address = _addressController.text;
-
-                                        // Print the entered information
-                                        print('Username: $username');
-                                        print('Email: $email');
-                                        print('Phone: $phone');
-                                        print('Address: $address');
-                                        print('Gender: $_selectedGender');
-                                      }
-                                    },
-                                    child: Text('Next'.tr()),
-                                  ),
-                                ),
-                              ],
-                            ),
-
-                            /*Align(
-                              alignment: Alignment.bottomCenter,
-                              child: SizedBox(
+                              ),
+                              SizedBox(
                                 width: context.width - margins * 5,
                                 child: ElevatedButton(
                                   onPressed: () {
-                                    if (_createBusinessProfileFormKey.currentState!
+                                    if (_createBusinessProfileFormKey
+                                        .currentState!
                                         .validate()) {
                                       // Registration logic here
                                       final username = _usernameController.text;
@@ -488,17 +633,44 @@ class _CreateBusinessProfilePageState extends State<CreateBusinessProfilePage>
                                       print('Gender: $_selectedGender');
                                     }
                                   },
-                                  child: Text('Next'.tr()),
+                                  child: Text('Next').translate(),
                                 ),
                               ),
-                            ),*/
-                          ],
-                        ),
+                            ],
+                          ),
+
+                          /*Align(
+                            alignment: Alignment.bottomCenter,
+                            child: SizedBox(
+                              width: context.width - margins * 5,
+                              child: ElevatedButton(
+                                onPressed: () {
+                                  if (_createBusinessProfileFormKey.currentState!
+                                      .validate()) {
+                                    // Registration logic here
+                                    final username = _usernameController.text;
+                                    final email = _emailController.text;
+                                    final phone = userEnteredPhoneNumber;
+                                    final address = _addressController.text;
+
+                                    // Print the entered information
+                                    print('Username: $username');
+                                    print('Email: $email');
+                                    print('Phone: $phone');
+                                    print('Address: $address');
+                                    print('Gender: $_selectedGender');
+                                  }
+                                },
+                                child: Text('Next'.tr()),
+                              ),
+                            ),
+                          ),*/
+                        ],
                       ),
                     ),
-                  );
-                },
-              ),
+                  ),
+                );
+              },
             ),
           ),
         ),
