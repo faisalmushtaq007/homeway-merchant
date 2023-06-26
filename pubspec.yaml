@@ -81,7 +81,10 @@ dependencies:
   json_annotation: ^4.8.1
   location: ^4.4.0
   logger: ^1.4.0
-  multi_image_crop: ^0.0.3
+  multi_image_crop:
+    git:
+      url: 'https://github.com/prasant10050/multi_image_crop.git'
+      ref: master
   network_manager:
     git:
       url: 'git@bitbucket.org:prasant72/homemakers_commons.git'
@@ -136,12 +139,6 @@ dev_dependencies:
 
 dependency_overrides:
   http: ^1.0.0
-  image_crop:
-    git:
-      url: 'https://github.com/iazel/image_crop.git'
-      ref: rewrite
-  preload_page_view: 0.2.0
-  scroll_to_index: 3.0.1
 
 flutter_gen:
   # Optional

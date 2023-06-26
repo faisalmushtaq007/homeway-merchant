@@ -53,6 +53,7 @@ abstract class Routes {
   static const String DOCUMENT_LIST_PAGE = _Paths.DOCUMENT_LIST_PAGE;
   static const String UPLOAD_DOCUMENT_PAGE = _Paths.UPLOAD_DOCUMENT_PAGE;
   static const String ADDRESS_FORM_PAGE = _Paths.ADDRESS_FORM_PAGE;
+  static const String BANK_INFORMATION_PAGE = _Paths.BANK_INFORMATION_PAGE;
 }
 
 abstract class _Paths {
@@ -104,4 +105,5 @@ abstract class _Paths {
   static const String DOCUMENT_LIST_PAGE = '/document-list';
   static const String UPLOAD_DOCUMENT_PAGE = '/upload-document';
   static const String ADDRESS_FORM_PAGE = '/address-form';
+  static const String BANK_INFORMATION_PAGE = '/bank-information';
 }

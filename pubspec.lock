@@ -1330,14 +1330,14 @@ packages:
     source: hosted
     version: "4.0.17"
   image_crop:
-    dependency: "direct overridden"
+    dependency: transitive
     description:
       path: "."
-      ref: rewrite
-      resolved-ref: "1c142913badcbfcf760aab73395879571ac61791"
-      url: "https://github.com/iazel/image_crop.git"
+      ref: master
+      resolved-ref: c137971605ea4808a2dfaee00a693f5da6249a79
+      url: "https://github.com/prasant10050/image_crop.git"
     source: git
-    version: "5.0.0"
+    version: "0.4.2"
   image_fade:
     dependency: "direct main"
     description:
@@ -1582,10 +1582,11 @@ packages:
   multi_image_crop:
     dependency: "direct main"
     description:
-      name: multi_image_crop
-      sha256: cdfeb9169843f828c4d39794c9af08be37e30ff24934d8335da71f836e88ef12
-      url: "https://pub.dev"
-    source: hosted
+      path: "."
+      ref: master
+      resolved-ref: "38aab2cab1f427dfb9f56102196e700b831c3041"
+      url: "https://github.com/prasant10050/multi_image_crop.git"
+    source: git
     version: "0.0.3"
   nested:
     dependency: transitive
@@ -1856,7 +1857,7 @@ packages:
     source: hosted
     version: "1.5.1"
   preload_page_view:
-    dependency: "direct overridden"
+    dependency: transitive
     description:
       name: preload_page_view
       sha256: "488a10c158c5c2e9ba9d77e5dbc09b1e49e37a20df2301e5ba02992eac802b7a"
@@ -1944,7 +1945,7 @@ packages:
     source: hosted
     version: "2.0.1"
   scroll_to_index:
-    dependency: "direct overridden"
+    dependency: transitive
     description:
       name: scroll_to_index
       sha256: b707546e7500d9f070d63e5acf74fd437ec7eeeb68d3412ef7b0afada0b4f176

@@ -22,15 +22,15 @@ import 'package:homemakers_merchant/shared/widgets/universal/multi_stream_builde
 import 'package:homemakers_merchant/shared/widgets/universal/phone_number_text_field/phone_form_field_bloc.dart';
 import 'package:homemakers_merchant/shared/widgets/universal/phone_number_text_field/phonenumber_form_field_widget.dart';
 
-class CreateBusinessProfilePage extends StatefulWidget {
-  const CreateBusinessProfilePage({super.key});
+class BusinessInformationPage extends StatefulWidget {
+  const BusinessInformationPage({super.key});
 
   @override
-  _CreateBusinessProfilePageState createState() =>
-      _CreateBusinessProfilePageState();
+  _BusinessInformationPageState createState() =>
+      _BusinessInformationPageState();
 }
 
-class _CreateBusinessProfilePageState extends State<CreateBusinessProfilePage>
+class _BusinessInformationPageState extends State<BusinessInformationPage>
     with SingleTickerProviderStateMixin {
   late final ScrollController scrollController;
 
@@ -633,7 +633,12 @@ class _CreateBusinessProfilePageState extends State<CreateBusinessProfilePage>
                                       print('Gender: $_selectedGender');
                                     }
                                   },
-                                  child: Text('Next').translate(),
+                                  child: Text(
+                                    'Next',
+                                    textDirection:
+                                        serviceLocator<LanguageController>()
+                                            .targetTextDirection,
+                                  ).translate(),
                                 ),
                               ),
                             ],

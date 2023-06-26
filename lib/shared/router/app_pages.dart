@@ -12,7 +12,8 @@ import 'package:homemakers_merchant/app/features/authentication/presentation/pag
 import 'package:homemakers_merchant/app/features/authentication/presentation/pages/terms_and_conditions_view.dart';
 import 'package:homemakers_merchant/app/features/onboarding/presentation/pages/onboarding_page.dart';
 import 'package:homemakers_merchant/app/features/onboarding/presentation/pages/splash_page.dart';
-import 'package:homemakers_merchant/app/features/profile/presentation/pages/create_business_profile_page.dart';
+import 'package:homemakers_merchant/app/features/profile/presentation/pages/bank/bank_information_page.dart';
+import 'package:homemakers_merchant/app/features/profile/presentation/pages/business_information_page.dart';
 import 'package:homemakers_merchant/app/features/profile/presentation/pages/document/document_list_page.dart';
 import 'package:homemakers_merchant/app/features/profile/presentation/pages/document/upload_document_page.dart';
 
@@ -25,7 +26,7 @@ class AppRouter {
 
   AppRouter._();
 
-  static const String INITIAL = Routes.ADDRESS_FORM_PAGE;
+  static const String INITIAL = Routes.BANK_INFORMATION_PAGE;
 
   static final GoRouter _router = GoRouter(
     debugLogDiagnostics: true,
@@ -68,7 +69,7 @@ class AppRouter {
       ),
       GoRoute(
         path: Routes.CREATE_BUSINESS_PROFILE_PAGE,
-        builder: (context, state) => const CreateBusinessProfilePage(),
+        builder: (context, state) => const BusinessInformationPage(),
       ),
       GoRoute(
         path: Routes.DOCUMENT_LIST_PAGE,
@@ -81,6 +82,10 @@ class AppRouter {
       GoRoute(
         path: Routes.ADDRESS_FORM_PAGE,
         builder: (context, state) => const AddressFormPage(),
+      ),
+      GoRoute(
+        path: Routes.BANK_INFORMATION_PAGE,
+        builder: (context, state) => const BankInformationPage(),
       ),
     ],
   );
