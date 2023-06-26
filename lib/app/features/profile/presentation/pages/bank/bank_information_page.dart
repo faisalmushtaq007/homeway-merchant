@@ -24,6 +24,7 @@ import 'package:homemakers_merchant/shared/widgets/universal/animated_gap/src/wi
 import 'package:homemakers_merchant/shared/widgets/universal/multi_stream_builder/multi_stream_builder.dart';
 import 'package:homemakers_merchant/shared/widgets/universal/phone_number_text_field/phone_form_field_bloc.dart';
 import 'package:homemakers_merchant/shared/widgets/universal/phone_number_text_field/phonenumber_form_field_widget.dart';
+import 'package:homemakers_merchant/utils/input_formatters/muskey.dart';
 
 class BankInformationPage extends StatefulWidget {
   const BankInformationPage({super.key});
@@ -52,6 +53,21 @@ class _BankInformationPageState extends State<BankInformationPage>
   late FocusNode _accountNumberControllerFocusNode;
   late FocusNode _confirmAccountNumberControllerFocusNode;
   late FocusNode _ibanNumberControllerFocusNode;
+  // SA03 8000 0000 6080 1016 7519
+  final ibanMuskeyFormatter = MuskeyFormatter(
+    masks: ['@%## #### #### #### #### ####'],
+    wildcards: {
+      '#': RegExp('[0-9]'),
+      '@': RegExp('[s|S]'),
+      '%': RegExp('[a|A]')
+    },
+    charTransforms: {
+      '@': (s) => s.toUpperCase(),
+      '%': (s) => s.toUpperCase(),
+    },
+    allowAutofill: true,
+    overflow: OverflowBehavior.forbidden(),
+  );
 
   @override
   void initState() {
@@ -538,14 +554,16 @@ class _BankInformationPageState extends State<BankInformationPage>
                                   ),
                                   Stream.fromFuture(
                                     AppTranslator.instance.translate(
-                                      _ibanNumberController.value.text.trim(),
+                                      //_ibanNumberController.value.text.trim(),
+                                      ibanMuskeyFormatter.info.clean,
                                     ),
                                   ),
                                 ],
                                 initialStreamValue: [
                                   'IBAN Number',
                                   'Please enter a iban number',
-                                  _ibanNumberController.value.text.trim(),
+                                  ibanMuskeyFormatter.info.clean,
+                                  //_ibanNumberController.value.text.trim(),
                                 ],
                                 builder: (context, snapshot) {
                                   if (listOfBankInfoTiles.isNotEmpty &&
@@ -580,14 +598,27 @@ class _BankInformationPageState extends State<BankInformationPage>
                                               .targetTextDirection,
                                       decoration: InputDecoration(
                                         labelText: snapshot[0],
+                                        hintText:
+                                            'SA## #### #### #### #### ####',
+                                        hintTextDirection:
+                                            serviceLocator<LanguageController>()
+                                                .targetTextDirection,
                                         isDense: true,
                                       ),
-                                      keyboardType: TextInputType.number,
+                                      //keyboardType: TextInputType.text,
                                       inputFormatters: [
-                                        FilteringTextInputFormatter.digitsOnly
+                                        //FilteringTextInputFormatter.digitsOnly,
+                                        // SA03 8000 0000 6080 1016 7519
+                                        ibanMuskeyFormatter,
                                       ],
                                       validator: (value) {
-                                        if (value == null || value.isEmpty) {
+                                        if (value == null ||
+                                            value.isEmpty ||
+                                            ibanMuskeyFormatter
+                                                .info.clean.isEmpty) {
+                                          return '${snapshot[1]}';
+                                        } else if (!ibanMuskeyFormatter
+                                            .info.isValid) {
                                           return '${snapshot[1]}';
                                         }
                                         return null;
@@ -607,7 +638,8 @@ class _BankInformationPageState extends State<BankInformationPage>
                               child: ElevatedButton(
                                 onPressed: () {
                                   if (!_bankInformationFormKey.currentState!
-                                      .validate()) {
+                                          .validate() &&
+                                      !ibanMuskeyFormatter.info.isValid) {
                                     // Registration logic here
                                     final accountHolderName =
                                         _accountHolderNameController.value.text;
@@ -616,8 +648,8 @@ class _BankInformationPageState extends State<BankInformationPage>
                                     final confirmAccountNumber =
                                         _confirmAccountNumberController
                                             .value.text;
-                                    final ibanNumber =
-                                        _ibanNumberController.value.text;
+                                    final ibanNumber = ibanMuskeyFormatter.info
+                                        .clean; //_ibanNumberController.value.text;
                                     final address =
                                         _accountHolderNameController.value.text;
                                     _bankInformationFormKey.currentState!
