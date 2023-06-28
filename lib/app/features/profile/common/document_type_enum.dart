@@ -1,0 +1,40 @@
+enum DocumentType {
+  tradeLicence(
+    documentTypeID: 1,
+    documentTypeName: 'Trade License',
+  ),
+  nationalID(
+    documentTypeID: 2,
+    documentTypeName: 'National ID',
+  ),
+  selfie(
+    documentTypeID: 3,
+    documentTypeName: 'Selfie',
+  ),
+  ;
+
+  const DocumentType(
+      {required this.documentTypeName, required this.documentTypeID});
+
+  final int documentTypeID;
+  final String documentTypeName;
+
+  @override
+  String toString() {
+    return '$name:($documentTypeID)';
+  }
+}
+
+enum DocumentUploadStatus {
+  none,
+  pending,
+  uploaded,
+  removed,
+  added,
+  ;
+
+  @override
+  String toString() {
+    return name;
+  }
+}

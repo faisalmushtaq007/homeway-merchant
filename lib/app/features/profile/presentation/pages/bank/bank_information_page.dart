@@ -5,7 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:homemakers_merchant/app/features/authentication/presentation/manager/phone_number_verification_bloc.dart';
 import 'package:homemakers_merchant/app/features/authentication/presentation/pages/phone_number_verification_page.dart';
-import 'package:homemakers_merchant/app/features/profile/presentation/widgets/bank/bank_info_tile_model.dart';
+import 'package:homemakers_merchant/app/features/profile/domain/entities/bank/bank_info_tile_model.dart';
 import 'package:homemakers_merchant/app/features/profile/presentation/widgets/bank/bank_information_tile_widget.dart';
 import 'package:homemakers_merchant/app/features/profile/presentation/widgets/bank/confirm_bank_information_dialog.dart';
 import 'package:homemakers_merchant/base/app_base.dart';
@@ -637,9 +637,10 @@ class _BankInformationPageState extends State<BankInformationPage>
                               width: context.width - margins * 5,
                               child: ElevatedButton(
                                 onPressed: () {
-                                  if (!_bankInformationFormKey.currentState!
+                                  if (/*!_bankInformationFormKey.currentState!
                                           .validate() &&
-                                      !ibanMuskeyFormatter.info.isValid) {
+                                      !ibanMuskeyFormatter.info.isValid*/
+                                      true) {
                                     // Registration logic here
                                     final accountHolderName =
                                         _accountHolderNameController.value.text;
@@ -687,7 +688,7 @@ class _BankInformationPageState extends State<BankInformationPage>
                                         return ResponsiveDialog(
                                           context: context,
                                           hideButtons: false,
-                                          maxLongSide: context.height / 2,
+                                          maxLongSide: context.height / 2.25,
                                           maxShortSide: context.width,
                                           title: 'Confirm Payment',
                                           confirmText: 'Confirm',
@@ -697,6 +698,7 @@ class _BankInformationPageState extends State<BankInformationPage>
                                           cancelPressed: () =>
                                               print('Dialog cancelled'),
                                           child: ListView.builder(
+                                            padding: EdgeInsetsDirectional.zero,
                                             itemCount:
                                                 listOfBankTileWidgets.length,
                                             itemBuilder: (context, index) =>
