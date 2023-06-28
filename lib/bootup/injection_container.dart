@@ -4,6 +4,8 @@ import 'package:homemakers_merchant/app/features/authentication/presentation/man
 import 'package:homemakers_merchant/app/features/permission/presentation/bloc/permission_bloc.dart';
 import 'package:homemakers_merchant/app/features/profile/data/local/data_sources/local_usermodel_service.dart';
 import 'package:homemakers_merchant/app/features/profile/domain/entities/user_model.dart';
+import 'package:homemakers_merchant/app/features/profile/presentation/manager/bank/bank_information_bloc.dart';
+import 'package:homemakers_merchant/app/features/profile/presentation/manager/document/business_document_bloc.dart';
 import 'package:homemakers_merchant/app/features/profile/presentation/manager/user_model_storage_controller.dart';
 import 'package:homemakers_merchant/config/permission/permission_controller.dart';
 import 'package:homemakers_merchant/config/permission/permission_service.dart';
@@ -169,4 +171,8 @@ void _setUpStateManagement() {
   );
   serviceLocator.registerFactory<OtpVerificationBloc>(OtpVerificationBloc.new);
   serviceLocator.registerFactory<PermissionBloc>(PermissionBloc.new);
+  serviceLocator
+      .registerFactory<BusinessDocumentBloc>(() => BusinessDocumentBloc());
+  serviceLocator
+      .registerFactory<BankInformationBloc>(() => BankInformationBloc());
 }

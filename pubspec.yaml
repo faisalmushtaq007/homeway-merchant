@@ -23,10 +23,12 @@ dependencies:
   cloud_firestore: ^4.8.1
   collection: ^1.17.1
   connectivity_plus: ^4.0.1
+  cross_file: ^0.3.3+4
   crypto: ^3.0.3
   cupertino_icons: ^1.0.5
   device_info_plus: ^9.0.2
   equatable: ^2.0.5
+  extended_image: ^8.0.2
   firebase_analytics: ^10.4.3
   firebase_auth: ^4.6.3
   firebase_core: ^2.14.0

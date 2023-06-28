@@ -41,6 +41,13 @@ class _BusinessDocumentPageState extends State<BusinessDocumentPage> {
       BusinessDocumentUploadedEntity(
         documentType: DocumentType.tradeLicence,
         businessDocumentAssetsEntity: [],
+        documentFrontAssets: BusinessDocumentAssetsEntity(
+          assetPath: '',
+          assetOriginalName: '',
+          assetName: '',
+          assetIdNumber: '',
+          assetExtension: '',
+        ),
       ),
     );
     allBusinessDocuments.insert(
@@ -111,78 +118,90 @@ class _BusinessDocumentPageState extends State<BusinessDocumentPage> {
               bloc: context.read<PermissionBloc>(),
               buildWhen: (previous, current) => previous != current,
               builder: (context, state) {
-                return ListView(
-                  controller: scrollController,
-                  shrinkWrap: true,
-                  padding: EdgeInsetsDirectional.only(
-                    start: margins * 2.5,
-                    end: margins * 2.5,
-                    top: topPadding,
-                    bottom: bottomPadding,
-                  ),
+                return Stack(
+                  alignment: Alignment.topLeft,
+                  clipBehavior: Clip.none,
+                  textDirection:
+                      serviceLocator<LanguageController>().targetTextDirection,
                   children: [
-                    Wrap(
-                      textDirection: serviceLocator<LanguageController>()
-                          .targetTextDirection,
-                      children: [
-                        Text(
-                          'Upload Legal Documents',
-                          style: context.titleLarge!.copyWith(
-                            fontWeight: FontWeight.bold,
-                          ),
-                          textDirection: serviceLocator<LanguageController>()
-                              .targetTextDirection,
-                        )
-                      ],
-                    ),
-                    const AnimatedGap(8, duration: Duration(milliseconds: 300)),
-                    Wrap(
-                      textDirection: serviceLocator<LanguageController>()
-                          .targetTextDirection,
-                      children: [
-                        Text(
-                          'Share with us commercial license and government ID for your business verification',
-                          style: context.labelMedium!.copyWith(),
-                          textDirection: serviceLocator<LanguageController>()
-                              .targetTextDirection,
-                        )
-                      ],
-                    ),
-                    const AnimatedGap(
-                      12,
-                      duration: Duration(milliseconds: 300),
-                    ),
-                    ImplicitlyAnimatedList<BusinessDocumentUploadedEntity>(
-                      key:
-                          const Key('allBusinessDocuments-listview-widget-key'),
+                    ListView(
                       controller: scrollController,
-                      items: allBusinessDocuments,
-                      updateDuration: const Duration(milliseconds: 400),
-                      areItemsTheSame: (a, b) => a == b,
                       shrinkWrap: true,
-                      itemBuilder: (context, animation, assets, index) {
-                        return SizeFadeTransition(
-                          key: ObjectKey(assets),
-                          sizeFraction: 0.7,
-                          curve: Curves.easeInOut,
-                          animation: animation,
-                          child: _buildItem(assets, index),
-                        );
-                      },
-                      updateItemBuilder: (context, animation, assets) {
-                        return FadeTransition(
-                          key: ObjectKey(assets),
-                          opacity: animation,
-                          child: _buildItem(assets),
-                        );
-                      },
-                      removeItemBuilder: (context, animation, oldAssets) {
-                        return FadeTransition(
-                          key: ObjectKey(oldAssets),
-                          opacity: animation,
-                          child: _buildItem(oldAssets),
-                        );
-                      },
+                      padding: EdgeInsetsDirectional.only(
+                        start: margins * 2.5,
+                        end: margins * 2.5,
+                        top: topPadding,
+                        bottom: bottomPadding,
+                      ),
+                      children: [
+                        Wrap(
+                          textDirection: serviceLocator<LanguageController>()
+                              .targetTextDirection,
+                          children: [
+                            Text(
+                              'Upload Legal Documents',
+                              style: context.titleLarge!.copyWith(
+                                fontWeight: FontWeight.bold,
+                              ),
+                              textDirection:
+                                  serviceLocator<LanguageController>()
+                                      .targetTextDirection,
+                            )
+                          ],
+                        ),
+                        const AnimatedGap(8,
+                            duration: Duration(milliseconds: 300)),
+                        Wrap(
+                          textDirection: serviceLocator<LanguageController>()
+                              .targetTextDirection,
+                          children: [
+                            Text(
+                              'Share with us commercial license and government ID for your business verification',
+                              style: context.labelMedium!.copyWith(),
+                              textDirection:
+                                  serviceLocator<LanguageController>()
+                                      .targetTextDirection,
+                            )
+                          ],
+                        ),
+                        const AnimatedGap(
+                          8,
+                          duration: Duration(milliseconds: 300),
+                        ),
+                        ImplicitlyAnimatedList<BusinessDocumentUploadedEntity>(
+                          key: const Key(
+                              'allBusinessDocuments-listview-widget-key'),
+                          controller: scrollController,
+                          items: allBusinessDocuments,
+                          updateDuration: const Duration(milliseconds: 400),
+                          areItemsTheSame: (a, b) => a == b,
+                          shrinkWrap: true,
+                          physics: const ClampingScrollPhysics(),
+                          itemBuilder: (context, animation, assets, index) {
+                            return SizeFadeTransition(
+                              key: ObjectKey(assets),
+                              sizeFraction: 0.7,
+                              curve: Curves.easeInOut,
+                              animation: animation,
+                              child: _buildItem(assets, index),
+                            );
+                          },
+                          updateItemBuilder: (context, animation, assets) {
+                            return FadeTransition(
+                              key: ObjectKey(assets),
+                              opacity: animation,
+                              child: _buildItem(assets),
+                            );
+                          },
+                          removeItemBuilder: (context, animation, oldAssets) {
+                            return FadeTransition(
+                              key: ObjectKey(oldAssets),
+                              opacity: animation,
+                              child: _buildItem(oldAssets),
+                            );
+                          },
+                        ),
+                      ],
                     ),
                   ],
                 );
@@ -212,6 +231,7 @@ class _BusinessDocumentPageState extends State<BusinessDocumentPage> {
           allBusinessDocumentAssets: entries.toList(),
           keyNameOfListView: '${assets.documentType.documentTypeName}-Key',
           hasEnableTextField: index == 0 || false,
+          labelOfTextField: 'Trade License Number',
         ),
         AnimatedSwitcher(
           duration: const Duration(milliseconds: 400),
@@ -233,7 +253,7 @@ class _BusinessDocumentPageState extends State<BusinessDocumentPage> {
                   ),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.white,
-                    fixedSize: Size(context.width, 36),
+                    minimumSize: Size(context.width, 46),
                   ),
                 )
               : const SizedBox.shrink(),

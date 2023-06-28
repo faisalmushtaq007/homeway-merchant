@@ -26,7 +26,7 @@ class AppRouter {
 
   AppRouter._();
 
-  static const String INITIAL = Routes.DOCUMENT_LIST_PAGE;
+  static const String INITIAL = Routes.UPLOAD_DOCUMENT_PAGE;
 
   static final GoRouter _router = GoRouter(
     debugLogDiagnostics: true,

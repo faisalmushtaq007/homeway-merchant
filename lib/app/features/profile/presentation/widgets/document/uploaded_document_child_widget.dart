@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:homemakers_merchant/app/features/profile/domain/entities/document/business_document_uploaded_entity.dart';
+import 'package:homemakers_merchant/app/features/profile/presentation/manager/document/business_document_bloc.dart';
 import 'package:homemakers_merchant/bootup/injection_container.dart';
 import 'package:homemakers_merchant/config/translation/language_controller.dart';
 import 'package:implicitly_animated_reorderable_list_2/implicitly_animated_reorderable_list_2.dart';
@@ -12,12 +14,14 @@ class UploadedDocumentChildWidget extends StatefulWidget {
     this.allBusinessDocumentAssets = const [],
     this.hasEnableTextField = false,
     this.documentIDNumber = '',
+    this.labelOfTextField = '',
   });
 
   final List<BusinessDocumentAssetsEntity> allBusinessDocumentAssets;
   final String keyNameOfListView;
   final bool hasEnableTextField;
   final String documentIDNumber;
+  final String labelOfTextField;
 
   @override
   State<UploadedDocumentChildWidget> createState() =>
@@ -56,39 +60,46 @@ class _UploadedDocumentChildWidgetState
   Widget build(BuildContext context) {
     return AnimatedSwitcher(
       duration: const Duration(milliseconds: 400),
-      child: ImplicitlyAnimatedList<BusinessDocumentAssetsEntity>(
-        key: Key(widget.keyNameOfListView),
-        controller: scrollController,
-        items: allBusinessDocumentAssets,
-        updateDuration: const Duration(milliseconds: 400),
-        padding: EdgeInsetsDirectional.only(
-          top: 20,
-        ),
-        areItemsTheSame: (a, b) => a == b,
-        shrinkWrap: true,
-        itemBuilder: (context, animation, assets, index) {
-          return SizeFadeTransition(
-            key: ObjectKey(assets),
-            sizeFraction: 0.7,
-            curve: Curves.easeInOut,
-            animation: animation,
-            child: index == 0 && widget.hasEnableTextField
-                ? _buildTextFieldItem(assets, index)
-                : _buildItem(assets, index),
-          );
-        },
-        updateItemBuilder: (context, animation, assets) {
-          return FadeTransition(
-            key: ObjectKey(assets),
-            opacity: animation,
-            child: _buildItem(assets),
-          );
-        },
-        removeItemBuilder: (context, animation, oldAssets) {
-          return FadeTransition(
-            key: ObjectKey(oldAssets),
-            opacity: animation,
-            child: _buildItem(oldAssets),
+      child: BlocBuilder<BusinessDocumentBloc, BusinessDocumentState>(
+        key: const Key('uploaded-document-child-bloc-builder-widget'),
+        buildWhen: (previous, current) => previous != current,
+        builder: (context, state) {
+          return ImplicitlyAnimatedList<BusinessDocumentAssetsEntity>(
+            key: Key(widget.keyNameOfListView),
+            controller: scrollController,
+            items: allBusinessDocumentAssets,
+            updateDuration: const Duration(milliseconds: 400),
+            padding: EdgeInsetsDirectional.only(
+              top: 16,
+            ),
+            areItemsTheSame: (a, b) => a == b,
+            shrinkWrap: true,
+            physics: const ClampingScrollPhysics(),
+            itemBuilder: (context, animation, assets, index) {
+              return SizeFadeTransition(
+                key: ObjectKey(assets),
+                sizeFraction: 0.7,
+                curve: Curves.easeInOut,
+                animation: animation,
+                child: index == 0 && widget.hasEnableTextField
+                    ? _buildTextFieldItem(assets, index)
+                    : _buildItem(assets, index),
+              );
+            },
+            updateItemBuilder: (context, animation, assets) {
+              return FadeTransition(
+                key: ObjectKey(assets),
+                opacity: animation,
+                child: _buildItem(assets),
+              );
+            },
+            removeItemBuilder: (context, animation, oldAssets) {
+              return FadeTransition(
+                key: ObjectKey(oldAssets),
+                opacity: animation,
+                child: _buildItem(oldAssets),
+              );
+            },
           );
         },
       ),
@@ -96,13 +107,34 @@ class _UploadedDocumentChildWidgetState
   }
 
   Widget _buildItem(BusinessDocumentAssetsEntity assets, [int index = -1]) {
-    return ListTile(
-      dense: true,
-      visualDensity: const VisualDensity(horizontal: 0, vertical: 4),
-      title: Text(assets.assetName),
-      trailing: IconButton(
-        onPressed: () {},
-        icon: const Icon(Icons.close),
+    return Padding(
+      padding: const EdgeInsetsDirectional.only(top: 8, bottom: 4),
+      child: ListTile(
+        selected: true,
+        selectedTileColor: Color.fromRGBO(226, 242, 228, 1),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadiusDirectional.circular(10),
+        ),
+        dense: true,
+        visualDensity: const VisualDensity(horizontal: 0, vertical: 0),
+        title: Text(assets.assetName),
+        trailing: SizedBox(
+          height: 26,
+          width: 26,
+          child: ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Color.fromRGBO(234, 247, 238, 1),
+              foregroundColor: Color.fromRGBO(127, 129, 132, 1),
+              padding: EdgeInsets.zero,
+              shape: const CircleBorder(),
+            ),
+            onPressed: () {},
+            child: const Icon(
+              Icons.close,
+              size: 16,
+            ),
+          ),
+        ),
       ),
     );
   }
@@ -112,7 +144,7 @@ class _UploadedDocumentChildWidgetState
     int index = 0,
   ]) {
     return Padding(
-      padding: const EdgeInsetsDirectional.only(top: 12),
+      padding: const EdgeInsetsDirectional.only(top: 12, bottom: 4),
       child: Row(
         children: [
           Flexible(
@@ -122,8 +154,8 @@ class _UploadedDocumentChildWidgetState
               textInputAction: TextInputAction.done,
               textDirection:
                   serviceLocator<LanguageController>().targetTextDirection,
-              decoration: const InputDecoration(
-                labelText: 'Trade License Number',
+              decoration: InputDecoration(
+                labelText: widget.labelOfTextField,
                 alignLabelWithHint: true,
                 isDense: true,
               ),

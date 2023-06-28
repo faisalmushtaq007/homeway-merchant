@@ -25,7 +25,61 @@ class PermissionBloc extends Bloc<PermissionEvent, PermissionState> {
   FutureOr<void> _requestPermissionEvent(
     RequestPermissionEvent event,
     Emitter<PermissionState> emit,
-  ) {}
+  ) async {
+    try {
+      var permissions = <Permission, PermissionStatus>{};
+      if (await event.permission.isGranted ||
+          await event.permission.isLimited) {
+        permissions[event.permission] = PermissionStatus.granted;
+        //
+        if (permissions[event.permission] == PermissionStatus.granted) {
+          emit(
+            const PermissionStateGranted(
+              message: 'Permission is granted by you',
+            ),
+          );
+        } else {
+          emit(
+            const PermissionStateLimited(
+              message: 'Permission is granted by you',
+            ),
+          );
+        }
+      } else {
+        final requestStatus = await event.permission.request();
+        if (requestStatus == PermissionStatus.granted ||
+            requestStatus == PermissionStatus.limited) {
+          //
+          add(RequestPermissionEvent(
+            event.permission,
+          ));
+        } else if (requestStatus == PermissionStatus.denied) {
+          //
+          emit(
+            const PermissionStateDenied(
+              message:
+                  'Permission is denied by you. Please grant the permission either re-request the permssion or from the app settings.',
+            ),
+          );
+        } else {
+          // Open setting
+          emit(
+            const PermissionStatePermanentlyDenied(
+              message:
+                  'Permission is permanently denied by you. Please grant the permission from app settings.',
+            ),
+          );
+          await AppSettings.openAppSettings();
+        }
+      }
+    } catch (e) {
+      emit(
+        PermissionStateError(
+          error: 'Permission error: $e',
+        ),
+      );
+    }
+  }
 
   FutureOr<void> _requestAllPermissionEvent(
     RequestAllPermissionEvent event,
@@ -82,7 +136,11 @@ class PermissionBloc extends Bloc<PermissionEvent, PermissionState> {
         add(const RequestLocationServiceEnable());
       }
     } catch (e) {
-      print(e);
+      emit(
+        PermissionStateError(
+          error: 'Location permission error: $e',
+        ),
+      );
     }
   }
 
