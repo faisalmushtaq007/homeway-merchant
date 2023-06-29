@@ -73,6 +73,11 @@ class BusinessDocumentState with _$BusinessDocumentState {
     @Default([]) List<BusinessDocumentUploadedEntity> allBusinessDocuments,
   }) = AskConfirmationState;
 
+  const factory BusinessDocumentState.askConfirmationFailedState({
+    @Default([]) List<BusinessDocumentUploadedEntity> allBusinessDocuments,
+    @Default('') String message,
+  }) = AskConfirmationFailedState;
+
   const factory BusinessDocumentState.confirmationYesState({
     @Default([]) List<BusinessDocumentUploadedEntity> allBusinessDocuments,
   }) = ConfirmationYesState;
@@ -106,21 +111,27 @@ class BusinessDocumentState with _$BusinessDocumentState {
 
   const factory BusinessDocumentState.captureImageFromCameraSuccessState({
     @Default(DocumentType.tradeLicence) DocumentType documentType,
+    File? responseFile,
+    XFile? pickedFile,
   }) = CaptureImageFromCameraSuccessState;
   const factory BusinessDocumentState.captureImageFromCameraProcessingState({
     @Default(DocumentType.tradeLicence) DocumentType documentType,
   }) = CaptureImageFromCameraFailedProcessingState;
   const factory BusinessDocumentState.captureImageFromCameraFailedState({
     @Default(DocumentType.tradeLicence) DocumentType documentType,
+    @Default('') String message,
   }) = CaptureImageFromCameraFailedState;
   const factory BusinessDocumentState.selectImageFromGalleryProcessingState({
     @Default(DocumentType.tradeLicence) DocumentType documentType,
   }) = SelectImageFromGalleryProcessingState;
   const factory BusinessDocumentState.selectImageFromGallerySuccessState({
     @Default(DocumentType.tradeLicence) DocumentType documentType,
+    File? responseFile,
+    XFile? pickedFile,
   }) = SelectImageFromGallerySuccessState;
   const factory BusinessDocumentState.selectImageFromGalleryFailedState({
     @Default(DocumentType.tradeLicence) DocumentType documentType,
+    @Default('') String message,
   }) = SelectImageFromGalleryFailedState;
 
   const factory BusinessDocumentState.restoreCaptureImageFromCameraState({
@@ -130,9 +141,26 @@ class BusinessDocumentState with _$BusinessDocumentState {
   const factory BusinessDocumentState.restoreSelectImageFromGalleryState({
     @Default(DocumentType.tradeLicence) DocumentType documentType,
   }) = RestoreSelectImageFromGalleryState;
+  const factory BusinessDocumentState.restoreCaptureImageFromCameraFailedState({
+    @Default(DocumentType.tradeLicence) DocumentType documentType,
+    @Default('') String message,
+  }) = RestoreCaptureImageFromCameraFailedState;
+
+  const factory BusinessDocumentState.restoreSelectImageFromGalleryFailedState({
+    @Default(DocumentType.tradeLicence) DocumentType documentType,
+    @Default('') String message,
+  }) = RestoreSelectImageFromGalleryFailedState;
 
   const factory BusinessDocumentState.openMediaPickerState({
     @Default(DocumentType.tradeLicence) DocumentType documentType,
-    @Default(ImageSource.gallery) ImageSource imageSource,
   }) = OpenMediaPickerState;
+  const factory BusinessDocumentState.selectDocumentSourceTypeState({
+    @Default(DocumentType.tradeLicence) DocumentType documentType,
+    @Default(ImageSource.camera) ImageSource imageSource,
+    @Default(DocumentPickerSource.camera)
+    DocumentPickerSource documentPickerSource,
+  }) = SelectDocumentSourceTypState;
+  const factory BusinessDocumentState.closeMediaPickerState({
+    @Default(DocumentType.tradeLicence) DocumentType documentType,
+  }) = CloseMediaPickerState;
 }

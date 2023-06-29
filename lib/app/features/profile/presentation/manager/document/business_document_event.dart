@@ -97,6 +97,14 @@ class BusinessDocumentEvent with _$BusinessDocumentEvent {
 
   const factory BusinessDocumentEvent.openMediaPicker({
     @Default(DocumentType.tradeLicence) DocumentType documentType,
-    @Default(ImageSource.gallery) ImageSource imageSource,
   }) = OpenMediaPicker;
+  const factory BusinessDocumentEvent.selectDocumentSourceType({
+    @Default(DocumentType.tradeLicence) DocumentType documentType,
+    @Default(ImageSource.camera) ImageSource imageSource,
+    @Default(DocumentPickerSource.camera)
+    DocumentPickerSource documentPickerSource,
+  }) = SelectDocumentSourceType;
+  const factory BusinessDocumentEvent.closeMediaPicker({
+    @Default(DocumentType.tradeLicence) DocumentType documentType,
+  }) = CloseMediaPicker;
 }
