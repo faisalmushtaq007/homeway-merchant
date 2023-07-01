@@ -16,6 +16,7 @@ import 'package:homemakers_merchant/config/translation/extension/text_extension.
 import 'package:homemakers_merchant/core/extensions/app_extension.dart';
 import 'package:homemakers_merchant/shared/widgets/universal/animated_gap/gap.dart';
 import 'package:homemakers_merchant/shared/widgets/universal/constrained_scrollable_views/constrained_scrollable_views.dart';
+import 'package:homemakers_merchant/shared/widgets/universal/loading_indicators/src/loading.dart';
 import 'package:homemakers_merchant/shared/widgets/universal/one_context/one_context.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:new_image_crop/data/data_editor_config.dart';
@@ -210,6 +211,136 @@ class _UploadDocumentPageState extends State<UploadDocumentPage> {
                   listener: (context, state) {
                     state.maybeMap(
                       orElse: () {},
+                      saveCropDocumentProcessingState: (value) {
+                        WidgetsBinding.instance
+                            .addPostFrameCallback((timeStamp) {
+                          showPlatformDialog(
+                            context: context,
+                            material: MaterialDialogData(
+                              barrierColor: Colors.transparent,
+                              barrierDismissible: false,
+                            ),
+                            cupertino: CupertinoDialogData(
+                              barrierDismissible: false,
+                            ),
+                            useRootNavigator: false,
+                            barrierDismissible: false,
+                            builder: (context) {
+                              return SafeArea(
+                                top: false,
+                                child: Builder(builder: (BuildContext context) {
+                                  return Theme(
+                                    data: theme,
+                                    child: Dialog(
+                                      // The background color
+                                      child: Padding(
+                                        padding:
+                                            EdgeInsets.symmetric(vertical: 20),
+                                        child: Column(
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: [
+                                            // The loading indicator
+                                            CircularProgressIndicator(),
+                                            SizedBox(
+                                              height: 15,
+                                            ),
+                                            // Some text
+                                            Text(
+                                              'Please wait while we are processing...',
+                                              style:
+                                                  context.labelMedium!.copyWith(
+                                                fontWeight: FontWeight.w500,
+                                              ),
+                                              textDirection: serviceLocator<
+                                                      LanguageController>()
+                                                  .targetTextDirection,
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  );
+                                  return Theme(
+                                    data: theme,
+                                    child: Dialog(
+                                      backgroundColor: Colors.grey.shade400,
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadiusDirectional.circular(
+                                                16),
+                                      ),
+                                      child: AnimatedContainer(
+                                        width: context.width,
+                                        height: context.height / 4,
+                                        alignment: Alignment.topLeft,
+                                        duration:
+                                            const Duration(milliseconds: 700),
+                                        constraints: BoxConstraints.tightFor(
+                                          height: context.height / 4,
+                                          width: context.width,
+                                        ),
+                                        child: Column(
+                                          mainAxisSize: MainAxisSize.min,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            const SizedBox(
+                                              height: 12,
+                                            ),
+                                            SizedBox.square(
+                                              dimension: 56,
+                                              child: Center(
+                                                child: LoadingIndicator(
+                                                  indicatorType:
+                                                      Indicator.ballRotateChase,
+                                                  colors: [
+                                                    theme.primaryColor,
+                                                    theme.primaryColor
+                                                        .withOpacity(0.75),
+                                                    theme.primaryColor
+                                                        .withOpacity(0.5),
+                                                    theme.primaryColor
+                                                        .withOpacity(0.25),
+                                                    theme.primaryColor
+                                                        .withOpacity(0.15),
+                                                    theme.primaryColor
+                                                        .withOpacity(0.5),
+                                                  ],
+                                                  strokeWidth: 2,
+                                                ),
+                                              ),
+                                            ),
+                                            const SizedBox(
+                                              height: 12,
+                                            ),
+                                            Text(
+                                              'Please wait while we are processing...',
+                                              style:
+                                                  context.labelMedium!.copyWith(
+                                                fontWeight: FontWeight.w500,
+                                              ),
+                                              textDirection: serviceLocator<
+                                                      LanguageController>()
+                                                  .targetTextDirection,
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  );
+                                }),
+                              );
+                            },
+                          );
+                        });
+                      },
+                      saveCropDocumentHideProcessingState: (value) {
+                        if (mounted) {
+                          Navigator.of(context).pop();
+                        }
+                      },
                     );
                   },
                   child:
@@ -229,12 +360,19 @@ class _UploadDocumentPageState extends State<UploadDocumentPage> {
                         },
                         captureImageFromCameraSuccessState: (value) {
                           controller = ImageEditorController();
-                          documentPickerSourceStatus =
-                              DocumentPickerSourceStatus.pickedUp;
                           pickedSourceFile = value.responseFile;
                           pickedXSourceFile = value.pickedFile;
                           selectedFileInBytes = value.uint8list;
                           fileMetaInfo = value.metaData;
+                          if (selectedFileInBytes != null &&
+                              (pickedSourceFile != null ||
+                                  pickedXSourceFile != null)) {
+                            documentPickerSourceStatus =
+                                DocumentPickerSourceStatus.pickedUp;
+                          } else {
+                            documentPickerSourceStatus =
+                                DocumentPickerSourceStatus.notPickedUp;
+                          }
                           //editorKey.currentState!.reset();
                         },
                         selectImageFromGalleryProcessingState: (value) {
@@ -243,12 +381,20 @@ class _UploadDocumentPageState extends State<UploadDocumentPage> {
                         },
                         selectImageFromGallerySuccessState: (value) {
                           controller = ImageEditorController();
-                          documentPickerSourceStatus =
-                              DocumentPickerSourceStatus.pickedUp;
+
                           pickedSourceFile = value.responseFile;
                           pickedXSourceFile = value.pickedFile;
                           selectedFileInBytes = value.uint8list;
                           fileMetaInfo = value.metaData;
+                          if (selectedFileInBytes != null &&
+                              (pickedSourceFile != null ||
+                                  pickedXSourceFile != null)) {
+                            documentPickerSourceStatus =
+                                DocumentPickerSourceStatus.pickedUp;
+                          } else {
+                            documentPickerSourceStatus =
+                                DocumentPickerSourceStatus.notPickedUp;
+                          }
                           //editorKey.currentState!.reset();
                         },
                         captureImageFromCameraFailedState: (value) {
@@ -275,6 +421,13 @@ class _UploadDocumentPageState extends State<UploadDocumentPage> {
                         },
                         rightRotateState: (value) {
                           controller.reduceRotateAngle90();
+                        },
+                        saveCropDocumentSuccessState: (value) {
+                          controller = ImageEditorController();
+                          documentPickerSourceStatus =
+                              DocumentPickerSourceStatus.notPickedUp;
+                          pickedSourceFile = null;
+                          pickedXSourceFile = null;
                         },
                       );
                       return Container(
@@ -330,7 +483,9 @@ class _UploadDocumentPageState extends State<UploadDocumentPage> {
                     print('Result of clipping');
                     if (pickedXSourceFile != null || pickedSourceFile != null) {
                       _showScreenShotOfCropImageDialog(
-                          context: context, byteData: byteData);
+                        context: context,
+                        byteData: byteData,
+                      );
                       /*BlocProvider.of<BusinessDocumentBloc>(context)
                           .add(SaveCropDocument(
                         documentType: widget.documentType,
@@ -735,7 +890,10 @@ class _UploadDocumentPageState extends State<UploadDocumentPage> {
   }
 
   void _showScreenShotOfCropImageDialog(
-      {required BuildContext context, required ByteData byteData}) {
+      {required BuildContext context,
+      required ByteData byteData,
+      Image? image,
+      Size? size}) {
     showConfirmationDialog(
       context: context,
       barrierDismissible: true,
@@ -754,6 +912,16 @@ class _UploadDocumentPageState extends State<UploadDocumentPage> {
             print('Dialog confirmed');
             await Future.delayed(const Duration(milliseconds: 300));
             Navigator.of(context).pop();
+            context.read<BusinessDocumentBloc>().add(
+                  SaveCropDocument(
+                    byteData: byteData,
+                    xfile: pickedXSourceFile,
+                    file: pickedSourceFile,
+                    bytes: byteData.buffer.asUint8List(),
+                    imageEditorController: controller,
+                    documentType: widget.documentType,
+                  ),
+                );
           },
           cancelPressed: () async {
             print('Dialog cancelled');

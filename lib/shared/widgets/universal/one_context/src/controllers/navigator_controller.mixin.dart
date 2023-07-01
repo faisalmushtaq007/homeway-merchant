@@ -1,3 +1,5 @@
+import 'package:homemakers_merchant/bootup/injection_container.dart';
+import 'package:homemakers_merchant/core/keys/app_key.dart';
 import 'package:homemakers_merchant/shared/widgets/universal/one_context/src/controllers/one_context.dart';
 import 'package:flutter/material.dart';
 
@@ -34,8 +36,8 @@ mixin NavigatorController {
   ///     builder: () => MyApp()
   /// );
   /// ```
-  GlobalKey<NavigatorState> get key =>
-      _key ??= GlobalKey<NavigatorState>(debugLabel: 'one_context');
+  GlobalKey<NavigatorState> get key => _key ??= serviceLocator<AppKey>()
+      .navigatorKey; //GlobalKey<NavigatorState>(debugLabel: 'one_context');
   set key(GlobalKey<NavigatorState> newKey) => _key = newKey;
 
   NavigatorState? get _nav {

@@ -215,20 +215,44 @@ class BusinessDocumentState with _$BusinessDocumentState {
     @Default(DocumentType.tradeLicence) DocumentType documentType,
     XFile? xfile,
     File? file,
-    required ExtendedImageEditorState extendedImageEditorState,
-    required Uint8List bytes,
-    required EditImageInfo imageInfo,
-    required bool isCropping,
+    ExtendedImageEditorState? extendedImageEditorState,
+    Uint8List? bytes,
+    ByteData? byteData,
+    EditImageInfo? imageInfo,
+    @Default(false) bool isCropping,
     @Default('') String message,
+    XFile? newXFile,
+    File? newFile,
+    @Default('') String newFilePath,
+    ImageEditorController? imageEditorController,
+    Image? image,
   }) = SaveCropDocumentSuccessState;
 
   const factory BusinessDocumentState.saveCropDocumentProcessingState({
     @Default(DocumentType.tradeLicence) DocumentType documentType,
   }) = SaveCropDocumentProcessingState;
 
+  const factory BusinessDocumentState.saveCropDocumentHideProcessingState({
+    @Default(DocumentType.tradeLicence) DocumentType documentType,
+  }) = SaveCropDocumentHideProcessingState;
+
   const factory BusinessDocumentState.saveCropDocumentFailedState({
     @Default(DocumentType.tradeLicence) DocumentType documentType,
     required String reason,
     StackTrace? stackTrace,
+    XFile? xfile,
+    File? file,
+    ExtendedImageEditorState? extendedImageEditorState,
+    Uint8List? bytes,
+    ByteData? byteData,
+    EditImageInfo? imageInfo,
+    @Default(false) bool isCropping,
+    ImageEditorController? imageEditorController,
+    Image? image,
   }) = SaveCropDocumentFailedState;
+  const factory BusinessDocumentState.saveCropDocumentErrorState({
+    @Default(DocumentType.tradeLicence) DocumentType documentType,
+    required String reason,
+    StackTrace? stackTrace,
+  }) = SaveCropDocumentErrorState;
 }

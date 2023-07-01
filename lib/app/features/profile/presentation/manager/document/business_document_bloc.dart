@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:ffi';
 import 'dart:io';
+import 'package:path/path.dart' as p;
 
 import 'package:bloc/bloc.dart';
 import 'package:bloc_concurrency/bloc_concurrency.dart';
@@ -18,6 +19,7 @@ import 'package:homemakers_merchant/utils/app_equatable/app_equatable.dart';
 import 'package:homemakers_merchant/utils/app_log.dart';
 import 'package:homemakers_merchant/utils/universal_platform/universal_platform.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:new_image_crop/ui/dialog/image_editor_component/image_editor_plane.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:file_saver/file_saver.dart' as fileSaver;
 import 'package:path/path.dart' as path;
@@ -279,27 +281,74 @@ class BusinessDocumentBloc
     try {
       if (event.xfile != null || event.file != null) {
         if (UniversalPlatform.isAndroid || UniversalPlatform.isIOS) {
-          bool status = await Permission.storage.isGranted;
-          if (!status) await Permission.storage.request();
+          Map<Permission, PermissionStatus> statuses = await [
+            Permission.mediaLibrary,
+            Permission.storage,
+            //Permission.manageExternalStorage,
+            Permission.accessMediaLocation,
+          ].request();
+          bool status =
+              statuses.entries.any((element) => element.value.isGranted);
+          //bool status = await Permission.storage.isGranted;
+          if (!status) {
+            Map<Permission, PermissionStatus> statuses = await [
+              Permission.mediaLibrary,
+              Permission.storage,
+              //Permission.manageExternalStorage,
+              Permission.accessMediaLocation,
+            ].request();
+          }
+          emit(SaveCropDocumentFailedState(
+            documentType: event.documentType,
+            reason: 'Storage permission is not granted',
+            imageEditorController: event.imageEditorController,
+            xfile: event.xfile,
+            file: event.file,
+            bytes: event.bytes,
+            byteData: event.byteData,
+          ));
         }
         emit(SaveCropDocumentProcessingState(
           documentType: event.documentType,
         ));
-        final EditImageInfo imageInfo = await cropImageDataWithDartLibrary(
-            state: event.extendedImageEditorState);
+        //final EditImageInfo imageInfo = await cropImageDataWithDartLibrary(state: event.extendedImageEditorState);
         final int timeStamp = DateTime.now().millisecondsSinceEpoch;
+        String nameOfExtension = p
+            .extension(event.xfile!.path ?? event.file!.path)
+            .replaceAll('.', '');
         final String filePath = await fileSaver.FileSaver.instance.saveFile(
           name:
               '${path.basename(event.xfile!.path ?? event.file!.path)}_$timeStamp',
-          bytes: imageInfo.data!,
+          bytes: event.bytes!,
           filePath: event.xfile?.path,
           file: event.file!,
-          ext: imageInfo.imageType == ImageType.png ? 'png' : 'gif',
-          mimeType: imageInfo.imageType == ImageType.png
-              ? fileSaver.MimeType.png
-              : fileSaver.MimeType.gif,
+          ext: p
+              .extension(event.xfile!.path ?? event.file!.path)
+              .replaceAll('.', ''),
+          mimeType: fileSaver.MimeType.values.byName(nameOfExtension),
         );
-
+        if (filePath == null || filePath.isEmpty) {
+          await Future.delayed(const Duration(seconds: 1));
+          emit(SaveCropDocumentHideProcessingState(
+            documentType: event.documentType,
+          ));
+          await Future.delayed(const Duration(milliseconds: 500));
+          emit(SaveCropDocumentFailedState(
+            documentType: event.documentType,
+            reason:
+                'Your selected document is not saved in your device, but uploaded into our server',
+            imageEditorController: event.imageEditorController,
+            xfile: event.xfile,
+            file: event.file,
+            bytes: event.bytes,
+            byteData: event.byteData,
+          ));
+        }
+        await Future.delayed(const Duration(seconds: 1));
+        emit(SaveCropDocumentHideProcessingState(
+          documentType: event.documentType,
+        ));
+        await Future.delayed(const Duration(milliseconds: 500));
         emit(
           SaveCropDocumentSuccessState(
             documentType: event.documentType,
@@ -308,17 +357,23 @@ class BusinessDocumentBloc
             file: event.file,
             isCropping: event.isCropping,
             xfile: event.xfile,
-            imageInfo: imageInfo,
-            message: 'Image saved in path: $filePath',
+            //imageInfo: imageInfo,
+            message:
+                'Your selected document is saved in this path: $filePath and successfully uploaded into our server',
+            newFilePath: filePath,
+            image: event.image,
+            byteData: event.byteData,
+            newFile: File(filePath),
+            newXFile: XFile(filePath),
           ),
         );
         return;
       }
     } catch (e, s) {
-      emit(SaveCropDocumentFailedState(
-        reason: 'Reason: $e',
-        stackTrace: s,
+      emit(SaveCropDocumentErrorState(
         documentType: event.documentType,
+        reason: '$e',
+        stackTrace: s,
       ));
     }
   }

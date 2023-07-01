@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 
 class AppKey {
-  final snackbarKey = GlobalKey<ScaffoldMessengerState>();
-  final navigatorKey = GlobalKey<NavigatorState>();
+  final snackbarKey =
+      GlobalKey<ScaffoldMessengerState>(debugLabel: 'app_snackbarKey');
+  final navigatorKey =
+      GlobalKey<NavigatorState>(debugLabel: 'app_navigatorKey');
 }
 
 /*

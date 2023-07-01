@@ -150,9 +150,12 @@ class BusinessDocumentEvent with _$BusinessDocumentEvent {
     @Default(DocumentType.tradeLicence) DocumentType documentType,
     XFile? xfile,
     File? file,
-    required ExtendedImageEditorState extendedImageEditorState,
-    required Uint8List bytes,
-    required EditImageInfo imageInfo,
-    required bool isCropping,
+    ExtendedImageEditorState? extendedImageEditorState,
+    Uint8List? bytes,
+    ByteData? byteData,
+    EditImageInfo? imageInfo,
+    @Default(false) bool isCropping,
+    ImageEditorController? imageEditorController,
+    Image? image,
   }) = SaveCropDocument;
 }

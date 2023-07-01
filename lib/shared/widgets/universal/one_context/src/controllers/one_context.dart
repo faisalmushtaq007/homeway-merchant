@@ -17,6 +17,7 @@ class OneContext with NavigatorController, OverlayController, DialogController {
   }
 
   static bool get hasContext => _context != null;
+
   set context(BuildContext? newContext) => _context = newContext;
 
   /// If you need reactive changes, do not use OneContext().mediaQuery
@@ -30,6 +31,7 @@ class OneContext with NavigatorController, OverlayController, DialogController {
   /// If you need reactive changes, do not use OneContext().textTheme
   /// Use `Theme.of(context).textTheme` instead.
   TextTheme get textTheme => theme.textTheme;
+
   FocusScopeNode get focusScope => FocusScope.of(context!);
 
   /// Locale
@@ -42,6 +44,7 @@ class OneContext with NavigatorController, OverlayController, DialogController {
   OneContext._private() {}
 
   static OneContext instance = OneContext._private();
+
   factory OneContext() => instance;
 
   /// Register all necessary callbacks from main widget, automatically
@@ -103,13 +106,16 @@ class OneContext with NavigatorController, OverlayController, DialogController {
   ///       builder: OneContext().builder,
   ///      ...
   /// ```
-  Widget builder(BuildContext context, Widget? widget,
-          {Key? key,
-          MediaQueryData? mediaQueryData,
-          String? initialRoute,
-          Route<dynamic> Function(RouteSettings)? onGenerateRoute,
-          Route<dynamic> Function(RouteSettings)? onUnknownRoute,
-          List<NavigatorObserver> observers = const <NavigatorObserver>[]}) =>
+  Widget builder(
+    BuildContext context,
+    Widget? widget, {
+    Key? key,
+    MediaQueryData? mediaQueryData,
+    String? initialRoute,
+    Route<dynamic> Function(RouteSettings)? onGenerateRoute,
+    Route<dynamic> Function(RouteSettings)? onUnknownRoute,
+    List<NavigatorObserver> observers = const <NavigatorObserver>[],
+  }) =>
       Directionality(
         textDirection: serviceLocator<LanguageController>().targetTextDirection,
         child: ParentContextWidget(
@@ -118,7 +124,7 @@ class OneContext with NavigatorController, OverlayController, DialogController {
           initialRoute: initialRoute,
           onGenerateRoute: onGenerateRoute,
           onUnknownRoute: onUnknownRoute,
-          observers: observers,
+          observers: [OneContext().heroController], //observers,
         ),
       );
 }

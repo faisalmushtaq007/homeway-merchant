@@ -1385,6 +1385,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "4.0.2"
+  hyphenatorx:
+    dependency: "direct main"
+    description:
+      name: hyphenatorx
+      sha256: "66d9f3ea67c0641762ca14324aed97a02b784207e60a4796f0170416f6a159e8"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.5.6+2"
   idb_shim:
     dependency: transitive
     description:
