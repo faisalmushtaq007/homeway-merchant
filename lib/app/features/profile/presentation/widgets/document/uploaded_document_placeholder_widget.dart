@@ -19,24 +19,26 @@ class UploadedDocumentPlaceholderWidget extends StatelessWidget {
     return Column(
       mainAxisSize: MainAxisSize.min,
       mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         Container(
-          height: MediaQuery.of(context).size.width * 0.6,
-          width: MediaQuery.of(context).size.height,
+          width: MediaQuery.of(context).size.width,
+          height: MediaQuery.of(context).size.height * 0.40,
           decoration: const BoxDecoration(
             image: DecorationImage(
-              image: AssetImage('assets/image/splash.png'),
+              image: AssetImage('assets/image/document_upload.jpeg'),
+              fit: BoxFit.cover,
             ),
           ),
         ),
         const AnimatedGap(
-          24,
+          30,
           duration: Duration(milliseconds: 400),
         ),
         Text(
           title!,
-          style: context.headlineSmall,
+          style: context.headlineSmall!.copyWith(fontWeight: FontWeight.bold),
+          textAlign: TextAlign.center,
           textDirection:
               serviceLocator<LanguageController>().targetTextDirection,
         ),
@@ -49,7 +51,7 @@ class UploadedDocumentPlaceholderWidget extends StatelessWidget {
           child: Text(
             subTitle!,
             textAlign: TextAlign.center,
-            style: context.titleMedium,
+            style: context.labelLarge,
             textDirection:
                 serviceLocator<LanguageController>().targetTextDirection,
           ),

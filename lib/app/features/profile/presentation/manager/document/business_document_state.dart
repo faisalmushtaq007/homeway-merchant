@@ -113,22 +113,31 @@ class BusinessDocumentState with _$BusinessDocumentState {
     @Default(DocumentType.tradeLicence) DocumentType documentType,
     File? responseFile,
     XFile? pickedFile,
+    Uint8List? uint8list,
+    @Default({}) Map<String, dynamic> metaData,
   }) = CaptureImageFromCameraSuccessState;
+
   const factory BusinessDocumentState.captureImageFromCameraProcessingState({
     @Default(DocumentType.tradeLicence) DocumentType documentType,
   }) = CaptureImageFromCameraFailedProcessingState;
+
   const factory BusinessDocumentState.captureImageFromCameraFailedState({
     @Default(DocumentType.tradeLicence) DocumentType documentType,
     @Default('') String message,
   }) = CaptureImageFromCameraFailedState;
+
   const factory BusinessDocumentState.selectImageFromGalleryProcessingState({
     @Default(DocumentType.tradeLicence) DocumentType documentType,
   }) = SelectImageFromGalleryProcessingState;
+
   const factory BusinessDocumentState.selectImageFromGallerySuccessState({
     @Default(DocumentType.tradeLicence) DocumentType documentType,
     File? responseFile,
     XFile? pickedFile,
+    Uint8List? uint8list,
+    @Default({}) Map<String, dynamic> metaData,
   }) = SelectImageFromGallerySuccessState;
+
   const factory BusinessDocumentState.selectImageFromGalleryFailedState({
     @Default(DocumentType.tradeLicence) DocumentType documentType,
     @Default('') String message,
@@ -136,11 +145,14 @@ class BusinessDocumentState with _$BusinessDocumentState {
 
   const factory BusinessDocumentState.restoreCaptureImageFromCameraState({
     @Default(DocumentType.tradeLicence) DocumentType documentType,
+    Uint8List? uint8list,
   }) = RestoreCaptureImageFromCameraState;
 
   const factory BusinessDocumentState.restoreSelectImageFromGalleryState({
     @Default(DocumentType.tradeLicence) DocumentType documentType,
+    Uint8List? uint8list,
   }) = RestoreSelectImageFromGalleryState;
+
   const factory BusinessDocumentState.restoreCaptureImageFromCameraFailedState({
     @Default(DocumentType.tradeLicence) DocumentType documentType,
     @Default('') String message,
@@ -154,13 +166,69 @@ class BusinessDocumentState with _$BusinessDocumentState {
   const factory BusinessDocumentState.openMediaPickerState({
     @Default(DocumentType.tradeLicence) DocumentType documentType,
   }) = OpenMediaPickerState;
+
   const factory BusinessDocumentState.selectDocumentSourceTypeState({
     @Default(DocumentType.tradeLicence) DocumentType documentType,
     @Default(ImageSource.camera) ImageSource imageSource,
     @Default(DocumentPickerSource.camera)
     DocumentPickerSource documentPickerSource,
   }) = SelectDocumentSourceTypState;
+
   const factory BusinessDocumentState.closeMediaPickerState({
     @Default(DocumentType.tradeLicence) DocumentType documentType,
   }) = CloseMediaPickerState;
+
+  const factory BusinessDocumentState.cropState({
+    @Default(DocumentType.tradeLicence) DocumentType documentType,
+    required AspectRatioItem aspectRatioItem,
+    XFile? xfile,
+    File? file,
+    required ExtendedImageEditorState extendedImageEditorState,
+    Uint8List? bytes,
+    @Default(false) bool isCropping,
+  }) = AssetCropState;
+
+  const factory BusinessDocumentState.rightRotateState({
+    @Default(DocumentType.tradeLicence) DocumentType documentType,
+    @Default(true) hasRightTurn,
+  }) = AssetRightRotateState;
+
+  const factory BusinessDocumentState.leftRotateState({
+    @Default(DocumentType.tradeLicence) DocumentType documentType,
+    @Default(true) hasRightTurn,
+  }) = AssetLeftRotateState;
+
+  const factory BusinessDocumentState.flipState({
+    @Default(DocumentType.tradeLicence) DocumentType documentType,
+  }) = AssetFlipState;
+
+  const factory BusinessDocumentState.resetAssetState({
+    @Default(DocumentType.tradeLicence) DocumentType documentType,
+    AspectRatioItem? aspectRatioItem,
+  }) = ResetAssetState;
+
+  const factory BusinessDocumentState.resetAllState({
+    @Default(DocumentType.tradeLicence) DocumentType documentType,
+  }) = ResetAllAssetState;
+
+  const factory BusinessDocumentState.saveCropDocumentSuccessState({
+    @Default(DocumentType.tradeLicence) DocumentType documentType,
+    XFile? xfile,
+    File? file,
+    required ExtendedImageEditorState extendedImageEditorState,
+    required Uint8List bytes,
+    required EditImageInfo imageInfo,
+    required bool isCropping,
+    @Default('') String message,
+  }) = SaveCropDocumentSuccessState;
+
+  const factory BusinessDocumentState.saveCropDocumentProcessingState({
+    @Default(DocumentType.tradeLicence) DocumentType documentType,
+  }) = SaveCropDocumentProcessingState;
+
+  const factory BusinessDocumentState.saveCropDocumentFailedState({
+    @Default(DocumentType.tradeLicence) DocumentType documentType,
+    required String reason,
+    StackTrace? stackTrace,
+  }) = SaveCropDocumentFailedState;
 }

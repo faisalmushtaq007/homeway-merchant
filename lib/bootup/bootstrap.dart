@@ -85,7 +85,7 @@ class AppBlocObserver extends BlocObserver {
     Transition<dynamic, dynamic> transition,
   ) {
     super.onTransition(bloc, transition);
-    log('onError(${bloc.runtimeType}, $transition)');
+    log('onTransition(${bloc.runtimeType}, $transition)');
   }
 }
 

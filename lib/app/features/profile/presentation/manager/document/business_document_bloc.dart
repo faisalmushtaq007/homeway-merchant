@@ -1,14 +1,26 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:ffi';
 import 'dart:io';
 
 import 'package:bloc/bloc.dart';
+import 'package:bloc_concurrency/bloc_concurrency.dart';
+import 'package:extended_image/extended_image.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:homemakers_merchant/app/features/profile/common/document_picker_source_enum.dart';
 import 'package:homemakers_merchant/app/features/profile/common/document_type_enum.dart';
 import 'package:homemakers_merchant/app/features/profile/domain/entities/document/business_document_uploaded_entity.dart';
+import 'package:homemakers_merchant/app/features/profile/presentation/widgets/document/image_edit/common_widget.dart';
+import 'package:homemakers_merchant/app/features/profile/presentation/widgets/document/image_edit/crop_editor_helper.dart';
+import 'package:homemakers_merchant/utils/app_equatable/app_equatable.dart';
+import 'package:homemakers_merchant/utils/app_log.dart';
+import 'package:homemakers_merchant/utils/universal_platform/universal_platform.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:permission_handler/permission_handler.dart';
+import 'package:file_saver/file_saver.dart' as fileSaver;
+import 'package:path/path.dart' as path;
 
 part 'business_document_event.dart';
 
@@ -19,43 +31,141 @@ part 'business_document_bloc.freezed.dart';
 class BusinessDocumentBloc
     extends Bloc<BusinessDocumentEvent, BusinessDocumentState> {
   BusinessDocumentBloc() : super(const BusinessDocumentInitial()) {
-    on<OpenMediaPicker>(_openMediaPicker);
-    on<CloseMediaPicker>(_closeMediaPicker);
-    on<SelectDocumentSourceType>(_selectDocumentSourceType);
+    on<BusinessDocumentEvent>(
+      (events, emit) async {
+        await events.map(
+          (value) {},
+          assetsStartUploading: (value) {},
+          tradeLicenseNumberOnChanged: (value) {},
+          assetsRemove: (value) {},
+          documentRemove: (value) {},
+          saveAndNext: (value) {},
+          back: (value) {},
+          askConfirmation: (value) {},
+          confirmationYes: (value) {},
+          askConfirmationNo: (value) {},
+          uploadNewAssets: (value) {},
+          uploadButtonState: (value) {},
+          addNewDocument: (value) {},
+          captureImageFromCamera: (value) {},
+          restoreCaptureImageFromCamera: (value) {},
+          selectImageFromGallery: (value) {},
+          restoreSelectImageFromGallery: (value) {},
+          openMediaPicker: (value) async => await _openMediaPicker(value, emit),
+          selectDocumentSourceType: (value) async =>
+              await _selectDocumentSourceType(value, emit),
+          closeMediaPicker: (value) async =>
+              await _closeMediaPicker(value, emit),
+          crop: (value) async => await _assetCrop(value, emit),
+          rightRotate: (value) async => await _assetRightRotate(value, emit),
+          leftRotate: (value) async => await _assetLeftRotate(value, emit),
+          flip: (value) async => await _assetFlip(value, emit),
+          resetAsset: (value) async => await _resetAsset(value, emit),
+          resetAll: (value) async => await _resetAllAsset(value, emit),
+          saveCropDocument: (value) async =>
+              await _saveCropDocument(value, emit),
+        );
+      },
+      transformer: restartable(),
+    );
+/*    on<OpenMediaPicker>(
+      _openMediaPicker,
+      transformer: sequential(),
+    );
+    on<CloseMediaPicker>(
+      _closeMediaPicker,
+      transformer: sequential(),
+    );
+    on<SelectDocumentSourceType>(
+      _selectDocumentSourceType,
+      transformer: sequential(),
+    );
+    on<AssetCrop>(
+      _assetCrop,
+      transformer: sequential(),
+    );
+    on<AssetLeftRotate>(
+      _assetLeftRotate,
+      transformer: sequential(),
+    );
+    on<AssetRightRotate>(
+      _assetRightRotate,
+      transformer: sequential(),
+    );
+    on<AssetFlip>(
+      _assetFlip,
+      transformer: sequential(),
+    );
+    on<ResetAsset>(
+      _resetAsset,
+      transformer: sequential(),
+    );
+    on<ResetAllAsset>(
+      _resetAllAsset,
+      transformer: sequential(),
+    );
+    on<SaveCropDocument>(
+      _saveCropDocument,
+      transformer: sequential(),
+    );*/
   }
 
   final ImagePicker _picker = ImagePicker();
 
   FutureOr<void> _openMediaPicker(
-      OpenMediaPicker event, Emitter<BusinessDocumentState> emit) {
+    OpenMediaPicker event,
+    Emitter<BusinessDocumentState> emit,
+  ) {
     emit(OpenMediaPickerState(documentType: event.documentType));
   }
 
   FutureOr<void> _closeMediaPicker(
-      CloseMediaPicker event, Emitter<BusinessDocumentState> emit) {
+    CloseMediaPicker event,
+    Emitter<BusinessDocumentState> emit,
+  ) {
     emit(CloseMediaPickerState(documentType: event.documentType));
   }
 
-  FutureOr<void> _selectDocumentSourceType(SelectDocumentSourceType event,
-      Emitter<BusinessDocumentState> emit) async {
+  FutureOr<void> _selectDocumentSourceType(
+    SelectDocumentSourceType event,
+    Emitter<BusinessDocumentState> emit,
+  ) async {
     try {
       ImageSource source = ImageSource.camera;
       File? response;
-      emit(SelectDocumentSourceTypState(
-        documentType: event.documentType,
-        documentPickerSource: event.documentPickerSource,
-        imageSource: event.imageSource,
-      ));
+      Uint8List? originalBytes;
+      var metaData = <String, dynamic>{};
+      emit(
+        SelectDocumentSourceTypState(
+          documentType: event.documentType,
+          documentPickerSource: event.documentPickerSource,
+          imageSource: event.imageSource,
+        ),
+      );
       if (event.documentPickerSource == DocumentPickerSource.camera) {
         source = ImageSource.camera;
+        emit(const CaptureImageFromCameraFailedProcessingState());
       } else {
         source = ImageSource.gallery;
+        emit(const SelectImageFromGalleryProcessingState());
       }
       final XFile? pickedFile = await _picker.pickImage(
         source: source,
       );
       if (pickedFile != null) {
         response = File(pickedFile.path);
+        originalBytes = await pickedFile.readAsBytes();
+        final mimeType = pickedFile.mimeType ?? '';
+        final length = await pickedFile.length();
+        final name = pickedFile.name;
+        final path = pickedFile.path;
+        //var encryptedBase64EncodedString = await File(path).readAsString(encoding:utf8);
+        //var decoded = base64Decode(encryptedBase64EncodedString);
+        metaData['mimeType'] = mimeType;
+        metaData['length'] = length;
+        metaData['name'] = name;
+        metaData['path'] = path;
+        metaData['bytes'] = originalBytes;
       }
       if (event.documentPickerSource == DocumentPickerSource.camera) {
         emit(
@@ -63,14 +173,20 @@ class BusinessDocumentBloc
             documentType: event.documentType,
             pickedFile: pickedFile,
             responseFile: response,
+            uint8list: originalBytes,
+            metaData: metaData,
           ),
         );
       } else {
-        emit(SelectImageFromGallerySuccessState(
-          documentType: event.documentType,
-          pickedFile: pickedFile,
-          responseFile: response,
-        ));
+        emit(
+          SelectImageFromGallerySuccessState(
+            documentType: event.documentType,
+            pickedFile: pickedFile,
+            responseFile: response,
+            uint8list: originalBytes,
+            metaData: metaData,
+          ),
+        );
       }
     } catch (e) {
       if (event.documentPickerSource == DocumentPickerSource.camera) {
@@ -80,12 +196,130 @@ class BusinessDocumentBloc
           ),
         );
       } else {
+        appLog.d('State SelectImageFromGalleryFailedState');
         emit(
           SelectImageFromGalleryFailedState(
             documentType: event.documentType,
           ),
         );
       }
+    }
+  }
+
+  FutureOr<void> _assetCrop(
+      AssetCrop event, Emitter<BusinessDocumentState> emit) async {
+    emit(
+      AssetCropState(
+        aspectRatioItem: event.aspectRatioItem,
+        documentType: event.documentType,
+        extendedImageEditorState: event.extendedImageEditorState,
+        bytes: event.bytes,
+        file: event.file,
+        isCropping: event.isCropping,
+        xfile: event.xfile,
+      ),
+    );
+  }
+
+  FutureOr<void> _assetLeftRotate(
+      AssetLeftRotate event, Emitter<BusinessDocumentState> emit) async {
+    emit(
+      AssetLeftRotateState(
+        hasRightTurn: event.hasRightTurn,
+        documentType: event.documentType,
+      ),
+    );
+    return;
+  }
+
+  FutureOr<void> _assetRightRotate(
+      AssetRightRotate event, Emitter<BusinessDocumentState> emit) async {
+    emit(
+      AssetRightRotateState(
+        hasRightTurn: event.hasRightTurn,
+        documentType: event.documentType,
+      ),
+    );
+    return;
+  }
+
+  FutureOr<void> _assetFlip(
+      AssetFlip event, Emitter<BusinessDocumentState> emit) async {
+    emit(
+      AssetFlipState(
+        documentType: event.documentType,
+      ),
+    );
+    return;
+  }
+
+  FutureOr<void> _resetAsset(
+      ResetAsset event, Emitter<BusinessDocumentState> emit) async {
+    emit(
+      ResetAssetState(
+        aspectRatioItem: event.aspectRatioItem,
+        documentType: event.documentType,
+      ),
+    );
+    return;
+  }
+
+  FutureOr<void> _resetAllAsset(
+      ResetAllAsset event, Emitter<BusinessDocumentState> emit) async {
+    emit(
+      ResetAllAssetState(
+        documentType: event.documentType,
+      ),
+    );
+    return;
+  }
+
+  FutureOr<void> _saveCropDocument(
+      SaveCropDocument event, Emitter<BusinessDocumentState> emit) async {
+    try {
+      if (event.xfile != null || event.file != null) {
+        if (UniversalPlatform.isAndroid || UniversalPlatform.isIOS) {
+          bool status = await Permission.storage.isGranted;
+          if (!status) await Permission.storage.request();
+        }
+        emit(SaveCropDocumentProcessingState(
+          documentType: event.documentType,
+        ));
+        final EditImageInfo imageInfo = await cropImageDataWithDartLibrary(
+            state: event.extendedImageEditorState);
+        final int timeStamp = DateTime.now().millisecondsSinceEpoch;
+        final String filePath = await fileSaver.FileSaver.instance.saveFile(
+          name:
+              '${path.basename(event.xfile!.path ?? event.file!.path)}_$timeStamp',
+          bytes: imageInfo.data!,
+          filePath: event.xfile?.path,
+          file: event.file!,
+          ext: imageInfo.imageType == ImageType.png ? 'png' : 'gif',
+          mimeType: imageInfo.imageType == ImageType.png
+              ? fileSaver.MimeType.png
+              : fileSaver.MimeType.gif,
+        );
+
+        emit(
+          SaveCropDocumentSuccessState(
+            documentType: event.documentType,
+            extendedImageEditorState: event.extendedImageEditorState,
+            bytes: event.bytes,
+            file: event.file,
+            isCropping: event.isCropping,
+            xfile: event.xfile,
+            imageInfo: imageInfo,
+            message: 'Image saved in path: $filePath',
+          ),
+        );
+        return;
+      }
+    } catch (e, s) {
+      emit(SaveCropDocumentFailedState(
+        reason: 'Reason: $e',
+        stackTrace: s,
+        documentType: event.documentType,
+      ));
     }
   }
 }

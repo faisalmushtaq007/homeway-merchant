@@ -85,12 +85,15 @@ class BusinessDocumentEvent with _$BusinessDocumentEvent {
   const factory BusinessDocumentEvent.captureImageFromCamera({
     @Default(DocumentType.tradeLicence) DocumentType documentType,
   }) = CaptureImageFromCamera;
+
   const factory BusinessDocumentEvent.restoreCaptureImageFromCamera({
     @Default(DocumentType.tradeLicence) DocumentType documentType,
   }) = RestoreCaptureImageFromCamera;
+
   const factory BusinessDocumentEvent.selectImageFromGallery({
     @Default(DocumentType.tradeLicence) DocumentType documentType,
   }) = SelectImageFromGallery;
+
   const factory BusinessDocumentEvent.restoreSelectImageFromGallery({
     @Default(DocumentType.tradeLicence) DocumentType documentType,
   }) = RestoreSelectImageFromGallery;
@@ -98,13 +101,58 @@ class BusinessDocumentEvent with _$BusinessDocumentEvent {
   const factory BusinessDocumentEvent.openMediaPicker({
     @Default(DocumentType.tradeLicence) DocumentType documentType,
   }) = OpenMediaPicker;
+
   const factory BusinessDocumentEvent.selectDocumentSourceType({
     @Default(DocumentType.tradeLicence) DocumentType documentType,
     @Default(ImageSource.camera) ImageSource imageSource,
     @Default(DocumentPickerSource.camera)
     DocumentPickerSource documentPickerSource,
   }) = SelectDocumentSourceType;
+
   const factory BusinessDocumentEvent.closeMediaPicker({
     @Default(DocumentType.tradeLicence) DocumentType documentType,
   }) = CloseMediaPicker;
+
+  const factory BusinessDocumentEvent.crop({
+    @Default(DocumentType.tradeLicence) DocumentType documentType,
+    XFile? xfile,
+    File? file,
+    required ExtendedImageEditorState extendedImageEditorState,
+    Uint8List? bytes,
+    @Default(false) bool isCropping,
+    required AspectRatioItem aspectRatioItem,
+  }) = AssetCrop;
+
+  const factory BusinessDocumentEvent.rightRotate({
+    @Default(DocumentType.tradeLicence) DocumentType documentType,
+    @Default(true) hasRightTurn,
+  }) = AssetRightRotate;
+
+  const factory BusinessDocumentEvent.leftRotate({
+    @Default(DocumentType.tradeLicence) DocumentType documentType,
+    @Default(true) hasRightTurn,
+  }) = AssetLeftRotate;
+
+  const factory BusinessDocumentEvent.flip({
+    @Default(DocumentType.tradeLicence) DocumentType documentType,
+  }) = AssetFlip;
+
+  const factory BusinessDocumentEvent.resetAsset({
+    @Default(DocumentType.tradeLicence) DocumentType documentType,
+    AspectRatioItem? aspectRatioItem,
+  }) = ResetAsset;
+
+  const factory BusinessDocumentEvent.resetAll({
+    @Default(DocumentType.tradeLicence) DocumentType documentType,
+  }) = ResetAllAsset;
+
+  const factory BusinessDocumentEvent.saveCropDocument({
+    @Default(DocumentType.tradeLicence) DocumentType documentType,
+    XFile? xfile,
+    File? file,
+    required ExtendedImageEditorState extendedImageEditorState,
+    required Uint8List bytes,
+    required EditImageInfo imageInfo,
+    required bool isCropping,
+  }) = SaveCropDocument;
 }

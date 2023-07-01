@@ -1,5 +1,22 @@
 targets:
   $default:
+    sources:
+      exclude:
+        - test
+        - lib/utils/**
+        - lib/theme/**
+        - lib/bootup/**
+        - lib/config/**
+        - lib/core/constants/**
+        - lib/core/interface/**
+        - lib/core/keys/**
+        - lib/core/local/**
+        - lib/core/mixins/**
+        - lib/core/parser/**
+        - lib/core/service/**
+        - lib/config/permission/**
+        - lib/config/styles/**
+        - lib/config/translation/**
     builders:
       json_serializable:
         options:
@@ -10,3 +27,25 @@ targets:
         options:
           generic_argument_factories: true
           explicit_to_json: true
+          generate_for:
+            exclude:
+              - test
+              - lib/utils/**
+              - lib/theme/**
+              - lib/bootup/**
+              - lib/config/**
+              - lib/core/constants/**
+              - lib/core/interface/**
+              - lib/core/keys/**
+              - lib/core/local/**
+              - lib/core/mixins/**
+              - lib/core/parser/**
+              - lib/core/service/**
+              - lib/config/permission/**
+              - lib/config/styles/**
+              - lib/config/translation/**
+              - lib/gen/**
+            include:
+              - lib/app/features/profile/presentation/manager/**
+              - lib/app/features/authentication/presentation/manager/**
+              - lib/app/features/address/domain/entities/**

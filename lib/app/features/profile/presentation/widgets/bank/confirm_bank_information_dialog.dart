@@ -15,7 +15,7 @@ const double kDialogMargin = 20.0;
 ///Is dialog showing
 bool isShowing = false;
 
-Future<T?> showConfirmationBankInformationDialog<T extends Object?>({
+Future<T?> showConfirmationDialog<T extends Object?>({
   required BuildContext context,
   bool barrierDismissible = false,
   required WidgetBuilder builder,
@@ -163,7 +163,7 @@ class _ResponsiveDialogState extends State<ResponsiveDialog> {
         children: <Widget>[
           if (widget.cancelButtonVisible)
             ElevatedButton(
-              key: const Key('bankinfo-confirm-dialog-negative-button'),
+              key: const Key('confirm-dialog-negative-button'),
               style: ElevatedButton.styleFrom(
                 backgroundColor: Color.fromRGBO(238, 238, 238, 1),
                 textStyle: context.labelLarge,
@@ -183,7 +183,7 @@ class _ResponsiveDialogState extends State<ResponsiveDialog> {
           else
             const SizedBox.shrink(),
           ElevatedButton(
-            key: const Key('bankinfo-confirm-dialog-positive-button'),
+            key: const Key('confirm-dialog-positive-button'),
             style: ElevatedButton.styleFrom(
                 backgroundColor: Color.fromRGBO(69, 201, 125, 1),
                 textStyle: context.labelLarge,
@@ -230,7 +230,7 @@ class _ResponsiveDialogState extends State<ResponsiveDialog> {
         borderRadius: BorderRadiusDirectional.circular(16),
       ),
       child: Directionality(
-        key: const Key('confirm-bankinfo-dialog-directionality'),
+        key: const Key('confirm-dialog-directionality'),
         textDirection: serviceLocator<LanguageController>().targetTextDirection,
         child: AnimatedContainer(
           width: dialogSize.width,

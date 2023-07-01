@@ -1,17 +1,27 @@
 import 'dart:io';
+import 'package:extended_image/extended_image.dart';
+import 'package:file_saver/file_saver.dart' as fileSaver;
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:google_ml_kit/google_ml_kit.dart';
 import 'package:homemakers_merchant/app/features/profile/common/document_picker_source_enum.dart';
 import 'package:homemakers_merchant/app/features/profile/common/document_type_enum.dart';
 import 'package:homemakers_merchant/app/features/profile/presentation/manager/document/business_document_bloc.dart';
+import 'package:homemakers_merchant/app/features/profile/presentation/widgets/bank/confirm_bank_information_dialog.dart';
+import 'package:homemakers_merchant/app/features/profile/presentation/widgets/document/image_edit/common_widget.dart';
+import 'package:homemakers_merchant/app/features/profile/presentation/widgets/document/image_edit/crop_editor_helper.dart';
 import 'package:homemakers_merchant/app/features/profile/presentation/widgets/document/painters/text_detector_painter.dart';
 import 'package:homemakers_merchant/app/features/profile/presentation/widgets/document/uploaded_document_placeholder_widget.dart';
 import 'package:homemakers_merchant/config/translation/extension/text_extension.dart';
 import 'package:homemakers_merchant/core/extensions/app_extension.dart';
 import 'package:homemakers_merchant/shared/widgets/universal/animated_gap/gap.dart';
+import 'package:homemakers_merchant/shared/widgets/universal/constrained_scrollable_views/constrained_scrollable_views.dart';
 import 'package:homemakers_merchant/shared/widgets/universal/one_context/one_context.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:new_image_crop/data/data_editor_config.dart';
+import 'package:new_image_crop/ui/dialog/image_editor_component/image_editor_plane.dart';
+import 'package:new_image_crop/widget/size_builder.dart';
+import 'package:path/path.dart' as path;
 import 'package:permission_handler/permission_handler.dart';
 import 'package:saver_gallery/saver_gallery.dart';
 import 'package:google_mlkit_text_recognition/google_mlkit_text_recognition.dart';
@@ -59,11 +69,64 @@ class _UploadDocumentPageState extends State<UploadDocumentPage> {
   XFile? pickedXSourceFile;
   DocumentPickerSourceStatus documentPickerSourceStatus =
       DocumentPickerSourceStatus.none;
+  final GlobalKey<ExtendedImageEditorState> editorKey =
+      GlobalKey<ExtendedImageEditorState>();
+  final GlobalKey<PopupMenuButtonState<EditorCropLayerPainter>> popupMenuKey =
+      GlobalKey<PopupMenuButtonState<EditorCropLayerPainter>>();
+  final List<AspectRatioItem> _aspectRatios = <AspectRatioItem>[
+    AspectRatioItem(text: '4*3', value: CropAspectRatios.ratio4_3),
+    AspectRatioItem(text: 'custom', value: CropAspectRatios.custom),
+    AspectRatioItem(text: 'original', value: CropAspectRatios.original),
+    AspectRatioItem(text: '1*1', value: CropAspectRatios.ratio1_1),
+    AspectRatioItem(text: '4*3', value: CropAspectRatios.ratio4_3),
+    AspectRatioItem(text: '3*4', value: CropAspectRatios.ratio3_4),
+    AspectRatioItem(text: '16*9', value: CropAspectRatios.ratio16_9),
+    AspectRatioItem(text: '9*16', value: CropAspectRatios.ratio9_16)
+  ];
+  AspectRatioItem? _aspectRatio;
+  bool _cropping = false;
+  Uint8List? selectedFileInBytes;
+  EditorCropLayerPainter? _cropLayerPainter;
+  Map<String, dynamic> fileMetaInfo = {};
+  EditImageInfo? imageInfo;
+
+  var controller = ImageEditorController();
+  final editorConfig = DataEditorConfig(
+      // Edit area background color
+      // Configure the padding of the editing area
+      cropRectPadding: const EdgeInsets.all(20.0),
+      // Configure the length of the four corners of the viewfinder
+      cornerLength: 30,
+      // Configure the width of the four corners of the viewfinder
+      cornerWidth: 4,
+      // Configure the color of the four corners of the viewfinder
+      cornerColor: Colors.blue,
+      // Configure the click response area of the four corners of the viewfinder
+      cornerHitTestSize: const Size(40, 40),
+      // Configure the color of the four sides of the viewfinder
+      lineColor: Colors.white,
+      // Configure the color of the four sides of the viewfinder
+      lineWidth: 2,
+      // Configure the width of the four sides of the viewfinder frame
+      lineHitTestWidth: 40,
+      // Configure the length of each unit of the nine-square dotted line in the viewfinder
+      dottedLength: 2,
+      // Configure the color of the dotted line of the nine-square grid in the viewfinder
+      dottedColor: Colors.white,
+      // Configure the color of the outer portion of the viewfinder
+      editorMaskColorHandler: (context, isTouching) {
+        return isTouching
+            ? Colors.black.withOpacity(0.3)
+            : Colors.black.withOpacity(0.7);
+        // return Colors.black;
+      });
 
   @override
   void initState() {
     super.initState();
     scrollController = ScrollController();
+    _aspectRatio = _aspectRatios[6];
+    _cropLayerPainter = const EditorCropLayerPainter();
     context.read<PermissionBloc>().add(const RequestLocationPermissionEvent());
   }
 
@@ -94,10 +157,27 @@ class _UploadDocumentPageState extends State<UploadDocumentPage> {
       child: Scaffold(
         resizeToAvoidBottomInset: false,
         appBar: AppBar(
-          actions: const [
-            Padding(
-              padding: EdgeInsetsDirectional.symmetric(horizontal: 14),
-              child: LanguageSelectionWidget(),
+          actions: [
+            IconButton(
+              onPressed: () {
+                return;
+              },
+              style: ElevatedButton.styleFrom(),
+              icon: const Icon(Icons.close),
+            ),
+            IconButton(
+              onPressed: () {
+                if (pickedXSourceFile != null || pickedSourceFile != null) {
+                  controller.tailor();
+                  BlocProvider.of<BusinessDocumentBloc>(context).add(
+                    SaveAndNext(),
+                  );
+                }
+                return;
+              },
+              style: ElevatedButton.styleFrom(),
+              icon: const Icon(Icons.done,
+                  color: Color.fromRGBO(69, 201, 125, 1)),
             ),
           ],
         ),
@@ -121,7 +201,7 @@ class _UploadDocumentPageState extends State<UploadDocumentPage> {
             child: BlocBuilder<PermissionBloc, PermissionState>(
               key: const Key('upload-document-address-bloc-builder-key'),
               bloc: context.read<PermissionBloc>(),
-              buildWhen: (previous, current) => previous != current,
+              //buildWhen: (previous, current) => previous != current,
               builder: (context, state) {
                 return BlocListener<BusinessDocumentBloc,
                     BusinessDocumentState>(
@@ -134,8 +214,9 @@ class _UploadDocumentPageState extends State<UploadDocumentPage> {
                   },
                   child:
                       BlocBuilder<BusinessDocumentBloc, BusinessDocumentState>(
-                    buildWhen: (previous, current) => previous != current,
-                    bloc: context.read<BusinessDocumentBloc>(),
+                    //buildWhen: (previous, current) => previous != current,
+                    key: const Key('upload-business-document-bloc-builder-key'),
+                    bloc: BlocProvider.of<BusinessDocumentBloc>(context),
                     builder: (context, state) {
                       state.maybeMap(
                         orElse: () {},
@@ -147,20 +228,28 @@ class _UploadDocumentPageState extends State<UploadDocumentPage> {
                               DocumentPickerSourceStatus.pickingUp;
                         },
                         captureImageFromCameraSuccessState: (value) {
+                          controller = ImageEditorController();
                           documentPickerSourceStatus =
                               DocumentPickerSourceStatus.pickedUp;
                           pickedSourceFile = value.responseFile;
                           pickedXSourceFile = value.pickedFile;
+                          selectedFileInBytes = value.uint8list;
+                          fileMetaInfo = value.metaData;
+                          //editorKey.currentState!.reset();
                         },
                         selectImageFromGalleryProcessingState: (value) {
                           documentPickerSourceStatus =
                               DocumentPickerSourceStatus.pickingUp;
                         },
                         selectImageFromGallerySuccessState: (value) {
+                          controller = ImageEditorController();
                           documentPickerSourceStatus =
                               DocumentPickerSourceStatus.pickedUp;
                           pickedSourceFile = value.responseFile;
                           pickedXSourceFile = value.pickedFile;
+                          selectedFileInBytes = value.uint8list;
+                          fileMetaInfo = value.metaData;
+                          //editorKey.currentState!.reset();
                         },
                         captureImageFromCameraFailedState: (value) {
                           documentPickerSourceStatus =
@@ -170,44 +259,39 @@ class _UploadDocumentPageState extends State<UploadDocumentPage> {
                           documentPickerSourceStatus =
                               DocumentPickerSourceStatus.notPickedUp;
                         },
+                        cropState: (value) {},
+                        flipState: (value) {
+                          controller.upsideDown();
+                          //editorKey.currentState!.flip();
+                        },
+                        resetAllState: (value) {},
+                        resetAssetState: (value) {
+                          controller.restore();
+                          //editorKey.currentState!.reset();
+                        },
+                        leftRotateState: (value) {
+                          controller.addRotateAngle90();
+                          //editorKey.currentState!.rotate(right: value.hasRightTurn);
+                        },
+                        rightRotateState: (value) {
+                          controller.reduceRotateAngle90();
+                        },
                       );
-                      return Stack(
-                        alignment: Alignment.topLeft,
-                        clipBehavior: Clip.none,
-                        textDirection: serviceLocator<LanguageController>()
-                            .targetTextDirection,
-                        children: [
-                          ListView(
-                            controller: scrollController,
-                            shrinkWrap: true,
-                            padding: EdgeInsetsDirectional.only(
-                              start: margins * 2.5,
-                              end: margins * 2.5,
-                              top: topPadding,
-                              bottom: bottomPadding,
-                            ),
-                            children: [
-                              SizedBox(
-                                child: Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  textDirection:
-                                      serviceLocator<LanguageController>()
-                                          .targetTextDirection,
-                                  children: [
-                                    AnimatedSwitcher(
-                                      duration:
-                                          const Duration(milliseconds: 400),
-                                      child: _currentPickerStatus(
-                                          documentPickerSourceStatus),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
+                      return Container(
+                        padding: EdgeInsetsDirectional.only(
+                          start: margins * 2.5,
+                          end: margins * 2.5,
+                          top: topPadding,
+                          bottom: margins,
+                        ),
+                        child: ListView(
+                          controller: scrollController,
+                          shrinkWrap: true,
+                          children: [
+                            _currentPickerStatus(
+                                documentPickerSourceStatus, context),
+                          ],
+                        ),
                       );
                     },
                   ),
@@ -221,7 +305,8 @@ class _UploadDocumentPageState extends State<UploadDocumentPage> {
   }
 
   Widget _currentPickerStatus(
-      DocumentPickerSourceStatus documentPickerSourceStatus) {
+      DocumentPickerSourceStatus documentPickerSourceStatus,
+      BuildContext context) {
     switch (documentPickerSourceStatus) {
       case DocumentPickerSourceStatus.none ||
             DocumentPickerSourceStatus.notPickedUp ||
@@ -231,12 +316,246 @@ class _UploadDocumentPageState extends State<UploadDocumentPage> {
         }
       case DocumentPickerSourceStatus.pickedUp:
         {
-          return const Column(
+          return Column(
             mainAxisSize: MainAxisSize.min,
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Text('Image Picked up'),
+              Container(
+                constraints: BoxConstraints(
+                    maxHeight: context.height / 1.75, minWidth: context.width),
+                child: ImageEditorPlane(
+                  imageData: selectedFileInBytes!.buffer.asByteData(),
+                  controller: controller,
+                  editorConfig: editorConfig,
+                  onTailorResult: (image, byteData, size) {
+                    print('Result of clipping');
+                    if (pickedXSourceFile != null || pickedSourceFile != null) {
+                      _showScreenShotOfCropImageDialog(
+                          context: context, byteData: byteData);
+                      /*BlocProvider.of<BusinessDocumentBloc>(context)
+                          .add(SaveCropDocument(
+                        documentType: widget.documentType,
+                        isCropping: _cropping,
+                        bytes: selectedFileInBytes!,
+                        extendedImageEditorState: editorKey.currentState!,
+                        file: pickedSourceFile!,
+                        xfile: pickedXSourceFile,
+                        imageInfo: imageInfo!,
+                      ));*/
+                      return;
+                    }
+                  },
+                ),
+                /*child: ExtendedImage.memory(
+                  selectedFileInBytes!,
+                  fit: BoxFit.contain,
+                  mode: ExtendedImageMode.editor,
+                  enableLoadState: true,
+                  extendedImageEditorKey: editorKey,
+                  constraints: BoxConstraints(
+                      maxHeight: context.height / 2, maxWidth: context.width),
+                  height: context.height / 2,
+                  width: context.width,
+                  alignment: AlignmentDirectional.center,
+                  clipBehavior: Clip.antiAliasWithSaveLayer,
+                  matchTextDirection: true,
+                  initEditorConfigHandler: (ExtendedImageState? state) {
+                    return EditorConfig(
+                      maxScale: 1,
+                      cropRectPadding: const EdgeInsets.all(0.0),
+                      hitTestSize: 20.0,
+                      cropLayerPainter: _cropLayerPainter!,
+                      initCropRectType: InitCropRectType.imageRect,
+                      cropAspectRatio: _aspectRatio!.value,
+                    );
+                  },
+                  cacheRawData: true,
+                ),*/
+              ),
+              const AnimatedGap(10, duration: Duration(milliseconds: 500)),
+              const Divider(
+                height: 4,
+                color: Color.fromRGBO(200, 201, 202, 1),
+                thickness: 1,
+              ),
+              const AnimatedGap(10, duration: Duration(milliseconds: 500)),
+              DecoratedBox(
+                decoration: BoxDecoration(
+                  border:
+                      Border.all(color: const Color.fromRGBO(200, 201, 202, 1)),
+                  borderRadius: BorderRadiusDirectional.circular(8),
+                ),
+                child: ScrollableRow(
+                  padding: const EdgeInsets.all(1),
+                  physics: const BouncingScrollPhysics(),
+                  constraintsBuilder: (constraints) => BoxConstraints(
+                    minWidth: constraints.maxWidth,
+                  ),
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  textDirection:
+                      serviceLocator<LanguageController>().targetTextDirection,
+                  children: [
+                    TextButton(
+                      onPressed: () {
+                        controller.addRotateAngle90();
+                        /*BlocProvider.of<BusinessDocumentBloc>(context).add(
+                            AssetLeftRotate(
+                                hasRightTurn: false,
+                                documentType: widget.documentType));*/
+                        return;
+                      },
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          const Icon(Icons.rotate_left),
+                          Text(
+                            'Left',
+                            textDirection: serviceLocator<LanguageController>()
+                                .targetTextDirection,
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(
+                      key: Key('rotate-left-vertical-divider'),
+                      height: 45,
+                      child: VerticalDivider(
+                        color: Color.fromRGBO(200, 201, 202, 1),
+                        width: 2,
+                        thickness: 1,
+                        indent: 4,
+                        endIndent: 4,
+                      ),
+                    ),
+                    TextButton(
+                      onPressed: () {
+                        controller.reduceRotateAngle90();
+                        /*BlocProvider.of<BusinessDocumentBloc>(context).add(
+                            AssetRightRotate(
+                                hasRightTurn: true,
+                                documentType: widget.documentType));*/
+                        return;
+                      },
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          const Icon(Icons.rotate_right),
+                          Text(
+                            'Right',
+                            textDirection: serviceLocator<LanguageController>()
+                                .targetTextDirection,
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(
+                      key: Key('rotate-right-vertical-divider'),
+                      height: 45,
+                      child: VerticalDivider(
+                        color: Color.fromRGBO(200, 201, 202, 1),
+                        width: 2,
+                        thickness: 1,
+                        indent: 4,
+                        endIndent: 4,
+                      ),
+                    ),
+                    TextButton(
+                      onPressed: () {
+                        controller.turnAround();
+                        /*BlocProvider.of<BusinessDocumentBloc>(context)
+                            .add(AssetFlip(documentType: widget.documentType));*/
+                        return;
+                      },
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          const RotatedBox(
+                            quarterTurns: 3,
+                            child: Icon(Icons.flip),
+                          ),
+                          Text(
+                            'Flip',
+                            textDirection: serviceLocator<LanguageController>()
+                                .targetTextDirection,
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(
+                      key: Key('flip-vertical-divider'),
+                      height: 45,
+                      child: VerticalDivider(
+                        color: Color.fromRGBO(200, 201, 202, 1),
+                        width: 2,
+                        thickness: 1,
+                        indent: 4,
+                        endIndent: 4,
+                      ),
+                    ),
+                    TextButton(
+                      style:
+                          TextButton.styleFrom(minimumSize: const Size(40, 36)),
+                      onPressed: () {
+                        controller.upsideDown();
+                        return;
+                      },
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          const Icon(Icons.flip),
+                          Text(
+                            'Flip',
+                            textDirection: serviceLocator<LanguageController>()
+                                .targetTextDirection,
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(
+                      key: Key('flip-horizontal-divider'),
+                      height: 45,
+                      child: VerticalDivider(
+                        color: Color.fromRGBO(200, 201, 202, 1),
+                        width: 2,
+                        thickness: 1,
+                        indent: 4,
+                        endIndent: 4,
+                      ),
+                    ),
+                    TextButton(
+                      onPressed: () {
+                        controller.restore();
+                        /*BlocProvider.of<BusinessDocumentBloc>(context).add(
+                          ResetAsset(
+                            documentType: widget.documentType,
+                            aspectRatioItem: _aspectRatio,
+                          ),
+                        );*/
+                        return;
+                      },
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          const Icon(Icons.restore),
+                          Text(
+                            'Reset',
+                            textDirection: serviceLocator<LanguageController>()
+                                .targetTextDirection,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(
+                height: kBottomNavigationBarHeight,
+              ),
             ],
           );
         }
@@ -410,6 +729,81 @@ class _UploadDocumentPageState extends State<UploadDocumentPage> {
               ),
             );
           },
+        );
+      },
+    );
+  }
+
+  void _showScreenShotOfCropImageDialog(
+      {required BuildContext context, required ByteData byteData}) {
+    showConfirmationDialog(
+      context: context,
+      barrierDismissible: true,
+      curve: Curves.fastOutSlowIn,
+      duration: Duration(seconds: 1),
+      builder: (BuildContext context) {
+        return ResponsiveDialog(
+          context: context,
+          hideButtons: false,
+          maxLongSide: context.height / 1.75,
+          maxShortSide: context.width,
+          title: 'Confirm Upload',
+          confirmText: 'Confirm',
+          cancelText: 'Cancel',
+          okPressed: () async {
+            print('Dialog confirmed');
+            await Future.delayed(const Duration(milliseconds: 300));
+            Navigator.of(context).pop();
+          },
+          cancelPressed: () async {
+            print('Dialog cancelled');
+            await Future.delayed(const Duration(milliseconds: 300));
+            Navigator.of(context).pop();
+          },
+          child: ScrollableColumn(
+            mainAxisSize: MainAxisSize.min,
+            padding: const EdgeInsets.all(1),
+            physics: const BouncingScrollPhysics(),
+            constraintsBuilder: (constraints) => BoxConstraints(
+              minWidth: constraints.maxWidth,
+              maxHeight: constraints.maxHeight,
+            ),
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            textDirection:
+                serviceLocator<LanguageController>().targetTextDirection,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Flexible(
+                child: Container(
+                  width: double.maxFinite,
+                  //height: context.height,
+                  //color: Colors.white,
+                  //alignment: Alignment.center,
+                  child: Image.memory(byteData.buffer.asUint8List()),
+                ),
+              ),
+              const AnimatedGap(12, duration: Duration(milliseconds: 400)),
+              Text.rich(
+                TextSpan(
+                  text:
+                      'Please check the document, and its clarity and cropped size and confirm it. Once it will be uploaded, it will be verify by our verification team.\n\n',
+                  children: [
+                    TextSpan(
+                      text: 'Will you confirm or cancel it?',
+                      style: context.bodyLarge!.copyWith(
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ],
+                ),
+                style: context.bodyMedium,
+                softWrap: true,
+                textAlign: TextAlign.center,
+                textDirection:
+                    serviceLocator<LanguageController>().targetTextDirection,
+              ),
+            ],
+          ),
         );
       },
     );

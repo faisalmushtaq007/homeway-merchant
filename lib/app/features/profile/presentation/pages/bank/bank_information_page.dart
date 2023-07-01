@@ -679,7 +679,7 @@ class _BankInformationPageState extends State<BankInformationPage>
                                         ),
                                       );
                                     });
-                                    showConfirmationBankInformationDialog(
+                                    showConfirmationDialog(
                                       context: context,
                                       barrierDismissible: true,
                                       curve: Curves.fastOutSlowIn,
@@ -693,10 +693,14 @@ class _BankInformationPageState extends State<BankInformationPage>
                                           title: 'Confirm Payment',
                                           confirmText: 'Confirm',
                                           cancelText: 'Cancel',
-                                          okPressed: () =>
-                                              print('Dialog confirmed'),
-                                          cancelPressed: () =>
-                                              print('Dialog cancelled'),
+                                          okPressed: () {
+                                            print('Dialog confirmed');
+                                            Navigator.of(context).pop();
+                                          },
+                                          cancelPressed: () {
+                                            print('Dialog cancelled');
+                                            Navigator.of(context).pop();
+                                          },
                                           child: ListView.builder(
                                             padding: EdgeInsetsDirectional.zero,
                                             itemCount:

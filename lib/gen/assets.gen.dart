@@ -14,6 +14,10 @@ import 'package:flutter/services.dart';
 class $AssetsImageGen {
   const $AssetsImageGen();
 
+  /// File path: assets/image/document_upload.jpeg
+  AssetGenImage get documentUpload =>
+      const AssetGenImage('assets/image/document_upload.jpeg');
+
   /// File path: assets/image/merchant_onboarding_01.png
   AssetGenImage get merchantOnboarding01 =>
       const AssetGenImage('assets/image/merchant_onboarding_01.png');
@@ -35,6 +39,7 @@ class $AssetsImageGen {
 
   /// List of all assets
   List<AssetGenImage> get values => [
+        documentUpload,
         merchantOnboarding01,
         merchantOnboarding02,
         merchantOnboarding03,
