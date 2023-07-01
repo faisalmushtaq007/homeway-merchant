@@ -732,30 +732,6 @@ class _UploadDocumentPageState extends State<UploadDocumentPage> {
     }
   }
 
-  Future<void> processImage(InputImage inputImage) async {
-    if (!_canProcess) return;
-    if (_isBusy) return;
-    _isBusy = true;
-    setState(() {
-      _text = '';
-    });
-    final recognizedText = await _textRecognizer.processImage(inputImage);
-    if (inputImage.metadata?.size != null &&
-        inputImage.metadata?.rotation != null) {
-      final painter = TextRecognizerPainter(recognizedText,
-          inputImage.metadata!.size, inputImage.metadata!.rotation);
-      _customPaint = CustomPaint(painter: painter);
-    } else {
-      _text = 'Recognized text:\n\n${recognizedText.text}';
-      // TODO: set _customPaint to draw boundingRect on top of image
-      _customPaint = null;
-    }
-    _isBusy = false;
-    if (mounted) {
-      setState(() {});
-    }
-  }
-
   void _selectDocumentSource([OpenMediaPickerState? value]) {
     OneContext().showBottomSheet(
       shape: const RoundedRectangleBorder(

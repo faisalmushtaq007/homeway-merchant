@@ -2,6 +2,9 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:ffi';
 import 'dart:io';
+import 'package:google_ml_kit/google_ml_kit.dart';
+import 'package:google_mlkit_text_recognition/google_mlkit_text_recognition.dart';
+import 'package:homemakers_merchant/app/features/profile/presentation/widgets/document/painters/text_detector_painter.dart';
 import 'package:path/path.dart' as p;
 
 import 'package:bloc/bloc.dart';
@@ -110,6 +113,11 @@ class BusinessDocumentBloc
       _saveCropDocument,
       transformer: sequential(),
     );*/
+    final TextRecognizer textRecognizer = GoogleMlKit.vision
+        .textRecognizer(); //TextRecognizer(script: TextRecognitionScript.latin);
+    bool canProcess = true;
+    bool isBusy = false;
+    CustomPaint? _customPaint;
   }
 
   final ImagePicker _picker = ImagePicker();
@@ -343,12 +351,15 @@ class BusinessDocumentBloc
             bytes: event.bytes,
             byteData: event.byteData,
           ));
+          return;
         }
         await Future.delayed(const Duration(seconds: 1));
         emit(SaveCropDocumentHideProcessingState(
           documentType: event.documentType,
         ));
         await Future.delayed(const Duration(milliseconds: 500));
+        //await processImage(InputImage.fromFile(File(filePath)));
+        //await Future.delayed(const Duration(milliseconds: 500));
         emit(
           SaveCropDocumentSuccessState(
             documentType: event.documentType,
@@ -375,6 +386,24 @@ class BusinessDocumentBloc
         reason: '$e',
         stackTrace: s,
       ));
+    }
+  }
+
+  Future<void> processImage(InputImage inputImage) async {
+    final TextRecognizer _textRecognizer = GoogleMlKit.vision.textRecognizer();
+    String _text = '';
+    CustomPaint? _customPaint;
+    final recognizedText = await _textRecognizer.processImage(inputImage);
+    if (inputImage.metadata?.size != null &&
+        inputImage.metadata?.rotation != null) {
+      final painter = TextRecognizerPainter(recognizedText,
+          inputImage.metadata!.size, inputImage.metadata!.rotation);
+      _customPaint = CustomPaint(painter: painter);
+    } else {
+      _text = 'Recognized text:\n\n${recognizedText.text}';
+      // TODO: set _customPaint to draw boundingRect on top of image
+      _customPaint = null;
+      appLog.d(_text);
     }
   }
 }
