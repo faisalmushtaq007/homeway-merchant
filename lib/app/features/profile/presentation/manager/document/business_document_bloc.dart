@@ -57,7 +57,14 @@ class BusinessDocumentBloc
           askConfirmationNo: (value) {},
           uploadNewAssets: (value) {},
           uploadButtonState: (value) {},
-          addNewDocument: (value) {},
+          addNewDocument: (value) {
+            emit(AddNewDocumentState(
+              newIndexPosition: value.newIndexPosition,
+              isTextFieldEnable: value.isTextFieldEnable,
+              indexOfTextField: value.indexOfTextField,
+              documentType: value.documentType,
+            ));
+          },
           captureImageFromCamera: (value) {},
           restoreCaptureImageFromCamera: (value) {},
           selectImageFromGallery: (value) {},
@@ -75,7 +82,16 @@ class BusinessDocumentBloc
           resetAll: (value) async => await _resetAllAsset(value, emit),
           saveCropDocument: (value) async =>
               await _saveCropDocument(value, emit),
-          addNewAsset: (value) {},
+          addNewAsset: (value) {
+            emit(AddNewAssetState(
+              newIndexPosition: value.newIndexPosition,
+              isTextFieldEnable: value.isTextFieldEnable,
+              indexOfTextField: value.indexOfTextField,
+              documentType: value.documentType,
+              onChanged: value.onChanged,
+              textEditingController: value.textEditingController,
+            ));
+          },
         );
       },
       transformer: restartable(),

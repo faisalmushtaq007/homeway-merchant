@@ -21,6 +21,7 @@ import 'package:homemakers_merchant/core/extensions/app_extension.dart';
 import 'package:homemakers_merchant/shared/router/app_pages.dart';
 import 'package:homemakers_merchant/shared/widgets/app/page_body.dart';
 import 'package:homemakers_merchant/shared/widgets/universal/animated_gap/gap.dart';
+import 'package:homemakers_merchant/utils/app_log.dart';
 import 'package:implicitly_animated_reorderable_list_2/implicitly_animated_reorderable_list_2.dart';
 import 'package:implicitly_animated_reorderable_list_2/transitions.dart';
 import 'package:path/path.dart' as path;
@@ -277,12 +278,9 @@ class _BusinessDocumentPageState extends State<BusinessDocumentPage> {
                   },
                 ),
               );
-              if (result != null &&
-                  result.isNotEmpty &&
-                  allBusinessDocuments[index]
-                      .documentFrontAssets!
-                      .assetPath
-                      .isNotEmpty) {
+              await Future.delayed(const Duration(milliseconds: 500));
+              appLog.d('Result ${(result != null && result.isNotEmpty)}');
+              if (result != null && result.isNotEmpty) {
                 // Add a document object into list of documents
                 var item = allBusinessDocuments[index];
 
@@ -296,6 +294,9 @@ class _BusinessDocumentPageState extends State<BusinessDocumentPage> {
                     xCroppedDocumentFile.path ?? croppedDocumentFile.path);
                 String fileExtension = path.extension(
                     xCroppedDocumentFile.path ?? croppedDocumentFile!.path);
+
+                appLog.d('assetName $filePath');
+
                 item.documentFrontAssets?.copyWith(
                   assetName: fileNameWithExtension,
                   assetOriginalName: path.basename(xFile.path ?? file.path),
@@ -306,13 +307,15 @@ class _BusinessDocumentPageState extends State<BusinessDocumentPage> {
                   assetsUploadStatus: DocumentUploadStatus.uploaded,
                   hasAssetsFrontSide: true,
                 );
+                appLog.d(
+                    'Index ${index} ${((index + 1) <= documentTypes.length)}');
                 if ((index + 1) <= documentTypes.length) {
+                  await Future.delayed(const Duration(milliseconds: 500));
+                  if (!mounted) return;
                   context.read<BusinessDocumentBloc>().add(
                         AddNewDocument(
                           newIndexPosition: index + 1,
                           documentType: documentTypes[index],
-                          indexOfTextField: 0,
-                          isTextFieldEnable: false,
                         ),
                       );
                 }
