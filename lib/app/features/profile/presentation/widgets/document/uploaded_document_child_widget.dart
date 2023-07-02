@@ -15,6 +15,8 @@ class UploadedDocumentChildWidget extends StatefulWidget {
     this.hasEnableTextField = false,
     this.documentIDNumber = '',
     this.labelOfTextField = '',
+    this.textEditingController,
+    this.onChanged,
   });
 
   final List<BusinessDocumentAssetsEntity> allBusinessDocumentAssets;
@@ -22,6 +24,8 @@ class UploadedDocumentChildWidget extends StatefulWidget {
   final bool hasEnableTextField;
   final String documentIDNumber;
   final String labelOfTextField;
+  final TextEditingController? textEditingController;
+  final ValueChanged<String>? onChanged;
 
   @override
   State<UploadedDocumentChildWidget> createState() =>
@@ -33,10 +37,12 @@ class _UploadedDocumentChildWidgetState
   List<BusinessDocumentAssetsEntity> allBusinessDocumentAssets = [];
   List<Widget> allBusinessDocumentAssetsWidgets = [];
   ScrollController scrollController = ScrollController();
-  final TextEditingController textEditingController = TextEditingController();
+  late TextEditingController textEditingController;
 
   @override
   void initState() {
+    textEditingController =
+        widget.textEditingController ?? TextEditingController();
     allBusinessDocumentAssets = [];
     allBusinessDocumentAssets.clear();
     allBusinessDocumentAssetsWidgets = [];
@@ -159,6 +165,7 @@ class _UploadedDocumentChildWidgetState
                 alignLabelWithHint: true,
                 isDense: true,
               ),
+              onChanged: widget.onChanged,
             ),
           ),
         ],

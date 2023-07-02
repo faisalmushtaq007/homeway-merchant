@@ -12,6 +12,7 @@ import 'package:homemakers_merchant/app/features/authentication/presentation/pag
 import 'package:homemakers_merchant/app/features/authentication/presentation/pages/terms_and_conditions_view.dart';
 import 'package:homemakers_merchant/app/features/onboarding/presentation/pages/onboarding_page.dart';
 import 'package:homemakers_merchant/app/features/onboarding/presentation/pages/splash_page.dart';
+import 'package:homemakers_merchant/app/features/profile/common/document_type_enum.dart';
 import 'package:homemakers_merchant/app/features/profile/presentation/pages/bank/bank_information_page.dart';
 import 'package:homemakers_merchant/app/features/profile/presentation/pages/business_information_page.dart';
 import 'package:homemakers_merchant/app/features/profile/presentation/pages/document/business_document_page.dart';
@@ -26,7 +27,7 @@ class AppRouter {
 
   AppRouter._();
 
-  static const String INITIAL = Routes.UPLOAD_DOCUMENT_PAGE;
+  static const String INITIAL = Routes.DOCUMENT_LIST_PAGE;
 
   static final GoRouter _router = GoRouter(
     debugLogDiagnostics: true,
@@ -77,7 +78,9 @@ class AppRouter {
       ),
       GoRoute(
         path: Routes.UPLOAD_DOCUMENT_PAGE,
-        builder: (context, state) => const UploadDocumentPage(),
+        builder: (context, state) => UploadDocumentPage(
+            documentType: DocumentType.values
+                .byName(jsonDecode(state.extra as String)['documentType'])),
       ),
       GoRoute(
         path: Routes.ADDRESS_FORM_PAGE,

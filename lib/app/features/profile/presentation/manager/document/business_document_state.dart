@@ -1,46 +1,46 @@
 part of 'business_document_bloc.dart';
 
-@freezed
+@unfreezed
 class BusinessDocumentState with _$BusinessDocumentState {
-  const factory BusinessDocumentState.initial() = BusinessDocumentInitial;
+  factory BusinessDocumentState.initial() = BusinessDocumentInitial;
 
-  const factory BusinessDocumentState.assetsUploadingState({
+  factory BusinessDocumentState.assetsUploadingState({
     @Default(DocumentType.tradeLicence) DocumentType documentType,
   }) = AssetsUploadingState;
 
-  const factory BusinessDocumentState.assetsUploadSuccessState({
+  factory BusinessDocumentState.assetsUploadSuccessState({
     @Default(DocumentType.tradeLicence) DocumentType documentType,
     @Default([]) List<BusinessDocumentAssetsEntity> assetsEntries,
     @Default([]) List<BusinessDocumentUploadedEntity> allBusinessDocuments,
     @Default(-1) int index,
   }) = AssetsUploadSuccessState;
 
-  const factory BusinessDocumentState.assetsUploadFailedState({
+  factory BusinessDocumentState.assetsUploadFailedState({
     @Default(DocumentType.tradeLicence) DocumentType documentType,
     @Default('') String message,
     @Default(-1) int index,
   }) = AssetsUploadFailedState;
 
-  const factory BusinessDocumentState.tradeLicenseNumberOnChangedState({
+  factory BusinessDocumentState.tradeLicenseNumberOnChangedState({
     @Default(DocumentType.tradeLicence) DocumentType documentType,
     required TextEditingController textEditingController,
     @Default('') String currentUpdatedValue,
     @Default(0) int index,
   }) = TradeLicenseNumberOnChangedState;
 
-  const factory BusinessDocumentState.assetsRemoveFailedState({
+  factory BusinessDocumentState.assetsRemoveFailedState({
     @Default(DocumentType.tradeLicence) DocumentType documentType,
     @Default('') String message,
     @Default(-1) int index,
   }) = AssetsRemoveFailedState;
 
-  const factory BusinessDocumentState.assetsRemoveSuccessState({
+  factory BusinessDocumentState.assetsRemoveSuccessState({
     @Default(DocumentType.tradeLicence) DocumentType documentType,
     @Default('') String message,
     @Default(-1) int index,
   }) = AssetsRemoveSuccessState;
 
-  const factory BusinessDocumentState.documentRemoveState({
+  factory BusinessDocumentState.documentRemoveState({
     @Default(DocumentType.tradeLicence) DocumentType documentType,
     @Default('') String reason,
     BusinessDocumentUploadedEntity? businessDocumentUploadedEntity,
@@ -48,12 +48,12 @@ class BusinessDocumentState with _$BusinessDocumentState {
     @Default(-1) int index,
   }) = DocumentRemoveState;
 
-  const factory BusinessDocumentState.documentRemovingState({
+  factory BusinessDocumentState.documentRemovingState({
     @Default(DocumentType.tradeLicence) DocumentType documentType,
     @Default('') String message,
   }) = DocumentRemovingState;
 
-  const factory BusinessDocumentState.documentRemoveFailedState({
+  factory BusinessDocumentState.documentRemoveFailedState({
     @Default(DocumentType.tradeLicence) DocumentType documentType,
     @Default('') String reason,
     BusinessDocumentUploadedEntity? businessDocumentUploadedEntity,
@@ -61,32 +61,48 @@ class BusinessDocumentState with _$BusinessDocumentState {
     @Default(-1) int index,
   }) = DocumentRemoveFailedState;
 
-  const factory BusinessDocumentState.saveAndNextState({
+  factory BusinessDocumentState.addNewDocumentState({
+    @Default(DocumentType.tradeLicence) DocumentType documentType,
+    @Default(0) int indexOfTextField,
+    @Default(false) bool isTextFieldEnable,
+    required int newIndexPosition,
+  }) = AddNewDocumentState;
+
+  factory BusinessDocumentState.addNewAssetState({
+    @Default(DocumentType.tradeLicence) DocumentType documentType,
+    @Default(0) int indexOfTextField,
+    @Default(false) bool isTextFieldEnable,
+    TextEditingController? textEditingController,
+    ValueChanged<String>? onChanged,
+    required int newIndexPosition,
+  }) = AddNewAssetState;
+
+  factory BusinessDocumentState.saveAndNextState({
     @Default([]) List<BusinessDocumentUploadedEntity> allBusinessDocuments,
   }) = SaveAndNextState;
 
-  const factory BusinessDocumentState.backState({
+  factory BusinessDocumentState.backState({
     @Default([]) List<BusinessDocumentUploadedEntity> allBusinessDocuments,
   }) = BackState;
 
-  const factory BusinessDocumentState.askConfirmationState({
+  factory BusinessDocumentState.askConfirmationState({
     @Default([]) List<BusinessDocumentUploadedEntity> allBusinessDocuments,
   }) = AskConfirmationState;
 
-  const factory BusinessDocumentState.askConfirmationFailedState({
+  factory BusinessDocumentState.askConfirmationFailedState({
     @Default([]) List<BusinessDocumentUploadedEntity> allBusinessDocuments,
     @Default('') String message,
   }) = AskConfirmationFailedState;
 
-  const factory BusinessDocumentState.confirmationYesState({
+  factory BusinessDocumentState.confirmationYesState({
     @Default([]) List<BusinessDocumentUploadedEntity> allBusinessDocuments,
   }) = ConfirmationYesState;
 
-  const factory BusinessDocumentState.askConfirmationNoState({
+  factory BusinessDocumentState.askConfirmationNoState({
     @Default([]) List<BusinessDocumentUploadedEntity> allBusinessDocuments,
   }) = ConfirmationNoState;
 
-  const factory BusinessDocumentState.uploadNewAssetsState({
+  factory BusinessDocumentState.uploadNewAssetsState({
     @Default(DocumentType.tradeLicence) DocumentType documentType,
     @Default(true) bool hasFrontSideAssets,
     BusinessDocumentAssetsEntity? businessDocumentAssetsEntity,
@@ -96,20 +112,14 @@ class BusinessDocumentState with _$BusinessDocumentState {
     @Default(-1) int index,
   }) = UploadNewAssetsState;
 
-  const factory BusinessDocumentState.uploadButtonState({
+  factory BusinessDocumentState.uploadButtonState({
     @Default(DocumentType.tradeLicence) DocumentType documentType,
     @Default(-1) int index,
     @Default([]) List<BusinessDocumentUploadedEntity> allBusinessDocuments,
     @Default(true) bool hasVisible,
   }) = UploadButtonState;
 
-  const factory BusinessDocumentState.addNewDocumentState({
-    @Default(DocumentType.tradeLicence) DocumentType documentType,
-    @Default(0) int indexOfTextField,
-    @Default(true) bool isTextFieldEnable,
-  }) = AddNewDocumentState;
-
-  const factory BusinessDocumentState.captureImageFromCameraSuccessState({
+  factory BusinessDocumentState.captureImageFromCameraSuccessState({
     @Default(DocumentType.tradeLicence) DocumentType documentType,
     File? responseFile,
     XFile? pickedFile,
@@ -117,20 +127,20 @@ class BusinessDocumentState with _$BusinessDocumentState {
     @Default({}) Map<String, dynamic> metaData,
   }) = CaptureImageFromCameraSuccessState;
 
-  const factory BusinessDocumentState.captureImageFromCameraProcessingState({
+  factory BusinessDocumentState.captureImageFromCameraProcessingState({
     @Default(DocumentType.tradeLicence) DocumentType documentType,
   }) = CaptureImageFromCameraFailedProcessingState;
 
-  const factory BusinessDocumentState.captureImageFromCameraFailedState({
+  factory BusinessDocumentState.captureImageFromCameraFailedState({
     @Default(DocumentType.tradeLicence) DocumentType documentType,
     @Default('') String message,
   }) = CaptureImageFromCameraFailedState;
 
-  const factory BusinessDocumentState.selectImageFromGalleryProcessingState({
+  factory BusinessDocumentState.selectImageFromGalleryProcessingState({
     @Default(DocumentType.tradeLicence) DocumentType documentType,
   }) = SelectImageFromGalleryProcessingState;
 
-  const factory BusinessDocumentState.selectImageFromGallerySuccessState({
+  factory BusinessDocumentState.selectImageFromGallerySuccessState({
     @Default(DocumentType.tradeLicence) DocumentType documentType,
     File? responseFile,
     XFile? pickedFile,
@@ -138,47 +148,47 @@ class BusinessDocumentState with _$BusinessDocumentState {
     @Default({}) Map<String, dynamic> metaData,
   }) = SelectImageFromGallerySuccessState;
 
-  const factory BusinessDocumentState.selectImageFromGalleryFailedState({
+  factory BusinessDocumentState.selectImageFromGalleryFailedState({
     @Default(DocumentType.tradeLicence) DocumentType documentType,
     @Default('') String message,
   }) = SelectImageFromGalleryFailedState;
 
-  const factory BusinessDocumentState.restoreCaptureImageFromCameraState({
+  factory BusinessDocumentState.restoreCaptureImageFromCameraState({
     @Default(DocumentType.tradeLicence) DocumentType documentType,
     Uint8List? uint8list,
   }) = RestoreCaptureImageFromCameraState;
 
-  const factory BusinessDocumentState.restoreSelectImageFromGalleryState({
+  factory BusinessDocumentState.restoreSelectImageFromGalleryState({
     @Default(DocumentType.tradeLicence) DocumentType documentType,
     Uint8List? uint8list,
   }) = RestoreSelectImageFromGalleryState;
 
-  const factory BusinessDocumentState.restoreCaptureImageFromCameraFailedState({
+  factory BusinessDocumentState.restoreCaptureImageFromCameraFailedState({
     @Default(DocumentType.tradeLicence) DocumentType documentType,
     @Default('') String message,
   }) = RestoreCaptureImageFromCameraFailedState;
 
-  const factory BusinessDocumentState.restoreSelectImageFromGalleryFailedState({
+  factory BusinessDocumentState.restoreSelectImageFromGalleryFailedState({
     @Default(DocumentType.tradeLicence) DocumentType documentType,
     @Default('') String message,
   }) = RestoreSelectImageFromGalleryFailedState;
 
-  const factory BusinessDocumentState.openMediaPickerState({
+  factory BusinessDocumentState.openMediaPickerState({
     @Default(DocumentType.tradeLicence) DocumentType documentType,
   }) = OpenMediaPickerState;
 
-  const factory BusinessDocumentState.selectDocumentSourceTypeState({
+  factory BusinessDocumentState.selectDocumentSourceTypeState({
     @Default(DocumentType.tradeLicence) DocumentType documentType,
     @Default(ImageSource.camera) ImageSource imageSource,
     @Default(DocumentPickerSource.camera)
     DocumentPickerSource documentPickerSource,
   }) = SelectDocumentSourceTypState;
 
-  const factory BusinessDocumentState.closeMediaPickerState({
+  factory BusinessDocumentState.closeMediaPickerState({
     @Default(DocumentType.tradeLicence) DocumentType documentType,
   }) = CloseMediaPickerState;
 
-  const factory BusinessDocumentState.cropState({
+  factory BusinessDocumentState.cropState({
     @Default(DocumentType.tradeLicence) DocumentType documentType,
     required AspectRatioItem aspectRatioItem,
     XFile? xfile,
@@ -188,30 +198,30 @@ class BusinessDocumentState with _$BusinessDocumentState {
     @Default(false) bool isCropping,
   }) = AssetCropState;
 
-  const factory BusinessDocumentState.rightRotateState({
+  factory BusinessDocumentState.rightRotateState({
     @Default(DocumentType.tradeLicence) DocumentType documentType,
     @Default(true) hasRightTurn,
   }) = AssetRightRotateState;
 
-  const factory BusinessDocumentState.leftRotateState({
+  factory BusinessDocumentState.leftRotateState({
     @Default(DocumentType.tradeLicence) DocumentType documentType,
     @Default(true) hasRightTurn,
   }) = AssetLeftRotateState;
 
-  const factory BusinessDocumentState.flipState({
+  factory BusinessDocumentState.flipState({
     @Default(DocumentType.tradeLicence) DocumentType documentType,
   }) = AssetFlipState;
 
-  const factory BusinessDocumentState.resetAssetState({
+  factory BusinessDocumentState.resetAssetState({
     @Default(DocumentType.tradeLicence) DocumentType documentType,
     AspectRatioItem? aspectRatioItem,
   }) = ResetAssetState;
 
-  const factory BusinessDocumentState.resetAllState({
+  factory BusinessDocumentState.resetAllState({
     @Default(DocumentType.tradeLicence) DocumentType documentType,
   }) = ResetAllAssetState;
 
-  const factory BusinessDocumentState.saveCropDocumentSuccessState({
+  factory BusinessDocumentState.saveCropDocumentSuccessState({
     @Default(DocumentType.tradeLicence) DocumentType documentType,
     XFile? xfile,
     File? file,
@@ -226,17 +236,18 @@ class BusinessDocumentState with _$BusinessDocumentState {
     @Default('') String newFilePath,
     ImageEditorController? imageEditorController,
     Image? image,
+    String? assetNetworkUrl,
   }) = SaveCropDocumentSuccessState;
 
-  const factory BusinessDocumentState.saveCropDocumentProcessingState({
+  factory BusinessDocumentState.saveCropDocumentProcessingState({
     @Default(DocumentType.tradeLicence) DocumentType documentType,
   }) = SaveCropDocumentProcessingState;
 
-  const factory BusinessDocumentState.saveCropDocumentHideProcessingState({
+  factory BusinessDocumentState.saveCropDocumentHideProcessingState({
     @Default(DocumentType.tradeLicence) DocumentType documentType,
   }) = SaveCropDocumentHideProcessingState;
 
-  const factory BusinessDocumentState.saveCropDocumentFailedState({
+  factory BusinessDocumentState.saveCropDocumentFailedState({
     @Default(DocumentType.tradeLicence) DocumentType documentType,
     required String reason,
     StackTrace? stackTrace,
@@ -250,7 +261,7 @@ class BusinessDocumentState with _$BusinessDocumentState {
     ImageEditorController? imageEditorController,
     Image? image,
   }) = SaveCropDocumentFailedState;
-  const factory BusinessDocumentState.saveCropDocumentErrorState({
+  factory BusinessDocumentState.saveCropDocumentErrorState({
     @Default(DocumentType.tradeLicence) DocumentType documentType,
     required String reason,
     StackTrace? stackTrace,

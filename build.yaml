@@ -46,6 +46,7 @@ targets:
               - lib/config/translation/**
               - lib/gen/**
             include:
+              - lib/app/features/profile/domain/entities/**
               - lib/app/features/profile/presentation/manager/**
               - lib/app/features/authentication/presentation/manager/**
               - lib/app/features/address/domain/entities/**

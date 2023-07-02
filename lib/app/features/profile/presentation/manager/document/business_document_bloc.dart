@@ -35,7 +35,7 @@ part 'business_document_bloc.freezed.dart';
 
 class BusinessDocumentBloc
     extends Bloc<BusinessDocumentEvent, BusinessDocumentState> {
-  BusinessDocumentBloc() : super(const BusinessDocumentInitial()) {
+  BusinessDocumentBloc() : super(BusinessDocumentInitial()) {
     on<BusinessDocumentEvent>(
       (events, emit) async {
         await events.map(
@@ -45,7 +45,13 @@ class BusinessDocumentBloc
           assetsRemove: (value) {},
           documentRemove: (value) {},
           saveAndNext: (value) {},
-          back: (value) {},
+          back: (value) {
+            emit(
+              BackState(
+                allBusinessDocuments: value.allBusinessDocuments.toList(),
+              ),
+            );
+          },
           askConfirmation: (value) {},
           confirmationYes: (value) {},
           askConfirmationNo: (value) {},
@@ -69,6 +75,7 @@ class BusinessDocumentBloc
           resetAll: (value) async => await _resetAllAsset(value, emit),
           saveCropDocument: (value) async =>
               await _saveCropDocument(value, emit),
+          addNewAsset: (value) {},
         );
       },
       transformer: restartable(),
@@ -154,10 +161,10 @@ class BusinessDocumentBloc
       );
       if (event.documentPickerSource == DocumentPickerSource.camera) {
         source = ImageSource.camera;
-        emit(const CaptureImageFromCameraFailedProcessingState());
+        emit(CaptureImageFromCameraFailedProcessingState());
       } else {
         source = ImageSource.gallery;
-        emit(const SelectImageFromGalleryProcessingState());
+        emit(SelectImageFromGalleryProcessingState());
       }
       final XFile? pickedFile = await _picker.pickImage(
         source: source,
@@ -330,7 +337,7 @@ class BusinessDocumentBloc
           bytes: event.bytes!,
           filePath: event.xfile?.path,
           file: event.file!,
-          ext: p
+          ext: path
               .extension(event.xfile!.path ?? event.file!.path)
               .replaceAll('.', ''),
           mimeType: fileSaver.MimeType.values.byName(nameOfExtension),

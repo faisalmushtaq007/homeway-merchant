@@ -3,6 +3,7 @@ import 'package:extended_image/extended_image.dart';
 import 'package:file_saver/file_saver.dart' as fileSaver;
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:go_router/go_router.dart';
 import 'package:google_ml_kit/google_ml_kit.dart';
 import 'package:homemakers_merchant/app/features/profile/common/document_picker_source_enum.dart';
 import 'package:homemakers_merchant/app/features/profile/common/document_type_enum.dart';
@@ -161,6 +162,9 @@ class _UploadDocumentPageState extends State<UploadDocumentPage> {
           actions: [
             IconButton(
               onPressed: () {
+                BlocProvider.of<BusinessDocumentBloc>(context).add(
+                  Back(),
+                );
                 return;
               },
               style: ElevatedButton.styleFrom(),
@@ -170,9 +174,6 @@ class _UploadDocumentPageState extends State<UploadDocumentPage> {
               onPressed: () {
                 if (pickedXSourceFile != null || pickedSourceFile != null) {
                   controller.tailor();
-                  BlocProvider.of<BusinessDocumentBloc>(context).add(
-                    SaveAndNext(),
-                  );
                 }
                 return;
               },
@@ -260,76 +261,6 @@ class _UploadDocumentPageState extends State<UploadDocumentPage> {
                                       ),
                                     ),
                                   );
-                                  return Theme(
-                                    data: theme,
-                                    child: Dialog(
-                                      backgroundColor: Colors.grey.shade400,
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius:
-                                            BorderRadiusDirectional.circular(
-                                                16),
-                                      ),
-                                      child: AnimatedContainer(
-                                        width: context.width,
-                                        height: context.height / 4,
-                                        alignment: Alignment.topLeft,
-                                        duration:
-                                            const Duration(milliseconds: 700),
-                                        constraints: BoxConstraints.tightFor(
-                                          height: context.height / 4,
-                                          width: context.width,
-                                        ),
-                                        child: Column(
-                                          mainAxisSize: MainAxisSize.min,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.center,
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: [
-                                            const SizedBox(
-                                              height: 12,
-                                            ),
-                                            SizedBox.square(
-                                              dimension: 56,
-                                              child: Center(
-                                                child: LoadingIndicator(
-                                                  indicatorType:
-                                                      Indicator.ballRotateChase,
-                                                  colors: [
-                                                    theme.primaryColor,
-                                                    theme.primaryColor
-                                                        .withOpacity(0.75),
-                                                    theme.primaryColor
-                                                        .withOpacity(0.5),
-                                                    theme.primaryColor
-                                                        .withOpacity(0.25),
-                                                    theme.primaryColor
-                                                        .withOpacity(0.15),
-                                                    theme.primaryColor
-                                                        .withOpacity(0.5),
-                                                  ],
-                                                  strokeWidth: 2,
-                                                ),
-                                              ),
-                                            ),
-                                            const SizedBox(
-                                              height: 12,
-                                            ),
-                                            Text(
-                                              'Please wait while we are processing...',
-                                              style:
-                                                  context.labelMedium!.copyWith(
-                                                fontWeight: FontWeight.w500,
-                                              ),
-                                              textDirection: serviceLocator<
-                                                      LanguageController>()
-                                                  .targetTextDirection,
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                  );
                                 }),
                               );
                             },
@@ -339,6 +270,26 @@ class _UploadDocumentPageState extends State<UploadDocumentPage> {
                       saveCropDocumentHideProcessingState: (value) {
                         if (mounted) {
                           Navigator.of(context).pop();
+                        }
+                      },
+                      saveCropDocumentSuccessState: (value) {
+                        if (mounted) {
+                          // Back to list
+                          context.pop([
+                            value.newFilePath,
+                            value.newXFile,
+                            value.newFile,
+                            value.byteData,
+                            value.bytes,
+                            value.xfile,
+                            value.file,
+                            value.assetNetworkUrl,
+                          ]);
+                        }
+                      },
+                      backState: (value) {
+                        if (mounted) {
+                          context.pop([]);
                         }
                       },
                     );

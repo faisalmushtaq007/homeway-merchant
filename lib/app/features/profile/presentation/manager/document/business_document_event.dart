@@ -1,10 +1,10 @@
 part of 'business_document_bloc.dart';
 
-@freezed
+@unfreezed
 class BusinessDocumentEvent with _$BusinessDocumentEvent {
-  const factory BusinessDocumentEvent() = _BusinessDocumentEvent;
+  factory BusinessDocumentEvent() = _BusinessDocumentEvent;
 
-  const factory BusinessDocumentEvent.assetsStartUploading({
+  factory BusinessDocumentEvent.assetsStartUploading({
     @Default(DocumentType.tradeLicence) DocumentType documentType,
     @Default(true) bool hasFrontSideAssets,
     BusinessDocumentAssetsEntity? businessDocumentAssetsEntity,
@@ -14,14 +14,14 @@ class BusinessDocumentEvent with _$BusinessDocumentEvent {
     @Default(-1) int index,
   }) = AssetsUploading;
 
-  const factory BusinessDocumentEvent.tradeLicenseNumberOnChanged({
+  factory BusinessDocumentEvent.tradeLicenseNumberOnChanged({
     @Default(DocumentType.tradeLicence) DocumentType documentType,
     required TextEditingController textEditingController,
     @Default('') String currentUpdatedValue,
     @Default(0) int index,
   }) = TradeLicenseNumberOnChanged;
 
-  const factory BusinessDocumentEvent.assetsRemove({
+  factory BusinessDocumentEvent.assetsRemove({
     @Default(DocumentType.tradeLicence) DocumentType documentType,
     @Default('') String reason,
     BusinessDocumentAssetsEntity? businessDocumentAssetsEntity,
@@ -31,7 +31,7 @@ class BusinessDocumentEvent with _$BusinessDocumentEvent {
     @Default(-1) int index,
   }) = AssetsRemove;
 
-  const factory BusinessDocumentEvent.documentRemove({
+  factory BusinessDocumentEvent.documentRemove({
     @Default(DocumentType.tradeLicence) DocumentType documentType,
     @Default('') String reason,
     BusinessDocumentUploadedEntity? businessDocumentUploadedEntity,
@@ -39,27 +39,27 @@ class BusinessDocumentEvent with _$BusinessDocumentEvent {
     @Default(-1) int index,
   }) = DocumentRemove;
 
-  const factory BusinessDocumentEvent.saveAndNext({
+  factory BusinessDocumentEvent.saveAndNext({
     @Default([]) List<BusinessDocumentUploadedEntity> allBusinessDocuments,
   }) = SaveAndNext;
 
-  const factory BusinessDocumentEvent.back({
+  factory BusinessDocumentEvent.back({
     @Default([]) List<BusinessDocumentUploadedEntity> allBusinessDocuments,
   }) = Back;
 
-  const factory BusinessDocumentEvent.askConfirmation({
+  factory BusinessDocumentEvent.askConfirmation({
     @Default([]) List<BusinessDocumentUploadedEntity> allBusinessDocuments,
   }) = AskConfirmation;
 
-  const factory BusinessDocumentEvent.confirmationYes({
+  factory BusinessDocumentEvent.confirmationYes({
     @Default([]) List<BusinessDocumentUploadedEntity> allBusinessDocuments,
   }) = ConfirmationYes;
 
-  const factory BusinessDocumentEvent.askConfirmationNo({
+  factory BusinessDocumentEvent.askConfirmationNo({
     @Default([]) List<BusinessDocumentUploadedEntity> allBusinessDocuments,
   }) = ConfirmationNo;
 
-  const factory BusinessDocumentEvent.uploadNewAssets({
+  factory BusinessDocumentEvent.uploadNewAssets({
     @Default(DocumentType.tradeLicence) DocumentType documentType,
     @Default(true) bool hasFrontSideAssets,
     BusinessDocumentAssetsEntity? businessDocumentAssetsEntity,
@@ -69,51 +69,60 @@ class BusinessDocumentEvent with _$BusinessDocumentEvent {
     @Default(-1) int index,
   }) = UploadNewAssets;
 
-  const factory BusinessDocumentEvent.uploadButtonState({
+  factory BusinessDocumentEvent.uploadButtonState({
     @Default(DocumentType.tradeLicence) DocumentType documentType,
     @Default(-1) int index,
     @Default([]) List<BusinessDocumentUploadedEntity> allBusinessDocuments,
     @Default(true) bool hasVisible,
   }) = UploadButton;
 
-  const factory BusinessDocumentEvent.addNewDocument({
+  factory BusinessDocumentEvent.addNewDocument({
     @Default(DocumentType.tradeLicence) DocumentType documentType,
     @Default(0) int indexOfTextField,
-    @Default(true) bool isTextFieldEnable,
+    @Default(false) bool isTextFieldEnable,
+    required int newIndexPosition,
   }) = AddNewDocument;
+  factory BusinessDocumentEvent.addNewAsset({
+    @Default(DocumentType.tradeLicence) DocumentType documentType,
+    @Default(0) int indexOfTextField,
+    @Default(false) bool isTextFieldEnable,
+    TextEditingController? textEditingController,
+    ValueChanged<String>? onChanged,
+    required int newIndexPosition,
+  }) = AddNewAsset;
 
-  const factory BusinessDocumentEvent.captureImageFromCamera({
+  factory BusinessDocumentEvent.captureImageFromCamera({
     @Default(DocumentType.tradeLicence) DocumentType documentType,
   }) = CaptureImageFromCamera;
 
-  const factory BusinessDocumentEvent.restoreCaptureImageFromCamera({
+  factory BusinessDocumentEvent.restoreCaptureImageFromCamera({
     @Default(DocumentType.tradeLicence) DocumentType documentType,
   }) = RestoreCaptureImageFromCamera;
 
-  const factory BusinessDocumentEvent.selectImageFromGallery({
+  factory BusinessDocumentEvent.selectImageFromGallery({
     @Default(DocumentType.tradeLicence) DocumentType documentType,
   }) = SelectImageFromGallery;
 
-  const factory BusinessDocumentEvent.restoreSelectImageFromGallery({
+  factory BusinessDocumentEvent.restoreSelectImageFromGallery({
     @Default(DocumentType.tradeLicence) DocumentType documentType,
   }) = RestoreSelectImageFromGallery;
 
-  const factory BusinessDocumentEvent.openMediaPicker({
+  factory BusinessDocumentEvent.openMediaPicker({
     @Default(DocumentType.tradeLicence) DocumentType documentType,
   }) = OpenMediaPicker;
 
-  const factory BusinessDocumentEvent.selectDocumentSourceType({
+  factory BusinessDocumentEvent.selectDocumentSourceType({
     @Default(DocumentType.tradeLicence) DocumentType documentType,
     @Default(ImageSource.camera) ImageSource imageSource,
     @Default(DocumentPickerSource.camera)
     DocumentPickerSource documentPickerSource,
   }) = SelectDocumentSourceType;
 
-  const factory BusinessDocumentEvent.closeMediaPicker({
+  factory BusinessDocumentEvent.closeMediaPicker({
     @Default(DocumentType.tradeLicence) DocumentType documentType,
   }) = CloseMediaPicker;
 
-  const factory BusinessDocumentEvent.crop({
+  factory BusinessDocumentEvent.crop({
     @Default(DocumentType.tradeLicence) DocumentType documentType,
     XFile? xfile,
     File? file,
@@ -123,30 +132,30 @@ class BusinessDocumentEvent with _$BusinessDocumentEvent {
     required AspectRatioItem aspectRatioItem,
   }) = AssetCrop;
 
-  const factory BusinessDocumentEvent.rightRotate({
+  factory BusinessDocumentEvent.rightRotate({
     @Default(DocumentType.tradeLicence) DocumentType documentType,
     @Default(true) hasRightTurn,
   }) = AssetRightRotate;
 
-  const factory BusinessDocumentEvent.leftRotate({
+  factory BusinessDocumentEvent.leftRotate({
     @Default(DocumentType.tradeLicence) DocumentType documentType,
     @Default(true) hasRightTurn,
   }) = AssetLeftRotate;
 
-  const factory BusinessDocumentEvent.flip({
+  factory BusinessDocumentEvent.flip({
     @Default(DocumentType.tradeLicence) DocumentType documentType,
   }) = AssetFlip;
 
-  const factory BusinessDocumentEvent.resetAsset({
+  factory BusinessDocumentEvent.resetAsset({
     @Default(DocumentType.tradeLicence) DocumentType documentType,
     AspectRatioItem? aspectRatioItem,
   }) = ResetAsset;
 
-  const factory BusinessDocumentEvent.resetAll({
+  factory BusinessDocumentEvent.resetAll({
     @Default(DocumentType.tradeLicence) DocumentType documentType,
   }) = ResetAllAsset;
 
-  const factory BusinessDocumentEvent.saveCropDocument({
+  factory BusinessDocumentEvent.saveCropDocument({
     @Default(DocumentType.tradeLicence) DocumentType documentType,
     XFile? xfile,
     File? file,

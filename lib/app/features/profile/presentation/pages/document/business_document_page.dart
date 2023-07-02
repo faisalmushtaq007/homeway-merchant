@@ -1,21 +1,29 @@
+import 'dart:convert';
+import 'dart:io';
+
+import 'package:cross_file/cross_file.dart';
 import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
+import 'package:go_router/go_router.dart';
 import 'package:homemakers_merchant/app/features/permission/presentation/bloc/permission_bloc.dart';
 import 'package:homemakers_merchant/app/features/profile/common/document_type_enum.dart';
 import 'package:homemakers_merchant/app/features/profile/domain/entities/document/business_document_uploaded_entity.dart';
+import 'package:homemakers_merchant/app/features/profile/presentation/manager/document/business_document_bloc.dart';
 import 'package:homemakers_merchant/app/features/profile/presentation/widgets/document/uploaded_document_child_widget.dart';
 import 'package:homemakers_merchant/bootup/injection_container.dart';
 import 'package:homemakers_merchant/config/translation/language_controller.dart';
 import 'package:homemakers_merchant/config/translation/widgets/language_selection_widget.dart';
 import 'package:homemakers_merchant/core/constants/global_app_constants.dart';
 import 'package:homemakers_merchant/core/extensions/app_extension.dart';
+import 'package:homemakers_merchant/shared/router/app_pages.dart';
 import 'package:homemakers_merchant/shared/widgets/app/page_body.dart';
 import 'package:homemakers_merchant/shared/widgets/universal/animated_gap/gap.dart';
 import 'package:implicitly_animated_reorderable_list_2/implicitly_animated_reorderable_list_2.dart';
 import 'package:implicitly_animated_reorderable_list_2/transitions.dart';
+import 'package:path/path.dart' as path;
 
 class BusinessDocumentPage extends StatefulWidget {
   const BusinessDocumentPage({super.key});
@@ -28,6 +36,16 @@ class _BusinessDocumentPageState extends State<BusinessDocumentPage> {
   late final ScrollController scrollController;
   late final ScrollController innerListScrollController;
   List<BusinessDocumentUploadedEntity> allBusinessDocuments = [];
+  final List<TextEditingController> textEditingControllers = [
+    TextEditingController(),
+    TextEditingController(),
+    TextEditingController(),
+  ];
+  List<DocumentType> documentTypes = [
+    DocumentType.tradeLicence,
+    DocumentType.nationalID,
+    DocumentType.selfie,
+  ];
 
   @override
   void initState() {
@@ -41,22 +59,9 @@ class _BusinessDocumentPageState extends State<BusinessDocumentPage> {
       BusinessDocumentUploadedEntity(
         documentType: DocumentType.tradeLicence,
         businessDocumentAssetsEntity: [],
-        documentFrontAssets: BusinessDocumentAssetsEntity(
-          assetPath: '',
-          assetOriginalName: '',
-          assetName: '',
-          assetIdNumber: '',
-          assetExtension: '',
-        ),
       ),
     );
-    allBusinessDocuments.insert(
-      1,
-      BusinessDocumentUploadedEntity(
-        documentType: DocumentType.nationalID,
-        businessDocumentAssetsEntity: [],
-      ),
-    );
+
     context.read<PermissionBloc>().add(const RequestLocationPermissionEvent());
   }
 
@@ -168,36 +173,57 @@ class _BusinessDocumentPageState extends State<BusinessDocumentPage> {
                           8,
                           duration: Duration(milliseconds: 300),
                         ),
-                        ImplicitlyAnimatedList<BusinessDocumentUploadedEntity>(
-                          key: const Key(
-                              'allBusinessDocuments-listview-widget-key'),
-                          controller: scrollController,
-                          items: allBusinessDocuments,
-                          updateDuration: const Duration(milliseconds: 400),
-                          areItemsTheSame: (a, b) => a == b,
-                          shrinkWrap: true,
-                          physics: const ClampingScrollPhysics(),
-                          itemBuilder: (context, animation, assets, index) {
-                            return SizeFadeTransition(
-                              key: ObjectKey(assets),
-                              sizeFraction: 0.7,
-                              curve: Curves.easeInOut,
-                              animation: animation,
-                              child: _buildItem(assets, index),
+                        BlocBuilder<BusinessDocumentBloc,
+                            BusinessDocumentState>(
+                          bloc: context.watch<BusinessDocumentBloc>(),
+                          builder: (context, state) {
+                            state.maybeMap(
+                              orElse: () {},
+                              addNewAssetState: (value) {},
+                              addNewDocumentState: (value) {
+                                allBusinessDocuments.insert(
+                                  value.newIndexPosition,
+                                  BusinessDocumentUploadedEntity(
+                                    documentType: value.documentType,
+                                    businessDocumentAssetsEntity: [],
+                                  ),
+                                );
+                              },
                             );
-                          },
-                          updateItemBuilder: (context, animation, assets) {
-                            return FadeTransition(
-                              key: ObjectKey(assets),
-                              opacity: animation,
-                              child: _buildItem(assets),
-                            );
-                          },
-                          removeItemBuilder: (context, animation, oldAssets) {
-                            return FadeTransition(
-                              key: ObjectKey(oldAssets),
-                              opacity: animation,
-                              child: _buildItem(oldAssets),
+                            return ImplicitlyAnimatedList<
+                                BusinessDocumentUploadedEntity>(
+                              key: const Key(
+                                  'allBusinessDocuments-listview-widget-key'),
+                              controller: scrollController,
+                              items: allBusinessDocuments,
+                              updateDuration: const Duration(milliseconds: 400),
+                              areItemsTheSame: (a, b) => a == b,
+                              shrinkWrap: true,
+                              physics: const ClampingScrollPhysics(),
+                              itemBuilder: (context, animation, assets, index) {
+                                return SizeFadeTransition(
+                                  key: ObjectKey(assets),
+                                  sizeFraction: 0.7,
+                                  curve: Curves.easeInOut,
+                                  animation: animation,
+                                  child: _buildItem(assets, index),
+                                );
+                              },
+                              updateItemBuilder: (context, animation, assets) {
+                                return FadeTransition(
+                                  key: ObjectKey(assets),
+                                  opacity: animation,
+                                  child: _buildItem(assets),
+                                );
+                              },
+                              removeItemBuilder:
+                                  (context, animation, oldAssets) {
+                                return FadeTransition(
+                                  key: ObjectKey(oldAssets),
+                                  opacity: animation,
+                                  child: _buildItem(oldAssets),
+                                );
+                              },
                             );
                           },
                         ),
@@ -232,31 +258,94 @@ class _BusinessDocumentPageState extends State<BusinessDocumentPage> {
           keyNameOfListView: '${assets.documentType.documentTypeName}-Key',
           hasEnableTextField: index == 0 || false,
           labelOfTextField: 'Trade License Number',
+          textEditingController: textEditingControllers[index],
+          onChanged: (value) {},
         ),
-        AnimatedSwitcher(
-          duration: const Duration(milliseconds: 400),
-          child: (assets.documentFrontAssetsUploadStatus !=
+        AnimatedCrossFade(
+          crossFadeState: (assets.documentFrontAssetsUploadStatus !=
                   DocumentUploadStatus.uploaded)
-              ? ElevatedButton.icon(
-                  onPressed: () {},
-                  icon: const Icon(
-                    Icons.upload_file,
-                    color: Color.fromRGBO(42, 45, 50, 1),
-                  ),
-                  label: Text(
-                    'Upload ${assets.documentType.documentTypeName} Document',
-                    textDirection: serviceLocator<LanguageController>()
-                        .targetTextDirection,
-                    style: context.labelLarge!.copyWith(
-                        //color: const Color.fromRGBO(42, 45, 50, 1),
+              ? CrossFadeState.showFirst
+              : CrossFadeState.showSecond,
+          duration: const Duration(milliseconds: 400),
+          firstChild: ElevatedButton.icon(
+            onPressed: () async {
+              final List<dynamic>? result = await context.push<List<dynamic>>(
+                Routes.UPLOAD_DOCUMENT_PAGE,
+                extra: jsonEncode(
+                  {
+                    'documentType': assets.documentType.name,
+                  },
+                ),
+              );
+              if (result != null &&
+                  result.isNotEmpty &&
+                  allBusinessDocuments[index]
+                      .documentFrontAssets!
+                      .assetPath
+                      .isNotEmpty) {
+                // Add a document object into list of documents
+                var item = allBusinessDocuments[index];
+
+                String filePath = result[0] as String;
+                XFile? xCroppedDocumentFile = result[1] as XFile;
+                File? croppedDocumentFile = result[2] as File;
+                XFile? xFile = result[5] as XFile;
+                File? file = result[6] as File;
+                String? assetNetworkUrl = result[7] as String?;
+                var fileNameWithExtension = path.basename(
+                    xCroppedDocumentFile.path ?? croppedDocumentFile.path);
+                String fileExtension = path.extension(
+                    xCroppedDocumentFile.path ?? croppedDocumentFile!.path);
+                item.documentFrontAssets?.copyWith(
+                  assetName: fileNameWithExtension,
+                  assetOriginalName: path.basename(xFile.path ?? file.path),
+                  assetPath: filePath,
+                  assetExtension: fileExtension,
+                  assetIdNumber:
+                      textEditingControllers[index].value.text.trim(),
+                  assetsUploadStatus: DocumentUploadStatus.uploaded,
+                  hasAssetsFrontSide: true,
+                );
+                if ((index + 1) <= documentTypes.length) {
+                  context.read<BusinessDocumentBloc>().add(
+                        AddNewDocument(
+                          newIndexPosition: index + 1,
+                          documentType: documentTypes[index],
+                          indexOfTextField: 0,
+                          isTextFieldEnable: false,
                         ),
+                      );
+                }
+
+                /*item.businessDocumentAssetsEntity.add(
+                  BusinessDocumentAssetsEntity(
+                    assetName: fileNameWithExtension,
+                    assetOriginalName: path.basename(xFile.path ?? file.path),
+                    assetPath: filePath,
+                    assetExtension: fileExtension,
+                    assetIdNumber: textEditingControllers[0].value.text.trim(),
                   ),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.white,
-                    minimumSize: Size(context.width, 46),
+                );*/
+              }
+            },
+            icon: const Icon(
+              Icons.upload_file,
+              color: Color.fromRGBO(42, 45, 50, 1),
+            ),
+            label: Text(
+              'Upload ${assets.documentType.documentTypeName} Document',
+              textDirection:
+                  serviceLocator<LanguageController>().targetTextDirection,
+              style: context.labelLarge!.copyWith(
+                  //color: const Color.fromRGBO(42, 45, 50, 1),
                   ),
-                )
-              : const SizedBox.shrink(),
+            ),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.white,
+              minimumSize: Size(context.width, 46),
+            ),
+          ),
+          secondChild: const SizedBox.shrink(),
         ),
       ],
     );
