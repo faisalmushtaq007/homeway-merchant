@@ -4,6 +4,7 @@ import 'package:homemakers_merchant/app/features/profile/domain/entities/documen
 import 'package:homemakers_merchant/app/features/profile/presentation/manager/document/business_document_bloc.dart';
 import 'package:homemakers_merchant/bootup/injection_container.dart';
 import 'package:homemakers_merchant/config/translation/language_controller.dart';
+import 'package:homemakers_merchant/utils/app_log.dart';
 import 'package:implicitly_animated_reorderable_list_2/implicitly_animated_reorderable_list_2.dart';
 import 'package:implicitly_animated_reorderable_list_2/transitions.dart';
 
@@ -17,6 +18,7 @@ class UploadedDocumentChildWidget extends StatefulWidget {
     this.labelOfTextField = '',
     this.textEditingController,
     this.onChanged,
+    this.onSubmitted,
   });
 
   final List<BusinessDocumentAssetsEntity> allBusinessDocumentAssets;
@@ -26,6 +28,7 @@ class UploadedDocumentChildWidget extends StatefulWidget {
   final String labelOfTextField;
   final TextEditingController? textEditingController;
   final ValueChanged<String>? onChanged;
+  final ValueChanged<String>? onSubmitted;
 
   @override
   State<UploadedDocumentChildWidget> createState() =>
@@ -82,6 +85,7 @@ class _UploadedDocumentChildWidgetState
             shrinkWrap: true,
             physics: const ClampingScrollPhysics(),
             itemBuilder: (context, animation, assets, index) {
+              appLog.d('itemBuilder: ${assets.assetOriginalName}');
               return SizeFadeTransition(
                 key: ObjectKey(assets),
                 sizeFraction: 0.7,
@@ -93,6 +97,7 @@ class _UploadedDocumentChildWidgetState
               );
             },
             updateItemBuilder: (context, animation, assets) {
+              appLog.d('updateItemBuilder: ${assets.assetOriginalName}');
               return FadeTransition(
                 key: ObjectKey(assets),
                 opacity: animation,
@@ -100,6 +105,7 @@ class _UploadedDocumentChildWidgetState
               );
             },
             removeItemBuilder: (context, animation, oldAssets) {
+              appLog.d('updateItemBuilder: ${oldAssets.assetOriginalName}');
               return FadeTransition(
                 key: ObjectKey(oldAssets),
                 opacity: animation,
@@ -113,6 +119,7 @@ class _UploadedDocumentChildWidgetState
   }
 
   Widget _buildItem(BusinessDocumentAssetsEntity assets, [int index = -1]) {
+    appLog.d('_buildItem: ${assets.assetOriginalName}');
     return Padding(
       padding: const EdgeInsetsDirectional.only(top: 8, bottom: 4),
       child: ListTile(
@@ -166,6 +173,17 @@ class _UploadedDocumentChildWidgetState
                 isDense: true,
               ),
               onChanged: widget.onChanged,
+              onSubmitted: (value) {
+                widget.onSubmitted!(value);
+                context.read<BusinessDocumentBloc>().add(
+                      TradeLicenseNumberOnChanged(
+                        textEditingController: textEditingController,
+                        currentUpdatedValue:
+                            textEditingController.value.text.trim(),
+                        index: index,
+                      ),
+                    );
+              },
             ),
           ),
         ],

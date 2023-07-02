@@ -213,84 +213,76 @@ class _UploadDocumentPageState extends State<UploadDocumentPage> {
                     state.maybeMap(
                       orElse: () {},
                       saveCropDocumentProcessingState: (value) {
-                        WidgetsBinding.instance
-                            .addPostFrameCallback((timeStamp) {
-                          showPlatformDialog(
-                            context: context,
-                            material: MaterialDialogData(
-                              barrierColor: Colors.transparent,
-                              barrierDismissible: false,
-                            ),
-                            cupertino: CupertinoDialogData(
-                              barrierDismissible: false,
-                            ),
-                            useRootNavigator: false,
+                        showPlatformDialog<void>(
+                          context: context,
+                          material: MaterialDialogData(
+                            barrierColor: Colors.transparent,
                             barrierDismissible: false,
-                            builder: (context) {
-                              return SafeArea(
-                                top: false,
-                                child: Builder(builder: (BuildContext context) {
-                                  return Theme(
-                                    data: theme,
-                                    child: Dialog(
-                                      // The background color
-                                      child: Padding(
-                                        padding:
-                                            EdgeInsets.symmetric(vertical: 20),
-                                        child: Column(
-                                          mainAxisSize: MainAxisSize.min,
-                                          children: [
-                                            // The loading indicator
-                                            CircularProgressIndicator(),
-                                            SizedBox(
-                                              height: 15,
+                          ),
+                          cupertino: CupertinoDialogData(
+                            barrierDismissible: false,
+                          ),
+                          useRootNavigator: false,
+                          barrierDismissible: false,
+                          builder: (context) {
+                            return SafeArea(
+                              top: false,
+                              child: Builder(builder: (BuildContext context) {
+                                return Theme(
+                                  data: theme,
+                                  child: Dialog(
+                                    // The background color
+                                    child: Padding(
+                                      padding:
+                                      EdgeInsets.symmetric(vertical: 10),
+                                      child: Column(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          // The loading indicator
+                                          CircularProgressIndicator(),
+                                          SizedBox(
+                                            height: 15,
+                                          ),
+                                          // Some text
+                                          Text(
+                                            'Please wait while we are processing...',
+                                            style:
+                                            context.labelMedium!.copyWith(
+                                              fontWeight: FontWeight.w500,
                                             ),
-                                            // Some text
-                                            Text(
-                                              'Please wait while we are processing...',
-                                              style:
-                                                  context.labelMedium!.copyWith(
-                                                fontWeight: FontWeight.w500,
-                                              ),
-                                              textDirection: serviceLocator<
-                                                      LanguageController>()
-                                                  .targetTextDirection,
-                                            ),
-                                          ],
-                                        ),
+                                            textDirection: serviceLocator<
+                                                LanguageController>()
+                                                .targetTextDirection,
+                                          ),
+                                        ],
                                       ),
                                     ),
-                                  );
-                                }),
-                              );
-                            },
-                          );
-                        });
+                                  ),
+                                );
+                              }),
+                            );
+                          },
+                        );
                       },
                       saveCropDocumentHideProcessingState: (value) {
-                        if (mounted) {
-                          Navigator.of(context).pop();
-                        }
+                        Navigator.of(context).pop();
+
                       },
                       saveCropDocumentSuccessState: (value) {
-                        if (mounted) {
-                          // Back to list
-                          context.pop([
-                            value.newFilePath,
-                            value.newXFile,
-                            value.newFile,
-                            value.byteData,
-                            value.bytes,
-                            value.xfile,
-                            value.file,
-                            value.assetNetworkUrl,
-                          ]);
-                        }
+                        context.pop([
+                          value.newFilePath,
+                          value.newXFile,
+                          value.newFile,
+                          value.byteData,
+                          value.bytes,
+                          value.xfile,
+                          value.file,
+                          value.assetNetworkUrl,
+                        ]);
+
                       },
                       backState: (value) {
-                        if (mounted) {
-                          context.pop([]);
-                        }
+                        context.pop();
                       },
                     );
                   },

@@ -2,10 +2,10 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:ffi';
 import 'dart:io';
+import 'package:collection/collection.dart';
 import 'package:google_ml_kit/google_ml_kit.dart';
 import 'package:google_mlkit_text_recognition/google_mlkit_text_recognition.dart';
 import 'package:homemakers_merchant/app/features/profile/presentation/widgets/document/painters/text_detector_painter.dart';
-import 'package:path/path.dart' as p;
 
 import 'package:bloc/bloc.dart';
 import 'package:bloc_concurrency/bloc_concurrency.dart';
@@ -58,12 +58,94 @@ class BusinessDocumentBloc
           uploadNewAssets: (value) {},
           uploadButtonState: (value) {},
           addNewDocument: (value) {
-            emit(AddNewDocumentState(
-              newIndexPosition: value.newIndexPosition,
-              isTextFieldEnable: value.isTextFieldEnable,
-              indexOfTextField: value.indexOfTextField,
-              documentType: value.documentType,
-            ));
+            // Add a document object into list of documents
+            var allDocumentItems = <BusinessDocumentUploadedEntity>[];
+            allDocumentItems.addAll(value.allBusinessDocuments.toList());
+            allDocumentItems.asMap().forEach((key, item) async {
+              if (item == value.businessDocumentUploadedEntity) {
+                var result = value.uploadedData;
+                // Extarct and store the return value
+                String filePath = result[0] as String;
+                XFile? xCroppedDocumentFile = result[1] as XFile;
+                File? croppedDocumentFile = result[2] as File;
+                XFile? xFile = result[5] as XFile;
+                File? file = result[6] as File;
+                String? assetNetworkUrl = result[7] as String?;
+                final int timeStamp = DateTime.now().millisecondsSinceEpoch;
+                var tempName =
+                    '${item.documentType.documentTypeName}_$timeStamp';
+                var fileNameWithExtension = path.basenameWithoutExtension(
+                    xCroppedDocumentFile?.path ??
+                        croppedDocumentFile?.path ??
+                        tempName);
+                String fileExtension = path.extension(
+                    xCroppedDocumentFile?.path ??
+                        croppedDocumentFile?.path ??
+                        '.png');
+
+                if (item.documentFrontAssets == null) {
+                  item.documentFrontAssets = BusinessDocumentAssetsEntity(
+                    assetName: fileNameWithExtension,
+                    assetPath: filePath,
+                    assetOriginalName:
+                        path.basenameWithoutExtension(xFile.path ?? file.path),
+                    assetExtension: fileExtension,
+                    assetsUploadStatus: DocumentUploadStatus.uploaded,
+                    hasAssetsFrontSide: true,
+                    assetIdNumber: '',
+                  );
+                  return emit(AddNewDocumentState(
+                    newIndexPosition: value.newIndexPosition,
+                    isTextFieldEnable: value.isTextFieldEnable,
+                    indexOfTextField: value.indexOfTextField,
+                    documentType: value.documentType,
+                    allBusinessDocuments: allDocumentItems.toList(),
+                    assetsEntries: value.assetsEntries.toList(),
+                    businessDocumentAssetsEntity:
+                    allDocumentItems[value.currentIndex]
+                        .documentFrontAssets,
+                    businessDocumentUploadedEntity:
+                    allDocumentItems[value.currentIndex],
+                    currentIndex: value.currentIndex,
+                    uploadedData: value.uploadedData,
+                  ));
+                }
+
+                /// Copywith
+                else {
+                  BusinessDocumentAssetsEntity businessDocumentAssetsEntity =
+                      item.documentFrontAssets!.copyWith(
+                    assetName: fileNameWithExtension,
+                    assetOriginalName:
+                        path.basenameWithoutExtension(xFile.path ?? file.path),
+                    assetPath: filePath,
+                    assetExtension: fileExtension,
+                    //assetIdNumber: value.textEditingControllers[value.currentIndex].value.text.trim(),
+                    assetsUploadStatus: DocumentUploadStatus.uploaded,
+                    hasAssetsFrontSide: true,
+                  );
+                  allDocumentItems[value.currentIndex].documentFrontAssets =
+                      businessDocumentAssetsEntity;
+                  return emit(AddNewDocumentState(
+                    newIndexPosition: value.newIndexPosition,
+                    isTextFieldEnable: value.isTextFieldEnable,
+                    indexOfTextField: value.indexOfTextField,
+                    documentType: value.documentType,
+                    allBusinessDocuments: allDocumentItems.toList(),
+                    assetsEntries: value.assetsEntries.toList(),
+                    businessDocumentAssetsEntity:
+                    allDocumentItems[value.currentIndex]
+                        .documentFrontAssets ??
+                        businessDocumentAssetsEntity,
+                    businessDocumentUploadedEntity:
+                    allDocumentItems[value.currentIndex],
+                    currentIndex: value.currentIndex,
+                    uploadedData: value.uploadedData,
+                  ));
+                }
+              }
+            });
+            //return;
           },
           captureImageFromCamera: (value) {},
           restoreCaptureImageFromCamera: (value) {},
@@ -90,11 +172,18 @@ class BusinessDocumentBloc
               documentType: value.documentType,
               onChanged: value.onChanged,
               textEditingController: value.textEditingController,
+              allBusinessDocuments: value.allBusinessDocuments.toList(),
+              assetsEntries: value.assetsEntries.toList(),
+              businessDocumentAssetsEntity: value.businessDocumentAssetsEntity,
+              businessDocumentUploadedEntity:
+                  value.businessDocumentUploadedEntity,
+              currentIndex: value.currentIndex,
+              uploadedData: value.uploadedData,
             ));
           },
         );
       },
-      transformer: restartable(),
+      transformer: sequential(),
     );
 /*    on<OpenMediaPicker>(
       _openMediaPicker,
@@ -344,12 +433,12 @@ class BusinessDocumentBloc
         ));
         //final EditImageInfo imageInfo = await cropImageDataWithDartLibrary(state: event.extendedImageEditorState);
         final int timeStamp = DateTime.now().millisecondsSinceEpoch;
-        String nameOfExtension = p
+        String nameOfExtension = path
             .extension(event.xfile!.path ?? event.file!.path)
             .replaceAll('.', '');
         final String filePath = await fileSaver.FileSaver.instance.saveFile(
           name:
-              '${path.basename(event.xfile!.path ?? event.file!.path)}_$timeStamp',
+              '${path.basenameWithoutExtension(event.xfile!.path ?? event.file!.path)}_$timeStamp',
           bytes: event.bytes!,
           filePath: event.xfile?.path,
           file: event.file!,
@@ -359,11 +448,17 @@ class BusinessDocumentBloc
           mimeType: fileSaver.MimeType.values.byName(nameOfExtension),
         );
         if (filePath == null || filePath.isEmpty) {
-          await Future.delayed(const Duration(seconds: 1));
+          await Future.delayed(
+            const Duration(seconds: 1),
+            () {},
+          );
           emit(SaveCropDocumentHideProcessingState(
             documentType: event.documentType,
           ));
-          await Future.delayed(const Duration(milliseconds: 500));
+          await Future.delayed(
+            const Duration(milliseconds: 500),
+            () {},
+          );
           emit(SaveCropDocumentFailedState(
             documentType: event.documentType,
             reason:
@@ -376,11 +471,17 @@ class BusinessDocumentBloc
           ));
           return;
         }
-        await Future.delayed(const Duration(seconds: 1));
+        await Future.delayed(
+          const Duration(seconds: 1),
+          () {},
+        );
         emit(SaveCropDocumentHideProcessingState(
           documentType: event.documentType,
         ));
-        await Future.delayed(const Duration(milliseconds: 500));
+        await Future.delayed(
+          const Duration(milliseconds: 500),
+          () {},
+        );
         //await processImage(InputImage.fromFile(File(filePath)));
         //await Future.delayed(const Duration(milliseconds: 500));
         emit(

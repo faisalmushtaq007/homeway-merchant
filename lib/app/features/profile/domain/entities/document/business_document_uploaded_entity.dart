@@ -31,17 +31,17 @@ class BusinessDocumentUploadedEntity with AppEquatable {
     );
   }
 
-  final DocumentType documentType;
-  final String documentIDNumber;
-  final BusinessDocumentAssetsEntity? documentFrontAssets;
-  final BusinessDocumentAssetsEntity? documentBackAssets;
-  final DocumentUploadStatus documentFrontAssetsUploadStatus;
-  final DocumentUploadStatus documentBackAssetsUploadStatus;
-  final bool hasDocumentFrontSide;
-  final List<BusinessDocumentAssetsEntity> businessDocumentAssetsEntity;
+   DocumentType documentType;
+   String documentIDNumber;
+   BusinessDocumentAssetsEntity? documentFrontAssets;
+   BusinessDocumentAssetsEntity? documentBackAssets;
+   DocumentUploadStatus documentFrontAssetsUploadStatus;
+   DocumentUploadStatus documentBackAssetsUploadStatus;
+   bool hasDocumentFrontSide;
+   List<BusinessDocumentAssetsEntity> businessDocumentAssetsEntity;
 
   @override
-  bool get cacheHash => true;
+  bool get cacheHash => false;
 
   @override
   List<Object?> get hashParameters => [
@@ -126,20 +126,20 @@ class BusinessDocumentAssetsEntity with AppEquatable {
     );
   }
 
-  final String assetName;
-  final String assetOriginalName;
-  final String assetPath;
-  final String assetUrl;
-  final String assetExtension;
-  final Map<String, dynamic> assetMoreInfo;
-  final String assetBase64Code;
-  final DocumentUploadStatus assetsUploadStatus;
-  final String assetIdNumber;
-  final bool hasAssetsFrontSide;
-  final BusinessDocumentAssetsEntity? backSideAssetsInfo;
+   String assetName;
+   String assetOriginalName;
+   String assetPath;
+   String assetUrl;
+   String assetExtension;
+   Map<String, dynamic> assetMoreInfo;
+   String assetBase64Code;
+   DocumentUploadStatus assetsUploadStatus;
+   String assetIdNumber;
+   bool hasAssetsFrontSide;
+   BusinessDocumentAssetsEntity? backSideAssetsInfo;
 
   @override
-  bool get cacheHash => true;
+  bool get cacheHash => false;
 
   @override
   List<Object?> get hashParameters => [

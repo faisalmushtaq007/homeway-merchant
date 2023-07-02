@@ -182,6 +182,18 @@ class _BusinessDocumentPageState extends State<BusinessDocumentPage> {
                               orElse: () {},
                               addNewAssetState: (value) {},
                               addNewDocumentState: (value) {
+                                int index=value.currentIndex;
+                                var document=value.allBusinessDocuments[index];
+                                /*allBusinessDocuments =
+                                    List<BusinessDocumentUploadedEntity>.from(
+                                  value.allBusinessDocuments.toList(),
+                                );*/
+
+                                //allBusinessDocuments=value.allBusinessDocuments!;
+                                allBusinessDocuments.toList().removeAt(index);
+                                allBusinessDocuments.insert(index, document);
+                                appLog.d('BlocBuilder Data: ${allBusinessDocuments[index].documentFrontAssets?.assetOriginalName}');
+                                appLog.d('BlocBuilder Data value: ${allBusinessDocuments[0].documentFrontAssets?.assetName} - ${allBusinessDocuments[0].documentFrontAssets?.assetPath}');
                                 allBusinessDocuments.insert(
                                   value.newIndexPosition,
                                   BusinessDocumentUploadedEntity(
@@ -261,7 +273,9 @@ class _BusinessDocumentPageState extends State<BusinessDocumentPage> {
           labelOfTextField: 'Trade License Number',
           textEditingController: textEditingControllers[index],
           onChanged: (value) {},
+          onSubmitted: (value) {},
         ),
+        const AnimatedGap(10, duration: Duration(milliseconds: 500)),
         AnimatedCrossFade(
           crossFadeState: (assets.documentFrontAssetsUploadStatus !=
                   DocumentUploadStatus.uploaded)
@@ -278,44 +292,22 @@ class _BusinessDocumentPageState extends State<BusinessDocumentPage> {
                   },
                 ),
               );
-              await Future.delayed(const Duration(milliseconds: 500));
-              appLog.d('Result ${(result != null && result.isNotEmpty)}');
+              await Future.delayed(const Duration(milliseconds: 500), () {});
               if (result != null && result.isNotEmpty) {
-                // Add a document object into list of documents
-                var item = allBusinessDocuments[index];
-
-                String filePath = result[0] as String;
-                XFile? xCroppedDocumentFile = result[1] as XFile;
-                File? croppedDocumentFile = result[2] as File;
-                XFile? xFile = result[5] as XFile;
-                File? file = result[6] as File;
-                String? assetNetworkUrl = result[7] as String?;
-                var fileNameWithExtension = path.basename(
-                    xCroppedDocumentFile.path ?? croppedDocumentFile.path);
-                String fileExtension = path.extension(
-                    xCroppedDocumentFile.path ?? croppedDocumentFile!.path);
-
-                appLog.d('assetName $filePath');
-
-                item.documentFrontAssets?.copyWith(
-                  assetName: fileNameWithExtension,
-                  assetOriginalName: path.basename(xFile.path ?? file.path),
-                  assetPath: filePath,
-                  assetExtension: fileExtension,
-                  assetIdNumber:
-                      textEditingControllers[index].value.text.trim(),
-                  assetsUploadStatus: DocumentUploadStatus.uploaded,
-                  hasAssetsFrontSide: true,
-                );
-                appLog.d(
-                    'Index ${index} ${((index + 1) <= documentTypes.length)}');
+                var currentIndex=index;
                 if ((index + 1) <= documentTypes.length) {
-                  await Future.delayed(const Duration(milliseconds: 500));
-                  if (!mounted) return;
+                  /*await Future.delayed(
+                      const Duration(milliseconds: 500), () {});
+                  if (!mounted) return;*/
                   context.read<BusinessDocumentBloc>().add(
                         AddNewDocument(
                           newIndexPosition: index + 1,
                           documentType: documentTypes[index + 1],
+                          allBusinessDocuments: allBusinessDocuments.toList(),
+                          businessDocumentUploadedEntity:
+                              allBusinessDocuments[currentIndex],
+                          currentIndex: currentIndex,
+                          uploadedData: result,
                         ),
                       );
                 }
@@ -323,7 +315,7 @@ class _BusinessDocumentPageState extends State<BusinessDocumentPage> {
                 /*item.businessDocumentAssetsEntity.add(
                   BusinessDocumentAssetsEntity(
                     assetName: fileNameWithExtension,
-                    assetOriginalName: path.basename(xFile.path ?? file.path),
+                    assetOriginalName: path.basenameWithoutExtension(xFile.path ?? file.path),
                     assetPath: filePath,
                     assetExtension: fileExtension,
                     assetIdNumber: textEditingControllers[0].value.text.trim(),
@@ -340,7 +332,7 @@ class _BusinessDocumentPageState extends State<BusinessDocumentPage> {
               textDirection:
                   serviceLocator<LanguageController>().targetTextDirection,
               style: context.labelLarge!.copyWith(
-                  //color: const Color.fromRGBO(42, 45, 50, 1),
+                  color: const Color.fromRGBO(42, 45, 50, 1),
                   ),
             ),
             style: ElevatedButton.styleFrom(

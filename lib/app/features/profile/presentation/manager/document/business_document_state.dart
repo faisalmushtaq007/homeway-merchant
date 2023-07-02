@@ -32,12 +32,25 @@ class BusinessDocumentState with _$BusinessDocumentState {
     @Default(DocumentType.tradeLicence) DocumentType documentType,
     @Default('') String message,
     @Default(-1) int index,
+    BusinessDocumentAssetsEntity? businessDocumentAssetsEntity,
+    BusinessDocumentUploadedEntity? businessDocumentUploadedEntity,
+    @Default([]) List<BusinessDocumentAssetsEntity> assetsEntries,
+    @Default([]) List<BusinessDocumentUploadedEntity> allBusinessDocuments,
   }) = AssetsRemoveFailedState;
-
+  factory BusinessDocumentState.assetsRemovingState({
+    @Default(DocumentType.tradeLicence) DocumentType documentType,
+    @Default('') String message,
+  }) = AssetsRemovingState;
   factory BusinessDocumentState.assetsRemoveSuccessState({
     @Default(DocumentType.tradeLicence) DocumentType documentType,
     @Default('') String message,
     @Default(-1) int index,
+    BusinessDocumentAssetsEntity? businessDocumentAssetsEntity,
+    BusinessDocumentUploadedEntity? businessDocumentUploadedEntity,
+    @Default([]) List<BusinessDocumentAssetsEntity> assetsEntries,
+    @Default([]) List<BusinessDocumentUploadedEntity> allBusinessDocuments,
+    required int currentIndex,
+    @Default([])List<dynamic> uploadedData,
   }) = AssetsRemoveSuccessState;
 
   factory BusinessDocumentState.documentRemoveState({
@@ -45,7 +58,11 @@ class BusinessDocumentState with _$BusinessDocumentState {
     @Default('') String reason,
     BusinessDocumentUploadedEntity? businessDocumentUploadedEntity,
     @Default([]) List<BusinessDocumentUploadedEntity> allBusinessDocuments,
+    BusinessDocumentAssetsEntity? businessDocumentAssetsEntity,
+    @Default([]) List<BusinessDocumentAssetsEntity> assetsEntries,
     @Default(-1) int index,
+    required int currentIndex,
+    @Default([])List<dynamic> uploadedData,
   }) = DocumentRemoveState;
 
   factory BusinessDocumentState.documentRemovingState({
@@ -58,6 +75,8 @@ class BusinessDocumentState with _$BusinessDocumentState {
     @Default('') String reason,
     BusinessDocumentUploadedEntity? businessDocumentUploadedEntity,
     @Default([]) List<BusinessDocumentUploadedEntity> allBusinessDocuments,
+    BusinessDocumentAssetsEntity? businessDocumentAssetsEntity,
+    @Default([]) List<BusinessDocumentAssetsEntity> assetsEntries,
     @Default(-1) int index,
   }) = DocumentRemoveFailedState;
 
@@ -66,6 +85,12 @@ class BusinessDocumentState with _$BusinessDocumentState {
     @Default(0) int indexOfTextField,
     @Default(false) bool isTextFieldEnable,
     required int newIndexPosition,
+    BusinessDocumentAssetsEntity? businessDocumentAssetsEntity,
+    BusinessDocumentUploadedEntity? businessDocumentUploadedEntity,
+    @Default([]) List<BusinessDocumentAssetsEntity> assetsEntries,
+    @Default([]) List<BusinessDocumentUploadedEntity> allBusinessDocuments,
+    required int currentIndex,
+    @Default([])List<dynamic> uploadedData,
   }) = AddNewDocumentState;
 
   factory BusinessDocumentState.addNewAssetState({
@@ -75,6 +100,12 @@ class BusinessDocumentState with _$BusinessDocumentState {
     TextEditingController? textEditingController,
     ValueChanged<String>? onChanged,
     required int newIndexPosition,
+    BusinessDocumentAssetsEntity? businessDocumentAssetsEntity,
+    BusinessDocumentUploadedEntity? businessDocumentUploadedEntity,
+    @Default([]) List<BusinessDocumentAssetsEntity> assetsEntries,
+    @Default([]) List<BusinessDocumentUploadedEntity> allBusinessDocuments,
+    required int currentIndex,
+    @Default([])List<dynamic> uploadedData,
   }) = AddNewAssetState;
 
   factory BusinessDocumentState.saveAndNextState({

@@ -37,6 +37,7 @@ class BusinessDocumentEvent with _$BusinessDocumentEvent {
     BusinessDocumentUploadedEntity? businessDocumentUploadedEntity,
     @Default([]) List<BusinessDocumentUploadedEntity> allBusinessDocuments,
     @Default(-1) int index,
+    @Default([]) List<BusinessDocumentAssetsEntity> assetsEntries,
   }) = DocumentRemove;
 
   factory BusinessDocumentEvent.saveAndNext({
@@ -81,6 +82,12 @@ class BusinessDocumentEvent with _$BusinessDocumentEvent {
     @Default(0) int indexOfTextField,
     @Default(false) bool isTextFieldEnable,
     required int newIndexPosition,
+    BusinessDocumentAssetsEntity? businessDocumentAssetsEntity,
+    BusinessDocumentUploadedEntity? businessDocumentUploadedEntity,
+    @Default([]) List<BusinessDocumentAssetsEntity> assetsEntries,
+    @Default([]) List<BusinessDocumentUploadedEntity> allBusinessDocuments,
+    required int currentIndex,
+    @Default([])List<dynamic> uploadedData,
   }) = AddNewDocument;
   factory BusinessDocumentEvent.addNewAsset({
     @Default(DocumentType.tradeLicence) DocumentType documentType,
@@ -89,6 +96,12 @@ class BusinessDocumentEvent with _$BusinessDocumentEvent {
     TextEditingController? textEditingController,
     ValueChanged<String>? onChanged,
     required int newIndexPosition,
+  BusinessDocumentAssetsEntity? businessDocumentAssetsEntity,
+  BusinessDocumentUploadedEntity? businessDocumentUploadedEntity,
+    @Default([]) List<BusinessDocumentAssetsEntity> assetsEntries,
+    @Default([]) List<BusinessDocumentUploadedEntity> allBusinessDocuments,
+    required int currentIndex,
+    @Default([])List<dynamic> uploadedData,
   }) = AddNewAsset;
 
   factory BusinessDocumentEvent.captureImageFromCamera({
