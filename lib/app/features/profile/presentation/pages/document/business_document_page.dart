@@ -315,7 +315,7 @@ class _BusinessDocumentPageState extends State<BusinessDocumentPage> {
                   context.read<BusinessDocumentBloc>().add(
                         AddNewDocument(
                           newIndexPosition: index + 1,
-                          documentType: documentTypes[index],
+                          documentType: documentTypes[index + 1],
                         ),
                       );
                 }
