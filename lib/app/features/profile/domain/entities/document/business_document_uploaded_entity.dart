@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:homemakers_merchant/app/features/profile/common/document_type_enum.dart';
 import 'package:homemakers_merchant/utils/app_equatable/src/app_equatable.dart';
 
@@ -11,6 +12,8 @@ class BusinessDocumentUploadedEntity with AppEquatable {
     this.documentFrontAssetsUploadStatus = DocumentUploadStatus.none,
     this.documentBackAssetsUploadStatus = DocumentUploadStatus.none,
     this.hasDocumentFrontSide = true,
+    this.hasButtonEnable = true,
+    this.hasTextFieldEnable=false,
   });
 
   factory BusinessDocumentUploadedEntity.fromMap(Map<String, dynamic> map) {
@@ -28,17 +31,21 @@ class BusinessDocumentUploadedEntity with AppEquatable {
       hasDocumentFrontSide: map['hasDocumentFrontSide'] as bool,
       businessDocumentAssetsEntity: map['businessDocumentAssetsEntity']
           as List<BusinessDocumentAssetsEntity>,
+      hasButtonEnable: map['hasButtonEnable'] as bool,
+        hasTextFieldEnable:map['hasTextFieldEnable'] as bool,
     );
   }
 
-   DocumentType documentType;
-   String documentIDNumber;
-   BusinessDocumentAssetsEntity? documentFrontAssets;
-   BusinessDocumentAssetsEntity? documentBackAssets;
-   DocumentUploadStatus documentFrontAssetsUploadStatus;
-   DocumentUploadStatus documentBackAssetsUploadStatus;
-   bool hasDocumentFrontSide;
-   List<BusinessDocumentAssetsEntity> businessDocumentAssetsEntity;
+  DocumentType documentType;
+  String documentIDNumber;
+  BusinessDocumentAssetsEntity? documentFrontAssets;
+  BusinessDocumentAssetsEntity? documentBackAssets;
+  DocumentUploadStatus documentFrontAssetsUploadStatus;
+  DocumentUploadStatus documentBackAssetsUploadStatus;
+  bool hasDocumentFrontSide;
+  List<BusinessDocumentAssetsEntity> businessDocumentAssetsEntity;
+  bool hasButtonEnable;
+  bool hasTextFieldEnable;
 
   @override
   bool get cacheHash => false;
@@ -53,6 +60,8 @@ class BusinessDocumentUploadedEntity with AppEquatable {
         documentBackAssetsUploadStatus,
         hasDocumentFrontSide,
         businessDocumentAssetsEntity,
+        hasButtonEnable,
+    hasTextFieldEnable,
       ];
 
   BusinessDocumentUploadedEntity copyWith({
@@ -64,6 +73,8 @@ class BusinessDocumentUploadedEntity with AppEquatable {
     DocumentUploadStatus? documentBackAssetsUploadStatus,
     bool? hasDocumentFrontSide,
     List<BusinessDocumentAssetsEntity>? businessDocumentAssetsEntity,
+    bool? hasButtonEnable,
+    bool? hasTextFieldEnable,
   }) {
     return BusinessDocumentUploadedEntity(
       documentType: documentType ?? this.documentType,
@@ -77,6 +88,8 @@ class BusinessDocumentUploadedEntity with AppEquatable {
       hasDocumentFrontSide: hasDocumentFrontSide ?? this.hasDocumentFrontSide,
       businessDocumentAssetsEntity:
           businessDocumentAssetsEntity ?? this.businessDocumentAssetsEntity,
+      hasButtonEnable: hasButtonEnable ?? this.hasButtonEnable,
+        hasTextFieldEnable:hasTextFieldEnable??this.hasTextFieldEnable,
     );
   }
 
@@ -90,6 +103,8 @@ class BusinessDocumentUploadedEntity with AppEquatable {
       'documentBackAssetsUploadStatus': this.documentBackAssetsUploadStatus,
       'hasDocumentFrontSide': this.hasDocumentFrontSide,
       'businessDocumentAssetsEntity': this.businessDocumentAssetsEntity,
+      'hasButtonEnable': this.hasButtonEnable,
+      'hasTextFieldEnable':this.hasTextFieldEnable,
     };
   }
 }
@@ -107,6 +122,9 @@ class BusinessDocumentAssetsEntity with AppEquatable {
     this.assetsUploadStatus = DocumentUploadStatus.none,
     this.hasAssetsFrontSide = true,
     this.backSideAssetsInfo,
+    this.textEditingController,
+    this.onSubmitted,
+    this.onChanged,
   });
 
   factory BusinessDocumentAssetsEntity.fromMap(Map<String, dynamic> map) {
@@ -123,20 +141,24 @@ class BusinessDocumentAssetsEntity with AppEquatable {
       hasAssetsFrontSide: map['hasAssetsFrontSide'] as bool,
       backSideAssetsInfo:
           map['backSideAssetsInfo'] as BusinessDocumentAssetsEntity,
+        textEditingController:map['textEditingController'] as TextEditingController,
     );
   }
 
-   String assetName;
-   String assetOriginalName;
-   String assetPath;
-   String assetUrl;
-   String assetExtension;
-   Map<String, dynamic> assetMoreInfo;
-   String assetBase64Code;
-   DocumentUploadStatus assetsUploadStatus;
-   String assetIdNumber;
-   bool hasAssetsFrontSide;
-   BusinessDocumentAssetsEntity? backSideAssetsInfo;
+  String assetName;
+  String assetOriginalName;
+  String assetPath;
+  String assetUrl;
+  String assetExtension;
+  Map<String, dynamic> assetMoreInfo;
+  String assetBase64Code;
+  DocumentUploadStatus assetsUploadStatus;
+  String assetIdNumber;
+  bool hasAssetsFrontSide;
+  BusinessDocumentAssetsEntity? backSideAssetsInfo;
+  TextEditingController? textEditingController;
+  ValueChanged<String>? onChanged;
+  ValueChanged<String>? onSubmitted;
 
   @override
   bool get cacheHash => false;
@@ -154,6 +176,7 @@ class BusinessDocumentAssetsEntity with AppEquatable {
         assetIdNumber,
         hasAssetsFrontSide,
         backSideAssetsInfo,
+    textEditingController,
       ];
 
   BusinessDocumentAssetsEntity copyWith({
@@ -168,6 +191,7 @@ class BusinessDocumentAssetsEntity with AppEquatable {
     String? assetIdNumber,
     bool? hasAssetsFrontSide,
     BusinessDocumentAssetsEntity? backSideAssetsInfo,
+    TextEditingController? textEditingController,
   }) {
     return BusinessDocumentAssetsEntity(
       assetName: assetName ?? this.assetName,
@@ -181,6 +205,7 @@ class BusinessDocumentAssetsEntity with AppEquatable {
       assetIdNumber: assetIdNumber ?? this.assetIdNumber,
       hasAssetsFrontSide: hasAssetsFrontSide ?? this.hasAssetsFrontSide,
       backSideAssetsInfo: backSideAssetsInfo ?? this.backSideAssetsInfo,
+        textEditingController:textEditingController??this.textEditingController,
     );
   }
 
@@ -197,6 +222,7 @@ class BusinessDocumentAssetsEntity with AppEquatable {
       'assetIdNumber': this.assetIdNumber,
       'hasAssetsFrontSide': this.hasAssetsFrontSide,
       'backSideAssetsInfo': this.backSideAssetsInfo,
+      'textEditingController':this.textEditingController,
     };
   }
 }

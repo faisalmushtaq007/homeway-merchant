@@ -124,6 +124,7 @@ class BusinessDocumentBloc
                     assetsUploadStatus: DocumentUploadStatus.uploaded,
                     hasAssetsFrontSide: true,
                   );
+                  allDocumentItems[value.currentIndex].hasButtonEnable=false;
                   allDocumentItems[value.currentIndex].documentFrontAssets =
                       businessDocumentAssetsEntity;
                   return emit(AddNewDocumentState(

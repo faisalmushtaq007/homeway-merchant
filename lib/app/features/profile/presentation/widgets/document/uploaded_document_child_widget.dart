@@ -51,7 +51,7 @@ class _UploadedDocumentChildWidgetState
     allBusinessDocumentAssetsWidgets = [];
     allBusinessDocumentAssetsWidgets.clear();
     super.initState();
-    if (widget.hasEnableTextField) {
+    /*if (widget.hasEnableTextField) {
       allBusinessDocumentAssets.add(
         BusinessDocumentAssetsEntity(
           assetExtension: '',
@@ -61,7 +61,7 @@ class _UploadedDocumentChildWidgetState
           assetPath: '',
         ),
       );
-    }
+    }*/
     allBusinessDocumentAssets.addAll(widget.allBusinessDocumentAssets.toList());
   }
 
@@ -71,7 +71,7 @@ class _UploadedDocumentChildWidgetState
       duration: const Duration(milliseconds: 400),
       child: BlocBuilder<BusinessDocumentBloc, BusinessDocumentState>(
         key: const Key('uploaded-document-child-bloc-builder-widget'),
-        buildWhen: (previous, current) => previous != current,
+        //buildWhen: (previous, current) => previous != current,
         builder: (context, state) {
           return ImplicitlyAnimatedList<BusinessDocumentAssetsEntity>(
             key: Key(widget.keyNameOfListView),
@@ -85,9 +85,9 @@ class _UploadedDocumentChildWidgetState
             shrinkWrap: true,
             physics: const ClampingScrollPhysics(),
             itemBuilder: (context, animation, assets, index) {
-              appLog.d('itemBuilder: ${assets.assetOriginalName}');
+              appLog.d('itemBuilder child: ${assets.assetOriginalName}');
               return SizeFadeTransition(
-                key: ObjectKey(assets),
+                //key: ObjectKey(assets),
                 sizeFraction: 0.7,
                 curve: Curves.easeInOut,
                 animation: animation,
@@ -97,17 +97,17 @@ class _UploadedDocumentChildWidgetState
               );
             },
             updateItemBuilder: (context, animation, assets) {
-              appLog.d('updateItemBuilder: ${assets.assetOriginalName}');
+              appLog.d('updateItemBuilder child: ${assets.assetOriginalName}');
               return FadeTransition(
-                key: ObjectKey(assets),
+                //key: ObjectKey(assets),
                 opacity: animation,
                 child: _buildItem(assets),
               );
             },
             removeItemBuilder: (context, animation, oldAssets) {
-              appLog.d('updateItemBuilder: ${oldAssets.assetOriginalName}');
+              appLog.d('updateItemBuilder child: ${oldAssets.assetOriginalName}');
               return FadeTransition(
-                key: ObjectKey(oldAssets),
+                //key: ObjectKey(oldAssets),
                 opacity: animation,
                 child: _buildItem(oldAssets),
               );
@@ -119,7 +119,7 @@ class _UploadedDocumentChildWidgetState
   }
 
   Widget _buildItem(BusinessDocumentAssetsEntity assets, [int index = -1]) {
-    appLog.d('_buildItem: ${assets.assetOriginalName}');
+    appLog.d('_buildItem child: ${assets.assetOriginalName}');
     return Padding(
       padding: const EdgeInsetsDirectional.only(top: 8, bottom: 4),
       child: ListTile(
