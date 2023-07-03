@@ -1,6 +1,6 @@
 part of 'business_document_bloc.dart';
 
-@unfreezed
+@freezed
 class BusinessDocumentState with _$BusinessDocumentState {
   factory BusinessDocumentState.initial() = BusinessDocumentInitial;
 
@@ -50,7 +50,7 @@ class BusinessDocumentState with _$BusinessDocumentState {
     @Default([]) List<BusinessDocumentAssetsEntity> assetsEntries,
     @Default([]) List<BusinessDocumentUploadedEntity> allBusinessDocuments,
     required int currentIndex,
-    @Default([])List<dynamic> uploadedData,
+    @Default([]) List<dynamic> uploadedData,
   }) = AssetsRemoveSuccessState;
 
   factory BusinessDocumentState.documentRemoveState({
@@ -62,7 +62,7 @@ class BusinessDocumentState with _$BusinessDocumentState {
     @Default([]) List<BusinessDocumentAssetsEntity> assetsEntries,
     @Default(-1) int index,
     required int currentIndex,
-    @Default([])List<dynamic> uploadedData,
+    @Default([]) List<dynamic> uploadedData,
   }) = DocumentRemoveState;
 
   factory BusinessDocumentState.documentRemovingState({
@@ -90,7 +90,7 @@ class BusinessDocumentState with _$BusinessDocumentState {
     @Default([]) List<BusinessDocumentAssetsEntity> assetsEntries,
     @Default([]) List<BusinessDocumentUploadedEntity> allBusinessDocuments,
     required int currentIndex,
-    @Default([])List<dynamic> uploadedData,
+    @Default([]) List<dynamic> uploadedData,
   }) = AddNewDocumentState;
 
   factory BusinessDocumentState.addNewAssetState({
@@ -105,7 +105,7 @@ class BusinessDocumentState with _$BusinessDocumentState {
     @Default([]) List<BusinessDocumentAssetsEntity> assetsEntries,
     @Default([]) List<BusinessDocumentUploadedEntity> allBusinessDocuments,
     required int currentIndex,
-    @Default([])List<dynamic> uploadedData,
+    @Default([]) List<dynamic> uploadedData,
   }) = AddNewAssetState;
 
   factory BusinessDocumentState.saveAndNextState({

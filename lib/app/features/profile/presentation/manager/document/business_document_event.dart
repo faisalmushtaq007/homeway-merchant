@@ -1,6 +1,6 @@
 part of 'business_document_bloc.dart';
 
-@unfreezed
+@freezed
 class BusinessDocumentEvent with _$BusinessDocumentEvent {
   factory BusinessDocumentEvent() = _BusinessDocumentEvent;
 
@@ -87,7 +87,7 @@ class BusinessDocumentEvent with _$BusinessDocumentEvent {
     @Default([]) List<BusinessDocumentAssetsEntity> assetsEntries,
     @Default([]) List<BusinessDocumentUploadedEntity> allBusinessDocuments,
     required int currentIndex,
-    @Default([])List<dynamic> uploadedData,
+    @Default([]) List<dynamic> uploadedData,
   }) = AddNewDocument;
   factory BusinessDocumentEvent.addNewAsset({
     @Default(DocumentType.tradeLicence) DocumentType documentType,
@@ -96,12 +96,12 @@ class BusinessDocumentEvent with _$BusinessDocumentEvent {
     TextEditingController? textEditingController,
     ValueChanged<String>? onChanged,
     required int newIndexPosition,
-  BusinessDocumentAssetsEntity? businessDocumentAssetsEntity,
-  BusinessDocumentUploadedEntity? businessDocumentUploadedEntity,
+    BusinessDocumentAssetsEntity? businessDocumentAssetsEntity,
+    BusinessDocumentUploadedEntity? businessDocumentUploadedEntity,
     @Default([]) List<BusinessDocumentAssetsEntity> assetsEntries,
     @Default([]) List<BusinessDocumentUploadedEntity> allBusinessDocuments,
     required int currentIndex,
-    @Default([])List<dynamic> uploadedData,
+    @Default([]) List<dynamic> uploadedData,
   }) = AddNewAsset;
 
   factory BusinessDocumentEvent.captureImageFromCamera({

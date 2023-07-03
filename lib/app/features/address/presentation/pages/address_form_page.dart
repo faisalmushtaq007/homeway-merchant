@@ -17,19 +17,34 @@ class AddressFormPage extends StatefulWidget {
   State<AddressFormPage> createState() => _AddressFormPageState();
 }
 
-class _AddressFormPageState extends State<AddressFormPage> {
+class _AddressFormPageState extends State<AddressFormPage>
+    with SingleTickerProviderStateMixin {
   late final ScrollController scrollController;
+  late AnimationController _animationController;
+  late Animation<double> _animation;
 
   @override
   void initState() {
     super.initState();
     scrollController = ScrollController();
+    _animationController = AnimationController(
+      vsync: this,
+      duration: Duration(seconds: 2),
+    );
+    _animation = Tween<double>(begin: -1, end: 0).animate(
+      CurvedAnimation(
+        parent: _animationController,
+        curve: Curves.fastOutSlowIn,
+      ),
+    );
+    _animationController.forward();
     context.read<PermissionBloc>().add(const RequestLocationPermissionEvent());
   }
 
   @override
   void dispose() {
     scrollController.dispose();
+    _animationController.dispose();
     super.dispose();
   }
 
@@ -68,36 +83,47 @@ class _AddressFormPageState extends State<AddressFormPage> {
             ),
           ],
         ),
-        body: Directionality(
-          textDirection:
-              serviceLocator<LanguageController>().targetTextDirection,
-          child: PageBody(
-            controller: scrollController,
-            constraints: BoxConstraints(
-              minWidth: double.infinity,
-              minHeight: media.size.height,
-            ),
-            child: BlocBuilder<PermissionBloc, PermissionState>(
-              key: const Key('address-form-bloc-builder-widget-key'),
-              bloc: context.read<PermissionBloc>(),
-              buildWhen: (previous, current) => previous != current,
-              builder: (context, state) {
-                return ListView(
+        body: AnimatedBuilder(
+          animation: _animationController,
+          builder: (BuildContext context, Widget? child) {
+            return Transform(
+              transform: Matrix4.translationValues(
+                _animation.value * width,
+                0.0,
+                0.0,
+              ),
+              child: Directionality(
+                textDirection:
+                    serviceLocator<LanguageController>().targetTextDirection,
+                child: PageBody(
                   controller: scrollController,
-                  shrinkWrap: true,
-                  padding: EdgeInsetsDirectional.only(
-                    start: margins * 2.5,
-                    end: margins * 2.5,
+                  constraints: BoxConstraints(
+                    minWidth: double.infinity,
+                    minHeight: media.size.height,
                   ),
-                  children: const [
-                    Center(
-                      child: Text('Address'),
-                    ),
-                  ],
-                );
-              },
-            ),
-          ),
+                  child: BlocBuilder<PermissionBloc, PermissionState>(
+                    bloc: context.read<PermissionBloc>(),
+                    buildWhen: (previous, current) => previous != current,
+                    builder: (context, state) {
+                      return ListView(
+                        controller: scrollController,
+                        shrinkWrap: true,
+                        padding: EdgeInsetsDirectional.only(
+                          start: margins * 2.5,
+                          end: margins * 2.5,
+                        ),
+                        children: const [
+                          Center(
+                            child: Text('New Screen'),
+                          ),
+                        ],
+                      );
+                    },
+                  ),
+                ),
+              ),
+            );
+          },
         ),
       ),
     );

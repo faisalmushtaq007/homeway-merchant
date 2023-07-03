@@ -137,13 +137,13 @@ class $AssetsImageGen {
 class $AssetsSvgGen {
   const $AssetsSvgGen();
 
-  /// File path: assets/svg/app_logo.svg
-  SvgGenImage get appLogo => const SvgGenImage('assets/svg/app_logo.svg');
+  /// File path: assets/svg/applogo.svg
+  SvgGenImage get applogo => const SvgGenImage('assets/svg/applogo.svg');
 
   $AssetsSvgFlagsGen get flags => const $AssetsSvgFlagsGen();
 
   /// List of all assets
-  List<SvgGenImage> get values => [appLogo];
+  List<SvgGenImage> get values => [applogo];
 }
 
 class $AssetsSvgFlagsGen {

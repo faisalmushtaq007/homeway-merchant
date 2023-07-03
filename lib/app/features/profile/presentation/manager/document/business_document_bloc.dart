@@ -1,6 +1,5 @@
 import 'dart:async';
-import 'dart:convert';
-import 'dart:ffi';
+
 import 'dart:io';
 import 'package:collection/collection.dart';
 import 'package:google_ml_kit/google_ml_kit.dart';
@@ -60,7 +59,10 @@ class BusinessDocumentBloc
           addNewDocument: (value) {
             // Add a document object into list of documents
             var allDocumentItems = <BusinessDocumentUploadedEntity>[];
-            allDocumentItems.addAll(value.allBusinessDocuments.toList());
+            final int currentIndex = value.currentIndex;
+            final int nextIndex = value.newIndexPosition;
+            allDocumentItems = List<BusinessDocumentUploadedEntity>.from(
+                value.allBusinessDocuments.toList());
             allDocumentItems.asMap().forEach((key, item) async {
               if (item == value.businessDocumentUploadedEntity) {
                 var result = value.uploadedData;
@@ -94,21 +96,6 @@ class BusinessDocumentBloc
                     hasAssetsFrontSide: true,
                     assetIdNumber: '',
                   );
-                  return emit(AddNewDocumentState(
-                    newIndexPosition: value.newIndexPosition,
-                    isTextFieldEnable: value.isTextFieldEnable,
-                    indexOfTextField: value.indexOfTextField,
-                    documentType: value.documentType,
-                    allBusinessDocuments: allDocumentItems.toList(),
-                    assetsEntries: value.assetsEntries.toList(),
-                    businessDocumentAssetsEntity:
-                    allDocumentItems[value.currentIndex]
-                        .documentFrontAssets,
-                    businessDocumentUploadedEntity:
-                    allDocumentItems[value.currentIndex],
-                    currentIndex: value.currentIndex,
-                    uploadedData: value.uploadedData,
-                  ));
                 }
 
                 /// Copywith
@@ -124,29 +111,35 @@ class BusinessDocumentBloc
                     assetsUploadStatus: DocumentUploadStatus.uploaded,
                     hasAssetsFrontSide: true,
                   );
-                  allDocumentItems[value.currentIndex].hasButtonEnable=false;
+                  allDocumentItems[value.currentIndex].hasButtonEnable = false;
                   allDocumentItems[value.currentIndex].documentFrontAssets =
                       businessDocumentAssetsEntity;
-                  return emit(AddNewDocumentState(
-                    newIndexPosition: value.newIndexPosition,
-                    isTextFieldEnable: value.isTextFieldEnable,
-                    indexOfTextField: value.indexOfTextField,
-                    documentType: value.documentType,
-                    allBusinessDocuments: allDocumentItems.toList(),
-                    assetsEntries: value.assetsEntries.toList(),
-                    businessDocumentAssetsEntity:
-                    allDocumentItems[value.currentIndex]
-                        .documentFrontAssets ??
-                        businessDocumentAssetsEntity,
-                    businessDocumentUploadedEntity:
-                    allDocumentItems[value.currentIndex],
-                    currentIndex: value.currentIndex,
-                    uploadedData: value.uploadedData,
-                  ));
                 }
               }
             });
             //return;
+            if (currentIndex != nextIndex) {
+              allDocumentItems.insert(
+                nextIndex,
+                BusinessDocumentUploadedEntity(
+                    documentType: documentTypes[nextIndex]),
+              );
+            }
+            emit(AddNewDocumentState(
+              newIndexPosition: value.newIndexPosition,
+              isTextFieldEnable: value.isTextFieldEnable,
+              indexOfTextField: value.indexOfTextField,
+              documentType: value.documentType,
+              allBusinessDocuments: allDocumentItems.toList(),
+              assetsEntries: value.assetsEntries.toList(),
+              businessDocumentAssetsEntity:
+                  allDocumentItems[value.currentIndex].documentFrontAssets,
+              businessDocumentUploadedEntity:
+                  allDocumentItems[value.currentIndex],
+              currentIndex: value.currentIndex,
+              uploadedData: value.uploadedData,
+            ));
+            return;
           },
           captureImageFromCamera: (value) {},
           restoreCaptureImageFromCamera: (value) {},
@@ -184,7 +177,7 @@ class BusinessDocumentBloc
           },
         );
       },
-      transformer: sequential(),
+      //transformer: sequential(),
     );
 /*    on<OpenMediaPicker>(
       _openMediaPicker,

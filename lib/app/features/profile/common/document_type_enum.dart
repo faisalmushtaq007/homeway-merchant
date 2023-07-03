@@ -38,3 +38,9 @@ enum DocumentUploadStatus {
     return name;
   }
 }
+
+List<DocumentType> documentTypes = [
+  DocumentType.tradeLicence,
+  DocumentType.nationalID,
+  DocumentType.selfie,
+];
