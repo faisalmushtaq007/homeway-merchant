@@ -13,7 +13,7 @@ class BusinessDocumentUploadedEntity with AppEquatable {
     this.documentBackAssetsUploadStatus = DocumentUploadStatus.none,
     this.hasDocumentFrontSide = true,
     this.hasButtonEnable = true,
-    this.hasTextFieldEnable=false,
+    this.hasTextFieldEnable = false,
   });
 
   factory BusinessDocumentUploadedEntity.fromMap(Map<String, dynamic> map) {
@@ -32,7 +32,7 @@ class BusinessDocumentUploadedEntity with AppEquatable {
       businessDocumentAssetsEntity: map['businessDocumentAssetsEntity']
           as List<BusinessDocumentAssetsEntity>,
       hasButtonEnable: map['hasButtonEnable'] as bool,
-        hasTextFieldEnable:map['hasTextFieldEnable'] as bool,
+      hasTextFieldEnable: map['hasTextFieldEnable'] as bool,
     );
   }
 
@@ -61,7 +61,7 @@ class BusinessDocumentUploadedEntity with AppEquatable {
         hasDocumentFrontSide,
         businessDocumentAssetsEntity,
         hasButtonEnable,
-    hasTextFieldEnable,
+        hasTextFieldEnable,
       ];
 
   BusinessDocumentUploadedEntity copyWith({
@@ -89,7 +89,7 @@ class BusinessDocumentUploadedEntity with AppEquatable {
       businessDocumentAssetsEntity:
           businessDocumentAssetsEntity ?? this.businessDocumentAssetsEntity,
       hasButtonEnable: hasButtonEnable ?? this.hasButtonEnable,
-        hasTextFieldEnable:hasTextFieldEnable??this.hasTextFieldEnable,
+      hasTextFieldEnable: hasTextFieldEnable ?? this.hasTextFieldEnable,
     );
   }
 
@@ -104,7 +104,7 @@ class BusinessDocumentUploadedEntity with AppEquatable {
       'hasDocumentFrontSide': this.hasDocumentFrontSide,
       'businessDocumentAssetsEntity': this.businessDocumentAssetsEntity,
       'hasButtonEnable': this.hasButtonEnable,
-      'hasTextFieldEnable':this.hasTextFieldEnable,
+      'hasTextFieldEnable': this.hasTextFieldEnable,
     };
   }
 }
@@ -125,6 +125,7 @@ class BusinessDocumentAssetsEntity with AppEquatable {
     this.textEditingController,
     this.onSubmitted,
     this.onChanged,
+    this.onSaved,
   });
 
   factory BusinessDocumentAssetsEntity.fromMap(Map<String, dynamic> map) {
@@ -141,7 +142,8 @@ class BusinessDocumentAssetsEntity with AppEquatable {
       hasAssetsFrontSide: map['hasAssetsFrontSide'] as bool,
       backSideAssetsInfo:
           map['backSideAssetsInfo'] as BusinessDocumentAssetsEntity,
-        textEditingController:map['textEditingController'] as TextEditingController,
+      textEditingController:
+          map['textEditingController'] as TextEditingController,
     );
   }
 
@@ -159,6 +161,7 @@ class BusinessDocumentAssetsEntity with AppEquatable {
   TextEditingController? textEditingController;
   ValueChanged<String>? onChanged;
   ValueChanged<String>? onSubmitted;
+  FormFieldSetter<String>? onSaved;
 
   @override
   bool get cacheHash => false;
@@ -176,7 +179,7 @@ class BusinessDocumentAssetsEntity with AppEquatable {
         assetIdNumber,
         hasAssetsFrontSide,
         backSideAssetsInfo,
-    textEditingController,
+        textEditingController,
       ];
 
   BusinessDocumentAssetsEntity copyWith({
@@ -205,7 +208,8 @@ class BusinessDocumentAssetsEntity with AppEquatable {
       assetIdNumber: assetIdNumber ?? this.assetIdNumber,
       hasAssetsFrontSide: hasAssetsFrontSide ?? this.hasAssetsFrontSide,
       backSideAssetsInfo: backSideAssetsInfo ?? this.backSideAssetsInfo,
-        textEditingController:textEditingController??this.textEditingController,
+      textEditingController:
+          textEditingController ?? this.textEditingController,
     );
   }
 
@@ -222,7 +226,7 @@ class BusinessDocumentAssetsEntity with AppEquatable {
       'assetIdNumber': this.assetIdNumber,
       'hasAssetsFrontSide': this.hasAssetsFrontSide,
       'backSideAssetsInfo': this.backSideAssetsInfo,
-      'textEditingController':this.textEditingController,
+      'textEditingController': this.textEditingController,
     };
   }
 }

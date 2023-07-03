@@ -11,6 +11,92 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter/services.dart';
 
+class $GoogleFontsGen {
+  const $GoogleFontsGen();
+
+  /// File path: google_fonts/OFL.txt
+  String get ofl => 'google_fonts/OFL.txt';
+
+  /// File path: google_fonts/Poppins-Black.ttf
+  String get poppinsBlack => 'google_fonts/Poppins-Black.ttf';
+
+  /// File path: google_fonts/Poppins-BlackItalic.ttf
+  String get poppinsBlackItalic => 'google_fonts/Poppins-BlackItalic.ttf';
+
+  /// File path: google_fonts/Poppins-Bold.ttf
+  String get poppinsBold => 'google_fonts/Poppins-Bold.ttf';
+
+  /// File path: google_fonts/Poppins-BoldItalic.ttf
+  String get poppinsBoldItalic => 'google_fonts/Poppins-BoldItalic.ttf';
+
+  /// File path: google_fonts/Poppins-ExtraBold.ttf
+  String get poppinsExtraBold => 'google_fonts/Poppins-ExtraBold.ttf';
+
+  /// File path: google_fonts/Poppins-ExtraBoldItalic.ttf
+  String get poppinsExtraBoldItalic =>
+      'google_fonts/Poppins-ExtraBoldItalic.ttf';
+
+  /// File path: google_fonts/Poppins-ExtraLight.ttf
+  String get poppinsExtraLight => 'google_fonts/Poppins-ExtraLight.ttf';
+
+  /// File path: google_fonts/Poppins-ExtraLightItalic.ttf
+  String get poppinsExtraLightItalic =>
+      'google_fonts/Poppins-ExtraLightItalic.ttf';
+
+  /// File path: google_fonts/Poppins-Italic.ttf
+  String get poppinsItalic => 'google_fonts/Poppins-Italic.ttf';
+
+  /// File path: google_fonts/Poppins-Light.ttf
+  String get poppinsLight => 'google_fonts/Poppins-Light.ttf';
+
+  /// File path: google_fonts/Poppins-LightItalic.ttf
+  String get poppinsLightItalic => 'google_fonts/Poppins-LightItalic.ttf';
+
+  /// File path: google_fonts/Poppins-Medium.ttf
+  String get poppinsMedium => 'google_fonts/Poppins-Medium.ttf';
+
+  /// File path: google_fonts/Poppins-MediumItalic.ttf
+  String get poppinsMediumItalic => 'google_fonts/Poppins-MediumItalic.ttf';
+
+  /// File path: google_fonts/Poppins-Regular.ttf
+  String get poppinsRegular => 'google_fonts/Poppins-Regular.ttf';
+
+  /// File path: google_fonts/Poppins-SemiBold.ttf
+  String get poppinsSemiBold => 'google_fonts/Poppins-SemiBold.ttf';
+
+  /// File path: google_fonts/Poppins-SemiBoldItalic.ttf
+  String get poppinsSemiBoldItalic => 'google_fonts/Poppins-SemiBoldItalic.ttf';
+
+  /// File path: google_fonts/Poppins-Thin.ttf
+  String get poppinsThin => 'google_fonts/Poppins-Thin.ttf';
+
+  /// File path: google_fonts/Poppins-ThinItalic.ttf
+  String get poppinsThinItalic => 'google_fonts/Poppins-ThinItalic.ttf';
+
+  /// List of all assets
+  List<String> get values => [
+        ofl,
+        poppinsBlack,
+        poppinsBlackItalic,
+        poppinsBold,
+        poppinsBoldItalic,
+        poppinsExtraBold,
+        poppinsExtraBoldItalic,
+        poppinsExtraLight,
+        poppinsExtraLightItalic,
+        poppinsItalic,
+        poppinsLight,
+        poppinsLightItalic,
+        poppinsMedium,
+        poppinsMediumItalic,
+        poppinsRegular,
+        poppinsSemiBold,
+        poppinsSemiBoldItalic,
+        poppinsThin,
+        poppinsThinItalic
+      ];
+}
+
 class $AssetsImageGen {
   const $AssetsImageGen();
 
@@ -51,7 +137,13 @@ class $AssetsImageGen {
 class $AssetsSvgGen {
   const $AssetsSvgGen();
 
+  /// File path: assets/svg/app_logo.svg
+  SvgGenImage get appLogo => const SvgGenImage('assets/svg/app_logo.svg');
+
   $AssetsSvgFlagsGen get flags => const $AssetsSvgFlagsGen();
+
+  /// List of all assets
+  List<SvgGenImage> get values => [appLogo];
 }
 
 class $AssetsSvgFlagsGen {
@@ -75,6 +167,7 @@ class Assets {
 
   static const $AssetsImageGen image = $AssetsImageGen();
   static const $AssetsSvgGen svg = $AssetsSvgGen();
+  static const $GoogleFontsGen googleFonts = $GoogleFontsGen();
 }
 
 class AssetGenImage {
