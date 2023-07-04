@@ -247,7 +247,10 @@ class _OTPVerificationPageState extends State<OTPVerificationPage> {
                     textDirection: serviceLocator<LanguageController>().targetTextDirection,
                     children: [
                       const AnimatedGap(16, duration: Duration(milliseconds: 400)),
-                      const AppLogo(),
+                      Align(
+                        alignment: AlignmentDirectional.topStart,
+                        child: const AppLogo(),
+                      ),
                       const AnimatedGap(36, duration: Duration(milliseconds: 400)),
                       SizedBox(
                         child: Wrap(

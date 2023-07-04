@@ -127,12 +127,11 @@ class _PageView extends WidgetView<SplashPage, _SplashPageViewController> {
                             textDirection: serviceLocator<LanguageController>().targetTextDirection,
                             children: [
                               Text(
-                                'Your Business',
-                                style: GoogleFonts.raleway(
-                                  textStyle: context.headlineMedium!.copyWith(
-                                    fontWeight: FontWeight.bold,
-                                    height: 0.9,
-                                  ),
+                                'Your Business,',
+                                style: context.headlineMedium!.copyWith(
+                                  fontWeight: FontWeight.bold,
+                                  height: 0.9,
+                                  color: Colors.white,
                                 ),
                                 textDirection: serviceLocator<LanguageController>().targetTextDirection,
                               ).translate(),
@@ -143,12 +142,11 @@ class _PageView extends WidgetView<SplashPage, _SplashPageViewController> {
                             textDirection: serviceLocator<LanguageController>().targetTextDirection,
                             children: [
                               Text(
-                                'Our Services',
-                                style: GoogleFonts.raleway(
-                                  textStyle: context.headlineMedium!.copyWith(
-                                    fontWeight: FontWeight.bold,
-                                    height: 0.9,
-                                  ),
+                                'Our Services,',
+                                style: context.headlineMedium!.copyWith(
+                                  fontWeight: FontWeight.bold,
+                                  height: 0.9,
+                                  color: Colors.white,
                                 ),
                                 textDirection: serviceLocator<LanguageController>().targetTextDirection,
                               ).translate(),
@@ -161,11 +159,10 @@ class _PageView extends WidgetView<SplashPage, _SplashPageViewController> {
                               Text(
                                 'Stays Forever',
                                 textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                                style: GoogleFonts.raleway(
-                                  textStyle: context.headlineMedium!.copyWith(
-                                    fontWeight: FontWeight.bold,
-                                    height: 0.9,
-                                  ),
+                                style: context.headlineMedium!.copyWith(
+                                  fontWeight: FontWeight.bold,
+                                  height: 0.9,
+                                  color: Colors.white,
                                 ),
                               ).translate(),
                             ],
@@ -177,12 +174,11 @@ class _PageView extends WidgetView<SplashPage, _SplashPageViewController> {
                               Text(
                                 'Thank you for selecting to start business with us.',
                                 textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                                style: GoogleFonts.raleway(
-                                  textStyle: context.bodySmall!.copyWith(
-                                    fontWeight: FontWeight.w500,
-                                    height: 0.9,
-                                    fontStyle: FontStyle.italic,
-                                  ),
+                                style: context.bodySmall!.copyWith(
+                                  fontWeight: FontWeight.w500,
+                                  height: 0.9,
+                                  fontStyle: FontStyle.italic,
+                                  color: Colors.white,
                                 ),
                               ).translate(),
                             ],

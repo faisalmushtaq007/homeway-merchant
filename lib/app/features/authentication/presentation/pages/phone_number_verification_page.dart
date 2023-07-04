@@ -264,8 +264,8 @@ class _PhoneNumberVerificationPageState extends State<PhoneNumberVerificationPag
                                         withLabel: true,
                                         decoration: InputDecoration(
                                           labelText: 'Mobile number',
-                                          alignLabelWithHint: true,
-                                          //hintText: 'Mobile number',
+                                          //alignLabelWithHint: true,
+                                          hintText: 'Enter your mobile number',
                                           errorText: phoneValidation,
                                           suffixIcon: const PhoneNumberValidationIconWidget(),
                                           isDense: true,

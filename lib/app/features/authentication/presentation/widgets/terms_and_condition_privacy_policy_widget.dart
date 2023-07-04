@@ -18,7 +18,7 @@ class TermsConditionStatementWidget extends StatelessWidget {
     return Directionality(
       textDirection: serviceLocator<LanguageController>().targetTextDirection,
       child: Container(
-        alignment: AlignmentDirectional.centerStart,
+        alignment: AlignmentDirectional.center,
         //padding: const EdgeInsetsDirectional.only(top: 5, bottom: 18, left: 30, right: 30),
         child: Center(
           child: Text.rich(
