@@ -22,12 +22,11 @@ part 'app_routes.dart';
 
 class AppRouter {
   static final rootNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'root');
-  static final shellNavigatorKey =
-      GlobalKey<NavigatorState>(debugLabel: 'shell');
+  static final shellNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'shell');
 
   AppRouter._();
 
-  static const String INITIAL = Routes.AUTH_OTP_VERIFICATION;
+  static const String INITIAL = Routes.SPLASH;
 
   static final GoRouter _router = GoRouter(
     debugLogDiagnostics: true,
@@ -53,8 +52,7 @@ class AppRouter {
       GoRoute(
           path: Routes.AUTH_OTP_VERIFICATION,
           builder: (context, state) => OTPVerificationPage(
-                phoneNumber:
-                    '+966 56 135 6754', //jsonDecode(state.extra as String)['mobileNumber'].toString(),
+                phoneNumber: jsonDecode(state.extra as String)['mobileNumber'].toString(), //Testing purpose'+966 56 135 6754',
               )),
       GoRoute(
         path: Routes.TERMS_AND_CONDITIONS,
@@ -78,9 +76,7 @@ class AppRouter {
       ),
       GoRoute(
         path: Routes.UPLOAD_DOCUMENT_PAGE,
-        builder: (context, state) => UploadDocumentPage(
-            documentType: DocumentType.values
-                .byName(jsonDecode(state.extra as String)['documentType'])),
+        builder: (context, state) => UploadDocumentPage(documentType: DocumentType.values.byName(jsonDecode(state.extra as String)['documentType'])),
       ),
       GoRoute(
         path: Routes.ADDRESS_FORM_PAGE,

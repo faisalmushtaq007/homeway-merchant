@@ -100,6 +100,10 @@ class $GoogleFontsGen {
 class $AssetsImageGen {
   const $AssetsImageGen();
 
+  /// File path: assets/image/appBackground.jpg
+  AssetGenImage get appBackground =>
+      const AssetGenImage('assets/image/appBackground.jpg');
+
   /// File path: assets/image/document_upload.jpeg
   AssetGenImage get documentUpload =>
       const AssetGenImage('assets/image/document_upload.jpeg');
@@ -125,6 +129,7 @@ class $AssetsImageGen {
 
   /// List of all assets
   List<AssetGenImage> get values => [
+        appBackground,
         documentUpload,
         merchantOnboarding01,
         merchantOnboarding02,
@@ -142,8 +147,12 @@ class $AssetsSvgGen {
 
   $AssetsSvgFlagsGen get flags => const $AssetsSvgFlagsGen();
 
+  /// File path: assets/svg/splashbackground.svg
+  SvgGenImage get splashbackground =>
+      const SvgGenImage('assets/svg/splashbackground.svg');
+
   /// List of all assets
-  List<SvgGenImage> get values => [applogo];
+  List<SvgGenImage> get values => [applogo, splashbackground];
 }
 
 class $AssetsSvgFlagsGen {

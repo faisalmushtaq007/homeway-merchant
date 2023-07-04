@@ -14,6 +14,7 @@ import 'package:homemakers_merchant/bootup/injection_container.dart';
 import 'package:homemakers_merchant/config/translation/extension/string_extension.dart';
 import 'package:homemakers_merchant/config/translation/extension/text_extension.dart';
 import 'package:homemakers_merchant/config/translation/language_controller.dart';
+import 'package:homemakers_merchant/config/translation/widgets/language_selection_widget.dart';
 import 'package:homemakers_merchant/core/constants/global_app_constants.dart';
 import 'package:homemakers_merchant/core/extensions/app_extension.dart';
 import 'package:homemakers_merchant/gen/assets.gen.dart';
@@ -119,6 +120,8 @@ class _PhoneNumberVerificationPageState
             );
           },
           child: SlideInLeft(
+            key: const Key('phone-verification-slideinleft-widget'),
+            from: context.width - 10,
             child: PageBody(
               controller: scrollController,
               constraints: BoxConstraints(
@@ -129,6 +132,14 @@ class _PhoneNumberVerificationPageState
                 textDirection:
                     serviceLocator<LanguageController>().targetTextDirection,
                 children: [
+                  PositionedDirectional(
+                    top: kToolbarHeight / 2,
+                    end: 0,
+                    child: Padding(
+                      padding: EdgeInsetsDirectional.only(end: 14),
+                      child: LanguageSelectionWidget(),
+                    ),
+                  ),
                   PositionedDirectional(
                     top: kToolbarHeight + media.padding.top,
                     start: margins * 2.5,
@@ -264,28 +275,33 @@ class _PhoneNumberVerificationPageState
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
                                   Flexible(
-                                    child: PhoneNumberFieldWidget(
-                                      key:
-                                          const Key('user-phone-number-widget'),
-                                      isCountryChipPersistent: false,
-                                      outlineBorder: true,
-                                      shouldFormat: true,
-                                      useRtl: false,
-                                      withLabel: true,
-                                      decoration: InputDecoration(
-                                        labelText: 'Mobile number',
-                                        alignLabelWithHint: true,
-                                        //hintText: 'Mobile number',
-                                        errorText: phoneValidation,
-                                        suffixIcon:
-                                            const PhoneNumberValidationIconWidget(),
-                                        isDense: true,
+                                    child: Directionality(
+                                      textDirection:
+                                          serviceLocator<LanguageController>()
+                                              .targetTextDirection,
+                                      child: PhoneNumberFieldWidget(
+                                        key: const Key(
+                                            'user-phone-number-widget'),
+                                        isCountryChipPersistent: false,
+                                        outlineBorder: true,
+                                        shouldFormat: true,
+                                        useRtl: false,
+                                        withLabel: true,
+                                        decoration: InputDecoration(
+                                          labelText: 'Mobile number',
+                                          alignLabelWithHint: true,
+                                          //hintText: 'Mobile number',
+                                          errorText: phoneValidation,
+                                          suffixIcon:
+                                              const PhoneNumberValidationIconWidget(),
+                                          isDense: true,
+                                        ),
+                                        isAllowEmpty: false,
+                                        autofocus: false,
+                                        style: context.bodyLarge,
+                                        showFlagInInput: false,
+                                        countryCodeStyle: context.bodyLarge,
                                       ),
-                                      isAllowEmpty: false,
-                                      autofocus: false,
-                                      style: context.bodyLarge,
-                                      showFlagInInput: false,
-                                      countryCodeStyle: context.bodyLarge,
                                     ),
                                   ),
                                 ],
@@ -345,9 +361,19 @@ class _PhoneNumberVerificationPageState
                                           serviceLocator<LanguageController>()
                                               .targetTextDirection,
                                       children: [
-                                        Icon(Icons.check),
+                                        Icon(
+                                          Icons.check,
+                                          textDirection: serviceLocator<
+                                                  LanguageController>()
+                                              .targetTextDirection,
+                                        ),
                                         SizedBox(width: 4),
-                                        Text('Success!').translate()
+                                        Text(
+                                          'Success!',
+                                          textDirection: serviceLocator<
+                                                  LanguageController>()
+                                              .targetTextDirection,
+                                        ).translate()
                                       ],
                                     ),
                                   ),
@@ -356,13 +382,23 @@ class _PhoneNumberVerificationPageState
                                       //backgroundColor: Colors.red,
                                       foregroundColor: Colors.white,
                                     ),
-                                    widget: Text('Get OTP').translate(),
+                                    widget: Text(
+                                      'Get OTP',
+                                      textDirection:
+                                          serviceLocator<LanguageController>()
+                                              .targetTextDirection,
+                                    ).translate(),
                                   ),
 /*                            onPressed: () async => phoneNumberVerification ==
                                         PhoneNumberVerification.valid
                                     ? verifyPhoneNumber()
                                     : null,*/
-                                  child: Text('Get OTP').translate(),
+                                  child: Text(
+                                    'Get OTP',
+                                    textDirection:
+                                        serviceLocator<LanguageController>()
+                                            .targetTextDirection,
+                                  ).translate(),
                                   onPressed: phoneNumberVerification ==
                                           PhoneNumberVerification.valid
                                       ? verifyPhoneNumber
