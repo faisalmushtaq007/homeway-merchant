@@ -83,47 +83,51 @@ class _AddressFormPageState extends State<AddressFormPage>
             ),
           ],
         ),
-        body: AnimatedBuilder(
-          animation: _animationController,
-          builder: (BuildContext context, Widget? child) {
-            return Transform(
-              transform: Matrix4.translationValues(
-                _animation.value * width,
-                0.0,
-                0.0,
-              ),
-              child: Directionality(
-                textDirection:
-                    serviceLocator<LanguageController>().targetTextDirection,
-                child: PageBody(
-                  controller: scrollController,
-                  constraints: BoxConstraints(
-                    minWidth: double.infinity,
-                    minHeight: media.size.height,
-                  ),
-                  child: BlocBuilder<PermissionBloc, PermissionState>(
-                    bloc: context.read<PermissionBloc>(),
-                    buildWhen: (previous, current) => previous != current,
-                    builder: (context, state) {
-                      return ListView(
-                        controller: scrollController,
-                        shrinkWrap: true,
-                        padding: EdgeInsetsDirectional.only(
-                          start: margins * 2.5,
-                          end: margins * 2.5,
-                        ),
-                        children: const [
-                          Center(
-                            child: Text('New Screen'),
+        body: Directionality(
+          textDirection:
+              serviceLocator<LanguageController>().targetTextDirection,
+          child: AnimatedBuilder(
+            animation: _animationController,
+            builder: (BuildContext context, Widget? child) {
+              return Transform(
+                transform: Matrix4.translationValues(
+                  _animation.value * width,
+                  0.0,
+                  0.0,
+                ),
+                child: Directionality(
+                  textDirection:
+                      serviceLocator<LanguageController>().targetTextDirection,
+                  child: PageBody(
+                    controller: scrollController,
+                    constraints: BoxConstraints(
+                      minWidth: double.infinity,
+                      minHeight: media.size.height,
+                    ),
+                    child: BlocBuilder<PermissionBloc, PermissionState>(
+                      bloc: context.read<PermissionBloc>(),
+                      buildWhen: (previous, current) => previous != current,
+                      builder: (context, state) {
+                        return ListView(
+                          controller: scrollController,
+                          shrinkWrap: true,
+                          padding: EdgeInsetsDirectional.only(
+                            start: margins * 2.5,
+                            end: margins * 2.5,
                           ),
-                        ],
-                      );
-                    },
+                          children: const [
+                            Center(
+                              child: Text('New Screen'),
+                            ),
+                          ],
+                        );
+                      },
+                    ),
                   ),
                 ),
-              ),
-            );
-          },
+              );
+            },
+          ),
         ),
       ),
     );

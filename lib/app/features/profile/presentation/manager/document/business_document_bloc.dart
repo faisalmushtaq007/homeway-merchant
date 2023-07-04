@@ -41,7 +41,9 @@ class BusinessDocumentBloc
           (value) {},
           assetsStartUploading: (value) {},
           tradeLicenseNumberOnChanged: (value) {},
-          assetsRemove: (value) {},
+          assetsRemove: (value) {
+            _assetsRemove(value, emit);
+          },
           documentRemove: (value) {},
           saveAndNext: (value) {},
           back: (value) {
@@ -524,4 +526,7 @@ class BusinessDocumentBloc
       appLog.d(_text);
     }
   }
+
+  Future<void> _assetsRemove(
+      AssetsRemove value, Emitter<BusinessDocumentState> emit) async {}
 }

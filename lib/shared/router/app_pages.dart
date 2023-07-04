@@ -27,7 +27,7 @@ class AppRouter {
 
   AppRouter._();
 
-  static const String INITIAL = Routes.DOCUMENT_LIST_PAGE;
+  static const String INITIAL = Routes.AUTH_OTP_VERIFICATION;
 
   static final GoRouter _router = GoRouter(
     debugLogDiagnostics: true,
@@ -53,8 +53,8 @@ class AppRouter {
       GoRoute(
           path: Routes.AUTH_OTP_VERIFICATION,
           builder: (context, state) => OTPVerificationPage(
-                phoneNumber: jsonDecode(state.extra as String)['mobileNumber']
-                    .toString(),
+                phoneNumber:
+                    '+966 56 135 6754', //jsonDecode(state.extra as String)['mobileNumber'].toString(),
               )),
       GoRoute(
         path: Routes.TERMS_AND_CONDITIONS,

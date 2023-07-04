@@ -7,14 +7,22 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_libphonenumber/flutter_libphonenumber.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:go_router/go_router.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:homemakers_merchant/app/features/authentication/presentation/manager/phone_number_verification_bloc.dart';
 import 'package:homemakers_merchant/app/features/authentication/presentation/widgets/terms_and_condition_privacy_policy_widget.dart';
+import 'package:homemakers_merchant/bootup/injection_container.dart';
 import 'package:homemakers_merchant/config/translation/extension/string_extension.dart';
+import 'package:homemakers_merchant/config/translation/extension/text_extension.dart';
+import 'package:homemakers_merchant/config/translation/language_controller.dart';
 import 'package:homemakers_merchant/core/constants/global_app_constants.dart';
 import 'package:homemakers_merchant/core/extensions/app_extension.dart';
+import 'package:homemakers_merchant/gen/assets.gen.dart';
 import 'package:homemakers_merchant/shared/router/app_pages.dart';
 import 'package:homemakers_merchant/shared/widgets/app/page_body.dart';
+import 'package:homemakers_merchant/shared/widgets/universal/animate_do/animate_do.dart';
+import 'package:homemakers_merchant/shared/widgets/universal/animated_gap/src/widgets/animated_gap.dart';
 import 'package:homemakers_merchant/shared/widgets/universal/async_button/async_button.dart';
+import 'package:homemakers_merchant/shared/widgets/universal/constrained_scrollable_views/constrained_scrollable_views.dart';
 import 'package:homemakers_merchant/shared/widgets/universal/nil/src/nil.dart';
 import 'package:homemakers_merchant/shared/widgets/universal/phone_number_text_field/phone_form_field_bloc.dart';
 import 'package:homemakers_merchant/shared/widgets/universal/phone_number_text_field/phonenumber_form_field_widget.dart';
@@ -30,12 +38,15 @@ class PhoneNumberVerificationPage extends StatefulWidget {
 }
 
 class _PhoneNumberVerificationPageState
-    extends State<PhoneNumberVerificationPage> {
+    extends State<PhoneNumberVerificationPage>
+    with SingleTickerProviderStateMixin {
   late final ScrollController scrollController;
+  late AnimationController _animationController;
+  late Animation<double> _animation;
 
   // Local PhoneController variables
   String? phoneValidation;
-  final requestOTPFormKey = GlobalKey<FormState>();
+  static final requestOTPFormKey = GlobalKey<FormState>();
 
   // Button Controller
   AsyncBtnStatesController phoneNumberVerificationButtonController =
@@ -48,12 +59,24 @@ class _PhoneNumberVerificationPageState
   @override
   void initState() {
     scrollController = ScrollController();
+    _animationController = AnimationController(
+      vsync: this,
+      duration: Duration(seconds: 2),
+    );
+    _animation = Tween<double>(begin: -1, end: 0).animate(
+      CurvedAnimation(
+        parent: _animationController,
+        curve: Curves.fastOutSlowIn,
+      ),
+    );
+    _animationController.forward();
     super.initState();
   }
 
   @override
   void dispose() {
     scrollController.dispose();
+    _animationController.dispose();
     super.dispose();
   }
 
@@ -76,196 +99,285 @@ class _PhoneNumberVerificationPageState
             //LanguageSelectionButton(),
           ],
         ),*/
-        body: PageBody(
-          controller: scrollController,
-          constraints: BoxConstraints(
-            minWidth: double.infinity,
-            minHeight: media.size.height,
-          ),
-          child: Form(
-            key: requestOTPFormKey,
-            child: BlocListener<PhoneNumberVerificationBloc,
-                PhoneNumberVerificationState>(
-              bloc: context.read<PhoneNumberVerificationBloc>(),
-              listenWhen: (previous, current) => previous != current,
-              listener: (context, state) {
-                state.maybeWhen(
-                  orElse: () {},
-                  success: (phoneNumberVerification,
-                      phoneNumber,
-                      countryDialCode,
-                      country,
-                      phoneController,
-                      asyncBtnState) {
-                    context.go(
-                      Routes.AUTH_OTP_VERIFICATION,
-                      extra: jsonEncode(
-                        {'mobileNumber': phoneNumber},
-                      ),
-                    );
-                    return;
-                  },
+        body: BlocListener<PhoneNumberVerificationBloc,
+            PhoneNumberVerificationState>(
+          bloc: context.read<PhoneNumberVerificationBloc>(),
+          listenWhen: (previous, current) => previous != current,
+          listener: (context, state) {
+            state.maybeWhen(
+              orElse: () {},
+              success: (phoneNumberVerification, phoneNumber, countryDialCode,
+                  country, phoneController, asyncBtnState) {
+                context.go(
+                  Routes.AUTH_OTP_VERIFICATION,
+                  extra: jsonEncode(
+                    {'mobileNumber': phoneNumber},
+                  ),
                 );
+                return;
               },
-              child: BlocBuilder<PhoneNumberVerificationBloc,
-                  PhoneNumberVerificationState>(
-                bloc: context.read<PhoneNumberVerificationBloc>(),
-                buildWhen: (previous, current) => previous != current,
-                builder: (context, state) {
-                  state.maybeWhen(
-                    validatePhoneNumber: (
-                      phoneNumber,
-                      countryDialCode,
-                      country,
-                      phoneNumberInputValidator,
-                      phoneValidation,
-                      enteredPhoneNumber,
-                      phoneNumberVerification,
-                      phoneController,
-                    ) {
-                      userEnteredPhoneNumber = phoneNumber;
-                      this.phoneController = phoneController;
-                      this.phoneNumberVerification = phoneNumberVerification;
-                      if (phoneNumberVerification ==
-                          PhoneNumberVerification.valid) {
-                        this.phoneValidation = phoneValidation;
-                      } else if (phoneNumberVerification ==
-                          PhoneNumberVerification.invalid) {
-                        this.phoneValidation = phoneValidation;
-                      } else {
-                        //phoneNumberVerificationButtonController.update(AsyncBtnState.idle)
-                      }
-                    },
-                    orElse: () {},
-                  );
-                  return Container(
-                    margin: EdgeInsetsDirectional.fromSTEB(
-                      margins * 2.5,
-                      topPadding,
-                      margins * 2.5,
-                      bottomPadding,
+            );
+          },
+          child: SlideInLeft(
+            child: PageBody(
+              controller: scrollController,
+              constraints: BoxConstraints(
+                minWidth: double.infinity,
+                minHeight: media.size.height,
+              ),
+              child: Stack(
+                textDirection:
+                    serviceLocator<LanguageController>().targetTextDirection,
+                children: [
+                  PositionedDirectional(
+                    top: kToolbarHeight + media.padding.top,
+                    start: margins * 2.5,
+                    //end: margins * 2.5,
+                    child: SizedBox(
+                      width: 96,
+                      height: 80,
+                      child: Assets.svg.applogo.svg(
+                        alignment: AlignmentDirectional.topStart,
+                      ),
                     ),
-                    height: context.height,
-                    width: double.infinity,
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsetsDirectional.only(bottom: 32),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                'Join us',
-                                style: context.headlineMedium,
-                              ),
-                            ],
+                  ),
+                  BlocBuilder<PhoneNumberVerificationBloc,
+                      PhoneNumberVerificationState>(
+                    bloc: context.read<PhoneNumberVerificationBloc>(),
+                    buildWhen: (previous, current) => previous != current,
+                    builder: (context, state) {
+                      state.maybeWhen(
+                        validatePhoneNumber: (
+                          phoneNumber,
+                          countryDialCode,
+                          country,
+                          phoneNumberInputValidator,
+                          phoneValidation,
+                          enteredPhoneNumber,
+                          phoneNumberVerification,
+                          phoneController,
+                        ) {
+                          userEnteredPhoneNumber = phoneNumber;
+                          this.phoneController = phoneController;
+                          this.phoneNumberVerification =
+                              phoneNumberVerification;
+                          if (phoneNumberVerification ==
+                              PhoneNumberVerification.valid) {
+                            this.phoneValidation = phoneValidation;
+                          } else if (phoneNumberVerification ==
+                              PhoneNumberVerification.invalid) {
+                            this.phoneValidation = phoneValidation;
+                          } else {
+                            //phoneNumberVerificationButtonController.update(AsyncBtnState.idle)
+                          }
+                        },
+                        orElse: () {},
+                      );
+                      return Form(
+                        key: requestOTPFormKey,
+                        child: Container(
+                          margin: EdgeInsetsDirectional.fromSTEB(
+                            margins * 2.5,
+                            topPadding * 1.75,
+                            margins * 2.5,
+                            bottomPadding,
                           ),
-                        ),
-                        /*Padding(
-                          padding: const EdgeInsetsDirectional.only(top: 12, bottom: 8),
-                          child: Row(
+                          height: context.height,
+                          width: double.infinity,
+                          child: ScrollableColumn(
+                            mainAxisSize: MainAxisSize.min,
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
                             children: [
-                              Text(
-                                'Enter your phone number',
-                                style: context.labelLarge,
-                              ),
-                            ],
-                          ),
-                        ),
-                        const SizedBox(height: 8),*/
-                        Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Flexible(
-                              child: PhoneNumberFieldWidget(
-                                key: const Key('user-phone-number-widget'),
-                                isCountryChipPersistent: false,
-                                outlineBorder: true,
-                                shouldFormat: true,
-                                useRtl: false,
-                                withLabel: true,
-                                decoration: InputDecoration(
-                                  labelText: 'Mobile number',
-                                  alignLabelWithHint: true,
-                                  //hintText: 'Mobile number',
-                                  errorText: phoneValidation,
-                                  suffixIcon:
-                                      const PhoneNumberValidationIconWidget(),
-                                  isDense: true,
-                                ),
-                                isAllowEmpty: false,
-                                autofocus: false,
-                                style: context.bodyLarge,
-                                showFlagInInput: false,
-                                countryCodeStyle: context.bodyLarge,
-                              ),
-                            ),
-                          ],
-                        ),
-
-                        const SizedBox(height: 32),
-                        //const Spacer(),
-                        SizedBox(
-                          width: context.width,
-                          child: AsyncElevatedBtn(
-                            asyncBtnStatesController:
-                                phoneNumberVerificationButtonController,
-                            key: const Key(
-                                'phone-number_verification-button-key'),
-                            /*style: ElevatedButton.styleFrom(
-                              disabledBackgroundColor: ,
-                              disabledForegroundColor: ,
-                            ),*/
-                            loadingStyle: AsyncBtnStateStyle(
-                              style: ElevatedButton.styleFrom(
-                                  //backgroundColor: Colors.amber,
-                                  ),
-                              widget: const SizedBox.square(
-                                dimension: 24,
-                                child: CircularProgressIndicator(
-                                  color: Colors.white,
+                              Padding(
+                                padding:
+                                    const EdgeInsetsDirectional.only(bottom: 8),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  textDirection:
+                                      serviceLocator<LanguageController>()
+                                          .targetTextDirection,
+                                  children: [
+                                    Text(
+                                      'Hi,',
+                                      style: GoogleFonts.raleway(
+                                        textStyle:
+                                            context.headlineLarge!.copyWith(
+                                          fontWeight: FontWeight.bold,
+                                          height: 0.9,
+                                          fontSize: 45,
+                                          color:
+                                              Color.fromRGBO(255, 125, 113, 1),
+                                        ),
+                                      ),
+                                      textDirection:
+                                          serviceLocator<LanguageController>()
+                                              .targetTextDirection,
+                                    ),
+                                  ],
                                 ),
                               ),
-                            ),
-                            successStyle: AsyncBtnStateStyle(
-                              style: ElevatedButton.styleFrom(
-                                //backgroundColor: Colors.green,
-                                foregroundColor: Colors.white,
+                              Padding(
+                                padding: const EdgeInsetsDirectional.only(
+                                    bottom: 40),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  textDirection:
+                                      serviceLocator<LanguageController>()
+                                          .targetTextDirection,
+                                  children: [
+                                    Text(
+                                      'Again.',
+                                      style: GoogleFonts.raleway(
+                                        textStyle:
+                                            context.headlineLarge!.copyWith(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 45,
+                                          height: 0.9,
+                                          color: Color.fromRGBO(42, 45, 50, 1),
+                                        ),
+                                      ),
+                                      textDirection:
+                                          serviceLocator<LanguageController>()
+                                              .targetTextDirection,
+                                    ),
+                                  ],
+                                ),
                               ),
-                              widget: const Row(
-                                mainAxisSize: MainAxisSize.min,
+                              /*Padding(
+                              padding: const EdgeInsetsDirectional.only(top: 12, bottom: 8),
+                              child: Row(
                                 children: [
-                                  Icon(Icons.check),
-                                  SizedBox(width: 4),
-                                  Text('Success!')
+                                  Text(
+                                    'Enter your phone number',
+                                    style: context.labelLarge,
+                                  ),
                                 ],
                               ),
                             ),
-                            failureStyle: AsyncBtnStateStyle(
-                              style: ElevatedButton.styleFrom(
-                                //backgroundColor: Colors.red,
-                                foregroundColor: Colors.white,
+                            const SizedBox(height: 8),*/
+
+                              Row(
+                                textDirection:
+                                    serviceLocator<LanguageController>()
+                                        .targetTextDirection,
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Flexible(
+                                    child: PhoneNumberFieldWidget(
+                                      key:
+                                          const Key('user-phone-number-widget'),
+                                      isCountryChipPersistent: false,
+                                      outlineBorder: true,
+                                      shouldFormat: true,
+                                      useRtl: false,
+                                      withLabel: true,
+                                      decoration: InputDecoration(
+                                        labelText: 'Mobile number',
+                                        alignLabelWithHint: true,
+                                        //hintText: 'Mobile number',
+                                        errorText: phoneValidation,
+                                        suffixIcon:
+                                            const PhoneNumberValidationIconWidget(),
+                                        isDense: true,
+                                      ),
+                                      isAllowEmpty: false,
+                                      autofocus: false,
+                                      style: context.bodyLarge,
+                                      showFlagInInput: false,
+                                      countryCodeStyle: context.bodyLarge,
+                                    ),
+                                  ),
+                                ],
                               ),
-                              widget: Text('Get OTP'.tr()),
-                            ),
+                              const AnimatedGap(18,
+                                  duration: Duration(milliseconds: 400)),
+                              Wrap(
+                                textDirection:
+                                    serviceLocator<LanguageController>()
+                                        .targetTextDirection,
+                                children: [
+                                  Text(
+                                    'A 6 digit OTP will be sent via SMS to verify your mobile number',
+                                    style: context.labelMedium!.copyWith(
+                                      color: Color.fromRGBO(127, 129, 132, 1),
+                                    ),
+                                    textDirection:
+                                        serviceLocator<LanguageController>()
+                                            .targetTextDirection,
+                                  ),
+                                ],
+                              ),
+                              const AnimatedGap(32,
+                                  duration: Duration(milliseconds: 400)),
+                              //const Spacer(),
+                              SizedBox(
+                                width: context.width,
+                                child: AsyncElevatedBtn(
+                                  asyncBtnStatesController:
+                                      phoneNumberVerificationButtonController,
+                                  key: const Key(
+                                      'phone-number_verification-button-key'),
+                                  style: ElevatedButton.styleFrom(
+                                    disabledBackgroundColor:
+                                        Color.fromRGBO(255, 219, 208, 1),
+                                    disabledForegroundColor: Colors.white,
+                                  ),
+                                  loadingStyle: AsyncBtnStateStyle(
+                                    style: ElevatedButton.styleFrom(
+                                        //backgroundColor: Colors.amber,
+                                        ),
+                                    widget: const SizedBox.square(
+                                      dimension: 24,
+                                      child: CircularProgressIndicator(
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                  ),
+                                  successStyle: AsyncBtnStateStyle(
+                                    style: ElevatedButton.styleFrom(
+                                      //backgroundColor: Colors.green,
+                                      foregroundColor: Colors.white,
+                                    ),
+                                    widget: Row(
+                                      mainAxisSize: MainAxisSize.min,
+                                      textDirection:
+                                          serviceLocator<LanguageController>()
+                                              .targetTextDirection,
+                                      children: [
+                                        Icon(Icons.check),
+                                        SizedBox(width: 4),
+                                        Text('Success!').translate()
+                                      ],
+                                    ),
+                                  ),
+                                  failureStyle: AsyncBtnStateStyle(
+                                    style: ElevatedButton.styleFrom(
+                                      //backgroundColor: Colors.red,
+                                      foregroundColor: Colors.white,
+                                    ),
+                                    widget: Text('Get OTP').translate(),
+                                  ),
 /*                            onPressed: () async => phoneNumberVerification ==
-                                    PhoneNumberVerification.valid
-                                ? verifyPhoneNumber()
-                                : null,*/
-                            child: Text('Get OTP'.tr()),
-                            onPressed: phoneNumberVerification ==
-                                    PhoneNumberVerification.valid
-                                ? verifyPhoneNumber
-                                : null,
+                                        PhoneNumberVerification.valid
+                                    ? verifyPhoneNumber()
+                                    : null,*/
+                                  child: Text('Get OTP').translate(),
+                                  onPressed: phoneNumberVerification ==
+                                          PhoneNumberVerification.valid
+                                      ? verifyPhoneNumber
+                                      : null,
+                                ),
+                              ),
+                              const SizedBox(height: 32),
+                              const TermsConditionStatementWidget(),
+                            ],
                           ),
                         ),
-                        const SizedBox(height: 32),
-                        const TermsConditionStatementWidget(),
-                      ],
-                    ),
-                  );
-                },
+                      );
+                    },
+                  ),
+                ],
               ),
             ),
           ),

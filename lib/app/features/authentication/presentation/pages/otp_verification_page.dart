@@ -3,10 +3,17 @@ import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:homemakers_merchant/bootup/injection_container.dart';
+import 'package:homemakers_merchant/config/translation/language_controller.dart';
 import 'package:homemakers_merchant/core/constants/global_app_constants.dart';
 import 'package:homemakers_merchant/core/extensions/app_extension.dart';
+import 'package:homemakers_merchant/gen/assets.gen.dart';
 import 'package:homemakers_merchant/shared/widgets/app/page_body.dart';
+import 'package:homemakers_merchant/shared/widgets/universal/animate_do/animate_do.dart';
+import 'package:homemakers_merchant/shared/widgets/universal/animated_gap/gap.dart';
 import 'package:homemakers_merchant/shared/widgets/universal/async_button/async_button.dart';
+import 'package:homemakers_merchant/shared/widgets/universal/constrained_scrollable_views/constrained_scrollable_views.dart';
 import 'package:homemakers_merchant/utils/app_log.dart';
 import 'package:pinput/pinput.dart';
 
@@ -26,17 +33,18 @@ class _OTPVerificationPageState extends State<OTPVerificationPage> {
   bool isVerifyEnabled = false;
   int countdown = 30;
   late Timer countdownTimer;
+
   // Button Controller
   AsyncBtnStatesController otpVerificationButtonController =
       AsyncBtnStatesController();
-  final verifyOTPFormKey = GlobalKey<FormState>();
+  static final verifyOTPFormKey = GlobalKey<FormState>();
   final otpFocusNode = FocusNode();
+
   // Error text
-  late String otpErrorText;
+  String? otpErrorText;
 
   @override
   void initState() {
-    otpErrorText = '';
     super.initState();
     scrollController = ScrollController();
     // Start the countdown timer
@@ -172,8 +180,8 @@ class _OTPVerificationPageState extends State<OTPVerificationPage> {
 
     final submittedPinTheme = defaultPinTheme.copyWith(
       decoration: defaultPinTheme.decoration?.copyWith(
-        color: const Color.fromRGBO(234, 239, 243, 1),
-      ),
+          color: const Color.fromRGBO(215, 243, 227, 1),
+          border: Border.all(color: Color.fromRGBO(69, 201, 125, 1.0))),
     );
     final errorPinTheme = defaultPinTheme.copyWith(
       decoration: BoxDecoration(
@@ -189,124 +197,186 @@ class _OTPVerificationPageState extends State<OTPVerificationPage> {
         opacity: 0.60,
       ),
       child: PlatformScaffold(
+        material: (context, platform) {
+          return MaterialScaffoldData(
+            resizeToAvoidBottomInset: false,
+          );
+        },
+        cupertino: (context, platform) {
+          return CupertinoPageScaffoldData(
+            resizeToAvoidBottomInset: false,
+          );
+        },
         appBar: PlatformAppBar(
-          title: const Text('OTP Verification'),
+          title: const Text('Phone Verification'),
         ),
-        body: PageBody(
-          controller: scrollController,
-          constraints: const BoxConstraints(
-            minWidth: double.infinity,
-            minHeight: double.infinity,
-          ),
-          child: Form(
-            child: ListView(
-              controller: scrollController,
-              padding: EdgeInsetsDirectional.fromSTEB(
-                margins * 2.5,
-                topPadding,
-                margins * 2.5,
-                bottomPadding,
-              ),
-              children: [
-                Container(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Flexible(
-                        child: Text(
-                          widget.phoneNumber,
-                          style: Theme.of(context).textTheme.titleLarge,
-                        ),
-                      ),
-                      Transform.translate(
-                        offset: Offset(-8, -2),
-                        child: IconButton(
-                          onPressed: () {
-                            //editPhoneNumber();
-
-                            return;
-                          },
-                          icon: Icon(Icons.edit_outlined, size: 20),
-                        ),
-                      ),
-                    ],
-                  ),
+        body: SlideInLeft(
+          key: const Key('otp-verification-slideinleft-widget'),
+          from: context.width - 10,
+          child: PageBody(
+            key: const Key('otp-verification-page-body-widget'),
+            controller: scrollController,
+            constraints: const BoxConstraints(
+              minWidth: double.infinity,
+              minHeight: double.infinity,
+            ),
+            child: Form(
+              key: verifyOTPFormKey,
+              child: Container(
+                margin: EdgeInsetsDirectional.fromSTEB(
+                  margins * 2.5,
+                  topPadding,
+                  margins * 2.5,
+                  bottomPadding,
                 ),
-                SizedBox(height: 24),
-                Row(
+                height: context.height,
+                width: double.infinity,
+                child: ScrollableColumn(
+                  flexible: false,
                   mainAxisSize: MainAxisSize.min,
                   mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    Text(
-                      'Enter the OTP',
-                      style: Theme.of(context).textTheme.bodyLarge,
+                    const AnimatedGap(16,
+                        duration: Duration(milliseconds: 400)),
+                    SizedBox(
+                      width: 96,
+                      height: 56,
+                      child: Assets.svg.applogo.svg(
+                        alignment: AlignmentDirectional.topStart,
+                      ),
                     ),
-                  ],
-                ),
-                Padding(
-                  padding:
-                      const EdgeInsetsDirectional.symmetric(horizontal: 16),
-                  child: Pinput(
-                    length: 6,
-                    controller: otpController,
-                    focusNode: otpFocusNode,
-                    androidSmsAutofillMethod:
-                        AndroidSmsAutofillMethod.smsUserConsentApi,
-                    listenForMultipleSmsOnAndroid: true,
-                    hapticFeedbackType: HapticFeedbackType.lightImpact,
-                    autofocus: true,
-                    defaultPinTheme: defaultPinTheme,
-                    focusedPinTheme: focusedPinTheme,
-                    submittedPinTheme: submittedPinTheme,
-                    errorPinTheme: errorPinTheme,
-                    validator: (otpValue) {
-                      return otpErrorText;
-                    },
-                    pinputAutovalidateMode: PinputAutovalidateMode.onSubmit,
-                    showCursor: true,
-                    onCompleted: (pin) {
-                      debugPrint('OTP onCompleted: pin');
-                    },
-                    onChanged: (value) {
-                      debugPrint('OTP onChanged: $value');
-                    },
-                    errorText: otpErrorText,
-                  ),
-                ),
-                SizedBox(height: 16),
-                Text(
-                  'OTP will expire in $countdown seconds',
-                  style: TextStyle(fontSize: 16),
-                ),
-                SizedBox(height: 16),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    TextButton(
-                      child: Text('Resend OTP'),
-                      onPressed: isResendEnabled ? () => resendOTP() : null,
+                    const AnimatedGap(36,
+                        duration: Duration(milliseconds: 400)),
+                    SizedBox(
+                      child: Wrap(
+                        alignment: WrapAlignment.start,
+                        crossAxisAlignment: WrapCrossAlignment.center,
+                        children: [
+                          Text(
+                            'Enter verification code',
+                            style: Theme.of(context)
+                                .textTheme
+                                .headlineMedium!
+                                .copyWith(fontWeight: FontWeight.w600),
+                          ),
+                        ],
+                      ),
                     ),
-                    SizedBox(width: 16),
-                    AsyncElevatedBtn(
-                      asyncBtnStatesController: otpVerificationButtonController,
-                      onPressed: () async {
-                        if (verifyOTPFormKey.currentState!.validate()) {
-                          appLog.d('OTP Validate');
-                          verifyOTPFormKey.currentState?.save();
+                    const AnimatedGap(4, duration: Duration(milliseconds: 400)),
+                    SizedBox(
+                      child: Wrap(
+                        alignment: WrapAlignment.start,
+                        crossAxisAlignment: WrapCrossAlignment.center,
+                        children: [
+                          Text(
+                            'We\'ve sent an OTP code to ${widget.phoneNumber}',
+                            style: Theme.of(context).textTheme.labelLarge,
+                          ),
+                        ],
+                      ),
+                    ),
+                    const AnimatedGap(16,
+                        duration: Duration(milliseconds: 400)),
+                    Pinput(
+                      length: 6,
+                      controller: otpController,
+                      focusNode: otpFocusNode,
+                      androidSmsAutofillMethod:
+                          AndroidSmsAutofillMethod.smsUserConsentApi,
+                      listenForMultipleSmsOnAndroid: true,
+                      hapticFeedbackType: HapticFeedbackType.lightImpact,
+                      autofocus: true,
+                      defaultPinTheme: defaultPinTheme,
+                      focusedPinTheme: focusedPinTheme,
+                      submittedPinTheme: submittedPinTheme,
+                      errorPinTheme: errorPinTheme,
+                      forceErrorState: otpErrorText != null ? true : false,
+                      validator: (otpValue) {
+                        if (otpValue == null ||
+                            otpValue.isEmpty ||
+                            !validateOTP(otpValue)) {
+                          otpErrorText = 'Enter the OTP code';
+                          return 'Enter the OTP code';
                         } else {
-                          appLog.d('OTP Invalid');
+                          otpErrorText = null;
+                          return null;
                         }
-                        //context.read<PhoneNumberVerificationBloc>().add(VerifyPhoneNumber(),);
-                        return;
                       },
-                      child: Text('Verify OTP'),
+                      pinputAutovalidateMode: PinputAutovalidateMode.onSubmit,
+                      showCursor: true,
+                      onCompleted: (pin) {
+                        debugPrint('OTP onCompleted: pin');
+                      },
+                      onChanged: (value) {
+                        debugPrint('OTP onChanged: $value');
+                      },
+                      errorText: otpErrorText,
+                    ),
+                    const AnimatedGap(16,
+                        duration: Duration(milliseconds: 400)),
+                    AnimatedCrossFade(
+                      duration: const Duration(milliseconds: 700),
+                      crossFadeState: isResendEnabled
+                          ? CrossFadeState.showSecond
+                          : CrossFadeState.showFirst,
+                      firstChild: Text(
+                        'OTP will expire in $countdown seconds',
+                        style: context.labelLarge!.copyWith(),
+                      ),
+                      secondChild: Wrap(
+                        children: [
+                          Text(
+                            "Didn't received the OTP? ",
+                            style: context.labelLarge!.copyWith(),
+                          ),
+                          InkWell(
+                            onTap: isResendEnabled ? () => resendOTP() : null,
+                            child: Text(
+                              'Resend OTP',
+                              style: context.labelLarge!.copyWith(
+                                color: context.primaryColor,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    const AnimatedGap(20,
+                        duration: Duration(milliseconds: 400)),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Expanded(
+                          child: AsyncElevatedBtn(
+                            asyncBtnStatesController:
+                                otpVerificationButtonController,
+                            onPressed: () async {
+                              if (verifyOTPFormKey.currentState!.validate()) {
+                                appLog.d('OTP Validate');
+                                verifyOTPFormKey.currentState?.save();
+                                if (otpController.value.text == '123456') {
+                                  // OTP is valid
+                                  otpErrorText = null;
+                                  setState(() {});
+                                } else {
+                                  setState(() {
+                                    otpErrorText = 'OTP is invalid';
+                                  });
+                                }
+                              }
+                              //context.read<PhoneNumberVerificationBloc>().add(VerifyPhoneNumber(),);
+                              return;
+                            },
+                            child: Text('Verify OTP'),
+                          ),
+                        ),
+                      ],
                     ),
                   ],
                 ),
-              ],
+              ),
             ),
           ),
         ),
