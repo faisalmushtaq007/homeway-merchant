@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:homemakers_merchant/config/translation/widgets/language_selection_widget.dart';
 
-class OnBoardingNavigationBar extends StatelessWidget
-    implements ObstructingPreferredSizeWidget {
+class OnBoardingNavigationBar extends StatelessWidget implements ObstructingPreferredSizeWidget {
   final int currentPage;
   final Function onSkip;
   final int totalPage;
@@ -41,31 +41,38 @@ class OnBoardingNavigationBar extends StatelessWidget
       automaticallyImplyLeading: false,
       leading: leading,
       middle: middle,
-      trailing: currentPage == totalPage - 1
-          ? finishButton == null
-              ? SizedBox.shrink()
-              : Container(
-                  color: Colors.transparent,
-                  child: TextButton(
-                    onPressed: () => onFinish?.call(),
-                    child: finishButton!,
+      trailing: Row(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          const LanguageSelectionWidget(),
+          if (currentPage == totalPage - 1)
+            finishButton == null
+                ? SizedBox.shrink()
+                : Container(
+                    color: Colors.transparent,
+                    child: TextButton(
+                      onPressed: () => onFinish?.call(),
+                      child: finishButton!,
+                    ),
+                  )
+          else
+            skipTextButton == null
+                ? SizedBox.shrink()
+                : Container(
+                    color: Colors.transparent,
+                    child: TextButton(
+                      onPressed: () {
+                        if (skipFunctionOverride == null) {
+                          onSkip();
+                        } else {
+                          skipFunctionOverride!();
+                        }
+                      },
+                      child: skipTextButton!,
+                    ),
                   ),
-                )
-          : skipTextButton == null
-              ? SizedBox.shrink()
-              : Container(
-                  color: Colors.transparent,
-                  child: TextButton(
-                    onPressed: () {
-                      if (skipFunctionOverride == null) {
-                        onSkip();
-                      } else {
-                        skipFunctionOverride!();
-                      }
-                    },
-                    child: skipTextButton!,
-                  ),
-                ),
+        ],
+      ),
       border: Border(
         bottom: BorderSide(color: Colors.transparent),
       ),

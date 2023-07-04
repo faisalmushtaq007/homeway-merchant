@@ -10,6 +10,7 @@ import 'package:homemakers_merchant/config/translation/widgets/language_selectio
 import 'package:homemakers_merchant/core/constants/global_app_constants.dart';
 import 'package:homemakers_merchant/core/extensions/app_extension.dart';
 import 'package:homemakers_merchant/gen/assets.gen.dart';
+import 'package:homemakers_merchant/shared/widgets/app/app_logo.dart';
 import 'package:homemakers_merchant/shared/widgets/app/page_body.dart';
 import 'package:homemakers_merchant/shared/widgets/universal/animate_do/animate_do.dart';
 import 'package:homemakers_merchant/shared/widgets/universal/animated_gap/gap.dart';
@@ -36,8 +37,7 @@ class _OTPVerificationPageState extends State<OTPVerificationPage> {
   late Timer countdownTimer;
 
   // Button Controller
-  AsyncBtnStatesController otpVerificationButtonController =
-      AsyncBtnStatesController();
+  AsyncBtnStatesController otpVerificationButtonController = AsyncBtnStatesController();
   static final verifyOTPFormKey = GlobalKey<FormState>();
   final otpFocusNode = FocusNode();
 
@@ -180,9 +180,8 @@ class _OTPVerificationPageState extends State<OTPVerificationPage> {
     );
 
     final submittedPinTheme = defaultPinTheme.copyWith(
-      decoration: defaultPinTheme.decoration?.copyWith(
-          color: const Color.fromRGBO(215, 243, 227, 1),
-          border: Border.all(color: Color.fromRGBO(69, 201, 125, 1.0))),
+      decoration:
+          defaultPinTheme.decoration?.copyWith(color: const Color.fromRGBO(215, 243, 227, 1), border: Border.all(color: Color.fromRGBO(69, 201, 125, 1.0))),
     );
     final errorPinTheme = defaultPinTheme.copyWith(
       decoration: BoxDecoration(
@@ -245,20 +244,11 @@ class _OTPVerificationPageState extends State<OTPVerificationPage> {
                     mainAxisSize: MainAxisSize.min,
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.stretch,
-                    textDirection: serviceLocator<LanguageController>()
-                        .targetTextDirection,
+                    textDirection: serviceLocator<LanguageController>().targetTextDirection,
                     children: [
-                      const AnimatedGap(16,
-                          duration: Duration(milliseconds: 400)),
-                      SizedBox(
-                        width: 96,
-                        height: 56,
-                        child: Assets.svg.applogo.svg(
-                          alignment: AlignmentDirectional.topStart,
-                        ),
-                      ),
-                      const AnimatedGap(36,
-                          duration: Duration(milliseconds: 400)),
+                      const AnimatedGap(16, duration: Duration(milliseconds: 400)),
+                      const AppLogo(),
+                      const AnimatedGap(36, duration: Duration(milliseconds: 400)),
                       SizedBox(
                         child: Wrap(
                           alignment: WrapAlignment.start,
@@ -266,19 +256,13 @@ class _OTPVerificationPageState extends State<OTPVerificationPage> {
                           children: [
                             Text(
                               'Enter verification code',
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .headlineMedium!
-                                  .copyWith(fontWeight: FontWeight.w600),
-                              textDirection:
-                                  serviceLocator<LanguageController>()
-                                      .targetTextDirection,
+                              style: Theme.of(context).textTheme.headlineMedium!.copyWith(fontWeight: FontWeight.w600),
+                              textDirection: serviceLocator<LanguageController>().targetTextDirection,
                             ),
                           ],
                         ),
                       ),
-                      const AnimatedGap(4,
-                          duration: Duration(milliseconds: 400)),
+                      const AnimatedGap(4, duration: Duration(milliseconds: 400)),
                       SizedBox(
                         child: Wrap(
                           alignment: WrapAlignment.start,
@@ -287,24 +271,19 @@ class _OTPVerificationPageState extends State<OTPVerificationPage> {
                             Text(
                               "We've sent an OTP code to ${widget.phoneNumber}",
                               style: Theme.of(context).textTheme.labelLarge,
-                              textDirection:
-                                  serviceLocator<LanguageController>()
-                                      .targetTextDirection,
+                              textDirection: serviceLocator<LanguageController>().targetTextDirection,
                             ),
                           ],
                         ),
                       ),
-                      const AnimatedGap(16,
-                          duration: Duration(milliseconds: 400)),
+                      const AnimatedGap(16, duration: Duration(milliseconds: 400)),
                       Directionality(
-                        textDirection: serviceLocator<LanguageController>()
-                            .targetTextDirection,
+                        textDirection: serviceLocator<LanguageController>().targetTextDirection,
                         child: Pinput(
                           length: 6,
                           controller: otpController,
                           focusNode: otpFocusNode,
-                          androidSmsAutofillMethod:
-                              AndroidSmsAutofillMethod.smsUserConsentApi,
+                          androidSmsAutofillMethod: AndroidSmsAutofillMethod.smsUserConsentApi,
                           listenForMultipleSmsOnAndroid: true,
                           hapticFeedbackType: HapticFeedbackType.lightImpact,
                           autofocus: true,
@@ -314,9 +293,7 @@ class _OTPVerificationPageState extends State<OTPVerificationPage> {
                           errorPinTheme: errorPinTheme,
                           forceErrorState: otpErrorText != null ? true : false,
                           validator: (otpValue) {
-                            if (otpValue == null ||
-                                otpValue.isEmpty ||
-                                !validateOTP(otpValue)) {
+                            if (otpValue == null || otpValue.isEmpty || !validateOTP(otpValue)) {
                               otpErrorText = 'Enter the OTP code';
                               return 'Enter the OTP code';
                             } else {
@@ -324,8 +301,7 @@ class _OTPVerificationPageState extends State<OTPVerificationPage> {
                               return null;
                             }
                           },
-                          pinputAutovalidateMode:
-                              PinputAutovalidateMode.onSubmit,
+                          pinputAutovalidateMode: PinputAutovalidateMode.onSubmit,
                           showCursor: true,
                           onCompleted: (pin) {
                             debugPrint('OTP onCompleted: pin');
@@ -336,29 +312,22 @@ class _OTPVerificationPageState extends State<OTPVerificationPage> {
                           errorText: otpErrorText,
                         ),
                       ),
-                      const AnimatedGap(16,
-                          duration: Duration(milliseconds: 400)),
+                      const AnimatedGap(16, duration: Duration(milliseconds: 400)),
                       AnimatedCrossFade(
                         duration: const Duration(milliseconds: 700),
-                        crossFadeState: isResendEnabled
-                            ? CrossFadeState.showSecond
-                            : CrossFadeState.showFirst,
+                        crossFadeState: isResendEnabled ? CrossFadeState.showSecond : CrossFadeState.showFirst,
                         firstChild: Text(
                           'OTP will expire in $countdown seconds',
                           style: context.labelLarge!.copyWith(),
-                          textDirection: serviceLocator<LanguageController>()
-                              .targetTextDirection,
+                          textDirection: serviceLocator<LanguageController>().targetTextDirection,
                         ),
                         secondChild: Wrap(
-                          textDirection: serviceLocator<LanguageController>()
-                              .targetTextDirection,
+                          textDirection: serviceLocator<LanguageController>().targetTextDirection,
                           children: [
                             Text(
                               "Didn't received the OTP? ",
                               style: context.labelLarge!.copyWith(),
-                              textDirection:
-                                  serviceLocator<LanguageController>()
-                                      .targetTextDirection,
+                              textDirection: serviceLocator<LanguageController>().targetTextDirection,
                             ),
                             InkWell(
                               onTap: isResendEnabled ? () => resendOTP() : null,
@@ -367,24 +336,20 @@ class _OTPVerificationPageState extends State<OTPVerificationPage> {
                                 style: context.labelLarge!.copyWith(
                                   color: context.primaryColor,
                                 ),
-                                textDirection:
-                                    serviceLocator<LanguageController>()
-                                        .targetTextDirection,
+                                textDirection: serviceLocator<LanguageController>().targetTextDirection,
                               ),
                             ),
                           ],
                         ),
                       ),
-                      const AnimatedGap(20,
-                          duration: Duration(milliseconds: 400)),
+                      const AnimatedGap(20, duration: Duration(milliseconds: 400)),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           Expanded(
                             child: AsyncElevatedBtn(
-                              asyncBtnStatesController:
-                                  otpVerificationButtonController,
+                              asyncBtnStatesController: otpVerificationButtonController,
                               onPressed: () async {
                                 if (verifyOTPFormKey.currentState!.validate()) {
                                   appLog.d('OTP Validate');
@@ -404,9 +369,7 @@ class _OTPVerificationPageState extends State<OTPVerificationPage> {
                               },
                               child: Text(
                                 'Verify OTP',
-                                textDirection:
-                                    serviceLocator<LanguageController>()
-                                        .targetTextDirection,
+                                textDirection: serviceLocator<LanguageController>().targetTextDirection,
                               ),
                             ),
                           ),

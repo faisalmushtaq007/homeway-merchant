@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:homemakers_merchant/bootup/injection_container.dart';
 import 'package:homemakers_merchant/config/translation/extension/text_extension.dart';
 import 'package:homemakers_merchant/config/translation/language_controller.dart';
@@ -13,8 +14,7 @@ class LanguageSelectionWidget extends StatefulWidget {
   const LanguageSelectionWidget({super.key});
 
   @override
-  State<LanguageSelectionWidget> createState() =>
-      _LanguageSelectionWidgetState();
+  State<LanguageSelectionWidget> createState() => _LanguageSelectionWidgetState();
 }
 
 class _LanguageSelectionWidgetState extends State<LanguageSelectionWidget> {
@@ -45,15 +45,11 @@ class _LanguageSelectionWidgetState extends State<LanguageSelectionWidget> {
                     itemBuilder: (context, index) {
                       return ListTile(
                         onTap: () async {
-                          if (serviceLocator<LanguageController>()
-                                  .targetAppLanguage ==
-                              GlobalApp
-                                  .defaultLanguages[index].sourceLanguage) {
+                          if (serviceLocator<LanguageController>().targetAppLanguage == GlobalApp.defaultLanguages[index].sourceLanguage) {
                             return;
                           } else {
                             // Change target language
-                            serviceLocator<LanguageController>()
-                                .changeTargetLanguage(
+                            serviceLocator<LanguageController>().changeTargetLanguage(
                               GlobalApp.defaultLanguages[index],
                             );
                           }
@@ -71,9 +67,7 @@ class _LanguageSelectionWidgetState extends State<LanguageSelectionWidget> {
                           ),
                         ),
                         title: Text(GlobalApp.defaultLanguages[index].text),
-                        trailing: GlobalApp.defaultLanguages[index] ==
-                                serviceLocator<LanguageController>()
-                                    .targetAppLanguage
+                        trailing: GlobalApp.defaultLanguages[index] == serviceLocator<LanguageController>().targetAppLanguage
                             ? Icon(
                                 Icons.check_circle_rounded,
                                 color: Theme.of(context).primaryColorLight,
@@ -81,21 +75,15 @@ class _LanguageSelectionWidgetState extends State<LanguageSelectionWidget> {
                             : null,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10),
-                          side: GlobalApp.defaultLanguages[index] ==
-                                  serviceLocator<LanguageController>()
-                                      .targetAppLanguage
+                          side: GlobalApp.defaultLanguages[index] == serviceLocator<LanguageController>().targetAppLanguage
                               ? BorderSide(
                                   color: Theme.of(context).primaryColorLight,
                                   width: 1.5,
                                 )
                               : BorderSide(color: Colors.grey[300]!),
                         ),
-                        tileColor: GlobalApp.defaultLanguages[index] ==
-                                serviceLocator<LanguageController>()
-                                    .targetAppLanguage
-                            ? Theme.of(context)
-                                .primaryColorLight
-                                .withOpacity(0.05)
+                        tileColor: GlobalApp.defaultLanguages[index] == serviceLocator<LanguageController>().targetAppLanguage
+                            ? Theme.of(context).primaryColorLight.withOpacity(0.05)
                             : null,
                       );
                     },
@@ -114,42 +102,15 @@ class _LanguageSelectionWidgetState extends State<LanguageSelectionWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: () {
-        debugPrint('click');
+    return IconButton(
+      onPressed: () {
+        debugPrint('Select language click');
         return showLanguageBottomSheet();
       },
-      child: const Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          /*Text(
-            serviceLocator<LanguageController>().targetAppLanguage.text,
-            style: context.labelLarge,
-          ),
-          SizedBox(width: 8),
-          */
-          Icon(
-            Icons.language,
-          ),
-        ],
-      ),
-    );
-    return Material(
-      child: OutlinedButton.icon(
-        onPressed: () {
-          debugPrint('click');
-          return showLanguageBottomSheet();
-        },
-        style: OutlinedButton.styleFrom(
-          side: BorderSide.none,
-        ),
-        label: Icon(
-          Icons.language,
-        ),
-        icon: Text(
-          serviceLocator<LanguageController>().targetAppLanguage.text,
-          style: context.labelLarge,
-        ),
+      icon: Icon(
+        Icons.language,
+        textDirection: serviceLocator<LanguageController>().targetTextDirection,
+        color: context.primaryColor,
       ),
     );
   }

@@ -26,7 +26,7 @@ class AppRouter {
 
   AppRouter._();
 
-  static const String INITIAL = Routes.SPLASH;
+  static const String INITIAL = Routes.INITIAL;
 
   static final GoRouter _router = GoRouter(
     debugLogDiagnostics: true,

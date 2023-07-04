@@ -173,17 +173,18 @@ flutter_gen:
 
 flutter_native_splash:
   color: "#ffffff"
-  background_image: assets/image/splash.png
-  background_image_dark: assets/image/splash.png
+  color_dark: "#ffb300"
+  background_image: assets/image/app_logo_light.jpg
+  background_image_dark: assets/image/app_logo_dark.jpg
 
   android_12:
     color: "#ffffff"
-    image: assets/image/splash.png
+    image: assets/image/app_logo_light.jpg
     icon_background_color: "#ffffff"
-    image_dark: assets/image/splash.png
-    icon_background_color_dark: "#ffffff"
+    image_dark: assets/image/app_logo_dark.jpg
+    icon_background_color_dark: "#ffb300"
 
-  web: false
+  web: true
 
 flutter:
   uses-material-design: true

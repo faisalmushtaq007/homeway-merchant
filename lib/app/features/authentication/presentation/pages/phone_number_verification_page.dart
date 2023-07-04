@@ -19,6 +19,7 @@ import 'package:homemakers_merchant/core/constants/global_app_constants.dart';
 import 'package:homemakers_merchant/core/extensions/app_extension.dart';
 import 'package:homemakers_merchant/gen/assets.gen.dart';
 import 'package:homemakers_merchant/shared/router/app_pages.dart';
+import 'package:homemakers_merchant/shared/widgets/app/app_logo.dart';
 import 'package:homemakers_merchant/shared/widgets/app/page_body.dart';
 import 'package:homemakers_merchant/shared/widgets/universal/animate_do/animate_do.dart';
 import 'package:homemakers_merchant/shared/widgets/universal/animated_gap/src/widgets/animated_gap.dart';
@@ -34,13 +35,10 @@ class PhoneNumberVerificationPage extends StatefulWidget {
   const PhoneNumberVerificationPage({super.key});
 
   @override
-  _PhoneNumberVerificationPageState createState() =>
-      _PhoneNumberVerificationPageState();
+  _PhoneNumberVerificationPageState createState() => _PhoneNumberVerificationPageState();
 }
 
-class _PhoneNumberVerificationPageState
-    extends State<PhoneNumberVerificationPage>
-    with SingleTickerProviderStateMixin {
+class _PhoneNumberVerificationPageState extends State<PhoneNumberVerificationPage> with SingleTickerProviderStateMixin {
   late final ScrollController scrollController;
   late AnimationController _animationController;
   late Animation<double> _animation;
@@ -50,12 +48,10 @@ class _PhoneNumberVerificationPageState
   static final requestOTPFormKey = GlobalKey<FormState>();
 
   // Button Controller
-  AsyncBtnStatesController phoneNumberVerificationButtonController =
-      AsyncBtnStatesController();
+  AsyncBtnStatesController phoneNumberVerificationButtonController = AsyncBtnStatesController();
   String userEnteredPhoneNumber = '';
   PhoneController phoneController = PhoneController(null);
-  PhoneNumberVerification phoneNumberVerification =
-      PhoneNumberVerification.none;
+  PhoneNumberVerification phoneNumberVerification = PhoneNumberVerification.none;
 
   @override
   void initState() {
@@ -100,15 +96,13 @@ class _PhoneNumberVerificationPageState
             //LanguageSelectionButton(),
           ],
         ),*/
-        body: BlocListener<PhoneNumberVerificationBloc,
-            PhoneNumberVerificationState>(
+        body: BlocListener<PhoneNumberVerificationBloc, PhoneNumberVerificationState>(
           bloc: context.read<PhoneNumberVerificationBloc>(),
           listenWhen: (previous, current) => previous != current,
           listener: (context, state) {
             state.maybeWhen(
               orElse: () {},
-              success: (phoneNumberVerification, phoneNumber, countryDialCode,
-                  country, phoneController, asyncBtnState) {
+              success: (phoneNumberVerification, phoneNumber, countryDialCode, country, phoneController, asyncBtnState) {
                 context.go(
                   Routes.AUTH_OTP_VERIFICATION,
                   extra: jsonEncode(
@@ -129,12 +123,11 @@ class _PhoneNumberVerificationPageState
                 minHeight: media.size.height,
               ),
               child: Stack(
-                textDirection:
-                    serviceLocator<LanguageController>().targetTextDirection,
+                textDirection: serviceLocator<LanguageController>().targetTextDirection,
                 children: [
                   PositionedDirectional(
-                    top: kToolbarHeight / 2,
-                    end: 0,
+                    top: kToolbarHeight - 10,
+                    end: 14,
                     child: Padding(
                       padding: EdgeInsetsDirectional.only(end: 14),
                       child: LanguageSelectionWidget(),
@@ -144,16 +137,11 @@ class _PhoneNumberVerificationPageState
                     top: kToolbarHeight + media.padding.top,
                     start: margins * 2.5,
                     //end: margins * 2.5,
-                    child: SizedBox(
-                      width: 96,
+                    child: const AppLogo(
                       height: 80,
-                      child: Assets.svg.applogo.svg(
-                        alignment: AlignmentDirectional.topStart,
-                      ),
                     ),
                   ),
-                  BlocBuilder<PhoneNumberVerificationBloc,
-                      PhoneNumberVerificationState>(
+                  BlocBuilder<PhoneNumberVerificationBloc, PhoneNumberVerificationState>(
                     bloc: context.read<PhoneNumberVerificationBloc>(),
                     buildWhen: (previous, current) => previous != current,
                     builder: (context, state) {
@@ -170,13 +158,10 @@ class _PhoneNumberVerificationPageState
                         ) {
                           userEnteredPhoneNumber = phoneNumber;
                           this.phoneController = phoneController;
-                          this.phoneNumberVerification =
-                              phoneNumberVerification;
-                          if (phoneNumberVerification ==
-                              PhoneNumberVerification.valid) {
+                          this.phoneNumberVerification = phoneNumberVerification;
+                          if (phoneNumberVerification == PhoneNumberVerification.valid) {
                             this.phoneValidation = phoneValidation;
-                          } else if (phoneNumberVerification ==
-                              PhoneNumberVerification.invalid) {
+                          } else if (phoneNumberVerification == PhoneNumberVerification.invalid) {
                             this.phoneValidation = phoneValidation;
                           } else {
                             //phoneNumberVerificationButtonController.update(AsyncBtnState.idle)
@@ -200,88 +185,78 @@ class _PhoneNumberVerificationPageState
                             mainAxisAlignment: MainAxisAlignment.start,
                             crossAxisAlignment: CrossAxisAlignment.stretch,
                             children: [
-                              Padding(
-                                padding:
-                                    const EdgeInsetsDirectional.only(bottom: 8),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  textDirection:
-                                      serviceLocator<LanguageController>()
-                                          .targetTextDirection,
-                                  children: [
-                                    Text(
-                                      'Hi,',
-                                      style: GoogleFonts.raleway(
-                                        textStyle:
-                                            context.headlineLarge!.copyWith(
-                                          fontWeight: FontWeight.bold,
-                                          height: 0.9,
-                                          fontSize: 45,
-                                          color:
-                                              Color.fromRGBO(255, 125, 113, 1),
-                                        ),
-                                      ),
-                                      textDirection:
-                                          serviceLocator<LanguageController>()
-                                              .targetTextDirection,
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsetsDirectional.only(
-                                    bottom: 40),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  textDirection:
-                                      serviceLocator<LanguageController>()
-                                          .targetTextDirection,
-                                  children: [
-                                    Text(
-                                      'Again.',
-                                      style: GoogleFonts.raleway(
-                                        textStyle:
-                                            context.headlineLarge!.copyWith(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 45,
-                                          height: 0.9,
-                                          color: Color.fromRGBO(42, 45, 50, 1),
-                                        ),
-                                      ),
-                                      textDirection:
-                                          serviceLocator<LanguageController>()
-                                              .targetTextDirection,
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              /*Padding(
-                              padding: const EdgeInsetsDirectional.only(top: 12, bottom: 8),
-                              child: Row(
+                              const AnimatedGap(8, duration: Duration(milliseconds: 500)),
+                              Wrap(
+                                textDirection: serviceLocator<LanguageController>().targetTextDirection,
                                 children: [
                                   Text(
-                                    'Enter your phone number',
-                                    style: context.labelLarge,
-                                  ),
+                                    'Hi,',
+                                    textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                    style: context.headlineLarge!.copyWith(
+                                      fontWeight: FontWeight.bold,
+                                      height: 0.9,
+                                      fontSize: 45,
+                                      color: Color.fromRGBO(255, 125, 113, 1),
+                                    ),
+                                  ).translate(),
                                 ],
                               ),
-                            ),
-                            const SizedBox(height: 8),*/
 
+                              const AnimatedGap(12, duration: Duration(milliseconds: 500)),
+                              Wrap(
+                                textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                children: [
+                                  Text(
+                                    'Create better together.',
+                                    textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                    style: GoogleFonts.raleway(
+                                      textStyle: context.headlineMedium!.copyWith(
+                                        fontWeight: FontWeight.bold,
+                                        height: 0.9,
+                                      ),
+                                    ),
+                                  ).translate(),
+                                ],
+                              ),
+                              const AnimatedGap(4, duration: Duration(milliseconds: 500)),
+                              Wrap(
+                                textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                children: [
+                                  Text(
+                                    'Join with us',
+                                    textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                    style: context.bodyMedium!.copyWith(
+                                      fontSize: 18,
+                                      fontStyle: FontStyle.normal,
+                                    ),
+                                  ).translate(),
+                                ],
+                              ),
+                              const AnimatedGap(36, duration: Duration(milliseconds: 500)),
+
+                              /* SizedBox(
+                                child: Wrap(
+                                  alignment: WrapAlignment.start,
+                                  crossAxisAlignment: WrapCrossAlignment.center,
+                                  children: [
+                                    Text(
+                                      'Enter your mobile number',
+                                      style: Theme.of(context).textTheme.labelLarge!.copyWith(fontWeight: FontWeight.w600),
+                                      textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              const AnimatedGap(6, duration: Duration(milliseconds: 500)),*/
                               Row(
-                                textDirection:
-                                    serviceLocator<LanguageController>()
-                                        .targetTextDirection,
+                                textDirection: serviceLocator<LanguageController>().targetTextDirection,
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
                                   Flexible(
                                     child: Directionality(
-                                      textDirection:
-                                          serviceLocator<LanguageController>()
-                                              .targetTextDirection,
+                                      textDirection: serviceLocator<LanguageController>().targetTextDirection,
                                       child: PhoneNumberFieldWidget(
-                                        key: const Key(
-                                            'user-phone-number-widget'),
+                                        key: const Key('user-phone-number-widget'),
                                         isCountryChipPersistent: false,
                                         outlineBorder: true,
                                         shouldFormat: true,
@@ -292,8 +267,7 @@ class _PhoneNumberVerificationPageState
                                           alignLabelWithHint: true,
                                           //hintText: 'Mobile number',
                                           errorText: phoneValidation,
-                                          suffixIcon:
-                                              const PhoneNumberValidationIconWidget(),
+                                          suffixIcon: const PhoneNumberValidationIconWidget(),
                                           isDense: true,
                                         ),
                                         isAllowEmpty: false,
@@ -306,37 +280,28 @@ class _PhoneNumberVerificationPageState
                                   ),
                                 ],
                               ),
-                              const AnimatedGap(18,
-                                  duration: Duration(milliseconds: 400)),
+                              const AnimatedGap(14, duration: Duration(milliseconds: 400)),
                               Wrap(
-                                textDirection:
-                                    serviceLocator<LanguageController>()
-                                        .targetTextDirection,
+                                textDirection: serviceLocator<LanguageController>().targetTextDirection,
                                 children: [
                                   Text(
-                                    'A 6 digit OTP will be sent via SMS to verify your mobile number',
+                                    'A 6 digit OTP code will be sent via SMS to verify your mobile number',
                                     style: context.labelMedium!.copyWith(
                                       color: Color.fromRGBO(127, 129, 132, 1),
                                     ),
-                                    textDirection:
-                                        serviceLocator<LanguageController>()
-                                            .targetTextDirection,
-                                  ),
+                                    textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                  ).translate(),
                                 ],
                               ),
-                              const AnimatedGap(32,
-                                  duration: Duration(milliseconds: 400)),
+                              const AnimatedGap(26, duration: Duration(milliseconds: 400)),
                               //const Spacer(),
                               SizedBox(
                                 width: context.width,
                                 child: AsyncElevatedBtn(
-                                  asyncBtnStatesController:
-                                      phoneNumberVerificationButtonController,
-                                  key: const Key(
-                                      'phone-number_verification-button-key'),
+                                  asyncBtnStatesController: phoneNumberVerificationButtonController,
+                                  key: const Key('phone-number_verification-button-key'),
                                   style: ElevatedButton.styleFrom(
-                                    disabledBackgroundColor:
-                                        Color.fromRGBO(255, 219, 208, 1),
+                                    disabledBackgroundColor: Color.fromRGBO(255, 219, 208, 1),
                                     disabledForegroundColor: Colors.white,
                                   ),
                                   loadingStyle: AsyncBtnStateStyle(
@@ -357,22 +322,16 @@ class _PhoneNumberVerificationPageState
                                     ),
                                     widget: Row(
                                       mainAxisSize: MainAxisSize.min,
-                                      textDirection:
-                                          serviceLocator<LanguageController>()
-                                              .targetTextDirection,
+                                      textDirection: serviceLocator<LanguageController>().targetTextDirection,
                                       children: [
                                         Icon(
                                           Icons.check,
-                                          textDirection: serviceLocator<
-                                                  LanguageController>()
-                                              .targetTextDirection,
+                                          textDirection: serviceLocator<LanguageController>().targetTextDirection,
                                         ),
                                         SizedBox(width: 4),
                                         Text(
                                           'Success!',
-                                          textDirection: serviceLocator<
-                                                  LanguageController>()
-                                              .targetTextDirection,
+                                          textDirection: serviceLocator<LanguageController>().targetTextDirection,
                                         ).translate()
                                       ],
                                     ),
@@ -384,9 +343,7 @@ class _PhoneNumberVerificationPageState
                                     ),
                                     widget: Text(
                                       'Get OTP',
-                                      textDirection:
-                                          serviceLocator<LanguageController>()
-                                              .targetTextDirection,
+                                      textDirection: serviceLocator<LanguageController>().targetTextDirection,
                                     ).translate(),
                                   ),
 /*                            onPressed: () async => phoneNumberVerification ==
@@ -395,17 +352,12 @@ class _PhoneNumberVerificationPageState
                                     : null,*/
                                   child: Text(
                                     'Get OTP',
-                                    textDirection:
-                                        serviceLocator<LanguageController>()
-                                            .targetTextDirection,
+                                    textDirection: serviceLocator<LanguageController>().targetTextDirection,
                                   ).translate(),
-                                  onPressed: phoneNumberVerification ==
-                                          PhoneNumberVerification.valid
-                                      ? verifyPhoneNumber
-                                      : null,
+                                  onPressed: phoneNumberVerification == PhoneNumberVerification.valid ? verifyPhoneNumber : null,
                                 ),
                               ),
-                              const SizedBox(height: 32),
+                              const AnimatedGap(26, duration: Duration(milliseconds: 500)),
                               const TermsConditionStatementWidget(),
                             ],
                           ),
@@ -444,8 +396,7 @@ class PhoneNumberValidationIconWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<PhoneNumberVerificationBloc,
-        PhoneNumberVerificationState>(
+    return BlocBuilder<PhoneNumberVerificationBloc, PhoneNumberVerificationState>(
       bloc: context.read<PhoneNumberVerificationBloc>(),
       buildWhen: (previous, current) => previous != current,
       builder: (context, state) {
@@ -465,8 +416,7 @@ class PhoneNumberValidationIconWidget extends StatelessWidget {
                 Icons.check_circle,
                 color: Colors.green,
               );
-            } else if (phoneNumberVerification ==
-                PhoneNumberVerification.invalid) {
+            } else if (phoneNumberVerification == PhoneNumberVerification.invalid) {
               return const Icon(
                 Icons.error,
                 color: Colors.red,

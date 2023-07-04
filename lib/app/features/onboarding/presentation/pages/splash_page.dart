@@ -5,13 +5,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:go_router/go_router.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:homemakers_merchant/base/widget_view.dart';
 import 'package:homemakers_merchant/bootup/injection_container.dart';
+import 'package:homemakers_merchant/config/translation/extension/text_extension.dart';
 import 'package:homemakers_merchant/config/translation/language_controller.dart';
 import 'package:homemakers_merchant/core/constants/global_app_constants.dart';
 import 'package:homemakers_merchant/core/extensions/app_extension.dart';
+import 'package:homemakers_merchant/shared/router/app_pages.dart';
+import 'package:homemakers_merchant/shared/widgets/app/app_logo.dart';
 import 'package:homemakers_merchant/shared/widgets/app/flutter_svg_provider.dart';
 import 'package:homemakers_merchant/shared/widgets/app/page_body.dart';
+import 'package:homemakers_merchant/shared/widgets/universal/animated_gap/gap.dart';
+import 'package:homemakers_merchant/shared/widgets/universal/constrained_scrollable_views/constrained_scrollable_views.dart';
 
 class SplashPage extends StatefulWidget {
   const SplashPage({super.key});
@@ -86,40 +93,117 @@ class _PageView extends WidgetView<SplashPage, _SplashPageViewController> {
                 child: Directionality(
                   textDirection: serviceLocator<LanguageController>().targetTextDirection,
                   child: PageBody(
-                      controller: state.scrollController,
+                    controller: state.scrollController,
+                    constraints: BoxConstraints(
+                      minWidth: double.infinity,
+                      minHeight: context.height,
+                    ),
+                    child: Container(
+                      height: context.height,
+                      alignment: AlignmentDirectional.topStart,
                       constraints: BoxConstraints(
                         minWidth: double.infinity,
                         minHeight: context.height,
                       ),
-                      child: Container(
-                        height: context.height,
-                        constraints: BoxConstraints(
-                          minWidth: double.infinity,
-                          minHeight: context.height,
+                      decoration: const BoxDecoration(
+                        image: DecorationImage(
+                          image: AssetImage('assets/image/splashBackground.jpg'),
+                          fit: BoxFit.cover,
                         ),
-                        decoration: BoxDecoration(
-                          image: DecorationImage(
-                            image: AssetImage('assets/image/appBackground.jpg'),
-                            fit: BoxFit.cover,
-                            colorFilter: ColorFilter.mode(Colors.black.withOpacity(0.70), BlendMode.darken),
-                            //colorFilter: ColorFilter.mode(Colors.black45, BlendMode.darken),
+                      ),
+                      child: ScrollableColumn(
+                        controller: state.scrollController,
+                        flexible: false,
+                        padding: EdgeInsetsDirectional.only(top: topPadding, start: margins * 2.5, end: margins * 2.5, bottom: bottomPadding),
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          const Align(
+                            alignment: AlignmentDirectional.topStart,
+                            child: AppLogo(changeColorModeOfText: true),
                           ),
-                        ),
-                        child: ListView(
-                          controller: state.scrollController,
-                          shrinkWrap: true,
-                          padding: EdgeInsetsDirectional.only(
-                            top: topPadding,
-                            start: margins * 2.5,
-                            end: margins * 2.5,
+                          const AnimatedGap(46, duration: Duration(milliseconds: 500)),
+                          Wrap(
+                            textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                            children: [
+                              Text(
+                                'Your Business',
+                                style: GoogleFonts.raleway(
+                                  textStyle: context.headlineMedium!.copyWith(
+                                    fontWeight: FontWeight.bold,
+                                    height: 0.9,
+                                  ),
+                                ),
+                                textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                              ).translate(),
+                            ],
                           ),
-                          children: const [
-                            Center(
-                              child: Text('New Screen'),
-                            ),
-                          ],
-                        ),
-                      )),
+                          const AnimatedGap(6, duration: Duration(milliseconds: 500)),
+                          Wrap(
+                            textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                            children: [
+                              Text(
+                                'Our Services',
+                                style: GoogleFonts.raleway(
+                                  textStyle: context.headlineMedium!.copyWith(
+                                    fontWeight: FontWeight.bold,
+                                    height: 0.9,
+                                  ),
+                                ),
+                                textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                              ).translate(),
+                            ],
+                          ),
+                          const AnimatedGap(6, duration: Duration(milliseconds: 500)),
+                          Wrap(
+                            textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                            children: [
+                              Text(
+                                'Stays Forever',
+                                textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                style: GoogleFonts.raleway(
+                                  textStyle: context.headlineMedium!.copyWith(
+                                    fontWeight: FontWeight.bold,
+                                    height: 0.9,
+                                  ),
+                                ),
+                              ).translate(),
+                            ],
+                          ),
+                          const AnimatedGap(10, duration: Duration(milliseconds: 500)),
+                          Wrap(
+                            textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                            children: [
+                              Text(
+                                'Thank you for selecting to start business with us.',
+                                textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                style: GoogleFonts.raleway(
+                                  textStyle: context.bodySmall!.copyWith(
+                                    fontWeight: FontWeight.w500,
+                                    height: 0.9,
+                                    fontStyle: FontStyle.italic,
+                                  ),
+                                ),
+                              ).translate(),
+                            ],
+                          ),
+                          /*Center(
+                            child: Text('New Screen'),
+                          ),*/
+                          const AnimatedGap(56, duration: Duration(milliseconds: 500)),
+                          ElevatedButton(
+                            onPressed: () {
+                              context.go(Routes.AUTH_PHONE_NUMBER_VERIFICATION);
+                            },
+                            child: Text(
+                              "Let's Get Started",
+                              textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                            ).translate(),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
                 ),
               );
             },

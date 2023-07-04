@@ -7,6 +7,8 @@ import 'package:homemakers_merchant/app/features/onboarding/presentation/widgets
 import 'package:homemakers_merchant/app/features/onboarding/presentation/widgets/onboarding_slider/background_final_button.dart';
 import 'package:homemakers_merchant/app/features/onboarding/presentation/widgets/onboarding_slider/onboarding_navigation_bar.dart';
 import 'package:homemakers_merchant/app/features/onboarding/presentation/widgets/onboarding_slider/page_offset_provider.dart';
+import 'package:homemakers_merchant/bootup/injection_container.dart';
+import 'package:homemakers_merchant/config/translation/language_controller.dart';
 import 'package:provider/provider.dart';
 
 export 'background.dart';
@@ -152,77 +154,81 @@ class _OnBoardingSliderState extends State<OnBoardingSlider> {
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (BuildContext context) => PageOffsetNotifier(_pageController),
-      child: PlatformScaffold(
-        backgroundColor: widget.pageBackgroundColor ?? null,
-        material: (context, platform) {
-          return MaterialScaffoldData(
-            floatingActionButton: widget.hasFloatingButton
-                ? BackgroundFinalButton(
-                    buttonTextStyle: widget.finishButtonTextStyle,
-                    skipIcon: widget.skipIcon,
-                    addButton: widget.addButton,
-                    currentPage: _currentPage,
-                    pageController: _pageController,
-                    totalPage: widget.totalPage,
-                    onPageFinish: widget.onFinish,
-                    finishButtonStyle: widget.finishButtonStyle,
-                    buttonText: widget.finishButtonText,
-                    hasSkip: widget.hasSkip,
-                  )
-                : const SizedBox.shrink(),
-          );
-        },
-        body: CupertinoPageScaffold(
-          navigationBar: OnBoardingNavigationBar(
-            skipFunctionOverride: widget.skipFunctionOverride,
-            leading: widget.leading,
-            middle: widget.middle,
-            totalPage: widget.totalPage,
-            currentPage: _currentPage,
-            onSkip: _onSkip,
-            headerBackgroundColor: widget.headerBackgroundColor,
-            onFinish: widget.trailingFunction,
-            finishButton: widget.trailing,
-            skipTextButton: widget.skipTextButton,
-          ),
-          child: Container(
-            height: MediaQuery.of(context).size.height,
-            decoration: BoxDecoration(
-              gradient: widget.pageBackgroundGradient ?? null,
-              color: widget.pageBackgroundColor ?? null,
+    return Directionality(
+      textDirection: serviceLocator<LanguageController>().targetTextDirection,
+      child: ChangeNotifierProvider(
+        create: (BuildContext context) => PageOffsetNotifier(_pageController),
+        child: PlatformScaffold(
+          backgroundColor: widget.pageBackgroundColor ?? null,
+          material: (context, platform) {
+            return MaterialScaffoldData(
+              floatingActionButton: widget.hasFloatingButton
+                  ? BackgroundFinalButton(
+                      buttonTextStyle: widget.finishButtonTextStyle,
+                      skipIcon: widget.skipIcon,
+                      addButton: widget.addButton,
+                      currentPage: _currentPage,
+                      pageController: _pageController,
+                      totalPage: widget.totalPage,
+                      onPageFinish: widget.onFinish,
+                      finishButtonStyle: widget.finishButtonStyle,
+                      buttonText: widget.finishButtonText,
+                      hasSkip: widget.hasSkip,
+                    )
+                  : const SizedBox.shrink(),
+            );
+          },
+          body: CupertinoPageScaffold(
+            navigationBar: OnBoardingNavigationBar(
+              skipFunctionOverride: widget.skipFunctionOverride,
+              leading: widget.leading,
+              middle: widget.middle,
+              totalPage: widget.totalPage,
+              currentPage: _currentPage,
+              onSkip: _onSkip,
+              headerBackgroundColor: widget.headerBackgroundColor,
+              onFinish: widget.trailingFunction,
+              finishButton: widget.trailing,
+              skipTextButton: widget.skipTextButton,
             ),
-            child: SafeArea(
-              child: Background(
-                centerBackground: widget.centerBackground,
-                imageHorizontalOffset: widget.imageHorizontalOffset,
-                imageVerticalOffset: widget.imageVerticalOffset,
-                background: widget.background,
-                speed: widget.speed,
-                totalPage: widget.totalPage,
-                child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Expanded(
-                        child: BackgroundBody(
-                          controller: _pageController,
-                          function: slide,
-                          totalPage: widget.totalPage,
-                          bodies: widget.pageBodies,
+            child: Container(
+              height: MediaQuery.of(context).size.height,
+              decoration: BoxDecoration(
+                gradient: widget.pageBackgroundGradient ?? null,
+                color: widget.pageBackgroundColor ?? null,
+              ),
+              child: SafeArea(
+                child: Background(
+                  centerBackground: widget.centerBackground,
+                  imageHorizontalOffset: widget.imageHorizontalOffset,
+                  imageVerticalOffset: widget.imageVerticalOffset,
+                  background: widget.background,
+                  speed: widget.speed,
+                  totalPage: widget.totalPage,
+                  child: Column(
+                      textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Expanded(
+                          child: BackgroundBody(
+                            controller: _pageController,
+                            function: slide,
+                            totalPage: widget.totalPage,
+                            bodies: widget.pageBodies,
+                          ),
                         ),
-                      ),
-                      widget.addController
-                          ? BackgroundController(
-                              indicatorPosition: widget.indicatorPosition,
-                              indicatorAbove: widget.indicatorAbove,
-                              currentPage: _currentPage,
-                              totalPage: widget.totalPage,
-                              controllerColor: widget.controllerColor,
-                            )
-                          : SizedBox.shrink(),
-                    ]),
+                        widget.addController
+                            ? BackgroundController(
+                                indicatorPosition: widget.indicatorPosition,
+                                indicatorAbove: widget.indicatorAbove,
+                                currentPage: _currentPage,
+                                totalPage: widget.totalPage,
+                                controllerColor: widget.controllerColor,
+                              )
+                            : SizedBox.shrink(),
+                      ]),
+                ),
               ),
             ),
           ),

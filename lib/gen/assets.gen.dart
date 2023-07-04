@@ -127,6 +127,10 @@ class $AssetsImageGen {
   /// File path: assets/image/splash.png
   AssetGenImage get splash => const AssetGenImage('assets/image/splash.png');
 
+  /// File path: assets/image/splashBackground.jpg
+  AssetGenImage get splashBackground =>
+      const AssetGenImage('assets/image/splashBackground.jpg');
+
   /// List of all assets
   List<AssetGenImage> get values => [
         appBackground,
@@ -135,7 +139,8 @@ class $AssetsImageGen {
         merchantOnboarding02,
         merchantOnboarding03,
         merchantOnboarding04,
-        splash
+        splash,
+        splashBackground
       ];
 }
 
@@ -145,6 +150,10 @@ class $AssetsSvgGen {
   /// File path: assets/svg/applogo.svg
   SvgGenImage get applogo => const SvgGenImage('assets/svg/applogo.svg');
 
+  /// File path: assets/svg/applogodark.svg
+  SvgGenImage get applogodark =>
+      const SvgGenImage('assets/svg/applogodark.svg');
+
   $AssetsSvgFlagsGen get flags => const $AssetsSvgFlagsGen();
 
   /// File path: assets/svg/splashbackground.svg
@@ -152,7 +161,7 @@ class $AssetsSvgGen {
       const SvgGenImage('assets/svg/splashbackground.svg');
 
   /// List of all assets
-  List<SvgGenImage> get values => [applogo, splashbackground];
+  List<SvgGenImage> get values => [applogo, applogodark, splashbackground];
 }
 
 class $AssetsSvgFlagsGen {
