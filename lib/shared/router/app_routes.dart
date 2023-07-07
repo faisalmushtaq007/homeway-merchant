@@ -40,20 +40,20 @@ abstract class Routes {
   static const String CANCEL_ORDERS = _Paths.CANCEL_ORDERS;
   static const String DELIVERY_ORDERS = _Paths.DELIVERY_ORDERS;
   static const String CUSTOMER_ORDERS = _Paths.CUSTOMER_ORDERS;
-  static const String ONBOARDING_BASIC_REGISTRATION =
-      _Paths.ONBOARDING_BASIC_REGISTRATION;
-  static const String ONBOARDING_VENDOR_IDENTITY =
-      _Paths.ONBOARDING_VENDOR_IDENTITY;
+  static const String ONBOARDING_BASIC_REGISTRATION = _Paths.ONBOARDING_BASIC_REGISTRATION;
+  static const String ONBOARDING_VENDOR_IDENTITY = _Paths.ONBOARDING_VENDOR_IDENTITY;
   static const String UPLOAD_IDENTITY_PAGE = _Paths.UPLOAD_IDENTITY_PAGE;
-  static const String AUTH_PHONE_NUMBER_VERIFICATION =
-      _Paths.AUTH_PHONE_NUMBER_VERIFICATION;
+  static const String AUTH_PHONE_NUMBER_VERIFICATION = _Paths.AUTH_PHONE_NUMBER_VERIFICATION;
   static const String AUTH_OTP_VERIFICATION = _Paths.AUTH_OTP_VERIFICATION;
-  static const String CREATE_BUSINESS_PROFILE_PAGE =
-      _Paths.CREATE_BUSINESS_PROFILE_PAGE;
+  static const String CREATE_BUSINESS_PROFILE_PAGE = _Paths.CREATE_BUSINESS_PROFILE_PAGE;
   static const String DOCUMENT_LIST_PAGE = _Paths.DOCUMENT_LIST_PAGE;
   static const String UPLOAD_DOCUMENT_PAGE = _Paths.UPLOAD_DOCUMENT_PAGE;
   static const String ADDRESS_FORM_PAGE = _Paths.ADDRESS_FORM_PAGE;
   static const String BANK_INFORMATION_PAGE = _Paths.BANK_INFORMATION_PAGE;
+  static const String WELCOME_PAGE = _Paths.WELCOME_PAGE;
+  static const String PRIMARY_DASHBOARD_PAGE = _Paths.PRIMARY_DASHBOARD_PAGE;
+  static const String MAIN_DASHBOARD_PAGE = _Paths.MAIN_DASHBOARD_PAGE;
+  static const String SAVE_STORE_PAGE = _Paths.SAVE_STORE_PAGE;
 }
 
 abstract class _Paths {
@@ -93,17 +93,18 @@ abstract class _Paths {
   static const String CANCEL_ORDERS = '/cancel-orders';
   static const String DELIVERY_ORDERS = '/delivery-orders';
   static const String CUSTOMER_ORDERS = '/customer-orders';
-  static const String ONBOARDING_BASIC_REGISTRATION =
-      '/onboarding-basic-registration';
-  static const String ONBOARDING_VENDOR_IDENTITY =
-      '/onboarding-vendor-identity';
+  static const String ONBOARDING_BASIC_REGISTRATION = '/onboarding-basic-registration';
+  static const String ONBOARDING_VENDOR_IDENTITY = '/onboarding-vendor-identity';
   static const String UPLOAD_IDENTITY_PAGE = '/upload-vendor-identity';
-  static const String AUTH_PHONE_NUMBER_VERIFICATION =
-      '/auth-phone-number-verification-page';
+  static const String AUTH_PHONE_NUMBER_VERIFICATION = '/auth-phone-number-verification-page';
   static const String AUTH_OTP_VERIFICATION = '/auth-otp-verification';
   static const String CREATE_BUSINESS_PROFILE_PAGE = '/creat-business-profile';
   static const String DOCUMENT_LIST_PAGE = '/document-list';
   static const String UPLOAD_DOCUMENT_PAGE = '/upload-document';
   static const String ADDRESS_FORM_PAGE = '/address-form';
   static const String BANK_INFORMATION_PAGE = '/bank-information';
+  static const String WELCOME_PAGE = '/welcome';
+  static const String PRIMARY_DASHBOARD_PAGE = '/initial-dashboard';
+  static const String MAIN_DASHBOARD_PAGE = '/dashboard';
+  static const String SAVE_STORE_PAGE = '/save-store';
 }

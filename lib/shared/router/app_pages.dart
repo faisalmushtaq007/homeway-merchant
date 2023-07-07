@@ -10,6 +10,9 @@ import 'package:homemakers_merchant/app/features/authentication/presentation/pag
 import 'package:homemakers_merchant/app/features/authentication/presentation/pages/phone_number_verification_page.dart';
 import 'package:homemakers_merchant/app/features/authentication/presentation/pages/privacy_and_policy_view.dart';
 import 'package:homemakers_merchant/app/features/authentication/presentation/pages/terms_and_conditions_view.dart';
+import 'package:homemakers_merchant/app/features/dashboard/presentation/pages/main_dashboard_page.dart';
+import 'package:homemakers_merchant/app/features/dashboard/presentation/pages/primary_dashboard_page.dart';
+import 'package:homemakers_merchant/app/features/dashboard/presentation/pages/welcome_page.dart';
 import 'package:homemakers_merchant/app/features/onboarding/presentation/pages/onboarding_page.dart';
 import 'package:homemakers_merchant/app/features/onboarding/presentation/pages/splash_page.dart';
 import 'package:homemakers_merchant/app/features/profile/common/document_type_enum.dart';
@@ -17,6 +20,7 @@ import 'package:homemakers_merchant/app/features/profile/presentation/pages/bank
 import 'package:homemakers_merchant/app/features/profile/presentation/pages/business_information_page.dart';
 import 'package:homemakers_merchant/app/features/profile/presentation/pages/document/business_document_page.dart';
 import 'package:homemakers_merchant/app/features/profile/presentation/pages/document/upload_document_page.dart';
+import 'package:homemakers_merchant/app/features/store/presentation/pages/save_store_page.dart';
 
 part 'app_routes.dart';
 
@@ -26,7 +30,7 @@ class AppRouter {
 
   AppRouter._();
 
-  static const String INITIAL = Routes.SPLASH;
+  static const String INITIAL = Routes.SAVE_STORE_PAGE;
 
   static final GoRouter _router = GoRouter(
     debugLogDiagnostics: true,
@@ -85,6 +89,22 @@ class AppRouter {
       GoRoute(
         path: Routes.BANK_INFORMATION_PAGE,
         builder: (context, state) => const BankInformationPage(),
+      ),
+      GoRoute(
+        path: Routes.WELCOME_PAGE,
+        builder: (context, state) => const WelcomePage(),
+      ),
+      GoRoute(
+        path: Routes.PRIMARY_DASHBOARD_PAGE,
+        builder: (context, state) => const PrimaryDashboardPage(),
+      ),
+      GoRoute(
+        path: Routes.MAIN_DASHBOARD_PAGE,
+        builder: (context, state) => const MainDashboardPage(),
+      ),
+      GoRoute(
+        path: Routes.SAVE_STORE_PAGE,
+        builder: (context, state) => const SaveStorePage(),
       ),
     ],
   );

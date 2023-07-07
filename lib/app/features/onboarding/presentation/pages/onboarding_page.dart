@@ -82,7 +82,7 @@ class _PageView extends WidgetView<OnBoardingPage, _OnBoardingPageViewController
               ),
             ).translate(),
             trailingFunction: () {
-              context.go(Routes.LOGIN);
+              context.go(Routes.AUTH_PHONE_NUMBER_VERIFICATION);
             },
             controllerColor: kDarkBlueColor,
             totalPage: 4,

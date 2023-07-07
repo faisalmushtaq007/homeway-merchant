@@ -3,6 +3,7 @@ import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
+import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:homemakers_merchant/bootup/injection_container.dart';
 import 'package:homemakers_merchant/config/translation/language_controller.dart';
@@ -10,6 +11,7 @@ import 'package:homemakers_merchant/config/translation/widgets/language_selectio
 import 'package:homemakers_merchant/core/constants/global_app_constants.dart';
 import 'package:homemakers_merchant/core/extensions/app_extension.dart';
 import 'package:homemakers_merchant/gen/assets.gen.dart';
+import 'package:homemakers_merchant/shared/router/app_pages.dart';
 import 'package:homemakers_merchant/shared/widgets/app/app_logo.dart';
 import 'package:homemakers_merchant/shared/widgets/app/page_body.dart';
 import 'package:homemakers_merchant/shared/widgets/universal/animate_do/animate_do.dart';
@@ -360,7 +362,13 @@ class _OTPVerificationPageState extends State<OTPVerificationPage> {
                                   if (otpController.value.text == '123456') {
                                     // OTP is valid
                                     otpErrorText = null;
+
                                     setState(() {});
+                                    await Future.delayed(const Duration(milliseconds: 500), () {});
+                                    if (!mounted) {
+                                      return;
+                                    }
+                                    context.go(Routes.CREATE_BUSINESS_PROFILE_PAGE);
                                   } else {
                                     setState(() {
                                       otpErrorText = 'OTP is invalid';

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
+import 'package:go_router/go_router.dart';
 import 'package:homemakers_merchant/app/features/authentication/presentation/manager/phone_number_verification_bloc.dart';
 import 'package:homemakers_merchant/app/features/authentication/presentation/pages/phone_number_verification_page.dart';
 import 'package:homemakers_merchant/base/app_base.dart';
@@ -15,6 +16,7 @@ import 'package:homemakers_merchant/config/translation/widgets/language_selectio
 import 'package:homemakers_merchant/core/constants/global_app_constants.dart';
 import 'package:homemakers_merchant/core/extensions/app_extension.dart';
 import 'package:homemakers_merchant/core/extensions/string/pattern.dart';
+import 'package:homemakers_merchant/shared/router/app_pages.dart';
 import 'package:homemakers_merchant/shared/widgets/app/page_body.dart';
 import 'package:homemakers_merchant/shared/widgets/universal/animated_gap/gap.dart';
 import 'package:homemakers_merchant/shared/widgets/universal/animated_gap/src/widgets/gap.dart';
@@ -26,12 +28,10 @@ class BusinessInformationPage extends StatefulWidget {
   const BusinessInformationPage({super.key});
 
   @override
-  _BusinessInformationPageState createState() =>
-      _BusinessInformationPageState();
+  _BusinessInformationPageState createState() => _BusinessInformationPageState();
 }
 
-class _BusinessInformationPageState extends State<BusinessInformationPage>
-    with SingleTickerProviderStateMixin {
+class _BusinessInformationPageState extends State<BusinessInformationPage> with SingleTickerProviderStateMixin {
   late final ScrollController scrollController;
 
   late AnimationController _animationController;
@@ -48,8 +48,7 @@ class _BusinessInformationPageState extends State<BusinessInformationPage>
   // Local PhoneController variables
   String? phoneValidation;
   String userEnteredPhoneNumber = '';
-  PhoneNumberVerification phoneNumberVerification =
-      PhoneNumberVerification.none;
+  PhoneNumberVerification phoneNumberVerification = PhoneNumberVerification.none;
 
   @override
   void initState() {
@@ -84,8 +83,7 @@ class _BusinessInformationPageState extends State<BusinessInformationPage>
   Widget build(BuildContext context) {
     final MediaQueryData media = MediaQuery.of(context);
     final double margins = GlobalApp.responsiveInsets(media.size.width);
-    final double topPadding =
-        margins; //media.padding.top + kToolbarHeight + margins; //margins * 1.5;
+    final double topPadding = margins; //media.padding.top + kToolbarHeight + margins; //margins * 1.5;
     final double bottomPadding = media.padding.bottom + margins;
     final double width = media.size.width;
     final ThemeData theme = Theme.of(context);
@@ -117,8 +115,7 @@ class _BusinessInformationPageState extends State<BusinessInformationPage>
           ],
         ),
         body: Directionality(
-          textDirection:
-              serviceLocator<LanguageController>().targetTextDirection,
+          textDirection: serviceLocator<LanguageController>().targetTextDirection,
           child: PageBody(
             controller: scrollController,
             constraints: BoxConstraints(
@@ -144,8 +141,7 @@ class _BusinessInformationPageState extends State<BusinessInformationPage>
                       child: Stack(
                         alignment: Alignment.topLeft,
                         clipBehavior: Clip.none,
-                        textDirection: serviceLocator<LanguageController>()
-                            .targetTextDirection,
+                        textDirection: serviceLocator<LanguageController>().targetTextDirection,
                         children: [
                           ListView(
                             controller: scrollController,
@@ -158,9 +154,7 @@ class _BusinessInformationPageState extends State<BusinessInformationPage>
                               Text(
                                 'Enter the business details',
                                 style: context.titleLarge,
-                                textDirection:
-                                    serviceLocator<LanguageController>()
-                                        .targetTextDirection,
+                                textDirection: serviceLocator<LanguageController>().targetTextDirection,
                               ).translate(),
                               const AnimatedGap(
                                 16,
@@ -172,16 +166,13 @@ class _BusinessInformationPageState extends State<BusinessInformationPage>
                                 key: const Key(
                                   'business-fullname-textFormField-key',
                                 ),
-                                buildWhen: (previousDataList, latestDataList) =>
-                                    previousDataList != latestDataList,
+                                buildWhen: (previousDataList, latestDataList) => previousDataList != latestDataList,
                                 streams: [
                                   Stream.fromFuture(
-                                    AppTranslator.instance
-                                        .translate('Full name'),
+                                    AppTranslator.instance.translate('Full name'),
                                   ),
                                   Stream.fromFuture(
-                                    AppTranslator.instance
-                                        .translate('Please enter a full name'),
+                                    AppTranslator.instance.translate('Please enter a full name'),
                                   ),
                                   Stream.fromFuture(
                                     AppTranslator.instance.translate(
@@ -189,23 +180,14 @@ class _BusinessInformationPageState extends State<BusinessInformationPage>
                                     ),
                                   ),
                                 ],
-                                initialStreamValue: const [
-                                  'Full name',
-                                  'Please enter a full name',
-                                  ''
-                                ],
+                                initialStreamValue: const ['Full name', 'Please enter a full name', ''],
                                 builder: (context, snapshot) {
-                                  final String translateString =
-                                      snapshot[2] as String;
+                                  final String translateString = snapshot[2] as String;
                                   return Directionality(
-                                    textDirection:
-                                        serviceLocator<LanguageController>()
-                                            .targetTextDirection,
+                                    textDirection: serviceLocator<LanguageController>().targetTextDirection,
                                     child: TextFormField(
                                       controller: _usernameController,
-                                      textDirection:
-                                          serviceLocator<LanguageController>()
-                                              .targetTextDirection,
+                                      textDirection: serviceLocator<LanguageController>().targetTextDirection,
                                       decoration: InputDecoration(
                                         labelText: snapshot[0],
                                         isDense: true,
@@ -230,12 +212,10 @@ class _BusinessInformationPageState extends State<BusinessInformationPage>
                                 key: const Key(
                                   'business-name-textFormField-key',
                                 ),
-                                buildWhen: (previousDataList, latestDataList) =>
-                                    previousDataList != latestDataList,
+                                buildWhen: (previousDataList, latestDataList) => previousDataList != latestDataList,
                                 streams: [
                                   Stream.fromFuture(
-                                    AppTranslator.instance
-                                        .translate('Business name'),
+                                    AppTranslator.instance.translate('Business name'),
                                   ),
                                   Stream.fromFuture(
                                     AppTranslator.instance.translate(
@@ -248,21 +228,13 @@ class _BusinessInformationPageState extends State<BusinessInformationPage>
                                     ),
                                   ),
                                 ],
-                                initialStreamValue: const [
-                                  'Business name',
-                                  'Please enter a business name',
-                                  ''
-                                ],
+                                initialStreamValue: const ['Business name', 'Please enter a business name', ''],
                                 builder: (context, snapshot) {
                                   return Directionality(
-                                    textDirection:
-                                        serviceLocator<LanguageController>()
-                                            .targetTextDirection,
+                                    textDirection: serviceLocator<LanguageController>().targetTextDirection,
                                     child: TextFormField(
                                       controller: _businessNameController,
-                                      textDirection:
-                                          serviceLocator<LanguageController>()
-                                              .targetTextDirection,
+                                      textDirection: serviceLocator<LanguageController>().targetTextDirection,
                                       decoration: InputDecoration(
                                         labelText: snapshot[0],
                                         isDense: true,
@@ -287,12 +259,10 @@ class _BusinessInformationPageState extends State<BusinessInformationPage>
                                 key: const Key(
                                   'business-email-address-textFormField-key',
                                 ),
-                                buildWhen: (previousDataList, latestDataList) =>
-                                    previousDataList != latestDataList,
+                                buildWhen: (previousDataList, latestDataList) => previousDataList != latestDataList,
                                 streams: [
                                   Stream.fromFuture(
-                                    AppTranslator.instance
-                                        .translate('Business email address'),
+                                    AppTranslator.instance.translate('Business email address'),
                                   ),
                                   Stream.fromFuture(
                                     AppTranslator.instance.translate(
@@ -310,22 +280,13 @@ class _BusinessInformationPageState extends State<BusinessInformationPage>
                                     ),
                                   ),
                                 ],
-                                initialStreamValue: const [
-                                  'Business email address',
-                                  'Please enter an email address',
-                                  'Please enter a valid email address',
-                                  ''
-                                ],
+                                initialStreamValue: const ['Business email address', 'Please enter an email address', 'Please enter a valid email address', ''],
                                 builder: (context, snapshot) {
                                   return Directionality(
-                                    textDirection:
-                                        serviceLocator<LanguageController>()
-                                            .targetTextDirection,
+                                    textDirection: serviceLocator<LanguageController>().targetTextDirection,
                                     child: TextFormField(
                                       controller: _emailController,
-                                      textDirection:
-                                          serviceLocator<LanguageController>()
-                                              .targetTextDirection,
+                                      textDirection: serviceLocator<LanguageController>().targetTextDirection,
                                       decoration: InputDecoration(
                                         labelText: snapshot[0],
                                         isDense: true,
@@ -337,8 +298,7 @@ class _BusinessInformationPageState extends State<BusinessInformationPage>
                                         /*else if (!value.contains('@')) {
                                           return 'Please enter a valid email address'.tr();
                                         }*/
-                                        else if (!value
-                                            .hasValidEmailAddress(value)) {
+                                        else if (!value.hasValidEmailAddress(value)) {
                                           return '${snapshot[2]}';
                                         }
                                         return null;
@@ -357,11 +317,9 @@ class _BusinessInformationPageState extends State<BusinessInformationPage>
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
                                   Flexible(
-                                    child: BlocBuilder<PhoneFormFieldBloc,
-                                        PhoneNumberFormFieldState>(
+                                    child: BlocBuilder<PhoneFormFieldBloc, PhoneNumberFormFieldState>(
                                       bloc: context.read<PhoneFormFieldBloc>(),
-                                      buildWhen: (previous, current) =>
-                                          previous != current,
+                                      buildWhen: (previous, current) => previous != current,
                                       builder: (context, state) {
                                         state.maybeWhen(
                                           orElse: () {},
@@ -377,10 +335,8 @@ class _BusinessInformationPageState extends State<BusinessInformationPage>
                                             countryDialCode,
                                             country,
                                           ) {
-                                            this.phoneNumberVerification =
-                                                phoneNumberVerification;
-                                            this.userEnteredPhoneNumber =
-                                                userEnteredPhoneNumber;
+                                            this.phoneNumberVerification = phoneNumberVerification;
+                                            this.userEnteredPhoneNumber = userEnteredPhoneNumber;
                                           },
                                         );
                                         return MultiStreamBuilder(
@@ -391,8 +347,7 @@ class _BusinessInformationPageState extends State<BusinessInformationPage>
                                             previousDataList,
                                             latestDataList,
                                           ) =>
-                                              previousDataList !=
-                                              latestDataList,
+                                              previousDataList != latestDataList,
                                           streams: [
                                             Stream.fromFuture(
                                               AppTranslator.instance.translate(
@@ -411,9 +366,7 @@ class _BusinessInformationPageState extends State<BusinessInformationPage>
                                           ],
                                           builder: (context, snapshot) {
                                             return Directionality(
-                                              textDirection: serviceLocator<
-                                                      LanguageController>()
-                                                  .targetTextDirection,
+                                              textDirection: serviceLocator<LanguageController>().targetTextDirection,
                                               child: PhoneNumberFieldWidget(
                                                 key: const Key(
                                                   'user-business-phone-number-widget-key',
@@ -434,8 +387,7 @@ class _BusinessInformationPageState extends State<BusinessInformationPage>
                                                 autofocus: false,
                                                 style: context.bodyLarge,
                                                 showFlagInInput: false,
-                                                countryCodeStyle:
-                                                    context.bodyLarge,
+                                                countryCodeStyle: context.bodyLarge,
                                               ),
                                             );
                                           },
@@ -455,16 +407,13 @@ class _BusinessInformationPageState extends State<BusinessInformationPage>
                                 key: const Key(
                                   'business-address-textFormField-key',
                                 ),
-                                buildWhen: (previousDataList, latestDataList) =>
-                                    previousDataList != latestDataList,
+                                buildWhen: (previousDataList, latestDataList) => previousDataList != latestDataList,
                                 streams: [
                                   Stream.fromFuture(
-                                    AppTranslator.instance
-                                        .translate('Business address'),
+                                    AppTranslator.instance.translate('Business address'),
                                   ),
                                   Stream.fromFuture(
-                                    AppTranslator.instance
-                                        .translate('Please enter an address'),
+                                    AppTranslator.instance.translate('Please enter an address'),
                                   ),
                                   Stream.fromFuture(
                                     AppTranslator.instance.translate(
@@ -472,33 +421,22 @@ class _BusinessInformationPageState extends State<BusinessInformationPage>
                                     ),
                                   ),
                                 ],
-                                initialStreamValue: const [
-                                  'Business address',
-                                  'Please enter an address',
-                                  ''
-                                ],
+                                initialStreamValue: const ['Business address', 'Please enter an address', ''],
                                 builder: (context, snapshot) {
                                   return Directionality(
-                                    textDirection:
-                                        serviceLocator<LanguageController>()
-                                            .targetTextDirection,
+                                    textDirection: serviceLocator<LanguageController>().targetTextDirection,
                                     child: TextFormField(
                                       controller: _addressController,
-                                      textDirection:
-                                          serviceLocator<LanguageController>()
-                                              .targetTextDirection,
+                                      textDirection: serviceLocator<LanguageController>().targetTextDirection,
                                       maxLines: 3,
                                       decoration: InputDecoration(
                                         labelText: snapshot[0],
                                         isDense: true,
                                         suffixIcon: Container(
-                                          width:
-                                              kMinInteractiveDimension * 1.05,
+                                          width: kMinInteractiveDimension * 1.05,
                                           constraints: BoxConstraints(
-                                            minWidth:
-                                                kMinInteractiveDimension * 1.05,
-                                            minHeight:
-                                                kMinInteractiveDimension * 2,
+                                            minWidth: kMinInteractiveDimension * 1.05,
+                                            minHeight: kMinInteractiveDimension * 2,
                                           ),
                                           decoration: BoxDecoration(
                                             border: BorderDirectional(
@@ -615,10 +553,8 @@ class _BusinessInformationPageState extends State<BusinessInformationPage>
                               SizedBox(
                                 width: context.width - margins * 5,
                                 child: ElevatedButton(
-                                  onPressed: () {
-                                    if (_createBusinessProfileFormKey
-                                        .currentState!
-                                        .validate()) {
+                                  onPressed: () async {
+                                    if (_createBusinessProfileFormKey.currentState!.validate()) {
                                       // Registration logic here
                                       final username = _usernameController.text;
                                       final email = _emailController.text;
@@ -631,13 +567,17 @@ class _BusinessInformationPageState extends State<BusinessInformationPage>
                                       print('Phone: $phone');
                                       print('Address: $address');
                                       print('Gender: $_selectedGender');
+                                      _createBusinessProfileFormKey.currentState!.save();
+                                      await Future.delayed(const Duration(milliseconds: 500), () {});
+                                      if (!mounted) {
+                                        return;
+                                      }
+                                      context.go(Routes.BANK_INFORMATION_PAGE);
                                     }
                                   },
                                   child: Text(
                                     'Next',
-                                    textDirection:
-                                        serviceLocator<LanguageController>()
-                                            .targetTextDirection,
+                                    textDirection: serviceLocator<LanguageController>().targetTextDirection,
                                   ).translate(),
                                 ),
                               ),

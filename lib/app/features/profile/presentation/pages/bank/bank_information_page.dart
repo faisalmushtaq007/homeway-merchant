@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
+import 'package:go_router/go_router.dart';
 import 'package:homemakers_merchant/app/features/authentication/presentation/manager/phone_number_verification_bloc.dart';
 import 'package:homemakers_merchant/app/features/authentication/presentation/pages/phone_number_verification_page.dart';
 import 'package:homemakers_merchant/app/features/profile/domain/entities/bank/bank_info_tile_model.dart';
@@ -18,6 +19,7 @@ import 'package:homemakers_merchant/config/translation/widgets/language_selectio
 import 'package:homemakers_merchant/core/constants/global_app_constants.dart';
 import 'package:homemakers_merchant/core/extensions/app_extension.dart';
 import 'package:homemakers_merchant/core/extensions/string/pattern.dart';
+import 'package:homemakers_merchant/shared/router/app_pages.dart';
 import 'package:homemakers_merchant/shared/widgets/app/page_body.dart';
 import 'package:homemakers_merchant/shared/widgets/universal/animated_gap/gap.dart';
 import 'package:homemakers_merchant/shared/widgets/universal/animated_gap/src/widgets/gap.dart';
@@ -33,8 +35,7 @@ class BankInformationPage extends StatefulWidget {
   State<BankInformationPage> createState() => _BankInformationPageState();
 }
 
-class _BankInformationPageState extends State<BankInformationPage>
-    with SingleTickerProviderStateMixin {
+class _BankInformationPageState extends State<BankInformationPage> with SingleTickerProviderStateMixin {
   late final ScrollController scrollController;
 
   late AnimationController _animationController;
@@ -43,8 +44,7 @@ class _BankInformationPageState extends State<BankInformationPage>
   final _bankInformationFormKey = GlobalKey<FormState>();
   TextEditingController _bankNameController = TextEditingController();
   TextEditingController _accountNumberController = TextEditingController();
-  TextEditingController _confirmAccountNumberController =
-      TextEditingController();
+  TextEditingController _confirmAccountNumberController = TextEditingController();
   TextEditingController _accountHolderNameController = TextEditingController();
   TextEditingController _ibanNumberController = TextEditingController();
   List<BankInfoTile> listOfBankInfoTiles = [];
@@ -56,11 +56,7 @@ class _BankInformationPageState extends State<BankInformationPage>
   // SA03 8000 0000 6080 1016 7519
   final ibanMuskeyFormatter = MuskeyFormatter(
     masks: ['@%## #### #### #### #### ####'],
-    wildcards: {
-      '#': RegExp('[0-9]'),
-      '@': RegExp('[s|S]'),
-      '%': RegExp('[a|A]')
-    },
+    wildcards: {'#': RegExp('[0-9]'), '@': RegExp('[s|S]'), '%': RegExp('[a|A]')},
     charTransforms: {
       '@': (s) => s.toUpperCase(),
       '%': (s) => s.toUpperCase(),
@@ -112,8 +108,7 @@ class _BankInformationPageState extends State<BankInformationPage>
   Widget build(BuildContext context) {
     final MediaQueryData media = MediaQuery.of(context);
     final double margins = GlobalApp.responsiveInsets(media.size.width);
-    final double topPadding =
-        margins; //media.padding.top + kToolbarHeight + margins; //margins * 1.5;
+    final double topPadding = margins; //media.padding.top + kToolbarHeight + margins; //margins * 1.5;
     final double bottomPadding = media.padding.bottom + margins;
     final double width = media.size.width;
     final ThemeData theme = Theme.of(context);
@@ -145,8 +140,7 @@ class _BankInformationPageState extends State<BankInformationPage>
           ],
         ),
         body: Directionality(
-          textDirection:
-              serviceLocator<LanguageController>().targetTextDirection,
+          textDirection: serviceLocator<LanguageController>().targetTextDirection,
           child: PageBody(
             controller: scrollController,
             constraints: BoxConstraints(
@@ -172,8 +166,7 @@ class _BankInformationPageState extends State<BankInformationPage>
                       child: Stack(
                         alignment: Alignment.topLeft,
                         clipBehavior: Clip.none,
-                        textDirection: serviceLocator<LanguageController>()
-                            .targetTextDirection,
+                        textDirection: serviceLocator<LanguageController>().targetTextDirection,
                         children: [
                           ListView(
                             controller: scrollController,
@@ -186,9 +179,7 @@ class _BankInformationPageState extends State<BankInformationPage>
                               Text(
                                 'Add Payment Details',
                                 style: context.titleLarge,
-                                textDirection:
-                                    serviceLocator<LanguageController>()
-                                        .targetTextDirection,
+                                textDirection: serviceLocator<LanguageController>().targetTextDirection,
                               ).translate(),
                               const AnimatedGap(
                                 16,
@@ -200,16 +191,13 @@ class _BankInformationPageState extends State<BankInformationPage>
                                 key: const Key(
                                   'bank-name-textFormField-key',
                                 ),
-                                buildWhen: (previousDataList, latestDataList) =>
-                                    previousDataList != latestDataList,
+                                buildWhen: (previousDataList, latestDataList) => previousDataList != latestDataList,
                                 streams: [
                                   Stream.fromFuture(
-                                    AppTranslator.instance
-                                        .translate('Bank Name'),
+                                    AppTranslator.instance.translate('Bank Name'),
                                   ),
                                   Stream.fromFuture(
-                                    AppTranslator.instance
-                                        .translate('Please enter a bank name'),
+                                    AppTranslator.instance.translate('Please enter a bank name'),
                                   ),
                                   Stream.fromFuture(
                                     AppTranslator.instance.translate(
@@ -223,38 +211,27 @@ class _BankInformationPageState extends State<BankInformationPage>
                                   _bankNameController.value.text.trim(),
                                 ],
                                 builder: (context, snapshot) {
-                                  final String translateString =
-                                      snapshot[2] as String;
-                                  if (listOfBankInfoTiles.isNotEmpty &&
-                                      listOfBankInfoTiles.elementAtOrNull(0) !=
-                                          null) {
+                                  final String translateString = snapshot[2] as String;
+                                  if (listOfBankInfoTiles.isNotEmpty && listOfBankInfoTiles.elementAtOrNull(0) != null) {
                                     listOfBankInfoTiles.removeAt(0);
                                     listOfBankInfoTiles.insert(
                                       0,
-                                      BankInfoTile(
-                                          label: snapshot[0] as String,
-                                          content: snapshot[2] as String),
+                                      BankInfoTile(label: snapshot[0] as String, content: snapshot[2] as String),
                                     );
                                   } else {
                                     listOfBankInfoTiles.insert(
                                       0,
-                                      BankInfoTile(
-                                          label: snapshot[0] as String,
-                                          content: snapshot[2] as String),
+                                      BankInfoTile(label: snapshot[0] as String, content: snapshot[2] as String),
                                     );
                                   }
 
                                   return Directionality(
-                                    textDirection:
-                                        serviceLocator<LanguageController>()
-                                            .targetTextDirection,
+                                    textDirection: serviceLocator<LanguageController>().targetTextDirection,
                                     child: TextFormField(
                                       controller: _bankNameController,
                                       focusNode: _bankNameControllerFocusNode,
                                       textInputAction: TextInputAction.next,
-                                      textDirection:
-                                          serviceLocator<LanguageController>()
-                                              .targetTextDirection,
+                                      textDirection: serviceLocator<LanguageController>().targetTextDirection,
                                       decoration: InputDecoration(
                                         labelText: snapshot[0],
                                         isDense: true,
@@ -266,10 +243,7 @@ class _BankInformationPageState extends State<BankInformationPage>
                                         }
                                         return null;
                                       },
-                                      onFieldSubmitted: (_) => _fieldFocusChange(
-                                          context,
-                                          _bankNameControllerFocusNode,
-                                          _accountNumberControllerFocusNode),
+                                      onFieldSubmitted: (_) => _fieldFocusChange(context, _bankNameControllerFocusNode, _accountNumberControllerFocusNode),
                                     ),
                                   );
                                 },
@@ -284,12 +258,10 @@ class _BankInformationPageState extends State<BankInformationPage>
                                 key: const Key(
                                   'account-number-textFormField-key',
                                 ),
-                                buildWhen: (previousDataList, latestDataList) =>
-                                    previousDataList != latestDataList,
+                                buildWhen: (previousDataList, latestDataList) => previousDataList != latestDataList,
                                 streams: [
                                   Stream.fromFuture(
-                                    AppTranslator.instance
-                                        .translate('Account Number'),
+                                    AppTranslator.instance.translate('Account Number'),
                                   ),
                                   Stream.fromFuture(
                                     AppTranslator.instance.translate(
@@ -298,8 +270,7 @@ class _BankInformationPageState extends State<BankInformationPage>
                                   ),
                                   Stream.fromFuture(
                                     AppTranslator.instance.translate(
-                                      _accountNumberController.value.text
-                                          .trim(),
+                                      _accountNumberController.value.text.trim(),
                                     ),
                                   ),
                                 ],
@@ -309,55 +280,40 @@ class _BankInformationPageState extends State<BankInformationPage>
                                   _accountNumberController.value.text.trim(),
                                 ],
                                 builder: (context, snapshot) {
-                                  if (listOfBankInfoTiles.isNotEmpty &&
-                                      listOfBankInfoTiles.elementAtOrNull(1) !=
-                                          null) {
+                                  if (listOfBankInfoTiles.isNotEmpty && listOfBankInfoTiles.elementAtOrNull(1) != null) {
                                     listOfBankInfoTiles.removeAt(1);
                                     listOfBankInfoTiles.insert(
                                       1,
-                                      BankInfoTile(
-                                          label: snapshot[0] as String,
-                                          content: snapshot[2] as String),
+                                      BankInfoTile(label: snapshot[0] as String, content: snapshot[2] as String),
                                     );
                                   } else {
                                     listOfBankInfoTiles.insert(
                                       1,
-                                      BankInfoTile(
-                                          label: snapshot[0] as String,
-                                          content: snapshot[2] as String),
+                                      BankInfoTile(label: snapshot[0] as String, content: snapshot[2] as String),
                                     );
                                   }
 
                                   return Directionality(
-                                    textDirection:
-                                        serviceLocator<LanguageController>()
-                                            .targetTextDirection,
+                                    textDirection: serviceLocator<LanguageController>().targetTextDirection,
                                     child: TextFormField(
                                       controller: _accountNumberController,
-                                      focusNode:
-                                          _accountNumberControllerFocusNode,
-                                      textDirection:
-                                          serviceLocator<LanguageController>()
-                                              .targetTextDirection,
+                                      focusNode: _accountNumberControllerFocusNode,
+                                      textDirection: serviceLocator<LanguageController>().targetTextDirection,
                                       decoration: InputDecoration(
                                         labelText: snapshot[0],
                                         isDense: true,
                                       ),
                                       textInputAction: TextInputAction.next,
                                       keyboardType: TextInputType.number,
-                                      inputFormatters: [
-                                        FilteringTextInputFormatter.digitsOnly
-                                      ],
+                                      inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                                       validator: (value) {
                                         if (value == null || value.isEmpty) {
                                           return '${snapshot[1]}';
                                         }
                                         return null;
                                       },
-                                      onFieldSubmitted: (_) => _fieldFocusChange(
-                                          context,
-                                          _accountNumberControllerFocusNode,
-                                          _confirmAccountNumberControllerFocusNode),
+                                      onFieldSubmitted: (_) =>
+                                          _fieldFocusChange(context, _accountNumberControllerFocusNode, _confirmAccountNumberControllerFocusNode),
                                     ),
                                   );
                                 },
@@ -372,12 +328,10 @@ class _BankInformationPageState extends State<BankInformationPage>
                                 key: const Key(
                                   'confirm-account-number-textFormField-key',
                                 ),
-                                buildWhen: (previousDataList, latestDataList) =>
-                                    previousDataList != latestDataList,
+                                buildWhen: (previousDataList, latestDataList) => previousDataList != latestDataList,
                                 streams: [
                                   Stream.fromFuture(
-                                    AppTranslator.instance
-                                        .translate('Confirm Account Number'),
+                                    AppTranslator.instance.translate('Confirm Account Number'),
                                   ),
                                   Stream.fromFuture(
                                     AppTranslator.instance.translate(
@@ -391,8 +345,7 @@ class _BankInformationPageState extends State<BankInformationPage>
                                   ),
                                   Stream.fromFuture(
                                     AppTranslator.instance.translate(
-                                      _confirmAccountNumberController.value.text
-                                          .trim(),
+                                      _confirmAccountNumberController.value.text.trim(),
                                     ),
                                   ),
                                 ],
@@ -400,46 +353,33 @@ class _BankInformationPageState extends State<BankInformationPage>
                                   'Confirm Account Number',
                                   'Please enter an confirm account number',
                                   'Please enter a valid account number',
-                                  _confirmAccountNumberController.value.text
-                                      .trim(),
+                                  _confirmAccountNumberController.value.text.trim(),
                                 ],
                                 builder: (context, snapshot) {
                                   return Directionality(
-                                    textDirection:
-                                        serviceLocator<LanguageController>()
-                                            .targetTextDirection,
+                                    textDirection: serviceLocator<LanguageController>().targetTextDirection,
                                     child: TextFormField(
-                                      controller:
-                                          _confirmAccountNumberController,
-                                      focusNode:
-                                          _confirmAccountNumberControllerFocusNode,
+                                      controller: _confirmAccountNumberController,
+                                      focusNode: _confirmAccountNumberControllerFocusNode,
                                       textInputAction: TextInputAction.next,
-                                      textDirection:
-                                          serviceLocator<LanguageController>()
-                                              .targetTextDirection,
+                                      textDirection: serviceLocator<LanguageController>().targetTextDirection,
                                       decoration: InputDecoration(
                                         labelText: snapshot[0],
                                         isDense: true,
                                       ),
                                       keyboardType: TextInputType.number,
-                                      inputFormatters: [
-                                        FilteringTextInputFormatter.digitsOnly
-                                      ],
+                                      inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                                       validator: (value) {
                                         if (value == null || value.isEmpty) {
                                           return '${snapshot[1]}';
-                                        } else if (!_accountNumberController
-                                            .value.text
-                                            .contains(value)) {
+                                        } else if (!_accountNumberController.value.text.contains(value)) {
                                           return '${snapshot[2]}';
                                         } else {
                                           return null;
                                         }
                                       },
-                                      onFieldSubmitted: (_) => _fieldFocusChange(
-                                          context,
-                                          _confirmAccountNumberControllerFocusNode,
-                                          _accountHolderNameControllerFocusNode),
+                                      onFieldSubmitted: (_) =>
+                                          _fieldFocusChange(context, _confirmAccountNumberControllerFocusNode, _accountHolderNameControllerFocusNode),
                                     ),
                                   );
                                 },
@@ -454,12 +394,10 @@ class _BankInformationPageState extends State<BankInformationPage>
                                 key: const Key(
                                   'bank-holder-name-textFormField-key',
                                 ),
-                                buildWhen: (previousDataList, latestDataList) =>
-                                    previousDataList != latestDataList,
+                                buildWhen: (previousDataList, latestDataList) => previousDataList != latestDataList,
                                 streams: [
                                   Stream.fromFuture(
-                                    AppTranslator.instance
-                                        .translate('Account Holder Name'),
+                                    AppTranslator.instance.translate('Account Holder Name'),
                                   ),
                                   Stream.fromFuture(
                                     AppTranslator.instance.translate(
@@ -468,49 +406,36 @@ class _BankInformationPageState extends State<BankInformationPage>
                                   ),
                                   Stream.fromFuture(
                                     AppTranslator.instance.translate(
-                                      _accountHolderNameController.value.text
-                                          .trim(),
+                                      _accountHolderNameController.value.text.trim(),
                                     ),
                                   ),
                                 ],
                                 initialStreamValue: [
                                   'Account Holder Name',
                                   'Please enter a account holder name',
-                                  _accountHolderNameController.value.text
-                                      .trim(),
+                                  _accountHolderNameController.value.text.trim(),
                                 ],
                                 builder: (context, snapshot) {
-                                  if (listOfBankInfoTiles.isNotEmpty &&
-                                      listOfBankInfoTiles.elementAtOrNull(2) !=
-                                          null) {
+                                  if (listOfBankInfoTiles.isNotEmpty && listOfBankInfoTiles.elementAtOrNull(2) != null) {
                                     listOfBankInfoTiles.removeAt(2);
                                     listOfBankInfoTiles.insert(
                                       2,
-                                      BankInfoTile(
-                                          label: snapshot[0] as String,
-                                          content: snapshot[2] as String),
+                                      BankInfoTile(label: snapshot[0] as String, content: snapshot[2] as String),
                                     );
                                   } else {
                                     listOfBankInfoTiles.insert(
                                       2,
-                                      BankInfoTile(
-                                          label: snapshot[0] as String,
-                                          content: snapshot[2] as String),
+                                      BankInfoTile(label: snapshot[0] as String, content: snapshot[2] as String),
                                     );
                                   }
 
                                   return Directionality(
-                                    textDirection:
-                                        serviceLocator<LanguageController>()
-                                            .targetTextDirection,
+                                    textDirection: serviceLocator<LanguageController>().targetTextDirection,
                                     child: TextFormField(
                                       controller: _accountHolderNameController,
-                                      focusNode:
-                                          _accountHolderNameControllerFocusNode,
+                                      focusNode: _accountHolderNameControllerFocusNode,
                                       textInputAction: TextInputAction.next,
-                                      textDirection:
-                                          serviceLocator<LanguageController>()
-                                              .targetTextDirection,
+                                      textDirection: serviceLocator<LanguageController>().targetTextDirection,
                                       decoration: InputDecoration(
                                         labelText: snapshot[0],
                                         isDense: true,
@@ -522,10 +447,8 @@ class _BankInformationPageState extends State<BankInformationPage>
                                         }
                                         return null;
                                       },
-                                      onFieldSubmitted: (_) => _fieldFocusChange(
-                                          context,
-                                          _accountHolderNameControllerFocusNode,
-                                          _ibanNumberControllerFocusNode),
+                                      onFieldSubmitted: (_) =>
+                                          _fieldFocusChange(context, _accountHolderNameControllerFocusNode, _ibanNumberControllerFocusNode),
                                     ),
                                   );
                                 },
@@ -540,12 +463,10 @@ class _BankInformationPageState extends State<BankInformationPage>
                                 key: const Key(
                                   'bank-iban-number-textFormField-key',
                                 ),
-                                buildWhen: (previousDataList, latestDataList) =>
-                                    previousDataList != latestDataList,
+                                buildWhen: (previousDataList, latestDataList) => previousDataList != latestDataList,
                                 streams: [
                                   Stream.fromFuture(
-                                    AppTranslator.instance
-                                        .translate('IBAN Number'),
+                                    AppTranslator.instance.translate('IBAN Number'),
                                   ),
                                   Stream.fromFuture(
                                     AppTranslator.instance.translate(
@@ -566,43 +487,30 @@ class _BankInformationPageState extends State<BankInformationPage>
                                   //_ibanNumberController.value.text.trim(),
                                 ],
                                 builder: (context, snapshot) {
-                                  if (listOfBankInfoTiles.isNotEmpty &&
-                                      listOfBankInfoTiles.elementAtOrNull(3) !=
-                                          null) {
+                                  if (listOfBankInfoTiles.isNotEmpty && listOfBankInfoTiles.elementAtOrNull(3) != null) {
                                     listOfBankInfoTiles.removeAt(3);
                                     listOfBankInfoTiles.insert(
                                       3,
-                                      BankInfoTile(
-                                          label: snapshot[0] as String,
-                                          content: snapshot[2] as String),
+                                      BankInfoTile(label: snapshot[0] as String, content: snapshot[2] as String),
                                     );
                                   } else {
                                     listOfBankInfoTiles.insert(
                                       3,
-                                      BankInfoTile(
-                                          label: snapshot[0] as String,
-                                          content: snapshot[2] as String),
+                                      BankInfoTile(label: snapshot[0] as String, content: snapshot[2] as String),
                                     );
                                   }
 
                                   return Directionality(
-                                    textDirection:
-                                        serviceLocator<LanguageController>()
-                                            .targetTextDirection,
+                                    textDirection: serviceLocator<LanguageController>().targetTextDirection,
                                     child: TextFormField(
                                       controller: _ibanNumberController,
                                       focusNode: _ibanNumberControllerFocusNode,
                                       textInputAction: TextInputAction.done,
-                                      textDirection:
-                                          serviceLocator<LanguageController>()
-                                              .targetTextDirection,
+                                      textDirection: serviceLocator<LanguageController>().targetTextDirection,
                                       decoration: InputDecoration(
                                         labelText: snapshot[0],
-                                        hintText:
-                                            'SA## #### #### #### #### ####',
-                                        hintTextDirection:
-                                            serviceLocator<LanguageController>()
-                                                .targetTextDirection,
+                                        hintText: 'SA## #### #### #### #### ####',
+                                        hintTextDirection: serviceLocator<LanguageController>().targetTextDirection,
                                         isDense: true,
                                       ),
                                       //keyboardType: TextInputType.text,
@@ -612,19 +520,14 @@ class _BankInformationPageState extends State<BankInformationPage>
                                         ibanMuskeyFormatter,
                                       ],
                                       validator: (value) {
-                                        if (value == null ||
-                                            value.isEmpty ||
-                                            ibanMuskeyFormatter
-                                                .info.clean.isEmpty) {
+                                        if (value == null || value.isEmpty || ibanMuskeyFormatter.info.clean.isEmpty) {
                                           return '${snapshot[1]}';
-                                        } else if (!ibanMuskeyFormatter
-                                            .info.isValid) {
+                                        } else if (!ibanMuskeyFormatter.info.isValid) {
                                           return '${snapshot[1]}';
                                         }
                                         return null;
                                       },
-                                      onFieldSubmitted: (_) =>
-                                          FocusScope.of(context).unfocus(),
+                                      onFieldSubmitted: (_) => FocusScope.of(context).unfocus(),
                                     ),
                                   );
                                 },
@@ -636,36 +539,24 @@ class _BankInformationPageState extends State<BankInformationPage>
                             child: SizedBox(
                               width: context.width - margins * 5,
                               child: ElevatedButton(
-                                onPressed: () {
-                                  if (/*!_bankInformationFormKey.currentState!
-                                          .validate() &&
-                                      !ibanMuskeyFormatter.info.isValid*/
-                                      true) {
+                                onPressed: () async {
+                                  if (_bankInformationFormKey.currentState!.validate() && ibanMuskeyFormatter.info.isValid) {
                                     // Registration logic here
-                                    final accountHolderName =
-                                        _accountHolderNameController.value.text;
-                                    final bankName =
-                                        _bankNameController.value.text;
-                                    final confirmAccountNumber =
-                                        _confirmAccountNumberController
-                                            .value.text;
-                                    final ibanNumber = ibanMuskeyFormatter.info
-                                        .clean; //_ibanNumberController.value.text;
-                                    final address =
-                                        _accountHolderNameController.value.text;
-                                    _bankInformationFormKey.currentState!
-                                        .save();
+                                    final accountHolderName = _accountHolderNameController.value.text;
+                                    final bankName = _bankNameController.value.text;
+                                    final confirmAccountNumber = _confirmAccountNumberController.value.text;
+                                    final ibanNumber = ibanMuskeyFormatter.info.clean; //_ibanNumberController.value.text;
+                                    final address = _accountHolderNameController.value.text;
+                                    _bankInformationFormKey.currentState!.save();
 
                                     // Print the entered information
-                                    print(
-                                        'Account holder name: $accountHolderName');
+                                    print('Account holder name: $accountHolderName');
                                     print('Bank name: $bankName');
                                     print('Email: $confirmAccountNumber');
                                     print('Phone: $ibanNumber');
 
                                     // Show confirmation dialog
-                                    List<BankInformationTileWidget>
-                                        listOfBankTileWidgets = [];
+                                    List<BankInformationTileWidget> listOfBankTileWidgets = [];
                                     listOfBankTileWidgets.clear();
                                     listOfBankInfoTiles.asMap().forEach((
                                       key,
@@ -679,11 +570,11 @@ class _BankInformationPageState extends State<BankInformationPage>
                                         ),
                                       );
                                     });
-                                    showConfirmationDialog(
+                                    final result = await showConfirmationDialog<bool>(
                                       context: context,
                                       barrierDismissible: true,
                                       curve: Curves.fastOutSlowIn,
-                                      duration: Duration(seconds: 1),
+                                      duration: const Duration(milliseconds: 700),
                                       builder: (BuildContext context) {
                                         return ResponsiveDialog(
                                           context: context,
@@ -693,32 +584,35 @@ class _BankInformationPageState extends State<BankInformationPage>
                                           title: 'Confirm Payment',
                                           confirmText: 'Confirm',
                                           cancelText: 'Cancel',
-                                          okPressed: () {
-                                            print('Dialog confirmed');
-                                            Navigator.of(context).pop();
+                                          okPressed: () async {
+                                            debugPrint('Dialog confirmed');
+                                            Navigator.of(context).pop(true);
                                           },
                                           cancelPressed: () {
-                                            print('Dialog cancelled');
-                                            Navigator.of(context).pop();
+                                            debugPrint('Dialog cancelled');
+                                            Navigator.of(context).pop(false);
                                           },
                                           child: ListView.builder(
                                             padding: EdgeInsetsDirectional.zero,
-                                            itemCount:
-                                                listOfBankTileWidgets.length,
-                                            itemBuilder: (context, index) =>
-                                                listOfBankTileWidgets[index],
+                                            itemCount: listOfBankTileWidgets.length,
+                                            itemBuilder: (context, index) => listOfBankTileWidgets[index],
                                             shrinkWrap: true,
                                           ),
                                         );
                                       },
                                     );
+                                    if (result != null && result) {
+                                      await Future.delayed(const Duration(milliseconds: 500), () {});
+                                      if (!mounted) {
+                                        return;
+                                      }
+                                      context.go(Routes.DOCUMENT_LIST_PAGE);
+                                    }
                                   }
                                 },
                                 child: Text(
                                   'Save Payment Details',
-                                  textDirection:
-                                      serviceLocator<LanguageController>()
-                                          .targetTextDirection,
+                                  textDirection: serviceLocator<LanguageController>().targetTextDirection,
                                 ).translate(),
                               ),
                             ),
@@ -736,8 +630,7 @@ class _BankInformationPageState extends State<BankInformationPage>
     );
   }
 
-  void _fieldFocusChange(
-      BuildContext context, FocusNode currentFocus, FocusNode nextFocus) {
+  void _fieldFocusChange(BuildContext context, FocusNode currentFocus, FocusNode nextFocus) {
     currentFocus.unfocus();
     FocusScope.of(context).requestFocus(nextFocus);
   }

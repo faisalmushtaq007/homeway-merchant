@@ -87,6 +87,7 @@ dependencies:
     git:
       url: 'https://github.com/prasant10050/isolate_manager.git'
       ref: main
+  jiffy: ^6.2.1
   json_annotation: ^4.8.1
   location: ^4.4.0
   logger: ^1.4.0
@@ -172,17 +173,17 @@ flutter_gen:
     lottie: true
 
 flutter_native_splash:
-  color: "#ffffff"
-  color_dark: "#ffb300"
-  background_image: assets/image/app_logo_light.jpg
-  background_image_dark: assets/image/app_logo_dark.jpg
+  color: "#e65100"
+  color_dark: "#e65100"
+  background_image: assets/image/homeway_logo.png
+  background_image_dark: assets/image/homeway_logo.png
 
   android_12:
-    color: "#ffffff"
-    image: assets/image/app_logo_light.jpg
-    icon_background_color: "#ffffff"
-    image_dark: assets/image/app_logo_dark.jpg
-    icon_background_color_dark: "#ffb300"
+    color: "#e65100"
+    image: assets/image/homeway_logo.png
+    icon_background_color: "#e65100"
+    image_dark: assets/image/homeway_logo.png
+    icon_background_color_dark: "#e65100"
 
   web: true
 

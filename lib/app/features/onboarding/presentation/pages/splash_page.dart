@@ -17,6 +17,7 @@ import 'package:homemakers_merchant/shared/router/app_pages.dart';
 import 'package:homemakers_merchant/shared/widgets/app/app_logo.dart';
 import 'package:homemakers_merchant/shared/widgets/app/flutter_svg_provider.dart';
 import 'package:homemakers_merchant/shared/widgets/app/page_body.dart';
+import 'package:homemakers_merchant/shared/widgets/universal/animate_do/animate_do.dart';
 import 'package:homemakers_merchant/shared/widgets/universal/animated_gap/gap.dart';
 import 'package:homemakers_merchant/shared/widgets/universal/constrained_scrollable_views/constrained_scrollable_views.dart';
 
@@ -81,128 +82,123 @@ class _PageView extends WidgetView<SplashPage, _SplashPageViewController> {
       child: PlatformScaffold(
         body: Directionality(
           textDirection: serviceLocator<LanguageController>().targetTextDirection,
-          child: AnimatedBuilder(
-            animation: state._animationController,
-            builder: (BuildContext context, Widget? child) {
-              return Transform(
-                transform: Matrix4.translationValues(
-                  state._animation.value * width,
-                  0.0,
-                  0.0,
+          child: PageBody(
+            controller: state.scrollController,
+            constraints: BoxConstraints(
+              minWidth: double.infinity,
+              minHeight: context.height,
+            ),
+            child: Container(
+              height: context.height,
+              alignment: AlignmentDirectional.topStart,
+              constraints: BoxConstraints(
+                minWidth: double.infinity,
+                minHeight: context.height,
+              ),
+              decoration: const BoxDecoration(
+                image: DecorationImage(
+                  image: AssetImage('assets/image/splashBackground.jpg'),
+                  fit: BoxFit.cover,
                 ),
-                child: Directionality(
-                  textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                  child: PageBody(
-                    controller: state.scrollController,
-                    constraints: BoxConstraints(
-                      minWidth: double.infinity,
-                      minHeight: context.height,
-                    ),
-                    child: Container(
-                      height: context.height,
-                      alignment: AlignmentDirectional.topStart,
-                      constraints: BoxConstraints(
-                        minWidth: double.infinity,
-                        minHeight: context.height,
-                      ),
-                      decoration: const BoxDecoration(
-                        image: DecorationImage(
-                          image: AssetImage('assets/image/splashBackground.jpg'),
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-                      child: ScrollableColumn(
-                        controller: state.scrollController,
-                        flexible: false,
-                        padding: EdgeInsetsDirectional.only(top: topPadding, start: margins * 2.5, end: margins * 2.5, bottom: bottomPadding),
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: [
-                          const Align(
-                            alignment: AlignmentDirectional.topStart,
-                            child: AppLogo(changeColorModeOfText: true),
-                          ),
-                          const AnimatedGap(46, duration: Duration(milliseconds: 500)),
-                          Wrap(
-                            textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                            children: [
-                              Text(
-                                'Your Business,',
-                                style: context.headlineMedium!.copyWith(
-                                  fontWeight: FontWeight.bold,
-                                  height: 0.9,
-                                  color: Colors.white,
-                                ),
-                                textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                              ).translate(),
-                            ],
-                          ),
-                          const AnimatedGap(6, duration: Duration(milliseconds: 500)),
-                          Wrap(
-                            textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                            children: [
-                              Text(
-                                'Our Services,',
-                                style: context.headlineMedium!.copyWith(
-                                  fontWeight: FontWeight.bold,
-                                  height: 0.9,
-                                  color: Colors.white,
-                                ),
-                                textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                              ).translate(),
-                            ],
-                          ),
-                          const AnimatedGap(6, duration: Duration(milliseconds: 500)),
-                          Wrap(
-                            textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                            children: [
-                              Text(
-                                'Stays Forever',
-                                textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                                style: context.headlineMedium!.copyWith(
-                                  fontWeight: FontWeight.bold,
-                                  height: 0.9,
-                                  color: Colors.white,
-                                ),
-                              ).translate(),
-                            ],
-                          ),
-                          const AnimatedGap(10, duration: Duration(milliseconds: 500)),
-                          Wrap(
-                            textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                            children: [
-                              Text(
-                                'Thank you for selecting to start business with us.',
-                                textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                                style: context.bodySmall!.copyWith(
-                                  fontWeight: FontWeight.w500,
-                                  height: 0.9,
-                                  fontStyle: FontStyle.italic,
-                                  color: Colors.white,
-                                ),
-                              ).translate(),
-                            ],
-                          ),
-                          /*Center(
-                            child: Text('New Screen'),
-                          ),*/
-                          const AnimatedGap(56, duration: Duration(milliseconds: 500)),
-                          ElevatedButton(
-                            onPressed: () {
-                              context.go(Routes.AUTH_PHONE_NUMBER_VERIFICATION);
-                            },
-                            child: Text(
-                              "Let's Get Started",
-                              textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                            ).translate(),
-                          ),
-                        ],
-                      ),
-                    ),
+              ),
+              child: SlideInLeft(
+                key: const Key('splash-page-slideinleft-widget'),
+                delay: const Duration(milliseconds: 500),
+                from: context.width / 4,
+                child: ScrollableColumn(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  controller: state.scrollController,
+                  flexible: false,
+                  padding: EdgeInsetsDirectional.only(
+                    top: topPadding,
+                    start: margins * 2.5,
+                    end: margins * 2.5,
+                    bottom: bottomPadding,
                   ),
+                  children: [
+                    const Align(
+                      alignment: AlignmentDirectional.topStart,
+                      child: AppLogo(changeColorModeOfText: true),
+                    ),
+                    const AnimatedGap(46, duration: Duration(milliseconds: 500)),
+                    Wrap(
+                      textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                      children: [
+                        Text(
+                          'Your Business,',
+                          style: context.headlineMedium!.copyWith(
+                            fontWeight: FontWeight.bold,
+                            height: 0.9,
+                            color: Colors.white,
+                          ),
+                          textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                        ).translate(),
+                      ],
+                    ),
+                    const AnimatedGap(6, duration: Duration(milliseconds: 500)),
+                    Wrap(
+                      textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                      children: [
+                        Text(
+                          'Our Services,',
+                          style: context.headlineMedium!.copyWith(
+                            fontWeight: FontWeight.bold,
+                            height: 0.9,
+                            color: Colors.white,
+                          ),
+                          textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                        ).translate(),
+                      ],
+                    ),
+                    const AnimatedGap(6, duration: Duration(milliseconds: 500)),
+                    Wrap(
+                      textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                      children: [
+                        Text(
+                          'Stays Forever',
+                          textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                          style: context.headlineMedium!.copyWith(
+                            fontWeight: FontWeight.bold,
+                            height: 0.9,
+                            color: Colors.white,
+                          ),
+                        ).translate(),
+                      ],
+                    ),
+                    const AnimatedGap(10, duration: Duration(milliseconds: 500)),
+                    Wrap(
+                      textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                      children: [
+                        Text(
+                          'Thank you for selecting to start business with us.',
+                          textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                          style: context.bodySmall!.copyWith(
+                            fontWeight: FontWeight.w500,
+                            height: 0.9,
+                            fontStyle: FontStyle.italic,
+                            color: Colors.white,
+                          ),
+                        ).translate(),
+                      ],
+                    ),
+                    /*Center(
+                                child: Text('New Screen'),
+                              ),*/
+                    const AnimatedGap(56, duration: Duration(milliseconds: 500)),
+                    ElevatedButton(
+                      onPressed: () {
+                        context.go(Routes.AUTH_PHONE_NUMBER_VERIFICATION);
+                      },
+                      child: Text(
+                        "Let's Get Started",
+                        textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                      ).translate(),
+                    ),
+                  ],
                 ),
-              );
-            },
+              ),
+            ),
           ),
         ),
       ),

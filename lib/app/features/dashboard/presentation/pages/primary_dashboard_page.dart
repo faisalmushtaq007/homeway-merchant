@@ -1,0 +1,220 @@
+import 'package:flex_color_scheme/flex_color_scheme.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
+import 'package:homemakers_merchant/app/features/dashboard/domain/entities/primary_dashboard_menu_entity.dart';
+import 'package:homemakers_merchant/app/features/dashboard/presentation/widgets/primary_dashboard_drawer.dart';
+import 'package:homemakers_merchant/app/features/dashboard/presentation/widgets/primary_dashboard_menu_card.dart';
+import 'package:homemakers_merchant/app/features/permission/presentation/bloc/permission_bloc.dart';
+import 'package:homemakers_merchant/bootup/injection_container.dart';
+import 'package:homemakers_merchant/config/translation/extension/text_extension.dart';
+import 'package:homemakers_merchant/config/translation/language_controller.dart';
+import 'package:homemakers_merchant/config/translation/widgets/language_selection_widget.dart';
+import 'package:homemakers_merchant/core/constants/global_app_constants.dart';
+import 'package:homemakers_merchant/core/extensions/app_extension.dart';
+import 'package:homemakers_merchant/shared/widgets/app/app_logo.dart';
+import 'package:homemakers_merchant/shared/widgets/app/page_body.dart';
+import 'package:homemakers_merchant/shared/widgets/universal/animate_do/animate_do.dart';
+import 'package:homemakers_merchant/shared/widgets/universal/animated_gap/gap.dart';
+import 'package:homemakers_merchant/shared/widgets/universal/constrained_scrollable_views/constrained_scrollable_views.dart';
+import 'package:homemakers_merchant/shared/router/app_pages.dart';
+import 'package:homemakers_merchant/shared/widgets/app/page_body.dart';
+import 'package:go_router/go_router.dart';
+import 'package:homemakers_merchant/shared/widgets/universal/double_tap_exit/double_tap_to_exit.dart';
+
+class PrimaryDashboardPage extends StatefulWidget {
+  const PrimaryDashboardPage({
+    super.key,
+    this.primaryDashboardMenuEntities = const [],
+  });
+
+  final List<PrimaryDashboardMenuEntity> primaryDashboardMenuEntities;
+
+  @override
+  _PrimaryDashboardPageState createState() => _PrimaryDashboardPageState();
+}
+
+class _PrimaryDashboardPageState extends State<PrimaryDashboardPage> {
+  final ScrollController scrollController = ScrollController();
+  List<PrimaryDashboardMenuEntity> primaryDashboardMenuEntities = [];
+
+  @override
+  void initState() {
+    super.initState();
+    primaryDashboardMenuEntities.clear();
+    primaryDashboardMenuEntities.add(
+      PrimaryDashboardMenuEntity(
+        title: 'Upload Documents',
+        titleID: 0,
+        onPressed: () {},
+        leading: const Icon(
+          Icons.edit_document,
+        ),
+        hasEntityStored: false,
+      ),
+    );
+    primaryDashboardMenuEntities.add(
+      PrimaryDashboardMenuEntity(
+        title: 'Payment details',
+        titleID: 1,
+        onPressed: () {},
+        leading: const Icon(
+          Icons.payment,
+        ),
+        hasEntityStored: false,
+      ),
+    );
+    primaryDashboardMenuEntities.add(
+      PrimaryDashboardMenuEntity(
+        title: 'Store',
+        titleID: 2,
+        onPressed: () {},
+        leading: const Icon(
+          Icons.store,
+        ),
+        hasEntityStored: false,
+      ),
+    );
+    primaryDashboardMenuEntities.add(
+      PrimaryDashboardMenuEntity(
+        title: 'Food Menu',
+        titleID: 3,
+        onPressed: () {},
+        leading: const Icon(
+          Icons.restaurant_menu,
+        ),
+        hasEntityStored: false,
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final MediaQueryData media = MediaQuery.of(context);
+    final double margins = GlobalApp.responsiveInsets(media.size.width);
+    final double topPadding = margins; //media.padding.top + kToolbarHeight + margins; //margins * 1.5;
+    final double bottomPadding = media.padding.bottom + margins;
+    final double width = media.size.width;
+    final ThemeData theme = Theme.of(context);
+
+    return AnnotatedRegion<SystemUiOverlayStyle>(
+      value: FlexColorScheme.themedSystemNavigationBar(
+        context,
+        useDivider: false,
+        opacity: 0.60,
+        noAppBar: true,
+      ),
+      child: Directionality(
+        textDirection: serviceLocator<LanguageController>().targetTextDirection,
+        child: DoubleTapToExit(
+          child: Scaffold(
+            appBar: AppBar(
+              actions: const [
+                Padding(
+                  padding: EdgeInsetsDirectional.symmetric(horizontal: 14),
+                  child: LanguageSelectionWidget(),
+                ),
+              ],
+            ),
+            drawer: const PrimaryDashboardDrawer(),
+            body: SlideInLeft(
+              key: const Key('primary-dashboard-page-slideinleft-widget'),
+              delay: const Duration(milliseconds: 500),
+              from: 200,
+              child: PageBody(
+                controller: scrollController,
+                constraints: BoxConstraints(
+                  minWidth: double.infinity,
+                  minHeight: context.height,
+                ),
+                padding: EdgeInsetsDirectional.only(
+                  top: margins,
+                  bottom: bottomPadding,
+                  start: margins * 2.5,
+                  end: margins * 2.5,
+                ),
+                child: BlocBuilder<PermissionBloc, PermissionState>(
+                  bloc: context.read<PermissionBloc>(),
+                  buildWhen: (previous, current) => previous != current,
+                  builder: (context, state) {
+                    return Container(
+                      constraints: BoxConstraints(
+                        minWidth: double.infinity,
+                        minHeight: context.height,
+                      ),
+                      child: ScrollableColumn(
+                        controller: scrollController,
+                        physics: const ClampingScrollPhysics(),
+                        textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                        mainAxisSize: MainAxisSize.min,
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        padding: EdgeInsetsDirectional.only(
+                          top: topPadding,
+                        ),
+                        children: [
+                          const Wrap(
+                            alignment: WrapAlignment.center,
+                            children: [
+                              CircleAvatar(
+                                maxRadius: 40,
+                                backgroundImage: AssetImage("assets/image/app_logo_light.jpg"),
+                              ),
+                            ],
+                          ),
+                          const AnimatedGap(
+                            15,
+                            duration: Duration(milliseconds: 500),
+                          ),
+                          const Wrap(
+                            alignment: WrapAlignment.center,
+                            children: [
+                              Text(
+                                "Thomas Shelby",
+                                style: TextStyle(fontWeight: FontWeight.w900, fontSize: 18),
+                              )
+                            ],
+                          ),
+                          const Wrap(
+                            alignment: WrapAlignment.center,
+                            children: [Text("thomashomeservice@gmail.com")],
+                          ),
+                          const AnimatedGap(
+                            15,
+                            duration: Duration(milliseconds: 500),
+                          ),
+                          const AnimatedGap(
+                            15,
+                            duration: Duration(milliseconds: 500),
+                          ),
+                          Flexible(
+                            child: ListView.builder(
+                              shrinkWrap: true,
+                              physics: const ClampingScrollPhysics(),
+                              itemCount: primaryDashboardMenuEntities.length,
+                              itemBuilder: (context, index) {
+                                return PrimaryDashboardMenuCard(
+                                  key: ValueKey(index),
+                                  primaryDashboardMenuEntity: primaryDashboardMenuEntities[index],
+                                );
+                              },
+                            ),
+                          ),
+                          const AnimatedGap(
+                            10,
+                            duration: Duration(milliseconds: 500),
+                          ),
+                        ],
+                      ),
+                    );
+                  },
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
