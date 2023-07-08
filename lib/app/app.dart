@@ -14,6 +14,7 @@ import 'package:homemakers_merchant/app/features/profile/domain/entities/user_mo
 import 'package:homemakers_merchant/app/features/profile/presentation/manager/bank/bank_information_bloc.dart';
 import 'package:homemakers_merchant/app/features/profile/presentation/manager/document/business_document_bloc.dart';
 import 'package:homemakers_merchant/app/features/profile/presentation/manager/user_model_storage_controller.dart';
+import 'package:homemakers_merchant/app/features/store/presentation/manager/store_bloc.dart';
 import 'package:homemakers_merchant/config/permission/permission_controller.dart';
 import 'package:homemakers_merchant/config/permission/permission_service.dart';
 import 'package:homemakers_merchant/config/translation/language.dart';
@@ -55,21 +56,15 @@ class _AppState extends State<App> with GetItStateMixin {
   Widget build(BuildContext context) {
     // Whenever the theme controller notifies the listenable in the
     // ListenableBuilder, the MaterialApp is rebuilt.
-    final PermissionController initPermissionController =
-        get<PermissionController>();
-    final UserModelStorageController initUserModelStorageController =
-        get<UserModelStorageController>();
+    final PermissionController initPermissionController = get<PermissionController>();
+    final UserModelStorageController initUserModelStorageController = get<UserModelStorageController>();
     final LanguageController initLanguageController = get<LanguageController>();
     final ThemeController initThemeController = get<ThemeController>();
 
-    final permissionController =
-        watchOnly((PermissionController controller) => controller);
-    final userModelStorageController =
-        watchOnly((UserModelStorageController controller) => controller);
-    final languageController =
-        watchOnly((LanguageController controller) => controller);
-    final themeController =
-        watchOnly((ThemeController controller) => controller);
+    final permissionController = watchOnly((PermissionController controller) => controller);
+    final userModelStorageController = watchOnly((UserModelStorageController controller) => controller);
+    final languageController = watchOnly((LanguageController controller) => controller);
+    final themeController = watchOnly((ThemeController controller) => controller);
 
     return MultiBlocProvider(
       providers: [
@@ -101,6 +96,10 @@ class _AppState extends State<App> with GetItStateMixin {
           key: const Key('bank_informationBloc_bloc_provider'),
           create: (context) => serviceLocator(),
         ),
+        BlocProvider<StoreBloc>(
+          key: const Key('store_bloc_provider'),
+          create: (context) => serviceLocator(),
+        ),
       ],
       child: MultiListenableBuilder(
         listenables: [
@@ -113,8 +112,7 @@ class _AppState extends State<App> with GetItStateMixin {
           final materialLightTheme = flexThemeLight(themeController);
           final materialDarkTheme = flexThemeDark(themeController);
 
-          const darkDefaultCupertinoTheme =
-              CupertinoThemeData(brightness: Brightness.dark);
+          const darkDefaultCupertinoTheme = CupertinoThemeData(brightness: Brightness.dark);
           /*final cupertinoDarkTheme = MaterialBasedCupertinoThemeData(
             materialTheme: materialDarkTheme.copyWith(
               cupertinoOverrideTheme: CupertinoThemeData(
@@ -138,8 +136,7 @@ class _AppState extends State<App> with GetItStateMixin {
           final cupertinoLightTheme = MaterialBasedCupertinoThemeData(
             materialTheme: materialLightTheme,
           );
-          final cupertinoDarkTheme =
-              MaterialBasedCupertinoThemeData(materialTheme: materialDarkTheme);
+          final cupertinoDarkTheme = MaterialBasedCupertinoThemeData(materialTheme: materialDarkTheme);
           // Connectivity app wrapper
           return ConnectivityAppWrapper(
             showNetworkUpdates: true,
@@ -170,8 +167,7 @@ class _AppState extends State<App> with GetItStateMixin {
                       //this.themeMode = themeMode; /* you can save to storage */
                     },
                     builder: (context) => Directionality(
-                      textDirection: serviceLocator<LanguageController>()
-                          .targetTextDirection,
+                      textDirection: serviceLocator<LanguageController>().targetTextDirection,
                       child: PlatformApp.router(
                         debugShowCheckedModeBanner: false,
                         title: 'Merchant',
@@ -180,8 +176,7 @@ class _AppState extends State<App> with GetItStateMixin {
                         // returns to the app after it has been killed while running in the
                         // background.
                         restorationScopeId: 'merchant_app',
-                        localizationsDelegates: const <LocalizationsDelegate<
-                            dynamic>>[
+                        localizationsDelegates: const <LocalizationsDelegate<dynamic>>[
                           ...AppLocalizations.localizationsDelegates,
                           DefaultMaterialLocalizations.delegate,
                           DefaultWidgetsLocalizations.delegate,
@@ -194,8 +189,7 @@ class _AppState extends State<App> with GetItStateMixin {
                         locale: languageController.targetAppLanguage.value,
                         supportedLocales: AppLocalizations.supportedLocales,
                         builder: (context, child) => Directionality(
-                          textDirection: serviceLocator<LanguageController>()
-                              .targetTextDirection,
+                          textDirection: serviceLocator<LanguageController>().targetTextDirection,
                           child: ResponsiveBreakpoints.builder(
                             child: OneContext().builder(context, child),
                             breakpoints: [

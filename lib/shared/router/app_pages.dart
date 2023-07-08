@@ -20,6 +20,7 @@ import 'package:homemakers_merchant/app/features/profile/presentation/pages/bank
 import 'package:homemakers_merchant/app/features/profile/presentation/pages/business_information_page.dart';
 import 'package:homemakers_merchant/app/features/profile/presentation/pages/document/business_document_page.dart';
 import 'package:homemakers_merchant/app/features/profile/presentation/pages/document/upload_document_page.dart';
+import 'package:homemakers_merchant/app/features/store/presentation/pages/all_stores_page.dart';
 import 'package:homemakers_merchant/app/features/store/presentation/pages/save_store_page.dart';
 
 part 'app_routes.dart';
@@ -105,6 +106,10 @@ class AppRouter {
       GoRoute(
         path: Routes.SAVE_STORE_PAGE,
         builder: (context, state) => const SaveStorePage(),
+      ),
+      GoRoute(
+        path: Routes.ALL_STORES,
+        builder: (context, state) => const AllStoresPage(),
       ),
     ],
   );

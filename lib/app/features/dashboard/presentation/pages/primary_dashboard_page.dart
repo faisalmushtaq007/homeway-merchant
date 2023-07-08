@@ -29,7 +29,7 @@ class PrimaryDashboardPage extends StatefulWidget {
     this.primaryDashboardMenuEntities = const [],
   });
 
-  final List<PrimaryDashboardMenuEntity> primaryDashboardMenuEntities;
+  final List<StoreEntity> primaryDashboardMenuEntities;
 
   @override
   _PrimaryDashboardPageState createState() => _PrimaryDashboardPageState();
@@ -37,14 +37,14 @@ class PrimaryDashboardPage extends StatefulWidget {
 
 class _PrimaryDashboardPageState extends State<PrimaryDashboardPage> {
   final ScrollController scrollController = ScrollController();
-  List<PrimaryDashboardMenuEntity> primaryDashboardMenuEntities = [];
+  List<StoreEntity> primaryDashboardMenuEntities = [];
 
   @override
   void initState() {
     super.initState();
     primaryDashboardMenuEntities.clear();
     primaryDashboardMenuEntities.add(
-      PrimaryDashboardMenuEntity(
+      StoreEntity(
         title: 'Upload Documents',
         titleID: 0,
         onPressed: () {},
@@ -55,7 +55,7 @@ class _PrimaryDashboardPageState extends State<PrimaryDashboardPage> {
       ),
     );
     primaryDashboardMenuEntities.add(
-      PrimaryDashboardMenuEntity(
+      StoreEntity(
         title: 'Payment details',
         titleID: 1,
         onPressed: () {},
@@ -66,7 +66,7 @@ class _PrimaryDashboardPageState extends State<PrimaryDashboardPage> {
       ),
     );
     primaryDashboardMenuEntities.add(
-      PrimaryDashboardMenuEntity(
+      StoreEntity(
         title: 'Store',
         titleID: 2,
         onPressed: () {},
@@ -77,7 +77,7 @@ class _PrimaryDashboardPageState extends State<PrimaryDashboardPage> {
       ),
     );
     primaryDashboardMenuEntities.add(
-      PrimaryDashboardMenuEntity(
+      StoreEntity(
         title: 'Food Menu',
         titleID: 3,
         onPressed: () {},

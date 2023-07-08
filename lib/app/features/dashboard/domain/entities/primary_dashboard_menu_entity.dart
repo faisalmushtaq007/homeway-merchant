@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:homemakers_merchant/utils/app_equatable/app_equatable.dart';
 
-class PrimaryDashboardMenuEntity with AppEquatable {
-  PrimaryDashboardMenuEntity({
+class StoreEntity with AppEquatable {
+  StoreEntity({
     required this.title,
     required this.titleID,
     required this.onPressed,
@@ -12,8 +12,8 @@ class PrimaryDashboardMenuEntity with AppEquatable {
     this.hasEntityStored = true,
   });
 
-  factory PrimaryDashboardMenuEntity.fromMap(Map<String, dynamic> map) {
-    return PrimaryDashboardMenuEntity(
+  factory StoreEntity.fromMap(Map<String, dynamic> map) {
+    return StoreEntity(
       title: map['title'] as String,
       titleID: map['titleID'] as int,
       onPressed: map['onPressed'] as VoidCallback,

@@ -54,6 +54,7 @@ abstract class Routes {
   static const String PRIMARY_DASHBOARD_PAGE = _Paths.PRIMARY_DASHBOARD_PAGE;
   static const String MAIN_DASHBOARD_PAGE = _Paths.MAIN_DASHBOARD_PAGE;
   static const String SAVE_STORE_PAGE = _Paths.SAVE_STORE_PAGE;
+  static const String ALL_STORES = _Paths.ALL_STORES;
 }
 
 abstract class _Paths {
@@ -107,4 +108,5 @@ abstract class _Paths {
   static const String PRIMARY_DASHBOARD_PAGE = '/initial-dashboard';
   static const String MAIN_DASHBOARD_PAGE = '/dashboard';
   static const String SAVE_STORE_PAGE = '/save-store';
+  static const String ALL_STORES = '/all-stores';
 }

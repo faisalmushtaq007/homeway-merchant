@@ -6,11 +6,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
-import 'package:homemakers_merchant/app/features/dashboard/presentation/widgets/multi_select_store_available_accepted_payment_mode_widget.dart';
-import 'package:homemakers_merchant/app/features/dashboard/presentation/widgets/multi_select_store_available_food_preparation_widget.dart';
-import 'package:homemakers_merchant/app/features/dashboard/presentation/widgets/multi_select_store_available_food_types_widget.dart';
-import 'package:homemakers_merchant/app/features/dashboard/presentation/widgets/multi_select_store_available_working_days_widget.dart';
-import 'package:homemakers_merchant/app/features/dashboard/presentation/widgets/store_text_field_widget.dart';
+import 'package:homemakers_merchant/app/features/store//presentation/widgets/multi_select_store_available_accepted_payment_mode_widget.dart';
+import 'package:homemakers_merchant/app/features/store/presentation/widgets/multi_select_store_available_food_preparation_widget.dart';
+import 'package:homemakers_merchant/app/features/store/presentation/widgets/multi_select_store_available_food_types_widget.dart';
+import 'package:homemakers_merchant/app/features/store/presentation/widgets/multi_select_store_available_working_days_widget.dart';
+import 'package:homemakers_merchant/app/features/store/presentation/widgets/store_text_field_widget.dart';
 import 'package:homemakers_merchant/app/features/permission/presentation/bloc/permission_bloc.dart';
 import 'package:homemakers_merchant/app/features/store/domain/entities/store_entity.dart';
 import 'package:homemakers_merchant/bootup/injection_container.dart';
@@ -32,6 +32,8 @@ import 'package:go_router/go_router.dart';
 import 'package:homemakers_merchant/shared/widgets/universal/date_time_picker_platform/datetime_picker_field_platform.dart';
 import 'package:homemakers_merchant/shared/widgets/universal/double_tap_exit/double_tap_to_exit.dart';
 import 'package:homemakers_merchant/shared/widgets/universal/multi_stream_builder/multi_stream_builder.dart';
+import 'package:homemakers_merchant/utils/input_formatters/mask_text_input_formatter/mask_text_input_formatter.dart';
+import 'package:homemakers_merchant/utils/input_formatters/muskey.dart';
 
 class SaveStorePage extends StatefulWidget {
   const SaveStorePage({super.key});
@@ -41,14 +43,14 @@ class SaveStorePage extends StatefulWidget {
 }
 
 class _SaveStorePageState extends State<SaveStorePage> {
-  final ScrollController scrollController = ScrollController();
+  late final ScrollController scrollController;
   static final storFormKey = GlobalKey<FormState>();
   List<File>? file_images = [];
   List<XFile> cross_file_images = [];
   TextEditingController _storeAddressController = TextEditingController();
   TextEditingController _storeNameController = TextEditingController();
   TextEditingController _storeMaxDeliveryTimeController = TextEditingController();
-  bool? _hasStoreOpenAllDays;
+
   double _maximumDeliveryRadiusValue = 6.0;
   List<StoreAvailableFoodTypes> _storeAvailableFoodTypes = [];
   List<StoreAvailableFoodPreparationType> _storeAvailableFoodPreparationType = [];
@@ -67,9 +69,22 @@ class _SaveStorePageState extends State<SaveStorePage> {
   TextEditingController _storeOwnerDriverPhoneNumberController = TextEditingController();
   TextEditingController _storeOwnerDriverLicenseController = TextEditingController();
 
+  final deliveryTimeMuskeyFormatter = MuskeyFormatter(
+    masks: ['### min'],
+    wildcards: {'#': RegExp('[0-9]'), '@': RegExp('[s|S]'), '%': RegExp('[a|A]')},
+    charTransforms: {
+      '@': (s) => s.toUpperCase(),
+      '%': (s) => s.toUpperCase(),
+    },
+    allowAutofill: true,
+    overflow: OverflowBehavior.forbidden(),
+  );
+  late final MaskTextInputFormatter maximumDeliveryTimeFormatter;
+
   @override
   void initState() {
     super.initState();
+    scrollController = ScrollController();
     file_images = [];
     cross_file_images = [];
     //
@@ -86,10 +101,12 @@ class _SaveStorePageState extends State<SaveStorePage> {
     initializeStoreAvailableFoodPreparationType();
     initializeStoreWorkingDays();
     initializeStoreAvailableFoodTypes();
+    maximumDeliveryTimeFormatter = MaskTextInputFormatter(mask: "##", filter: {"#": RegExp(r'[0-9]')}, type: MaskAutoCompletionType.lazy);
   }
 
   @override
   void dispose() {
+    scrollController.dispose();
     _storeAddressController.dispose();
     _storeNameController.dispose();
     _storeMaxDeliveryTimeController.dispose();
@@ -299,6 +316,7 @@ class _SaveStorePageState extends State<SaveStorePage> {
                         const AnimatedGap(10, duration: Duration(milliseconds: 500)),
                         Row(
                           mainAxisSize: MainAxisSize.min,
+                          textDirection: serviceLocator<LanguageController>().targetTextDirection,
                           children: [
                             Expanded(
                               child: StoreTextFieldWidget(
@@ -311,6 +329,12 @@ class _SaveStorePageState extends State<SaveStorePage> {
                                   ),
                                   isDense: true,
                                 ),
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return 'Enter store name';
+                                  }
+                                  return null;
+                                },
                               ),
                             ),
                           ],
@@ -416,28 +440,19 @@ class _SaveStorePageState extends State<SaveStorePage> {
                             fontSize: 14,
                           ),
                         ).translate(),
-                        MultiSelectStoreAvailableWorkingDays(
+                        const AnimatedGap(6, duration: Duration(milliseconds: 500)),
+                        MultiSelectAvailableWorkingDaysFormField(
                           onSelectionChanged: (List<StoreWorkingDayAndTime> selectedWorkingDays) {},
-                          availableWorkingDayList: _storeWorkingDays.toList(),
-                        ),
-                        CheckboxListTile(
-                          value: _hasStoreOpenAllDays,
-                          controlAffinity: ListTileControlAffinity.leading,
-                          dense: true,
-                          contentPadding: EdgeInsetsDirectional.zero,
-                          visualDensity: VisualDensity(vertical: -4, horizontal: -4),
-                          isThreeLine: false,
-                          onChanged: (value) {
-                            setState(() {
-                              _hasStoreOpenAllDays = value;
-                            });
+                          availableWorkingDaysList: _storeWorkingDays.toList(),
+                          validator: (value) {
+                            if (value == null || value.length == 0) {
+                              return 'Select one or more days';
+                            } else {
+                              return null;
+                            }
                           },
-                          tristate: true,
-                          title: Text(
-                            'All days',
-                            textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                            style: context.titleSmall,
-                          ),
+                          initialSelectedAvailableWorkingDaysList: [],
+                          onSaved: (newValue) {},
                         ),
                         const AnimatedGap(12, duration: Duration(milliseconds: 500)),
                         Text(
@@ -470,6 +485,13 @@ class _SaveStorePageState extends State<SaveStorePage> {
                                   isDense: true,
                                   contentPadding: EdgeInsetsDirectional.symmetric(vertical: 8, horizontal: 12),
                                 ),
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return 'Select open time';
+                                  } else {
+                                    return null;
+                                  }
+                                },
                               ),
                             ),
                             const AnimatedGap(16, duration: Duration(milliseconds: 500)),
@@ -491,6 +513,13 @@ class _SaveStorePageState extends State<SaveStorePage> {
                                   isDense: true,
                                   contentPadding: EdgeInsetsDirectional.symmetric(vertical: 8, horizontal: 12),
                                 ),
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return 'Select close time';
+                                  } else {
+                                    return null;
+                                  }
+                                },
                               ),
                             ),
                           ],
@@ -504,9 +533,19 @@ class _SaveStorePageState extends State<SaveStorePage> {
                           ),
                           textDirection: serviceLocator<LanguageController>().targetTextDirection,
                         ).translate(),
-                        MultiSelectStoreAvailableFoodTypes(
+                        const AnimatedGap(6, duration: Duration(milliseconds: 500)),
+                        MultiSelectAvailableFoodTypeFormField(
                           onSelectionChanged: (List<StoreAvailableFoodTypes> selectedFoodTypes) {},
                           availableFoodTypesList: _storeAvailableFoodTypes.toList(),
+                          validator: (value) {
+                            if (value == null || value.length == 0) {
+                              return 'Select one or more food type';
+                            } else {
+                              return null;
+                            }
+                          },
+                          initialSelectedAvailableFoodTypesList: [],
+                          onSaved: (newValue) {},
                         ),
                         const AnimatedGap(12, duration: Duration(milliseconds: 500)),
                         Text(
@@ -517,9 +556,19 @@ class _SaveStorePageState extends State<SaveStorePage> {
                           ),
                           textDirection: serviceLocator<LanguageController>().targetTextDirection,
                         ).translate(),
-                        MultiSelectStoreAvailableFoodPreparationTypes(
+                        const AnimatedGap(6, duration: Duration(milliseconds: 500)),
+                        MultiSelectAvailableFoodPreparationTypesFormField(
                           onSelectionChanged: (List<StoreAvailableFoodPreparationType> selectedPreparationTypes) {},
                           availableFoodPreparationTypesList: _storeAvailableFoodPreparationType.toList(),
+                          validator: (value) {
+                            if (value == null || value.length == 0) {
+                              return 'Select one or more food preparation type';
+                            } else {
+                              return null;
+                            }
+                          },
+                          initialSelectedFoodPreparationTypesList: [],
+                          onSaved: (newValue) {},
                         ),
                         Divider(),
                         Column(
@@ -575,6 +624,7 @@ class _SaveStorePageState extends State<SaveStorePage> {
                                     Row(
                                       mainAxisSize: MainAxisSize.min,
                                       crossAxisAlignment: CrossAxisAlignment.center,
+                                      textDirection: serviceLocator<LanguageController>().targetTextDirection,
                                       children: [
                                         Expanded(
                                           child: StoreTextFieldWidget(
@@ -595,6 +645,7 @@ class _SaveStorePageState extends State<SaveStorePage> {
                                     Row(
                                       mainAxisSize: MainAxisSize.min,
                                       crossAxisAlignment: CrossAxisAlignment.center,
+                                      textDirection: serviceLocator<LanguageController>().targetTextDirection,
                                       children: [
                                         Expanded(
                                           child: StoreTextFieldWidget(
@@ -615,6 +666,7 @@ class _SaveStorePageState extends State<SaveStorePage> {
                                     Row(
                                       mainAxisSize: MainAxisSize.min,
                                       crossAxisAlignment: CrossAxisAlignment.center,
+                                      textDirection: serviceLocator<LanguageController>().targetTextDirection,
                                       children: [
                                         Expanded(
                                           child: StoreTextFieldWidget(
@@ -651,29 +703,44 @@ class _SaveStorePageState extends State<SaveStorePage> {
                         const AnimatedGap(12, duration: Duration(milliseconds: 500)),
                         Row(
                           mainAxisSize: MainAxisSize.min,
+                          textDirection: serviceLocator<LanguageController>().targetTextDirection,
                           children: [
-                            Directionality(
-                              textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                              child: Expanded(
-                                child: StoreTextFieldWidget(
-                                  controller: _storeMaxDeliveryTimeController,
-                                  textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                                  decoration: InputDecoration(
-                                    hintText: '30 mins',
-                                    isDense: true,
-                                    border: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(10),
-                                    ),
-                                    suffixIcon: InkWell(
-                                      onTap: () {},
-                                      child: Icon(
-                                        Icons.arrow_drop_down,
-                                      ),
-                                    ),
+                            Expanded(
+                              child: StoreTextFieldWidget(
+                                controller: _storeMaxDeliveryTimeController,
+                                textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                decoration: InputDecoration(
+                                  hintText: '00',
+                                  isDense: true,
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(10),
                                   ),
+                                  suffixText: 'min',
                                 ),
+                                inputFormatters: [
+                                  //FilteringTextInputFormatter.digitsOnly,
+                                  maximumDeliveryTimeFormatter,
+                                ],
+                                onChanged: (value) {},
+                                validator: (value) {
+                                  debugPrint('Value ${value}');
+                                  if (value == null || value.isEmpty || maximumDeliveryTimeFormatter.getUnmaskedText().isEmpty) {
+                                    return 'Please enter delivery time';
+                                  } else {
+                                    return null;
+                                  }
+                                  /*if (value == null || value.isEmpty || deliveryTimeMuskeyFormatter.info.clean.isEmpty) {
+                                    return 'Please enter delivery time';
+                                  } else if (!deliveryTimeMuskeyFormatter.info.isValid) {
+                                    return 'Please enter delivery time';
+                                  }*/
+                                },
                               ),
                             ),
+                            /*Expanded(
+                              flex: 3,
+                              child: SizedBox(),
+                            ),*/
                           ],
                         ),
                         const AnimatedGap(12, duration: Duration(milliseconds: 500)),
@@ -685,18 +752,26 @@ class _SaveStorePageState extends State<SaveStorePage> {
                           ),
                           textDirection: serviceLocator<LanguageController>().targetTextDirection,
                         ).translate(),
-                        Slider(
-                          min: 1.0,
-                          divisions: 19,
-                          max: 20.0,
-                          value: _maximumDeliveryRadiusValue,
-                          label: _maximumDeliveryRadiusValue.round().toString(),
-                          onChanged: (double value) {
-                            setState(() {
-                              _maximumDeliveryRadiusValue = value;
-                            });
-                          },
+                        const AnimatedGap(6, duration: Duration(milliseconds: 500)),
+                        SliderTheme(
+                          data: SliderThemeData(
+                            // here
+                            overlayShape: SliderComponentShape.noOverlay,
+                          ),
+                          child: Slider(
+                            min: 1.0,
+                            divisions: 19,
+                            max: 20.0,
+                            value: _maximumDeliveryRadiusValue,
+                            label: _maximumDeliveryRadiusValue.round().toString(),
+                            onChanged: (double value) {
+                              setState(() {
+                                _maximumDeliveryRadiusValue = value;
+                              });
+                            },
+                          ),
                         ),
+                        const AnimatedGap(6, duration: Duration(milliseconds: 500)),
                         Divider(),
                         Text(
                           'Accepted payment mode',
@@ -706,13 +781,27 @@ class _SaveStorePageState extends State<SaveStorePage> {
                           ),
                           textDirection: serviceLocator<LanguageController>().targetTextDirection,
                         ).translate(),
-                        MultiSelectStoreAvailablePaymentMode(
+                        const AnimatedGap(6, duration: Duration(milliseconds: 500)),
+                        MultiSelectAvailablePaymentModeFormField(
                           onSelectionChanged: (List<StoreAcceptedPaymentModes> selectedPaymentModes) {},
-                          availablePaymentModes: _storeAcceptedPaymentModes.toList(),
+                          availablePaymentModesList: _storeAcceptedPaymentModes.toList(),
+                          validator: (value) {
+                            if (value == null || value.length == 0) {
+                              return 'Select one or more payment mode';
+                            } else {
+                              return null;
+                            }
+                          },
+                          initialSelectedAvailablePaymentModesList: [],
+                          onSaved: (newValue) {},
                         ),
                         const AnimatedGap(30, duration: Duration(milliseconds: 500)),
                         ElevatedButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            if (storFormKey.currentState!.validate()) {
+                              storFormKey.currentState!.save();
+                            }
+                          },
                           child: Text(
                             'Add Store',
                             textDirection: serviceLocator<LanguageController>().targetTextDirection,

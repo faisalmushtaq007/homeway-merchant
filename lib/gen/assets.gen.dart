@@ -104,9 +104,21 @@ class $AssetsImageGen {
   AssetGenImage get appBackground =>
       const AssetGenImage('assets/image/appBackground.jpg');
 
+  /// File path: assets/image/app_logo_dark.jpg
+  AssetGenImage get appLogoDark =>
+      const AssetGenImage('assets/image/app_logo_dark.jpg');
+
+  /// File path: assets/image/app_logo_light.jpg
+  AssetGenImage get appLogoLight =>
+      const AssetGenImage('assets/image/app_logo_light.jpg');
+
   /// File path: assets/image/document_upload.jpeg
   AssetGenImage get documentUpload =>
       const AssetGenImage('assets/image/document_upload.jpeg');
+
+  /// File path: assets/image/homeway_logo.png
+  AssetGenImage get homewayLogo =>
+      const AssetGenImage('assets/image/homeway_logo.png');
 
   /// File path: assets/image/merchant_onboarding_01.png
   AssetGenImage get merchantOnboarding01 =>
@@ -134,7 +146,10 @@ class $AssetsImageGen {
   /// List of all assets
   List<AssetGenImage> get values => [
         appBackground,
+        appLogoDark,
+        appLogoLight,
         documentUpload,
+        homewayLogo,
         merchantOnboarding01,
         merchantOnboarding02,
         merchantOnboarding03,

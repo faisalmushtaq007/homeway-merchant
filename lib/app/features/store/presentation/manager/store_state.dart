@@ -151,6 +151,22 @@ class GetAllStoreState extends StoreState with AppEquatable {
       ];
 }
 
+class GetEmptyStoreState extends StoreState with AppEquatable {
+  GetEmptyStoreState({this.storeEntities = const [], this.message = ''});
+
+  final List<StoreEntity> storeEntities;
+  final String message;
+
+  @override
+  bool get cacheHash => true;
+
+  @override
+  List<Object?> get hashParameters => [
+        storeEntities,
+        message,
+      ];
+}
+
 class GetStoreState extends StoreState with AppEquatable {
   GetStoreState({
     this.storeEntity,

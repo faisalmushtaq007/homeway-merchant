@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
-import 'package:homemakers_merchant/app/features/dashboard/domain/entities/primary_dashboard_menu_entity.dart';
 import 'package:homemakers_merchant/app/features/dashboard/presentation/widgets/primary_dashboard_drawer.dart';
 import 'package:homemakers_merchant/app/features/permission/presentation/bloc/permission_bloc.dart';
+import 'package:homemakers_merchant/app/features/store/domain/entities/store_entity.dart';
 import 'package:homemakers_merchant/bootup/injection_container.dart';
 import 'package:homemakers_merchant/config/translation/extension/text_extension.dart';
 import 'package:homemakers_merchant/config/translation/language_controller.dart';
@@ -21,10 +21,10 @@ import 'package:homemakers_merchant/shared/router/app_pages.dart';
 import 'package:homemakers_merchant/shared/widgets/app/page_body.dart';
 import 'package:go_router/go_router.dart';
 
-class PrimaryDashboardMenuCard extends StatelessWidget {
-  const PrimaryDashboardMenuCard({required this.primaryDashboardMenuEntity, super.key});
+class StoreCard extends StatelessWidget {
+  const StoreCard({required this.storeEntity, super.key});
 
-  final StoreEntity primaryDashboardMenuEntity;
+  final StoreEntity storeEntity;
 
   @override
   Widget build(BuildContext context) {
@@ -36,32 +36,31 @@ class PrimaryDashboardMenuCard extends StatelessWidget {
         textDirection: serviceLocator<LanguageController>().targetTextDirection,
         children: [
           Card(
-            key: ValueKey(primaryDashboardMenuEntity.titleID),
-            margin: const EdgeInsetsDirectional.only(bottom: 10),
+            key: ValueKey(storeEntity.storeID),
+            margin: const EdgeInsetsDirectional.only(bottom: 10, top: 5),
             shape: RoundedRectangleBorder(borderRadius: BorderRadiusDirectional.circular(10)),
             child: ListTile(
               //dense: true,
-              leading: primaryDashboardMenuEntity.leading,
+              //leading: storeEntity.leading,
               title: Text(
-                primaryDashboardMenuEntity.title,
-                style: primaryDashboardMenuEntity.style ?? context.titleMedium!.copyWith(fontSize: 18, fontWeight: FontWeight.w500),
+                storeEntity.storeName,
+                style: context.titleMedium!.copyWith(fontWeight: FontWeight.w600),
+                textDirection: serviceLocator<LanguageController>().targetTextDirection,
+              ),
+              subtitle: Text(
+                storeEntity.storeAddress.address?.area ?? '',
+                style: context.labelMedium,
                 textDirection: serviceLocator<LanguageController>().targetTextDirection,
               ),
               trailing: InkWell(
                 onTap: () {
-                  primaryDashboardMenuEntity.onPressed();
                   return;
                 },
-                child: primaryDashboardMenuEntity.trailing ??
-                    const Icon(
-                      Icons.arrow_forward_ios,
-                    ),
+                child: const Icon(
+                  Icons.arrow_forward_ios,
+                ),
               ),
             ),
-          ),
-          const AnimatedGap(
-            10,
-            duration: Duration(milliseconds: 500),
           ),
         ],
       ),

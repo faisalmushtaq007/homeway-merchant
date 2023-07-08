@@ -181,6 +181,10 @@ class StoreTextFieldWidget extends StatelessWidget {
       contextMenuBuilder: contextMenuBuilder,
       spellCheckConfiguration: spellCheckConfiguration,
       magnifierConfiguration: magnifierConfiguration,
+      validator: validator,
+      autovalidateMode: autovalidateMode,
+      initialValue: initialValue,
+      onFieldSubmitted: onFieldSubmitted,
     );
   }
 }
