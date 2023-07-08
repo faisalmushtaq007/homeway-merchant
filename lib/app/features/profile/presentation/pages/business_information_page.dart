@@ -4,8 +4,10 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:go_router/go_router.dart';
+import 'package:homemakers_merchant/app/features/address/domain/entities/address_model.dart';
 import 'package:homemakers_merchant/app/features/authentication/presentation/manager/phone_number_verification_bloc.dart';
 import 'package:homemakers_merchant/app/features/authentication/presentation/pages/phone_number_verification_page.dart';
+import 'package:homemakers_merchant/app/features/profile/domain/entities/user_entity.dart';
 import 'package:homemakers_merchant/base/app_base.dart';
 import 'package:homemakers_merchant/bootup/injection_container.dart';
 import 'package:homemakers_merchant/config/translation/app_translator.dart';
@@ -572,6 +574,18 @@ class _BusinessInformationPageState extends State<BusinessInformationPage> with 
                                       if (!mounted) {
                                         return;
                                       }
+                                      var businessProfile = serviceLocator<BusinessProfile>().copyWith(
+                                        userName: _usernameController.value.text,
+                                        businessAddress: AddressModel(
+                                          address: AddressBean(area: _addressController.value.text),
+                                        ),
+                                        businessEmailAddress: _emailController.value.text,
+                                        businessName: _businessNameController.value.text,
+                                        businessPhoneNumber: userEnteredPhoneNumber,
+                                      );
+                                      serviceLocator<UserEntity>().copyWith(
+                                        businessProfile: businessProfile,
+                                      );
                                       context.go(Routes.BANK_INFORMATION_PAGE);
                                     }
                                   },

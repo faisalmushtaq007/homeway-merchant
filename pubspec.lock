@@ -1588,6 +1588,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.2"
+  localstore:
+    dependency: "direct main"
+    description:
+      name: localstore
+      sha256: "42a0afb7696cfab1b4bd7d08355b4ee01f975fd364553b28d51496eccaf11cce"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.3.5"
   location:
     dependency: "direct main"
     description:
@@ -1629,7 +1637,7 @@ packages:
     source: hosted
     version: "1.2.0"
   lottie:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: lottie
       sha256: f461105d3a35887b27089abf9c292334478dd292f7b47ecdccb6ae5c37a22c80

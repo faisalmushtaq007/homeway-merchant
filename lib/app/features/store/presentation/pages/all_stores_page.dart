@@ -174,6 +174,13 @@ class _AllStoresPageState extends State<AllStoresPage> {
                                           message: state.message,
                                         );
                                       }
+                                    case SaveStoreState():
+                                      {
+                                        storeEntities.add(state.storeEntity);
+                                        widgetState = WidgetState<StoreEntity>.allData(
+                                          context: context,
+                                        );
+                                      }
                                     case _:
                                       print('default');
                                   }

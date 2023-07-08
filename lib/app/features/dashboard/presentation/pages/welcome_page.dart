@@ -19,9 +19,36 @@ import 'package:homemakers_merchant/shared/widgets/universal/constrained_scrolla
 import 'package:homemakers_merchant/shared/router/app_pages.dart';
 import 'package:homemakers_merchant/shared/widgets/app/page_body.dart';
 import 'package:go_router/go_router.dart';
+import 'package:lottie/lottie.dart';
 
-class WelcomePage extends StatelessWidget {
+class WelcomePage extends StatefulWidget {
   const WelcomePage({super.key});
+
+  @override
+  State<WelcomePage> createState() => _WelcomePageState();
+}
+
+class _WelcomePageState extends State<WelcomePage> with TickerProviderStateMixin {
+  late final AnimationController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _controller = AnimationController(vsync: this)
+      ..value = 0.5
+      ..addListener(() {
+        setState(() {
+          // Rebuild the widget at each frame to update the "progress" label.
+        });
+      });
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -85,80 +112,92 @@ class WelcomePage extends StatelessWidget {
                         alignment: AlignmentDirectional.topStart,
                         child: AppLogo(),
                       ),
-                      ListView(
-                        controller: scrollController,
-                        padding: EdgeInsetsDirectional.only(
-                          top: 100,
+                      Container(
+                        constraints: BoxConstraints(
+                          minWidth: double.infinity,
+                          minHeight: media.size.height,
                         ),
-                        children: [
-                          // success logo
-                          Center(
-                            child: Text(
-                              'Welcome!',
-                              textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                              textAlign: TextAlign.center,
-                              style: context.headlineMedium!.copyWith(
-                                color: const Color.fromRGBO(69, 201, 125, 1),
-                                fontSize: 32,
-                                fontWeight: FontWeight.bold,
+                        child: ScrollableColumn(
+                          controller: scrollController,
+                          padding: EdgeInsetsDirectional.only(
+                            top: 50,
+                          ),
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            // success logo
+                            Lottie.asset(
+                              'assets/lottie/success_check_mark.json',
+                              height: 110,
+                            ),
+                            Center(
+                              child: Text(
+                                'Welcome!',
+                                textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                textAlign: TextAlign.center,
+                                style: context.headlineMedium!.copyWith(
+                                  color: const Color.fromRGBO(69, 201, 125, 1),
+                                  fontSize: 32,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ).translate(),
+                            ),
+                            Center(
+                              child: Text(
+                                'Nura24X7',
+                                textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                textAlign: TextAlign.center,
+                                style: context.headlineMedium!.copyWith(
+                                  color: const Color.fromRGBO(69, 201, 125, 1),
+                                  fontSize: 32,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ).translate(),
+                            ),
+                            const AnimatedGap(
+                              60,
+                              duration: Duration(
+                                milliseconds: 300,
                               ),
-                            ).translate(),
-                          ),
-                          Center(
-                            child: Text(
-                              'Nura24X7',
-                              textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                              textAlign: TextAlign.center,
-                              style: context.headlineMedium!.copyWith(
-                                color: const Color.fromRGBO(69, 201, 125, 1),
-                                fontSize: 32,
-                                fontWeight: FontWeight.bold,
+                            ),
+                            Center(
+                              child: Wrap(
+                                children: [
+                                  Text(
+                                    'Thank you for registering with us',
+                                    textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                    textAlign: TextAlign.center,
+                                    style: context.titleLarge!.copyWith(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ).translate(),
+                                ],
                               ),
-                            ).translate(),
-                          ),
-                          const AnimatedGap(
-                            80,
-                            duration: Duration(
-                              milliseconds: 300,
                             ),
-                          ),
-                          Center(
-                            child: Wrap(
-                              children: [
-                                Text(
-                                  'Thank you for registering with us',
-                                  textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                                  textAlign: TextAlign.center,
-                                  style: context.titleLarge!.copyWith(
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ).translate(),
-                              ],
+                            const AnimatedGap(
+                              16,
+                              duration: Duration(
+                                milliseconds: 300,
+                              ),
                             ),
-                          ),
-                          const AnimatedGap(
-                            16,
-                            duration: Duration(
-                              milliseconds: 300,
+                            Center(
+                              child: Wrap(
+                                textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                children: [
+                                  Text(
+                                    'We will contact you in Next 1-2 Working Days to physicals business verification',
+                                    textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                    textAlign: TextAlign.center,
+                                    style: context.bodyMedium!.copyWith(
+                                      fontSize: 16,
+                                    ),
+                                  ).translate(),
+                                ],
+                              ),
                             ),
-                          ),
-                          Center(
-                            child: Wrap(
-                              textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                              children: [
-                                Text(
-                                  'We will contact you in Next 1-2 Working Days to physicals business verification',
-                                  textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                                  textAlign: TextAlign.center,
-                                  style: context.bodyMedium!.copyWith(
-                                    fontSize: 16,
-                                  ),
-                                ).translate(),
-                              ],
-                            ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                       Align(
                         alignment: AlignmentDirectional.bottomCenter,

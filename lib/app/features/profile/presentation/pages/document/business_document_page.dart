@@ -543,6 +543,7 @@ class _BusinessDocumentPageState extends State<BusinessDocumentPage> with Single
   }
 
   void onUploadPressed() {
+    context.go(Routes.WELCOME_PAGE);
     return;
   }
 }

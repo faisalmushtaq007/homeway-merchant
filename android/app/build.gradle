@@ -89,7 +89,7 @@ android {
     productFlavors { 
         production {
             dimension "default"
-            applicationIdSuffix ""
+            applicationIdSuffix ".prod"
             manifestPlaceholders = [appName: "Homemakers Merchant"]
         }
         staging {
@@ -108,7 +108,7 @@ android {
         release {
             signingConfig signingConfigs.release
             minifyEnabled true
-            proguardFiles getDefaultProguardFile('proguard-android.txt')
+            proguardFiles getDefaultProguardFile('proguard-android.txt'),'proguard-rules.pro'
         }
         debug {
             signingConfig signingConfigs.debug
@@ -128,4 +128,5 @@ dependencies {
     implementation 'com.google.firebase:firebase-analytics-ktx'
     implementation 'com.google.android.gms:play-services-location:21.0.1'
     implementation 'com.google.android.gms:play-services-maps:18.1.0'
+    implementation 'com.google.android.material:material:1.9.0'
 }

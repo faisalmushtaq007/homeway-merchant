@@ -6,7 +6,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
+import 'package:homemakers_merchant/app/features/address/domain/entities/address_model.dart';
 import 'package:homemakers_merchant/app/features/store//presentation/widgets/multi_select_store_available_accepted_payment_mode_widget.dart';
+import 'package:homemakers_merchant/app/features/store/presentation/manager/store_bloc.dart';
 import 'package:homemakers_merchant/app/features/store/presentation/widgets/multi_select_store_available_food_preparation_widget.dart';
 import 'package:homemakers_merchant/app/features/store/presentation/widgets/multi_select_store_available_food_types_widget.dart';
 import 'package:homemakers_merchant/app/features/store/presentation/widgets/multi_select_store_available_working_days_widget.dart';
@@ -112,6 +114,9 @@ class _SaveStorePageState extends State<SaveStorePage> {
     _storeMaxDeliveryTimeController.dispose();
     _storeOpeningTimeController.dispose();
     _storeClosingTimeController.dispose();
+    _storeOwnerDriverNameController.dispose();
+    _storeOwnerDriverLicenseController.dispose();
+    _storeOwnerDriverPhoneNumberController.dispose();
     super.dispose();
   }
 
@@ -257,7 +262,7 @@ class _SaveStorePageState extends State<SaveStorePage> {
                       textDirection: serviceLocator<LanguageController>().targetTextDirection,
                       physics: const ClampingScrollPhysics(),
                       children: [
-                        const AnimatedGap(10, duration: Duration(milliseconds: 500)),
+                        const AnimatedGap(6, duration: Duration(milliseconds: 500)),
                         Align(
                           alignment: AlignmentDirectional.topStart,
                           child: Text(
@@ -265,7 +270,7 @@ class _SaveStorePageState extends State<SaveStorePage> {
                             style: context.titleLarge,
                           ),
                         ),
-                        const AnimatedGap(10, duration: Duration(milliseconds: 500)),
+                        const AnimatedGap(12, duration: Duration(milliseconds: 500)),
                         cross_file_images.isNotEmpty
                             ? Swiper(
                                 itemBuilder: (context, index) {
@@ -313,7 +318,7 @@ class _SaveStorePageState extends State<SaveStorePage> {
                                   ),
                                 ),
                               ),
-                        const AnimatedGap(10, duration: Duration(milliseconds: 500)),
+                        const AnimatedGap(12, duration: Duration(milliseconds: 500)),
                         Row(
                           mainAxisSize: MainAxisSize.min,
                           textDirection: serviceLocator<LanguageController>().targetTextDirection,
@@ -442,7 +447,10 @@ class _SaveStorePageState extends State<SaveStorePage> {
                         ).translate(),
                         const AnimatedGap(6, duration: Duration(milliseconds: 500)),
                         MultiSelectAvailableWorkingDaysFormField(
-                          onSelectionChanged: (List<StoreWorkingDayAndTime> selectedWorkingDays) {},
+                          onSelectionChanged: (List<StoreWorkingDayAndTime> selectedWorkingDays) {
+                            _selectedWorkingDays = List<StoreWorkingDayAndTime>.from(selectedWorkingDays);
+                            setState(() {});
+                          },
                           availableWorkingDaysList: _storeWorkingDays.toList(),
                           validator: (value) {
                             if (value == null || value.length == 0) {
@@ -535,7 +543,10 @@ class _SaveStorePageState extends State<SaveStorePage> {
                         ).translate(),
                         const AnimatedGap(6, duration: Duration(milliseconds: 500)),
                         MultiSelectAvailableFoodTypeFormField(
-                          onSelectionChanged: (List<StoreAvailableFoodTypes> selectedFoodTypes) {},
+                          onSelectionChanged: (List<StoreAvailableFoodTypes> selectedFoodTypes) {
+                            _selectedFoodTypes = List<StoreAvailableFoodTypes>.from(selectedFoodTypes);
+                            setState(() {});
+                          },
                           availableFoodTypesList: _storeAvailableFoodTypes.toList(),
                           validator: (value) {
                             if (value == null || value.length == 0) {
@@ -558,7 +569,10 @@ class _SaveStorePageState extends State<SaveStorePage> {
                         ).translate(),
                         const AnimatedGap(6, duration: Duration(milliseconds: 500)),
                         MultiSelectAvailableFoodPreparationTypesFormField(
-                          onSelectionChanged: (List<StoreAvailableFoodPreparationType> selectedPreparationTypes) {},
+                          onSelectionChanged: (List<StoreAvailableFoodPreparationType> selectedPreparationTypes) {
+                            _selectedFoodPreparationType = List<StoreAvailableFoodPreparationType>.from(selectedPreparationTypes);
+                            setState(() {});
+                          },
                           availableFoodPreparationTypesList: _storeAvailableFoodPreparationType.toList(),
                           validator: (value) {
                             if (value == null || value.length == 0) {
@@ -637,6 +651,16 @@ class _SaveStorePageState extends State<SaveStorePage> {
                                               ),
                                               isDense: true,
                                             ),
+                                            validator: (value) {
+                                              if (_hasStoreOwnDeliveryService) {
+                                                if (value == null || value.isEmpty) {
+                                                  return 'Please enter driver name';
+                                                } else {
+                                                  return null;
+                                                }
+                                              }
+                                              return null;
+                                            },
                                           ),
                                         )
                                       ],
@@ -658,6 +682,16 @@ class _SaveStorePageState extends State<SaveStorePage> {
                                               ),
                                               isDense: true,
                                             ),
+                                            validator: (value) {
+                                              if (_hasStoreOwnDeliveryService) {
+                                                if (value == null || value.isEmpty) {
+                                                  return 'Please enter driver mobile number';
+                                                } else {
+                                                  return null;
+                                                }
+                                              }
+                                              return null;
+                                            },
                                           ),
                                         )
                                       ],
@@ -679,6 +713,16 @@ class _SaveStorePageState extends State<SaveStorePage> {
                                               ),
                                               isDense: true,
                                             ),
+                                            validator: (value) {
+                                              if (_hasStoreOwnDeliveryService) {
+                                                if (value == null || value.isEmpty) {
+                                                  return 'Please enter driver driving license';
+                                                } else {
+                                                  return null;
+                                                }
+                                              }
+                                              return null;
+                                            },
                                           ),
                                         )
                                       ],
@@ -723,7 +767,6 @@ class _SaveStorePageState extends State<SaveStorePage> {
                                 ],
                                 onChanged: (value) {},
                                 validator: (value) {
-                                  debugPrint('Value ${value}');
                                   if (value == null || value.isEmpty || maximumDeliveryTimeFormatter.getUnmaskedText().isEmpty) {
                                     return 'Please enter delivery time';
                                   } else {
@@ -783,7 +826,10 @@ class _SaveStorePageState extends State<SaveStorePage> {
                         ).translate(),
                         const AnimatedGap(6, duration: Duration(milliseconds: 500)),
                         MultiSelectAvailablePaymentModeFormField(
-                          onSelectionChanged: (List<StoreAcceptedPaymentModes> selectedPaymentModes) {},
+                          onSelectionChanged: (List<StoreAcceptedPaymentModes> selectedPaymentModes) {
+                            _selectedAcceptedPaymentModes = List<StoreAcceptedPaymentModes>.from(selectedPaymentModes);
+                            setState(() {});
+                          },
                           availablePaymentModesList: _storeAcceptedPaymentModes.toList(),
                           validator: (value) {
                             if (value == null || value.length == 0) {
@@ -800,7 +846,44 @@ class _SaveStorePageState extends State<SaveStorePage> {
                           onPressed: () {
                             if (storFormKey.currentState!.validate()) {
                               storFormKey.currentState!.save();
+                              final storeInfo = StoreEntity(
+                                storeName: _storeNameController.value.text,
+                                storeAddress: AddressModel(
+                                  address: AddressBean(
+                                    area: _storeAddressController.value.text,
+                                  ),
+                                ),
+                                storeImagePath: '',
+                                storeImageMetaData: {},
+                                storeMaximumFoodDeliveryTime: int.parse(_storeMaxDeliveryTimeController.value.text),
+                                storeMaximumFoodDeliveryRadius: _maximumDeliveryRadiusValue.toInt(),
+                                storeOpeningTime: _storeOpeningTimeController.value.text,
+                                storeClosingTime: _storeClosingTimeController.value.text,
+                                storeID: ((DateTime.now().millisecondsSinceEpoch - DateTime.now().millisecond) / 100).toInt(),
+                                hasStoreOwnDeliveryPartners: _hasStoreOwnDeliveryService,
+                                storeAcceptedPaymentModes: _selectedAcceptedPaymentModes.toList(),
+                                storeAvailableFoodPreparationType: _selectedFoodPreparationType.toList(),
+                                storeAvailableFoodTypes: _selectedFoodTypes.toList(),
+                                storeOwnDeliveryPartnersInfo: (_hasStoreOwnDeliveryService)
+                                    ? [
+                                        StoreOwnDeliveryPartnersInfo(
+                                          driverMobileNumber: _storeOwnerDriverPhoneNumberController.value.text,
+                                          driverName: _storeOwnerDriverNameController.value.text,
+                                          drivingLicenseNumber: _storeOwnerDriverLicenseController.value.text,
+                                        ),
+                                      ]
+                                    : [],
+                                storeWorkingDays: _selectedWorkingDays.toList(),
+                              );
+                              serviceLocator<List<StoreEntity>>().add(storeInfo);
+                              context.read<StoreBloc>().add(SaveStore(storeEntity: storeInfo, hasNewStore: true));
+                              context.go(
+                                Routes.NEW_STORE_GREETING_PAGE,
+                                extra: storeInfo,
+                              );
+                              return;
                             }
+                            return;
                           },
                           child: Text(
                             'Add Store',

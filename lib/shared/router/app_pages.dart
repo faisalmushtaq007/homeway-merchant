@@ -10,6 +10,7 @@ import 'package:homemakers_merchant/app/features/authentication/presentation/pag
 import 'package:homemakers_merchant/app/features/authentication/presentation/pages/phone_number_verification_page.dart';
 import 'package:homemakers_merchant/app/features/authentication/presentation/pages/privacy_and_policy_view.dart';
 import 'package:homemakers_merchant/app/features/authentication/presentation/pages/terms_and_conditions_view.dart';
+
 import 'package:homemakers_merchant/app/features/dashboard/presentation/pages/main_dashboard_page.dart';
 import 'package:homemakers_merchant/app/features/dashboard/presentation/pages/primary_dashboard_page.dart';
 import 'package:homemakers_merchant/app/features/dashboard/presentation/pages/welcome_page.dart';
@@ -20,7 +21,9 @@ import 'package:homemakers_merchant/app/features/profile/presentation/pages/bank
 import 'package:homemakers_merchant/app/features/profile/presentation/pages/business_information_page.dart';
 import 'package:homemakers_merchant/app/features/profile/presentation/pages/document/business_document_page.dart';
 import 'package:homemakers_merchant/app/features/profile/presentation/pages/document/upload_document_page.dart';
+import 'package:homemakers_merchant/app/features/store/domain/entities/store_entity.dart';
 import 'package:homemakers_merchant/app/features/store/presentation/pages/all_stores_page.dart';
+import 'package:homemakers_merchant/app/features/store/presentation/pages/new_store_greeting_page.dart';
 import 'package:homemakers_merchant/app/features/store/presentation/pages/save_store_page.dart';
 
 part 'app_routes.dart';
@@ -31,7 +34,7 @@ class AppRouter {
 
   AppRouter._();
 
-  static const String INITIAL = Routes.SAVE_STORE_PAGE;
+  static const String INITIAL = Routes.INITIAL;
 
   static final GoRouter _router = GoRouter(
     debugLogDiagnostics: true,
@@ -108,8 +111,12 @@ class AppRouter {
         builder: (context, state) => const SaveStorePage(),
       ),
       GoRoute(
-        path: Routes.ALL_STORES,
+        path: Routes.ALL_STORES_PAGE,
         builder: (context, state) => const AllStoresPage(),
+      ),
+      GoRoute(
+        path: Routes.NEW_STORE_GREETING_PAGE,
+        builder: (context, state) => NewStoreGreetingPage(storeEntity: state.extra as StoreEntity),
       ),
     ],
   );

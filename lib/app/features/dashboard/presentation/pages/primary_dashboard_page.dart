@@ -7,6 +7,7 @@ import 'package:homemakers_merchant/app/features/dashboard/domain/entities/prima
 import 'package:homemakers_merchant/app/features/dashboard/presentation/widgets/primary_dashboard_drawer.dart';
 import 'package:homemakers_merchant/app/features/dashboard/presentation/widgets/primary_dashboard_menu_card.dart';
 import 'package:homemakers_merchant/app/features/permission/presentation/bloc/permission_bloc.dart';
+import 'package:homemakers_merchant/app/features/profile/domain/entities/user_entity.dart';
 import 'package:homemakers_merchant/bootup/injection_container.dart';
 import 'package:homemakers_merchant/config/translation/extension/text_extension.dart';
 import 'package:homemakers_merchant/config/translation/language_controller.dart';
@@ -69,7 +70,9 @@ class _PrimaryDashboardPageState extends State<PrimaryDashboardPage> {
       StoreEntity(
         title: 'Store',
         titleID: 2,
-        onPressed: () {},
+        onPressed: () {
+          context.go(Routes.ALL_STORES_PAGE);
+        },
         leading: const Icon(
           Icons.store,
         ),
@@ -167,18 +170,18 @@ class _PrimaryDashboardPageState extends State<PrimaryDashboardPage> {
                             15,
                             duration: Duration(milliseconds: 500),
                           ),
-                          const Wrap(
+                          Wrap(
                             alignment: WrapAlignment.center,
                             children: [
                               Text(
-                                "Thomas Shelby",
+                                "${serviceLocator<UserEntity>().businessProfile?.userName ?? 'Thomas Shelby'}",
                                 style: TextStyle(fontWeight: FontWeight.w900, fontSize: 18),
                               )
                             ],
                           ),
-                          const Wrap(
+                          Wrap(
                             alignment: WrapAlignment.center,
-                            children: [Text("thomashomeservice@gmail.com")],
+                            children: [Text("${serviceLocator<UserEntity>().businessProfile?.businessEmailAddress ?? 'thomashomeservice@gmail.com'}")],
                           ),
                           const AnimatedGap(
                             15,

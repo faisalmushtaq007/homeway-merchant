@@ -1,12 +1,15 @@
 import 'package:get_it/get_it.dart';
 import 'package:homemakers_merchant/app/features/authentication/presentation/manager/otp_verification/otp_verification_bloc.dart';
 import 'package:homemakers_merchant/app/features/authentication/presentation/manager/phone_number_verification_bloc.dart';
+
 import 'package:homemakers_merchant/app/features/permission/presentation/bloc/permission_bloc.dart';
 import 'package:homemakers_merchant/app/features/profile/data/local/data_sources/local_usermodel_service.dart';
+import 'package:homemakers_merchant/app/features/profile/domain/entities/user_entity.dart';
 import 'package:homemakers_merchant/app/features/profile/domain/entities/user_model.dart';
 import 'package:homemakers_merchant/app/features/profile/presentation/manager/bank/bank_information_bloc.dart';
 import 'package:homemakers_merchant/app/features/profile/presentation/manager/document/business_document_bloc.dart';
 import 'package:homemakers_merchant/app/features/profile/presentation/manager/user_model_storage_controller.dart';
+import 'package:homemakers_merchant/app/features/store/domain/entities/store_entity.dart';
 import 'package:homemakers_merchant/app/features/store/presentation/manager/store_bloc.dart';
 import 'package:homemakers_merchant/config/permission/permission_controller.dart';
 import 'package:homemakers_merchant/config/permission/permission_service.dart';
@@ -150,6 +153,13 @@ void _setUpService() {
         ],
       ),
     );
+
+  serviceLocator.registerSingleton<BusinessProfile>(BusinessProfile());
+  serviceLocator.registerSingleton<List<StoreEntity>>([]);
+  serviceLocator.registerSingleton<UserEntity>(UserEntity(
+    businessProfile: serviceLocator(),
+    stores: serviceLocator(),
+  ));
 }
 
 void _setUpRepository() {}
