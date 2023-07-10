@@ -156,7 +156,7 @@ void _setUpService() {
 
   serviceLocator.registerSingleton<BusinessProfile>(BusinessProfile());
   serviceLocator.registerSingleton<List<StoreEntity>>([]);
-  serviceLocator.registerSingleton<UserEntity>(UserEntity(
+  serviceLocator.registerSingleton<AppUserEntity>(AppUserEntity(
     businessProfile: serviceLocator(),
     stores: serviceLocator(),
   ));

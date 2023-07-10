@@ -369,7 +369,7 @@ class _OTPVerificationPageState extends State<OTPVerificationPage> {
                                     if (!mounted) {
                                       return;
                                     }
-                                    serviceLocator<UserEntity>().copyWith(
+                                    serviceLocator<AppUserEntity>().copyWith(
                                       phoneNumber: widget.phoneNumber,
                                     );
                                     context.go(Routes.CREATE_BUSINESS_PROFILE_PAGE);

@@ -61,6 +61,7 @@ dependencies:
     git:
       url: 'https://github.com/prasant10050/geocoder_buddy.git'
       ref: main
+  geocoding: ^2.1.0
   geolocator: ^9.0.2
   get_it: ^7.6.0
   get_it_mixin: ^4.2.0
@@ -128,6 +129,7 @@ dependencies:
   responsive_framework: ^1.1.0
   rxdart: ^0.27.7
   saver_gallery: ^2.0.1
+  sembast: ^3.4.9
   synchronized: ^3.1.0
   timelines:
     git:

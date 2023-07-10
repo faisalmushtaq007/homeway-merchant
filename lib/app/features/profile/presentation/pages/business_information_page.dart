@@ -583,7 +583,7 @@ class _BusinessInformationPageState extends State<BusinessInformationPage> with 
                                         businessName: _businessNameController.value.text,
                                         businessPhoneNumber: userEnteredPhoneNumber,
                                       );
-                                      serviceLocator<UserEntity>().copyWith(
+                                      serviceLocator<AppUserEntity>().copyWith(
                                         businessProfile: businessProfile,
                                       );
                                       context.go(Routes.BANK_INFORMATION_PAGE);

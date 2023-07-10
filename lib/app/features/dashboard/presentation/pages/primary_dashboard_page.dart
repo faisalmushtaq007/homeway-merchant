@@ -174,14 +174,14 @@ class _PrimaryDashboardPageState extends State<PrimaryDashboardPage> {
                             alignment: WrapAlignment.center,
                             children: [
                               Text(
-                                "${serviceLocator<UserEntity>().businessProfile?.userName ?? 'Thomas Shelby'}",
+                                "${serviceLocator<AppUserEntity>().businessProfile?.userName ?? 'Thomas Shelby'}",
                                 style: TextStyle(fontWeight: FontWeight.w900, fontSize: 18),
                               )
                             ],
                           ),
                           Wrap(
                             alignment: WrapAlignment.center,
-                            children: [Text("${serviceLocator<UserEntity>().businessProfile?.businessEmailAddress ?? 'thomashomeservice@gmail.com'}")],
+                            children: [Text("${serviceLocator<AppUserEntity>().businessProfile?.businessEmailAddress ?? 'thomashomeservice@gmail.com'}")],
                           ),
                           const AnimatedGap(
                             15,
