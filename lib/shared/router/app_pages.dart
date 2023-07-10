@@ -3,7 +3,9 @@ import 'dart:convert';
 
 import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
+import 'package:homemakers_merchant/app/features/address/domain/entities/address_model.dart';
 import 'package:homemakers_merchant/app/features/address/presentation/pages/address_form_page.dart';
+import 'package:homemakers_merchant/app/features/address/presentation/pages/pickup_location_from_map.dart';
 import 'package:homemakers_merchant/app/features/authentication/presentation/pages/about_us.dart';
 import 'package:homemakers_merchant/app/features/authentication/presentation/pages/login_page.dart';
 import 'package:homemakers_merchant/app/features/authentication/presentation/pages/otp_verification_page.dart';
@@ -34,7 +36,7 @@ class AppRouter {
 
   AppRouter._();
 
-  static const String INITIAL = Routes.INITIAL;
+  static const String INITIAL = Routes.PICKUP_LOCATION_FROM_MAP_PAGE;
 
   static final GoRouter _router = GoRouter(
     debugLogDiagnostics: true,
@@ -117,6 +119,10 @@ class AppRouter {
       GoRoute(
         path: Routes.NEW_STORE_GREETING_PAGE,
         builder: (context, state) => NewStoreGreetingPage(storeEntity: state.extra as StoreEntity),
+      ),
+      GoRoute(
+        path: Routes.PICKUP_LOCATION_FROM_MAP_PAGE,
+        builder: (context, state) => PickupLocationFromMapPage(addressModel: AddressModel() ?? state.extra as AddressModel),
       ),
     ],
   );

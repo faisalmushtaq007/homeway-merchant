@@ -34,8 +34,8 @@ import 'package:homemakers_merchant/shared/widgets/universal/map/google_map_plac
 import 'package:homemakers_merchant/utils/app_log.dart';
 import 'package:location/location.dart' as loc;
 
-class AddressPage extends StatefulWidget {
-  const AddressPage({
+class PickupLocationFromMapPage extends StatefulWidget {
+  const PickupLocationFromMapPage({
     super.key,
     required this.addressModel,
   });
@@ -46,7 +46,7 @@ class AddressPage extends StatefulWidget {
   _AddressPageController createState() => _AddressPageController();
 }
 
-class _AddressPageController extends State<AddressPage> {
+class _AddressPageController extends State<PickupLocationFromMapPage> {
   final ScrollController scrollController = ScrollController();
   Completer<GoogleMapController> mapcontroller = Completer();
 
@@ -448,7 +448,7 @@ class _AddressPageController extends State<AddressPage> {
       );
 }
 
-class _AddressPageView extends WidgetView<AddressPage, _AddressPageController> {
+class _AddressPageView extends WidgetView<PickupLocationFromMapPage, _AddressPageController> {
   const _AddressPageView(super.state);
 
   @override
@@ -469,6 +469,16 @@ class _AddressPageView extends WidgetView<AddressPage, _AddressPageController> {
       child: Directionality(
         textDirection: serviceLocator<LanguageController>().targetTextDirection,
         child: PlatformScaffold(
+          material: (context, platform) {
+            return MaterialScaffoldData(
+              resizeToAvoidBottomInset: false,
+            );
+          },
+          cupertino: (context, platform) {
+            return CupertinoPageScaffoldData(
+              resizeToAvoidBottomInset: false,
+            );
+          },
           appBar: PlatformAppBar(
             automaticallyImplyLeading: true,
             trailingActions: const [
@@ -488,144 +498,144 @@ class _AddressPageView extends WidgetView<AddressPage, _AddressPageController> {
                 minHeight: media.size.height,
               ),
               padding: EdgeInsetsDirectional.only(
-                top: topPadding,
-                bottom: bottomPadding,
-                start: margins * 2.5,
-                end: margins * 2.5,
+                top: 0,
               ),
-              child: Stack(
-                children: [
-                  Container(
-                    constraints: BoxConstraints(
-                      minWidth: double.infinity,
-                      minHeight: media.size.height,
-                    ),
-                    child: ScrollableColumn(
-                      controller: state.scrollController,
-                      padding: EdgeInsetsDirectional.only(
-                        top: 50,
+              child: Container(
+                constraints: BoxConstraints(
+                  minWidth: double.infinity,
+                  minHeight: media.size.height,
+                ),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  mainAxisSize: MainAxisSize.min,
+                  textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                  children: [
+                    Flexible(
+                      flex: 3,
+                      child: Stack(
+                        children: [
+                          Animarker(
+                            curve: Curves.ease,
+                            mapId: state.mapcontroller.future.then<int>((value) => value.mapId),
+                            //Grab Google Map Id
+                            markers: state.markers.values.toSet(),
+                            rippleRadius: 0.12,
+                            rippleColor: Colors.teal,
+                            rippleDuration: Duration(milliseconds: 2500),
+                            useRotation: false,
+                            shouldAnimateCamera: true,
+                            key: Key(state.markedIdOfCurrentUser),
+                            child: GoogleMap(
+                              scrollGesturesEnabled: true,
+                              initialCameraPosition: state.cameraPosition!,
+                              onMapCreated: state.mapCreated,
+                              //onCameraMoveStarted: state.onCameraMoveStarted,
+                              //onCameraIdle: state.onCameraIdle,
+                              onCameraMove: state.onCameraMove,
+                              //minMaxZoomPreference: MinMaxZoomPreference(14, 100),
+                              tiltGesturesEnabled: true,
+                              rotateGesturesEnabled: true,
+                              onTap: state.onTapOnMap,
+                              zoomGesturesEnabled: true,
+                              zoomControlsEnabled: true,
+                              gestureRecognizers: Set()
+                                ..add(Factory<EagerGestureRecognizer>(() => EagerGestureRecognizer()))
+                                ..add(
+                                  Factory<OneSequenceGestureRecognizer>(
+                                    () => new EagerGestureRecognizer(),
+                                  ),
+                                ),
+                              key: const Key('address-picker-map'),
+                            ),
+                          ),
+                          PositionedDirectional(
+                            top: 0,
+                            start: 0,
+                            end: 0,
+                            child: Container(
+                              child: SearchGooglePlacesWidget(
+                                  apiKey: 'AIzaSyB6wUuIm0xLJbTFm6qPiwKgULJupJ8IE8s',
+                                  // The language of the autocompletion
+                                  language: 'en',
+                                  // The position used to give better recommendations. In this case we are using the user position
+                                  radius: 30000,
+                                  location: state.defaultLatLng,
+                                  onSelected: state.onSelected,
+                                  onSearch: (Place place) {},
+                                  onNewSearch: state.onNewSearch,
+                                  onNewSelected: state.onNewSelected,
+                                  outerMarginOfSearchTextField: EdgeInsetsDirectional.only(start: margins, end: margins)),
+                            ),
+                          ),
+                          PositionedDirectional(
+                            bottom: 0,
+                            end: margins * 2.5,
+                            start: margins * 2.5,
+                            child: OutlinedButton.icon(
+                              onPressed: () async {
+                                await state.fetchUserLocation();
+                                return;
+                              },
+                              icon: Icon(Icons.gps_fixed_outlined),
+                              label: Text(
+                                'Use current location',
+                              ),
+                              style: OutlinedButton.styleFrom(
+                                padding: EdgeInsetsDirectional.symmetric(horizontal: 16),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadiusDirectional.all(Radius.circular(10)),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Flexible(
-                          flex: 4,
-                          child: Stack(
-                            children: [
-                              Animarker(
-                                curve: Curves.ease,
-                                mapId: state.mapcontroller.future.then<int>((value) => value.mapId),
-                                //Grab Google Map Id
-                                markers: state.markers.values.toSet(),
-                                rippleRadius: 0.12,
-                                rippleColor: Colors.teal,
-                                rippleDuration: Duration(milliseconds: 2500),
-                                useRotation: false,
-                                shouldAnimateCamera: true,
-                                key: Key(state.markedIdOfCurrentUser),
-                                child: GoogleMap(
-                                  scrollGesturesEnabled: true,
-                                  initialCameraPosition: state.cameraPosition!,
-                                  onMapCreated: state.mapCreated,
-                                  //onCameraMoveStarted: state.onCameraMoveStarted,
-                                  //onCameraIdle: state.onCameraIdle,
-                                  onCameraMove: state.onCameraMove,
-                                  //minMaxZoomPreference: MinMaxZoomPreference(14, 100),
-                                  tiltGesturesEnabled: true,
-                                  rotateGesturesEnabled: true,
-                                  onTap: state.onTapOnMap,
-                                  zoomGesturesEnabled: true,
-                                  zoomControlsEnabled: true,
-                                  gestureRecognizers: Set()
-                                    ..add(Factory<EagerGestureRecognizer>(() => EagerGestureRecognizer()))
-                                    ..add(
-                                      Factory<OneSequenceGestureRecognizer>(
-                                        () => new EagerGestureRecognizer(),
-                                      ),
-                                    ),
-                                  key: const Key('address-picker-map'),
-                                ),
-                              ),
-                              Positioned(
-                                top: 60,
-                                left: MediaQuery.of(context).size.width * 0.05,
-                                child: Container(
-                                  child: SearchGooglePlacesWidget(
-                                    apiKey: 'AIzaSyB6wUuIm0xLJbTFm6qPiwKgULJupJ8IE8s',
-                                    // The language of the autocompletion
-                                    language: 'en',
-                                    // The position used to give better recommendations. In this case we are using the user position
-                                    radius: 30000,
-                                    location: state.defaultLatLng,
-                                    onSelected: state.onSelected,
-                                    onSearch: (Place place) {},
-                                    onNewSearch: state.onNewSearch,
-                                    onNewSelected: state.onNewSelected,
-                                  ),
-                                ),
-                              ),
-                              Align(
-                                alignment: Alignment.bottomCenter,
-                                child: OutlinedButton.icon(
-                                  onPressed: () async {
-                                    await state.fetchUserLocation();
-                                    return;
-                                  },
-                                  icon: Icon(Icons.gps_fixed_outlined),
-                                  label: Text(
-                                    'Use current location',
-                                  ),
-                                  style: OutlinedButton.styleFrom(
-                                    padding: EdgeInsets.symmetric(horizontal: 16),
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.all(Radius.circular(10)),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        Flexible(
-                            child: Padding(
-                          padding: const EdgeInsets.only(left: 12.0, right: 12),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.stretch,
-                            children: [
-                              SizedBox(
-                                height: 8,
-                              ),
-                              Text('Select Delivery location', style: Theme.of(context).textTheme.titleSmall),
-                              SizedBox(
-                                height: 12,
-                              ),
-                              Flexible(
-                                child: Text(
-                                  '${state.displayName}',
-                                  style: Theme.of(context).textTheme.labelLarge,
-                                ),
-                              ),
-                              SizedBox(
-                                height: 12,
-                              ),
-                              ElevatedButton(
-                                onPressed: state.navigateToCompleteAddressScreen,
-                                child: Text(
-                                  'Confirm Location',
-                                  style: Theme.of(context).textTheme.titleMedium!.copyWith(
-                                        color: Colors.white,
-                                        fontSize: 18,
-                                      ),
-                                ),
-                                style: ElevatedButton.styleFrom(),
-                              ),
-                            ],
-                          ),
-                        ))
-                      ],
                     ),
-                  ),
-                ],
+                    Divider(),
+                    Flexible(
+                        child: Padding(
+                      padding: EdgeInsetsDirectional.only(
+                        bottom: bottomPadding - margins,
+                        start: margins * 2.5,
+                        end: margins * 2.5,
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          SizedBox(
+                            height: 8,
+                          ),
+                          Text('Your location', style: Theme.of(context).textTheme.titleSmall),
+                          SizedBox(
+                            height: 12,
+                          ),
+                          Flexible(
+                            child: Text(
+                              '${state.displayName}',
+                              style: Theme.of(context).textTheme.labelLarge,
+                            ),
+                          ),
+                          SizedBox(
+                            height: 12,
+                          ),
+                          ElevatedButton(
+                            onPressed: state.navigateToCompleteAddressScreen,
+                            child: Text(
+                              'Confirm Location',
+                              style: Theme.of(context).textTheme.titleMedium!.copyWith(
+                                    color: Colors.white,
+                                    fontSize: 18,
+                                  ),
+                            ),
+                            style: ElevatedButton.styleFrom(),
+                          ),
+                        ],
+                      ),
+                    ))
+                  ],
+                ),
               ),
             ),
           ),

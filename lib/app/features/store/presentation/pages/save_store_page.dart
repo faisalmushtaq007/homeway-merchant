@@ -49,17 +49,17 @@ class _SaveStorePageState extends State<SaveStorePage> {
   static final storFormKey = GlobalKey<FormState>();
   List<File>? file_images = [];
   List<XFile> cross_file_images = [];
-  TextEditingController _storeAddressController = TextEditingController();
-  TextEditingController _storeNameController = TextEditingController();
-  TextEditingController _storeMaxDeliveryTimeController = TextEditingController();
+  final TextEditingController _storeAddressController = TextEditingController();
+  final TextEditingController _storeNameController = TextEditingController();
+  final TextEditingController _storeMaxDeliveryTimeController = TextEditingController();
 
   double _maximumDeliveryRadiusValue = 6.0;
   List<StoreAvailableFoodTypes> _storeAvailableFoodTypes = [];
   List<StoreAvailableFoodPreparationType> _storeAvailableFoodPreparationType = [];
   List<StoreAcceptedPaymentModes> _storeAcceptedPaymentModes = [];
   List<StoreWorkingDayAndTime> _storeWorkingDays = [];
-  TextEditingController _storeOpeningTimeController = TextEditingController();
-  TextEditingController _storeClosingTimeController = TextEditingController();
+  final TextEditingController _storeOpeningTimeController = TextEditingController();
+  final TextEditingController _storeClosingTimeController = TextEditingController();
 
   List<StoreAvailableFoodTypes> _selectedFoodTypes = [];
   List<StoreAvailableFoodPreparationType> _selectedFoodPreparationType = [];
@@ -67,9 +67,9 @@ class _SaveStorePageState extends State<SaveStorePage> {
   List<StoreWorkingDayAndTime> _selectedWorkingDays = [];
 
   bool _hasStoreOwnDeliveryService = false;
-  TextEditingController _storeOwnerDriverNameController = TextEditingController();
-  TextEditingController _storeOwnerDriverPhoneNumberController = TextEditingController();
-  TextEditingController _storeOwnerDriverLicenseController = TextEditingController();
+  final TextEditingController _storeOwnerDriverNameController = TextEditingController();
+  final TextEditingController _storeOwnerDriverPhoneNumberController = TextEditingController();
+  final TextEditingController _storeOwnerDriverLicenseController = TextEditingController();
 
   final deliveryTimeMuskeyFormatter = MuskeyFormatter(
     masks: ['### min'],

@@ -19,9 +19,9 @@ class SearchGooglePlacesWidget extends StatefulWidget {
     this.key,
     required this.onNewSelected,
     required this.onNewSearch,
+    required this.outerMarginOfSearchTextField,
     this.newPlaceType,
-  })  : assert((location == null && radius == null) ||
-            (location != null && radius != null)),
+  })  : assert((location == null && radius == null) || (location != null && radius != null)),
         super(key: key);
 
   final Key? key;
@@ -78,13 +78,13 @@ class SearchGooglePlacesWidget extends StatefulWidget {
 
   /// Enables Dark Mode when set to `true`. Default value is `false`.
   final bool? darkMode;
+  final EdgeInsetsGeometry outerMarginOfSearchTextField;
 
   @override
   _SearchMapPlaceWidgetState createState() => _SearchMapPlaceWidgetState();
 }
 
-class _SearchMapPlaceWidgetState extends State<SearchGooglePlacesWidget>
-    with TickerProviderStateMixin {
+class _SearchMapPlaceWidgetState extends State<SearchGooglePlacesWidget> with TickerProviderStateMixin {
   TextEditingController _textEditingController = TextEditingController();
   AnimationController? _animationController;
   // SearchContainer height.
@@ -107,9 +107,8 @@ class _SearchMapPlaceWidgetState extends State<SearchGooglePlacesWidget>
   @override
   void initState() {
     geocode = Geocoding(apiKey: widget.apiKey, language: widget.language);
-    _animationController =
-        AnimationController(vsync: this, duration: Duration(milliseconds: 500));
-    _containerHeight = Tween<double>(begin: 55, end: 364).animate(
+    _animationController = AnimationController(vsync: this, duration: Duration(milliseconds: 500));
+    _containerHeight = Tween<double>(begin: 60, end: 364).animate(
       CurvedAnimation(
         curve: Interval(0.0, 0.5, curve: Curves.easeInOut),
         parent: _animationController!,
@@ -143,7 +142,8 @@ class _SearchMapPlaceWidgetState extends State<SearchGooglePlacesWidget>
 
   @override
   Widget build(BuildContext context) => Container(
-        width: MediaQuery.of(context).size.width * 0.9,
+        width: context.width,
+        margin: widget.outerMarginOfSearchTextField,
         child: _searchContainer(
           child: _searchInput(context),
         ),
@@ -156,15 +156,14 @@ class _SearchMapPlaceWidgetState extends State<SearchGooglePlacesWidget>
     return AnimatedBuilder(
         animation: _animationController!,
         builder: (context, _) {
-          return Container(
+          return SizedBox(
             height: _containerHeight!.value,
-            decoration: _containerDecoration(),
+            //decoration: _containerDecoration(),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
                 Padding(
-                  padding:
-                      const EdgeInsets.only(left: 12.0, right: 12.0, top: 4),
+                  padding: const EdgeInsetsDirectional.only(start: 16.0, end: 16.0, top: 6, bottom: 4),
                   child: child,
                 ),
 
@@ -187,8 +186,7 @@ class _SearchMapPlaceWidgetState extends State<SearchGooglePlacesWidget>
                         shrinkWrap: true,
                         padding: EdgeInsets.zero,
                         children: <Widget>[
-                          for (var prediction in _placePredictionsData)
-                            _newPlaceOption(prediction),
+                          for (var prediction in _placePredictionsData) _newPlaceOption(prediction),
                         ],
                       ),
                     ),
@@ -217,12 +215,11 @@ class _SearchMapPlaceWidgetState extends State<SearchGooglePlacesWidget>
               ),
             ),
           ),
-          Container(width: 15),
+          SizedBox(width: 12),
           if (widget.hasClearButton!)
             GestureDetector(
               onTap: () {
-                if (_crossFadeState == CrossFadeState.showSecond)
-                  _textEditingController.clear();
+                if (_crossFadeState == CrossFadeState.showSecond) _textEditingController.clear();
               },
               // child: Icon(_inputIcon, color: this.widget.iconColor),
               child: AnimatedCrossFade(
@@ -232,8 +229,7 @@ class _SearchMapPlaceWidgetState extends State<SearchGooglePlacesWidget>
                 secondChild: Icon(Icons.clear, color: widget.iconColor),
               ),
             ),
-          if (!widget.hasClearButton!)
-            Icon(widget.icon, color: widget.iconColor)
+          if (!widget.hasClearButton!) Icon(widget.icon, color: widget.iconColor)
         ],
       ),
     );
@@ -247,9 +243,7 @@ class _SearchMapPlaceWidgetState extends State<SearchGooglePlacesWidget>
       onPressed: () => _selectPlace(prediction: prediction),
       child: ListTile(
         title: Text(
-          place!.length < 45
-              ? "$place"
-              : "${place.replaceRange(45, place.length, "")} ...",
+          place!.length < 45 ? "$place" : "${place.replaceRange(45, place.length, "")} ...",
           style: TextStyle(
             fontSize: MediaQuery.of(context).size.width * 0.04,
             color: widget.darkMode! ? Colors.grey[100] : Colors.grey[850],
@@ -276,9 +270,7 @@ class _SearchMapPlaceWidgetState extends State<SearchGooglePlacesWidget>
       horizontalTitleGap: 0,
       child: ListTile(
         title: Text(
-          place!.length < 45
-              ? "$place"
-              : "${place.replaceRange(45, place.length, "")} ...",
+          place!.length < 45 ? "$place" : "${place.replaceRange(45, place.length, "")} ...",
           style: TextStyle(
             fontSize: MediaQuery.of(context).size.width * 0.04,
             color: widget.darkMode! ? Colors.grey[100] : Colors.grey[850],
@@ -302,7 +294,8 @@ class _SearchMapPlaceWidgetState extends State<SearchGooglePlacesWidget>
     return InputDecoration(
       hintText: this.widget.placeholder,
       border: InputBorder.none,
-      contentPadding: EdgeInsets.symmetric(horizontal: 0.0, vertical: 0.0),
+      //isDense: true,
+      contentPadding: EdgeInsetsDirectional.symmetric(horizontal: 12.0, vertical: 8.0),
       hintStyle: TextStyle(
         color: widget.darkMode! ? Colors.grey[100] : Colors.grey[850],
       ),
@@ -312,10 +305,8 @@ class _SearchMapPlaceWidgetState extends State<SearchGooglePlacesWidget>
   BoxDecoration _containerDecoration() {
     return BoxDecoration(
       color: widget.darkMode! ? Colors.grey[800] : Colors.white,
-      borderRadius: BorderRadius.all(Radius.circular(6.0)),
-      boxShadow: [
-        BoxShadow(color: Colors.black12, blurRadius: 20, spreadRadius: 10)
-      ],
+      borderRadius: BorderRadius.all(Radius.circular(10.0)),
+      boxShadow: [BoxShadow(color: Colors.black12, blurRadius: 20, spreadRadius: 10)],
     );
   }
 
@@ -342,8 +333,7 @@ class _SearchMapPlaceWidgetState extends State<SearchGooglePlacesWidget>
 
       if (_currentInput == _tempInput) {
         //final predictions = await _makeRequest(_currentInput);
-        final List<GBSearchData> data =
-            await _searchLocationQuery(_currentInput);
+        final List<GBSearchData> data = await _searchLocationQuery(_currentInput);
         await _animationController!.animateTo(0.5);
         //_placePredictionsData
         setState(() {
@@ -365,11 +355,9 @@ class _SearchMapPlaceWidgetState extends State<SearchGooglePlacesWidget>
 
   /// API request function. Returns the Predictions
   Future<dynamic> _makeRequest(input) async {
-    String url =
-        "https://maps.googleapis.com/maps/api/place/autocomplete/json?input=$input&key=${widget.apiKey}&language=${widget.language}";
+    String url = "https://maps.googleapis.com/maps/api/place/autocomplete/json?input=$input&key=${widget.apiKey}&language=${widget.language}";
     if (widget.location != null && widget.radius != null) {
-      url +=
-          "&location=${widget.location!.latitude},${widget.location!.longitude}&radius=${widget.radius}";
+      url += "&location=${widget.location!.latitude},${widget.location!.longitude}&radius=${widget.radius}";
       if (widget.strictBounds!) {
         url += "&strictbounds";
       }
@@ -383,9 +371,7 @@ class _SearchMapPlaceWidgetState extends State<SearchGooglePlacesWidget>
 
     if (json["error_message"] != null) {
       var error = json["error_message"];
-      if (error == "This API project is not authorized to use this API.")
-        error +=
-            " Make sure the Places API is activated on your Google Cloud Platform";
+      if (error == "This API project is not authorized to use this API.") error += " Make sure the Places API is activated on your Google Cloud Platform";
       throw Exception(error);
     } else {
       final predictions = json["predictions"];
@@ -435,8 +421,7 @@ class _SearchMapPlaceWidgetState extends State<SearchGooglePlacesWidget>
 
   /// Closes the expanded search box with predictions
   void _closeSearch() async {
-    if (!_animationController!.isDismissed)
-      await _animationController!.animateTo(0.5);
+    if (!_animationController!.isDismissed) await _animationController!.animateTo(0.5);
     _fn.unfocus();
     setState(() {
       _placePredictions = [];
