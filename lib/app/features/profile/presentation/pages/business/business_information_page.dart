@@ -7,6 +7,7 @@ import 'package:go_router/go_router.dart';
 import 'package:homemakers_merchant/app/features/address/domain/entities/address_model.dart';
 import 'package:homemakers_merchant/app/features/authentication/presentation/manager/phone_number_verification_bloc.dart';
 import 'package:homemakers_merchant/app/features/authentication/presentation/pages/phone_number_verification_page.dart';
+import 'package:homemakers_merchant/app/features/profile/domain/entities/business/business_profile_entity.dart';
 import 'package:homemakers_merchant/app/features/profile/domain/entities/user_entity.dart';
 import 'package:homemakers_merchant/base/app_base.dart';
 import 'package:homemakers_merchant/bootup/injection_container.dart';
@@ -574,7 +575,7 @@ class _BusinessInformationPageState extends State<BusinessInformationPage> with 
                                       if (!mounted) {
                                         return;
                                       }
-                                      var businessProfile = serviceLocator<BusinessProfile>().copyWith(
+                                      var businessProfile = serviceLocator<BusinessProfileEntity>().copyWith(
                                         userName: _usernameController.value.text,
                                         businessAddress: AddressModel(
                                           address: AddressBean(area: _addressController.value.text),

@@ -1,0 +1,305 @@
+import 'package:animator/animator.dart';
+import 'package:flex_color_scheme/flex_color_scheme.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:go_router/go_router.dart';
+import 'package:homemakers_merchant/app/features/permission/presentation/bloc/permission_bloc.dart';
+import 'package:homemakers_merchant/app/features/profile/data/local/data_sources/business_type_list_data.dart';
+import 'package:homemakers_merchant/app/features/profile/domain/entities/business/business_type_entity.dart';
+import 'package:homemakers_merchant/base/widget_view.dart';
+import 'package:homemakers_merchant/bootup/injection_container.dart';
+import 'package:homemakers_merchant/config/translation/extension/text_extension.dart';
+import 'package:homemakers_merchant/config/translation/language_controller.dart';
+import 'package:homemakers_merchant/config/translation/widgets/language_selection_widget.dart';
+import 'package:homemakers_merchant/core/constants/global_app_constants.dart';
+import 'package:homemakers_merchant/core/extensions/app_extension.dart';
+import 'package:homemakers_merchant/shared/widgets/app/app_logo.dart';
+import 'package:homemakers_merchant/shared/widgets/app/page_body.dart';
+import 'package:homemakers_merchant/shared/widgets/universal/animate_do/animate_do.dart';
+import 'package:homemakers_merchant/shared/widgets/universal/animated_gap/gap.dart';
+import 'package:homemakers_merchant/shared/widgets/universal/carousel_animation/carousel_animations.dart';
+import 'package:homemakers_merchant/shared/widgets/universal/constrained_scrollable_views/constrained_scrollable_views.dart';
+import 'package:homemakers_merchant/shared/router/app_pages.dart';
+import 'package:homemakers_merchant/shared/widgets/app/page_body.dart';
+import 'package:go_router/go_router.dart';
+import 'package:homemakers_merchant/shared/widgets/universal/infinity_scroll/infinite_carousel.dart';
+import 'package:homemakers_merchant/utils/app_scroll_behavior.dart';
+
+class ConfirmBusinessTypePage extends StatefulWidget {
+  const ConfirmBusinessTypePage({super.key});
+
+  @override
+  _ConfirmBusinessTypePageController createState() => _ConfirmBusinessTypePageController();
+}
+
+class _ConfirmBusinessTypePageController extends State<ConfirmBusinessTypePage> {
+  List<BusinessTypeEntity> _businessTypesList = [];
+  late SwiperController swiperController;
+
+  // Wheater to loop through elements
+  bool _loop = false;
+
+  // Scroll controller for carousel
+  late InfiniteScrollController _controller;
+
+  // Maintain current index of carousel
+  int _selectedIndex = 0;
+
+  // Width of each item
+  double? _itemExtent;
+
+  // Get screen width of viewport.
+  double get screenWidth => context.width;
+  bool _center = true;
+  double _anchor = 0.0;
+  double _velocityFactor = 0.5;
+
+  @override
+  void initState() {
+    super.initState();
+    _businessTypesList = [];
+    _businessTypesList = List<BusinessTypeEntity>.from(businessTypeList.toList());
+    swiperController = SwiperController();
+    _controller = InfiniteScrollController(initialItem: _selectedIndex);
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _itemExtent = screenWidth - 200;
+  }
+
+  @override
+  void dispose() {
+    swiperController.dispose();
+    super.dispose();
+    _controller.dispose();
+  }
+
+  void onIndexChanged(int index) {
+    if (_selectedIndex != index) {
+      setState(() {
+        _selectedIndex = index;
+      });
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) => _ConfirmBusinessTypePageView(this);
+}
+
+class _ConfirmBusinessTypePageView extends WidgetView<ConfirmBusinessTypePage, _ConfirmBusinessTypePageController> {
+  const _ConfirmBusinessTypePageView(super.state);
+
+  @override
+  Widget build(BuildContext context) {
+    final MediaQueryData media = MediaQuery.of(context);
+    final double margins = GlobalApp.responsiveInsets(media.size.width);
+    final double topPadding = margins; //media.padding.top + kToolbarHeight + margins; //margins * 1.5;
+    final double bottomPadding = media.padding.bottom + margins;
+    final double width = media.size.width;
+    final ThemeData theme = Theme.of(context);
+    final ScrollController scrollController = ScrollController();
+    return AnnotatedRegion<SystemUiOverlayStyle>(
+      value: FlexColorScheme.themedSystemNavigationBar(
+        context,
+        useDivider: false,
+        opacity: 0.60,
+        noAppBar: true,
+      ),
+      child: Directionality(
+        textDirection: serviceLocator<LanguageController>().targetTextDirection,
+        child: PlatformScaffold(
+          material: (context, platform) {
+            return MaterialScaffoldData(
+              resizeToAvoidBottomInset: false,
+            );
+          },
+          cupertino: (context, platform) {
+            return CupertinoPageScaffoldData(
+              resizeToAvoidBottomInset: false,
+            );
+          },
+          appBar: PlatformAppBar(
+            trailingActions: const [
+              Padding(
+                padding: EdgeInsetsDirectional.symmetric(horizontal: 14),
+                child: LanguageSelectionWidget(),
+              ),
+            ],
+          ),
+          body: SlideInLeft(
+            key: const Key('select-business-type-page-zoomin-widget'),
+            delay: const Duration(milliseconds: 500),
+            child: PageBody(
+              controller: scrollController,
+              constraints: BoxConstraints(
+                minWidth: double.infinity,
+                minHeight: media.size.height,
+              ),
+              padding: EdgeInsetsDirectional.only(
+                top: topPadding,
+                bottom: bottomPadding,
+                start: margins * 2.5,
+                end: margins * 2.5,
+              ),
+              child: BlocBuilder<PermissionBloc, PermissionState>(
+                bloc: context.read<PermissionBloc>(),
+                buildWhen: (previous, current) => previous != current,
+                builder: (context, permissionState) {
+                  return Stack(
+                    children: [
+                      const Align(
+                        alignment: AlignmentDirectional.topStart,
+                        child: AppLogo(),
+                      ),
+                      Container(
+                        constraints: BoxConstraints(
+                          minWidth: double.infinity,
+                          minHeight: media.size.height,
+                        ),
+                        child: ListView(
+                          controller: scrollController,
+                          children: [
+                            Container(
+                              margin: EdgeInsetsDirectional.only(top: media.padding.top + kToolbarHeight + margins),
+                              height: context.width / 2,
+                              width: context.width,
+                              child: Swiper(
+                                itemCount: state._businessTypesList.length,
+                                controller: state.swiperController,
+                                //pagination: const SwiperPagination(),
+                                itemBuilder: (context, index) {
+                                  return Center(
+                                    child: AnimateWidget(
+                                      duration: const Duration(seconds: 1),
+                                      curve: Curves.fastOutSlowIn,
+                                      builder: (BuildContext context, Animate animate) {
+                                        return ScaleTransition(
+                                          scale: animate.curvedAnimation,
+                                          alignment: FractionalOffset.center,
+                                          child: SizedBox(
+                                            height: context.height / 5,
+                                            width: context.height / 5,
+                                            child: Card(
+                                              key: ValueKey(index),
+                                              color: Color.fromRGBO(240, 237, 237, 1.0),
+                                              shape: RoundedRectangleBorder(
+                                                borderRadius: BorderRadiusDirectional.circular(15),
+                                                /*side: BorderSide(
+                                                  color: Colors.white,
+                                                  width: 2,
+                                                ),*/
+                                              ),
+                                              child: Column(
+                                                mainAxisAlignment: MainAxisAlignment.center,
+                                                crossAxisAlignment: CrossAxisAlignment.center,
+                                                mainAxisSize: MainAxisSize.min,
+                                                children: [
+                                                  state._businessTypesList[index].localAssetWidget ??
+                                                      SvgPicture.asset(state._businessTypesList[index].localAssetPath),
+                                                  const AnimatedGap(16, duration: Duration(milliseconds: 500)),
+                                                  Wrap(
+                                                    children: [
+                                                      Text(
+                                                        '${state._businessTypesList[index].businessTypeName}',
+                                                        style: context.titleMedium,
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                        );
+                                      },
+                                    ),
+                                  );
+                                },
+                                autoplay: false,
+                                viewportFraction: 0.6,
+                                scale: 0.8,
+                                loop: false,
+                                fade: 0.5,
+                                curve: Curves.fastOutSlowIn,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      PositionedDirectional(
+                        bottom: kBottomNavigationBarHeight - bottomPadding,
+                        start: 0,
+                        end: 0,
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Expanded(
+                              flex: 1,
+                              child: ElevatedButton(
+                                onPressed: () {
+                                  if (context.canPop()) {
+                                    context.pop();
+                                    return;
+                                  }
+                                  return;
+                                },
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: Colors.white,
+                                  //minimumSize: Size(100, 40),
+                                  side: const BorderSide(
+                                    color: Color.fromRGBO(
+                                      165,
+                                      166,
+                                      168,
+                                      1.0,
+                                    ),
+                                  ),
+                                ),
+                                child: Text(
+                                  'Prev',
+                                  textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                  style: const TextStyle(
+                                    color: Color.fromRGBO(127, 129, 132, 1.0),
+                                  ),
+                                ).translate(),
+                              ),
+                            ),
+                            const SizedBox(
+                              width: 24,
+                            ),
+                            Expanded(
+                              flex: 2,
+                              child: ElevatedButton(
+                                onPressed: () {},
+                                style: ElevatedButton.styleFrom(
+                                  //minimumSize: Size(180, 40),
+                                  disabledBackgroundColor: Color.fromRGBO(255, 219, 208, 1),
+                                  disabledForegroundColor: Colors.white,
+                                ),
+                                child: Text(
+                                  'Next',
+                                  textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                ).translate(),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  );
+                },
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}

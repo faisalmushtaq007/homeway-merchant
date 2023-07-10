@@ -1,36 +1,54 @@
 import 'package:homemakers_merchant/app/features/address/domain/entities/address_model.dart';
+import 'package:homemakers_merchant/app/features/profile/domain/entities/business/business_profile_entity.dart';
+import 'package:homemakers_merchant/app/features/profile/domain/entities/business/business_type_entity.dart';
 import 'package:homemakers_merchant/app/features/store/domain/entities/store_entity.dart';
 
 class AppUserEntity {
+  const AppUserEntity({
+    this.id = -1,
+    this.userID,
+    this.phoneNumber,
+    this.businessProfile,
+    this.stores = const [],
+    this.token = '',
+    this.tokenCreationDateTime,
+    this.hasUserAuthenticated = false,
+    this.businessTypeEntity,
+  });
+
+  factory AppUserEntity.fromMap(Map<String, dynamic> map) {
+    return AppUserEntity(
+      id: map['id'] as int,
+      userID: map['userID'] as String,
+      phoneNumber: map['phoneNumber'] as String,
+      businessProfile: map['businessProfile'] as BusinessProfileEntity,
+      stores: map['stores'] as List<StoreEntity>,
+      token: map['token'] as String,
+      tokenCreationDateTime: map['tokenCreationDateTime'] as DateTime,
+      hasUserAuthenticated: map['hasUserAuthenticated'] as bool,
+      businessTypeEntity: map['businessTypeEntity'] as BusinessTypeEntity,
+    );
+  }
   final int id;
   final String? userID;
   final String? phoneNumber;
-  final BusinessProfile? businessProfile;
+  final BusinessProfileEntity? businessProfile;
   final List<StoreEntity> stores;
   final String token;
   final DateTime? tokenCreationDateTime;
   final bool hasUserAuthenticated;
-
-  const AppUserEntity({
-    this.userID,
-    this.id=-1,
-    this.phoneNumber,
-    this.businessProfile,
-    this.stores = const [],
-    this.token='',
-    this.tokenCreationDateTime,
-    this.hasUserAuthenticated=false,
-  });
+  final BusinessTypeEntity? businessTypeEntity;
 
   AppUserEntity copyWith({
     int? id,
     String? userID,
     String? phoneNumber,
-    BusinessProfile? businessProfile,
+    BusinessProfileEntity? businessProfile,
     List<StoreEntity>? stores,
     String? token,
     DateTime? tokenCreationDateTime,
     bool? hasUserAuthenticated,
+    BusinessTypeEntity? businessTypeEntity,
   }) {
     return AppUserEntity(
       id: id ?? this.id,
@@ -39,9 +57,9 @@ class AppUserEntity {
       businessProfile: businessProfile ?? this.businessProfile,
       stores: stores ?? this.stores,
       token: token ?? this.token,
-      tokenCreationDateTime:
-          tokenCreationDateTime ?? this.tokenCreationDateTime,
-        hasUserAuthenticated:hasUserAuthenticated??this.hasUserAuthenticated,
+      tokenCreationDateTime: tokenCreationDateTime ?? this.tokenCreationDateTime,
+      hasUserAuthenticated: hasUserAuthenticated ?? this.hasUserAuthenticated,
+      businessTypeEntity: businessTypeEntity ?? this.businessTypeEntity,
     );
   }
 
@@ -54,78 +72,8 @@ class AppUserEntity {
       'stores': this.stores,
       'token': this.token,
       'tokenCreationDateTime': this.tokenCreationDateTime,
-      'hasUserAuthenticated':this.hasUserAuthenticated,
+      'hasUserAuthenticated': this.hasUserAuthenticated,
+      'businessTypeEntity': this.businessTypeEntity,
     };
-  }
-
-  factory AppUserEntity.fromMap(Map<String, dynamic> map) {
-    return AppUserEntity(
-      id: map['id'] as int,
-      userID: map['userID'] as String,
-      phoneNumber: map['phoneNumber'] as String,
-      businessProfile: map['businessProfile'] as BusinessProfile,
-      stores: map['stores'] as List<StoreEntity>,
-      token: map['token'] as String,
-      tokenCreationDateTime: map['tokenCreationDateTime'] as DateTime,
-        hasUserAuthenticated:map['hasUserAuthenticated'] as bool,
-    );
-  }
-}
-
-class BusinessProfile {
-  final int id;
-  final String? userName;
-  final String? businessPhoneNumber;
-  final AddressModel? businessAddress;
-  final String? businessEmailAddress;
-  final String? businessName;
-
-  const BusinessProfile({
-    this.userName,
-    this.id=-1,
-    this.businessPhoneNumber,
-    this.businessAddress,
-    this.businessEmailAddress,
-    this.businessName,
-  });
-
-  Map<String, dynamic> toMap() {
-    return {
-      'id': this.id,
-      'userName': this.userName,
-      'businessPhoneNumber': this.businessPhoneNumber,
-      'businessAddress': this.businessAddress,
-      'businessEmailAddress': this.businessEmailAddress,
-      'businessName': this.businessName,
-    };
-  }
-
-  factory BusinessProfile.fromMap(Map<String, dynamic> map) {
-    return BusinessProfile(
-      id: map['id'] as int,
-      userName: map['userName'] as String,
-      businessPhoneNumber: map['businessPhoneNumber'] as String,
-      businessAddress: map['businessAddress'] as AddressModel,
-      businessEmailAddress: map['businessEmailAddress'] as String,
-      businessName: map['businessName'] as String,
-    );
-  }
-
-  BusinessProfile copyWith({
-    int? id,
-    String? userName,
-    String? businessPhoneNumber,
-    AddressModel? businessAddress,
-    String? businessEmailAddress,
-    String? businessName,
-  }) {
-    return BusinessProfile(
-      id: id ?? this.id,
-      userName: userName ?? this.userName,
-      businessPhoneNumber: businessPhoneNumber ?? this.businessPhoneNumber,
-      businessAddress: businessAddress ?? this.businessAddress,
-      businessEmailAddress: businessEmailAddress ?? this.businessEmailAddress,
-      businessName: businessName ?? this.businessName,
-    );
   }
 }

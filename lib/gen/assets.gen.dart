@@ -10,6 +10,7 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter/services.dart';
+import 'package:lottie/lottie.dart';
 
 class $GoogleFontsGen {
   const $GoogleFontsGen();
@@ -116,9 +117,21 @@ class $AssetsImageGen {
   AssetGenImage get documentUpload =>
       const AssetGenImage('assets/image/document_upload.jpeg');
 
+  /// File path: assets/image/homeway_icon.png
+  AssetGenImage get homewayIcon =>
+      const AssetGenImage('assets/image/homeway_icon.png');
+
   /// File path: assets/image/homeway_logo.png
   AssetGenImage get homewayLogo =>
       const AssetGenImage('assets/image/homeway_logo.png');
+
+  /// File path: assets/image/homeway_logo_update.png
+  AssetGenImage get homewayLogoUpdate =>
+      const AssetGenImage('assets/image/homeway_logo_update.png');
+
+  /// File path: assets/image/ic_launcher.png
+  AssetGenImage get icLauncher =>
+      const AssetGenImage('assets/image/ic_launcher.png');
 
   /// File path: assets/image/merchant_onboarding_01.png
   AssetGenImage get merchantOnboarding01 =>
@@ -149,7 +162,10 @@ class $AssetsImageGen {
         appLogoDark,
         appLogoLight,
         documentUpload,
+        homewayIcon,
         homewayLogo,
+        homewayLogoUpdate,
+        icLauncher,
         merchantOnboarding01,
         merchantOnboarding02,
         merchantOnboarding03,
@@ -157,6 +173,17 @@ class $AssetsImageGen {
         splash,
         splashBackground
       ];
+}
+
+class $AssetsLottieGen {
+  const $AssetsLottieGen();
+
+  /// File path: assets/lottie/success_check_mark.json
+  LottieGenImage get successCheckMark =>
+      const LottieGenImage('assets/lottie/success_check_mark.json');
+
+  /// List of all assets
+  List<LottieGenImage> get values => [successCheckMark];
 }
 
 class $AssetsSvgGen {
@@ -171,12 +198,21 @@ class $AssetsSvgGen {
 
   $AssetsSvgFlagsGen get flags => const $AssetsSvgFlagsGen();
 
+  /// File path: assets/svg/home_chef_type.svg
+  SvgGenImage get homeChefType =>
+      const SvgGenImage('assets/svg/home_chef_type.svg');
+
+  /// File path: assets/svg/restaurant_type.svg
+  SvgGenImage get restaurantType =>
+      const SvgGenImage('assets/svg/restaurant_type.svg');
+
   /// File path: assets/svg/splashbackground.svg
   SvgGenImage get splashbackground =>
       const SvgGenImage('assets/svg/splashbackground.svg');
 
   /// List of all assets
-  List<SvgGenImage> get values => [applogo, applogodark, splashbackground];
+  List<SvgGenImage> get values =>
+      [applogo, applogodark, homeChefType, restaurantType, splashbackground];
 }
 
 class $AssetsSvgFlagsGen {
@@ -199,6 +235,7 @@ class Assets {
   Assets._();
 
   static const $AssetsImageGen image = $AssetsImageGen();
+  static const $AssetsLottieGen lottie = $AssetsLottieGen();
   static const $AssetsSvgGen svg = $AssetsSvgGen();
   static const $GoogleFontsGen googleFonts = $GoogleFontsGen();
 }
@@ -322,6 +359,65 @@ class SvgGenImage {
       colorBlendMode: colorBlendMode,
       clipBehavior: clipBehavior,
       cacheColorFilter: cacheColorFilter,
+    );
+  }
+
+  String get path => _assetName;
+
+  String get keyName => _assetName;
+}
+
+class LottieGenImage {
+  const LottieGenImage(this._assetName);
+
+  final String _assetName;
+
+  LottieBuilder lottie({
+    Animation<double>? controller,
+    bool? animate,
+    FrameRate? frameRate,
+    bool? repeat,
+    bool? reverse,
+    LottieDelegates? delegates,
+    LottieOptions? options,
+    void Function(LottieComposition)? onLoaded,
+    LottieImageProviderFactory? imageProviderFactory,
+    Key? key,
+    AssetBundle? bundle,
+    Widget Function(BuildContext, Widget, LottieComposition?)? frameBuilder,
+    ImageErrorWidgetBuilder? errorBuilder,
+    double? width,
+    double? height,
+    BoxFit? fit,
+    AlignmentGeometry? alignment,
+    String? package,
+    bool? addRepaintBoundary,
+    FilterQuality? filterQuality,
+    void Function(String)? onWarning,
+  }) {
+    return Lottie.asset(
+      _assetName,
+      controller: controller,
+      animate: animate,
+      frameRate: frameRate,
+      repeat: repeat,
+      reverse: reverse,
+      delegates: delegates,
+      options: options,
+      onLoaded: onLoaded,
+      imageProviderFactory: imageProviderFactory,
+      key: key,
+      bundle: bundle,
+      frameBuilder: frameBuilder,
+      errorBuilder: errorBuilder,
+      width: width,
+      height: height,
+      fit: fit,
+      alignment: alignment,
+      package: package,
+      addRepaintBoundary: addRepaintBoundary,
+      filterQuality: filterQuality,
+      onWarning: onWarning,
     );
   }
 

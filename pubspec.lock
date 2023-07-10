@@ -74,6 +74,15 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.0.7"
+  animator:
+    dependency: "direct main"
+    description:
+      path: "."
+      ref: master
+      resolved-ref: "7882d4ad2822069899b401065631a95b881e927e"
+      url: "https://github.com/prasant10050/animator-1.git"
+    source: git
+    version: "3.3.0"
   app_links:
     dependency: "direct main"
     description:
@@ -775,6 +784,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.3.0"
+  flutter_carousel_widget:
+    dependency: "direct main"
+    description:
+      name: flutter_carousel_widget
+      sha256: "4abd72747196e0c070594f27870360a41d693dfebc275d9ed27ff738c3271838"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.0.4"
   flutter_displaymode:
     dependency: "direct main"
     description:
@@ -1117,10 +1134,10 @@ packages:
     dependency: "direct main"
     description:
       name: go_router
-      sha256: "1531542666c2d052c44bbf6e2b48011bf3771da0404b94c60eabec1228a62906"
+      sha256: b33a88c67816312597e5e0f5906c5139a0b9bd9bb137346e872c788da7af8ea0
       url: "https://pub.dev"
     source: hosted
-    version: "9.0.0"
+    version: "9.0.3"
   go_router_builder:
     dependency: "direct dev"
     description:
@@ -1733,6 +1750,14 @@ packages:
       url: "https://github.com/prasant10050/multi_image_crop.git"
     source: git
     version: "0.0.3"
+  navigation_builder:
+    dependency: transitive
+    description:
+      name: navigation_builder
+      sha256: "95e25150191d9cd4e4b86504f33cd9e786d1e6732edb2e3e635bbedc5ef0dea7"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.0.3"
   nested:
     dependency: transitive
     description:
@@ -2295,6 +2320,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.11.0"
+  states_rebuilder:
+    dependency: transitive
+    description:
+      name: states_rebuilder
+      sha256: bf1a5ab5c543acdefce35e60f482eb7ab592339484fe3266d147ee597f18dc92
+      url: "https://pub.dev"
+    source: hosted
+    version: "6.3.0"
   stream_channel:
     dependency: transitive
     description:

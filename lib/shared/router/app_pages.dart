@@ -20,9 +20,10 @@ import 'package:homemakers_merchant/app/features/onboarding/presentation/pages/o
 import 'package:homemakers_merchant/app/features/onboarding/presentation/pages/splash_page.dart';
 import 'package:homemakers_merchant/app/features/profile/common/document_type_enum.dart';
 import 'package:homemakers_merchant/app/features/profile/presentation/pages/bank/bank_information_page.dart';
-import 'package:homemakers_merchant/app/features/profile/presentation/pages/business_information_page.dart';
+import 'package:homemakers_merchant/app/features/profile/presentation/pages/business/business_information_page.dart';
 import 'package:homemakers_merchant/app/features/profile/presentation/pages/document/business_document_page.dart';
 import 'package:homemakers_merchant/app/features/profile/presentation/pages/document/upload_document_page.dart';
+import 'package:homemakers_merchant/app/features/profile/presentation/pages/business/select_business_type_page.dart';
 import 'package:homemakers_merchant/app/features/store/domain/entities/store_entity.dart';
 import 'package:homemakers_merchant/app/features/store/presentation/pages/all_stores_page.dart';
 import 'package:homemakers_merchant/app/features/store/presentation/pages/new_store_greeting_page.dart';
@@ -36,7 +37,7 @@ class AppRouter {
 
   AppRouter._();
 
-  static const String INITIAL = Routes.PICKUP_LOCATION_FROM_MAP_PAGE;
+  static const String INITIAL = Routes.CONFIRM_BUSINESS_TYPE_PAGE;
 
   static final GoRouter _router = GoRouter(
     debugLogDiagnostics: true,
@@ -123,6 +124,10 @@ class AppRouter {
       GoRoute(
         path: Routes.PICKUP_LOCATION_FROM_MAP_PAGE,
         builder: (context, state) => PickupLocationFromMapPage(addressModel: AddressModel() ?? state.extra as AddressModel),
+      ),
+      GoRoute(
+        path: Routes.CONFIRM_BUSINESS_TYPE_PAGE,
+        builder: (context, state) => ConfirmBusinessTypePage(),
       ),
     ],
   );

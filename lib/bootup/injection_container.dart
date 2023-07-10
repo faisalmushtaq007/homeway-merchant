@@ -4,6 +4,8 @@ import 'package:homemakers_merchant/app/features/authentication/presentation/man
 
 import 'package:homemakers_merchant/app/features/permission/presentation/bloc/permission_bloc.dart';
 import 'package:homemakers_merchant/app/features/profile/data/local/data_sources/local_usermodel_service.dart';
+import 'package:homemakers_merchant/app/features/profile/domain/entities/business/business_profile_entity.dart';
+import 'package:homemakers_merchant/app/features/profile/domain/entities/business/business_type_entity.dart';
 import 'package:homemakers_merchant/app/features/profile/domain/entities/user_entity.dart';
 import 'package:homemakers_merchant/app/features/profile/domain/entities/user_model.dart';
 import 'package:homemakers_merchant/app/features/profile/presentation/manager/bank/bank_information_bloc.dart';
@@ -154,7 +156,7 @@ void _setUpService() {
       ),
     );
 
-  serviceLocator.registerSingleton<BusinessProfile>(BusinessProfile());
+  serviceLocator.registerSingleton<BusinessProfileEntity>(BusinessProfileEntity());
   serviceLocator.registerSingleton<List<StoreEntity>>([]);
   serviceLocator.registerSingleton<AppUserEntity>(AppUserEntity(
     businessProfile: serviceLocator(),
