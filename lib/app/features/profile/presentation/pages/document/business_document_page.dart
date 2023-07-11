@@ -10,7 +10,9 @@ import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:go_router/go_router.dart';
 import 'package:homemakers_merchant/app/features/permission/presentation/bloc/permission_bloc.dart';
 import 'package:homemakers_merchant/app/features/profile/common/document_type_enum.dart';
+import 'package:homemakers_merchant/app/features/profile/common/profile_status_enum.dart';
 import 'package:homemakers_merchant/app/features/profile/domain/entities/document/business_document_uploaded_entity.dart';
+import 'package:homemakers_merchant/app/features/profile/domain/entities/user_entity.dart';
 import 'package:homemakers_merchant/app/features/profile/presentation/manager/document/business_document_bloc.dart';
 import 'package:homemakers_merchant/app/features/profile/presentation/widgets/document/uploaded_document_child_widget.dart';
 import 'package:homemakers_merchant/bootup/injection_container.dart';
@@ -417,6 +419,7 @@ class _BusinessDocumentPageState extends State<BusinessDocumentPage> with Single
                                                           () {},
                                                         );
                                                         if (!mounted) return;
+                                                        serviceLocator<AppUserEntity>().currentProfileStatus = CurrentProfileStatus.businessDocumentUploaded;
                                                         context.read<BusinessDocumentBloc>().add(
                                                               AddNewDocument(
                                                                 newIndexPosition: currentIndex,

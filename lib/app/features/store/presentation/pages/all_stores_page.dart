@@ -45,7 +45,7 @@ class _AllStoresPageState extends State<AllStoresPage> {
   List<StoreEntity> storeEntities = [];
   late final ScrollController listViewBuilderScrollController;
   ResultState<StoreEntity> resultState = const ResultState.empty();
-
+  WidgetState<StoreEntity> widgetState = WidgetState<StoreEntity>.none();
   @override
   void initState() {
     super.initState();
@@ -53,6 +53,8 @@ class _AllStoresPageState extends State<AllStoresPage> {
     listViewBuilderScrollController = ScrollController();
     storeEntities = [];
     storeEntities.clear();
+
+    //context.read<StoreBloc>().add(GetAllStore());
     initStoreList();
   }
 
@@ -74,17 +76,6 @@ class _AllStoresPageState extends State<AllStoresPage> {
     final double width = media.size.width;
     final ThemeData theme = Theme.of(context);
 
-    WidgetState<StoreEntity> widgetState = WidgetState<StoreEntity>.empty(
-      context: context,
-      child: Center(
-        key: Key('get-all-store-empty-widget'),
-        child: Text(
-          'No store available or added by you',
-          style: context.labelLarge,
-          textDirection: serviceLocator<LanguageController>().targetTextDirection,
-        ).translate(),
-      ),
-    );
     return Directionality(
       textDirection: serviceLocator<LanguageController>().targetTextDirection,
       child: AnnotatedRegion<SystemUiOverlayStyle>(
@@ -96,6 +87,7 @@ class _AllStoresPageState extends State<AllStoresPage> {
         ),
         child: PlatformScaffold(
           appBar: PlatformAppBar(
+            automaticallyImplyLeading: true,
             title: Text(
               'All stores',
               textDirection: serviceLocator<LanguageController>().targetTextDirection,
@@ -135,57 +127,67 @@ class _AllStoresPageState extends State<AllStoresPage> {
                     ),
                     child: Stack(
                       children: [
-                        ScrollableColumn(
-                          controller: scrollController,
-                          mainAxisSize: storeEntities.isEmpty ? MainAxisSize.min : MainAxisSize.max,
-                          mainAxisAlignment: storeEntities.isEmpty ? MainAxisAlignment.center : MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                          flexible: true,
-                          physics: const ClampingScrollPhysics(),
-                          children: [
-                            const AnimatedGap(10, duration: Duration(milliseconds: 500)),
-                            Flexible(
-                              flex: 5,
-                              child: BlocBuilder<StoreBloc, StoreState>(
-                                key: const Key('get-all-store-blocbuilder-widget'),
-                                bloc: context.watch<StoreBloc>(),
-                                builder: (context, state) {
-                                  switch (state) {
-                                    case GetAllStoreState():
-                                      {
-                                        storeEntities = List<StoreEntity>.from(state.storeEntities.toList());
-                                        widgetState = WidgetState<StoreEntity>.allData(
-                                          context: context,
-                                        );
-                                      }
-                                    //case GetEmptyStoreState(:final error):
-                                    case GetEmptyStoreState():
-                                      {
-                                        print(state.message);
-                                        storeEntities = [];
-                                        storeEntities.clear();
-                                      }
-                                    case StoreLoadingState():
-                                      {
-                                        widgetState = WidgetState<StoreEntity>.loading(
-                                          context: context,
-                                          isLoading: state.isLoading,
-                                          message: state.message,
-                                        );
-                                      }
-                                    case SaveStoreState():
-                                      {
-                                        storeEntities.add(state.storeEntity);
-                                        widgetState = WidgetState<StoreEntity>.allData(
-                                          context: context,
-                                        );
-                                      }
-                                    case _:
-                                      print('default');
-                                  }
-                                  return widgetState.maybeWhen(
-                                    empty: (ctx, child, message, data) => child!,
+                        BlocBuilder<StoreBloc, StoreState>(
+                          key: const Key('get-all-store-blocbuilder-widget'),
+                          bloc: context.watch<StoreBloc>(),
+                          builder: (context, state) {
+                            switch (state) {
+                              case GetAllStoreState():
+                                {
+                                  storeEntities = List<StoreEntity>.from(state.storeEntities.toList());
+                                  widgetState = WidgetState<StoreEntity>.allData(
+                                    context: context,
+                                  );
+                                }
+                              //case GetEmptyStoreState(:final error):
+                              case GetEmptyStoreState():
+                                {
+                                  print(state.message);
+                                  storeEntities = [];
+                                  storeEntities.clear();
+                                  widgetState = WidgetState<StoreEntity>.empty(
+                                    context: context,
+                                    message: state.message,
+                                  );
+                                }
+                              case StoreLoadingState():
+                                {
+                                  widgetState = WidgetState<StoreEntity>.loading(
+                                    context: context,
+                                    isLoading: state.isLoading,
+                                    message: state.message,
+                                  );
+                                }
+                              case SaveStoreState():
+                                {
+                                  storeEntities.add(state.storeEntity);
+                                  widgetState = WidgetState<StoreEntity>.allData(
+                                    context: context,
+                                  );
+                                }
+                              case _:
+                                print('default');
+                            }
+                            return ScrollableColumn(
+                              controller: scrollController,
+                              mainAxisSize: MainAxisSize.min,
+                              mainAxisAlignment: storeEntities.isEmpty ? MainAxisAlignment.center : MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.stretch,
+                              textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                              flexible: true,
+                              physics: const ClampingScrollPhysics(),
+                              children: [
+                                Flexible(
+                                  flex: 1,
+                                  child: widgetState.maybeWhen(
+                                    empty: (context, child, message, data) => Center(
+                                      key: Key('get-all-store-empty-widget'),
+                                      child: Text(
+                                        'No store available or added by you',
+                                        style: context.labelLarge,
+                                        textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                      ).translate(),
+                                    ),
                                     loading: (context, child, message, isLoading) {
                                       return const Center(
                                         key: Key('get-all-store-center-widget'),
@@ -196,7 +198,7 @@ class _AllStoresPageState extends State<AllStoresPage> {
                                         ),
                                       );
                                     },
-                                    allData: (ctx, child, message, data) {
+                                    allData: (context, child, message, data) {
                                       return ListView.builder(
                                         shrinkWrap: true,
                                         key: const Key('get-all-store-listviewbuilder-widget'),
@@ -210,26 +212,23 @@ class _AllStoresPageState extends State<AllStoresPage> {
                                         },
                                       );
                                     },
-                                    orElse: () {
-                                      return Column(
-                                        mainAxisAlignment: MainAxisAlignment.center,
-                                        crossAxisAlignment: CrossAxisAlignment.center,
-                                        children: [
-                                          Center(
-                                            child: Text(
-                                              'No store available or added by you',
-                                              style: context.labelLarge,
-                                              textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                                            ).translate(),
-                                          ),
-                                        ],
+                                    none: () {
+                                      return Center(
+                                        child: Text(
+                                          'No store available or added by you',
+                                          style: context.labelLarge,
+                                          textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                        ).translate(),
                                       );
                                     },
-                                  );
-                                },
-                              ),
-                            ),
-                          ],
+                                    orElse: () {
+                                      return SizedBox();
+                                    },
+                                  ),
+                                ),
+                              ],
+                            );
+                          },
                         ),
                         PositionedDirectional(
                           bottom: kBottomNavigationBarHeight - 10,

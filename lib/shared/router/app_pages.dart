@@ -37,7 +37,7 @@ class AppRouter {
 
   AppRouter._();
 
-  static const String INITIAL = Routes.CONFIRM_BUSINESS_TYPE_PAGE;
+  static const String INITIAL = Routes.ALL_STORES_PAGE;
 
   static final GoRouter _router = GoRouter(
     debugLogDiagnostics: true,

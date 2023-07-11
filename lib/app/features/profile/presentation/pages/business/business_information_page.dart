@@ -7,6 +7,7 @@ import 'package:go_router/go_router.dart';
 import 'package:homemakers_merchant/app/features/address/domain/entities/address_model.dart';
 import 'package:homemakers_merchant/app/features/authentication/presentation/manager/phone_number_verification_bloc.dart';
 import 'package:homemakers_merchant/app/features/authentication/presentation/pages/phone_number_verification_page.dart';
+import 'package:homemakers_merchant/app/features/profile/common/profile_status_enum.dart';
 import 'package:homemakers_merchant/app/features/profile/domain/entities/business/business_profile_entity.dart';
 import 'package:homemakers_merchant/app/features/profile/domain/entities/user_entity.dart';
 import 'package:homemakers_merchant/base/app_base.dart';
@@ -558,18 +559,6 @@ class _BusinessInformationPageState extends State<BusinessInformationPage> with 
                                 child: ElevatedButton(
                                   onPressed: () async {
                                     if (_createBusinessProfileFormKey.currentState!.validate()) {
-                                      // Registration logic here
-                                      final username = _usernameController.text;
-                                      final email = _emailController.text;
-                                      final phone = userEnteredPhoneNumber;
-                                      final address = _addressController.text;
-
-                                      // Print the entered information
-                                      print('Username: $username');
-                                      print('Email: $email');
-                                      print('Phone: $phone');
-                                      print('Address: $address');
-                                      print('Gender: $_selectedGender');
                                       _createBusinessProfileFormKey.currentState!.save();
                                       await Future.delayed(const Duration(milliseconds: 500), () {});
                                       if (!mounted) {
@@ -584,10 +573,9 @@ class _BusinessInformationPageState extends State<BusinessInformationPage> with 
                                         businessName: _businessNameController.value.text,
                                         businessPhoneNumber: userEnteredPhoneNumber,
                                       );
-                                      serviceLocator<AppUserEntity>().copyWith(
-                                        businessProfile: businessProfile,
-                                      );
-                                      context.go(Routes.BANK_INFORMATION_PAGE);
+                                      serviceLocator<AppUserEntity>().currentProfileStatus = CurrentProfileStatus.basicProfileSaved;
+                                      serviceLocator<AppUserEntity>().businessProfile = businessProfile;
+                                      context.go(Routes.CONFIRM_BUSINESS_TYPE_PAGE);
                                     }
                                   },
                                   child: Text(

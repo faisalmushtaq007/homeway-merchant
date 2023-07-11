@@ -8,8 +8,10 @@ import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:homemakers_merchant/app/features/permission/presentation/bloc/permission_bloc.dart';
+import 'package:homemakers_merchant/app/features/profile/common/profile_status_enum.dart';
 import 'package:homemakers_merchant/app/features/profile/data/local/data_sources/business_type_list_data.dart';
 import 'package:homemakers_merchant/app/features/profile/domain/entities/business/business_type_entity.dart';
+import 'package:homemakers_merchant/app/features/profile/domain/entities/user_entity.dart';
 import 'package:homemakers_merchant/base/widget_view.dart';
 import 'package:homemakers_merchant/bootup/injection_container.dart';
 import 'package:homemakers_merchant/config/translation/extension/text_extension.dart';
@@ -57,6 +59,10 @@ class _ConfirmBusinessTypePageController extends State<ConfirmBusinessTypePage> 
   bool _center = true;
   double _anchor = 0.0;
   double _velocityFactor = 0.5;
+  bool selected = false;
+  double selectedWidthActive = 0;
+  double selectedHeightActive = 0;
+  String pickupBusinessTypeName = '';
 
   @override
   void initState() {
@@ -88,6 +94,22 @@ class _ConfirmBusinessTypePageController extends State<ConfirmBusinessTypePage> 
     }
   }
 
+  void _selectBusinessTypeCard(int selectedIndex) {
+    //_businessTypesList[key].hasSelected == _businessTypesList[index].hasSelected &&
+    for (int index = 0; index < _businessTypesList.length; index++) {
+      _businessTypesList[index].hasSelected = false;
+    }
+    _businessTypesList[selectedIndex].hasSelected = true;
+    pickupBusinessTypeName = _businessTypesList[selectedIndex].businessTypeName ?? '';
+    setState(() {});
+  }
+
+  void _nextButtonOnPressed() {
+    serviceLocator<AppUserEntity>().currentProfileStatus = CurrentProfileStatus.businessTypeSaved;
+    context.go(Routes.BANK_INFORMATION_PAGE);
+    return;
+  }
+
   @override
   Widget build(BuildContext context) => _ConfirmBusinessTypePageView(this);
 }
@@ -104,6 +126,8 @@ class _ConfirmBusinessTypePageView extends WidgetView<ConfirmBusinessTypePage, _
     final double width = media.size.width;
     final ThemeData theme = Theme.of(context);
     final ScrollController scrollController = ScrollController();
+    double selectedWidthInActive = context.width * 0.45;
+    double selectedHeightInActive = context.width * 0.45;
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: FlexColorScheme.themedSystemNavigationBar(
         context,
@@ -114,16 +138,6 @@ class _ConfirmBusinessTypePageView extends WidgetView<ConfirmBusinessTypePage, _
       child: Directionality(
         textDirection: serviceLocator<LanguageController>().targetTextDirection,
         child: PlatformScaffold(
-          material: (context, platform) {
-            return MaterialScaffoldData(
-              resizeToAvoidBottomInset: false,
-            );
-          },
-          cupertino: (context, platform) {
-            return CupertinoPageScaffoldData(
-              resizeToAvoidBottomInset: false,
-            );
-          },
           appBar: PlatformAppBar(
             trailingActions: const [
               Padding(
@@ -152,6 +166,7 @@ class _ConfirmBusinessTypePageView extends WidgetView<ConfirmBusinessTypePage, _
                 buildWhen: (previous, current) => previous != current,
                 builder: (context, permissionState) {
                   return Stack(
+                    textDirection: serviceLocator<LanguageController>().targetTextDirection,
                     children: [
                       const Align(
                         alignment: AlignmentDirectional.topStart,
@@ -167,24 +182,47 @@ class _ConfirmBusinessTypePageView extends WidgetView<ConfirmBusinessTypePage, _
                           children: [
                             Container(
                               margin: EdgeInsetsDirectional.only(top: media.padding.top + kToolbarHeight + margins),
-                              height: context.width / 2,
+                              height: context.width / 1.25,
                               width: context.width,
                               child: Swiper(
                                 itemCount: state._businessTypesList.length,
                                 controller: state.swiperController,
                                 //pagination: const SwiperPagination(),
+                                onIndexChanged: (index) {
+                                  state._selectBusinessTypeCard(index);
+                                  return;
+                                },
+                                onTap: (index) {
+                                  state._selectBusinessTypeCard(index);
+                                  return;
+                                },
                                 itemBuilder: (context, index) {
                                   return Center(
                                     child: AnimateWidget(
-                                      duration: const Duration(seconds: 1),
+                                      duration: const Duration(milliseconds: 500),
                                       curve: Curves.fastOutSlowIn,
                                       builder: (BuildContext context, Animate animate) {
                                         return ScaleTransition(
                                           scale: animate.curvedAnimation,
                                           alignment: FractionalOffset.center,
-                                          child: SizedBox(
-                                            height: context.height / 5,
-                                            width: context.height / 5,
+                                          child: AnimatedContainer(
+                                            duration: const Duration(milliseconds: 500),
+                                            height: selectedHeightInActive,
+                                            width: selectedWidthInActive,
+                                            decoration: BoxDecoration(
+                                              boxShadow: state._businessTypesList[index].hasSelected
+                                                  ? [
+                                                      BoxShadow(
+                                                        blurRadius: 36,
+                                                        spreadRadius: 17,
+                                                        blurStyle: BlurStyle.normal,
+                                                        offset: Offset.fromDirection(0.0, 0.0),
+                                                        color: Color.fromRGBO(69, 201, 125, 1),
+                                                      ),
+                                                    ]
+                                                  : null,
+                                              borderRadius: BorderRadiusDirectional.circular(15),
+                                            ),
                                             child: Card(
                                               key: ValueKey(index),
                                               color: Color.fromRGBO(240, 237, 237, 1.0),
@@ -208,7 +246,8 @@ class _ConfirmBusinessTypePageView extends WidgetView<ConfirmBusinessTypePage, _
                                                       Text(
                                                         '${state._businessTypesList[index].businessTypeName}',
                                                         style: context.titleMedium,
-                                                      ),
+                                                        textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                                      ).translate(),
                                                     ],
                                                   ),
                                                 ],
@@ -227,6 +266,24 @@ class _ConfirmBusinessTypePageView extends WidgetView<ConfirmBusinessTypePage, _
                                 fade: 0.5,
                                 curve: Curves.fastOutSlowIn,
                               ),
+                            ),
+                            const AnimatedGap(24, duration: Duration(milliseconds: 500)),
+                            Wrap(
+                              alignment: WrapAlignment.center,
+                              crossAxisAlignment: WrapCrossAlignment.center,
+                              textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                              children: [
+                                AnimatedSwitcher(
+                                  duration: const Duration(milliseconds: 500),
+                                  child: Text(
+                                    (state.pickupBusinessTypeName.isEmpty)
+                                        ? 'Pickup your business type'
+                                        : 'Your business type is ${state.pickupBusinessTypeName}',
+                                    textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                    style: context.titleMedium,
+                                  ).translate(),
+                                ),
+                              ],
                             ),
                           ],
                         ),
@@ -277,7 +334,7 @@ class _ConfirmBusinessTypePageView extends WidgetView<ConfirmBusinessTypePage, _
                             Expanded(
                               flex: 2,
                               child: ElevatedButton(
-                                onPressed: () {},
+                                onPressed: state.pickupBusinessTypeName.isNotEmpty ? state._nextButtonOnPressed : null,
                                 style: ElevatedButton.styleFrom(
                                   //minimumSize: Size(180, 40),
                                   disabledBackgroundColor: Color.fromRGBO(255, 219, 208, 1),

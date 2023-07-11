@@ -220,6 +220,7 @@ class _SaveStorePageState extends State<SaveStorePage> {
             );
           },
           appBar: PlatformAppBar(
+            automaticallyImplyLeading: true,
             title: Text(
               'Add store',
               textDirection: serviceLocator<LanguageController>().targetTextDirection,
@@ -334,6 +335,7 @@ class _SaveStorePageState extends State<SaveStorePage> {
                                   ),
                                   isDense: true,
                                 ),
+                                textInputAction: TextInputAction.next,
                                 validator: (value) {
                                   if (value == null || value.isEmpty) {
                                     return 'Enter store name';
@@ -371,6 +373,7 @@ class _SaveStorePageState extends State<SaveStorePage> {
                                 controller: _storeAddressController,
                                 textDirection: serviceLocator<LanguageController>().targetTextDirection,
                                 maxLines: 3,
+                                textInputAction: TextInputAction.next,
                                 decoration: InputDecoration(
                                   labelText: snapshot[0],
                                   isDense: true,
@@ -599,7 +602,7 @@ class _SaveStorePageState extends State<SaveStorePage> {
                             ).translate(),
                             const AnimatedGap(2, duration: Duration(milliseconds: 500)),
                             Text(
-                              'I have own delivery service',
+                              'Do you have your own delivery service',
                               style: context.labelMedium,
                               textDirection: serviceLocator<LanguageController>().targetTextDirection,
                             ).translate(),
@@ -643,6 +646,7 @@ class _SaveStorePageState extends State<SaveStorePage> {
                                         Expanded(
                                           child: StoreTextFieldWidget(
                                             controller: _storeOwnerDriverNameController,
+                                            textInputAction: TextInputAction.next,
                                             decoration: InputDecoration(
                                               labelText: 'Driver name',
                                               hintText: 'Enter driver name',
@@ -674,6 +678,7 @@ class _SaveStorePageState extends State<SaveStorePage> {
                                         Expanded(
                                           child: StoreTextFieldWidget(
                                             controller: _storeOwnerDriverPhoneNumberController,
+                                            textInputAction: TextInputAction.next,
                                             decoration: InputDecoration(
                                               labelText: 'Driver mobile number',
                                               hintText: 'Enter driver mobile number',
@@ -705,6 +710,7 @@ class _SaveStorePageState extends State<SaveStorePage> {
                                         Expanded(
                                           child: StoreTextFieldWidget(
                                             controller: _storeOwnerDriverLicenseController,
+                                            textInputAction: TextInputAction.next,
                                             decoration: InputDecoration(
                                               labelText: 'Driver driving license number',
                                               hintText: 'Enter driver driving license',
@@ -765,6 +771,7 @@ class _SaveStorePageState extends State<SaveStorePage> {
                                   //FilteringTextInputFormatter.digitsOnly,
                                   maximumDeliveryTimeFormatter,
                                 ],
+                                textInputAction: TextInputAction.done,
                                 onChanged: (value) {},
                                 validator: (value) {
                                   if (value == null || value.isEmpty || maximumDeliveryTimeFormatter.getUnmaskedText().isEmpty) {

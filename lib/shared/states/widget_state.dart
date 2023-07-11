@@ -7,6 +7,8 @@ part 'widget_state.freezed.dart';
 
 @freezed
 class WidgetState<T> with _$WidgetState<T> {
+  const factory WidgetState.idle() = _WidgetStateIdle<T>;
+  const factory WidgetState.none() = _WidgetStateNone<T>;
   const factory WidgetState.loading({required BuildContext context, Widget? child, @Default('Loading...') String message, @Default(false) isLoading}) =
       _WidgetLoading<T>;
 

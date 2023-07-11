@@ -121,6 +121,7 @@ class _DateTimeFieldPlatformState extends State<DateTimeFieldPlatform> {
           style: widget.inputStyle,
           validator: widget.validator,
           decoration: widget.decoration,
+          textInputAction: TextInputAction.next,
         ),
       ),
     );

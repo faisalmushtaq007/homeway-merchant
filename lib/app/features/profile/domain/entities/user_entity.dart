@@ -1,10 +1,11 @@
 import 'package:homemakers_merchant/app/features/address/domain/entities/address_model.dart';
+import 'package:homemakers_merchant/app/features/profile/common/profile_status_enum.dart';
 import 'package:homemakers_merchant/app/features/profile/domain/entities/business/business_profile_entity.dart';
 import 'package:homemakers_merchant/app/features/profile/domain/entities/business/business_type_entity.dart';
 import 'package:homemakers_merchant/app/features/store/domain/entities/store_entity.dart';
 
 class AppUserEntity {
-  const AppUserEntity({
+  AppUserEntity({
     this.id = -1,
     this.userID,
     this.phoneNumber,
@@ -14,6 +15,7 @@ class AppUserEntity {
     this.tokenCreationDateTime,
     this.hasUserAuthenticated = false,
     this.businessTypeEntity,
+    this.currentProfileStatus = CurrentProfileStatus.none,
   });
 
   factory AppUserEntity.fromMap(Map<String, dynamic> map) {
@@ -27,17 +29,19 @@ class AppUserEntity {
       tokenCreationDateTime: map['tokenCreationDateTime'] as DateTime,
       hasUserAuthenticated: map['hasUserAuthenticated'] as bool,
       businessTypeEntity: map['businessTypeEntity'] as BusinessTypeEntity,
+      currentProfileStatus: map['currentProfileStatus'] as CurrentProfileStatus,
     );
   }
-  final int id;
-  final String? userID;
-  final String? phoneNumber;
-  final BusinessProfileEntity? businessProfile;
-  final List<StoreEntity> stores;
-  final String token;
-  final DateTime? tokenCreationDateTime;
-  final bool hasUserAuthenticated;
-  final BusinessTypeEntity? businessTypeEntity;
+  int id;
+  String? userID;
+  String? phoneNumber;
+  BusinessProfileEntity? businessProfile;
+  List<StoreEntity> stores;
+  String token;
+  DateTime? tokenCreationDateTime;
+  bool hasUserAuthenticated;
+  BusinessTypeEntity? businessTypeEntity;
+  CurrentProfileStatus currentProfileStatus;
 
   AppUserEntity copyWith({
     int? id,
@@ -49,6 +53,7 @@ class AppUserEntity {
     DateTime? tokenCreationDateTime,
     bool? hasUserAuthenticated,
     BusinessTypeEntity? businessTypeEntity,
+    CurrentProfileStatus? currentProfileStatus,
   }) {
     return AppUserEntity(
       id: id ?? this.id,
@@ -60,6 +65,7 @@ class AppUserEntity {
       tokenCreationDateTime: tokenCreationDateTime ?? this.tokenCreationDateTime,
       hasUserAuthenticated: hasUserAuthenticated ?? this.hasUserAuthenticated,
       businessTypeEntity: businessTypeEntity ?? this.businessTypeEntity,
+      currentProfileStatus: currentProfileStatus ?? this.currentProfileStatus,
     );
   }
 
@@ -74,6 +80,7 @@ class AppUserEntity {
       'tokenCreationDateTime': this.tokenCreationDateTime,
       'hasUserAuthenticated': this.hasUserAuthenticated,
       'businessTypeEntity': this.businessTypeEntity,
+      'currentProfileStatus': this.currentProfileStatus,
     };
   }
 }

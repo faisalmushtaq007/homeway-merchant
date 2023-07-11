@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:homemakers_merchant/app/features/profile/common/profile_status_enum.dart';
 import 'package:homemakers_merchant/app/features/profile/domain/entities/user_entity.dart';
 import 'package:homemakers_merchant/bootup/injection_container.dart';
 import 'package:homemakers_merchant/config/translation/language_controller.dart';
@@ -369,9 +370,8 @@ class _OTPVerificationPageState extends State<OTPVerificationPage> {
                                     if (!mounted) {
                                       return;
                                     }
-                                    serviceLocator<AppUserEntity>().copyWith(
-                                      phoneNumber: widget.phoneNumber,
-                                    );
+                                    serviceLocator<AppUserEntity>().phoneNumber = widget.phoneNumber;
+                                    serviceLocator<AppUserEntity>().currentProfileStatus = CurrentProfileStatus.phoneNumberVerified;
                                     context.go(Routes.CREATE_BUSINESS_PROFILE_PAGE);
                                   } else {
                                     setState(() {

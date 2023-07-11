@@ -1,7 +1,7 @@
 import 'package:flutter/widgets.dart';
 
 class BusinessTypeEntity {
-  const BusinessTypeEntity({
+  BusinessTypeEntity({
     this.id = -1,
     required this.businessTypeId,
     required this.businessTypeName,
@@ -10,6 +10,7 @@ class BusinessTypeEntity {
     this.metaData,
     this.localAssetWidget,
     this.remoteAssetWidget,
+    this.hasSelected = false,
   });
 
   factory BusinessTypeEntity.fromMap(Map<String, dynamic> map) {
@@ -20,6 +21,7 @@ class BusinessTypeEntity {
       localAssetPath: map['localAssetPath'] as String,
       remoteAssetPath: map['remoteAssetPath'] as String,
       metaData: map['metaData'] as Map<String, dynamic>,
+      hasSelected: map['hasSelected'] as bool,
     );
   }
 
@@ -31,6 +33,7 @@ class BusinessTypeEntity {
   final Map<String, dynamic>? metaData;
   final Widget? localAssetWidget;
   final Widget? remoteAssetWidget;
+  bool hasSelected;
 
   Map<String, dynamic> toMap() {
     return {
@@ -40,6 +43,7 @@ class BusinessTypeEntity {
       'localAssetPath': this.localAssetPath,
       'remoteAssetPath': this.remoteAssetPath,
       'metaData': this.metaData,
+      'hasSelected': this.hasSelected,
     };
   }
 
@@ -52,6 +56,7 @@ class BusinessTypeEntity {
     Map<String, dynamic>? metaData,
     Widget? localAssetWidget,
     Widget? remoteAssetWidget,
+    bool? hasSelected,
   }) {
     return BusinessTypeEntity(
       id: id ?? this.id,
@@ -62,6 +67,7 @@ class BusinessTypeEntity {
       metaData: metaData ?? this.metaData,
       localAssetWidget: localAssetWidget ?? this.localAssetWidget,
       remoteAssetWidget: remoteAssetWidget ?? this.remoteAssetWidget,
+      hasSelected: hasSelected ?? this.hasSelected,
     );
   }
 }

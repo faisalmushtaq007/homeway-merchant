@@ -6,7 +6,9 @@ import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:go_router/go_router.dart';
 import 'package:homemakers_merchant/app/features/authentication/presentation/manager/phone_number_verification_bloc.dart';
 import 'package:homemakers_merchant/app/features/authentication/presentation/pages/phone_number_verification_page.dart';
+import 'package:homemakers_merchant/app/features/profile/common/profile_status_enum.dart';
 import 'package:homemakers_merchant/app/features/profile/domain/entities/bank/bank_info_tile_model.dart';
+import 'package:homemakers_merchant/app/features/profile/domain/entities/user_entity.dart';
 import 'package:homemakers_merchant/app/features/profile/presentation/widgets/bank/bank_information_tile_widget.dart';
 import 'package:homemakers_merchant/app/features/profile/presentation/widgets/bank/confirm_bank_information_dialog.dart';
 import 'package:homemakers_merchant/base/app_base.dart';
@@ -606,6 +608,7 @@ class _BankInformationPageState extends State<BankInformationPage> with SingleTi
                                       if (!mounted) {
                                         return;
                                       }
+                                      serviceLocator<AppUserEntity>().currentProfileStatus = CurrentProfileStatus.paymentDetailSaved;
                                       context.go(Routes.DOCUMENT_LIST_PAGE);
                                     }
                                   }
