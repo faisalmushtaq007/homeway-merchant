@@ -58,6 +58,11 @@ abstract class Routes {
   static const String NEW_STORE_GREETING_PAGE = _Paths.NEW_STORE_GREETING;
   static const String PICKUP_LOCATION_FROM_MAP_PAGE = _Paths.PICKUP_LOCATION_FROM_MAP_PAGE;
   static const String CONFIRM_BUSINESS_TYPE_PAGE = _Paths.CONFIRM_BUSINESS_TYPE_PAGE;
+  static const String ALL_MENU_PAGE = _Paths.ALL_MENU_PAGE;
+  static const String SAVE_MENU_PAGE = _Paths.SAVE_MENU_PAGE;
+  static const String NEW_MENU_GREETING_PAGE = _Paths.NEW_MENU_GREETING_PAGE;
+
+  static const String MENU_DESCRIPTION_PAGE = _Paths.MENU_DESCRIPTION_PAGE;
 }
 
 abstract class _Paths {
@@ -115,4 +120,8 @@ abstract class _Paths {
   static const String NEW_STORE_GREETING = '/new-store-greeting';
   static const String PICKUP_LOCATION_FROM_MAP_PAGE = '/pickup-location-from-map';
   static const String CONFIRM_BUSINESS_TYPE_PAGE = '/confirm-business-type';
+  static const String ALL_MENU_PAGE = '/all-menu';
+  static const String SAVE_MENU_PAGE = '/save-menu';
+  static const String NEW_MENU_GREETING_PAGE = '/new-menu-greeting';
+  static const String MENU_DESCRIPTION_PAGE = '/menu-description';
 }

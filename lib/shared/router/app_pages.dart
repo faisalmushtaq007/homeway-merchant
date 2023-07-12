@@ -16,6 +16,10 @@ import 'package:homemakers_merchant/app/features/authentication/presentation/pag
 import 'package:homemakers_merchant/app/features/dashboard/presentation/pages/main_dashboard_page.dart';
 import 'package:homemakers_merchant/app/features/dashboard/presentation/pages/primary_dashboard_page.dart';
 import 'package:homemakers_merchant/app/features/dashboard/presentation/pages/welcome_page.dart';
+import 'package:homemakers_merchant/app/features/menu/presentation/pages/all_menu_page.dart';
+import 'package:homemakers_merchant/app/features/menu/presentation/pages/menu_description_page.dart';
+import 'package:homemakers_merchant/app/features/menu/presentation/pages/new_menu_greeting_page.dart';
+import 'package:homemakers_merchant/app/features/menu/presentation/pages/save_menu_page.dart';
 import 'package:homemakers_merchant/app/features/onboarding/presentation/pages/onboarding_page.dart';
 import 'package:homemakers_merchant/app/features/onboarding/presentation/pages/splash_page.dart';
 import 'package:homemakers_merchant/app/features/profile/common/document_type_enum.dart';
@@ -37,7 +41,7 @@ class AppRouter {
 
   AppRouter._();
 
-  static const String INITIAL = Routes.ALL_STORES_PAGE;
+  static const String INITIAL = Routes.ALL_MENU_PAGE;
 
   static final GoRouter _router = GoRouter(
     debugLogDiagnostics: true,
@@ -123,11 +127,28 @@ class AppRouter {
       ),
       GoRoute(
         path: Routes.PICKUP_LOCATION_FROM_MAP_PAGE,
+        // (TODO:Prasant): Replace and Set object of address model
         builder: (context, state) => PickupLocationFromMapPage(addressModel: AddressModel() ?? state.extra as AddressModel),
       ),
       GoRoute(
         path: Routes.CONFIRM_BUSINESS_TYPE_PAGE,
-        builder: (context, state) => ConfirmBusinessTypePage(),
+        builder: (context, state) => const ConfirmBusinessTypePage(),
+      ),
+      GoRoute(
+        path: Routes.ALL_MENU_PAGE,
+        builder: (context, state) => const AllMenuPage(),
+      ),
+      GoRoute(
+        path: Routes.SAVE_MENU_PAGE,
+        builder: (context, state) => const SaveMenuPage(),
+      ),
+      GoRoute(
+        path: Routes.NEW_MENU_GREETING_PAGE,
+        builder: (context, state) => const NewMenuGreetingPage(),
+      ),
+      GoRoute(
+        path: Routes.MENU_DESCRIPTION_PAGE,
+        builder: (context, state) => const MenuDescriptionPage(),
       ),
     ],
   );

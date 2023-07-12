@@ -162,7 +162,9 @@ class _PrimaryDashboardPageState extends State<PrimaryDashboardPage> {
                             children: [
                               CircleAvatar(
                                 maxRadius: 40,
-                                backgroundImage: AssetImage("assets/image/app_logo_light.jpg"),
+                                backgroundImage: AssetImage(
+                                  "assets/image/app_logo_light.jpg",
+                                ),
                               ),
                             ],
                           ),
@@ -176,19 +178,41 @@ class _PrimaryDashboardPageState extends State<PrimaryDashboardPage> {
                               Text(
                                 "${serviceLocator<AppUserEntity>().businessProfile?.userName ?? 'Thomas Shelby'}",
                                 style: TextStyle(fontWeight: FontWeight.w900, fontSize: 18),
-                              )
+                                textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                              ).translate(),
                             ],
                           ),
                           Wrap(
                             alignment: WrapAlignment.center,
-                            children: [Text("${serviceLocator<AppUserEntity>().businessProfile?.businessEmailAddress ?? 'thomashomeservice@gmail.com'}")],
+                            textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                            children: [
+                              Text("${serviceLocator<AppUserEntity>().businessProfile?.businessEmailAddress ?? 'thomashomeservice@gmail.com'}").translate(),
+                            ],
                           ),
                           const AnimatedGap(
                             15,
                             duration: Duration(milliseconds: 500),
                           ),
+                          Wrap(
+                            textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                            alignment: WrapAlignment.center,
+                            children: [
+                              DecoratedBox(
+                                decoration: BoxDecoration(color: Color.fromRGBO(252, 240, 218, 1)),
+                                child: Padding(
+                                  padding: const EdgeInsetsDirectional.only(top: 8, bottom: 8, start: 4, end: 4),
+                                  child: Text(
+                                    'Your business verification is under review process. Thank you so much for being our partner.',
+                                    textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                    textAlign: TextAlign.center,
+                                    style: context.bodyMedium!.copyWith(color: Color.fromRGBO(207, 138, 10, 1)),
+                                  ).translate(),
+                                ),
+                              ),
+                            ],
+                          ),
                           const AnimatedGap(
-                            15,
+                            25,
                             duration: Duration(milliseconds: 500),
                           ),
                           Flexible(
