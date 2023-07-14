@@ -8,6 +8,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:homemakers_merchant/app/features/address/domain/entities/address_model.dart';
 import 'package:homemakers_merchant/app/features/store//presentation/widgets/multi_select_store_available_accepted_payment_mode_widget.dart';
+import 'package:homemakers_merchant/app/features/store/data/local/data_sources/store_local_data.dart';
 import 'package:homemakers_merchant/app/features/store/presentation/manager/store_bloc.dart';
 import 'package:homemakers_merchant/app/features/store/presentation/widgets/multi_select_store_available_food_preparation_widget.dart';
 import 'package:homemakers_merchant/app/features/store/presentation/widgets/multi_select_store_available_food_types_widget.dart';
@@ -117,6 +118,14 @@ class _SaveStorePageState extends State<SaveStorePage> {
     _storeOwnerDriverNameController.dispose();
     _storeOwnerDriverLicenseController.dispose();
     _storeOwnerDriverPhoneNumberController.dispose();
+    _selectedFoodTypes = [];
+    _selectedFoodPreparationType = [];
+    _selectedAcceptedPaymentModes = [];
+    _selectedWorkingDays = [];
+    _storeAcceptedPaymentModes = [];
+    _storeAvailableFoodPreparationType = [];
+    _storeAvailableFoodTypes = [];
+    _storeWorkingDays = [];
     super.dispose();
   }
 
@@ -142,53 +151,15 @@ class _SaveStorePageState extends State<SaveStorePage> {
   }
 
   void initializeStoreAvailableFoodPreparationType() {
-    _storeAvailableFoodPreparationType = [
-      StoreAvailableFoodPreparationType(id: 0, title: 'Cooking'),
-      StoreAvailableFoodPreparationType(id: 1, title: 'Cooked'),
-      StoreAvailableFoodPreparationType(id: 2, title: 'Baking'),
-      StoreAvailableFoodPreparationType(id: 3, title: 'Baked'),
-      StoreAvailableFoodPreparationType(id: 4, title: 'Sauteing'),
-      StoreAvailableFoodPreparationType(id: 5, title: 'Poaching'),
-      StoreAvailableFoodPreparationType(id: 6, title: 'Broiling'),
-      StoreAvailableFoodPreparationType(id: 7, title: 'Grilling'),
-      StoreAvailableFoodPreparationType(id: 8, title: 'Roasting'),
-      StoreAvailableFoodPreparationType(id: 9, title: 'Deep Frying'),
-      StoreAvailableFoodPreparationType(id: 10, title: 'Sallow Frying'),
-      StoreAvailableFoodPreparationType(id: 11, title: 'Pan Frying'),
-      StoreAvailableFoodPreparationType(id: 12, title: 'Stir Frying'),
-      StoreAvailableFoodPreparationType(id: 13, title: 'Searing'),
-      StoreAvailableFoodPreparationType(id: 14, title: 'Boiling'),
-      StoreAvailableFoodPreparationType(id: 15, title: 'Flambeing'),
-    ];
+    _storeAvailableFoodPreparationType = List<StoreAvailableFoodPreparationType>.from(localStoreAvailableFoodPreparationType.toList());
   }
 
   void initializeStoreAvailableFoodTypes() {
-    _storeAvailableFoodTypes = [
-      StoreAvailableFoodTypes(title: 'Veg', id: 0),
-      StoreAvailableFoodTypes(title: 'Chicken', id: 1),
-      StoreAvailableFoodTypes(title: 'Vegan', id: 2),
-      StoreAvailableFoodTypes(title: 'Egg', id: 3),
-      StoreAvailableFoodTypes(title: 'Seeds', id: 3),
-      StoreAvailableFoodTypes(title: 'Dairy', id: 4),
-      StoreAvailableFoodTypes(title: 'Soups', id: 5),
-      StoreAvailableFoodTypes(title: 'Legumes', id: 6),
-      StoreAvailableFoodTypes(title: 'Meat', id: 7),
-      StoreAvailableFoodTypes(title: 'Fish', id: 8),
-      StoreAvailableFoodTypes(title: 'Prawns', id: 9),
-      StoreAvailableFoodTypes(title: 'Others', id: 10),
-    ];
+    _storeAvailableFoodTypes = List<StoreAvailableFoodTypes>.from(localStoreAvailableFoodTypes.toList());
   }
 
   void initializeStoreWorkingDays() {
-    _storeWorkingDays = [
-      StoreWorkingDayAndTime(day: 'Monday', id: 0, shortName: 'Sun'),
-      StoreWorkingDayAndTime(day: 'Monday', id: 1, shortName: 'Mon'),
-      StoreWorkingDayAndTime(day: 'Tuesday', id: 2, shortName: 'Tue'),
-      StoreWorkingDayAndTime(day: 'Wednesday', id: 3, shortName: 'Wed'),
-      StoreWorkingDayAndTime(day: 'Thursday', id: 4, shortName: 'Thur'),
-      StoreWorkingDayAndTime(day: 'Friday', id: 5, shortName: 'Fri'),
-      StoreWorkingDayAndTime(day: 'Saturday', id: 6, shortName: 'Sat'),
-    ];
+    _storeWorkingDays = List<StoreWorkingDayAndTime>.from(localStoreWorkingDays.toList());
   }
 
   @override
@@ -563,7 +534,7 @@ class _SaveStorePageState extends State<SaveStorePage> {
                         ),
                         const AnimatedGap(12, duration: Duration(milliseconds: 500)),
                         Text(
-                          'Food preparation type',
+                          'Food preparation method',
                           style: context.titleLarge!.copyWith(
                             fontWeight: FontWeight.w600,
                             fontSize: 20,
@@ -579,7 +550,7 @@ class _SaveStorePageState extends State<SaveStorePage> {
                           availableFoodPreparationTypesList: _storeAvailableFoodPreparationType.toList(),
                           validator: (value) {
                             if (value == null || value.length == 0) {
-                              return 'Select one or more food preparation type';
+                              return 'Select one or more food preparation method';
                             } else {
                               return null;
                             }

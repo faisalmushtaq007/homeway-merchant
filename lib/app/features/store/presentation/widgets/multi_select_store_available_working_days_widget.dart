@@ -70,6 +70,7 @@ class MultiSelectAvailableWorkingDaysFormField extends FormField<List<StoreWorki
     this.onMaxSelected,
     this.maxSelection,
     this.initialSelectedAvailableWorkingDaysList = const [],
+    super.key,
   }) : super(
           onSaved: onSaved,
           validator: validator,

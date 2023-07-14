@@ -69,6 +69,7 @@ class MultiSelectAvailablePaymentModeFormField extends FormField<List<StoreAccep
     this.onMaxSelected,
     this.maxSelection,
     this.initialSelectedAvailablePaymentModesList = const [],
+    super.key,
   }) : super(
           onSaved: onSaved,
           validator: validator,

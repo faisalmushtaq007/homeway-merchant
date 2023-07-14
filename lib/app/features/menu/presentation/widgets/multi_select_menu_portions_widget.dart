@@ -1,23 +1,24 @@
 import 'package:flutter/material.dart';
+import 'package:homemakers_merchant/app/features/menu/domain/entities/menu_entity.dart';
 import 'package:homemakers_merchant/app/features/store/domain/entities/store_entity.dart';
 import 'package:homemakers_merchant/bootup/injection_container.dart';
 import 'package:homemakers_merchant/config/translation/language_controller.dart';
 
-class MultiSelectAvailableFoodTypeFormField extends FormField<List<StoreAvailableFoodTypes>> {
+class MultiSelectMenuPortionFormField extends FormField<List<MenuPortion>> {
   final Widget title;
   final Widget hintWidget;
   final bool required;
   final String errorText;
 
   //final List? dataSource;
-  final List<StoreAvailableFoodTypes> availableFoodTypesList;
-  final List<StoreAvailableFoodTypes> initialSelectedAvailableFoodTypesList;
-  final Function(List<StoreAvailableFoodTypes>) onSelectionChanged;
-  final Function(List<StoreAvailableFoodTypes>)? onMaxSelected;
+  final List<MenuPortion> availableMenuPortionList;
+  final List<MenuPortion> initialSelectedMenuPortionList;
+  final Function(List<MenuPortion>) onSelectionChanged;
+  final Function(List<MenuPortion>)? onMaxSelected;
   final int? maxSelection;
   final String? textField;
   final String? valueField;
-  final ValueChanged<List<StoreAvailableFoodTypes>>? onChanged;
+  final ValueChanged<List<MenuPortion>>? onChanged;
   final Function? open;
   final Function? close;
   final Widget? leading;
@@ -34,9 +35,9 @@ class MultiSelectAvailableFoodTypeFormField extends FormField<List<StoreAvailabl
   final Color? checkBoxActiveColor;
   final bool enabled;
 
-  MultiSelectAvailableFoodTypeFormField({
-    FormFieldSetter<List<StoreAvailableFoodTypes>>? onSaved,
-    FormFieldValidator<List<StoreAvailableFoodTypes>>? validator,
+  MultiSelectMenuPortionFormField({
+    FormFieldSetter<List<MenuPortion>>? onSaved,
+    FormFieldValidator<List<MenuPortion>>? validator,
     dynamic initialValue,
     AutovalidateMode autovalidate = AutovalidateMode.disabled,
     this.title = const Text('Title'),
@@ -65,19 +66,19 @@ class MultiSelectAvailableFoodTypeFormField extends FormField<List<StoreAvailabl
     this.checkBoxActiveColor,
     this.checkBoxCheckColor,
     required this.onSelectionChanged,
-    required this.availableFoodTypesList,
+    required this.availableMenuPortionList,
     this.onMaxSelected,
     this.maxSelection,
-    this.initialSelectedAvailableFoodTypesList = const [],
+    this.initialSelectedMenuPortionList = const [],
     super.key,
   }) : super(
           onSaved: onSaved,
           validator: validator,
-          initialValue: initialSelectedAvailableFoodTypesList.toList(),
+          initialValue: initialSelectedMenuPortionList.toList(),
           autovalidateMode: autovalidate,
-          builder: (FormFieldState<List<StoreAvailableFoodTypes>> state) {
+          builder: (FormFieldState<List<MenuPortion>> state) {
             // String selectedChoice = "";
-            List<StoreAvailableFoodTypes> selectedChoices = [];
+            List<MenuPortion> selectedChoices = [];
             return InputDecorator(
               decoration: InputDecoration(
                 //filled: true,
@@ -94,8 +95,8 @@ class MultiSelectAvailableFoodTypeFormField extends FormField<List<StoreAvailabl
                 errorBorder: InputBorder.none,
               ),
               isEmpty: state.value == null || state.value!.isEmpty,
-              child: MultiSelectStoreAvailableFoodTypes(
-                onSelectionChanged: (List<StoreAvailableFoodTypes> selectedItems) {
+              child: MultiSelectMenuMenuPortion(
+                onSelectionChanged: (List<MenuPortion> selectedItems) {
                   selectedChoices = selectedItems.toList();
                   onSelectionChanged?.call(selectedChoices);
                   state.didChange(selectedChoices);
@@ -104,45 +105,45 @@ class MultiSelectAvailableFoodTypeFormField extends FormField<List<StoreAvailabl
                   }
                   state.save();
                 },
-                availableFoodTypesList: availableFoodTypesList.toList(),
-                initialSelectedAvailableFoodTypesList: initialSelectedAvailableFoodTypesList.toList(),
+                availableMenuPortions: availableMenuPortionList.toList(),
+                initialSelectedMenuPortionList: initialSelectedMenuPortionList.toList(),
               ),
             );
           },
         );
 }
 
-class MultiSelectStoreAvailableFoodTypes extends StatefulWidget {
-  const MultiSelectStoreAvailableFoodTypes({
+class MultiSelectMenuMenuPortion extends StatefulWidget {
+  const MultiSelectMenuMenuPortion({
     required this.onSelectionChanged,
-    required this.availableFoodTypesList,
+    required this.availableMenuPortions,
     this.onMaxSelected,
     this.maxSelection,
     super.key,
-    this.initialSelectedAvailableFoodTypesList = const [],
+    this.initialSelectedMenuPortionList = const [],
   });
 
-  final List<StoreAvailableFoodTypes> availableFoodTypesList;
-  final List<StoreAvailableFoodTypes> initialSelectedAvailableFoodTypesList;
-  final Function(List<StoreAvailableFoodTypes>) onSelectionChanged;
-  final Function(List<StoreAvailableFoodTypes>)? onMaxSelected;
+  final List<MenuPortion> availableMenuPortions;
+  final Function(List<MenuPortion>) onSelectionChanged;
+  final Function(List<MenuPortion>)? onMaxSelected;
+  final List<MenuPortion> initialSelectedMenuPortionList;
   final int? maxSelection;
 
   @override
   _MultiSelectChipState createState() => _MultiSelectChipState();
 }
 
-class _MultiSelectChipState extends State<MultiSelectStoreAvailableFoodTypes> {
+class _MultiSelectChipState extends State<MultiSelectMenuMenuPortion> {
   // String selectedChoice = "";
-  List<StoreAvailableFoodTypes> selectedChoices = [];
+  List<MenuPortion> selectedChoices = [];
 
   List<Widget> _buildChoiceList() {
     List<Widget> choices = [];
 
-    for (var item in widget.availableFoodTypesList) {
+    for (var item in widget.availableMenuPortions) {
       choices.add(ChoiceChip(
         label: Text(
-          item.title,
+          '${item.title} ${item.unit}',
           textDirection: serviceLocator<LanguageController>().targetTextDirection,
         ),
         selected: selectedChoices.contains(item),
@@ -155,6 +156,10 @@ class _MultiSelectChipState extends State<MultiSelectStoreAvailableFoodTypes> {
               widget.onSelectionChanged?.call(selectedChoices);
             });
           }
+          /*setState(() {
+            selectedChoices.contains(item) ? selectedChoices.remove(item) : selectedChoices.add(item);
+            widget.onSelectionChanged(selectedChoices);
+          });*/
         },
       ));
     }
@@ -165,7 +170,7 @@ class _MultiSelectChipState extends State<MultiSelectStoreAvailableFoodTypes> {
   @override
   Widget build(BuildContext context) {
     return Wrap(
-      spacing: 8,
+      spacing: 6,
       runSpacing: 0,
       textDirection: serviceLocator<LanguageController>().targetTextDirection,
       children: _buildChoiceList(),

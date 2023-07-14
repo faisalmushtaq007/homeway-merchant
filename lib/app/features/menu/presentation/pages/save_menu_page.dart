@@ -1,39 +1,64 @@
-import 'package:flutter/material.dart';
-import 'package:homemakers_merchant/base/widget_view.dart';
-import 'package:homemakers_merchant/core/constants/global_app_constants.dart';
-import 'package:flex_color_scheme/flex_color_scheme.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
-import 'package:homemakers_merchant/app/features/permission/presentation/bloc/permission_bloc.dart';
-import 'package:homemakers_merchant/bootup/injection_container.dart';
-import 'package:homemakers_merchant/config/translation/language_controller.dart';
-import 'package:homemakers_merchant/config/translation/widgets/language_selection_widget.dart';
-import 'package:homemakers_merchant/core/constants/global_app_constants.dart';
-import 'package:homemakers_merchant/shared/widgets/app/page_body.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
-import 'package:go_router/go_router.dart';
-import 'package:homemakers_merchant/bootup/injection_container.dart';
-import 'package:homemakers_merchant/config/translation/app_translator.dart';
-import 'package:homemakers_merchant/config/translation/extension/text_extension.dart';
-import 'package:homemakers_merchant/config/translation/language_controller.dart';
-import 'package:homemakers_merchant/config/translation/widgets/language_selection_widget.dart';
-import 'package:homemakers_merchant/core/constants/global_app_constants.dart';
-import 'package:homemakers_merchant/core/extensions/app_extension.dart';
-import 'package:homemakers_merchant/core/extensions/string/pattern.dart';
-import 'package:homemakers_merchant/shared/widgets/universal/constrained_scrollable_views/constrained_scrollable_views.dart';
+part of 'package:homemakers_merchant/app/features/menu/index.dart';
 
 class SaveMenuPage extends StatefulWidget {
   const SaveMenuPage({super.key});
+
   @override
   _SaveMenuPageController createState() => _SaveMenuPageController();
 }
 
 class _SaveMenuPageController extends State<SaveMenuPage> {
   late final ScrollController scrollController;
+  int _currentPageIndex = 0;
+  final StepProgressController stepProgressController = StepProgressController(initialStep: 0, totalStep: 5);
+  PageController controller = PageController(initialPage: 0);
+  FormPageStyle? formPageStyle = FormPageStyle();
+  PreloadPageController preloadPageController = PreloadPageController(initialPage: 0);
+  ProgressIndicatorType progress = ProgressIndicatorType.linear;
+
+  static final List<GlobalKey<FormState>> formKeys = [
+    GlobalKey<FormState>(debugLabel: 'fomr1'),
+    GlobalKey<FormState>(debugLabel: 'fomr2'),
+    GlobalKey<FormState>(debugLabel: 'fomr3'),
+    GlobalKey<FormState>(debugLabel: 'fomr4'),
+    GlobalKey<FormState>(debugLabel: 'fomr5')
+  ];
+  List<FocusNode> focusList = [
+    FocusNode(),
+    FocusNode(),
+    FocusNode(),
+    FocusNode(),
+    FocusNode(),
+    FocusNode(),
+    FocusNode(),
+    FocusNode(),
+    FocusNode(),
+    FocusNode()
+  ];
+
+  List<FormPageModel> pages = [
+    FormPageModel(
+      body: MenuForm1Page(),
+      formKey: formKeys[0],
+    ),
+    FormPageModel(
+      body: MenuForm2Page(),
+      formKey: formKeys[1],
+    ),
+    FormPageModel(
+      body: MenuForm3Page(),
+      formKey: formKeys[2],
+    ),
+    FormPageModel(
+      body: MenuForm4Page(),
+      formKey: formKeys[3],
+    ),
+    FormPageModel(
+      body: MenuForm5Page(),
+      formKey: formKeys[4],
+    ),
+  ];
+
   @override
   void initState() {
     super.initState();
@@ -43,7 +68,72 @@ class _SaveMenuPageController extends State<SaveMenuPage> {
   @override
   void dispose() {
     scrollController.dispose();
+    controller.dispose();
+    preloadPageController.dispose();
     super.dispose();
+  }
+
+  bool validateCurrentPage() {
+    final page = pages[_currentPageIndex];
+    if (page.formKey != null) {
+      final form = page.formKey!.currentState!;
+      if (form.validate()) {
+        form.save();
+      } else {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  void _nextButtonOnPressed() {
+    /*if (validateCurrentPage()) {
+      setState(() {
+        if (_currentPageIndex < pages.length - 1) {
+          _currentPageIndex++;
+          controller.nextPage(duration: const Duration(milliseconds: 300), curve: Curves.ease);
+          preloadPageController.nextPage(duration: const Duration(milliseconds: 300), curve: Curves.ease);
+        } else {
+          onFormSubmitted();
+        }
+      });
+    }*/
+    debugPrint('_nextButtonOnPressed Pages length: ${pages.length}, _currentPageIndex: ${_currentPageIndex}');
+    setState(() {
+      if (_currentPageIndex < pages.length - 1) {
+        _currentPageIndex++;
+        //controller.nextPage(duration: const Duration(milliseconds: 300), curve: Curves.ease);
+        preloadPageController.nextPage(duration: const Duration(milliseconds: 300), curve: Curves.ease);
+        stepProgressController.nextStep();
+      } else {
+        onFormSubmitted();
+      }
+    });
+    return;
+  }
+
+  void onFormSubmitted() {}
+
+  void onPageChanged(int currentIndex) {}
+
+  void onStepChanged(int currentIndex) {}
+
+  void _prevButtonOnPressed() {
+    if (_currentPageIndex > 0) {
+      setState(() {
+        _currentPageIndex--;
+        /*controller.previousPage(
+          duration: const Duration(milliseconds: 300),
+          curve: Curves.ease,
+        );*/
+        preloadPageController.previousPage(
+          duration: const Duration(milliseconds: 300),
+          curve: Curves.ease,
+        );
+        stepProgressController.prevStep();
+      });
+    }
+    return;
   }
 
   @override
@@ -71,12 +161,12 @@ class _SaveMenuPageView extends WidgetView<SaveMenuPage, _SaveMenuPageController
       child: PlatformScaffold(
         material: (context, platform) {
           return MaterialScaffoldData(
-            resizeToAvoidBottomInset: false,
+            resizeToAvoidBottomInset: true,
           );
         },
         cupertino: (context, platform) {
           return CupertinoPageScaffoldData(
-            resizeToAvoidBottomInset: false,
+            resizeToAvoidBottomInset: true,
           );
         },
         appBar: PlatformAppBar(
@@ -92,26 +182,11 @@ class _SaveMenuPageView extends WidgetView<SaveMenuPage, _SaveMenuPageController
           child: PageBody(
             controller: state.scrollController,
             constraints: BoxConstraints(
-              minWidth: double.infinity,
-              minHeight: media.size.height,
+              minHeight: context.height,
+              minWidth: 1000,
             ),
-            child: Container(
-              padding: EdgeInsetsDirectional.only(top: topPadding, start: margins * 2.5, end: margins * 2.5, bottom: bottomPadding),
-              constraints: BoxConstraints(
-                minWidth: double.infinity,
-                minHeight: media.size.height,
-              ),
-              child: ScrollableColumn(
-                controller: state.scrollController,
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: const [
-                  Center(
-                    child: Text('New Screen'),
-                  ),
-                ],
-              ),
-            ),
+            padding: EdgeInsetsDirectional.fromSTEB(margins * 2.5, topPadding, margins * 2.5, bottomPadding),
+            child: MenuForm2Page(),
           ),
         ),
       ),

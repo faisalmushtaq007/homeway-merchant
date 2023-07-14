@@ -69,6 +69,7 @@ class MultiSelectAvailableFoodPreparationTypesFormField extends FormField<List<S
     this.onMaxSelected,
     this.maxSelection,
     this.initialSelectedFoodPreparationTypesList = const [],
+    super.key,
   }) : super(
           onSaved: onSaved,
           validator: validator,

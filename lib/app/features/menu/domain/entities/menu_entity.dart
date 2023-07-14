@@ -25,6 +25,7 @@ class MenuEntity with AppEquatable {
     required this.metaInfoOfMenu,
     required this.nutrients,
     required this.menuTiming,
+    required this.tasteType,
   });
 
   factory MenuEntity.fromMap(Map<String, dynamic> map) {
@@ -51,8 +52,10 @@ class MenuEntity with AppEquatable {
       metaInfoOfMenu: map['metaInfoOfMenu'] as Map<String, dynamic>,
       nutrients: map['nutrients'] as List<Nutrients>,
       menuTiming: map['menuTiming'] as Timing,
+      tasteType: map['tasteType'] as TasteType,
     );
   }
+
   final int id;
   final String menuId;
   final List<MenuImage> menuImages;
@@ -75,12 +78,37 @@ class MenuEntity with AppEquatable {
   final Map<String, dynamic> metaInfoOfMenu;
   final List<Nutrients> nutrients;
   final Timing menuTiming;
+  final TasteType tasteType;
 
   @override
   bool get cacheHash => true;
 
   @override
-  List<Object?> get hashParameters => [];
+  List<Object?> get hashParameters => [
+        id,
+        menuId,
+        menuImages,
+        menuName,
+        menuDescription,
+        menuCategories,
+        ingredients,
+        storeAvailableFoodTypes,
+        storeAvailableFoodPreparationType,
+        menuPortions,
+        hasCustomPortion,
+        customPortions,
+        extras,
+        menuAvailableFromTime,
+        menuAvailableToTime,
+        menuAvailableInDays,
+        minStockAvailable,
+        maxStockAvailable,
+        timeOfPeriodWise,
+        metaInfoOfMenu,
+        nutrients,
+        menuTiming,
+        tasteType,
+      ];
 
   Map<String, dynamic> toMap() {
     return {
@@ -106,6 +134,7 @@ class MenuEntity with AppEquatable {
       'metaInfoOfMenu': this.metaInfoOfMenu,
       'nutrients': this.nutrients,
       'menuTiming': this.menuTiming,
+      'tasteType': this.tasteType,
     };
   }
 
@@ -132,6 +161,7 @@ class MenuEntity with AppEquatable {
     Map<String, dynamic>? metaInfoOfMenu,
     List<Nutrients>? nutrients,
     Timing? menuTiming,
+    TasteType? tasteType,
   }) {
     return MenuEntity(
       id: id ?? this.id,
@@ -156,6 +186,7 @@ class MenuEntity with AppEquatable {
       metaInfoOfMenu: metaInfoOfMenu ?? this.metaInfoOfMenu,
       nutrients: nutrients ?? this.nutrients,
       menuTiming: menuTiming ?? this.menuTiming,
+      tasteType: tasteType ?? this.tasteType,
     );
   }
 }
@@ -182,6 +213,7 @@ class MenuImage with AppEquatable {
       assetsUploadStatus: map['assetsUploadStatus'] as AssetsUploadStatus,
     );
   }
+
   final String imageId;
   final String assetPath;
   final Map<String, dynamic> metaInfo;
@@ -194,7 +226,15 @@ class MenuImage with AppEquatable {
   bool get cacheHash => true;
 
   @override
-  List<Object?> get hashParameters => [];
+  List<Object?> get hashParameters => [
+        imageId,
+        assetPath,
+        metaInfo,
+        assetExtension,
+        hasBase64,
+        valueOfBase64,
+        assetsUploadStatus,
+      ];
 
   Map<String, dynamic> toMap() {
     return {
@@ -247,6 +287,7 @@ class Ingredients with AppEquatable {
       metaInfo: map['metaInfo'] as Map<String, dynamic>,
     );
   }
+
   final String ingredientsId;
   final String title;
   final bool hasSelected;
@@ -257,7 +298,13 @@ class Ingredients with AppEquatable {
   bool get cacheHash => true;
 
   @override
-  List<Object?> get hashParameters => [];
+  List<Object?> get hashParameters => [
+        ingredientsId,
+        title,
+        hasSelected,
+        value,
+        metaInfo,
+      ];
 
   Map<String, dynamic> toMap() {
     return {
@@ -306,6 +353,7 @@ class Nutrients with AppEquatable {
       metaInfo: map['metaInfo'] as Map<String, dynamic>,
     );
   }
+
   final String nutrientsId;
   final String title;
   final bool hasSelected;
@@ -317,7 +365,14 @@ class Nutrients with AppEquatable {
   bool get cacheHash => true;
 
   @override
-  List<Object?> get hashParameters => [];
+  List<Object?> get hashParameters => [
+        nutrientsId,
+        title,
+        hasSelected,
+        value,
+        unit,
+        metaInfo,
+      ];
 
   Map<String, dynamic> toMap() {
     return {
@@ -441,21 +496,86 @@ class MenuPreparationType with AppEquatable {
   }
 }
 
-class SpiceLevel with AppEquatable {
-  SpiceLevel({
-    required this.spiceLevelId,
+class TasteType with AppEquatable {
+  TasteType({
+    required this.tasteTypeId,
+    required this.title,
+    required this.hasSelected,
+    required this.tasteLevel,
+    required this.hasTasteLevel,
+  });
+
+  factory TasteType.fromMap(Map<String, dynamic> map) {
+    return TasteType(
+      tasteTypeId: map['tasteTypeId'] as String,
+      title: map['title'] as String,
+      hasSelected: map['hasSelected'] as bool,
+      tasteLevel: map['tasteLevel'] as List<TasteLevel>,
+      hasTasteLevel: map['hasTasteLevel'] as bool,
+    );
+  }
+
+  final String tasteTypeId;
+  final String title;
+  final bool hasSelected;
+  final bool hasTasteLevel;
+  final List<TasteLevel> tasteLevel;
+
+  @override
+  bool get cacheHash => true;
+
+  @override
+  List<Object?> get hashParameters => [
+        tasteTypeId,
+        title,
+        hasSelected,
+        tasteLevel,
+        hasTasteLevel,
+      ];
+
+  Map<String, dynamic> toMap() {
+    return {
+      'tasteTypeId': this.tasteTypeId,
+      'title': this.title,
+      'hasSelected': this.hasSelected,
+      'tasteLevel': this.tasteLevel,
+      'hasTasteLevel': this.hasTasteLevel,
+    };
+  }
+
+  TasteType copyWith({
+    String? tasteTypeId,
+    String? title,
+    bool? hasSelected,
+    List<TasteLevel>? tasteLevel,
+    bool? hasTasteLevel,
+  }) {
+    return TasteType(
+      tasteTypeId: tasteTypeId ?? this.tasteTypeId,
+      title: title ?? this.title,
+      hasSelected: hasSelected ?? this.hasSelected,
+      tasteLevel: tasteLevel ?? this.tasteLevel,
+      hasTasteLevel: hasTasteLevel ?? this.hasTasteLevel,
+    );
+  }
+}
+
+class TasteLevel with AppEquatable {
+  TasteLevel({
+    required this.tasteLevelId,
     required this.title,
     required this.hasSelected,
   });
 
-  factory SpiceLevel.fromMap(Map<String, dynamic> map) {
-    return SpiceLevel(
-      spiceLevelId: map['spiceLevelId'] as String,
+  factory TasteLevel.fromMap(Map<String, dynamic> map) {
+    return TasteLevel(
+      tasteLevelId: map['tasteLevelId'] as String,
       title: map['title'] as String,
       hasSelected: map['hasSelected'] as bool,
     );
   }
-  final String spiceLevelId;
+
+  final String tasteLevelId;
   final String title;
   final bool hasSelected;
 
@@ -463,23 +583,27 @@ class SpiceLevel with AppEquatable {
   bool get cacheHash => true;
 
   @override
-  List<Object?> get hashParameters => [];
+  List<Object?> get hashParameters => [
+        tasteLevelId,
+        title,
+        hasSelected,
+      ];
 
   Map<String, dynamic> toMap() {
     return {
-      'spiceLevelId': this.spiceLevelId,
+      'tasteLevelId': this.tasteLevelId,
       'title': this.title,
       'hasSelected': this.hasSelected,
     };
   }
 
-  SpiceLevel copyWith({
-    String? spiceLevelId,
+  TasteLevel copyWith({
+    String? tasteLevelId,
     String? title,
     bool? hasSelected,
   }) {
-    return SpiceLevel(
-      spiceLevelId: spiceLevelId ?? this.spiceLevelId,
+    return TasteLevel(
+      tasteLevelId: tasteLevelId ?? this.tasteLevelId,
       title: title ?? this.title,
       hasSelected: hasSelected ?? this.hasSelected,
     );
@@ -512,6 +636,7 @@ class MenuPortion with AppEquatable {
       unit: map['unit'] as String,
     );
   }
+
   final String portionID;
   final String title;
   final String quantity;
@@ -526,7 +651,17 @@ class MenuPortion with AppEquatable {
   bool get cacheHash => true;
 
   @override
-  List<Object?> get hashParameters => [];
+  List<Object?> get hashParameters => [
+        portionID,
+        title,
+        quantity,
+        maxServingPerson,
+        defaultPrice,
+        finalPrice,
+        discountedPrice,
+        hasSelected,
+        unit,
+      ];
 
   Map<String, dynamic> toMap() {
     return {
@@ -595,6 +730,7 @@ class CustomPortion with AppEquatable {
       unit: map['unit'] as String,
     );
   }
+
   final String cutsomePortionID;
   final String title;
   final int maxServingPerson;
@@ -610,7 +746,18 @@ class CustomPortion with AppEquatable {
   bool get cacheHash => true;
 
   @override
-  List<Object?> get hashParameters => [];
+  List<Object?> get hashParameters => [
+        cutsomePortionID,
+        title,
+        maxServingPerson,
+        quantity,
+        defaultPrice,
+        finalPrice,
+        discountedPrice,
+        otherInfo,
+        hasSelected,
+        unit,
+      ];
 
   Map<String, dynamic> toMap() {
     return {
@@ -680,6 +827,7 @@ class Extras with AppEquatable {
       extrasImage: map['extrasImage'] as MenuImage,
     );
   }
+
   final String extrasID;
   final String title;
   final String quantity;
@@ -694,7 +842,17 @@ class Extras with AppEquatable {
   bool get cacheHash => true;
 
   @override
-  List<Object?> get hashParameters => [];
+  List<Object?> get hashParameters => [
+        extrasID,
+        title,
+        quantity,
+        defaultPrice,
+        finalPrice,
+        discountedPrice,
+        hasSelected,
+        unit,
+        extrasImage,
+      ];
 
   Map<String, dynamic> toMap() {
     return {
@@ -820,6 +978,7 @@ class TimeOfPeriodWise with AppEquatable {
       hasSelected: map['hasSelected'] as bool,
     );
   }
+
   final String timeOfPeriodWiseId;
   final String title;
   final bool hasSelected;
@@ -828,7 +987,11 @@ class TimeOfPeriodWise with AppEquatable {
   bool get cacheHash => true;
 
   @override
-  List<Object?> get hashParameters => [];
+  List<Object?> get hashParameters => [
+        timeOfPeriodWiseId,
+        title,
+        hasSelected,
+      ];
 
   Map<String, dynamic> toMap() {
     return {
@@ -869,6 +1032,7 @@ class Timing with AppEquatable {
       maxDeliveryTiming: map['maxDeliveryTiming'] as String,
     );
   }
+
   final String timingID;
   final String minPreparingTime;
   final String maxPreparingTime;
@@ -879,7 +1043,13 @@ class Timing with AppEquatable {
   bool get cacheHash => true;
 
   @override
-  List<Object?> get hashParameters => [];
+  List<Object?> get hashParameters => [
+        timingID,
+        minPreparingTime,
+        maxPreparingTime,
+        minDeliveryTime,
+        maxDeliveryTiming,
+      ];
 
   Map<String, dynamic> toMap() {
     return {
@@ -922,6 +1092,7 @@ class Category with AppEquatable {
       hasSelected: map['hasSelected'] as bool,
     );
   }
+
   final String categoryId;
   final String title;
   final bool hasSelected;
@@ -930,7 +1101,11 @@ class Category with AppEquatable {
   bool get cacheHash => true;
 
   @override
-  List<Object?> get hashParameters => [];
+  List<Object?> get hashParameters => [
+        categoryId,
+        title,
+        hasSelected,
+      ];
 
   Map<String, dynamic> toMap() {
     return {

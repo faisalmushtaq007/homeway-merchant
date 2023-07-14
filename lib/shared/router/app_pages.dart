@@ -16,10 +16,7 @@ import 'package:homemakers_merchant/app/features/authentication/presentation/pag
 import 'package:homemakers_merchant/app/features/dashboard/presentation/pages/main_dashboard_page.dart';
 import 'package:homemakers_merchant/app/features/dashboard/presentation/pages/primary_dashboard_page.dart';
 import 'package:homemakers_merchant/app/features/dashboard/presentation/pages/welcome_page.dart';
-import 'package:homemakers_merchant/app/features/menu/presentation/pages/all_menu_page.dart';
-import 'package:homemakers_merchant/app/features/menu/presentation/pages/menu_description_page.dart';
-import 'package:homemakers_merchant/app/features/menu/presentation/pages/new_menu_greeting_page.dart';
-import 'package:homemakers_merchant/app/features/menu/presentation/pages/save_menu_page.dart';
+import 'package:homemakers_merchant/app/features/menu/index.dart';
 import 'package:homemakers_merchant/app/features/onboarding/presentation/pages/onboarding_page.dart';
 import 'package:homemakers_merchant/app/features/onboarding/presentation/pages/splash_page.dart';
 import 'package:homemakers_merchant/app/features/profile/common/document_type_enum.dart';
@@ -41,7 +38,7 @@ class AppRouter {
 
   AppRouter._();
 
-  static const String INITIAL = Routes.ALL_MENU_PAGE;
+  static const String INITIAL = Routes.SAVE_MENU_PAGE;
 
   static final GoRouter _router = GoRouter(
     debugLogDiagnostics: true,
@@ -149,6 +146,10 @@ class AppRouter {
       GoRoute(
         path: Routes.MENU_DESCRIPTION_PAGE,
         builder: (context, state) => const MenuDescriptionPage(),
+      ),
+      GoRoute(
+        path: Routes.MENU_FORM1_PAGE,
+        builder: (context, state) => const MenuForm1Page(),
       ),
     ],
   );

@@ -1,30 +1,4 @@
-import 'package:flutter/material.dart';
-import 'package:homemakers_merchant/base/widget_view.dart';
-import 'package:homemakers_merchant/core/constants/global_app_constants.dart';
-import 'package:flex_color_scheme/flex_color_scheme.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
-import 'package:homemakers_merchant/app/features/permission/presentation/bloc/permission_bloc.dart';
-import 'package:homemakers_merchant/bootup/injection_container.dart';
-import 'package:homemakers_merchant/config/translation/language_controller.dart';
-import 'package:homemakers_merchant/config/translation/widgets/language_selection_widget.dart';
-import 'package:homemakers_merchant/core/constants/global_app_constants.dart';
-import 'package:homemakers_merchant/shared/widgets/app/page_body.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
-import 'package:go_router/go_router.dart';
-import 'package:homemakers_merchant/bootup/injection_container.dart';
-import 'package:homemakers_merchant/config/translation/app_translator.dart';
-import 'package:homemakers_merchant/config/translation/extension/text_extension.dart';
-import 'package:homemakers_merchant/config/translation/language_controller.dart';
-import 'package:homemakers_merchant/config/translation/widgets/language_selection_widget.dart';
-import 'package:homemakers_merchant/core/constants/global_app_constants.dart';
-import 'package:homemakers_merchant/core/extensions/app_extension.dart';
-import 'package:homemakers_merchant/core/extensions/string/pattern.dart';
-import 'package:homemakers_merchant/shared/widgets/universal/constrained_scrollable_views/constrained_scrollable_views.dart';
+part of 'package:homemakers_merchant/app/features/menu/index.dart';
 
 class MenuDescriptionPage extends StatefulWidget {
   const MenuDescriptionPage({super.key});

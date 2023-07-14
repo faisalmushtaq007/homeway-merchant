@@ -135,6 +135,7 @@ dependencies:
   rxdart: ^0.27.7
   saver_gallery: ^2.0.1
   sembast: ^3.4.9
+  sliver_tools: ^0.2.10
   synchronized: ^3.1.0
   timelines:
     git:

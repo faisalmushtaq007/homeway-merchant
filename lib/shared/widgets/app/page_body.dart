@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:homemakers_merchant/utils/app_scroll_behavior.dart';
+import 'package:homemakers_merchant/utils/universal_platform/src/universal_platform.dart';
 
 /// A centered width constrained web style page body.
 ///
@@ -57,6 +59,7 @@ class PageBody extends StatelessWidget {
     // the screen where it belongs.
     return Scrollbar(
       controller: controller,
+      thickness: UniversalPlatform.isDesktopOrWeb ? null : 0,
       child: GestureDetector(
         // This allows us to un-focus a widget, typically a TextField with focus
         // by tapping somewhere outside it. It is no longer needed on desktop
@@ -67,8 +70,7 @@ class PageBody extends StatelessWidget {
           child: ConstrainedBox(
             constraints: constraints,
             child: ScrollConfiguration(
-              behavior:
-                  ScrollConfiguration.of(context).copyWith(scrollbars: false),
+              behavior: const DragScrollBehavior().copyWith(scrollbars: false), //ScrollConfiguration.of(context).copyWith(scrollbars: false),
               child: Padding(
                 padding: padding,
                 child: child,

@@ -61,8 +61,12 @@ abstract class Routes {
   static const String ALL_MENU_PAGE = _Paths.ALL_MENU_PAGE;
   static const String SAVE_MENU_PAGE = _Paths.SAVE_MENU_PAGE;
   static const String NEW_MENU_GREETING_PAGE = _Paths.NEW_MENU_GREETING_PAGE;
-
   static const String MENU_DESCRIPTION_PAGE = _Paths.MENU_DESCRIPTION_PAGE;
+  static const String MENU_FORM1_PAGE = _Paths.MENU_FORM1_PAGE;
+  static const String MENU_FORM2_PAGE = _Paths.MENU_FORM2_PAGE;
+  static const String MENU_FORM3_PAGE = _Paths.MENU_FORM3_PAGE;
+  static const String MENU_FORM4_PAGE = _Paths.MENU_FORM4_PAGE;
+  static const String MENU_FORM5_PAGE = _Paths.MENU_FORM5_PAGE;
 }
 
 abstract class _Paths {
@@ -124,4 +128,9 @@ abstract class _Paths {
   static const String SAVE_MENU_PAGE = '/save-menu';
   static const String NEW_MENU_GREETING_PAGE = '/new-menu-greeting';
   static const String MENU_DESCRIPTION_PAGE = '/menu-description';
+  static const String MENU_FORM1_PAGE = '/menu-form-1';
+  static const String MENU_FORM2_PAGE = '/menu-form-2';
+  static const String MENU_FORM3_PAGE = '/menu-form-3';
+  static const String MENU_FORM4_PAGE = '/menu-form-4';
+  static const String MENU_FORM5_PAGE = '/menu-form-5';
 }

@@ -7,6 +7,8 @@ analyzer:
     invalid_annotation_target: ignore
     argument_type_not_assignable: ignore
     generic_argument_factories: true
+    invalid_assignment: false
+
 linter:
   rules:
     public_member_api_docs: false
@@ -18,3 +20,4 @@ linter:
     sort_constructors_first: true
     cascade_invocations: false
     lines_longer_than_80_chars: false
+    invalid_assignment: false
