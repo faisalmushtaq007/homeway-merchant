@@ -59,7 +59,7 @@ class StoreBloc extends Bloc<StoreEvent, StoreState> {
 
   FutureOr<void> _getAllStore(GetAllStore event, Emitter<StoreState> emit) async {
     emit(StoreLoadingState(isLoading: true, message: 'Please wait while we are fetching your store...'));
-    await Future.delayed(const Duration(seconds: 2));
+    await Future.delayed(const Duration(seconds: 1));
     emit(StoreLoadingState(isLoading: false, message: ''));
     await Future.delayed(const Duration(seconds: 1));
     emit(

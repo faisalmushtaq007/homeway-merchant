@@ -35,6 +35,7 @@ import 'package:go_router/go_router.dart';
 import 'package:homemakers_merchant/shared/widgets/universal/date_time_picker_platform/datetime_picker_field_platform.dart';
 import 'package:homemakers_merchant/shared/widgets/universal/double_tap_exit/double_tap_to_exit.dart';
 import 'package:homemakers_merchant/shared/widgets/universal/multi_stream_builder/multi_stream_builder.dart';
+import 'package:homemakers_merchant/utils/fieldFocusChange.dart';
 import 'package:homemakers_merchant/utils/input_formatters/mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:homemakers_merchant/utils/input_formatters/muskey.dart';
 
@@ -83,6 +84,18 @@ class _SaveStorePageState extends State<SaveStorePage> {
     overflow: OverflowBehavior.forbidden(),
   );
   late final MaskTextInputFormatter maximumDeliveryTimeFormatter;
+  List<FocusNode> focusList = [
+    FocusNode(),
+    FocusNode(),
+    FocusNode(),
+    FocusNode(),
+    FocusNode(),
+    FocusNode(),
+    FocusNode(),
+    FocusNode(),
+    FocusNode(),
+    FocusNode()
+  ];
 
   @override
   void initState() {
@@ -126,6 +139,7 @@ class _SaveStorePageState extends State<SaveStorePage> {
     _storeAvailableFoodPreparationType = [];
     _storeAvailableFoodTypes = [];
     _storeWorkingDays = [];
+    focusList.asMap().forEach((key, value) => value.dispose());
     super.dispose();
   }
 
@@ -298,6 +312,7 @@ class _SaveStorePageState extends State<SaveStorePage> {
                             Expanded(
                               child: StoreTextFieldWidget(
                                 controller: _storeNameController,
+                                keyboardType: TextInputType.name,
                                 decoration: InputDecoration(
                                   labelText: 'Store name',
                                   hintText: 'Enter your store name',
@@ -306,7 +321,9 @@ class _SaveStorePageState extends State<SaveStorePage> {
                                   ),
                                   isDense: true,
                                 ),
+                                focusNode: focusList[0],
                                 textInputAction: TextInputAction.next,
+                                onFieldSubmitted: (_) => fieldFocusChange(context, focusList[0], focusList[1]),
                                 validator: (value) {
                                   if (value == null || value.isEmpty) {
                                     return 'Enter store name';
@@ -344,7 +361,9 @@ class _SaveStorePageState extends State<SaveStorePage> {
                                 controller: _storeAddressController,
                                 textDirection: serviceLocator<LanguageController>().targetTextDirection,
                                 maxLines: 3,
+                                focusNode: focusList[1],
                                 textInputAction: TextInputAction.next,
+                                onFieldSubmitted: (_) => fieldFocusChange(context, focusList[1], focusList[2]),
                                 decoration: InputDecoration(
                                   labelText: snapshot[0],
                                   isDense: true,
@@ -617,7 +636,9 @@ class _SaveStorePageState extends State<SaveStorePage> {
                                         Expanded(
                                           child: StoreTextFieldWidget(
                                             controller: _storeOwnerDriverNameController,
+                                            focusNode: focusList[4],
                                             textInputAction: TextInputAction.next,
+                                            onFieldSubmitted: (_) => fieldFocusChange(context, focusList[4], focusList[5]),
                                             decoration: InputDecoration(
                                               labelText: 'Driver name',
                                               hintText: 'Enter driver name',
@@ -649,7 +670,9 @@ class _SaveStorePageState extends State<SaveStorePage> {
                                         Expanded(
                                           child: StoreTextFieldWidget(
                                             controller: _storeOwnerDriverPhoneNumberController,
+                                            focusNode: focusList[5],
                                             textInputAction: TextInputAction.next,
+                                            onFieldSubmitted: (_) => fieldFocusChange(context, focusList[5], focusList[6]),
                                             decoration: InputDecoration(
                                               labelText: 'Driver mobile number',
                                               hintText: 'Enter driver mobile number',
@@ -681,7 +704,9 @@ class _SaveStorePageState extends State<SaveStorePage> {
                                         Expanded(
                                           child: StoreTextFieldWidget(
                                             controller: _storeOwnerDriverLicenseController,
+                                            focusNode: focusList[6],
                                             textInputAction: TextInputAction.next,
+                                            onFieldSubmitted: (_) => fieldFocusChange(context, focusList[6], focusList[7]),
                                             decoration: InputDecoration(
                                               labelText: 'Driver driving license number',
                                               hintText: 'Enter driver driving license',
@@ -730,6 +755,9 @@ class _SaveStorePageState extends State<SaveStorePage> {
                               child: StoreTextFieldWidget(
                                 controller: _storeMaxDeliveryTimeController,
                                 textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                focusNode: focusList[7],
+                                textInputAction: TextInputAction.done,
+                                onFieldSubmitted: (_) => fieldFocusChange(context, focusList[7], focusList[8]),
                                 decoration: InputDecoration(
                                   hintText: '00',
                                   isDense: true,
@@ -742,7 +770,6 @@ class _SaveStorePageState extends State<SaveStorePage> {
                                   //FilteringTextInputFormatter.digitsOnly,
                                   maximumDeliveryTimeFormatter,
                                 ],
-                                textInputAction: TextInputAction.done,
                                 onChanged: (value) {},
                                 validator: (value) {
                                   if (value == null || value.isEmpty || maximumDeliveryTimeFormatter.getUnmaskedText().isEmpty) {

@@ -186,7 +186,7 @@ class _SaveMenuPageView extends WidgetView<SaveMenuPage, _SaveMenuPageController
               minWidth: 1000,
             ),
             padding: EdgeInsetsDirectional.fromSTEB(margins * 2.5, topPadding, margins * 2.5, bottomPadding),
-            child: MenuForm2Page(),
+            child: MenuForm3Page(),
           ),
         ),
       ),

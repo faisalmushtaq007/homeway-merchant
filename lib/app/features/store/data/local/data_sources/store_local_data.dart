@@ -43,3 +43,5 @@ final localStoreWorkingDays = [
   StoreWorkingDayAndTime(day: 'Friday', id: 5, shortName: 'Fri'),
   StoreWorkingDayAndTime(day: 'Saturday', id: 6, shortName: 'Sat'),
 ];
+
+final localMenuPreparationTimings = [];

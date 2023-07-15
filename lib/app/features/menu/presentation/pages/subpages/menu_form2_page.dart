@@ -99,9 +99,6 @@ class _MenuForm2PageState extends State<MenuForm2Page> {
   @override
   Widget build(BuildContext context) {
     return DynMouseScroll(
-      scrollSpeed: 4.4,
-      durationMS: 500,
-      //animationCurve: Curves.easeOutQuart,
       builder: (context, controller, physics) {
         return ListView(
           controller: scrollController,
@@ -321,7 +318,11 @@ class _MenuForm2PageState extends State<MenuForm2Page> {
                       });
                     },
                     value: _hasCustomMenuPortionSize,
-                    title: Text('Select and enter your own portion size').translate(),
+                    title: Text(
+                      'Select your own portion size',
+                      style: context.titleMedium!.copyWith(fontWeight: FontWeight.w500),
+                      textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                    ).translate(),
                     isThreeLine: false,
                     dense: true,
                     controlAffinity: ListTileControlAffinity.leading,
@@ -329,107 +330,110 @@ class _MenuForm2PageState extends State<MenuForm2Page> {
                   ),
                   AnimatedCrossFade(
                     firstChild: SizedBox.shrink(),
-                    secondChild: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        const AnimatedGap(8, duration: Duration(milliseconds: 500)),
-                        Row(
-                          mainAxisSize: MainAxisSize.min,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                          children: [
-                            Expanded(
-                              child: StoreTextFieldWidget(
-                                controller: _menuPortionNameController,
-                                textInputAction: TextInputAction.next,
-                                decoration: InputDecoration(
-                                  labelText: 'Size or Quantity name',
-                                  hintText: 'Enter Size or Quantity name',
-                                  border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(10),
-                                  ),
-                                  isDense: true,
-                                ),
-                                validator: (value) {
-                                  if (_hasCustomMenuPortionSize) {
-                                    if (value == null || value.isEmpty) {
-                                      return 'Please enter size or quantity name';
-                                    } else {
+                    secondChild: Padding(
+                      padding: EdgeInsetsDirectional.fromSTEB(8, 2, 8, 12),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          const AnimatedGap(8, duration: Duration(milliseconds: 500)),
+                          IntrinsicHeight(
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                              children: [
+                                Expanded(
+                                  flex: 2,
+                                  child: StoreTextFieldWidget(
+                                    controller: _menuPortionNameController,
+                                    textInputAction: TextInputAction.next,
+                                    decoration: InputDecoration(
+                                      labelText: 'Size or Quantity name',
+                                      hintText: 'Enter size or quantity name',
+                                      border: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(10),
+                                      ),
+                                      isDense: true,
+                                    ),
+                                    validator: (value) {
+                                      if (_hasCustomMenuPortionSize) {
+                                        if (value == null || value.isEmpty) {
+                                          return 'Please enter size or quantity name';
+                                        } else {
+                                          return null;
+                                        }
+                                      }
                                       return null;
-                                    }
-                                  }
-                                  return null;
-                                },
-                              ),
-                            )
-                          ],
-                        ),
-                        const AnimatedGap(12, duration: Duration(milliseconds: 500)),
-                        Row(
-                          mainAxisSize: MainAxisSize.min,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                          children: [
-                            Expanded(
-                              child: StoreTextFieldWidget(
-                                controller: _menuPortionSizeController,
-                                textInputAction: TextInputAction.next,
-                                decoration: InputDecoration(
-                                  labelText: 'Maximum Serving Persons',
-                                  hintText: 'Enter maximum serving persons',
-                                  border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(10),
+                                    },
                                   ),
-                                  isDense: true,
                                 ),
-                                validator: (value) {
-                                  if (_hasCustomMenuPortionSize) {
-                                    if (value == null || value.isEmpty) {
-                                      return 'Please enter maximum serving persons';
-                                    } else {
+                                const AnimatedGap(18, duration: Duration(milliseconds: 500)),
+                                Expanded(
+                                  child: StoreTextFieldWidget(
+                                    controller: _menuPortionUnitController,
+                                    textInputAction: TextInputAction.next,
+                                    textCapitalization: TextCapitalization.words,
+                                    decoration: InputDecoration(
+                                      labelText: 'Unit',
+                                      hintText: 'Enter unit of menu',
+                                      border: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(10),
+                                      ),
+                                      isDense: true,
+                                    ),
+                                    validator: (value) {
+                                      if (_hasCustomMenuPortionSize) {
+                                        if (value == null || value.isEmpty) {
+                                          return 'Please enter unit of menu';
+                                        } else {
+                                          return null;
+                                        }
+                                      }
                                       return null;
-                                    }
-                                  }
-                                  return null;
-                                },
-                              ),
-                            )
-                          ],
-                        ),
-/*                    const AnimatedGap(12, duration: Duration(milliseconds: 500)),
-                    Row(
-                      mainAxisSize: MainAxisSize.min,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                      children: [
-                        Expanded(
-                          child: StoreTextFieldWidget(
-                            controller: _menuPortionUnitController,
-                            textInputAction: TextInputAction.next,
-                            decoration: InputDecoration(
-                              labelText: 'Maximum portion units ',
-                              hintText: 'Enter driver driving license',
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                              isDense: true,
+                                    },
+                                  ),
+                                ),
+                              ],
                             ),
-                            validator: (value) {
-                              if (_hasCustomMenuPortionSize) {
-                                if (value == null || value.isEmpty) {
-                                  return 'Please enter driver driving license';
-                                } else {
-                                  return null;
-                                }
-                              }
-                              return null;
-                            },
                           ),
-                        )
-                      ],
-                    ),*/
-                      ],
+                          const AnimatedGap(12, duration: Duration(milliseconds: 500)),
+                          IntrinsicHeight(
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                              children: [
+                                Expanded(
+                                  child: StoreTextFieldWidget(
+                                    controller: _menuPortionSizeController,
+                                    textInputAction: TextInputAction.next,
+                                    decoration: InputDecoration(
+                                      labelText: 'Maximum Serving Persons',
+                                      hintText: 'Enter maximum serving persons',
+                                      border: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(10),
+                                      ),
+                                      isDense: true,
+                                    ),
+                                    validator: (value) {
+                                      if (_hasCustomMenuPortionSize) {
+                                        if (value == null || value.isEmpty) {
+                                          return 'Please enter maximum serving persons';
+                                        } else {
+                                          return null;
+                                        }
+                                      }
+                                      return null;
+                                    },
+                                  ),
+                                ),
+                                //
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                     crossFadeState: (_hasCustomMenuPortionSize == true) ? CrossFadeState.showSecond : CrossFadeState.showFirst,
                     duration: const Duration(milliseconds: 500),

@@ -151,6 +151,18 @@ class AppRouter {
         path: Routes.MENU_FORM1_PAGE,
         builder: (context, state) => const MenuForm1Page(),
       ),
+      GoRoute(
+        path: Routes.MENU_ADDONS_PAGE,
+        builder: (context, state) => const MenuAllAddonsPage(),
+      ),
+      GoRoute(
+        path: Routes.SAVE_ADDONS_PAGE,
+        builder: (context, state) => const SaveAddonsPage(),
+      ),
+      GoRoute(
+        path: Routes.NEW_ADDONS_GREETING_PAGE,
+        builder: (context, state) => const NewAddonsGreetingPage(),
+      ),
     ],
   );
 

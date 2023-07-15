@@ -67,6 +67,9 @@ abstract class Routes {
   static const String MENU_FORM3_PAGE = _Paths.MENU_FORM3_PAGE;
   static const String MENU_FORM4_PAGE = _Paths.MENU_FORM4_PAGE;
   static const String MENU_FORM5_PAGE = _Paths.MENU_FORM5_PAGE;
+  static const String MENU_ADDONS_PAGE = _Paths.MENU_ADDONS_PAGE;
+  static const String SAVE_ADDONS_PAGE = _Paths.SAVE_ADDONS_PAGE;
+  static const String NEW_ADDONS_GREETING_PAGE = _Paths.NEW_ADDONS_GREETING_PAGE;
 }
 
 abstract class _Paths {
@@ -133,4 +136,7 @@ abstract class _Paths {
   static const String MENU_FORM3_PAGE = '/menu-form-3';
   static const String MENU_FORM4_PAGE = '/menu-form-4';
   static const String MENU_FORM5_PAGE = '/menu-form-5';
+  static const String MENU_ADDONS_PAGE = '/menu-addons';
+  static const String SAVE_ADDONS_PAGE = '/save-addons';
+  static const String NEW_ADDONS_GREETING_PAGE = '/new-addons-greeting';
 }

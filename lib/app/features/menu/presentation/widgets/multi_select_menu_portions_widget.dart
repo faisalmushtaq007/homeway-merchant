@@ -35,6 +35,9 @@ class MultiSelectMenuPortionFormField extends FormField<List<MenuPortion>> {
   final Color? checkBoxActiveColor;
   final bool enabled;
 
+  /// Enable single choice
+  final bool isSingleSelect;
+
   MultiSelectMenuPortionFormField({
     FormFieldSetter<List<MenuPortion>>? onSaved,
     FormFieldValidator<List<MenuPortion>>? validator,
@@ -70,6 +73,7 @@ class MultiSelectMenuPortionFormField extends FormField<List<MenuPortion>> {
     this.onMaxSelected,
     this.maxSelection,
     this.initialSelectedMenuPortionList = const [],
+    this.isSingleSelect = false,
     super.key,
   }) : super(
           onSaved: onSaved,
@@ -107,6 +111,9 @@ class MultiSelectMenuPortionFormField extends FormField<List<MenuPortion>> {
                 },
                 availableMenuPortions: availableMenuPortionList.toList(),
                 initialSelectedMenuPortionList: initialSelectedMenuPortionList.toList(),
+                isSingleSelect: isSingleSelect,
+                onMaxSelected: onMaxSelected,
+                maxSelection: maxSelection,
               ),
             );
           },
@@ -121,6 +128,7 @@ class MultiSelectMenuMenuPortion extends StatefulWidget {
     this.maxSelection,
     super.key,
     this.initialSelectedMenuPortionList = const [],
+    this.isSingleSelect = false,
   });
 
   final List<MenuPortion> availableMenuPortions;
@@ -128,6 +136,9 @@ class MultiSelectMenuMenuPortion extends StatefulWidget {
   final Function(List<MenuPortion>)? onMaxSelected;
   final List<MenuPortion> initialSelectedMenuPortionList;
   final int? maxSelection;
+
+  /// Enable single choice
+  final bool isSingleSelect;
 
   @override
   _MultiSelectChipState createState() => _MultiSelectChipState();
@@ -148,18 +159,25 @@ class _MultiSelectChipState extends State<MultiSelectMenuMenuPortion> {
         ),
         selected: selectedChoices.contains(item),
         onSelected: (selected) {
-          if (selectedChoices.length == (widget.maxSelection ?? -1) && !selectedChoices.contains(item)) {
-            widget.onMaxSelected?.call(selectedChoices);
-          } else {
+          if (widget.isSingleSelect) {
             setState(() {
-              selectedChoices.contains(item) ? selectedChoices.remove(item) : selectedChoices.add(item);
+              selectedChoices.clear();
+              selectedChoices = [];
+              selectedChoices.add(item);
               widget.onSelectionChanged?.call(selectedChoices);
             });
+          } else {
+            if (selectedChoices.length == (widget.maxSelection ?? -1) && !selectedChoices.contains(item)) {
+              setState(() {
+                widget.onMaxSelected?.call(selectedChoices);
+              });
+            } else {
+              setState(() {
+                selectedChoices.contains(item) ? selectedChoices.remove(item) : selectedChoices.add(item);
+                widget.onSelectionChanged?.call(selectedChoices);
+              });
+            }
           }
-          /*setState(() {
-            selectedChoices.contains(item) ? selectedChoices.remove(item) : selectedChoices.add(item);
-            widget.onSelectionChanged(selectedChoices);
-          });*/
         },
       ));
     }

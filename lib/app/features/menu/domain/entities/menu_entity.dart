@@ -15,7 +15,7 @@ class MenuEntity with AppEquatable {
     required this.menuPortions,
     required this.hasCustomPortion,
     required this.customPortions,
-    required this.extras,
+    required this.addons,
     required this.menuAvailableFromTime,
     required this.menuAvailableToTime,
     required this.menuAvailableInDays,
@@ -26,6 +26,7 @@ class MenuEntity with AppEquatable {
     required this.nutrients,
     required this.menuTiming,
     required this.tasteType,
+    required this.stock,
   });
 
   factory MenuEntity.fromMap(Map<String, dynamic> map) {
@@ -42,7 +43,7 @@ class MenuEntity with AppEquatable {
       menuPortions: map['menuPortions'] as List<MenuPortion>,
       hasCustomPortion: map['hasCustomPortion'] as bool,
       customPortions: map['customPortions'] as List<CustomPortion>,
-      extras: map['extras'] as List<Extras>,
+      addons: map['addons'] as List<Addons>,
       menuAvailableFromTime: map['menuAvailableFromTime'] as String,
       menuAvailableToTime: map['menuAvailableToTime'] as String,
       menuAvailableInDays: map['menuAvailableInDays'] as List<MenuAvailableDayAndTime>,
@@ -53,6 +54,7 @@ class MenuEntity with AppEquatable {
       nutrients: map['nutrients'] as List<Nutrients>,
       menuTiming: map['menuTiming'] as Timing,
       tasteType: map['tasteType'] as TasteType,
+      stock: map['stock'] as Stock,
     );
   }
 
@@ -68,7 +70,7 @@ class MenuEntity with AppEquatable {
   final List<MenuPortion> menuPortions;
   final bool hasCustomPortion;
   final List<CustomPortion> customPortions;
-  final List<Extras> extras;
+  final List<Addons> addons;
   final String menuAvailableFromTime;
   final String menuAvailableToTime;
   final List<MenuAvailableDayAndTime> menuAvailableInDays;
@@ -79,6 +81,7 @@ class MenuEntity with AppEquatable {
   final List<Nutrients> nutrients;
   final Timing menuTiming;
   final TasteType tasteType;
+  final Stock stock;
 
   @override
   bool get cacheHash => true;
@@ -97,7 +100,7 @@ class MenuEntity with AppEquatable {
         menuPortions,
         hasCustomPortion,
         customPortions,
-        extras,
+        addons,
         menuAvailableFromTime,
         menuAvailableToTime,
         menuAvailableInDays,
@@ -108,6 +111,7 @@ class MenuEntity with AppEquatable {
         nutrients,
         menuTiming,
         tasteType,
+        stock,
       ];
 
   Map<String, dynamic> toMap() {
@@ -124,7 +128,7 @@ class MenuEntity with AppEquatable {
       'menuPortions': this.menuPortions,
       'hasCustomPortion': this.hasCustomPortion,
       'customPortions': this.customPortions,
-      'extras': this.extras,
+      'addons': this.addons,
       'menuAvailableFromTime': this.menuAvailableFromTime,
       'menuAvailableToTime': this.menuAvailableToTime,
       'menuAvailableInDays': this.menuAvailableInDays,
@@ -135,6 +139,7 @@ class MenuEntity with AppEquatable {
       'nutrients': this.nutrients,
       'menuTiming': this.menuTiming,
       'tasteType': this.tasteType,
+      'stock': this.stock,
     };
   }
 
@@ -151,7 +156,7 @@ class MenuEntity with AppEquatable {
     List<MenuPortion>? menuPortions,
     bool? hasCustomPortion,
     List<CustomPortion>? customPortions,
-    List<Extras>? extras,
+    List<Addons>? addons,
     String? menuAvailableFromTime,
     String? menuAvailableToTime,
     List<MenuAvailableDayAndTime>? menuAvailableInDays,
@@ -162,6 +167,7 @@ class MenuEntity with AppEquatable {
     List<Nutrients>? nutrients,
     Timing? menuTiming,
     TasteType? tasteType,
+    Stock? stock,
   }) {
     return MenuEntity(
       id: id ?? this.id,
@@ -176,7 +182,7 @@ class MenuEntity with AppEquatable {
       menuPortions: menuPortions ?? this.menuPortions,
       hasCustomPortion: hasCustomPortion ?? this.hasCustomPortion,
       customPortions: customPortions ?? this.customPortions,
-      extras: extras ?? this.extras,
+      addons: addons ?? this.addons,
       menuAvailableFromTime: menuAvailableFromTime ?? this.menuAvailableFromTime,
       menuAvailableToTime: menuAvailableToTime ?? this.menuAvailableToTime,
       menuAvailableInDays: menuAvailableInDays ?? this.menuAvailableInDays,
@@ -187,6 +193,7 @@ class MenuEntity with AppEquatable {
       nutrients: nutrients ?? this.nutrients,
       menuTiming: menuTiming ?? this.menuTiming,
       tasteType: tasteType ?? this.tasteType,
+      stock: stock ?? this.stock,
     );
   }
 }
@@ -621,31 +628,37 @@ class MenuPortion with AppEquatable {
     required this.discountedPrice,
     required this.hasSelected,
     required this.unit,
+    this.currency = 'SAR',
+    this.description = '',
   });
 
   factory MenuPortion.fromMap(Map<String, dynamic> map) {
     return MenuPortion(
       portionID: map['portionID'] as String,
       title: map['title'] as String,
-      quantity: map['quantity'] as String,
+      quantity: map['quantity'] as double,
       maxServingPerson: map['maxServingPerson'] as int,
       defaultPrice: map['defaultPrice'] as double,
       finalPrice: map['finalPrice'] as double,
       discountedPrice: map['discountedPrice'] as double,
       hasSelected: map['hasSelected'] as bool,
       unit: map['unit'] as String,
+      currency: map['currency'] as String,
+      description: map['description'] as String,
     );
   }
 
   final String portionID;
   final String title;
-  final String quantity;
+  final double quantity;
   final int maxServingPerson;
   final double defaultPrice;
   final double finalPrice;
   final double discountedPrice;
   final bool hasSelected;
   final String unit;
+  final String currency;
+  final String description;
 
   @override
   bool get cacheHash => true;
@@ -661,6 +674,8 @@ class MenuPortion with AppEquatable {
         discountedPrice,
         hasSelected,
         unit,
+        currency,
+        description,
       ];
 
   Map<String, dynamic> toMap() {
@@ -674,19 +689,23 @@ class MenuPortion with AppEquatable {
       'discountedPrice': this.discountedPrice,
       'hasSelected': this.hasSelected,
       'unit': this.unit,
+      'currency': this.currency,
+      'description': this.description,
     };
   }
 
   MenuPortion copyWith({
     String? portionID,
     String? title,
-    String? quantity,
+    double? quantity,
     int? maxServingPerson,
     double? defaultPrice,
     double? finalPrice,
     double? discountedPrice,
     bool? hasSelected,
     String? unit,
+    String? currency,
+    String? description,
   }) {
     return MenuPortion(
       portionID: portionID ?? this.portionID,
@@ -698,6 +717,8 @@ class MenuPortion with AppEquatable {
       discountedPrice: discountedPrice ?? this.discountedPrice,
       hasSelected: hasSelected ?? this.hasSelected,
       unit: unit ?? this.unit,
+      currency: currency ?? this.currency,
+      description: description ?? this.description,
     );
   }
 }
@@ -714,6 +735,8 @@ class CustomPortion with AppEquatable {
     required this.otherInfo,
     required this.hasSelected,
     required this.unit,
+    this.currency = 'SAR',
+    this.description = '',
   });
 
   factory CustomPortion.fromMap(Map<String, dynamic> map) {
@@ -721,26 +744,30 @@ class CustomPortion with AppEquatable {
       cutsomePortionID: map['cutsomePortionID'] as String,
       title: map['title'] as String,
       maxServingPerson: map['maxServingPerson'] as int,
-      quantity: map['quantity'] as String,
+      quantity: map['quantity'] as double,
       defaultPrice: map['defaultPrice'] as double,
       finalPrice: map['finalPrice'] as double,
       discountedPrice: map['discountedPrice'] as double,
       otherInfo: map['otherInfo'] as Map<String, dynamic>,
       hasSelected: map['hasSelected'] as bool,
       unit: map['unit'] as String,
+      currency: map['currency'] as String,
+      description: map['description'] as String,
     );
   }
 
   final String cutsomePortionID;
   final String title;
   final int maxServingPerson;
-  final String quantity;
+  final double quantity;
   final double defaultPrice;
   final double finalPrice;
   final double discountedPrice;
   final Map<String, dynamic> otherInfo;
   final bool hasSelected;
   final String unit;
+  final String currency;
+  final String description;
 
   @override
   bool get cacheHash => true;
@@ -757,6 +784,8 @@ class CustomPortion with AppEquatable {
         otherInfo,
         hasSelected,
         unit,
+        currency,
+        description,
       ];
 
   Map<String, dynamic> toMap() {
@@ -771,6 +800,8 @@ class CustomPortion with AppEquatable {
       'otherInfo': this.otherInfo,
       'hasSelected': this.hasSelected,
       'unit': this.unit,
+      'currency': this.currency,
+      'description': this.description,
     };
   }
 
@@ -778,13 +809,15 @@ class CustomPortion with AppEquatable {
     String? cutsomePortionID,
     String? title,
     int? maxServingPerson,
-    String? quantity,
+    double? quantity,
     double? defaultPrice,
     double? finalPrice,
     double? discountedPrice,
     Map<String, dynamic>? otherInfo,
     bool? hasSelected,
     String? unit,
+    String? currency,
+    String? description,
   }) {
     return CustomPortion(
       cutsomePortionID: cutsomePortionID ?? this.cutsomePortionID,
@@ -797,13 +830,15 @@ class CustomPortion with AppEquatable {
       otherInfo: otherInfo ?? this.otherInfo,
       hasSelected: hasSelected ?? this.hasSelected,
       unit: unit ?? this.unit,
+      currency: currency ?? this.currency,
+      description: description ?? this.description,
     );
   }
 }
 
-class Extras with AppEquatable {
-  Extras({
-    required this.extrasID,
+class Addons with AppEquatable {
+  Addons({
+    required this.addonsID,
     required this.title,
     required this.quantity,
     required this.defaultPrice,
@@ -811,39 +846,45 @@ class Extras with AppEquatable {
     required this.discountedPrice,
     required this.hasSelected,
     required this.unit,
-    required this.extrasImage,
+    this.addonsImage,
+    this.currency = 'SAR',
+    this.description = '',
   });
 
-  factory Extras.fromMap(Map<String, dynamic> map) {
-    return Extras(
-      extrasID: map['extrasID'] as String,
+  factory Addons.fromMap(Map<String, dynamic> map) {
+    return Addons(
+      addonsID: map['addonsD'] as String,
       title: map['title'] as String,
-      quantity: map['quantity'] as String,
+      quantity: map['quantity'] as double,
       defaultPrice: map['defaultPrice'] as double,
       finalPrice: map['finalPrice'] as double,
       discountedPrice: map['discountedPrice'] as double,
       hasSelected: map['hasSelected'] as bool,
       unit: map['unit'] as String,
-      extrasImage: map['extrasImage'] as MenuImage,
+      addonsImage: map['addonsImage'] as MenuImage,
+      currency: map['currency'] as String,
+      description: map['description'] as String,
     );
   }
 
-  final String extrasID;
+  final String addonsID;
   final String title;
-  final String quantity;
+  final double quantity;
   final double defaultPrice;
   final double finalPrice;
   final double discountedPrice;
   final bool hasSelected;
   final String unit;
-  final MenuImage extrasImage;
+  final MenuImage? addonsImage;
+  final String currency;
+  final String description;
 
   @override
   bool get cacheHash => true;
 
   @override
   List<Object?> get hashParameters => [
-        extrasID,
+        addonsID,
         title,
         quantity,
         defaultPrice,
@@ -851,12 +892,14 @@ class Extras with AppEquatable {
         discountedPrice,
         hasSelected,
         unit,
-        extrasImage,
+        addonsImage,
+        currency,
+        description,
       ];
 
   Map<String, dynamic> toMap() {
     return {
-      'extrasID': this.extrasID,
+      'addonsID': this.addonsID,
       'title': this.title,
       'quantity': this.quantity,
       'defaultPrice': this.defaultPrice,
@@ -864,23 +907,27 @@ class Extras with AppEquatable {
       'discountedPrice': this.discountedPrice,
       'hasSelected': this.hasSelected,
       'unit': this.unit,
-      'extrasImage': this.extrasImage,
+      'addonsImage': this.addonsImage,
+      'currency': this.currency,
+      'description': this.description,
     };
   }
 
-  Extras copyWith({
-    String? extrasID,
+  Addons copyWith({
+    String? addonsID,
     String? title,
-    String? quantity,
+    double? quantity,
     double? defaultPrice,
     double? finalPrice,
     double? discountedPrice,
     bool? hasSelected,
     String? unit,
-    MenuImage? extrasImage,
+    MenuImage? addonsImage,
+    String? currency,
+    String? description,
   }) {
-    return Extras(
-      extrasID: extrasID ?? this.extrasID,
+    return Addons(
+      addonsID: addonsID ?? this.addonsID,
       title: title ?? this.title,
       quantity: quantity ?? this.quantity,
       defaultPrice: defaultPrice ?? this.defaultPrice,
@@ -888,7 +935,9 @@ class Extras with AppEquatable {
       discountedPrice: discountedPrice ?? this.discountedPrice,
       hasSelected: hasSelected ?? this.hasSelected,
       unit: unit ?? this.unit,
-      extrasImage: extrasImage ?? this.extrasImage,
+      addonsImage: addonsImage ?? this.addonsImage,
+      currency: currency ?? this.currency,
+      description: description ?? this.description,
     );
   }
 }
@@ -1124,6 +1173,56 @@ class Category with AppEquatable {
       categoryId: categoryId ?? this.categoryId,
       title: title ?? this.title,
       hasSelected: hasSelected ?? this.hasSelected,
+    );
+  }
+}
+
+class Stock with AppEquatable {
+  Stock({
+    required this.stockID,
+    required this.minStockQuantity,
+    required this.maxStockQuantity,
+  });
+
+  factory Stock.fromMap(Map<String, dynamic> map) {
+    return Stock(
+      stockID: map['timingID'] as String,
+      minStockQuantity: map['minPreparingTime'] as int,
+      maxStockQuantity: map['maxPreparingTime'] as int,
+    );
+  }
+
+  final String stockID;
+  final int minStockQuantity;
+  final int maxStockQuantity;
+
+  @override
+  bool get cacheHash => true;
+
+  @override
+  List<Object?> get hashParameters => [
+        stockID,
+        minStockQuantity,
+        maxStockQuantity,
+      ];
+
+  Map<String, dynamic> toMap() {
+    return {
+      'stockID': this.stockID,
+      'minStockQuantity': this.minStockQuantity,
+      'maxStockQuantity': this.maxStockQuantity,
+    };
+  }
+
+  Stock copyWith({
+    String? stockID,
+    int? minStockQuantity,
+    int? maxStockQuantity,
+  }) {
+    return Stock(
+      stockID: stockID ?? this.stockID,
+      minStockQuantity: minStockQuantity ?? this.minStockQuantity,
+      maxStockQuantity: maxStockQuantity ?? this.maxStockQuantity,
     );
   }
 }

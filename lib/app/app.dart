@@ -8,6 +8,7 @@ import 'package:google_mlkit_translation/google_mlkit_translation.dart';
 import 'package:homemakers_merchant/app/features/authentication/presentation/manager/otp_verification/otp_verification_bloc.dart';
 import 'package:homemakers_merchant/app/features/authentication/presentation/manager/phone_number_verification_bloc.dart';
 import 'package:homemakers_merchant/app/features/authentication/presentation/pages/login_page.dart';
+import 'package:homemakers_merchant/app/features/menu/index.dart';
 import 'package:homemakers_merchant/app/features/onboarding/presentation/pages/splash_page.dart';
 import 'package:homemakers_merchant/app/features/permission/presentation/bloc/permission_bloc.dart';
 import 'package:homemakers_merchant/app/features/profile/domain/entities/user_model.dart';
@@ -98,6 +99,10 @@ class _AppState extends State<App> with GetItStateMixin {
         ),
         BlocProvider<StoreBloc>(
           key: const Key('store_bloc_provider'),
+          create: (context) => serviceLocator(),
+        ),
+        BlocProvider<MenuBloc>(
+          key: const Key('menu_bloc_provider'),
           create: (context) => serviceLocator(),
         ),
       ],

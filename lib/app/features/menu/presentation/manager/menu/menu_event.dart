@@ -1,0 +1,228 @@
+part of 'menu_bloc.dart';
+
+@immutable
+abstract class MenuEvent with AppEquatable {}
+
+// Menu
+class SaveMenu extends MenuEvent {
+  SaveMenu({required this.menuEntity, required this.hasNewMenu});
+  final MenuEntity menuEntity;
+  final bool hasNewMenu;
+  @override
+  bool get cacheHash => true;
+
+  @override
+  List<Object?> get hashParameters => [menuEntity, hasNewMenu];
+}
+
+class RemoveByIDMenu extends MenuEvent {
+  RemoveByIDMenu({
+    this.menuEntity,
+    this.index = -1,
+    this.storeID = '',
+    this.menuEntities = const [],
+  });
+
+  final MenuEntity? menuEntity;
+  final int index;
+  final List<MenuEntity> menuEntities;
+  final String storeID;
+
+  @override
+  bool get cacheHash => true;
+
+  @override
+  List<Object?> get hashParameters => [
+        menuEntity,
+        index,
+        menuEntities,
+        storeID,
+      ];
+}
+
+class RemoveAllMenu extends MenuEvent {
+  RemoveAllMenu({this.menuEntities = const []});
+
+  final List<MenuEntity> menuEntities;
+
+  @override
+  bool get cacheHash => true;
+
+  @override
+  List<Object?> get hashParameters => [menuEntities];
+}
+
+class GetByIDMenu extends MenuEvent {
+  GetByIDMenu({
+    this.menuEntity,
+    this.index = -1,
+    this.menuEntities = const [],
+    this.menuID = '',
+  });
+
+  final MenuEntity? menuEntity;
+  final int index;
+  final List<MenuEntity> menuEntities;
+  final String menuID;
+
+  @override
+  bool get cacheHash => true;
+
+  @override
+  List<Object?> get hashParameters => [
+        menuEntity,
+        index,
+        menuEntities,
+        menuID,
+      ];
+}
+
+class GetAllMenu extends MenuEvent {
+  GetAllMenu();
+  @override
+  bool get cacheHash => true;
+
+  @override
+  List<Object?> get hashParameters => [];
+}
+
+class AddAddonsOnMenu extends MenuEvent {
+  @override
+  bool get cacheHash => true;
+
+  @override
+  List<Object?> get hashParameters => [];
+}
+
+// Addons
+class SaveAddons extends MenuEvent {
+  SaveAddons({required this.addonsEntity, this.hasNewAddons = true});
+  final Addons addonsEntity;
+  final bool hasNewAddons;
+  @override
+  bool get cacheHash => true;
+
+  @override
+  List<Object?> get hashParameters => [hasNewAddons, addonsEntity];
+}
+
+class RemoveByIDAddons extends MenuEvent {
+  RemoveByIDAddons({
+    this.addonsEntity,
+    this.index = -1,
+    this.addonsID = '',
+    this.addonsEntities = const [],
+  });
+
+  final Addons? addonsEntity;
+  final int index;
+  final List<Addons> addonsEntities;
+  final String addonsID;
+
+  @override
+  bool get cacheHash => true;
+
+  @override
+  List<Object?> get hashParameters => [
+        addonsEntity,
+        index,
+        addonsEntities,
+        addonsID,
+      ];
+}
+
+class RemoveAllAddons extends MenuEvent {
+  RemoveAllAddons({this.addonsEntities = const []});
+
+  final List<Addons> addonsEntities;
+
+  @override
+  bool get cacheHash => true;
+
+  @override
+  List<Object?> get hashParameters => [addonsEntities];
+}
+
+class GetByIDAddons extends MenuEvent {
+  GetByIDAddons({
+    this.addonsEntity,
+    this.index = -1,
+    this.addonsEntities = const [],
+    this.addonsID = '',
+  });
+
+  final Addons? addonsEntity;
+  final int index;
+  final List<Addons> addonsEntities;
+  final String addonsID;
+
+  @override
+  bool get cacheHash => true;
+
+  @override
+  List<Object?> get hashParameters => [
+        addonsEntity,
+        index,
+        addonsEntities,
+        addonsID,
+      ];
+}
+
+class GetAllAddons extends MenuEvent {
+  GetAllAddons();
+  @override
+  bool get cacheHash => true;
+
+  @override
+  List<Object?> get hashParameters => [];
+}
+
+class SelectAddons extends MenuEvent {
+  SelectAddons({
+    this.addonsEntity,
+    this.index = -1,
+    this.addonsEntities = const [],
+    this.addonsID = '',
+    this.selectedAddonsEntities = const [],
+  });
+
+  final Addons? addonsEntity;
+  final int index;
+  final List<Addons> addonsEntities;
+  final List<Addons> selectedAddonsEntities;
+  final String addonsID;
+
+  @override
+  bool get cacheHash => true;
+
+  @override
+  List<Object?> get hashParameters => [
+        addonsEntity,
+        index,
+        addonsEntities,
+        addonsID,
+        selectedAddonsEntities,
+      ];
+}
+
+class SelectAddonsMaxPortion extends MenuEvent {
+  SelectAddonsMaxPortion({
+    this.addonsEntities = const [],
+    this.selectedAddonsEntities = const [],
+    this.selectedMenuPortions = const [],
+  });
+
+  final List<Addons> addonsEntities;
+  final List<Addons> selectedAddonsEntities;
+  final List<MenuPortion> selectedMenuPortions;
+
+  @override
+  bool get cacheHash => true;
+
+  @override
+  List<Object?> get hashParameters => [
+        addonsEntities,
+        selectedAddonsEntities,
+        selectedMenuPortions,
+      ];
+}

@@ -550,13 +550,6 @@ class _BankInformationPageState extends State<BankInformationPage> with SingleTi
                                     final ibanNumber = ibanMuskeyFormatter.info.clean; //_ibanNumberController.value.text;
                                     final address = _accountHolderNameController.value.text;
                                     _bankInformationFormKey.currentState!.save();
-
-                                    // Print the entered information
-                                    print('Account holder name: $accountHolderName');
-                                    print('Bank name: $bankName');
-                                    print('Email: $confirmAccountNumber');
-                                    print('Phone: $ibanNumber');
-
                                     // Show confirmation dialog
                                     List<BankInformationTileWidget> listOfBankTileWidgets = [];
                                     listOfBankTileWidgets.clear();
