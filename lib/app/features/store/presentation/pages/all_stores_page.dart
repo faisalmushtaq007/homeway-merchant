@@ -32,6 +32,7 @@ import 'package:go_router/go_router.dart';
 import 'package:homemakers_merchant/shared/widgets/universal/date_time_picker_platform/datetime_picker_field_platform.dart';
 import 'package:homemakers_merchant/shared/widgets/universal/double_tap_exit/double_tap_to_exit.dart';
 import 'package:homemakers_merchant/shared/widgets/universal/multi_stream_builder/multi_stream_builder.dart';
+import 'package:homemakers_merchant/utils/app_log.dart';
 
 class AllStoresPage extends StatefulWidget {
   const AllStoresPage({super.key});
@@ -45,7 +46,7 @@ class _AllStoresPageState extends State<AllStoresPage> {
   List<StoreEntity> storeEntities = [];
   late final ScrollController listViewBuilderScrollController;
   ResultState<StoreEntity> resultState = const ResultState.empty();
-  WidgetState<StoreEntity> widgetState = WidgetState<StoreEntity>.none();
+  WidgetState<StoreEntity> widgetState = const WidgetState<StoreEntity>.none();
   @override
   void initState() {
     super.initState();
@@ -142,7 +143,6 @@ class _AllStoresPageState extends State<AllStoresPage> {
                               //case GetEmptyStoreState(:final error):
                               case GetEmptyStoreState():
                                 {
-                                  print(state.message);
                                   storeEntities = [];
                                   storeEntities.clear();
                                   widgetState = WidgetState<StoreEntity>.empty(
@@ -166,7 +166,7 @@ class _AllStoresPageState extends State<AllStoresPage> {
                                   );
                                 }
                               case _:
-                                print('default');
+                                appLog.d('Default case: all store page');
                             }
                             return ScrollableColumn(
                               controller: scrollController,
@@ -181,7 +181,7 @@ class _AllStoresPageState extends State<AllStoresPage> {
                                   flex: 1,
                                   child: widgetState.maybeWhen(
                                     empty: (context, child, message, data) => Center(
-                                      key: Key('get-all-store-empty-widget'),
+                                      key: const Key('get-all-store-empty-widget'),
                                       child: Text(
                                         'No store available or added by you',
                                         style: context.labelLarge,
@@ -222,7 +222,7 @@ class _AllStoresPageState extends State<AllStoresPage> {
                                       );
                                     },
                                     orElse: () {
-                                      return SizedBox();
+                                      return const SizedBox();
                                     },
                                   ),
                                 ),

@@ -38,9 +38,10 @@ class _MenuForm1PageState extends State<MenuForm1Page> {
   Widget build(BuildContext context) {
     return Directionality(
       textDirection: serviceLocator<LanguageController>().targetTextDirection,
-      child: ListView(
-        controller: scrollController,
-        shrinkWrap: true,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        textDirection: serviceLocator<LanguageController>().targetTextDirection,
         children: [
           AppTextFieldWidget(
             controller: menuCategoryTextEditingController,

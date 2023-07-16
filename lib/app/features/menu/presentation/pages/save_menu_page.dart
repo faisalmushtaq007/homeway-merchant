@@ -186,7 +186,19 @@ class _SaveMenuPageView extends WidgetView<SaveMenuPage, _SaveMenuPageController
               minWidth: 1000,
             ),
             padding: EdgeInsetsDirectional.fromSTEB(margins * 2.5, topPadding, margins * 2.5, bottomPadding),
-            child: MenuForm3Page(),
+            child: CustomScrollView(
+              controller: state.scrollController,
+              shrinkWrap: true,
+              slivers: [
+                SliverList(
+                  delegate: SliverChildListDelegate(
+                    [
+                      MenuForm3Page(),
+                    ],
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),

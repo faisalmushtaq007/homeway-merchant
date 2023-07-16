@@ -7,8 +7,7 @@ import 'package:flutter/widgets.dart';
 /// Must implement [onResume] and [onPause].
 /// Override [onContextReady] as alternative to initState to have context ready
 /// Also to synchronously obtain the lifecycle you can call [currentLifecycleState]
-mixin LifecycleMixin<T extends StatefulWidget> on State<T>
-    implements WidgetsBindingObserver {
+mixin LifecycleMixin<T extends StatefulWidget> on State<T> implements WidgetsBindingObserver {
   var _didRunOnContextReady = false;
 
   @override
@@ -29,8 +28,7 @@ mixin LifecycleMixin<T extends StatefulWidget> on State<T>
     }
   }
 
-  AppLifecycleState? get currentLifecycleState =>
-      WidgetsBinding.instance.lifecycleState;
+  AppLifecycleState? get currentLifecycleState => WidgetsBinding.instance.lifecycleState;
 
   @override
   void initState() {

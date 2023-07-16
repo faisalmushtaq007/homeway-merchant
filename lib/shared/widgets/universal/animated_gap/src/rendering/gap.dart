@@ -40,7 +40,7 @@ class RenderGap extends RenderBox {
   }
 
   Axis? get _direction {
-    final AbstractNode? parentNode = parent;
+    final parentNode = parent;
     if (parentNode is RenderFlex) {
       return parentNode.direction;
     } else {
