@@ -215,6 +215,7 @@ class _MultiSelectChipState extends State<MultiSelectStoreAvailableWorkingDays> 
             textDirection: serviceLocator<LanguageController>().targetTextDirection,
             style: context.titleSmall,
           ),
+      
         ),
       ],
     );
