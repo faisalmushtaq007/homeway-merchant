@@ -3,30 +3,30 @@ import 'package:homemakers_merchant/utils/app_equatable/app_equatable.dart';
 
 class MenuEntity with AppEquatable {
   MenuEntity({
-    required this.id,
-    required this.menuId,
-    required this.menuImages,
-    required this.menuName,
-    required this.menuDescription,
-    required this.menuCategories,
-    required this.ingredients,
-    required this.storeAvailableFoodTypes,
-    required this.storeAvailableFoodPreparationType,
-    required this.menuPortions,
-    required this.hasCustomPortion,
-    required this.customPortions,
-    required this.addons,
-    required this.menuAvailableFromTime,
-    required this.menuAvailableToTime,
-    required this.menuAvailableInDays,
-    required this.minStockAvailable,
-    required this.maxStockAvailable,
-    required this.timeOfPeriodWise,
-    required this.metaInfoOfMenu,
-    required this.nutrients,
-    required this.menuTiming,
-    required this.tasteType,
-    required this.stock,
+    this.id = -1,
+    this.menuId = '',
+    this.menuImages = const [],
+    this.menuName = '',
+    this.menuDescription = '',
+    this.menuCategories = const [],
+    this.ingredients = const [],
+    this.storeAvailableFoodTypes = const [],
+    this.storeAvailableFoodPreparationType = const [],
+    this.menuPortions = const [],
+    this.hasCustomPortion = false,
+    this.customPortions = const [],
+    this.addons = const [],
+    this.menuAvailableFromTime = '',
+    this.menuAvailableToTime = '',
+    this.menuAvailableInDays = const [],
+    this.minStockAvailable = -1,
+    this.maxStockAvailable = -1,
+    this.timeOfPeriodWise = const [],
+    this.metaInfoOfMenu = const {},
+    this.nutrients = const [],
+    this.menuTiming,
+    this.tasteType,
+    this.stock,
   });
 
   factory MenuEntity.fromMap(Map<String, dynamic> map) {
@@ -39,14 +39,16 @@ class MenuEntity with AppEquatable {
       menuCategories: map['menuCategories'] as List<Category>,
       ingredients: map['ingredients'] as List<Ingredients>,
       storeAvailableFoodTypes: map['storeAvailableFoodTypes'] as List<MenuType>,
-      storeAvailableFoodPreparationType: map['storeAvailableFoodPreparationType'] as List<MenuPreparationType>,
+      storeAvailableFoodPreparationType:
+          map['storeAvailableFoodPreparationType'] as List<MenuPreparationType>,
       menuPortions: map['menuPortions'] as List<MenuPortion>,
       hasCustomPortion: map['hasCustomPortion'] as bool,
       customPortions: map['customPortions'] as List<CustomPortion>,
       addons: map['addons'] as List<Addons>,
       menuAvailableFromTime: map['menuAvailableFromTime'] as String,
       menuAvailableToTime: map['menuAvailableToTime'] as String,
-      menuAvailableInDays: map['menuAvailableInDays'] as List<MenuAvailableDayAndTime>,
+      menuAvailableInDays:
+          map['menuAvailableInDays'] as List<MenuAvailableDayAndTime>,
       minStockAvailable: map['minStockAvailable'] as int,
       maxStockAvailable: map['maxStockAvailable'] as int,
       timeOfPeriodWise: map['timeOfPeriodWise'] as List<TimeOfPeriodWise>,
@@ -79,9 +81,9 @@ class MenuEntity with AppEquatable {
   final List<TimeOfPeriodWise> timeOfPeriodWise;
   final Map<String, dynamic> metaInfoOfMenu;
   final List<Nutrients> nutrients;
-  final Timing menuTiming;
-  final TasteType tasteType;
-  final Stock stock;
+  final Timing? menuTiming;
+  final TasteType? tasteType;
+  final Stock? stock;
 
   @override
   bool get cacheHash => true;
@@ -124,7 +126,8 @@ class MenuEntity with AppEquatable {
       'menuCategories': this.menuCategories,
       'ingredients': this.ingredients,
       'storeAvailableFoodTypes': this.storeAvailableFoodTypes,
-      'storeAvailableFoodPreparationType': this.storeAvailableFoodPreparationType,
+      'storeAvailableFoodPreparationType':
+          this.storeAvailableFoodPreparationType,
       'menuPortions': this.menuPortions,
       'hasCustomPortion': this.hasCustomPortion,
       'customPortions': this.customPortions,
@@ -177,13 +180,16 @@ class MenuEntity with AppEquatable {
       menuDescription: menuDescription ?? this.menuDescription,
       menuCategories: menuCategories ?? this.menuCategories,
       ingredients: ingredients ?? this.ingredients,
-      storeAvailableFoodTypes: storeAvailableFoodTypes ?? this.storeAvailableFoodTypes,
-      storeAvailableFoodPreparationType: storeAvailableFoodPreparationType ?? this.storeAvailableFoodPreparationType,
+      storeAvailableFoodTypes:
+          storeAvailableFoodTypes ?? this.storeAvailableFoodTypes,
+      storeAvailableFoodPreparationType: storeAvailableFoodPreparationType ??
+          this.storeAvailableFoodPreparationType,
       menuPortions: menuPortions ?? this.menuPortions,
       hasCustomPortion: hasCustomPortion ?? this.hasCustomPortion,
       customPortions: customPortions ?? this.customPortions,
       addons: addons ?? this.addons,
-      menuAvailableFromTime: menuAvailableFromTime ?? this.menuAvailableFromTime,
+      menuAvailableFromTime:
+          menuAvailableFromTime ?? this.menuAvailableFromTime,
       menuAvailableToTime: menuAvailableToTime ?? this.menuAvailableToTime,
       menuAvailableInDays: menuAvailableInDays ?? this.menuAvailableInDays,
       minStockAvailable: minStockAvailable ?? this.minStockAvailable,

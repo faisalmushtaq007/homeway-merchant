@@ -152,34 +152,36 @@ class _MultiSelectChipState extends State<MultiSelectMenuMenuPortion> {
     List<Widget> choices = [];
 
     for (var item in widget.availableMenuPortions) {
-      choices.add(ChoiceChip(
-        label: Text(
-          '${item.title} ${item.unit}',
-          textDirection: serviceLocator<LanguageController>().targetTextDirection,
-        ),
-        selected: selectedChoices.contains(item),
-        onSelected: (selected) {
-          if (widget.isSingleSelect) {
-            setState(() {
-              selectedChoices.clear();
-              selectedChoices = [];
-              selectedChoices.add(item);
-              widget.onSelectionChanged?.call(selectedChoices);
-            });
-          } else {
-            if (selectedChoices.length == (widget.maxSelection ?? -1) && !selectedChoices.contains(item)) {
+      choices.add(
+        ChoiceChip(
+          label: Text(
+            '${item.title} ${item.unit}',
+            textDirection: serviceLocator<LanguageController>().targetTextDirection,
+          ),
+          selected: selectedChoices.contains(item),
+          onSelected: (selected) {
+            if (widget.isSingleSelect) {
               setState(() {
-                widget.onMaxSelected?.call(selectedChoices);
-              });
-            } else {
-              setState(() {
-                selectedChoices.contains(item) ? selectedChoices.remove(item) : selectedChoices.add(item);
+                selectedChoices.clear();
+                selectedChoices = [];
+                selectedChoices.add(item);
                 widget.onSelectionChanged?.call(selectedChoices);
               });
+            } else {
+              if (selectedChoices.length == (widget.maxSelection ?? -1) && !selectedChoices.contains(item)) {
+                setState(() {
+                  widget.onMaxSelected?.call(selectedChoices);
+                });
+              } else {
+                setState(() {
+                  selectedChoices.contains(item) ? selectedChoices.remove(item) : selectedChoices.add(item);
+                  widget.onSelectionChanged?.call(selectedChoices);
+                });
+              }
             }
-          }
-        },
-      ));
+          },
+        ),
+      );
     }
 
     return choices;

@@ -18,6 +18,7 @@ class MenuBloc extends Bloc<MenuEvent, MenuState> {
     on<SelectAddons>(_selectAddons);
     on<SaveAddons>(_saveAddons);
     on<SelectAddonsMaxPortion>(_selectAddonsMaxPortion);
+    on<PopToMenuPage>(_popToMenuPage);
   }
 
   Future<void> _getAllAddons(GetAllAddons event, Emitter<MenuState> emit) async {
@@ -102,6 +103,15 @@ class MenuBloc extends Bloc<MenuEvent, MenuState> {
         addonsEntities: event.addonsEntities.toList(),
         selectedAddonsEntities: event.selectedAddonsEntities.toList(),
         selectedMenuPortions: event.selectedMenuPortions.toList(),
+      ),
+    );
+  }
+
+  FutureOr<void> _popToMenuPage(PopToMenuPage event, Emitter<MenuState> emit) {
+    emit(
+      PopToMenuPageState(
+        hasNewAddons: event.hasNewAddons,
+        addonsEntity: event.addonsEntity.toList(),
       ),
     );
   }

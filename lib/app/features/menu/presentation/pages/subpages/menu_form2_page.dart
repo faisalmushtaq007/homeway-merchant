@@ -27,11 +27,26 @@ class _MenuForm2PageState extends State<MenuForm2Page> {
   List<TasteType> _selectedTasteType = [];
   List<TasteLevel> _selectedTasteLevel = [];
   List<MenuPortion> _selectedMenuPortions = [];
+  List<FocusNode> menuForm2FocusList = [];
+  bool _haveAddonsWithCurrentMenu = false;
+  List<Addons> _selectedAddons = [];
+  List<Widget> selectedAddonsWidgets = [];
 
   @override
   void initState() {
     super.initState();
     scrollController = ScrollController();
+    menuForm2FocusList = [
+      FocusNode(),
+      FocusNode(),
+      FocusNode(),
+      FocusNode(),
+      FocusNode(),
+      FocusNode(),
+      FocusNode(),
+      FocusNode(),
+      FocusNode(),
+    ];
     _menuAvailableFoodCookingType = [];
     _menuAvailableFoodTypes = [];
     _menuAvailableDays = [];
@@ -56,6 +71,7 @@ class _MenuForm2PageState extends State<MenuForm2Page> {
   @override
   void dispose() {
     scrollController.dispose();
+    menuForm2FocusList.asMap().forEach((key, value) => value.dispose());
     _menuAvailableFoodCookingType = [];
     _menuAvailableFoodTypes = [];
     _menuAvailableDays = [];
@@ -286,13 +302,16 @@ class _MenuForm2PageState extends State<MenuForm2Page> {
             setState(() {});
           },
           availableMenuPortionList: _menuPortions.toList(),
-          /* validator: (value) {
-            if (value == null || value.length == 0) {
-              return 'Select one or more taste level';
-            } else {
-              return null;
+          validator: (value) {
+            if (!_hasCustomMenuPortionSize) {
+              if (value == null || value.isEmpty) {
+                return 'Select one or more portions';
+              } else {
+                return null;
+              }
             }
-          },*/
+            return null;
+          },
           initialSelectedMenuPortionList: [],
           onSaved: (newValue) {},
         ),
@@ -344,10 +363,14 @@ class _MenuForm2PageState extends State<MenuForm2Page> {
                               flex: 2,
                               child: StoreTextFieldWidget(
                                 controller: _menuPortionNameController,
+                                textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                focusNode: menuForm2FocusList[0],
                                 textInputAction: TextInputAction.next,
+                                onFieldSubmitted: (_) => fieldFocusChange(context, menuForm2FocusList[0], menuForm2FocusList[1]),
+                                keyboardType: TextInputType.numberWithOptions(),
                                 decoration: InputDecoration(
-                                  labelText: 'Size or Quantity name',
-                                  hintText: 'Enter size or quantity name',
+                                  labelText: 'Size or Portion value',
+                                  hintText: 'Enter size or portion value',
                                   border: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(10),
                                   ),
@@ -356,7 +379,7 @@ class _MenuForm2PageState extends State<MenuForm2Page> {
                                 validator: (value) {
                                   if (_hasCustomMenuPortionSize) {
                                     if (value == null || value.isEmpty) {
-                                      return 'Please enter size or quantity name';
+                                      return 'Please enter size or portion value';
                                     } else {
                                       return null;
                                     }
@@ -369,7 +392,11 @@ class _MenuForm2PageState extends State<MenuForm2Page> {
                             Expanded(
                               child: StoreTextFieldWidget(
                                 controller: _menuPortionUnitController,
+                                textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                focusNode: menuForm2FocusList[1],
                                 textInputAction: TextInputAction.next,
+                                onFieldSubmitted: (_) => fieldFocusChange(context, menuForm2FocusList[1], menuForm2FocusList[2]),
+                                keyboardType: TextInputType.text,
                                 textCapitalization: TextCapitalization.words,
                                 decoration: InputDecoration(
                                   labelText: 'Unit',
@@ -404,7 +431,10 @@ class _MenuForm2PageState extends State<MenuForm2Page> {
                             Expanded(
                               child: StoreTextFieldWidget(
                                 controller: _menuPortionSizeController,
-                                textInputAction: TextInputAction.next,
+                                textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                focusNode: menuForm2FocusList[2],
+                                textInputAction: TextInputAction.done,
+                                keyboardType: TextInputType.numberWithOptions(),
                                 decoration: InputDecoration(
                                   labelText: 'Maximum Serving Persons',
                                   hintText: 'Enter maximum serving persons',
@@ -439,7 +469,112 @@ class _MenuForm2PageState extends State<MenuForm2Page> {
           ),
         ),
         const AnimatedGap(12, duration: Duration(milliseconds: 500)),
+        Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          textDirection: serviceLocator<LanguageController>().targetTextDirection,
+          children: [
+            Wrap(
+              textDirection: serviceLocator<LanguageController>().targetTextDirection,
+              children: [
+                Text(
+                  'Extras',
+                  style: context.titleLarge!.copyWith(
+                    fontWeight: FontWeight.w600,
+                    fontSize: 20,
+                  ),
+                  textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                ).translate(),
+              ],
+            ),
+            const AnimatedGap(2, duration: Duration(milliseconds: 500)),
+            Wrap(
+              textDirection: serviceLocator<LanguageController>().targetTextDirection,
+              children: [
+                Text(
+                  'Add customization options add to your menu item',
+                  style: context.labelMedium,
+                  textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                ).translate(),
+              ],
+            ),
+          ],
+        ),
+        const AnimatedGap(8, duration: Duration(milliseconds: 500)),
+        AnimatedCrossFade(
+          duration: const Duration(milliseconds: 500),
+          crossFadeState: (_selectedAddons.isNotEmpty && selectedAddonsWidgets.isNotEmpty) ? CrossFadeState.showFirst : CrossFadeState.showSecond,
+          firstChild: Wrap(
+            spacing: 6,
+            runSpacing: 0,
+            textDirection: serviceLocator<LanguageController>().targetTextDirection,
+            children: selectedAddonsWidgets.toList(),
+          ),
+          secondChild: OutlinedButton(
+            style: OutlinedButton.styleFrom(
+              visualDensity: VisualDensity(vertical: -1, horizontal: 0),
+              shape: const RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(
+                  Radius.circular(10),
+                ),
+              ),
+            ),
+            child: Text('Select Adons').translate(),
+            onPressed: () async {
+              final List<Addons>? addons = await context.push<List<Addons>>(Routes.MENU_ADDONS_PAGE);
+              debugPrint('List of addons ${addons}');
+              if (addons != null && addons.isNotEmpty) {
+                setState(() {
+                  _selectedAddons = List<Addons>.from(addons.toList());
+                  for (var item in _selectedAddons) {
+                    selectedAddonsWidgets.add(
+                      InputChip(
+                        label: Text(
+                          '${item.title} ${item.unit}',
+                          textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                        ),
+                        selected: _selectedAddons.contains(item),
+                        showCheckmark: false,
+                        onSelected: (selected) {
+                          setState(() {
+                            _selectedAddons.contains(item) ? _selectedAddons.remove(item) : _selectedAddons.add(item);
+                          });
+                        },
+                        onDeleted: () {
+                          _selectedAddons.remove(item);
+                        },
+                      ),
+                    );
+                  }
+                });
+              }
+            },
+          ),
+        ),
       ],
     );
+  }
+
+  List<Widget> _buildAddonsChoiceList(BuildContext context) {
+    List<Widget> choices = [];
+
+    for (var item in _selectedAddons) {
+      choices.add(
+        InputChip(
+          label: Text(
+            '${item.title} ${item.unit}',
+            textDirection: serviceLocator<LanguageController>().targetTextDirection,
+          ),
+          selected: _selectedAddons.contains(item),
+          onSelected: (selected) {
+            setState(() {
+              _selectedAddons.contains(item) ? _selectedAddons.remove(item) : _selectedAddons.add(item);
+            });
+          },
+        ),
+      );
+    }
+
+    return choices;
   }
 }

@@ -137,24 +137,14 @@ class _SaveAddonsPageView extends WidgetView<SaveAddonsPage, _SaveAddonsPageCont
           opacity: 0.60,
           noAppBar: true,
         ),
-        child: PlatformScaffold(
-          material: (context, platform) {
-            return MaterialScaffoldData(
-              resizeToAvoidBottomInset: true,
-            );
-          },
-          cupertino: (context, platform) {
-            return CupertinoPageScaffoldData(
-              resizeToAvoidBottomInset: true,
-            );
-          },
-          appBar: PlatformAppBar(
-            automaticallyImplyLeading: true,
+        child: Scaffold(
+          resizeToAvoidBottomInset: true,
+          appBar: AppBar(
             title: Text(
               'Add new addons',
               textDirection: serviceLocator<LanguageController>().targetTextDirection,
             ),
-            trailingActions: const [
+            actions: const [
               Padding(
                 padding: EdgeInsetsDirectional.symmetric(horizontal: 14),
                 child: LanguageSelectionWidget(),

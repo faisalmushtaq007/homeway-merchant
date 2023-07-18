@@ -43,53 +43,64 @@ class _MenuAllAddonsPageController extends State<MenuAllAddonsPage> {
   }
 
   @override
-  Widget build(BuildContext context) => BlocBuilder<MenuBloc, MenuState>(
-        key: const Key('get-all-addons-blocbuilder-widget'),
+  Widget build(BuildContext context) => BlocListener<MenuBloc, MenuState>(
+        key: const Key('get-all-addons-bloclistener-widget'),
         bloc: context.watch<MenuBloc>(),
-        builder: (context, addonsState) {
-          switch (addonsState) {
-            case GetAllAddonsState():
-              {
-                _menuAvailableAddons = List<Addons>.from(addonsState.addonsEntities.toList());
-                widgetState = WidgetState<Addons>.allData(
-                  context: context,
-                );
-              }
-            case GetEmptyAddonsState():
-              {
-                print(addonsState.message);
-                _menuAvailableAddons = [];
-                _menuAvailableAddons.clear();
-                widgetState = WidgetState<Addons>.empty(
-                  context: context,
-                  message: addonsState.message,
-                );
-              }
-            case AddonsLoadingState():
-              {
-                widgetState = WidgetState<Addons>.loading(
-                  context: context,
-                  isLoading: addonsState.isLoading,
-                  message: addonsState.message,
-                );
-              }
-            case SaveAddonsState():
-              {
-                _menuAvailableAddons.add(addonsState.addonsEntity);
-                localMenuAddons.add(addonsState.addonsEntity);
-                widgetState = WidgetState<Addons>.allData(
-                  context: context,
-                );
-              }
-            case SelectAddonsState():
-              {
-                _selectedAddons = List<Addons>.from(addonsState.selectedAddonsEntities.toList());
-              }
-            case _:
-              print('default');
+        listener: (context, menuState) {
+          if (menuState is PopToMenuPageState) {
+            if (context.canPop()) {
+              Navigator.of(context).pop(menuState.addonsEntity.toList());
+            }
           }
-          return _MenuAllAddonsPageView(this);
         },
+        child: BlocBuilder<MenuBloc, MenuState>(
+          key: const Key('get-all-addons-blocbuilder-widget'),
+          bloc: context.watch<MenuBloc>(),
+          builder: (context, addonsState) {
+            switch (addonsState) {
+              case GetAllAddonsState():
+                {
+                  _menuAvailableAddons = List<Addons>.from(addonsState.addonsEntities.toList());
+                  widgetState = WidgetState<Addons>.allData(
+                    context: context,
+                  );
+                }
+              case GetEmptyAddonsState():
+                {
+                  print(addonsState.message);
+                  _menuAvailableAddons = [];
+                  _menuAvailableAddons.clear();
+                  widgetState = WidgetState<Addons>.empty(
+                    context: context,
+                    message: addonsState.message,
+                  );
+                }
+              case AddonsLoadingState():
+                {
+                  widgetState = WidgetState<Addons>.loading(
+                    context: context,
+                    isLoading: addonsState.isLoading,
+                    message: addonsState.message,
+                  );
+                }
+              case SaveAddonsState():
+                {
+                  _menuAvailableAddons.add(addonsState.addonsEntity);
+                  localMenuAddons.add(addonsState.addonsEntity);
+                  widgetState = WidgetState<Addons>.allData(
+                    context: context,
+                  );
+                }
+              case SelectAddonsState():
+                {
+                  _selectedAddons = List<Addons>.from(addonsState.selectedAddonsEntities.toList());
+                }
+              case _:
+                print('default');
+            }
+            return _MenuAllAddonsPageView(this);
+          },
+        ),
       );
 }
 
@@ -114,19 +125,32 @@ class _MenuAllAddonsPageView extends WidgetView<MenuAllAddonsPage, _MenuAllAddon
           opacity: 0.60,
           noAppBar: true,
         ),
-        child: PlatformScaffold(
-          appBar: PlatformAppBar(
-            automaticallyImplyLeading: true,
+        child: Scaffold(
+          appBar: AppBar(
             title: Text(
               'All Addons',
               textDirection: serviceLocator<LanguageController>().targetTextDirection,
             ),
-            trailingActions: const [
+            actions: const [
               Padding(
                 padding: EdgeInsetsDirectional.symmetric(horizontal: 14),
                 child: LanguageSelectionWidget(),
               ),
             ],
+          ),
+          floatingActionButton: Padding(
+            padding: EdgeInsetsDirectional.only(bottom: 70),
+            child: FloatingActionButton(
+              child: Icon(
+                Icons.check,
+              ),
+              backgroundColor: Color.fromRGBO(69, 201, 125, 1.0),
+              onPressed: () {
+                context.read<MenuBloc>().add(
+                      PopToMenuPage(addonsEntity: state._selectedAddons.toList()),
+                    );
+              },
+            ),
           ),
           body: SlideInLeft(
             key: const Key('menu-all-addons-slideinleft-widget'),
@@ -229,7 +253,7 @@ class _MenuAllAddonsPageView extends WidgetView<MenuAllAddonsPage, _MenuAllAddon
                           ],
                         ),
                         PositionedDirectional(
-                          bottom: kBottomNavigationBarHeight - 10,
+                          bottom: 0,
                           start: 0,
                           end: 0,
                           child: ElevatedButton(

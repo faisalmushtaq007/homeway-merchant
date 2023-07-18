@@ -12,27 +12,48 @@ class _MenuForm3PageState extends State<MenuForm3Page> {
 
   List<StoreWorkingDayAndTime> _menuAvailableDays = [];
   List<StoreWorkingDayAndTime> _selectedWorkingDays = [];
-  final TextEditingController _menuOpeningTimeController = TextEditingController();
-  final TextEditingController _menuClosingTimeController = TextEditingController();
+  final TextEditingController _menuOpeningTimeController =
+      TextEditingController();
+  final TextEditingController _menuClosingTimeController =
+      TextEditingController();
   late final MaskTextInputFormatter maximumDeliveryTimeFormatter;
-  final TextEditingController _menuMinPreparationTimeController = TextEditingController();
-  final TextEditingController _menuMaxPreparationTimeController = TextEditingController();
-  final TextEditingController _menuMinStockQuantityController = TextEditingController();
-  final TextEditingController _menuMaxStockQuantityController = TextEditingController();
+  final TextEditingController _menuMinPreparationTimeController =
+      TextEditingController();
+  final TextEditingController _menuMaxPreparationTimeController =
+      TextEditingController();
+  final TextEditingController _menuMinStockQuantityController =
+      TextEditingController();
+  final TextEditingController _menuMaxStockQuantityController =
+      TextEditingController();
 
   //List<Timing> _menuAvailablePreparationTimings = [];
   List<String> _menuAvailablePreparationTimings = [];
   Timing? _menuPreparationTiming;
   Stock? _menuStock;
+  List<FocusNode> menuForm3FocusList = [];
 
   @override
   void initState() {
     super.initState();
     scrollController = ScrollController();
+    menuForm3FocusList = [
+      FocusNode(),
+      FocusNode(),
+      FocusNode(),
+      FocusNode(),
+      FocusNode(),
+      FocusNode(),
+      FocusNode(),
+      FocusNode(),
+      FocusNode(),
+    ];
     _menuAvailableDays = [];
     _selectedWorkingDays = [];
     _menuAvailablePreparationTimings = [];
-    maximumDeliveryTimeFormatter = MaskTextInputFormatter(mask: "##", filter: {"#": RegExp(r'[0-9]')}, type: MaskAutoCompletionType.lazy);
+    maximumDeliveryTimeFormatter = MaskTextInputFormatter(
+        mask: "##",
+        filter: {"#": RegExp(r'[0-9]')},
+        type: MaskAutoCompletionType.lazy);
     initializeMenuWorkingDays();
     initializeMenuAvailableTimings();
   }
@@ -49,11 +70,13 @@ class _MenuForm3PageState extends State<MenuForm3Page> {
     _menuMinStockQuantityController.dispose();
     _menuMaxStockQuantityController.dispose();
     _menuAvailablePreparationTimings = [];
+    menuForm3FocusList.asMap().forEach((key, value) => value.dispose());
     super.dispose();
   }
 
   void initializeMenuWorkingDays() {
-    _menuAvailableDays = List<StoreWorkingDayAndTime>.from(localStoreWorkingDays.toList());
+    _menuAvailableDays =
+        List<StoreWorkingDayAndTime>.from(localStoreWorkingDays.toList());
   }
 
   void initializeMenuAvailableTimings() {
@@ -70,9 +93,12 @@ class _MenuForm3PageState extends State<MenuForm3Page> {
         Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.stretch,
-          textDirection: serviceLocator<LanguageController>().targetTextDirection,
+          textDirection:
+              serviceLocator<LanguageController>().targetTextDirection,
           children: [
             Wrap(
+              textDirection:
+                  serviceLocator<LanguageController>().targetTextDirection,
               children: [
                 Text(
                   'Menu availability',
@@ -80,18 +106,21 @@ class _MenuForm3PageState extends State<MenuForm3Page> {
                     fontWeight: FontWeight.w600,
                     fontSize: 20,
                   ),
-                  textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                  textDirection:
+                      serviceLocator<LanguageController>().targetTextDirection,
                 ).translate(),
               ],
             ),
             const AnimatedGap(2, duration: Duration(milliseconds: 500)),
             Wrap(
-              textDirection: serviceLocator<LanguageController>().targetTextDirection,
+              textDirection:
+                  serviceLocator<LanguageController>().targetTextDirection,
               children: [
                 Text(
                   'Select menu availability day(s) and time',
                   style: context.labelMedium,
-                  textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                  textDirection:
+                      serviceLocator<LanguageController>().targetTextDirection,
                 ).translate(),
               ],
             ),
@@ -100,7 +129,8 @@ class _MenuForm3PageState extends State<MenuForm3Page> {
         const AnimatedGap(12, duration: Duration(milliseconds: 500)),
         Text(
           'Select days',
-          textDirection: serviceLocator<LanguageController>().targetTextDirection,
+          textDirection:
+              serviceLocator<LanguageController>().targetTextDirection,
           style: context.titleMedium!.copyWith(
             fontWeight: FontWeight.w600,
             fontSize: 14,
@@ -108,8 +138,10 @@ class _MenuForm3PageState extends State<MenuForm3Page> {
         ).translate(),
         const AnimatedGap(6, duration: Duration(milliseconds: 500)),
         MultiSelectAvailableWorkingDaysFormField(
-          onSelectionChanged: (List<StoreWorkingDayAndTime> selectedWorkingDays) {
-            _selectedWorkingDays = List<StoreWorkingDayAndTime>.from(selectedWorkingDays);
+          onSelectionChanged:
+              (List<StoreWorkingDayAndTime> selectedWorkingDays) {
+            _selectedWorkingDays =
+                List<StoreWorkingDayAndTime>.from(selectedWorkingDays);
             setState(() {});
           },
           availableWorkingDaysList: _menuAvailableDays.toList(),
@@ -125,11 +157,13 @@ class _MenuForm3PageState extends State<MenuForm3Page> {
         ),
         const AnimatedGap(12, duration: Duration(milliseconds: 500)),
         Wrap(
-          textDirection: serviceLocator<LanguageController>().targetTextDirection,
+          textDirection:
+              serviceLocator<LanguageController>().targetTextDirection,
           children: [
             Text(
               'Select menu availability in time',
-              textDirection: serviceLocator<LanguageController>().targetTextDirection,
+              textDirection:
+                  serviceLocator<LanguageController>().targetTextDirection,
               style: context.titleMedium!.copyWith(
                 fontWeight: FontWeight.w600,
                 fontSize: 14,
@@ -140,7 +174,8 @@ class _MenuForm3PageState extends State<MenuForm3Page> {
         const AnimatedGap(12, duration: Duration(milliseconds: 500)),
         Row(
           mainAxisSize: MainAxisSize.min,
-          textDirection: serviceLocator<LanguageController>().targetTextDirection,
+          textDirection:
+              serviceLocator<LanguageController>().targetTextDirection,
           children: [
             Expanded(
               child: DateTimeFieldPlatform(
@@ -159,7 +194,8 @@ class _MenuForm3PageState extends State<MenuForm3Page> {
                     Icons.arrow_drop_down,
                   ),
                   isDense: true,
-                  contentPadding: EdgeInsetsDirectional.symmetric(vertical: 8, horizontal: 12),
+                  contentPadding: EdgeInsetsDirectional.symmetric(
+                      vertical: 8, horizontal: 12),
                 ),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
@@ -188,7 +224,8 @@ class _MenuForm3PageState extends State<MenuForm3Page> {
                     Icons.arrow_drop_down,
                   ),
                   isDense: true,
-                  contentPadding: EdgeInsetsDirectional.symmetric(vertical: 8, horizontal: 12),
+                  contentPadding: EdgeInsetsDirectional.symmetric(
+                      vertical: 8, horizontal: 12),
                 ),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
@@ -203,12 +240,14 @@ class _MenuForm3PageState extends State<MenuForm3Page> {
         ),
         Divider(),
         Column(
-          textDirection: serviceLocator<LanguageController>().targetTextDirection,
+          textDirection:
+              serviceLocator<LanguageController>().targetTextDirection,
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Wrap(
-              textDirection: serviceLocator<LanguageController>().targetTextDirection,
+              textDirection:
+                  serviceLocator<LanguageController>().targetTextDirection,
               children: [
                 Text(
                   'Preparation or cooking time',
@@ -216,18 +255,21 @@ class _MenuForm3PageState extends State<MenuForm3Page> {
                     fontWeight: FontWeight.w600,
                     fontSize: 20,
                   ),
-                  textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                  textDirection:
+                      serviceLocator<LanguageController>().targetTextDirection,
                 ).translate(),
               ],
             ),
             const AnimatedGap(2, duration: Duration(milliseconds: 500)),
             Wrap(
-              textDirection: serviceLocator<LanguageController>().targetTextDirection,
+              textDirection:
+                  serviceLocator<LanguageController>().targetTextDirection,
               children: [
                 Text(
                   'Select menu preparation or cooking time',
                   style: context.labelMedium,
-                  textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                  textDirection:
+                      serviceLocator<LanguageController>().targetTextDirection,
                 ).translate(),
               ],
             ),
@@ -245,7 +287,8 @@ class _MenuForm3PageState extends State<MenuForm3Page> {
           ),
           child: IntrinsicHeight(
             child: Row(
-              textDirection: serviceLocator<LanguageController>().targetTextDirection,
+              textDirection:
+                  serviceLocator<LanguageController>().targetTextDirection,
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisSize: MainAxisSize.min,
               children: [
@@ -254,7 +297,8 @@ class _MenuForm3PageState extends State<MenuForm3Page> {
                     child: Text(
                       'Minimum time',
                       style: context.labelLarge,
-                      textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                      textDirection: serviceLocator<LanguageController>()
+                          .targetTextDirection,
                     ),
                     padding: EdgeInsetsDirectional.only(
                       start: 16,
@@ -268,6 +312,13 @@ class _MenuForm3PageState extends State<MenuForm3Page> {
                 Expanded(
                   child: AppTextFieldWidget(
                     controller: _menuMinPreparationTimeController,
+                    textDirection: serviceLocator<LanguageController>()
+                        .targetTextDirection,
+                    focusNode: menuForm3FocusList[0],
+                    textInputAction: TextInputAction.next,
+                    onFieldSubmitted: (_) => fieldFocusChange(
+                        context, menuForm3FocusList[0], menuForm3FocusList[1]),
+                    keyboardType: TextInputType.numberWithOptions(),
                     readOnly: true,
                     decoration: InputDecoration(
                       hintText: 'Min or Hr',
@@ -278,15 +329,20 @@ class _MenuForm3PageState extends State<MenuForm3Page> {
                       disabledBorder: InputBorder.none,
                       errorBorder: InputBorder.none,
                       isDense: true,
-                      contentPadding: EdgeInsetsDirectional.symmetric(horizontal: 8, vertical: 14),
+                      contentPadding: EdgeInsetsDirectional.symmetric(
+                          horizontal: 8, vertical: 14),
                       suffixIcon: IconButton(
                         onPressed: () async {
                           final String? timing = await selectTiming(context);
                           if (timing != null) {
                             setState(() {
-                              _menuMinPreparationTimeController.text = timing ?? '';
-                              final cacheMenuTiming = _menuPreparationTiming?.copyWith(
-                                minPreparingTime: _menuMinPreparationTimeController.value.text.trim(),
+                              _menuMinPreparationTimeController.text =
+                                  timing ?? '';
+                              final cacheMenuTiming =
+                                  _menuPreparationTiming?.copyWith(
+                                minPreparingTime:
+                                    _menuMinPreparationTimeController.value.text
+                                        .trim(),
                               );
                             });
                           }
@@ -296,7 +352,7 @@ class _MenuForm3PageState extends State<MenuForm3Page> {
                         ),
                       ),
                     ),
-                    textInputAction: TextInputAction.next,
+                    
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return 'Enter minimum time';
@@ -321,7 +377,8 @@ class _MenuForm3PageState extends State<MenuForm3Page> {
           ),
           child: IntrinsicHeight(
             child: Row(
-              textDirection: serviceLocator<LanguageController>().targetTextDirection,
+              textDirection:
+                  serviceLocator<LanguageController>().targetTextDirection,
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisSize: MainAxisSize.min,
               children: [
@@ -330,7 +387,8 @@ class _MenuForm3PageState extends State<MenuForm3Page> {
                     child: Text(
                       'Maximum time',
                       style: context.labelLarge,
-                      textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                      textDirection: serviceLocator<LanguageController>()
+                          .targetTextDirection,
                     ),
                     padding: EdgeInsetsDirectional.only(
                       start: 16,
@@ -345,6 +403,13 @@ class _MenuForm3PageState extends State<MenuForm3Page> {
                   child: AppTextFieldWidget(
                     controller: _menuMaxPreparationTimeController,
                     readOnly: true,
+                    textDirection: serviceLocator<LanguageController>()
+                        .targetTextDirection,
+                    focusNode: menuForm3FocusList[1],
+                    textInputAction: TextInputAction.next,
+                    onFieldSubmitted: (_) => fieldFocusChange(
+                        context, menuForm3FocusList[1], menuForm3FocusList[2]),
+                    keyboardType: TextInputType.numberWithOptions(),
                     decoration: InputDecoration(
                       hintText: 'Min or Hr',
                       border: InputBorder.none,
@@ -354,15 +419,20 @@ class _MenuForm3PageState extends State<MenuForm3Page> {
                       disabledBorder: InputBorder.none,
                       errorBorder: InputBorder.none,
                       isDense: true,
-                      contentPadding: EdgeInsetsDirectional.symmetric(horizontal: 8, vertical: 14),
+                      contentPadding: EdgeInsetsDirectional.symmetric(
+                          horizontal: 8, vertical: 14),
                       suffixIcon: IconButton(
                         onPressed: () async {
                           final String? timing = await selectTiming(context);
                           if (timing != null) {
                             setState(() {
-                              _menuMaxPreparationTimeController.text = timing ?? '';
-                              final cacheMenuTiming = _menuPreparationTiming?.copyWith(
-                                maxPreparingTime: _menuMaxPreparationTimeController.value.text.trim(),
+                              _menuMaxPreparationTimeController.text =
+                                  timing ?? '';
+                              final cacheMenuTiming =
+                                  _menuPreparationTiming?.copyWith(
+                                maxPreparingTime:
+                                    _menuMaxPreparationTimeController.value.text
+                                        .trim(),
                               );
                             });
                           }
@@ -372,7 +442,7 @@ class _MenuForm3PageState extends State<MenuForm3Page> {
                         ),
                       ),
                     ),
-                    textInputAction: TextInputAction.next,
+                   
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return 'Enter minimum time';
@@ -389,7 +459,8 @@ class _MenuForm3PageState extends State<MenuForm3Page> {
         Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.stretch,
-          textDirection: serviceLocator<LanguageController>().targetTextDirection,
+          textDirection:
+              serviceLocator<LanguageController>().targetTextDirection,
           children: [
             Text(
               'Stocks',
@@ -397,19 +468,28 @@ class _MenuForm3PageState extends State<MenuForm3Page> {
                 fontWeight: FontWeight.w600,
                 fontSize: 20,
               ),
-              textDirection: serviceLocator<LanguageController>().targetTextDirection,
+              textDirection:
+                  serviceLocator<LanguageController>().targetTextDirection,
             ).translate(),
             const AnimatedGap(2, duration: Duration(milliseconds: 500)),
             Text(
               'Select menu minimum and maximum stock',
               style: context.labelMedium,
-              textDirection: serviceLocator<LanguageController>().targetTextDirection,
+              textDirection:
+                  serviceLocator<LanguageController>().targetTextDirection,
             ).translate(),
           ],
         ),
         const AnimatedGap(12, duration: Duration(milliseconds: 500)),
         AppTextFieldWidget(
           controller: _menuMinStockQuantityController,
+          textDirection: serviceLocator<LanguageController>()
+                        .targetTextDirection,
+                    focusNode: menuForm3FocusList[2],
+                    textInputAction: TextInputAction.next,
+                    onFieldSubmitted: (_) => fieldFocusChange(
+                        context, menuForm3FocusList[2], menuForm3FocusList[3]),
+                    keyboardType: TextInputType.numberWithOptions(),
           decoration: InputDecoration(
             labelText: 'Minimum Quantity',
             hintText: 'Enter minimum stock quantity',
@@ -418,7 +498,7 @@ class _MenuForm3PageState extends State<MenuForm3Page> {
             ),
             isDense: true,
           ),
-          textInputAction: TextInputAction.next,
+          
           validator: (value) {
             if (value == null || value.isEmpty) {
               return 'Enter minimum stock quantity';
@@ -429,6 +509,12 @@ class _MenuForm3PageState extends State<MenuForm3Page> {
         const AnimatedGap(12, duration: Duration(milliseconds: 500)),
         AppTextFieldWidget(
           controller: _menuMaxStockQuantityController,
+          textDirection:
+              serviceLocator<LanguageController>().targetTextDirection,
+          focusNode: menuForm3FocusList[3],
+          textInputAction: TextInputAction.done,
+         
+          keyboardType: TextInputType.numberWithOptions(),
           decoration: InputDecoration(
             labelText: 'Maximum Quantity',
             hintText: 'Enter maximum stock quantity',
@@ -437,7 +523,7 @@ class _MenuForm3PageState extends State<MenuForm3Page> {
             ),
             isDense: true,
           ),
-          textInputAction: TextInputAction.next,
+        
           validator: (value) {
             if (value == null || value.isEmpty) {
               return 'Enter maximum stock quantity';
@@ -445,6 +531,7 @@ class _MenuForm3PageState extends State<MenuForm3Page> {
             return null;
           },
         ),
+      
       ],
     );
   }
@@ -470,7 +557,8 @@ class _MenuForm3PageState extends State<MenuForm3Page> {
               child: ListView.builder(
                 padding: EdgeInsetsDirectional.zero,
                 itemCount: _menuAvailablePreparationTimings.length,
-                itemBuilder: (context, index) => _menuPreparationWidget(context, index, setState),
+                itemBuilder: (context, index) =>
+                    _menuPreparationWidget(context, index, setState),
                 shrinkWrap: true,
               ),
             );
@@ -481,11 +569,15 @@ class _MenuForm3PageState extends State<MenuForm3Page> {
     return timing;
   }
 
-  Widget _menuPreparationWidget(BuildContext context, int index, StateSetter innerSetState) {
+  Widget _menuPreparationWidget(
+      BuildContext context, int index, StateSetter innerSetState) {
     return DecoratedBox(
       decoration: BoxDecoration(
         border: Border(
-            top: (index == 0) ? BorderSide(color: Theme.of(context).dividerColor) : BorderSide.none, bottom: BorderSide(color: Theme.of(context).dividerColor)),
+            top: (index == 0)
+                ? BorderSide(color: Theme.of(context).dividerColor)
+                : BorderSide.none,
+            bottom: BorderSide(color: Theme.of(context).dividerColor)),
       ),
       child: ListTile(
         dense: true,
@@ -495,7 +587,8 @@ class _MenuForm3PageState extends State<MenuForm3Page> {
         visualDensity: VisualDensity(vertical: -1, horizontal: 0),
         title: Text(
           '${_menuAvailablePreparationTimings[index]}',
-          textDirection: serviceLocator<LanguageController>().targetTextDirection,
+          textDirection:
+              serviceLocator<LanguageController>().targetTextDirection,
         ),
         onTap: () {
           innerSetState(() {});

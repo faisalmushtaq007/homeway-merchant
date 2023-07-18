@@ -226,3 +226,22 @@ class SelectAddonsMaxPortion extends MenuEvent {
         selectedMenuPortions,
       ];
 }
+
+class PopToMenuPage extends MenuEvent {
+  PopToMenuPage({
+    this.addonsEntity = const [],
+    this.hasNewAddons = true,
+  });
+
+  final List<Addons> addonsEntity;
+  final bool hasNewAddons;
+
+  @override
+  bool get cacheHash => true;
+
+  @override
+  List<Object?> get hashParameters => [
+        addonsEntity,
+        hasNewAddons,
+      ];
+}

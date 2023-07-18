@@ -48,7 +48,7 @@ class StoreCard extends StatelessWidget {
                 textDirection: serviceLocator<LanguageController>().targetTextDirection,
               ),
               subtitle: Text(
-                storeEntity.storeAddress.address?.area ?? '',
+                storeEntity.storeAddress?.address?.area ?? '',
                 style: context.labelMedium,
                 textDirection: serviceLocator<LanguageController>().targetTextDirection,
               ),

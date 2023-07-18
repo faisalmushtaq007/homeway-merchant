@@ -453,3 +453,22 @@ class NavigateToAddonsMenuState extends MenuState {
         hasNewAddons,
       ];
 }
+
+class PopToMenuPageState extends MenuState {
+  PopToMenuPageState({
+    this.addonsEntity = const [],
+    this.hasNewAddons = true,
+  });
+
+  final List<Addons> addonsEntity;
+  final bool hasNewAddons;
+
+  @override
+  bool get cacheHash => true;
+
+  @override
+  List<Object?> get hashParameters => [
+        addonsEntity,
+        hasNewAddons,
+      ];
+}

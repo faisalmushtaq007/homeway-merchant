@@ -57,23 +57,25 @@ class PageBody extends StatelessWidget {
     // width constrained content. If we use the built in scroll bars of the
     // in a scrolling child, it will be next to the child, not at the edge of
     // the screen where it belongs.
-    return Scrollbar(
-      controller: controller,
-      thickness: UniversalPlatform.isDesktopOrWeb ? null : 0,
-      child: GestureDetector(
-        // This allows us to un-focus a widget, typically a TextField with focus
-        // by tapping somewhere outside it. It is no longer needed on desktop
-        // builds, it is done automatically there, but not on tablet and phone
-        // app. In this demo we want it on them too.
-        onTap: () => FocusScope.of(context).unfocus(),
-        child: Center(
-          child: ConstrainedBox(
-            constraints: constraints,
-            child: ScrollConfiguration(
-              behavior: const DragScrollBehavior().copyWith(scrollbars: false), //ScrollConfiguration.of(context).copyWith(scrollbars: false),
-              child: Padding(
-                padding: padding,
-                child: child,
+    return SafeArea(
+      child: Scrollbar(
+        controller: controller,
+        thickness: UniversalPlatform.isDesktopOrWeb ? null : 0,
+        child: GestureDetector(
+          // This allows us to un-focus a widget, typically a TextField with focus
+          // by tapping somewhere outside it. It is no longer needed on desktop
+          // builds, it is done automatically there, but not on tablet and phone
+          // app. In this demo we want it on them too.
+          onTap: () => FocusScope.of(context).unfocus(),
+          child: Center(
+            child: ConstrainedBox(
+              constraints: constraints,
+              child: ScrollConfiguration(
+                behavior: const DragScrollBehavior().copyWith(scrollbars: false), //ScrollConfiguration.of(context).copyWith(scrollbars: false),
+                child: Padding(
+                  padding: padding,
+                  child: child,
+                ),
               ),
             ),
           ),
