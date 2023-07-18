@@ -528,20 +528,26 @@ class _MenuForm2PageState extends State<MenuForm2Page> {
                   _selectedAddons = List<Addons>.from(addons.toList());
                   for (var item in _selectedAddons) {
                     selectedAddonsWidgets.add(
-                      InputChip(
-                        label: Text(
-                          '${item.title} ${item.unit}',
-                          textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                        ),
-                        selected: _selectedAddons.contains(item),
-                        showCheckmark: false,
-                        onSelected: (selected) {
-                          setState(() {
-                            _selectedAddons.contains(item) ? _selectedAddons.remove(item) : _selectedAddons.add(item);
-                          });
-                        },
-                        onDeleted: () {
-                          _selectedAddons.remove(item);
+                      StatefulBuilder(
+                        builder: (context,setState) {
+                          return InputChip(
+                            label: Text(
+                              '${item.title} ${item.unit}',
+                              textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                            ),
+                            selected: _selectedAddons.contains(item),
+                            showCheckmark: false,
+                            onSelected: (selected) {
+                              setState(() {
+                                _selectedAddons.contains(item) ? _selectedAddons.remove(item) : _selectedAddons.add(item);
+                              });
+                            },
+                            onDeleted: () {
+                              setState(() {
+                                _selectedAddons.remove(item);
+                              });
+                            },
+                          );
                         },
                       ),
                     );

@@ -138,18 +138,22 @@ class _MenuAllAddonsPageView extends WidgetView<MenuAllAddonsPage, _MenuAllAddon
               ),
             ],
           ),
-          floatingActionButton: Padding(
-            padding: EdgeInsetsDirectional.only(bottom: 70),
-            child: FloatingActionButton(
-              child: Icon(
-                Icons.check,
+          floatingActionButton: AnimatedOpacity(
+            opacity: state._selectedAddons.isEmpty ? 0.0 : 1.0,
+            duration: const Duration(milliseconds: 500),
+            child: Padding(
+              padding: EdgeInsetsDirectional.only(bottom: 70),
+              child: FloatingActionButton(
+                child: Icon(
+                  Icons.check,
+                ),
+                backgroundColor: Color.fromRGBO(69, 201, 125, 1.0),
+                onPressed: () {
+                  context.read<MenuBloc>().add(
+                        PopToMenuPage(addonsEntity: state._selectedAddons.toList()),
+                      );
+                },
               ),
-              backgroundColor: Color.fromRGBO(69, 201, 125, 1.0),
-              onPressed: () {
-                context.read<MenuBloc>().add(
-                      PopToMenuPage(addonsEntity: state._selectedAddons.toList()),
-                    );
-              },
             ),
           ),
           body: SlideInLeft(
