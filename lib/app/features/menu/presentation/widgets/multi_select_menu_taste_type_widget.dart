@@ -77,6 +77,8 @@ class MultiSelectTasteTypeFormField extends FormField<List<TasteType>> {
                 },
                 availableTasteTypes: availableTasteTypeList.toList(),
                 initialSelectedTasteTypeList: initialSelectedTasteTypeList.toList(),
+                maxSelection: maxSelection,
+                onMaxSelected: onMaxSelected,
               ),
             );
           },

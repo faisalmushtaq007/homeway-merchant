@@ -25,6 +25,9 @@ mixin LifecycleMixin<T extends StatefulWidget> on State<T> implements WidgetsBin
       case AppLifecycleState.detached:
         onDetached();
         return;
+      case AppLifecycleState.hidden:
+        onInactive();
+        return;
     }
   }
 

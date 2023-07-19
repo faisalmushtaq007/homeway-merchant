@@ -106,6 +106,8 @@ class MultiSelectAvailableFoodPreparationTypesFormField extends FormField<List<S
                 },
                 availableFoodPreparationTypesList: availableFoodPreparationTypesList.toList(),
                 initialSelectedAvailableFoodPreparationTypesList: initialSelectedFoodPreparationTypesList.toList(),
+                maxSelection: maxSelection,
+                onMaxSelected: onMaxSelected,
               ),
             );
           },

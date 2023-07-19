@@ -106,6 +106,8 @@ class MultiSelectAvailablePaymentModeFormField extends FormField<List<StoreAccep
                 },
                 availablePaymentModes: availablePaymentModesList.toList(),
                 initialSelectedAvailablePaymentModesList: initialSelectedAvailablePaymentModesList.toList(),
+                maxSelection: maxSelection,
+                onMaxSelected: onMaxSelected,
               ),
             );
           },

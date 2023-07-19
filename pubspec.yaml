@@ -32,7 +32,6 @@ dependencies:
   cupertino_icons: ^1.0.5
   device_info_plus: ^9.0.2
   equatable: ^2.0.5
-  extended_image: ^8.0.2
   file_saver: ^0.2.5
   firebase_analytics: ^10.4.4
   firebase_core: ^2.15.0

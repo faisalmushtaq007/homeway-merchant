@@ -4,40 +4,10 @@ import 'package:homemakers_merchant/app/features/store/domain/entities/store_ent
 import 'package:homemakers_merchant/bootup/injection_container.dart';
 import 'package:homemakers_merchant/config/translation/language_controller.dart';
 
-class MultiSelectTasteLevelFormField extends FormField<List<TasteLevel>> {
-  final Widget title;
-  final Widget hintWidget;
-  final bool required;
-  final String errorText;
-
-  //final List? dataSource;
-  final List<TasteLevel> availableTasteLevelList;
-  final List<TasteLevel> initialSelectedTasteLevelList;
-  final Function(List<TasteLevel>) onSelectionChanged;
-  final Function(List<TasteLevel>)? onMaxSelected;
-  final int? maxSelection;
-  final String? textField;
-  final String? valueField;
-  final ValueChanged<List<TasteLevel>>? onChanged;
-  final Function? open;
-  final Function? close;
-  final Widget? leading;
-  final Widget? trailing;
-  final String okButtonLabel;
-  final String cancelButtonLabel;
-  final Color? fillColor;
-  final InputBorder? border;
-  final TextStyle? chipLabelStyle;
-  final Color? chipBackGroundColor;
-  final TextStyle dialogTextStyle;
-  final ShapeBorder dialogShapeBorder;
-  final Color? checkBoxCheckColor;
-  final Color? checkBoxActiveColor;
-  final bool enabled;
-
-  MultiSelectTasteLevelFormField({
-    FormFieldSetter<List<TasteLevel>>? onSaved,
-    FormFieldValidator<List<TasteLevel>>? validator,
+class MultiSelectAddonsFormField extends FormField<List<Addons>> {
+  MultiSelectAddonsFormField({
+    FormFieldSetter<List<Addons>>? onSaved,
+    FormFieldValidator<List<Addons>>? validator,
     dynamic initialValue,
     AutovalidateMode autovalidate = AutovalidateMode.disabled,
     this.title = const Text('Title'),
@@ -66,19 +36,19 @@ class MultiSelectTasteLevelFormField extends FormField<List<TasteLevel>> {
     this.checkBoxActiveColor,
     this.checkBoxCheckColor,
     required this.onSelectionChanged,
-    required this.availableTasteLevelList,
+    required this.availableAddonsList,
     this.onMaxSelected,
     this.maxSelection,
-    this.initialSelectedTasteLevelList = const [],
+    this.initialSelectedAddonsList = const [],
     super.key,
   }) : super(
           onSaved: onSaved,
           validator: validator,
-          initialValue: initialSelectedTasteLevelList.toList(),
+          initialValue: initialSelectedAddonsList.toList(),
           autovalidateMode: autovalidate,
-          builder: (FormFieldState<List<TasteLevel>> state) {
+          builder: (FormFieldState<List<Addons>> state) {
             // String selectedChoice = "";
-            List<TasteLevel> selectedChoices = [];
+            List<Addons> selectedChoices = [];
             return InputDecorator(
               decoration: InputDecoration(
                 //filled: true,
@@ -95,8 +65,8 @@ class MultiSelectTasteLevelFormField extends FormField<List<TasteLevel>> {
                 errorBorder: InputBorder.none,
               ),
               isEmpty: state.value == null || state.value!.isEmpty,
-              child: MultiSelectMenuTasteLevel(
-                onSelectionChanged: (List<TasteLevel> selectedItems) {
+              child: MultiSelectMenuAddons(
+                onSelectionChanged: (List<Addons> selectedItems) {
                   selectedChoices = selectedItems.toList();
                   onSelectionChanged?.call(selectedChoices);
                   state.didChange(selectedChoices);
@@ -105,68 +75,84 @@ class MultiSelectTasteLevelFormField extends FormField<List<TasteLevel>> {
                   }
                   state.save();
                 },
-                availableTasteLevels: availableTasteLevelList.toList(),
-                initialSelectedTasteLevelList: initialSelectedTasteLevelList.toList(),
+                availableAddonss: availableAddonsList.toList(),
+                initialSelectedAddonsList: initialSelectedAddonsList.toList(),
                 maxSelection: maxSelection,
                 onMaxSelected: onMaxSelected,
               ),
             );
           },
         );
+  final Widget title;
+  final Widget hintWidget;
+  final bool required;
+  final String errorText;
+
+  //final List? dataSource;
+  final List<Addons> availableAddonsList;
+  final List<Addons> initialSelectedAddonsList;
+  final Function(List<Addons>) onSelectionChanged;
+  final Function(List<Addons>)? onMaxSelected;
+  final int? maxSelection;
+  final String? textField;
+  final String? valueField;
+  final ValueChanged<List<Addons>>? onChanged;
+  final Function? open;
+  final Function? close;
+  final Widget? leading;
+  final Widget? trailing;
+  final String okButtonLabel;
+  final String cancelButtonLabel;
+  final Color? fillColor;
+  final InputBorder? border;
+  final TextStyle? chipLabelStyle;
+  final Color? chipBackGroundColor;
+  final TextStyle dialogTextStyle;
+  final ShapeBorder dialogShapeBorder;
+  final Color? checkBoxCheckColor;
+  final Color? checkBoxActiveColor;
+  final bool enabled;
 }
 
-class MultiSelectMenuTasteLevel extends StatefulWidget {
-  const MultiSelectMenuTasteLevel({
+class MultiSelectMenuAddons extends StatefulWidget {
+  const MultiSelectMenuAddons({
     required this.onSelectionChanged,
-    required this.availableTasteLevels,
+    required this.availableAddonss,
     this.onMaxSelected,
     this.maxSelection,
     super.key,
-    this.initialSelectedTasteLevelList = const [],
+    this.initialSelectedAddonsList = const [],
   });
 
-  final List<TasteLevel> availableTasteLevels;
-  final Function(List<TasteLevel>) onSelectionChanged;
-  final Function(List<TasteLevel>)? onMaxSelected;
-  final List<TasteLevel> initialSelectedTasteLevelList;
+  final List<Addons> availableAddonss;
+  final Function(List<Addons>) onSelectionChanged;
+  final Function(List<Addons>)? onMaxSelected;
+  final List<Addons> initialSelectedAddonsList;
   final int? maxSelection;
 
   @override
   _MultiSelectChipState createState() => _MultiSelectChipState();
 }
 
-class _MultiSelectChipState extends State<MultiSelectMenuTasteLevel> {
+class _MultiSelectChipState extends State<MultiSelectMenuAddons> {
   // String selectedChoice = "";
-  List<TasteLevel> selectedChoices = [];
+  List<Addons> selectedChoices = [];
 
   List<Widget> _buildChoiceList() {
-    List<Widget> choices = [];
-
-    for (var item in widget.availableTasteLevels) {
-      choices.add(ChoiceChip(
+    return List<Widget>.generate(widget.availableAddonss.length, (int index) {
+      return Chip(
         label: Text(
-          item.title,
+          widget.availableAddonss[index].title,
           textDirection: serviceLocator<LanguageController>().targetTextDirection,
         ),
-        selected: selectedChoices.contains(item),
-        onSelected: (selected) {
-          if (selectedChoices.length == (widget.maxSelection ?? -1) && !selectedChoices.contains(item)) {
-            widget.onMaxSelected?.call(selectedChoices);
-          } else {
-            setState(() {
-              selectedChoices.contains(item) ? selectedChoices.remove(item) : selectedChoices.add(item);
-              widget.onSelectionChanged?.call(selectedChoices);
-            });
-          }
-          /*setState(() {
-            selectedChoices.contains(item) ? selectedChoices.remove(item) : selectedChoices.add(item);
-            widget.onSelectionChanged(selectedChoices);
-          });*/
+        onDeleted: () {
+          setState(() {
+            widget.availableAddonss.removeAt(index);
+            widget.onSelectionChanged?.call(widget.availableAddonss);
+          });
         },
-      ));
-    }
-
-    return choices;
+      );
+    });
   }
 
   @override

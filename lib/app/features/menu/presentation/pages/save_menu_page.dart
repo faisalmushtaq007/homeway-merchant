@@ -13,24 +13,20 @@ class SaveMenuPage extends StatefulWidget {
   _SaveMenuPageController createState() => _SaveMenuPageController();
 }
 
-class _SaveMenuPageController extends State<SaveMenuPage>
-    with AutomaticKeepAliveClientMixin, WidgetsBindingObserver {
+class _SaveMenuPageController extends State<SaveMenuPage> with AutomaticKeepAliveClientMixin, WidgetsBindingObserver {
   late final ScrollController scrollController;
   late final ScrollController _screenScrollController;
   int _currentPageIndex = 1;
 
   // StepProgressController
-  final StepProgressController stepProgressController =
-      StepProgressController(initialStep: 1, totalStep: 5);
+  final StepProgressController stepProgressController = StepProgressController(totalStep: 5, initialStep: 1);
   PageController controller = PageController(
-    initialPage: 0,
-  );
-  FormPageStyle? formPageStyle = FormPageStyle();
-
-  // PageView
-  PreloadPageController preloadPageController = PreloadPageController(
     initialPage: 1,
   );
+  FormPageStyle? formPageStyle = const FormPageStyle();
+
+  // PageView
+  PreloadPageController preloadPageController = PreloadPageController(initialPage: 1);
 
   // ProgressIndicatorType
   ProgressIndicatorType progress = ProgressIndicatorType.linear;
@@ -113,18 +109,7 @@ class _SaveMenuPageController extends State<SaveMenuPage>
         formKey: formKeys[4],
       ),
     ];
-    focusList = [
-      FocusNode(),
-      FocusNode(),
-      FocusNode(),
-      FocusNode(),
-      FocusNode(),
-      FocusNode(),
-      FocusNode(),
-      FocusNode(),
-      FocusNode(),
-      FocusNode()
-    ];
+    focusList = [FocusNode(), FocusNode(), FocusNode(), FocusNode(), FocusNode(), FocusNode(), FocusNode(), FocusNode(), FocusNode(), FocusNode()];
     _screenScrollController = ScrollController()..addListener(_scrollListener);
   }
 
@@ -148,15 +133,11 @@ class _SaveMenuPageController extends State<SaveMenuPage>
   }
 
   void _scrollListener() {
-    if (_screenScrollController.offset >=
-            _screenScrollController.position.maxScrollExtent &&
-        !_screenScrollController.position.outOfRange) {
+    if (_screenScrollController.offset >= _screenScrollController.position.maxScrollExtent && !_screenScrollController.position.outOfRange) {
       //reach the top
     }
-    if (_screenScrollController.offset <=
-            _screenScrollController.position.minScrollExtent &&
-        !_screenScrollController.position.outOfRange) {
-     //reach the top
+    if (_screenScrollController.offset <= _screenScrollController.position.minScrollExtent && !_screenScrollController.position.outOfRange) {
+      //reach the top
     }
   }
 
@@ -175,13 +156,11 @@ class _SaveMenuPageController extends State<SaveMenuPage>
 
   void _nextButtonOnPressed() {
     if (validateCurrentPage()) {
-
       setState(() {
         if (_currentPageIndex < pages.length - 1) {
           _currentPageIndex++;
           //controller.nextPage(duration: const Duration(milliseconds: 300), curve: Curves.ease);
-          preloadPageController.nextPage(
-              duration: const Duration(milliseconds: 300), curve: Curves.ease);
+          preloadPageController.nextPage(duration: const Duration(milliseconds: 300), curve: Curves.ease);
           stepProgressController.nextStep();
         } else {
           onFormSubmitted();
@@ -229,16 +208,14 @@ class _SaveMenuPageController extends State<SaveMenuPage>
   bool get wantKeepAlive => true;
 }
 
-class _SaveMenuPageView
-    extends WidgetView<SaveMenuPage, _SaveMenuPageController> {
+class _SaveMenuPageView extends WidgetView<SaveMenuPage, _SaveMenuPageController> {
   const _SaveMenuPageView(super.state);
 
   @override
   Widget build(BuildContext context) {
     final MediaQueryData media = MediaQuery.of(context);
     final double margins = GlobalApp.responsiveInsets(media.size.width);
-    final double topPadding =
-        margins; //media.padding.top + kToolbarHeight + margins; //margins * 1.5;
+    final double topPadding = margins; //media.padding.top + kToolbarHeight + margins; //margins * 1.5;
     final double bottomPadding = media.padding.bottom + margins;
     final double width = media.size.width;
     final ThemeData theme = Theme.of(context);
@@ -262,8 +239,7 @@ class _SaveMenuPageView
           ],
         ),
         body: Directionality(
-          textDirection:
-              serviceLocator<LanguageController>().targetTextDirection,
+          textDirection: serviceLocator<LanguageController>().targetTextDirection,
           child: PageBody(
             controller: state.scrollController,
             constraints: BoxConstraints(
@@ -281,13 +257,12 @@ class _SaveMenuPageView
                     SliverList(
                       delegate: SliverChildListDelegate(
                         [
-                          const AnimatedGap(50,
-                              duration: Duration(milliseconds: 500)),
+                          const AnimatedGap(50, duration: Duration(milliseconds: 500)),
                           AnimatedContainer(
                             height: context.height * 0.64,
                             margin: EdgeInsetsDirectional.only(
-                              start: margins*1.5,
-                              end: margins*1.5,
+                              start: margins * 1.5,
+                              end: margins * 1.5,
                             ),
                             padding: EdgeInsetsDirectional.only(
                               start: margins * 2.25,
@@ -300,8 +275,7 @@ class _SaveMenuPageView
                             ),
                             decoration: BoxDecoration(
                               color: Colors.white,
-                              borderRadius:
-                                  BorderRadiusDirectional.circular(10),
+                              borderRadius: BorderRadiusDirectional.circular(10),
                               boxShadow: const [
                                 BoxShadow(
                                   offset: Offset(0, 3),
@@ -325,13 +299,10 @@ class _SaveMenuPageView
                                 return SingleChildScrollView(
                                   child: Column(
                                     children: [
-                                      const AnimatedGap(18,
-                                          duration:
-                                              Duration(milliseconds: 500)),
+                                      const AnimatedGap(18, duration: Duration(milliseconds: 500)),
                                       Wrap(
                                         alignment: WrapAlignment.center,
-                                        crossAxisAlignment:
-                                            WrapCrossAlignment.center,
+                                        crossAxisAlignment: WrapCrossAlignment.center,
                                         children: [
                                           AnimatedSwitcher(
                                             duration: const Duration(
@@ -339,8 +310,7 @@ class _SaveMenuPageView
                                             ),
                                             child: Text(
                                               '${(!widget.haveNewMenu && widget.menuEntity != null && widget.menuEntity?.menuName != null) ? widget.menuEntity?.menuName : 'Add new menu'}',
-                                              style:
-                                                  context.titleLarge!.copyWith(
+                                              style: context.titleLarge!.copyWith(
                                                 color: context.primaryColor,
                                                 fontWeight: FontWeight.bold,
                                                 fontSize: 24,
@@ -349,9 +319,7 @@ class _SaveMenuPageView
                                           ),
                                         ],
                                       ),
-                                      const AnimatedGap(12,
-                                          duration:
-                                              Duration(milliseconds: 500)),
+                                      const AnimatedGap(12, duration: Duration(milliseconds: 500)),
                                       state.pages[index].body,
                                     ],
                                   ),
@@ -361,10 +329,8 @@ class _SaveMenuPageView
                             ),
                           ),
                           Progress(
-                            stepProgressController:
-                                state.stepProgressController,
-                            strokeColor: context.colorScheme.surfaceTint
-                                .withOpacity(0.75),
+                            stepProgressController: state.stepProgressController,
+                            strokeColor: context.colorScheme.surfaceTint.withOpacity(0.75),
                             valueColor: Colors.white,
                             //context.colorScheme.surface,
                             //backgroundColor: context.primaryColor,
@@ -372,11 +338,13 @@ class _SaveMenuPageView
                             onStepChanged: state.onStepChanged,
                             defaultColor: context.colorScheme.surface,
                             height: kToolbarHeight - margins,
-                            margin: EdgeInsetsDirectional.symmetric(
-                                horizontal: context.width / 8),
+                            margin: EdgeInsetsDirectional.symmetric(horizontal: context.width / 8),
                           ),
                           Padding(
-                            padding: EdgeInsetsDirectional.only(start: margins*2,end:margins*2,),
+                            padding: EdgeInsetsDirectional.only(
+                              start: margins * 2,
+                              end: margins * 2,
+                            ),
                             child: Row(
                               mainAxisSize: MainAxisSize.min,
                               mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -400,9 +368,7 @@ class _SaveMenuPageView
                                     ),
                                     child: Text(
                                       'Prev',
-                                      textDirection:
-                                          serviceLocator<LanguageController>()
-                                              .targetTextDirection,
+                                      textDirection: serviceLocator<LanguageController>().targetTextDirection,
                                       style: const TextStyle(
                                         color: Color.fromRGBO(127, 129, 132, 1.0),
                                       ),
@@ -418,15 +384,12 @@ class _SaveMenuPageView
                                     onPressed: state._nextButtonOnPressed,
                                     style: ElevatedButton.styleFrom(
                                       //minimumSize: Size(180, 40),
-                                      disabledBackgroundColor:
-                                          Color.fromRGBO(255, 219, 208, 1),
+                                      disabledBackgroundColor: Color.fromRGBO(255, 219, 208, 1),
                                       disabledForegroundColor: Colors.white,
                                     ),
                                     child: Text(
                                       'Next',
-                                      textDirection:
-                                          serviceLocator<LanguageController>()
-                                              .targetTextDirection,
+                                      textDirection: serviceLocator<LanguageController>().targetTextDirection,
                                     ).translate(),
                                   ),
                                 ),
@@ -440,15 +403,13 @@ class _SaveMenuPageView
                 ),
                 AnimatedPositioned(
                   duration: const Duration(milliseconds: 300),
+                  top: (state.isKeyboardOpen) ? -(MediaQuery.of(context).viewInsets.bottom - margins) : 8,
                   child: DisplayImage(
                     imagePath: '',
                     onPressed: () {},
                     hasIconImage: true,
                     hasEditButton: false,
                   ),
-                  top: (state.isKeyboardOpen)
-                      ? -(MediaQuery.of(context).viewInsets.bottom-margins)
-                      : 8 ,
                 ),
               ],
             ),

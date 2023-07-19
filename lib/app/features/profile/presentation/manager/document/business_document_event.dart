@@ -127,8 +127,7 @@ class BusinessDocumentEvent with _$BusinessDocumentEvent {
   factory BusinessDocumentEvent.selectDocumentSourceType({
     @Default(DocumentType.tradeLicence) DocumentType documentType,
     @Default(ImageSource.camera) ImageSource imageSource,
-    @Default(DocumentPickerSource.camera)
-    DocumentPickerSource documentPickerSource,
+    @Default(DocumentPickerSource.camera) DocumentPickerSource documentPickerSource,
   }) = SelectDocumentSourceType;
 
   factory BusinessDocumentEvent.closeMediaPicker({
@@ -139,10 +138,8 @@ class BusinessDocumentEvent with _$BusinessDocumentEvent {
     @Default(DocumentType.tradeLicence) DocumentType documentType,
     XFile? xfile,
     File? file,
-    required ExtendedImageEditorState extendedImageEditorState,
     Uint8List? bytes,
     @Default(false) bool isCropping,
-    required AspectRatioItem aspectRatioItem,
   }) = AssetCrop;
 
   factory BusinessDocumentEvent.rightRotate({
@@ -161,7 +158,6 @@ class BusinessDocumentEvent with _$BusinessDocumentEvent {
 
   factory BusinessDocumentEvent.resetAsset({
     @Default(DocumentType.tradeLicence) DocumentType documentType,
-    AspectRatioItem? aspectRatioItem,
   }) = ResetAsset;
 
   factory BusinessDocumentEvent.resetAll({
@@ -172,7 +168,6 @@ class BusinessDocumentEvent with _$BusinessDocumentEvent {
     @Default(DocumentType.tradeLicence) DocumentType documentType,
     XFile? xfile,
     File? file,
-    ExtendedImageEditorState? extendedImageEditorState,
     Uint8List? bytes,
     ByteData? byteData,
     EditImageInfo? imageInfo,

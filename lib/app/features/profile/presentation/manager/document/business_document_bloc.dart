@@ -8,7 +8,6 @@ import 'package:homemakers_merchant/app/features/profile/presentation/widgets/do
 
 import 'package:bloc/bloc.dart';
 import 'package:bloc_concurrency/bloc_concurrency.dart';
-import 'package:extended_image/extended_image.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
@@ -32,8 +31,7 @@ part 'business_document_state.dart';
 
 part 'business_document_bloc.freezed.dart';
 
-class BusinessDocumentBloc
-    extends Bloc<BusinessDocumentEvent, BusinessDocumentState> {
+class BusinessDocumentBloc extends Bloc<BusinessDocumentEvent, BusinessDocumentState> {
   BusinessDocumentBloc() : super(BusinessDocumentInitial()) {
     on<BusinessDocumentEvent>(
       (events, emit) async {
@@ -63,8 +61,7 @@ class BusinessDocumentBloc
             var allDocumentItems = <BusinessDocumentUploadedEntity>[];
             final int currentIndex = value.currentIndex;
             final int nextIndex = value.newIndexPosition;
-            allDocumentItems = List<BusinessDocumentUploadedEntity>.from(
-                value.allBusinessDocuments.toList());
+            allDocumentItems = List<BusinessDocumentUploadedEntity>.from(value.allBusinessDocuments.toList());
             allDocumentItems.asMap().forEach((key, item) async {
               if (item == value.businessDocumentUploadedEntity) {
                 var result = value.uploadedData;
@@ -76,23 +73,15 @@ class BusinessDocumentBloc
                 File? file = result[6] as File;
                 String? assetNetworkUrl = result[7] as String?;
                 final int timeStamp = DateTime.now().millisecondsSinceEpoch;
-                var tempName =
-                    '${item.documentType.documentTypeName}_$timeStamp';
-                var fileNameWithExtension = path.basenameWithoutExtension(
-                    xCroppedDocumentFile?.path ??
-                        croppedDocumentFile?.path ??
-                        tempName);
-                String fileExtension = path.extension(
-                    xCroppedDocumentFile?.path ??
-                        croppedDocumentFile?.path ??
-                        '.png');
+                var tempName = '${item.documentType.documentTypeName}_$timeStamp';
+                var fileNameWithExtension = path.basenameWithoutExtension(xCroppedDocumentFile?.path ?? croppedDocumentFile?.path ?? tempName);
+                String fileExtension = path.extension(xCroppedDocumentFile?.path ?? croppedDocumentFile?.path ?? '.png');
 
                 if (item.documentFrontAssets == null) {
                   item.documentFrontAssets = BusinessDocumentAssetsEntity(
                     assetName: fileNameWithExtension,
                     assetPath: filePath,
-                    assetOriginalName:
-                        path.basenameWithoutExtension(xFile.path ?? file.path),
+                    assetOriginalName: path.basenameWithoutExtension(xFile.path ?? file.path),
                     assetExtension: fileExtension,
                     assetsUploadStatus: DocumentUploadStatus.uploaded,
                     hasAssetsFrontSide: true,
@@ -102,11 +91,9 @@ class BusinessDocumentBloc
 
                 /// Copywith
                 else {
-                  BusinessDocumentAssetsEntity businessDocumentAssetsEntity =
-                      item.documentFrontAssets!.copyWith(
+                  BusinessDocumentAssetsEntity businessDocumentAssetsEntity = item.documentFrontAssets!.copyWith(
                     assetName: fileNameWithExtension,
-                    assetOriginalName:
-                        path.basenameWithoutExtension(xFile.path ?? file.path),
+                    assetOriginalName: path.basenameWithoutExtension(xFile.path ?? file.path),
                     assetPath: filePath,
                     assetExtension: fileExtension,
                     //assetIdNumber: value.textEditingControllers[value.currentIndex].value.text.trim(),
@@ -114,8 +101,7 @@ class BusinessDocumentBloc
                     hasAssetsFrontSide: true,
                   );
                   allDocumentItems[value.currentIndex].hasButtonEnable = false;
-                  allDocumentItems[value.currentIndex].documentFrontAssets =
-                      businessDocumentAssetsEntity;
+                  allDocumentItems[value.currentIndex].documentFrontAssets = businessDocumentAssetsEntity;
                 }
               }
             });
@@ -123,8 +109,7 @@ class BusinessDocumentBloc
             if (currentIndex != nextIndex) {
               allDocumentItems.insert(
                 nextIndex,
-                BusinessDocumentUploadedEntity(
-                    documentType: documentTypes[nextIndex]),
+                BusinessDocumentUploadedEntity(documentType: documentTypes[nextIndex]),
               );
             }
             emit(AddNewDocumentState(
@@ -134,10 +119,8 @@ class BusinessDocumentBloc
               documentType: value.documentType,
               allBusinessDocuments: allDocumentItems.toList(),
               assetsEntries: value.assetsEntries.toList(),
-              businessDocumentAssetsEntity:
-                  allDocumentItems[value.currentIndex].documentFrontAssets,
-              businessDocumentUploadedEntity:
-                  allDocumentItems[value.currentIndex],
+              businessDocumentAssetsEntity: allDocumentItems[value.currentIndex].documentFrontAssets,
+              businessDocumentUploadedEntity: allDocumentItems[value.currentIndex],
               currentIndex: value.currentIndex,
               uploadedData: value.uploadedData,
             ));
@@ -148,18 +131,15 @@ class BusinessDocumentBloc
           selectImageFromGallery: (value) {},
           restoreSelectImageFromGallery: (value) {},
           openMediaPicker: (value) async => await _openMediaPicker(value, emit),
-          selectDocumentSourceType: (value) async =>
-              await _selectDocumentSourceType(value, emit),
-          closeMediaPicker: (value) async =>
-              await _closeMediaPicker(value, emit),
+          selectDocumentSourceType: (value) async => await _selectDocumentSourceType(value, emit),
+          closeMediaPicker: (value) async => await _closeMediaPicker(value, emit),
           crop: (value) async => await _assetCrop(value, emit),
           rightRotate: (value) async => await _assetRightRotate(value, emit),
           leftRotate: (value) async => await _assetLeftRotate(value, emit),
           flip: (value) async => await _assetFlip(value, emit),
           resetAsset: (value) async => await _resetAsset(value, emit),
           resetAll: (value) async => await _resetAllAsset(value, emit),
-          saveCropDocument: (value) async =>
-              await _saveCropDocument(value, emit),
+          saveCropDocument: (value) async => await _saveCropDocument(value, emit),
           addNewAsset: (value) {
             emit(AddNewAssetState(
               newIndexPosition: value.newIndexPosition,
@@ -171,8 +151,7 @@ class BusinessDocumentBloc
               allBusinessDocuments: value.allBusinessDocuments.toList(),
               assetsEntries: value.assetsEntries.toList(),
               businessDocumentAssetsEntity: value.businessDocumentAssetsEntity,
-              businessDocumentUploadedEntity:
-                  value.businessDocumentUploadedEntity,
+              businessDocumentUploadedEntity: value.businessDocumentUploadedEntity,
               currentIndex: value.currentIndex,
               uploadedData: value.uploadedData,
             ));
@@ -221,8 +200,7 @@ class BusinessDocumentBloc
       _saveCropDocument,
       transformer: sequential(),
     );*/
-    final TextRecognizer textRecognizer = GoogleMlKit.vision
-        .textRecognizer(); //TextRecognizer(script: TextRecognitionScript.latin);
+    final TextRecognizer textRecognizer = GoogleMlKit.vision.textRecognizer(); //TextRecognizer(script: TextRecognitionScript.latin);
     bool canProcess = true;
     bool isBusy = false;
     CustomPaint? _customPaint;
@@ -324,13 +302,10 @@ class BusinessDocumentBloc
     }
   }
 
-  FutureOr<void> _assetCrop(
-      AssetCrop event, Emitter<BusinessDocumentState> emit) async {
+  FutureOr<void> _assetCrop(AssetCrop event, Emitter<BusinessDocumentState> emit) async {
     emit(
       AssetCropState(
-        aspectRatioItem: event.aspectRatioItem,
         documentType: event.documentType,
-        extendedImageEditorState: event.extendedImageEditorState,
         bytes: event.bytes,
         file: event.file,
         isCropping: event.isCropping,
@@ -339,8 +314,7 @@ class BusinessDocumentBloc
     );
   }
 
-  FutureOr<void> _assetLeftRotate(
-      AssetLeftRotate event, Emitter<BusinessDocumentState> emit) async {
+  FutureOr<void> _assetLeftRotate(AssetLeftRotate event, Emitter<BusinessDocumentState> emit) async {
     emit(
       AssetLeftRotateState(
         hasRightTurn: event.hasRightTurn,
@@ -350,8 +324,7 @@ class BusinessDocumentBloc
     return;
   }
 
-  FutureOr<void> _assetRightRotate(
-      AssetRightRotate event, Emitter<BusinessDocumentState> emit) async {
+  FutureOr<void> _assetRightRotate(AssetRightRotate event, Emitter<BusinessDocumentState> emit) async {
     emit(
       AssetRightRotateState(
         hasRightTurn: event.hasRightTurn,
@@ -361,8 +334,7 @@ class BusinessDocumentBloc
     return;
   }
 
-  FutureOr<void> _assetFlip(
-      AssetFlip event, Emitter<BusinessDocumentState> emit) async {
+  FutureOr<void> _assetFlip(AssetFlip event, Emitter<BusinessDocumentState> emit) async {
     emit(
       AssetFlipState(
         documentType: event.documentType,
@@ -371,19 +343,16 @@ class BusinessDocumentBloc
     return;
   }
 
-  FutureOr<void> _resetAsset(
-      ResetAsset event, Emitter<BusinessDocumentState> emit) async {
+  FutureOr<void> _resetAsset(ResetAsset event, Emitter<BusinessDocumentState> emit) async {
     emit(
       ResetAssetState(
-        aspectRatioItem: event.aspectRatioItem,
         documentType: event.documentType,
       ),
     );
     return;
   }
 
-  FutureOr<void> _resetAllAsset(
-      ResetAllAsset event, Emitter<BusinessDocumentState> emit) async {
+  FutureOr<void> _resetAllAsset(ResetAllAsset event, Emitter<BusinessDocumentState> emit) async {
     emit(
       ResetAllAssetState(
         documentType: event.documentType,
@@ -392,8 +361,7 @@ class BusinessDocumentBloc
     return;
   }
 
-  FutureOr<void> _saveCropDocument(
-      SaveCropDocument event, Emitter<BusinessDocumentState> emit) async {
+  FutureOr<void> _saveCropDocument(SaveCropDocument event, Emitter<BusinessDocumentState> emit) async {
     try {
       if (event.xfile != null || event.file != null) {
         if (UniversalPlatform.isAndroid || UniversalPlatform.isIOS) {
@@ -403,8 +371,7 @@ class BusinessDocumentBloc
             //Permission.manageExternalStorage,
             Permission.accessMediaLocation,
           ].request();
-          bool status =
-              statuses.entries.any((element) => element.value.isGranted);
+          bool status = statuses.entries.any((element) => element.value.isGranted);
           //bool status = await Permission.storage.isGranted;
           if (!status) {
             Map<Permission, PermissionStatus> statuses = await [
@@ -429,18 +396,13 @@ class BusinessDocumentBloc
         ));
         //final EditImageInfo imageInfo = await cropImageDataWithDartLibrary(state: event.extendedImageEditorState);
         final int timeStamp = DateTime.now().millisecondsSinceEpoch;
-        String nameOfExtension = path
-            .extension(event.xfile!.path ?? event.file!.path)
-            .replaceAll('.', '');
+        String nameOfExtension = path.extension(event.xfile!.path ?? event.file!.path).replaceAll('.', '');
         final String filePath = await fileSaver.FileSaver.instance.saveFile(
-          name:
-              '${path.basenameWithoutExtension(event.xfile!.path ?? event.file!.path)}_$timeStamp',
+          name: '${path.basenameWithoutExtension(event.xfile!.path ?? event.file!.path)}_$timeStamp',
           bytes: event.bytes!,
           filePath: event.xfile?.path,
           file: event.file!,
-          ext: path
-              .extension(event.xfile!.path ?? event.file!.path)
-              .replaceAll('.', ''),
+          ext: path.extension(event.xfile!.path ?? event.file!.path).replaceAll('.', ''),
           mimeType: fileSaver.MimeType.values.byName(nameOfExtension),
         );
         if (filePath == null || filePath.isEmpty) {
@@ -457,8 +419,7 @@ class BusinessDocumentBloc
           );
           emit(SaveCropDocumentFailedState(
             documentType: event.documentType,
-            reason:
-                'Your selected document is not saved in your device, but uploaded into our server',
+            reason: 'Your selected document is not saved in your device, but uploaded into our server',
             imageEditorController: event.imageEditorController,
             xfile: event.xfile,
             file: event.file,
@@ -483,14 +444,13 @@ class BusinessDocumentBloc
         emit(
           SaveCropDocumentSuccessState(
             documentType: event.documentType,
-            extendedImageEditorState: event.extendedImageEditorState,
+
             bytes: event.bytes,
             file: event.file,
             isCropping: event.isCropping,
             xfile: event.xfile,
             //imageInfo: imageInfo,
-            message:
-                'Your selected document is saved in this path: $filePath and successfully uploaded into our server',
+            message: 'Your selected document is saved in this path: $filePath and successfully uploaded into our server',
             newFilePath: filePath,
             image: event.image,
             byteData: event.byteData,
@@ -514,10 +474,8 @@ class BusinessDocumentBloc
     String _text = '';
     CustomPaint? _customPaint;
     final recognizedText = await _textRecognizer.processImage(inputImage);
-    if (inputImage.metadata?.size != null &&
-        inputImage.metadata?.rotation != null) {
-      final painter = TextRecognizerPainter(recognizedText,
-          inputImage.metadata!.size, inputImage.metadata!.rotation);
+    if (inputImage.metadata?.size != null && inputImage.metadata?.rotation != null) {
+      final painter = TextRecognizerPainter(recognizedText, inputImage.metadata!.size, inputImage.metadata!.rotation);
       _customPaint = CustomPaint(painter: painter);
     } else {
       _text = 'Recognized text:\n\n${recognizedText.text}';
@@ -527,6 +485,5 @@ class BusinessDocumentBloc
     }
   }
 
-  Future<void> _assetsRemove(
-      AssetsRemove value, Emitter<BusinessDocumentState> emit) async {}
+  Future<void> _assetsRemove(AssetsRemove value, Emitter<BusinessDocumentState> emit) async {}
 }

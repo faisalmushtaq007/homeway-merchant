@@ -107,6 +107,8 @@ class MultiSelectAvailableWorkingDaysFormField extends FormField<List<StoreWorki
                 },
                 availableWorkingDayList: availableWorkingDaysList.toList(),
                 initialSelectedAvailableWorkingDayList: initialSelectedAvailableWorkingDaysList.toList(),
+                maxSelection: maxSelection,
+                onMaxSelected: onMaxSelected,
               ),
             );
           },
@@ -215,7 +217,6 @@ class _MultiSelectChipState extends State<MultiSelectStoreAvailableWorkingDays> 
             textDirection: serviceLocator<LanguageController>().targetTextDirection,
             style: context.titleSmall,
           ),
-      
         ),
       ],
     );

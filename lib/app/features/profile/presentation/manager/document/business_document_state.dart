@@ -211,8 +211,7 @@ class BusinessDocumentState with _$BusinessDocumentState {
   factory BusinessDocumentState.selectDocumentSourceTypeState({
     @Default(DocumentType.tradeLicence) DocumentType documentType,
     @Default(ImageSource.camera) ImageSource imageSource,
-    @Default(DocumentPickerSource.camera)
-    DocumentPickerSource documentPickerSource,
+    @Default(DocumentPickerSource.camera) DocumentPickerSource documentPickerSource,
   }) = SelectDocumentSourceTypState;
 
   factory BusinessDocumentState.closeMediaPickerState({
@@ -221,10 +220,8 @@ class BusinessDocumentState with _$BusinessDocumentState {
 
   factory BusinessDocumentState.cropState({
     @Default(DocumentType.tradeLicence) DocumentType documentType,
-    required AspectRatioItem aspectRatioItem,
     XFile? xfile,
     File? file,
-    required ExtendedImageEditorState extendedImageEditorState,
     Uint8List? bytes,
     @Default(false) bool isCropping,
   }) = AssetCropState;
@@ -245,7 +242,6 @@ class BusinessDocumentState with _$BusinessDocumentState {
 
   factory BusinessDocumentState.resetAssetState({
     @Default(DocumentType.tradeLicence) DocumentType documentType,
-    AspectRatioItem? aspectRatioItem,
   }) = ResetAssetState;
 
   factory BusinessDocumentState.resetAllState({
@@ -256,7 +252,6 @@ class BusinessDocumentState with _$BusinessDocumentState {
     @Default(DocumentType.tradeLicence) DocumentType documentType,
     XFile? xfile,
     File? file,
-    ExtendedImageEditorState? extendedImageEditorState,
     Uint8List? bytes,
     ByteData? byteData,
     EditImageInfo? imageInfo,
@@ -284,7 +279,6 @@ class BusinessDocumentState with _$BusinessDocumentState {
     StackTrace? stackTrace,
     XFile? xfile,
     File? file,
-    ExtendedImageEditorState? extendedImageEditorState,
     Uint8List? bytes,
     ByteData? byteData,
     EditImageInfo? imageInfo,

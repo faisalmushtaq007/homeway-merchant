@@ -3,6 +3,7 @@ import 'package:homemakers_merchant/app/features/menu/data/local/data_sources/lo
 import 'package:homemakers_merchant/app/features/menu/domain/entities/menu_entity.dart';
 import 'package:homemakers_merchant/app/features/menu/presentation/widgets/addons_card.dart';
 import 'package:homemakers_merchant/app/features/menu/presentation/widgets/form_page_view/enum/progress_enum.dart';
+import 'package:homemakers_merchant/app/features/menu/presentation/widgets/multi_select_menu_addons_widget.dart';
 import 'package:homemakers_merchant/app/features/menu/presentation/widgets/multi_select_menu_portions_widget.dart';
 import 'package:homemakers_merchant/app/features/menu/presentation/widgets/multi_select_menu_taste_level_widget.dart';
 import 'package:homemakers_merchant/app/features/menu/presentation/widgets/multi_select_menu_taste_type_widget.dart';
@@ -81,5 +82,5 @@ part 'package:homemakers_merchant/app/features/menu/presentation/pages/subpages/
 part 'package:homemakers_merchant/app/features/menu/presentation/pages/subpages/menu_form3_page.dart';
 part 'package:homemakers_merchant/app/features/menu/presentation/pages/subpages/menu_form4_page.dart';
 part 'package:homemakers_merchant/app/features/menu/presentation/pages/subpages/menu_form5_page.dart';
-part 'package:homemakers_merchant/app/features/menu/presentation/pages/subpages/menu_all_addons_page.dart';
+part 'package:homemakers_merchant/app/features/menu/presentation/pages/menu_all_addons_page.dart';
 part 'package:homemakers_merchant/app/features/menu/presentation/widgets/form_page_view/form_page_view.dart';

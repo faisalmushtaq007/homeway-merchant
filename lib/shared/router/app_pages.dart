@@ -152,6 +152,22 @@ class AppRouter {
         builder: (context, state) => const MenuForm1Page(),
       ),
       GoRoute(
+        path: Routes.MENU_FORM2_PAGE,
+        builder: (context, state) => const MenuForm2Page(),
+      ),
+      GoRoute(
+        path: Routes.MENU_FORM3_PAGE,
+        builder: (context, state) => const MenuForm3Page(),
+      ),
+      GoRoute(
+        path: Routes.MENU_FORM4_PAGE,
+        builder: (context, state) => const MenuForm4Page(),
+      ),
+      GoRoute(
+        path: Routes.MENU_FORM5_PAGE,
+        builder: (context, state) => const MenuForm5Page(),
+      ),
+      GoRoute(
         path: Routes.MENU_ADDONS_PAGE,
         builder: (context, state) => const MenuAllAddonsPage(),
       ),

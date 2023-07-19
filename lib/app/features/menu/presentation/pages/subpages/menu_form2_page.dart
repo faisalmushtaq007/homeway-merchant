@@ -30,6 +30,7 @@ class _MenuForm2PageState extends State<MenuForm2Page> {
   List<FocusNode> menuForm2FocusList = [];
   bool _haveAddonsWithCurrentMenu = false;
   List<Addons> _selectedAddons = [];
+  List<Addons> _allAddons = [];
   List<Widget> selectedAddonsWidgets = [];
 
   @override
@@ -117,25 +118,37 @@ class _MenuForm2PageState extends State<MenuForm2Page> {
     return Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.stretch,
+      textDirection: serviceLocator<LanguageController>().targetTextDirection,
       children: [
         Column(
+          textDirection: serviceLocator<LanguageController>().targetTextDirection,
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Text(
-              'Food types',
-              style: context.titleLarge!.copyWith(
-                fontWeight: FontWeight.w600,
-                fontSize: 20,
-              ),
+            Wrap(
               textDirection: serviceLocator<LanguageController>().targetTextDirection,
-            ).translate(),
+              children: [
+                Text(
+                  'Food types',
+                  style: context.titleLarge!.copyWith(
+                    fontWeight: FontWeight.w600,
+                    fontSize: 20,
+                  ),
+                  textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                ).translate(),
+              ],
+            ),
             const AnimatedGap(4, duration: Duration(milliseconds: 500)),
-            Text(
-              'Select the food group of your menu in which its belongs',
-              style: context.labelMedium,
+            Wrap(
               textDirection: serviceLocator<LanguageController>().targetTextDirection,
-            ).translate(),
+              children: [
+                Text(
+                  'Select the food group of your menu in which its belongs',
+                  style: context.labelMedium,
+                  textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                ).translate(),
+              ],
+            ),
           ],
         ),
         const AnimatedGap(6, duration: Duration(milliseconds: 500)),
@@ -160,21 +173,32 @@ class _MenuForm2PageState extends State<MenuForm2Page> {
         Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.stretch,
+          textDirection: serviceLocator<LanguageController>().targetTextDirection,
           children: [
-            Text(
-              'Food preparation method',
-              style: context.titleLarge!.copyWith(
-                fontWeight: FontWeight.w600,
-                fontSize: 20,
-              ),
+            Wrap(
               textDirection: serviceLocator<LanguageController>().targetTextDirection,
-            ).translate(),
+              children: [
+                Text(
+                  'Food preparation method',
+                  style: context.titleLarge!.copyWith(
+                    fontWeight: FontWeight.w600,
+                    fontSize: 20,
+                  ),
+                  textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                ).translate(),
+              ],
+            ),
             const AnimatedGap(4, duration: Duration(milliseconds: 500)),
-            Text(
-              'Choose the cooking methods of your menu',
-              style: context.labelMedium,
+            Wrap(
               textDirection: serviceLocator<LanguageController>().targetTextDirection,
-            ).translate(),
+              children: [
+                Text(
+                  'Choose the cooking methods of your menu',
+                  style: context.labelMedium,
+                  textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                ).translate(),
+              ],
+            ),
           ],
         ),
         const AnimatedGap(6, duration: Duration(milliseconds: 500)),
@@ -199,21 +223,32 @@ class _MenuForm2PageState extends State<MenuForm2Page> {
         Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.stretch,
+          textDirection: serviceLocator<LanguageController>().targetTextDirection,
           children: [
-            Text(
-              'Taste type',
-              style: context.titleLarge!.copyWith(
-                fontWeight: FontWeight.w600,
-                fontSize: 20,
-              ),
+            Wrap(
               textDirection: serviceLocator<LanguageController>().targetTextDirection,
-            ).translate(),
+              children: [
+                Text(
+                  'Taste type',
+                  style: context.titleLarge!.copyWith(
+                    fontWeight: FontWeight.w600,
+                    fontSize: 20,
+                  ),
+                  textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                ).translate(),
+              ],
+            ),
             const AnimatedGap(4, duration: Duration(milliseconds: 500)),
-            Text(
-              'Select the food taste type of your menu',
-              style: context.labelMedium,
+            Wrap(
               textDirection: serviceLocator<LanguageController>().targetTextDirection,
-            ).translate(),
+              children: [
+                Text(
+                  'Select the food taste type of your menu',
+                  style: context.labelMedium,
+                  textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                ).translate(),
+              ],
+            ),
           ],
         ),
         const AnimatedGap(6, duration: Duration(milliseconds: 500)),
@@ -238,21 +273,32 @@ class _MenuForm2PageState extends State<MenuForm2Page> {
         Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.stretch,
+          textDirection: serviceLocator<LanguageController>().targetTextDirection,
           children: [
-            Text(
-              'Taste level',
-              style: context.titleLarge!.copyWith(
-                fontWeight: FontWeight.w600,
-                fontSize: 20,
-              ),
+            Wrap(
               textDirection: serviceLocator<LanguageController>().targetTextDirection,
-            ).translate(),
+              children: [
+                Text(
+                  'Taste level',
+                  style: context.titleLarge!.copyWith(
+                    fontWeight: FontWeight.w600,
+                    fontSize: 20,
+                  ),
+                  textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                ).translate(),
+              ],
+            ),
             const AnimatedGap(4, duration: Duration(milliseconds: 500)),
-            Text(
-              'Select the taste level of your menu',
-              style: context.labelMedium,
+            Wrap(
               textDirection: serviceLocator<LanguageController>().targetTextDirection,
-            ).translate(),
+              children: [
+                Text(
+                  'Select the taste level of your menu',
+                  style: context.labelMedium,
+                  textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                ).translate(),
+              ],
+            ),
           ],
         ),
         const AnimatedGap(6, duration: Duration(milliseconds: 500)),
@@ -277,21 +323,32 @@ class _MenuForm2PageState extends State<MenuForm2Page> {
         Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.stretch,
+          textDirection: serviceLocator<LanguageController>().targetTextDirection,
           children: [
-            Text(
-              'Portion size of menu',
-              style: context.titleLarge!.copyWith(
-                fontWeight: FontWeight.w600,
-                fontSize: 20,
-              ),
+            Wrap(
               textDirection: serviceLocator<LanguageController>().targetTextDirection,
-            ).translate(),
+              children: [
+                Text(
+                  'Portion size of menu',
+                  style: context.titleLarge!.copyWith(
+                    fontWeight: FontWeight.w600,
+                    fontSize: 20,
+                  ),
+                  textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                ).translate(),
+              ],
+            ),
             const AnimatedGap(4, duration: Duration(milliseconds: 500)),
-            Text(
-              'Select the menu serving size or quantity availability',
-              style: context.labelMedium,
+            Wrap(
               textDirection: serviceLocator<LanguageController>().targetTextDirection,
-            ).translate(),
+              children: [
+                Text(
+                  'Select the menu serving size or quantity availability',
+                  style: context.labelMedium,
+                  textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                ).translate(),
+              ],
+            ),
           ],
         ),
         const AnimatedGap(6, duration: Duration(milliseconds: 500)),
@@ -324,6 +381,7 @@ class _MenuForm2PageState extends State<MenuForm2Page> {
             mainAxisSize: MainAxisSize.min,
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.stretch,
+            textDirection: serviceLocator<LanguageController>().targetTextDirection,
             children: [
               SwitchListTile(
                 onChanged: (value) {
@@ -351,6 +409,7 @@ class _MenuForm2PageState extends State<MenuForm2Page> {
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     crossAxisAlignment: CrossAxisAlignment.stretch,
+                    textDirection: serviceLocator<LanguageController>().targetTextDirection,
                     children: [
                       const AnimatedGap(8, duration: Duration(milliseconds: 500)),
                       IntrinsicHeight(
@@ -503,12 +562,25 @@ class _MenuForm2PageState extends State<MenuForm2Page> {
         const AnimatedGap(8, duration: Duration(milliseconds: 500)),
         AnimatedCrossFade(
           duration: const Duration(milliseconds: 500),
-          crossFadeState: (_selectedAddons.isNotEmpty && selectedAddonsWidgets.isNotEmpty) ? CrossFadeState.showFirst : CrossFadeState.showSecond,
-          firstChild: Wrap(
-            spacing: 6,
-            runSpacing: 0,
-            textDirection: serviceLocator<LanguageController>().targetTextDirection,
-            children: selectedAddonsWidgets.toList(),
+          crossFadeState: (_selectedAddons.isNotEmpty) ? CrossFadeState.showFirst : CrossFadeState.showSecond,
+          firstChild: MultiSelectAddonsFormField(
+            key: const Key('store-menu-multiSelectAvailableMenuAddons-formfield'),
+            onSelectionChanged: (List<Addons> selectedMenuPortions) {
+              debugPrint('_selectedAddons length ${_selectedAddons.length}');
+              _selectedAddons = List<Addons>.from(selectedMenuPortions);
+              setState(() {});
+              debugPrint('_selectedAddons current length ${_selectedAddons.length}');
+            },
+            availableAddonsList: _selectedAddons.toList(),
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return 'Select one or more portions';
+              } else {
+                return null;
+              }
+            },
+            initialSelectedAddonsList: [],
+            onSaved: (newValue) {},
           ),
           secondChild: OutlinedButton(
             style: OutlinedButton.styleFrom(
@@ -526,27 +598,6 @@ class _MenuForm2PageState extends State<MenuForm2Page> {
               if (addons != null && addons.isNotEmpty) {
                 setState(() {
                   _selectedAddons = List<Addons>.from(addons.toList());
-                });
-                _selectedAddons.asMap().forEach((key, item) {
-                  selectedAddonsWidgets.add(
-                    StatefulBuilder(
-                      builder: (context, setState) {
-                        return Chip(
-                          label: Text(
-                            '${item.title} ${item.unit}',
-                            textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                          ),
-                          onDeleted: () {
-                            setState(() {
-                              _selectedAddons.removeWhere((element) => element == _selectedAddons[key]);
-                              //_selectedAddons.remove(item);
-                              selectedAddonsWidgets.removeWhere((element) => element == selectedAddonsWidgets[key]);
-                            });
-                          },
-                        );
-                      },
-                    ),
-                  );
                 });
               }
             },
