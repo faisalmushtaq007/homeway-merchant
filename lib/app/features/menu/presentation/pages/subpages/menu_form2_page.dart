@@ -18,6 +18,7 @@ class _MenuForm2PageState extends State<MenuForm2Page> {
   List<MenuPortion> _menuPortions = [];
   bool _hasCustomMenuPortionSize = false;
   final TextEditingController _menuPortionNameController = TextEditingController();
+  final TextEditingController _menuPortionValueController = TextEditingController();
   final TextEditingController _menuPortionSizeController = TextEditingController();
   final TextEditingController _menuPortionUnitController = TextEditingController();
 
@@ -86,6 +87,10 @@ class _MenuForm2PageState extends State<MenuForm2Page> {
     _selectedTasteType = [];
     _selectedTasteLevel = [];
     _selectedMenuPortions = [];
+    _menuPortionNameController.dispose();
+    _menuPortionValueController.dispose();
+    _menuPortionSizeController.dispose();
+    _menuPortionUnitController.dispose();
     super.dispose();
   }
 
@@ -167,7 +172,12 @@ class _MenuForm2PageState extends State<MenuForm2Page> {
             }
           },
           initialSelectedAvailableFoodTypesList: [],
-          onSaved: (newValue) {},
+          onSaved: (newValue) {
+            var cacheMenuType = List<MenuType>.from(_selectedFoodTypes.map((e) => MenuType.fromMap(e.toMap())).toList());
+            final cacheMenuEntity = serviceLocator<MenuEntity>().copyWith(
+              storeAvailableFoodTypes: cacheMenuType.toList(),
+            );
+          },
         ),
         const AnimatedGap(12, duration: Duration(milliseconds: 500)),
         Column(
@@ -217,9 +227,14 @@ class _MenuForm2PageState extends State<MenuForm2Page> {
             }
           },
           initialSelectedFoodPreparationTypesList: [],
-          onSaved: (newValue) {},
+          onSaved: (newValue) {
+            var cacheMenuPreparationType = List<MenuPreparationType>.from(_selectedFoodTypes.map((e) => MenuPreparationType.fromMap(e.toMap())).toList());
+            final cacheMenuEntity = serviceLocator<MenuEntity>().copyWith(
+              storeAvailableFoodPreparationType: cacheMenuPreparationType.toList(),
+            );
+          },
         ),
-        Divider(),
+        const Divider(),
         Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -267,7 +282,18 @@ class _MenuForm2PageState extends State<MenuForm2Page> {
             }
           },
           initialSelectedTasteTypeList: [],
-          onSaved: (newValue) {},
+          maxSelection: 1,
+          isSingleSelect: true,
+          onMaxSelected: (List<TasteType> selectedTasteTypes) {
+            _selectedTasteType = List<TasteType>.from(selectedTasteTypes);
+            setState(() {});
+          },
+          onSaved: (newValue) {
+            var cacheTasteType = _selectedTasteType[0];
+            final cacheMenuEntity = serviceLocator<MenuEntity>().copyWith(
+              tasteType: cacheTasteType,
+            );
+          },
         ),
         const AnimatedGap(12, duration: Duration(milliseconds: 500)),
         Column(
@@ -317,9 +343,20 @@ class _MenuForm2PageState extends State<MenuForm2Page> {
             }
           },
           initialSelectedTasteLevelList: [],
-          onSaved: (newValue) {},
+          onSaved: (newValue) {
+            var menuEntity = serviceLocator<MenuEntity>().copyWith();
+            var cacheTasteType = menuEntity.tasteType;
+            if (cacheTasteType != null) {
+              var cacheTasteLevel = cacheTasteType.copyWith(
+                tasteLevel: List<TasteLevel>.from(_selectedTasteLevel.toList()),
+              );
+              final cacheMenuEntity = serviceLocator<MenuEntity>().copyWith(
+                tasteType: cacheTasteLevel,
+              );
+            }
+          },
         ),
-        Divider(),
+        const Divider(),
         Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -370,10 +407,26 @@ class _MenuForm2PageState extends State<MenuForm2Page> {
             return null;
           },
           initialSelectedMenuPortionList: [],
-          onSaved: (newValue) {},
+          onSaved: (newValue) {
+            if (!_hasCustomMenuPortionSize) {
+              var menuEntity = serviceLocator<MenuEntity>().copyWith();
+              var menuPortions = menuEntity.menuPortions;
+              menuPortions = List<MenuPortion>.from(_selectedMenuPortions.toList());
+              final cacheMenuEntity = serviceLocator<MenuEntity>().copyWith(
+                menuPortions: menuPortions.toList(),
+                hasCustomPortion: false,
+              );
+              menuPortions.asMap().forEach((key, value) {
+                debugPrint('Form2 menu portion ${value.title}');
+              });
+              cacheMenuEntity.menuPortions.asMap().forEach((key, value) {
+                debugPrint('cacheMenuEntity Form2 menu portion ${value.title}');
+              });
+            }
+          },
         ),
         Card(
-          margin: EdgeInsetsDirectional.only(start: 0, end: 0, top: 4, bottom: 4),
+          margin: const EdgeInsetsDirectional.only(start: 0, end: 0, top: 4, bottom: 4),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadiusDirectional.circular(10),
           ),
@@ -400,12 +453,12 @@ class _MenuForm2PageState extends State<MenuForm2Page> {
                 isThreeLine: false,
                 dense: true,
                 controlAffinity: ListTileControlAffinity.leading,
-                visualDensity: VisualDensity(horizontal: -4, vertical: 0),
+                visualDensity: const VisualDensity(horizontal: -4, vertical: 0),
               ),
               AnimatedCrossFade(
-                firstChild: SizedBox.shrink(),
+                firstChild: const SizedBox.shrink(),
                 secondChild: Padding(
-                  padding: EdgeInsetsDirectional.fromSTEB(8, 2, 8, 12),
+                  padding: const EdgeInsetsDirectional.fromSTEB(8, 2, 8, 12),
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -419,14 +472,67 @@ class _MenuForm2PageState extends State<MenuForm2Page> {
                           textDirection: serviceLocator<LanguageController>().targetTextDirection,
                           children: [
                             Expanded(
-                              flex: 2,
                               child: StoreTextFieldWidget(
                                 controller: _menuPortionNameController,
                                 textDirection: serviceLocator<LanguageController>().targetTextDirection,
                                 focusNode: menuForm2FocusList[0],
                                 textInputAction: TextInputAction.next,
+                                keyboardType: TextInputType.text,
+                                decoration: InputDecoration(
+                                  labelText: 'Your Portion name',
+                                  hintText: 'Enter your portion name',
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                  isDense: true,
+                                ),
+                                validator: (value) {
+                                  if (_hasCustomMenuPortionSize) {
+                                    if (value == null || value.isEmpty) {
+                                      return 'Please enter your portion name';
+                                    } else {
+                                      return null;
+                                    }
+                                  }
+                                  return null;
+                                },
+                                onSaved: (newValue) {
+                                  if (_hasCustomMenuPortionSize) {
+                                    var menuEntity = serviceLocator<MenuEntity>().copyWith();
+                                    var customPortion = menuEntity.customPortion;
+                                    if (customPortion != null) {
+                                      var cacheCustom = customPortion.copyWith(
+                                        title: _menuPortionNameController.value.text.trim(),
+                                      );
+                                      final cacheMenuEntity = serviceLocator<MenuEntity>().copyWith(
+                                        customPortion: cacheCustom,
+                                        hasCustomPortion: true,
+                                      );
+                                    }
+                                  }
+                                },
+                              ),
+                            ),
+                            //
+                          ],
+                        ),
+                      ),
+                      const AnimatedGap(12, duration: Duration(milliseconds: 500)),
+                      IntrinsicHeight(
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                          children: [
+                            Expanded(
+                              flex: 2,
+                              child: StoreTextFieldWidget(
+                                controller: _menuPortionValueController,
+                                textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                focusNode: menuForm2FocusList[0],
+                                textInputAction: TextInputAction.next,
                                 onFieldSubmitted: (_) => fieldFocusChange(context, menuForm2FocusList[0], menuForm2FocusList[1]),
-                                keyboardType: TextInputType.numberWithOptions(),
+                                keyboardType: const TextInputType.numberWithOptions(),
                                 decoration: InputDecoration(
                                   labelText: 'Size or Portion value',
                                   hintText: 'Enter size or portion value',
@@ -444,6 +550,21 @@ class _MenuForm2PageState extends State<MenuForm2Page> {
                                     }
                                   }
                                   return null;
+                                },
+                                onSaved: (newValue) {
+                                  if (_hasCustomMenuPortionSize) {
+                                    var menuEntity = serviceLocator<MenuEntity>().copyWith();
+                                    var customPortion = menuEntity.customPortion;
+                                    if (customPortion != null) {
+                                      var cacheCustom = customPortion.copyWith(
+                                        quantity: double.parse(_menuPortionValueController.value.text.trim()),
+                                      );
+                                      final cacheMenuEntity = serviceLocator<MenuEntity>().copyWith(
+                                        customPortion: cacheCustom,
+                                        hasCustomPortion: true,
+                                      );
+                                    }
+                                  }
                                 },
                               ),
                             ),
@@ -475,6 +596,21 @@ class _MenuForm2PageState extends State<MenuForm2Page> {
                                   }
                                   return null;
                                 },
+                                onSaved: (newValue) {
+                                  if (_hasCustomMenuPortionSize) {
+                                    var menuEntity = serviceLocator<MenuEntity>().copyWith();
+                                    var customPortion = menuEntity.customPortion;
+                                    if (customPortion != null) {
+                                      var cacheCustom = customPortion.copyWith(
+                                        unit: _menuPortionUnitController.value.text.trim(),
+                                      );
+                                      final cacheMenuEntity = serviceLocator<MenuEntity>().copyWith(
+                                        customPortion: cacheCustom,
+                                        hasCustomPortion: true,
+                                      );
+                                    }
+                                  }
+                                },
                               ),
                             ),
                           ],
@@ -493,7 +629,7 @@ class _MenuForm2PageState extends State<MenuForm2Page> {
                                 textDirection: serviceLocator<LanguageController>().targetTextDirection,
                                 focusNode: menuForm2FocusList[2],
                                 textInputAction: TextInputAction.done,
-                                keyboardType: TextInputType.numberWithOptions(),
+                                keyboardType: const TextInputType.numberWithOptions(),
                                 decoration: InputDecoration(
                                   labelText: 'Maximum Serving Persons',
                                   hintText: 'Enter maximum serving persons',
@@ -511,6 +647,21 @@ class _MenuForm2PageState extends State<MenuForm2Page> {
                                     }
                                   }
                                   return null;
+                                },
+                                onSaved: (newValue) {
+                                  if (_hasCustomMenuPortionSize) {
+                                    var menuEntity = serviceLocator<MenuEntity>().copyWith();
+                                    var customPortion = menuEntity.customPortion;
+                                    if (customPortion != null) {
+                                      var cacheCustom = customPortion.copyWith(
+                                        maxServingPerson: int.parse(_menuPortionSizeController.value.text.trim()),
+                                      );
+                                      final cacheMenuEntity = serviceLocator<MenuEntity>().copyWith(
+                                        customPortion: cacheCustom,
+                                        hasCustomPortion: true,
+                                      );
+                                    }
+                                  }
                                 },
                               ),
                             ),
@@ -557,51 +708,65 @@ class _MenuForm2PageState extends State<MenuForm2Page> {
                 ).translate(),
               ],
             ),
-          ],
-        ),
-        const AnimatedGap(8, duration: Duration(milliseconds: 500)),
-        AnimatedCrossFade(
-          duration: const Duration(milliseconds: 500),
-          crossFadeState: (_selectedAddons.isNotEmpty) ? CrossFadeState.showFirst : CrossFadeState.showSecond,
-          firstChild: MultiSelectAddonsFormField(
-            key: const Key('store-menu-multiSelectAvailableMenuAddons-formfield'),
-            onSelectionChanged: (List<Addons> selectedMenuPortions) {
-              debugPrint('_selectedAddons length ${_selectedAddons.length}');
-              _selectedAddons = List<Addons>.from(selectedMenuPortions);
-              setState(() {});
-              debugPrint('_selectedAddons current length ${_selectedAddons.length}');
-            },
-            availableAddonsList: _selectedAddons.toList(),
-            validator: (value) {
-              if (value == null || value.isEmpty) {
-                return 'Select one or more portions';
-              } else {
-                return null;
-              }
-            },
-            initialSelectedAddonsList: [],
-            onSaved: (newValue) {},
-          ),
-          secondChild: OutlinedButton(
-            style: OutlinedButton.styleFrom(
-              visualDensity: VisualDensity(vertical: -1, horizontal: 0),
-              shape: const RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(
-                  Radius.circular(10),
-                ),
+            const AnimatedGap(8, duration: Duration(milliseconds: 500)),
+            AnimatedCrossFade(
+              duration: const Duration(milliseconds: 500),
+              crossFadeState: (_selectedAddons.isNotEmpty) ? CrossFadeState.showFirst : CrossFadeState.showSecond,
+              firstChild: MultiSelectAddonsFormField(
+                key: const Key('store-menu-multiSelectAvailableMenuAddons-formfield'),
+                onSelectionChanged: (List<Addons> selectedMenuPortions) {
+                  _selectedAddons = List<Addons>.from(selectedMenuPortions);
+                  setState(() {});
+                },
+                availableAddonsList: _selectedAddons.toList(),
+                /*validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Select one or more portions';
+                  } else {
+                    return null;
+                  }
+                },*/
+                initialSelectedAddonsList: [],
+                onSaved: (newValue) {
+                  serviceLocator<MenuEntity>().copyWith(
+                    addons: _selectedAddons.toList(),
+                  );
+                },
               ),
+              secondChild: const Offstage(),
             ),
-            child: Text('Select Adons').translate(),
-            onPressed: () async {
-              final List<Addons>? addons = await context.push<List<Addons>>(Routes.MENU_ADDONS_PAGE);
-              debugPrint('List of addons ${addons}');
-              if (addons != null && addons.isNotEmpty) {
-                setState(() {
-                  _selectedAddons = List<Addons>.from(addons.toList());
-                });
-              }
-            },
-          ),
+            const AnimatedGap(12, duration: Duration(milliseconds: 500)),
+            ElevatedButton.icon(
+              style: ElevatedButton.styleFrom(
+                //visualDensity: VisualDensity(vertical: -1, horizontal: 0),
+                shape: const RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(10),
+                  ),
+                ),
+                backgroundColor: const Color.fromRGBO(238, 238, 238, 1.0),
+              ),
+              icon: const Icon(
+                Icons.add,
+                color: Color.fromRGBO(42, 45, 48, 1.0),
+              ),
+              label: Text(
+                'Add Addons Menu',
+                style: const TextStyle(
+                  color: Color.fromRGBO(42, 45, 50, 1.0),
+                ),
+                textDirection: serviceLocator<LanguageController>().targetTextDirection,
+              ).translate(),
+              onPressed: () async {
+                final List<Addons>? addons = await context.push<List<Addons>>(Routes.MENU_ADDONS_PAGE);
+                if (addons != null && addons.isNotEmpty) {
+                  setState(() {
+                    _selectedAddons = List<Addons>.from(addons.toList());
+                  });
+                }
+              },
+            )
+          ],
         ),
       ],
     );

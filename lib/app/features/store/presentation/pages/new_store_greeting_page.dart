@@ -252,7 +252,7 @@ class NewStoreGreetingPage extends StatelessWidget {
                             textDirection: serviceLocator<LanguageController>().targetTextDirection,
                           ).translate(),
                           onPressed: () {
-                            context.go(Routes.PRIMARY_DASHBOARD_PAGE);
+                            context.go(Routes.SAVE_MENU_PAGE);
                             return;
                           },
                         ),

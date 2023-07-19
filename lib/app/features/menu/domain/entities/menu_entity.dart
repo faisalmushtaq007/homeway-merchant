@@ -27,6 +27,9 @@ class MenuEntity with AppEquatable {
     this.menuTiming,
     this.tasteType,
     this.stock,
+    this.customPortion,
+    this.menuMaxPreparationTime = '',
+    this.menuMinPreparationTime = '',
   });
 
   factory MenuEntity.fromMap(Map<String, dynamic> map) {
@@ -39,24 +42,25 @@ class MenuEntity with AppEquatable {
       menuCategories: map['menuCategories'] as List<Category>,
       ingredients: map['ingredients'] as List<Ingredients>,
       storeAvailableFoodTypes: map['storeAvailableFoodTypes'] as List<MenuType>,
-      storeAvailableFoodPreparationType:
-          map['storeAvailableFoodPreparationType'] as List<MenuPreparationType>,
+      storeAvailableFoodPreparationType: map['storeAvailableFoodPreparationType'] as List<MenuPreparationType>,
       menuPortions: map['menuPortions'] as List<MenuPortion>,
       hasCustomPortion: map['hasCustomPortion'] as bool,
       customPortions: map['customPortions'] as List<CustomPortion>,
       addons: map['addons'] as List<Addons>,
       menuAvailableFromTime: map['menuAvailableFromTime'] as String,
       menuAvailableToTime: map['menuAvailableToTime'] as String,
-      menuAvailableInDays:
-          map['menuAvailableInDays'] as List<MenuAvailableDayAndTime>,
+      menuAvailableInDays: map['menuAvailableInDays'] as List<MenuAvailableDayAndTime>,
       minStockAvailable: map['minStockAvailable'] as int,
       maxStockAvailable: map['maxStockAvailable'] as int,
       timeOfPeriodWise: map['timeOfPeriodWise'] as List<TimeOfPeriodWise>,
       metaInfoOfMenu: map['metaInfoOfMenu'] as Map<String, dynamic>,
       nutrients: map['nutrients'] as List<Nutrients>,
-      menuTiming: map['menuTiming'] as Timing,
-      tasteType: map['tasteType'] as TasteType,
-      stock: map['stock'] as Stock,
+      menuTiming: map['menuTiming'] as Timing?,
+      tasteType: map['tasteType'] as TasteType?,
+      stock: map['stock'] as Stock?,
+      customPortion: map['customPortion'] as CustomPortion?,
+      menuMinPreparationTime: map['menuMinPreparationTime'] as String,
+      menuMaxPreparationTime: map['menuMaxPreparationTime'] as String,
     );
   }
 
@@ -84,6 +88,9 @@ class MenuEntity with AppEquatable {
   final Timing? menuTiming;
   final TasteType? tasteType;
   final Stock? stock;
+  final CustomPortion? customPortion;
+  final String menuMinPreparationTime;
+  final String menuMaxPreparationTime;
 
   @override
   bool get cacheHash => true;
@@ -114,6 +121,9 @@ class MenuEntity with AppEquatable {
         menuTiming,
         tasteType,
         stock,
+        customPortion,
+        menuMinPreparationTime,
+        menuMaxPreparationTime,
       ];
 
   Map<String, dynamic> toMap() {
@@ -126,8 +136,7 @@ class MenuEntity with AppEquatable {
       'menuCategories': this.menuCategories,
       'ingredients': this.ingredients,
       'storeAvailableFoodTypes': this.storeAvailableFoodTypes,
-      'storeAvailableFoodPreparationType':
-          this.storeAvailableFoodPreparationType,
+      'storeAvailableFoodPreparationType': this.storeAvailableFoodPreparationType,
       'menuPortions': this.menuPortions,
       'hasCustomPortion': this.hasCustomPortion,
       'customPortions': this.customPortions,
@@ -143,6 +152,9 @@ class MenuEntity with AppEquatable {
       'menuTiming': this.menuTiming,
       'tasteType': this.tasteType,
       'stock': this.stock,
+      'customPortion': this.customPortion,
+      'menuMinPreparationTime': this.menuMinPreparationTime,
+      'menuMaxPreparationTime': this.menuMaxPreparationTime,
     };
   }
 
@@ -171,6 +183,9 @@ class MenuEntity with AppEquatable {
     Timing? menuTiming,
     TasteType? tasteType,
     Stock? stock,
+    CustomPortion? customPortion,
+    String? menuMinPreparationTime,
+    String? menuMaxPreparationTime,
   }) {
     return MenuEntity(
       id: id ?? this.id,
@@ -180,16 +195,13 @@ class MenuEntity with AppEquatable {
       menuDescription: menuDescription ?? this.menuDescription,
       menuCategories: menuCategories ?? this.menuCategories,
       ingredients: ingredients ?? this.ingredients,
-      storeAvailableFoodTypes:
-          storeAvailableFoodTypes ?? this.storeAvailableFoodTypes,
-      storeAvailableFoodPreparationType: storeAvailableFoodPreparationType ??
-          this.storeAvailableFoodPreparationType,
+      storeAvailableFoodTypes: storeAvailableFoodTypes ?? this.storeAvailableFoodTypes,
+      storeAvailableFoodPreparationType: storeAvailableFoodPreparationType ?? this.storeAvailableFoodPreparationType,
       menuPortions: menuPortions ?? this.menuPortions,
       hasCustomPortion: hasCustomPortion ?? this.hasCustomPortion,
       customPortions: customPortions ?? this.customPortions,
       addons: addons ?? this.addons,
-      menuAvailableFromTime:
-          menuAvailableFromTime ?? this.menuAvailableFromTime,
+      menuAvailableFromTime: menuAvailableFromTime ?? this.menuAvailableFromTime,
       menuAvailableToTime: menuAvailableToTime ?? this.menuAvailableToTime,
       menuAvailableInDays: menuAvailableInDays ?? this.menuAvailableInDays,
       minStockAvailable: minStockAvailable ?? this.minStockAvailable,
@@ -200,6 +212,9 @@ class MenuEntity with AppEquatable {
       menuTiming: menuTiming ?? this.menuTiming,
       tasteType: tasteType ?? this.tasteType,
       stock: stock ?? this.stock,
+      customPortion: customPortion ?? this.customPortion,
+      menuMaxPreparationTime: menuMaxPreparationTime ?? this.menuMaxPreparationTime,
+      menuMinPreparationTime: menuMinPreparationTime ?? this.menuMinPreparationTime,
     );
   }
 }
@@ -731,15 +746,15 @@ class MenuPortion with AppEquatable {
 
 class CustomPortion with AppEquatable {
   CustomPortion({
-    required this.cutsomePortionID,
+    this.customPortionID = '0',
     required this.title,
     required this.maxServingPerson,
     required this.quantity,
-    required this.defaultPrice,
-    required this.finalPrice,
-    required this.discountedPrice,
-    required this.otherInfo,
-    required this.hasSelected,
+    this.defaultPrice = 0.0,
+    this.finalPrice = 0.0,
+    this.discountedPrice = 0.0,
+    this.otherInfo = const {},
+    this.hasSelected = false,
     required this.unit,
     this.currency = 'SAR',
     this.description = '',
@@ -747,7 +762,7 @@ class CustomPortion with AppEquatable {
 
   factory CustomPortion.fromMap(Map<String, dynamic> map) {
     return CustomPortion(
-      cutsomePortionID: map['cutsomePortionID'] as String,
+      customPortionID: map['customPortionID'] as String,
       title: map['title'] as String,
       maxServingPerson: map['maxServingPerson'] as int,
       quantity: map['quantity'] as double,
@@ -762,7 +777,7 @@ class CustomPortion with AppEquatable {
     );
   }
 
-  final String cutsomePortionID;
+  final String customPortionID;
   final String title;
   final int maxServingPerson;
   final double quantity;
@@ -780,7 +795,7 @@ class CustomPortion with AppEquatable {
 
   @override
   List<Object?> get hashParameters => [
-        cutsomePortionID,
+        customPortionID,
         title,
         maxServingPerson,
         quantity,
@@ -796,7 +811,7 @@ class CustomPortion with AppEquatable {
 
   Map<String, dynamic> toMap() {
     return {
-      'cutsomePortionID': this.cutsomePortionID,
+      'customPortionID': this.customPortionID,
       'title': this.title,
       'maxServingPerson': this.maxServingPerson,
       'quantity': this.quantity,
@@ -812,7 +827,7 @@ class CustomPortion with AppEquatable {
   }
 
   CustomPortion copyWith({
-    String? cutsomePortionID,
+    String? customPortionID,
     String? title,
     int? maxServingPerson,
     double? quantity,
@@ -826,7 +841,7 @@ class CustomPortion with AppEquatable {
     String? description,
   }) {
     return CustomPortion(
-      cutsomePortionID: cutsomePortionID ?? this.cutsomePortionID,
+      customPortionID: customPortionID ?? this.customPortionID,
       title: title ?? this.title,
       maxServingPerson: maxServingPerson ?? this.maxServingPerson,
       quantity: quantity ?? this.quantity,
@@ -964,8 +979,8 @@ class MenuAvailableDayAndTime with AppEquatable {
       shortName: map['shortName'] as String,
       id: map['id'] as int,
       hasSelected: map['hasSelected'] as bool,
-      openingTime: map['openingTime'] as DateTime,
-      closingTime: map['closingTime'] as DateTime,
+      openingTime: map['openingTime'] as DateTime?,
+      closingTime: map['closingTime'] as DateTime?,
     );
   }
 
@@ -1135,9 +1150,9 @@ class Timing with AppEquatable {
 
 class Category with AppEquatable {
   Category({
-    required this.categoryId,
+    this.categoryId = '0',
     required this.title,
-    required this.hasSelected,
+    this.hasSelected = false,
   });
 
   factory Category.fromMap(Map<String, dynamic> map) {

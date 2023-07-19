@@ -16,17 +16,17 @@ class SaveMenuPage extends StatefulWidget {
 class _SaveMenuPageController extends State<SaveMenuPage> with AutomaticKeepAliveClientMixin, WidgetsBindingObserver {
   late final ScrollController scrollController;
   late final ScrollController _screenScrollController;
-  int _currentPageIndex = 1;
+  int _currentPageIndex = 0;
 
   // StepProgressController
-  final StepProgressController stepProgressController = StepProgressController(totalStep: 5, initialStep: 1);
+  final StepProgressController stepProgressController = StepProgressController(totalStep: 5, initialStep: 0);
   PageController controller = PageController(
-    initialPage: 1,
+    initialPage: 0,
   );
   FormPageStyle? formPageStyle = const FormPageStyle();
 
   // PageView
-  PreloadPageController preloadPageController = PreloadPageController(initialPage: 1);
+  PreloadPageController preloadPageController = PreloadPageController(initialPage: 0);
 
   // ProgressIndicatorType
   ProgressIndicatorType progress = ProgressIndicatorType.linear;
@@ -292,7 +292,7 @@ class _SaveMenuPageView extends WidgetView<SaveMenuPage, _SaveMenuPageController
                             child: PreloadPageView.builder(
                               controller: state.preloadPageController,
                               itemCount: state.pages.length,
-                              preloadPagesCount: 5,
+                              preloadPagesCount: 3,
                               physics: const NeverScrollableScrollPhysics(),
                               onPageChanged: state.onPageChanged,
                               itemBuilder: (context, index) {
@@ -403,7 +403,7 @@ class _SaveMenuPageView extends WidgetView<SaveMenuPage, _SaveMenuPageController
                 ),
                 AnimatedPositioned(
                   duration: const Duration(milliseconds: 300),
-                  top: (state.isKeyboardOpen) ? -(MediaQuery.of(context).viewInsets.bottom - margins) : 8,
+                  top: (state.isKeyboardOpen) ? -(MediaQuery.of(context).viewInsets.bottom - margins * 1.5) : 8,
                   child: DisplayImage(
                     imagePath: '',
                     onPressed: () {},

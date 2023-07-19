@@ -35,6 +35,9 @@ class MultiSelectAvailableWorkingDaysFormField extends FormField<List<StoreWorki
   final Color? checkBoxActiveColor;
   final bool enabled;
 
+  /// Enable single choice
+  final bool isSingleSelect;
+
   MultiSelectAvailableWorkingDaysFormField({
     FormFieldSetter<List<StoreWorkingDayAndTime>>? onSaved,
     FormFieldValidator<List<StoreWorkingDayAndTime>>? validator,
@@ -70,6 +73,7 @@ class MultiSelectAvailableWorkingDaysFormField extends FormField<List<StoreWorki
     this.onMaxSelected,
     this.maxSelection,
     this.initialSelectedAvailableWorkingDaysList = const [],
+    this.isSingleSelect = false,
     super.key,
   }) : super(
           onSaved: onSaved,
@@ -109,6 +113,7 @@ class MultiSelectAvailableWorkingDaysFormField extends FormField<List<StoreWorki
                 initialSelectedAvailableWorkingDayList: initialSelectedAvailableWorkingDaysList.toList(),
                 maxSelection: maxSelection,
                 onMaxSelected: onMaxSelected,
+                isSingleSelect: isSingleSelect,
               ),
             );
           },
@@ -123,6 +128,7 @@ class MultiSelectStoreAvailableWorkingDays extends StatefulWidget {
     this.maxSelection,
     this.initialSelectedAvailableWorkingDayList = const [],
     super.key,
+    this.isSingleSelect = false,
   });
 
   final List<StoreWorkingDayAndTime> availableWorkingDayList;
@@ -130,6 +136,9 @@ class MultiSelectStoreAvailableWorkingDays extends StatefulWidget {
   final Function(List<StoreWorkingDayAndTime>)? onMaxSelected;
   final List<StoreWorkingDayAndTime> initialSelectedAvailableWorkingDayList;
   final int? maxSelection;
+
+  /// Enable single choice
+  final bool isSingleSelect;
 
   @override
   _MultiSelectChipState createState() => _MultiSelectChipState();
@@ -166,13 +175,22 @@ class _MultiSelectChipState extends State<MultiSelectStoreAvailableWorkingDays> 
         ),
         selected: selectedChoices.contains(item),
         onSelected: (selected) {
-          if (selectedChoices.length == (widget.maxSelection ?? -1) && !selectedChoices.contains(item)) {
-            widget.onMaxSelected?.call(selectedChoices);
-          } else {
+          if (widget.isSingleSelect) {
             setState(() {
-              selectedChoices.contains(item) ? selectedChoices.remove(item) : selectedChoices.add(item);
+              selectedChoices.clear();
+              selectedChoices = [];
+              selectedChoices.add(item);
               widget.onSelectionChanged?.call(selectedChoices);
             });
+          } else {
+            if (selectedChoices.length == (widget.maxSelection ?? -1) && !selectedChoices.contains(item)) {
+              widget.onMaxSelected?.call(selectedChoices);
+            } else {
+              setState(() {
+                selectedChoices.contains(item) ? selectedChoices.remove(item) : selectedChoices.add(item);
+                widget.onSelectionChanged?.call(selectedChoices);
+              });
+            }
           }
         },
       ));

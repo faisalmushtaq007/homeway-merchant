@@ -71,6 +71,8 @@ import 'package:homemakers_merchant/app/features/menu/presentation/widgets/form_
 import 'package:homemakers_merchant/app/features/menu/presentation/widgets/form_page_view/models/form_page_style.dart';
 import 'package:homemakers_merchant/app/features/menu/presentation/manager/menu/menu_bloc.dart';
 export 'package:homemakers_merchant/app/features/menu/presentation/manager/menu/menu_bloc.dart';
+part 'package:homemakers_merchant/app/features/menu/presentation/widgets/set_addons_price_widget.dart';
+part 'package:homemakers_merchant/app/features/menu/presentation/widgets/set_menu_price_widget.dart';
 part 'package:homemakers_merchant/app/features/menu/presentation/pages/all_menu_page.dart';
 part 'package:homemakers_merchant/app/features/menu/presentation/pages/save_menu_page.dart';
 part 'package:homemakers_merchant/app/features/menu/presentation/pages/save_addons_page.dart';

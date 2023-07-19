@@ -30,6 +30,10 @@ class DateTimeFieldPlatform extends StatefulWidget {
     this.textConfirmStyle,
     this.dateFormatter = dateFormat,
     this.timeFormatter = timeFormat,
+    this.onSaved,
+    this.onEditingComplete,
+    this.onFieldSubmitted,
+    this.onChanged,
   }) : super(key: key);
 
   /// Optional, the date type to use. Default is [DateMode.date].
@@ -85,6 +89,10 @@ class DateTimeFieldPlatform extends StatefulWidget {
 
   /// Optional, this will be applied to the validator of the [TextFormField].
   final FormFieldValidator<String>? validator;
+  final FormFieldSetter<String>? onSaved;
+  final ValueChanged<String>? onChanged;
+  final ValueChanged<String>? onFieldSubmitted;
+  final VoidCallback? onEditingComplete;
 
   @override
   State<DateTimeFieldPlatform> createState() => _DateTimeFieldPlatformState();
@@ -122,6 +130,10 @@ class _DateTimeFieldPlatformState extends State<DateTimeFieldPlatform> {
           validator: widget.validator,
           decoration: widget.decoration,
           textInputAction: TextInputAction.next,
+          onSaved: widget.onSaved,
+          onChanged: widget.onChanged,
+          onFieldSubmitted: widget.onFieldSubmitted,
+          onEditingComplete: widget.onEditingComplete,
         ),
       ),
     );

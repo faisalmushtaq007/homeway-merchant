@@ -34,6 +34,9 @@ class MultiSelectAvailableFoodPreparationTypesFormField extends FormField<List<S
   final Color? checkBoxActiveColor;
   final bool enabled;
 
+  /// Enable single choice
+  final bool isSingleSelect;
+
   MultiSelectAvailableFoodPreparationTypesFormField({
     FormFieldSetter<List<StoreAvailableFoodPreparationType>>? onSaved,
     FormFieldValidator<List<StoreAvailableFoodPreparationType>>? validator,
@@ -69,6 +72,7 @@ class MultiSelectAvailableFoodPreparationTypesFormField extends FormField<List<S
     this.onMaxSelected,
     this.maxSelection,
     this.initialSelectedFoodPreparationTypesList = const [],
+    this.isSingleSelect = false,
     super.key,
   }) : super(
           onSaved: onSaved,
@@ -108,6 +112,7 @@ class MultiSelectAvailableFoodPreparationTypesFormField extends FormField<List<S
                 initialSelectedAvailableFoodPreparationTypesList: initialSelectedFoodPreparationTypesList.toList(),
                 maxSelection: maxSelection,
                 onMaxSelected: onMaxSelected,
+                isSingleSelect: isSingleSelect,
               ),
             );
           },
@@ -115,19 +120,24 @@ class MultiSelectAvailableFoodPreparationTypesFormField extends FormField<List<S
 }
 
 class MultiSelectStoreAvailableFoodPreparationTypes extends StatefulWidget {
-  const MultiSelectStoreAvailableFoodPreparationTypes(
-      {required this.onSelectionChanged,
-      required this.availableFoodPreparationTypesList,
-      this.onMaxSelected,
-      this.maxSelection,
-      super.key,
-      this.initialSelectedAvailableFoodPreparationTypesList = const []});
+  const MultiSelectStoreAvailableFoodPreparationTypes({
+    required this.onSelectionChanged,
+    required this.availableFoodPreparationTypesList,
+    this.onMaxSelected,
+    this.maxSelection,
+    super.key,
+    this.initialSelectedAvailableFoodPreparationTypesList = const [],
+    this.isSingleSelect = false,
+  });
 
   final List<StoreAvailableFoodPreparationType> availableFoodPreparationTypesList;
   final Function(List<StoreAvailableFoodPreparationType>) onSelectionChanged;
   final Function(List<StoreAvailableFoodPreparationType>)? onMaxSelected;
   final List<StoreAvailableFoodPreparationType> initialSelectedAvailableFoodPreparationTypesList;
   final int? maxSelection;
+
+  /// Enable single choice
+  final bool isSingleSelect;
 
   @override
   _MultiSelectChipState createState() => _MultiSelectChipState();
@@ -148,18 +158,23 @@ class _MultiSelectChipState extends State<MultiSelectStoreAvailableFoodPreparati
         ),
         selected: selectedChoices.contains(item),
         onSelected: (selected) {
-          if (selectedChoices.length == (widget.maxSelection ?? -1) && !selectedChoices.contains(item)) {
-            widget.onMaxSelected?.call(selectedChoices);
-          } else {
+          if (widget.isSingleSelect) {
             setState(() {
-              selectedChoices.contains(item) ? selectedChoices.remove(item) : selectedChoices.add(item);
+              selectedChoices.clear();
+              selectedChoices = [];
+              selectedChoices.add(item);
               widget.onSelectionChanged?.call(selectedChoices);
             });
+          } else {
+            if (selectedChoices.length == (widget.maxSelection ?? -1) && !selectedChoices.contains(item)) {
+              widget.onMaxSelected?.call(selectedChoices);
+            } else {
+              setState(() {
+                selectedChoices.contains(item) ? selectedChoices.remove(item) : selectedChoices.add(item);
+                widget.onSelectionChanged?.call(selectedChoices);
+              });
+            }
           }
-          /*setState(() {
-            selectedChoices.contains(item) ? selectedChoices.remove(item) : selectedChoices.add(item);
-            widget.onSelectionChanged(selectedChoices);
-          });*/
         },
       ));
     }

@@ -34,6 +34,9 @@ class MultiSelectAvailableFoodTypeFormField extends FormField<List<StoreAvailabl
   final Color? checkBoxActiveColor;
   final bool enabled;
 
+  /// Enable single choice
+  final bool isSingleSelect;
+
   MultiSelectAvailableFoodTypeFormField({
     FormFieldSetter<List<StoreAvailableFoodTypes>>? onSaved,
     FormFieldValidator<List<StoreAvailableFoodTypes>>? validator,
@@ -69,6 +72,7 @@ class MultiSelectAvailableFoodTypeFormField extends FormField<List<StoreAvailabl
     this.onMaxSelected,
     this.maxSelection,
     this.initialSelectedAvailableFoodTypesList = const [],
+    this.isSingleSelect = false,
     super.key,
   }) : super(
           onSaved: onSaved,
@@ -108,6 +112,7 @@ class MultiSelectAvailableFoodTypeFormField extends FormField<List<StoreAvailabl
                 initialSelectedAvailableFoodTypesList: initialSelectedAvailableFoodTypesList.toList(),
                 maxSelection: maxSelection,
                 onMaxSelected: onMaxSelected,
+                isSingleSelect: isSingleSelect,
               ),
             );
           },
@@ -122,6 +127,7 @@ class MultiSelectStoreAvailableFoodTypes extends StatefulWidget {
     this.maxSelection,
     super.key,
     this.initialSelectedAvailableFoodTypesList = const [],
+    this.isSingleSelect = false,
   });
 
   final List<StoreAvailableFoodTypes> availableFoodTypesList;
@@ -129,6 +135,9 @@ class MultiSelectStoreAvailableFoodTypes extends StatefulWidget {
   final Function(List<StoreAvailableFoodTypes>) onSelectionChanged;
   final Function(List<StoreAvailableFoodTypes>)? onMaxSelected;
   final int? maxSelection;
+
+  /// Enable single choice
+  final bool isSingleSelect;
 
   @override
   _MultiSelectChipState createState() => _MultiSelectChipState();
@@ -149,13 +158,22 @@ class _MultiSelectChipState extends State<MultiSelectStoreAvailableFoodTypes> {
         ),
         selected: selectedChoices.contains(item),
         onSelected: (selected) {
-          if (selectedChoices.length == (widget.maxSelection ?? -1) && !selectedChoices.contains(item)) {
-            widget.onMaxSelected?.call(selectedChoices);
-          } else {
+          if (widget.isSingleSelect) {
             setState(() {
-              selectedChoices.contains(item) ? selectedChoices.remove(item) : selectedChoices.add(item);
+              selectedChoices.clear();
+              selectedChoices = [];
+              selectedChoices.add(item);
               widget.onSelectionChanged?.call(selectedChoices);
             });
+          } else {
+            if (selectedChoices.length == (widget.maxSelection ?? -1) && !selectedChoices.contains(item)) {
+              widget.onMaxSelected?.call(selectedChoices);
+            } else {
+              setState(() {
+                selectedChoices.contains(item) ? selectedChoices.remove(item) : selectedChoices.add(item);
+                widget.onSelectionChanged?.call(selectedChoices);
+              });
+            }
           }
         },
       ));

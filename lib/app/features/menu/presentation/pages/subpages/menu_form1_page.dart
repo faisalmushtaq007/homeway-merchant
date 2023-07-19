@@ -9,12 +9,9 @@ class MenuForm1Page extends StatefulWidget {
 
 class _MenuForm1PageState extends State<MenuForm1Page> {
   late final ScrollController scrollController;
-  final TextEditingController menuNameTextEditingController =
-      TextEditingController();
-  final TextEditingController menuDescriptionTextEditingController =
-      TextEditingController();
-  final TextEditingController menuCategoryTextEditingController =
-      TextEditingController();
+  final TextEditingController menuNameTextEditingController = TextEditingController();
+  final TextEditingController menuDescriptionTextEditingController = TextEditingController();
+  final TextEditingController menuCategoryTextEditingController = TextEditingController();
   Category? selectedCategory;
 
   List<Category> listOfCategories = [];
@@ -77,8 +74,7 @@ class _MenuForm1PageState extends State<MenuForm1Page> {
               child: ListView.builder(
                 padding: EdgeInsetsDirectional.zero,
                 itemCount: listOfCategories.length,
-                itemBuilder: (context, index) =>
-                    _allFoodCategory(context, index, setState),
+                itemBuilder: (context, index) => _allFoodCategory(context, index, setState),
                 shrinkWrap: true,
               ),
             );
@@ -107,12 +103,10 @@ class _MenuForm1PageState extends State<MenuForm1Page> {
           AppTextFieldWidget(
             controller: menuCategoryTextEditingController,
             readOnly: true,
-            textDirection:
-                serviceLocator<LanguageController>().targetTextDirection,
+            textDirection: serviceLocator<LanguageController>().targetTextDirection,
             focusNode: menuForm1FocusList[0],
             textInputAction: TextInputAction.next,
-            onFieldSubmitted: (_) => fieldFocusChange(
-                context, menuForm1FocusList[0], menuForm1FocusList[1]),
+            onFieldSubmitted: (_) => fieldFocusChange(context, menuForm1FocusList[0], menuForm1FocusList[1]),
             keyboardType: TextInputType.text,
             decoration: InputDecoration(
               labelText: 'Menu category',
@@ -137,21 +131,27 @@ class _MenuForm1PageState extends State<MenuForm1Page> {
               }
               return null;
             },
-          
-            onTap: () async{
+            onTap: () async {
               await selectMenuCategory(context);
               return;
+            },
+            onSaved: (newValue) {
+              final cacheMenuEntity = serviceLocator<MenuEntity>().copyWith(
+                menuCategories: [
+                  Category(
+                    title: menuCategoryTextEditingController.value.text.trim(),
+                  )
+                ],
+              );
             },
           ),
           AnimatedGap(12, duration: Duration(milliseconds: 500)),
           AppTextFieldWidget(
             controller: menuNameTextEditingController,
-            textDirection:
-                serviceLocator<LanguageController>().targetTextDirection,
+            textDirection: serviceLocator<LanguageController>().targetTextDirection,
             focusNode: menuForm1FocusList[1],
             textInputAction: TextInputAction.next,
-            onFieldSubmitted: (_) => fieldFocusChange(
-                context, menuForm1FocusList[1], menuForm1FocusList[2]),
+            onFieldSubmitted: (_) => fieldFocusChange(context, menuForm1FocusList[1], menuForm1FocusList[2]),
             keyboardType: TextInputType.text,
             decoration: InputDecoration(
               labelText: 'Menu name',
@@ -167,20 +167,23 @@ class _MenuForm1PageState extends State<MenuForm1Page> {
               }
               return null;
             },
+            onSaved: (newValue) {
+              final cacheMenuEntity = serviceLocator<MenuEntity>().copyWith(
+                menuName: menuNameTextEditingController.value.text.trim(),
+              );
+            },
           ),
           AnimatedGap(12, duration: Duration(milliseconds: 500)),
           AppTextFieldWidget(
             controller: menuDescriptionTextEditingController,
-            textDirection:
-                serviceLocator<LanguageController>().targetTextDirection,
+            textDirection: serviceLocator<LanguageController>().targetTextDirection,
             focusNode: menuForm1FocusList[2],
             textInputAction: TextInputAction.done,
             keyboardType: TextInputType.text,
             maxLines: 5,
             decoration: InputDecoration(
               labelText: 'Menu description',
-              hintText:
-                  'Enter either the description or about the ingredients of the menu.',
+              hintText: 'Enter either the description or about the ingredients of the menu.',
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(10),
               ),
@@ -192,6 +195,11 @@ class _MenuForm1PageState extends State<MenuForm1Page> {
               }
               return null;
             },
+            onSaved: (newValue) {
+              final cacheMenuEntity = serviceLocator<MenuEntity>().copyWith(
+                menuDescription: menuDescriptionTextEditingController.value.text.trim(),
+              );
+            },
           ),
           //
         ],
@@ -199,15 +207,11 @@ class _MenuForm1PageState extends State<MenuForm1Page> {
     );
   }
 
-  Widget _allFoodCategory(
-      BuildContext context, int index, StateSetter innerSetState) {
+  Widget _allFoodCategory(BuildContext context, int index, StateSetter innerSetState) {
     return DecoratedBox(
       decoration: BoxDecoration(
         border: Border(
-            top: (index == 0)
-                ? BorderSide(color: Theme.of(context).dividerColor)
-                : BorderSide.none,
-            bottom: BorderSide(color: Theme.of(context).dividerColor)),
+            top: (index == 0) ? BorderSide(color: Theme.of(context).dividerColor) : BorderSide.none, bottom: BorderSide(color: Theme.of(context).dividerColor)),
       ),
       child: ListTile(
         dense: true,
@@ -217,8 +221,7 @@ class _MenuForm1PageState extends State<MenuForm1Page> {
         visualDensity: VisualDensity(vertical: -1, horizontal: 0),
         title: Text(
           '${listOfCategories[index].title}',
-          textDirection:
-              serviceLocator<LanguageController>().targetTextDirection,
+          textDirection: serviceLocator<LanguageController>().targetTextDirection,
         ),
         onTap: () {
           innerSetState(() {});
