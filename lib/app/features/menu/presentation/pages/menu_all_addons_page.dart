@@ -29,6 +29,13 @@ class _MenuAllAddonsPageController extends State<MenuAllAddonsPage> {
   }
 
   @override
+  void setState(VoidCallback fn) {
+    if (mounted) {
+      super.setState(fn);
+    }
+  }
+
+  @override
   void dispose() {
     scrollController.dispose();
     listViewBuilderScrollController.dispose();

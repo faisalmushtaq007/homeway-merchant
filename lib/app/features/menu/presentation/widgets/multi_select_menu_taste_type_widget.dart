@@ -1,8 +1,4 @@
-import 'package:flutter/material.dart';
-import 'package:homemakers_merchant/app/features/menu/domain/entities/menu_entity.dart';
-import 'package:homemakers_merchant/app/features/store/domain/entities/store_entity.dart';
-import 'package:homemakers_merchant/bootup/injection_container.dart';
-import 'package:homemakers_merchant/config/translation/language_controller.dart';
+part of 'package:homemakers_merchant/app/features/menu/index.dart';
 
 class MultiSelectTasteTypeFormField extends FormField<List<TasteType>> {
   MultiSelectTasteTypeFormField({
@@ -140,10 +136,10 @@ class MultiSelectMenuTasteType extends StatefulWidget {
   final bool isSingleSelect;
 
   @override
-  _MultiSelectChipState createState() => _MultiSelectChipState();
+  _MultiSelectTasteTypeChipState createState() => _MultiSelectTasteTypeChipState();
 }
 
-class _MultiSelectChipState extends State<MultiSelectMenuTasteType> {
+class _MultiSelectTasteTypeChipState extends State<MultiSelectMenuTasteType> {
   // String selectedChoice = "";
   List<TasteType> selectedChoices = [];
 
@@ -180,6 +176,13 @@ class _MultiSelectChipState extends State<MultiSelectMenuTasteType> {
     }
 
     return choices;
+  }
+
+  @override
+  void setState(VoidCallback fn) {
+    if (mounted) {
+      super.setState(fn);
+    }
   }
 
   @override

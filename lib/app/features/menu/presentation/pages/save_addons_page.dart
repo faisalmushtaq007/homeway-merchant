@@ -45,6 +45,13 @@ class _SaveAddonsPageController extends State<SaveAddonsPage> {
   }
 
   @override
+  void setState(VoidCallback fn) {
+    if (mounted) {
+      super.setState(fn);
+    }
+  }
+
+  @override
   void dispose() {
     scrollController.dispose();
     listViewBuilderScrollController.dispose();

@@ -140,10 +140,10 @@ class MultiSelectStoreAvailableFoodTypes extends StatefulWidget {
   final bool isSingleSelect;
 
   @override
-  _MultiSelectChipState createState() => _MultiSelectChipState();
+  _MultiSelectStoreAvailableFoodTypesState createState() => _MultiSelectStoreAvailableFoodTypesState();
 }
 
-class _MultiSelectChipState extends State<MultiSelectStoreAvailableFoodTypes> {
+class _MultiSelectStoreAvailableFoodTypesState extends State<MultiSelectStoreAvailableFoodTypes> {
   // String selectedChoice = "";
   List<StoreAvailableFoodTypes> selectedChoices = [];
 

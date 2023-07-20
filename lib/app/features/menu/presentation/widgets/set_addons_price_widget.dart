@@ -15,6 +15,13 @@ class SetAddonsPriceWidget extends StatefulWidget {
 
 class _SetAddonsPriceWidgetState extends State<SetAddonsPriceWidget> {
   @override
+  void setState(VoidCallback fn) {
+    if (mounted) {
+      super.setState(fn);
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Directionality(
       textDirection: serviceLocator<LanguageController>().targetTextDirection,

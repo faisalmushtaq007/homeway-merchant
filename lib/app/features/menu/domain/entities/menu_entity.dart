@@ -1,5 +1,4 @@
-import 'package:homemakers_merchant/app/features/menu/common/assets_upload_status.dart';
-import 'package:homemakers_merchant/utils/app_equatable/app_equatable.dart';
+part of 'package:homemakers_merchant/app/features/menu/index.dart';
 
 class MenuEntity with AppEquatable {
   MenuEntity({
@@ -64,33 +63,33 @@ class MenuEntity with AppEquatable {
     );
   }
 
-  final int id;
-  final String menuId;
-  final List<MenuImage> menuImages;
-  final String menuName;
-  final String menuDescription;
-  final List<Category> menuCategories;
-  final List<Ingredients> ingredients;
-  final List<MenuType> storeAvailableFoodTypes;
-  final List<MenuPreparationType> storeAvailableFoodPreparationType;
-  final List<MenuPortion> menuPortions;
-  final bool hasCustomPortion;
-  final List<CustomPortion> customPortions;
-  final List<Addons> addons;
-  final String menuAvailableFromTime;
-  final String menuAvailableToTime;
-  final List<MenuAvailableDayAndTime> menuAvailableInDays;
-  final int minStockAvailable;
-  final int maxStockAvailable;
-  final List<TimeOfPeriodWise> timeOfPeriodWise;
-  final Map<String, dynamic> metaInfoOfMenu;
-  final List<Nutrients> nutrients;
-  final Timing? menuTiming;
-  final TasteType? tasteType;
-  final Stock? stock;
-  final CustomPortion? customPortion;
-  final String menuMinPreparationTime;
-  final String menuMaxPreparationTime;
+  int id;
+  String menuId;
+  List<MenuImage> menuImages;
+  String menuName;
+  String menuDescription;
+  List<Category> menuCategories;
+  List<Ingredients> ingredients;
+  List<MenuType> storeAvailableFoodTypes;
+  List<MenuPreparationType> storeAvailableFoodPreparationType;
+  List<MenuPortion> menuPortions;
+  bool hasCustomPortion;
+  List<CustomPortion> customPortions;
+  List<Addons> addons;
+  String menuAvailableFromTime;
+  String menuAvailableToTime;
+  List<MenuAvailableDayAndTime> menuAvailableInDays;
+  int minStockAvailable;
+  int maxStockAvailable;
+  List<TimeOfPeriodWise> timeOfPeriodWise;
+  Map<String, dynamic> metaInfoOfMenu;
+  List<Nutrients> nutrients;
+  Timing? menuTiming;
+  TasteType? tasteType;
+  Stock? stock;
+  CustomPortion? customPortion;
+  String menuMinPreparationTime;
+  String menuMaxPreparationTime;
 
   @override
   bool get cacheHash => true;
@@ -242,13 +241,13 @@ class MenuImage with AppEquatable {
     );
   }
 
-  final String imageId;
-  final String assetPath;
-  final Map<String, dynamic> metaInfo;
-  final String assetExtension;
-  final bool hasBase64;
-  final String valueOfBase64;
-  final AssetsUploadStatus assetsUploadStatus;
+  String imageId;
+  String assetPath;
+  Map<String, dynamic> metaInfo;
+  String assetExtension;
+  bool hasBase64;
+  String valueOfBase64;
+  AssetsUploadStatus assetsUploadStatus;
 
   @override
   bool get cacheHash => true;
@@ -316,11 +315,11 @@ class Ingredients with AppEquatable {
     );
   }
 
-  final String ingredientsId;
-  final String title;
-  final bool hasSelected;
-  final dynamic value;
-  final Map<String, dynamic> metaInfo;
+  String ingredientsId;
+  String title;
+  bool hasSelected;
+  dynamic value;
+  Map<String, dynamic> metaInfo;
 
   @override
   bool get cacheHash => true;
@@ -382,12 +381,12 @@ class Nutrients with AppEquatable {
     );
   }
 
-  final String nutrientsId;
-  final String title;
-  final bool hasSelected;
-  final dynamic value;
-  final String unit;
-  final Map<String, dynamic> metaInfo;
+  String nutrientsId;
+  String title;
+  bool hasSelected;
+  dynamic value;
+  String unit;
+  Map<String, dynamic> metaInfo;
 
   @override
   bool get cacheHash => true;
@@ -447,9 +446,9 @@ class MenuType with AppEquatable {
     );
   }
 
-  final String title;
-  final int id;
-  final bool hasSelected;
+  String title;
+  int id;
+  bool hasSelected;
 
   @override
   bool get cacheHash => true;
@@ -493,9 +492,9 @@ class MenuPreparationType with AppEquatable {
     );
   }
 
-  final String title;
-  final int id;
-  final bool hasSelected;
+  String title;
+  int id;
+  bool hasSelected;
 
   @override
   bool get cacheHash => true;
@@ -543,11 +542,11 @@ class TasteType with AppEquatable {
     );
   }
 
-  final String tasteTypeId;
-  final String title;
-  final bool hasSelected;
-  final bool hasTasteLevel;
-  final List<TasteLevel> tasteLevel;
+  String tasteTypeId;
+  String title;
+  bool hasSelected;
+  bool hasTasteLevel;
+  List<TasteLevel> tasteLevel;
 
   @override
   bool get cacheHash => true;
@@ -603,9 +602,9 @@ class TasteLevel with AppEquatable {
     );
   }
 
-  final String tasteLevelId;
-  final String title;
-  final bool hasSelected;
+  String tasteLevelId;
+  String title;
+  bool hasSelected;
 
   @override
   bool get cacheHash => true;
@@ -669,17 +668,17 @@ class MenuPortion with AppEquatable {
     );
   }
 
-  final String portionID;
-  final String title;
-  final double quantity;
-  final int maxServingPerson;
-  final double defaultPrice;
-  final double finalPrice;
-  final double discountedPrice;
-  final bool hasSelected;
-  final String unit;
-  final String currency;
-  final String description;
+  String portionID;
+  String title;
+  double quantity;
+  int maxServingPerson;
+  double defaultPrice;
+  double finalPrice;
+  double discountedPrice;
+  bool hasSelected;
+  String unit;
+  String currency;
+  String description;
 
   @override
   bool get cacheHash => true;
@@ -777,18 +776,18 @@ class CustomPortion with AppEquatable {
     );
   }
 
-  final String customPortionID;
-  final String title;
-  final int maxServingPerson;
-  final double quantity;
-  final double defaultPrice;
-  final double finalPrice;
-  final double discountedPrice;
-  final Map<String, dynamic> otherInfo;
-  final bool hasSelected;
-  final String unit;
-  final String currency;
-  final String description;
+  String customPortionID;
+  String title;
+  int maxServingPerson;
+  double quantity;
+  double defaultPrice;
+  double finalPrice;
+  double discountedPrice;
+  Map<String, dynamic> otherInfo;
+  bool hasSelected;
+  String unit;
+  String currency;
+  String description;
 
   @override
   bool get cacheHash => true;
@@ -870,6 +869,7 @@ class Addons with AppEquatable {
     this.addonsImage,
     this.currency = 'SAR',
     this.description = '',
+    this.hasOwnAddons = false,
   });
 
   factory Addons.fromMap(Map<String, dynamic> map) {
@@ -885,20 +885,22 @@ class Addons with AppEquatable {
       addonsImage: map['addonsImage'] as MenuImage,
       currency: map['currency'] as String,
       description: map['description'] as String,
+      hasOwnAddons: map['hasOwnAddons'] as bool,
     );
   }
 
-  final String addonsID;
-  final String title;
-  final double quantity;
-  final double defaultPrice;
-  final double finalPrice;
-  final double discountedPrice;
-  final bool hasSelected;
-  final String unit;
-  final MenuImage? addonsImage;
-  final String currency;
-  final String description;
+  String addonsID;
+  String title;
+  double quantity;
+  double defaultPrice;
+  double finalPrice;
+  double discountedPrice;
+  bool hasSelected;
+  String unit;
+  MenuImage? addonsImage;
+  String currency;
+  String description;
+  bool hasOwnAddons;
 
   @override
   bool get cacheHash => true;
@@ -916,6 +918,7 @@ class Addons with AppEquatable {
         addonsImage,
         currency,
         description,
+        hasOwnAddons,
       ];
 
   Map<String, dynamic> toMap() {
@@ -931,6 +934,7 @@ class Addons with AppEquatable {
       'addonsImage': this.addonsImage,
       'currency': this.currency,
       'description': this.description,
+      'hasOwnAddons': this.hasOwnAddons,
     };
   }
 
@@ -946,6 +950,7 @@ class Addons with AppEquatable {
     MenuImage? addonsImage,
     String? currency,
     String? description,
+    bool? hasOwnAddons,
   }) {
     return Addons(
       addonsID: addonsID ?? this.addonsID,
@@ -959,6 +964,7 @@ class Addons with AppEquatable {
       addonsImage: addonsImage ?? this.addonsImage,
       currency: currency ?? this.currency,
       description: description ?? this.description,
+      hasOwnAddons: hasOwnAddons ?? this.hasOwnAddons,
     );
   }
 }
@@ -984,12 +990,12 @@ class MenuAvailableDayAndTime with AppEquatable {
     );
   }
 
-  final String day;
-  final String shortName;
-  final int id;
-  final bool hasSelected;
-  final DateTime? openingTime;
-  final DateTime? closingTime;
+  String day;
+  String shortName;
+  int id;
+  bool hasSelected;
+  DateTime? openingTime;
+  DateTime? closingTime;
 
   @override
   bool get cacheHash => true;
@@ -1049,9 +1055,9 @@ class TimeOfPeriodWise with AppEquatable {
     );
   }
 
-  final String timeOfPeriodWiseId;
-  final String title;
-  final bool hasSelected;
+  String timeOfPeriodWiseId;
+  String title;
+  bool hasSelected;
 
   @override
   bool get cacheHash => true;
@@ -1103,11 +1109,11 @@ class Timing with AppEquatable {
     );
   }
 
-  final String timingID;
-  final String minPreparingTime;
-  final String maxPreparingTime;
-  final String minDeliveryTime;
-  final String maxDeliveryTiming;
+  String timingID;
+  String minPreparingTime;
+  String maxPreparingTime;
+  String minDeliveryTime;
+  String maxDeliveryTiming;
 
   @override
   bool get cacheHash => true;
@@ -1163,9 +1169,9 @@ class Category with AppEquatable {
     );
   }
 
-  final String categoryId;
-  final String title;
-  final bool hasSelected;
+  String categoryId;
+  String title;
+  bool hasSelected;
 
   @override
   bool get cacheHash => true;
@@ -1213,9 +1219,9 @@ class Stock with AppEquatable {
     );
   }
 
-  final String stockID;
-  final int minStockQuantity;
-  final int maxStockQuantity;
+  String stockID;
+  int minStockQuantity;
+  int maxStockQuantity;
 
   @override
   bool get cacheHash => true;

@@ -1,8 +1,4 @@
-import 'package:flutter/material.dart';
-import 'package:homemakers_merchant/app/features/menu/domain/entities/menu_entity.dart';
-import 'package:homemakers_merchant/app/features/store/domain/entities/store_entity.dart';
-import 'package:homemakers_merchant/bootup/injection_container.dart';
-import 'package:homemakers_merchant/config/translation/language_controller.dart';
+part of 'package:homemakers_merchant/app/features/menu/index.dart';
 
 class MultiSelectAddonsFormField extends FormField<List<Addons>> {
   MultiSelectAddonsFormField({
@@ -131,10 +127,10 @@ class MultiSelectMenuAddons extends StatefulWidget {
   final int? maxSelection;
 
   @override
-  _MultiSelectChipState createState() => _MultiSelectChipState();
+  _MultiSelectAddonsChipState createState() => _MultiSelectAddonsChipState();
 }
 
-class _MultiSelectChipState extends State<MultiSelectMenuAddons> {
+class _MultiSelectAddonsChipState extends State<MultiSelectMenuAddons> {
   // String selectedChoice = "";
   List<Addons> selectedChoices = [];
 
@@ -153,6 +149,13 @@ class _MultiSelectChipState extends State<MultiSelectMenuAddons> {
         },
       );
     });
+  }
+
+  @override
+  void setState(VoidCallback fn) {
+    if (mounted) {
+      super.setState(fn);
+    }
   }
 
   @override

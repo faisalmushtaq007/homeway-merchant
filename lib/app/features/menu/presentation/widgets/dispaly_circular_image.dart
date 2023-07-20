@@ -2,12 +2,12 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 
-class DisplayImage extends StatelessWidget {
+class DisplayCircularImage extends StatelessWidget {
   final String imagePath;
   final VoidCallback onPressed;
 
   // Constructor
-  const DisplayImage({
+  const DisplayCircularImage({
     Key? key,
     required this.imagePath,
     required this.onPressed,

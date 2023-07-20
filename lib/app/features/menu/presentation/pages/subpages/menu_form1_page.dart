@@ -34,6 +34,13 @@ class _MenuForm1PageState extends State<MenuForm1Page> {
   }
 
   @override
+  void setState(VoidCallback fn) {
+    if (mounted) {
+      super.setState(fn);
+    }
+  }
+
+  @override
   void dispose() {
     scrollController.dispose();
     listOfCategories = [];
@@ -86,6 +93,18 @@ class _MenuForm1PageState extends State<MenuForm1Page> {
       setState(() {
         menuCategoryTextEditingController.text = category?.title ?? '';
         selectedCategory = category;
+        serviceLocator<MenuEntity>().menuCategories = [
+          Category(
+            title: menuCategoryTextEditingController.value.text.trim(),
+          )
+        ];
+        context.read<MenuBloc>().add(
+              PushMenuEntityData(
+                menuEntity: serviceLocator<MenuEntity>(),
+                menuFormStage: MenuFormStage.form1,
+                menuEntityStatus: MenuEntityStatus.push,
+              ),
+            );
       });
     }
     return;
@@ -95,114 +114,197 @@ class _MenuForm1PageState extends State<MenuForm1Page> {
   Widget build(BuildContext context) {
     return Directionality(
       textDirection: serviceLocator<LanguageController>().targetTextDirection,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        textDirection: serviceLocator<LanguageController>().targetTextDirection,
-        children: [
-          AppTextFieldWidget(
-            controller: menuCategoryTextEditingController,
-            readOnly: true,
+      child: BlocBuilder<MenuBloc, MenuState>(
+        key: const Key('menu-form1-page-bloc-builder-widget'),
+        bloc: context.watch<MenuBloc>(),
+        builder: (context, state) {
+          if (state is PushMenuEntityDataState && state.menuFormStage is MenuForm1Page) {}
+          if (state is PullMenuEntityDataState && state.menuFormStage is MenuForm1Page) {}
+          return Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
             textDirection: serviceLocator<LanguageController>().targetTextDirection,
-            focusNode: menuForm1FocusList[0],
-            textInputAction: TextInputAction.next,
-            onFieldSubmitted: (_) => fieldFocusChange(context, menuForm1FocusList[0], menuForm1FocusList[1]),
-            keyboardType: TextInputType.text,
-            decoration: InputDecoration(
-              labelText: 'Menu category',
-              hintText: 'Select your menu category',
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(10),
-              ),
-              isDense: true,
-              suffixIcon: IconButton(
-                onPressed: () async {
+            children: [
+              AppTextFieldWidget(
+                controller: menuCategoryTextEditingController,
+                readOnly: true,
+                textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                focusNode: menuForm1FocusList[0],
+                textInputAction: TextInputAction.next,
+                onFieldSubmitted: (_) => fieldFocusChange(context, menuForm1FocusList[0], menuForm1FocusList[1]),
+                keyboardType: TextInputType.text,
+                decoration: InputDecoration(
+                  labelText: 'Menu category',
+                  hintText: 'Select your menu category',
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  isDense: true,
+                  suffixIcon: IconButton(
+                    onPressed: () async {
+                      await selectMenuCategory(context);
+                      return;
+                    },
+                    icon: Icon(
+                      Icons.arrow_drop_down,
+                    ),
+                  ),
+                ),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Select menu category';
+                  }
+                  return null;
+                },
+                onTap: () async {
                   await selectMenuCategory(context);
                   return;
                 },
-                icon: Icon(
-                  Icons.arrow_drop_down,
+                onChanged: (value) {
+                  serviceLocator<MenuEntity>().menuCategories = [
+                    Category(
+                      title: value,
+                    )
+                  ];
+                  context.read<MenuBloc>().add(
+                        PushMenuEntityData(
+                          menuEntity: serviceLocator<MenuEntity>(),
+                          menuFormStage: MenuFormStage.form1,
+                          menuEntityStatus: MenuEntityStatus.push,
+                        ),
+                      );
+                },
+                onSaved: (newValue) {
+                  serviceLocator<MenuEntity>().menuCategories = [
+                    Category(
+                      title: menuCategoryTextEditingController.value.text.trim(),
+                    )
+                  ];
+                  context.read<MenuBloc>().add(
+                        PushMenuEntityData(
+                          menuEntity: serviceLocator<MenuEntity>(),
+                          menuFormStage: MenuFormStage.form1,
+                          menuEntityStatus: MenuEntityStatus.push,
+                        ),
+                      );
+                },
+                onEditingComplete: () {
+                  serviceLocator<MenuEntity>().menuCategories = [
+                    Category(
+                      title: menuCategoryTextEditingController.value.text.trim(),
+                    )
+                  ];
+                  context.read<MenuBloc>().add(
+                        PushMenuEntityData(
+                          menuEntity: serviceLocator<MenuEntity>(),
+                          menuFormStage: MenuFormStage.form1,
+                          menuEntityStatus: MenuEntityStatus.push,
+                        ),
+                      );
+                },
+              ),
+              AnimatedGap(12, duration: Duration(milliseconds: 500)),
+              AppTextFieldWidget(
+                controller: menuNameTextEditingController,
+                textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                focusNode: menuForm1FocusList[1],
+                textInputAction: TextInputAction.next,
+                onFieldSubmitted: (_) => fieldFocusChange(context, menuForm1FocusList[1], menuForm1FocusList[2]),
+                keyboardType: TextInputType.text,
+                decoration: InputDecoration(
+                  labelText: 'Menu name',
+                  hintText: 'Enter your menu name',
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  isDense: true,
                 ),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Enter menu name';
+                  }
+                  return null;
+                },
+                onChanged: (value) {
+                  serviceLocator<MenuEntity>().menuName = value;
+                  context.read<MenuBloc>().add(
+                        PushMenuEntityData(
+                          menuEntity: serviceLocator<MenuEntity>(),
+                          menuFormStage: MenuFormStage.form1,
+                          menuEntityStatus: MenuEntityStatus.push,
+                        ),
+                      );
+                },
+                onSaved: (newValue) {
+                  serviceLocator<MenuEntity>().menuName = menuNameTextEditingController.value.text.trim();
+                  context.read<MenuBloc>().add(
+                        PushMenuEntityData(
+                          menuEntity: serviceLocator<MenuEntity>(),
+                          menuFormStage: MenuFormStage.form2,
+                          menuEntityStatus: MenuEntityStatus.push,
+                        ),
+                      );
+                },
               ),
-            ),
-            validator: (value) {
-              if (value == null || value.isEmpty) {
-                return 'Select menu category';
-              }
-              return null;
-            },
-            onTap: () async {
-              await selectMenuCategory(context);
-              return;
-            },
-            onSaved: (newValue) {
-              final cacheMenuEntity = serviceLocator<MenuEntity>().copyWith(
-                menuCategories: [
-                  Category(
-                    title: menuCategoryTextEditingController.value.text.trim(),
-                  )
-                ],
-              );
-            },
-          ),
-          AnimatedGap(12, duration: Duration(milliseconds: 500)),
-          AppTextFieldWidget(
-            controller: menuNameTextEditingController,
-            textDirection: serviceLocator<LanguageController>().targetTextDirection,
-            focusNode: menuForm1FocusList[1],
-            textInputAction: TextInputAction.next,
-            onFieldSubmitted: (_) => fieldFocusChange(context, menuForm1FocusList[1], menuForm1FocusList[2]),
-            keyboardType: TextInputType.text,
-            decoration: InputDecoration(
-              labelText: 'Menu name',
-              hintText: 'Enter your menu name',
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(10),
+              AnimatedGap(12, duration: Duration(milliseconds: 500)),
+              AppTextFieldWidget(
+                controller: menuDescriptionTextEditingController,
+                textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                focusNode: menuForm1FocusList[2],
+                textInputAction: TextInputAction.done,
+                keyboardType: TextInputType.text,
+                onChanged: (value) {
+                  serviceLocator<MenuEntity>().menuDescription = value;
+                  context.read<MenuBloc>().add(
+                        PushMenuEntityData(
+                          menuEntity: serviceLocator<MenuEntity>(),
+                          menuFormStage: MenuFormStage.form1,
+                          menuEntityStatus: MenuEntityStatus.push,
+                        ),
+                      );
+                },
+                onEditingComplete: () {
+                  serviceLocator<MenuEntity>().menuDescription = menuDescriptionTextEditingController.value.text.trim();
+                  context.read<MenuBloc>().add(
+                        PushMenuEntityData(
+                          menuEntity: serviceLocator<MenuEntity>(),
+                          menuFormStage: MenuFormStage.form1,
+                          menuEntityStatus: MenuEntityStatus.push,
+                        ),
+                      );
+                },
+                maxLines: 5,
+                decoration: InputDecoration(
+                  labelText: 'Menu description',
+                  hintText: 'Enter either the description or about the ingredients of the menu.',
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  isDense: true,
+                ),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Enter menu description';
+                  }
+                  return null;
+                },
+                onSaved: (newValue) {
+                  final cacheMenuEntity = serviceLocator<MenuEntity>().copyWith(
+                    menuDescription: menuDescriptionTextEditingController.value.text.trim(),
+                  );
+                  context.read<MenuBloc>().add(
+                        PushMenuEntityData(
+                          menuEntity: cacheMenuEntity,
+                          menuFormStage: MenuFormStage.form1,
+                          menuEntityStatus: MenuEntityStatus.push,
+                        ),
+                      );
+                },
               ),
-              isDense: true,
-            ),
-            validator: (value) {
-              if (value == null || value.isEmpty) {
-                return 'Enter menu name';
-              }
-              return null;
-            },
-            onSaved: (newValue) {
-              final cacheMenuEntity = serviceLocator<MenuEntity>().copyWith(
-                menuName: menuNameTextEditingController.value.text.trim(),
-              );
-            },
-          ),
-          AnimatedGap(12, duration: Duration(milliseconds: 500)),
-          AppTextFieldWidget(
-            controller: menuDescriptionTextEditingController,
-            textDirection: serviceLocator<LanguageController>().targetTextDirection,
-            focusNode: menuForm1FocusList[2],
-            textInputAction: TextInputAction.done,
-            keyboardType: TextInputType.text,
-            maxLines: 5,
-            decoration: InputDecoration(
-              labelText: 'Menu description',
-              hintText: 'Enter either the description or about the ingredients of the menu.',
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(10),
-              ),
-              isDense: true,
-            ),
-            validator: (value) {
-              if (value == null || value.isEmpty) {
-                return 'Enter menu description';
-              }
-              return null;
-            },
-            onSaved: (newValue) {
-              final cacheMenuEntity = serviceLocator<MenuEntity>().copyWith(
-                menuDescription: menuDescriptionTextEditingController.value.text.trim(),
-              );
-            },
-          ),
-          //
-        ],
+              //
+            ],
+          );
+        },
       ),
     );
   }

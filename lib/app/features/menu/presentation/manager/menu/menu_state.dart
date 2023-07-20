@@ -472,3 +472,69 @@ class PopToMenuPageState extends MenuState {
         hasNewAddons,
       ];
 }
+
+class PushMenuEntityDataState extends MenuState {
+  PushMenuEntityDataState({
+    required this.menuEntity,
+    this.menuEntities = const [],
+    this.hasNewMenu = true,
+    this.message = '',
+    this.menuEntityStatus = MenuEntityStatus.none,
+    this.menuFormStage = MenuFormStage.none,
+    this.menuSelectionUseCase = MenuSelectionUseCase.none,
+  });
+
+  final List<MenuEntity> menuEntities;
+  final bool hasNewMenu;
+  final MenuEntity menuEntity;
+  final String message;
+  final MenuEntityStatus menuEntityStatus;
+  final MenuFormStage menuFormStage;
+  final MenuSelectionUseCase menuSelectionUseCase;
+
+  @override
+  bool get cacheHash => true;
+
+  @override
+  List<Object?> get hashParameters => [
+        menuEntities,
+        hasNewMenu,
+        menuEntity,
+        menuFormStage,
+        menuEntityStatus,
+        menuSelectionUseCase,
+      ];
+}
+
+class PullMenuEntityDataState extends MenuState {
+  PullMenuEntityDataState({
+    required this.menuEntity,
+    this.menuEntities = const [],
+    this.hasNewMenu = true,
+    this.message = '',
+    this.menuEntityStatus = MenuEntityStatus.none,
+    this.menuFormStage = MenuFormStage.none,
+    this.menuSelectionUseCase = MenuSelectionUseCase.none,
+  });
+
+  final List<MenuEntity> menuEntities;
+  final bool hasNewMenu;
+  final MenuEntity menuEntity;
+  final String message;
+  final MenuEntityStatus menuEntityStatus;
+  final MenuFormStage menuFormStage;
+  final MenuSelectionUseCase menuSelectionUseCase;
+
+  @override
+  bool get cacheHash => true;
+
+  @override
+  List<Object?> get hashParameters => [
+        menuEntities,
+        hasNewMenu,
+        menuEntity,
+        menuFormStage,
+        menuEntityStatus,
+        menuSelectionUseCase,
+      ];
+}

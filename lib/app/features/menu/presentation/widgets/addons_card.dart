@@ -1,5 +1,4 @@
-import 'package:flutter/material.dart';
-import 'package:homemakers_merchant/app/features/menu/domain/entities/menu_entity.dart';
+part of 'package:homemakers_merchant/app/features/menu/index.dart';
 
 class AddonsCard extends StatefulWidget {
   const AddonsCard({
@@ -26,6 +25,13 @@ class _AddonsCardState extends State<AddonsCard> {
   void initState() {
     super.initState();
     addonsEntity = widget.addonsEntity;
+  }
+
+  @override
+  void setState(VoidCallback fn) {
+    if (mounted) {
+      super.setState(fn);
+    }
   }
 
   @override

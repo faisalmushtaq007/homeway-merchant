@@ -15,6 +15,13 @@ class _MenuDescriptionPageController extends State<MenuDescriptionPage> {
   }
 
   @override
+  void setState(VoidCallback fn) {
+    if (mounted) {
+      super.setState(fn);
+    }
+  }
+
+  @override
   void dispose() {
     scrollController.dispose();
     super.dispose();

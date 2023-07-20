@@ -63,7 +63,7 @@ class _SaveMenuPageController extends State<SaveMenuPage> with AutomaticKeepAliv
           key: formKeys[0],
           child: PageStorage(
             bucket: pageStorageBucketMenuForm1,
-            child: const MenuForm1Page(),
+            child: const MenuForm2Page(),
           ),
         ),
         formKey: formKeys[0],
@@ -73,7 +73,7 @@ class _SaveMenuPageController extends State<SaveMenuPage> with AutomaticKeepAliv
           key: formKeys[1],
           child: PageStorage(
             bucket: pageStorageBucketMenuForm2,
-            child: const MenuForm2Page(),
+            child: const MenuForm4Page(),
           ),
         ),
         formKey: formKeys[1],
@@ -83,7 +83,7 @@ class _SaveMenuPageController extends State<SaveMenuPage> with AutomaticKeepAliv
           key: formKeys[2],
           child: PageStorage(
             bucket: pageStorageBucketMenuForm3,
-            child: const MenuForm3Page(),
+            child: const MenuForm1Page(),
           ),
         ),
         formKey: formKeys[2],
@@ -111,6 +111,13 @@ class _SaveMenuPageController extends State<SaveMenuPage> with AutomaticKeepAliv
     ];
     focusList = [FocusNode(), FocusNode(), FocusNode(), FocusNode(), FocusNode(), FocusNode(), FocusNode(), FocusNode(), FocusNode(), FocusNode()];
     _screenScrollController = ScrollController()..addListener(_scrollListener);
+  }
+
+  @override
+  void setState(VoidCallback fn) {
+    if (mounted) {
+      super.setState(fn);
+    }
   }
 
   @override
@@ -230,7 +237,7 @@ class _SaveMenuPageView extends WidgetView<SaveMenuPage, _SaveMenuPageController
         resizeToAvoidBottomInset: true,
         extendBody: true,
         appBar: AppBar(
-          title: Text('Menu').translate(),
+          title: const Text('Menu').translate(),
           actions: const [
             Padding(
               padding: EdgeInsetsDirectional.symmetric(horizontal: 14),
@@ -252,7 +259,7 @@ class _SaveMenuPageView extends WidgetView<SaveMenuPage, _SaveMenuPageController
               children: [
                 CustomScrollView(
                   controller: state._screenScrollController,
-                  physics: ClampingScrollPhysics(),
+                  physics: const ClampingScrollPhysics(),
                   slivers: [
                     SliverList(
                       delegate: SliverChildListDelegate(
@@ -292,11 +299,12 @@ class _SaveMenuPageView extends WidgetView<SaveMenuPage, _SaveMenuPageController
                             child: PreloadPageView.builder(
                               controller: state.preloadPageController,
                               itemCount: state.pages.length,
-                              preloadPagesCount: 3,
+                              preloadPagesCount: 0,
                               physics: const NeverScrollableScrollPhysics(),
                               onPageChanged: state.onPageChanged,
                               itemBuilder: (context, index) {
                                 return SingleChildScrollView(
+                                  physics: const ClampingScrollPhysics(),
                                   child: Column(
                                     children: [
                                       const AnimatedGap(18, duration: Duration(milliseconds: 500)),
@@ -323,7 +331,6 @@ class _SaveMenuPageView extends WidgetView<SaveMenuPage, _SaveMenuPageController
                                       state.pages[index].body,
                                     ],
                                   ),
-                                  physics: ClampingScrollPhysics(),
                                 );
                               },
                             ),
@@ -384,7 +391,7 @@ class _SaveMenuPageView extends WidgetView<SaveMenuPage, _SaveMenuPageController
                                     onPressed: state._nextButtonOnPressed,
                                     style: ElevatedButton.styleFrom(
                                       //minimumSize: Size(180, 40),
-                                      disabledBackgroundColor: Color.fromRGBO(255, 219, 208, 1),
+                                      disabledBackgroundColor: const Color.fromRGBO(255, 219, 208, 1),
                                       disabledForegroundColor: Colors.white,
                                     ),
                                     child: Text(

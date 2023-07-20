@@ -140,10 +140,10 @@ class MultiSelectStoreAvailablePaymentMode extends StatefulWidget {
   final bool isSingleSelect;
 
   @override
-  _MultiSelectChipState createState() => _MultiSelectChipState();
+  _MultiSelectStoreAvailablePaymentModeState createState() => _MultiSelectStoreAvailablePaymentModeState();
 }
 
-class _MultiSelectChipState extends State<MultiSelectStoreAvailablePaymentMode> {
+class _MultiSelectStoreAvailablePaymentModeState extends State<MultiSelectStoreAvailablePaymentMode> {
   // String selectedChoice = "";
   List<StoreAcceptedPaymentModes> selectedChoices = [];
 

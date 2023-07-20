@@ -1,7 +1,6 @@
 import 'package:get_it/get_it.dart';
 import 'package:homemakers_merchant/app/features/authentication/presentation/manager/otp_verification/otp_verification_bloc.dart';
 import 'package:homemakers_merchant/app/features/authentication/presentation/manager/phone_number_verification_bloc.dart';
-import 'package:homemakers_merchant/app/features/menu/domain/entities/menu_entity.dart';
 import 'package:homemakers_merchant/app/features/menu/index.dart';
 
 import 'package:homemakers_merchant/app/features/permission/presentation/bloc/permission_bloc.dart';
@@ -55,18 +54,20 @@ void _setupGetIt() {
 
 void _setUpModel() {
   serviceLocator.registerSingleton<UserModel>(UserModel());
-  serviceLocator
-      .registerSingleton<BusinessProfileEntity>(BusinessProfileEntity());
+  serviceLocator.registerSingleton<BusinessProfileEntity>(BusinessProfileEntity());
+  // Menu entity
   serviceLocator.registerSingleton<MenuEntity>(
     MenuEntity(),
   );
   serviceLocator.registerSingleton<List<MenuEntity>>([]);
+  // Store entity
   serviceLocator.registerSingleton<StoreEntity>(
     StoreEntity(
       menuEntities: serviceLocator(),
     ),
   );
   serviceLocator.registerSingleton<List<StoreEntity>>([]);
+  // App user entity
   serviceLocator.registerSingleton<AppUserEntity>(
     AppUserEntity(
       businessProfile: serviceLocator(),
@@ -76,14 +77,12 @@ void _setUpModel() {
 }
 
 Future<void> _setUpAppSetting() async {
-  serviceLocator.registerSingleton<ThemeService>(
-      ThemeServiceHive('app_color_scheme_box'));
+  serviceLocator.registerSingleton<ThemeService>(ThemeServiceHive('app_color_scheme_box'));
   //final ThemeService themeService = ThemeServicePrefs();
   //final ThemeService themeService = ThemeServiceHive('app_color_scheme_box');
   // Initialize the theme service.
   await serviceLocator<ThemeService>().init();
-  serviceLocator
-      .registerSingleton<ThemeController>(ThemeController(serviceLocator()));
+  serviceLocator.registerSingleton<ThemeController>(ThemeController(serviceLocator()));
   // Create a ThemeController that uses the ThemeService.
   //final ThemeController themeController = ThemeController(themeService);
   // Load preferred theme settings, while the app is loading, before MaterialApp
@@ -101,8 +100,7 @@ Future<void> _setUpAppSetting() async {
   );
   await serviceLocator<PermissionController>().loadAll();
   // User Model service
-  serviceLocator.registerSingleton<IStorageService>(
-      LocalUserModelService(GlobalApp.storageBoxName));
+  serviceLocator.registerSingleton<IStorageService>(LocalUserModelService(GlobalApp.storageBoxName));
   await serviceLocator<IStorageService>().init();
 
   serviceLocator.registerSingleton<UserModelStorageController>(
@@ -130,8 +128,7 @@ Future<void> _setUpAppSetting() async {
   // TranslateApi init
   //await translateApi.init(sourceLanguage: GlobalApp.defaultSourceTranslateLanguage, targetLanguage: GlobalApp.defaultSourceTranslateLanguage);
   // Multiple language download
-  final MultipleLanguageDownload multipleLanguageDownload =
-      MultipleLanguageDownload(
+  final MultipleLanguageDownload multipleLanguageDownload = MultipleLanguageDownload(
     languageService: serviceLocator<ILanguageService>(),
     boxName: GlobalApp.languageBoxName,
   );
@@ -143,10 +140,8 @@ Future<void> _setUpAppSetting() async {
   );
   await appTranslator.init(
     languageController: serviceLocator(),
-    sourceLanguage:
-        serviceLocator<LanguageController>().sourceTranslateLanguage,
-    targetLanguage:
-        serviceLocator<LanguageController>().targetTranslateLanguage,
+    sourceLanguage: serviceLocator<LanguageController>().sourceTranslateLanguage,
+    targetLanguage: serviceLocator<LanguageController>().targetTranslateLanguage,
     sourceAppLanguage: serviceLocator<LanguageController>().sourceApplanguage,
     targetAppLanguage: serviceLocator<LanguageController>().targetAppLanguage,
     initTextDirection: serviceLocator<LanguageController>().targetTextDirection,
@@ -154,9 +149,7 @@ Future<void> _setUpAppSetting() async {
 }
 
 void _setUpService() {
-  serviceLocator
-      .registerSingleton<ConnectivityService>(ConnectivityService())
-      .initConnectivityService();
+  serviceLocator.registerSingleton<ConnectivityService>(ConnectivityService()).initConnectivityService();
   serviceLocator
     ..registerSingleton<FreshTokenInterceptor<OAuth2Token>>(
       FreshTokenInterceptor.oAuth2(
@@ -196,10 +189,8 @@ void _setUpStateManagement() {
   );
   serviceLocator.registerFactory<OtpVerificationBloc>(OtpVerificationBloc.new);
   serviceLocator.registerFactory<PermissionBloc>(PermissionBloc.new);
-  serviceLocator
-      .registerFactory<BusinessDocumentBloc>(() => BusinessDocumentBloc());
-  serviceLocator
-      .registerFactory<BankInformationBloc>(() => BankInformationBloc());
+  serviceLocator.registerFactory<BusinessDocumentBloc>(() => BusinessDocumentBloc());
+  serviceLocator.registerFactory<BankInformationBloc>(() => BankInformationBloc());
   serviceLocator.registerFactory<StoreBloc>(() => StoreBloc());
   //MenuBloc
   serviceLocator.registerFactory<MenuBloc>(() => MenuBloc());

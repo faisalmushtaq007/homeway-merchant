@@ -1,4 +1,4 @@
-import 'package:homemakers_merchant/app/features/menu/domain/entities/menu_entity.dart';
+part of 'package:homemakers_merchant/app/features/menu/index.dart';
 
 final localListOfCategories = [
   Category(

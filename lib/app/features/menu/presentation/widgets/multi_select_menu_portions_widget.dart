@@ -1,8 +1,4 @@
-import 'package:flutter/material.dart';
-import 'package:homemakers_merchant/app/features/menu/domain/entities/menu_entity.dart';
-import 'package:homemakers_merchant/app/features/store/domain/entities/store_entity.dart';
-import 'package:homemakers_merchant/bootup/injection_container.dart';
-import 'package:homemakers_merchant/config/translation/language_controller.dart';
+part of 'package:homemakers_merchant/app/features/menu/index.dart';
 
 class MultiSelectMenuPortionFormField extends FormField<List<MenuPortion>> {
   final Widget title;
@@ -141,10 +137,10 @@ class MultiSelectMenuMenuPortion extends StatefulWidget {
   final bool isSingleSelect;
 
   @override
-  _MultiSelectChipState createState() => _MultiSelectChipState();
+  _MultiSelectPortionsChipState createState() => _MultiSelectPortionsChipState();
 }
 
-class _MultiSelectChipState extends State<MultiSelectMenuMenuPortion> {
+class _MultiSelectPortionsChipState extends State<MultiSelectMenuMenuPortion> {
   // String selectedChoice = "";
   List<MenuPortion> selectedChoices = [];
 
@@ -185,6 +181,13 @@ class _MultiSelectChipState extends State<MultiSelectMenuMenuPortion> {
     }
 
     return choices;
+  }
+
+  @override
+  void setState(VoidCallback fn) {
+    if (mounted) {
+      super.setState(fn);
+    }
   }
 
   @override

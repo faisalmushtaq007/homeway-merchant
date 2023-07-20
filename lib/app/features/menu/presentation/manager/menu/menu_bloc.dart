@@ -1,11 +1,9 @@
 import 'dart:async';
-
 import 'package:bloc/bloc.dart';
-import 'package:equatable/equatable.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:homemakers_merchant/app/features/menu/data/local/data_sources/local_categories_list.dart';
-import 'package:meta/meta.dart';
-import 'package:homemakers_merchant/app/features/menu/domain/entities/menu_entity.dart';
+import 'package:bloc_concurrency/bloc_concurrency.dart';
+import 'package:flutter/material.dart';
+import 'package:homemakers_merchant/app/features/menu/index.dart';
+import 'package:homemakers_merchant/bootup/injection_container.dart';
 import 'package:homemakers_merchant/utils/app_equatable/app_equatable.dart';
 
 part 'menu_event.dart';
@@ -14,11 +12,34 @@ part 'menu_state.dart';
 
 class MenuBloc extends Bloc<MenuEvent, MenuState> {
   MenuBloc() : super(MenuInitial()) {
-    on<GetAllAddons>(_getAllAddons);
-    on<SelectAddons>(_selectAddons);
-    on<SaveAddons>(_saveAddons);
-    on<SelectAddonsMaxPortion>(_selectAddonsMaxPortion);
-    on<PopToMenuPage>(_popToMenuPage);
+    on<GetAllAddons>(
+      _getAllAddons,
+      transformer: sequential(),
+    );
+    on<SelectAddons>(
+      _selectAddons,
+      transformer: sequential(),
+    );
+    on<SaveAddons>(
+      _saveAddons,
+      transformer: sequential(),
+    );
+    on<SelectAddonsMaxPortion>(
+      _selectAddonsMaxPortion,
+      transformer: sequential(),
+    );
+    on<PopToMenuPage>(
+      _popToMenuPage,
+      transformer: sequential(),
+    );
+    on<PushMenuEntityData>(
+      _pushMenuEntityData,
+      transformer: sequential(),
+    );
+    on<PullMenuEntityData>(
+      _pullMenuEntityData,
+      transformer: sequential(),
+    );
   }
 
   Future<void> _getAllAddons(GetAllAddons event, Emitter<MenuState> emit) async {
@@ -30,7 +51,11 @@ class MenuBloc extends Bloc<MenuEvent, MenuState> {
         ),
       );
       List<Addons> _menuAvailableAddons = List<Addons>.from(localMenuAddons.toList());
-      await Future.delayed(const Duration(milliseconds: 500));
+      await Future.delayed(
+          const Duration(
+            milliseconds: 500,
+          ),
+          () {});
       if (_menuAvailableAddons.isEmpty) {
         emit(
           GetEmptyAddonsState(
@@ -114,5 +139,97 @@ class MenuBloc extends Bloc<MenuEvent, MenuState> {
         addonsEntity: event.addonsEntity.toList(),
       ),
     );
+  }
+
+  FutureOr<void> _pushMenuEntityData(PushMenuEntityData event, Emitter<MenuState> emit) async {
+    try {
+      /*final MenuEntity cacheMenuEntity = serviceLocator<MenuEntity>();
+      final MenuEntity updatedCacheMenuEntity = serviceLocator<MenuEntity>().copyWith(
+        id: event.menuEntity.id,
+        menuId: event.menuEntity.menuId,
+        menuImages: event.menuEntity.menuImages,
+        menuName: event.menuEntity.menuName,
+        menuDescription: event.menuEntity.menuDescription,
+        menuCategories: event.menuEntity.menuCategories,
+        ingredients: event.menuEntity.ingredients,
+        storeAvailableFoodTypes: event.menuEntity.storeAvailableFoodTypes,
+        storeAvailableFoodPreparationType: event.menuEntity.storeAvailableFoodPreparationType,
+        menuPortions: event.menuEntity.menuPortions,
+        hasCustomPortion: event.menuEntity.hasCustomPortion,
+        customPortions: event.menuEntity.customPortions,
+        addons: event.menuEntity.addons,
+        menuAvailableFromTime: event.menuEntity.menuAvailableFromTime,
+        menuAvailableToTime: event.menuEntity.menuAvailableToTime,
+        menuAvailableInDays: event.menuEntity.menuAvailableInDays,
+        minStockAvailable: event.menuEntity.minStockAvailable,
+        maxStockAvailable: event.menuEntity.maxStockAvailable,
+        timeOfPeriodWise: event.menuEntity.timeOfPeriodWise,
+        metaInfoOfMenu: event.menuEntity.metaInfoOfMenu,
+        nutrients: event.menuEntity.nutrients,
+        menuTiming: event.menuEntity.menuTiming,
+        tasteType: event.menuEntity.tasteType,
+        stock: event.menuEntity.stock,
+        customPortion: event.menuEntity.customPortion,
+        menuMaxPreparationTime: event.menuEntity.menuMaxPreparationTime,
+        menuMinPreparationTime: event.menuEntity.menuMinPreparationTime,
+      );
+      //await Future.delayed(const Duration(milliseconds: 500), () {});
+      debugPrint('MenuBloc ${DateTime.now().hour}:${DateTime.now().minute}--> ${cacheMenuEntity.toMap()}');
+      debugPrint('=======>');*/
+      debugPrint('MenuBloc ${DateTime.now().hour}:${DateTime.now().minute}--> ${event.menuEntity.toMap()}');
+      emit(
+        PushMenuEntityDataState(
+          menuEntity: serviceLocator<MenuEntity>(),
+          message: 'Success',
+          hasNewMenu: event.hasNewMenu,
+          menuEntityStatus: event.menuEntityStatus,
+          menuFormStage: event.menuFormStage,
+          menuEntities: event.menuEntities.toList(),
+          menuSelectionUseCase: event.menuSelectionUseCase,
+        ),
+      );
+    } catch (e) {
+      emit(
+        PushMenuEntityDataState(
+          menuEntity: serviceLocator<MenuEntity>(),
+          message: 'Something went wrong, ${e.toString()}',
+          hasNewMenu: event.hasNewMenu,
+          menuEntityStatus: event.menuEntityStatus,
+          menuFormStage: event.menuFormStage,
+          menuEntities: event.menuEntities.toList(),
+          menuSelectionUseCase: event.menuSelectionUseCase,
+        ),
+      );
+    }
+  }
+
+  FutureOr<void> _pullMenuEntityData(PullMenuEntityData event, Emitter<MenuState> emit) async {
+    try {
+      final MenuEntity cacheMenuEntity = serviceLocator<MenuEntity>();
+      //await Future.delayed(const Duration(milliseconds: 500), () {});
+      emit(
+        PullMenuEntityDataState(
+          menuEntity: cacheMenuEntity,
+          message: 'Success',
+          hasNewMenu: event.hasNewMenu,
+          menuEntityStatus: event.menuEntityStatus,
+          menuFormStage: event.menuFormStage,
+          menuEntities: event.menuEntities.toList(),
+          menuSelectionUseCase: event.menuSelectionUseCase,
+        ),
+      );
+    } catch (e) {
+      emit(
+        PullMenuEntityDataState(
+          menuEntity: serviceLocator<MenuEntity>(),
+          message: 'Something went wrong, ${e.toString()}',
+          hasNewMenu: event.hasNewMenu,
+          menuEntityStatus: event.menuEntityStatus,
+          menuFormStage: event.menuFormStage,
+          menuEntities: event.menuEntities.toList(),
+          menuSelectionUseCase: event.menuSelectionUseCase,
+        ),
+      );
+    }
   }
 }

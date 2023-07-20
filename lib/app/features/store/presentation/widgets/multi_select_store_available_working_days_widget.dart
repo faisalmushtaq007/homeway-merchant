@@ -141,10 +141,10 @@ class MultiSelectStoreAvailableWorkingDays extends StatefulWidget {
   final bool isSingleSelect;
 
   @override
-  _MultiSelectChipState createState() => _MultiSelectChipState();
+  _MultiSelectStoreAvailableWorkingDaysState createState() => _MultiSelectStoreAvailableWorkingDaysState();
 }
 
-class _MultiSelectChipState extends State<MultiSelectStoreAvailableWorkingDays> {
+class _MultiSelectStoreAvailableWorkingDaysState extends State<MultiSelectStoreAvailableWorkingDays> {
   // String selectedChoice = "";
   List<StoreWorkingDayAndTime> selectedChoices = [];
   bool? _hasStoreOpenAllDays;

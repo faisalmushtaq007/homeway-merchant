@@ -71,6 +71,13 @@ class _MenuForm2PageState extends State<MenuForm2Page> {
   }
 
   @override
+  void setState(VoidCallback fn) {
+    if (mounted) {
+      super.setState(fn);
+    }
+  }
+
+  @override
   void dispose() {
     scrollController.dispose();
     menuForm2FocusList.asMap().forEach((key, value) => value.dispose());
@@ -120,655 +127,787 @@ class _MenuForm2PageState extends State<MenuForm2Page> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      crossAxisAlignment: CrossAxisAlignment.stretch,
+    return Directionality(
       textDirection: serviceLocator<LanguageController>().targetTextDirection,
-      children: [
-        Column(
-          textDirection: serviceLocator<LanguageController>().targetTextDirection,
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Wrap(
-              textDirection: serviceLocator<LanguageController>().targetTextDirection,
-              children: [
-                Text(
-                  'Food types',
-                  style: context.titleLarge!.copyWith(
-                    fontWeight: FontWeight.w600,
-                    fontSize: 20,
-                  ),
-                  textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                ).translate(),
-              ],
-            ),
-            const AnimatedGap(4, duration: Duration(milliseconds: 500)),
-            Wrap(
-              textDirection: serviceLocator<LanguageController>().targetTextDirection,
-              children: [
-                Text(
-                  'Select the food group of your menu in which its belongs',
-                  style: context.labelMedium,
-                  textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                ).translate(),
-              ],
-            ),
-          ],
-        ),
-        const AnimatedGap(6, duration: Duration(milliseconds: 500)),
-        MultiSelectAvailableFoodTypeFormField(
-          key: const Key('store-menu-multiSelectAvailableFoodType-formfield'),
-          onSelectionChanged: (List<StoreAvailableFoodTypes> selectedFoodTypes) {
-            _selectedFoodTypes = List<StoreAvailableFoodTypes>.from(selectedFoodTypes);
-            setState(() {});
-          },
-          availableFoodTypesList: _menuAvailableFoodTypes.toList(),
-          validator: (value) {
-            if (value == null || value.length == 0) {
-              return 'Select one or more food type';
-            } else {
-              return null;
-            }
-          },
-          initialSelectedAvailableFoodTypesList: [],
-          onSaved: (newValue) {
-            var cacheMenuType = List<MenuType>.from(_selectedFoodTypes.map((e) => MenuType.fromMap(e.toMap())).toList());
-            final cacheMenuEntity = serviceLocator<MenuEntity>().copyWith(
-              storeAvailableFoodTypes: cacheMenuType.toList(),
-            );
-          },
-        ),
-        const AnimatedGap(12, duration: Duration(milliseconds: 500)),
-        Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          textDirection: serviceLocator<LanguageController>().targetTextDirection,
-          children: [
-            Wrap(
-              textDirection: serviceLocator<LanguageController>().targetTextDirection,
-              children: [
-                Text(
-                  'Food preparation method',
-                  style: context.titleLarge!.copyWith(
-                    fontWeight: FontWeight.w600,
-                    fontSize: 20,
-                  ),
-                  textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                ).translate(),
-              ],
-            ),
-            const AnimatedGap(4, duration: Duration(milliseconds: 500)),
-            Wrap(
-              textDirection: serviceLocator<LanguageController>().targetTextDirection,
-              children: [
-                Text(
-                  'Choose the cooking methods of your menu',
-                  style: context.labelMedium,
-                  textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                ).translate(),
-              ],
-            ),
-          ],
-        ),
-        const AnimatedGap(6, duration: Duration(milliseconds: 500)),
-        MultiSelectAvailableFoodPreparationTypesFormField(
-          key: const Key('store-menu-multiSelectAvailableFoodPreparationTypes-formfield'),
-          onSelectionChanged: (List<StoreAvailableFoodPreparationType> selectedPreparationTypes) {
-            _selectedFoodPreparationType = List<StoreAvailableFoodPreparationType>.from(selectedPreparationTypes);
-            setState(() {});
-          },
-          availableFoodPreparationTypesList: _menuAvailableFoodCookingType.toList(),
-          validator: (value) {
-            if (value == null || value.length == 0) {
-              return 'Select one or more food preparation type';
-            } else {
-              return null;
-            }
-          },
-          initialSelectedFoodPreparationTypesList: [],
-          onSaved: (newValue) {
-            var cacheMenuPreparationType = List<MenuPreparationType>.from(_selectedFoodTypes.map((e) => MenuPreparationType.fromMap(e.toMap())).toList());
-            final cacheMenuEntity = serviceLocator<MenuEntity>().copyWith(
-              storeAvailableFoodPreparationType: cacheMenuPreparationType.toList(),
-            );
-          },
-        ),
-        const Divider(),
-        Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          textDirection: serviceLocator<LanguageController>().targetTextDirection,
-          children: [
-            Wrap(
-              textDirection: serviceLocator<LanguageController>().targetTextDirection,
-              children: [
-                Text(
-                  'Taste type',
-                  style: context.titleLarge!.copyWith(
-                    fontWeight: FontWeight.w600,
-                    fontSize: 20,
-                  ),
-                  textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                ).translate(),
-              ],
-            ),
-            const AnimatedGap(4, duration: Duration(milliseconds: 500)),
-            Wrap(
-              textDirection: serviceLocator<LanguageController>().targetTextDirection,
-              children: [
-                Text(
-                  'Select the food taste type of your menu',
-                  style: context.labelMedium,
-                  textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                ).translate(),
-              ],
-            ),
-          ],
-        ),
-        const AnimatedGap(6, duration: Duration(milliseconds: 500)),
-        MultiSelectTasteTypeFormField(
-          key: const Key('store-menu-multiSelectTasteType-formfield'),
-          onSelectionChanged: (List<TasteType> selectedTasteTypes) {
-            _selectedTasteType = List<TasteType>.from(selectedTasteTypes);
-            setState(() {});
-          },
-          availableTasteTypeList: _menuTasteType.toList(),
-          validator: (value) {
-            if (value == null || value.length == 0) {
-              return 'Select one or more taste type';
-            } else {
-              return null;
-            }
-          },
-          initialSelectedTasteTypeList: [],
-          maxSelection: 1,
-          isSingleSelect: true,
-          onMaxSelected: (List<TasteType> selectedTasteTypes) {
-            _selectedTasteType = List<TasteType>.from(selectedTasteTypes);
-            setState(() {});
-          },
-          onSaved: (newValue) {
-            var cacheTasteType = _selectedTasteType[0];
-            final cacheMenuEntity = serviceLocator<MenuEntity>().copyWith(
-              tasteType: cacheTasteType,
-            );
-          },
-        ),
-        const AnimatedGap(12, duration: Duration(milliseconds: 500)),
-        Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          textDirection: serviceLocator<LanguageController>().targetTextDirection,
-          children: [
-            Wrap(
-              textDirection: serviceLocator<LanguageController>().targetTextDirection,
-              children: [
-                Text(
-                  'Taste level',
-                  style: context.titleLarge!.copyWith(
-                    fontWeight: FontWeight.w600,
-                    fontSize: 20,
-                  ),
-                  textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                ).translate(),
-              ],
-            ),
-            const AnimatedGap(4, duration: Duration(milliseconds: 500)),
-            Wrap(
-              textDirection: serviceLocator<LanguageController>().targetTextDirection,
-              children: [
-                Text(
-                  'Select the taste level of your menu',
-                  style: context.labelMedium,
-                  textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                ).translate(),
-              ],
-            ),
-          ],
-        ),
-        const AnimatedGap(6, duration: Duration(milliseconds: 500)),
-        MultiSelectTasteLevelFormField(
-          key: const Key('store-menu-multiSelectAvailableTasteLevel-formfield'),
-          onSelectionChanged: (List<TasteLevel> selectedTasteLevel) {
-            _selectedTasteLevel = List<TasteLevel>.from(selectedTasteLevel);
-            setState(() {});
-          },
-          availableTasteLevelList: _menuTasteLevel.toList(),
-          validator: (value) {
-            if (value == null || value.length == 0) {
-              return 'Select one or more taste level';
-            } else {
-              return null;
-            }
-          },
-          initialSelectedTasteLevelList: [],
-          onSaved: (newValue) {
-            var menuEntity = serviceLocator<MenuEntity>().copyWith();
-            var cacheTasteType = menuEntity.tasteType;
-            if (cacheTasteType != null) {
-              var cacheTasteLevel = cacheTasteType.copyWith(
-                tasteLevel: List<TasteLevel>.from(_selectedTasteLevel.toList()),
-              );
-              final cacheMenuEntity = serviceLocator<MenuEntity>().copyWith(
-                tasteType: cacheTasteLevel,
-              );
-            }
-          },
-        ),
-        const Divider(),
-        Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          textDirection: serviceLocator<LanguageController>().targetTextDirection,
-          children: [
-            Wrap(
-              textDirection: serviceLocator<LanguageController>().targetTextDirection,
-              children: [
-                Text(
-                  'Portion size of menu',
-                  style: context.titleLarge!.copyWith(
-                    fontWeight: FontWeight.w600,
-                    fontSize: 20,
-                  ),
-                  textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                ).translate(),
-              ],
-            ),
-            const AnimatedGap(4, duration: Duration(milliseconds: 500)),
-            Wrap(
-              textDirection: serviceLocator<LanguageController>().targetTextDirection,
-              children: [
-                Text(
-                  'Select the menu serving size or quantity availability',
-                  style: context.labelMedium,
-                  textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                ).translate(),
-              ],
-            ),
-          ],
-        ),
-        const AnimatedGap(6, duration: Duration(milliseconds: 500)),
-        MultiSelectMenuPortionFormField(
-          key: const Key('store-menu-multiSelectAvailableMenuPortions-formfield'),
-          onSelectionChanged: (List<MenuPortion> selectedMenuPortions) {
-            _selectedMenuPortions = List<MenuPortion>.from(selectedMenuPortions);
-            setState(() {});
-          },
-          availableMenuPortionList: _menuPortions.toList(),
-          validator: (value) {
-            if (!_hasCustomMenuPortionSize) {
-              if (value == null || value.isEmpty) {
-                return 'Select one or more portions';
-              } else {
-                return null;
-              }
-            }
-            return null;
-          },
-          initialSelectedMenuPortionList: [],
-          onSaved: (newValue) {
-            if (!_hasCustomMenuPortionSize) {
-              var menuEntity = serviceLocator<MenuEntity>().copyWith();
-              var menuPortions = menuEntity.menuPortions;
-              menuPortions = List<MenuPortion>.from(_selectedMenuPortions.toList());
-              final cacheMenuEntity = serviceLocator<MenuEntity>().copyWith(
-                menuPortions: menuPortions.toList(),
-                hasCustomPortion: false,
-              );
-              menuPortions.asMap().forEach((key, value) {
-                debugPrint('Form2 menu portion ${value.title}');
-              });
-              cacheMenuEntity.menuPortions.asMap().forEach((key, value) {
-                debugPrint('cacheMenuEntity Form2 menu portion ${value.title}');
-              });
-            }
-          },
-        ),
-        Card(
-          margin: const EdgeInsetsDirectional.only(start: 0, end: 0, top: 4, bottom: 4),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadiusDirectional.circular(10),
-          ),
-          child: Column(
+      child: BlocBuilder<MenuBloc, MenuState>(
+        key: const Key('menu-form2-page-bloc-builder-widget'),
+        bloc: context.watch<MenuBloc>(),
+        builder: (context, state) {
+          if (state is PushMenuEntityDataState && state.menuFormStage is MenuForm2Page) {}
+          if (state is PullMenuEntityDataState && state.menuFormStage is MenuForm2Page) {}
+          return Column(
             mainAxisSize: MainAxisSize.min,
-            mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             textDirection: serviceLocator<LanguageController>().targetTextDirection,
             children: [
-              SwitchListTile(
-                onChanged: (value) {
-                  setState(() {
-                    _hasCustomMenuPortionSize = value;
-                    _selectedMenuPortions.clear();
-                    _selectedMenuPortions = [];
-                  });
-                },
-                value: _hasCustomMenuPortionSize,
-                title: Text(
-                  'Select your own portion size',
-                  style: context.titleMedium!.copyWith(fontWeight: FontWeight.w500),
-                  textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                ).translate(),
-                isThreeLine: false,
-                dense: true,
-                controlAffinity: ListTileControlAffinity.leading,
-                visualDensity: const VisualDensity(horizontal: -4, vertical: 0),
-              ),
-              AnimatedCrossFade(
-                firstChild: const SizedBox.shrink(),
-                secondChild: Padding(
-                  padding: const EdgeInsetsDirectional.fromSTEB(8, 2, 8, 12),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
+              Column(
+                textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Wrap(
                     textDirection: serviceLocator<LanguageController>().targetTextDirection,
                     children: [
-                      const AnimatedGap(8, duration: Duration(milliseconds: 500)),
-                      IntrinsicHeight(
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                          children: [
-                            Expanded(
-                              child: StoreTextFieldWidget(
-                                controller: _menuPortionNameController,
-                                textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                                focusNode: menuForm2FocusList[0],
-                                textInputAction: TextInputAction.next,
-                                keyboardType: TextInputType.text,
-                                decoration: InputDecoration(
-                                  labelText: 'Your Portion name',
-                                  hintText: 'Enter your portion name',
-                                  border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(10),
-                                  ),
-                                  isDense: true,
-                                ),
-                                validator: (value) {
-                                  if (_hasCustomMenuPortionSize) {
-                                    if (value == null || value.isEmpty) {
-                                      return 'Please enter your portion name';
-                                    } else {
-                                      return null;
-                                    }
-                                  }
-                                  return null;
-                                },
-                                onSaved: (newValue) {
-                                  if (_hasCustomMenuPortionSize) {
-                                    var menuEntity = serviceLocator<MenuEntity>().copyWith();
-                                    var customPortion = menuEntity.customPortion;
-                                    if (customPortion != null) {
-                                      var cacheCustom = customPortion.copyWith(
-                                        title: _menuPortionNameController.value.text.trim(),
-                                      );
-                                      final cacheMenuEntity = serviceLocator<MenuEntity>().copyWith(
-                                        customPortion: cacheCustom,
-                                        hasCustomPortion: true,
-                                      );
-                                    }
-                                  }
-                                },
-                              ),
-                            ),
-                            //
-                          ],
+                      Text(
+                        'Food types',
+                        style: context.titleLarge!.copyWith(
+                          fontWeight: FontWeight.w600,
+                          fontSize: 20,
                         ),
-                      ),
-                      const AnimatedGap(12, duration: Duration(milliseconds: 500)),
-                      IntrinsicHeight(
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                          children: [
-                            Expanded(
-                              flex: 2,
-                              child: StoreTextFieldWidget(
-                                controller: _menuPortionValueController,
-                                textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                                focusNode: menuForm2FocusList[0],
-                                textInputAction: TextInputAction.next,
-                                onFieldSubmitted: (_) => fieldFocusChange(context, menuForm2FocusList[0], menuForm2FocusList[1]),
-                                keyboardType: const TextInputType.numberWithOptions(),
-                                decoration: InputDecoration(
-                                  labelText: 'Size or Portion value',
-                                  hintText: 'Enter size or portion value',
-                                  border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(10),
-                                  ),
-                                  isDense: true,
-                                ),
-                                validator: (value) {
-                                  if (_hasCustomMenuPortionSize) {
-                                    if (value == null || value.isEmpty) {
-                                      return 'Please enter size or portion value';
-                                    } else {
-                                      return null;
-                                    }
-                                  }
-                                  return null;
-                                },
-                                onSaved: (newValue) {
-                                  if (_hasCustomMenuPortionSize) {
-                                    var menuEntity = serviceLocator<MenuEntity>().copyWith();
-                                    var customPortion = menuEntity.customPortion;
-                                    if (customPortion != null) {
-                                      var cacheCustom = customPortion.copyWith(
-                                        quantity: double.parse(_menuPortionValueController.value.text.trim()),
-                                      );
-                                      final cacheMenuEntity = serviceLocator<MenuEntity>().copyWith(
-                                        customPortion: cacheCustom,
-                                        hasCustomPortion: true,
-                                      );
-                                    }
-                                  }
-                                },
-                              ),
-                            ),
-                            const AnimatedGap(18, duration: Duration(milliseconds: 500)),
-                            Expanded(
-                              child: StoreTextFieldWidget(
-                                controller: _menuPortionUnitController,
-                                textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                                focusNode: menuForm2FocusList[1],
-                                textInputAction: TextInputAction.next,
-                                onFieldSubmitted: (_) => fieldFocusChange(context, menuForm2FocusList[1], menuForm2FocusList[2]),
-                                keyboardType: TextInputType.text,
-                                textCapitalization: TextCapitalization.words,
-                                decoration: InputDecoration(
-                                  labelText: 'Unit',
-                                  hintText: 'Enter unit of menu',
-                                  border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(10),
-                                  ),
-                                  isDense: true,
-                                ),
-                                validator: (value) {
-                                  if (_hasCustomMenuPortionSize) {
-                                    if (value == null || value.isEmpty) {
-                                      return 'Please enter unit of menu';
-                                    } else {
-                                      return null;
-                                    }
-                                  }
-                                  return null;
-                                },
-                                onSaved: (newValue) {
-                                  if (_hasCustomMenuPortionSize) {
-                                    var menuEntity = serviceLocator<MenuEntity>().copyWith();
-                                    var customPortion = menuEntity.customPortion;
-                                    if (customPortion != null) {
-                                      var cacheCustom = customPortion.copyWith(
-                                        unit: _menuPortionUnitController.value.text.trim(),
-                                      );
-                                      final cacheMenuEntity = serviceLocator<MenuEntity>().copyWith(
-                                        customPortion: cacheCustom,
-                                        hasCustomPortion: true,
-                                      );
-                                    }
-                                  }
-                                },
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      const AnimatedGap(12, duration: Duration(milliseconds: 500)),
-                      IntrinsicHeight(
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                          children: [
-                            Expanded(
-                              child: StoreTextFieldWidget(
-                                controller: _menuPortionSizeController,
-                                textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                                focusNode: menuForm2FocusList[2],
-                                textInputAction: TextInputAction.done,
-                                keyboardType: const TextInputType.numberWithOptions(),
-                                decoration: InputDecoration(
-                                  labelText: 'Maximum Serving Persons',
-                                  hintText: 'Enter maximum serving persons',
-                                  border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(10),
-                                  ),
-                                  isDense: true,
-                                ),
-                                validator: (value) {
-                                  if (_hasCustomMenuPortionSize) {
-                                    if (value == null || value.isEmpty) {
-                                      return 'Please enter maximum serving persons';
-                                    } else {
-                                      return null;
-                                    }
-                                  }
-                                  return null;
-                                },
-                                onSaved: (newValue) {
-                                  if (_hasCustomMenuPortionSize) {
-                                    var menuEntity = serviceLocator<MenuEntity>().copyWith();
-                                    var customPortion = menuEntity.customPortion;
-                                    if (customPortion != null) {
-                                      var cacheCustom = customPortion.copyWith(
-                                        maxServingPerson: int.parse(_menuPortionSizeController.value.text.trim()),
-                                      );
-                                      final cacheMenuEntity = serviceLocator<MenuEntity>().copyWith(
-                                        customPortion: cacheCustom,
-                                        hasCustomPortion: true,
-                                      );
-                                    }
-                                  }
-                                },
-                              ),
-                            ),
-                            //
-                          ],
-                        ),
-                      ),
+                        textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                      ).translate(),
                     ],
                   ),
-                ),
-                crossFadeState: (_hasCustomMenuPortionSize == true) ? CrossFadeState.showSecond : CrossFadeState.showFirst,
-                duration: const Duration(milliseconds: 500),
-              ),
-            ],
-          ),
-        ),
-        const AnimatedGap(12, duration: Duration(milliseconds: 500)),
-        Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          textDirection: serviceLocator<LanguageController>().targetTextDirection,
-          children: [
-            Wrap(
-              textDirection: serviceLocator<LanguageController>().targetTextDirection,
-              children: [
-                Text(
-                  'Extras',
-                  style: context.titleLarge!.copyWith(
-                    fontWeight: FontWeight.w600,
-                    fontSize: 20,
+                  const AnimatedGap(4, duration: Duration(milliseconds: 500)),
+                  Wrap(
+                    textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                    children: [
+                      Text(
+                        'Select the food group of your menu in which its belongs',
+                        style: context.labelMedium,
+                        textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                      ).translate(),
+                    ],
                   ),
-                  textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                ).translate(),
-              ],
-            ),
-            const AnimatedGap(2, duration: Duration(milliseconds: 500)),
-            Wrap(
-              textDirection: serviceLocator<LanguageController>().targetTextDirection,
-              children: [
-                Text(
-                  'Add customization options add to your menu item',
-                  style: context.labelMedium,
-                  textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                ).translate(),
-              ],
-            ),
-            const AnimatedGap(8, duration: Duration(milliseconds: 500)),
-            AnimatedCrossFade(
-              duration: const Duration(milliseconds: 500),
-              crossFadeState: (_selectedAddons.isNotEmpty) ? CrossFadeState.showFirst : CrossFadeState.showSecond,
-              firstChild: MultiSelectAddonsFormField(
-                key: const Key('store-menu-multiSelectAvailableMenuAddons-formfield'),
-                onSelectionChanged: (List<Addons> selectedMenuPortions) {
-                  _selectedAddons = List<Addons>.from(selectedMenuPortions);
+                ],
+              ),
+              const AnimatedGap(6, duration: Duration(milliseconds: 500)),
+              MultiSelectAvailableFoodTypeFormField(
+                key: const Key('store-menu-multiSelectAvailableFoodType-formfield'),
+                onSelectionChanged: (List<StoreAvailableFoodTypes> selectedFoodTypes) {
+                  _selectedFoodTypes = List<StoreAvailableFoodTypes>.from(selectedFoodTypes);
                   setState(() {});
+                  var cacheMenuType = List<MenuType>.from(_selectedFoodTypes.map((e) => MenuType.fromMap(e.toMap())).toList());
+                  serviceLocator<MenuEntity>().storeAvailableFoodTypes = cacheMenuType.toList();
+                  context.read<MenuBloc>().add(
+                        PushMenuEntityData(
+                          menuEntity: serviceLocator<MenuEntity>(),
+                          menuFormStage: MenuFormStage.form2,
+                          menuEntityStatus: MenuEntityStatus.push,
+                        ),
+                      );
                 },
-                availableAddonsList: _selectedAddons.toList(),
-                /*validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Select one or more portions';
+                availableFoodTypesList: _menuAvailableFoodTypes.toList(),
+                validator: (value) {
+                  if (value == null || value.length == 0) {
+                    return 'Select one or more food type';
                   } else {
                     return null;
                   }
-                },*/
-                initialSelectedAddonsList: [],
+                },
+                initialSelectedAvailableFoodTypesList: [],
                 onSaved: (newValue) {
-                  serviceLocator<MenuEntity>().copyWith(
-                    addons: _selectedAddons.toList(),
-                  );
+                  var cacheMenuType = List<MenuType>.from(_selectedFoodTypes.map((e) => MenuType.fromMap(e.toMap())).toList());
+                  serviceLocator<MenuEntity>().storeAvailableFoodTypes = cacheMenuType.toList();
+                  context.read<MenuBloc>().add(
+                        PushMenuEntityData(
+                          menuEntity: serviceLocator<MenuEntity>(),
+                          menuFormStage: MenuFormStage.form2,
+                          menuEntityStatus: MenuEntityStatus.push,
+                        ),
+                      );
                 },
               ),
-              secondChild: const Offstage(),
-            ),
-            const AnimatedGap(12, duration: Duration(milliseconds: 500)),
-            ElevatedButton.icon(
-              style: ElevatedButton.styleFrom(
-                //visualDensity: VisualDensity(vertical: -1, horizontal: 0),
-                shape: const RoundedRectangleBorder(
-                  borderRadius: BorderRadius.all(
-                    Radius.circular(10),
-                  ),
-                ),
-                backgroundColor: const Color.fromRGBO(238, 238, 238, 1.0),
-              ),
-              icon: const Icon(
-                Icons.add,
-                color: Color.fromRGBO(42, 45, 48, 1.0),
-              ),
-              label: Text(
-                'Add Addons Menu',
-                style: const TextStyle(
-                  color: Color.fromRGBO(42, 45, 50, 1.0),
-                ),
+              const AnimatedGap(12, duration: Duration(milliseconds: 500)),
+              Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
                 textDirection: serviceLocator<LanguageController>().targetTextDirection,
-              ).translate(),
-              onPressed: () async {
-                final List<Addons>? addons = await context.push<List<Addons>>(Routes.MENU_ADDONS_PAGE);
-                if (addons != null && addons.isNotEmpty) {
-                  setState(() {
-                    _selectedAddons = List<Addons>.from(addons.toList());
-                  });
-                }
-              },
-            )
-          ],
-        ),
-      ],
+                children: [
+                  Wrap(
+                    textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                    children: [
+                      Text(
+                        'Food preparation method',
+                        style: context.titleLarge!.copyWith(
+                          fontWeight: FontWeight.w600,
+                          fontSize: 20,
+                        ),
+                        textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                      ).translate(),
+                    ],
+                  ),
+                  const AnimatedGap(4, duration: Duration(milliseconds: 500)),
+                  Wrap(
+                    textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                    children: [
+                      Text(
+                        'Choose the cooking methods of your menu',
+                        style: context.labelMedium,
+                        textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                      ).translate(),
+                    ],
+                  ),
+                ],
+              ),
+              const AnimatedGap(6, duration: Duration(milliseconds: 500)),
+              MultiSelectAvailableFoodPreparationTypesFormField(
+                key: const Key('store-menu-multiSelectAvailableFoodPreparationTypes-formfield'),
+                onSelectionChanged: (List<StoreAvailableFoodPreparationType> selectedPreparationTypes) {
+                  _selectedFoodPreparationType = List<StoreAvailableFoodPreparationType>.from(selectedPreparationTypes);
+                  setState(() {});
+                  var cacheMenuPreparationType =
+                      List<MenuPreparationType>.from(_selectedFoodPreparationType.map((e) => MenuPreparationType.fromMap(e.toMap())).toList());
+                  serviceLocator<MenuEntity>().storeAvailableFoodPreparationType = cacheMenuPreparationType.toList();
+                  context.read<MenuBloc>().add(
+                        PushMenuEntityData(
+                          menuEntity: serviceLocator<MenuEntity>(),
+                          menuFormStage: MenuFormStage.form2,
+                          menuEntityStatus: MenuEntityStatus.push,
+                        ),
+                      );
+                },
+                availableFoodPreparationTypesList: _menuAvailableFoodCookingType.toList(),
+                validator: (value) {
+                  if (value == null || value.length == 0) {
+                    return 'Select one or more food preparation type';
+                  } else {
+                    return null;
+                  }
+                },
+                initialSelectedFoodPreparationTypesList: [],
+                onSaved: (newValue) {
+                  var cacheMenuPreparationType =
+                      List<MenuPreparationType>.from(_selectedFoodPreparationType.map((e) => MenuPreparationType.fromMap(e.toMap())).toList());
+                  serviceLocator<MenuEntity>().storeAvailableFoodPreparationType = cacheMenuPreparationType.toList();
+                  context.read<MenuBloc>().add(
+                        PushMenuEntityData(
+                          menuEntity: serviceLocator<MenuEntity>(),
+                          menuFormStage: MenuFormStage.form2,
+                          menuEntityStatus: MenuEntityStatus.push,
+                        ),
+                      );
+                },
+              ),
+              const Divider(),
+              Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                children: [
+                  Wrap(
+                    textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                    children: [
+                      Text(
+                        'Taste type',
+                        style: context.titleLarge!.copyWith(
+                          fontWeight: FontWeight.w600,
+                          fontSize: 20,
+                        ),
+                        textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                      ).translate(),
+                    ],
+                  ),
+                  const AnimatedGap(4, duration: Duration(milliseconds: 500)),
+                  Wrap(
+                    textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                    children: [
+                      Text(
+                        'Select the food taste type of your menu',
+                        style: context.labelMedium,
+                        textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                      ).translate(),
+                    ],
+                  ),
+                ],
+              ),
+              const AnimatedGap(6, duration: Duration(milliseconds: 500)),
+              MultiSelectTasteTypeFormField(
+                key: const Key('store-menu-multiSelectTasteType-formfield'),
+                onSelectionChanged: (List<TasteType> selectedTasteTypes) {
+                  _selectedTasteType = List<TasteType>.from(selectedTasteTypes);
+                  setState(() {});
+                  var cacheTasteType = _selectedTasteType[0];
+                  serviceLocator<MenuEntity>().tasteType = cacheTasteType;
+                  context.read<MenuBloc>().add(
+                        PushMenuEntityData(
+                          menuEntity: serviceLocator<MenuEntity>(),
+                          menuFormStage: MenuFormStage.form2,
+                          menuEntityStatus: MenuEntityStatus.push,
+                        ),
+                      );
+                },
+                availableTasteTypeList: _menuTasteType.toList(),
+                validator: (value) {
+                  if (value == null || value.length == 0) {
+                    return 'Select one or more taste type';
+                  } else {
+                    return null;
+                  }
+                },
+                initialSelectedTasteTypeList: [],
+                maxSelection: 1,
+                isSingleSelect: true,
+                onMaxSelected: (List<TasteType> selectedTasteTypes) {
+                  _selectedTasteType = List<TasteType>.from(selectedTasteTypes);
+                  setState(() {});
+                },
+                onSaved: (newValue) {
+                  var cacheTasteType = _selectedTasteType[0];
+                  serviceLocator<MenuEntity>().tasteType = cacheTasteType;
+                  context.read<MenuBloc>().add(
+                        PushMenuEntityData(
+                          menuEntity: serviceLocator<MenuEntity>(),
+                          menuFormStage: MenuFormStage.form2,
+                          menuEntityStatus: MenuEntityStatus.push,
+                        ),
+                      );
+                },
+              ),
+              const AnimatedGap(12, duration: Duration(milliseconds: 500)),
+              Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                children: [
+                  Wrap(
+                    textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                    children: [
+                      Text(
+                        'Taste level',
+                        style: context.titleLarge!.copyWith(
+                          fontWeight: FontWeight.w600,
+                          fontSize: 20,
+                        ),
+                        textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                      ).translate(),
+                    ],
+                  ),
+                  const AnimatedGap(4, duration: Duration(milliseconds: 500)),
+                  Wrap(
+                    textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                    children: [
+                      Text(
+                        'Select the taste level of your menu',
+                        style: context.labelMedium,
+                        textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                      ).translate(),
+                    ],
+                  ),
+                ],
+              ),
+              const AnimatedGap(6, duration: Duration(milliseconds: 500)),
+              MultiSelectTasteLevelFormField(
+                key: const Key('store-menu-multiSelectAvailableTasteLevel-formfield'),
+                onSelectionChanged: (List<TasteLevel> selectedTasteLevel) {
+                  _selectedTasteLevel = List<TasteLevel>.from(selectedTasteLevel);
+                  setState(() {});
+                  serviceLocator<MenuEntity>().tasteType?.tasteLevel = List<TasteLevel>.from(_selectedTasteLevel.toList());
+                  context.read<MenuBloc>().add(
+                        PushMenuEntityData(
+                          menuEntity: serviceLocator<MenuEntity>(),
+                          menuFormStage: MenuFormStage.form2,
+                          menuEntityStatus: MenuEntityStatus.push,
+                        ),
+                      );
+                },
+                availableTasteLevelList: _menuTasteLevel.toList(),
+                validator: (value) {
+                  if (value == null || value.length == 0) {
+                    return 'Select one or more taste level';
+                  } else {
+                    return null;
+                  }
+                },
+                initialSelectedTasteLevelList: [],
+                onSaved: (newValue) {
+                  serviceLocator<MenuEntity>().tasteType?.tasteLevel = List<TasteLevel>.from(_selectedTasteLevel.toList());
+                  context.read<MenuBloc>().add(
+                        PushMenuEntityData(
+                          menuEntity: serviceLocator<MenuEntity>(),
+                          menuFormStage: MenuFormStage.form2,
+                          menuEntityStatus: MenuEntityStatus.push,
+                        ),
+                      );
+                },
+              ),
+              const Divider(),
+              Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                children: [
+                  Wrap(
+                    textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                    children: [
+                      Text(
+                        'Portion size of menu',
+                        style: context.titleLarge!.copyWith(
+                          fontWeight: FontWeight.w600,
+                          fontSize: 20,
+                        ),
+                        textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                      ).translate(),
+                    ],
+                  ),
+                  const AnimatedGap(4, duration: Duration(milliseconds: 500)),
+                  Wrap(
+                    textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                    children: [
+                      Text(
+                        'Select the menu serving size or quantity availability',
+                        style: context.labelMedium,
+                        textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                      ).translate(),
+                    ],
+                  ),
+                ],
+              ),
+              const AnimatedGap(6, duration: Duration(milliseconds: 500)),
+              MultiSelectMenuPortionFormField(
+                key: const Key('store-menu-multiSelectAvailableMenuPortions-formfield'),
+                onSelectionChanged: (List<MenuPortion> selectedMenuPortions) {
+                  _selectedMenuPortions = List<MenuPortion>.from(selectedMenuPortions);
+                  setState(() {});
+                  if (!_hasCustomMenuPortionSize) {
+                    serviceLocator<MenuEntity>().menuPortions = List<MenuPortion>.from(_selectedMenuPortions.toList());
+                    serviceLocator<MenuEntity>().hasCustomPortion = false;
+                    context.read<MenuBloc>().add(
+                          PushMenuEntityData(
+                            menuEntity: serviceLocator<MenuEntity>(),
+                            menuFormStage: MenuFormStage.form2,
+                            menuEntityStatus: MenuEntityStatus.push,
+                          ),
+                        );
+                    serviceLocator<MenuEntity>().menuPortions.asMap().forEach((key, value) {
+                      debugPrint('cacheMenuEntity Form2 menu portion onSelectionChanged ${value.title}');
+                    });
+                  }
+                },
+                availableMenuPortionList: _menuPortions.toList(),
+                validator: (value) {
+                  if (!_hasCustomMenuPortionSize) {
+                    if (value == null || value.isEmpty) {
+                      return 'Select one or more portions';
+                    } else {
+                      return null;
+                    }
+                  }
+                  return null;
+                },
+                initialSelectedMenuPortionList: [],
+                onSaved: (newValue) {
+                  if (!_hasCustomMenuPortionSize) {
+                    serviceLocator<MenuEntity>().menuPortions = List<MenuPortion>.from(_selectedMenuPortions.toList());
+                    serviceLocator<MenuEntity>().hasCustomPortion = false;
+                    context.read<MenuBloc>().add(
+                          PushMenuEntityData(
+                            menuEntity: serviceLocator<MenuEntity>(),
+                            menuFormStage: MenuFormStage.form2,
+                            menuEntityStatus: MenuEntityStatus.push,
+                          ),
+                        );
+                    serviceLocator<MenuEntity>().menuPortions.asMap().forEach((key, value) {
+                      debugPrint('cacheMenuEntity Form2 menu portion onSaved ${value.title}');
+                    });
+                  }
+                },
+              ),
+              Card(
+                margin: const EdgeInsetsDirectional.only(start: 0, end: 0, top: 4, bottom: 4),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadiusDirectional.circular(10),
+                ),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                  children: [
+                    SwitchListTile(
+                      onChanged: (value) {
+                        setState(() {
+                          _hasCustomMenuPortionSize = value;
+                          _selectedMenuPortions.clear();
+                          _selectedMenuPortions = [];
+                        });
+                      },
+                      value: _hasCustomMenuPortionSize,
+                      title: Text(
+                        'Select your own portion size',
+                        style: context.titleMedium!.copyWith(fontWeight: FontWeight.w500),
+                        textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                      ).translate(),
+                      isThreeLine: false,
+                      dense: true,
+                      controlAffinity: ListTileControlAffinity.leading,
+                      visualDensity: const VisualDensity(horizontal: -4, vertical: 0),
+                    ),
+                    AnimatedCrossFade(
+                      firstChild: const SizedBox.shrink(),
+                      secondChild: Padding(
+                        padding: const EdgeInsetsDirectional.fromSTEB(8, 2, 8, 12),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                          children: [
+                            const AnimatedGap(8, duration: Duration(milliseconds: 500)),
+                            IntrinsicHeight(
+                              child: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                children: [
+                                  Expanded(
+                                    child: StoreTextFieldWidget(
+                                      controller: _menuPortionNameController,
+                                      textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                      focusNode: menuForm2FocusList[0],
+                                      textInputAction: TextInputAction.next,
+                                      keyboardType: TextInputType.text,
+                                      decoration: InputDecoration(
+                                        labelText: 'Your Portion name',
+                                        hintText: 'Enter your portion name',
+                                        border: OutlineInputBorder(
+                                          borderRadius: BorderRadius.circular(10),
+                                        ),
+                                        isDense: true,
+                                      ),
+                                      validator: (value) {
+                                        if (_hasCustomMenuPortionSize) {
+                                          if (value == null || value.isEmpty) {
+                                            return 'Please enter your portion name';
+                                          } else {
+                                            return null;
+                                          }
+                                        }
+                                        return null;
+                                      },
+                                      onChanged: (value) {
+                                        if (_hasCustomMenuPortionSize) {
+                                          serviceLocator<MenuEntity>().customPortion?.title = value;
+                                          serviceLocator<MenuEntity>().hasCustomPortion = true;
+                                          context.read<MenuBloc>().add(
+                                                PushMenuEntityData(
+                                                  menuEntity: serviceLocator<MenuEntity>(),
+                                                  menuFormStage: MenuFormStage.form2,
+                                                  menuEntityStatus: MenuEntityStatus.push,
+                                                ),
+                                              );
+                                        }
+                                      },
+                                      onSaved: (newValue) {
+                                        if (_hasCustomMenuPortionSize) {
+                                          serviceLocator<MenuEntity>().customPortion?.title = _menuPortionNameController.value.text.trim();
+                                          serviceLocator<MenuEntity>().hasCustomPortion = true;
+                                          context.read<MenuBloc>().add(
+                                                PushMenuEntityData(
+                                                  menuEntity: serviceLocator<MenuEntity>(),
+                                                  menuFormStage: MenuFormStage.form2,
+                                                  menuEntityStatus: MenuEntityStatus.push,
+                                                ),
+                                              );
+                                        }
+                                      },
+                                    ),
+                                  ),
+                                  //
+                                ],
+                              ),
+                            ),
+                            const AnimatedGap(12, duration: Duration(milliseconds: 500)),
+                            IntrinsicHeight(
+                              child: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                children: [
+                                  Expanded(
+                                    flex: 2,
+                                    child: StoreTextFieldWidget(
+                                      controller: _menuPortionValueController,
+                                      textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                      focusNode: menuForm2FocusList[0],
+                                      textInputAction: TextInputAction.next,
+                                      onFieldSubmitted: (_) => fieldFocusChange(context, menuForm2FocusList[0], menuForm2FocusList[1]),
+                                      keyboardType: const TextInputType.numberWithOptions(),
+                                      decoration: InputDecoration(
+                                        labelText: 'Size or Portion value',
+                                        hintText: 'Enter size or portion value',
+                                        border: OutlineInputBorder(
+                                          borderRadius: BorderRadius.circular(10),
+                                        ),
+                                        isDense: true,
+                                      ),
+                                      validator: (value) {
+                                        if (_hasCustomMenuPortionSize) {
+                                          if (value == null || value.isEmpty) {
+                                            return 'Please enter size or portion value';
+                                          } else {
+                                            return null;
+                                          }
+                                        }
+                                        return null;
+                                      },
+                                      onChanged: (value) {
+                                        if (_hasCustomMenuPortionSize) {
+                                          serviceLocator<MenuEntity>().customPortion?.quantity = double.parse(value);
+                                          serviceLocator<MenuEntity>().hasCustomPortion = true;
+                                          context.read<MenuBloc>().add(
+                                                PushMenuEntityData(
+                                                  menuEntity: serviceLocator<MenuEntity>(),
+                                                  menuFormStage: MenuFormStage.form2,
+                                                  menuEntityStatus: MenuEntityStatus.push,
+                                                ),
+                                              );
+                                        }
+                                      },
+                                      onSaved: (newValue) {
+                                        if (_hasCustomMenuPortionSize) {
+                                          serviceLocator<MenuEntity>().customPortion?.quantity = double.parse(_menuPortionValueController.value.text.trim());
+                                          serviceLocator<MenuEntity>().hasCustomPortion = true;
+                                          context.read<MenuBloc>().add(
+                                                PushMenuEntityData(
+                                                  menuEntity: serviceLocator<MenuEntity>(),
+                                                  menuFormStage: MenuFormStage.form2,
+                                                  menuEntityStatus: MenuEntityStatus.push,
+                                                ),
+                                              );
+                                        }
+                                      },
+                                    ),
+                                  ),
+                                  const AnimatedGap(18, duration: Duration(milliseconds: 500)),
+                                  Expanded(
+                                    child: StoreTextFieldWidget(
+                                      controller: _menuPortionUnitController,
+                                      textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                      focusNode: menuForm2FocusList[1],
+                                      textInputAction: TextInputAction.next,
+                                      onFieldSubmitted: (_) => fieldFocusChange(context, menuForm2FocusList[1], menuForm2FocusList[2]),
+                                      keyboardType: TextInputType.text,
+                                      textCapitalization: TextCapitalization.words,
+                                      decoration: InputDecoration(
+                                        labelText: 'Unit',
+                                        hintText: 'Enter unit of menu',
+                                        border: OutlineInputBorder(
+                                          borderRadius: BorderRadius.circular(10),
+                                        ),
+                                        isDense: true,
+                                      ),
+                                      validator: (value) {
+                                        if (_hasCustomMenuPortionSize) {
+                                          if (value == null || value.isEmpty) {
+                                            return 'Please enter unit of menu';
+                                          } else {
+                                            return null;
+                                          }
+                                        }
+                                        return null;
+                                      },
+                                      onChanged: (value) {
+                                        if (_hasCustomMenuPortionSize) {
+                                          serviceLocator<MenuEntity>().customPortion?.unit = value;
+                                          serviceLocator<MenuEntity>().hasCustomPortion = true;
+                                          context.read<MenuBloc>().add(
+                                                PushMenuEntityData(
+                                                  menuEntity: serviceLocator<MenuEntity>(),
+                                                  menuFormStage: MenuFormStage.form2,
+                                                  menuEntityStatus: MenuEntityStatus.push,
+                                                ),
+                                              );
+                                        }
+                                      },
+                                      onSaved: (newValue) {
+                                        if (_hasCustomMenuPortionSize) {
+                                          serviceLocator<MenuEntity>().customPortion?.unit = _menuPortionUnitController.value.text.trim();
+                                          serviceLocator<MenuEntity>().hasCustomPortion = true;
+                                          context.read<MenuBloc>().add(
+                                                PushMenuEntityData(
+                                                  menuEntity: serviceLocator<MenuEntity>(),
+                                                  menuFormStage: MenuFormStage.form2,
+                                                  menuEntityStatus: MenuEntityStatus.push,
+                                                ),
+                                              );
+                                        }
+                                      },
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            const AnimatedGap(12, duration: Duration(milliseconds: 500)),
+                            IntrinsicHeight(
+                              child: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                children: [
+                                  Expanded(
+                                    child: StoreTextFieldWidget(
+                                      controller: _menuPortionSizeController,
+                                      textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                      focusNode: menuForm2FocusList[2],
+                                      textInputAction: TextInputAction.done,
+                                      keyboardType: const TextInputType.numberWithOptions(),
+                                      decoration: InputDecoration(
+                                        labelText: 'Maximum Serving Persons',
+                                        hintText: 'Enter maximum serving persons',
+                                        border: OutlineInputBorder(
+                                          borderRadius: BorderRadius.circular(10),
+                                        ),
+                                        isDense: true,
+                                      ),
+                                      validator: (value) {
+                                        if (_hasCustomMenuPortionSize) {
+                                          if (value == null || value.isEmpty) {
+                                            return 'Please enter maximum serving persons';
+                                          } else {
+                                            return null;
+                                          }
+                                        }
+                                        return null;
+                                      },
+                                      onChanged: (value) {
+                                        if (_hasCustomMenuPortionSize) {
+                                          serviceLocator<MenuEntity>().customPortion?.maxServingPerson = int.parse(value);
+                                          serviceLocator<MenuEntity>().hasCustomPortion = true;
+                                          context.read<MenuBloc>().add(
+                                                PushMenuEntityData(
+                                                  menuEntity: serviceLocator<MenuEntity>(),
+                                                  menuFormStage: MenuFormStage.form2,
+                                                  menuEntityStatus: MenuEntityStatus.push,
+                                                ),
+                                              );
+                                        }
+                                      },
+                                      onSaved: (newValue) {
+                                        if (_hasCustomMenuPortionSize) {
+                                          serviceLocator<MenuEntity>().customPortion?.maxServingPerson =
+                                              int.parse(_menuPortionSizeController.value.text.trim());
+                                          serviceLocator<MenuEntity>().hasCustomPortion = true;
+                                          context.read<MenuBloc>().add(
+                                                PushMenuEntityData(
+                                                  menuEntity: serviceLocator<MenuEntity>(),
+                                                  menuFormStage: MenuFormStage.form2,
+                                                  menuEntityStatus: MenuEntityStatus.push,
+                                                ),
+                                              );
+                                        }
+                                      },
+                                    ),
+                                  ),
+                                  //
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      crossFadeState: (_hasCustomMenuPortionSize == true) ? CrossFadeState.showSecond : CrossFadeState.showFirst,
+                      duration: const Duration(milliseconds: 500),
+                    ),
+                  ],
+                ),
+              ),
+              const AnimatedGap(12, duration: Duration(milliseconds: 500)),
+              Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                children: [
+                  Wrap(
+                    textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                    children: [
+                      Text(
+                        'Extras',
+                        style: context.titleLarge!.copyWith(
+                          fontWeight: FontWeight.w600,
+                          fontSize: 20,
+                        ),
+                        textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                      ).translate(),
+                    ],
+                  ),
+                  const AnimatedGap(2, duration: Duration(milliseconds: 500)),
+                  Wrap(
+                    textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                    children: [
+                      Text(
+                        'Add customization options add to your menu item',
+                        style: context.labelMedium,
+                        textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                      ).translate(),
+                    ],
+                  ),
+                  const AnimatedGap(8, duration: Duration(milliseconds: 500)),
+                  AnimatedCrossFade(
+                    duration: const Duration(milliseconds: 500),
+                    crossFadeState: (_selectedAddons.isNotEmpty) ? CrossFadeState.showFirst : CrossFadeState.showSecond,
+                    firstChild: MultiSelectAddonsFormField(
+                      key: const Key('store-menu-multiSelectAvailableMenuAddons-formfield'),
+                      onSelectionChanged: (List<Addons> selectedMenuPortions) {
+                        _selectedAddons = List<Addons>.from(selectedMenuPortions);
+                        setState(() {});
+                        serviceLocator<MenuEntity>().addons = _selectedAddons.toList();
+                        context.read<MenuBloc>().add(
+                              PushMenuEntityData(
+                                menuEntity: serviceLocator<MenuEntity>(),
+                                menuFormStage: MenuFormStage.form2,
+                                menuEntityStatus: MenuEntityStatus.push,
+                              ),
+                            );
+                      },
+                      availableAddonsList: _selectedAddons.toList(),
+                      /*validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Select one or more portions';
+                    } else {
+                      return null;
+                    }
+                  },*/
+                      initialSelectedAddonsList: [],
+                      onSaved: (newValue) {
+                        serviceLocator<MenuEntity>().addons = _selectedAddons.toList();
+                        context.read<MenuBloc>().add(
+                              PushMenuEntityData(
+                                menuEntity: serviceLocator<MenuEntity>(),
+                                menuFormStage: MenuFormStage.form2,
+                                menuEntityStatus: MenuEntityStatus.push,
+                              ),
+                            );
+                      },
+                    ),
+                    secondChild: const Offstage(),
+                  ),
+                  const AnimatedGap(12, duration: Duration(milliseconds: 500)),
+                  ElevatedButton.icon(
+                    style: ElevatedButton.styleFrom(
+                      //visualDensity: VisualDensity(vertical: -1, horizontal: 0),
+                      shape: const RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(10),
+                        ),
+                      ),
+                      backgroundColor: const Color.fromRGBO(238, 238, 238, 1.0),
+                    ),
+                    icon: const Icon(
+                      Icons.add,
+                      color: Color.fromRGBO(42, 45, 48, 1.0),
+                    ),
+                    label: Text(
+                      'Add Addons Menu',
+                      style: const TextStyle(
+                        color: Color.fromRGBO(42, 45, 50, 1.0),
+                      ),
+                      textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                    ).translate(),
+                    onPressed: () async {
+                      final List<Addons>? addons = await context.push<List<Addons>>(Routes.MENU_ADDONS_PAGE);
+                      if (addons != null && addons.isNotEmpty) {
+                        setState(() {
+                          _selectedAddons = List<Addons>.from(addons.toList());
+                        });
+                      }
+                    },
+                  )
+                ],
+              ),
+            ],
+          );
+        },
+      ),
     );
   }
 

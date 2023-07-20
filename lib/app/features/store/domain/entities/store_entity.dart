@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:homemakers_merchant/app/features/address/domain/entities/address_model.dart';
-import 'package:homemakers_merchant/app/features/menu/domain/entities/menu_entity.dart';
+import 'package:homemakers_merchant/app/features/menu/index.dart';
 import 'package:homemakers_merchant/utils/app_equatable/app_equatable.dart';
 
 class StoreEntity with AppEquatable {
@@ -29,19 +29,13 @@ class StoreEntity with AppEquatable {
       storeAddress: map['storeAddress'] as AddressModel,
       storeImagePath: map['storeImagePath'] as String,
       storeImageMetaData: map['storeImageMetaData'] as Map<String, dynamic>,
-      storeAvailableFoodTypes:
-          map['storeAvailableFoodTypes'] as List<StoreAvailableFoodTypes>,
-      storeAvailableFoodPreparationType:
-          map['storeAvailableFoodPreparationType']
-              as List<StoreAvailableFoodPreparationType>,
+      storeAvailableFoodTypes: map['storeAvailableFoodTypes'] as List<StoreAvailableFoodTypes>,
+      storeAvailableFoodPreparationType: map['storeAvailableFoodPreparationType'] as List<StoreAvailableFoodPreparationType>,
       hasStoreOwnDeliveryPartners: map['hasStoreOwnDeliveryPartners'] as bool,
-      storeOwnDeliveryPartnersInfo: map['storeOwnDeliveryPartnersInfo']
-          as List<StoreOwnDeliveryPartnersInfo>,
+      storeOwnDeliveryPartnersInfo: map['storeOwnDeliveryPartnersInfo'] as List<StoreOwnDeliveryPartnersInfo>,
       storeMaximumFoodDeliveryTime: map['storeMaximumFoodDeliveryTime'] as int,
-      storeMaximumFoodDeliveryRadius:
-          map['storeMaximumFoodDeliveryRadius'] as int,
-      storeAcceptedPaymentModes:
-          map['storeAcceptedPaymentModes'] as List<StoreAcceptedPaymentModes>,
+      storeMaximumFoodDeliveryRadius: map['storeMaximumFoodDeliveryRadius'] as int,
+      storeAcceptedPaymentModes: map['storeAcceptedPaymentModes'] as List<StoreAcceptedPaymentModes>,
       storeWorkingDays: map['storeWorkingDays'] as List<StoreWorkingDayAndTime>,
       storeOpeningTime: map['storeOpeningTime'] as String,
       storeClosingTime: map['storeClosingTime'] as String,
@@ -61,8 +55,7 @@ class StoreEntity with AppEquatable {
   final bool hasStoreOwnDeliveryPartners;
   final List<StoreOwnDeliveryPartnersInfo> storeOwnDeliveryPartnersInfo;
   final List<StoreAvailableFoodTypes> storeAvailableFoodTypes;
-  final List<StoreAvailableFoodPreparationType>
-      storeAvailableFoodPreparationType;
+  final List<StoreAvailableFoodPreparationType> storeAvailableFoodPreparationType;
   final List<StoreAcceptedPaymentModes> storeAcceptedPaymentModes;
   final List<StoreWorkingDayAndTime> storeWorkingDays;
   final int storeID;
@@ -114,20 +107,13 @@ class StoreEntity with AppEquatable {
       storeAddress: storeAddress ?? this.storeAddress,
       storeImagePath: storeImagePath ?? this.storeImagePath,
       storeImageMetaData: storeImageMetaData ?? this.storeImageMetaData,
-      storeAvailableFoodTypes:
-          storeAvailableFoodTypes ?? this.storeAvailableFoodTypes,
-      storeAvailableFoodPreparationType: storeAvailableFoodPreparationType ??
-          this.storeAvailableFoodPreparationType,
-      hasStoreOwnDeliveryPartners:
-          hasStoreOwnDeliveryPartners ?? this.hasStoreOwnDeliveryPartners,
-      storeOwnDeliveryPartnersInfo:
-          storeOwnDeliveryPartnersInfo ?? this.storeOwnDeliveryPartnersInfo,
-      storeMaximumFoodDeliveryTime:
-          storeMaximumFoodDeliveryTime ?? this.storeMaximumFoodDeliveryTime,
-      storeMaximumFoodDeliveryRadius:
-          storeMaximumFoodDeliveryRadius ?? this.storeMaximumFoodDeliveryRadius,
-      storeAcceptedPaymentModes:
-          storeAcceptedPaymentModes ?? this.storeAcceptedPaymentModes,
+      storeAvailableFoodTypes: storeAvailableFoodTypes ?? this.storeAvailableFoodTypes,
+      storeAvailableFoodPreparationType: storeAvailableFoodPreparationType ?? this.storeAvailableFoodPreparationType,
+      hasStoreOwnDeliveryPartners: hasStoreOwnDeliveryPartners ?? this.hasStoreOwnDeliveryPartners,
+      storeOwnDeliveryPartnersInfo: storeOwnDeliveryPartnersInfo ?? this.storeOwnDeliveryPartnersInfo,
+      storeMaximumFoodDeliveryTime: storeMaximumFoodDeliveryTime ?? this.storeMaximumFoodDeliveryTime,
+      storeMaximumFoodDeliveryRadius: storeMaximumFoodDeliveryRadius ?? this.storeMaximumFoodDeliveryRadius,
+      storeAcceptedPaymentModes: storeAcceptedPaymentModes ?? this.storeAcceptedPaymentModes,
       storeWorkingDays: storeWorkingDays ?? this.storeWorkingDays,
       storeOpeningTime: storeOpeningTime ?? this.storeOpeningTime,
       storeClosingTime: storeClosingTime ?? this.storeClosingTime,
@@ -143,8 +129,7 @@ class StoreEntity with AppEquatable {
       'storeImagePath': this.storeImagePath,
       'storeImageMetaData': this.storeImageMetaData,
       'storeAvailableFoodTypes': this.storeAvailableFoodTypes,
-      'storeAvailableFoodPreparationType':
-          this.storeAvailableFoodPreparationType,
+      'storeAvailableFoodPreparationType': this.storeAvailableFoodPreparationType,
       'hasStoreOwnDeliveryPartners': this.hasStoreOwnDeliveryPartners,
       'storeOwnDeliveryPartnersInfo': this.storeOwnDeliveryPartnersInfo,
       'storeMaximumFoodDeliveryTime': this.storeMaximumFoodDeliveryTime,
@@ -291,11 +276,7 @@ class StoreAcceptedPaymentModes with AppEquatable {
     };
   }
 
-  StoreAcceptedPaymentModes copyWith(
-      {String? titleOfStoreAvailableFoodTypes,
-      int? storeAvailableFoodTypesID,
-      Icon? icon,
-      bool? hasSelected}) {
+  StoreAcceptedPaymentModes copyWith({String? titleOfStoreAvailableFoodTypes, int? storeAvailableFoodTypesID, Icon? icon, bool? hasSelected}) {
     return StoreAcceptedPaymentModes(
       title: titleOfStoreAvailableFoodTypes ?? this.title,
       id: storeAvailableFoodTypesID ?? this.id,

@@ -1,13 +1,14 @@
 part of 'menu_bloc.dart';
 
-@immutable
 abstract class MenuEvent with AppEquatable {}
 
 // Menu
 class SaveMenu extends MenuEvent {
   SaveMenu({required this.menuEntity, required this.hasNewMenu});
+
   final MenuEntity menuEntity;
   final bool hasNewMenu;
+
   @override
   bool get cacheHash => true;
 
@@ -79,6 +80,7 @@ class GetByIDMenu extends MenuEvent {
 
 class GetAllMenu extends MenuEvent {
   GetAllMenu();
+
   @override
   bool get cacheHash => true;
 
@@ -97,8 +99,10 @@ class AddAddonsOnMenu extends MenuEvent {
 // Addons
 class SaveAddons extends MenuEvent {
   SaveAddons({required this.addonsEntity, this.hasNewAddons = true});
+
   final Addons addonsEntity;
   final bool hasNewAddons;
+
   @override
   bool get cacheHash => true;
 
@@ -170,6 +174,7 @@ class GetByIDAddons extends MenuEvent {
 
 class GetAllAddons extends MenuEvent {
   GetAllAddons();
+
   @override
   bool get cacheHash => true;
 
@@ -244,4 +249,59 @@ class PopToMenuPage extends MenuEvent {
         addonsEntity,
         hasNewAddons,
       ];
+}
+
+class PushMenuEntityData extends MenuEvent {
+  PushMenuEntityData({
+    required this.menuEntity,
+    this.menuEntities = const [],
+    this.hasNewMenu = true,
+    this.menuEntityStatus = MenuEntityStatus.none,
+    this.menuFormStage = MenuFormStage.none,
+    this.menuSelectionUseCase = MenuSelectionUseCase.none,
+  });
+
+  final List<MenuEntity> menuEntities;
+  final bool hasNewMenu;
+  final MenuEntity menuEntity;
+  final MenuEntityStatus menuEntityStatus;
+  final MenuFormStage menuFormStage;
+  final MenuSelectionUseCase menuSelectionUseCase;
+
+  @override
+  bool get cacheHash => true;
+
+  @override
+  List<Object?> get hashParameters => [
+        menuEntities,
+        hasNewMenu,
+        menuEntity,
+        menuFormStage,
+        menuEntityStatus,
+        menuSelectionUseCase,
+      ];
+}
+
+class PullMenuEntityData extends MenuEvent {
+  PullMenuEntityData({
+    required this.menuEntity,
+    this.menuEntities = const [],
+    this.hasNewMenu = true,
+    this.menuEntityStatus = MenuEntityStatus.none,
+    this.menuFormStage = MenuFormStage.none,
+    this.menuSelectionUseCase = MenuSelectionUseCase.none,
+  });
+
+  final List<MenuEntity> menuEntities;
+  final bool hasNewMenu;
+  final MenuEntity menuEntity;
+  final MenuEntityStatus menuEntityStatus;
+  final MenuFormStage menuFormStage;
+  final MenuSelectionUseCase menuSelectionUseCase;
+
+  @override
+  bool get cacheHash => true;
+
+  @override
+  List<Object?> get hashParameters => [menuEntities, hasNewMenu, menuEntity, menuFormStage, menuEntityStatus, menuSelectionUseCase];
 }

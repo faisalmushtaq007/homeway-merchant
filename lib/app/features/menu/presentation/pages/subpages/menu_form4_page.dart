@@ -13,19 +13,29 @@ class _MenuForm4PageState extends State<MenuForm4Page> {
   CustomPortion? customPortion;
   bool hasCustomPortion = false;
   MenuEntity menuEntity = serviceLocator<MenuEntity>();
-  PageStorageBucket pageStorageBucket = PageStorageBucket();
 
   @override
   void initState() {
     super.initState();
+    listOfMenuPortions = [];
+    initData();
+  }
+
+  void initData() {
     menuEntity = serviceLocator<MenuEntity>();
+    if (serviceLocator<MenuEntity>().menuPortions.isNotEmpty) {
+      listOfMenuPortions = List<MenuPortion>.from(serviceLocator<MenuEntity>().menuPortions.toList());
+    }
     hasCustomPortion = menuEntity.hasCustomPortion;
     customPortion = menuEntity.customPortion;
-    listOfMenuPortions = List<MenuPortion>.from(menuEntity.menuPortions.toList());
-    debugPrint('menuPortions ${menuEntity.menuPortions.length}');
-    menuEntity.menuPortions.asMap().forEach((key, value) {
-      debugPrint('Value ${value}');
-    });
+    setState(() {});
+  }
+
+  @override
+  void setState(VoidCallback fn) {
+    if (mounted) {
+      super.setState(fn);
+    }
   }
 
   @override
@@ -36,161 +46,160 @@ class _MenuForm4PageState extends State<MenuForm4Page> {
   }
 
   @override
-  void didChangeDependencies() {
-    menuEntity = serviceLocator<MenuEntity>();
-    hasCustomPortion = menuEntity.hasCustomPortion;
-    customPortion = menuEntity.customPortion;
-    listOfMenuPortions = List<MenuPortion>.from(menuEntity.menuPortions.toList());
-    debugPrint('didChangeDependencies menuPortions ${menuEntity.menuPortions.length}');
-    menuEntity.menuPortions.asMap().forEach((key, value) {
-      debugPrint('didChangeDependencies Value ${value}');
-    });
-    super.didChangeDependencies();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Directionality(
       textDirection: serviceLocator<LanguageController>().targetTextDirection,
-      child: PageStorage(
-        bucket: pageStorageBucket,
-        key: const Key('menu-form4-PageStorage-widget'),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          textDirection: serviceLocator<LanguageController>().targetTextDirection,
-          children: [
-            Flexible(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                children: [
-                  Wrap(
-                    textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                    children: [
-                      Text(
-                        'Menu price',
-                        style: context.titleLarge!.copyWith(
-                          fontWeight: FontWeight.w600,
-                          fontSize: 20,
-                        ),
-                        textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                      ).translate(),
-                    ],
-                  ),
-                  const AnimatedGap(2, duration: Duration(milliseconds: 500)),
-                  Wrap(
-                    textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                    children: [
-                      Text(
-                        'Set menu selling price for customer ',
-                        style: context.labelMedium,
-                        textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                      ).translate(),
-                    ],
-                  ),
-                  const AnimatedGap(12, duration: Duration(milliseconds: 500)),
-                  Flexible(
-                    child: AnimatedCrossFade(
-                      firstChild: SizedBox(
-                        child: CustomScrollView(
-                          physics: ClampingScrollPhysics(),
-                          shrinkWrap: true,
-                          slivers: [
-                            SliverList(
-                              delegate: SliverChildBuilderDelegate(
-                                (context, index) {
-                                  return SetMenuPriceWidget(
-                                    currentIndex: index,
-                                    listOfMenuPortions: listOfMenuPortions,
-                                    key: PageStorageKey('set-menu-price-${listOfMenuPortions[index].title}_${index}'),
-                                    menuPortion: listOfMenuPortions[index],
-                                  );
-                                },
-                                childCount: listOfMenuPortions.length,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      secondChild: const Offstage(),
-                      crossFadeState: (!hasCustomPortion && listOfMenuPortions.isNotEmpty) ? CrossFadeState.showFirst : CrossFadeState.showSecond,
-                      duration: const Duration(milliseconds: 500),
+      child: BlocBuilder<MenuBloc, MenuState>(
+        key: const Key('menu-form4-page-bloc-builder-widget'),
+        bloc: context.watch<MenuBloc>(),
+        builder: (context, state) {
+          if (state is PushMenuEntityDataState) {
+            if (state.menuFormStage is MenuForm2Page || state.menuFormStage is MenuForm4Page) {
+              menuEntity = state.menuEntity;
+              hasCustomPortion = menuEntity.hasCustomPortion;
+              customPortion = menuEntity.customPortion;
+              listOfMenuPortions = List<MenuPortion>.from(menuEntity.menuPortions.toList());
+              debugPrint('Form page 4 PushMenuEntityDataState ${listOfMenuPortions.length}');
+            }
+          }
+          if (state is PullMenuEntityDataState) {}
+          return Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            textDirection: serviceLocator<LanguageController>().targetTextDirection,
+            children: [
+              Flexible(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                  children: [
+                    Wrap(
+                      textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                      children: [
+                        Text(
+                          'Menu price',
+                          style: context.titleLarge!.copyWith(
+                            fontWeight: FontWeight.w600,
+                            fontSize: 20,
+                          ),
+                          textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                        ).translate(),
+                      ],
                     ),
-                  ),
-                ],
-              ),
-            ),
-            const AnimatedGap(12, duration: Duration(milliseconds: 500)),
-            AnimatedCrossFade(
-              firstChild: SetMenuPriceWidget(
-                hasCustomPortion: true,
-                customPortion: customPortion,
-                key: const Key('set-custom-price-wdget'),
-              ),
-              secondChild: const Offstage(),
-              crossFadeState: hasCustomPortion ? CrossFadeState.showFirst : CrossFadeState.showSecond,
-              duration: const Duration(
-                milliseconds: 500,
-              ),
-            ),
-            AnimatedCrossFade(
-              firstChild: const AnimatedGap(12, duration: Duration(milliseconds: 500)),
-              secondChild: const Offstage(),
-              crossFadeState: hasCustomPortion ? CrossFadeState.showFirst : CrossFadeState.showSecond,
-              duration: const Duration(
-                milliseconds: 500,
-              ),
-            ),
-            AnimatedCrossFade(
-              firstChild: const Divider(),
-              secondChild: const Offstage(),
-              crossFadeState: hasCustomPortion ? CrossFadeState.showFirst : CrossFadeState.showSecond,
-              duration: const Duration(
-                milliseconds: 500,
-              ),
-            ),
-            Flexible(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                children: [
-                  Wrap(
-                    textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                    children: [
-                      Text(
-                        'Extras price',
-                        style: context.titleLarge!.copyWith(
-                          fontWeight: FontWeight.w600,
-                          fontSize: 20,
+                    const AnimatedGap(2, duration: Duration(milliseconds: 500)),
+                    Wrap(
+                      textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                      children: [
+                        Text(
+                          'Set menu selling price for customer ',
+                          style: context.labelMedium,
+                          textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                        ).translate(),
+                      ],
+                    ),
+                    const AnimatedGap(12, duration: Duration(milliseconds: 500)),
+                    Flexible(
+                      child: AnimatedCrossFade(
+                        firstChild: SizedBox(
+                          child: CustomScrollView(
+                            physics: ClampingScrollPhysics(),
+                            shrinkWrap: true,
+                            slivers: [
+                              SliverList(
+                                delegate: SliverChildBuilderDelegate(
+                                  (context, index) {
+                                    return SetMenuPriceWidget(
+                                      currentIndex: index,
+                                      listOfMenuPortions: listOfMenuPortions,
+                                      key: PageStorageKey('set-menu-price-${listOfMenuPortions[index].title}_${index}'),
+                                      menuPortion: listOfMenuPortions[index],
+                                    );
+                                  },
+                                  childCount: listOfMenuPortions.length,
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
-                        textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                      ).translate(),
-                    ],
-                  ),
-                  const AnimatedGap(2, duration: Duration(milliseconds: 500)),
-                  Wrap(
-                    textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                    children: [
-                      Text(
-                        'Set extras selling price for customer ',
-                        style: context.labelMedium,
-                        textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                      ).translate(),
-                    ],
-                  ),
-                  const AnimatedGap(12, duration: Duration(milliseconds: 500)),
-                  Flexible(
-                    child: SizedBox(),
-                  ),
-                ],
+                        secondChild: const Offstage(),
+                        crossFadeState: (!hasCustomPortion && listOfMenuPortions.isNotEmpty) ? CrossFadeState.showFirst : CrossFadeState.showSecond,
+                        duration: const Duration(milliseconds: 500),
+                      ),
+                    ),
+                  ],
+                ),
               ),
-            ),
-            const AnimatedGap(12, duration: Duration(milliseconds: 500)),
-          ],
-        ),
+              const AnimatedGap(12, duration: Duration(milliseconds: 500)),
+              AnimatedCrossFade(
+                firstChild: SetMenuPriceWidget(
+                  hasCustomPortion: true,
+                  customPortion: customPortion,
+                  key: const Key('set-custom-price-wdget'),
+                ),
+                secondChild: const Offstage(),
+                crossFadeState: hasCustomPortion ? CrossFadeState.showFirst : CrossFadeState.showSecond,
+                duration: const Duration(
+                  milliseconds: 500,
+                ),
+              ),
+              AnimatedCrossFade(
+                firstChild: const AnimatedGap(12, duration: Duration(milliseconds: 500)),
+                secondChild: const Offstage(),
+                crossFadeState: hasCustomPortion ? CrossFadeState.showFirst : CrossFadeState.showSecond,
+                duration: const Duration(
+                  milliseconds: 500,
+                ),
+              ),
+              AnimatedCrossFade(
+                firstChild: const Divider(),
+                secondChild: const Offstage(),
+                crossFadeState: hasCustomPortion ? CrossFadeState.showFirst : CrossFadeState.showSecond,
+                duration: const Duration(
+                  milliseconds: 500,
+                ),
+              ),
+              Flexible(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                  children: [
+                    Wrap(
+                      textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                      children: [
+                        Text(
+                          'Extras price',
+                          style: context.titleLarge!.copyWith(
+                            fontWeight: FontWeight.w600,
+                            fontSize: 20,
+                          ),
+                          textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                        ).translate(),
+                      ],
+                    ),
+                    const AnimatedGap(2, duration: Duration(milliseconds: 500)),
+                    Wrap(
+                      textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                      children: [
+                        Text(
+                          'Set extras selling price for customer ',
+                          style: context.labelMedium,
+                          textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                        ).translate(),
+                      ],
+                    ),
+                    const AnimatedGap(12, duration: Duration(milliseconds: 500)),
+                    Flexible(
+                      child: SizedBox(),
+                    ),
+                  ],
+                ),
+              ),
+              const AnimatedGap(12, duration: Duration(milliseconds: 500)),
+            ],
+          );
+        },
       ),
     );
   }

@@ -15,6 +15,13 @@ class _AllMenuPageController extends State<AllMenuPage> {
   }
 
   @override
+  void setState(VoidCallback fn) {
+    if (mounted) {
+      super.setState(fn);
+    }
+  }
+
+  @override
   void dispose() {
     scrollController.dispose();
     super.dispose();
