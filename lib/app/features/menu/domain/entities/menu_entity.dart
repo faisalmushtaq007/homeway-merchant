@@ -222,11 +222,11 @@ class MenuImage with AppEquatable {
   MenuImage({
     required this.imageId,
     required this.assetPath,
-    required this.metaInfo,
+    this.metaInfo = const {},
     required this.assetExtension,
-    required this.hasBase64,
-    required this.valueOfBase64,
-    required this.assetsUploadStatus,
+    this.hasBase64 = false,
+    this.valueOfBase64,
+    this.assetsUploadStatus = AssetsUploadStatus.none,
   });
 
   factory MenuImage.fromMap(Map<String, dynamic> map) {
@@ -246,7 +246,7 @@ class MenuImage with AppEquatable {
   Map<String, dynamic> metaInfo;
   String assetExtension;
   bool hasBase64;
-  String valueOfBase64;
+  String? valueOfBase64;
   AssetsUploadStatus assetsUploadStatus;
 
   @override

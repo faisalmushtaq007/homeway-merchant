@@ -139,6 +139,7 @@ dependencies:
     git:
       url: 'https://github.com/prasant10050/timelines.git'
       ref: main
+  transparent_image: ^2.0.1
   url_launcher: ^6.1.11
   uuid: ^3.0.7
 

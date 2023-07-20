@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:cross_file/cross_file.dart';
 import 'package:flutter/material.dart';
 import 'package:homemakers_merchant/app/features/menu/presentation/widgets/form_page_view/enum/progress_enum.dart';
 import 'package:homemakers_merchant/app/features/profile/presentation/widgets/bank/confirm_bank_information_dialog.dart';
@@ -27,6 +30,8 @@ import 'package:homemakers_merchant/shared/widgets/app/page_body.dart';
 import 'package:homemakers_merchant/shared/widgets/universal/animate_do/animate_do.dart';
 import 'package:homemakers_merchant/shared/widgets/universal/animated_gap/gap.dart';
 import 'package:homemakers_merchant/shared/widgets/universal/animated_gap/src/widgets/gap.dart';
+import 'package:homemakers_merchant/shared/widgets/universal/carousel_animation/carousel_animations.dart';
+import 'package:homemakers_merchant/shared/widgets/universal/carousel_images/carousel_images.dart';
 import 'package:homemakers_merchant/shared/widgets/universal/dyn_mouse_scroll/smooth_scroll_multiplatform.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -48,6 +53,7 @@ import 'package:homemakers_merchant/utils/app_log.dart';
 import 'package:homemakers_merchant/utils/app_scroll_behavior.dart';
 import 'package:homemakers_merchant/utils/fieldFocusChange.dart';
 import 'package:homemakers_merchant/utils/input_formatters/mask_text_input_formatter/mask_text_input_formatter.dart';
+import 'package:path/path.dart' as path;
 import 'package:sliver_tools/sliver_tools.dart';
 import 'package:meta/meta.dart';
 import 'package:lottie/lottie.dart';

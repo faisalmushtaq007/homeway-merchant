@@ -139,6 +139,8 @@ class _SaveStorePageState extends State<SaveStorePage> {
     _storeAvailableFoodPreparationType = [];
     _storeAvailableFoodTypes = [];
     _storeWorkingDays = [];
+    file_images = [];
+    cross_file_images = [];
     focusList.asMap().forEach((key, value) => value.dispose());
     super.dispose();
   }

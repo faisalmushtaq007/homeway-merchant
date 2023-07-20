@@ -345,7 +345,7 @@ class _SaveMenuPageView extends WidgetView<SaveMenuPage, _SaveMenuPageController
                             onStepChanged: state.onStepChanged,
                             defaultColor: context.colorScheme.surface,
                             height: kToolbarHeight - margins,
-                            margin: EdgeInsetsDirectional.symmetric(horizontal: context.width / 8),
+                            margin: EdgeInsetsDirectional.symmetric(horizontal: context.width / margins),
                           ),
                           Padding(
                             padding: EdgeInsetsDirectional.only(
