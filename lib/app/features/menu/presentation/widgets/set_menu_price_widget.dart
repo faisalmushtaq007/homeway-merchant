@@ -127,7 +127,7 @@ class _SetMenuPriceWidgetState extends State<SetMenuPriceWidget> {
             AppTextFieldWidget(
               controller: maximumRetailPriceOfMenuTextEditingController,
               textDirection: serviceLocator<LanguageController>().targetTextDirection,
-              textInputAction: TextInputAction.next,
+              textInputAction: TextInputAction.done,
               inputFormatters: [
                 FilteringTextInputFormatter.allow(
                   RegExp(r'^(\d+)?\.?\d{0,2}'),
@@ -152,16 +152,12 @@ class _SetMenuPriceWidgetState extends State<SetMenuPriceWidget> {
               },
               onChanged: (value) {
                 sellingMaxRetailPrice = value;
+                setMaxRetailPriceFunction(context, value);
                 setState(() {});
               },
               onSaved: (newValue) {
-                if (widget.hasCustomPortion) {
-                  final cacheCustomPortion = serviceLocator<MenuEntity>().customPortion;
-                  if (cacheCustomPortion != null) {}
-                } else {
-                  final cacheMenuPortion = serviceLocator<MenuEntity>().menuPortions;
-                }
-                final cacheMenuEntity = serviceLocator<MenuEntity>().copyWith();
+                setMaxRetailPriceFunction(context, maximumRetailPriceOfMenuTextEditingController.value.text.trim());
+                return;
               },
             ),
             const AnimatedGap(12, duration: Duration(milliseconds: 500)),
@@ -193,16 +189,12 @@ class _SetMenuPriceWidgetState extends State<SetMenuPriceWidget> {
               },
               onChanged: (value) {
                 sellingDiscountPrice = value;
+                setDiscountPriceFunction(context, value);
                 setState(() {});
               },
               onSaved: (newValue) {
-                if (widget.hasCustomPortion) {
-                  final cacheCustomPortion = serviceLocator<MenuEntity>().customPortion;
-                  if (cacheCustomPortion != null) {}
-                } else {
-                  final cacheMenuPortion = serviceLocator<MenuEntity>().menuPortions;
-                }
-                final cacheMenuEntity = serviceLocator<MenuEntity>().copyWith();
+                setDiscountPriceFunction(context, discountPriceOfMenuTextEditingController.value.text.trim());
+                return;
               },
             ),
             //const AnimatedGap(8, duration: Duration(milliseconds: 500)),
@@ -214,5 +206,93 @@ class _SetMenuPriceWidgetState extends State<SetMenuPriceWidget> {
         ),
       ),
     );
+  }
+
+  void setMaxRetailPriceFunction(BuildContext context, String newValue) {
+    if (widget.hasCustomPortion) {
+      final cacheCustomPortion = serviceLocator<MenuEntity>().customPortion;
+      if (cacheCustomPortion != null) {
+        // copy value
+        serviceLocator<MenuEntity>().customPortion?.copyWith(
+              defaultPrice: double.tryParse(newValue) ?? 0.0,
+            );
+        context.read<MenuBloc>().add(
+              PushMenuEntityData(
+                menuEntity: serviceLocator<MenuEntity>(),
+                menuFormStage: MenuFormStage.form4,
+                menuEntityStatus: MenuEntityStatus.push,
+              ),
+            );
+      } else {
+        // new value
+        serviceLocator<MenuEntity>().customPortion?.defaultPrice = double.tryParse(newValue) ?? 0.0;
+        context.read<MenuBloc>().add(
+              PushMenuEntityData(
+                menuEntity: serviceLocator<MenuEntity>(),
+                menuFormStage: MenuFormStage.form4,
+                menuEntityStatus: MenuEntityStatus.push,
+              ),
+            );
+      }
+    } else {
+      final cacheMenuPortion = serviceLocator<MenuEntity>().menuPortions;
+      widget.menuPortion?.defaultPrice = double.tryParse(newValue) ?? 0.0;
+      if (widget.currentIndex != null) {
+        widget.listOfMenuPortions[widget.currentIndex!].defaultPrice = double.tryParse(newValue) ?? 0.0;
+        serviceLocator<MenuEntity>().menuPortions[widget.currentIndex!].defaultPrice =
+            double.tryParse(maximumRetailPriceOfMenuTextEditingController.value.text.trim()) ?? 0.0;
+        context.read<MenuBloc>().add(
+              PushMenuEntityData(
+                menuEntity: serviceLocator<MenuEntity>(),
+                menuFormStage: MenuFormStage.form4,
+                menuEntityStatus: MenuEntityStatus.push,
+              ),
+            );
+      }
+    }
+  }
+
+  void setDiscountPriceFunction(BuildContext context, String newValue) {
+    if (widget.hasCustomPortion) {
+      final cacheCustomPortion = serviceLocator<MenuEntity>().customPortion;
+      if (cacheCustomPortion != null) {
+        // copy value
+        serviceLocator<MenuEntity>().customPortion?.copyWith(
+              discountedPrice: double.tryParse(newValue) ?? 0.0,
+            );
+        context.read<MenuBloc>().add(
+              PushMenuEntityData(
+                menuEntity: serviceLocator<MenuEntity>(),
+                menuFormStage: MenuFormStage.form4,
+                menuEntityStatus: MenuEntityStatus.push,
+              ),
+            );
+      } else {
+        // new value
+        serviceLocator<MenuEntity>().customPortion?.discountedPrice = double.tryParse(newValue) ?? 0.0;
+        context.read<MenuBloc>().add(
+              PushMenuEntityData(
+                menuEntity: serviceLocator<MenuEntity>(),
+                menuFormStage: MenuFormStage.form4,
+                menuEntityStatus: MenuEntityStatus.push,
+              ),
+            );
+      }
+    } else {
+      final cacheMenuPortion = serviceLocator<MenuEntity>().menuPortions;
+      widget.menuPortion?.discountedPrice = double.tryParse(newValue) ?? 0.0;
+      if (widget.currentIndex != null) {
+        widget.listOfMenuPortions[widget.currentIndex!].discountedPrice = double.tryParse(newValue) ?? 0.0;
+        serviceLocator<MenuEntity>().menuPortions[widget.currentIndex!].discountedPrice =
+            double.tryParse(maximumRetailPriceOfMenuTextEditingController.value.text.trim()) ?? 0.0;
+        context.read<MenuBloc>().add(
+              PushMenuEntityData(
+                menuEntity: serviceLocator<MenuEntity>(),
+                menuFormStage: MenuFormStage.form4,
+                menuEntityStatus: MenuEntityStatus.push,
+              ),
+            );
+      }
+    }
   }
 }

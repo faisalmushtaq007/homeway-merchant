@@ -63,7 +63,7 @@ class _SaveMenuPageController extends State<SaveMenuPage> with AutomaticKeepAliv
           key: formKeys[0],
           child: PageStorage(
             bucket: pageStorageBucketMenuForm1,
-            child: const MenuForm2Page(),
+            child: const MenuForm1Page(),
           ),
         ),
         formKey: formKeys[0],
@@ -73,7 +73,7 @@ class _SaveMenuPageController extends State<SaveMenuPage> with AutomaticKeepAliv
           key: formKeys[1],
           child: PageStorage(
             bucket: pageStorageBucketMenuForm2,
-            child: const MenuForm4Page(),
+            child: const MenuForm2Page(),
           ),
         ),
         formKey: formKeys[1],
@@ -83,7 +83,7 @@ class _SaveMenuPageController extends State<SaveMenuPage> with AutomaticKeepAliv
           key: formKeys[2],
           child: PageStorage(
             bucket: pageStorageBucketMenuForm3,
-            child: const MenuForm1Page(),
+            child: const MenuForm3Page(),
           ),
         ),
         formKey: formKeys[2],

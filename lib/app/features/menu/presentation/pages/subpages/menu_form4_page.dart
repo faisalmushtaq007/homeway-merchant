@@ -10,6 +10,7 @@ class MenuForm4Page extends StatefulWidget {
 class _MenuForm4PageState extends State<MenuForm4Page> {
   final ScrollController scrollController = ScrollController();
   List<MenuPortion> listOfMenuPortions = [];
+  List<Addons> listOfAddons = [];
   CustomPortion? customPortion;
   bool hasCustomPortion = false;
   MenuEntity menuEntity = serviceLocator<MenuEntity>();
@@ -28,6 +29,9 @@ class _MenuForm4PageState extends State<MenuForm4Page> {
     }
     hasCustomPortion = menuEntity.hasCustomPortion;
     customPortion = menuEntity.customPortion;
+    if (serviceLocator<MenuEntity>().addons.isNotEmpty) {
+      listOfAddons = List<Addons>.from(serviceLocator<MenuEntity>().addons.toList());
+    }
     setState(() {});
   }
 
@@ -59,7 +63,6 @@ class _MenuForm4PageState extends State<MenuForm4Page> {
               hasCustomPortion = menuEntity.hasCustomPortion;
               customPortion = menuEntity.customPortion;
               listOfMenuPortions = List<MenuPortion>.from(menuEntity.menuPortions.toList());
-              debugPrint('Form page 4 PushMenuEntityDataState ${listOfMenuPortions.length}');
             }
           }
           if (state is PullMenuEntityDataState) {}
@@ -191,7 +194,32 @@ class _MenuForm4PageState extends State<MenuForm4Page> {
                     ),
                     const AnimatedGap(12, duration: Duration(milliseconds: 500)),
                     Flexible(
-                      child: SizedBox(),
+                      child: AnimatedCrossFade(
+                        firstChild: SizedBox(
+                          child: CustomScrollView(
+                            physics: ClampingScrollPhysics(),
+                            shrinkWrap: true,
+                            slivers: [
+                              SliverList(
+                                delegate: SliverChildBuilderDelegate(
+                                  (context, index) {
+                                    return SetAddonsPriceWidget(
+                                      currentIndex: index,
+                                      listOfAddons: listOfAddons,
+                                      key: PageStorageKey('set-addons-price-${listOfAddons[index].title}_${index}'),
+                                      addons: listOfAddons[index],
+                                    );
+                                  },
+                                  childCount: listOfAddons.length,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        secondChild: const Offstage(),
+                        crossFadeState: (!hasCustomPortion && listOfMenuPortions.isNotEmpty) ? CrossFadeState.showFirst : CrossFadeState.showSecond,
+                        duration: const Duration(milliseconds: 500),
+                      ),
                     ),
                   ],
                 ),

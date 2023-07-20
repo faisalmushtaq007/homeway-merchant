@@ -364,10 +364,10 @@ class _MenuForm3PageState extends State<MenuForm3Page> {
                         child: AppTextFieldWidget(
                           controller: _menuMinPreparationTimeController,
                           textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                          focusNode: menuForm3FocusList[0],
+                          //focusNode: menuForm3FocusList[0],
                           textInputAction: TextInputAction.next,
-                          onFieldSubmitted: (_) => fieldFocusChange(context, menuForm3FocusList[0], menuForm3FocusList[1]),
-                          keyboardType: TextInputType.numberWithOptions(),
+                          //onFieldSubmitted: (_) => fieldFocusChange(context, menuForm3FocusList[0], menuForm3FocusList[1]),
+                          //keyboardType: TextInputType.numberWithOptions(),
                           readOnly: true,
                           decoration: InputDecoration(
                             hintText: 'Min or Hr',
@@ -465,10 +465,10 @@ class _MenuForm3PageState extends State<MenuForm3Page> {
                           controller: _menuMaxPreparationTimeController,
                           readOnly: true,
                           textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                          focusNode: menuForm3FocusList[1],
+                          //focusNode: menuForm3FocusList[1],
                           textInputAction: TextInputAction.next,
-                          onFieldSubmitted: (_) => fieldFocusChange(context, menuForm3FocusList[1], menuForm3FocusList[2]),
-                          keyboardType: TextInputType.numberWithOptions(),
+                          //onFieldSubmitted: (_) => fieldFocusChange(context, menuForm3FocusList[1], menuForm3FocusList[2]),
+                          //keyboardType: TextInputType.numberWithOptions(),
                           decoration: InputDecoration(
                             hintText: 'Min or Hr',
                             border: InputBorder.none,
@@ -554,9 +554,9 @@ class _MenuForm3PageState extends State<MenuForm3Page> {
               AppTextFieldWidget(
                 controller: _menuMinStockQuantityController,
                 textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                focusNode: menuForm3FocusList[2],
+                focusNode: menuForm3FocusList[0],
                 textInputAction: TextInputAction.next,
-                onFieldSubmitted: (_) => fieldFocusChange(context, menuForm3FocusList[2], menuForm3FocusList[3]),
+                onFieldSubmitted: (_) => fieldFocusChange(context, menuForm3FocusList[0], menuForm3FocusList[1]),
                 keyboardType: TextInputType.numberWithOptions(),
                 decoration: InputDecoration(
                   labelText: 'Minimum Quantity',
@@ -573,7 +573,7 @@ class _MenuForm3PageState extends State<MenuForm3Page> {
                   return null;
                 },
                 onChanged: (value) {
-                  serviceLocator<MenuEntity>().minStockAvailable = int.parse(value);
+                  serviceLocator<MenuEntity>().minStockAvailable = int.tryParse(value) ?? 0;
                   context.read<MenuBloc>().add(
                         PushMenuEntityData(
                           menuEntity: serviceLocator<MenuEntity>(),
@@ -583,7 +583,7 @@ class _MenuForm3PageState extends State<MenuForm3Page> {
                       );
                 },
                 onSaved: (newValue) {
-                  serviceLocator<MenuEntity>().minStockAvailable = int.parse(_menuMinStockQuantityController.value.text.trim());
+                  serviceLocator<MenuEntity>().minStockAvailable = int.tryParse(_menuMinStockQuantityController.value.text.trim()) ?? 0;
                   context.read<MenuBloc>().add(
                         PushMenuEntityData(
                           menuEntity: serviceLocator<MenuEntity>(),
@@ -597,7 +597,7 @@ class _MenuForm3PageState extends State<MenuForm3Page> {
               AppTextFieldWidget(
                 controller: _menuMaxStockQuantityController,
                 textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                focusNode: menuForm3FocusList[3],
+                focusNode: menuForm3FocusList[1],
                 textInputAction: TextInputAction.done,
                 keyboardType: TextInputType.numberWithOptions(),
                 decoration: InputDecoration(
@@ -615,7 +615,7 @@ class _MenuForm3PageState extends State<MenuForm3Page> {
                   return null;
                 },
                 onChanged: (value) {
-                  serviceLocator<MenuEntity>().maxStockAvailable = int.parse(value);
+                  serviceLocator<MenuEntity>().maxStockAvailable = int.tryParse(value) ?? 0;
                   context.read<MenuBloc>().add(
                         PushMenuEntityData(
                           menuEntity: serviceLocator<MenuEntity>(),
@@ -625,7 +625,7 @@ class _MenuForm3PageState extends State<MenuForm3Page> {
                       );
                 },
                 onSaved: (newValue) {
-                  serviceLocator<MenuEntity>().maxStockAvailable = int.parse(_menuMaxStockQuantityController.value.text.trim());
+                  serviceLocator<MenuEntity>().maxStockAvailable = int.tryParse(_menuMaxStockQuantityController.value.text.trim()) ?? 0;
                   context.read<MenuBloc>().add(
                         PushMenuEntityData(
                           menuEntity: serviceLocator<MenuEntity>(),

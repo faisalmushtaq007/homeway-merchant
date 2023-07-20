@@ -469,9 +469,6 @@ class _MenuForm2PageState extends State<MenuForm2Page> {
                             menuEntityStatus: MenuEntityStatus.push,
                           ),
                         );
-                    serviceLocator<MenuEntity>().menuPortions.asMap().forEach((key, value) {
-                      debugPrint('cacheMenuEntity Form2 menu portion onSelectionChanged ${value.title}');
-                    });
                   }
                 },
                 availableMenuPortionList: _menuPortions.toList(),
@@ -497,9 +494,6 @@ class _MenuForm2PageState extends State<MenuForm2Page> {
                             menuEntityStatus: MenuEntityStatus.push,
                           ),
                         );
-                    serviceLocator<MenuEntity>().menuPortions.asMap().forEach((key, value) {
-                      debugPrint('cacheMenuEntity Form2 menu portion onSaved ${value.title}');
-                    });
                   }
                 },
               ),
@@ -554,6 +548,7 @@ class _MenuForm2PageState extends State<MenuForm2Page> {
                                       controller: _menuPortionNameController,
                                       textDirection: serviceLocator<LanguageController>().targetTextDirection,
                                       focusNode: menuForm2FocusList[0],
+                                      onFieldSubmitted: (_) => fieldFocusChange(context, menuForm2FocusList[0], menuForm2FocusList[1]),
                                       textInputAction: TextInputAction.next,
                                       keyboardType: TextInputType.text,
                                       decoration: InputDecoration(
@@ -618,9 +613,9 @@ class _MenuForm2PageState extends State<MenuForm2Page> {
                                     child: StoreTextFieldWidget(
                                       controller: _menuPortionValueController,
                                       textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                                      focusNode: menuForm2FocusList[0],
+                                      focusNode: menuForm2FocusList[1],
                                       textInputAction: TextInputAction.next,
-                                      onFieldSubmitted: (_) => fieldFocusChange(context, menuForm2FocusList[0], menuForm2FocusList[1]),
+                                      onFieldSubmitted: (_) => fieldFocusChange(context, menuForm2FocusList[1], menuForm2FocusList[2]),
                                       keyboardType: const TextInputType.numberWithOptions(),
                                       decoration: InputDecoration(
                                         labelText: 'Size or Portion value',
@@ -642,7 +637,7 @@ class _MenuForm2PageState extends State<MenuForm2Page> {
                                       },
                                       onChanged: (value) {
                                         if (_hasCustomMenuPortionSize) {
-                                          serviceLocator<MenuEntity>().customPortion?.quantity = double.parse(value);
+                                          serviceLocator<MenuEntity>().customPortion?.quantity = double.tryParse(value) ?? 0.0;
                                           serviceLocator<MenuEntity>().hasCustomPortion = true;
                                           context.read<MenuBloc>().add(
                                                 PushMenuEntityData(
@@ -655,7 +650,8 @@ class _MenuForm2PageState extends State<MenuForm2Page> {
                                       },
                                       onSaved: (newValue) {
                                         if (_hasCustomMenuPortionSize) {
-                                          serviceLocator<MenuEntity>().customPortion?.quantity = double.parse(_menuPortionValueController.value.text.trim());
+                                          serviceLocator<MenuEntity>().customPortion?.quantity =
+                                              double.tryParse(_menuPortionValueController.value.text.trim()) ?? 0.0;
                                           serviceLocator<MenuEntity>().hasCustomPortion = true;
                                           context.read<MenuBloc>().add(
                                                 PushMenuEntityData(
@@ -673,9 +669,9 @@ class _MenuForm2PageState extends State<MenuForm2Page> {
                                     child: StoreTextFieldWidget(
                                       controller: _menuPortionUnitController,
                                       textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                                      focusNode: menuForm2FocusList[1],
+                                      focusNode: menuForm2FocusList[2],
                                       textInputAction: TextInputAction.next,
-                                      onFieldSubmitted: (_) => fieldFocusChange(context, menuForm2FocusList[1], menuForm2FocusList[2]),
+                                      onFieldSubmitted: (_) => fieldFocusChange(context, menuForm2FocusList[2], menuForm2FocusList[3]),
                                       keyboardType: TextInputType.text,
                                       textCapitalization: TextCapitalization.words,
                                       decoration: InputDecoration(
@@ -738,7 +734,7 @@ class _MenuForm2PageState extends State<MenuForm2Page> {
                                     child: StoreTextFieldWidget(
                                       controller: _menuPortionSizeController,
                                       textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                                      focusNode: menuForm2FocusList[2],
+                                      focusNode: menuForm2FocusList[3],
                                       textInputAction: TextInputAction.done,
                                       keyboardType: const TextInputType.numberWithOptions(),
                                       decoration: InputDecoration(
@@ -761,7 +757,7 @@ class _MenuForm2PageState extends State<MenuForm2Page> {
                                       },
                                       onChanged: (value) {
                                         if (_hasCustomMenuPortionSize) {
-                                          serviceLocator<MenuEntity>().customPortion?.maxServingPerson = int.parse(value);
+                                          serviceLocator<MenuEntity>().customPortion?.maxServingPerson = int.tryParse(value) ?? 0;
                                           serviceLocator<MenuEntity>().hasCustomPortion = true;
                                           context.read<MenuBloc>().add(
                                                 PushMenuEntityData(
@@ -775,7 +771,7 @@ class _MenuForm2PageState extends State<MenuForm2Page> {
                                       onSaved: (newValue) {
                                         if (_hasCustomMenuPortionSize) {
                                           serviceLocator<MenuEntity>().customPortion?.maxServingPerson =
-                                              int.parse(_menuPortionSizeController.value.text.trim());
+                                              int.tryParse(_menuPortionSizeController.value.text.trim()) ?? 0;
                                           serviceLocator<MenuEntity>().hasCustomPortion = true;
                                           context.read<MenuBloc>().add(
                                                 PushMenuEntityData(
