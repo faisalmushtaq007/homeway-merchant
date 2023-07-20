@@ -245,7 +245,7 @@ class _MenuForm5PageState extends State<MenuForm5Page> {
                       selectedMenuImage = listOfMenuRemoteImages[index];
                     });
                     final nameOfurl = Uri.parse(listOfMenuRemoteImages[index]).path.split("/").last;
-                    final File file = XFile(listOfMenuRemoteImages[index]);
+                    final File file = File(listOfMenuRemoteImages[index]);
                     final filename = path.basename(file.path);
                     final nameWithoutExtension = path.basenameWithoutExtension(file.path);
                     final fileExtenion = path.extension(file.path);
