@@ -575,7 +575,7 @@ class _BusinessInformationPageState extends State<BusinessInformationPage> with 
                                       );
                                       serviceLocator<AppUserEntity>().currentProfileStatus = CurrentProfileStatus.basicProfileSaved;
                                       serviceLocator<AppUserEntity>().businessProfile = businessProfile;
-                                      context.go(Routes.CONFIRM_BUSINESS_TYPE_PAGE);
+                                      context.push(Routes.CONFIRM_BUSINESS_TYPE_PAGE);
                                     }
                                   },
                                   child: Text(

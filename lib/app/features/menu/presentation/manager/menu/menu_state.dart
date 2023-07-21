@@ -14,10 +14,12 @@ class SaveMenuState extends MenuState {
   SaveMenuState({
     required this.menuEntity,
     required this.hasNewMenu,
+    this.menuStateStatus = MenuStateStatus.none,
   });
 
   final MenuEntity menuEntity;
   final bool hasNewMenu;
+  final MenuStateStatus menuStateStatus;
 
   @override
   bool get cacheHash => true;
@@ -26,6 +28,7 @@ class SaveMenuState extends MenuState {
   List<Object?> get hashParameters => [
         menuEntity,
         hasNewMenu,
+        menuStateStatus,
       ];
 }
 
@@ -143,17 +146,20 @@ class DeleteAllMenuState extends MenuState {
 }
 
 class GetAllMenuState extends MenuState {
-  GetAllMenuState({this.menuEntities = const []});
-
+  GetAllMenuState({
+    this.menuEntities = const [],
+    this.menuStateStatus = MenuStateStatus.none,
+    this.message = '',
+  });
+  final MenuStateStatus menuStateStatus;
   final List<MenuEntity> menuEntities;
+  final String message;
 
   @override
   bool get cacheHash => true;
 
   @override
-  List<Object?> get hashParameters => [
-        menuEntities,
-      ];
+  List<Object?> get hashParameters => [menuEntities, menuStateStatus];
 }
 
 class GetEmptyMenuState extends MenuState {

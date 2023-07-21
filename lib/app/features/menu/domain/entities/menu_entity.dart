@@ -858,14 +858,14 @@ class CustomPortion with AppEquatable {
 
 class Addons with AppEquatable {
   Addons({
-    required this.addonsID,
-    required this.title,
-    required this.quantity,
-    required this.defaultPrice,
-    required this.finalPrice,
-    required this.discountedPrice,
-    required this.hasSelected,
-    required this.unit,
+    this.addonsID = '',
+    this.title = '',
+    this.quantity = 0.0,
+    this.defaultPrice = 0.0,
+    this.finalPrice = 0.0,
+    this.discountedPrice = 0.0,
+    this.hasSelected = false,
+    this.unit = '1',
     this.addonsImage,
     this.currency = 'SAR',
     this.description = '',

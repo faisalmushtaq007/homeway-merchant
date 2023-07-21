@@ -22,19 +22,9 @@ class NewAddonsGreetingPage extends StatelessWidget {
       ),
       child: Directionality(
         textDirection: serviceLocator<LanguageController>().targetTextDirection,
-        child: PlatformScaffold(
-          material: (context, platform) {
-            return MaterialScaffoldData(
-              resizeToAvoidBottomInset: false,
-            );
-          },
-          cupertino: (context, platform) {
-            return CupertinoPageScaffoldData(
-              resizeToAvoidBottomInset: false,
-            );
-          },
-          appBar: PlatformAppBar(
-            trailingActions: const [
+        child: Scaffold(
+          appBar: AppBar(
+            actions: const [
               Padding(
                 padding: EdgeInsetsDirectional.symmetric(horizontal: 14),
                 child: LanguageSelectionWidget(),
@@ -52,7 +42,7 @@ class NewAddonsGreetingPage extends StatelessWidget {
               ),
               padding: EdgeInsetsDirectional.only(
                 top: topPadding,
-                bottom: bottomPadding,
+                //bottom: bottomPadding,
                 start: margins * 2.5,
                 end: margins * 2.5,
               ),
@@ -79,7 +69,7 @@ class NewAddonsGreetingPage extends StatelessWidget {
                           ),
                           Center(
                             child: Text(
-                              'Congratulation!',
+                              'Hurray! New Addons',
                               textDirection: serviceLocator<LanguageController>().targetTextDirection,
                               textAlign: TextAlign.center,
                               style: context.headlineMedium!.copyWith(
@@ -91,7 +81,7 @@ class NewAddonsGreetingPage extends StatelessWidget {
                           ),
                           Center(
                             child: Text(
-                              'User',
+                              '${addonsEntity?.title}',
                               textDirection: serviceLocator<LanguageController>().targetTextDirection,
                               textAlign: TextAlign.center,
                               style: context.headlineMedium!.copyWith(

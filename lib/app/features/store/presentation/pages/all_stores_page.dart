@@ -86,14 +86,14 @@ class _AllStoresPageState extends State<AllStoresPage> {
           opacity: 0.60,
           noAppBar: true,
         ),
-        child: PlatformScaffold(
-          appBar: PlatformAppBar(
+        child: Scaffold(
+          appBar: AppBar(
             automaticallyImplyLeading: true,
             title: Text(
               'All stores',
               textDirection: serviceLocator<LanguageController>().targetTextDirection,
             ),
-            trailingActions: const [
+            actions: const [
               Padding(
                 padding: EdgeInsetsDirectional.symmetric(horizontal: 14),
                 child: LanguageSelectionWidget(),
@@ -236,7 +236,7 @@ class _AllStoresPageState extends State<AllStoresPage> {
                           end: 0,
                           child: ElevatedButton(
                             onPressed: () {
-                              context.go(Routes.SAVE_STORE_PAGE);
+                              context.push(Routes.SAVE_STORE_PAGE);
                               return;
                             },
                             child: Text(

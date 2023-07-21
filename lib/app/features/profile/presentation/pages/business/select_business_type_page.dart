@@ -106,7 +106,7 @@ class _ConfirmBusinessTypePageController extends State<ConfirmBusinessTypePage> 
 
   void _nextButtonOnPressed() {
     serviceLocator<AppUserEntity>().currentProfileStatus = CurrentProfileStatus.businessTypeSaved;
-    context.go(Routes.BANK_INFORMATION_PAGE);
+    context.push(Routes.BANK_INFORMATION_PAGE);
     return;
   }
 

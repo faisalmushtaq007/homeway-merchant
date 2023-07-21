@@ -53,20 +53,20 @@ void _setupGetIt() {
 }
 
 void _setUpModel() {
-  serviceLocator.registerSingleton<UserModel>(UserModel());
-  serviceLocator.registerSingleton<BusinessProfileEntity>(BusinessProfileEntity());
+  serviceLocator.registerLazySingleton<UserModel>(UserModel.new);
+  serviceLocator.registerLazySingleton<BusinessProfileEntity>(BusinessProfileEntity.new);
   // Menu entity
-  serviceLocator.registerSingleton<MenuEntity>(
-    MenuEntity(),
+  serviceLocator.registerLazySingleton<MenuEntity>(
+    MenuEntity.new,
   );
-  serviceLocator.registerSingleton<List<MenuEntity>>([]);
+  serviceLocator.registerLazySingleton<List<MenuEntity>>(() => <MenuEntity>[]);
   // Store entity
-  serviceLocator.registerSingleton<StoreEntity>(
-    StoreEntity(
+  serviceLocator.registerLazySingleton<StoreEntity>(
+    () => StoreEntity(
       menuEntities: serviceLocator(),
     ),
   );
-  serviceLocator.registerSingleton<List<StoreEntity>>([]);
+  serviceLocator.registerLazySingleton<List<StoreEntity>>(() => []);
   // App user entity
   serviceLocator.registerSingleton<AppUserEntity>(
     AppUserEntity(

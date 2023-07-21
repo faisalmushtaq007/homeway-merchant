@@ -88,6 +88,16 @@ class GetAllMenu extends MenuEvent {
   List<Object?> get hashParameters => [];
 }
 
+class SelectAllMenu extends MenuEvent {
+  SelectAllMenu({this.menuEntities = const []});
+  final List<MenuEntity> menuEntities;
+  @override
+  bool get cacheHash => true;
+
+  @override
+  List<Object?> get hashParameters => [menuEntities];
+}
+
 class AddAddonsOnMenu extends MenuEvent {
   @override
   bool get cacheHash => true;

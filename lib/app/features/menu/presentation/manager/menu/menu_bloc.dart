@@ -40,6 +40,30 @@ class MenuBloc extends Bloc<MenuEvent, MenuState> {
       _pullMenuEntityData,
       transformer: sequential(),
     );
+    on<SaveMenu>(
+      _saveMenu,
+      transformer: sequential(),
+    );
+    on<RemoveByIDMenu>(
+      _removeByIDMenu,
+      transformer: sequential(),
+    );
+    on<RemoveAllMenu>(
+      _removeAllMenu,
+      transformer: sequential(),
+    );
+    on<GetByIDMenu>(
+      _getByIDMenu,
+      transformer: sequential(),
+    );
+    on<SelectAllMenu>(
+      _selectAllMenu,
+      transformer: sequential(),
+    );
+    on<GetAllMenu>(
+      _getAllMenus,
+      transformer: sequential(),
+    );
   }
 
   Future<void> _getAllAddons(GetAllAddons event, Emitter<MenuState> emit) async {
@@ -231,5 +255,78 @@ class MenuBloc extends Bloc<MenuEvent, MenuState> {
         ),
       );
     }
+  }
+
+  FutureOr<void> _getAllMenus(GetAllMenu event, Emitter<MenuState> emit) async {
+    try {
+      emit(
+        GetAllMenuState(
+          menuEntities: [],
+          message: 'Your menu is loading...',
+          menuStateStatus: MenuStateStatus.loading,
+        ),
+      );
+      final List<MenuEntity> listOfMenus = serviceLocator<List<MenuEntity>>();
+      Future.delayed(const Duration(seconds: 1), () {});
+      if (listOfMenus.isEmpty) {
+        emit(
+          GetAllMenuState(
+            menuEntities: [],
+            message: 'Your menu is empty',
+            menuStateStatus: MenuStateStatus.empty,
+          ),
+        );
+      } else {
+        emit(
+          GetAllMenuState(
+            menuEntities: listOfMenus.toList(),
+            message: '',
+            menuStateStatus: MenuStateStatus.success,
+          ),
+        );
+      }
+    } catch (e) {
+      emit(
+        GetAllMenuState(
+          menuEntities: [],
+          message: 'Something went wrong, please try again',
+          menuStateStatus: MenuStateStatus.exception,
+        ),
+      );
+    }
+  }
+
+  FutureOr<void> _saveMenu(SaveMenu event, Emitter<MenuState> emit) async {
+    try {
+      // Save menu
+      final MenuEntity menuEntity = event.menuEntity;
+      serviceLocator<List<MenuEntity>>().add(menuEntity);
+      emit(
+        SaveMenuState(menuEntity: menuEntity, hasNewMenu: event.hasNewMenu, menuStateStatus: MenuStateStatus.success),
+      );
+      await Future.delayed(const Duration(milliseconds: 500), () {
+        serviceLocator.resetLazySingleton<MenuEntity>();
+      });
+    } catch (e) {
+      emit(
+        SaveMenuState(menuEntity: event.menuEntity, hasNewMenu: event.hasNewMenu, menuStateStatus: MenuStateStatus.exception),
+      );
+    }
+  }
+
+  FutureOr<void> _removeByIDMenu(RemoveByIDMenu event, Emitter<MenuState> emit) async {
+    try {} catch (e) {}
+  }
+
+  FutureOr<void> _removeAllMenu(RemoveAllMenu event, Emitter<MenuState> emit) async {
+    try {} catch (e) {}
+  }
+
+  FutureOr<void> _getByIDMenu(GetByIDMenu event, Emitter<MenuState> emit) async {
+    try {} catch (e) {}
+  }
+
+  FutureOr<void> _selectAllMenu(SelectAllMenu event, Emitter<MenuState> emit) async {
+    try {} catch (e) {}
   }
 }

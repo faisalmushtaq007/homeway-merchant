@@ -141,7 +141,7 @@ class AppRouter {
       ),
       GoRoute(
         path: Routes.NEW_MENU_GREETING_PAGE,
-        builder: (context, state) => const NewMenuGreetingPage(),
+        builder: (context, state) => NewMenuGreetingPage(menuEntity: state.extra as MenuEntity),
       ),
       GoRoute(
         path: Routes.MENU_DESCRIPTION_PAGE,
@@ -177,7 +177,7 @@ class AppRouter {
       ),
       GoRoute(
         path: Routes.NEW_ADDONS_GREETING_PAGE,
-        builder: (context, state) => const NewAddonsGreetingPage(),
+        builder: (context, state) => NewAddonsGreetingPage(addonsEntity: state.extra as Addons),
       ),
     ],
   );

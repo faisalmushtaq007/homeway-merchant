@@ -59,10 +59,10 @@ class _MenuForm4PageState extends State<MenuForm4Page> {
         builder: (context, state) {
           if (state is PushMenuEntityDataState) {
             if (state.menuFormStage is MenuForm2Page || state.menuFormStage is MenuForm4Page) {
-              menuEntity = state.menuEntity;
+              /*menuEntity = state.menuEntity;
               hasCustomPortion = menuEntity.hasCustomPortion;
               customPortion = menuEntity.customPortion;
-              listOfMenuPortions = List<MenuPortion>.from(menuEntity.menuPortions.toList());
+              listOfMenuPortions = List<MenuPortion>.from(menuEntity.menuPortions.toList());*/
             }
           }
           if (state is PullMenuEntityDataState) {}
@@ -138,7 +138,7 @@ class _MenuForm4PageState extends State<MenuForm4Page> {
                 firstChild: SetMenuPriceWidget(
                   hasCustomPortion: true,
                   customPortion: customPortion,
-                  key: const Key('set-custom-price-wdget'),
+                  key: const Key('set-custom-price-widget'),
                 ),
                 secondChild: const Offstage(),
                 crossFadeState: hasCustomPortion ? CrossFadeState.showFirst : CrossFadeState.showSecond,

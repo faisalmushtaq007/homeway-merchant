@@ -42,3 +42,39 @@ enum MenuSelectionUseCase {
   edit,
   none,
 }
+
+enum MenuStateStatus {
+  none,
+  loading,
+  processing,
+  progressing,
+  loaded,
+  success,
+  failed,
+  exception,
+  empty,
+  ;
+
+  @override
+  String toString() {
+    return name;
+  }
+}
+
+enum ActionOnFindMenu {
+  none,
+  loading,
+  searching,
+  filtering,
+  finding,
+  success,
+  failed,
+  exception,
+  empty,
+  ;
+
+  @override
+  String toString() {
+    return name;
+  }
+}

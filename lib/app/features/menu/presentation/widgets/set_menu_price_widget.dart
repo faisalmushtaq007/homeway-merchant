@@ -26,6 +26,7 @@ class _SetMenuPriceWidgetState extends State<SetMenuPriceWidget> {
   String portionName = '';
   String sellingMaxRetailPrice = '00.00';
   String sellingDiscountPrice = '00.00';
+  final formKey = GlobalKey<FormState>(debugLabel: 'set_menu_price_widget');
 
   @override
   void initState() {
@@ -66,143 +67,146 @@ class _SetMenuPriceWidgetState extends State<SetMenuPriceWidget> {
     return Directionality(
       textDirection: serviceLocator<LanguageController>().targetTextDirection,
       child: SizedBox(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          textDirection: serviceLocator<LanguageController>().targetTextDirection,
-          children: [
-            Wrap(
-              textDirection: serviceLocator<LanguageController>().targetTextDirection,
-              alignment: WrapAlignment.spaceBetween,
-              crossAxisAlignment: WrapCrossAlignment.center,
-              children: [
-                Card(
-                  color: const Color.fromRGBO(188, 235, 208, 1.0),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadiusDirectional.circular(20),
-                    side: const BorderSide(
-                      color: Color.fromRGBO(69, 201, 125, 1.0),
-                    ),
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsetsDirectional.only(
-                      top: 8.0,
-                      bottom: 8,
-                      start: 16,
-                      end: 16,
-                    ),
-                    child: Text(
-                      '$portionName',
-                      style: context.bodyMedium!.copyWith(
-                        fontWeight: FontWeight.w600,
-                        color: Color.fromRGBO(42, 45, 50, 1.0),
+        child: Form(
+          key: formKey,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            textDirection: serviceLocator<LanguageController>().targetTextDirection,
+            children: [
+              Wrap(
+                textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                alignment: WrapAlignment.spaceBetween,
+                crossAxisAlignment: WrapCrossAlignment.center,
+                children: [
+                  Card(
+                    color: const Color.fromRGBO(188, 235, 208, 1.0),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadiusDirectional.circular(20),
+                      side: const BorderSide(
+                        color: Color.fromRGBO(69, 201, 125, 1.0),
                       ),
-                      textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                    ).translate(),
-                  ),
-                ),
-                Directionality(
-                  textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                  child: RichText(
-                    text: TextSpan(
-                      style: context.bodyMedium!.copyWith(),
-                      children: <TextSpan>[
-                        /*TextSpan(
-                          text: 'Selling price ',
-                          style: context.labelMedium!.copyWith(),
-                        ),*/
-                        TextSpan(
-                          text: 'SAR ${sellingMaxRetailPrice}',
-                          style: context.bodyMedium!.copyWith(
-                            fontWeight: FontWeight.w600,
-                          ),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsetsDirectional.only(
+                        top: 8.0,
+                        bottom: 8,
+                        start: 16,
+                        end: 16,
+                      ),
+                      child: Text(
+                        '$portionName',
+                        style: context.bodyMedium!.copyWith(
+                          fontWeight: FontWeight.w600,
+                          color: Color.fromRGBO(42, 45, 50, 1.0),
                         ),
-                      ],
+                        textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                      ).translate(),
                     ),
                   ),
-                ),
-              ],
-            ),
-            const AnimatedGap(12, duration: Duration(milliseconds: 500)),
-            AppTextFieldWidget(
-              controller: maximumRetailPriceOfMenuTextEditingController,
-              textDirection: serviceLocator<LanguageController>().targetTextDirection,
-              textInputAction: TextInputAction.done,
-              inputFormatters: [
-                FilteringTextInputFormatter.allow(
-                  RegExp(r'^(\d+)?\.?\d{0,2}'),
-                ),
-              ],
-              keyboardType: TextInputType.numberWithOptions(decimal: true),
-              decoration: InputDecoration(
-                labelText: 'Base Price',
-                hintText: '00.00',
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                isDense: true,
-                suffixText: 'SAR',
+                  Directionality(
+                    textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                    child: RichText(
+                      text: TextSpan(
+                        style: context.bodyMedium!.copyWith(),
+                        children: <TextSpan>[
+                          /*TextSpan(
+                            text: 'Selling price ',
+                            style: context.labelMedium!.copyWith(),
+                          ),*/
+                          TextSpan(
+                            text: 'SAR ${sellingMaxRetailPrice}',
+                            style: context.bodyMedium!.copyWith(
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
               ),
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return 'Please enter menu base price';
-                } else {
-                  return null;
-                }
-              },
-              onChanged: (value) {
-                sellingMaxRetailPrice = value;
-                setMaxRetailPriceFunction(context, value);
-                setState(() {});
-              },
-              onSaved: (newValue) {
-                setMaxRetailPriceFunction(context, maximumRetailPriceOfMenuTextEditingController.value.text.trim());
-                return;
-              },
-            ),
-            const AnimatedGap(12, duration: Duration(milliseconds: 500)),
-            AppTextFieldWidget(
-              controller: discountPriceOfMenuTextEditingController,
-              textDirection: serviceLocator<LanguageController>().targetTextDirection,
-              textInputAction: TextInputAction.done,
-              inputFormatters: [
-                FilteringTextInputFormatter.allow(
-                  RegExp(r'^(\d+)?\.?\d{0,2}'),
+              const AnimatedGap(12, duration: Duration(milliseconds: 500)),
+              AppTextFieldWidget(
+                controller: maximumRetailPriceOfMenuTextEditingController,
+                textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                textInputAction: TextInputAction.done,
+                inputFormatters: [
+                  FilteringTextInputFormatter.allow(
+                    RegExp(r'^(\d+)?\.?\d{0,2}'),
+                  ),
+                ],
+                keyboardType: TextInputType.numberWithOptions(decimal: true),
+                decoration: InputDecoration(
+                  labelText: 'Base Price',
+                  hintText: '00.00',
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  isDense: true,
+                  suffixText: 'SAR',
                 ),
-              ],
-              keyboardType: TextInputType.numberWithOptions(decimal: true),
-              decoration: InputDecoration(
-                labelText: 'Discount Price',
-                hintText: '00.00',
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                isDense: true,
-                suffixText: 'SAR',
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter menu base price';
+                  } else {
+                    return null;
+                  }
+                },
+                onChanged: (value) {
+                  sellingMaxRetailPrice = value;
+                  setMaxRetailPriceFunction(context, value);
+                  setState(() {});
+                },
+                onSaved: (newValue) {
+                  setMaxRetailPriceFunction(context, maximumRetailPriceOfMenuTextEditingController.value.text.trim());
+                  return;
+                },
               ),
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return 'Please enter menu discount price';
-                } else {
-                  return null;
-                }
-              },
-              onChanged: (value) {
-                sellingDiscountPrice = value;
-                setDiscountPriceFunction(context, value);
-                setState(() {});
-              },
-              onSaved: (newValue) {
-                setDiscountPriceFunction(context, discountPriceOfMenuTextEditingController.value.text.trim());
-                return;
-              },
-            ),
-            //const AnimatedGap(8, duration: Duration(milliseconds: 500)),
-            const Divider(
-              height: 26,
-              thickness: 1,
-            ),
-          ],
+              const AnimatedGap(12, duration: Duration(milliseconds: 500)),
+              AppTextFieldWidget(
+                controller: discountPriceOfMenuTextEditingController,
+                textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                textInputAction: TextInputAction.done,
+                inputFormatters: [
+                  FilteringTextInputFormatter.allow(
+                    RegExp(r'^(\d+)?\.?\d{0,2}'),
+                  ),
+                ],
+                keyboardType: TextInputType.numberWithOptions(decimal: true),
+                decoration: InputDecoration(
+                  labelText: 'Discount Price',
+                  hintText: '00.00',
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  isDense: true,
+                  suffixText: 'SAR',
+                ),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter menu discount price';
+                  } else {
+                    return null;
+                  }
+                },
+                onChanged: (value) {
+                  sellingDiscountPrice = value;
+                  setDiscountPriceFunction(context, value);
+                  setState(() {});
+                },
+                onSaved: (newValue) {
+                  setDiscountPriceFunction(context, discountPriceOfMenuTextEditingController.value.text.trim());
+                  return;
+                },
+              ),
+              //const AnimatedGap(8, duration: Duration(milliseconds: 500)),
+              const Divider(
+                height: 26,
+                thickness: 1,
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -250,6 +254,7 @@ class _SetMenuPriceWidgetState extends State<SetMenuPriceWidget> {
             );
       }
     }
+    return;
   }
 
   void setDiscountPriceFunction(BuildContext context, String newValue) {
@@ -294,5 +299,6 @@ class _SetMenuPriceWidgetState extends State<SetMenuPriceWidget> {
             );
       }
     }
+    return;
   }
 }

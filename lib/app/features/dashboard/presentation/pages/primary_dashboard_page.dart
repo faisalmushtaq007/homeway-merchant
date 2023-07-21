@@ -71,7 +71,7 @@ class _PrimaryDashboardPageState extends State<PrimaryDashboardPage> {
         title: 'Store',
         titleID: 2,
         onPressed: () {
-          context.go(Routes.ALL_STORES_PAGE);
+          context.push(Routes.ALL_STORES_PAGE);
         },
         leading: const Icon(
           Icons.store,

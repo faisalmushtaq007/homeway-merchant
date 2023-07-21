@@ -145,7 +145,7 @@ class _MenuForm1PageState extends State<MenuForm1Page> {
                       await selectMenuCategory(context);
                       return;
                     },
-                    icon: Icon(
+                    icon: const Icon(
                       Icons.arrow_drop_down,
                     ),
                   ),
@@ -203,7 +203,7 @@ class _MenuForm1PageState extends State<MenuForm1Page> {
                       );
                 },
               ),
-              AnimatedGap(12, duration: Duration(milliseconds: 500)),
+              const AnimatedGap(12, duration: Duration(milliseconds: 500)),
               AppTextFieldWidget(
                 controller: menuNameTextEditingController,
                 textDirection: serviceLocator<LanguageController>().targetTextDirection,
@@ -246,7 +246,7 @@ class _MenuForm1PageState extends State<MenuForm1Page> {
                       );
                 },
               ),
-              AnimatedGap(12, duration: Duration(milliseconds: 500)),
+              const AnimatedGap(12, duration: Duration(milliseconds: 500)),
               AppTextFieldWidget(
                 controller: menuDescriptionTextEditingController,
                 textDirection: serviceLocator<LanguageController>().targetTextDirection,
@@ -320,7 +320,7 @@ class _MenuForm1PageState extends State<MenuForm1Page> {
         minVerticalPadding: 0,
         minLeadingWidth: 0,
         horizontalTitleGap: 0,
-        visualDensity: VisualDensity(vertical: -1, horizontal: 0),
+        visualDensity: const VisualDensity(vertical: -1, horizontal: 0),
         title: Text(
           '${listOfCategories[index].title}',
           textDirection: serviceLocator<LanguageController>().targetTextDirection,

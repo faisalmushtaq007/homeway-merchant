@@ -6,6 +6,7 @@ class SaveMenuPage extends StatefulWidget {
     this.haveNewMenu = true,
     this.menuEntity,
   });
+
   final bool haveNewMenu;
   final MenuEntity? menuEntity;
 
@@ -48,9 +49,9 @@ class _SaveMenuPageController extends State<SaveMenuPage> with AutomaticKeepAliv
   ];
 
   List<FocusNode> focusList = [];
-
   List<FormPageModel> pages = [];
   bool isKeyboardOpen = false;
+  MenuStateStatus menuStateStatus = MenuStateStatus.none;
 
   @override
   void initState() {
@@ -178,7 +179,16 @@ class _SaveMenuPageController extends State<SaveMenuPage> with AutomaticKeepAliv
     return;
   }
 
-  void onFormSubmitted() {}
+  void onFormSubmitted() {
+    context.read<MenuBloc>().add(
+          SaveMenu(
+            menuEntity: serviceLocator<MenuEntity>().copyWith(
+              id: (DateTime.now().millisecondsSinceEpoch - DateTime.now().millisecond) ~/ 1000,
+            ),
+            hasNewMenu: widget.haveNewMenu,
+          ),
+        );
+  }
 
   void onPageChanged(int currentIndex) {}
 
@@ -207,7 +217,23 @@ class _SaveMenuPageController extends State<SaveMenuPage> with AutomaticKeepAliv
     super.build(context);
     return PageStorage(
       bucket: pageStorageBucket,
-      child: _SaveMenuPageView(this),
+      child: BlocListener<MenuBloc, MenuState>(
+        key: const Key('save-menu-page-bloc-listener-widget'),
+        bloc: context.watch<MenuBloc>(),
+        listener: (context, state) {
+          switch (state) {
+            case SaveMenuState():
+              {
+                menuStateStatus = state.menuStateStatus;
+                context.go(Routes.NEW_MENU_GREETING_PAGE, extra: state.menuEntity);
+                return;
+              }
+            case _:
+              appLog.d('Default case: all menu page');
+          }
+        },
+        child: _SaveMenuPageView(this),
+      ),
     );
   }
 
@@ -391,12 +417,16 @@ class _SaveMenuPageView extends WidgetView<SaveMenuPage, _SaveMenuPageController
                                     onPressed: state._nextButtonOnPressed,
                                     style: ElevatedButton.styleFrom(
                                       //minimumSize: Size(180, 40),
-                                      disabledBackgroundColor: const Color.fromRGBO(255, 219, 208, 1),
+                                      backgroundColor: (state._currentPageIndex == state.pages.length - 1) ? const Color.fromRGBO(69, 201, 125, 1) : null,
+                                      disabledBackgroundColor: (state._currentPageIndex == state.pages.length - 1)
+                                          ? const Color.fromRGBO(215, 243, 227, 1)
+                                          : const Color.fromRGBO(255, 219, 208, 1),
                                       disabledForegroundColor: Colors.white,
                                     ),
                                     child: Text(
                                       'Next',
                                       textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                      style: TextStyle(color: (state._currentPageIndex == state.pages.length - 1) ? Colors.white : null),
                                     ).translate(),
                                   ),
                                 ),

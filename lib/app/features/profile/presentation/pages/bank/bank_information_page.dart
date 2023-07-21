@@ -602,7 +602,7 @@ class _BankInformationPageState extends State<BankInformationPage> with SingleTi
                                         return;
                                       }
                                       serviceLocator<AppUserEntity>().currentProfileStatus = CurrentProfileStatus.paymentDetailSaved;
-                                      context.go(Routes.DOCUMENT_LIST_PAGE);
+                                      context.push(Routes.DOCUMENT_LIST_PAGE);
                                     }
                                   }
                                 },

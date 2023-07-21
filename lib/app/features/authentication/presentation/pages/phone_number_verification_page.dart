@@ -103,7 +103,7 @@ class _PhoneNumberVerificationPageState extends State<PhoneNumberVerificationPag
             state.maybeWhen(
               orElse: () {},
               success: (phoneNumberVerification, phoneNumber, countryDialCode, country, phoneController, asyncBtnState) {
-                context.go(
+                context.push(
                   Routes.AUTH_OTP_VERIFICATION,
                   extra: jsonEncode(
                     {'mobileNumber': phoneNumber},

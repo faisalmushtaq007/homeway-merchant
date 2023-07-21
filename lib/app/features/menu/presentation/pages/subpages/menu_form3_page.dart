@@ -59,16 +59,16 @@ class _MenuForm3PageState extends State<MenuForm3Page> {
   @override
   void dispose() {
     scrollController.dispose();
-    _menuAvailableDays = [];
-    _selectedWorkingDays = [];
     _menuOpeningTimeController.dispose();
     _menuClosingTimeController.dispose();
     _menuMinPreparationTimeController.dispose();
     _menuMaxPreparationTimeController.dispose();
     _menuMinStockQuantityController.dispose();
     _menuMaxStockQuantityController.dispose();
-    _menuAvailablePreparationTimings = [];
     menuForm3FocusList.asMap().forEach((key, value) => value.dispose());
+    _menuAvailablePreparationTimings = [];
+    _menuAvailableDays = [];
+    _selectedWorkingDays = [];
     super.dispose();
   }
 

@@ -44,19 +44,9 @@ class NewStoreGreetingPage extends StatelessWidget {
       ),
       child: Directionality(
         textDirection: serviceLocator<LanguageController>().targetTextDirection,
-        child: PlatformScaffold(
-          material: (context, platform) {
-            return MaterialScaffoldData(
-              resizeToAvoidBottomInset: false,
-            );
-          },
-          cupertino: (context, platform) {
-            return CupertinoPageScaffoldData(
-              resizeToAvoidBottomInset: false,
-            );
-          },
-          appBar: PlatformAppBar(
-            trailingActions: const [
+        child: Scaffold(
+          appBar: AppBar(
+            actions: const [
               Padding(
                 padding: EdgeInsetsDirectional.symmetric(horizontal: 14),
                 child: LanguageSelectionWidget(),
@@ -74,7 +64,7 @@ class NewStoreGreetingPage extends StatelessWidget {
               ),
               padding: EdgeInsetsDirectional.only(
                 top: topPadding,
-                bottom: bottomPadding,
+                //bottom: bottomPadding,
                 start: margins * 2.5,
                 end: margins * 2.5,
               ),

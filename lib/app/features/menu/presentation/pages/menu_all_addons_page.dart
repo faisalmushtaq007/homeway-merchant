@@ -269,7 +269,7 @@ class _MenuAllAddonsPageView extends WidgetView<MenuAllAddonsPage, _MenuAllAddon
                           end: 0,
                           child: ElevatedButton(
                             onPressed: () {
-                              context.go(Routes.SAVE_ADDONS_PAGE);
+                              context.push(Routes.SAVE_ADDONS_PAGE);
                               return;
                             },
                             child: Text(
