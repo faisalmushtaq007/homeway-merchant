@@ -315,3 +315,64 @@ class PullMenuEntityData extends MenuEvent {
   @override
   List<Object?> get hashParameters => [menuEntities, hasNewMenu, menuEntity, menuFormStage, menuEntityStatus, menuSelectionUseCase];
 }
+
+class NavigateToStorePage extends MenuEvent {
+  NavigateToStorePage({
+    this.menuEntities = const [],
+    this.listOfSelectedMenuEntities = const [],
+  });
+  final List<MenuEntity> menuEntities;
+  final List<MenuEntity> listOfSelectedMenuEntities;
+  @override
+  bool get cacheHash => true;
+  @override
+  List<Object?> get hashParameters => [menuEntities, listOfSelectedMenuEntities];
+}
+
+class FetchAllStores extends MenuEvent {
+  FetchAllStores({
+    this.menuEntities = const [],
+    this.listOfSelectedMenuEntities = const [],
+  });
+  final List<MenuEntity> menuEntities;
+  final List<MenuEntity> listOfSelectedMenuEntities;
+  @override
+  bool get cacheHash => true;
+
+  @override
+  List<Object?> get hashParameters => [menuEntities, listOfSelectedMenuEntities];
+}
+
+class BindMenuWithStores extends MenuEvent {
+  BindMenuWithStores({
+    this.menuEntities = const [],
+    this.listOfSelectedMenuEntities = const [],
+    this.storeEntities = const [],
+    this.menuStateStatus = MenuStateStatus.none,
+    this.message = '',
+    this.bindMenuToStoreStage = BindMenuToStoreStage.none,
+    this.listOfSelectedStoreEntities = const [],
+  });
+
+  final List<MenuEntity> menuEntities;
+  final List<MenuEntity> listOfSelectedMenuEntities;
+  final List<StoreEntity> storeEntities;
+  final List<StoreEntity> listOfSelectedStoreEntities;
+  final MenuStateStatus menuStateStatus;
+  final String message;
+  final BindMenuToStoreStage bindMenuToStoreStage;
+
+  @override
+  bool get cacheHash => true;
+
+  @override
+  List<Object?> get hashParameters => [
+        menuEntities,
+        listOfSelectedMenuEntities,
+        storeEntities,
+        menuStateStatus,
+        message,
+        bindMenuToStoreStage,
+        listOfSelectedStoreEntities,
+      ];
+}

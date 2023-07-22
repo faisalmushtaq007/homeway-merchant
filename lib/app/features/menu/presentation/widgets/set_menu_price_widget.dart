@@ -21,8 +21,8 @@ class SetMenuPriceWidget extends StatefulWidget {
 }
 
 class _SetMenuPriceWidgetState extends State<SetMenuPriceWidget> {
-  final TextEditingController maximumRetailPriceOfMenuTextEditingController = TextEditingController();
-  final TextEditingController discountPriceOfMenuTextEditingController = TextEditingController();
+  TextEditingController maximumRetailPriceOfMenuTextEditingController = TextEditingController(text: '00.00');
+  TextEditingController discountPriceOfMenuTextEditingController = TextEditingController(text: '00.00');
   String portionName = '';
   String sellingMaxRetailPrice = '00.00';
   String sellingDiscountPrice = '00.00';
@@ -50,6 +50,8 @@ class _SetMenuPriceWidgetState extends State<SetMenuPriceWidget> {
 
   @override
   void dispose() {
+    maximumRetailPriceOfMenuTextEditingController.text = '';
+    discountPriceOfMenuTextEditingController.text = '';
     maximumRetailPriceOfMenuTextEditingController.dispose();
     discountPriceOfMenuTextEditingController.dispose();
     super.dispose();

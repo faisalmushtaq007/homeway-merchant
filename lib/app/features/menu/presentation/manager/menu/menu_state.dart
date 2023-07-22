@@ -151,6 +151,7 @@ class GetAllMenuState extends MenuState {
     this.menuStateStatus = MenuStateStatus.none,
     this.message = '',
   });
+
   final MenuStateStatus menuStateStatus;
   final List<MenuEntity> menuEntities;
   final String message;
@@ -542,5 +543,82 @@ class PullMenuEntityDataState extends MenuState {
         menuFormStage,
         menuEntityStatus,
         menuSelectionUseCase,
+      ];
+}
+
+class NavigateToStorePageState extends MenuState {
+  NavigateToStorePageState({
+    this.menuEntities = const [],
+    this.listOfSelectedMenuEntities = const [],
+  });
+
+  final List<MenuEntity> menuEntities;
+  final List<MenuEntity> listOfSelectedMenuEntities;
+
+  @override
+  bool get cacheHash => true;
+
+  @override
+  List<Object?> get hashParameters => [menuEntities, listOfSelectedMenuEntities];
+}
+
+class FetchAllStoresState extends MenuState {
+  FetchAllStoresState({
+    this.menuEntities = const [],
+    this.listOfSelectedMenuEntities = const [],
+    this.storeEntities = const [],
+    this.menuStateStatus = MenuStateStatus.none,
+    this.message = '',
+  });
+
+  final List<MenuEntity> menuEntities;
+  final List<MenuEntity> listOfSelectedMenuEntities;
+  final List<StoreEntity> storeEntities;
+  final MenuStateStatus menuStateStatus;
+  final String message;
+
+  @override
+  bool get cacheHash => true;
+
+  @override
+  List<Object?> get hashParameters => [
+        menuEntities,
+        listOfSelectedMenuEntities,
+        storeEntities,
+        menuStateStatus,
+        message,
+      ];
+}
+
+class BindMenuWithStoresState extends MenuState {
+  BindMenuWithStoresState({
+    this.menuEntities = const [],
+    this.listOfSelectedMenuEntities = const [],
+    this.storeEntities = const [],
+    this.menuStateStatus = MenuStateStatus.none,
+    this.message = '',
+    this.bindMenuToStoreStage = BindMenuToStoreStage.none,
+    this.listOfSelectedStoreEntities = const [],
+  });
+
+  final List<MenuEntity> menuEntities;
+  final List<MenuEntity> listOfSelectedMenuEntities;
+  final List<StoreEntity> storeEntities;
+  final MenuStateStatus menuStateStatus;
+  final String message;
+  final BindMenuToStoreStage bindMenuToStoreStage;
+  final List<StoreEntity> listOfSelectedStoreEntities;
+  @override
+  bool get cacheHash => true;
+
+  @override
+  List<Object?> get hashParameters => [
+        menuEntities,
+        listOfSelectedMenuEntities,
+        storeEntities,
+        menuStateStatus,
+        message,
+        bindMenuToStoreStage,
+        listOfSelectedStoreEntities,
       ];
 }

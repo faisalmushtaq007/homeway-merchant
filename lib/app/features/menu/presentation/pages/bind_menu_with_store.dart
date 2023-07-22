@@ -1,20 +1,29 @@
 part of 'package:homemakers_merchant/app/features/menu/index.dart';
 
-class AllMenuPage extends StatefulWidget {
-  const AllMenuPage({super.key});
+class BindMenuWithStore extends StatefulWidget {
+  const BindMenuWithStore({
+    super.key,
+    this.listOfAllMenus = const [],
+    this.listOfAllSelectedMenus = const [],
+  });
+
+  final List<MenuEntity> listOfAllMenus;
+  final List<MenuEntity> listOfAllSelectedMenus;
 
   @override
-  _AllMenuPageController createState() => _AllMenuPageController();
+  _BindMenuWithStoreController createState() => _BindMenuWithStoreController();
 }
 
-class _AllMenuPageController extends State<AllMenuPage> {
+class _BindMenuWithStoreController extends State<BindMenuWithStore> {
   late final ScrollController scrollController;
   late final ScrollController innerScrollController;
   List<MenuEntity> listOfAllMenus = [];
   List<MenuEntity> listOfAllSelectedMenus = [];
+  List<StoreEntity> listOfAllStores = [];
+  List<StoreEntity> listOfAllSelectedStores = [];
   final TextEditingController searchTextEditingController = TextEditingController();
-  WidgetState<MenuEntity> widgetState = const WidgetState<MenuEntity>.none();
-  bool? haveSelectAllMenus = false;
+  WidgetState<StoreEntity> widgetState = const WidgetState<StoreEntity>.none();
+  bool? haveSelectAllStores = false;
 
   @override
   void initState() {
@@ -25,7 +34,12 @@ class _AllMenuPageController extends State<AllMenuPage> {
     listOfAllMenus.clear();
     listOfAllSelectedMenus = [];
     listOfAllSelectedMenus.clear();
-    context.read<MenuBloc>().add(GetAllMenu());
+    listOfAllStores = [];
+    listOfAllStores.clear();
+    listOfAllSelectedStores = [];
+    listOfAllSelectedStores.clear();
+    initLoadSelectedMenu();
+    context.read<MenuBloc>().add(FetchAllStores());
   }
 
   @override
@@ -33,6 +47,12 @@ class _AllMenuPageController extends State<AllMenuPage> {
     if (mounted) {
       super.setState(fn);
     }
+  }
+
+  void initLoadSelectedMenu() {
+    listOfAllMenus = List<MenuEntity>.from(widget.listOfAllMenus.toList());
+    listOfAllSelectedMenus = List<MenuEntity>.from(widget.listOfAllSelectedMenus.toList());
+    setState(() {});
   }
 
   @override
@@ -44,55 +64,79 @@ class _AllMenuPageController extends State<AllMenuPage> {
     listOfAllMenus.clear();
     listOfAllSelectedMenus = [];
     listOfAllSelectedMenus.clear();
+    listOfAllStores = [];
+    listOfAllStores.clear();
+    listOfAllSelectedStores = [];
+    listOfAllSelectedStores.clear();
     super.dispose();
   }
 
-  @override
-  Widget build(BuildContext context) => BlocBuilder<MenuBloc, MenuState>(
-        key: const Key('all-menus-page-bloc-builder-widget'),
-        bloc: context.watch<MenuBloc>(),
-        builder: (context, state) {
-          switch (state) {
-            case GetAllMenuState():
-              {
-                listOfAllMenus = List<MenuEntity>.from(state.menuEntities.toList());
-                widgetState = WidgetState<MenuEntity>.allData(
-                  context: context,
-                );
-              }
-            case _:
-              appLog.d('Default case: all menu page');
-          }
-          return _AllMenuPageView(this);
-        },
-      );
-
-  void onSelectionChanged(List<MenuEntity> listOfMenuEntities) {
+  void onSelectionChanged(List<StoreEntity> listOfStoreEntities) {
     setState(() {
-      listOfAllSelectedMenus = List<MenuEntity>.from(listOfMenuEntities.toList());
+      listOfAllSelectedStores = List<StoreEntity>.from(listOfStoreEntities.toList());
     });
   }
 
-  void selectAllMenus({bool? isSelectAllMenus = false}) {
-    haveSelectAllMenus = isSelectAllMenus;
-    if (isSelectAllMenus != null && isSelectAllMenus == true) {
-      listOfAllSelectedMenus = List.from(listOfAllMenus.toList());
+  void selectAllStores({bool? isSelectAllStores = false}) {
+    haveSelectAllStores = isSelectAllStores;
+    if (isSelectAllStores != null && isSelectAllStores == true) {
+      listOfAllSelectedStores = List.from(listOfAllStores.toList());
     } else {
-      listOfAllSelectedMenus = [];
-      listOfAllSelectedMenus.clear();
+      listOfAllSelectedStores = [];
+      listOfAllSelectedStores.clear();
     }
     setState(() {});
   }
+
+  @override
+  Widget build(BuildContext context) => BlocListener<MenuBloc, MenuState>(
+        key: const Key('bind-menu-with-store-page-bloc-builder-widget'),
+        bloc: context.watch<MenuBloc>(),
+        listener: (context, state) {
+          switch (state) {
+            case BindMenuToStoreStage():
+              {
+                context.go(Routes.ABOUT_US);
+                return;
+              }
+            case _:
+              appLog.d('Default case: all bloc listener bind menu page');
+          }
+        },
+        child: BlocBuilder<MenuBloc, MenuState>(
+          key: const Key('bind-menu-with-store-page-bloc-builder-widget'),
+          bloc: context.watch<MenuBloc>(),
+          builder: (context, state) {
+            switch (state) {
+              case FetchAllStoresState():
+                {
+                  listOfAllStores = List<StoreEntity>.from(state.storeEntities.toList());
+                  widgetState = WidgetState<StoreEntity>.allData(
+                    context: context,
+                  );
+                }
+              case BindMenuToStoreStage():
+                {
+                  listOfAllSelectedStores = [];
+                  listOfAllSelectedStores.clear();
+                }
+              case _:
+                appLog.d('Default case: all bloc builder bind menu page');
+            }
+            return _BindMenuWithStoreView(this);
+          },
+        ),
+      );
 }
 
-class _AllMenuPageView extends WidgetView<AllMenuPage, _AllMenuPageController> {
-  const _AllMenuPageView(super.state);
+class _BindMenuWithStoreView extends WidgetView<BindMenuWithStore, _BindMenuWithStoreController> {
+  const _BindMenuWithStoreView(super.state);
 
   @override
   Widget build(BuildContext context) {
     final MediaQueryData media = MediaQuery.of(context);
     final double margins = GlobalApp.responsiveInsets(media.size.width);
-    final double topPadding = margins; //media.padding.top + kToolbarHeight + margins; //margins * 1.5;
+    final double topPadding = margins; //media.padding.top + kWitholbarHeight + margins; //margins * 1.5;
     final double bottomPadding = media.padding.bottom + margins;
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: FlexColorScheme.themedSystemNavigationBar(
@@ -105,7 +149,7 @@ class _AllMenuPageView extends WidgetView<AllMenuPage, _AllMenuPageController> {
         textDirection: serviceLocator<LanguageController>().targetTextDirection,
         child: Scaffold(
           appBar: AppBar(
-            title: const Text('All Menus'),
+            title: const Text('All Stores'),
             actions: const [
               Padding(
                 padding: EdgeInsetsDirectional.symmetric(horizontal: 14),
@@ -136,7 +180,7 @@ class _AllMenuPageView extends WidgetView<AllMenuPage, _AllMenuPageController> {
           body: Directionality(
             textDirection: serviceLocator<LanguageController>().targetTextDirection,
             child: SlideInLeft(
-              key: const Key('get-all-menus-slideinleft-widget'),
+              key: const Key('bind-menu-with-store-slideinleft-widget'),
               delay: const Duration(milliseconds: 500),
               from: context.width - 40,
               child: PageBody(
@@ -171,7 +215,7 @@ class _AllMenuPageView extends WidgetView<AllMenuPage, _AllMenuPageController> {
                                 keyboardType: TextInputType.text,
                                 decoration: InputDecoration(
                                   labelText: 'Search',
-                                  hintText: 'Search menu and addons',
+                                  hintText: 'Search store',
                                   border: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(10),
                                   ),
@@ -203,9 +247,9 @@ class _AllMenuPageView extends WidgetView<AllMenuPage, _AllMenuPageController> {
                       ),
                       const AnimatedGap(12, duration: Duration(milliseconds: 500)),
                       CheckboxListTile(
-                        value: state.haveSelectAllMenus,
+                        value: state.haveSelectAllStores,
                         onChanged: (value) {
-                          state.selectAllMenus(isSelectAllMenus: value);
+                          state.selectAllStores(isSelectAllStores: value);
                         },
                         tristate: true,
                         visualDensity: const VisualDensity(horizontal: -4, vertical: -4),
@@ -215,7 +259,7 @@ class _AllMenuPageView extends WidgetView<AllMenuPage, _AllMenuPageController> {
                           child: Row(
                             children: [
                               Text(
-                                'Your Menus',
+                                'Your Stores',
                                 textDirection: serviceLocator<LanguageController>().targetTextDirection,
                               ),
                               const AnimatedGap(3, duration: Duration(milliseconds: 500)),
@@ -242,6 +286,16 @@ class _AllMenuPageView extends WidgetView<AllMenuPage, _AllMenuPageController> {
                         ),
                       ),
                       const AnimatedGap(12, duration: Duration(milliseconds: 500)),
+                      Text(
+                        'Select Store',
+                        textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                      ),
+                      const AnimatedGap(12, duration: Duration(milliseconds: 500)),
+                      Text(
+                        'For Menu',
+                        textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                      ),
+                      const AnimatedGap(12, duration: Duration(milliseconds: 500)),
                       Expanded(
                         flex: 3,
                         child: CustomScrollView(
@@ -251,34 +305,22 @@ class _AllMenuPageView extends WidgetView<AllMenuPage, _AllMenuPageController> {
                           slivers: [
                             SliverList.separated(
                               itemBuilder: (context, index) {
-                                return MenuCardWidget(
-                                  menuEntity: state.listOfAllMenus[index],
+                                return StoreCardWidget(
                                   currentIndex: index,
                                   listOfAllMenuEntities: state.listOfAllMenus.toList(),
-                                  onSelectionChanged: (List<MenuEntity> listOfAllMenuEntities) {
-                                    state.onSelectionChanged(listOfAllMenuEntities.toList());
+                                  onSelectionChanged: (List<StoreEntity> listOfAllStoreEntities) {
+                                    state.onSelectionChanged(listOfAllStoreEntities.toList());
                                   },
                                   listOfAllSelectedMenuEntities: state.listOfAllSelectedMenus.toList(),
+                                  listOfAllSelectedStoreEntities: state.listOfAllSelectedStores.toList(),
+                                  listOfAllStoreEntities: state.listOfAllStores.toList(),
+                                  storeEntity: state.listOfAllStores[index],
                                 );
                               },
-                              itemCount: state.listOfAllMenus.length,
+                              itemCount: state.listOfAllStores.length,
                               separatorBuilder: (context, index) {
                                 return const Divider(thickness: 0.25, color: Color.fromRGBO(127, 129, 132, 1));
                               },
-                              /*delegate: SliverChildBuilderDelegate(
-                                (context, index) {
-                                  return MenuCardWidget(
-                                    menuEntity: state.listOfAllMenus[index],
-                                    currentIndex: index,
-                                    listOfAllMenuEntities: state.listOfAllMenus.toList(),
-                                    onSelectionChanged: (List<MenuEntity> listOfAllMenuEntities) {
-                                      state.onSelectionChanged(listOfAllMenuEntities.toList());
-                                    },
-                                    listOfAllSelectedMenuEntities: state.listOfAllSelectedMenus.toList(),
-                                  );
-                                },
-                                childCount: state.listOfAllMenus.length,
-                              ),*/
                             ),
                           ],
                         ),
@@ -290,11 +332,19 @@ class _AllMenuPageView extends WidgetView<AllMenuPage, _AllMenuPageController> {
                           Expanded(
                             child: ElevatedButton(
                               onPressed: () {
-                                context.push(Routes.SAVE_MENU_PAGE);
+                                //context.push(Routes.SAVE_MENU_PAGE);
+                                context.read<MenuBloc>().add(
+                                      BindMenuWithStores(
+                                        menuEntities: state.listOfAllMenus.toList(),
+                                        listOfSelectedMenuEntities: state.listOfAllSelectedMenus.toList(),
+                                        listOfSelectedStoreEntities: state.listOfAllSelectedStores.toList(),
+                                        storeEntities: state.listOfAllStores.toList(),
+                                      ),
+                                    );
                                 return;
                               },
                               child: Text(
-                                'Add New Menu',
+                                'Save',
                                 textDirection: serviceLocator<LanguageController>().targetTextDirection,
                               ),
                             ),

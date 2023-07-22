@@ -1,33 +1,37 @@
 part of 'package:homemakers_merchant/app/features/menu/index.dart';
 
-class MenuCardWidget extends StatefulWidget {
-  const MenuCardWidget({
+class StoreCardWidget extends StatefulWidget {
+  const StoreCardWidget({
     super.key,
-    required this.menuEntity,
     required this.currentIndex,
     required this.listOfAllMenuEntities,
     required this.onSelectionChanged,
     required this.listOfAllSelectedMenuEntities,
+    required this.storeEntity,
+    required this.listOfAllSelectedStoreEntities,
+    required this.listOfAllStoreEntities,
   });
 
-  final MenuEntity menuEntity;
+  final StoreEntity storeEntity;
   final int currentIndex;
   final List<MenuEntity> listOfAllMenuEntities;
   final List<MenuEntity> listOfAllSelectedMenuEntities;
-  final Function(List<MenuEntity>) onSelectionChanged;
+  final List<StoreEntity> listOfAllStoreEntities;
+  final List<StoreEntity> listOfAllSelectedStoreEntities;
+  final Function(List<StoreEntity>) onSelectionChanged;
 
   @override
-  _MenuCardWidgetState createState() => _MenuCardWidgetState();
+  _StoreCardWidgetState createState() => _StoreCardWidgetState();
 }
 
-class _MenuCardWidgetState extends State<MenuCardWidget> {
+class _StoreCardWidgetState extends State<StoreCardWidget> {
   Color carBackgroundColor = Colors.white;
-  var _popupMenuItemIndex = 0;
+  var _popupStoreItemIndex = 0;
 
-  Widget _buildPopupMenuButton(int currentIndex, MenuEntity menuEntity) {
+  Widget _buildPopupMenuButton(int currentIndex, StoreEntity storeEntity) {
     return PopupMenuButton(
       onSelected: (value) {
-        _onMenuItemSelected(value as int);
+        _onStoreSelected(value as int);
       },
       offset: Offset(0.0, AppBar().preferredSize.height),
       shape: RoundedRectangleBorder(
@@ -39,28 +43,28 @@ class _MenuCardWidgetState extends State<MenuCardWidget> {
           Icons.remove_red_eye,
           MenuOptions.view.index,
           currentIndex,
-          menuEntity,
+          storeEntity,
         ),
         _buildPopupMenuItem(
           'Edit',
           Icons.edit,
           MenuOptions.edit.index,
           currentIndex,
-          menuEntity,
+          storeEntity,
         ),
         _buildPopupMenuItem(
           'Remove from store',
           Icons.store,
           MenuOptions.removeFromStore.index,
           currentIndex,
-          menuEntity,
+          storeEntity,
         ),
         _buildPopupMenuItem(
           'Delete',
           Icons.restore_from_trash,
           MenuOptions.delete.index,
           currentIndex,
-          menuEntity,
+          storeEntity,
         ),
       ],
     );
@@ -72,12 +76,12 @@ class _MenuCardWidgetState extends State<MenuCardWidget> {
     IconData iconData,
     int position,
     int currentIndex,
-    MenuEntity menuEntity,
+    StoreEntity storeEntity,
   ) {
     return PopupMenuItem(
       value: position,
       onTap: () async {
-        switch (_popupMenuItemIndex) {
+        switch (_popupStoreItemIndex) {
           case 0:
             {}
           case 1:
@@ -122,7 +126,7 @@ class _MenuCardWidgetState extends State<MenuCardWidget> {
                       textDirection: serviceLocator<LanguageController>().targetTextDirection,
                       children: [
                         Text(
-                          'Permanently delete this menu. If there is an order for this menu in any of your stores, then it will be deleted only after completing the order, and if you still confirm for delete, then this menu will remain pending and under review. Are you sure you want to delete this menu?',
+                          'Permanently delete this store. If there is an order for this store, then it will be deleted only after completing the orders, and if you still confirm for delete, then this store will remain pending and under review. Are you sure you want to delete this store?',
                           textDirection: serviceLocator<LanguageController>().targetTextDirection,
                         ),
                       ],
@@ -135,7 +139,7 @@ class _MenuCardWidgetState extends State<MenuCardWidget> {
                 if (!mounted) {
                   return;
                 }
-                serviceLocator<List<MenuEntity>>().removeAt(currentIndex);
+                serviceLocator<AppUserEntity>().stores.removeAt(currentIndex);
               }
               return;
             }
@@ -165,9 +169,9 @@ class _MenuCardWidgetState extends State<MenuCardWidget> {
     );
   }
 
-  void _onMenuItemSelected(int value) {
+  void _onStoreSelected(int value) {
     setState(() {
-      _popupMenuItemIndex = value;
+      _popupStoreItemIndex = value;
     });
   }
 
@@ -175,7 +179,7 @@ class _MenuCardWidgetState extends State<MenuCardWidget> {
   Widget build(BuildContext context) {
     return ListTile(
       leading: ImageHelper(
-        image: widget.menuEntity.menuImages[0].assetPath,
+        image: widget.storeEntity.storeImagePath,
         // image scale
         scale: 1.0,
         // Quality levels for image sampling in [ImageFilter] and [Shader] objects that sample
@@ -215,7 +219,7 @@ class _MenuCardWidgetState extends State<MenuCardWidget> {
         //side: BorderSide(color: Color.fromRGBO(127, 129, 132, 1)),
       ),
       title: Text(
-        widget.menuEntity.menuName,
+        widget.storeEntity.storeName,
         style: context.titleMedium!.copyWith(color: const Color.fromRGBO(31, 31, 31, 1)),
         textDirection: serviceLocator<LanguageController>().targetTextDirection,
         maxLines: 1,
@@ -223,7 +227,7 @@ class _MenuCardWidgetState extends State<MenuCardWidget> {
         overflow: TextOverflow.ellipsis,
       ),
       subtitle: Text(
-        widget.menuEntity.menuCategories[0].title,
+        widget.storeEntity.storeAddress?.address?.area ?? '',
         style: const TextStyle(color: Color.fromRGBO(127, 129, 132, 1)),
         textDirection: serviceLocator<LanguageController>().targetTextDirection,
         maxLines: 1,
@@ -234,22 +238,23 @@ class _MenuCardWidgetState extends State<MenuCardWidget> {
       minLeadingWidth: 20,
       onTap: () {
         setState(() {
-          widget.listOfAllSelectedMenuEntities.contains(widget.menuEntity)
-              ? widget.listOfAllSelectedMenuEntities.remove(widget.menuEntity)
-              : widget.listOfAllSelectedMenuEntities.add(widget.menuEntity);
-          widget.onSelectionChanged?.call(widget.listOfAllSelectedMenuEntities);
+          widget.listOfAllSelectedStoreEntities.contains(widget.storeEntity)
+              ? widget.listOfAllSelectedStoreEntities.remove(widget.storeEntity)
+              : widget.listOfAllSelectedStoreEntities.add(widget.storeEntity);
+          widget.onSelectionChanged?.call(widget.listOfAllSelectedStoreEntities);
         });
       },
-      selected: widget.listOfAllSelectedMenuEntities.contains(widget.menuEntity),
-      trailing: (widget.listOfAllSelectedMenuEntities.contains(widget.menuEntity))
+      selected: widget.listOfAllSelectedStoreEntities.contains(widget.storeEntity),
+      trailing: (widget.listOfAllSelectedStoreEntities.contains(widget.storeEntity))
           ? const Icon(
               Icons.check,
               color: Color.fromRGBO(69, 201, 125, 1),
             )
-          : _buildPopupMenuButton(
+          : /*_buildPopupMenuButton(
               widget.currentIndex,
-              widget.menuEntity,
-            ),
+              widget.storeEntity,
+            ),*/
+          null,
       selectedColor: const Color.fromRGBO(215, 243, 227, 1),
       selectedTileColor: const Color.fromRGBO(215, 243, 227, 1),
       tileColor: Colors.white,

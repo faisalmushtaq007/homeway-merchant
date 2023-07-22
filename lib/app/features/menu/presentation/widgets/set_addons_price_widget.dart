@@ -17,7 +17,7 @@ class SetAddonsPriceWidget extends StatefulWidget {
 }
 
 class _SetAddonsPriceWidgetState extends State<SetAddonsPriceWidget> {
-  final TextEditingController maximumRetailPriceOfMenuTextEditingController = TextEditingController();
+  final TextEditingController maximumRetailPriceOfMenuTextEditingController = TextEditingController(text: '00.00');
   String portionName = '';
   String sellingMaxRetailPrice = '00.00';
   final formKey = GlobalKey<FormState>();
@@ -39,6 +39,7 @@ class _SetAddonsPriceWidgetState extends State<SetAddonsPriceWidget> {
 
   @override
   void dispose() {
+    maximumRetailPriceOfMenuTextEditingController.text = '';
     maximumRetailPriceOfMenuTextEditingController.dispose();
     super.dispose();
   }

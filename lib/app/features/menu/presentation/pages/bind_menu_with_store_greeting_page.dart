@@ -1,16 +1,18 @@
 part of 'package:homemakers_merchant/app/features/menu/index.dart';
 
-class NewMenuGreetingPage extends StatefulWidget {
-  const NewMenuGreetingPage({
+class BindMenuWithStoreGreetingPage extends StatefulWidget {
+  const BindMenuWithStoreGreetingPage({
     super.key,
-    required this.menuEntity,
+    this.storeEntities = const [],
+    this.menuEntities = const [],
   });
-  final MenuEntity menuEntity;
+  final List<MenuEntity> menuEntities;
+  final List<StoreEntity> storeEntities;
   @override
-  _NewMenuGreetingPageController createState() => _NewMenuGreetingPageController();
+  _BindMenuWithStoreGreetingPageController createState() => _BindMenuWithStoreGreetingPageController();
 }
 
-class _NewMenuGreetingPageController extends State<NewMenuGreetingPage> {
+class _BindMenuWithStoreGreetingPageController extends State<BindMenuWithStoreGreetingPage> {
   late final ScrollController scrollController;
   @override
   void initState() {
@@ -32,11 +34,11 @@ class _NewMenuGreetingPageController extends State<NewMenuGreetingPage> {
   }
 
   @override
-  Widget build(BuildContext context) => _NewMenuGreetingPageView(this);
+  Widget build(BuildContext context) => _BindMenuWithStoreGreetingPageView(this);
 }
 
-class _NewMenuGreetingPageView extends WidgetView<NewMenuGreetingPage, _NewMenuGreetingPageController> {
-  const _NewMenuGreetingPageView(super.state);
+class _BindMenuWithStoreGreetingPageView extends WidgetView<BindMenuWithStoreGreetingPage, _BindMenuWithStoreGreetingPageController> {
+  const _BindMenuWithStoreGreetingPageView(super.state);
 
   @override
   Widget build(BuildContext context) {
@@ -65,7 +67,7 @@ class _NewMenuGreetingPageView extends WidgetView<NewMenuGreetingPage, _NewMenuG
             ],
           ),
           body: ZoomIn(
-            key: const Key('new-addons-greeting-page-zoomin-widget'),
+            key: const Key('bind-menu-with-store--greeting-page-zoomin-widget'),
             delay: const Duration(milliseconds: 500),
             child: PageBody(
               controller: state.scrollController,
@@ -102,25 +104,7 @@ class _NewMenuGreetingPageView extends WidgetView<NewMenuGreetingPage, _NewMenuG
                           ),
                           Center(
                             child: Text(
-                              'Hurray! New Menu',
-                              textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                              textAlign: TextAlign.center,
-                              style: context.headlineMedium!.copyWith(
-                                color: const Color.fromRGBO(69, 201, 125, 1),
-                                fontSize: 32,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ).translate(),
-                          ),
-                          const AnimatedGap(
-                            6,
-                            duration: Duration(
-                              milliseconds: 300,
-                            ),
-                          ),
-                          Center(
-                            child: Text(
-                              '${widget.menuEntity.menuName}',
+                              'Hurray!',
                               textDirection: serviceLocator<LanguageController>().targetTextDirection,
                               textAlign: TextAlign.center,
                               style: context.headlineMedium!.copyWith(
@@ -140,7 +124,7 @@ class _NewMenuGreetingPageView extends WidgetView<NewMenuGreetingPage, _NewMenuG
                             child: Wrap(
                               children: [
                                 Text(
-                                  'Your menu has been created successfully',
+                                  '${widget.menuEntities.length} Menu are successfully listed with ${widget.storeEntities.length} stores',
                                   textDirection: serviceLocator<LanguageController>().targetTextDirection,
                                   textAlign: TextAlign.center,
                                   style: context.titleLarge!.copyWith(
@@ -151,49 +135,7 @@ class _NewMenuGreetingPageView extends WidgetView<NewMenuGreetingPage, _NewMenuG
                               ],
                             ),
                           ),
-                          const AnimatedGap(
-                            4,
-                            duration: Duration(
-                              milliseconds: 300,
-                            ),
-                          ),
-                          Center(
-                            child: Wrap(
-                              children: [
-                                Text(
-                                  'Your menu is under verification process',
-                                  textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                                  textAlign: TextAlign.center,
-                                  style: context.bodyMedium!.copyWith(
-                                    fontSize: 14,
-                                  ),
-                                ).translate(),
-                              ],
-                            ),
-                          ),
-                          const AnimatedGap(
-                            24,
-                            duration: Duration(
-                              milliseconds: 300,
-                            ),
-                          ),
-                          Center(
-                            child: Wrap(
-                              textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                              children: [
-                                Icon(Icons.restaurant_menu),
-                                Text(
-                                  'Menu ID #HMW${widget.menuEntity.menuId}',
-                                  textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                                  textAlign: TextAlign.center,
-                                  style: context.titleMedium!.copyWith(
-                                    fontSize: 18,
-                                    color: Color.fromRGBO(127, 129, 132, 1),
-                                  ),
-                                ).translate(),
-                              ],
-                            ),
-                          ),
+
                           const AnimatedGap(
                             16,
                             duration: Duration(

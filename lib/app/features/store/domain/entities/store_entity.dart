@@ -44,22 +44,22 @@ class StoreEntity with AppEquatable {
     );
   }
 
-  final String storeName;
-  final AddressModel? storeAddress;
-  final String storeImagePath;
-  final Map<String, dynamic> storeImageMetaData;
-  final int storeMaximumFoodDeliveryTime;
-  final int storeMaximumFoodDeliveryRadius;
-  final String storeOpeningTime;
-  final String storeClosingTime;
-  final bool hasStoreOwnDeliveryPartners;
-  final List<StoreOwnDeliveryPartnersInfo> storeOwnDeliveryPartnersInfo;
-  final List<StoreAvailableFoodTypes> storeAvailableFoodTypes;
-  final List<StoreAvailableFoodPreparationType> storeAvailableFoodPreparationType;
-  final List<StoreAcceptedPaymentModes> storeAcceptedPaymentModes;
-  final List<StoreWorkingDayAndTime> storeWorkingDays;
-  final int storeID;
-  final List<MenuEntity> menuEntities;
+  String storeName;
+  AddressModel? storeAddress;
+  String storeImagePath;
+  Map<String, dynamic> storeImageMetaData;
+  int storeMaximumFoodDeliveryTime;
+  int storeMaximumFoodDeliveryRadius;
+  String storeOpeningTime;
+  String storeClosingTime;
+  bool hasStoreOwnDeliveryPartners;
+  List<StoreOwnDeliveryPartnersInfo> storeOwnDeliveryPartnersInfo;
+  List<StoreAvailableFoodTypes> storeAvailableFoodTypes;
+  List<StoreAvailableFoodPreparationType> storeAvailableFoodPreparationType;
+  List<StoreAcceptedPaymentModes> storeAcceptedPaymentModes;
+  List<StoreWorkingDayAndTime> storeWorkingDays;
+  int storeID;
+  List<MenuEntity> menuEntities;
 
   @override
   bool get cacheHash => true;
@@ -159,9 +159,9 @@ class StoreAvailableFoodTypes with AppEquatable {
     );
   }
 
-  final String title;
-  final int id;
-  final bool hasSelected;
+  String title;
+  int id;
+  bool hasSelected;
 
   @override
   bool get cacheHash => true;
@@ -205,9 +205,9 @@ class StoreAvailableFoodPreparationType with AppEquatable {
     );
   }
 
-  final String title;
-  final int id;
-  final bool hasSelected;
+  String title;
+  int id;
+  bool hasSelected;
 
   @override
   bool get cacheHash => true;
@@ -252,10 +252,10 @@ class StoreAcceptedPaymentModes with AppEquatable {
     );
   }
 
-  final String title;
-  final int id;
-  final Icon? icon;
-  final bool hasSelected;
+  String title;
+  int id;
+  Icon? icon;
+  bool hasSelected;
 
   @override
   bool get cacheHash => true;
@@ -301,9 +301,9 @@ class StoreOwnDeliveryPartnersInfo with AppEquatable {
     );
   }
 
-  final String driverName;
-  final String driverMobileNumber;
-  final String drivingLicenseNumber;
+  String driverName;
+  String driverMobileNumber;
+  String drivingLicenseNumber;
 
   @override
   bool get cacheHash => true;
@@ -357,12 +357,12 @@ class StoreWorkingDayAndTime with AppEquatable {
     );
   }
 
-  final String day;
-  final String shortName;
-  final int id;
-  final bool hasSelected;
-  final DateTime? openingTime;
-  final DateTime? closingTime;
+  String day;
+  String shortName;
+  int id;
+  bool hasSelected;
+  DateTime? openingTime;
+  DateTime? closingTime;
 
   @override
   bool get cacheHash => true;

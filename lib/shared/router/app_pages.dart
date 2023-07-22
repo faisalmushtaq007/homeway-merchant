@@ -38,7 +38,7 @@ class AppRouter {
 
   AppRouter._();
 
-  static const String INITIAL = Routes.SAVE_MENU_PAGE;
+  static const String INITIAL = Routes.PRIMARY_DASHBOARD_PAGE;
 
   static final GoRouter _router = GoRouter(
     debugLogDiagnostics: true,
@@ -178,6 +178,20 @@ class AppRouter {
       GoRoute(
         path: Routes.NEW_ADDONS_GREETING_PAGE,
         builder: (context, state) => NewAddonsGreetingPage(addonsEntity: state.extra as Addons),
+      ),
+      GoRoute(
+        path: Routes.BIND_MENU_WITH_STORE_PAGE,
+        builder: (context, state) => BindMenuWithStore(
+          listOfAllMenus: state.extra as List<MenuEntity>,
+          listOfAllSelectedMenus: state.extra as List<MenuEntity>,
+        ),
+      ),
+      GoRoute(
+        path: Routes.BIND_MENU_WITH_STORE_GREETING_PAGE,
+        builder: (context, state) => BindMenuWithStoreGreetingPage(
+          menuEntities: state.extra as List<MenuEntity>,
+          storeEntities: state.extra as List<StoreEntity>,
+        ),
       ),
     ],
   );

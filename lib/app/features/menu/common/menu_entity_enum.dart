@@ -80,3 +80,22 @@ enum ActionOnFindMenu {
 }
 
 enum MenuOptions { view, edit, removeFromStore, delete }
+
+enum BindMenuToStoreStage {
+  none,
+  select,
+  save,
+  remove,
+  attached,
+  success,
+  failed,
+  exception,
+  attaching,
+  processing,
+  ;
+
+  @override
+  String toString() {
+    return name;
+  }
+}

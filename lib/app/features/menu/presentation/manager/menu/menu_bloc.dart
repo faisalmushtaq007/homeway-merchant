@@ -2,7 +2,10 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:bloc_concurrency/bloc_concurrency.dart';
 import 'package:flutter/material.dart';
+import 'package:homemakers_merchant/app/features/address/domain/entities/address_model.dart';
 import 'package:homemakers_merchant/app/features/menu/index.dart';
+import 'package:homemakers_merchant/app/features/profile/domain/entities/user_entity.dart';
+import 'package:homemakers_merchant/app/features/store/domain/entities/store_entity.dart';
 import 'package:homemakers_merchant/bootup/injection_container.dart';
 import 'package:homemakers_merchant/utils/app_equatable/app_equatable.dart';
 
@@ -62,6 +65,18 @@ class MenuBloc extends Bloc<MenuEvent, MenuState> {
     );
     on<GetAllMenu>(
       _getAllMenus,
+      transformer: sequential(),
+    );
+    on<NavigateToStorePage>(
+      _navigateToStorePage,
+      transformer: sequential(),
+    );
+    on<FetchAllStores>(
+      _fetchAllStores,
+      transformer: sequential(),
+    );
+    on<BindMenuWithStores>(
+      _bindMenuWithStores,
       transformer: sequential(),
     );
   }
@@ -280,7 +295,6 @@ class MenuBloc extends Bloc<MenuEvent, MenuState> {
         emit(
           GetAllMenuState(
             menuEntities: listOfMenus.toList(),
-            message: '',
             menuStateStatus: MenuStateStatus.success,
           ),
         );
@@ -328,5 +342,148 @@ class MenuBloc extends Bloc<MenuEvent, MenuState> {
 
   FutureOr<void> _selectAllMenu(SelectAllMenu event, Emitter<MenuState> emit) async {
     try {} catch (e) {}
+  }
+
+  FutureOr<void> _navigateToStorePage(NavigateToStorePage event, Emitter<MenuState> emit) async {
+    emit(NavigateToStorePageState(
+      menuEntities: event.menuEntities.toList(),
+      listOfSelectedMenuEntities: event.listOfSelectedMenuEntities.toList(),
+    ));
+  }
+
+  FutureOr<void> _fetchAllStores(FetchAllStores event, Emitter<MenuState> emit) async {
+    try {
+      emit(
+        FetchAllStoresState(
+          menuEntities: event.menuEntities.toList(),
+          message: 'Your store is loading...',
+          menuStateStatus: MenuStateStatus.loading,
+          listOfSelectedMenuEntities: event.listOfSelectedMenuEntities.toList(),
+          storeEntities: [],
+        ),
+      );
+      //final List<StoreEntity> listOfStores = serviceLocator<List<StoreEntity>>();
+      final List<StoreEntity> listOfStores = [
+        StoreEntity(
+          storeID: 0,
+          storeName: 'Nura 24x7',
+          storeAddress: AddressModel(
+            address: AddressBean(
+              area: 'Reyadh',
+            ),
+          ),
+          storeImagePath: 'https://img.freepik.com/free-vector/flat-restaurant-with-lampposts_23-2147539585.jpg',
+        ),
+        StoreEntity(
+          storeID: 1,
+          storeName: 'Asansol Delight',
+          storeAddress: AddressModel(
+            address: AddressBean(
+              area: 'Asansol',
+            ),
+          ),
+          storeImagePath:
+              'https://img.freepik.com/free-vector/scene-beverage-shop-showroom-chair-with-coffee-table-umbrella-near-green-lawn-nature-park_1150-48862.jpg',
+        ),
+        StoreEntity(
+          storeID: 2,
+          storeName: 'The Grand',
+          storeAddress: AddressModel(
+            address: AddressBean(
+              area: 'Macca',
+            ),
+          ),
+          storeImagePath: 'https://img.freepik.com/premium-photo/closeup-interior-chinese-restaurant_1417-16144.jpg',
+        ),
+      ];
+      Future.delayed(const Duration(seconds: 1), () {});
+      if (listOfStores.isEmpty) {
+        emit(
+          FetchAllStoresState(
+            menuEntities: event.menuEntities.toList(),
+            menuStateStatus: MenuStateStatus.empty,
+            listOfSelectedMenuEntities: event.listOfSelectedMenuEntities.toList(),
+            storeEntities: [],
+            message: 'Your store is empty',
+          ),
+        );
+      } else {
+        emit(
+          FetchAllStoresState(
+            menuEntities: event.menuEntities.toList(),
+            message: '',
+            menuStateStatus: MenuStateStatus.success,
+            listOfSelectedMenuEntities: event.listOfSelectedMenuEntities.toList(),
+            storeEntities: listOfStores.toList(),
+          ),
+        );
+      }
+    } catch (e) {
+      emit(
+        FetchAllStoresState(
+          menuEntities: event.menuEntities.toList(),
+          menuStateStatus: MenuStateStatus.exception,
+          listOfSelectedMenuEntities: event.listOfSelectedMenuEntities.toList(),
+          storeEntities: [],
+          message: 'Something went wrong, please try again',
+        ),
+      );
+    }
+  }
+
+  FutureOr<void> _bindMenuWithStores(BindMenuWithStores event, Emitter<MenuState> emit) async {
+    try {
+      emit(
+        BindMenuWithStoresState(
+          menuEntities: event.menuEntities.toList(),
+          menuStateStatus: MenuStateStatus.exception,
+          listOfSelectedMenuEntities: event.listOfSelectedMenuEntities.toList(),
+          storeEntities: event.storeEntities.toList(),
+          message: 'Processing please wait...',
+          bindMenuToStoreStage: BindMenuToStoreStage.attaching,
+        ),
+      );
+      List<StoreEntity> storeEntities = event.storeEntities;
+      List<StoreEntity> selectedStoreEntities = event.listOfSelectedStoreEntities;
+      List<MenuEntity> menuEntities = event.menuEntities;
+      List<MenuEntity> selectedMenuEntities = event.listOfSelectedMenuEntities;
+      // Update the object
+      selectedStoreEntities.asMap().forEach((key, value) {
+        value.menuEntities = selectedMenuEntities.toList();
+      });
+      storeEntities.asMap().forEach((parentIndex, parentStore) {
+        selectedStoreEntities.asMap().forEach((childIndex, childStore) {
+          if (childStore == parentStore) {
+            serviceLocator<AppUserEntity>().stores[parentIndex].menuEntities = selectedMenuEntities.toList();
+          }
+        });
+      });
+      // Search store and update it with selected stores date
+      //serviceLocator<AppUserEntity>().stores;
+      Future.delayed(const Duration(seconds: 1), () {});
+      emit(
+        BindMenuWithStoresState(
+          menuEntities: event.menuEntities.toList(),
+          menuStateStatus: MenuStateStatus.success,
+          listOfSelectedMenuEntities: event.listOfSelectedMenuEntities.toList(),
+          storeEntities: serviceLocator<AppUserEntity>().stores.toList(),
+          message: 'Something went wrong, please try again',
+          bindMenuToStoreStage: BindMenuToStoreStage.attached,
+          listOfSelectedStoreEntities: selectedStoreEntities,
+        ),
+      );
+    } catch (e) {
+      emit(
+        BindMenuWithStoresState(
+          menuEntities: event.menuEntities.toList(),
+          menuStateStatus: MenuStateStatus.exception,
+          listOfSelectedMenuEntities: event.listOfSelectedMenuEntities.toList(),
+          storeEntities: event.storeEntities.toList(),
+          message: 'Something went wrong, please try again',
+          bindMenuToStoreStage: BindMenuToStoreStage.exception,
+          listOfSelectedStoreEntities: event.listOfSelectedStoreEntities,
+        ),
+      );
+    }
   }
 }

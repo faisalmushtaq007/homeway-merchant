@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:cross_file/cross_file.dart';
 import 'package:flutter/material.dart';
 import 'package:homemakers_merchant/app/features/menu/presentation/widgets/form_page_view/enum/progress_enum.dart';
-import 'package:homemakers_merchant/app/features/menu/presentation/widgets/menu_card_widget.dart';
+import 'package:homemakers_merchant/app/features/profile/domain/entities/user_entity.dart';
 import 'package:homemakers_merchant/app/features/profile/presentation/widgets/bank/confirm_bank_information_dialog.dart';
 import 'package:homemakers_merchant/app/features/store/data/local/data_sources/store_local_data.dart';
 import 'package:homemakers_merchant/app/features/store/domain/entities/store_entity.dart';
@@ -76,6 +76,14 @@ import 'package:homemakers_merchant/app/features/store/domain/entities/store_ent
 import 'package:homemakers_merchant/bootup/injection_container.dart';
 import 'package:homemakers_merchant/config/translation/language_controller.dart';
 import 'package:homemakers_merchant/utils/app_equatable/app_equatable.dart';
+import 'package:homemakers_merchant/app/features/profile/presentation/widgets/bank/confirm_bank_information_dialog.dart';
+import 'package:homemakers_merchant/bootup/injection_container.dart';
+import 'package:homemakers_merchant/config/translation/language_controller.dart';
+import 'package:homemakers_merchant/core/extensions/app_extension.dart';
+import 'package:homemakers_merchant/shared/widgets/universal/animated_gap/gap.dart';
+import 'package:homemakers_merchant/shared/widgets/universal/image_loader/image_helper.dart';
+part 'package:homemakers_merchant/app/features/menu/presentation/widgets/menu_card_widget.dart';
+part 'package:homemakers_merchant/app/features/menu/presentation/widgets/store_card_widget.dart';
 part 'package:homemakers_merchant/app/features/menu/presentation/widgets/set_addons_price_widget.dart';
 part 'package:homemakers_merchant/app/features/menu/presentation/widgets/set_menu_price_widget.dart';
 part 'package:homemakers_merchant/app/features/menu/presentation/pages/all_menu_page.dart';
@@ -90,6 +98,7 @@ part 'package:homemakers_merchant/app/features/menu/presentation/pages/subpages/
 part 'package:homemakers_merchant/app/features/menu/presentation/pages/subpages/menu_form4_page.dart';
 part 'package:homemakers_merchant/app/features/menu/presentation/pages/subpages/menu_form5_page.dart';
 part 'package:homemakers_merchant/app/features/menu/presentation/pages/menu_all_addons_page.dart';
+part 'package:homemakers_merchant/app/features/menu/presentation/pages/bind_menu_with_store.dart';
 part 'package:homemakers_merchant/app/features/menu/presentation/widgets/form_page_view/form_page_view.dart';
 part 'package:homemakers_merchant/app/features/menu/domain/entities/menu_entity.dart';
 part 'package:homemakers_merchant/app/features/menu/common/menu_entity_enum.dart';
@@ -100,3 +109,4 @@ part 'package:homemakers_merchant/app/features/menu/presentation/widgets/multi_s
 part 'package:homemakers_merchant/app/features/menu/presentation/widgets/multi_select_menu_portions_widget.dart';
 part 'package:homemakers_merchant/app/features/menu/presentation/widgets/multi_select_menu_taste_level_widget.dart';
 part 'package:homemakers_merchant/app/features/menu/presentation/widgets/multi_select_menu_taste_type_widget.dart';
+part 'package:homemakers_merchant/app/features/menu/presentation/pages/bind_menu_with_store_greeting_page.dart';
