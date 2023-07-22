@@ -7,7 +7,7 @@ class MenuForm4Page extends StatefulWidget {
   State<MenuForm4Page> createState() => _MenuForm4PageState();
 }
 
-class _MenuForm4PageState extends State<MenuForm4Page> {
+class _MenuForm4PageState extends State<MenuForm4Page> with AutomaticKeepAliveClientMixin<MenuForm4Page> {
   final ScrollController scrollController = ScrollController();
   List<MenuPortion> listOfMenuPortions = [];
   List<Addons> listOfAddons = [];
@@ -43,9 +43,11 @@ class _MenuForm4PageState extends State<MenuForm4Page> {
   }
 
   @override
+  bool get wantKeepAlive => true;
+  @override
   void dispose() {
     scrollController.dispose();
-    listOfMenuPortions = [];
+    //listOfMenuPortions = [];
     super.dispose();
   }
 

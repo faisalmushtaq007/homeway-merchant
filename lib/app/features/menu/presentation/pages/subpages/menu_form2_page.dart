@@ -7,7 +7,7 @@ class MenuForm2Page extends StatefulWidget {
   State<MenuForm2Page> createState() => _MenuForm2PageState();
 }
 
-class _MenuForm2PageState extends State<MenuForm2Page> {
+class _MenuForm2PageState extends State<MenuForm2Page> with AutomaticKeepAliveClientMixin<MenuForm2Page> {
   late final ScrollController scrollController;
 
   List<StoreAvailableFoodTypes> _menuAvailableFoodTypes = [];
@@ -62,6 +62,12 @@ class _MenuForm2PageState extends State<MenuForm2Page> {
     _selectedTasteType = [];
     _selectedTasteLevel = [];
     _selectedMenuPortions = [];
+    _selectedAddons = [];
+    _allAddons = [];
+    selectedAddonsWidgets = [];
+    _selectedAddons.clear();
+    _allAddons.clear();
+    selectedAddonsWidgets.clear();
     initializeMenuAvailableFoodCookingType();
     initializeMenuAvailableDays();
     initializeMenuAvailableFoodTypes();
@@ -80,7 +86,7 @@ class _MenuForm2PageState extends State<MenuForm2Page> {
   @override
   void dispose() {
     scrollController.dispose();
-    menuForm2FocusList.asMap().forEach((key, value) => value.dispose());
+/*
     _menuAvailableFoodCookingType = [];
     _menuAvailableFoodTypes = [];
     _menuAvailableDays = [];
@@ -98,8 +104,20 @@ class _MenuForm2PageState extends State<MenuForm2Page> {
     _menuPortionValueController.dispose();
     _menuPortionSizeController.dispose();
     _menuPortionUnitController.dispose();
+    menuForm2FocusList.asMap().forEach((key, value) => value.dispose());
+    menuForm2FocusList = [];
+    menuForm2FocusList.clear();
+    _selectedAddons = [];
+    _allAddons = [];
+    selectedAddonsWidgets = [];
+    _selectedAddons.clear();
+    _allAddons.clear();
+    selectedAddonsWidgets.clear();*/
     super.dispose();
   }
+
+  @override
+  bool get wantKeepAlive => true;
 
   void initializeMenuAvailableFoodCookingType() {
     _menuAvailableFoodCookingType = List<StoreAvailableFoodPreparationType>.from(localStoreAvailableFoodPreparationType.toList());

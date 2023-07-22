@@ -14,7 +14,7 @@ class SaveMenuPage extends StatefulWidget {
   _SaveMenuPageController createState() => _SaveMenuPageController();
 }
 
-class _SaveMenuPageController extends State<SaveMenuPage> with AutomaticKeepAliveClientMixin, WidgetsBindingObserver {
+class _SaveMenuPageController extends State<SaveMenuPage> with AutomaticKeepAliveClientMixin<SaveMenuPage>, WidgetsBindingObserver {
   late final ScrollController scrollController;
   late final ScrollController _screenScrollController;
   int _currentPageIndex = 0;
@@ -40,13 +40,7 @@ class _SaveMenuPageController extends State<SaveMenuPage> with AutomaticKeepAliv
   PageStorageBucket pageStorageBucketMenuForm4 = PageStorageBucket();
   PageStorageBucket pageStorageBucketMenuForm5 = PageStorageBucket();
 
-  static final List<GlobalKey<FormState>> formKeys = [
-    GlobalKey<FormState>(debugLabel: 'menuForm1'),
-    GlobalKey<FormState>(debugLabel: 'menuForm2'),
-    GlobalKey<FormState>(debugLabel: 'menuForm3'),
-    GlobalKey<FormState>(debugLabel: 'menuForm4'),
-    GlobalKey<FormState>(debugLabel: 'menuForm5')
-  ];
+  List<GlobalKey<FormState>> formKeys = [];
 
   List<FocusNode> focusList = [];
   List<FormPageModel> pages = [];
@@ -58,6 +52,7 @@ class _SaveMenuPageController extends State<SaveMenuPage> with AutomaticKeepAliv
     super.initState();
     scrollController = ScrollController();
     WidgetsBinding.instance?.addObserver(this);
+    formKeys = [GlobalKey<FormState>(), GlobalKey<FormState>(), GlobalKey<FormState>(), GlobalKey<FormState>(), GlobalKey<FormState>()];
     pages = [
       FormPageModel(
         body: Form(
@@ -124,11 +119,15 @@ class _SaveMenuPageController extends State<SaveMenuPage> with AutomaticKeepAliv
   @override
   void dispose() {
     _screenScrollController?.removeListener(_scrollListener);
+    WidgetsBinding.instance?.removeObserver(this);
     scrollController.dispose();
     controller.dispose();
     preloadPageController.dispose();
     focusList.asMap().forEach((key, value) => value.dispose());
-    WidgetsBinding.instance?.removeObserver(this);
+    pages = [];
+    pages.clear;
+    focusList = [];
+    focusList.clear();
     super.dispose();
   }
 

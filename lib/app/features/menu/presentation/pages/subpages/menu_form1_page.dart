@@ -7,7 +7,7 @@ class MenuForm1Page extends StatefulWidget {
   State<MenuForm1Page> createState() => _MenuForm1PageState();
 }
 
-class _MenuForm1PageState extends State<MenuForm1Page> {
+class _MenuForm1PageState extends State<MenuForm1Page> with AutomaticKeepAliveClientMixin<MenuForm1Page> {
   late final ScrollController scrollController;
   final TextEditingController menuNameTextEditingController = TextEditingController();
   final TextEditingController menuDescriptionTextEditingController = TextEditingController();
@@ -43,12 +43,12 @@ class _MenuForm1PageState extends State<MenuForm1Page> {
   @override
   void dispose() {
     scrollController.dispose();
-    listOfCategories = [];
+    /*listOfCategories = [];
     listOfCategories.clear();
     menuCategoryTextEditingController.dispose();
     menuNameTextEditingController.dispose();
     menuDescriptionTextEditingController.dispose();
-    menuForm1FocusList.asMap().forEach((key, value) => value.dispose());
+    menuForm1FocusList.asMap().forEach((key, value) => value.dispose());*/
     super.dispose();
   }
 
@@ -333,4 +333,7 @@ class _MenuForm1PageState extends State<MenuForm1Page> {
       ),
     );
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }

@@ -7,7 +7,7 @@ class MenuForm5Page extends StatefulWidget {
   State<MenuForm5Page> createState() => _MenuForm5PageState();
 }
 
-class _MenuForm5PageState extends State<MenuForm5Page> {
+class _MenuForm5PageState extends State<MenuForm5Page> with AutomaticKeepAliveClientMixin<MenuForm5Page> {
   late final ScrollController scrollController;
   List<File>? file_images = [];
   List<XFile> cross_file_images = [];
@@ -51,13 +51,15 @@ class _MenuForm5PageState extends State<MenuForm5Page> {
   }
 
   @override
+  bool get wantKeepAlive => true;
+  @override
   void dispose() {
     scrollController.dispose();
-    file_images = [];
+    /*file_images = [];
     cross_file_images = [];
     listOfMenuRemoteImages = [];
     selectedMenuImage = '';
-    selectedMenuFileImage = XFile('');
+    selectedMenuFileImage = XFile('');*/
     super.dispose();
   }
 

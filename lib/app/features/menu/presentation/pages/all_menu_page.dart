@@ -11,6 +11,7 @@ class _AllMenuPageController extends State<AllMenuPage> {
   late final ScrollController scrollController;
   late final ScrollController innerScrollController;
   List<MenuEntity> listOfAllMenus = [];
+  List<MenuEntity> listOfAllSelectedMenus = [];
   final TextEditingController searchTextEditingController = TextEditingController();
   WidgetState<MenuEntity> widgetState = const WidgetState<MenuEntity>.none();
 
@@ -21,6 +22,8 @@ class _AllMenuPageController extends State<AllMenuPage> {
     innerScrollController = ScrollController();
     listOfAllMenus = [];
     listOfAllMenus.clear();
+    listOfAllSelectedMenus = [];
+    listOfAllSelectedMenus.clear();
     context.read<MenuBloc>().add(GetAllMenu());
   }
 
@@ -37,7 +40,9 @@ class _AllMenuPageController extends State<AllMenuPage> {
     innerScrollController.dispose();
     searchTextEditingController.dispose();
     listOfAllMenus = [];
-    listOfAllMenus.clear;
+    listOfAllMenus.clear();
+    listOfAllSelectedMenus = [];
+    listOfAllSelectedMenus.clear();
     super.dispose();
   }
 
@@ -60,6 +65,12 @@ class _AllMenuPageController extends State<AllMenuPage> {
           return _AllMenuPageView(this);
         },
       );
+
+  void onSelectionChanged(List<MenuEntity> listOfMenuEntities) {
+    setState(() {
+      listOfAllSelectedMenus = List<MenuEntity>.from(listOfMenuEntities.toList());
+    });
+  }
 }
 
 class _AllMenuPageView extends WidgetView<AllMenuPage, _AllMenuPageController> {
@@ -114,7 +125,7 @@ class _AllMenuPageView extends WidgetView<AllMenuPage, _AllMenuPageController> {
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     textDirection: serviceLocator<LanguageController>().targetTextDirection,
                     children: [
-                      const AnimatedGap(12, duration: Duration(milliseconds: 500)),
+                      const AnimatedGap(6, duration: Duration(milliseconds: 500)),
                       IntrinsicHeight(
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -158,24 +169,44 @@ class _AllMenuPageView extends WidgetView<AllMenuPage, _AllMenuPageController> {
                           ],
                         ),
                       ),
+                      const AnimatedGap(12, duration: Duration(milliseconds: 500)),
                       Expanded(
                         flex: 3,
                         child: CustomScrollView(
                           controller: state.innerScrollController,
                           physics: const ClampingScrollPhysics(),
-                          shrinkWrap: true,
+                          //shrinkWrap: true,
                           slivers: [
-                            SliverList(
-                              delegate: SliverChildBuilderDelegate(
+                            SliverList.separated(
+                              itemBuilder: (context, index) {
+                                return MenuCardWidget(
+                                  menuEntity: state.listOfAllMenus[index],
+                                  currentIndex: index,
+                                  listOfAllMenuEntities: state.listOfAllMenus.toList(),
+                                  onSelectionChanged: (List<MenuEntity> listOfAllMenuEntities) {
+                                    state.onSelectionChanged(listOfAllMenuEntities.toList());
+                                  },
+                                  listOfAllSelectedMenuEntities: state.listOfAllSelectedMenus.toList(),
+                                );
+                              },
+                              itemCount: state.listOfAllMenus.length,
+                              separatorBuilder: (context, index) {
+                                return const Divider(thickness: 0.6, color: Color.fromRGBO(127, 129, 132, 1));
+                              },
+                              /*delegate: SliverChildBuilderDelegate(
                                 (context, index) {
                                   return MenuCardWidget(
                                     menuEntity: state.listOfAllMenus[index],
                                     currentIndex: index,
-                                    listOfAllMenuEntity: state.listOfAllMenus.toList(),
+                                    listOfAllMenuEntities: state.listOfAllMenus.toList(),
+                                    onSelectionChanged: (List<MenuEntity> listOfAllMenuEntities) {
+                                      state.onSelectionChanged(listOfAllMenuEntities.toList());
+                                    },
+                                    listOfAllSelectedMenuEntities: state.listOfAllSelectedMenus.toList(),
                                   );
                                 },
                                 childCount: state.listOfAllMenus.length,
-                              ),
+                              ),*/
                             ),
                           ],
                         ),

@@ -7,7 +7,7 @@ class MenuForm3Page extends StatefulWidget {
   State<MenuForm3Page> createState() => _MenuForm3PageState();
 }
 
-class _MenuForm3PageState extends State<MenuForm3Page> {
+class _MenuForm3PageState extends State<MenuForm3Page> with AutomaticKeepAliveClientMixin<MenuForm3Page> {
   late final ScrollController scrollController;
 
   List<StoreWorkingDayAndTime> _menuAvailableDays = [];
@@ -59,7 +59,7 @@ class _MenuForm3PageState extends State<MenuForm3Page> {
   @override
   void dispose() {
     scrollController.dispose();
-    _menuOpeningTimeController.dispose();
+    /*_menuOpeningTimeController.dispose();
     _menuClosingTimeController.dispose();
     _menuMinPreparationTimeController.dispose();
     _menuMaxPreparationTimeController.dispose();
@@ -68,9 +68,12 @@ class _MenuForm3PageState extends State<MenuForm3Page> {
     menuForm3FocusList.asMap().forEach((key, value) => value.dispose());
     _menuAvailablePreparationTimings = [];
     _menuAvailableDays = [];
-    _selectedWorkingDays = [];
+    _selectedWorkingDays = [];*/
     super.dispose();
   }
+
+  @override
+  bool get wantKeepAlive => true;
 
   void initializeMenuWorkingDays() {
     _menuAvailableDays = List<StoreWorkingDayAndTime>.from(localStoreWorkingDays.toList());

@@ -78,3 +78,5 @@ enum ActionOnFindMenu {
     return name;
   }
 }
+
+enum MenuOptions { view, edit, removeFromStore, delete }

@@ -20,7 +20,7 @@ class _SetAddonsPriceWidgetState extends State<SetAddonsPriceWidget> {
   final TextEditingController maximumRetailPriceOfMenuTextEditingController = TextEditingController();
   String portionName = '';
   String sellingMaxRetailPrice = '00.00';
-  final formKey = GlobalKey<FormState>(debugLabel: 'set_addons_price_widget');
+  final formKey = GlobalKey<FormState>();
 
   @override
   void initState() {

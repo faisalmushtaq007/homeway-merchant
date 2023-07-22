@@ -26,7 +26,7 @@ class _SetMenuPriceWidgetState extends State<SetMenuPriceWidget> {
   String portionName = '';
   String sellingMaxRetailPrice = '00.00';
   String sellingDiscountPrice = '00.00';
-  final formKey = GlobalKey<FormState>(debugLabel: 'set_menu_price_widget');
+  final formKey = GlobalKey<FormState>();
 
   @override
   void initState() {
