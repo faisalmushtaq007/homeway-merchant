@@ -98,7 +98,10 @@ class _SaveAddonsPageController extends State<SaveAddonsPage> {
         bloc: context.watch<MenuBloc>(),
         listener: (context, state) {
           if (state is NavigateToAddonsMenuState) {
-            context.go(Routes.NEW_ADDONS_GREETING_PAGE);
+            context.pushReplacement(
+              Routes.NEW_ADDONS_GREETING_PAGE,
+              extra: state.addonsEntity,
+            );
           }
         },
         child: BlocBuilder<MenuBloc, MenuState>(
@@ -180,11 +183,14 @@ class _SaveAddonsPageView extends WidgetView<SaveAddonsPage, _SaveAddonsPageCont
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   Expanded(
+                    flex: 3,
                     child: Form(
                       key: _SaveAddonsPageController.saveAddonsFormKey,
                       child: ListView(
                         controller: state.scrollController,
+                        shrinkWrap: true,
                         children: [
+                          const AnimatedGap(12, duration: Duration(milliseconds: 500)),
                           AppTextFieldWidget(
                             controller: state.addonsNameTextEditingController,
                             textDirection: serviceLocator<LanguageController>().targetTextDirection,
@@ -352,7 +358,7 @@ class _SaveAddonsPageView extends WidgetView<SaveAddonsPage, _SaveAddonsPageCont
                       ),
                     ),
                   ),
-                  const SizedBox(width: 14),
+                  const AnimatedGap(14, duration: Duration(milliseconds: 500)),
                   ElevatedButton(
                     onPressed: () {
                       if (_SaveAddonsPageController.saveAddonsFormKey.currentState!.validate()) {

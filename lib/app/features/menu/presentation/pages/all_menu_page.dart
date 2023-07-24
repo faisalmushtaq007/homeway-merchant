@@ -124,7 +124,13 @@ class _AllMenuPageView extends WidgetView<AllMenuPage, _AllMenuPageController> {
                   if (state.listOfAllSelectedMenus.isEmpty) {
                     return;
                   } else {
-                    final result = await context.push(Routes.ALL_STORES_PAGE, extra: state.listOfAllSelectedMenus.toList());
+                    final result = await context.push(
+                      Routes.BIND_MENU_WITH_STORE_PAGE,
+                      extra: {
+                        'allMenu': state.listOfAllMenus.toList(),
+                        'selectedMenus': state.listOfAllSelectedMenus.toList(),
+                      },
+                    );
                   }
                 },
                 child: const Icon(
@@ -213,6 +219,7 @@ class _AllMenuPageView extends WidgetView<AllMenuPage, _AllMenuPageController> {
                         //dense: true,
                         title: IntrinsicHeight(
                           child: Row(
+                            textDirection: serviceLocator<LanguageController>().targetTextDirection,
                             children: [
                               Text(
                                 'Your Menus',
@@ -244,43 +251,23 @@ class _AllMenuPageView extends WidgetView<AllMenuPage, _AllMenuPageController> {
                       const AnimatedGap(12, duration: Duration(milliseconds: 500)),
                       Expanded(
                         flex: 3,
-                        child: CustomScrollView(
-                          controller: state.innerScrollController,
-                          physics: const ClampingScrollPhysics(),
-                          //shrinkWrap: true,
-                          slivers: [
-                            SliverList.separated(
-                              itemBuilder: (context, index) {
-                                return MenuCardWidget(
-                                  menuEntity: state.listOfAllMenus[index],
-                                  currentIndex: index,
-                                  listOfAllMenuEntities: state.listOfAllMenus.toList(),
-                                  onSelectionChanged: (List<MenuEntity> listOfAllMenuEntities) {
-                                    state.onSelectionChanged(listOfAllMenuEntities.toList());
-                                  },
-                                  listOfAllSelectedMenuEntities: state.listOfAllSelectedMenus.toList(),
-                                );
+                        child: ListView.separated(
+                          itemBuilder: (context, index) {
+                            return MenuCardWidget(
+                              key: ValueKey(index),
+                              menuEntity: state.listOfAllMenus[index],
+                              currentIndex: index,
+                              listOfAllMenuEntities: state.listOfAllMenus.toList(),
+                              onSelectionChanged: (List<MenuEntity> listOfAllMenuEntities) {
+                                state.onSelectionChanged(listOfAllMenuEntities.toList());
                               },
-                              itemCount: state.listOfAllMenus.length,
-                              separatorBuilder: (context, index) {
-                                return const Divider(thickness: 0.25, color: Color.fromRGBO(127, 129, 132, 1));
-                              },
-                              /*delegate: SliverChildBuilderDelegate(
-                                (context, index) {
-                                  return MenuCardWidget(
-                                    menuEntity: state.listOfAllMenus[index],
-                                    currentIndex: index,
-                                    listOfAllMenuEntities: state.listOfAllMenus.toList(),
-                                    onSelectionChanged: (List<MenuEntity> listOfAllMenuEntities) {
-                                      state.onSelectionChanged(listOfAllMenuEntities.toList());
-                                    },
-                                    listOfAllSelectedMenuEntities: state.listOfAllSelectedMenus.toList(),
-                                  );
-                                },
-                                childCount: state.listOfAllMenus.length,
-                              ),*/
-                            ),
-                          ],
+                              listOfAllSelectedMenuEntities: state.listOfAllSelectedMenus.toList(),
+                            );
+                          },
+                          itemCount: state.listOfAllMenus.length,
+                          separatorBuilder: (context, index) {
+                            return const Divider(thickness: 0.25, color: Color.fromRGBO(127, 129, 132, 1));
+                          },
                         ),
                       ),
                       const AnimatedGap(12, duration: Duration(milliseconds: 500)),

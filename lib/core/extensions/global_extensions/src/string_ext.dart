@@ -257,3 +257,34 @@ extension StringExtensions on String? {
     return s == 'true' || s == 'yes' || n > 0;
   }
 }
+
+extension StringEnhanceExtensions on String {
+  String? getInitials({int limitTo = 2}) {
+    var buffer = StringBuffer();
+    var wordList = trim().split(' ');
+
+    if (isEmpty) {
+      return this;
+    }
+
+    // Take first character if string is a single word
+    if (wordList.length <= 1) {
+      return characters.first;
+    }
+
+    /// Fallback to actual word count if
+    /// expected word count is greater
+    if (limitTo > wordList.length) {
+      for (var i = 0; i < wordList.length; i++) {
+        buffer.write(wordList[i][0]);
+      }
+      return buffer.toString();
+    }
+
+    // Handle all other cases
+    for (var i = 0; i < (wordList.length); i++) {
+      buffer.write(wordList[i][0]);
+    }
+    return buffer.toString();
+  }
+}

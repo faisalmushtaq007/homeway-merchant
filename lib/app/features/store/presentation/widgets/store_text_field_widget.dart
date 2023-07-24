@@ -1,5 +1,4 @@
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+part of 'package:homemakers_merchant/app/features/store/index.dart';
 
 class StoreTextFieldWidget extends StatelessWidget {
   const StoreTextFieldWidget({

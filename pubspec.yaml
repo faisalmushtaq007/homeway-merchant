@@ -111,6 +111,7 @@ dependencies:
       url: 'https://github.com/prasant10050/image_crop_rotate_flip.git'
       ref: master
   open_settings_plus: ^0.1.0
+  palette_generator: ^0.3.3+2
   path: ^1.8.3
   path_provider: ^2.0.15
   permission_handler:

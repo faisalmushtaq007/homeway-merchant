@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
-import 'package:homemakers_merchant/app/features/dashboard/domain/entities/primary_dashboard_menu_entity.dart';
+import 'package:homemakers_merchant/app/features/dashboard/domain/entities/primary_dashboard_entity.dart';
 import 'package:homemakers_merchant/app/features/dashboard/presentation/widgets/primary_dashboard_drawer.dart';
 import 'package:homemakers_merchant/app/features/dashboard/presentation/widgets/primary_dashboard_menu_card.dart';
 import 'package:homemakers_merchant/app/features/permission/presentation/bloc/permission_bloc.dart';
@@ -30,7 +30,7 @@ class PrimaryDashboardPage extends StatefulWidget {
     this.primaryDashboardMenuEntities = const [],
   });
 
-  final List<StoreEntity> primaryDashboardMenuEntities;
+  final List<PrimaryDashboardEntity> primaryDashboardMenuEntities;
 
   @override
   _PrimaryDashboardPageState createState() => _PrimaryDashboardPageState();
@@ -38,14 +38,14 @@ class PrimaryDashboardPage extends StatefulWidget {
 
 class _PrimaryDashboardPageState extends State<PrimaryDashboardPage> {
   final ScrollController scrollController = ScrollController();
-  List<StoreEntity> primaryDashboardMenuEntities = [];
+  List<PrimaryDashboardEntity> primaryDashboardMenuEntities = [];
 
   @override
   void initState() {
     super.initState();
     primaryDashboardMenuEntities.clear();
     primaryDashboardMenuEntities.add(
-      StoreEntity(
+      PrimaryDashboardEntity(
         title: 'Upload Documents',
         titleID: 0,
         onPressed: () {},
@@ -56,7 +56,7 @@ class _PrimaryDashboardPageState extends State<PrimaryDashboardPage> {
       ),
     );
     primaryDashboardMenuEntities.add(
-      StoreEntity(
+      PrimaryDashboardEntity(
         title: 'Payment details',
         titleID: 1,
         onPressed: () {},
@@ -67,11 +67,11 @@ class _PrimaryDashboardPageState extends State<PrimaryDashboardPage> {
       ),
     );
     primaryDashboardMenuEntities.add(
-      StoreEntity(
+      PrimaryDashboardEntity(
         title: 'Store',
         titleID: 2,
-        onPressed: () {
-          context.push(Routes.ALL_STORES_PAGE);
+        onPressed: () async {
+          final navigateToStorePage = await context.push(Routes.ALL_STORES_PAGE);
         },
         leading: const Icon(
           Icons.store,
@@ -80,10 +80,12 @@ class _PrimaryDashboardPageState extends State<PrimaryDashboardPage> {
       ),
     );
     primaryDashboardMenuEntities.add(
-      StoreEntity(
-        title: 'Food Menu',
+      PrimaryDashboardEntity(
+        title: 'Menu',
         titleID: 3,
-        onPressed: () {},
+        onPressed: () async {
+          final navigateToMenuPage = await context.push(Routes.ALL_MENU_PAGE);
+        },
         leading: const Icon(
           Icons.restaurant_menu,
         ),

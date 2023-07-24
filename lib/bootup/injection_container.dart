@@ -55,11 +55,17 @@ void _setupGetIt() {
 void _setUpModel() {
   serviceLocator.registerLazySingleton<UserModel>(UserModel.new);
   serviceLocator.registerLazySingleton<BusinessProfileEntity>(BusinessProfileEntity.new);
+  // Addons entity
+  serviceLocator.registerLazySingleton<Addons>(
+    Addons.new,
+  );
+  serviceLocator.registerLazySingleton<List<Addons>>(() => <Addons>[]);
   // Menu entity
   serviceLocator.registerLazySingleton<MenuEntity>(
     MenuEntity.new,
   );
   serviceLocator.registerLazySingleton<List<MenuEntity>>(() => <MenuEntity>[]);
+
   // Store entity
   serviceLocator.registerLazySingleton<StoreEntity>(
     () => StoreEntity(

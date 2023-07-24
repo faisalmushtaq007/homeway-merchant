@@ -5,6 +5,10 @@ import 'dart:typed_data';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:homemakers_merchant/bootup/injection_container.dart';
+import 'package:homemakers_merchant/config/translation/language_controller.dart';
+import 'package:homemakers_merchant/core/extensions/app_extension.dart';
+import 'package:homemakers_merchant/core/extensions/global_extensions/dart_extensions.dart';
 import 'package:lottie/lottie.dart';
 
 import 'default_error_widget.dart';
@@ -23,6 +27,7 @@ enum ImageType {
   gifAsset,
   gifMemory,
   GifNetwork,
+  text,
 }
 
 enum ImageShape { circle, rectangle, oval, none }
@@ -217,37 +222,46 @@ class ImageHelper extends StatelessWidget {
   /// box border surounded image
   final BoxBorder? boxBorder;
 
-  ImageHelper(
-      {required this.image,
-      required this.imageType,
-      this.imageShape = ImageShape.none,
-      this.color,
-      this.height,
-      this.width,
-      this.boxFit = BoxFit.contain,
-      this.errorBuilder,
-      this.filterQuality = FilterQuality.low,
-      this.loaderBuilder,
-      this.blendMode = BlendMode.srcIn,
-      this.alignment = Alignment.center,
-      this.scale = 1.0,
-      this.borderRadius,
-      this.defaultLoaderColor,
-      this.defaultErrorBuilderColor,
-      this.fadeInAnime = Curves.easeIn,
-      this.fadeOutAnime = Curves.easeOut,
-      this.fadeInDuration = const Duration(milliseconds: 300),
-      this.fadeOutDuration = const Duration(milliseconds: 300),
-      this.opacity,
-      this.imageRepeat = ImageRepeat.noRepeat,
-      this.excludeFromSemantics = false,
-      this.centerSlice,
-      this.gaplessPlayback = false,
-      this.isAntiAlias = false,
-      this.matchTextDirection = false,
-      this.semanticLabel,
-      this.frameRate = 15,
-      this.boxBorder});
+  /// show this text (only for one/two letter of one/two word(s)) when image is not available
+  final String? placeholderText;
+  final TextStyle? placeholderTextStyle;
+  final Color? placeholderBackgroundColor;
+
+  ImageHelper({
+    required this.image,
+    required this.imageType,
+    this.imageShape = ImageShape.none,
+    this.color,
+    this.height,
+    this.width,
+    this.boxFit = BoxFit.contain,
+    this.errorBuilder,
+    this.filterQuality = FilterQuality.low,
+    this.loaderBuilder,
+    this.blendMode = BlendMode.srcIn,
+    this.alignment = Alignment.center,
+    this.scale = 1.0,
+    this.borderRadius,
+    this.defaultLoaderColor,
+    this.defaultErrorBuilderColor,
+    this.fadeInAnime = Curves.easeIn,
+    this.fadeOutAnime = Curves.easeOut,
+    this.fadeInDuration = const Duration(milliseconds: 300),
+    this.fadeOutDuration = const Duration(milliseconds: 300),
+    this.opacity,
+    this.imageRepeat = ImageRepeat.noRepeat,
+    this.excludeFromSemantics = false,
+    this.centerSlice,
+    this.gaplessPlayback = false,
+    this.isAntiAlias = false,
+    this.matchTextDirection = false,
+    this.semanticLabel,
+    this.frameRate = 15,
+    this.boxBorder,
+    this.placeholderText,
+    this.placeholderTextStyle,
+    this.placeholderBackgroundColor,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -266,7 +280,13 @@ class ImageHelper extends StatelessWidget {
   Widget get _rounded => Container(
         clipBehavior: Clip.antiAlias,
         decoration: BoxDecoration(borderRadius: borderRadius, border: boxBorder),
-        child: Container(child: _loadImage, clipBehavior: Clip.hardEdge, decoration: BoxDecoration(borderRadius: borderRadius)),
+        child: Container(
+            child: _loadImage,
+            clipBehavior: Clip.hardEdge,
+            decoration: BoxDecoration(
+              borderRadius: borderRadius,
+              color: placeholderBackgroundColor,
+            )),
       );
 
   Widget get _circle => Container(
@@ -277,7 +297,11 @@ class ImageHelper extends StatelessWidget {
         child: Container(
           child: _loadImage,
           clipBehavior: Clip.antiAlias,
-          decoration: BoxDecoration(shape: BoxShape.circle, border: boxBorder),
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            border: boxBorder,
+            color: placeholderBackgroundColor,
+          ),
         ),
       );
 
@@ -308,6 +332,8 @@ class ImageHelper extends StatelessWidget {
         return _jsonNetwork;
       case ImageType.JsonMemory:
         return _jsonMemory;
+      case ImageType.text:
+        return _text;
       case _:
         return const Offstage();
     }
@@ -436,6 +462,19 @@ class ImageHelper extends StatelessWidget {
 
   Widget get _jsonFile => Lottie.file(image,
       width: width, alignment: alignment, errorBuilder: (context, error, stackTrace) => _errorBuilder, repeat: true, fit: boxFit, height: height);
+
+  Widget get _text => SizedBox(
+        height: height,
+        width: width,
+        child: Center(
+          child: Text(
+            '${(placeholderText ?? '').getInitials()}',
+            maxLines: 1,
+            textDirection: serviceLocator<LanguageController>().targetTextDirection,
+            style: placeholderTextStyle,
+          ),
+        ),
+      );
 
   List<int> get _gifCodeUnite => image.codeUnits;
 

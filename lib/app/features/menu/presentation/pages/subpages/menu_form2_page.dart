@@ -851,8 +851,8 @@ class _MenuForm2PageState extends State<MenuForm2Page> with AutomaticKeepAliveCl
                     crossFadeState: (_selectedAddons.isNotEmpty) ? CrossFadeState.showFirst : CrossFadeState.showSecond,
                     firstChild: MultiSelectAddonsFormField(
                       key: const Key('store-menu-multiSelectAvailableMenuAddons-formfield'),
-                      onSelectionChanged: (List<Addons> selectedMenuPortions) {
-                        _selectedAddons = List<Addons>.from(selectedMenuPortions);
+                      onSelectionChanged: (List<Addons> selectedAddons) {
+                        _selectedAddons = List<Addons>.from(selectedAddons);
                         setState(() {});
                         serviceLocator<MenuEntity>().addons = _selectedAddons.toList();
                         context.read<MenuBloc>().add(
@@ -908,7 +908,7 @@ class _MenuForm2PageState extends State<MenuForm2Page> with AutomaticKeepAliveCl
                       textDirection: serviceLocator<LanguageController>().targetTextDirection,
                     ).translate(),
                     onPressed: () async {
-                      final List<Addons>? addons = await context.push<List<Addons>>(Routes.MENU_ADDONS_PAGE);
+                      final List<Addons>? addons = await context.push<List<Addons>>(Routes.ALL_ADDONS_PAGE);
                       if (addons != null && addons.isNotEmpty) {
                         setState(() {
                           _selectedAddons = List<Addons>.from(addons.toList());

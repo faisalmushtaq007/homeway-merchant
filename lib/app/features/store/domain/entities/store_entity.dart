@@ -21,6 +21,7 @@ class StoreEntity with AppEquatable {
     this.storeAcceptedPaymentModes = const [],
     this.storeWorkingDays = const [],
     this.menuEntities = const [],
+    this.hasNewStore = false,
   });
 
   factory StoreEntity.fromMap(Map<String, dynamic> map) {
@@ -41,6 +42,7 @@ class StoreEntity with AppEquatable {
       storeClosingTime: map['storeClosingTime'] as String,
       storeID: map['storeID'] as int,
       menuEntities: map['menuEntities'] as List<MenuEntity>,
+      hasNewStore: map['hasNewStore'] as bool,
     );
   }
 
@@ -60,6 +62,7 @@ class StoreEntity with AppEquatable {
   List<StoreWorkingDayAndTime> storeWorkingDays;
   int storeID;
   List<MenuEntity> menuEntities;
+  bool hasNewStore;
 
   @override
   bool get cacheHash => true;
@@ -82,6 +85,7 @@ class StoreEntity with AppEquatable {
         storeClosingTime,
         storeID,
         menuEntities,
+        hasNewStore,
       ];
 
   StoreEntity copyWith({
@@ -101,6 +105,7 @@ class StoreEntity with AppEquatable {
     String? storeClosingTime,
     int? storeID,
     List<MenuEntity>? menuEntities,
+    bool? hasNewStore,
   }) {
     return StoreEntity(
       storeName: storeName ?? this.storeName,
@@ -119,6 +124,7 @@ class StoreEntity with AppEquatable {
       storeClosingTime: storeClosingTime ?? this.storeClosingTime,
       storeID: storeID ?? this.storeID,
       menuEntities: menuEntities ?? this.menuEntities,
+      hasNewStore: hasNewStore ?? this.hasNewStore,
     );
   }
 
@@ -140,6 +146,7 @@ class StoreEntity with AppEquatable {
       'storeClosingTime': this.storeClosingTime,
       'storeID': this.storeID,
       'menuEntities': this.menuEntities,
+      'hasNewStore': this.hasNewStore,
     };
   }
 }

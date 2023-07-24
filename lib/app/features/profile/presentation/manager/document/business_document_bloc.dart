@@ -427,38 +427,39 @@ class BusinessDocumentBloc extends Bloc<BusinessDocumentEvent, BusinessDocumentS
             byteData: event.byteData,
           ));
           return;
-        }
-        await Future.delayed(
-          const Duration(seconds: 1),
-          () {},
-        );
-        emit(SaveCropDocumentHideProcessingState(
-          documentType: event.documentType,
-        ));
-        await Future.delayed(
-          const Duration(milliseconds: 500),
-          () {},
-        );
-        //await processImage(InputImage.fromFile(File(filePath)));
-        //await Future.delayed(const Duration(milliseconds: 500));
-        emit(
-          SaveCropDocumentSuccessState(
+        } else {
+          await Future.delayed(
+            const Duration(seconds: 1),
+            () {},
+          );
+          emit(SaveCropDocumentHideProcessingState(
             documentType: event.documentType,
+          ));
+          await Future.delayed(
+            const Duration(milliseconds: 500),
+            () {},
+          );
+          //await processImage(InputImage.fromFile(File(filePath)));
+          //await Future.delayed(const Duration(milliseconds: 500));
+          emit(
+            SaveCropDocumentSuccessState(
+              documentType: event.documentType,
 
-            bytes: event.bytes,
-            file: event.file,
-            isCropping: event.isCropping,
-            xfile: event.xfile,
-            //imageInfo: imageInfo,
-            message: 'Your selected document is saved in this path: $filePath and successfully uploaded into our server',
-            newFilePath: filePath,
-            image: event.image,
-            byteData: event.byteData,
-            newFile: File(filePath),
-            newXFile: XFile(filePath),
-          ),
-        );
-        return;
+              bytes: event.bytes,
+              file: event.file,
+              isCropping: event.isCropping,
+              xfile: event.xfile,
+              //imageInfo: imageInfo,
+              message: 'Your selected document is saved in this path: $filePath and successfully uploaded into our server',
+              newFilePath: filePath,
+              image: event.image,
+              byteData: event.byteData,
+              newFile: File(filePath),
+              newXFile: XFile(filePath),
+            ),
+          );
+          return;
+        }
       }
     } catch (e, s) {
       emit(SaveCropDocumentErrorState(

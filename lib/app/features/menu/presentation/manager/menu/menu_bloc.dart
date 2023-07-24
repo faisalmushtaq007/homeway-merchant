@@ -142,16 +142,19 @@ class MenuBloc extends Bloc<MenuEvent, MenuState> {
 
   FutureOr<void> _saveAddons(SaveAddons event, Emitter<MenuState> emit) async {
     final newIndex = localMenuAddons.toList().length - 1;
-    Addons currentSaveAddons = event.addonsEntity;
+    final Addons currentSaveAddons = event.addonsEntity;
     if (event.hasNewAddons) {
-      var currentCacheSaveAddons = currentSaveAddons.copyWith(
+      final currentCacheSaveAddons = currentSaveAddons.copyWith(
         addonsID: newIndex.toString(),
       );
+      // Save into local menu addons list
+      localMenuAddons.insert(0, currentCacheSaveAddons);
       emit(
         SaveAddonsState(addonsEntity: currentCacheSaveAddons, hasNewAddons: event.hasNewAddons),
       );
       await Future.delayed(const Duration(milliseconds: 500), () {});
       emit(NavigateToAddonsMenuState(addonsEntity: currentCacheSaveAddons, hasNewAddons: event.hasNewAddons));
+      add(GetAllAddons());
     } else {
       emit(
         SaveAddonsState(addonsEntity: currentSaveAddons, hasNewAddons: event.hasNewAddons),
@@ -281,7 +284,54 @@ class MenuBloc extends Bloc<MenuEvent, MenuState> {
           menuStateStatus: MenuStateStatus.loading,
         ),
       );
-      final List<MenuEntity> listOfMenus = serviceLocator<List<MenuEntity>>();
+      //final List<MenuEntity> listOfMenus = serviceLocator<List<MenuEntity>>();
+      final List<MenuEntity> listOfMenus = [
+        MenuEntity(
+          menuName: 'Soya Chilli',
+          menuCategories: [
+            Category(
+              title: 'Arabic',
+            )
+          ],
+          menuImages: [
+            MenuImage(
+                imageId: '0',
+                assetPath:
+                    'https://img.freepik.com/premium-photo/dum-handi-chicken-biryani-is-prepared-earthen-clay-pot-called-haandi-popular-indian-non-vegetarian-food_466689-52225.jpg',
+                assetExtension: '.jpg')
+          ],
+        ),
+        MenuEntity(
+          menuName: 'Briyani',
+          menuCategories: [
+            Category(
+              title: 'Arabic',
+            )
+          ],
+          menuImages: [
+            MenuImage(
+                imageId: '1',
+                assetPath:
+                    'https://img.freepik.com/premium-photo/chicken-dhum-biriyani-using-jeera-rice-spices-arranged-earthen-ware_527904-513.jpg?size=626&ext=jpg',
+                assetExtension: '.jpg')
+          ],
+        ),
+        MenuEntity(
+          menuName: 'Paneer Chilli',
+          menuCategories: [
+            Category(
+              title: 'Arabic',
+            )
+          ],
+          menuImages: [
+            MenuImage(
+                imageId: '2',
+                assetPath:
+                    'https://img.freepik.com/premium-photo/dum-handi-chicken-biryani-is-prepared-earthen-clay-pot-called-haandi-popular-indian-non-vegetarian-food_466689-52414.jpg',
+                assetExtension: '.jpg')
+          ],
+        ),
+      ];
       Future.delayed(const Duration(seconds: 1), () {});
       if (listOfMenus.isEmpty) {
         emit(

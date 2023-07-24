@@ -26,9 +26,7 @@ import 'package:homemakers_merchant/app/features/profile/presentation/pages/docu
 import 'package:homemakers_merchant/app/features/profile/presentation/pages/document/upload_document_page.dart';
 import 'package:homemakers_merchant/app/features/profile/presentation/pages/business/select_business_type_page.dart';
 import 'package:homemakers_merchant/app/features/store/domain/entities/store_entity.dart';
-import 'package:homemakers_merchant/app/features/store/presentation/pages/all_stores_page.dart';
-import 'package:homemakers_merchant/app/features/store/presentation/pages/new_store_greeting_page.dart';
-import 'package:homemakers_merchant/app/features/store/presentation/pages/save_store_page.dart';
+import 'package:homemakers_merchant/app/features/store/index.dart';
 
 part 'app_routes.dart';
 
@@ -64,7 +62,7 @@ class AppRouter {
       GoRoute(
           path: Routes.AUTH_OTP_VERIFICATION,
           builder: (context, state) => OTPVerificationPage(
-                phoneNumber: jsonDecode(state.extra as String)['mobileNumber'].toString(), //Testing purpose'+966 56 135 6754',
+                phoneNumber: jsonDecode(state.extra! as String)['mobileNumber'].toString(), //Testing purpose'+966 56 135 6754',
               )),
       GoRoute(
         path: Routes.TERMS_AND_CONDITIONS,
@@ -88,7 +86,7 @@ class AppRouter {
       ),
       GoRoute(
         path: Routes.UPLOAD_DOCUMENT_PAGE,
-        builder: (context, state) => UploadDocumentPage(documentType: DocumentType.values.byName(jsonDecode(state.extra as String)['documentType'])),
+        builder: (context, state) => UploadDocumentPage(documentType: DocumentType.values.byName(jsonDecode(state.extra! as String)['documentType'])),
       ),
       GoRoute(
         path: Routes.ADDRESS_FORM_PAGE,
@@ -120,7 +118,11 @@ class AppRouter {
       ),
       GoRoute(
         path: Routes.NEW_STORE_GREETING_PAGE,
-        builder: (context, state) => NewStoreGreetingPage(storeEntity: state.extra as StoreEntity),
+        builder: (context, state) {
+          return NewStoreGreetingPage(
+            storeEntity: state.extra! as StoreEntity,
+          );
+        },
       ),
       GoRoute(
         path: Routes.PICKUP_LOCATION_FROM_MAP_PAGE,
@@ -141,7 +143,7 @@ class AppRouter {
       ),
       GoRoute(
         path: Routes.NEW_MENU_GREETING_PAGE,
-        builder: (context, state) => NewMenuGreetingPage(menuEntity: state.extra as MenuEntity),
+        builder: (context, state) => NewMenuGreetingPage(menuEntity: state.extra! as MenuEntity),
       ),
       GoRoute(
         path: Routes.MENU_DESCRIPTION_PAGE,
@@ -168,7 +170,7 @@ class AppRouter {
         builder: (context, state) => const MenuForm5Page(),
       ),
       GoRoute(
-        path: Routes.MENU_ADDONS_PAGE,
+        path: Routes.ALL_ADDONS_PAGE,
         builder: (context, state) => const MenuAllAddonsPage(),
       ),
       GoRoute(
@@ -177,21 +179,33 @@ class AppRouter {
       ),
       GoRoute(
         path: Routes.NEW_ADDONS_GREETING_PAGE,
-        builder: (context, state) => NewAddonsGreetingPage(addonsEntity: state.extra as Addons),
+        builder: (context, state) => NewAddonsGreetingPage(addonsEntity: state.extra! as Addons),
       ),
       GoRoute(
-        path: Routes.BIND_MENU_WITH_STORE_PAGE,
-        builder: (context, state) => BindMenuWithStore(
-          listOfAllMenus: state.extra as List<MenuEntity>,
-          listOfAllSelectedMenus: state.extra as List<MenuEntity>,
-        ),
+          path: Routes.BIND_MENU_WITH_STORE_PAGE,
+          builder: (context, state) {
+            final Map<String, dynamic> args = state.extra! as Map<String, dynamic>;
+            return BindMenuWithStore(
+              listOfAllMenus: args['allMenu']! as List<MenuEntity>,
+              listOfAllSelectedMenus: args['selectedMenus']! as List<MenuEntity>,
+            );
+          }),
+      GoRoute(
+          path: Routes.BIND_MENU_WITH_STORE_GREETING_PAGE,
+          builder: (context, state) {
+            final Map<String, dynamic> args = state.extra! as Map<String, dynamic>;
+            return BindMenuWithStoreGreetingPage(
+              menuEntities: args['allMenu']! as List<MenuEntity>,
+              storeEntities: args['allStore']! as List<StoreEntity>,
+            );
+          }),
+      GoRoute(
+        path: Routes.STORE_DETAILS_PAGE,
+        builder: (context, state) => const StoreDetailsPage(),
       ),
       GoRoute(
-        path: Routes.BIND_MENU_WITH_STORE_GREETING_PAGE,
-        builder: (context, state) => BindMenuWithStoreGreetingPage(
-          menuEntities: state.extra as List<MenuEntity>,
-          storeEntities: state.extra as List<StoreEntity>,
-        ),
+        path: Routes.MENU_DETAILS_PAGE,
+        builder: (context, state) => const MenuDetailsPage(),
       ),
     ],
   );

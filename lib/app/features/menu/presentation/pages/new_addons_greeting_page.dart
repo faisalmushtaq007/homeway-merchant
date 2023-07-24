@@ -177,12 +177,12 @@ class NewAddonsGreetingPage extends StatelessWidget {
                             backgroundColor: Colors.white,
                           ),
                           child: Text(
-                            'Go to Dashboard',
+                            'Show All Addons',
                             style: TextStyle(color: Color.fromRGBO(42, 45, 50, 1)),
                             textDirection: serviceLocator<LanguageController>().targetTextDirection,
                           ).translate(),
                           onPressed: () {
-                            context.go(Routes.PRIMARY_DASHBOARD_PAGE);
+                            context.pushReplacement(Routes.ALL_ADDONS_PAGE);
                             return;
                           },
                         ),
@@ -193,11 +193,11 @@ class NewAddonsGreetingPage extends StatelessWidget {
                         end: 0,
                         child: ElevatedButton(
                           child: Text(
-                            'Add Food Menu',
+                            'Add New Addons',
                             textDirection: serviceLocator<LanguageController>().targetTextDirection,
                           ).translate(),
                           onPressed: () {
-                            context.go(Routes.SAVE_MENU_PAGE);
+                            context.pushReplacement(Routes.SAVE_ADDONS_PAGE);
                             return;
                           },
                         ),

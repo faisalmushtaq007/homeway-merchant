@@ -67,11 +67,13 @@ abstract class Routes {
   static const String MENU_FORM3_PAGE = _Paths.MENU_FORM3_PAGE;
   static const String MENU_FORM4_PAGE = _Paths.MENU_FORM4_PAGE;
   static const String MENU_FORM5_PAGE = _Paths.MENU_FORM5_PAGE;
-  static const String MENU_ADDONS_PAGE = _Paths.MENU_ADDONS_PAGE;
+  static const String ALL_ADDONS_PAGE = _Paths.MENU_ADDONS_PAGE;
   static const String SAVE_ADDONS_PAGE = _Paths.SAVE_ADDONS_PAGE;
   static const String NEW_ADDONS_GREETING_PAGE = _Paths.NEW_ADDONS_GREETING_PAGE;
   static const String BIND_MENU_WITH_STORE_PAGE = _Paths.BIND_MENU_WITH_STORE;
   static const String BIND_MENU_WITH_STORE_GREETING_PAGE = _Paths.BIND_MENU_WITH_STORE_GREETING_PAGE;
+  static const String STORE_DETAILS_PAGE = _Paths.STORE_DETAILS_PAGE;
+  static const String MENU_DETAILS_PAGE = _Paths.MENU_DETAILS_PAGE;
 }
 
 abstract class _Paths {
@@ -143,4 +145,6 @@ abstract class _Paths {
   static const String NEW_ADDONS_GREETING_PAGE = '/new-addons-greeting';
   static const String BIND_MENU_WITH_STORE = '/bind-menu-with-store';
   static const String BIND_MENU_WITH_STORE_GREETING_PAGE = '/menu-save-with-store-greeting';
+  static const String STORE_DETAILS_PAGE = '/store-details';
+  static const String MENU_DETAILS_PAGE = '/menu-details';
 }

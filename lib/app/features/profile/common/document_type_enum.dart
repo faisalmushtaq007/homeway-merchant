@@ -11,10 +11,13 @@ enum DocumentType {
     documentTypeID: 3,
     documentTypeName: 'Selfie',
   ),
+  other(
+    documentTypeID: 4,
+    documentTypeName: 'Other',
+  ),
   ;
 
-  const DocumentType(
-      {required this.documentTypeName, required this.documentTypeID});
+  const DocumentType({required this.documentTypeName, required this.documentTypeID});
 
   final int documentTypeID;
   final String documentTypeName;

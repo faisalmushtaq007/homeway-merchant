@@ -1,8 +1,4 @@
-import 'package:flutter/material.dart';
-import 'package:homemakers_merchant/app/features/store/domain/entities/store_entity.dart';
-import 'package:homemakers_merchant/bootup/injection_container.dart';
-import 'package:homemakers_merchant/config/translation/language_controller.dart';
-import 'package:homemakers_merchant/core/extensions/app_extension.dart';
+part of 'package:homemakers_merchant/app/features/store/index.dart';
 
 class MultiSelectAvailableWorkingDaysFormField extends FormField<List<StoreWorkingDayAndTime>> {
   final Widget title;

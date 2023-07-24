@@ -134,6 +134,7 @@ class _MenuAllAddonsPageView extends WidgetView<MenuAllAddonsPage, _MenuAllAddon
         ),
         child: Scaffold(
           appBar: AppBar(
+            automaticallyImplyLeading: true,
             title: Text(
               'All Addons',
               textDirection: serviceLocator<LanguageController>().targetTextDirection,
@@ -268,8 +269,11 @@ class _MenuAllAddonsPageView extends WidgetView<MenuAllAddonsPage, _MenuAllAddon
                           start: 0,
                           end: 0,
                           child: ElevatedButton(
-                            onPressed: () {
-                              context.push(Routes.SAVE_ADDONS_PAGE);
+                            onPressed: () async {
+                              final navigateToSaveAddonsPage = await context.push<Addons>(Routes.SAVE_ADDONS_PAGE);
+                              if (navigateToSaveAddonsPage != null) {
+                                // Body
+                              }
                               return;
                             },
                             child: Text(

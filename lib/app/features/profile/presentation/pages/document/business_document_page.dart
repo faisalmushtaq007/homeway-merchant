@@ -382,6 +382,7 @@ class _BusinessDocumentPageState extends State<BusinessDocumentPage> with Single
                                                 padding: const EdgeInsetsDirectional.only(top: 12.0),
                                                 child: ElevatedButton.icon(
                                                   onPressed: () async {
+                                                    // Navigate to document picker page
                                                     final List<dynamic>? result = await context.push<List<dynamic>>(
                                                       Routes.UPLOAD_DOCUMENT_PAGE,
                                                       extra: jsonEncode(
@@ -390,7 +391,7 @@ class _BusinessDocumentPageState extends State<BusinessDocumentPage> with Single
                                                         },
                                                       ),
                                                     );
-
+                                                    // Check is Result exists or not
                                                     if (result != null && result.isNotEmpty) {
                                                       var currentIndex = index;
                                                       if ((index + 1) < documentTypes.length) {

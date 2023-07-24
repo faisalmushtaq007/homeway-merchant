@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
-import 'package:homemakers_merchant/app/features/dashboard/domain/entities/primary_dashboard_menu_entity.dart';
+import 'package:homemakers_merchant/app/features/dashboard/domain/entities/primary_dashboard_entity.dart';
 import 'package:homemakers_merchant/app/features/dashboard/presentation/widgets/primary_dashboard_drawer.dart';
 import 'package:homemakers_merchant/app/features/permission/presentation/bloc/permission_bloc.dart';
 import 'package:homemakers_merchant/bootup/injection_container.dart';
@@ -24,7 +24,7 @@ import 'package:go_router/go_router.dart';
 class PrimaryDashboardMenuCard extends StatelessWidget {
   const PrimaryDashboardMenuCard({required this.primaryDashboardMenuEntity, super.key});
 
-  final StoreEntity primaryDashboardMenuEntity;
+  final PrimaryDashboardEntity primaryDashboardMenuEntity;
 
   @override
   Widget build(BuildContext context) {
@@ -63,7 +63,7 @@ class PrimaryDashboardMenuCard extends StatelessWidget {
             ),
           ),
           const AnimatedGap(
-            10,
+            8,
             duration: Duration(milliseconds: 500),
           ),
         ],

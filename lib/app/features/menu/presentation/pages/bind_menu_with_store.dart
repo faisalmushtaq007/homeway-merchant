@@ -165,10 +165,16 @@ class _BindMenuWithStoreView extends WidgetView<BindMenuWithStore, _BindMenuWith
               child: FloatingActionButton(
                 backgroundColor: const Color.fromRGBO(69, 201, 125, 1.0),
                 onPressed: () async {
-                  if (state.listOfAllSelectedMenus.isEmpty) {
+                  if (state.listOfAllSelectedMenus.isEmpty || state.listOfAllSelectedStores.isEmpty) {
                     return;
                   } else {
-                    final result = await context.push(Routes.ALL_STORES_PAGE, extra: state.listOfAllSelectedMenus.toList());
+                    context.go(
+                      Routes.BIND_MENU_WITH_STORE_GREETING_PAGE,
+                      extra: {
+                        'allMenu': state.listOfAllSelectedMenus.toList(),
+                        'allStore': state.listOfAllSelectedStores.toList(),
+                      },
+                    );
                   }
                 },
                 child: const Icon(
@@ -288,41 +294,42 @@ class _BindMenuWithStoreView extends WidgetView<BindMenuWithStore, _BindMenuWith
                       const AnimatedGap(12, duration: Duration(milliseconds: 500)),
                       Text(
                         'Select Store',
+                        style: context.titleMedium!.copyWith(
+                          fontWeight: FontWeight.w600,
+                        ),
                         textDirection: serviceLocator<LanguageController>().targetTextDirection,
                       ),
                       const AnimatedGap(12, duration: Duration(milliseconds: 500)),
                       Text(
-                        'For Menu',
+                        'For your Menu',
+                        style: context.labelMedium!.copyWith(
+                          fontWeight: FontWeight.w600,
+                          color: context.colorScheme.primary,
+                        ),
                         textDirection: serviceLocator<LanguageController>().targetTextDirection,
                       ),
                       const AnimatedGap(12, duration: Duration(milliseconds: 500)),
                       Expanded(
                         flex: 3,
-                        child: CustomScrollView(
-                          controller: state.innerScrollController,
-                          physics: const ClampingScrollPhysics(),
-                          //shrinkWrap: true,
-                          slivers: [
-                            SliverList.separated(
-                              itemBuilder: (context, index) {
-                                return StoreCardWidget(
-                                  currentIndex: index,
-                                  listOfAllMenuEntities: state.listOfAllMenus.toList(),
-                                  onSelectionChanged: (List<StoreEntity> listOfAllStoreEntities) {
-                                    state.onSelectionChanged(listOfAllStoreEntities.toList());
-                                  },
-                                  listOfAllSelectedMenuEntities: state.listOfAllSelectedMenus.toList(),
-                                  listOfAllSelectedStoreEntities: state.listOfAllSelectedStores.toList(),
-                                  listOfAllStoreEntities: state.listOfAllStores.toList(),
-                                  storeEntity: state.listOfAllStores[index],
-                                );
+                        child: ListView.separated(
+                          itemBuilder: (context, index) {
+                            return StoreCardWidget(
+                              key: ValueKey(index),
+                              currentIndex: index,
+                              listOfAllMenuEntities: state.listOfAllMenus.toList(),
+                              onSelectionChanged: (List<StoreEntity> listOfAllStoreEntities) {
+                                state.onSelectionChanged(listOfAllStoreEntities.toList());
                               },
-                              itemCount: state.listOfAllStores.length,
-                              separatorBuilder: (context, index) {
-                                return const Divider(thickness: 0.25, color: Color.fromRGBO(127, 129, 132, 1));
-                              },
-                            ),
-                          ],
+                              listOfAllSelectedMenuEntities: state.listOfAllSelectedMenus.toList(),
+                              listOfAllSelectedStoreEntities: state.listOfAllSelectedStores.toList(),
+                              listOfAllStoreEntities: state.listOfAllStores.toList(),
+                              storeEntity: state.listOfAllStores[index],
+                            );
+                          },
+                          itemCount: state.listOfAllStores.length,
+                          separatorBuilder: (context, index) {
+                            return const Divider(thickness: 0.25, color: Color.fromRGBO(127, 129, 132, 1));
+                          },
                         ),
                       ),
                       const AnimatedGap(12, duration: Duration(milliseconds: 500)),

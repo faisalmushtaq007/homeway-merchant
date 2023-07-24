@@ -7,10 +7,9 @@ import 'package:homemakers_merchant/app/features/profile/domain/entities/user_en
 import 'package:homemakers_merchant/app/features/profile/presentation/widgets/bank/confirm_bank_information_dialog.dart';
 import 'package:homemakers_merchant/app/features/store/data/local/data_sources/store_local_data.dart';
 import 'package:homemakers_merchant/app/features/store/domain/entities/store_entity.dart';
-import 'package:homemakers_merchant/app/features/store/presentation/widgets/multi_select_store_available_food_preparation_widget.dart';
-import 'package:homemakers_merchant/app/features/store/presentation/widgets/multi_select_store_available_food_types_widget.dart';
-import 'package:homemakers_merchant/app/features/store/presentation/widgets/multi_select_store_available_working_days_widget.dart';
-import 'package:homemakers_merchant/app/features/store/presentation/widgets/store_text_field_widget.dart';
+import 'package:homemakers_merchant/app/features/store/index.dart';
+import 'package:homemakers_merchant/app/features/store/presentation/manager/store_bloc.dart';
+
 import 'package:homemakers_merchant/base/widget_view.dart';
 import 'package:homemakers_merchant/core/constants/global_app_constants.dart';
 import 'package:flex_color_scheme/flex_color_scheme.dart';
@@ -110,3 +109,4 @@ part 'package:homemakers_merchant/app/features/menu/presentation/widgets/multi_s
 part 'package:homemakers_merchant/app/features/menu/presentation/widgets/multi_select_menu_taste_level_widget.dart';
 part 'package:homemakers_merchant/app/features/menu/presentation/widgets/multi_select_menu_taste_type_widget.dart';
 part 'package:homemakers_merchant/app/features/menu/presentation/pages/bind_menu_with_store_greeting_page.dart';
+part 'package:homemakers_merchant/app/features/menu/presentation/pages/menu_details_page.dart';

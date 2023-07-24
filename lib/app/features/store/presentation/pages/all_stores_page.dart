@@ -1,38 +1,4 @@
-import 'dart:io';
-
-import 'package:cross_file/cross_file.dart';
-import 'package:flex_color_scheme/flex_color_scheme.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
-import 'package:homemakers_merchant/app/features/permission/presentation/bloc/permission_bloc.dart';
-import 'package:homemakers_merchant/app/features/store/domain/entities/store_entity.dart';
-import 'package:homemakers_merchant/app/features/store/presentation/manager/store_bloc.dart';
-import 'package:homemakers_merchant/app/features/store/presentation/widgets/store_card.dart';
-import 'package:homemakers_merchant/bootup/injection_container.dart';
-import 'package:homemakers_merchant/config/translation/app_translator.dart';
-import 'package:homemakers_merchant/config/translation/extension/text_extension.dart';
-import 'package:homemakers_merchant/config/translation/language_controller.dart';
-import 'package:homemakers_merchant/config/translation/widgets/language_selection_widget.dart';
-import 'package:homemakers_merchant/core/constants/global_app_constants.dart';
-import 'package:homemakers_merchant/core/constants/store.dart';
-import 'package:homemakers_merchant/core/extensions/app_extension.dart';
-import 'package:homemakers_merchant/shared/states/result_state.dart';
-import 'package:homemakers_merchant/shared/states/widget_state.dart';
-import 'package:homemakers_merchant/shared/widgets/app/app_logo.dart';
-import 'package:homemakers_merchant/shared/widgets/app/page_body.dart';
-import 'package:homemakers_merchant/shared/widgets/universal/animate_do/animate_do.dart';
-import 'package:homemakers_merchant/shared/widgets/universal/animated_gap/gap.dart';
-import 'package:homemakers_merchant/shared/widgets/universal/carousel_animation/carousel_animations.dart';
-import 'package:homemakers_merchant/shared/widgets/universal/constrained_scrollable_views/constrained_scrollable_views.dart';
-import 'package:homemakers_merchant/shared/router/app_pages.dart';
-import 'package:homemakers_merchant/shared/widgets/app/page_body.dart';
-import 'package:go_router/go_router.dart';
-import 'package:homemakers_merchant/shared/widgets/universal/date_time_picker_platform/datetime_picker_field_platform.dart';
-import 'package:homemakers_merchant/shared/widgets/universal/double_tap_exit/double_tap_to_exit.dart';
-import 'package:homemakers_merchant/shared/widgets/universal/multi_stream_builder/multi_stream_builder.dart';
-import 'package:homemakers_merchant/utils/app_log.dart';
+part of 'package:homemakers_merchant/app/features/store/index.dart';
 
 class AllStoresPage extends StatefulWidget {
   const AllStoresPage({super.key});
@@ -43,14 +9,17 @@ class AllStoresPage extends StatefulWidget {
 
 class _AllStoresPageState extends State<AllStoresPage> {
   late final ScrollController scrollController;
+  late final ScrollController innerScrollController;
   List<StoreEntity> storeEntities = [];
   late final ScrollController listViewBuilderScrollController;
   ResultState<StoreEntity> resultState = const ResultState.empty();
   WidgetState<StoreEntity> widgetState = const WidgetState<StoreEntity>.none();
+  final TextEditingController searchTextEditingController = TextEditingController();
   @override
   void initState() {
     super.initState();
     scrollController = ScrollController();
+    innerScrollController = ScrollController();
     listViewBuilderScrollController = ScrollController();
     storeEntities = [];
     storeEntities.clear();
@@ -64,6 +33,7 @@ class _AllStoresPageState extends State<AllStoresPage> {
   @override
   void dispose() {
     scrollController.dispose();
+    innerScrollController.dispose();
     listViewBuilderScrollController.dispose();
     super.dispose();
   }
@@ -168,17 +138,105 @@ class _AllStoresPageState extends State<AllStoresPage> {
                               case _:
                                 appLog.d('Default case: all store page');
                             }
-                            return ScrollableColumn(
-                              controller: scrollController,
+                            return Column(
                               mainAxisSize: MainAxisSize.min,
                               mainAxisAlignment: storeEntities.isEmpty ? MainAxisAlignment.center : MainAxisAlignment.start,
                               crossAxisAlignment: CrossAxisAlignment.stretch,
                               textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                              flexible: true,
-                              physics: const ClampingScrollPhysics(),
                               children: [
-                                Flexible(
-                                  flex: 1,
+                                AnimatedCrossFade(
+                                  firstChild: Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                                    textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                    children: [
+                                      const AnimatedGap(6, duration: Duration(milliseconds: 500)),
+                                      IntrinsicHeight(
+                                        child: Row(
+                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                          textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                          children: [
+                                            Expanded(
+                                              child: AppTextFieldWidget(
+                                                controller: searchTextEditingController,
+                                                textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                                textInputAction: TextInputAction.done,
+                                                keyboardType: TextInputType.text,
+                                                decoration: InputDecoration(
+                                                  labelText: 'Search',
+                                                  hintText: 'Search store',
+                                                  border: OutlineInputBorder(
+                                                    borderRadius: BorderRadius.circular(10),
+                                                  ),
+                                                  isDense: true,
+                                                ),
+                                              ),
+                                            ),
+                                            const AnimatedGap(12, duration: Duration(milliseconds: 500)),
+                                            SizedBox(
+                                              height: 52,
+                                              child: OutlinedButton(
+                                                onPressed: () {},
+                                                style: OutlinedButton.styleFrom(
+                                                  shape: RoundedRectangleBorder(
+                                                    borderRadius: BorderRadiusDirectional.circular(10),
+                                                  ),
+                                                  side: const BorderSide(color: Color.fromRGBO(238, 238, 238, 1)),
+                                                  backgroundColor: Colors.white,
+                                                ),
+                                                child: Icon(
+                                                  Icons.filter_list,
+                                                  textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                                  color: context.primaryColor,
+                                                ),
+                                              ),
+                                            )
+                                          ],
+                                        ),
+                                      ),
+                                      const AnimatedGap(6, duration: Duration(milliseconds: 500)),
+                                      ListTile(
+                                        dense: true,
+                                        title: IntrinsicHeight(
+                                          child: Row(
+                                            textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                            children: [
+                                              Text(
+                                                'Your Stores',
+                                                style: context.labelLarge!.copyWith(fontWeight: FontWeight.w500, fontSize: 18),
+                                                textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                              ),
+                                              const AnimatedGap(3, duration: Duration(milliseconds: 500)),
+                                              Card(
+                                                shape: RoundedRectangleBorder(
+                                                  borderRadius: BorderRadiusDirectional.circular(20),
+                                                ),
+                                                child: Padding(
+                                                  padding: const EdgeInsetsDirectional.only(start: 12.0, end: 12, top: 4, bottom: 4),
+                                                  child: Text(
+                                                    '${storeEntities.length}',
+                                                    textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        visualDensity: VisualDensity(horizontal: -4, vertical: -4),
+                                        horizontalTitleGap: 0,
+                                        minLeadingWidth: 0,
+                                        contentPadding: EdgeInsetsDirectional.symmetric(horizontal: 2),
+                                      ),
+                                      const AnimatedGap(6, duration: Duration(milliseconds: 500)),
+                                    ],
+                                  ),
+                                  secondChild: const Offstage(),
+                                  duration: const Duration(milliseconds: 500),
+                                  crossFadeState: (storeEntities.isNotEmpty) ? CrossFadeState.showFirst : CrossFadeState.showSecond,
+                                ),
+                                Expanded(
+                                  flex: 2,
                                   child: widgetState.maybeWhen(
                                     empty: (context, child, message, data) => Center(
                                       key: const Key('get-all-store-empty-widget'),
@@ -199,16 +257,18 @@ class _AllStoresPageState extends State<AllStoresPage> {
                                       );
                                     },
                                     allData: (context, child, message, data) {
-                                      return ListView.builder(
-                                        shrinkWrap: true,
-                                        key: const Key('get-all-store-listviewbuilder-widget'),
-                                        controller: listViewBuilderScrollController,
-                                        itemCount: storeEntities.length,
+                                      return ListView.separated(
                                         itemBuilder: (context, index) {
                                           return StoreCard(
                                             key: ValueKey(index),
                                             storeEntity: storeEntities[index],
+                                            listOfAllStoreEntities: storeEntities.toList(),
+                                            currentIndex: index,
                                           );
+                                        },
+                                        itemCount: storeEntities.length,
+                                        separatorBuilder: (context, index) {
+                                          return const Divider(thickness: 0.25, color: Color.fromRGBO(127, 129, 132, 1));
                                         },
                                       );
                                     },
@@ -226,25 +286,26 @@ class _AllStoresPageState extends State<AllStoresPage> {
                                     },
                                   ),
                                 ),
+                                Row(
+                                  children: [
+                                    Expanded(
+                                      child: ElevatedButton(
+                                        onPressed: () {
+                                          context.push(Routes.SAVE_STORE_PAGE);
+                                          return;
+                                        },
+                                        child: Text(
+                                          'Add Store',
+                                          textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                        ).translate(),
+                                      ),
+                                    ),
+                                  ],
+                                ),
                               ],
                             );
                           },
                         ),
-                        PositionedDirectional(
-                          bottom: kBottomNavigationBarHeight - 10,
-                          start: 0,
-                          end: 0,
-                          child: ElevatedButton(
-                            onPressed: () {
-                              context.push(Routes.SAVE_STORE_PAGE);
-                              return;
-                            },
-                            child: Text(
-                              'Add Store',
-                              textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                            ).translate(),
-                          ),
-                        )
                       ],
                     ),
                   );
