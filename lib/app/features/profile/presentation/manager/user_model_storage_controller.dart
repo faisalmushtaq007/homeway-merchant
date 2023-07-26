@@ -48,7 +48,7 @@ class UserModelStorageController with ChangeNotifier {
     // Otherwise, assign new value to private property.
     _userModel = value;
     // reassign the currentUserModel to singleton UserModel
-    serviceLocator<UserModel>().fromMap(value.toMap()!);
+    serviceLocator<UserModel>().fromJson(value.toMap()!);
     // Inform all listeners a change has occurred, if notify flag is true.
     if (notify) notifyListeners();
     // Persist the change to whatever storage is used with the ThemeService.
@@ -72,7 +72,6 @@ class UserModelStorageController with ChangeNotifier {
     // Inform all listeners a change has occurred, if notify flag is true.
     if (notify) notifyListeners();
     // Persist the change to whatever storage is used with the ThemeService.
-    unawaited(
-        _userModelStorageService.save(GlobalApp.userAccessTokenKey, value));
+    unawaited(_userModelStorageService.save(GlobalApp.userAccessTokenKey, value));
   }
 }

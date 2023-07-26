@@ -46,16 +46,15 @@ class UserModel extends INetworkModel<UserModel> {
   @HiveField(9)
   AddressModel? addressModel;
 
-  factory UserModel.fromJson(Map<String, Object?> json) =>
-      _$UserModelFromJson(json);
+  factory UserModel.fromJson(Map<String, Object?> json) => _$UserModelFromJson(json);
 
   @override
-  UserModel fromMap(Map<String, dynamic> json) {
+  UserModel fromJson(Map<String, dynamic> json) {
     return UserModel.fromJson(json);
   }
 
-  Map<String, dynamic>? toJson() => _$UserModelToJson(this);
+  Map<String, dynamic>? toMap() => _$UserModelToJson(this);
 
   @override
-  Map<String, dynamic>? toMap() => toJson();
+  Map<String, dynamic>? toJson() => toMap();
 }

@@ -22,8 +22,7 @@ class SendOtpEntity extends INetworkModel<SendOtpEntity> {
     this.userName,
   });
 
-  factory SendOtpEntity.fromJson(Map<String, Object?> json) =>
-      _$SendOtpEntityFromJson(json);
+  factory SendOtpEntity.fromJson(Map<String, Object?> json) => _$SendOtpEntityFromJson(json);
 
   @JsonKey(name: 'business_name')
   String? businessName;
@@ -49,12 +48,12 @@ class SendOtpEntity extends INetworkModel<SendOtpEntity> {
   String? appUserType;
 
   @override
-  SendOtpEntity fromMap(Map<String, dynamic> json) {
+  SendOtpEntity fromJson(Map<String, dynamic> json) {
     return SendOtpEntity.fromJson(json);
   }
 
-  Map<String, dynamic> toJson() => _$SendOtpEntityToJson(this);
+  Map<String, dynamic> toMap() => _$SendOtpEntityToJson(this);
 
   @override
-  Map<String, dynamic> toMap() => toJson();
+  Map<String, dynamic> toJson() => toMap();
 }

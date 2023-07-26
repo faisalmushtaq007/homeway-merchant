@@ -23,20 +23,20 @@ class BaseResponseModel<T> extends INetworkModel<BaseResponseModel<T>> {
   final int? code;
 
   @override
-  BaseResponseModel<T> fromMap(Map<String, dynamic> json) {
+  BaseResponseModel<T> fromJson(Map<String, dynamic> json) {
     return BaseResponseModel<T>.fromJson(
       json,
       (json) => json as T,
     );
   }
 
-  Map<String, dynamic> toJson(
+  Map<String, dynamic> toMap(
     Object Function(T value) toJsonT,
   ) =>
       _$BaseResponseModelToJson(this, toJsonT);
 
   @override
-  Map<String, dynamic>? toMap() {
-    return BaseResponseModel<T>().toJson((value) => value.toString());
+  Map<String, dynamic>? toJson() {
+    return BaseResponseModel<T>().toMap((value) => value.toString());
   }
 }

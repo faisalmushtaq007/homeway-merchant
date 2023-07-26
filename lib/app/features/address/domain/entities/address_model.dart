@@ -7,8 +7,7 @@ import 'package:network_manager/network_manager.dart';
 part 'address_model.g.dart';
 
 @JsonSerializable(explicitToJson: true)
-@HiveType(
-    typeId: HiveTypeConstant.addressModel, adapterName: 'AddressModelAdapter')
+@HiveType(typeId: HiveTypeConstant.addressModel, adapterName: 'AddressModelAdapter')
 class AddressModel extends INetworkModel<AddressModel> {
   AddressModel({
     this.isDefault,
@@ -25,8 +24,7 @@ class AddressModel extends INetworkModel<AddressModel> {
     this.updatedAt,
   });
 
-  factory AddressModel.fromJson(Map<String, Object?> json) =>
-      _$AddressModelFromJson(json);
+  factory AddressModel.fromJson(Map<String, Object?> json) => _$AddressModelFromJson(json);
 
   @JsonKey(name: 'address_ref_id')
   @HiveField(0)
@@ -65,21 +63,19 @@ class AddressModel extends INetworkModel<AddressModel> {
   @HiveField(44)
   bool? isDefault;
 
-  Map<String, dynamic> toJson() => _$AddressModelToJson(this);
+  Map<String, dynamic> toMap() => _$AddressModelToJson(this);
 
   @override
-  AddressModel fromMap(Map<String, dynamic> json) {
+  AddressModel fromJson(Map<String, dynamic> json) {
     return AddressModel.fromJson(json);
   }
 
   @override
-  Map<String, dynamic>? toMap() => toJson();
+  Map<String, dynamic>? toJson() => toMap();
 }
 
 @JsonSerializable(explicitToJson: true)
-@HiveType(
-    typeId: HiveTypeConstant.addressBeanModel,
-    adapterName: 'AddressBeanAdapter')
+@HiveType(typeId: HiveTypeConstant.addressBeanModel, adapterName: 'AddressBeanAdapter')
 class AddressBean extends INetworkModel<AddressBean> {
   AddressBean({
     this.latitude,
@@ -117,8 +113,7 @@ class AddressBean extends INetworkModel<AddressBean> {
     this.stateCode,
   });
 
-  factory AddressBean.fromJson(Map<String, Object?> json) =>
-      _$AddressBeanFromJson(json);
+  factory AddressBean.fromJson(Map<String, Object?> json) => _$AddressBeanFromJson(json);
 
   @JsonKey(name: 'place_id')
   @HiveField(11)
@@ -222,13 +217,13 @@ class AddressBean extends INetworkModel<AddressBean> {
   @HiveField(43)
   String? displayAddressName;
 
-  Map<String, dynamic> toJson() => _$AddressBeanToJson(this);
+  Map<String, dynamic> toMap() => _$AddressBeanToJson(this);
 
   @override
-  AddressBean fromMap(Map<String, dynamic> json) {
+  AddressBean fromJson(Map<String, dynamic> json) {
     return AddressBean.fromJson(json);
   }
 
   @override
-  Map<String, dynamic>? toMap() => toJson();
+  Map<String, dynamic>? toJson() => toMap();
 }

@@ -14,8 +14,7 @@ class VerifyOtpEntity extends INetworkModel<VerifyOtpEntity> {
     this.otpCode,
   });
 
-  factory VerifyOtpEntity.fromJson(Map<String, Object?> json) =>
-      _$VerifyOtpEntityFromJson(json);
+  factory VerifyOtpEntity.fromJson(Map<String, Object?> json) => _$VerifyOtpEntityFromJson(json);
 
   @JsonKey(name: 'business_phonenumber')
   String? businessPhoneNumber;
@@ -27,12 +26,12 @@ class VerifyOtpEntity extends INetworkModel<VerifyOtpEntity> {
   String? appUserType;
 
   @override
-  VerifyOtpEntity fromMap(Map<String, dynamic> json) {
+  VerifyOtpEntity fromJson(Map<String, dynamic> json) {
     return VerifyOtpEntity.fromJson(json);
   }
 
-  Map<String, dynamic> toJson() => _$VerifyOtpEntityToJson(this);
+  Map<String, dynamic> toMap() => _$VerifyOtpEntityToJson(this);
 
   @override
-  Map<String, dynamic> toMap() => toJson();
+  Map<String, dynamic> toJson() => toMap();
 }

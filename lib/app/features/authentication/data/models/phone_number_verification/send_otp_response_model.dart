@@ -12,19 +12,18 @@ class SendOtpResponseModel extends INetworkModel<SendOtpResponseModel> {
     this.appUserType,
     this.message,
   });
-  factory SendOtpResponseModel.fromJson(Map<String, Object?> json) =>
-      _$SendOtpResponseModelFromJson(json);
+  factory SendOtpResponseModel.fromJson(Map<String, Object?> json) => _$SendOtpResponseModelFromJson(json);
   @JsonKey(name: 'message')
   String? message;
   @JsonKey(name: 'app_user_type')
   String? appUserType;
 
   @override
-  SendOtpResponseModel fromMap(Map<String, dynamic> json) {
+  SendOtpResponseModel fromJson(Map<String, dynamic> json) {
     return SendOtpResponseModel.fromJson(json);
   }
 
-  Map<String, dynamic> toJson() => _$SendOtpResponseModelToJson(this);
+  Map<String, dynamic> toMap() => _$SendOtpResponseModelToJson(this);
   @override
-  Map<String, dynamic> toMap() => toJson();
+  Map<String, dynamic> toJson() => toMap();
 }

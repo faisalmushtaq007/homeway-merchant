@@ -294,39 +294,36 @@ class StoreAcceptedPaymentModes with AppEquatable {
 }
 
 class StoreOwnDeliveryPartnersInfo with AppEquatable {
-  StoreOwnDeliveryPartnersInfo({
-    required this.driverName,
-    required this.driverMobileNumber,
-    required this.drivingLicenseNumber,
-  });
+  StoreOwnDeliveryPartnersInfo({this.driverID='',this.driverName = '', this.driverMobileNumber = '', this.drivingLicenseNumber = '', this.vehicleInfo});
 
   factory StoreOwnDeliveryPartnersInfo.fromMap(Map<String, dynamic> map) {
     return StoreOwnDeliveryPartnersInfo(
       driverName: map['driverName'] as String,
+      driverID: map['driverID'] as String,
       driverMobileNumber: map['driverMobileNumber'] as String,
       drivingLicenseNumber: map['drivingLicenseNumber'] as String,
+      vehicleInfo: map['vehicleInfo'] as VehicleInfo,
     );
   }
-
+  String driverID;
   String driverName;
   String driverMobileNumber;
   String drivingLicenseNumber;
+  VehicleInfo? vehicleInfo;
 
   @override
   bool get cacheHash => true;
 
   @override
-  List<Object?> get hashParameters => [
-        driverMobileNumber,
-        driverName,
-        drivingLicenseNumber,
-      ];
+  List<Object?> get hashParameters => [driverID,driverMobileNumber, driverName, drivingLicenseNumber, vehicleInfo];
 
   Map<String, dynamic> toMap() {
     return {
       'driverName': this.driverName,
       'driverMobileNumber': this.driverMobileNumber,
       'drivingLicenseNumber': this.drivingLicenseNumber,
+      'vehicleInfo': this.vehicleInfo,
+      'driverID':this.driverID,
     };
   }
 
@@ -334,11 +331,55 @@ class StoreOwnDeliveryPartnersInfo with AppEquatable {
     String? driverName,
     String? driverMobileNumber,
     String? drivingLicenseNumber,
+    VehicleInfo? vehicleInfo,
+    String? driverID,
   }) {
     return StoreOwnDeliveryPartnersInfo(
       driverName: driverName ?? this.driverName,
       driverMobileNumber: driverMobileNumber ?? this.driverMobileNumber,
       drivingLicenseNumber: drivingLicenseNumber ?? this.drivingLicenseNumber,
+      vehicleInfo: vehicleInfo ?? this.vehicleInfo,
+        driverID:driverID??this.driverID,
+    );
+  }
+}
+
+class VehicleInfo with AppEquatable {
+  VehicleInfo({
+    this.vehicleID = '',
+    this.vehicleType = '',
+  });
+
+  factory VehicleInfo.fromMap(Map<String, dynamic> map) {
+    return VehicleInfo(
+      vehicleID: map['vehicleID'] as String,
+      vehicleType: map['vehicleType'] as String,
+    );
+  }
+
+  String vehicleID;
+  String vehicleType;
+
+  @override
+  bool get cacheHash => true;
+
+  @override
+  List<Object?> get hashParameters => [vehicleID, vehicleType];
+
+  Map<String, dynamic> toMap() {
+    return {
+      'vehicleID': this.vehicleID,
+      'vehicleType': this.vehicleType,
+    };
+  }
+
+  VehicleInfo copyWith({
+    String? vehicleID,
+    String? vehicleType,
+  }) {
+    return VehicleInfo(
+      vehicleID: vehicleID ?? this.vehicleID,
+      vehicleType: vehicleType ?? this.vehicleType,
     );
   }
 }

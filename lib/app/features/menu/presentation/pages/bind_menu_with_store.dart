@@ -90,13 +90,24 @@ class _BindMenuWithStoreController extends State<BindMenuWithStore> {
 
   @override
   Widget build(BuildContext context) => BlocListener<MenuBloc, MenuState>(
-        key: const Key('bind-menu-with-store-page-bloc-builder-widget'),
+        key: const Key('bind-menu-with-store-page-bloc-listener-widget'),
         bloc: context.watch<MenuBloc>(),
         listener: (context, state) {
           switch (state) {
-            case BindMenuToStoreStage():
+            case BindMenuWithStoresState():
               {
-                context.go(Routes.ABOUT_US);
+                appLog.d('Listener: BindMenuWithStoresState ${state.bindMenuToStoreStage}');
+                if (state.bindMenuToStoreStage == BindMenuToStoreStage.attached) {
+                  listOfAllSelectedStores = [];
+                  listOfAllSelectedStores.clear();
+                  context.go(
+                    Routes.BIND_MENU_WITH_STORE_GREETING_PAGE,
+                    extra: {
+                      'allMenu': state.menuEntities.toList(),
+                      'allStore': state.storeEntities.toList(),
+                    },
+                  );
+                }
                 return;
               }
             case _:
@@ -114,11 +125,6 @@ class _BindMenuWithStoreController extends State<BindMenuWithStore> {
                   widgetState = WidgetState<StoreEntity>.allData(
                     context: context,
                   );
-                }
-              case BindMenuToStoreStage():
-                {
-                  listOfAllSelectedStores = [];
-                  listOfAllSelectedStores.clear();
                 }
               case _:
                 appLog.d('Default case: all bloc builder bind menu page');
@@ -158,14 +164,14 @@ class _BindMenuWithStoreView extends WidgetView<BindMenuWithStore, _BindMenuWith
             ],
           ),
           floatingActionButton: AnimatedOpacity(
-            opacity: state.listOfAllSelectedMenus.isEmpty ? 0.0 : 1.0,
+            opacity: (state.listOfAllSelectedMenus.isEmpty && state.listOfAllSelectedStores.isEmpty) ? 0.0 : 1.0,
             duration: const Duration(milliseconds: 500),
             child: Padding(
               padding: const EdgeInsetsDirectional.only(bottom: 70),
               child: FloatingActionButton(
                 backgroundColor: const Color.fromRGBO(69, 201, 125, 1.0),
                 onPressed: () async {
-                  if (state.listOfAllSelectedMenus.isEmpty || state.listOfAllSelectedStores.isEmpty) {
+                  if (state.listOfAllSelectedMenus.isEmpty && state.listOfAllSelectedStores.isEmpty) {
                     return;
                   } else {
                     context.go(
@@ -178,7 +184,7 @@ class _BindMenuWithStoreView extends WidgetView<BindMenuWithStore, _BindMenuWith
                   }
                 },
                 child: const Icon(
-                  Icons.store,
+                  Icons.check,
                 ),
               ),
             ),

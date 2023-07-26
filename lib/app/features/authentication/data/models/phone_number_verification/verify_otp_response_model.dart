@@ -16,8 +16,7 @@ class VerifyOtpResponseModel extends INetworkModel<VerifyOtpResponseModel> {
     this.userID,
     this.authToken,
   });
-  factory VerifyOtpResponseModel.fromJson(Map<String, Object?> json) =>
-      _$VerifyOtpResponseModelFromJson(json);
+  factory VerifyOtpResponseModel.fromJson(Map<String, Object?> json) => _$VerifyOtpResponseModelFromJson(json);
   @JsonKey(name: 'message')
   String? message;
   @JsonKey(name: 'userID')
@@ -29,11 +28,11 @@ class VerifyOtpResponseModel extends INetworkModel<VerifyOtpResponseModel> {
   @JsonKey(name: 'current_status')
   int? currentStatus;
   @override
-  VerifyOtpResponseModel fromMap(Map<String, dynamic> json) {
+  VerifyOtpResponseModel fromJson(Map<String, dynamic> json) {
     return VerifyOtpResponseModel.fromJson(json);
   }
 
-  Map<String, dynamic> toJson() => _$VerifyOtpResponseModelToJson(this);
+  Map<String, dynamic> toMap() => _$VerifyOtpResponseModelToJson(this);
   @override
-  Map<String, dynamic> toMap() => toJson();
+  Map<String, dynamic> toJson() => toMap();
 }

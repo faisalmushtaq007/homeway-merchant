@@ -22,13 +22,13 @@ class BaseResponseErrorModel extends INetworkModel<BaseResponseErrorModel> {
   final int? code;
 
   @override
-  BaseResponseErrorModel fromMap(Map<String, dynamic> json) {
+  BaseResponseErrorModel fromJson(Map<String, dynamic> json) {
     return BaseResponseErrorModel.fromJson(
       json,
     );
   }
 
-  Map<String, dynamic> toJson() => _$BaseResponseErrorModelToJson(this);
-  @override
   Map<String, dynamic> toMap() => _$BaseResponseErrorModelToJson(this);
+  @override
+  Map<String, dynamic> toJson() => toMap();
 }
