@@ -1,7 +1,16 @@
 part of 'package:homemakers_merchant/app/features/menu/index.dart';
 
 class SaveAddonsPage extends StatefulWidget {
-  const SaveAddonsPage({super.key});
+  const SaveAddonsPage({
+    super.key,
+    this.haveNewAddons = true,
+    this.haveOwnAddons = true,
+    this.addons,
+  });
+
+  final bool haveNewAddons;
+  final bool haveOwnAddons;
+  final Addons? addons;
 
   @override
   _SaveAddonsPageController createState() => _SaveAddonsPageController();
@@ -9,6 +18,7 @@ class SaveAddonsPage extends StatefulWidget {
 
 class _SaveAddonsPageController extends State<SaveAddonsPage> {
   late final ScrollController scrollController;
+  late final ScrollController innerScrollController;
   late final ScrollController listViewBuilderScrollController;
 
   static final GlobalKey<FormState> saveAddonsFormKey = GlobalKey<FormState>(debugLabel: 'save_addons-formkey');
@@ -38,6 +48,7 @@ class _SaveAddonsPageController extends State<SaveAddonsPage> {
   void initState() {
     super.initState();
     scrollController = ScrollController();
+    innerScrollController = ScrollController();
     listViewBuilderScrollController = ScrollController();
     _menuPortions = [];
     _selectedMenuPortions = [];
@@ -54,6 +65,7 @@ class _SaveAddonsPageController extends State<SaveAddonsPage> {
   @override
   void dispose() {
     scrollController.dispose();
+    innerScrollController.dispose();
     listViewBuilderScrollController.dispose();
     addonsPriceTextEditingController.dispose();
     addonsNameTextEditingController.dispose();
@@ -151,7 +163,7 @@ class _SaveAddonsPageView extends WidgetView<SaveAddonsPage, _SaveAddonsPageCont
           resizeToAvoidBottomInset: true,
           appBar: AppBar(
             title: Text(
-              'Add new addons',
+              'New Addons',
               textDirection: serviceLocator<LanguageController>().targetTextDirection,
             ),
             actions: const [
@@ -171,221 +183,298 @@ class _SaveAddonsPageView extends WidgetView<SaveAddonsPage, _SaveAddonsPageCont
                 minWidth: double.infinity,
                 minHeight: media.size.height,
               ),
-              padding: EdgeInsetsDirectional.only(
-                top: margins,
-                bottom: bottomPadding,
-                start: margins * 2.5,
-                end: margins * 2.5,
-              ),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  Expanded(
-                    flex: 3,
-                    child: Form(
-                      key: _SaveAddonsPageController.saveAddonsFormKey,
-                      child: ListView(
-                        controller: state.scrollController,
-                        shrinkWrap: true,
-                        children: [
-                          const AnimatedGap(12, duration: Duration(milliseconds: 500)),
-                          AppTextFieldWidget(
-                            controller: state.addonsNameTextEditingController,
-                            textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                            focusNode: state.focusList[0],
-                            textInputAction: TextInputAction.next,
-                            onFieldSubmitted: (_) => fieldFocusChange(context, state.focusList[0], state.focusList[1]),
-                            keyboardType: TextInputType.name,
-                            decoration: InputDecoration(
-                              labelText: 'Addons name',
-                              hintText: 'Enter addons name',
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                              isDense: true,
-                            ),
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'Enter addons name';
-                              }
-                              return null;
-                            },
+              child: CustomScrollView(
+                controller: state.innerScrollController,
+                physics: const ClampingScrollPhysics(),
+                slivers: [
+                  SliverList(
+                    delegate: SliverChildListDelegate(
+                      [
+                        const AnimatedGap(50, duration: Duration(milliseconds: 500)),
+                        AnimatedContainer(
+                          height: context.height * 0.7,
+                          margin: EdgeInsetsDirectional.only(
+                            start: margins * 1.5,
+                            end: margins * 1.5,
                           ),
-                          const AnimatedGap(12, duration: Duration(milliseconds: 500)),
-                          AppTextFieldWidget(
-                            controller: state.addonsDescriptionTextEditingController,
-                            textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                            focusNode: state.focusList[1],
-                            textInputAction: TextInputAction.next,
-                            onFieldSubmitted: (_) => fieldFocusChange(context, state.focusList[1], state.focusList[2]),
-                            keyboardType: TextInputType.text,
-                            maxLines: 3,
-                            decoration: InputDecoration(
-                              labelText: 'Addons Description',
-                              hintText: 'Enter addons description',
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                              isDense: true,
-                            ),
-                            /*validator: (value) {
-                                  if (value == null || value.isEmpty) {
-                                    return 'Enter addons description';
-                                  }
-                                  return null;
-                                },*/
+                          padding: EdgeInsetsDirectional.only(
+                            start: margins * 2.25,
+                            end: margins * 2.25,
+                            top: margins * 2.25,
+                            //bottom: margins,
                           ),
-                          const AnimatedGap(12, duration: Duration(milliseconds: 500)),
-                          Column(
-                            mainAxisSize: MainAxisSize.min,
-                            crossAxisAlignment: CrossAxisAlignment.stretch,
-                            children: [
-                              Text(
-                                'Portion size of menu',
-                                style: context.titleLarge!.copyWith(
-                                  fontWeight: FontWeight.w600,
-                                  fontSize: 20,
+                          duration: const Duration(
+                            milliseconds: 500,
+                          ),
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadiusDirectional.circular(10),
+                            boxShadow: const [
+                              BoxShadow(
+                                offset: Offset(0, 3),
+                                blurRadius: 12,
+                                color: Color.fromRGBO(
+                                  0,
+                                  0,
+                                  0,
+                                  0.16,
                                 ),
-                                textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                              ).translate(),
-                              const AnimatedGap(4, duration: Duration(milliseconds: 500)),
-                              Text(
-                                'Select the menu serving size or quantity availability',
-                                style: context.labelMedium,
-                                textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                              ).translate(),
+                              ),
                             ],
                           ),
-                          const AnimatedGap(6, duration: Duration(milliseconds: 500)),
-                          MultiSelectMenuPortionFormField(
-                            key: const Key('menu-addons-multiSelectAvailableMenuPortions-formfield'),
-                            onSelectionChanged: state.onSelectionChangedPortion,
-                            availableMenuPortionList: state._menuPortions.toList(),
-                            initialSelectedMenuPortionList: [],
-                            onSaved: (newValue) {},
-                            isSingleSelect: true,
-                          ),
-                          const AnimatedGap(12, duration: Duration(milliseconds: 500)),
-                          IntrinsicHeight(
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              mainAxisSize: MainAxisSize.min,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Expanded(
-                                  child: AppTextFieldWidget(
-                                    controller: state.addonsQuantityTextEditingController,
-                                    textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                                    focusNode: state.focusList[2],
-                                    textInputAction: TextInputAction.next,
-                                    onFieldSubmitted: (_) => fieldFocusChange(context, state.focusList[2], state.focusList[3]),
-                                    keyboardType: const TextInputType.numberWithOptions(
-                                      decimal: true,
-                                    ),
-                                    decoration: InputDecoration(
-                                      labelText: 'Addons Quantity',
-                                      hintText: 'Enter addons quantity',
-                                      border: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(10),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                            children: [
+                              SizedBox(
+                                height: 26,
+                                child: Stack(
+                                  alignment: AlignmentDirectional.topCenter,
+                                  clipBehavior: Clip.none,
+                                  children: [
+                                    AnimatedPositioned(
+                                      duration: const Duration(milliseconds: 300),
+                                      top: -54,
+                                      child: DisplayImage(
+                                        imagePath: '',
+                                        onPressed: () {},
+                                        hasIconImage: true,
+                                        hasEditButton: false,
                                       ),
-                                      isDense: true,
                                     ),
-                                    validator: (value) {
-                                      if (value == null || value.isEmpty) {
-                                        return 'Enter addons quantity';
-                                      }
-                                      return null;
-                                    },
+                                  ],
+                                ),
+                              ),
+                              Wrap(
+                                alignment: WrapAlignment.center,
+                                crossAxisAlignment: WrapCrossAlignment.center,
+                                children: [
+                                  AnimatedSwitcher(
+                                    duration: const Duration(
+                                      milliseconds: 500,
+                                    ),
+                                    child: Text(
+                                      '${((!widget.haveNewAddons || widget.haveOwnAddons != true) && widget.addons?.title != null) ? widget.addons?.title : 'Add New Addons'}',
+                                      style: context.titleLarge!.copyWith(
+                                        color: context.primaryColor,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 24,
+                                      ),
+                                    ).translate(),
+                                  ),
+                                ],
+                              ),
+                              //const AnimatedGap(12, duration: Duration(milliseconds: 500)),
+                              Expanded(
+                                flex: 3,
+                                child: Form(
+                                  key: _SaveAddonsPageController.saveAddonsFormKey,
+                                  child: ListView(
+                                    controller: state.listViewBuilderScrollController,
+                                    physics: const ClampingScrollPhysics(),
+                                    //shrinkWrap: true,
+                                    children: [
+                                      const AnimatedGap(12, duration: Duration(milliseconds: 500)),
+                                      AppTextFieldWidget(
+                                        controller: state.addonsNameTextEditingController,
+                                        textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                        focusNode: state.focusList[0],
+                                        textInputAction: TextInputAction.next,
+                                        onFieldSubmitted: (_) => fieldFocusChange(context, state.focusList[0], state.focusList[1]),
+                                        keyboardType: TextInputType.name,
+                                        decoration: InputDecoration(
+                                          labelText: 'Addons name',
+                                          hintText: 'Enter addons name',
+                                          border: OutlineInputBorder(
+                                            borderRadius: BorderRadius.circular(10),
+                                          ),
+                                          isDense: true,
+                                        ),
+                                        validator: (value) {
+                                          if (value == null || value.isEmpty) {
+                                            return 'Enter addons name';
+                                          }
+                                          return null;
+                                        },
+                                      ),
+                                      const AnimatedGap(12, duration: Duration(milliseconds: 500)),
+                                      AppTextFieldWidget(
+                                        controller: state.addonsDescriptionTextEditingController,
+                                        textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                        focusNode: state.focusList[1],
+                                        textInputAction: TextInputAction.next,
+                                        onFieldSubmitted: (_) => fieldFocusChange(context, state.focusList[1], state.focusList[2]),
+                                        keyboardType: TextInputType.text,
+                                        maxLines: 3,
+                                        decoration: InputDecoration(
+                                          labelText: 'Addons Description',
+                                          hintText: 'Enter addons description',
+                                          border: OutlineInputBorder(
+                                            borderRadius: BorderRadius.circular(10),
+                                          ),
+                                          isDense: true,
+                                        ),
+                                      ),
+                                      const AnimatedGap(12, duration: Duration(milliseconds: 500)),
+                                      Column(
+                                        mainAxisSize: MainAxisSize.min,
+                                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                                        children: [
+                                          Text(
+                                            'Portion size of addons',
+                                            style: context.titleLarge!.copyWith(
+                                              fontWeight: FontWeight.w600,
+                                              fontSize: 20,
+                                            ),
+                                            textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                          ).translate(),
+                                          const AnimatedGap(4, duration: Duration(milliseconds: 500)),
+                                          Text(
+                                            'Select the addons serving size or quantity availability',
+                                            style: context.labelMedium,
+                                            textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                          ).translate(),
+                                        ],
+                                      ),
+                                      const AnimatedGap(6, duration: Duration(milliseconds: 500)),
+                                      MultiSelectMenuPortionFormField(
+                                        key: const Key('menu-addons-multiSelectAvailableMenuPortions-formfield'),
+                                        onSelectionChanged: state.onSelectionChangedPortion,
+                                        availableMenuPortionList: state._menuPortions.toList(),
+                                        initialSelectedMenuPortionList: [],
+                                        onSaved: (newValue) {},
+                                        isSingleSelect: true,
+                                      ),
+                                      const AnimatedGap(12, duration: Duration(milliseconds: 500)),
+                                      IntrinsicHeight(
+                                        child: Row(
+                                          mainAxisAlignment: MainAxisAlignment.start,
+                                          mainAxisSize: MainAxisSize.min,
+                                          crossAxisAlignment: CrossAxisAlignment.center,
+                                          children: [
+                                            Expanded(
+                                              child: AppTextFieldWidget(
+                                                controller: state.addonsQuantityTextEditingController,
+                                                textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                                focusNode: state.focusList[2],
+                                                textInputAction: TextInputAction.next,
+                                                onFieldSubmitted: (_) => fieldFocusChange(context, state.focusList[2], state.focusList[3]),
+                                                keyboardType: const TextInputType.numberWithOptions(
+                                                  decimal: true,
+                                                ),
+                                                decoration: InputDecoration(
+                                                  labelText: 'Addons Quantity',
+                                                  hintText: 'Enter addons quantity',
+                                                  border: OutlineInputBorder(
+                                                    borderRadius: BorderRadius.circular(10),
+                                                  ),
+                                                  isDense: true,
+                                                ),
+                                                validator: (value) {
+                                                  if (value == null || value.isEmpty) {
+                                                    return 'Enter addons quantity';
+                                                  }
+                                                  return null;
+                                                },
+                                              ),
+                                            ),
+                                            const AnimatedGap(24, duration: Duration(milliseconds: 500)),
+                                            Expanded(
+                                              child: AppTextFieldWidget(
+                                                controller: state.addonsUnitTextEditingController,
+                                                textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                                textCapitalization: TextCapitalization.words,
+                                                focusNode: state.focusList[3],
+                                                textInputAction: TextInputAction.next,
+                                                onFieldSubmitted: (_) => fieldFocusChange(context, state.focusList[3], state.focusList[4]),
+                                                keyboardType: TextInputType.name,
+                                                decoration: InputDecoration(
+                                                  labelText: 'Addons Units',
+                                                  hintText: 'Enter addons units',
+                                                  border: OutlineInputBorder(
+                                                    borderRadius: BorderRadius.circular(10),
+                                                  ),
+                                                  isDense: true,
+                                                ),
+                                                validator: (value) {
+                                                  if (value == null || value.isEmpty) {
+                                                    return 'Enter addons units';
+                                                  }
+                                                  return null;
+                                                },
+                                              ),
+                                            )
+                                          ],
+                                        ),
+                                      ),
+                                      const AnimatedGap(12, duration: Duration(milliseconds: 500)),
+                                      AppTextFieldWidget(
+                                        controller: state.addonsPriceTextEditingController,
+                                        textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                        focusNode: state.focusList[4],
+                                        textInputAction: TextInputAction.done,
+                                        keyboardType: const TextInputType.numberWithOptions(
+                                          decimal: true,
+                                        ),
+                                        decoration: InputDecoration(
+                                          labelText: 'Addons Price',
+                                          hintText: 'Enter addons price',
+                                          border: OutlineInputBorder(
+                                            borderRadius: BorderRadius.circular(10),
+                                          ),
+                                          isDense: true,
+                                          suffixText: state.currency,
+                                        ),
+                                        validator: (value) {
+                                          if (value == null || value.isEmpty) {
+                                            return 'Enter addons price';
+                                          }
+                                          return null;
+                                        },
+                                      ),
+                                    ],
                                   ),
                                 ),
-                                const AnimatedGap(24, duration: Duration(milliseconds: 500)),
-                                Expanded(
-                                  child: AppTextFieldWidget(
-                                    controller: state.addonsUnitTextEditingController,
-                                    textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                                    textCapitalization: TextCapitalization.words,
-                                    focusNode: state.focusList[3],
-                                    textInputAction: TextInputAction.next,
-                                    onFieldSubmitted: (_) => fieldFocusChange(context, state.focusList[3], state.focusList[4]),
-                                    keyboardType: TextInputType.name,
-                                    decoration: InputDecoration(
-                                      labelText: 'Addons Units',
-                                      hintText: 'Enter addons units',
-                                      border: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(10),
-                                      ),
-                                      isDense: true,
-                                    ),
-                                    validator: (value) {
-                                      if (value == null || value.isEmpty) {
-                                        return 'Enter addons units';
-                                      }
-                                      return null;
-                                    },
-                                  ),
-                                )
-                              ],
-                            ),
-                          ),
-                          const AnimatedGap(12, duration: Duration(milliseconds: 500)),
-                          AppTextFieldWidget(
-                            controller: state.addonsPriceTextEditingController,
-                            textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                            focusNode: state.focusList[4],
-                            textInputAction: TextInputAction.done,
-                            keyboardType: const TextInputType.numberWithOptions(
-                              decimal: true,
-                            ),
-                            decoration: InputDecoration(
-                              labelText: 'Addons Price',
-                              hintText: 'Enter addons price',
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10),
                               ),
-                              isDense: true,
-                              suffixText: state.currency,
-                            ),
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'Enter addons price';
+                              const AnimatedGap(6, duration: Duration(milliseconds: 500)),
+                            ],
+                          ),
+                        ),
+                        const AnimatedGap(12, duration: Duration(milliseconds: 500)),
+                        Padding(
+                          padding: EdgeInsetsDirectional.symmetric(horizontal: margins * 1.5),
+                          child: ElevatedButton(
+                            onPressed: () {
+                              if (_SaveAddonsPageController.saveAddonsFormKey.currentState!.validate()) {
+                                _SaveAddonsPageController.saveAddonsFormKey.currentState!.save();
+                                context.read<MenuBloc>().add(
+                                      SaveAddons(
+                                        addonsEntity: Addons(
+                                          addonsID: '',
+                                          title: state.addonsNameTextEditingController.value.text.trim(),
+                                          description: state.addonsDescriptionTextEditingController.value.text.trim(),
+                                          quantity: double.parse(state.addonsQuantityTextEditingController.value.text.trim()),
+                                          defaultPrice: 0.0,
+                                          finalPrice: double.parse(state.addonsPriceTextEditingController.value.text.trim()),
+                                          discountedPrice: 0.0,
+                                          hasSelected: false,
+                                          unit: state.addonsUnitTextEditingController.value.text.trim(),
+                                          currency: state.currency,
+                                        ),
+                                      ),
+                                    );
                               }
-                              return null;
+                              return;
                             },
+                            child: Text(
+                              'Save Addons',
+                              textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                            ).translate(),
                           ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
-                  ),
-                  const AnimatedGap(14, duration: Duration(milliseconds: 500)),
-                  ElevatedButton(
-                    onPressed: () {
-                      if (_SaveAddonsPageController.saveAddonsFormKey.currentState!.validate()) {
-                        _SaveAddonsPageController.saveAddonsFormKey.currentState!.save();
-                        context.read<MenuBloc>().add(
-                              SaveAddons(
-                                addonsEntity: Addons(
-                                  addonsID: '',
-                                  title: state.addonsNameTextEditingController.value.text.trim(),
-                                  description: state.addonsDescriptionTextEditingController.value.text.trim(),
-                                  quantity: double.parse(state.addonsQuantityTextEditingController.value.text.trim()),
-                                  defaultPrice: 0.0,
-                                  finalPrice: double.parse(state.addonsPriceTextEditingController.value.text.trim()),
-                                  discountedPrice: 0.0,
-                                  hasSelected: false,
-                                  unit: state.addonsUnitTextEditingController.value.text.trim(),
-                                  currency: state.currency,
-                                ),
-                              ),
-                            );
-                      }
-                      return;
-                    },
-                    child: Text(
-                      'Save Addons',
-                      textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                    ).translate(),
                   ),
                 ],
               ),

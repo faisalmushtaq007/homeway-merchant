@@ -112,6 +112,7 @@ class _MenuForm1PageState extends State<MenuForm1Page> with AutomaticKeepAliveCl
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return Directionality(
       textDirection: serviceLocator<LanguageController>().targetTextDirection,
       child: BlocBuilder<MenuBloc, MenuState>(
