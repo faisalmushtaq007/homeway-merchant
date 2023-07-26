@@ -16,8 +16,7 @@ part 'phone_number_verification_state.dart';
 
 part 'phone_number_verification_bloc.freezed.dart';
 
-class PhoneNumberVerificationBloc
-    extends Bloc<PhoneNumberVerificationEvent, PhoneNumberVerificationState> {
+class PhoneNumberVerificationBloc extends Bloc<PhoneNumberVerificationEvent, PhoneNumberVerificationState> {
   PhoneNumberVerificationBloc({
     required this.phoneFormFieldBloc,
   }) : super(const PhoneNumberVerificationState.initial()) {
@@ -37,8 +36,7 @@ class PhoneNumberVerificationBloc
 
   final PhoneFormFieldBloc phoneFormFieldBloc;
 
-  FutureOr<void> _phoneNumberChangedEvent(
-      PhoneNumberChanged event, Emitter<PhoneNumberVerificationState> emit) {
+  FutureOr<void> _phoneNumberChangedEvent(PhoneNumberChanged event, Emitter<PhoneNumberVerificationState> emit) {
     emit(PhoneNumberVerificationState.phoneNumberChanged(
       phoneNumber: event.phoneNumber,
       countryDialCode: event.countryDialCode,
@@ -50,8 +48,7 @@ class PhoneNumberVerificationBloc
     ));
   }
 
-  FutureOr<void> _validatePhoneNumberEvent(
-      ValidatePhoneNumber event, Emitter<PhoneNumberVerificationState> emit) {
+  FutureOr<void> _validatePhoneNumberEvent(ValidatePhoneNumber event, Emitter<PhoneNumberVerificationState> emit) {
     emit(PhoneNumberVerificationValidatePhoneNumber(
       phoneNumber: event.phoneNumber,
       country: event.country,
@@ -64,8 +61,7 @@ class PhoneNumberVerificationBloc
     ));
   }
 
-  FutureOr<void> _verifyPhoneNumber(
-      VerifyPhoneNumber event, Emitter<PhoneNumberVerificationState> emit) {
+  FutureOr<void> _verifyPhoneNumber(VerifyPhoneNumber event, Emitter<PhoneNumberVerificationState> emit) {
     // Handle api call and otp sent request
     emit(
       PhoneNumberVerificationSuccessState(

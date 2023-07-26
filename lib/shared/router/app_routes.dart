@@ -74,6 +74,9 @@ abstract class Routes {
   static const String BIND_MENU_WITH_STORE_GREETING_PAGE = _Paths.BIND_MENU_WITH_STORE_GREETING_PAGE;
   static const String STORE_DETAILS_PAGE = _Paths.STORE_DETAILS_PAGE;
   static const String MENU_DETAILS_PAGE = _Paths.MENU_DETAILS_PAGE;
+  static const String ALL_DRIVER_PAGE = _Paths.ALL_DRIVER_PAGE;
+  static const String SAVE_DRIVER_PAGE = _Paths.SAVE_DRIVER_PAGE;
+  static const String NEW_DRIVER_GREETING_PAGE = _Paths.NEW_DRIVER_GREETING_PAGE;
 }
 
 abstract class _Paths {
@@ -147,4 +150,7 @@ abstract class _Paths {
   static const String BIND_MENU_WITH_STORE_GREETING_PAGE = '/menu-save-with-store-greeting';
   static const String STORE_DETAILS_PAGE = '/store-details';
   static const String MENU_DETAILS_PAGE = '/menu-details';
+  static const String ALL_DRIVER_PAGE = '/all-driver';
+  static const String SAVE_DRIVER_PAGE = '/save-driver';
+  static const String NEW_DRIVER_GREETING_PAGE = '/new-driver-greeting';
 }

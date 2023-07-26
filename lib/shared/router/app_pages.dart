@@ -36,7 +36,7 @@ class AppRouter {
 
   AppRouter._();
 
-  static const String INITIAL = Routes.PRIMARY_DASHBOARD_PAGE;
+  static const String INITIAL = Routes.SAVE_DRIVER_PAGE;
 
   static final GoRouter _router = GoRouter(
     debugLogDiagnostics: true,
@@ -206,6 +206,21 @@ class AppRouter {
       GoRoute(
         path: Routes.MENU_DETAILS_PAGE,
         builder: (context, state) => const MenuDetailsPage(),
+      ),
+      //SaveDriverPage
+      // All Drivers
+      // New Driver Greetings
+      GoRoute(
+        path: Routes.ALL_DRIVER_PAGE,
+        builder: (context, state) => const AllMenuPage(),
+      ),
+      GoRoute(
+        path: Routes.SAVE_DRIVER_PAGE,
+        builder: (context, state) => const SaveDriverPage(),
+      ),
+      GoRoute(
+        path: Routes.NEW_DRIVER_GREETING_PAGE,
+        builder: (context, state) => NewMenuGreetingPage(menuEntity: state.extra! as MenuEntity),
       ),
     ],
   );

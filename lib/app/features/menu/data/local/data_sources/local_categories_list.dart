@@ -575,3 +575,18 @@ final localTimings = [
   '03:45 hr',
   '04:00 hr'
 ];
+
+final List<VehicleInfo> localVehicleTypeInfo = [
+  VehicleInfo(
+    vehicleID: '0',
+    vehicleType: '2 Wheeler',
+  ),
+  VehicleInfo(
+    vehicleID: '1',
+    vehicleType: '3 Wheeler',
+  ),
+  VehicleInfo(
+    vehicleID: '2',
+    vehicleType: '4 Wheeler',
+  ),
+];

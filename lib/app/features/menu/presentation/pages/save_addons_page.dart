@@ -163,7 +163,7 @@ class _SaveAddonsPageView extends WidgetView<SaveAddonsPage, _SaveAddonsPageCont
           resizeToAvoidBottomInset: true,
           appBar: AppBar(
             title: Text(
-              'New Addons',
+              'Addons',
               textDirection: serviceLocator<LanguageController>().targetTextDirection,
             ),
             actions: const [

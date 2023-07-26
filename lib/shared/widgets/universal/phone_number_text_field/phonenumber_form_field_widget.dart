@@ -30,6 +30,14 @@ class PhoneNumberFieldWidget extends StatefulWidget {
     this.enabled = true,
     this.countryCodeStyle,
     this.phoneValidation,
+    this.onPhoneNumberChanged,
+    this.onPhoneNumberSaved,
+    this.phoneNumberValidator,
+    this.suffixIcon,
+    this.phoneNumberValidationChanged,
+    this.haveStateManagement = true,
+    this.textInputAction = TextInputAction.next,
+    this.keyboardType = TextInputType.phone,
   });
 
   final CountrySelectorNavigator selectorNavigator;
@@ -48,6 +56,18 @@ class PhoneNumberFieldWidget extends StatefulWidget {
   final bool enabled;
   final TextStyle? countryCodeStyle;
   final String? phoneValidation;
+  final ValueChanged<PhoneNumber?>? onPhoneNumberChanged;
+  final Function(PhoneNumber?)? onPhoneNumberSaved;
+  final PhoneNumberInputValidator? phoneNumberValidator;
+  final Function(
+    String? phoneNumberValidation,
+    PhoneNumber? phoneNumber,
+    PhoneController controller,
+  )? phoneNumberValidationChanged;
+  final Widget? suffixIcon;
+  final bool haveStateManagement;
+  final TextInputType keyboardType;
+  final TextInputAction textInputAction;
 
   @override
   State<PhoneNumberFieldWidget> createState() => _PhoneNumberFieldWidgetState();
@@ -70,8 +90,7 @@ class _PhoneNumberFieldWidgetState extends State<PhoneNumberFieldWidget> {
   );
 
   // Country picker selector mode
-  CountrySelectorNavigator selectorNavigator =
-      const CountrySelectorNavigator.searchDelegate();
+  CountrySelectorNavigator selectorNavigator = const CountrySelectorNavigator.searchDelegate();
   final phoneKey = GlobalKey<FormFieldState<PhoneNumber>>();
   bool mobileOnly = true;
   String? phoneValidation;
@@ -160,10 +179,8 @@ class _PhoneNumberFieldWidgetState extends State<PhoneNumberFieldWidget> {
             }*/
             context.read<PhoneNumberVerificationBloc>().add(
                   ValidatePhoneNumber(
-                    phoneNumber:
-                        '+${phoneController.value?.countryCode} ${phoneController.value?.getFormattedNsn().trim()}',
-                    countryDialCode:
-                        '+${phoneController.value?.countryCode ?? '+966'}',
+                    phoneNumber: '+${phoneController.value?.countryCode} ${phoneController.value?.getFormattedNsn().trim()}',
+                    countryDialCode: '+${phoneController.value?.countryCode ?? '+966'}',
                     country: phoneController.value?.isoCode.name ?? 'SA',
                     phoneValidation: phoneValidation,
                     phoneNumberInputValidator: phoneNumberInputValidator,
@@ -176,10 +193,8 @@ class _PhoneNumberFieldWidgetState extends State<PhoneNumberFieldWidget> {
           onChange: (phoneNumber, controller) {
             context.read<PhoneNumberVerificationBloc>().add(
                   PhoneNumberChanged(
-                    phoneNumber:
-                        '+${controller?.value?.countryCode} ${controller?.value?.getFormattedNsn().trim()}',
-                    countryDialCode:
-                        '+${controller?.value?.countryCode ?? '+966'}',
+                    phoneNumber: '+${controller?.value?.countryCode} ${controller?.value?.getFormattedNsn().trim()}',
+                    countryDialCode: '+${controller?.value?.countryCode ?? '+966'}',
                     country: controller?.value?.isoCode.name ?? 'SA',
                     enteredPhoneNumber: phoneNumber,
                     phoneController: controller!,
@@ -222,16 +237,11 @@ class _PhoneNumberFieldWidgetState extends State<PhoneNumberFieldWidget> {
               ),
             ),
           ],
-          initialStreamValue: [
-            'Mobile number',
-            '${widget.withLabel}',
-            phoneValidation
-          ],
+          initialStreamValue: ['Mobile number', '${widget.withLabel}', phoneValidation],
           builder: (context, snapshot) {
             return AutofillGroup(
               child: Directionality(
-                textDirection:
-                    serviceLocator<LanguageController>().targetTextDirection,
+                textDirection: serviceLocator<LanguageController>().targetTextDirection,
                 //widget.useRtl ? TextDirection.rtl : TextDirection.ltr,
                 child: PhoneFormField(
                   key: phoneKey,
@@ -244,41 +254,46 @@ class _PhoneNumberFieldWidgetState extends State<PhoneNumberFieldWidget> {
                   countrySelectorNavigator: widget.selectorNavigator,
                   defaultCountry: defaultCountry,
                   decoration: widget.decoration?.copyWith(
-                        suffixIcon: const PhoneNumberValidationIconWidget(),
+                        suffixIcon: widget.suffixIcon ?? const PhoneNumberValidationIconWidget(),
                       ) ??
                       InputDecoration(
-                        label: widget.withLabel
-                            ? const Text('Mobile number').translate()
-                            : null,
-                        border: widget.outlineBorder
-                            ? const OutlineInputBorder()
-                            : const UnderlineInputBorder(),
+                        label: widget.withLabel ? const Text('Mobile number').translate() : null,
+                        border: widget.outlineBorder ? const OutlineInputBorder() : const UnderlineInputBorder(),
                         hintText: widget.withLabel ? '' : snapshot[0],
                         errorText: phoneValidation,
-                        suffixIcon: const PhoneNumberValidationIconWidget(),
+                        suffixIcon: widget.suffixIcon ?? const PhoneNumberValidationIconWidget(),
                       ),
                   enabled: widget.enabled,
+                  textInputAction: widget.textInputAction,
+                  keyboardType: widget.keyboardType,
                   showFlagInInput: widget.showFlagInInput,
                   validator: (PhoneNumber? phoneNumber) {
-                    final result = widget.validator ??
-                        getValidator(isAllowEmpty: widget.isAllowEmpty);
+                    final result = widget.validator ?? getValidator(isAllowEmpty: widget.isAllowEmpty);
                     phoneValidation = result?.call(phoneNumber);
-                    context.read<PhoneFormFieldBloc>().add(
-                          PhoneFormFieldValidate(
-                            phoneNumberInputValidator: result,
-                            phoneValidation: phoneValidation,
-                            phoneController: controller,
-                          ),
-                        );
+                    widget.phoneNumberValidationChanged?.call(
+                      phoneValidation,
+                      phoneNumber,
+                      controller,
+                    );
+                    if (widget.haveStateManagement) {
+                      context.read<PhoneFormFieldBloc>().add(
+                            PhoneFormFieldValidate(
+                              phoneNumberInputValidator: result,
+                              phoneValidation: phoneValidation,
+                              phoneController: controller,
+                            ),
+                          );
+                    }
                     return phoneValidation;
                   },
-                  autovalidateMode: widget.autovalidateMode ??
-                      AutovalidateMode.onUserInteraction,
+                  autovalidateMode: widget.autovalidateMode ?? AutovalidateMode.onUserInteraction,
                   cursorColor: Theme.of(context).colorScheme.primary,
                   onSaved: (PhoneNumber? p) {
+                    widget.onPhoneNumberSaved?.call(p);
                     //return context.read<PhoneFormFieldBloc>().add(PhoneFormFieldOnSave(phoneNumber: p, controller: controller),);
                   },
                   onChanged: (PhoneNumber? p) {
+                    widget.onPhoneNumberChanged?.call(p);
                     //return context.read<PhoneFormFieldBloc>().add(PhoneFormFieldOnChange(phoneNumber: p, controller: controller),);
                   },
                   //print('changed $p'),
