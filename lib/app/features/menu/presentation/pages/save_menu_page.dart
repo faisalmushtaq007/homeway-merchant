@@ -5,10 +5,12 @@ class SaveMenuPage extends StatefulWidget {
     super.key,
     this.haveNewMenu = true,
     this.menuEntity,
+    this.currentIndex = -1,
   });
 
   final bool haveNewMenu;
   final MenuEntity? menuEntity;
+  final int currentIndex;
 
   @override
   _SaveMenuPageController createState() => _SaveMenuPageController();

@@ -11,6 +11,7 @@ import 'package:homemakers_merchant/app/features/store/index.dart';
 import 'package:homemakers_merchant/app/features/store/presentation/manager/store_bloc.dart';
 
 import 'package:homemakers_merchant/base/widget_view.dart';
+import 'package:homemakers_merchant/core/common/entity/ratingAndReviewEntity.dart';
 import 'package:homemakers_merchant/core/constants/global_app_constants.dart';
 import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/material.dart';

@@ -10,6 +10,8 @@ class DisplayImage extends StatelessWidget {
   final VoidCallback onPressed;
   final bool hasIconImage;
   final bool hasEditButton;
+  final bool hasCustomIcon;
+  final Icon? customIcon;
 
   // Constructor
   const DisplayImage({
@@ -18,6 +20,8 @@ class DisplayImage extends StatelessWidget {
     required this.onPressed,
     this.hasIconImage = false,
     this.hasEditButton = true,
+    this.customIcon,
+    this.hasCustomIcon = false,
   }) : super(key: key);
 
   @override
@@ -42,9 +46,7 @@ class DisplayImage extends StatelessWidget {
 
   // Builds Profile Image
   Widget buildImage(Color color, bool hasIconImage, BuildContext context) {
-    final image = imagePath.contains('https://')
-        ? NetworkImage(imagePath)
-        : AssetImage(imagePath);
+    final image = imagePath.contains('https://') ? NetworkImage(imagePath) : AssetImage(imagePath);
 
     return CircleAvatar(
       radius: 36,
@@ -53,12 +55,13 @@ class DisplayImage extends StatelessWidget {
         backgroundColor: const Color.fromRGBO(238, 238, 238, 1),
         backgroundImage: hasIconImage ? null : image as ImageProvider,
         child: hasIconImage
-            ? Icon(
-                textDirection:
-                    serviceLocator<LanguageController>().targetTextDirection,
-                Icons.restaurant_menu,
-                size: 24.0,
-              )
+            ? hasCustomIcon
+                ? customIcon
+                : Icon(
+                    textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                    Icons.restaurant_menu,
+                    size: 24.0,
+                  )
             : null,
         radius: 32,
       ),

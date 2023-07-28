@@ -9,10 +9,10 @@ class StoreOwnerAllDrivers extends StatefulWidget {
 class _StoreOwnerAllDriversController extends State<StoreOwnerAllDrivers> {
   late final ScrollController scrollController;
   late final ScrollController innerScrollController;
-  List<MenuEntity> listOfAllMenus = [];
-  List<MenuEntity> listOfAllSelectedMenus = [];
+  List<StoreOwnDeliveryPartnersInfo> listOfAllDrivers = [];
+  List<StoreOwnDeliveryPartnersInfo> listOfAllSelectedDrivers = [];
   final TextEditingController searchTextEditingController = TextEditingController();
-  WidgetState<MenuEntity> widgetState = const WidgetState<MenuEntity>.none();
+  WidgetState<StoreOwnDeliveryPartnersInfo> widgetState = const WidgetState<StoreOwnDeliveryPartnersInfo>.none();
   bool? haveSelectAllMenus = false;
 
   @override
@@ -20,11 +20,11 @@ class _StoreOwnerAllDriversController extends State<StoreOwnerAllDrivers> {
     super.initState();
     scrollController = ScrollController();
     innerScrollController = ScrollController();
-    listOfAllMenus = [];
-    listOfAllMenus.clear();
-    listOfAllSelectedMenus = [];
-    listOfAllSelectedMenus.clear();
-    context.read<MenuBloc>().add(GetAllMenu());
+    listOfAllDrivers = [];
+    listOfAllDrivers.clear();
+    listOfAllSelectedDrivers = [];
+    listOfAllSelectedDrivers.clear();
+    context.read<StoreBloc>().add(GetAllDriver());
   }
 
   @override
@@ -39,45 +39,45 @@ class _StoreOwnerAllDriversController extends State<StoreOwnerAllDrivers> {
     scrollController.dispose();
     innerScrollController.dispose();
     searchTextEditingController.dispose();
-    listOfAllMenus = [];
-    listOfAllMenus.clear();
-    listOfAllSelectedMenus = [];
-    listOfAllSelectedMenus.clear();
+    listOfAllDrivers = [];
+    listOfAllDrivers.clear();
+    listOfAllSelectedDrivers = [];
+    listOfAllSelectedDrivers.clear();
     super.dispose();
   }
 
-  void onSelectionChanged(List<MenuEntity> listOfMenuEntities) {
+  void onSelectionChanged(List<StoreOwnDeliveryPartnersInfo> listOfMenuEntities) {
     setState(() {
-      listOfAllSelectedMenus = List<MenuEntity>.from(listOfMenuEntities.toList());
+      listOfAllSelectedDrivers = List<StoreOwnDeliveryPartnersInfo>.from(listOfMenuEntities.toList());
     });
   }
 
-  void selectAllMenus({bool? isSelectAllMenus = false}) {
-    haveSelectAllMenus = isSelectAllMenus;
-    if (isSelectAllMenus != null && isSelectAllMenus == true) {
-      listOfAllSelectedMenus = List.from(listOfAllMenus.toList());
+  void selectAllDrivers({bool? isSelectAllDrivers = false}) {
+    haveSelectAllMenus = isSelectAllDrivers;
+    if (isSelectAllDrivers != null && isSelectAllDrivers == true) {
+      listOfAllSelectedDrivers = List.from(listOfAllDrivers.toList());
     } else {
-      listOfAllSelectedMenus = [];
-      listOfAllSelectedMenus.clear();
+      listOfAllSelectedDrivers = [];
+      listOfAllSelectedDrivers.clear();
     }
     setState(() {});
   }
 
   @override
-  Widget build(BuildContext context) => BlocBuilder<MenuBloc, MenuState>(
-        key: const Key('all-menus-page-bloc-builder-widget'),
-        bloc: context.watch<MenuBloc>(),
+  Widget build(BuildContext context) => BlocBuilder<StoreBloc, StoreState>(
+        key: const Key('all-driver-page-bloc-builder-widget'),
+        bloc: context.watch<StoreBloc>(),
         builder: (context, state) {
           switch (state) {
-            case GetAllMenuState():
+            case GetAllDriverState():
               {
-                listOfAllMenus = List<MenuEntity>.from(state.menuEntities.toList());
-                widgetState = WidgetState<MenuEntity>.allData(
+                listOfAllDrivers = List<StoreOwnDeliveryPartnersInfo>.from(state.storeOwnDeliveryPartnerEntities.toList());
+                widgetState = WidgetState<StoreOwnDeliveryPartnersInfo>.allData(
                   context: context,
                 );
               }
             case _:
-              appLog.d('Default case: all menu page');
+              appLog.d('Default case: all driver page');
           }
           return _StoreOwnerAllDriversView(this);
         },

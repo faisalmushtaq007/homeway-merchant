@@ -202,6 +202,14 @@ class $AssetsSvgGen {
   SvgGenImage get homeChefType =>
       const SvgGenImage('assets/svg/home_chef_type.svg');
 
+  /// File path: assets/svg/offline_driver.svg
+  SvgGenImage get offlineDriver =>
+      const SvgGenImage('assets/svg/offline_driver.svg');
+
+  /// File path: assets/svg/online_driver.svg
+  SvgGenImage get onlineDriver =>
+      const SvgGenImage('assets/svg/online_driver.svg');
+
   /// File path: assets/svg/restaurant_type.svg
   SvgGenImage get restaurantType =>
       const SvgGenImage('assets/svg/restaurant_type.svg');
@@ -211,8 +219,15 @@ class $AssetsSvgGen {
       const SvgGenImage('assets/svg/splashbackground.svg');
 
   /// List of all assets
-  List<SvgGenImage> get values =>
-      [applogo, applogodark, homeChefType, restaurantType, splashbackground];
+  List<SvgGenImage> get values => [
+        applogo,
+        applogodark,
+        homeChefType,
+        offlineDriver,
+        onlineDriver,
+        restaurantType,
+        splashbackground
+      ];
 }
 
 class $AssetsSvgFlagsGen {

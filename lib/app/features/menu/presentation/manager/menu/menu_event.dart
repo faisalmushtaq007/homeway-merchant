@@ -4,16 +4,21 @@ abstract class MenuEvent with AppEquatable {}
 
 // Menu
 class SaveMenu extends MenuEvent {
-  SaveMenu({required this.menuEntity, required this.hasNewMenu});
+  SaveMenu({required this.menuEntity, required this.hasNewMenu, this.currentIndex = -1});
 
   final MenuEntity menuEntity;
   final bool hasNewMenu;
+  final int currentIndex;
 
   @override
   bool get cacheHash => true;
 
   @override
-  List<Object?> get hashParameters => [menuEntity, hasNewMenu];
+  List<Object?> get hashParameters => [
+        menuEntity,
+        hasNewMenu,
+        currentIndex,
+      ];
 }
 
 class RemoveByIDMenu extends MenuEvent {
@@ -108,16 +113,28 @@ class AddAddonsOnMenu extends MenuEvent {
 
 // Addons
 class SaveAddons extends MenuEvent {
-  SaveAddons({required this.addonsEntity, this.hasNewAddons = true});
+  SaveAddons({
+    required this.addonsEntity,
+    this.hasNewAddons = true,
+    this.currentIndex = -1,
+    this.haveOwnAddons = true,
+  });
 
   final Addons addonsEntity;
   final bool hasNewAddons;
+  final int currentIndex;
+  final bool haveOwnAddons;
 
   @override
   bool get cacheHash => true;
 
   @override
-  List<Object?> get hashParameters => [hasNewAddons, addonsEntity];
+  List<Object?> get hashParameters => [
+        hasNewAddons,
+        addonsEntity,
+        currentIndex,
+        haveOwnAddons,
+      ];
 }
 
 class RemoveByIDAddons extends MenuEvent {

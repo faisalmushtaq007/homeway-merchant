@@ -8,6 +8,7 @@ import 'package:homemakers_merchant/config/translation/extension/text_extension.
 import 'package:homemakers_merchant/config/translation/language_controller.dart';
 import 'package:homemakers_merchant/shared/widgets/universal/multi_stream_builder/multi_stream_builder.dart';
 import 'package:homemakers_merchant/shared/widgets/universal/phone_number_text_field/phone_form_field_bloc.dart';
+import 'package:homemakers_merchant/shared/widgets/universal/phone_number_text_field/phone_number_validate_widget.dart';
 import 'package:homemakers_merchant/utils/app_log.dart';
 import 'package:phone_form_field/phone_form_field.dart';
 
@@ -38,6 +39,7 @@ class PhoneNumberFieldWidget extends StatefulWidget {
     this.haveStateManagement = true,
     this.textInputAction = TextInputAction.next,
     this.keyboardType = TextInputType.phone,
+    this.phoneNumberFocusNode,
   });
 
   final CountrySelectorNavigator selectorNavigator;
@@ -68,6 +70,7 @@ class PhoneNumberFieldWidget extends StatefulWidget {
   final bool haveStateManagement;
   final TextInputType keyboardType;
   final TextInputAction textInputAction;
+  final FocusNode? phoneNumberFocusNode;
 
   @override
   State<PhoneNumberFieldWidget> createState() => _PhoneNumberFieldWidgetState();
@@ -100,6 +103,9 @@ class _PhoneNumberFieldWidgetState extends State<PhoneNumberFieldWidget> {
   bool isCountryChipPersistent = false;
   bool withLabel = true;
   bool useRtl = false;
+  ValueNotifier<PhoneNumberVerification> valueNotifierPhoneNumberVerification = ValueNotifier<PhoneNumberVerification>(
+    PhoneNumberVerification.none,
+  );
 
   @override
   void initState() {
@@ -110,7 +116,7 @@ class _PhoneNumberFieldWidgetState extends State<PhoneNumberFieldWidget> {
     controller = PhoneController(initialPhoneNumberValue);
     controller.value = initialPhoneNumberValue;
     defaultCountry = isoCodeNameMap.values.byName('SA');
-    phoneNumberFocusNode = FocusNode();
+    phoneNumberFocusNode = widget.phoneNumberFocusNode ?? FocusNode();
     mobileOnly = true;
     phoneValidation = phoneKey.currentState?.errorText;
     super.initState();
@@ -124,6 +130,7 @@ class _PhoneNumberFieldWidgetState extends State<PhoneNumberFieldWidget> {
   void dispose() {
     phoneNumberFocusNode.dispose();
     controller.dispose();
+    valueNotifierPhoneNumberVerification.dispose();
     super.dispose();
   }
 
@@ -254,7 +261,16 @@ class _PhoneNumberFieldWidgetState extends State<PhoneNumberFieldWidget> {
                   countrySelectorNavigator: widget.selectorNavigator,
                   defaultCountry: defaultCountry,
                   decoration: widget.decoration?.copyWith(
-                        suffixIcon: widget.suffixIcon ?? const PhoneNumberValidationIconWidget(),
+                        suffixIcon: (!widget.haveStateManagement)
+                            ? ValueListenableBuilder(
+                                valueListenable: valueNotifierPhoneNumberVerification,
+                                builder: (context, value, child) {
+                                  return PhoneNumberValidateWidget(
+                                    phoneNumberVerification: value,
+                                  );
+                                },
+                              )
+                            : const PhoneNumberValidationIconWidget(),
                       ) ??
                       InputDecoration(
                         label: widget.withLabel ? const Text('Mobile number').translate() : null,
@@ -283,6 +299,16 @@ class _PhoneNumberFieldWidgetState extends State<PhoneNumberFieldWidget> {
                               phoneController: controller,
                             ),
                           );
+                    } else {
+                      if (phoneValidation != null && phoneValidation!.isNotEmpty) {
+                        valueNotifierPhoneNumberVerification.value = PhoneNumberVerification.invalid;
+                      } else {
+                        if (phoneValidation == null && controller.value != null && controller.value!.getFormattedNsn().trim().isNotEmpty) {
+                          valueNotifierPhoneNumberVerification.value = PhoneNumberVerification.valid;
+                        } else {
+                          valueNotifierPhoneNumberVerification.value = PhoneNumberVerification.none;
+                        }
+                      }
                     }
                     return phoneValidation;
                   },

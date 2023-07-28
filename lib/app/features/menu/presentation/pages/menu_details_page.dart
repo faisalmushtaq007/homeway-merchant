@@ -26,8 +26,8 @@ class _StoreDetailsPageController extends State<MenuDetailsPage> {
   }
 
   @override
-  Widget build(BuildContext context) => BlocBuilder<StoreBloc, StoreState>(
-        bloc: context.watch<StoreBloc>(),
+  Widget build(BuildContext context) => BlocBuilder<MenuBloc, MenuState>(
+        bloc: context.watch<MenuBloc>(),
         key: const Key('menu-details-page-bloc-builder-widget'),
         builder: (context, storeState) {
           return _StoreDetailsPageView(this);

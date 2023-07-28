@@ -29,6 +29,7 @@ class MenuEntity with AppEquatable {
     this.customPortion,
     this.menuMaxPreparationTime = '',
     this.menuMinPreparationTime = '',
+    this.ratingAndReviewEntity,
   });
 
   factory MenuEntity.fromMap(Map<String, dynamic> map) {
@@ -60,6 +61,7 @@ class MenuEntity with AppEquatable {
       customPortion: map['customPortion'] as CustomPortion?,
       menuMinPreparationTime: map['menuMinPreparationTime'] as String,
       menuMaxPreparationTime: map['menuMaxPreparationTime'] as String,
+      ratingAndReviewEntity: map['ratingAndReviewEntity'] as RatingAndReviewEntity,
     );
   }
 
@@ -90,6 +92,7 @@ class MenuEntity with AppEquatable {
   CustomPortion? customPortion;
   String menuMinPreparationTime;
   String menuMaxPreparationTime;
+  RatingAndReviewEntity? ratingAndReviewEntity;
 
   @override
   bool get cacheHash => true;
@@ -123,6 +126,7 @@ class MenuEntity with AppEquatable {
         customPortion,
         menuMinPreparationTime,
         menuMaxPreparationTime,
+        ratingAndReviewEntity,
       ];
 
   Map<String, dynamic> toMap() {
@@ -154,6 +158,7 @@ class MenuEntity with AppEquatable {
       'customPortion': this.customPortion,
       'menuMinPreparationTime': this.menuMinPreparationTime,
       'menuMaxPreparationTime': this.menuMaxPreparationTime,
+      'ratingAndReviewEntity': this.ratingAndReviewEntity,
     };
   }
 
@@ -185,6 +190,7 @@ class MenuEntity with AppEquatable {
     CustomPortion? customPortion,
     String? menuMinPreparationTime,
     String? menuMaxPreparationTime,
+    RatingAndReviewEntity? ratingAndReviewEntity,
   }) {
     return MenuEntity(
       id: id ?? this.id,
@@ -214,6 +220,7 @@ class MenuEntity with AppEquatable {
       customPortion: customPortion ?? this.customPortion,
       menuMaxPreparationTime: menuMaxPreparationTime ?? this.menuMaxPreparationTime,
       menuMinPreparationTime: menuMinPreparationTime ?? this.menuMinPreparationTime,
+      ratingAndReviewEntity: ratingAndReviewEntity ?? this.ratingAndReviewEntity,
     );
   }
 }

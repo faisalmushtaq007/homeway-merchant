@@ -1,6 +1,6 @@
 name: homemakers_merchant
 description: A app for HomeMakers merchant.
-version: 1.0.0+1
+version: 1.0.0+2
 publish_to: none
 
 environment:

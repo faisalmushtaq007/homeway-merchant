@@ -5,10 +5,12 @@ class SaveDriverPage extends StatefulWidget {
     super.key,
     this.haveStoreOwnNewDeliveryPartnersInfo = true,
     this.storeOwnDeliveryPartnersInfo,
+    this.currentIndex = -1,
   });
 
   final bool haveStoreOwnNewDeliveryPartnersInfo;
   final StoreOwnDeliveryPartnersInfo? storeOwnDeliveryPartnersInfo;
+  final int currentIndex;
 
   @override
   _SaveDriverPageController createState() => _SaveDriverPageController();
@@ -29,7 +31,7 @@ class _SaveDriverPageController extends State<SaveDriverPage> {
   final TextEditingController driverNameTextEditingController = TextEditingController();
   final TextEditingController driverContactNumberTextEditingController = TextEditingController();
   final TextEditingController drivingLicenseNumberTextEditingController = TextEditingController();
-  final TextEditingController addonsQuantityTextEditingController = TextEditingController();
+  final TextEditingController driverVehicleNumberTextEditingController = TextEditingController();
   final TextEditingController addonsUnitTextEditingController = TextEditingController();
   List<StoreOwnDeliveryPartnersInfo> listOfStoreOwnDeliveryPartners = [];
   List<StoreOwnDeliveryPartnersInfo> listOfSelectedStoreOwnDeliveryPartner = [];
@@ -43,6 +45,9 @@ class _SaveDriverPageController extends State<SaveDriverPage> {
   PhoneNumber? phoneNumber;
   late PhoneController phoneNumberController;
   PhoneNumberVerification phoneNumberVerification = PhoneNumberVerification.none;
+  ValueNotifier<PhoneNumberVerification> valueNotifierPhoneNumberVerification = ValueNotifier<PhoneNumberVerification>(
+    PhoneNumberVerification.none,
+  );
 
   @override
   void initState() {
@@ -83,7 +88,7 @@ class _SaveDriverPageController extends State<SaveDriverPage> {
     drivingLicenseNumberTextEditingController.dispose();
     driverNameTextEditingController.dispose();
     driverContactNumberTextEditingController.dispose();
-    addonsQuantityTextEditingController.dispose();
+    driverVehicleNumberTextEditingController.dispose();
     addonsUnitTextEditingController.dispose();
     listOfStoreOwnDeliveryPartners = [];
     listOfSelectedStoreOwnDeliveryPartner = [];
@@ -94,11 +99,7 @@ class _SaveDriverPageController extends State<SaveDriverPage> {
   }
 
   void initVehicleTypeInfo() {
-    listOfVehicleTypeInfo = List<VehicleInfo>.from(localVehicleTypeInfo.toList());
-  }
-
-  void initStoreOwnDeliveryPartners() {
-    //listOfStoreOwnDeliveryPartners = List<StoreOwnDeliveryPartnersInfo>.from(localMenuPortions.toList());
+    listOfVehicleTypeInfo = List<VehicleInfo>.from(localDriverVehicleType.toList());
   }
 
   void onSelectionChangedVehicleType(List<VehicleInfo> selectedMenuPortions) {
@@ -132,45 +133,52 @@ class _SaveDriverPageController extends State<SaveDriverPage> {
     phoneNumberController = phoneNumberControllers;
     if (phoneValidation != null && phoneValidation!.isNotEmpty) {
       phoneNumberVerification = PhoneNumberVerification.invalid;
+      valueNotifierPhoneNumberVerification.value = PhoneNumberVerification.invalid;
     } else {
       if (phoneValidation == null && phoneNumberControllers.value != null && phoneNumberControllers.value!.getFormattedNsn().trim().isNotEmpty) {
         phoneNumberVerification = PhoneNumberVerification.valid;
+        valueNotifierPhoneNumberVerification.value = PhoneNumberVerification.valid;
       } else {
         phoneNumberVerification = PhoneNumberVerification.none;
+        valueNotifierPhoneNumberVerification.value = PhoneNumberVerification.none;
       }
     }
     //setState(() {});
   }
 
   void onPhoneNumberSaved(PhoneNumber? value) {}
-  String? phoneNumberValidator(PhoneNumber? phoneNumber) {}
+
+  String? phoneNumberValidator(PhoneNumber? phoneNumber) {
+    //
+  }
 
   @override
-  Widget build(BuildContext context) => BlocListener<MenuBloc, MenuState>(
-        key: const Key('save-addons-bloclistener-widget'),
-        bloc: context.watch<MenuBloc>(),
-        listener: (context, state) {
-          if (state is NavigateToAddonsMenuState) {
-            context.pushReplacement(
-              Routes.NEW_ADDONS_GREETING_PAGE,
-              extra: state.addonsEntity,
-            );
+  Widget build(BuildContext context) => BlocListener<StoreBloc, StoreState>(
+        key: const Key('save-driver-bloclistener-widget'),
+        bloc: context.watch<StoreBloc>(),
+        listener: (context, driverListenerState) {
+          switch (driverListenerState) {
+            case NavigateToNewDriverGreetingPageState():
+              {
+                context.go(
+                  Routes.NEW_DRIVER_GREETING_PAGE,
+                  extra: {
+                    'storeOwnDeliveryPartnerEntity': driverListenerState.storeOwnDeliveryPartnerEntity,
+                    'haveNewDriver': driverListenerState.hasNewDriver,
+                  },
+                );
+              }
+            case _:
+              debugPrint('default');
           }
         },
-        child: BlocBuilder<MenuBloc, MenuState>(
-          key: const Key('save-addons-blocbuilder-widget'),
-          bloc: context.watch<MenuBloc>(),
-          builder: (context, addonsState) {
-            switch (addonsState) {
-              case SelectAddonsMaxPortionState():
-                {
-                  listOfSelectedStoreOwnDeliveryPartner = List<StoreOwnDeliveryPartnersInfo>.from(addonsState.selectedMenuPortions.toList());
-                  addonsQuantityTextEditingController.text = addonsState.selectedMenuPortions.first.quantity.toString();
-                  drivingLicenseNumberTextEditingController.text = addonsState.selectedMenuPortions.first.finalPrice.toString();
-                  addonsUnitTextEditingController.text = addonsState.selectedMenuPortions.first.unit.toString();
-                  currency = addonsState.selectedMenuPortions.first.currency.toString();
-                  unit = addonsState.selectedMenuPortions.first.unit.toString();
-                }
+        child: BlocBuilder<StoreBloc, StoreState>(
+          key: const Key('save-driver-blocbuilder-widget'),
+          bloc: context.watch<StoreBloc>(),
+          builder: (context, driverState) {
+            switch (driverState) {
+              case SaveDriverState():
+                {}
               case _:
                 debugPrint('default');
             }
@@ -282,6 +290,8 @@ class _SaveDriverPageView extends WidgetView<SaveDriverPage, _SaveDriverPageCont
                                         onPressed: () {},
                                         hasIconImage: true,
                                         hasEditButton: false,
+                                        hasCustomIcon: true,
+                                        customIcon: Icon(Icons.person),
                                       ),
                                     ),
                                   ],
@@ -351,12 +361,12 @@ class _SaveDriverPageView extends WidgetView<SaveDriverPage, _SaveDriverPageCont
                                           withLabel: true,
                                           decoration: InputDecoration(
                                             labelText: 'Driver mobile number',
-                                            //alignLabelWithHint: true,
-                                            hintText: 'Enter driver number',
+                                            //hintText: 'Enter driver number',
+                                            alignLabelWithHint: true,
                                             errorText: state.phoneValidation,
-                                            suffixIcon: PhoneNumberValidateWidget(
-                                              phoneNumberVerification: state.phoneNumberVerification,
-                                            ),
+                                            /*suffixIcon: PhoneNumberValidateWidget(
+                                                  phoneNumberVerification: value,
+                                                ),*/
                                             isDense: true,
                                           ),
                                           isAllowEmpty: false,
@@ -364,8 +374,8 @@ class _SaveDriverPageView extends WidgetView<SaveDriverPage, _SaveDriverPageCont
                                           style: context.bodyLarge,
                                           showFlagInInput: false,
                                           countryCodeStyle: context.bodyLarge,
-                                          validator: state.phoneNumberValidator,
-                                          suffixIcon: PhoneNumberValidateWidget(phoneNumberVerification: state.phoneNumberVerification),
+                                          //validator: state.phoneNumberValidator,
+                                          //suffixIcon: PhoneNumberValidateWidget(phoneNumberVerification: value),
                                           onPhoneNumberChanged: state.onPhoneNumberChanged,
                                           phoneNumberValidator: state.phoneNumberValidator,
                                           onPhoneNumberSaved: state.onPhoneNumberSaved,
@@ -427,6 +437,31 @@ class _SaveDriverPageView extends WidgetView<SaveDriverPage, _SaveDriverPageCont
                                         onSaved: (newValue) {},
                                         isSingleSelect: true,
                                       ),
+                                      const AnimatedGap(12, duration: Duration(milliseconds: 500)),
+                                      AppTextFieldWidget(
+                                        controller: state.driverVehicleNumberTextEditingController,
+                                        textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                        //focusNode: state.focusList[2],
+                                        textInputAction: TextInputAction.done,
+                                        keyboardType: TextInputType.text,
+                                        decoration: InputDecoration(
+                                            labelText: 'Vehicle Number',
+                                            hintText: 'Enter driver vehicle number',
+                                            border: OutlineInputBorder(
+                                              borderRadius: BorderRadius.circular(10),
+                                            ),
+                                            isDense: true,
+                                            suffixText: state.currency,
+                                            prefixIcon: const Icon(
+                                              Icons.drive_eta,
+                                            )),
+                                        validator: (value) {
+                                          if (value == null || value.isEmpty) {
+                                            return 'Enter driver vehicle number';
+                                          }
+                                          return null;
+                                        },
+                                      ),
                                     ],
                                   ),
                                 ),
@@ -440,27 +475,50 @@ class _SaveDriverPageView extends WidgetView<SaveDriverPage, _SaveDriverPageCont
                           padding: EdgeInsetsDirectional.symmetric(horizontal: margins * 1.5),
                           child: ElevatedButton(
                             onPressed: () {
+                              // Form validate and save
                               if (_SaveDriverPageController.SaveDriverFormKey.currentState!.validate()) {
                                 _SaveDriverPageController.SaveDriverFormKey.currentState!.save();
-                                /*context.read<MenuBloc>().add(
+                                StoreOwnDeliveryPartnersInfo storeOwnDeliveryPartnerEntity;
+                                // Existing driver
+                                if (widget.haveStoreOwnNewDeliveryPartnersInfo && widget.storeOwnDeliveryPartnersInfo != null) {
+                                  storeOwnDeliveryPartnerEntity = widget.storeOwnDeliveryPartnersInfo!.copyWith(
+                                    driverMobileNumber: state.userEnteredPhoneNumber,
+                                    drivingLicenseNumber: state.drivingLicenseNumberTextEditingController.value.text.trim(),
+                                    driverName: state.driverNameTextEditingController.value.text.trim(),
+                                    vehicleInfo: VehicleInfo(
+                                      vehicleID: state.listOfSelectedVehicleTypeInfo[0].vehicleID,
+                                      vehicleType: state.listOfSelectedVehicleTypeInfo[0].vehicleType,
+                                      vehicleNumber: state.listOfSelectedVehicleTypeInfo[0].vehicleNumber,
+                                    ),
+                                  );
+                                }
+                                // New driver
+                                else {
+                                  storeOwnDeliveryPartnerEntity = StoreOwnDeliveryPartnersInfo(
+                                    driverMobileNumber: state.userEnteredPhoneNumber,
+                                    drivingLicenseNumber: state.drivingLicenseNumberTextEditingController.value.text.trim(),
+                                    driverName: state.driverNameTextEditingController.value.text.trim(),
+                                    vehicleInfo: VehicleInfo(
+                                      vehicleID: state.listOfSelectedVehicleTypeInfo[0].vehicleID,
+                                      vehicleType: state.listOfSelectedVehicleTypeInfo[0].vehicleType,
+                                      vehicleNumber: state.listOfSelectedVehicleTypeInfo[0].vehicleNumber,
+                                    ),
+                                  );
+                                }
+                                // Execute save action
+                                context.read<StoreBloc>().add(
                                       SaveDriver(
-                                        addonsEntity: Addons(
-                                          addonsID: '',
-                                          title: state.driverNameTextEditingController.value.text.trim(),
-                                          description: state.driverContactNumberTextEditingController.value.text.trim(),
-                                          quantity: double.parse(state.addonsQuantityTextEditingController.value.text.trim()),
-                                          defaultPrice: 0.0,
-                                          finalPrice: double.parse(state.drivingLicenseNumberTextEditingController.value.text.trim()),
-                                          discountedPrice: 0.0,
-                                          hasSelected: false,
-                                          unit: state.addonsUnitTextEditingController.value.text.trim(),
-                                          currency: state.currency,
-                                        ),
+                                        haveNewDriver: widget.haveStoreOwnNewDeliveryPartnersInfo,
+                                        storeOwnDeliveryPartnerEntity: storeOwnDeliveryPartnerEntity,
                                       ),
-                                    );*/
+                                    );
+                                return;
                               }
                               return;
                             },
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: const Color.fromRGBO(69, 201, 125, 1),
+                            ),
                             child: Text(
                               'Save Driver',
                               textDirection: serviceLocator<LanguageController>().targetTextDirection,

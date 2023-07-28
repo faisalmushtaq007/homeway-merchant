@@ -1,21 +1,22 @@
 part of 'package:homemakers_merchant/app/features/store/index.dart';
 
-class StoreCard extends StatefulWidget {
-  const StoreCard({required this.storeEntity, super.key, required this.currentIndex, required this.listOfAllStoreEntities});
+class DriverCard extends StatefulWidget {
+  const DriverCard(
+      {required this.storeOwnDeliveryPartnerEntity, super.key, required this.currentIndex, required this.listOfAllStoreOwnDeliveryPartnerEntities});
 
-  final StoreEntity storeEntity;
+  final StoreOwnDeliveryPartnersInfo storeOwnDeliveryPartnerEntity;
   final int currentIndex;
-  final List<StoreEntity> listOfAllStoreEntities;
+  final List<StoreOwnDeliveryPartnersInfo> listOfAllStoreOwnDeliveryPartnerEntities;
 
   @override
-  State<StoreCard> createState() => _StoreCardState();
+  State<DriverCard> createState() => _DriverCardState();
 }
 
-class _StoreCardState extends State<StoreCard> {
+class _DriverCardState extends State<DriverCard> {
   Color carBackgroundColor = Colors.white;
   var _popupStoreItemIndex = 0;
 
-  Widget _buildPopupMenuButton(int currentIndex, StoreEntity storeEntity) {
+  Widget _buildPopupMenuButton(int currentIndex, StoreOwnDeliveryPartnersInfo storeOwnDeliveryPartnerEntity) {
     return PopupMenuButton(
       onSelected: (value) {
         _onStoreSelected(value as int);
@@ -30,28 +31,28 @@ class _StoreCardState extends State<StoreCard> {
           Icons.remove_red_eye,
           storeEnum.Options.view.index,
           currentIndex,
-          storeEntity,
+          storeOwnDeliveryPartnerEntity,
         ),
         _buildPopupMenuItem(
           'Edit',
           Icons.edit,
           storeEnum.Options.edit.index,
           currentIndex,
-          storeEntity,
+          storeOwnDeliveryPartnerEntity,
         ),
-        /*_buildPopupMenuItem(
+        _buildPopupMenuItem(
           'Remove from store',
           Icons.store,
           storeEnum.Options.removeFromStore.index,
           currentIndex,
-          storeEntity,
-        ),*/
+          storeOwnDeliveryPartnerEntity,
+        ),
         _buildPopupMenuItem(
           'Delete',
           Icons.restore_from_trash,
           storeEnum.Options.delete.index,
           currentIndex,
-          storeEntity,
+          storeOwnDeliveryPartnerEntity,
         ),
       ],
     );
@@ -63,7 +64,7 @@ class _StoreCardState extends State<StoreCard> {
     IconData iconData,
     int position,
     int currentIndex,
-    StoreEntity storeEntity,
+    StoreOwnDeliveryPartnersInfo storeOwnDeliveryPartnerEntity,
   ) {
     return PopupMenuItem(
       value: position,
@@ -115,7 +116,7 @@ class _StoreCardState extends State<StoreCard> {
                       textDirection: serviceLocator<LanguageController>().targetTextDirection,
                       children: [
                         Text(
-                          'Permanently delete this store. If there is an order for this store, then it will be deleted only after completing the orders, and if you still confirm for delete, then this store will remain pending and under review. Are you sure you want to delete this store?',
+                          'Permanently delete this driver. If there is an order for this driver, then it will be deleted only after completing the orders, and if you still confirm for delete, then this driver will remain pending and under review. Are you sure you want to delete this driver?',
                           textDirection: serviceLocator<LanguageController>().targetTextDirection,
                         ),
                       ],
@@ -128,7 +129,7 @@ class _StoreCardState extends State<StoreCard> {
                 if (!mounted) {
                   return;
                 }
-                serviceLocator<AppUserEntity>().stores.removeAt(currentIndex);
+                serviceLocator<AppUserEntity>().drivers.removeAt(currentIndex);
               }
               return;
             }
@@ -168,9 +169,11 @@ class _StoreCardState extends State<StoreCard> {
   Widget build(BuildContext context) {
     return ListTile(
       leading: ImageHelper(
-        image: widget.storeEntity.storeImagePath,
-        // image scale
-        scale: 1.0,
+        image: ((widget.storeOwnDeliveryPartnerEntity.imageEntity != null && widget.storeOwnDeliveryPartnerEntity.imageEntity!.imagePath.isNotEmpty))
+            ? widget.storeOwnDeliveryPartnerEntity.imageEntity?.imagePath ?? ''
+            : (widget.storeOwnDeliveryPartnerEntity.hasOnline)
+                ? 'assets/svg/online_driver.svg'
+                : 'assets/svg/offline_driver.svg',
         // Quality levels for image sampling in [ImageFilter] and [Shader] objects that sample
         filterQuality: FilterQuality.high,
         // border radius only work with [ImageShape.rounded]
@@ -178,23 +181,16 @@ class _StoreCardState extends State<StoreCard> {
         // alignment of image
         //alignment: Alignment.center,
         // indicates where image will be loaded from, types are [network, asset,file]
-        imageType: (widget.storeEntity.storeImagePath.isNotEmpty) ? ImageType.network : ImageType.text,
+        imageType: (widget.storeOwnDeliveryPartnerEntity.imageEntity != null && widget.storeOwnDeliveryPartnerEntity.imageEntity!.imagePath.isNotEmpty)
+            ? ImageType.network
+            : ImageType.svg,
         // indicates what shape you would like to be with image [rectangle, oval,circle or none]
         imageShape: ImageShape.rectangle,
         // image default box fit
         boxFit: BoxFit.fill,
         width: context.width / 8,
         height: context.width / 8,
-        // imagePath: 'assets/images/image.png',
-        // default loader color, default value is null
-        //defaultLoaderColor: Colors.red,
-        // default error builder color, default value is null
         defaultErrorBuilderColor: Colors.blueGrey,
-        // the color you want to change image with
-        //color: Colors.blue,
-        // blend mode with image only
-        //blendMode: BlendMode.srcIn,
-        // error builder widget, default as icon if null
         errorBuilder: const Icon(
           Icons.image_not_supported,
           size: 10000,
@@ -202,7 +198,7 @@ class _StoreCardState extends State<StoreCard> {
         // loader builder widget, default as icon if null
         loaderBuilder: const CircularProgressIndicator(),
         matchTextDirection: true,
-        placeholderText: widget.storeEntity.storeName,
+        placeholderText: widget.storeOwnDeliveryPartnerEntity.driverName,
         placeholderTextStyle: context.labelLarge!.copyWith(
           color: Colors.white,
           fontSize: 16,
@@ -214,7 +210,7 @@ class _StoreCardState extends State<StoreCard> {
         //side: BorderSide(color: Color.fromRGBO(127, 129, 132, 1)),
       ),
       title: Text(
-        widget.storeEntity.storeName,
+        widget.storeOwnDeliveryPartnerEntity.driverName,
         style: context.titleMedium!.copyWith(color: const Color.fromRGBO(31, 31, 31, 1)),
         textDirection: serviceLocator<LanguageController>().targetTextDirection,
         maxLines: 1,
@@ -222,7 +218,7 @@ class _StoreCardState extends State<StoreCard> {
         overflow: TextOverflow.ellipsis,
       ),
       subtitle: Text(
-        widget.storeEntity.storeAddress?.address?.area ?? '',
+        widget.storeOwnDeliveryPartnerEntity.vehicleInfo?.vehicleType ?? '',
         style: const TextStyle(color: Color.fromRGBO(127, 129, 132, 1)),
         textDirection: serviceLocator<LanguageController>().targetTextDirection,
         maxLines: 1,
@@ -231,12 +227,10 @@ class _StoreCardState extends State<StoreCard> {
       ),
       dense: true,
       minLeadingWidth: 20,
-      onTap: () async {
-        //final navigateToStoreDetailPage=await context.push(Routes.ALL_STORES_PAGE);
-      },
+      onTap: () async {},
       trailing: _buildPopupMenuButton(
         widget.currentIndex,
-        widget.storeEntity,
+        widget.storeOwnDeliveryPartnerEntity,
       ),
       selectedColor: const Color.fromRGBO(215, 243, 227, 1),
       selectedTileColor: const Color.fromRGBO(215, 243, 227, 1),

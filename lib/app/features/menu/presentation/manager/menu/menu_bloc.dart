@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:bloc_concurrency/bloc_concurrency.dart';
 import 'package:flutter/material.dart';
+import 'package:homemakers_merchant/app/app.dart';
 import 'package:homemakers_merchant/app/features/address/domain/entities/address_model.dart';
 import 'package:homemakers_merchant/app/features/menu/index.dart';
 import 'package:homemakers_merchant/app/features/profile/domain/entities/user_entity.dart';
@@ -144,12 +145,15 @@ class MenuBloc extends Bloc<MenuEvent, MenuState> {
   FutureOr<void> _saveAddons(SaveAddons event, Emitter<MenuState> emit) async {
     final newIndex = localMenuAddons.toList().length - 1;
     final Addons currentSaveAddons = event.addonsEntity;
-    if (event.hasNewAddons) {
-      final currentCacheSaveAddons = currentSaveAddons.copyWith(
-        addonsID: newIndex.toString(),
-      );
+    if (!event.hasNewAddons && event.currentIndex != -1) {
+      final currentCacheSaveAddons = currentSaveAddons.copyWith();
       // Save into local menu addons list
-      localMenuAddons.insert(0, currentCacheSaveAddons);
+      localMenuAddons.removeAt(event.currentIndex);
+      localMenuAddons.insert(event.currentIndex, currentCacheSaveAddons);
+      serviceLocator<List<Addons>>().removeAt(event.currentIndex);
+      serviceLocator<List<Addons>>().insert(0, currentSaveAddons);
+      serviceLocator<AppUserEntity>().addons = serviceLocator<List<Addons>>();
+      //
       emit(
         SaveAddonsState(addonsEntity: currentCacheSaveAddons, hasNewAddons: event.hasNewAddons),
       );
@@ -157,11 +161,17 @@ class MenuBloc extends Bloc<MenuEvent, MenuState> {
       emit(NavigateToAddonsMenuState(addonsEntity: currentCacheSaveAddons, hasNewAddons: event.hasNewAddons));
       add(GetAllAddons());
     } else {
+      final currentCacheSaveAddons = currentSaveAddons.copyWith(
+        addonsID: newIndex.toString(),
+      );
+      localMenuAddons.insert(0, currentCacheSaveAddons);
+      serviceLocator<List<Addons>>().insert(0, currentCacheSaveAddons);
+      serviceLocator<AppUserEntity>().addons = serviceLocator<List<Addons>>();
       emit(
-        SaveAddonsState(addonsEntity: currentSaveAddons, hasNewAddons: event.hasNewAddons),
+        SaveAddonsState(addonsEntity: currentCacheSaveAddons, hasNewAddons: event.hasNewAddons),
       );
       await Future.delayed(const Duration(milliseconds: 500), () {});
-      emit(NavigateToAddonsMenuState(addonsEntity: currentSaveAddons, hasNewAddons: event.hasNewAddons));
+      emit(NavigateToAddonsMenuState(addonsEntity: currentCacheSaveAddons, hasNewAddons: event.hasNewAddons));
     }
   }
 
@@ -365,7 +375,13 @@ class MenuBloc extends Bloc<MenuEvent, MenuState> {
     try {
       // Save menu
       final MenuEntity menuEntity = event.menuEntity;
-      serviceLocator<List<MenuEntity>>().add(menuEntity);
+      if (!event.hasNewMenu && event.currentIndex != -1) {
+        serviceLocator<List<MenuEntity>>().removeAt(event.currentIndex);
+        serviceLocator<List<MenuEntity>>().insert(event.currentIndex, menuEntity);
+      } else {
+        serviceLocator<List<MenuEntity>>().insert(0, menuEntity);
+      }
+      serviceLocator<AppUserEntity>().menus = serviceLocator<List<MenuEntity>>();
       emit(
         SaveMenuState(menuEntity: menuEntity, hasNewMenu: event.hasNewMenu, menuStateStatus: MenuStateStatus.success),
       );

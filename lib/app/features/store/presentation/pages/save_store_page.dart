@@ -3,10 +3,14 @@ part of 'package:homemakers_merchant/app/features/store/index.dart';
 class SaveStorePage extends StatefulWidget {
   const SaveStorePage({
     super.key,
-    this.hasNewStore = true,
+    this.haveNewStore = true,
+    this.currentIndex = -1,
+    this.storeEntity,
   });
 
-  final bool hasNewStore;
+  final bool haveNewStore;
+  final int currentIndex;
+  final StoreEntity? storeEntity;
 
   @override
   _SaveStorePageState createState() => _SaveStorePageState();
@@ -895,19 +899,22 @@ class _SaveStorePageState extends State<SaveStorePage> {
                                                   ]
                                                 : [],
                                             storeWorkingDays: _selectedWorkingDays.toList(),
-                                            hasNewStore: widget.hasNewStore,
+                                            hasNewStore: widget.haveNewStore,
                                           );
                                           serviceLocator<List<StoreEntity>>().add(storeInfo);
                                           context.read<StoreBloc>().add(SaveStore(
                                                 storeEntity: storeInfo,
-                                                hasNewStore: widget.hasNewStore,
+                                                hasNewStore: widget.haveNewStore,
                                               ));
                                           return;
                                         }
                                         return;
                                       },
+                                      style: ElevatedButton.styleFrom(
+                                        backgroundColor: const Color.fromRGBO(69, 201, 125, 1),
+                                      ),
                                       child: Text(
-                                        'Add Store',
+                                        'Save Store',
                                         textDirection: serviceLocator<LanguageController>().targetTextDirection,
                                       ),
                                     ),

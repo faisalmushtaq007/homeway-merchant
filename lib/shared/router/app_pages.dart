@@ -110,7 +110,14 @@ class AppRouter {
       ),
       GoRoute(
         path: Routes.SAVE_STORE_PAGE,
-        builder: (context, state) => const SaveStorePage(),
+        builder: (context, state) {
+          final Map<String, dynamic>? args = state.extra as Map<String, dynamic>?;
+          return SaveStorePage(
+            storeEntity: args?['storeEntity'] as StoreEntity,
+            haveNewStore: args?['haveNewStore'] as bool,
+            currentIndex: args?['currentIndex'] as int,
+          );
+        },
       ),
       GoRoute(
         path: Routes.ALL_STORES_PAGE,
@@ -127,7 +134,7 @@ class AppRouter {
       GoRoute(
         path: Routes.PICKUP_LOCATION_FROM_MAP_PAGE,
         // (TODO:Prasant): Replace and Set object of address model
-        builder: (context, state) => PickupLocationFromMapPage(addressModel: AddressModel() ?? state.extra as AddressModel),
+        builder: (context, state) => PickupLocationFromMapPage(addressModel: state.extra! as AddressModel),
       ),
       GoRoute(
         path: Routes.CONFIRM_BUSINESS_TYPE_PAGE,
@@ -139,7 +146,14 @@ class AppRouter {
       ),
       GoRoute(
         path: Routes.SAVE_MENU_PAGE,
-        builder: (context, state) => const SaveMenuPage(),
+        builder: (context, state) {
+          final Map<String, dynamic>? args = state.extra as Map<String, dynamic>?;
+          return SaveMenuPage(
+            menuEntity: args?['menuEntity'] as MenuEntity,
+            haveNewMenu: args?['haveNewMenu'] as bool,
+            currentIndex: args?['currentIndex'] as int,
+          );
+        },
       ),
       GoRoute(
         path: Routes.NEW_MENU_GREETING_PAGE,
@@ -175,28 +189,36 @@ class AppRouter {
       ),
       GoRoute(
         path: Routes.SAVE_ADDONS_PAGE,
-        builder: (context, state) => const SaveAddonsPage(),
+        builder: (context, state) {
+          final Map<String, dynamic>? args = state.extra as Map<String, dynamic>?;
+          return SaveAddonsPage(
+            addons: args?['addons'] as Addons,
+            haveNewAddons: args?['haveNewAddons'] as bool,
+            haveOwnAddons: args?['haveOwnAddons'] as bool,
+            currentIndex: args?['currentIndex'] as int,
+          );
+        },
       ),
       GoRoute(
         path: Routes.NEW_ADDONS_GREETING_PAGE,
-        builder: (context, state) => NewAddonsGreetingPage(addonsEntity: state.extra! as Addons),
+        builder: (context, state) => NewAddonsGreetingPage(addonsEntity: state.extra as Addons?),
       ),
       GoRoute(
           path: Routes.BIND_MENU_WITH_STORE_PAGE,
           builder: (context, state) {
-            final Map<String, dynamic> args = state.extra! as Map<String, dynamic>;
+            final Map<String, dynamic>? args = state.extra as Map<String, dynamic>?;
             return BindMenuWithStore(
-              listOfAllMenus: args['allMenu']! as List<MenuEntity>,
-              listOfAllSelectedMenus: args['selectedMenus']! as List<MenuEntity>,
+              listOfAllMenus: args?['allMenu'] ?? <MenuEntity>[] as List<MenuEntity>,
+              listOfAllSelectedMenus: args?['selectedMenus'] ?? <MenuEntity>[] as List<MenuEntity>,
             );
           }),
       GoRoute(
           path: Routes.BIND_MENU_WITH_STORE_GREETING_PAGE,
           builder: (context, state) {
-            final Map<String, dynamic> args = state.extra! as Map<String, dynamic>;
+            final Map<String, dynamic>? args = state.extra as Map<String, dynamic>?;
             return BindMenuWithStoreGreetingPage(
-              menuEntities: args['allMenu']! as List<MenuEntity>,
-              storeEntities: args['allStore']! as List<StoreEntity>,
+              menuEntities: args?['allMenu'] ?? <MenuEntity>[] as List<MenuEntity>,
+              storeEntities: args?['allStore'] ?? <MenuEntity>[] as List<StoreEntity>,
             );
           }),
       GoRoute(
@@ -212,15 +234,27 @@ class AppRouter {
       // New Driver Greetings
       GoRoute(
         path: Routes.ALL_DRIVER_PAGE,
-        builder: (context, state) => const AllMenuPage(),
+        builder: (context, state) => const StoreOwnerAllDrivers(),
       ),
       GoRoute(
         path: Routes.SAVE_DRIVER_PAGE,
-        builder: (context, state) => const SaveDriverPage(),
+        builder: (context, state) {
+          final Map<String, dynamic>? args = state.extra as Map<String, dynamic>?;
+          return SaveDriverPage(
+            storeOwnDeliveryPartnersInfo: args?['storeOwnDeliveryPartnersInfo'] as StoreOwnDeliveryPartnersInfo?,
+            haveStoreOwnNewDeliveryPartnersInfo: args?['haveNewDriver'] ?? true as bool,
+            currentIndex: args?['currentIndex'] as int,
+          );
+        },
       ),
       GoRoute(
         path: Routes.NEW_DRIVER_GREETING_PAGE,
-        builder: (context, state) => NewMenuGreetingPage(menuEntity: state.extra! as MenuEntity),
+        builder: (context, state) {
+          final Map<String, dynamic>? args = state.extra as Map<String, dynamic>?;
+          return NewDriverGreetingPage(
+            storeOwnDeliveryPartnerEntity: args?['storeOwnDeliveryPartnerEntity'] as StoreOwnDeliveryPartnersInfo,
+          );
+        },
       ),
     ],
   );

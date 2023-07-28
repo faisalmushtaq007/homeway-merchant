@@ -6,11 +6,13 @@ class SaveAddonsPage extends StatefulWidget {
     this.haveNewAddons = true,
     this.haveOwnAddons = true,
     this.addons,
+    this.currentIndex = -1,
   });
 
   final bool haveNewAddons;
   final bool haveOwnAddons;
   final Addons? addons;
+  final int currentIndex;
 
   @override
   _SaveAddonsPageController createState() => _SaveAddonsPageController();
@@ -467,6 +469,9 @@ class _SaveAddonsPageView extends WidgetView<SaveAddonsPage, _SaveAddonsPageCont
                               }
                               return;
                             },
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: const Color.fromRGBO(69, 201, 125, 1),
+                            ),
                             child: Text(
                               'Save Addons',
                               textDirection: serviceLocator<LanguageController>().targetTextDirection,

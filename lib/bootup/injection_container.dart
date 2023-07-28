@@ -65,11 +65,16 @@ void _setUpModel() {
     MenuEntity.new,
   );
   serviceLocator.registerLazySingleton<List<MenuEntity>>(() => <MenuEntity>[]);
-
+  // Driver entity
+  serviceLocator.registerLazySingleton<StoreOwnDeliveryPartnersInfo>(
+    StoreOwnDeliveryPartnersInfo.new,
+  );
+  serviceLocator.registerLazySingleton<List<StoreOwnDeliveryPartnersInfo>>(() => []);
   // Store entity
   serviceLocator.registerLazySingleton<StoreEntity>(
     () => StoreEntity(
       menuEntities: serviceLocator(),
+      storeOwnDeliveryPartnersInfo: serviceLocator(),
     ),
   );
   serviceLocator.registerLazySingleton<List<StoreEntity>>(() => []);
@@ -78,6 +83,9 @@ void _setUpModel() {
     AppUserEntity(
       businessProfile: serviceLocator(),
       stores: serviceLocator(),
+      menus: serviceLocator(),
+      drivers: serviceLocator(),
+      addons: serviceLocator(),
     ),
   );
 }
@@ -197,7 +205,7 @@ void _setUpStateManagement() {
   serviceLocator.registerFactory<PermissionBloc>(PermissionBloc.new);
   serviceLocator.registerFactory<BusinessDocumentBloc>(() => BusinessDocumentBloc());
   serviceLocator.registerFactory<BankInformationBloc>(() => BankInformationBloc());
-  serviceLocator.registerFactory<StoreBloc>(() => StoreBloc());
-  //MenuBloc
   serviceLocator.registerFactory<MenuBloc>(() => MenuBloc());
+  //MenuBloc
+  serviceLocator.registerFactory<StoreBloc>(() => StoreBloc());
 }

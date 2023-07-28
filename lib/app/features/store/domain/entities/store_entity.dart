@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:homemakers_merchant/app/features/address/domain/entities/address_model.dart';
 import 'package:homemakers_merchant/app/features/menu/index.dart';
+import 'package:homemakers_merchant/core/common/entity/image_entity.dart';
+import 'package:homemakers_merchant/core/common/entity/ratingAndReviewEntity.dart';
 import 'package:homemakers_merchant/utils/app_equatable/app_equatable.dart';
 
 class StoreEntity with AppEquatable {
@@ -21,7 +23,8 @@ class StoreEntity with AppEquatable {
     this.storeAcceptedPaymentModes = const [],
     this.storeWorkingDays = const [],
     this.menuEntities = const [],
-    this.hasNewStore = false,
+    this.hasNewStore = true,
+    this.ratingAndReviewEntity,
   });
 
   factory StoreEntity.fromMap(Map<String, dynamic> map) {
@@ -43,6 +46,7 @@ class StoreEntity with AppEquatable {
       storeID: map['storeID'] as int,
       menuEntities: map['menuEntities'] as List<MenuEntity>,
       hasNewStore: map['hasNewStore'] as bool,
+      ratingAndReviewEntity: map['ratingAndReviewEntity'] as RatingAndReviewEntity,
     );
   }
 
@@ -63,6 +67,7 @@ class StoreEntity with AppEquatable {
   int storeID;
   List<MenuEntity> menuEntities;
   bool hasNewStore;
+  RatingAndReviewEntity? ratingAndReviewEntity;
 
   @override
   bool get cacheHash => true;
@@ -86,6 +91,7 @@ class StoreEntity with AppEquatable {
         storeID,
         menuEntities,
         hasNewStore,
+        ratingAndReviewEntity,
       ];
 
   StoreEntity copyWith({
@@ -106,6 +112,7 @@ class StoreEntity with AppEquatable {
     int? storeID,
     List<MenuEntity>? menuEntities,
     bool? hasNewStore,
+    RatingAndReviewEntity? ratingAndReviewEntity,
   }) {
     return StoreEntity(
       storeName: storeName ?? this.storeName,
@@ -125,6 +132,7 @@ class StoreEntity with AppEquatable {
       storeID: storeID ?? this.storeID,
       menuEntities: menuEntities ?? this.menuEntities,
       hasNewStore: hasNewStore ?? this.hasNewStore,
+      ratingAndReviewEntity: ratingAndReviewEntity ?? this.ratingAndReviewEntity,
     );
   }
 
@@ -294,7 +302,17 @@ class StoreAcceptedPaymentModes with AppEquatable {
 }
 
 class StoreOwnDeliveryPartnersInfo with AppEquatable {
-  StoreOwnDeliveryPartnersInfo({this.driverID='',this.driverName = '', this.driverMobileNumber = '', this.drivingLicenseNumber = '', this.vehicleInfo});
+  StoreOwnDeliveryPartnersInfo({
+    this.driverID = '',
+    this.driverName = '',
+    this.driverMobileNumber = '',
+    this.drivingLicenseNumber = '',
+    this.vehicleInfo,
+    this.hasOnline = true,
+    this.ratingAndReviewEntity,
+    this.imageEntity,
+    this.hasDriverImage = false,
+  });
 
   factory StoreOwnDeliveryPartnersInfo.fromMap(Map<String, dynamic> map) {
     return StoreOwnDeliveryPartnersInfo(
@@ -303,19 +321,38 @@ class StoreOwnDeliveryPartnersInfo with AppEquatable {
       driverMobileNumber: map['driverMobileNumber'] as String,
       drivingLicenseNumber: map['drivingLicenseNumber'] as String,
       vehicleInfo: map['vehicleInfo'] as VehicleInfo,
+      hasOnline: map['hasOnline'] as bool,
+      ratingAndReviewEntity: map['ratingAndReviewEntity'] as RatingAndReviewEntity,
+      hasDriverImage: map['hasDriverImage'] as bool,
+      imageEntity: map['imageEntity'] as ImageEntity,
     );
   }
+
   String driverID;
   String driverName;
   String driverMobileNumber;
   String drivingLicenseNumber;
   VehicleInfo? vehicleInfo;
+  bool hasOnline;
+  RatingAndReviewEntity? ratingAndReviewEntity;
+  ImageEntity? imageEntity;
+  bool hasDriverImage;
 
   @override
   bool get cacheHash => true;
 
   @override
-  List<Object?> get hashParameters => [driverID,driverMobileNumber, driverName, drivingLicenseNumber, vehicleInfo];
+  List<Object?> get hashParameters => [
+        driverID,
+        driverMobileNumber,
+        driverName,
+        drivingLicenseNumber,
+        vehicleInfo,
+        hasOnline,
+        ratingAndReviewEntity,
+        hasDriverImage,
+        imageEntity,
+      ];
 
   Map<String, dynamic> toMap() {
     return {
@@ -323,7 +360,11 @@ class StoreOwnDeliveryPartnersInfo with AppEquatable {
       'driverMobileNumber': this.driverMobileNumber,
       'drivingLicenseNumber': this.drivingLicenseNumber,
       'vehicleInfo': this.vehicleInfo,
-      'driverID':this.driverID,
+      'driverID': this.driverID,
+      'hasOnline': this.hasOnline,
+      'ratingAndReviewEntity': this.ratingAndReviewEntity,
+      'hasDriverImage': this.hasDriverImage,
+      'imageEntity': this.imageEntity,
     };
   }
 
@@ -333,13 +374,21 @@ class StoreOwnDeliveryPartnersInfo with AppEquatable {
     String? drivingLicenseNumber,
     VehicleInfo? vehicleInfo,
     String? driverID,
+    bool? hasOnline,
+    RatingAndReviewEntity? ratingAndReviewEntity,
+    ImageEntity? imageEntity,
+    bool? hasDriverImage,
   }) {
     return StoreOwnDeliveryPartnersInfo(
       driverName: driverName ?? this.driverName,
       driverMobileNumber: driverMobileNumber ?? this.driverMobileNumber,
       drivingLicenseNumber: drivingLicenseNumber ?? this.drivingLicenseNumber,
       vehicleInfo: vehicleInfo ?? this.vehicleInfo,
-        driverID:driverID??this.driverID,
+      driverID: driverID ?? this.driverID,
+      hasOnline: hasOnline ?? this.hasOnline,
+      ratingAndReviewEntity: ratingAndReviewEntity ?? this.ratingAndReviewEntity,
+      hasDriverImage: hasDriverImage ?? this.hasDriverImage,
+      imageEntity: imageEntity ?? this.imageEntity,
     );
   }
 }
@@ -348,38 +397,48 @@ class VehicleInfo with AppEquatable {
   VehicleInfo({
     this.vehicleID = '',
     this.vehicleType = '',
+    this.vehicleNumber = '',
   });
 
   factory VehicleInfo.fromMap(Map<String, dynamic> map) {
     return VehicleInfo(
       vehicleID: map['vehicleID'] as String,
       vehicleType: map['vehicleType'] as String,
+      vehicleNumber: map['vehicleNumber'] as String,
     );
   }
 
   String vehicleID;
   String vehicleType;
+  String vehicleNumber;
 
   @override
   bool get cacheHash => true;
 
   @override
-  List<Object?> get hashParameters => [vehicleID, vehicleType];
+  List<Object?> get hashParameters => [
+        vehicleID,
+        vehicleType,
+        vehicleNumber,
+      ];
 
   Map<String, dynamic> toMap() {
     return {
       'vehicleID': this.vehicleID,
       'vehicleType': this.vehicleType,
+      'vehicleNumber': this.vehicleNumber,
     };
   }
 
   VehicleInfo copyWith({
     String? vehicleID,
     String? vehicleType,
+    String? vehicleNumber,
   }) {
     return VehicleInfo(
       vehicleID: vehicleID ?? this.vehicleID,
       vehicleType: vehicleType ?? this.vehicleType,
+      vehicleNumber: vehicleNumber ?? this.vehicleNumber,
     );
   }
 }

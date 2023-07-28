@@ -15,11 +15,13 @@ class SaveMenuState extends MenuState {
     required this.menuEntity,
     required this.hasNewMenu,
     this.menuStateStatus = MenuStateStatus.none,
+    this.currentIndex = -1,
   });
 
   final MenuEntity menuEntity;
   final bool hasNewMenu;
   final MenuStateStatus menuStateStatus;
+  final int currentIndex;
 
   @override
   bool get cacheHash => true;
@@ -29,6 +31,7 @@ class SaveMenuState extends MenuState {
         menuEntity,
         hasNewMenu,
         menuStateStatus,
+        currentIndex,
       ];
 }
 
@@ -209,10 +212,14 @@ class SaveAddonsState extends MenuState {
   SaveAddonsState({
     required this.addonsEntity,
     required this.hasNewAddons,
+    this.currentIndex = -1,
+    this.haveOwnAddons = true,
   });
 
   final Addons addonsEntity;
   final bool hasNewAddons;
+  final int currentIndex;
+  final bool haveOwnAddons;
 
   @override
   bool get cacheHash => true;
@@ -221,6 +228,8 @@ class SaveAddonsState extends MenuState {
   List<Object?> get hashParameters => [
         addonsEntity,
         hasNewAddons,
+        currentIndex,
+        haveOwnAddons,
       ];
 }
 
@@ -608,6 +617,7 @@ class BindMenuWithStoresState extends MenuState {
   final String message;
   final BindMenuToStoreStage bindMenuToStoreStage;
   final List<StoreEntity> listOfSelectedStoreEntities;
+
   @override
   bool get cacheHash => true;
 

@@ -356,6 +356,9 @@ class _BindMenuWithStoreView extends WidgetView<BindMenuWithStore, _BindMenuWith
                                     );
                                 return;
                               },
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: const Color.fromRGBO(69, 201, 125, 1),
+                              ),
                               child: Text(
                                 'Save',
                                 textDirection: serviceLocator<LanguageController>().targetTextDirection,
