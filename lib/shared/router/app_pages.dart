@@ -115,7 +115,7 @@ class AppRouter {
           return SaveStorePage(
             storeEntity: args?['storeEntity'] as StoreEntity,
             haveNewStore: args?['haveNewStore'] as bool,
-            currentIndex: args?['currentIndex'] as int,
+            currentIndex: args?['currentIndex'] ?? -1 as int,
           );
         },
       ),
@@ -151,7 +151,7 @@ class AppRouter {
           return SaveMenuPage(
             menuEntity: args?['menuEntity'] as MenuEntity,
             haveNewMenu: args?['haveNewMenu'] as bool,
-            currentIndex: args?['currentIndex'] as int,
+            currentIndex: args?['currentIndex'] ?? -1 as int,
           );
         },
       ),
@@ -195,7 +195,7 @@ class AppRouter {
             addons: args?['addons'] as Addons,
             haveNewAddons: args?['haveNewAddons'] as bool,
             haveOwnAddons: args?['haveOwnAddons'] as bool,
-            currentIndex: args?['currentIndex'] as int,
+            currentIndex: args?['currentIndex'] ?? -1 as int,
           );
         },
       ),
@@ -243,7 +243,7 @@ class AppRouter {
           return SaveDriverPage(
             storeOwnDeliveryPartnersInfo: args?['storeOwnDeliveryPartnersInfo'] as StoreOwnDeliveryPartnersInfo?,
             haveStoreOwnNewDeliveryPartnersInfo: args?['haveNewDriver'] ?? true as bool,
-            currentIndex: args?['currentIndex'] as int,
+            currentIndex: args?['currentIndex'] ?? -1 as int,
           );
         },
       ),
