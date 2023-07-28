@@ -92,6 +92,19 @@ class _PrimaryDashboardPageState extends State<PrimaryDashboardPage> {
         hasEntityStored: false,
       ),
     );
+    primaryDashboardMenuEntities.add(
+      PrimaryDashboardEntity(
+        title: 'My Drivers',
+        titleID: 4,
+        onPressed: () async {
+          final navigateToMenuPage = await context.push(Routes.ALL_DRIVER_PAGE);
+        },
+        leading: const Icon(
+          Icons.person,
+        ),
+        hasEntityStored: false,
+      ),
+    );
   }
 
   @override

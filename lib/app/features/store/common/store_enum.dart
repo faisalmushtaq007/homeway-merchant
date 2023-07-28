@@ -56,3 +56,22 @@ enum DriverStateStage {
     return name;
   }
 }
+
+enum BindDriverToStoreStage {
+  none,
+  select,
+  save,
+  remove,
+  attached,
+  success,
+  failed,
+  exception,
+  attaching,
+  processing,
+  ;
+
+  @override
+  String toString() {
+    return name;
+  }
+}

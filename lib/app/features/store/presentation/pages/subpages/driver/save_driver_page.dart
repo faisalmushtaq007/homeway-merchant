@@ -21,7 +21,7 @@ class _SaveDriverPageController extends State<SaveDriverPage> {
   late final ScrollController innerScrollController;
   late final ScrollController listViewBuilderScrollController;
 
-  static final GlobalKey<FormState> SaveDriverFormKey = GlobalKey<FormState>(debugLabel: 'save_addons-formkey');
+  static final GlobalKey<FormState> SaveDriverFormKey = GlobalKey<FormState>(debugLabel: 'save-driver--formkey');
   List<FocusNode> focusList = [
     FocusNode(),
     FocusNode(),
@@ -160,7 +160,7 @@ class _SaveDriverPageController extends State<SaveDriverPage> {
           switch (driverListenerState) {
             case NavigateToNewDriverGreetingPageState():
               {
-                context.go(
+                context.pushReplacement(
                   Routes.NEW_DRIVER_GREETING_PAGE,
                   extra: {
                     'storeOwnDeliveryPartnerEntity': driverListenerState.storeOwnDeliveryPartnerEntity,
@@ -436,6 +436,13 @@ class _SaveDriverPageView extends WidgetView<SaveDriverPage, _SaveDriverPageCont
                                         initialVehicleInfoList: [],
                                         onSaved: (newValue) {},
                                         isSingleSelect: true,
+                                        validator: (value) {
+                                          if (value == null || value.length == 0) {
+                                            return "Select driver's vehicle type";
+                                          } else {
+                                            return null;
+                                          }
+                                        },
                                       ),
                                       const AnimatedGap(12, duration: Duration(milliseconds: 500)),
                                       AppTextFieldWidget(

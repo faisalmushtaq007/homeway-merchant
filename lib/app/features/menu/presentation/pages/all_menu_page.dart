@@ -131,6 +131,11 @@ class _AllMenuPageView extends WidgetView<AllMenuPage, _AllMenuPageController> {
                         'selectedMenus': state.listOfAllSelectedMenus.toList(),
                       },
                     );
+                    await Future.delayed(const Duration(milliseconds: 300), () {});
+                    if (!state.mounted) {
+                      return;
+                    }
+                    context.read<MenuBloc>().add(GetAllMenu());
                   }
                 },
                 child: const Icon(

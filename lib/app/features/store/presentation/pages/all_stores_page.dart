@@ -23,8 +23,7 @@ class _AllStoresPageState extends State<AllStoresPage> {
     listViewBuilderScrollController = ScrollController();
     storeEntities = [];
     storeEntities.clear();
-
-    //context.read<StoreBloc>().add(GetAllStore());
+    context.read<StoreBloc>().add(GetAllStore());
     initStoreList();
   }
 

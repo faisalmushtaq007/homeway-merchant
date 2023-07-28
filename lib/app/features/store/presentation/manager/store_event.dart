@@ -190,3 +190,37 @@ class GetDriver extends StoreEvent with AppEquatable {
         storeID,
       ];
 }
+
+class BindDriverWithStores extends StoreEvent with AppEquatable {
+  BindDriverWithStores({
+    this.listOfStoreOwnDeliveryPartners = const [],
+    this.listOfSelectedStoreOwnDeliveryPartners = const [],
+    this.storeEntities = const [],
+    this.storeStateStatus = StoreStateStage.none,
+    this.message = '',
+    this.bindDriverToStoreStage = BindDriverToStoreStage.none,
+    this.listOfSelectedStoreEntities = const [],
+  });
+
+  final List<StoreOwnDeliveryPartnersInfo> listOfStoreOwnDeliveryPartners;
+  final List<StoreOwnDeliveryPartnersInfo> listOfSelectedStoreOwnDeliveryPartners;
+  final List<StoreEntity> storeEntities;
+  final List<StoreEntity> listOfSelectedStoreEntities;
+  final StoreStateStage storeStateStatus;
+  final String message;
+  final BindDriverToStoreStage bindDriverToStoreStage;
+
+  @override
+  bool get cacheHash => true;
+
+  @override
+  List<Object?> get hashParameters => [
+        listOfStoreOwnDeliveryPartners,
+        listOfSelectedStoreOwnDeliveryPartners,
+        storeEntities,
+        storeStateStatus,
+        message,
+        bindDriverToStoreStage,
+        listOfSelectedStoreEntities,
+      ];
+}

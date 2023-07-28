@@ -1,11 +1,44 @@
 part of 'package:homemakers_merchant/app/features/store/index.dart';
 
-class NewDriverGreetingPage extends StatelessWidget {
-  const NewDriverGreetingPage({
-    required this.storeOwnDeliveryPartnerEntity,
+class BindDriverWithStoreGreetingPage extends StatefulWidget {
+  const BindDriverWithStoreGreetingPage({
     super.key,
+    this.storeEntities = const [],
+    this.storeOwnDeliveryPartnersEntities = const [],
   });
-  final StoreOwnDeliveryPartnersInfo storeOwnDeliveryPartnerEntity;
+  final List<StoreOwnDeliveryPartnersInfo> storeOwnDeliveryPartnersEntities;
+  final List<StoreEntity> storeEntities;
+  @override
+  _BindDriverWithStoreGreetingPageController createState() => _BindDriverWithStoreGreetingPageController();
+}
+
+class _BindDriverWithStoreGreetingPageController extends State<BindDriverWithStoreGreetingPage> {
+  late final ScrollController scrollController;
+  @override
+  void initState() {
+    super.initState();
+    scrollController = ScrollController();
+  }
+
+  @override
+  void setState(VoidCallback fn) {
+    if (mounted) {
+      super.setState(fn);
+    }
+  }
+
+  @override
+  void dispose() {
+    scrollController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) => _BindDriverWithStoreGreetingPageView(this);
+}
+
+class _BindDriverWithStoreGreetingPageView extends WidgetView<BindDriverWithStoreGreetingPage, _BindDriverWithStoreGreetingPageController> {
+  const _BindDriverWithStoreGreetingPageView(super.state);
 
   @override
   Widget build(BuildContext context) {
@@ -15,7 +48,6 @@ class NewDriverGreetingPage extends StatelessWidget {
     final double bottomPadding = media.padding.bottom + margins;
     final double width = media.size.width;
     final ThemeData theme = Theme.of(context);
-    final ScrollController scrollController = ScrollController();
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: FlexColorScheme.themedSystemNavigationBar(
         context,
@@ -35,10 +67,10 @@ class NewDriverGreetingPage extends StatelessWidget {
             ],
           ),
           body: ZoomIn(
-            key: const Key('new-driver-greeting-page-zoomin-widget'),
+            key: const Key('bind-menu-with-store--greeting-page-zoomin-widget'),
             delay: const Duration(milliseconds: 500),
             child: PageBody(
-              controller: scrollController,
+              controller: state.scrollController,
               constraints: BoxConstraints(
                 minWidth: double.infinity,
                 minHeight: media.size.height,
@@ -52,7 +84,7 @@ class NewDriverGreetingPage extends StatelessWidget {
               child: BlocBuilder<PermissionBloc, PermissionState>(
                 bloc: context.read<PermissionBloc>(),
                 buildWhen: (previous, current) => previous != current,
-                builder: (context, state) {
+                builder: (context, permissionState) {
                   return Stack(
                     children: [
                       const Align(
@@ -60,8 +92,8 @@ class NewDriverGreetingPage extends StatelessWidget {
                         child: AppLogo(),
                       ),
                       ListView(
-                        controller: scrollController,
-                        padding: const EdgeInsetsDirectional.only(
+                        controller: state.scrollController,
+                        padding: EdgeInsetsDirectional.only(
                           top: 50,
                         ),
                         children: [
@@ -72,19 +104,7 @@ class NewDriverGreetingPage extends StatelessWidget {
                           ),
                           Center(
                             child: Text(
-                              'Congratulation!',
-                              textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                              textAlign: TextAlign.center,
-                              style: context.headlineMedium!.copyWith(
-                                color: const Color.fromRGBO(69, 201, 125, 1),
-                                fontSize: 32,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ).translate(),
-                          ),
-                          Center(
-                            child: Text(
-                              '${storeOwnDeliveryPartnerEntity.driverName ?? ''}',
+                              'Hurray!',
                               textDirection: serviceLocator<LanguageController>().targetTextDirection,
                               textAlign: TextAlign.center,
                               style: context.headlineMedium!.copyWith(
@@ -95,7 +115,7 @@ class NewDriverGreetingPage extends StatelessWidget {
                             ).translate(),
                           ),
                           const AnimatedGap(
-                            80,
+                            50,
                             duration: Duration(
                               milliseconds: 300,
                             ),
@@ -104,7 +124,7 @@ class NewDriverGreetingPage extends StatelessWidget {
                             child: Wrap(
                               children: [
                                 Text(
-                                  'New Driver has been successfully added',
+                                  '${widget.storeOwnDeliveryPartnersEntities.length} Menu are successfully listed with ${widget.storeEntities.length} stores',
                                   textDirection: serviceLocator<LanguageController>().targetTextDirection,
                                   textAlign: TextAlign.center,
                                   style: context.titleLarge!.copyWith(
@@ -115,49 +135,7 @@ class NewDriverGreetingPage extends StatelessWidget {
                               ],
                             ),
                           ),
-                          const AnimatedGap(
-                            4,
-                            duration: Duration(
-                              milliseconds: 300,
-                            ),
-                          ),
-                          Center(
-                            child: Wrap(
-                              children: [
-                                Text(
-                                  'Your driver information is under verification process',
-                                  textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                                  textAlign: TextAlign.center,
-                                  style: context.bodyMedium!.copyWith(
-                                    fontSize: 14,
-                                  ),
-                                ).translate(),
-                              ],
-                            ),
-                          ),
-                          const AnimatedGap(
-                            24,
-                            duration: Duration(
-                              milliseconds: 300,
-                            ),
-                          ),
-                          Center(
-                            child: Wrap(
-                              textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                              children: [
-                                const Icon(Icons.store),
-                                Text(
-                                  'Driver ID #HMW${storeOwnDeliveryPartnerEntity.driverID}',
-                                  textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                                  textAlign: TextAlign.center,
-                                  style: context.titleMedium!.copyWith(
-                                    fontSize: 18,
-                                    color: const Color.fromRGBO(127, 129, 132, 1),
-                                  ),
-                                ).translate(),
-                              ],
-                            ),
-                          ),
+
                           const AnimatedGap(
                             16,
                             duration: Duration(
@@ -167,14 +145,14 @@ class NewDriverGreetingPage extends StatelessWidget {
                         ],
                       ),
                       PositionedDirectional(
-                        bottom: kBottomNavigationBarHeight + bottomPadding,
+                        bottom: kBottomNavigationBarHeight + bottomPadding + margins * 6.5,
                         start: 0,
                         end: 0,
                         child: Center(
                           child: Wrap(
                             textDirection: serviceLocator<LanguageController>().targetTextDirection,
                             children: [
-                              const Icon(Icons.share),
+                              Icon(Icons.share),
                               const SizedBox(
                                 width: 4,
                               ),
@@ -184,11 +162,33 @@ class NewDriverGreetingPage extends StatelessWidget {
                                 textAlign: TextAlign.center,
                                 style: context.titleMedium!.copyWith(
                                   fontSize: 18,
-                                  color: const Color.fromRGBO(127, 129, 132, 1),
+                                  color: Color.fromRGBO(127, 129, 132, 1),
                                 ),
                               ).translate(),
                             ],
                           ),
+                        ),
+                      ),
+                      PositionedDirectional(
+                        bottom: kBottomNavigationBarHeight + bottomPadding - margins,
+                        start: 0,
+                        end: 0,
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            side: BorderSide(
+                              color: Color.fromRGBO(165, 166, 168, 1),
+                            ),
+                            backgroundColor: Colors.white,
+                          ),
+                          child: Text(
+                            'Go to Dashboard',
+                            style: TextStyle(color: Color.fromRGBO(42, 45, 50, 1)),
+                            textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                          ).translate(),
+                          onPressed: () {
+                            context.go(Routes.PRIMARY_DASHBOARD_PAGE);
+                            return;
+                          },
                         ),
                       ),
                       PositionedDirectional(

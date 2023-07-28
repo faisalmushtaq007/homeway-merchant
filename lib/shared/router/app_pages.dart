@@ -36,7 +36,7 @@ class AppRouter {
 
   AppRouter._();
 
-  static const String INITIAL = Routes.SAVE_DRIVER_PAGE;
+  static const String INITIAL = Routes.ALL_DRIVER_PAGE;
 
   static final GoRouter _router = GoRouter(
     debugLogDiagnostics: true,
@@ -60,10 +60,11 @@ class AppRouter {
         builder: (context, state) => const PhoneNumberVerificationPage(),
       ),
       GoRoute(
-          path: Routes.AUTH_OTP_VERIFICATION,
-          builder: (context, state) => OTPVerificationPage(
-                phoneNumber: jsonDecode(state.extra! as String)['mobileNumber'].toString(), //Testing purpose'+966 56 135 6754',
-              )),
+        path: Routes.AUTH_OTP_VERIFICATION,
+        builder: (context, state) => OTPVerificationPage(
+          phoneNumber: jsonDecode(state.extra! as String)['mobileNumber'].toString(), //Testing purpose'+966 56 135 6754',
+        ),
+      ),
       GoRoute(
         path: Routes.TERMS_AND_CONDITIONS,
         builder: (context, state) => const TermsAndConditionsPage(),
@@ -204,23 +205,25 @@ class AppRouter {
         builder: (context, state) => NewAddonsGreetingPage(addonsEntity: state.extra as Addons?),
       ),
       GoRoute(
-          path: Routes.BIND_MENU_WITH_STORE_PAGE,
-          builder: (context, state) {
-            final Map<String, dynamic>? args = state.extra as Map<String, dynamic>?;
-            return BindMenuWithStore(
-              listOfAllMenus: args?['allMenu'] ?? <MenuEntity>[] as List<MenuEntity>,
-              listOfAllSelectedMenus: args?['selectedMenus'] ?? <MenuEntity>[] as List<MenuEntity>,
-            );
-          }),
+        path: Routes.BIND_MENU_WITH_STORE_PAGE,
+        builder: (context, state) {
+          final Map<String, dynamic>? args = state.extra as Map<String, dynamic>?;
+          return BindMenuWithStore(
+            listOfAllMenus: args?['allMenu'] ?? <MenuEntity>[] as List<MenuEntity>,
+            listOfAllSelectedMenus: args?['selectedMenus'] ?? <MenuEntity>[] as List<MenuEntity>,
+          );
+        },
+      ),
       GoRoute(
-          path: Routes.BIND_MENU_WITH_STORE_GREETING_PAGE,
-          builder: (context, state) {
-            final Map<String, dynamic>? args = state.extra as Map<String, dynamic>?;
-            return BindMenuWithStoreGreetingPage(
-              menuEntities: args?['allMenu'] ?? <MenuEntity>[] as List<MenuEntity>,
-              storeEntities: args?['allStore'] ?? <MenuEntity>[] as List<StoreEntity>,
-            );
-          }),
+        path: Routes.BIND_MENU_WITH_STORE_GREETING_PAGE,
+        builder: (context, state) {
+          final Map<String, dynamic>? args = state.extra as Map<String, dynamic>?;
+          return BindMenuWithStoreGreetingPage(
+            menuEntities: args?['allMenu'] ?? <MenuEntity>[] as List<MenuEntity>,
+            storeEntities: args?['allStore'] ?? <MenuEntity>[] as List<StoreEntity>,
+          );
+        },
+      ),
       GoRoute(
         path: Routes.STORE_DETAILS_PAGE,
         builder: (context, state) => const StoreDetailsPage(),
@@ -253,6 +256,27 @@ class AppRouter {
           final Map<String, dynamic>? args = state.extra as Map<String, dynamic>?;
           return NewDriverGreetingPage(
             storeOwnDeliveryPartnerEntity: args?['storeOwnDeliveryPartnerEntity'] as StoreOwnDeliveryPartnersInfo,
+          );
+        },
+      ),
+
+      GoRoute(
+        path: Routes.BIND_DRIVER_WITH_STORE_PAGE,
+        builder: (context, state) {
+          final Map<String, dynamic>? args = state.extra as Map<String, dynamic>?;
+          return BindDriverWithStore(
+            listOfAllStoreOwnDeliveryPartners: args?['allDriver'] ?? <StoreOwnDeliveryPartnersInfo>[] as List<StoreOwnDeliveryPartnersInfo>,
+            listOfAllSelectedStoreOwnDeliveryPartners: args?['selectedDriver'] ?? <StoreOwnDeliveryPartnersInfo>[] as List<StoreOwnDeliveryPartnersInfo>,
+          );
+        },
+      ),
+      GoRoute(
+        path: Routes.BIND_DRIVER_WITH_STORE_GREETING_PAGE,
+        builder: (context, state) {
+          final Map<String, dynamic>? args = state.extra as Map<String, dynamic>?;
+          return BindDriverWithStoreGreetingPage(
+            storeOwnDeliveryPartnersEntities: args?['allDriver'] ?? <StoreOwnDeliveryPartnersInfo>[] as List<StoreOwnDeliveryPartnersInfo>,
+            storeEntities: args?['allStore'] ?? <MenuEntity>[] as List<StoreEntity>,
           );
         },
       ),

@@ -96,7 +96,6 @@ class _BindMenuWithStoreController extends State<BindMenuWithStore> {
           switch (state) {
             case BindMenuWithStoresState():
               {
-                appLog.d('Listener: BindMenuWithStoresState ${state.bindMenuToStoreStage}');
                 if (state.bindMenuToStoreStage == BindMenuToStoreStage.attached) {
                   listOfAllSelectedStores = [];
                   listOfAllSelectedStores.clear();

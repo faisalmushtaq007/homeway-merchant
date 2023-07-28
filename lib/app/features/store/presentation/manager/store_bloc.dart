@@ -1,11 +1,13 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
+import 'package:bloc_concurrency/bloc_concurrency.dart';
 import 'package:homemakers_merchant/app/features/profile/domain/entities/user_entity.dart';
 import 'package:homemakers_merchant/app/features/store/common/store_enum.dart';
 import 'package:homemakers_merchant/app/features/store/domain/entities/store_entity.dart';
 import 'package:homemakers_merchant/bootup/injection_container.dart';
 import 'package:homemakers_merchant/utils/app_equatable/app_equatable.dart';
+import 'package:homemakers_merchant/utils/app_log.dart';
 import 'package:meta/meta.dart';
 
 part 'store_event.dart';
@@ -14,21 +16,55 @@ part 'store_state.dart';
 
 class StoreBloc extends Bloc<StoreEvent, StoreState> {
   StoreBloc() : super(StoreInitial()) {
-    on<SaveStore>(_saveStore);
-    on<GetStore>(_getStore);
-    on<DeleteStore>(_deleteStore);
-    on<DeleteAllStore>(_deleteAllStore);
-    on<GetAllStore>(_getAllStore);
+    on<SaveStore>(
+      _saveStore,
+      transformer: sequential(),
+    );
+    on<GetStore>(
+      _getStore,
+      transformer: sequential(),
+    );
+    on<DeleteStore>(
+      _deleteStore,
+      transformer: sequential(),
+    );
+    on<DeleteAllStore>(
+      _deleteAllStore,
+      transformer: sequential(),
+    );
+    on<GetAllStore>(
+      _getAllStore,
+      transformer: sequential(),
+    );
     //SaveDriver
-    on<SaveDriver>(_saveDriver);
+    on<SaveDriver>(
+      _saveDriver,
+      transformer: sequential(),
+    );
     //DeleteDriver
-    on<DeleteDriver>(_deleteDriver);
+    on<DeleteDriver>(
+      _deleteDriver,
+      transformer: sequential(),
+    );
     //DeleteAllDriver
-    on<DeleteAllDriver>(_deleteAllDriver);
+    on<DeleteAllDriver>(
+      _deleteAllDriver,
+      transformer: sequential(),
+    );
     //GetAllDriver
-    on<GetAllDriver>(_getAllDriver);
+    on<GetAllDriver>(
+      _getAllDriver,
+      transformer: sequential(),
+    );
     //GetDriver
-    on<GetDriver>(_getDriver);
+    on<GetDriver>(
+      _getDriver,
+      transformer: sequential(),
+    );
+    on<BindDriverWithStores>(
+      _bindDriverWithStores,
+      transformer: sequential(),
+    );
   }
 
   FutureOr<void> _saveStore(SaveStore event, Emitter<StoreState> emit) async {
@@ -134,9 +170,8 @@ class StoreBloc extends Bloc<StoreEvent, StoreState> {
       } else {
         serviceLocator<List<StoreOwnDeliveryPartnersInfo>>().insert(0, driverEntity);
       }
-      serviceLocator<StoreOwnDeliveryPartnersInfo>();
       // Save menu
-      serviceLocator<AppUserEntity>().drivers = serviceLocator<List<StoreOwnDeliveryPartnersInfo>>();
+      serviceLocator<AppUserEntity>().drivers = List<StoreOwnDeliveryPartnersInfo>.from(serviceLocator<List<StoreOwnDeliveryPartnersInfo>>().toList());
       emit(
         SaveDriverState(storeOwnDeliveryPartnerEntity: driverEntity, hasNewDriver: event.haveNewDriver, driverStateStage: DriverStateStage.success),
       );
@@ -194,16 +229,32 @@ class StoreBloc extends Bloc<StoreEvent, StoreState> {
           driverStateStage: DriverStateStage.getAllDriver,
         ),
       );
-      List<StoreOwnDeliveryPartnersInfo> listOfDrivers = serviceLocator<List<StoreOwnDeliveryPartnersInfo>>();
+      List<StoreOwnDeliveryPartnersInfo> listOfDrivers = List<StoreOwnDeliveryPartnersInfo>.from(serviceLocator<List<StoreOwnDeliveryPartnersInfo>>().toList());
       if (listOfDrivers.isEmpty) {
         listOfDrivers = serviceLocator<AppUserEntity>().drivers;
       }
-      await Future.delayed(const Duration(milliseconds: 300), () {});
+      /*await Future.delayed(const Duration(milliseconds: 300), () {});
       emit(DriverLoadingState(
         isLoading: false,
         message: '',
         driverStateStage: DriverStateStage.getAllDriver,
-      ));
+      ));*/
+      listOfDrivers = [
+        StoreOwnDeliveryPartnersInfo(
+          driverID: '0',
+          driverName: 'Sonu',
+          driverMobileNumber: '',
+          drivingLicenseNumber: '1234',
+          vehicleInfo: VehicleInfo(vehicleID: '0', vehicleType: '2 Wheeler', vehicleNumber: '12345'),
+        ),
+        StoreOwnDeliveryPartnersInfo(
+          driverID: '1',
+          driverName: 'Monu',
+          driverMobileNumber: '',
+          drivingLicenseNumber: '123456',
+          vehicleInfo: VehicleInfo(vehicleID: '1', vehicleType: '3 Wheeler', vehicleNumber: '12345789'),
+        ),
+      ];
       await Future.delayed(const Duration(milliseconds: 300), () {});
       if (listOfDrivers.isEmpty) {
         emit(
@@ -244,6 +295,58 @@ class StoreBloc extends Bloc<StoreEvent, StoreState> {
           exception: e as Exception,
           stackTrace: s,
           driverStateStage: DriverStateStage.getDriver,
+        ),
+      );
+    }
+  }
+
+  FutureOr<void> _bindDriverWithStores(BindDriverWithStores event, Emitter<StoreState> emit) async {
+    try {
+      emit(
+        BindDriverWithStoresLoadingState(
+          message: 'Processing please wait...',
+          bindDriverToStoreStage: BindDriverToStoreStage.attaching,
+          isLoading: true,
+        ),
+      );
+      List<StoreEntity> storeEntities = event.storeEntities;
+      List<StoreEntity> selectedStoreEntities = event.listOfSelectedStoreEntities;
+      List<StoreOwnDeliveryPartnersInfo> storeOwnDeliveryPartnersEntities = event.listOfStoreOwnDeliveryPartners;
+      List<StoreOwnDeliveryPartnersInfo> selectedStoreOwnDeliveryPartners = event.listOfSelectedStoreOwnDeliveryPartners;
+      // Update the object
+      selectedStoreEntities.asMap().forEach((key, value) {
+        value.storeOwnDeliveryPartnersInfo = selectedStoreOwnDeliveryPartners.toList();
+      });
+      storeEntities.asMap().forEach((parentIndex, parentStore) {
+        selectedStoreEntities.asMap().forEach((childIndex, childStore) {
+          if (childStore == parentStore) {
+            serviceLocator<AppUserEntity>().stores[parentIndex].storeOwnDeliveryPartnersInfo = selectedStoreOwnDeliveryPartners.toList();
+          }
+        });
+      });
+      // Search store and update it with selected stores date
+      //serviceLocator<AppUserEntity>().stores;
+      Future.delayed(const Duration(milliseconds: 500), () {});
+      emit(
+        BindDriverWithStoresState(
+          listOfStoreOwnDeliveryPartners: event.listOfStoreOwnDeliveryPartners.toList(),
+          listOfSelectedStoreOwnDeliveryPartners: event.listOfSelectedStoreOwnDeliveryPartners.toList(),
+          storeEntities: serviceLocator<AppUserEntity>().stores.toList(),
+          message: '',
+          bindDriverToStoreStage: BindDriverToStoreStage.attached,
+          listOfSelectedStoreEntities: selectedStoreEntities,
+        ),
+      );
+    } catch (e) {
+      appLog.d('Listener: BindMenuWithStoresState ${e.toString()}');
+      emit(
+        BindDriverWithStoresState(
+          listOfStoreOwnDeliveryPartners: event.listOfStoreOwnDeliveryPartners.toList(),
+          listOfSelectedStoreOwnDeliveryPartners: event.listOfSelectedStoreOwnDeliveryPartners.toList(),
+          storeEntities: event.storeEntities.toList(),
+          message: 'Something went wrong, please try again',
+          bindDriverToStoreStage: BindDriverToStoreStage.exception,
+          listOfSelectedStoreEntities: event.listOfSelectedStoreEntities,
         ),
       );
     }
