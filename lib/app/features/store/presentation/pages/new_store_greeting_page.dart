@@ -195,22 +195,50 @@ class NewStoreGreetingPage extends StatelessWidget {
                         bottom: bottomPadding,
                         start: 0,
                         end: 0,
-                        child: ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            side: BorderSide(
-                              color: Color.fromRGBO(165, 166, 168, 1),
-                            ),
-                            backgroundColor: Colors.white,
+                        child: IntrinsicHeight(
+                          child: Row(
+                            children: [
+                              Expanded(
+                                child: ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                    side: BorderSide(
+                                      color: Color.fromRGBO(165, 166, 168, 1),
+                                    ),
+                                    backgroundColor: Colors.white,
+                                  ),
+                                  child: Text(
+                                    'My Stores',
+                                    style: TextStyle(color: Color.fromRGBO(42, 45, 50, 1)),
+                                    textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                  ).translate(),
+                                  onPressed: () {
+                                    context.pushReplacement(Routes.ALL_STORES_PAGE);
+                                    return;
+                                  },
+                                ),
+                              ),
+                              const AnimatedGap(12, duration: Duration(milliseconds: 300)),
+                              Expanded(
+                                child: ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                    side: BorderSide(
+                                      color: Color.fromRGBO(165, 166, 168, 1),
+                                    ),
+                                    backgroundColor: Colors.white,
+                                  ),
+                                  child: Text(
+                                    'Dashboard',
+                                    style: TextStyle(color: Color.fromRGBO(42, 45, 50, 1)),
+                                    textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                  ).translate(),
+                                  onPressed: () {
+                                    context.pushReplacement(Routes.PRIMARY_DASHBOARD_PAGE);
+                                    return;
+                                  },
+                                ),
+                              ),
+                            ],
                           ),
-                          child: Text(
-                            'Dashboard',
-                            style: TextStyle(color: Color.fromRGBO(42, 45, 50, 1)),
-                            textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                          ).translate(),
-                          onPressed: () {
-                            context.pushReplacement(Routes.PRIMARY_DASHBOARD_PAGE);
-                            return;
-                          },
                         ),
                       ),
                       PositionedDirectional(

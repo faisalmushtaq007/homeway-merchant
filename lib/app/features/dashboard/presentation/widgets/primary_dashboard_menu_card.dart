@@ -12,6 +12,7 @@ import 'package:homemakers_merchant/config/translation/language_controller.dart'
 import 'package:homemakers_merchant/config/translation/widgets/language_selection_widget.dart';
 import 'package:homemakers_merchant/core/constants/global_app_constants.dart';
 import 'package:homemakers_merchant/core/extensions/app_extension.dart';
+import 'package:homemakers_merchant/core/extensions/global_extensions/dart_extensions.dart';
 import 'package:homemakers_merchant/shared/widgets/app/app_logo.dart';
 import 'package:homemakers_merchant/shared/widgets/app/page_body.dart';
 import 'package:homemakers_merchant/shared/widgets/universal/animate_do/animate_do.dart';
@@ -41,7 +42,9 @@ class PrimaryDashboardMenuCard extends StatelessWidget {
             shape: RoundedRectangleBorder(borderRadius: BorderRadiusDirectional.circular(10)),
             child: ListTile(
               //dense: true,
-              leading: primaryDashboardMenuEntity.leading,
+              leading: primaryDashboardMenuEntity.leading.copyWith(
+                color: context.colorScheme.primary,
+              ),
               title: Text(
                 primaryDashboardMenuEntity.title,
                 style: primaryDashboardMenuEntity.style ?? context.titleMedium!.copyWith(fontSize: 18, fontWeight: FontWeight.w500),
@@ -59,8 +62,9 @@ class PrimaryDashboardMenuCard extends StatelessWidget {
                 child: Directionality(
                   textDirection: serviceLocator<LanguageController>().targetTextDirection,
                   child: primaryDashboardMenuEntity.trailing ??
-                      const Icon(
+                      Icon(
                         Icons.arrow_forward_ios,
+                        color: context.colorScheme.primary,
                       ),
                 ),
               ),

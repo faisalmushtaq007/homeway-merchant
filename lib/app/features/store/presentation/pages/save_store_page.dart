@@ -325,6 +325,21 @@ class _SaveStorePageState extends State<SaveStorePage> {
                                         ),
                                       ),
                                     const AnimatedGap(12, duration: Duration(milliseconds: 500)),
+                                    Wrap(
+                                      textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                      children: [
+                                        Text(
+                                          'Make sure your store image is clear and visible with jpg or png format',
+                                          style: context.labelMedium!.copyWith(
+                                            color: Color.fromRGBO(127, 129, 132, 1),
+                                          ),
+                                          textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                          maxLines: 2,
+                                          softWrap: true,
+                                        ).translate(),
+                                      ],
+                                    ),
+                                    const AnimatedGap(12, duration: Duration(milliseconds: 500)),
                                     Row(
                                       mainAxisSize: MainAxisSize.min,
                                       textDirection: serviceLocator<LanguageController>().targetTextDirection,
@@ -882,8 +897,8 @@ class _SaveStorePageState extends State<SaveStorePage> {
                                             storeImageMetaData: {},
                                             storeMaximumFoodDeliveryTime: int.parse(_storeMaxDeliveryTimeController.value.text),
                                             storeMaximumFoodDeliveryRadius: _maximumDeliveryRadiusValue.toInt(),
-                                            storeOpeningTime: _storeOpeningTimeController.value.text,
-                                            storeClosingTime: _storeClosingTimeController.value.text,
+                                            storeOpeningTime: _storeOpeningTimeController.value.text.trim(),
+                                            storeClosingTime: _storeClosingTimeController.value.text.trim(),
                                             storeID: ((DateTime.now().millisecondsSinceEpoch - DateTime.now().millisecond) / 100).toInt(),
                                             hasStoreOwnDeliveryPartners: _hasStoreOwnDeliveryService,
                                             storeAcceptedPaymentModes: _selectedAcceptedPaymentModes.toList(),
@@ -901,7 +916,10 @@ class _SaveStorePageState extends State<SaveStorePage> {
                                             storeWorkingDays: _selectedWorkingDays.toList(),
                                             hasNewStore: widget.haveNewStore,
                                           );
-                                          serviceLocator<List<StoreEntity>>().add(storeInfo);
+
+                                          if (!mounted) {
+                                            return;
+                                          }
                                           context.read<StoreBloc>().add(SaveStore(
                                                 storeEntity: storeInfo,
                                                 hasNewStore: widget.haveNewStore,

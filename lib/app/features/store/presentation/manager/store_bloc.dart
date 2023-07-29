@@ -68,15 +68,13 @@ class StoreBloc extends Bloc<StoreEvent, StoreState> {
   }
 
   FutureOr<void> _saveStore(SaveStore event, Emitter<StoreState> emit) async {
-    if (!event.hasNewStore) {
-      if (event.currentIndex != -1) {
-        serviceLocator<List<StoreEntity>>().removeAt(event.currentIndex);
-        serviceLocator<List<StoreEntity>>().insert(event.currentIndex, event.storeEntity);
-      }
+    if (!event.hasNewStore && event.currentIndex != -1) {
+      serviceLocator<List<StoreEntity>>().removeAt(event.currentIndex);
+      serviceLocator<List<StoreEntity>>().insert(event.currentIndex, event.storeEntity);
     } else {
       serviceLocator<List<StoreEntity>>().insert(0, event.storeEntity);
     }
-    serviceLocator<AppUserEntity>().stores = serviceLocator<List<StoreEntity>>();
+    serviceLocator<AppUserEntity>().stores = List<StoreEntity>.from(serviceLocator<List<StoreEntity>>().toList());
     emit(
       SaveStoreState(
         storeEntity: event.storeEntity,
@@ -133,9 +131,9 @@ class StoreBloc extends Bloc<StoreEvent, StoreState> {
       if (listOfStores.isEmpty) {
         listOfStores = serviceLocator<AppUserEntity>().stores.toList();
       }
-      await Future.delayed(const Duration(milliseconds: 300), () {});
-      emit(StoreLoadingState(isLoading: false, message: ''));
-      await Future.delayed(const Duration(milliseconds: 300), () {});
+      //await Future.delayed(const Duration(milliseconds: 300), () {});
+      //emit(StoreLoadingState(isLoading: false, message: ''));
+      //await Future.delayed(const Duration(milliseconds: 300), () {});
       if (listOfStores.isEmpty) {
         emit(
           GetEmptyStoreState(message: 'Store is empty', storeEntities: []),
