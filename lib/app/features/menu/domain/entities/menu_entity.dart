@@ -2,7 +2,6 @@ part of 'package:homemakers_merchant/app/features/menu/index.dart';
 
 class MenuEntity with AppEquatable {
   MenuEntity({
-    this.id = -1,
     this.menuId = '',
     this.menuImages = const [],
     this.menuName = '',
@@ -34,38 +33,37 @@ class MenuEntity with AppEquatable {
 
   factory MenuEntity.fromMap(Map<String, dynamic> map) {
     return MenuEntity(
-      id: map['id'] as int,
       menuId: map['menuId'] as String,
-      menuImages: map['menuImages'] as List<MenuImage>,
+      menuImages: map['menuImages'].map((e) => MenuImage.fromMap(e)).toList().cast<MenuImage>(),
       menuName: map['menuName'] as String,
       menuDescription: map['menuDescription'] as String,
-      menuCategories: map['menuCategories'] as List<Category>,
-      ingredients: map['ingredients'] as List<Ingredients>,
-      storeAvailableFoodTypes: map['storeAvailableFoodTypes'] as List<MenuType>,
-      storeAvailableFoodPreparationType: map['storeAvailableFoodPreparationType'] as List<MenuPreparationType>,
-      menuPortions: map['menuPortions'] as List<MenuPortion>,
+      menuCategories: map['menuCategories'].map((e) => Category.fromMap(e)).toList().cast<Category>(),
+      ingredients: map['ingredients'].map((e) => Ingredients.fromMap(e)).toList().cast<Ingredients>(),
+      storeAvailableFoodTypes: map['storeAvailableFoodTypes'].map((e) => MenuType.fromMap(e)).toList().cast<MenuType>(),
+      storeAvailableFoodPreparationType:
+          map['storeAvailableFoodPreparationType'].map((e) => MenuPreparationType.fromMap(e)).toList().cast<MenuPreparationType>(),
+      menuPortions: map['menuPortions'].map((e) => MenuPortion.fromMap(e)).toList().cast<MenuPortion>(),
       hasCustomPortion: map['hasCustomPortion'] as bool,
-      customPortions: map['customPortions'] as List<CustomPortion>,
-      addons: map['addons'] as List<Addons>,
+      customPortions: map['customPortions'].map((e) => CustomPortion.fromMap(e)).toList().cast<CustomPortion>(),
+      addons: map['addons'].map((e) => Addons.fromMap(e)).toList().cast<Addons>(),
       menuAvailableFromTime: map['menuAvailableFromTime'] as String,
       menuAvailableToTime: map['menuAvailableToTime'] as String,
-      menuAvailableInDays: map['menuAvailableInDays'] as List<MenuAvailableDayAndTime>,
+      menuAvailableInDays: map['menuAvailableInDays'].map((e) => MenuAvailableDayAndTime.fromMap(e)).toList().cast<MenuAvailableDayAndTime>(),
       minStockAvailable: map['minStockAvailable'] as int,
       maxStockAvailable: map['maxStockAvailable'] as int,
-      timeOfPeriodWise: map['timeOfPeriodWise'] as List<TimeOfPeriodWise>,
+      timeOfPeriodWise: map['timeOfPeriodWise'].map((e) => TimeOfPeriodWise.fromMap(e)).toList().cast<TimeOfPeriodWise>(),
       metaInfoOfMenu: map['metaInfoOfMenu'] as Map<String, dynamic>,
-      nutrients: map['nutrients'] as List<Nutrients>,
-      menuTiming: map['menuTiming'] as Timing?,
-      tasteType: map['tasteType'] as TasteType?,
-      stock: map['stock'] as Stock?,
-      customPortion: map['customPortion'] as CustomPortion?,
+      nutrients: map['nutrients'].map((e) => Nutrients.fromMap(e)).toList().cast<Nutrients>(),
+      menuTiming: (map['menuTiming'] != null) ? Timing.fromMap(map['menuTiming']) : null,
+      tasteType: (map['tasteType'] != null) ? TasteType.fromMap(map['tasteType']) : null,
+      stock: (map['stock'] != null) ? Stock.fromMap(map['stock']) : null,
+      customPortion: (map['customPortion'] != null) ? CustomPortion.fromMap(map['customPortion']) : null,
       menuMinPreparationTime: map['menuMinPreparationTime'] as String,
       menuMaxPreparationTime: map['menuMaxPreparationTime'] as String,
-      ratingAndReviewEntity: map['ratingAndReviewEntity'] as RatingAndReviewEntity,
+      ratingAndReviewEntity: (map['ratingAndReviewEntity'] != null) ? RatingAndReviewEntity.fromMap(map['ratingAndReviewEntity']) : null,
     );
   }
 
-  int id;
   String menuId;
   List<MenuImage> menuImages;
   String menuName;
@@ -99,7 +97,6 @@ class MenuEntity with AppEquatable {
 
   @override
   List<Object?> get hashParameters => [
-        id,
         menuId,
         menuImages,
         menuName,
@@ -131,39 +128,37 @@ class MenuEntity with AppEquatable {
 
   Map<String, dynamic> toMap() {
     return {
-      'id': this.id,
       'menuId': this.menuId,
-      'menuImages': this.menuImages,
+      'menuImages': this.menuImages.map((e) => e.toMap()).toList(growable: false),
       'menuName': this.menuName,
       'menuDescription': this.menuDescription,
-      'menuCategories': this.menuCategories,
-      'ingredients': this.ingredients,
-      'storeAvailableFoodTypes': this.storeAvailableFoodTypes,
-      'storeAvailableFoodPreparationType': this.storeAvailableFoodPreparationType,
-      'menuPortions': this.menuPortions,
+      'menuCategories': this.menuCategories.map((e) => e.toMap()).toList(growable: false),
+      'ingredients': this.ingredients.map((e) => e.toMap()).toList(growable: false),
+      'storeAvailableFoodTypes': this.storeAvailableFoodTypes.map((e) => e.toMap()).toList(growable: false),
+      'storeAvailableFoodPreparationType': this.storeAvailableFoodPreparationType.map((e) => e.toMap()).toList(growable: false),
+      'menuPortions': this.menuPortions.map((e) => e.toMap()).toList(growable: false),
       'hasCustomPortion': this.hasCustomPortion,
-      'customPortions': this.customPortions,
-      'addons': this.addons,
+      'customPortions': this.customPortions.map((e) => e.toMap()).toList(growable: false),
+      'addons': this.addons.map((e) => e.toMap()).toList(growable: false),
       'menuAvailableFromTime': this.menuAvailableFromTime,
       'menuAvailableToTime': this.menuAvailableToTime,
-      'menuAvailableInDays': this.menuAvailableInDays,
+      'menuAvailableInDays': this.menuAvailableInDays.map((e) => e.toMap()).toList(growable: false),
       'minStockAvailable': this.minStockAvailable,
       'maxStockAvailable': this.maxStockAvailable,
-      'timeOfPeriodWise': this.timeOfPeriodWise,
+      'timeOfPeriodWise': this.timeOfPeriodWise.map((e) => e.toMap()).toList(growable: false),
       'metaInfoOfMenu': this.metaInfoOfMenu,
-      'nutrients': this.nutrients,
-      'menuTiming': this.menuTiming,
-      'tasteType': this.tasteType,
-      'stock': this.stock,
-      'customPortion': this.customPortion,
+      'nutrients': this.nutrients.map((e) => e.toMap()).toList(growable: false),
+      'menuTiming': this.menuTiming?.toMap(),
+      'tasteType': this.tasteType?.toMap(),
+      'stock': this.stock?.toMap(),
+      'customPortion': this.customPortion?.toMap(),
       'menuMinPreparationTime': this.menuMinPreparationTime,
       'menuMaxPreparationTime': this.menuMaxPreparationTime,
-      'ratingAndReviewEntity': this.ratingAndReviewEntity,
+      'ratingAndReviewEntity': this.ratingAndReviewEntity?.toMap(),
     };
   }
 
   MenuEntity copyWith({
-    int? id,
     String? menuId,
     List<MenuImage>? menuImages,
     String? menuName,
@@ -193,7 +188,6 @@ class MenuEntity with AppEquatable {
     RatingAndReviewEntity? ratingAndReviewEntity,
   }) {
     return MenuEntity(
-      id: id ?? this.id,
       menuId: menuId ?? this.menuId,
       menuImages: menuImages ?? this.menuImages,
       menuName: menuName ?? this.menuName,
@@ -244,7 +238,7 @@ class MenuImage with AppEquatable {
       assetExtension: map['assetExtension'] as String,
       hasBase64: map['hasBase64'] as bool,
       valueOfBase64: map['valueOfBase64'] as String,
-      assetsUploadStatus: map['assetsUploadStatus'] as AssetsUploadStatus,
+      assetsUploadStatus: AssetsUploadStatus.values.byName(map['assetsUploadStatus']),
     );
   }
 
@@ -278,7 +272,7 @@ class MenuImage with AppEquatable {
       'assetExtension': this.assetExtension,
       'hasBase64': this.hasBase64,
       'valueOfBase64': this.valueOfBase64,
-      'assetsUploadStatus': this.assetsUploadStatus,
+      'assetsUploadStatus': this.assetsUploadStatus.name,
     };
   }
 
@@ -544,7 +538,7 @@ class TasteType with AppEquatable {
       tasteTypeId: map['tasteTypeId'] as String,
       title: map['title'] as String,
       hasSelected: map['hasSelected'] as bool,
-      tasteLevel: map['tasteLevel'] as List<TasteLevel>,
+      tasteLevel: map['tasteLevel'].map((e) => TasteLevel.fromMap(e)).toList().cast<TasteLevel>(),
       hasTasteLevel: map['hasTasteLevel'] as bool,
     );
   }
@@ -572,7 +566,7 @@ class TasteType with AppEquatable {
       'tasteTypeId': this.tasteTypeId,
       'title': this.title,
       'hasSelected': this.hasSelected,
-      'tasteLevel': this.tasteLevel,
+      'tasteLevel': this.tasteLevel.map((e) => e.toMap()).toList(growable: false),
       'hasTasteLevel': this.hasTasteLevel,
     };
   }
@@ -889,13 +883,12 @@ class Addons with AppEquatable {
       discountedPrice: map['discountedPrice'] as double,
       hasSelected: map['hasSelected'] as bool,
       unit: map['unit'] as String,
-      addonsImage: map['addonsImage'] as MenuImage,
+      addonsImage: (map['addonsImage'] != null) ? MenuImage.fromMap(map['addonsImage']) : null,
       currency: map['currency'] as String,
       description: map['description'] as String,
       hasOwnAddons: map['hasOwnAddons'] as bool,
     );
   }
-
   String addonsID;
   String title;
   double quantity;
@@ -938,7 +931,7 @@ class Addons with AppEquatable {
       'discountedPrice': this.discountedPrice,
       'hasSelected': this.hasSelected,
       'unit': this.unit,
-      'addonsImage': this.addonsImage,
+      'addonsImage': this.addonsImage?.toMap(),
       'currency': this.currency,
       'description': this.description,
       'hasOwnAddons': this.hasOwnAddons,
@@ -958,6 +951,7 @@ class Addons with AppEquatable {
     String? currency,
     String? description,
     bool? hasOwnAddons,
+    int? id,
   }) {
     return Addons(
       addonsID: addonsID ?? this.addonsID,

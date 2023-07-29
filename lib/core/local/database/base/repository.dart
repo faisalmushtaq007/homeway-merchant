@@ -4,7 +4,6 @@ import 'repository.dart';
 import './repository_failure.dart';
 import './identifiable.dart';
 
-
 class BaseRepositoryOperation<EntityType> {}
 
 extension OperationValue<EntityType> on BaseRepositoryOperation<EntityType> {
@@ -60,7 +59,9 @@ abstract class Update<EntityType> extends BaseRepositoryOperation<EntityType> {
   /// Note: Concrete implementation will more likely constraints
   /// EntityType to be have an Id or be equatable.
   Future<Either<RepositoryBaseFailure, EntityType>> update(
-      EntityType entity, UniqueId uniqueId);
+    EntityType entity,
+    UniqueId uniqueId,
+  );
 }
 
 /// Edit provides partial updates of entities.
@@ -69,21 +70,20 @@ abstract class Update<EntityType> extends BaseRepositoryOperation<EntityType> {
 /// and others like a Map<String, dynamic>.
 /// Note: Edit is not part of the repository definition as this would imply
 /// Extending all repositories to have 2 type variables.
-abstract class Edit<Operation, EntityType>
-    extends BaseRepositoryOperation<EntityType> {
+abstract class Edit<Operation, EntityType> extends BaseRepositoryOperation<EntityType> {
   /// Performs some edit operation on a already present entity.
   Future<Either<RepositoryBaseFailure, EntityType>> edit(
-      UniqueId id, Operation operation);
+    UniqueId id,
+    Operation operation,
+  );
 }
 
 /// A repository with only with the subset of opertions related to reading
 ///
 /// Operations: GetAll and GetById
-abstract class ReadOnlyRepository<EntityType>
-    implements GetAll<EntityType>, GetById<EntityType> {}
+abstract class ReadOnlyRepository<EntityType> implements GetAll<EntityType>, GetById<EntityType> {}
 
-abstract class WriteOnlyRepository<EntityType>
-    implements Add<EntityType>, Delete<EntityType>, Update<EntityType> {}
+abstract class WriteOnlyRepository<EntityType> implements Add<EntityType>, Delete<EntityType>, Update<EntityType> {}
 
 abstract class Repository<EntityType>
     implements
@@ -98,7 +98,7 @@ abstract class Repository<EntityType>
   late String? currentUserToken;
   late int? currentUserId;
   bool authStatus = false;
-  Future<Either<RepositoryBaseFailure, void>> clear() ;
+  Future<Either<RepositoryBaseFailure, void>> clear();
 }
 
 abstract class Init<EntityType> extends BaseRepositoryOperation<EntityType> {
@@ -106,44 +106,43 @@ abstract class Init<EntityType> extends BaseRepositoryOperation<EntityType> {
   Future<Either<RepositoryBaseFailure, void>> init();
 }
 
-abstract class GetCurrentUserTokenByID<EntityType>
-    extends BaseRepositoryOperation<EntityType> {
+abstract class GetCurrentUserTokenByID<EntityType> extends BaseRepositoryOperation<EntityType> {
   /// Returns the object with the given a unique id
   ///
   /// Will return a Failure if no corresponding entity for id is found.
   Future<Either<RepositoryBaseFailure, String>> getCurrentUserTokenByID(
-      UniqueId id);
+    UniqueId id,
+  );
 }
 
-abstract class DeleteAll<EntityType>
-    extends BaseRepositoryOperation<EntityType> {
+abstract class DeleteAll<EntityType> extends BaseRepositoryOperation<EntityType> {
   /// Completely remove the entity instance from repository
   Future<Either<RepositoryBaseFailure, bool>> deleteAll(EntityType entity);
 }
 
-abstract class DeleteById<EntityType>
-    extends BaseRepositoryOperation<EntityType> {
+abstract class DeleteById<EntityType> extends BaseRepositoryOperation<EntityType> {
   /// Completely remove the entity instance from repository
   Future<Either<RepositoryBaseFailure, bool>> deleteById(UniqueId uniqueId);
 }
 
-abstract class FindUserByTokenOrID<EntityType>
-    extends BaseRepositoryOperation<EntityType> {
+abstract class FindUserByTokenOrID<EntityType> extends BaseRepositoryOperation<EntityType> {
   /// Returns the object with the given a unique id
   ///
   /// Will return a Failure if no corresponding entity for id is found.
-  Future<Either<RepositoryBaseFailure, EntityType>> findUserByTokenOrID(
-      {UniqueId? id, String? token});
+  Future<Either<RepositoryBaseFailure, EntityType>> findUserByTokenOrID({
+    UniqueId? id,
+    String? token,
+  });
 }
 
-abstract class AddOrUpdateUser<EntityType>
-    extends BaseRepositoryOperation<EntityType> {
+abstract class AddOrUpdateUser<EntityType> extends BaseRepositoryOperation<EntityType> {
   /// Returns the object with the given a model
   ///
   /// Will return a Failure if no corresponding entity for id is found.
-  Future<Either<RepositoryBaseFailure, EntityType>> addOrUpdateUser(
-      {UniqueId? id,
-      String? token,
-      required EntityType entity,
-      bool checkIfUserLoggedIn = false});
+  Future<Either<RepositoryBaseFailure, EntityType>> addOrUpdateUser({
+    UniqueId? id,
+    String? token,
+    required EntityType entity,
+    bool checkIfUserLoggedIn = false,
+  });
 }

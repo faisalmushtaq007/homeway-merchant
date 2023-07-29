@@ -11,6 +11,7 @@ import 'package:homemakers_merchant/app/features/profile/domain/entities/user_mo
 import 'package:homemakers_merchant/app/features/profile/presentation/manager/bank/bank_information_bloc.dart';
 import 'package:homemakers_merchant/app/features/profile/presentation/manager/document/business_document_bloc.dart';
 import 'package:homemakers_merchant/app/features/profile/presentation/manager/user_model_storage_controller.dart';
+import 'package:homemakers_merchant/app/features/store/data/local/data_sources/store_local_db_dao.dart';
 import 'package:homemakers_merchant/app/features/store/domain/entities/store_entity.dart';
 import 'package:homemakers_merchant/app/features/store/presentation/manager/store_bloc.dart';
 import 'package:homemakers_merchant/config/permission/permission_controller.dart';
@@ -191,7 +192,9 @@ void _setUpService() {
     );
 }
 
-void _setUpRepository() {}
+void _setUpRepository() {
+  serviceLocator.registerSingleton<StoreLocalDbRepository>(StoreLocalDbRepository());
+}
 
 void _setUpStateManagement() {
   serviceLocator.registerFactory<ConnectivityBloc>(ConnectivityBloc.new);

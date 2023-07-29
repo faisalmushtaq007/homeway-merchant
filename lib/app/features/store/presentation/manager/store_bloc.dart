@@ -2,8 +2,10 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:bloc_concurrency/bloc_concurrency.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:homemakers_merchant/app/features/profile/domain/entities/user_entity.dart';
 import 'package:homemakers_merchant/app/features/store/common/store_enum.dart';
+import 'package:homemakers_merchant/app/features/store/data/local/data_sources/store_local_db_dao.dart';
 import 'package:homemakers_merchant/app/features/store/domain/entities/store_entity.dart';
 import 'package:homemakers_merchant/bootup/injection_container.dart';
 import 'package:homemakers_merchant/utils/app_equatable/app_equatable.dart';
@@ -68,19 +70,36 @@ class StoreBloc extends Bloc<StoreEvent, StoreState> {
   }
 
   FutureOr<void> _saveStore(SaveStore event, Emitter<StoreState> emit) async {
-    if (!event.hasNewStore && event.currentIndex != -1) {
-      serviceLocator<List<StoreEntity>>().removeAt(event.currentIndex);
-      serviceLocator<List<StoreEntity>>().insert(event.currentIndex, event.storeEntity);
-    } else {
-      serviceLocator<List<StoreEntity>>().insert(0, event.storeEntity);
+    try {
+      if (!event.hasNewStore && event.currentIndex != -1) {
+        serviceLocator<List<StoreEntity>>().removeAt(event.currentIndex);
+        serviceLocator<List<StoreEntity>>().insert(event.currentIndex, event.storeEntity);
+      } else {
+        serviceLocator<List<StoreEntity>>().insert(0, event.storeEntity);
+      }
+      serviceLocator<AppUserEntity>().stores = List<StoreEntity>.from(serviceLocator<List<StoreEntity>>().toList());
+      final result = await serviceLocator<StoreLocalDbRepository>().add(event.storeEntity);
+      result.fold((left) {
+        debugPrint('Save Store error ${left.toString()}');
+      }, (right) {
+        debugPrint('Save StoreID : ${right.storeID}, ${right.storeName}');
+      });
+      emit(
+        SaveStoreState(
+          storeEntity: event.storeEntity,
+          hasNewStore: event.hasNewStore,
+        ),
+      );
+    } catch (e, s) {
+      emit(
+        StoreExceptionState(
+          message: 'Something went wrong during saving your store details, please try again',
+          //exception: e as Exception,
+          stackTrace: s,
+          storeStateStage: StoreStateStage.getStore,
+        ),
+      );
     }
-    serviceLocator<AppUserEntity>().stores = List<StoreEntity>.from(serviceLocator<List<StoreEntity>>().toList());
-    emit(
-      SaveStoreState(
-        storeEntity: event.storeEntity,
-        hasNewStore: event.hasNewStore,
-      ),
-    );
   }
 
   FutureOr<void> _getStore(GetStore event, Emitter<StoreState> emit) async {
@@ -97,7 +116,7 @@ class StoreBloc extends Bloc<StoreEvent, StoreState> {
       emit(
         StoreExceptionState(
           message: 'Something went wrong during getting your store details, please try again',
-          exception: e as Exception,
+          //exception: e as Exception,
           stackTrace: s,
           storeStateStage: StoreStateStage.getStore,
         ),
@@ -131,6 +150,14 @@ class StoreBloc extends Bloc<StoreEvent, StoreState> {
       if (listOfStores.isEmpty) {
         listOfStores = serviceLocator<AppUserEntity>().stores.toList();
       }
+      final result = await serviceLocator<StoreLocalDbRepository>().getAll();
+      result.fold((left) {
+        debugPrint('Store get all error ${left.toString()}');
+        listOfStores = [];
+      }, (right) {
+        debugPrint('Store get all ${right.length}');
+        listOfStores = List<StoreEntity>.from(right.toList());
+      });
       //await Future.delayed(const Duration(milliseconds: 300), () {});
       //emit(StoreLoadingState(isLoading: false, message: ''));
       //await Future.delayed(const Duration(milliseconds: 300), () {});
@@ -151,7 +178,7 @@ class StoreBloc extends Bloc<StoreEvent, StoreState> {
       emit(
         StoreExceptionState(
           message: 'Something went wrong during getting your all stores, please try again',
-          exception: e as Exception,
+          //exception: e as Exception,
           stackTrace: s,
           storeStateStage: StoreStateStage.getAllStore,
         ),
@@ -184,7 +211,7 @@ class StoreBloc extends Bloc<StoreEvent, StoreState> {
       emit(
         DriverExceptionState(
           message: 'Something went wrong during getting your all drivers, please try again',
-          exception: e as Exception,
+          //exception: e as Exception,
           stackTrace: s,
           driverStateStage: DriverStateStage.saveDriver,
         ),
@@ -197,7 +224,7 @@ class StoreBloc extends Bloc<StoreEvent, StoreState> {
       emit(
         DriverExceptionState(
           message: 'Something went wrong during getting your all drivers, please try again',
-          exception: e as Exception,
+          //exception: e as Exception,
           stackTrace: s,
           driverStateStage: DriverStateStage.deleteDriver,
         ),
@@ -210,7 +237,7 @@ class StoreBloc extends Bloc<StoreEvent, StoreState> {
       emit(
         DriverExceptionState(
           message: 'Something went wrong during getting your all drivers, please try again',
-          exception: e as Exception,
+          //exception: e as Exception,
           stackTrace: s,
           driverStateStage: DriverStateStage.deleteAllDriver,
         ),
@@ -277,7 +304,7 @@ class StoreBloc extends Bloc<StoreEvent, StoreState> {
       emit(
         DriverExceptionState(
           message: 'Something went wrong during getting your all drivers, please try again',
-          exception: e as Exception,
+          //exception: e as Exception,
           stackTrace: s,
           driverStateStage: DriverStateStage.getAllDriver,
         ),
@@ -290,7 +317,7 @@ class StoreBloc extends Bloc<StoreEvent, StoreState> {
       emit(
         DriverExceptionState(
           message: 'Something went wrong during getting your all drivers, please try again',
-          exception: e as Exception,
+          //exception: e as Exception,
           stackTrace: s,
           driverStateStage: DriverStateStage.getDriver,
         ),

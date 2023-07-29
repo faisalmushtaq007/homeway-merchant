@@ -110,10 +110,9 @@ class MenuBloc extends Bloc<MenuEvent, MenuState> {
         ));
       }
     } catch (e, s) {
-      debugPrint(e.toString());
       emit(AddonsExceptionState(
         message: 'Something went wrong',
-        exception: e as Exception,
+        //exception: e as Exception,
         stackTrace: s,
       ));
     }

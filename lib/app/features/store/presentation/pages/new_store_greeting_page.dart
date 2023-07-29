@@ -13,8 +13,6 @@ class NewStoreGreetingPage extends StatelessWidget {
     final double margins = GlobalApp.responsiveInsets(media.size.width);
     final double topPadding = margins; //media.padding.top + kToolbarHeight + margins; //margins * 1.5;
     final double bottomPadding = media.padding.bottom + margins;
-    final double width = media.size.width;
-    final ThemeData theme = Theme.of(context);
     final ScrollController scrollController = ScrollController();
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: FlexColorScheme.themedSystemNavigationBar(
@@ -61,7 +59,7 @@ class NewStoreGreetingPage extends StatelessWidget {
                       ),
                       ListView(
                         controller: scrollController,
-                        padding: EdgeInsetsDirectional.only(
+                        padding: const EdgeInsetsDirectional.only(
                           top: 50,
                         ),
                         children: [
@@ -84,7 +82,7 @@ class NewStoreGreetingPage extends StatelessWidget {
                           ),
                           Center(
                             child: Text(
-                              '${storeEntity.storeName ?? ''}',
+                              storeEntity.storeName,
                               textDirection: serviceLocator<LanguageController>().targetTextDirection,
                               textAlign: TextAlign.center,
                               style: context.headlineMedium!.copyWith(
@@ -145,14 +143,14 @@ class NewStoreGreetingPage extends StatelessWidget {
                             child: Wrap(
                               textDirection: serviceLocator<LanguageController>().targetTextDirection,
                               children: [
-                                Icon(Icons.store),
+                                const Icon(Icons.store),
                                 Text(
                                   'Store ID #HMW${storeEntity.storeID}',
                                   textDirection: serviceLocator<LanguageController>().targetTextDirection,
                                   textAlign: TextAlign.center,
                                   style: context.titleMedium!.copyWith(
                                     fontSize: 18,
-                                    color: Color.fromRGBO(127, 129, 132, 1),
+                                    color: const Color.fromRGBO(127, 129, 132, 1),
                                   ),
                                 ).translate(),
                               ],
@@ -174,7 +172,7 @@ class NewStoreGreetingPage extends StatelessWidget {
                           child: Wrap(
                             textDirection: serviceLocator<LanguageController>().targetTextDirection,
                             children: [
-                              Icon(Icons.share),
+                              const Icon(Icons.share),
                               const SizedBox(
                                 width: 4,
                               ),
@@ -184,7 +182,7 @@ class NewStoreGreetingPage extends StatelessWidget {
                                 textAlign: TextAlign.center,
                                 style: context.titleMedium!.copyWith(
                                   fontSize: 18,
-                                  color: Color.fromRGBO(127, 129, 132, 1),
+                                  color: const Color.fromRGBO(127, 129, 132, 1),
                                 ),
                               ).translate(),
                             ],
@@ -201,14 +199,14 @@ class NewStoreGreetingPage extends StatelessWidget {
                               Expanded(
                                 child: ElevatedButton(
                                   style: ElevatedButton.styleFrom(
-                                    side: BorderSide(
+                                    side: const BorderSide(
                                       color: Color.fromRGBO(165, 166, 168, 1),
                                     ),
                                     backgroundColor: Colors.white,
                                   ),
                                   child: Text(
                                     'My Stores',
-                                    style: TextStyle(color: Color.fromRGBO(42, 45, 50, 1)),
+                                    style: const TextStyle(color: Color.fromRGBO(42, 45, 50, 1)),
                                     textDirection: serviceLocator<LanguageController>().targetTextDirection,
                                   ).translate(),
                                   onPressed: () {
@@ -221,14 +219,14 @@ class NewStoreGreetingPage extends StatelessWidget {
                               Expanded(
                                 child: ElevatedButton(
                                   style: ElevatedButton.styleFrom(
-                                    side: BorderSide(
+                                    side: const BorderSide(
                                       color: Color.fromRGBO(165, 166, 168, 1),
                                     ),
                                     backgroundColor: Colors.white,
                                   ),
                                   child: Text(
                                     'Dashboard',
-                                    style: TextStyle(color: Color.fromRGBO(42, 45, 50, 1)),
+                                    style: const TextStyle(color: Color.fromRGBO(42, 45, 50, 1)),
                                     textDirection: serviceLocator<LanguageController>().targetTextDirection,
                                   ).translate(),
                                   onPressed: () {

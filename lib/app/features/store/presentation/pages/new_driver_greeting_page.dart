@@ -13,8 +13,6 @@ class NewDriverGreetingPage extends StatelessWidget {
     final double margins = GlobalApp.responsiveInsets(media.size.width);
     final double topPadding = margins; //media.padding.top + kToolbarHeight + margins; //margins * 1.5;
     final double bottomPadding = media.padding.bottom + margins;
-    final double width = media.size.width;
-    final ThemeData theme = Theme.of(context);
     final ScrollController scrollController = ScrollController();
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: FlexColorScheme.themedSystemNavigationBar(
@@ -84,7 +82,7 @@ class NewDriverGreetingPage extends StatelessWidget {
                           ),
                           Center(
                             child: Text(
-                              '${storeOwnDeliveryPartnerEntity.driverName ?? ''}',
+                              storeOwnDeliveryPartnerEntity.driverName,
                               textDirection: serviceLocator<LanguageController>().targetTextDirection,
                               textAlign: TextAlign.center,
                               style: context.headlineMedium!.copyWith(

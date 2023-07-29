@@ -886,6 +886,7 @@ class _SaveStorePageState extends State<SaveStorePage> {
                                       onPressed: () {
                                         if (storFormKey.currentState!.validate()) {
                                           storFormKey.currentState!.save();
+
                                           final storeInfo = StoreEntity(
                                             storeName: _storeNameController.value.text,
                                             storeAddress: AddressModel(
@@ -899,7 +900,6 @@ class _SaveStorePageState extends State<SaveStorePage> {
                                             storeMaximumFoodDeliveryRadius: _maximumDeliveryRadiusValue.toInt(),
                                             storeOpeningTime: _storeOpeningTimeController.value.text.trim(),
                                             storeClosingTime: _storeClosingTimeController.value.text.trim(),
-                                            storeID: ((DateTime.now().millisecondsSinceEpoch - DateTime.now().millisecond) / 100).toInt(),
                                             hasStoreOwnDeliveryPartners: _hasStoreOwnDeliveryService,
                                             storeAcceptedPaymentModes: _selectedAcceptedPaymentModes.toList(),
                                             storeAvailableFoodPreparationType: _selectedFoodPreparationType.toList(),
@@ -916,12 +916,21 @@ class _SaveStorePageState extends State<SaveStorePage> {
                                             storeWorkingDays: _selectedWorkingDays.toList(),
                                             hasNewStore: widget.haveNewStore,
                                           );
-
+                                          StoreEntity storeEntity;
+                                          if (!widget.haveNewStore && widget.storeEntity != null && widget.currentIndex != -1) {
+                                            storeEntity = storeInfo.copyWith(
+                                              storeID: widget.storeEntity?.storeID,
+                                            );
+                                          } else {
+                                            storeEntity = storeInfo.copyWith(
+                                              storeID: ((DateTime.now().millisecondsSinceEpoch - DateTime.now().millisecond) / 100).toInt(),
+                                            );
+                                          }
                                           if (!mounted) {
                                             return;
                                           }
                                           context.read<StoreBloc>().add(SaveStore(
-                                                storeEntity: storeInfo,
+                                                storeEntity: storeEntity,
                                                 hasNewStore: widget.haveNewStore,
                                               ));
                                           return;
