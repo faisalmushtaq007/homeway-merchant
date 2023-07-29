@@ -453,7 +453,6 @@ class _SaveAddonsPageView extends WidgetView<SaveAddonsPage, _SaveAddonsPageCont
                                 context.read<MenuBloc>().add(
                                       SaveAddons(
                                         addonsEntity: Addons(
-                                          addonsID: '',
                                           title: state.addonsNameTextEditingController.value.text.trim(),
                                           description: state.addonsDescriptionTextEditingController.value.text.trim(),
                                           quantity: double.parse(state.addonsQuantityTextEditingController.value.text.trim()),

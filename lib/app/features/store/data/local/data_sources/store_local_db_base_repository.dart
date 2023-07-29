@@ -3,3 +3,6 @@ import 'package:homemakers_merchant/app/features/store/domain/entities/store_ent
 import 'package:homemakers_merchant/core/local/database/base/repository.dart';
 
 abstract class BaseStoreLocalDbRepository<T extends StoreEntity> implements ReadOnlyRepository<T>, WriteOnlyRepository<T>, DeleteAll<T>, DeleteById<T> {}
+
+abstract class BaseStoreOwnDriverLocalDbRepository<T extends StoreOwnDeliveryPartnersInfo>
+    implements ReadOnlyRepository<T>, WriteOnlyRepository<T>, DeleteAll<T>, DeleteById<T> {}

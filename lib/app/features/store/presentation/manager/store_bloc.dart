@@ -8,8 +8,11 @@ import 'package:homemakers_merchant/app/features/store/common/store_enum.dart';
 import 'package:homemakers_merchant/app/features/store/data/local/data_sources/store_local_db_dao.dart';
 import 'package:homemakers_merchant/app/features/store/domain/entities/store_entity.dart';
 import 'package:homemakers_merchant/bootup/injection_container.dart';
+import 'package:homemakers_merchant/core/local/database/base/identifiable.dart';
+import 'package:homemakers_merchant/core/local/database/base/repository_failure.dart';
 import 'package:homemakers_merchant/utils/app_equatable/app_equatable.dart';
 import 'package:homemakers_merchant/utils/app_log.dart';
+import 'package:homemakers_merchant/utils/functional/functional.dart';
 import 'package:meta/meta.dart';
 
 part 'store_event.dart';
@@ -71,14 +74,12 @@ class StoreBloc extends Bloc<StoreEvent, StoreState> {
 
   FutureOr<void> _saveStore(SaveStore event, Emitter<StoreState> emit) async {
     try {
+      Either<RepositoryBaseFailure, StoreEntity> result;
       if (!event.hasNewStore && event.currentIndex != -1) {
-        serviceLocator<List<StoreEntity>>().removeAt(event.currentIndex);
-        serviceLocator<List<StoreEntity>>().insert(event.currentIndex, event.storeEntity);
+        result = await serviceLocator<StoreLocalDbRepository>().update(event.storeEntity, UniqueId(event.storeEntity.storeID));
       } else {
-        serviceLocator<List<StoreEntity>>().insert(0, event.storeEntity);
+        result = await serviceLocator<StoreLocalDbRepository>().add(event.storeEntity);
       }
-      serviceLocator<AppUserEntity>().stores = List<StoreEntity>.from(serviceLocator<List<StoreEntity>>().toList());
-      final result = await serviceLocator<StoreLocalDbRepository>().add(event.storeEntity);
       result.fold((left) {
         debugPrint('Save Store error ${left.toString()}');
       }, (right) {
@@ -266,14 +267,14 @@ class StoreBloc extends Bloc<StoreEvent, StoreState> {
       ));*/
       listOfDrivers = [
         StoreOwnDeliveryPartnersInfo(
-          driverID: '0',
+          driverID: 0,
           driverName: 'Sonu',
           driverMobileNumber: '',
           drivingLicenseNumber: '1234',
           vehicleInfo: VehicleInfo(vehicleID: '0', vehicleType: '2 Wheeler', vehicleNumber: '12345'),
         ),
         StoreOwnDeliveryPartnersInfo(
-          driverID: '1',
+          driverID: 1,
           driverName: 'Monu',
           driverMobileNumber: '',
           drivingLicenseNumber: '123456',

@@ -2,7 +2,7 @@ part of 'package:homemakers_merchant/app/features/menu/index.dart';
 
 class MenuEntity with AppEquatable {
   MenuEntity({
-    this.menuId = '',
+    this.menuId = -1,
     this.menuImages = const [],
     this.menuName = '',
     this.menuDescription = '',
@@ -33,7 +33,7 @@ class MenuEntity with AppEquatable {
 
   factory MenuEntity.fromMap(Map<String, dynamic> map) {
     return MenuEntity(
-      menuId: map['menuId'] as String,
+      menuId: map['menuId'] as int,
       menuImages: map['menuImages'].map((e) => MenuImage.fromMap(e)).toList().cast<MenuImage>(),
       menuName: map['menuName'] as String,
       menuDescription: map['menuDescription'] as String,
@@ -64,7 +64,7 @@ class MenuEntity with AppEquatable {
     );
   }
 
-  String menuId;
+  int menuId;
   List<MenuImage> menuImages;
   String menuName;
   String menuDescription;
@@ -159,7 +159,7 @@ class MenuEntity with AppEquatable {
   }
 
   MenuEntity copyWith({
-    String? menuId,
+    int? menuId,
     List<MenuImage>? menuImages,
     String? menuName,
     String? menuDescription,
@@ -859,7 +859,7 @@ class CustomPortion with AppEquatable {
 
 class Addons with AppEquatable {
   Addons({
-    this.addonsID = '',
+    this.addonsID = -1,
     this.title = '',
     this.quantity = 0.0,
     this.defaultPrice = 0.0,
@@ -875,7 +875,7 @@ class Addons with AppEquatable {
 
   factory Addons.fromMap(Map<String, dynamic> map) {
     return Addons(
-      addonsID: map['addonsD'] as String,
+      addonsID: map['addonsD'] as int,
       title: map['title'] as String,
       quantity: map['quantity'] as double,
       defaultPrice: map['defaultPrice'] as double,
@@ -889,7 +889,7 @@ class Addons with AppEquatable {
       hasOwnAddons: map['hasOwnAddons'] as bool,
     );
   }
-  String addonsID;
+  int addonsID;
   String title;
   double quantity;
   double defaultPrice;
@@ -939,7 +939,7 @@ class Addons with AppEquatable {
   }
 
   Addons copyWith({
-    String? addonsID,
+    int? addonsID,
     String? title,
     double? quantity,
     double? defaultPrice,

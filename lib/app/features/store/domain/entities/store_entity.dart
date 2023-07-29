@@ -305,7 +305,7 @@ class StoreAcceptedPaymentModes with AppEquatable {
 
 class StoreOwnDeliveryPartnersInfo with AppEquatable {
   StoreOwnDeliveryPartnersInfo({
-    this.driverID = '',
+    this.driverID = -1,
     this.driverName = '',
     this.driverMobileNumber = '',
     this.drivingLicenseNumber = '',
@@ -319,7 +319,7 @@ class StoreOwnDeliveryPartnersInfo with AppEquatable {
   factory StoreOwnDeliveryPartnersInfo.fromMap(Map<String, dynamic> map) {
     return StoreOwnDeliveryPartnersInfo(
       driverName: map['driverName'] as String,
-      driverID: map['driverID'] as String,
+      driverID: map['driverID'] as int,
       driverMobileNumber: map['driverMobileNumber'] as String,
       drivingLicenseNumber: map['drivingLicenseNumber'] as String,
       vehicleInfo: (map['vehicleInfo'] != null) ? VehicleInfo.fromMap(map['vehicleInfo']) : null,
@@ -329,7 +329,7 @@ class StoreOwnDeliveryPartnersInfo with AppEquatable {
       imageEntity: (map['imageEntity'] != null) ? ImageEntity.fromMap(map['imageEntity']) : null,
     );
   }
-  String driverID;
+  int driverID;
   String driverName;
   String driverMobileNumber;
   String drivingLicenseNumber;
@@ -374,7 +374,7 @@ class StoreOwnDeliveryPartnersInfo with AppEquatable {
     String? driverMobileNumber,
     String? drivingLicenseNumber,
     VehicleInfo? vehicleInfo,
-    String? driverID,
+    int? driverID,
     bool? hasOnline,
     RatingAndReviewEntity? ratingAndReviewEntity,
     ImageEntity? imageEntity,

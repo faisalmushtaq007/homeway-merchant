@@ -1,0 +1,102 @@
+import 'package:homemakers_merchant/app/features/menu/data/local/data_sources/menu_local_db_base_repository.dart';
+import 'package:homemakers_merchant/app/features/menu/index.dart';
+
+import 'package:homemakers_merchant/core/local/database/app_database.dart';
+import 'package:homemakers_merchant/core/local/database/base/identifiable.dart';
+import 'package:homemakers_merchant/core/local/database/base/repository_failure.dart';
+import 'package:homemakers_merchant/core/local/database/base/tryCatch.dart';
+import 'package:homemakers_merchant/utils/functional/either/either.dart';
+import 'package:sembast/sembast.dart';
+
+import 'package:sembast/utils/value_utils.dart';
+
+class MenuLocalDbRepository<Menu extends MenuEntity> implements BaseMenuLocalDbRepository<MenuEntity> {
+  // Completer is used for transforming synchronous code into asynchronous code.
+  Future<Database> get _db async => AppDatabase.instance.database;
+
+  StoreRef<int, Map<String, dynamic>> get _store => AppDatabase.instance.store;
+
+  @override
+  Future<Either<RepositoryBaseFailure, MenuEntity>> add(MenuEntity entity) async {
+    final result = await tryCatch<MenuEntity>(() async {
+      final int recordID = await _store.add(await _db, entity.toMap());
+      //final MenuEntity recordMenuEntity = entity.copyWith(storeID: recordID.toString());
+      final value = await _store.record(recordID).get(await _db);
+      if (value != null) {
+        return MenuEntity.fromMap(value).copyWith(menuId: recordID);
+      } else {
+        return entity.copyWith(menuId: recordID);
+      }
+    });
+    return result;
+  }
+
+  @override
+  Future<Either<RepositoryBaseFailure, bool>> delete(MenuEntity entity) async {
+    final result = await tryCatch<bool>(() async {
+      final int key = entity.menuId;
+      final finder = Finder(filter: Filter.byKey(key));
+      await _store.delete(
+        await _db,
+        finder: finder,
+      );
+    });
+    return result;
+  }
+
+  @override
+  Future<Either<RepositoryBaseFailure, bool>> deleteAll(MenuEntity entity) async {
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<Either<RepositoryBaseFailure, bool>> deleteById(UniqueId uniqueId) async {
+    final result = await tryCatch<bool>(() async {
+      final value = await _store.record(uniqueId.value).get(await _db);
+      if (value != null) {
+        await _store.delete(
+          await _db,
+        );
+        return true;
+      }
+      return false;
+    });
+    return result;
+  }
+
+  @override
+  Future<Either<RepositoryBaseFailure, List<MenuEntity>>> getAll() async {
+    final result = await tryCatch<List<MenuEntity>>(() async {
+      final snapshots = await _store.find(await _db);
+      return snapshots
+          .map((snapshot) => MenuEntity.fromMap(snapshot.value).copyWith(
+                menuId: snapshot.key,
+              ))
+          .toList(growable: false);
+    });
+    return result;
+  }
+
+  @override
+  Future<Either<RepositoryBaseFailure, MenuEntity?>> getById(UniqueId id) async {
+    final result = await tryCatch<MenuEntity?>(() async {
+      final value = await _store.record(id.value).get(await _db);
+      if (value != null) {
+        return MenuEntity.fromMap(value);
+      }
+      return null;
+    });
+    return result;
+  }
+
+  @override
+  Future<Either<RepositoryBaseFailure, MenuEntity>> update(MenuEntity entity, UniqueId uniqueId) async {
+    final result = await tryCatch<MenuEntity>(() async {
+      final int key = entity.menuId;
+      final value = await _store.record(key).get(await _db);
+      final result = await _store.record(key).put(await _db, entity.toMap(), merge: (value != null) || false);
+      return MenuEntity.fromMap(result);
+    });
+    return result;
+  }
+}

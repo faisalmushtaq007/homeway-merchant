@@ -406,14 +406,14 @@ class SelectAddonsState extends MenuState {
     this.addonsEntity,
     this.index = -1,
     this.addonsEntities = const [],
-    this.addonsID = '',
+    this.addonsID = -1,
     this.selectedAddonsEntities = const [],
   });
 
   final Addons? addonsEntity;
   final int index;
   final List<Addons> addonsEntities;
-  final String addonsID;
+  final int addonsID;
   final List<Addons> selectedAddonsEntities;
 
   @override

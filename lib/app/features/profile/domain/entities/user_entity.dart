@@ -8,8 +8,7 @@ import 'package:homemakers_merchant/core/common/entity/ratingAndReviewEntity.dar
 
 class AppUserEntity {
   AppUserEntity({
-    this.id = -1,
-    this.userID,
+    this.userID = -1,
     this.phoneNumber,
     this.businessProfile,
     this.stores = const [],
@@ -26,25 +25,23 @@ class AppUserEntity {
 
   factory AppUserEntity.fromMap(Map<String, dynamic> map) {
     return AppUserEntity(
-      id: map['id'] as int,
-      userID: map['userID'] as String,
+      userID: map['userID'] as int,
       phoneNumber: map['phoneNumber'] as String,
-      businessProfile: map['businessProfile'] as BusinessProfileEntity,
-      stores: map['stores'] as List<StoreEntity>,
+      businessProfile: (map['businessProfile'] != null) ? BusinessProfileEntity.fromMap(map['businessProfile']) : null,
+      stores: map['stores'].map((e) => StoreEntity.fromMap(e)).toList().cast<StoreEntity>(),
       token: map['token'] as String,
       tokenCreationDateTime: map['tokenCreationDateTime'] as DateTime,
       hasUserAuthenticated: map['hasUserAuthenticated'] as bool,
-      businessTypeEntity: map['businessTypeEntity'] as BusinessTypeEntity,
-      currentProfileStatus: map['currentProfileStatus'] as CurrentProfileStatus,
-      menus: map['menus'] as List<MenuEntity>,
-      drivers: map['drivers'] as List<StoreOwnDeliveryPartnersInfo>,
-      addons: map['addons'] as List<Addons>,
-      ratingAndReviewEntity: map['ratingAndReviewEntity'] as RatingAndReviewEntity,
+      businessTypeEntity: (map['businessTypeEntity'] != null) ? BusinessTypeEntity.fromMap(map['businessTypeEntity']) : null,
+      currentProfileStatus: (map['currentProfileStatus'] != null) ? CurrentProfileStatus.values.byName(map['currentProfileStatus']) : CurrentProfileStatus.none,
+      menus: map['menus'].map((e) => MenuEntity.fromMap(e)).toList().cast<MenuEntity>(),
+      drivers: map['drivers'].map((e) => StoreOwnDeliveryPartnersInfo.fromMap(e)).toList().cast<StoreOwnDeliveryPartnersInfo>(),
+      addons: map['addons'].map((e) => Addons.fromMap(e)).toList().cast<Addons>(),
+      ratingAndReviewEntity: (map['ratingAndReviewEntity'] != null) ? RatingAndReviewEntity.fromMap(map['ratingAndReviewEntity']) : null,
     );
   }
 
-  int id;
-  String? userID;
+  int userID;
   String? phoneNumber;
   BusinessProfileEntity? businessProfile;
   List<StoreEntity> stores;
@@ -59,8 +56,7 @@ class AppUserEntity {
   RatingAndReviewEntity? ratingAndReviewEntity;
 
   AppUserEntity copyWith(
-      {int? id,
-      String? userID,
+      {int? userID,
       String? phoneNumber,
       BusinessProfileEntity? businessProfile,
       List<StoreEntity>? stores,
@@ -74,7 +70,6 @@ class AppUserEntity {
       List<Addons>? addons,
       RatingAndReviewEntity? ratingAndReviewEntity}) {
     return AppUserEntity(
-      id: id ?? this.id,
       userID: userID ?? this.userID,
       phoneNumber: phoneNumber ?? this.phoneNumber,
       businessProfile: businessProfile ?? this.businessProfile,
@@ -93,20 +88,19 @@ class AppUserEntity {
 
   Map<String, dynamic> toMap() {
     return {
-      'id': this.id,
       'userID': this.userID,
       'phoneNumber': this.phoneNumber,
-      'businessProfile': this.businessProfile,
-      'stores': this.stores,
+      'businessProfile': this.businessProfile?.toMap(),
+      'stores': this.stores.map((e) => e.toMap()).toList(growable: false),
       'token': this.token,
       'tokenCreationDateTime': this.tokenCreationDateTime,
       'hasUserAuthenticated': this.hasUserAuthenticated,
-      'businessTypeEntity': this.businessTypeEntity,
-      'currentProfileStatus': this.currentProfileStatus,
-      'menus': this.menus,
-      'drivers': this.drivers,
-      'addons': this.addons,
-      'ratingAndReviewEntity': this.ratingAndReviewEntity,
+      'businessTypeEntity': this.businessTypeEntity?.toMap(),
+      'currentProfileStatus': this.currentProfileStatus.name,
+      'menus': this.menus.map((e) => e.toMap()).toList(growable: false),
+      'drivers': this.drivers.map((e) => e.toMap()).toList(growable: false),
+      'addons': this.addons.map((e) => e.toMap()).toList(growable: false),
+      'ratingAndReviewEntity': this.ratingAndReviewEntity?.toMap(),
     };
   }
 }

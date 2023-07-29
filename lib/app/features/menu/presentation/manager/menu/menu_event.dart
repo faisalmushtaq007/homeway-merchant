@@ -214,7 +214,7 @@ class SelectAddons extends MenuEvent {
     this.addonsEntity,
     this.index = -1,
     this.addonsEntities = const [],
-    this.addonsID = '',
+    this.addonsID = -1,
     this.selectedAddonsEntities = const [],
   });
 
@@ -222,7 +222,7 @@ class SelectAddons extends MenuEvent {
   final int index;
   final List<Addons> addonsEntities;
   final List<Addons> selectedAddonsEntities;
-  final String addonsID;
+  final int addonsID;
 
   @override
   bool get cacheHash => true;

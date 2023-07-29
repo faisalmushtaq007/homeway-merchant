@@ -291,7 +291,7 @@ List<MenuPortion> localMenuPortions = [
 
 final localMenuAddons = [
   Addons(
-    addonsID: '0',
+    addonsID: 0,
     title: 'Sweet sauce',
     quantity: 1.0,
     unit: '',
@@ -301,7 +301,7 @@ final localMenuAddons = [
     defaultPrice: 0.0,
   ),
   Addons(
-    addonsID: '1',
+    addonsID: 1,
     title: 'Spicy sauce',
     quantity: 1.0,
     unit: '',
@@ -311,7 +311,7 @@ final localMenuAddons = [
     defaultPrice: 0.0,
   ),
   Addons(
-    addonsID: '2',
+    addonsID: 2,
     title: 'Extra Onions',
     quantity: 1.0,
     unit: '',
@@ -321,7 +321,7 @@ final localMenuAddons = [
     defaultPrice: 0.0,
   ),
   Addons(
-    addonsID: '3',
+    addonsID: 3,
     title: 'Extra Olives',
     quantity: 1.0,
     unit: '',
@@ -331,7 +331,7 @@ final localMenuAddons = [
     defaultPrice: 0.0,
   ),
   Addons(
-    addonsID: '4',
+    addonsID: 4,
     title: 'Extra Cheese',
     quantity: 1.0,
     unit: '',
@@ -341,7 +341,7 @@ final localMenuAddons = [
     defaultPrice: 0.0,
   ),
   Addons(
-    addonsID: '5',
+    addonsID: 5,
     title: 'Extra Salad',
     quantity: 1.0,
     unit: 'gm',
@@ -351,7 +351,7 @@ final localMenuAddons = [
     defaultPrice: 0.0,
   ),
   Addons(
-    addonsID: '6',
+    addonsID: 6,
     title: 'Extra Egg',
     quantity: 1.0,
     unit: 'gm',
@@ -361,7 +361,7 @@ final localMenuAddons = [
     defaultPrice: 0.0,
   ),
   Addons(
-    addonsID: '7',
+    addonsID: 7,
     title: 'Extra Chicken Bites',
     quantity: 1.0,
     unit: 'gm',
@@ -371,7 +371,7 @@ final localMenuAddons = [
     defaultPrice: 0.0,
   ),
   Addons(
-    addonsID: '8',
+    addonsID: 8,
     title: 'Extra Yogurt',
     quantity: 1.0,
     unit: 'gm',
@@ -381,7 +381,7 @@ final localMenuAddons = [
     defaultPrice: 0.0,
   ),
   Addons(
-    addonsID: '9',
+    addonsID: 9,
     title: 'Extra Chocolates',
     quantity: 1.0,
     unit: 'gm',
@@ -391,7 +391,7 @@ final localMenuAddons = [
     defaultPrice: 0.0,
   ),
   Addons(
-    addonsID: '10',
+    addonsID: 10,
     title: 'Extra French Fries',
     quantity: 1.0,
     unit: 'gm',
@@ -401,7 +401,7 @@ final localMenuAddons = [
     defaultPrice: 0.0,
   ),
   Addons(
-    addonsID: '11',
+    addonsID: 11,
     title: 'Extra Ice',
     quantity: 1.0,
     unit: 'gm',
@@ -411,7 +411,7 @@ final localMenuAddons = [
     defaultPrice: 0.0,
   ),
   Addons(
-    addonsID: '12',
+    addonsID: 12,
     title: 'Extra Syrup',
     quantity: 1.0,
     unit: 'gm',
@@ -421,7 +421,7 @@ final localMenuAddons = [
     defaultPrice: 0.0,
   ),
   Addons(
-    addonsID: '13',
+    addonsID: 13,
     title: 'Extra IceCream',
     quantity: 1.0,
     unit: 'gm',
@@ -431,7 +431,7 @@ final localMenuAddons = [
     defaultPrice: 0.0,
   ),
   Addons(
-    addonsID: '14',
+    addonsID: 14,
     title: 'Blue Mojito',
     quantity: 1.0,
     unit: 'gm',
@@ -441,7 +441,7 @@ final localMenuAddons = [
     defaultPrice: 0.0,
   ),
   Addons(
-    addonsID: '15',
+    addonsID: 15,
     title: 'Cafe Latte',
     quantity: 1.0,
     unit: 'gm',
@@ -451,7 +451,7 @@ final localMenuAddons = [
     defaultPrice: 0.0,
   ),
   Addons(
-    addonsID: '16',
+    addonsID: 16,
     title: 'Potato chips',
     quantity: 1.0,
     unit: 'gm',
@@ -461,7 +461,7 @@ final localMenuAddons = [
     defaultPrice: 0.0,
   ),
   Addons(
-    addonsID: '17',
+    addonsID: 17,
     title: 'Extra Sweets',
     quantity: 1.0,
     unit: 'gm',
@@ -471,7 +471,7 @@ final localMenuAddons = [
     defaultPrice: 0.0,
   ),
   Addons(
-    addonsID: '18',
+    addonsID: 18,
     title: 'Extra Bread',
     quantity: 1.0,
     unit: 'gm',
@@ -481,7 +481,7 @@ final localMenuAddons = [
     defaultPrice: 0.0,
   ),
   Addons(
-    addonsID: '19',
+    addonsID: 19,
     title: 'Black Olives',
     quantity: 1.0,
     unit: 'gm',
@@ -491,7 +491,7 @@ final localMenuAddons = [
     defaultPrice: 0.0,
   ),
   Addons(
-    addonsID: '20',
+    addonsID: 20,
     title: 'Jalapeno',
     quantity: 1.0,
     unit: 'gm',
@@ -501,7 +501,7 @@ final localMenuAddons = [
     defaultPrice: 0.0,
   ),
   Addons(
-    addonsID: '21',
+    addonsID: 21,
     title: 'Red Pepper',
     quantity: 1.0,
     unit: 'gm',
@@ -511,7 +511,7 @@ final localMenuAddons = [
     defaultPrice: 0.0,
   ),
   Addons(
-    addonsID: '22',
+    addonsID: 22,
     title: 'Extra Paneer',
     quantity: 1.0,
     unit: 'gm',
@@ -521,7 +521,7 @@ final localMenuAddons = [
     defaultPrice: 0.0,
   ),
   Addons(
-    addonsID: '23',
+    addonsID: 23,
     title: 'Crisp Capsicum',
     quantity: 1.0,
     unit: 'gm',
@@ -531,7 +531,7 @@ final localMenuAddons = [
     defaultPrice: 0.0,
   ),
   Addons(
-    addonsID: '24',
+    addonsID: 24,
     title: 'Fresh Tomato',
     quantity: 1.0,
     unit: 'gm',
@@ -541,7 +541,7 @@ final localMenuAddons = [
     defaultPrice: 0.0,
   ),
   Addons(
-    addonsID: '25',
+    addonsID: 25,
     title: 'Extra Garlics',
     quantity: 1.0,
     unit: 'gm',

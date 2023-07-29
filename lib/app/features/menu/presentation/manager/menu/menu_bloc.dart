@@ -161,7 +161,7 @@ class MenuBloc extends Bloc<MenuEvent, MenuState> {
       add(GetAllAddons());
     } else {
       final currentCacheSaveAddons = currentSaveAddons.copyWith(
-        addonsID: newIndex.toString(),
+        addonsID: newIndex,
       );
       localMenuAddons.insert(0, currentCacheSaveAddons);
       serviceLocator<List<Addons>>().insert(0, currentCacheSaveAddons);
