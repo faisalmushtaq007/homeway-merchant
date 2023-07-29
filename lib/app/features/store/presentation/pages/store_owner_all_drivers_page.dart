@@ -185,7 +185,7 @@ class _StoreOwnerAllDriversView extends WidgetView<StoreOwnerAllDrivers, _StoreO
           ),
           body: SlideInLeft(
             key: const Key('get-all-drivers-slideinleft-widget'),
-            delay: const Duration(milliseconds: 300),
+            delay: const Duration(milliseconds: 500),
             from: context.width - 40,
             child: PageBody(
               controller: state.scrollController,
@@ -333,7 +333,7 @@ class _StoreOwnerAllDriversView extends WidgetView<StoreOwnerAllDrivers, _StoreO
                       ],
                     ),
                     secondChild: const Offstage(),
-                    duration: const Duration(milliseconds: 300),
+                    duration: const Duration(milliseconds: 500),
                     crossFadeState: (state.listOfAllDrivers.isNotEmpty) ? CrossFadeState.showFirst : CrossFadeState.showSecond,
                   ),
                   Expanded(

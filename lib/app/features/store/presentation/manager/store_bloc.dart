@@ -129,7 +129,7 @@ class StoreBloc extends Bloc<StoreEvent, StoreState> {
   FutureOr<void> _getAllStore(GetAllStore event, Emitter<StoreState> emit) async {
     try {
       emit(StoreLoadingState(isLoading: true, message: 'Please wait while we are fetching your store...'));
-      List<StoreEntity> listOfStores = serviceLocator<List<StoreEntity>>();
+      List<StoreEntity> listOfStores = List<StoreEntity>.from(serviceLocator<List<StoreEntity>>().toList());
       if (listOfStores.isEmpty) {
         listOfStores = serviceLocator<AppUserEntity>().stores.toList();
       }
@@ -255,7 +255,7 @@ class StoreBloc extends Bloc<StoreEvent, StoreState> {
           vehicleInfo: VehicleInfo(vehicleID: '1', vehicleType: '3 Wheeler', vehicleNumber: '12345789'),
         ),
       ];
-      await Future.delayed(const Duration(milliseconds: 300), () {});
+      //await Future.delayed(const Duration(milliseconds: 300), () {});
       if (listOfDrivers.isEmpty) {
         emit(
           DriverEmptyState(

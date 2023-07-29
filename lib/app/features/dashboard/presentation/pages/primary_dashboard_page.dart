@@ -68,7 +68,7 @@ class _PrimaryDashboardPageState extends State<PrimaryDashboardPage> {
     );
     primaryDashboardMenuEntities.add(
       PrimaryDashboardEntity(
-        title: 'Store',
+        title: 'My Stores',
         titleID: 2,
         onPressed: () async {
           final navigateToStorePage = await context.push(Routes.ALL_STORES_PAGE);
@@ -81,7 +81,7 @@ class _PrimaryDashboardPageState extends State<PrimaryDashboardPage> {
     );
     primaryDashboardMenuEntities.add(
       PrimaryDashboardEntity(
-        title: 'Menu',
+        title: 'My Menu',
         titleID: 3,
         onPressed: () async {
           final navigateToMenuPage = await context.push(Routes.ALL_MENU_PAGE);
@@ -147,8 +147,8 @@ class _PrimaryDashboardPageState extends State<PrimaryDashboardPage> {
                   minHeight: context.height,
                 ),
                 padding: EdgeInsetsDirectional.only(
-                  top: margins,
-                  bottom: bottomPadding,
+                  //top: margins,
+                  //bottom: margins,
                   start: margins * 2.5,
                   end: margins * 2.5,
                 ),

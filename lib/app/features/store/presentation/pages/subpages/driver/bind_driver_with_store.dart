@@ -209,7 +209,7 @@ class _BindDriverWithStoreView extends WidgetView<BindDriverWithStore, _BindDriv
             textDirection: serviceLocator<LanguageController>().targetTextDirection,
             child: SlideInLeft(
               key: const Key('bind-driver-with-store-slideinleft-widget'),
-              delay: const Duration(milliseconds: 300),
+              delay: const Duration(milliseconds: 500),
               from: context.width - 40,
               child: PageBody(
                 controller: state.scrollController,
@@ -341,7 +341,7 @@ class _BindDriverWithStoreView extends WidgetView<BindDriverWithStore, _BindDriv
                           ],
                         ),
                         secondChild: const Offstage(),
-                        duration: const Duration(milliseconds: 300),
+                        duration: const Duration(milliseconds: 500),
                         crossFadeState: (state.listOfAllStores.isNotEmpty) ? CrossFadeState.showFirst : CrossFadeState.showSecond,
                       ),
                       const AnimatedGap(12, duration: Duration(milliseconds: 300)),
