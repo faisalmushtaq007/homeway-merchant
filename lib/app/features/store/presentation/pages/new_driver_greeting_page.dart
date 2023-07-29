@@ -251,7 +251,11 @@ class NewDriverGreetingPage extends StatelessWidget {
                             textDirection: serviceLocator<LanguageController>().targetTextDirection,
                           ).translate(),
                           onPressed: () {
-                            context.go(Routes.SAVE_MENU_PAGE);
+                            context.pushReplacement(Routes.SAVE_DRIVER_PAGE, extra: {
+                              'storeOwnDeliveryPartnersInfo': null,
+                              'haveNewDriver': true,
+                              'currentIndex': -1,
+                            });
                             return;
                           },
                         ),

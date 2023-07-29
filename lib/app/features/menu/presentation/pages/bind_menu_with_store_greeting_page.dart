@@ -181,12 +181,12 @@ class _BindMenuWithStoreGreetingPageView extends WidgetView<BindMenuWithStoreGre
                             backgroundColor: Colors.white,
                           ),
                           child: Text(
-                            'Go to Dashboard',
+                            'Dashboard',
                             style: TextStyle(color: Color.fromRGBO(42, 45, 50, 1)),
                             textDirection: serviceLocator<LanguageController>().targetTextDirection,
                           ).translate(),
                           onPressed: () {
-                            context.go(Routes.PRIMARY_DASHBOARD_PAGE);
+                            context.pushReplacement(Routes.PRIMARY_DASHBOARD_PAGE);
                             return;
                           },
                         ),
@@ -208,7 +208,7 @@ class _BindMenuWithStoreGreetingPageView extends WidgetView<BindMenuWithStoreGre
                             textDirection: serviceLocator<LanguageController>().targetTextDirection,
                           ).translate(),
                           onPressed: () {
-                            context.go(Routes.ALL_MENU_PAGE);
+                            context.pushReplacement(Routes.ALL_MENU_PAGE);
                             return;
                           },
                         ),
@@ -219,11 +219,19 @@ class _BindMenuWithStoreGreetingPageView extends WidgetView<BindMenuWithStoreGre
                         end: 0,
                         child: ElevatedButton(
                           child: Text(
-                            'Add Food Menu',
+                            'Add New Menu',
                             textDirection: serviceLocator<LanguageController>().targetTextDirection,
                           ).translate(),
-                          onPressed: () {
-                            context.go(Routes.SAVE_MENU_PAGE);
+                          onPressed: () async {
+                            context.pushReplacement(
+                              Routes.SAVE_MENU_PAGE,
+                              extra: {
+                                'menuEntity': null,
+                                'haveNewMenu': true,
+                                'currentIndex': -1,
+                              },
+                            );
+
                             return;
                           },
                         ),

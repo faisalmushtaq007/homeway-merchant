@@ -81,7 +81,7 @@ class _PrimaryDashboardPageState extends State<PrimaryDashboardPage> {
     );
     primaryDashboardMenuEntities.add(
       PrimaryDashboardEntity(
-        title: 'My Menu',
+        title: 'My Menus',
         titleID: 3,
         onPressed: () async {
           final navigateToMenuPage = await context.push(Routes.ALL_MENU_PAGE);

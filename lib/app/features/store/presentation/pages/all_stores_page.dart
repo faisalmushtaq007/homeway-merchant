@@ -15,6 +15,7 @@ class _AllStoresPageState extends State<AllStoresPage> {
   ResultState<StoreEntity> resultState = const ResultState.empty();
   WidgetState<StoreEntity> widgetState = const WidgetState<StoreEntity>.none();
   final TextEditingController searchTextEditingController = TextEditingController();
+
   @override
   void initState() {
     super.initState();
@@ -289,8 +290,19 @@ class _AllStoresPageState extends State<AllStoresPage> {
                                   children: [
                                     Expanded(
                                       child: ElevatedButton(
-                                        onPressed: () {
-                                          context.push(Routes.SAVE_STORE_PAGE);
+                                        onPressed: () async {
+                                          final navigateToSaveStorePage = await context.push(
+                                            Routes.SAVE_STORE_PAGE,
+                                            extra: {
+                                              'storeEntity': null,
+                                              'haveNewStore': true,
+                                              'currentIndex': -1,
+                                            },
+                                          );
+                                          if (!mounted) {
+                                            return;
+                                          }
+                                          context.read<StoreBloc>().add(GetAllStore());
                                           return;
                                         },
                                         child: Text(

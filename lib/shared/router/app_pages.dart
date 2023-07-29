@@ -114,8 +114,8 @@ class AppRouter {
         builder: (context, state) {
           final Map<String, dynamic>? args = state.extra as Map<String, dynamic>?;
           return SaveStorePage(
-            storeEntity: args?['storeEntity'] as StoreEntity,
-            haveNewStore: args?['haveNewStore'] as bool,
+            storeEntity: args?['storeEntity'] as StoreEntity?,
+            haveNewStore: args?['haveNewStore'] ?? true as bool,
             currentIndex: args?['currentIndex'] ?? -1 as int,
           );
         },
@@ -150,8 +150,8 @@ class AppRouter {
         builder: (context, state) {
           final Map<String, dynamic>? args = state.extra as Map<String, dynamic>?;
           return SaveMenuPage(
-            menuEntity: args?['menuEntity'] as MenuEntity,
-            haveNewMenu: args?['haveNewMenu'] as bool,
+            menuEntity: args?['menuEntity'] as MenuEntity?,
+            haveNewMenu: args?['haveNewMenu'] ?? true as bool,
             currentIndex: args?['currentIndex'] ?? -1 as int,
           );
         },
@@ -193,16 +193,16 @@ class AppRouter {
         builder: (context, state) {
           final Map<String, dynamic>? args = state.extra as Map<String, dynamic>?;
           return SaveAddonsPage(
-            addons: args?['addons'] as Addons,
-            haveNewAddons: args?['haveNewAddons'] as bool,
-            haveOwnAddons: args?['haveOwnAddons'] as bool,
+            addons: args?['addons'] as Addons?,
+            haveNewAddons: args?['haveNewAddons'] ?? true as bool,
+            haveOwnAddons: args?['haveOwnAddons'] ?? true as bool,
             currentIndex: args?['currentIndex'] ?? -1 as int,
           );
         },
       ),
       GoRoute(
         path: Routes.NEW_ADDONS_GREETING_PAGE,
-        builder: (context, state) => NewAddonsGreetingPage(addonsEntity: state.extra as Addons?),
+        builder: (context, state) => NewAddonsGreetingPage(addonsEntity: state.extra! as Addons),
       ),
       GoRoute(
         path: Routes.BIND_MENU_WITH_STORE_PAGE,

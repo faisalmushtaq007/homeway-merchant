@@ -270,10 +270,19 @@ class _MenuAllAddonsPageView extends WidgetView<MenuAllAddonsPage, _MenuAllAddon
                           end: 0,
                           child: ElevatedButton(
                             onPressed: () async {
-                              final navigateToSaveAddonsPage = await context.push<Addons>(Routes.SAVE_ADDONS_PAGE);
-                              if (navigateToSaveAddonsPage != null) {
-                                // Body
+                              final navigateToSaveAddonsPage = await context.push(
+                                Routes.SAVE_ADDONS_PAGE,
+                                extra: {
+                                  'addons': null,
+                                  'haveNewAddons': true,
+                                  'haveOwnAddons': true,
+                                  'currentIndex': -1,
+                                },
+                              );
+                              if (!state.mounted) {
+                                return;
                               }
+                              context.read<MenuBloc>().add(GetAllAddons());
                               return;
                             },
                             child: Text(

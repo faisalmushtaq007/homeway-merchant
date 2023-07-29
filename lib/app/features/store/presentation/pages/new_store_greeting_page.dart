@@ -203,12 +203,12 @@ class NewStoreGreetingPage extends StatelessWidget {
                             backgroundColor: Colors.white,
                           ),
                           child: Text(
-                            'Go to Dashboard',
+                            'Dashboard',
                             style: TextStyle(color: Color.fromRGBO(42, 45, 50, 1)),
                             textDirection: serviceLocator<LanguageController>().targetTextDirection,
                           ).translate(),
                           onPressed: () {
-                            context.go(Routes.PRIMARY_DASHBOARD_PAGE);
+                            context.pushReplacement(Routes.PRIMARY_DASHBOARD_PAGE);
                             return;
                           },
                         ),
@@ -223,7 +223,7 @@ class NewStoreGreetingPage extends StatelessWidget {
                             textDirection: serviceLocator<LanguageController>().targetTextDirection,
                           ).translate(),
                           onPressed: () {
-                            context.go(Routes.SAVE_MENU_PAGE);
+                            context.pushReplacement(Routes.ALL_MENU_PAGE);
                             return;
                           },
                         ),

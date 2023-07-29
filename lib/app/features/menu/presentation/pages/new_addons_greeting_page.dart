@@ -196,8 +196,16 @@ class NewAddonsGreetingPage extends StatelessWidget {
                             'Add New Addons',
                             textDirection: serviceLocator<LanguageController>().targetTextDirection,
                           ).translate(),
-                          onPressed: () {
-                            context.pushReplacement(Routes.SAVE_ADDONS_PAGE);
+                          onPressed: () async {
+                            context.pushReplacement(
+                              Routes.SAVE_ADDONS_PAGE,
+                              extra: {
+                                'addons': null,
+                                'haveNewAddons': true,
+                                'haveOwnAddons': true,
+                                'currentIndex': -1,
+                              },
+                            );
                             return;
                           },
                         ),

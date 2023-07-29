@@ -99,13 +99,15 @@ class _BindMenuWithStoreController extends State<BindMenuWithStore> {
                 if (state.bindMenuToStoreStage == BindMenuToStoreStage.attached) {
                   listOfAllSelectedStores = [];
                   listOfAllSelectedStores.clear();
-                  context.go(
+                  context.push(
                     Routes.BIND_MENU_WITH_STORE_GREETING_PAGE,
                     extra: {
                       'allMenu': state.menuEntities.toList(),
                       'allStore': state.storeEntities.toList(),
                     },
-                  );
+                  ).whenComplete(() {
+                    context.read<MenuBloc>().add(FetchAllStores());
+                  });
                 }
                 return;
               }

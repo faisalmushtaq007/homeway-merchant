@@ -244,7 +244,7 @@ class _NewMenuGreetingPageView extends WidgetView<NewMenuGreetingPage, _NewMenuG
                             textDirection: serviceLocator<LanguageController>().targetTextDirection,
                           ).translate(),
                           onPressed: () {
-                            context.go(Routes.PRIMARY_DASHBOARD_PAGE);
+                            context.pushReplacement(Routes.PRIMARY_DASHBOARD_PAGE);
                             return;
                           },
                         ),
@@ -266,7 +266,7 @@ class _NewMenuGreetingPageView extends WidgetView<NewMenuGreetingPage, _NewMenuG
                             textDirection: serviceLocator<LanguageController>().targetTextDirection,
                           ).translate(),
                           onPressed: () {
-                            context.go(Routes.ALL_MENU_PAGE);
+                            context.pushReplacement(Routes.ALL_MENU_PAGE);
                             return;
                           },
                         ),
@@ -281,7 +281,18 @@ class _NewMenuGreetingPageView extends WidgetView<NewMenuGreetingPage, _NewMenuG
                             textDirection: serviceLocator<LanguageController>().targetTextDirection,
                           ).translate(),
                           onPressed: () {
-                            context.go(Routes.SAVE_MENU_PAGE);
+                            context.pushReplacement(
+                              Routes.SAVE_MENU_PAGE,
+                              extra: {
+                                'menuEntity': null,
+                                'haveNewMenu': true,
+                                'currentIndex': -1,
+                              },
+                            );
+                            if (!state.mounted) {
+                              return;
+                            }
+                            context.read<MenuBloc>().add(GetAllMenu());
                             return;
                           },
                         ),

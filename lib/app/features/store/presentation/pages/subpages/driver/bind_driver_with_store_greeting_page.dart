@@ -170,28 +170,6 @@ class _BindDriverWithStoreGreetingPageView extends WidgetView<BindDriverWithStor
                         ),
                       ),
                       PositionedDirectional(
-                        bottom: kBottomNavigationBarHeight + bottomPadding - margins,
-                        start: 0,
-                        end: 0,
-                        child: ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            side: BorderSide(
-                              color: Color.fromRGBO(165, 166, 168, 1),
-                            ),
-                            backgroundColor: Colors.white,
-                          ),
-                          child: Text(
-                            'Go to Dashboard',
-                            style: TextStyle(color: Color.fromRGBO(42, 45, 50, 1)),
-                            textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                          ).translate(),
-                          onPressed: () {
-                            context.go(Routes.PRIMARY_DASHBOARD_PAGE);
-                            return;
-                          },
-                        ),
-                      ),
-                      PositionedDirectional(
                         bottom: bottomPadding,
                         start: 0,
                         end: 0,
@@ -251,7 +229,11 @@ class _BindDriverWithStoreGreetingPageView extends WidgetView<BindDriverWithStor
                             textDirection: serviceLocator<LanguageController>().targetTextDirection,
                           ).translate(),
                           onPressed: () {
-                            context.go(Routes.SAVE_MENU_PAGE);
+                            context.pushReplacement(Routes.SAVE_DRIVER_PAGE, extra: {
+                              'storeOwnDeliveryPartnersInfo': null,
+                              'haveNewDriver': true,
+                              'currentIndex': -1,
+                            });
                             return;
                           },
                         ),

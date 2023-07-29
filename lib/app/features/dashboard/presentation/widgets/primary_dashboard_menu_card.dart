@@ -47,6 +47,10 @@ class PrimaryDashboardMenuCard extends StatelessWidget {
                 style: primaryDashboardMenuEntity.style ?? context.titleMedium!.copyWith(fontSize: 18, fontWeight: FontWeight.w500),
                 textDirection: serviceLocator<LanguageController>().targetTextDirection,
               ).translate(),
+              onTap: () {
+                primaryDashboardMenuEntity.onPressed();
+                return;
+              },
               trailing: InkWell(
                 onTap: () {
                   primaryDashboardMenuEntity.onPressed();

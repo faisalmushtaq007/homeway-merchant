@@ -281,8 +281,19 @@ class _AllMenuPageView extends WidgetView<AllMenuPage, _AllMenuPageController> {
                         children: [
                           Expanded(
                             child: ElevatedButton(
-                              onPressed: () {
-                                context.push(Routes.SAVE_MENU_PAGE);
+                              onPressed: () async {
+                                final navigateToSaveMenuPage = await context.push(
+                                  Routes.SAVE_MENU_PAGE,
+                                  extra: {
+                                    'menuEntity': null,
+                                    'haveNewMenu': true,
+                                    'currentIndex': -1,
+                                  },
+                                );
+                                if (!state.mounted) {
+                                  return;
+                                }
+                                context.read<MenuBloc>().add(GetAllMenu());
                                 return;
                               },
                               child: Text(
