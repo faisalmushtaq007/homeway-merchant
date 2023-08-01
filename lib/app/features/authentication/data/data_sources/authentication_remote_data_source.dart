@@ -55,6 +55,7 @@ class AuthenticationRemoteDataSource extends AuthenticationDataSource {
         apiPath,
         parseModel: BaseResponseModel<SendOtpResponseModel>(),
         method: RequestType.POST,
+        data: sendOtpEntity.toMap(),
       );
       if (response.data != null) {
         return ApiResultState<SendOtpResponseModel>.success(
@@ -85,6 +86,7 @@ class AuthenticationRemoteDataSource extends AuthenticationDataSource {
         apiPath,
         parseModel: BaseResponseModel<VerifyOtpResponseModel>(),
         method: RequestType.POST,
+        data: verifyOtpEntity.toMap(),
       );
       if (response.data != null) {
         return ApiResultState<VerifyOtpResponseModel>.success(

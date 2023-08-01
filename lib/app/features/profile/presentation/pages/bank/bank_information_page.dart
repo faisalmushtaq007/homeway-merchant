@@ -122,19 +122,10 @@ class _BankInformationPageState extends State<BankInformationPage> with SingleTi
         opacity: 0.60,
         noAppBar: true,
       ),
-      child: PlatformScaffold(
-        material: (context, platform) {
-          return MaterialScaffoldData(
-            resizeToAvoidBottomInset: false,
-          );
-        },
-        cupertino: (context, platform) {
-          return CupertinoPageScaffoldData(
-            resizeToAvoidBottomInset: false,
-          );
-        },
-        appBar: PlatformAppBar(
-          trailingActions: const [
+      child: Scaffold(
+        resizeToAvoidBottomInset: false,
+        appBar: AppBar(
+          actions: const [
             Padding(
               padding: EdgeInsetsDirectional.symmetric(horizontal: 14),
               child: LanguageSelectionWidget(),
@@ -163,7 +154,7 @@ class _BankInformationPageState extends State<BankInformationPage> with SingleTi
                     child: Padding(
                       padding: EdgeInsetsDirectional.only(
                         top: topPadding,
-                        bottom: bottomPadding,
+                        //bottom: bottomPadding,
                       ),
                       child: Stack(
                         alignment: Alignment.topLeft,

@@ -172,7 +172,7 @@ class GlobalApp {
   /// default one. The default Flutter one is too dense imo.
   static VisualDensity get visualDensity => FlexColorScheme.comfortablePlatformDensity;
 
-  static String baseUrl = 'http://207.154.192.209';
+  static String baseUrl = 'http://207.154.192.209:8069';
   static int port = 8069;
 
   static const String userModelKey = 'userModelKey';

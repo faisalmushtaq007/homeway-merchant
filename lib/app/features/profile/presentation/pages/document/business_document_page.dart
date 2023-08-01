@@ -118,19 +118,10 @@ class _BusinessDocumentPageState extends State<BusinessDocumentPage> with Single
         opacity: 0.60,
         noAppBar: true,
       ),
-      child: PlatformScaffold(
-        material: (context, platform) {
-          return MaterialScaffoldData(
-            resizeToAvoidBottomInset: false,
-          );
-        },
-        cupertino: (context, platform) {
-          return CupertinoPageScaffoldData(
-            resizeToAvoidBottomInset: false,
-          );
-        },
-        appBar: PlatformAppBar(
-          trailingActions: const [
+      child: Scaffold(
+        resizeToAvoidBottomInset: false,
+        appBar: AppBar(
+          actions: const [
             Padding(
               padding: EdgeInsetsDirectional.only(end: 14),
               child: LanguageSelectionWidget(),
@@ -473,7 +464,7 @@ class _BusinessDocumentPageState extends State<BusinessDocumentPage> with Single
                             ),
                           ),
                           PositionedDirectional(
-                            bottom: kBottomNavigationBarHeight - 10,
+                            bottom: 0,
                             start: margins * 2.5,
                             end: margins * 2.5,
                             child: Row(
