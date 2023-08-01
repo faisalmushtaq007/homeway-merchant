@@ -79,7 +79,7 @@ class _PageView extends WidgetView<SplashPage, _SplashPageViewController> {
         opacity: 0.6,
         noAppBar: true,
       ),
-      child: PlatformScaffold(
+      child: Scaffold(
         body: Directionality(
           textDirection: serviceLocator<LanguageController>().targetTextDirection,
           child: PageBody(
@@ -114,7 +114,7 @@ class _PageView extends WidgetView<SplashPage, _SplashPageViewController> {
                     top: topPadding,
                     start: margins * 2.5,
                     end: margins * 2.5,
-                    bottom: bottomPadding,
+                    //bottom: bottomPadding,
                   ),
                   children: [
                     const Align(

@@ -40,6 +40,7 @@ class PhoneNumberFieldWidget extends StatefulWidget {
     this.textInputAction = TextInputAction.next,
     this.keyboardType = TextInputType.phone,
     this.phoneNumberFocusNode,
+    this.onPhoneNumberValidationMessage,
   });
 
   final CountrySelectorNavigator selectorNavigator;
@@ -71,6 +72,7 @@ class PhoneNumberFieldWidget extends StatefulWidget {
   final TextInputType keyboardType;
   final TextInputAction textInputAction;
   final FocusNode? phoneNumberFocusNode;
+  final ValueChanged<PhoneNumberVerification?>? onPhoneNumberValidationMessage;
 
   @override
   State<PhoneNumberFieldWidget> createState() => _PhoneNumberFieldWidgetState();
@@ -286,11 +288,6 @@ class _PhoneNumberFieldWidgetState extends State<PhoneNumberFieldWidget> {
                   validator: (PhoneNumber? phoneNumber) {
                     final result = widget.validator ?? getValidator(isAllowEmpty: widget.isAllowEmpty);
                     phoneValidation = result?.call(phoneNumber);
-                    widget.phoneNumberValidationChanged?.call(
-                      phoneValidation,
-                      phoneNumber,
-                      controller,
-                    );
                     if (widget.haveStateManagement) {
                       context.read<PhoneFormFieldBloc>().add(
                             PhoneFormFieldValidate(
@@ -310,6 +307,11 @@ class _PhoneNumberFieldWidgetState extends State<PhoneNumberFieldWidget> {
                         }
                       }
                     }
+                    widget.phoneNumberValidationChanged?.call(
+                      phoneValidation,
+                      phoneNumber,
+                      controller,
+                    );
                     return phoneValidation;
                   },
                   autovalidateMode: widget.autovalidateMode ?? AutovalidateMode.onUserInteraction,
