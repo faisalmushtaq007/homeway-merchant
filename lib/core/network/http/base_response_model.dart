@@ -4,7 +4,7 @@ import 'package:network_manager/network_manager.dart';
 part 'base_response_model.g.dart';
 
 @JsonSerializable(explicitToJson: true)
-class BaseResponseModel<T> extends INetworkModel<BaseResponseModel<T>> {
+class BaseResponseModel<T extends INetworkModel<T>> extends INetworkModel<BaseResponseModel<T>> {
   BaseResponseModel({
     this.status,
     this.message,

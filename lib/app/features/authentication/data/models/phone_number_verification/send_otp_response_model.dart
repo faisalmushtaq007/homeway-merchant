@@ -10,13 +10,15 @@ part 'send_otp_response_model.g.dart';
 class SendOtpResponseModel extends INetworkModel<SendOtpResponseModel> {
   SendOtpResponseModel({
     this.appUserType,
-    this.message,
+    this.id,
   });
   factory SendOtpResponseModel.fromJson(Map<String, Object?> json) => _$SendOtpResponseModelFromJson(json);
-  @JsonKey(name: 'message')
-  String? message;
+  @JsonKey(name: 'id')
+  String? id;
   @JsonKey(name: 'app_user_type')
   String? appUserType;
+  @JsonKey(name: 'result')
+  SendOtpResultModel? result;
 
   @override
   SendOtpResponseModel fromJson(Map<String, dynamic> json) {
@@ -24,6 +26,28 @@ class SendOtpResponseModel extends INetworkModel<SendOtpResponseModel> {
   }
 
   Map<String, dynamic> toMap() => _$SendOtpResponseModelToJson(this);
+  @override
+  Map<String, dynamic> toJson() => toMap();
+}
+
+@JsonSerializable(explicitToJson: true)
+class SendOtpResultModel extends INetworkModel<SendOtpResultModel> {
+  SendOtpResultModel({
+    this.otp,
+    this.message,
+  });
+  factory SendOtpResultModel.fromJson(Map<String, Object?> json) => _$SendOtpResultModelFromJson(json);
+  @JsonKey(name: 'message')
+  String? message;
+  @JsonKey(name: 'otp')
+  int? otp;
+
+  @override
+  SendOtpResultModel fromJson(Map<String, dynamic> json) {
+    return SendOtpResultModel.fromJson(json);
+  }
+
+  Map<String, dynamic> toMap() => _$SendOtpResultModelToJson(this);
   @override
   Map<String, dynamic> toJson() => toMap();
 }

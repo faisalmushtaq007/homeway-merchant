@@ -346,6 +346,7 @@ class _PhoneNumberVerificationPageState extends State<PhoneNumberVerificationPag
                                       textDirection: serviceLocator<LanguageController>().targetTextDirection,
                                     ).translate(),
                                   ),
+                                  onPressed: phoneNumberVerification == PhoneNumberVerification.valid ? verifyPhoneNumber : null,
 /*                            onPressed: () async => phoneNumberVerification ==
                                         PhoneNumberVerification.valid
                                     ? verifyPhoneNumber()
@@ -354,7 +355,6 @@ class _PhoneNumberVerificationPageState extends State<PhoneNumberVerificationPag
                                     'Get OTP',
                                     textDirection: serviceLocator<LanguageController>().targetTextDirection,
                                   ).translate(),
-                                  onPressed: phoneNumberVerification == PhoneNumberVerification.valid ? verifyPhoneNumber : null,
                                 ),
                               ),
                               const AnimatedGap(26, duration: Duration(milliseconds: 500)),

@@ -1,7 +1,8 @@
 import 'dart:async';
 
 import 'package:flutter/foundation.dart';
-import 'package:homemakers_merchant/app/features/profile/domain/entities/user_model.dart';
+import 'package:homemakers_merchant/app/features/profile/domain/entities/user_entity.dart';
+
 import 'package:homemakers_merchant/bootup/injection_container.dart';
 import 'package:homemakers_merchant/core/constants/global_app_constants.dart';
 import 'package:homemakers_merchant/core/interface/storage_interface.dart';
@@ -13,7 +14,7 @@ class UserModelStorageController with ChangeNotifier {
   final IStorageService _userModelStorageService;
 
   Future<void> loadAll() async {
-    _userModel = await _userModelStorageService.load<UserModel>(
+    _userModel = await _userModelStorageService.load<AppUserEntity>(
       GlobalApp.userModelKey,
       GlobalApp.defaultUserModel,
     );
@@ -35,20 +36,20 @@ class UserModelStorageController with ChangeNotifier {
     if (doNotify) notifyListeners();
   }
 
-  // Private value, getter and setter for the UserModel
-  late UserModel _userModel;
-  // Getter for the current UserModel.
-  UserModel get userModel => _userModel;
-  // Set and persist new UserModel value.
-  void setUserModel(UserModel? value, [bool notify = true]) {
+  // Private value, getter and setter for the AppUserEntity
+  late AppUserEntity _userModel;
+  // Getter for the current AppUserEntity.
+  AppUserEntity get userModel => _userModel;
+  // Set and persist new AppUserEntity value.
+  void setUserModel(AppUserEntity? value, [bool notify = true]) {
     // No work if null value passed.
     if (value == null) return;
     // Do not perform any work if new and old value are identical.
     if (value == _userModel) return;
     // Otherwise, assign new value to private property.
     _userModel = value;
-    // reassign the currentUserModel to singleton UserModel
-    serviceLocator<UserModel>().fromJson(value.toMap()!);
+    // reassign the currentUserModel to singleton AppUserEntity
+    serviceLocator<AppUserEntity>().fromJson(value.toMap()!);
     // Inform all listeners a change has occurred, if notify flag is true.
     if (notify) notifyListeners();
     // Persist the change to whatever storage is used with the ThemeService.
@@ -59,7 +60,7 @@ class UserModelStorageController with ChangeNotifier {
   late String _accessToken;
   // Getter for the current token.
   String get accessToken => _accessToken;
-  // Set and persist new UserModel value.
+  // Set and persist new AppUserEntity value.
   void setUserAccessToken(String? value, [bool notify = true]) {
     // No work if null value passed.
     if (value == null) return;
@@ -68,7 +69,7 @@ class UserModelStorageController with ChangeNotifier {
     // Otherwise, assign new value to private property.
     _accessToken = value;
     // Update the token value
-    serviceLocator<UserModel>().token = value;
+    serviceLocator<AppUserEntity>().token = value;
     // Inform all listeners a change has occurred, if notify flag is true.
     if (notify) notifyListeners();
     // Persist the change to whatever storage is used with the ThemeService.

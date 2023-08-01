@@ -5,8 +5,9 @@ import 'package:homemakers_merchant/app/features/profile/domain/entities/busines
 import 'package:homemakers_merchant/app/features/profile/domain/entities/business/business_type_entity.dart';
 import 'package:homemakers_merchant/app/features/store/domain/entities/store_entity.dart';
 import 'package:homemakers_merchant/core/common/entity/ratingAndReviewEntity.dart';
+import 'package:network_manager/network_manager.dart';
 
-class AppUserEntity {
+class AppUserEntity extends INetworkModel<AppUserEntity> {
   AppUserEntity({
     this.userID = -1,
     this.phoneNumber,
@@ -103,4 +104,10 @@ class AppUserEntity {
       'ratingAndReviewEntity': this.ratingAndReviewEntity?.toMap(),
     };
   }
+
+  @override
+  AppUserEntity fromJson(Map<String, dynamic> json) => AppUserEntity.fromMap(json);
+
+  @override
+  Map<String, dynamic>? toJson() => toMap();
 }

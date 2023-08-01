@@ -19,11 +19,11 @@ class VerifyOtpResponseModel extends INetworkModel<VerifyOtpResponseModel> {
   factory VerifyOtpResponseModel.fromJson(Map<String, Object?> json) => _$VerifyOtpResponseModelFromJson(json);
   @JsonKey(name: 'message')
   String? message;
-  @JsonKey(name: 'userID')
+  @JsonKey(name: 'uid')
   String? userID;
-  @JsonKey(name: 'auth_token')
+  @JsonKey(name: 'access_token')
   String? authToken;
-  @JsonKey(name: 'app_user_type')
+  @JsonKey(name: 'user_type')
   String? appUserType;
   @JsonKey(name: 'current_status')
   int? currentStatus;

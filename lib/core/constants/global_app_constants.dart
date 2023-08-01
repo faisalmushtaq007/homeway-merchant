@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_mlkit_translation/google_mlkit_translation.dart';
 import 'package:homemakers_merchant/app/features/profile/common/document_picker_source_enum.dart';
-import 'package:homemakers_merchant/app/features/profile/domain/entities/user_model.dart';
+import 'package:homemakers_merchant/app/features/profile/domain/entities/user_entity.dart';
+
 import 'package:homemakers_merchant/bootup/injection_container.dart';
 import 'package:homemakers_merchant/config/translation/language.dart';
 import 'package:homemakers_merchant/gen/assets.gen.dart';
@@ -30,8 +31,7 @@ class GlobalApp {
   /// need to update in one place, where it belongs and no need to put it as
   /// a const somewhere and no need to pass it around via a title prop either.
   /// Also used in the [showAppAboutDialog] About box as app name.
-  static String title(BuildContext context) =>
-      (context as Element).findAncestorWidgetOfExactType<MaterialApp>()!.title;
+  static String title(BuildContext context) => (context as Element).findAncestorWidgetOfExactType<MaterialApp>()!.title;
 
   // When building new public web versions of the demos, make sure to
   // update this info with current versions used for the build, before
@@ -48,8 +48,7 @@ class GlobalApp {
   static const String versionBuild = '1';
   static const String version = '$versionMajor.$versionMinor.$versionPatch '
       'Build-$versionBuild';
-  static const String packageVersion =
-      '$versionMajor.$versionMinor.$versionPatch';
+  static const String packageVersion = '$versionMajor.$versionMinor.$versionPatch';
   static const String flutterVersion = 'stable';
   static const String copyright = '© 2023 - 2024';
   static const String author = '';
@@ -171,21 +170,17 @@ class GlobalApp {
   ///
   /// Use what you prefer, I just like this one on desktop better than the
   /// default one. The default Flutter one is too dense imo.
-  static VisualDensity get visualDensity =>
-      FlexColorScheme.comfortablePlatformDensity;
+  static VisualDensity get visualDensity => FlexColorScheme.comfortablePlatformDensity;
 
-  static String baseUrl = '';
-  static int port = 8080;
+  static String baseUrl = 'http://207.154.192.209';
+  static int port = 8069;
 
   static const String userModelKey = 'userModelKey';
-  static UserModel defaultUserModel = serviceLocator<UserModel>();
+  static AppUserEntity defaultUserModel = serviceLocator<AppUserEntity>();
   static const String userAccessTokenKey = 'userAccessToken';
-  static String defaultUserAccessToken =
-      serviceLocator<UserModel>().token ?? '';
-  static const String defaultMessageDuringLoading =
-      'Please wait while we are fetching';
-  static const String defaultSomethingWentWrong =
-      'Something went wrong, please try again later';
+  static String defaultUserAccessToken = serviceLocator<AppUserEntity>().token ?? '';
+  static const String defaultMessageDuringLoading = 'Please wait while we are fetching';
+  static const String defaultSomethingWentWrong = 'Something went wrong, please try again later';
   static const String defaultFailure = 'Failure';
 
   static final defaultLanguages = <Language>[
@@ -229,11 +224,9 @@ class GlobalApp {
   static final Language defaultLanguageSelect = defaultLanguages[0];
   static final Language defaultTargetLanguageSelect = defaultLanguages[0];
   static const String keySourceTranslateLanguage = 'sourceTranslateLanguage';
-  static TranslateLanguage defaultSourceTranslateLanguage =
-      defaultLanguages[0].sourceLanguage;
+  static TranslateLanguage defaultSourceTranslateLanguage = defaultLanguages[0].sourceLanguage;
   static const String keyTargetTranslateLanguage = 'targetTranslateLanguage';
-  static TranslateLanguage defaultTargetTranslateLanguage =
-      defaultLanguages[0].sourceLanguage;
+  static TranslateLanguage defaultTargetTranslateLanguage = defaultLanguages[0].sourceLanguage;
   static const String permissionBoxName = 'permission_box';
   static const String storageBoxName = 'user_model_box';
   static const String languageBoxName = 'user_language_box';
@@ -243,8 +236,7 @@ class GlobalApp {
   static Locale defaultTargetLocale = defaultLanguages[0].value;
   static Locale defaultSourceLocale = defaultLanguages[0].value;
   static const String keyTargetTextDirection = 'targetTextDirection';
-  static final TextDirection defaultTargetTextDirection =
-      defaultLanguages[0].textDirection;
+  static final TextDirection defaultTargetTextDirection = defaultLanguages[0].textDirection;
 
   static final defaultDocumentPickerSource = [
     DocumentPickerSource.camera,

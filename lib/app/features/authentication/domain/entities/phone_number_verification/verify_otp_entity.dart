@@ -8,7 +8,7 @@ part 'verify_otp_entity.g.dart';
 @JsonSerializable(explicitToJson: true)
 class VerifyOtpEntity extends INetworkModel<VerifyOtpEntity> {
   VerifyOtpEntity({
-    this.businessPhoneNumber,
+    this.login,
     this.appUserType,
     this.countryDialCode,
     this.otpCode,
@@ -16,13 +16,13 @@ class VerifyOtpEntity extends INetworkModel<VerifyOtpEntity> {
 
   factory VerifyOtpEntity.fromJson(Map<String, Object?> json) => _$VerifyOtpEntityFromJson(json);
 
-  @JsonKey(name: 'business_phonenumber')
-  String? businessPhoneNumber;
+  @JsonKey(name: 'login')
+  String? login;
   @JsonKey(name: 'country_dial_code')
   String? countryDialCode;
-  @JsonKey(name: 'otp_code')
+  @JsonKey(name: 'otp')
   int? otpCode;
-  @JsonKey(name: 'app_user_type')
+  @JsonKey(name: 'user_type')
   String? appUserType;
 
   @override

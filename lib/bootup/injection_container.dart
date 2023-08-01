@@ -1,4 +1,8 @@
 import 'package:get_it/get_it.dart';
+import 'package:homemakers_merchant/app/features/authentication/data/data_sources/authentication_remote_data_source.dart';
+import 'package:homemakers_merchant/app/features/authentication/domain/repositories/authentication_repository.dart';
+import 'package:homemakers_merchant/app/features/authentication/domain/use_cases/send_otp_usecase.dart';
+import 'package:homemakers_merchant/app/features/authentication/domain/use_cases/verify_otp_usecase.dart';
 import 'package:homemakers_merchant/app/features/authentication/presentation/manager/otp_verification/otp_verification_bloc.dart';
 import 'package:homemakers_merchant/app/features/authentication/presentation/manager/phone_number_verification_bloc.dart';
 import 'package:homemakers_merchant/app/features/menu/data/local/data_sources/addons_local_db_dao.dart';
@@ -10,7 +14,7 @@ import 'package:homemakers_merchant/app/features/profile/data/local/data_sources
 import 'package:homemakers_merchant/app/features/profile/data/local/data_sources/user_local_db_dao.dart';
 import 'package:homemakers_merchant/app/features/profile/domain/entities/business/business_profile_entity.dart';
 import 'package:homemakers_merchant/app/features/profile/domain/entities/user_entity.dart';
-import 'package:homemakers_merchant/app/features/profile/domain/entities/user_model.dart';
+
 import 'package:homemakers_merchant/app/features/profile/presentation/manager/bank/bank_information_bloc.dart';
 import 'package:homemakers_merchant/app/features/profile/presentation/manager/document/business_document_bloc.dart';
 import 'package:homemakers_merchant/app/features/profile/presentation/manager/user_model_storage_controller.dart';
@@ -48,6 +52,7 @@ Future<void> setupGetIt() async {
   await _setUpAppSetting();
   _setUpService();
   _setUpRepository();
+  _setUpUseCases();
   _setUpStateManagement();
   return;
 }
@@ -58,7 +63,6 @@ void _setupGetIt() {
 }
 
 void _setUpModel() {
-  serviceLocator.registerLazySingleton<UserModel>(UserModel.new);
   serviceLocator.registerLazySingleton<BusinessProfileEntity>(BusinessProfileEntity.new);
   // Addons entity
   serviceLocator.registerLazySingleton<Addons>(
@@ -181,19 +185,36 @@ void _setUpService() {
         },
       ),
     )
-    ..registerFactory<NetworkManager<BaseResponseErrorModel>>(
-      () => NetworkManager(
+    ..registerFactory<INetworkManager<BaseResponseErrorModel>>(
+      () => NetworkManager<BaseResponseErrorModel>(
         isEnableLogger: true,
         options: BaseOptions(
           baseUrl: GlobalApp.baseUrl,
         ),
         //This is optional.
         errorModel: BaseResponseErrorModel(),
+        /*errorModelFromData: (data) {
+
+        },*/
+        fileManager: LocalSembast(),
         additionalInterceptors: [
-          serviceLocator(),
+          serviceLocator<FreshTokenInterceptor<OAuth2Token>>(),
         ],
       ),
     );
+}
+
+void _setUpUseCases() {
+  serviceLocator.registerLazySingleton<SendOtpUseCase>(
+    () => SendOtpUseCase(
+      authenticationRepository: serviceLocator(),
+    ),
+  );
+  serviceLocator.registerLazySingleton<VerifyOtpUseCase>(
+    () => VerifyOtpUseCase(
+      authenticationRepository: serviceLocator(),
+    ),
+  );
 }
 
 void _setUpRepository() {
@@ -202,6 +223,12 @@ void _setUpRepository() {
   serviceLocator.registerSingleton<StoreLocalDbRepository>(StoreLocalDbRepository());
   serviceLocator.registerSingleton<MenuLocalDbRepository>(MenuLocalDbRepository());
   serviceLocator.registerSingleton<UserLocalDbRepository>(UserLocalDbRepository());
+  serviceLocator.registerSingleton<AuthenticationDataSource>(AuthenticationRemoteDataSource());
+  serviceLocator.registerSingleton<AuthenticationRepository>(
+    AuthenticationRepositoryImplement(
+      authenticationDataSource: serviceLocator(),
+    ),
+  );
 }
 
 void _setUpStateManagement() {
@@ -212,7 +239,12 @@ void _setUpStateManagement() {
       phoneFormFieldBloc: serviceLocator(),
     ),
   );
-  serviceLocator.registerFactory<OtpVerificationBloc>(OtpVerificationBloc.new);
+  serviceLocator.registerFactory<OtpVerificationBloc>(
+    () => OtpVerificationBloc(
+      sendOtpUseCase: serviceLocator(),
+      verifyOtpUseCase: serviceLocator(),
+    ),
+  );
   serviceLocator.registerFactory<PermissionBloc>(PermissionBloc.new);
   serviceLocator.registerFactory<BusinessDocumentBloc>(() => BusinessDocumentBloc());
   serviceLocator.registerFactory<BankInformationBloc>(() => BankInformationBloc());

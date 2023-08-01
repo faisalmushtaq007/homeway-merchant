@@ -10,7 +10,7 @@ targets:
         - lib/core/constants/**
         - lib/core/interface/**
         - lib/core/keys/**
-        - lib/core/local/**
+#        - lib/core/local/**
         - lib/core/mixins/**
         - lib/core/parser/**
         - lib/core/service/**
@@ -37,7 +37,7 @@ targets:
               - lib/core/constants/**
               - lib/core/interface/**
               - lib/core/keys/**
-              - lib/core/local/**
+#              - lib/core/local/**
               - lib/core/mixins/**
               - lib/core/parser/**
               - lib/core/service/**
@@ -45,8 +45,3 @@ targets:
               - lib/config/styles/**
               - lib/config/translation/**
               - lib/gen/**
-            include:
-              - lib/app/features/profile/domain/entities/**
-              - lib/app/features/profile/presentation/manager/**
-              - lib/app/features/authentication/presentation/manager/**
-              - lib/app/features/address/domain/entities/**
