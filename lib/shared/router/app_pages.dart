@@ -36,7 +36,7 @@ class AppRouter {
 
   AppRouter._();
 
-  static const String INITIAL = Routes.INITIAL;
+  static const String INITIAL = Routes.STORE_DETAILS_PAGE;
 
   static final GoRouter _router = GoRouter(
     debugLogDiagnostics: true,
@@ -223,6 +223,14 @@ class AppRouter {
             storeEntities: args?['allStore'] ?? <MenuEntity>[] as List<StoreEntity>,
           );
         },
+      ),
+      GoRoute(
+        path: Routes.STORE_PREVIEW_PAGE,
+        builder: (context, state) => const StoreDetailsPage(),
+      ),
+      GoRoute(
+        path: Routes.MENU_PREVIEW_PAGE,
+        builder: (context, state) => const MenuDetailsPage(),
       ),
       GoRoute(
         path: Routes.STORE_DETAILS_PAGE,

@@ -102,6 +102,9 @@ class BannerCarousel extends StatefulWidget {
   /// curve for programmatic transition
   final Duration? transitionDuration;
 
+  final BorderRadiusGeometry? outerBorderRadius;
+  final BorderRadiusGeometry? bannerWidgetBorderRadius;
+
   /// ```dart
   ///  BannersCarousel(banners: BannerImages.listBanners)
   /// ```
@@ -128,6 +131,8 @@ class BannerCarousel extends StatefulWidget {
     this.shouldTriggerChange,
     this.transitionCurve,
     this.transitionDuration,
+    this.outerBorderRadius,
+    this.bannerWidgetBorderRadius,
   })  : assert(banners != null || customizedBanners != null, 'banners or customizedBanners need to be implemented'),
         assert(
             banners == null || customizedBanners == null,
@@ -159,6 +164,8 @@ class BannerCarousel extends StatefulWidget {
     this.shouldTriggerChange,
     this.transitionCurve,
     this.transitionDuration,
+    this.outerBorderRadius,
+    this.bannerWidgetBorderRadius,
   })  : this.width = double.maxFinite,
         this.spaceBetween = 0.0,
         this.margin = EdgeInsets.zero,
@@ -177,6 +184,7 @@ class _BannerCarouselState extends State<BannerCarousel> {
   late int _page;
   late StreamSubscription streamSubscription;
   late PageController _controller;
+
   @override
   void initState() {
     _page = widget.initialPage;
@@ -198,9 +206,11 @@ class _BannerCarouselState extends State<BannerCarousel> {
 
   /// Shadow Banner
   bool get _showShadow => widget.viewportFraction == 1 && widget.customizedBanners == null;
+
   Color get _shadowColor => Colors.black.withOpacity(_showShadow ? 0.25 : 0.0);
 
   Color get _activeColor => widget.activeColor ?? Color(0xFF10306D);
+
   Color get _disableColor => widget.disableColor ?? Color(0xFFC4C4C4);
 
   List<dynamic> get _banners => widget.customizedBanners ?? widget.banners!;
@@ -214,6 +224,7 @@ class _BannerCarouselState extends State<BannerCarousel> {
                 spaceBetween: widget.spaceBetween,
                 onTap: widget.onTap != null ? () => widget.onTap!(banner.id) : () => print("Double Tap Banner ${banner.id}"),
                 borderRadius: widget.borderRadius,
+                bannerWidgetBorderRadius: widget.bannerWidgetBorderRadius,
               ))
           .toList();
 
@@ -268,7 +279,7 @@ class _BannerCarouselState extends State<BannerCarousel> {
 
   BoxDecoration get _boxDecoration => BoxDecoration(
         color: context.colorScheme.onPrimary,
-        borderRadius: BorderRadiusDirectional.circular(10),
+        borderRadius: widget.outerBorderRadius ?? BorderRadiusDirectional.circular(10),
         boxShadow: [
           BoxShadow(
             color: _shadowColor,
@@ -293,5 +304,6 @@ class _BannerCarouselState extends State<BannerCarousel> {
     Curve curve = (widget.transitionCurve != null ? widget.transitionCurve : Curves.linear)!;
     Duration duration = (widget.transitionDuration != null ? widget.transitionDuration : Duration(seconds: 1))!;
     if (page.runtimeType == int && page >= 0 && page < _listBanners.length) _controller.animateToPage(page, curve: curve, duration: duration);
+    setState(() => _page = page);
   }
 }

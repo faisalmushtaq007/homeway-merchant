@@ -31,6 +31,7 @@ import 'package:homemakers_merchant/shared/states/result_state.dart';
 import 'package:homemakers_merchant/shared/states/widget_state.dart';
 import 'package:homemakers_merchant/shared/widgets/app/app_text_field_widget.dart';
 import 'package:homemakers_merchant/shared/widgets/app/page_body.dart';
+import 'package:homemakers_merchant/shared/widgets/universal/persistent_header_adaptive/persistent_header_adaptive.dart';
 import 'package:homemakers_merchant/shared/widgets/universal/phone_number_text_field/phone_number_validate_widget.dart';
 import 'package:homemakers_merchant/shared/widgets/universal/animate_do/animate_do.dart';
 import 'package:homemakers_merchant/shared/widgets/universal/animated_gap/gap.dart';
@@ -253,6 +254,7 @@ part 'package:homemakers_merchant/app/features/store/presentation/pages/new_stor
 part 'package:homemakers_merchant/app/features/store/presentation/pages/new_driver_greeting_page.dart';
 part 'package:homemakers_merchant/app/features/store/presentation/pages/save_store_page.dart';
 part 'package:homemakers_merchant/app/features/store/presentation/pages/store_details_page.dart';
+part 'package:homemakers_merchant/app/features/store/presentation/pages/store_preview_page.dart';
 part 'package:homemakers_merchant/app/features/store/presentation/pages/store_owner_all_drivers_page.dart';
 part 'package:homemakers_merchant/app/features/store/presentation/pages/subpages/driver/contact_form_item_widget.dart';
 part 'package:homemakers_merchant/app/features/store/presentation/pages/subpages/driver/empty_state.dart';

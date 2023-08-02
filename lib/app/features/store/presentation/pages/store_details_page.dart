@@ -101,50 +101,54 @@ class _StoreDetailsPageView extends WidgetView<StoreDetailsPage, _StoreDetailsPa
                 minWidth: double.infinity,
                 minHeight: media.size.height,
               ),
-              padding: EdgeInsetsDirectional.only(
+              /*padding: EdgeInsetsDirectional.only(
                 top: topPadding,
                 start: margins * 2.5,
                 end: margins * 2.5,
-              ),
-              child: Stack(
-                children: [
-                  CustomScrollView(
-                    controller: state.innerScrollController,
-                    slivers: [
-                      SliverList(
-                        delegate: SliverChildListDelegate([
-                          Column(
-                            mainAxisSize: MainAxisSize.min,
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.stretch,
-                            children: [
-                              Container(
-                                width: double.infinity,
-                                height: 150,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadiusDirectional.circular(10),
-                                ),
-                                child: BannerCarousel(
-                                  banners: state.listBanners,
-                                  customizedIndicators: IndicatorModel.animation(width: 20, height: 5, spaceBetween: 2, widthAnimation: 50),
-                                  height: 150,
-                                  activeColor: Colors.amberAccent,
-                                  disableColor: Colors.white,
-                                  animation: true,
-                                  margin: EdgeInsetsDirectional.zero,
-                                  borderRadius: 10,
-                                  onTap: (id) => print(id),
-                                  //width: 250,
-                                  indicatorBottom: true,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ]),
+              ),*/
+              child: NestedScrollView(
+                physics: ClampingScrollPhysics(),
+                headerSliverBuilder: (context, innerBoxIsScrolled) {
+                  return [
+                    AdaptiveHeightSliverPersistentHeader(
+                      child: Container(
+                        width: double.infinity,
+                        height: 150,
+                        child: BannerCarousel(
+                          banners: state.listBanners,
+                          customizedIndicators: IndicatorModel.animation(width: 20, height: 5, spaceBetween: 2, widthAnimation: 50),
+                          height: 150,
+                          activeColor: Colors.amberAccent,
+                          disableColor: Colors.white,
+                          animation: true,
+                          margin: EdgeInsetsDirectional.zero,
+                          onTap: (id) => print(id),
+                          borderRadius: 0,
+                          //width: 250,
+                          indicatorBottom: true,
+                          outerBorderRadius: BorderRadiusDirectional.zero,
+                          bannerWidgetBorderRadius: BorderRadiusDirectional.zero,
+                        ),
                       ),
-                    ],
-                  ),
-                ],
+                      floating: true,
+                    ),
+                  ];
+                },
+                body: CustomScrollView(
+                  controller: state.innerScrollController,
+                  slivers: [
+                    SliverList(
+                      delegate: SliverChildListDelegate([
+                        Column(
+                          mainAxisSize: MainAxisSize.min,
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [],
+                        ),
+                      ]),
+                    ),
+                  ],
+                ),
               ),
             ),
           ),

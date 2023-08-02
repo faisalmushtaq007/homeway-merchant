@@ -15,11 +15,14 @@ class BannerWidget extends StatelessWidget {
 
   final double spaceBetween;
 
+  final BorderRadiusGeometry? bannerWidgetBorderRadius;
+
   BannerWidget({
     Key? key,
     required BannerModel bannerModel,
-    this.borderRadius = 5,
+    this.borderRadius = 10,
     this.spaceBetween = 0,
+    this.bannerWidgetBorderRadius,
     required VoidCallback onTap,
   })  : _bannerModel = bannerModel,
         _onTap = onTap,
@@ -60,7 +63,7 @@ class BannerWidget extends StatelessWidget {
           // Quality levels for image sampling in [ImageFilter] and [Shader] objects that sample
           filterQuality: FilterQuality.high,
           // border radius only work with [ImageShape.rounded]
-          borderRadius: BorderRadiusDirectional.circular(10),
+          borderRadius: bannerWidgetBorderRadius ?? BorderRadiusDirectional.circular(borderRadius),
           // alignment of image
           //alignment: Alignment.center,
           // indicates where image will be loaded from, types are [network, asset,file]
