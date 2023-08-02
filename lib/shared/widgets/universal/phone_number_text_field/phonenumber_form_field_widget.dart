@@ -7,6 +7,7 @@ import 'package:homemakers_merchant/config/translation/app_translator.dart';
 import 'package:homemakers_merchant/config/translation/extension/text_extension.dart';
 import 'package:homemakers_merchant/config/translation/language_controller.dart';
 import 'package:homemakers_merchant/shared/widgets/universal/multi_stream_builder/multi_stream_builder.dart';
+import 'package:homemakers_merchant/shared/widgets/universal/nil/src/nil.dart';
 import 'package:homemakers_merchant/shared/widgets/universal/phone_number_text_field/phone_form_field_bloc.dart';
 import 'package:homemakers_merchant/shared/widgets/universal/phone_number_text_field/phone_number_validate_widget.dart';
 import 'package:homemakers_merchant/utils/app_log.dart';
@@ -331,6 +332,48 @@ class _PhoneNumberFieldWidgetState extends State<PhoneNumberFieldWidget> {
                 ),
               ),
             );
+          },
+        );
+      },
+    );
+  }
+}
+
+class PhoneNumberValidationIconWidget extends StatelessWidget {
+  const PhoneNumberValidationIconWidget({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<PhoneNumberVerificationBloc, PhoneNumberVerificationState>(
+      bloc: context.read<PhoneNumberVerificationBloc>(),
+      buildWhen: (previous, current) => previous != current,
+      builder: (context, state) {
+        return state.maybeWhen(
+          validatePhoneNumber: (
+            phoneNumber,
+            countryDialCode,
+            country,
+            phoneNumberInputValidator,
+            phoneValidation,
+            enteredPhoneNumber,
+            phoneNumberVerification,
+            phoneController,
+          ) {
+            if (phoneNumberVerification == PhoneNumberVerification.valid) {
+              return const Icon(
+                Icons.check_circle,
+                color: Colors.green,
+              );
+            } else if (phoneNumberVerification == PhoneNumberVerification.invalid) {
+              return const Icon(
+                Icons.error,
+                color: Colors.red,
+              );
+            }
+            return nil;
+          },
+          orElse: () {
+            return nil;
           },
         );
       },

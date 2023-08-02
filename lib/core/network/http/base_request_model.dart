@@ -17,7 +17,7 @@ class BaseRequestModel<T> {
   @JsonKey(name: 'jsonrpc')
   final String? jsonrpc;
   @JsonKey(name: 'params')
-  final T? data;
+  T? data;
 
   Map<String, dynamic> toJson(
     Object Function(T value) toJsonT,

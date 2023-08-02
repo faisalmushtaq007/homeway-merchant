@@ -173,14 +173,23 @@ class _PhoneNumberVerificationPageState extends State<PhoneNumberVerificationPag
           listener: (context, state) {
             state.maybeWhen(
               orElse: () {},
-              success: (phoneNumberVerification, phoneNumber, countryDialCode, country, phoneController, asyncBtnState) {
+              success: (
+                phoneNumberVerification,
+                userEnteredPhoneNumber,
+                countryDialCode,
+                country,
+                phoneController,
+                phoneNumbers,
+                asyncBtnState,
+              ) {
                 context.push(
                   Routes.AUTH_OTP_VERIFICATION,
-                  extra: jsonEncode(
-                    {'mobileNumber': phoneNumber},
-                  ),
-                );
-                return;
+                  extra: {
+                    'mobileNumber': userEnteredPhoneNumber,
+                    'countryDialCode': countryDialCode,
+                    'phoneNumberWithoutFormat': phoneNumbers.nsn,
+                  },
+                ).whenComplete(() {});
               },
             );
           },
@@ -348,54 +357,11 @@ class _PhoneNumberVerificationPageState extends State<PhoneNumberVerificationPag
                             child: ValueListenableBuilder<PhoneNumberVerification>(
                               valueListenable: valueNotifierPhoneNumberVerification,
                               builder: (context, value, child) {
-                                return AsyncElevatedBtn(
-                                  asyncBtnStatesController: phoneNumberVerificationButtonController,
+                                return ElevatedButton(
                                   key: const Key('phone-number_verification-button-key'),
                                   style: ElevatedButton.styleFrom(
                                     disabledBackgroundColor: Color.fromRGBO(255, 219, 208, 1),
                                     disabledForegroundColor: Colors.white,
-                                  ),
-                                  loadingStyle: AsyncBtnStateStyle(
-                                    style: ElevatedButton.styleFrom(
-                                        //backgroundColor: Colors.amber,
-                                        ),
-                                    widget: const SizedBox.square(
-                                      dimension: 24,
-                                      child: CircularProgressIndicator(
-                                        color: Colors.white,
-                                      ),
-                                    ),
-                                  ),
-                                  successStyle: AsyncBtnStateStyle(
-                                    style: ElevatedButton.styleFrom(
-                                      //backgroundColor: Colors.green,
-                                      foregroundColor: Colors.white,
-                                    ),
-                                    widget: Row(
-                                      mainAxisSize: MainAxisSize.min,
-                                      textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                                      children: [
-                                        Icon(
-                                          Icons.check,
-                                          textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                                        ),
-                                        SizedBox(width: 4),
-                                        Text(
-                                          'Success!',
-                                          textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                                        ).translate()
-                                      ],
-                                    ),
-                                  ),
-                                  failureStyle: AsyncBtnStateStyle(
-                                    style: ElevatedButton.styleFrom(
-                                      //backgroundColor: Colors.red,
-                                      foregroundColor: Colors.white,
-                                    ),
-                                    widget: Text(
-                                      'Get OTP',
-                                      textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                                    ).translate(),
                                   ),
                                   onPressed: (value == PhoneNumberVerification.valid) ? verifyPhoneNumber : null,
                                   child: Text(
@@ -426,56 +392,14 @@ class _PhoneNumberVerificationPageState extends State<PhoneNumberVerificationPag
       requestOTPFormKey.currentState?.save();
       context.read<PhoneNumberVerificationBloc>().add(
             VerifyPhoneNumber(
-              phoneNumber: userEnteredPhoneNumber,
-              countryDialCode: phoneController.value?.countryCode ?? '+966',
-              country: phoneController.value?.isoCode.name ?? 'SA',
-              phoneController: phoneController,
-            ),
+                phoneNumber: phoneNumber!,
+                countryDialCode: phoneController.value?.countryCode ?? '+966',
+                country: phoneController.value?.isoCode.name ?? 'SA',
+                phoneController: phoneController,
+                userEnteredPhoneNumber: userEnteredPhoneNumber),
           );
       return;
     }
     return;
-  }
-}
-
-class PhoneNumberValidationIconWidget extends StatelessWidget {
-  const PhoneNumberValidationIconWidget({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return BlocBuilder<PhoneNumberVerificationBloc, PhoneNumberVerificationState>(
-      bloc: context.read<PhoneNumberVerificationBloc>(),
-      buildWhen: (previous, current) => previous != current,
-      builder: (context, state) {
-        return state.maybeWhen(
-          validatePhoneNumber: (
-            phoneNumber,
-            countryDialCode,
-            country,
-            phoneNumberInputValidator,
-            phoneValidation,
-            enteredPhoneNumber,
-            phoneNumberVerification,
-            phoneController,
-          ) {
-            if (phoneNumberVerification == PhoneNumberVerification.valid) {
-              return const Icon(
-                Icons.check_circle,
-                color: Colors.green,
-              );
-            } else if (phoneNumberVerification == PhoneNumberVerification.invalid) {
-              return const Icon(
-                Icons.error,
-                color: Colors.red,
-              );
-            }
-            return nil;
-          },
-          orElse: () {
-            return nil;
-          },
-        );
-      },
-    );
   }
 }

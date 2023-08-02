@@ -1,7 +1,16 @@
 part of 'package:homemakers_merchant/app/features/store/index.dart';
 
 class StoreDetailsPage extends StatefulWidget {
-  const StoreDetailsPage({super.key});
+  const StoreDetailsPage({
+    super.key,
+    required this.storeEntity,
+    this.index = -1,
+    this.storeEntities = const [],
+  });
+
+  final StoreEntity storeEntity;
+  final int index;
+  final List<StoreEntity> storeEntities;
 
   @override
   _StoreDetailsPageController createState() => _StoreDetailsPageController();
@@ -12,12 +21,24 @@ class _StoreDetailsPageController extends State<StoreDetailsPage> {
   late final ScrollController innerScrollController;
   List<String> listOfStoreImages = [];
   List<BannerModel> listBanners = [];
+  StoreEntity storeEntity = StoreEntity();
+  List<StoreEntity> storeEntities = [];
+  int currentIndex = -1;
+  bool isStoreOnline = false;
+  List<StoreOrderInfo> listOfStoreOrderInfo = [];
 
   @override
   void initState() {
     super.initState();
     scrollController = ScrollController();
     innerScrollController = ScrollController();
+    storeEntities = [];
+    storeEntities.clear();
+    listOfStoreOrderInfo = [];
+    listOfStoreOrderInfo.clear();
+    storeEntity = widget.storeEntity;
+    currentIndex = widget.index;
+    storeEntities = List<StoreEntity>.from(widget.storeEntities.toList());
     listOfStoreImages = [];
     listOfStoreImages.clear();
     listOfStoreImages = [
@@ -46,7 +67,54 @@ class _StoreDetailsPageController extends State<StoreDetailsPage> {
     listOfStoreImages.clear;
     listBanners = [];
     listBanners.clear();
+    storeEntities = [];
+    storeEntities.clear();
+    listOfStoreOrderInfo = [];
+    listOfStoreOrderInfo.clear();
     super.dispose();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    listOfStoreOrderInfo = [
+      StoreOrderInfo(
+        title: 'New',
+        subTitle: '5',
+        titleTextColor: context.colorScheme.primary,
+        subTitleTextColor: context.colorScheme.primary,
+      ),
+      StoreOrderInfo(
+        title: 'Schedule',
+        subTitle: '4',
+        titleTextColor: Color.fromRGBO(42, 45, 50, 1),
+        subTitleTextColor: Color.fromRGBO(42, 45, 50, 1),
+      ),
+      StoreOrderInfo(
+        title: 'Ongoing',
+        subTitle: '2',
+        titleTextColor: Color.fromRGBO(255, 90, 39, 1),
+        subTitleTextColor: Color.fromRGBO(255, 90, 39, 1),
+      ),
+      StoreOrderInfo(
+        title: 'Delivered',
+        subTitle: '75',
+        titleTextColor: Color.fromRGBO(69, 201, 125, 1),
+        subTitleTextColor: Color.fromRGBO(69, 201, 125, 1),
+      ),
+      StoreOrderInfo(
+        title: 'Cancel',
+        subTitle: '4',
+        titleTextColor: context.colorScheme.outlineVariant,
+        subTitleTextColor: context.colorScheme.outlineVariant,
+      ),
+    ];
+  }
+
+  void onStoreOnlineChanged(bool value) {
+    setState(() {
+      isStoreOnline = value;
+    });
   }
 
   @override
@@ -138,14 +206,227 @@ class _StoreDetailsPageView extends WidgetView<StoreDetailsPage, _StoreDetailsPa
                   controller: state.innerScrollController,
                   slivers: [
                     SliverList(
-                      delegate: SliverChildListDelegate([
-                        Column(
-                          mainAxisSize: MainAxisSize.min,
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          children: [],
-                        ),
-                      ]),
+                      delegate: SliverChildListDelegate(
+                        [
+                          Padding(
+                            padding: EdgeInsetsDirectional.only(
+                              top: margins,
+                              bottom: margins,
+                              start: margins * 2.5,
+                              end: margins * 2.5,
+                            ),
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.stretch,
+                              children: [
+                                const AnimatedGap(12, duration: Duration(milliseconds: 200)),
+                                Wrap(
+                                  alignment: WrapAlignment.center,
+                                  crossAxisAlignment: WrapCrossAlignment.center,
+                                  children: [
+                                    Icon(
+                                      Icons.store,
+                                      color: context.colorScheme.primary,
+                                      size: 32,
+                                    ),
+                                    const AnimatedGap(12, duration: Duration(milliseconds: 200)),
+                                    Text(
+                                      'Nura Birayani', //state.storeEntity.storeName,
+                                      style: context.headlineSmall!.copyWith(fontWeight: FontWeight.bold),
+                                      textAlign: TextAlign.center,
+                                    ),
+                                  ],
+                                ),
+                                const AnimatedGap(8, duration: Duration(milliseconds: 200)),
+                                Wrap(
+                                  alignment: WrapAlignment.center,
+                                  crossAxisAlignment: WrapCrossAlignment.center,
+                                  children: [
+                                    Text(
+                                      'Macs Eatery ماكس ايتري  18th Street, As Salam, Dammam 32416, Saudi Arabia', //state.storeEntity.storeName,
+
+                                      style: context.bodyMedium!.copyWith(fontWeight: FontWeight.w500),
+                                      textAlign: TextAlign.center,
+                                    ),
+                                  ],
+                                ),
+                                const AnimatedGap(8, duration: Duration(milliseconds: 200)),
+                                Divider(),
+                                IntrinsicHeight(
+                                  child: Row(
+                                    mainAxisSize: MainAxisSize.min,
+                                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    children: [
+                                      IntrinsicHeight(
+                                        child: TextButton.icon(
+                                          onPressed: () {},
+                                          icon: Icon(Icons.share),
+                                          label: Text('Share Store'),
+                                        ),
+                                      ),
+                                      Spacer(),
+                                      IntrinsicHeight(
+                                        child: Row(
+                                          mainAxisSize: MainAxisSize.min,
+                                          mainAxisAlignment: MainAxisAlignment.start,
+                                          crossAxisAlignment: CrossAxisAlignment.center,
+                                          children: [
+                                            Transform.scale(
+                                              //scale: 0.8,
+                                              scaleX: 0.80,
+                                              scaleY: 0.7,
+                                              child: CupertinoSwitch(
+                                                value: state.isStoreOnline,
+                                                onChanged: state.onStoreOnlineChanged,
+                                              ),
+                                            ),
+                                            Text('Store Online'),
+                                          ],
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                Divider(),
+                                const AnimatedGap(8, duration: Duration(milliseconds: 200)),
+                                Card(
+                                  child: ListTile(
+                                    title: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      mainAxisAlignment: MainAxisAlignment.start,
+                                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                                      children: [
+                                        Text(
+                                          'Customer Review',
+                                          style: context.titleMedium!.copyWith(fontWeight: FontWeight.w600),
+                                        ),
+                                        IntrinsicHeight(
+                                          child: Row(
+                                            mainAxisSize: MainAxisSize.min,
+                                            crossAxisAlignment: CrossAxisAlignment.center,
+                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              RatingBar.readOnly(
+                                                filledIcon: Icons.star,
+                                                emptyIcon: Icons.star_border,
+                                                initialRating: 4.5,
+                                                maxRating: 5,
+                                                size: 28,
+                                              ),
+                                              Container(
+                                                padding: EdgeInsetsDirectional.symmetric(vertical: 1, horizontal: 8),
+                                                margin: EdgeInsetsDirectional.only(end: 8),
+                                                child: Text(
+                                                  "${4.5.toStringAsPrecision(2)}/${5.toStringAsPrecision(2)}",
+                                                ),
+                                                decoration: BoxDecoration(
+                                                    color: const Color(0xff9b9b9b), shape: BoxShape.rectangle, borderRadius: BorderRadius.circular(10)),
+                                              ),
+                                            ],
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                    subtitle: Text(
+                                      '450 Ratings',
+                                    ),
+                                  ),
+                                ),
+                                const AnimatedGap(12, duration: Duration(milliseconds: 200)),
+                                Card(
+                                  child: Padding(
+                                    padding: const EdgeInsetsDirectional.symmetric(horizontal: 13),
+                                    child: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      mainAxisAlignment: MainAxisAlignment.start,
+                                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                                      children: [
+                                        const AnimatedGap(6, duration: Duration(milliseconds: 200)),
+                                        Row(
+                                          mainAxisSize: MainAxisSize.min,
+                                          mainAxisAlignment: MainAxisAlignment.start,
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: [
+                                            Expanded(
+                                              child: Text(
+                                                'Store Orders',
+                                                style: context.titleLarge!.copyWith(
+                                                  fontWeight: FontWeight.w600,
+                                                  color: context.colorScheme.primary,
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                        Container(
+                                          height: 55,
+                                          child: IntrinsicHeight(
+                                            child: Row(
+                                              mainAxisSize: MainAxisSize.min,
+                                              mainAxisAlignment: MainAxisAlignment.start,
+                                              crossAxisAlignment: CrossAxisAlignment.center,
+                                              children: [
+                                                StoreOrderCardWidget(
+                                                  storeOrderInfo: StoreOrderInfo(
+                                                    title: 'Total',
+                                                    subTitle: '90',
+                                                    titleTextColor: context.colorScheme.onPrimaryContainer,
+                                                    subTitleTextColor: context.colorScheme.onPrimaryContainer,
+                                                  ),
+                                                ),
+                                                const AnimatedGap(6, duration: Duration(milliseconds: 200)),
+                                                VerticalDivider(
+                                                  thickness: 0.75,
+                                                  indent: 6,
+                                                  endIndent: 6,
+                                                ),
+                                                const AnimatedGap(6, duration: Duration(milliseconds: 200)),
+                                                Expanded(
+                                                  child: ListView.separated(
+                                                    scrollDirection: Axis.horizontal,
+                                                    shrinkWrap: true,
+                                                    separatorBuilder: (context, index) {
+                                                      return Row(
+                                                        mainAxisSize: MainAxisSize.min,
+                                                        mainAxisAlignment: MainAxisAlignment.start,
+                                                        crossAxisAlignment: CrossAxisAlignment.center,
+                                                        children: [
+                                                          const AnimatedGap(4, duration: Duration(milliseconds: 200)),
+                                                          VerticalDivider(
+                                                            thickness: 0.75,
+                                                            indent: 6,
+                                                            endIndent: 6,
+                                                          ),
+                                                          const AnimatedGap(4, duration: Duration(milliseconds: 200)),
+                                                        ],
+                                                      );
+                                                    },
+                                                    itemCount: state.listOfStoreOrderInfo.length,
+                                                    itemBuilder: (context, index) {
+                                                      return StoreOrderCardWidget(
+                                                        key: ValueKey(index),
+                                                        storeOrderInfo: state.listOfStoreOrderInfo[index],
+                                                      );
+                                                    },
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                        const AnimatedGap(6, duration: Duration(milliseconds: 200)),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                                const AnimatedGap(12, duration: Duration(milliseconds: 200)),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ],
                 ),

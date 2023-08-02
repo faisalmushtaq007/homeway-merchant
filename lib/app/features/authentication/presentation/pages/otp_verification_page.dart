@@ -30,9 +30,10 @@ import 'package:homemakers_merchant/utils/app_log.dart';
 import 'package:pinput/pinput.dart';
 
 class OTPVerificationPage extends StatefulWidget {
+  const OTPVerificationPage({required this.phoneNumber, super.key, this.countryDialCode = '+966', required this.phoneNumberWithoutFormat});
   final String phoneNumber;
-
-  OTPVerificationPage({required this.phoneNumber});
+  final String countryDialCode;
+  final String phoneNumberWithoutFormat;
 
   @override
   _OTPVerificationPageState createState() => _OTPVerificationPageState();
@@ -62,7 +63,11 @@ class _OTPVerificationPageState extends State<OTPVerificationPage> {
     scrollController = ScrollController();
     context.read<OtpVerificationBloc>().add(
           SendOtp(
-            sendOtpEntity: SendOtpEntity(appUserType: 'merchant', userName: widget.phoneNumber, countryDialCode: ''),
+            sendOtpEntity: SendOtpEntity(
+              appUserType: 'merchant',
+              userName: widget.phoneNumberWithoutFormat,
+              countryDialCode: widget.countryDialCode,
+            ),
             otpVerificationStatus: OtpVerificationStatus.otpSent,
           ),
         );
@@ -113,7 +118,11 @@ class _OTPVerificationPageState extends State<OTPVerificationPage> {
     });
     context.read<OtpVerificationBloc>().add(
           SendOtp(
-            sendOtpEntity: SendOtpEntity(appUserType: 'merchant', userName: widget.phoneNumber, countryDialCode: ''),
+            sendOtpEntity: SendOtpEntity(
+              appUserType: 'merchant',
+              userName: widget.phoneNumberWithoutFormat,
+              countryDialCode: widget.countryDialCode,
+            ),
             otpVerificationStatus: OtpVerificationStatus.otpReSent,
           ),
         );

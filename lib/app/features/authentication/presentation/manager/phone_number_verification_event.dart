@@ -15,10 +15,11 @@ class PhoneNumberVerificationEvent with _$PhoneNumberVerificationEvent {
   }) = PhoneNumberChanged;
 
   const factory PhoneNumberVerificationEvent.verifyPhoneNumber({
-    required String phoneNumber,
+    required String userEnteredPhoneNumber,
     required String countryDialCode,
     required String country,
     required PhoneController phoneController,
+    required PhoneNumber phoneNumber,
   }) = VerifyPhoneNumber;
 
   const factory PhoneNumberVerificationEvent.validatePhoneNumber({
@@ -28,8 +29,7 @@ class PhoneNumberVerificationEvent with _$PhoneNumberVerificationEvent {
     PhoneNumberInputValidator? phoneNumberInputValidator,
     String? phoneValidation,
     PhoneNumber? enteredPhoneNumber,
-    @Default(PhoneNumberVerification.none)
-    PhoneNumberVerification phoneNumberVerification,
+    @Default(PhoneNumberVerification.none) PhoneNumberVerification phoneNumberVerification,
     required PhoneController phoneController,
   }) = ValidatePhoneNumber;
 }

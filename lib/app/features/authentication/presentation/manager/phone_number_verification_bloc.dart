@@ -49,7 +49,7 @@ class PhoneNumberVerificationBloc extends Bloc<PhoneNumberVerificationEvent, Pho
   }
 
   FutureOr<void> _validatePhoneNumberEvent(ValidatePhoneNumber event, Emitter<PhoneNumberVerificationState> emit) {
-    emit(PhoneNumberVerificationValidatePhoneNumber(
+    emit(PhoneNumberVerificationState.validatePhoneNumber(
       phoneNumber: event.phoneNumber,
       country: event.country,
       countryDialCode: event.countryDialCode,
@@ -64,17 +64,13 @@ class PhoneNumberVerificationBloc extends Bloc<PhoneNumberVerificationEvent, Pho
   FutureOr<void> _verifyPhoneNumber(VerifyPhoneNumber event, Emitter<PhoneNumberVerificationState> emit) {
     // Handle api call and otp sent request
     emit(
-      PhoneNumberVerificationSuccessState(
+      PhoneNumberVerificationState.success(
         phoneController: event.phoneController,
         countryDialCode: event.countryDialCode,
-        phoneNumber: event.phoneNumber,
+        userEnteredPhoneNumber: event.userEnteredPhoneNumber,
         country: event.country,
+        phoneNumber: event.phoneNumber,
       ),
     );
-  }
-
-  @override
-  Future<void> close() {
-    return super.close();
   }
 }

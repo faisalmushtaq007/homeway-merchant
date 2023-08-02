@@ -7,7 +7,9 @@ class AuthenticationRepositoryImplement implements AuthenticationRepository {
 
   @override
   Future<ResultState<SendOtpResponseModel>> sendPhoneAuthenticationOtp(SendOtpEntity sendOtpEntity) async {
-    final response = await authenticationDataSource.sendPhoneAuthenticationOTP(sendOtpEntity: sendOtpEntity);
+    final response = await authenticationDataSource.sendPhoneAuthenticationOTP(
+      sendOtpEntity: BaseRequestModel<SendOtpEntity>(data: sendOtpEntity),
+    );
     return response.when(
       success: (data) {
         return ResultState<SendOtpResponseModel>.success(data: data);
@@ -25,7 +27,9 @@ class AuthenticationRepositoryImplement implements AuthenticationRepository {
 
   @override
   Future<ResultState<VerifyOtpResponseModel>> verifyPhoneAuthenticationOtp(VerifyOtpEntity verifyOtpEntity) async {
-    final response = await authenticationDataSource.verifyPhoneAuthenticationOTP(verifyOtpEntity: verifyOtpEntity);
+    final response = await authenticationDataSource.verifyPhoneAuthenticationOTP(
+      verifyOtpEntity: BaseRequestModel<VerifyOtpEntity>(data: verifyOtpEntity),
+    );
     return response.when(
       success: (data) {
         return ResultState<VerifyOtpResponseModel>.success(data: data);

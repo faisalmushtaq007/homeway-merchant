@@ -6,10 +6,12 @@ import 'package:homemakers_merchant/app/features/authentication/domain/entities/
 import 'package:homemakers_merchant/app/features/profile/domain/entities/user_entity.dart';
 
 import 'package:homemakers_merchant/bootup/injection_container.dart';
+import 'package:homemakers_merchant/core/network/http/base_request_model.dart';
 import 'package:homemakers_merchant/core/network/http/base_response_error_model.dart';
 import 'package:homemakers_merchant/core/network/http/base_response_model.dart';
 import 'package:homemakers_merchant/core/network/http/failure/get_api_exception.dart';
 import 'package:homemakers_merchant/shared/states/api_result_state.dart';
+import 'package:homemakers_merchant/utils/app_log.dart';
 import 'package:network_manager/network_manager.dart';
 
 part 'authentication_data_source.dart';
@@ -47,7 +49,7 @@ class AuthenticationRemoteDataSource extends AuthenticationDataSource {
 
   @override
   Future<ApiResultState<SendOtpResponseModel>> sendPhoneAuthenticationOTP({
-    required SendOtpEntity sendOtpEntity,
+    required BaseRequestModel<SendOtpEntity> sendOtpEntity,
   }) async {
     try {
       const String apiPath = AuthenticationConstants.sendOtp;
@@ -55,7 +57,7 @@ class AuthenticationRemoteDataSource extends AuthenticationDataSource {
         apiPath,
         parseModel: BaseResponseModel<SendOtpResponseModel>(),
         method: RequestType.POST,
-        data: sendOtpEntity.toMap(),
+        data: sendOtpEntity.toJson((value) => value.toJson()),
       );
       if (response.data != null) {
         return ApiResultState<SendOtpResponseModel>.success(
@@ -78,7 +80,7 @@ class AuthenticationRemoteDataSource extends AuthenticationDataSource {
 
   @override
   Future<ApiResultState<VerifyOtpResponseModel>> verifyPhoneAuthenticationOTP({
-    required VerifyOtpEntity verifyOtpEntity,
+    required BaseRequestModel<VerifyOtpEntity> verifyOtpEntity,
   }) async {
     try {
       const String apiPath = AuthenticationConstants.verifyOtp;
@@ -86,7 +88,7 @@ class AuthenticationRemoteDataSource extends AuthenticationDataSource {
         apiPath,
         parseModel: BaseResponseModel<VerifyOtpResponseModel>(),
         method: RequestType.POST,
-        data: verifyOtpEntity.toMap(),
+        data: verifyOtpEntity.toJson((value) => value.toJson()),
       );
       if (response.data != null) {
         return ApiResultState<VerifyOtpResponseModel>.success(

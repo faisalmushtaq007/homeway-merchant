@@ -60,11 +60,15 @@ class AppRouter {
         builder: (context, state) => const PhoneNumberVerificationPage(),
       ),
       GoRoute(
-        path: Routes.AUTH_OTP_VERIFICATION,
-        builder: (context, state) => OTPVerificationPage(
-          phoneNumber: jsonDecode(state.extra! as String)['mobileNumber'].toString(), //Testing purpose'+966 56 135 6754',
-        ),
-      ),
+          path: Routes.AUTH_OTP_VERIFICATION,
+          builder: (context, state) {
+            final Map<String, dynamic>? args = state.extra as Map<String, dynamic>?;
+            return OTPVerificationPage(
+              phoneNumber: args?['mobileNumber'] as String,
+              countryDialCode: args?['countryDialCode'] ?? '' as String,
+              phoneNumberWithoutFormat: args?['phoneNumberWithoutFormat'] as String,
+            );
+          }),
       GoRoute(
         path: Routes.TERMS_AND_CONDITIONS,
         builder: (context, state) => const TermsAndConditionsPage(),
@@ -224,17 +228,24 @@ class AppRouter {
           );
         },
       ),
-      GoRoute(
+      /*GoRoute(
         path: Routes.STORE_PREVIEW_PAGE,
         builder: (context, state) => const StoreDetailsPage(),
-      ),
+      ),*/
       GoRoute(
         path: Routes.MENU_PREVIEW_PAGE,
         builder: (context, state) => const MenuDetailsPage(),
       ),
       GoRoute(
         path: Routes.STORE_DETAILS_PAGE,
-        builder: (context, state) => const StoreDetailsPage(),
+        builder: (context, state) {
+          final Map<String, dynamic>? args = state.extra as Map<String, dynamic>?;
+          return StoreDetailsPage(
+            storeEntity: args?['store'] ?? StoreEntity() as StoreEntity,
+            index: args?['index'] ?? -1 as int,
+            storeEntities: args?['allStores'] ?? <StoreEntity>[] as List<StoreEntity>,
+          );
+        },
       ),
       GoRoute(
         path: Routes.MENU_DETAILS_PAGE,

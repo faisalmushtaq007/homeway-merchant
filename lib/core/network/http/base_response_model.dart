@@ -10,6 +10,9 @@ class BaseResponseModel<T extends INetworkModel<T>> extends INetworkModel<BaseRe
     this.message,
     this.data,
     this.code,
+    this.result,
+    this.id,
+    this.jsonrpc = '2.0',
   });
   factory BaseResponseModel.fromJson(
     Map<String, dynamic> json,
@@ -21,6 +24,12 @@ class BaseResponseModel<T extends INetworkModel<T>> extends INetworkModel<BaseRe
   final String? message;
   final T? data;
   final int? code;
+  @JsonKey(name: 'jsonrpc')
+  final String? jsonrpc;
+  @JsonKey(name: 'id')
+  final int? id;
+  @JsonKey(name: 'result')
+  final T? result;
 
   @override
   BaseResponseModel<T> fromJson(Map<String, dynamic> json) {
@@ -37,6 +46,6 @@ class BaseResponseModel<T extends INetworkModel<T>> extends INetworkModel<BaseRe
 
   @override
   Map<String, dynamic>? toJson() {
-    return BaseResponseModel<T>().toMap((value) => value.toString());
+    return BaseResponseModel<T>().toMap((value) => value);
   }
 }

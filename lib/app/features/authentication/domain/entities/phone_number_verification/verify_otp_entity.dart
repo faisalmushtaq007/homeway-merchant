@@ -22,6 +22,10 @@ class VerifyOtpEntity extends INetworkModel<VerifyOtpEntity> {
   String? countryDialCode;
   @JsonKey(name: 'otp')
   int? otpCode;
+  @JsonKey(name: 'password')
+  int? password;
+  @JsonKey(name: 'db')
+  String? db;
   @JsonKey(name: 'user_type')
   String? appUserType;
 
