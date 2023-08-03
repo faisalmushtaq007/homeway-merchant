@@ -104,6 +104,7 @@ class BannerCarousel extends StatefulWidget {
 
   final BorderRadiusGeometry? outerBorderRadius;
   final BorderRadiusGeometry? bannerWidgetBorderRadius;
+  final ScrollPhysics? physics;
 
   /// ```dart
   ///  BannersCarousel(banners: BannerImages.listBanners)
@@ -133,6 +134,7 @@ class BannerCarousel extends StatefulWidget {
     this.transitionDuration,
     this.outerBorderRadius,
     this.bannerWidgetBorderRadius,
+    this.physics,
   })  : assert(banners != null || customizedBanners != null, 'banners or customizedBanners need to be implemented'),
         assert(
             banners == null || customizedBanners == null,
@@ -166,6 +168,7 @@ class BannerCarousel extends StatefulWidget {
     this.transitionDuration,
     this.outerBorderRadius,
     this.bannerWidgetBorderRadius,
+    this.physics,
   })  : this.width = double.maxFinite,
         this.spaceBetween = 0.0,
         this.margin = EdgeInsets.zero,
@@ -254,6 +257,7 @@ class _BannerCarouselState extends State<BannerCarousel> {
             decoration: _boxDecoration,
             height: widget.height,
             child: PageView(
+              physics: widget.physics,
               controller: _controller,
               //controller: widget.pageController ?? PageController(initialPage: widget.initialPage, viewportFraction: widget.viewportFraction),
               onPageChanged: (index) => changeCurrentPage(index),

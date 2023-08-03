@@ -32,6 +32,7 @@ import 'package:homemakers_merchant/shared/states/result_state.dart';
 import 'package:homemakers_merchant/shared/states/widget_state.dart';
 import 'package:homemakers_merchant/shared/widgets/app/app_text_field_widget.dart';
 import 'package:homemakers_merchant/shared/widgets/app/page_body.dart';
+import 'package:homemakers_merchant/shared/widgets/universal/conditional_rendering/flutter_conditional_rendering.dart';
 import 'package:homemakers_merchant/shared/widgets/universal/persistent_header_adaptive/persistent_header_adaptive.dart';
 import 'package:homemakers_merchant/shared/widgets/universal/phone_number_text_field/phone_number_validate_widget.dart';
 import 'package:homemakers_merchant/shared/widgets/universal/animate_do/animate_do.dart';
@@ -267,3 +268,4 @@ part 'package:homemakers_merchant/app/features/store/presentation/widgets/store_
 part 'package:homemakers_merchant/app/features/store/presentation/pages/subpages/driver/bind_driver_with_store.dart';
 part 'package:homemakers_merchant/app/features/store/presentation/pages/subpages/driver/bind_driver_with_store_greeting_page.dart';
 part 'package:homemakers_merchant/app/features/store/presentation/widgets/bind_store_card_widget.dart';
+part 'package:homemakers_merchant/app/features/store/presentation/widgets/expandable_card_widget.dart';

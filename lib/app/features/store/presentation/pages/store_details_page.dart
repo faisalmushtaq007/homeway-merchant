@@ -19,6 +19,7 @@ class StoreDetailsPage extends StatefulWidget {
 class _StoreDetailsPageController extends State<StoreDetailsPage> {
   late final ScrollController scrollController;
   late final ScrollController innerScrollController;
+  late final ScrollController sliverListScrollController;
   List<String> listOfStoreImages = [];
   List<BannerModel> listBanners = [];
   StoreEntity storeEntity = StoreEntity();
@@ -32,6 +33,7 @@ class _StoreDetailsPageController extends State<StoreDetailsPage> {
     super.initState();
     scrollController = ScrollController();
     innerScrollController = ScrollController();
+    sliverListScrollController = ScrollController();
     storeEntities = [];
     storeEntities.clear();
     listOfStoreOrderInfo = [];
@@ -63,6 +65,7 @@ class _StoreDetailsPageController extends State<StoreDetailsPage> {
   void dispose() {
     scrollController.dispose();
     innerScrollController.dispose();
+    sliverListScrollController.dispose();
     listOfStoreImages = [];
     listOfStoreImages.clear;
     listBanners = [];
@@ -125,6 +128,10 @@ class _StoreDetailsPageController extends State<StoreDetailsPage> {
           return _StoreDetailsPageView(this);
         },
       );
+
+  void editStore() {}
+
+  void addMenu() {}
 }
 
 class _StoreDetailsPageView extends WidgetView<StoreDetailsPage, _StoreDetailsPageController> {
@@ -175,9 +182,17 @@ class _StoreDetailsPageView extends WidgetView<StoreDetailsPage, _StoreDetailsPa
                 end: margins * 2.5,
               ),*/
               child: NestedScrollView(
-                physics: ClampingScrollPhysics(),
+                //physics: const ClampingScrollPhysics(parent: ClampingScrollPhysics()),
+                controller: state.innerScrollController,
+                floatHeaderSlivers: true,
                 headerSliverBuilder: (context, innerBoxIsScrolled) {
-                  return [
+                  return [];
+                },
+                body: CustomScrollView(
+                  controller: state.sliverListScrollController,
+                  physics: const ClampingScrollPhysics(parent: ClampingScrollPhysics()),
+                  shrinkWrap: true,
+                  slivers: [
                     AdaptiveHeightSliverPersistentHeader(
                       child: Container(
                         width: double.infinity,
@@ -196,15 +211,10 @@ class _StoreDetailsPageView extends WidgetView<StoreDetailsPage, _StoreDetailsPa
                           indicatorBottom: true,
                           outerBorderRadius: BorderRadiusDirectional.zero,
                           bannerWidgetBorderRadius: BorderRadiusDirectional.zero,
+                          //physics: const ClampingScrollPhysics(parent: ClampingScrollPhysics()),
                         ),
                       ),
-                      floating: true,
                     ),
-                  ];
-                },
-                body: CustomScrollView(
-                  controller: state.innerScrollController,
-                  slivers: [
                     SliverList(
                       delegate: SliverChildListDelegate(
                         [
@@ -245,7 +255,6 @@ class _StoreDetailsPageView extends WidgetView<StoreDetailsPage, _StoreDetailsPa
                                   children: [
                                     Text(
                                       'Macs Eatery ماكس ايتري  18th Street, As Salam, Dammam 32416, Saudi Arabia', //state.storeEntity.storeName,
-
                                       style: context.bodyMedium!.copyWith(fontWeight: FontWeight.w500),
                                       textAlign: TextAlign.center,
                                     ),
@@ -422,6 +431,114 @@ class _StoreDetailsPageView extends WidgetView<StoreDetailsPage, _StoreDetailsPa
                                   ),
                                 ),
                                 const AnimatedGap(12, duration: Duration(milliseconds: 200)),
+                                StoreExpandedCardWidget<StoreWorkingDayAndTime, String>(
+                                  key: const Key('store-details-availability-widget'),
+                                  expandableCardInfo: ExpandableCardInfo<StoreWorkingDayAndTime, String>(
+                                    id: 0,
+                                    data: state.storeEntity.storeWorkingDays.toList(),
+                                    title: 'Availability',
+                                    subTitle: 'Store availability day(s) and time',
+                                    storeEntity: state.storeEntity,
+                                  ),
+                                ),
+                                const AnimatedGap(12, duration: Duration(milliseconds: 200)),
+                                StoreExpandedCardWidget<StoreAvailableFoodTypes, StoreAvailableFoodPreparationType>(
+                                  key: const Key('store-details-menu-type-widget'),
+                                  expandableCardInfo: ExpandableCardInfo<StoreAvailableFoodTypes, StoreAvailableFoodPreparationType>(
+                                    id: 1,
+                                    data: state.storeEntity.storeAvailableFoodTypes.toList(),
+                                    secondaryData: state.storeEntity.storeAvailableFoodPreparationType.toList(),
+                                    title: 'Menu Type',
+                                    subTitle: 'Store menu and cooking types',
+                                    storeEntity: state.storeEntity,
+                                  ),
+                                ),
+                                const AnimatedGap(12, duration: Duration(milliseconds: 200)),
+                                StoreExpandedCardWidget<MenuEntity, MenuEntity>(
+                                  key: const Key('store-details-menu-widget'),
+                                  expandableCardInfo: ExpandableCardInfo<MenuEntity, MenuEntity>(
+                                    id: 2,
+                                    data: state.storeEntity.menuEntities.toList(),
+                                    title: 'Menu',
+                                    subTitle: 'Store available menu',
+                                    storeEntity: state.storeEntity,
+                                  ),
+                                ),
+                                const AnimatedGap(12, duration: Duration(milliseconds: 200)),
+                                StoreExpandedCardWidget<StoreOwnDeliveryPartnersInfo, StoreOwnDeliveryPartnersInfo>(
+                                  key: const Key('store-details-delivery-widget'),
+                                  expandableCardInfo: ExpandableCardInfo<StoreOwnDeliveryPartnersInfo, StoreOwnDeliveryPartnersInfo>(
+                                    id: 3,
+                                    data: state.storeEntity.storeOwnDeliveryPartnersInfo.toList(),
+                                    title: 'Your Delivery Partner',
+                                    subTitle: 'Store own delivery drivers',
+                                    storeEntity: state.storeEntity,
+                                  ),
+                                ),
+                                const AnimatedGap(12, duration: Duration(milliseconds: 200)),
+                                StoreExpandedCardWidget<StoreAcceptedPaymentModes, StoreAcceptedPaymentModes>(
+                                  key: const Key('store-details-payment-widget'),
+                                  expandableCardInfo: ExpandableCardInfo<StoreAcceptedPaymentModes, StoreAcceptedPaymentModes>(
+                                    id: 4,
+                                    data: state.storeEntity.storeAcceptedPaymentModes.toList(),
+                                    title: 'Payment',
+                                    subTitle: 'Store available payment methods',
+                                    storeEntity: state.storeEntity,
+                                  ),
+                                ),
+                                const AnimatedGap(12, duration: Duration(milliseconds: 200)),
+                                // Buttons
+                                Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Expanded(
+                                      flex: 1,
+                                      child: ElevatedButton(
+                                        onPressed: state.editStore,
+                                        style: ElevatedButton.styleFrom(
+                                          backgroundColor: Colors.white,
+                                          //minimumSize: Size(100, 40),
+                                          side: const BorderSide(
+                                            color: Color.fromRGBO(
+                                              165,
+                                              166,
+                                              168,
+                                              1.0,
+                                            ),
+                                          ),
+                                        ),
+                                        child: Text(
+                                          'Edit',
+                                          textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                          style: const TextStyle(
+                                            color: Color.fromRGBO(127, 129, 132, 1.0),
+                                          ),
+                                        ).translate(),
+                                      ),
+                                    ),
+                                    const AnimatedGap(
+                                      24,
+                                      duration: Duration(milliseconds: 100),
+                                    ),
+                                    Expanded(
+                                      flex: 2,
+                                      child: ElevatedButton(
+                                        onPressed: state.addMenu,
+                                        style: ElevatedButton.styleFrom(
+                                            //minimumSize: Size(180, 40),
+                                            //backgroundColor: const Color.fromRGBO(69, 201, 125, 1),
+                                            ),
+                                        child: Text(
+                                          'Add New Menu',
+                                          textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                          //style: TextStyle(color:  Colors.white),
+                                        ).translate(),
+                                      ),
+                                    ),
+                                  ],
+                                ),
                               ],
                             ),
                           ),
