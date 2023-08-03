@@ -15,13 +15,11 @@ class StoreExpandedCardWidget<T, S> extends StatefulWidget {
 class _StoreExpandedCardWidgetController<T, S> extends State<StoreExpandedCardWidget<T, S>> {
   late ExpansionTileController? controller;
   WidgetState<Widget> widgetState = const WidgetState<Widget>.none();
+
   @override
   void initState() {
     super.initState();
     controller = ExpansionTileController();
-    if (mounted) {
-      init(context);
-    }
   }
 
   @override
@@ -31,6 +29,9 @@ class _StoreExpandedCardWidgetController<T, S> extends State<StoreExpandedCardWi
 
   @override
   void didChangeDependencies() {
+    if (mounted) {
+      init(context);
+    }
     super.didChangeDependencies();
   }
 
@@ -42,11 +43,15 @@ class _StoreExpandedCardWidgetController<T, S> extends State<StoreExpandedCardWi
         valueBuilder: (BuildContext context) => widget.expandableCardInfo.id,
         caseBuilders: {
           0: (BuildContext context) => SizedBox(
-                height: 70,
+                height: 65,
                 width: double.infinity,
                 child: _storeAvailability(context),
               ),
-          1: (BuildContext context) => const Text('The value is B!'),
+          1: (BuildContext context) => SizedBox(
+                height: 160,
+                width: double.infinity,
+                child: _storeMenuAndPreparationType(context),
+              ),
           2: (BuildContext context) => const Text('The value is B!'),
           3: (BuildContext context) => const Text('The value is B!'),
           4: (BuildContext context) => const Text('The value is B!'),
@@ -69,7 +74,7 @@ class _StoreExpandedCardWidgetController<T, S> extends State<StoreExpandedCardWi
           ),
           color: Colors.white,
           child: Padding(
-            padding: EdgeInsetsDirectional.all(6),
+            padding: EdgeInsetsDirectional.only(start: 8, end: 8, top: 8, bottom: 6),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisSize: MainAxisSize.min,
@@ -77,17 +82,32 @@ class _StoreExpandedCardWidgetController<T, S> extends State<StoreExpandedCardWi
                 Text(
                   'SUN',
                   style: context.labelMedium!.copyWith(
-                    fontWeight: FontWeight.w600,
+                    fontWeight: FontWeight.bold,
                     color: const Color.fromRGBO(69, 201, 125, 1),
                   ),
                 ),
-                AnimatedGap(3, duration: Duration(milliseconds: 200)),
+                AnimatedGap(4, duration: Duration(milliseconds: 200)),
                 Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Text('9:00 AM'),
-                    Text('-'),
-                    Text('9:00 PM'),
+                    Text(
+                      '9:00 AM',
+                      style: context.labelMedium!.copyWith(
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                    Text(
+                      '-',
+                      style: context.labelMedium!.copyWith(
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                    Text(
+                      '9:00 PM',
+                      style: context.labelMedium!.copyWith(
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
                   ],
                 ),
               ],
@@ -96,6 +116,96 @@ class _StoreExpandedCardWidgetController<T, S> extends State<StoreExpandedCardWi
         );
       },
       itemCount: 7, //widget.expandableCardInfo.storeEntity.storeWorkingDays.length,
+    );
+  }
+
+  Widget _storeMenuAndPreparationType(BuildContext context) {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Flexible(
+          key: const Key('expandable-card-food-type'),
+          child: ListView.builder(
+            scrollDirection: Axis.horizontal,
+            padding: EdgeInsetsDirectional.zero,
+            shrinkWrap: true,
+            itemBuilder: (context, index) {
+              return Padding(
+                padding: const EdgeInsetsDirectional.only(
+                  end: 8,
+                ),
+                child: Chip(
+                  labelPadding: const EdgeInsetsDirectional.all(2),
+                  avatar: Icon(
+                    Icons.check,
+                    color: const Color.fromRGBO(69, 201, 125, 1),
+                  ),
+                  label: Text(
+                    'Vegetration',
+                    style: TextStyle(),
+                  ),
+                  backgroundColor: Colors.white,
+                  elevation: 6.0,
+                  shadowColor: Colors.grey[60],
+                  padding: const EdgeInsetsDirectional.all(8),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadiusDirectional.circular(20),
+                    side: BorderSide(
+                      color: const Color.fromRGBO(69, 201, 125, 1),
+                    ),
+                  ),
+                ),
+              );
+            },
+            itemCount: 7, //widget.expandableCardInfo.storeEntity.storeWorkingDays.length,
+          ),
+        ),
+        //const AnimatedGap(3, duration: Duration(milliseconds: 200)),
+        Text(
+          'Preparation Types',
+          style: context.titleMedium!.copyWith(
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+        Flexible(
+          key: const Key('expandable-card-preparation-type'),
+          child: ListView.builder(
+            scrollDirection: Axis.horizontal,
+            padding: EdgeInsetsDirectional.zero,
+            shrinkWrap: true,
+            itemBuilder: (context, index) {
+              return Padding(
+                padding: const EdgeInsetsDirectional.only(
+                  end: 8,
+                ),
+                child: Chip(
+                  labelPadding: const EdgeInsetsDirectional.all(2),
+                  avatar: Icon(
+                    Icons.check,
+                    color: const Color.fromRGBO(69, 201, 125, 1),
+                  ),
+                  label: Text(
+                    'Cooking',
+                    style: TextStyle(),
+                  ),
+                  backgroundColor: Colors.white,
+                  elevation: 6.0,
+                  shadowColor: Colors.grey[60],
+                  padding: const EdgeInsetsDirectional.all(8),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadiusDirectional.circular(20),
+                    side: BorderSide(
+                      color: const Color.fromRGBO(69, 201, 125, 1),
+                    ),
+                  ),
+                ),
+              );
+            },
+            itemCount: 7, //widget.expandableCardInfo.storeEntity.storeWorkingDays.length,
+          ),
+        ),
+      ],
     );
   }
 
