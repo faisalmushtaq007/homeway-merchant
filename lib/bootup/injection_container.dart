@@ -244,6 +244,41 @@ void _setUpUseCases() {
     ),
   );
   // Driver
+  serviceLocator.registerLazySingleton<SaveDriverUseCase>(
+    () => SaveDriverUseCase(
+      storeRepository: serviceLocator(),
+    ),
+  );
+  serviceLocator.registerLazySingleton<EditDriverUseCase>(
+    () => EditDriverUseCase(
+      storeRepository: serviceLocator(),
+    ),
+  );
+  serviceLocator.registerLazySingleton<GetDriverUseCase>(
+    () => GetDriverUseCase(
+      storeRepository: serviceLocator(),
+    ),
+  );
+  serviceLocator.registerLazySingleton<GetAllDriverUseCase>(
+    () => GetAllDriverUseCase(
+      storeRepository: serviceLocator(),
+    ),
+  );
+  serviceLocator.registerLazySingleton<DeleteDriverUseCase>(
+    () => DeleteDriverUseCase(
+      storeRepository: serviceLocator(),
+    ),
+  );
+  serviceLocator.registerLazySingleton<DeleteAllDriverUseCase>(
+    () => DeleteAllDriverUseCase(
+      storeRepository: serviceLocator(),
+    ),
+  );
+  serviceLocator.registerLazySingleton<BindDriverWithStoreUseCase>(
+    () => BindDriverWithStoreUseCase(
+      storeRepository: serviceLocator(),
+    ),
+  );
   //Menu
   serviceLocator.registerLazySingleton<SaveMenuUseCase>(
     () => SaveMenuUseCase(
@@ -276,6 +311,46 @@ void _setUpUseCases() {
     ),
   );
   //Addons
+  serviceLocator.registerLazySingleton<SaveAddonsUseCase>(
+    () => SaveAddonsUseCase(
+      menuRepository: serviceLocator(),
+    ),
+  );
+  serviceLocator.registerLazySingleton<EditAddonsUseCase>(
+    () => EditAddonsUseCase(
+      menuRepository: serviceLocator(),
+    ),
+  );
+  serviceLocator.registerLazySingleton<GetAddonsUseCase>(
+    () => GetAddonsUseCase(
+      menuRepository: serviceLocator(),
+    ),
+  );
+  serviceLocator.registerLazySingleton<GetAllAddonsUseCase>(
+    () => GetAllAddonsUseCase(
+      menuRepository: serviceLocator(),
+    ),
+  );
+  serviceLocator.registerLazySingleton<DeleteAddonsUseCase>(
+    () => DeleteAddonsUseCase(
+      menuRepository: serviceLocator(),
+    ),
+  );
+  serviceLocator.registerLazySingleton<DeleteAllAddonsUseCase>(
+    () => DeleteAllAddonsUseCase(
+      menuRepository: serviceLocator(),
+    ),
+  );
+  serviceLocator.registerLazySingleton<BindAddonsWithMenuUseCase>(
+    () => BindAddonsWithMenuUseCase(
+      menuRepository: serviceLocator(),
+    ),
+  );
+  serviceLocator.registerLazySingleton<BindMenuWithStoreUseCase>(
+    () => BindMenuWithStoreUseCase(
+      menuRepository: serviceLocator(),
+    ),
+  );
 }
 
 void _setUpRepository() {

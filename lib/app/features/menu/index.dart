@@ -132,6 +132,15 @@ part 'package:homemakers_merchant/app/features/menu/domain/usecases/get_all_menu
 part 'package:homemakers_merchant/app/features/menu/domain/usecases/delete_menu_usecase.dart';
 part 'package:homemakers_merchant/app/features/menu/domain/usecases/delete_all_menu_usecase.dart';
 part 'package:homemakers_merchant/app/features/menu/domain/usecases/save_menu_usecase.dart';
+// Addons UseCases
+part 'package:homemakers_merchant/app/features/menu/domain/usecases/edit_addons_usecase.dart';
+part 'package:homemakers_merchant/app/features/menu/domain/usecases/get_addons_usecase.dart';
+part 'package:homemakers_merchant/app/features/menu/domain/usecases/get_all_addons_usecase.dart';
+part 'package:homemakers_merchant/app/features/menu/domain/usecases/delete_addons_usecase.dart';
+part 'package:homemakers_merchant/app/features/menu/domain/usecases/delete_all_addons_usecase.dart';
+part 'package:homemakers_merchant/app/features/menu/domain/usecases/save_addons_usecase.dart';
+part 'package:homemakers_merchant/app/features/menu/domain/usecases/bind_addons_with_menu_usecase.dart';
+part 'package:homemakers_merchant/app/features/menu/domain/usecases/bind_menu_with_store_usecase.dart';
 
 // Repository
 part 'package:homemakers_merchant/app/features/menu/domain/repositories/menu_repository.dart';
