@@ -52,7 +52,11 @@ class _StoreExpandedCardWidgetController<T, S> extends State<StoreExpandedCardWi
                 width: double.infinity,
                 child: _storeMenuAndPreparationType(context),
               ),
-          2: (BuildContext context) => const Text('Not Available'),
+          2: (BuildContext context) => SizedBox(
+                height: context.width / 2.5,
+                width: double.infinity,
+                child: _storeAvailableMenus(context),
+              ),
           3: (BuildContext context) => SizedBox(
                 height: 170,
                 width: double.infinity,
@@ -312,6 +316,148 @@ class _StoreExpandedCardWidgetController<T, S> extends State<StoreExpandedCardWi
     );
   }
 
+  Widget _storeAvailableMenus(BuildContext context) {
+    return ListView.builder(
+      scrollDirection: Axis.horizontal,
+      //padding: EdgeInsetsDirectional.zero,
+      shrinkWrap: true,
+      itemBuilder: (context, index) {
+        return Card(
+          key: ValueKey(index),
+          margin: const EdgeInsetsDirectional.only(bottom: 16, end: 8, top: 0),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadiusDirectional.circular(6),
+          ),
+          color: Colors.white,
+          child: Padding(
+            padding: EdgeInsetsDirectional.zero,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Flexible(
+                  flex: 2,
+                  child: ImageHelper(
+                    image:
+                        'https://img.freepik.com/premium-photo/dum-handi-chicken-biryani-is-prepared-earthen-clay-pot-called-haandi-popular-indian-non-vegetarian-food_466689-52225.jpg',
+                    // image scale
+                    scale: 1.0,
+                    // Quality levels for image sampling in [ImageFilter] and [Shader] objects that sample
+                    filterQuality: FilterQuality.high,
+                    // border radius only work with [ImageShape.rounded]
+                    borderRadius: BorderRadiusDirectional.circular(0),
+                    // alignment of image
+                    //alignment: Alignment.center,
+                    // indicates where image will be loaded from, types are [network, asset,file]
+                    //imageType: ImageType.network,
+                    // indicates what shape you would like to be with image [rectangle, oval,circle or none]
+                    imageShape: ImageShape.rectangle,
+                    // image default box fit
+                    boxFit: BoxFit.fill,
+                    width: context.width / 2.5,
+                    height: context.width / 2.5,
+                    // imagePath: 'assets/images/image.png',
+                    // default loader color, default value is null
+                    //defaultLoaderColor: Colors.red,
+                    // default error builder color, default value is null
+                    defaultErrorBuilderColor: Colors.blueGrey,
+                    // the color you want to change image with
+                    //color: Colors.blue,
+                    // blend mode with image only
+                    //blendMode: BlendMode.srcIn,
+                    // error builder widget, default as icon if null
+                    errorBuilder: const Icon(
+                      Icons.image_not_supported,
+                      size: 10000,
+                    ),
+                    // loader builder widget, default as icon if null
+                    loaderBuilder: const CircularProgressIndicator(),
+                    matchTextDirection: true,
+                    placeholderText: 'Dum Handi',
+                    placeholderTextStyle: context.labelLarge!.copyWith(
+                      color: Colors.white,
+                      fontSize: 16,
+                    ),
+                    placeholderBackgroundColor: context.colorScheme.primary.withOpacity(0.5),
+                    imageType: _findImageType(
+                        'https://img.freepik.com/premium-photo/dum-handi-chicken-biryani-is-prepared-earthen-clay-pot-called-haandi-popular-indian-non-vegetarian-food_466689-52225.jpg'),
+                  ),
+                ),
+                Flexible(
+                  child: Text(
+                    'John D',
+                    style: context.titleMedium!.copyWith(
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+                /*Text(
+                  'John D',
+                  style: context.titleMedium!.copyWith(
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                const AnimatedGap(4, duration: Duration(milliseconds: 200)),
+                Text(
+                  '98765005645',
+                  style: context.labelMedium!.copyWith(
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+                const AnimatedGap(4, duration: Duration(milliseconds: 200)),
+                Chip(
+                  labelPadding: const EdgeInsetsDirectional.all(2),
+                  avatar: const SingleStarRating(
+                    rating: 4.2,
+                    starColor: Color.fromRGBO(42, 45, 50, 1),
+                    starSize: 16,
+                  ),
+                  label: Text(
+                    '4.2',
+                    style: context.labelMedium!.copyWith(
+                      color: const Color.fromRGBO(42, 45, 50, 1),
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                  backgroundColor: const Color.fromRGBO(69, 201, 125, 1),
+                  elevation: 0.0,
+                  padding: const EdgeInsetsDirectional.all(8),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadiusDirectional.circular(20),
+                  ),
+                ),*/
+                const AnimatedGap(4, duration: Duration(milliseconds: 200)),
+              ],
+            ),
+          ),
+        );
+      },
+      itemCount: 7, //widget.expandableCardInfo.storeEntity.storeOwnDeliveryPartnersInfo.length,
+    );
+  }
+
+  ImageType _findImageType(String? assetsPath) {
+    if (assetsPath.isEmptyOrNull) {
+      return ImageType.text;
+    } else {
+      switch (assetsPath) {
+        case (final String path) when path.startsWith('http') || path.startsWith('https'):
+          {
+            return ImageType.network;
+          }
+        case (final String path) when path.startsWith('/') || path.startsWith('//'):
+          {
+            return ImageType.file;
+          }
+        case _:
+          {
+            return ImageType.text;
+          }
+      }
+    }
+  }
+
   Widget _storeAvailablePaymentMethods(BuildContext context) {
     return ListView.builder(
       scrollDirection: Axis.horizontal,
@@ -481,6 +627,7 @@ class SingleStarRating extends StatefulWidget {
 
 class _SingleStarRatingState extends State<SingleStarRating> {
   late Widget startRateIcon;
+
   @override
   void initState() {
     super.initState();
