@@ -14,8 +14,7 @@ class AddUseCase<I, Repo extends BaseCRUDRepo<I>> extends UseCaseIO<I, int> {
   }
 }
 
-class AddAllUseCase<I, Repo extends BaseCRUDRepo<I>>
-    extends UseCaseIO<List<I>, List<int>> {
+class AddAllUseCase<I, Repo extends BaseCRUDRepo<I>> extends UseCaseIO<List<I>, List<int>> {
   AddAllUseCase(this.repo);
   final Repo repo;
 
@@ -25,8 +24,7 @@ class AddAllUseCase<I, Repo extends BaseCRUDRepo<I>>
   }
 }
 
-class GetByIdUseCase<O, Repo extends BaseCRUDRepo<O>>
-    extends UseCaseIO<int, O?> {
+class GetByIdUseCase<O, Repo extends BaseCRUDRepo<O>> extends UseCaseIO<int, O?> {
   GetByIdUseCase(this.repo);
   final Repo repo;
 
@@ -46,8 +44,7 @@ class GetAllUseCase<O, Repo extends BaseCRUDRepo<O>> extends UseCase<List<O>> {
   }
 }
 
-class UpdateUseCase<I, Repo extends BaseCRUDRepo<I>>
-    extends UseCaseIO<I, void> {
+class UpdateUseCase<I, Repo extends BaseCRUDRepo<I>> extends UseCaseIO<I, void> {
   UpdateUseCase(this.repo);
   final Repo repo;
 
@@ -57,8 +54,7 @@ class UpdateUseCase<I, Repo extends BaseCRUDRepo<I>>
   }
 }
 
-class UpdateAllUseCase<I, Repo extends BaseCRUDRepo<I>>
-    extends UseCaseIO<List<I>, void> {
+class UpdateAllUseCase<I, Repo extends BaseCRUDRepo<I>> extends UseCaseIO<List<I>, void> {
   UpdateAllUseCase(this.repo);
   final Repo repo;
 
@@ -68,8 +64,7 @@ class UpdateAllUseCase<I, Repo extends BaseCRUDRepo<I>>
   }
 }
 
-class DeleteUseCase<I, Repo extends BaseCRUDRepo<I>>
-    extends UseCaseIO<I, void> {
+class DeleteUseCase<I, Repo extends BaseCRUDRepo<I>> extends UseCaseIO<I, void> {
   DeleteUseCase(this.repo);
   final Repo repo;
 
@@ -79,8 +74,7 @@ class DeleteUseCase<I, Repo extends BaseCRUDRepo<I>>
   }
 }
 
-class DeleteAllUseCase<I, Repo extends BaseCRUDRepo<I>>
-    extends UseCaseIO<List<I>, void> {
+class DeleteAllUseCase<I, Repo extends BaseCRUDRepo<I>> extends UseCaseIO<List<I>, void> {
   DeleteAllUseCase(this.repo);
   final Repo repo;
 
@@ -116,4 +110,8 @@ abstract class UseCase<T> {
 
 abstract class UseCaseIO<Input, T> {
   Future<T> call(Input input);
+}
+
+abstract class UseCaseByID<Input1, Input2, T> {
+  Future<T> call({required int id, Input1? input});
 }

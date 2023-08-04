@@ -71,7 +71,11 @@ class _StoreCardState extends State<StoreCard> {
         switch (_popupStoreItemIndex) {
           case 0:
             {
-              final navigateToStoreDetailsPage = await context.push(Routes.STORE_DETAILS_PAGE);
+              final navigateToStoreDetailsPage = await context.push(Routes.STORE_DETAILS_PAGE, extra: {
+                'store': widget.storeEntity,
+                'index': widget.currentIndex,
+                'allStores': widget.listOfAllStoreEntities.toList(),
+              });
             }
           case 1:
             {}
@@ -164,6 +168,27 @@ class _StoreCardState extends State<StoreCard> {
     });
   }
 
+  ImageType _findImageType(String? assetsPath) {
+    if (assetsPath.isEmptyOrNull) {
+      return ImageType.text;
+    } else {
+      switch (assetsPath) {
+        case (final String path) when path.startsWith('http') || path.startsWith('https'):
+          {
+            return ImageType.network;
+          }
+        case (final String path) when path.startsWith('/') || path.startsWith('//'):
+          {
+            return ImageType.file;
+          }
+        case _:
+          {
+            return ImageType.text;
+          }
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return ListTile(
@@ -178,7 +203,7 @@ class _StoreCardState extends State<StoreCard> {
         // alignment of image
         //alignment: Alignment.center,
         // indicates where image will be loaded from, types are [network, asset,file]
-        imageType: (widget.storeEntity.storeImagePath.isNotEmpty) ? ImageType.network : ImageType.text,
+        imageType: _findImageType(widget.storeEntity.storeImagePath),
         // indicates what shape you would like to be with image [rectangle, oval,circle or none]
         imageShape: ImageShape.rectangle,
         // image default box fit

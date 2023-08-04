@@ -13,12 +13,18 @@ class BannerModel {
   /// Default value is [BoxFit.cover]
   final BoxFit boxFit;
 
+  final Map<String, dynamic> metaData;
+
   ///
   /// BannerModel(imagePath: '/assets/banner1.png', id: "1")
   ///
   /// OR
   ///
   /// BannerModel(imagePath: '"https://picjumbo.com/wp-content/uploads/the-golden-gate-bridge-sunset-1080x720.jpg"', id: "2"),
-  BannerModel(
-      {required this.imagePath, required this.id, this.boxFit = BoxFit.cover});
+  BannerModel({
+    required this.imagePath,
+    required this.id,
+    this.boxFit = BoxFit.cover,
+    this.metaData = const {},
+  });
 }

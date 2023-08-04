@@ -1,14 +1,4 @@
-import 'package:homemakers_merchant/app/features/menu/data/local/data_sources/menu_local_db_base_repository.dart';
-import 'package:homemakers_merchant/app/features/menu/index.dart';
-
-import 'package:homemakers_merchant/core/local/database/app_database.dart';
-import 'package:homemakers_merchant/core/local/database/base/identifiable.dart';
-import 'package:homemakers_merchant/core/local/database/base/repository_failure.dart';
-import 'package:homemakers_merchant/core/local/database/base/tryCatch.dart';
-import 'package:homemakers_merchant/utils/functional/either/either.dart';
-import 'package:sembast/sembast.dart';
-
-import 'package:sembast/utils/value_utils.dart';
+part of 'package:homemakers_merchant/app/features/menu/index.dart';
 
 class AddonsLocalDbRepository<Extras extends Addons> implements BaseAddonsLocalDbRepository<Addons> {
   // Completer is used for transforming synchronous code into asynchronous code.

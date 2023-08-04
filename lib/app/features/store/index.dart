@@ -10,10 +10,11 @@ import 'package:homemakers_merchant/app/features/profile/common/document_type_en
 import 'package:homemakers_merchant/app/features/profile/domain/entities/user_entity.dart';
 import 'package:homemakers_merchant/app/features/profile/presentation/widgets/bank/confirm_bank_information_dialog.dart';
 import 'package:homemakers_merchant/app/features/store/common/store_enum.dart';
-import 'package:homemakers_merchant/app/features/store/data/local/data_sources/store_local_data.dart';
+
 import 'package:homemakers_merchant/app/features/store/domain/entities/store_entity.dart';
 import 'package:homemakers_merchant/app/features/store/presentation/manager/store_bloc.dart';
 import 'package:homemakers_merchant/app/features/store/presentation/widgets/store_order_card_widget.dart';
+import 'package:homemakers_merchant/base/base_usecase.dart';
 import 'package:homemakers_merchant/base/widget_view.dart';
 import 'package:homemakers_merchant/core/common/enum/store_enum.dart' as storeEnum;
 import 'package:homemakers_merchant/core/constants/global_app_constants.dart';
@@ -28,7 +29,9 @@ import 'package:homemakers_merchant/config/translation/language_controller.dart'
 import 'package:homemakers_merchant/config/translation/widgets/language_selection_widget.dart';
 import 'package:homemakers_merchant/core/constants/global_app_constants.dart';
 import 'package:homemakers_merchant/core/extensions/global_extensions/dart_extensions.dart';
+import 'package:homemakers_merchant/core/network/http/base_response_error_model.dart';
 import 'package:homemakers_merchant/shared/router/app_pages.dart';
+import 'package:homemakers_merchant/shared/states/api_result_state.dart';
 import 'package:homemakers_merchant/shared/states/result_state.dart';
 import 'package:homemakers_merchant/shared/states/widget_state.dart';
 import 'package:homemakers_merchant/shared/widgets/app/app_text_field_widget.dart';
@@ -66,6 +69,7 @@ import 'package:homemakers_merchant/utils/app_log.dart';
 import 'package:homemakers_merchant/utils/app_scroll_behavior.dart';
 import 'package:homemakers_merchant/utils/fieldFocusChange.dart';
 import 'package:homemakers_merchant/utils/input_formatters/mask_text_input_formatter/mask_text_input_formatter.dart';
+import 'package:network_manager/network_manager.dart';
 import 'package:path/path.dart' as path;
 import 'package:phone_form_field/phone_form_field.dart';
 //import 'package:phone_number/phone_number.dart';
@@ -157,7 +161,6 @@ import 'package:go_router/go_router.dart';
 import 'package:lottie/lottie.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:homemakers_merchant/app/features/address/domain/entities/address_model.dart';
-import 'package:homemakers_merchant/app/features/store/data/local/data_sources/store_local_data.dart';
 import 'package:homemakers_merchant/app/features/store/presentation/manager/store_bloc.dart';
 
 import 'package:homemakers_merchant/app/features/permission/presentation/bloc/permission_bloc.dart';
@@ -246,6 +249,15 @@ import 'package:homemakers_merchant/shared/widgets/universal/multi_stream_builde
 import 'package:homemakers_merchant/utils/app_log.dart';
 import 'package:homemakers_merchant/core/extensions/app_extension.dart';
 import 'package:uuid/uuid.dart';
+import 'package:homemakers_merchant/core/local/database/base/repository.dart';
+import 'package:homemakers_merchant/core/local/database/app_database.dart';
+import 'package:homemakers_merchant/core/local/database/base/identifiable.dart';
+import 'package:homemakers_merchant/core/local/database/base/repository_failure.dart';
+import 'package:homemakers_merchant/core/local/database/base/tryCatch.dart';
+import 'package:homemakers_merchant/utils/functional/either/either.dart';
+import 'package:sembast/sembast.dart';
+import 'package:homemakers_merchant/shared/states/result_state.dart';
+
 part 'package:homemakers_merchant/app/features/store/presentation/widgets/store_card_widget.dart';
 part 'package:homemakers_merchant/app/features/store/presentation/widgets/driver_card_widget.dart';
 part 'package:homemakers_merchant/app/features/store/presentation/widgets/store_text_field_widget.dart';
@@ -270,3 +282,29 @@ part 'package:homemakers_merchant/app/features/store/presentation/pages/subpages
 part 'package:homemakers_merchant/app/features/store/presentation/pages/subpages/driver/bind_driver_with_store_greeting_page.dart';
 part 'package:homemakers_merchant/app/features/store/presentation/widgets/bind_store_card_widget.dart';
 part 'package:homemakers_merchant/app/features/store/presentation/widgets/expandable_card_widget.dart';
+
+// UseCases
+part 'package:homemakers_merchant/app/features/store/domain/usecases/edit_store_usecase.dart';
+part 'package:homemakers_merchant/app/features/store/domain/usecases/get_store_usecase.dart';
+part 'package:homemakers_merchant/app/features/store/domain/usecases/get_all_store_usecase.dart';
+part 'package:homemakers_merchant/app/features/store/domain/usecases/delete_store_usecase.dart';
+part 'package:homemakers_merchant/app/features/store/domain/usecases/delete_all_store_usecase.dart';
+part 'package:homemakers_merchant/app/features/store/domain/usecases/save_store_usecase.dart';
+// Driver UseCase
+part 'package:homemakers_merchant/app/features/store/domain/usecases/edit_driver_usecase.dart';
+part 'package:homemakers_merchant/app/features/store/domain/usecases/get_driver_usecase.dart';
+part 'package:homemakers_merchant/app/features/store/domain/usecases/get_all_driver_usecase.dart';
+part 'package:homemakers_merchant/app/features/store/domain/usecases/delete_driver_usecase.dart';
+part 'package:homemakers_merchant/app/features/store/domain/usecases/delete_all_driver_usecase.dart';
+part 'package:homemakers_merchant/app/features/store/domain/usecases/save_driver_usecase.dart';
+part 'package:homemakers_merchant/app/features/store/domain/usecases/bind_driver_with_store_usecase.dart';
+// Repository
+part 'package:homemakers_merchant/app/features/store/domain/repositories/store_repository.dart';
+part 'package:homemakers_merchant/app/features/store/data/repositories/store_repository_implement.dart';
+// Data
+part 'package:homemakers_merchant/app/features/store/data/remote/data_sources/store_datasource.dart';
+part 'package:homemakers_merchant/app/features/store/data/remote/data_sources/store_remote_datasource.dart';
+part 'package:homemakers_merchant/app/features/store/data/local/data_sources/store_local_data.dart';
+part 'package:homemakers_merchant/app/features/store/data/local/data_sources/store_local_db_base_repository.dart';
+part 'package:homemakers_merchant/app/features/store/data/local/data_sources/store_local_db_dao.dart';
+part 'package:homemakers_merchant/app/features/store/data/local/data_sources/store_own_driver_local_db_dao.dart';

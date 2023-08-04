@@ -52,16 +52,20 @@ class _StoreExpandedCardWidgetController<T, S> extends State<StoreExpandedCardWi
                 width: double.infinity,
                 child: _storeMenuAndPreparationType(context),
               ),
-          2: (BuildContext context) => SizedBox(
-                height: context.width / 2.5,
-                width: double.infinity,
-                child: _storeAvailableMenus(context),
-              ),
-          3: (BuildContext context) => SizedBox(
-                height: 170,
-                width: double.infinity,
-                child: _storeAvailableDrivers(context),
-              ),
+          2: (BuildContext context) => (widget.expandableCardInfo.storeEntity.menuEntities.isEmptyOrNull)
+              ? const Offstage()
+              : SizedBox(
+                  height: context.width / 2.25,
+                  width: double.infinity,
+                  child: _storeAvailableMenus(context),
+                ),
+          3: (BuildContext context) => (widget.expandableCardInfo.storeEntity.storeOwnDeliveryPartnersInfo.isEmptyOrNull)
+              ? const Offstage()
+              : SizedBox(
+                  height: 170,
+                  width: double.infinity,
+                  child: _storeAvailableDrivers(context),
+                ),
           4: (BuildContext context) => SizedBox(
                 height: 65,
                 width: double.infinity,
@@ -86,24 +90,24 @@ class _StoreExpandedCardWidgetController<T, S> extends State<StoreExpandedCardWi
           ),
           color: Colors.white,
           child: Padding(
-            padding: EdgeInsetsDirectional.only(start: 8, end: 8, top: 8, bottom: 6),
+            padding: const EdgeInsetsDirectional.only(start: 8, end: 8, top: 8, bottom: 6),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisSize: MainAxisSize.min,
               children: [
                 Text(
-                  'SUN',
+                  widget.expandableCardInfo.storeEntity.storeWorkingDays[index].shortName,
                   style: context.labelMedium!.copyWith(
                     fontWeight: FontWeight.bold,
                     color: const Color.fromRGBO(69, 201, 125, 1),
                   ),
                 ),
-                AnimatedGap(4, duration: Duration(milliseconds: 200)),
+                const AnimatedGap(4, duration: Duration(milliseconds: 200)),
                 Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Text(
-                      '9:00 AM',
+                      widget.expandableCardInfo.storeEntity.storeOpeningTime,
                       style: context.labelMedium!.copyWith(
                         fontWeight: FontWeight.w500,
                       ),
@@ -115,7 +119,7 @@ class _StoreExpandedCardWidgetController<T, S> extends State<StoreExpandedCardWi
                       ),
                     ),
                     Text(
-                      '9:00 PM',
+                      widget.expandableCardInfo.storeEntity.storeClosingTime,
                       style: context.labelMedium!.copyWith(
                         fontWeight: FontWeight.w500,
                       ),
@@ -127,7 +131,7 @@ class _StoreExpandedCardWidgetController<T, S> extends State<StoreExpandedCardWi
           ),
         );
       },
-      itemCount: 7, //widget.expandableCardInfo.storeEntity.storeWorkingDays.length,
+      itemCount: widget.expandableCardInfo.storeEntity.storeWorkingDays.length,
     );
   }
 
@@ -149,13 +153,12 @@ class _StoreExpandedCardWidgetController<T, S> extends State<StoreExpandedCardWi
                 ),
                 child: Chip(
                   labelPadding: const EdgeInsetsDirectional.all(2),
-                  avatar: Icon(
+                  avatar: const Icon(
                     Icons.check,
-                    color: const Color.fromRGBO(69, 201, 125, 1),
+                    color: Color.fromRGBO(69, 201, 125, 1),
                   ),
                   label: Text(
-                    'Vegetration',
-                    style: TextStyle(),
+                    widget.expandableCardInfo.storeEntity.storeAvailableFoodTypes[index].title,
                   ),
                   backgroundColor: Colors.white,
                   elevation: 6.0,
@@ -163,14 +166,14 @@ class _StoreExpandedCardWidgetController<T, S> extends State<StoreExpandedCardWi
                   padding: const EdgeInsetsDirectional.all(8),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadiusDirectional.circular(20),
-                    side: BorderSide(
-                      color: const Color.fromRGBO(69, 201, 125, 1),
+                    side: const BorderSide(
+                      color: Color.fromRGBO(69, 201, 125, 1),
                     ),
                   ),
                 ),
               );
             },
-            itemCount: 7, //widget.expandableCardInfo.storeEntity.storeAvailableFoodTypes.length,
+            itemCount: widget.expandableCardInfo.storeEntity.storeAvailableFoodTypes.length,
           ),
         ),
         //const AnimatedGap(3, duration: Duration(milliseconds: 200)),
@@ -193,13 +196,12 @@ class _StoreExpandedCardWidgetController<T, S> extends State<StoreExpandedCardWi
                 ),
                 child: Chip(
                   labelPadding: const EdgeInsetsDirectional.all(2),
-                  avatar: Icon(
+                  avatar: const Icon(
                     Icons.check,
-                    color: const Color.fromRGBO(69, 201, 125, 1),
+                    color: Color.fromRGBO(69, 201, 125, 1),
                   ),
                   label: Text(
-                    'Cooking',
-                    style: TextStyle(),
+                    widget.expandableCardInfo.storeEntity.storeAvailableFoodPreparationType[index].title,
                   ),
                   backgroundColor: Colors.white,
                   elevation: 6.0,
@@ -207,14 +209,14 @@ class _StoreExpandedCardWidgetController<T, S> extends State<StoreExpandedCardWi
                   padding: const EdgeInsetsDirectional.all(8),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadiusDirectional.circular(20),
-                    side: BorderSide(
-                      color: const Color.fromRGBO(69, 201, 125, 1),
+                    side: const BorderSide(
+                      color: Color.fromRGBO(69, 201, 125, 1),
                     ),
                   ),
                 ),
               );
             },
-            itemCount: 7, //widget.expandableCardInfo.storeEntity.storeAvailableFoodPreparationType.length,
+            itemCount: widget.expandableCardInfo.storeEntity.storeAvailableFoodPreparationType.length,
           ),
         ),
       ],
@@ -233,9 +235,9 @@ class _StoreExpandedCardWidgetController<T, S> extends State<StoreExpandedCardWi
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadiusDirectional.circular(6),
           ),
-          color: Colors.white,
+          color: const Color.fromRGBO(242, 242, 242, 1),
           child: Padding(
-            padding: EdgeInsetsDirectional.only(start: 16, end: 16, top: 12, bottom: 10),
+            padding: const EdgeInsetsDirectional.only(start: 16, end: 16, top: 12, bottom: 10),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
@@ -272,21 +274,21 @@ class _StoreExpandedCardWidgetController<T, S> extends State<StoreExpandedCardWi
                   matchTextDirection: true,
                 ),
                 Text(
-                  'John D',
+                  widget.expandableCardInfo.storeEntity.storeOwnDeliveryPartnersInfo[index].driverName,
                   style: context.titleMedium!.copyWith(
                     fontWeight: FontWeight.bold,
                   ),
                 ),
                 const AnimatedGap(4, duration: Duration(milliseconds: 200)),
                 Text(
-                  '98765005645',
+                  widget.expandableCardInfo.storeEntity.storeOwnDeliveryPartnersInfo[index].driverMobileNumber,
                   style: context.labelMedium!.copyWith(
                     fontWeight: FontWeight.w500,
                   ),
                 ),
                 const AnimatedGap(4, duration: Duration(milliseconds: 200)),
                 Chip(
-                  labelPadding: const EdgeInsetsDirectional.all(2),
+                  //labelPadding: const EdgeInsetsDirectional.all(2),
                   avatar: const SingleStarRating(
                     rating: 4.2,
                     starColor: Color.fromRGBO(42, 45, 50, 1),
@@ -297,6 +299,7 @@ class _StoreExpandedCardWidgetController<T, S> extends State<StoreExpandedCardWi
                     style: context.labelMedium!.copyWith(
                       color: const Color.fromRGBO(42, 45, 50, 1),
                       fontWeight: FontWeight.w600,
+                      fontSize: 16,
                     ),
                   ),
                   backgroundColor: const Color.fromRGBO(69, 201, 125, 1),
@@ -312,7 +315,7 @@ class _StoreExpandedCardWidgetController<T, S> extends State<StoreExpandedCardWi
           ),
         );
       },
-      itemCount: 7, //widget.expandableCardInfo.storeEntity.storeOwnDeliveryPartnersInfo.length,
+      itemCount: widget.expandableCardInfo.storeEntity.storeOwnDeliveryPartnersInfo.length,
     );
   }
 
@@ -328,19 +331,19 @@ class _StoreExpandedCardWidgetController<T, S> extends State<StoreExpandedCardWi
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadiusDirectional.circular(6),
           ),
-          color: Colors.white,
+          color: const Color.fromRGBO(242, 242, 242, 1),
           child: Padding(
             padding: EdgeInsetsDirectional.zero,
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.start,
               mainAxisSize: MainAxisSize.min,
               children: [
                 Flexible(
                   flex: 2,
                   child: ImageHelper(
-                    image:
-                        'https://img.freepik.com/premium-photo/dum-handi-chicken-biryani-is-prepared-earthen-clay-pot-called-haandi-popular-indian-non-vegetarian-food_466689-52225.jpg',
+                    image: widget.expandableCardInfo.storeEntity.menuEntities[index].menuImages[0].assetPath,
+                    //'https://img.freepik.com/premium-photo/dum-handi-chicken-biryani-is-prepared-earthen-clay-pot-called-haandi-popular-indian-non-vegetarian-food_466689-52225.jpg',
                     // image scale
                     scale: 1.0,
                     // Quality levels for image sampling in [ImageFilter] and [Shader] objects that sample
@@ -355,8 +358,8 @@ class _StoreExpandedCardWidgetController<T, S> extends State<StoreExpandedCardWi
                     imageShape: ImageShape.rectangle,
                     // image default box fit
                     boxFit: BoxFit.fill,
-                    width: context.width / 2.5,
-                    height: context.width / 2.5,
+                    width: context.width / 2.15,
+                    height: context.width / 2.15,
                     // imagePath: 'assets/images/image.png',
                     // default loader color, default value is null
                     //defaultLoaderColor: Colors.red,
@@ -385,55 +388,83 @@ class _StoreExpandedCardWidgetController<T, S> extends State<StoreExpandedCardWi
                   ),
                 ),
                 Flexible(
-                  child: Text(
-                    'John D',
-                    style: context.titleMedium!.copyWith(
-                      fontWeight: FontWeight.bold,
+                  flex: 1,
+                  child: DecoratedBox(
+                    decoration: BoxDecoration(
+                        border: Border.all(
+                      color: const Color.fromRGBO(242, 242, 242, 1),
+                    )),
+                    child: Stack(
+                      alignment: AlignmentDirectional.topCenter,
+                      clipBehavior: Clip.none,
+                      children: [
+                        Align(
+                          alignment: AlignmentDirectional.center,
+                          child: Center(
+                            child: Container(
+                              width: context.width / 2.15,
+                              padding: const EdgeInsetsDirectional.only(
+                                start: 12,
+                                end: 12,
+                                top: 12,
+                                bottom: 4,
+                              ),
+                              child: Text(
+                                widget.expandableCardInfo.storeEntity.menuEntities[index].menuName,
+                                style: context.labelMedium!.copyWith(
+                                  fontWeight: FontWeight.bold,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                                maxLines: 2,
+                                textAlign: TextAlign.center,
+                              ),
+                            ),
+                          ),
+                        ),
+                        AnimatedPositioned(
+                          duration: const Duration(milliseconds: 300),
+                          top: -20,
+                          child: Center(
+                            child: Chip(
+                              labelPadding: const EdgeInsetsDirectional.all(1),
+                              avatar: const SingleStarRating(
+                                rating: 4.2,
+                                starColor: Color.fromRGBO(42, 45, 50, 1),
+                                starSize: 16,
+                              ),
+                              label: Text(
+                                '4.2',
+                                style: context.labelSmall!.copyWith(
+                                  color: const Color.fromRGBO(42, 45, 50, 1),
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: 16,
+                                ),
+                              ),
+                              backgroundColor: const Color.fromRGBO(69, 201, 125, 1),
+                              elevation: 0.0,
+                              visualDensity: const VisualDensity(horizontal: -4, vertical: -4),
+                              materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                              padding: const EdgeInsetsDirectional.all(8),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadiusDirectional.circular(20),
+                                side: const BorderSide(
+                                  color: Color.fromRGBO(242, 242, 242, 1),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 ),
-                /*Text(
-                  'John D',
-                  style: context.titleMedium!.copyWith(
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                const AnimatedGap(4, duration: Duration(milliseconds: 200)),
-                Text(
-                  '98765005645',
-                  style: context.labelMedium!.copyWith(
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-                const AnimatedGap(4, duration: Duration(milliseconds: 200)),
-                Chip(
-                  labelPadding: const EdgeInsetsDirectional.all(2),
-                  avatar: const SingleStarRating(
-                    rating: 4.2,
-                    starColor: Color.fromRGBO(42, 45, 50, 1),
-                    starSize: 16,
-                  ),
-                  label: Text(
-                    '4.2',
-                    style: context.labelMedium!.copyWith(
-                      color: const Color.fromRGBO(42, 45, 50, 1),
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                  backgroundColor: const Color.fromRGBO(69, 201, 125, 1),
-                  elevation: 0.0,
-                  padding: const EdgeInsetsDirectional.all(8),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadiusDirectional.circular(20),
-                  ),
-                ),*/
                 const AnimatedGap(4, duration: Duration(milliseconds: 200)),
               ],
             ),
           ),
         );
       },
-      itemCount: 7, //widget.expandableCardInfo.storeEntity.storeOwnDeliveryPartnersInfo.length,
+      itemCount: widget.expandableCardInfo.storeEntity.menuEntities.length,
     );
   }
 
@@ -469,26 +500,34 @@ class _StoreExpandedCardWidgetController<T, S> extends State<StoreExpandedCardWi
             end: 8,
           ),
           child: Chip(
-            labelPadding: const EdgeInsetsDirectional.all(2),
-            avatar: Icon(
-              Icons.payment,
+            //labelPadding: const EdgeInsetsDirectional.all(2),
+            /*avatar: widget.expandableCardInfo.storeEntity.storeAcceptedPaymentModes[index].icon?.copyWith(
               color: const Color.fromRGBO(69, 201, 125, 1),
+            ),*/
+            avatar: const Icon(
+              Icons.check,
+              color: Color.fromRGBO(69, 201, 125, 1),
             ),
             label: Text(
-              'Cash',
-              style: TextStyle(),
+              widget.expandableCardInfo.storeEntity.storeAcceptedPaymentModes[index].title,
             ),
-            backgroundColor: Colors.transparent,
-            elevation: 0.0,
             //shadowColor: Colors.grey[60],
+            backgroundColor: Colors.white,
+            elevation: 6.0,
+            shadowColor: Colors.grey[60],
             padding: const EdgeInsetsDirectional.all(8),
+            materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+            visualDensity: const VisualDensity(horizontal: 0, vertical: 0),
             shape: RoundedRectangleBorder(
-              borderRadius: BorderRadiusDirectional.circular(0),
+              borderRadius: BorderRadiusDirectional.circular(20),
+              side: const BorderSide(
+                color: Color.fromRGBO(69, 201, 125, 1),
+              ),
             ),
           ),
         );
       },
-      itemCount: 4, //widget.expandableCardInfo.storeEntity.storeAcceptedPaymentModes.length,
+      itemCount: widget.expandableCardInfo.storeEntity.storeAcceptedPaymentModes.length,
     );
   }
 

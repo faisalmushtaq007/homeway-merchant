@@ -5,8 +5,8 @@ import 'package:bloc_concurrency/bloc_concurrency.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:homemakers_merchant/app/features/profile/domain/entities/user_entity.dart';
 import 'package:homemakers_merchant/app/features/store/common/store_enum.dart';
-import 'package:homemakers_merchant/app/features/store/data/local/data_sources/store_local_db_dao.dart';
 import 'package:homemakers_merchant/app/features/store/domain/entities/store_entity.dart';
+import 'package:homemakers_merchant/app/features/store/index.dart';
 import 'package:homemakers_merchant/bootup/injection_container.dart';
 import 'package:homemakers_merchant/core/local/database/base/identifiable.dart';
 import 'package:homemakers_merchant/core/local/database/base/repository_failure.dart';
@@ -81,9 +81,9 @@ class StoreBloc extends Bloc<StoreEvent, StoreState> {
         result = await serviceLocator<StoreLocalDbRepository>().add(event.storeEntity);
       }
       result.fold((left) {
-        debugPrint('Save Store error ${left.toString()}');
+        appLog.d('Save Store error ${left.toString()}');
       }, (right) {
-        debugPrint('Save StoreID : ${right.storeID}, ${right.storeName}');
+        appLog.d('Save StoreID : ${right.storeID}, ${right.storeName}');
       });
       emit(
         SaveStoreState(

@@ -126,18 +126,22 @@ class _SaveStorePageState extends State<SaveStorePage> {
       StoreAcceptedPaymentModes(
         title: 'Cash',
         id: 0,
+        //icon: const Icon(Icons.payments),
       ),
       StoreAcceptedPaymentModes(
         title: 'Card',
         id: 1,
+        //icon: const Icon(Icons.payment),
       ),
       StoreAcceptedPaymentModes(
         title: 'Online',
         id: 2,
+        //icon: const Icon(Icons.devices),
       ),
       StoreAcceptedPaymentModes(
         title: 'Wallet',
         id: 3,
+        //icon: const Icon(Icons.account_balance_wallet),
       ),
     ];
   }
@@ -284,11 +288,29 @@ class _SaveStorePageState extends State<SaveStorePage> {
                                                 path.basenameWithoutExtension(xCroppedDocumentFile?.path ?? croppedDocumentFile?.path ?? tempName);
                                             String fileExtension = path.extension(xCroppedDocumentFile?.path ?? croppedDocumentFile?.path ?? '.png');
                                             String croppedFilePath = (xCroppedDocumentFile.path.isEmpty) ? xCroppedDocumentFile.path : croppedDocumentFile.path;
+                                            final fileReadAsBytes = await file.readAsBytes();
+                                            final xFileReadAsBytes = await xFile.readAsBytes();
+                                            final fileReadAsString = base64Encode(fileReadAsBytes);
+                                            final xFileReadAsString = base64Encode(xFileReadAsBytes);
                                             listBanners.insert(
                                                 0,
                                                 BannerModel(
                                                   imagePath: croppedFilePath,
-                                                  id: Uuid().v4(),
+                                                  id: const Uuid().v4(),
+                                                  metaData: {
+                                                    'id': const Uuid().v4(),
+                                                    'filePath': filePath,
+                                                    'croppedFilePath': croppedFilePath,
+                                                    'fileExtension': fileExtension,
+                                                    'fileNameWithExtension': fileNameWithExtension,
+                                                    //'file': file,
+                                                    //'xFile': xFile,
+                                                    'assetNetworkUrl': assetNetworkUrl,
+                                                    'fileReadAsBytes': fileReadAsBytes,
+                                                    'xFileReadAsBytes': xFileReadAsBytes,
+                                                    'fileReadAsString': fileReadAsString,
+                                                    'xFileReadAsString': xFileReadAsString,
+                                                  },
                                                 ));
                                             setState(() {});
                                           }
@@ -298,7 +320,7 @@ class _SaveStorePageState extends State<SaveStorePage> {
                                           height: 150,
                                           decoration: BoxDecoration(
                                             borderRadius: BorderRadiusDirectional.circular(10),
-                                            border: BorderDirectional(
+                                            border: const BorderDirectional(
                                               start: BorderSide(width: 0.5),
                                               end: BorderSide(width: 0.5),
                                               top: BorderSide(width: 0.5),
@@ -331,7 +353,7 @@ class _SaveStorePageState extends State<SaveStorePage> {
                                         Text(
                                           'Make sure your store image is clear and visible with jpg or png format',
                                           style: context.labelMedium!.copyWith(
-                                            color: Color.fromRGBO(127, 129, 132, 1),
+                                            color: const Color.fromRGBO(127, 129, 132, 1),
                                           ),
                                           textDirection: serviceLocator<LanguageController>().targetTextDirection,
                                           maxLines: 2,
@@ -404,11 +426,11 @@ class _SaveStorePageState extends State<SaveStorePage> {
                                               isDense: true,
                                               suffixIcon: Container(
                                                 width: kMinInteractiveDimension * 1.05,
-                                                constraints: BoxConstraints(
+                                                constraints: const BoxConstraints(
                                                   minWidth: kMinInteractiveDimension * 1.05,
                                                   minHeight: kMinInteractiveDimension * 2,
                                                 ),
-                                                decoration: BoxDecoration(
+                                                decoration: const BoxDecoration(
                                                   border: BorderDirectional(
                                                     start: BorderSide(
                                                       width: 1.0,
@@ -425,7 +447,7 @@ class _SaveStorePageState extends State<SaveStorePage> {
                                                   children: [
                                                     IconButton(
                                                       onPressed: () {},
-                                                      icon: Icon(
+                                                      icon: const Icon(
                                                         Icons.my_location,
                                                       ),
                                                     ),
@@ -443,7 +465,7 @@ class _SaveStorePageState extends State<SaveStorePage> {
                                         );
                                       },
                                     ),
-                                    Divider(),
+                                    const Divider(),
                                     Column(
                                       mainAxisSize: MainAxisSize.min,
                                       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -515,11 +537,11 @@ class _SaveStorePageState extends State<SaveStorePage> {
                                               border: OutlineInputBorder(
                                                 borderRadius: BorderRadius.circular(10),
                                               ),
-                                              suffixIcon: Icon(
+                                              suffixIcon: const Icon(
                                                 Icons.arrow_drop_down,
                                               ),
                                               isDense: true,
-                                              contentPadding: EdgeInsetsDirectional.symmetric(vertical: 8, horizontal: 12),
+                                              contentPadding: const EdgeInsetsDirectional.symmetric(vertical: 8, horizontal: 12),
                                             ),
                                             validator: (value) {
                                               if (value == null || value.isEmpty) {
@@ -543,11 +565,11 @@ class _SaveStorePageState extends State<SaveStorePage> {
                                               border: OutlineInputBorder(
                                                 borderRadius: BorderRadius.circular(10),
                                               ),
-                                              suffixIcon: Icon(
+                                              suffixIcon: const Icon(
                                                 Icons.arrow_drop_down,
                                               ),
                                               isDense: true,
-                                              contentPadding: EdgeInsetsDirectional.symmetric(vertical: 8, horizontal: 12),
+                                              contentPadding: const EdgeInsetsDirectional.symmetric(vertical: 8, horizontal: 12),
                                             ),
                                             validator: (value) {
                                               if (value == null || value.isEmpty) {
@@ -560,7 +582,7 @@ class _SaveStorePageState extends State<SaveStorePage> {
                                         ),
                                       ],
                                     ),
-                                    Divider(),
+                                    const Divider(),
                                     Text(
                                       'Food types',
                                       style: context.titleLarge!.copyWith(
@@ -612,7 +634,7 @@ class _SaveStorePageState extends State<SaveStorePage> {
                                       initialSelectedFoodPreparationTypesList: [],
                                       onSaved: (newValue) {},
                                     ),
-                                    Divider(),
+                                    const Divider(),
                                     Column(
                                       mainAxisSize: MainAxisSize.min,
                                       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -634,7 +656,7 @@ class _SaveStorePageState extends State<SaveStorePage> {
                                       ],
                                     ),
                                     Card(
-                                      margin: EdgeInsetsDirectional.only(start: 0, end: 0, top: 4, bottom: 4),
+                                      margin: const EdgeInsetsDirectional.only(start: 0, end: 0, top: 4, bottom: 4),
                                       shape: RoundedRectangleBorder(
                                         borderRadius: BorderRadiusDirectional.circular(10),
                                       ),
@@ -650,14 +672,14 @@ class _SaveStorePageState extends State<SaveStorePage> {
                                               });
                                             },
                                             value: _hasStoreOwnDeliveryService,
-                                            title: Text('I have my own delivery service').translate(),
+                                            title: const Text('I have my own delivery service').translate(),
                                             isThreeLine: false,
                                             dense: true,
                                             controlAffinity: ListTileControlAffinity.leading,
-                                            visualDensity: VisualDensity(horizontal: -4, vertical: 0),
+                                            visualDensity: const VisualDensity(horizontal: -4, vertical: 0),
                                           ),
                                           AnimatedCrossFade(
-                                            firstChild: SizedBox.shrink(),
+                                            firstChild: const SizedBox.shrink(),
                                             secondChild: Column(
                                               mainAxisSize: MainAxisSize.min,
                                               crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -855,7 +877,7 @@ class _SaveStorePageState extends State<SaveStorePage> {
                                       ),
                                     ),
                                     const AnimatedGap(6, duration: Duration(milliseconds: 500)),
-                                    Divider(),
+                                    const Divider(),
                                     Text(
                                       'Accepted payment mode',
                                       style: context.titleLarge!.copyWith(
@@ -894,8 +916,8 @@ class _SaveStorePageState extends State<SaveStorePage> {
                                                 area: _storeAddressController.value.text,
                                               ),
                                             ),
-                                            storeImagePath: '',
-                                            storeImageMetaData: {},
+                                            storeImagePath: listBanners[0].imagePath,
+                                            storeImageMetaData: listBanners[0].metaData,
                                             storeMaximumFoodDeliveryTime: int.parse(_storeMaxDeliveryTimeController.value.text),
                                             storeMaximumFoodDeliveryRadius: _maximumDeliveryRadiusValue.toInt(),
                                             storeOpeningTime: _storeOpeningTimeController.value.text.trim(),

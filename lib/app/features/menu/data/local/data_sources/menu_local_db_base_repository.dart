@@ -1,6 +1,4 @@
-import 'package:homemakers_merchant/app/features/menu/index.dart';
-
-import 'package:homemakers_merchant/core/local/database/base/repository.dart';
+part of 'package:homemakers_merchant/app/features/menu/index.dart';
 
 abstract class BaseMenuLocalDbRepository<T extends MenuEntity> implements ReadOnlyRepository<T>, WriteOnlyRepository<T>, DeleteAll<T>, DeleteById<T> {}
 

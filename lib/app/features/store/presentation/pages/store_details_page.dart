@@ -20,7 +20,6 @@ class _StoreDetailsPageController extends State<StoreDetailsPage> {
   late final ScrollController scrollController;
   late final ScrollController innerScrollController;
   late final ScrollController sliverListScrollController;
-  List<String> listOfStoreImages = [];
   List<BannerModel> listBanners = [];
   StoreEntity storeEntity = StoreEntity();
   List<StoreEntity> storeEntities = [];
@@ -41,24 +40,18 @@ class _StoreDetailsPageController extends State<StoreDetailsPage> {
     storeEntity = widget.storeEntity;
     currentIndex = widget.index;
     storeEntities = List<StoreEntity>.from(widget.storeEntities.toList());
-    listOfStoreImages = [];
-    listOfStoreImages.clear();
-    listOfStoreImages = [
-      'https://img.freepik.com/free-photo/smiling-asian-barista-girl-wears-apron-shows-credit-card-machine-processing-payment-suggest-p_1258-134410.jpg',
-      'https://img.freepik.com/premium-photo/charming-woman-working-her-bakery-shop_130388-1288.jpg'
-    ];
+
     listBanners = [];
     listBanners.clear();
-    listBanners = [
-      BannerModel(
-          imagePath:
-              'https://img.freepik.com/premium-photo/generative-ai-portrait-happy-restaurant-owner-standing-front-coffee-shop-with-open-signboard_28914-14863.jpg?size=626&ext=jpg',
-          id: "1"),
-      BannerModel(
-          imagePath:
-              'https://img.freepik.com/premium-photo/contemporary-young-handsome-waiter-apron-using-tablet-while-taking-online-orders-clients-come-evening_274679-13753.jpg?size=626&ext=jpg',
-          id: "2"),
-    ];
+    listBanners = List<BannerModel>.from(
+      [
+        BannerModel(
+          imagePath: storeEntity.storeImagePath,
+          id: storeEntity.storeImageMetaData['id'],
+          metaData: storeEntity.storeImageMetaData,
+        ),
+      ],
+    );
   }
 
   @override
@@ -66,8 +59,6 @@ class _StoreDetailsPageController extends State<StoreDetailsPage> {
     scrollController.dispose();
     innerScrollController.dispose();
     sliverListScrollController.dispose();
-    listOfStoreImages = [];
-    listOfStoreImages.clear;
     listBanners = [];
     listBanners.clear();
     storeEntities = [];
@@ -236,13 +227,13 @@ class _StoreDetailsPageView extends WidgetView<StoreDetailsPage, _StoreDetailsPa
                                   crossAxisAlignment: WrapCrossAlignment.center,
                                   children: [
                                     Icon(
-                                      Icons.store,
+                                      Icons.storefront,
                                       color: context.colorScheme.primary,
                                       size: 32,
                                     ),
                                     const AnimatedGap(12, duration: Duration(milliseconds: 200)),
                                     Text(
-                                      'Nura Birayani', //state.storeEntity.storeName,
+                                      state.storeEntity.storeName,
                                       style: context.headlineSmall!.copyWith(fontWeight: FontWeight.bold),
                                       textAlign: TextAlign.center,
                                     ),
@@ -254,7 +245,8 @@ class _StoreDetailsPageView extends WidgetView<StoreDetailsPage, _StoreDetailsPa
                                   crossAxisAlignment: WrapCrossAlignment.center,
                                   children: [
                                     Text(
-                                      'Macs Eatery ماكس ايتري  18th Street, As Salam, Dammam 32416, Saudi Arabia', //state.storeEntity.storeName,
+                                      state.storeEntity.storeAddress?.address?.area ??
+                                          'Macs Eatery ماكس ايتري  18th Street, As Salam, Dammam 32416, Saudi Arabia',
                                       style: context.bodyMedium!.copyWith(fontWeight: FontWeight.w500),
                                       textAlign: TextAlign.center,
                                     ),
@@ -317,21 +309,28 @@ class _StoreDetailsPageView extends WidgetView<StoreDetailsPage, _StoreDetailsPa
                                             crossAxisAlignment: CrossAxisAlignment.center,
                                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                             children: [
-                                              RatingBar.readOnly(
+                                              const RatingBar.readOnly(
                                                 filledIcon: Icons.star,
                                                 emptyIcon: Icons.star_border,
+                                                halfFilledIcon: Icons.star_half,
                                                 initialRating: 4.5,
                                                 maxRating: 5,
                                                 size: 28,
+                                                isHalfAllowed: true,
                                               ),
                                               Container(
-                                                padding: EdgeInsetsDirectional.symmetric(vertical: 1, horizontal: 8),
+                                                padding: EdgeInsetsDirectional.symmetric(vertical: 2, horizontal: 8),
                                                 margin: EdgeInsetsDirectional.only(end: 8),
                                                 child: Text(
                                                   "${4.5.toStringAsPrecision(2)}/${5.toStringAsPrecision(2)}",
                                                 ),
                                                 decoration: BoxDecoration(
-                                                    color: const Color(0xff9b9b9b), shape: BoxShape.rectangle, borderRadius: BorderRadius.circular(10)),
+                                                    color: const Color.fromRGBO(242, 242, 242, 1),
+                                                    shape: BoxShape.rectangle,
+                                                    borderRadius: BorderRadius.circular(12),
+                                                    border: Border.all(
+                                                      color: const Color.fromRGBO(42, 45, 50, 0.15),
+                                                    )),
                                               ),
                                             ],
                                           ),

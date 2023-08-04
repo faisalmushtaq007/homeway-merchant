@@ -5,8 +5,6 @@ import 'package:homemakers_merchant/app/features/authentication/domain/use_cases
 import 'package:homemakers_merchant/app/features/authentication/domain/use_cases/verify_otp_usecase.dart';
 import 'package:homemakers_merchant/app/features/authentication/presentation/manager/otp_verification/otp_verification_bloc.dart';
 import 'package:homemakers_merchant/app/features/authentication/presentation/manager/phone_number_verification_bloc.dart';
-import 'package:homemakers_merchant/app/features/menu/data/local/data_sources/addons_local_db_dao.dart';
-import 'package:homemakers_merchant/app/features/menu/data/local/data_sources/menu_local_db_dao.dart';
 import 'package:homemakers_merchant/app/features/menu/index.dart';
 
 import 'package:homemakers_merchant/app/features/permission/presentation/bloc/permission_bloc.dart';
@@ -18,9 +16,8 @@ import 'package:homemakers_merchant/app/features/profile/domain/entities/user_en
 import 'package:homemakers_merchant/app/features/profile/presentation/manager/bank/bank_information_bloc.dart';
 import 'package:homemakers_merchant/app/features/profile/presentation/manager/document/business_document_bloc.dart';
 import 'package:homemakers_merchant/app/features/profile/presentation/manager/user_model_storage_controller.dart';
-import 'package:homemakers_merchant/app/features/store/data/local/data_sources/store_local_db_dao.dart';
-import 'package:homemakers_merchant/app/features/store/data/local/data_sources/store_own_driver_local_db_dao.dart';
 import 'package:homemakers_merchant/app/features/store/domain/entities/store_entity.dart';
+import 'package:homemakers_merchant/app/features/store/index.dart';
 import 'package:homemakers_merchant/app/features/store/presentation/manager/store_bloc.dart';
 import 'package:homemakers_merchant/config/permission/permission_controller.dart';
 import 'package:homemakers_merchant/config/permission/permission_service.dart';
@@ -215,6 +212,70 @@ void _setUpUseCases() {
       authenticationRepository: serviceLocator(),
     ),
   );
+  // Store
+  serviceLocator.registerLazySingleton<SaveStoreUseCase>(
+    () => SaveStoreUseCase(
+      storeRepository: serviceLocator(),
+    ),
+  );
+  serviceLocator.registerLazySingleton<EditStoreUseCase>(
+    () => EditStoreUseCase(
+      storeRepository: serviceLocator(),
+    ),
+  );
+  serviceLocator.registerLazySingleton<GetStoreUseCase>(
+    () => GetStoreUseCase(
+      storeRepository: serviceLocator(),
+    ),
+  );
+  serviceLocator.registerLazySingleton<GetAllStoreUseCase>(
+    () => GetAllStoreUseCase(
+      storeRepository: serviceLocator(),
+    ),
+  );
+  serviceLocator.registerLazySingleton<DeleteStoreUseCase>(
+    () => DeleteStoreUseCase(
+      storeRepository: serviceLocator(),
+    ),
+  );
+  serviceLocator.registerLazySingleton<DeleteAllStoreUseCase>(
+    () => DeleteAllStoreUseCase(
+      storeRepository: serviceLocator(),
+    ),
+  );
+  // Driver
+  //Menu
+  serviceLocator.registerLazySingleton<SaveMenuUseCase>(
+    () => SaveMenuUseCase(
+      menuRepository: serviceLocator(),
+    ),
+  );
+  serviceLocator.registerLazySingleton<EditMenuUseCase>(
+    () => EditMenuUseCase(
+      menuRepository: serviceLocator(),
+    ),
+  );
+  serviceLocator.registerLazySingleton<GetMenuUseCase>(
+    () => GetMenuUseCase(
+      menuRepository: serviceLocator(),
+    ),
+  );
+  serviceLocator.registerLazySingleton<GetAllMenuUseCase>(
+    () => GetAllMenuUseCase(
+      menuRepository: serviceLocator(),
+    ),
+  );
+  serviceLocator.registerLazySingleton<DeleteMenuUseCase>(
+    () => DeleteMenuUseCase(
+      menuRepository: serviceLocator(),
+    ),
+  );
+  serviceLocator.registerLazySingleton<DeleteAllMenuUseCase>(
+    () => DeleteAllMenuUseCase(
+      menuRepository: serviceLocator(),
+    ),
+  );
+  //Addons
 }
 
 void _setUpRepository() {
@@ -227,6 +288,24 @@ void _setUpRepository() {
   serviceLocator.registerSingleton<AuthenticationRepository>(
     AuthenticationRepositoryImplement(
       authenticationDataSource: serviceLocator(),
+    ),
+  );
+  // Store
+  serviceLocator.registerLazySingleton<StoreDataSource>(StoreRemoteDataSource());
+  serviceLocator.registerLazySingleton<StoreRepository>(
+    () => StoreRepositoryImplement(
+      remoteDataSource: serviceLocator(),
+      storeLocalDataSource: serviceLocator(),
+      driverLocalDataSource: serviceLocator(),
+    ),
+  );
+  // Menu
+  serviceLocator.registerLazySingleton<MenuDataSource>(MenuRemoteDataSource());
+  serviceLocator.registerLazySingleton<MenuRepository>(
+    () => MenuRepositoryImplement(
+      remoteDataSource: serviceLocator(),
+      menuLocalDataSource: serviceLocator(),
+      addonsLocalDataSource: serviceLocator(),
     ),
   );
 }

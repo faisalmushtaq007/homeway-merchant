@@ -157,7 +157,7 @@ class _ConfirmBusinessTypePageView extends WidgetView<ConfirmBusinessTypePage, _
               ),
               padding: EdgeInsetsDirectional.only(
                 top: topPadding,
-                bottom: bottomPadding,
+                //bottom: bottomPadding,
                 start: margins * 2.5,
                 end: margins * 2.5,
               ),

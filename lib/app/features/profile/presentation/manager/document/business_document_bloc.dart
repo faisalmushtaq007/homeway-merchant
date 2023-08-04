@@ -16,6 +16,7 @@ import 'package:homemakers_merchant/app/features/profile/common/document_type_en
 import 'package:homemakers_merchant/app/features/profile/domain/entities/document/business_document_uploaded_entity.dart';
 import 'package:homemakers_merchant/app/features/profile/presentation/widgets/document/image_edit/common_widget.dart';
 import 'package:homemakers_merchant/app/features/profile/presentation/widgets/document/image_edit/crop_editor_helper.dart';
+import 'package:homemakers_merchant/core/extensions/global_extensions/dart_extensions.dart';
 import 'package:homemakers_merchant/utils/app_equatable/app_equatable.dart';
 import 'package:homemakers_merchant/utils/app_log.dart';
 import 'package:homemakers_merchant/utils/universal_platform/universal_platform.dart';
@@ -403,9 +404,10 @@ class BusinessDocumentBloc extends Bloc<BusinessDocumentEvent, BusinessDocumentS
           filePath: event.xfile?.path,
           file: event.file!,
           ext: path.extension(event.xfile!.path ?? event.file!.path).replaceAll('.', ''),
-          mimeType: fileSaver.MimeType.values.byName(nameOfExtension),
+          customMimeType: 'image/jpg',
+          mimeType: nameOfExtension.contains('jpg') ? fileSaver.MimeType.custom : fileSaver.MimeType.values.byName(nameOfExtension),
         );
-        if (filePath == null || filePath.isEmpty) {
+        if (filePath.isEmptyOrNull) {
           await Future.delayed(
             const Duration(seconds: 1),
             () {},

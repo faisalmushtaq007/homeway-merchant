@@ -1,4 +1,4 @@
-import 'package:homemakers_merchant/app/features/store/domain/entities/store_entity.dart';
+part of 'package:homemakers_merchant/app/features/store/index.dart';
 
 final localStoreAvailableFoodPreparationType = [
   StoreAvailableFoodPreparationType(id: 0, title: 'Cooking'),

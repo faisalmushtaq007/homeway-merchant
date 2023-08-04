@@ -10,26 +10,19 @@ import 'package:homemakers_merchant/app/features/profile/presentation/manager/do
 import 'package:homemakers_merchant/app/features/profile/presentation/widgets/bank/confirm_bank_information_dialog.dart';
 import 'package:homemakers_merchant/app/features/profile/presentation/widgets/document/image_edit/common_widget.dart';
 import 'package:homemakers_merchant/app/features/profile/presentation/widgets/document/image_edit/crop_editor_helper.dart';
-import 'package:homemakers_merchant/app/features/profile/presentation/widgets/document/painters/text_detector_painter.dart';
 import 'package:homemakers_merchant/app/features/profile/presentation/widgets/document/uploaded_document_placeholder_widget.dart';
 import 'package:homemakers_merchant/config/translation/extension/text_extension.dart';
 import 'package:homemakers_merchant/core/extensions/app_extension.dart';
 import 'package:homemakers_merchant/shared/widgets/universal/animated_gap/gap.dart';
 import 'package:homemakers_merchant/shared/widgets/universal/constrained_scrollable_views/constrained_scrollable_views.dart';
-import 'package:homemakers_merchant/shared/widgets/universal/loading_indicators/src/loading.dart';
 import 'package:homemakers_merchant/shared/widgets/universal/one_context/one_context.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:new_image_crop/data/data_editor_config.dart';
 import 'package:new_image_crop/ui/dialog/image_editor_component/image_editor_plane.dart';
-import 'package:new_image_crop/widget/size_builder.dart';
 import 'package:path/path.dart' as path;
 import 'package:permission_handler/permission_handler.dart';
-import 'package:saver_gallery/saver_gallery.dart';
 import 'package:google_mlkit_text_recognition/google_mlkit_text_recognition.dart';
-import 'package:multi_image_crop/multi_image_crop.dart';
-import 'package:photo_view/photo_view.dart';
 import 'package:flex_color_scheme/flex_color_scheme.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
@@ -206,6 +199,8 @@ class _UploadDocumentPageState extends State<UploadDocumentPage> {
                                   data: theme,
                                   child: Dialog(
                                     // The background color
+                                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
+
                                     child: Padding(
                                       padding: EdgeInsets.symmetric(vertical: 10),
                                       child: Column(
@@ -712,8 +707,13 @@ class _UploadDocumentPageState extends State<UploadDocumentPage> {
           confirmText: 'Confirm',
           cancelText: 'Cancel',
           okPressed: () async {
-            print('Dialog confirmed');
-            await Future.delayed(const Duration(milliseconds: 300));
+            await Future.delayed(
+              const Duration(milliseconds: 300),
+              () {},
+            );
+            if (!mounted) {
+              return;
+            }
             Navigator.of(context).pop();
             context.read<BusinessDocumentBloc>().add(
                   SaveCropDocument(
@@ -727,8 +727,13 @@ class _UploadDocumentPageState extends State<UploadDocumentPage> {
                 );
           },
           cancelPressed: () async {
-            print('Dialog cancelled');
-            await Future.delayed(const Duration(milliseconds: 300));
+            await Future.delayed(
+              const Duration(milliseconds: 300),
+              () {},
+            );
+            if (!mounted) {
+              return;
+            }
             Navigator.of(context).pop();
           },
           child: ScrollableColumn(
