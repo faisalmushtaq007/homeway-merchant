@@ -1,12 +1,12 @@
 part of 'package:homemakers_merchant/app/features/store/index.dart';
 
-class GetAllDriverUseCase extends UseCase<List<StoreEntity>> {
+class GetAllDriverUseCase extends UseCase<DataSourceState<List<StoreOwnDeliveryPartnersInfo>>> {
   GetAllDriverUseCase({
     required this.storeRepository,
   });
   final StoreRepository storeRepository;
   @override
-  Future<List<StoreEntity>> call() async {
+  Future<DataSourceState<List<StoreOwnDeliveryPartnersInfo>>> call() async {
     throw UnimplementedError();
   }
 }

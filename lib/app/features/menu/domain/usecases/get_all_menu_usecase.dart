@@ -1,13 +1,13 @@
 part of 'package:homemakers_merchant/app/features/menu/index.dart';
 
-class GetAllMenuUseCase extends UseCase<List<MenuEntity>> {
+class GetAllMenuUseCase extends UseCase<DataSourceState<List<MenuEntity>>> {
   GetAllMenuUseCase({
     required this.menuRepository,
   });
 
   final MenuRepository menuRepository;
   @override
-  Future<List<MenuEntity>> call() async {
+  Future<DataSourceState<List<MenuEntity>>> call() async {
     throw UnimplementedError();
   }
 }

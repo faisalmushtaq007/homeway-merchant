@@ -10,38 +10,98 @@ class StoreRepositoryImplement implements StoreRepository {
   final BaseStoreLocalDbRepository storeLocalDataSource;
   final BaseStoreOwnDriverLocalDbRepository driverLocalDataSource;
   @override
-  Future<ResultState<bool>> deleteAllStore() {
+  Future<DataSourceState<bool>> deleteAllStore() {
     // TODO: implement deleteAllStore
     throw UnimplementedError();
   }
 
   @override
-  Future<ResultState<bool>> deleteStore({StoreEntity? storeEntity, required int storeID}) {
+  Future<DataSourceState<bool>> deleteStore({
+    StoreEntity? storeEntity,
+    required int storeID,
+  }) {
     // TODO: implement deleteStore
     throw UnimplementedError();
   }
 
   @override
-  Future<ResultState<StoreEntity>> editStore({required StoreEntity storeEntity}) {
+  Future<DataSourceState<StoreEntity>> editStore({
+    required StoreEntity storeEntity,
+    required int storeID,
+  }) {
     // TODO: implement editStore
     throw UnimplementedError();
   }
 
   @override
-  Future<ResultState<StoreEntity>> getAllStore() {
+  Future<DataSourceState<StoreEntity>> getAllStore() {
     // TODO: implement getAllStore
     throw UnimplementedError();
   }
 
   @override
-  Future<ResultState<StoreEntity>> getStore({StoreEntity? storeEntity, required int storeID}) {
+  Future<DataSourceState<StoreEntity>> getStore({StoreEntity? storeEntity, required int storeID}) {
     // TODO: implement getStore
     throw UnimplementedError();
   }
 
   @override
-  Future<ResultState<StoreEntity>> saveStore({required StoreEntity storeEntity}) {
+  Future<DataSourceState<StoreEntity>> saveStore({required StoreEntity storeEntity}) {
     // TODO: implement saveStore
     throw UnimplementedError();
   }
+
+  // Driver
+  @override
+  Future<DataSourceState<List<StoreEntity>>> bindDriverWithStores(
+      {required List<StoreOwnDeliveryPartnersInfo> source, required List<StoreEntity> destination}) {
+    // TODO: implement bindDriverWithStores
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<DataSourceState<bool>> deleteAllDriver() {
+    // TODO: implement deleteAllDriver
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<DataSourceState<bool>> deleteDriver({StoreOwnDeliveryPartnersInfo? storeOwnDeliveryPartnersInfo, required int driverID}) {
+    // TODO: implement deleteDriver
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<DataSourceState<StoreOwnDeliveryPartnersInfo>> editDriver(
+      {required StoreOwnDeliveryPartnersInfo storeOwnDeliveryPartnersInfo, required int driverID}) {
+    // TODO: implement editDriver
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<DataSourceState<List<StoreOwnDeliveryPartnersInfo>>> getAllDriver() {
+    // TODO: implement getAllDriver
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<DataSourceState<StoreOwnDeliveryPartnersInfo>> getDriver({StoreOwnDeliveryPartnersInfo? storeOwnDeliveryPartnersInfo, required int driverID}) {
+    // TODO: implement getDriver
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<DataSourceState<StoreOwnDeliveryPartnersInfo>> saveDriver({required StoreOwnDeliveryPartnersInfo storeOwnDeliveryPartnersInfo}) {
+    // TODO: implement saveDriver
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<DataSourceState<List<StoreEntity>>> unBindDriverWithStores(
+      {required List<StoreOwnDeliveryPartnersInfo> source, required List<StoreEntity> destination}) {
+    // TODO: implement unBindDriverWithStores
+    throw UnimplementedError();
+  }
+
+  // Driver
 }

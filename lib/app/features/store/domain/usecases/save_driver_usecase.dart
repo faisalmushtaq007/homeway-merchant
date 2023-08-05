@@ -1,12 +1,12 @@
 part of 'package:homemakers_merchant/app/features/store/index.dart';
 
-class SaveDriverUseCase extends UseCaseIO<StoreOwnDeliveryPartnersInfo, StoreOwnDeliveryPartnersInfo> {
+class SaveDriverUseCase extends UseCaseIO<StoreOwnDeliveryPartnersInfo, DataSourceState<StoreOwnDeliveryPartnersInfo>> {
   SaveDriverUseCase({
     required this.storeRepository,
   });
   final StoreRepository storeRepository;
   @override
-  Future<StoreOwnDeliveryPartnersInfo> call(StoreOwnDeliveryPartnersInfo input) async {
+  Future<DataSourceState<StoreOwnDeliveryPartnersInfo>> call(StoreOwnDeliveryPartnersInfo input) async {
     throw UnimplementedError();
   }
 }

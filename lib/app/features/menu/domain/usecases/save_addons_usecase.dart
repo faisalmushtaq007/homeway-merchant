@@ -1,13 +1,13 @@
 part of 'package:homemakers_merchant/app/features/menu/index.dart';
 
-class SaveAddonsUseCase extends UseCaseIO<MenuEntity, MenuEntity> {
+class SaveAddonsUseCase extends UseCaseIO<Addons, DataSourceState<Addons>> {
   SaveAddonsUseCase({
     required this.menuRepository,
   });
 
   final MenuRepository menuRepository;
   @override
-  Future<MenuEntity> call(MenuEntity input) async {
+  Future<DataSourceState<Addons>> call(Addons input) async {
     throw UnimplementedError();
   }
 }

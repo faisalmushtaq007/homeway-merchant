@@ -1,25 +1,55 @@
 part of 'package:homemakers_merchant/app/features/store/index.dart';
 
 abstract interface class StoreRepository {
-  Future<ResultState<StoreEntity>> saveStore({
+  Future<DataSourceState<StoreEntity>> saveStore({
     required StoreEntity storeEntity,
   });
 
-  Future<ResultState<StoreEntity>> editStore({
+  Future<DataSourceState<StoreEntity>> editStore({
     required StoreEntity storeEntity,
+    required int storeID,
   });
 
-  Future<ResultState<bool>> deleteStore({
+  Future<DataSourceState<bool>> deleteStore({
     StoreEntity? storeEntity,
     required int storeID,
   });
 
-  Future<ResultState<bool>> deleteAllStore();
+  Future<DataSourceState<bool>> deleteAllStore();
 
-  Future<ResultState<StoreEntity>> getStore({
+  Future<DataSourceState<StoreEntity>> getStore({
     StoreEntity? storeEntity,
     required int storeID,
   });
 
-  Future<ResultState<StoreEntity>> getAllStore();
+  Future<DataSourceState<StoreEntity>> getAllStore();
+
+  //Driver
+  Future<DataSourceState<StoreOwnDeliveryPartnersInfo>> saveDriver({
+    required StoreOwnDeliveryPartnersInfo storeOwnDeliveryPartnersInfo,
+  });
+
+  Future<DataSourceState<StoreOwnDeliveryPartnersInfo>> editDriver({
+    required StoreOwnDeliveryPartnersInfo storeOwnDeliveryPartnersInfo,
+    required int driverID,
+  });
+
+  Future<DataSourceState<bool>> deleteDriver({
+    StoreOwnDeliveryPartnersInfo? storeOwnDeliveryPartnersInfo,
+    required int driverID,
+  });
+
+  Future<DataSourceState<bool>> deleteAllDriver();
+
+  Future<DataSourceState<StoreOwnDeliveryPartnersInfo>> getDriver({
+    StoreOwnDeliveryPartnersInfo? storeOwnDeliveryPartnersInfo,
+    required int driverID,
+  });
+
+  Future<DataSourceState<List<StoreOwnDeliveryPartnersInfo>>> getAllDriver();
+
+  Future<DataSourceState<List<StoreEntity>>> bindDriverWithStores({required List<StoreOwnDeliveryPartnersInfo> source, required List<StoreEntity> destination});
+
+  Future<DataSourceState<List<StoreEntity>>> unBindDriverWithStores(
+      {required List<StoreOwnDeliveryPartnersInfo> source, required List<StoreEntity> destination});
 }

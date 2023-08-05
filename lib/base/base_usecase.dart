@@ -115,3 +115,7 @@ abstract class UseCaseIO<Input, T> {
 abstract class UseCaseByID<Input1, Input2, T> {
   Future<T> call({required int id, Input1? input});
 }
+
+abstract class BindingUseCase<Input1, Input2, T> {
+  Future<T> call({required Input1 source, required Input2 destination});
+}

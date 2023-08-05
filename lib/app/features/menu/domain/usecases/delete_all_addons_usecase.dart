@@ -1,6 +1,6 @@
 part of 'package:homemakers_merchant/app/features/menu/index.dart';
 
-class DeleteAllAddonsUseCase extends UseCaseIO<StoreEntity, bool> {
+class DeleteAllAddonsUseCase extends UseCase<DataSourceState<bool>> {
   DeleteAllAddonsUseCase({
     required this.menuRepository,
   });
@@ -8,7 +8,7 @@ class DeleteAllAddonsUseCase extends UseCaseIO<StoreEntity, bool> {
   final MenuRepository menuRepository;
 
   @override
-  Future<bool> call(StoreEntity input) async {
+  Future<DataSourceState<bool>> call() async {
     throw UnimplementedError();
   }
 }

@@ -1,13 +1,13 @@
 part of 'package:homemakers_merchant/app/features/menu/index.dart';
 
-class DeleteAddonsUseCase extends UseCaseByID<MenuEntity, int, MenuEntity> {
+class DeleteAddonsUseCase extends UseCaseByID<Addons, int, DataSourceState<bool>> {
   DeleteAddonsUseCase({
     required this.menuRepository,
   });
 
   final MenuRepository menuRepository;
   @override
-  Future<MenuEntity> call({required int id, MenuEntity? input}) {
+  Future<DataSourceState<bool>> call({required int id, Addons? input}) {
     // TODO: implement call
     throw UnimplementedError();
   }

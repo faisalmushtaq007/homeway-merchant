@@ -34,17 +34,36 @@ class StoreLocalDbRepository<Store extends StoreEntity> implements BaseStoreLoca
     final result = await tryCatch<bool>(() async {
       final int key = entity.storeID;
       final finder = Finder(filter: Filter.byKey(key));
-      await _store.delete(
+      final int count = await _store.delete(
         await _db,
         finder: finder,
       );
+      if (count >= 0) {
+        return true;
+      } else {
+        return false;
+      }
     });
     return result;
   }
 
   @override
   Future<Either<RepositoryBaseFailure, bool>> deleteAll(StoreEntity entity) async {
-    throw UnimplementedError();
+    final result = await tryCatch<bool>(() async {
+      final db = await _db;
+      int count = 0;
+      await db.transaction((transaction) async {
+        // Delete all
+        await _store.delete(transaction);
+        count++;
+      });
+      if (count >= 0) {
+        return true;
+      } else {
+        return false;
+      }
+    });
+    return result;
   }
 
   @override
@@ -52,10 +71,14 @@ class StoreLocalDbRepository<Store extends StoreEntity> implements BaseStoreLoca
     final result = await tryCatch<bool>(() async {
       final value = await _store.record(uniqueId.value).get(await _db);
       if (value != null) {
-        await _store.delete(
+        final int count = await _store.delete(
           await _db,
         );
-        return true;
+        if (count >= 0) {
+          return true;
+        } else {
+          return false;
+        }
       }
       return false;
     });
