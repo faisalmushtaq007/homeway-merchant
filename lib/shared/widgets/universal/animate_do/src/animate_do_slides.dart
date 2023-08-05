@@ -38,8 +38,7 @@ class SlideInUp extends StatefulWidget {
 }
 
 /// State class, where the magic happens
-class _SlideInUpState extends State<SlideInUp>
-    with SingleTickerProviderStateMixin {
+class _SlideInUpState extends State<SlideInUp> with TickerProviderStateMixin {
   AnimationController? controller;
   bool disposed = false;
   late Animation<double> animation;
@@ -57,8 +56,7 @@ class _SlideInUpState extends State<SlideInUp>
 
     controller = AnimationController(duration: widget.duration, vsync: this);
 
-    animation = Tween<double>(begin: widget.from, end: 0)
-        .animate(CurvedAnimation(parent: controller!, curve: Curves.easeOut));
+    animation = Tween<double>(begin: widget.from, end: 0).animate(CurvedAnimation(parent: controller!, curve: Curves.easeOut));
 
     if (!widget.manualTrigger && widget.animate) {
       Future.delayed(widget.delay, () {
@@ -87,8 +85,7 @@ class _SlideInUpState extends State<SlideInUp>
     return AnimatedBuilder(
         animation: controller!,
         builder: (BuildContext context, Widget? child) {
-          return Transform.translate(
-              offset: Offset(0, animation.value), child: widget.child);
+          return Transform.translate(offset: Offset(0, animation.value), child: widget.child);
         });
   }
 }
@@ -176,8 +173,7 @@ class SlideInLeft extends StatefulWidget {
 }
 
 /// State class, where the magic happens
-class _SlideInLeftState extends State<SlideInLeft>
-    with SingleTickerProviderStateMixin {
+class _SlideInLeftState extends State<SlideInLeft> with TickerProviderStateMixin {
   AnimationController? controller;
   bool disposed = false;
   late Animation<double> animation;
@@ -195,8 +191,7 @@ class _SlideInLeftState extends State<SlideInLeft>
 
     controller = AnimationController(duration: widget.duration, vsync: this);
 
-    animation = Tween<double>(begin: widget.from * -1, end: 0)
-        .animate(CurvedAnimation(parent: controller!, curve: Curves.easeOut));
+    animation = Tween<double>(begin: widget.from * -1, end: 0).animate(CurvedAnimation(parent: controller!, curve: Curves.easeOut));
 
     if (!widget.manualTrigger && widget.animate) {
       Future.delayed(widget.delay, () {
@@ -225,8 +220,7 @@ class _SlideInLeftState extends State<SlideInLeft>
     return AnimatedBuilder(
         animation: controller!,
         builder: (BuildContext context, Widget? child) {
-          return Transform.translate(
-              offset: Offset(animation.value, 0), child: widget.child);
+          return Transform.translate(offset: Offset(animation.value, 0), child: widget.child);
         });
   }
 }

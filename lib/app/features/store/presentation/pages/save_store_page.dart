@@ -22,17 +22,17 @@ class _SaveStorePageState extends State<SaveStorePage> {
   static final storFormKey = GlobalKey<FormState>();
   List<File>? file_images = [];
   List<XFile> cross_file_images = [];
-  final TextEditingController _storeAddressController = TextEditingController();
-  final TextEditingController _storeNameController = TextEditingController();
-  final TextEditingController _storeMaxDeliveryTimeController = TextEditingController();
+  TextEditingController _storeAddressController = TextEditingController();
+  TextEditingController _storeNameController = TextEditingController();
+  TextEditingController _storeMaxDeliveryTimeController = TextEditingController();
 
   double _maximumDeliveryRadiusValue = 6.0;
   List<StoreAvailableFoodTypes> _storeAvailableFoodTypes = [];
   List<StoreAvailableFoodPreparationType> _storeAvailableFoodPreparationType = [];
   List<StoreAcceptedPaymentModes> _storeAcceptedPaymentModes = [];
   List<StoreWorkingDayAndTime> _storeWorkingDays = [];
-  final TextEditingController _storeOpeningTimeController = TextEditingController();
-  final TextEditingController _storeClosingTimeController = TextEditingController();
+  TextEditingController _storeOpeningTimeController = TextEditingController();
+  TextEditingController _storeClosingTimeController = TextEditingController();
 
   List<StoreAvailableFoodTypes> _selectedFoodTypes = [];
   List<StoreAvailableFoodPreparationType> _selectedFoodPreparationType = [];
@@ -40,9 +40,9 @@ class _SaveStorePageState extends State<SaveStorePage> {
   List<StoreWorkingDayAndTime> _selectedWorkingDays = [];
 
   bool _hasStoreOwnDeliveryService = false;
-  final TextEditingController _storeOwnerDriverNameController = TextEditingController();
-  final TextEditingController _storeOwnerDriverPhoneNumberController = TextEditingController();
-  final TextEditingController _storeOwnerDriverLicenseController = TextEditingController();
+  TextEditingController _storeOwnerDriverNameController = TextEditingController();
+  TextEditingController _storeOwnerDriverPhoneNumberController = TextEditingController();
+  TextEditingController _storeOwnerDriverLicenseController = TextEditingController();
 
   final deliveryTimeMuskeyFormatter = MuskeyFormatter(
     masks: ['### min'],
@@ -97,12 +97,14 @@ class _SaveStorePageState extends State<SaveStorePage> {
 
   @override
   void dispose() {
-    scrollController.dispose();
-    innerScrollController.dispose();
     _storeAddressController.dispose();
     _storeNameController.dispose();
     _storeMaxDeliveryTimeController.dispose();
-    _storeOpeningTimeController.dispose();
+    if (_storeOpeningTimeController == null) {
+      _storeOpeningTimeController.dispose();
+    } else {
+      _storeOpeningTimeController.dispose();
+    }
     _storeClosingTimeController.dispose();
     _storeOwnerDriverNameController.dispose();
     _storeOwnerDriverLicenseController.dispose();
@@ -118,6 +120,8 @@ class _SaveStorePageState extends State<SaveStorePage> {
     file_images = [];
     cross_file_images = [];
     focusList.asMap().forEach((key, value) => value.dispose());
+    scrollController.dispose();
+    innerScrollController.dispose();
     super.dispose();
   }
 
@@ -527,6 +531,7 @@ class _SaveStorePageState extends State<SaveStorePage> {
                                       children: [
                                         Expanded(
                                           child: DateTimeFieldPlatform(
+                                            key: const Key('Store-OpeningTime-widget'),
                                             mode: DateMode.time,
                                             maximumDate: DateTime.now().add(const Duration(hours: 2)),
                                             minimumDate: DateTime.now().subtract(const Duration(hours: 2)),
@@ -555,6 +560,7 @@ class _SaveStorePageState extends State<SaveStorePage> {
                                         const AnimatedGap(16, duration: Duration(milliseconds: 500)),
                                         Expanded(
                                           child: DateTimeFieldPlatform(
+                                            key: const Key('Store-ClosingTime-widget'),
                                             mode: DateMode.time,
                                             maximumDate: DateTime.now().add(const Duration(hours: 2)),
                                             minimumDate: DateTime.now().subtract(const Duration(hours: 2)),
@@ -916,8 +922,8 @@ class _SaveStorePageState extends State<SaveStorePage> {
                                                 area: _storeAddressController.value.text,
                                               ),
                                             ),
-                                            storeImagePath: listBanners[0].imagePath,
-                                            storeImageMetaData: listBanners[0].metaData,
+                                            storeImagePath: (listBanners.isNotNullOrEmpty) ? listBanners[0].imagePath : '',
+                                            storeImageMetaData: (listBanners.isNotNullOrEmpty) ? listBanners[0].metaData : <String, dynamic>{},
                                             storeMaximumFoodDeliveryTime: int.parse(_storeMaxDeliveryTimeController.value.text),
                                             storeMaximumFoodDeliveryRadius: _maximumDeliveryRadiusValue.toInt(),
                                             storeOpeningTime: _storeOpeningTimeController.value.text.trim(),

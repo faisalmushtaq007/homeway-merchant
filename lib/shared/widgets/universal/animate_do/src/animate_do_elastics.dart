@@ -36,8 +36,7 @@ class ElasticIn extends StatefulWidget {
 }
 
 /// StateClass, where the magic happens
-class _ElasticInState extends State<ElasticIn>
-    with SingleTickerProviderStateMixin {
+class _ElasticInState extends State<ElasticIn> with TickerProviderStateMixin {
   AnimationController? controller;
   bool disposed = false;
   late Animation<double> bouncing;
@@ -55,11 +54,9 @@ class _ElasticInState extends State<ElasticIn>
 
     controller = AnimationController(duration: widget.duration, vsync: this);
 
-    opacity = Tween<double>(begin: 0, end: 1).animate(
-        CurvedAnimation(parent: controller!, curve: const Interval(0, 0.45)));
+    opacity = Tween<double>(begin: 0, end: 1).animate(CurvedAnimation(parent: controller!, curve: const Interval(0, 0.45)));
 
-    bouncing = Tween<double>(begin: 0, end: 1).animate(
-        CurvedAnimation(parent: controller!, curve: Curves.elasticOut));
+    bouncing = Tween<double>(begin: 0, end: 1).animate(CurvedAnimation(parent: controller!, curve: Curves.elasticOut));
 
     if (!widget.manualTrigger && widget.animate) {
       Future.delayed(widget.delay, () {
@@ -139,8 +136,7 @@ class ElasticInDown extends StatefulWidget {
 }
 
 /// StateClass, where the magic happens
-class _ElasticInDownState extends State<ElasticInDown>
-    with SingleTickerProviderStateMixin {
+class _ElasticInDownState extends State<ElasticInDown> with TickerProviderStateMixin {
   AnimationController? controller;
   bool disposed = false;
   late Animation<double> bouncing;
@@ -159,18 +155,13 @@ class _ElasticInDownState extends State<ElasticInDown>
 
     controller = AnimationController(duration: widget.duration, vsync: this);
 
-    opacity = Tween<double>(begin: 0, end: 1).animate(
-        CurvedAnimation(parent: controller!, curve: const Interval(0, 0.45)));
+    opacity = Tween<double>(begin: 0, end: 1).animate(CurvedAnimation(parent: controller!, curve: const Interval(0, 0.45)));
 
     falling = Tween<double>(begin: widget.from * -1, end: widget.to * -1)
-        .animate(CurvedAnimation(
-            parent: controller!,
-            curve: const Interval(0, 0.30, curve: Curves.linear)));
+        .animate(CurvedAnimation(parent: controller!, curve: const Interval(0, 0.30, curve: Curves.linear)));
 
-    bouncing = Tween<double>(begin: widget.to * -1, end: 0).animate(
-        CurvedAnimation(
-            parent: controller!,
-            curve: const Interval(0.30, 1, curve: Curves.elasticOut)));
+    bouncing =
+        Tween<double>(begin: widget.to * -1, end: 0).animate(CurvedAnimation(parent: controller!, curve: const Interval(0.30, 1, curve: Curves.elasticOut)));
 
     if (!widget.manualTrigger && widget.animate) {
       Future.delayed(widget.delay, () {
@@ -200,11 +191,7 @@ class _ElasticInDownState extends State<ElasticInDown>
         animation: controller!,
         builder: (BuildContext context, Widget? child) {
           return Transform.translate(
-              offset: Offset(
-                  0,
-                  (falling.value == (widget.to * -1))
-                      ? bouncing.value
-                      : falling.value),
+              offset: Offset(0, (falling.value == (widget.to * -1)) ? bouncing.value : falling.value),
               child: Opacity(
                 opacity: opacity.value,
                 child: widget.child,
@@ -299,8 +286,7 @@ class ElasticInLeft extends StatefulWidget {
 }
 
 /// StateClass, where the magic happens
-class _ElasticInLeftState extends State<ElasticInLeft>
-    with SingleTickerProviderStateMixin {
+class _ElasticInLeftState extends State<ElasticInLeft> with TickerProviderStateMixin {
   AnimationController? controller;
   bool disposed = false;
   late Animation<double> bouncing;
@@ -319,18 +305,13 @@ class _ElasticInLeftState extends State<ElasticInLeft>
 
     controller = AnimationController(duration: widget.duration, vsync: this);
 
-    opacity = Tween<double>(begin: 0, end: 1).animate(
-        CurvedAnimation(parent: controller!, curve: const Interval(0, 0.45)));
+    opacity = Tween<double>(begin: 0, end: 1).animate(CurvedAnimation(parent: controller!, curve: const Interval(0, 0.45)));
 
     falling = Tween<double>(begin: widget.from * -1, end: widget.to * -1)
-        .animate(CurvedAnimation(
-            parent: controller!,
-            curve: const Interval(0, 0.30, curve: Curves.linear)));
+        .animate(CurvedAnimation(parent: controller!, curve: const Interval(0, 0.30, curve: Curves.linear)));
 
-    bouncing = Tween<double>(begin: widget.to * -1, end: 0).animate(
-        CurvedAnimation(
-            parent: controller!,
-            curve: const Interval(0.30, 1, curve: Curves.elasticOut)));
+    bouncing =
+        Tween<double>(begin: widget.to * -1, end: 0).animate(CurvedAnimation(parent: controller!, curve: const Interval(0.30, 1, curve: Curves.elasticOut)));
 
     if (!widget.manualTrigger && widget.animate) {
       Future.delayed(widget.delay, () {
@@ -360,11 +341,7 @@ class _ElasticInLeftState extends State<ElasticInLeft>
         animation: controller!,
         builder: (BuildContext context, Widget? child) {
           return Transform.translate(
-              offset: Offset(
-                  (falling.value == (widget.to * -1))
-                      ? bouncing.value
-                      : falling.value,
-                  0),
+              offset: Offset((falling.value == (widget.to * -1)) ? bouncing.value : falling.value, 0),
               child: Opacity(
                 opacity: opacity.value,
                 child: widget.child,
@@ -408,12 +385,5 @@ class ElasticInRight extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => ElasticInLeft(
-      child: child,
-      duration: duration,
-      delay: delay,
-      controller: controller,
-      manualTrigger: manualTrigger,
-      animate: animate,
-      from: from * -1,
-      to: -100);
+      child: child, duration: duration, delay: delay, controller: controller, manualTrigger: manualTrigger, animate: animate, from: from * -1, to: -100);
 }

@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 
-abstract class RepositoryBaseFailure {}
+abstract interface class RepositoryBaseFailure {}
 
 enum RepositoryFailureOrigin { local, remote, connectivity }
 
@@ -16,22 +16,18 @@ class RepositoryFailure extends Equatable implements RepositoryBaseFailure {
     this.stacktrace,
   });
 
-  factory RepositoryFailure.server(String message) =>
-      RepositoryFailure(RepositoryFailureOrigin.remote, message);
+  factory RepositoryFailure.server(String message) => RepositoryFailure(RepositoryFailureOrigin.remote, message);
 
   factory RepositoryFailure.localdb(
     String message, {
     dynamic extra,
     StackTrace? stacktrace,
   }) =>
-      RepositoryFailure(RepositoryFailureOrigin.local, message,
-          extra: extra, stacktrace: stacktrace);
+      RepositoryFailure(RepositoryFailureOrigin.local, message, extra: extra, stacktrace: stacktrace);
 
-  factory RepositoryFailure.cache(String message) =>
-      RepositoryFailure(RepositoryFailureOrigin.local, message);
+  factory RepositoryFailure.cache(String message) => RepositoryFailure(RepositoryFailureOrigin.local, message);
 
-  factory RepositoryFailure.connectivity() => RepositoryFailure(
-      RepositoryFailureOrigin.connectivity, 'No internet connection');
+  factory RepositoryFailure.connectivity() => RepositoryFailure(RepositoryFailureOrigin.connectivity, 'No internet connection');
 
   @override
   List<Object?> get props => [origin, message];

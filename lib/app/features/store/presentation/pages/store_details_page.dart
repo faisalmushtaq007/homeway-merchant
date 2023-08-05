@@ -43,12 +43,14 @@ class _StoreDetailsPageController extends State<StoreDetailsPage> {
 
     listBanners = [];
     listBanners.clear();
+
     listBanners = List<BannerModel>.from(
       [
         BannerModel(
-          imagePath: storeEntity.storeImagePath,
-          id: storeEntity.storeImageMetaData['id'],
-          metaData: storeEntity.storeImageMetaData,
+          imagePath: storeEntity.storeImagePath.isEmptyOrNull ? 'assets/svg/sorry-image-not-available.svg' : storeEntity.storeImagePath,
+          id: storeEntity.storeImagePath.isEmptyOrNull ? '${DateTime.now().millisecondsSinceEpoch}' : storeEntity.storeImageMetaData['id'],
+          metaData: storeEntity.storeImagePath.isEmptyOrNull ? <String, dynamic>{} : storeEntity.storeImageMetaData,
+          boxFit: storeEntity.storeImagePath.isEmptyOrNull ? BoxFit.fill : BoxFit.cover,
         ),
       ],
     );
@@ -199,7 +201,7 @@ class _StoreDetailsPageView extends WidgetView<StoreDetailsPage, _StoreDetailsPa
                           onTap: (id) => print(id),
                           borderRadius: 0,
                           //width: 250,
-                          indicatorBottom: true,
+                          indicatorBottom: false,
                           outerBorderRadius: BorderRadiusDirectional.zero,
                           bannerWidgetBorderRadius: BorderRadiusDirectional.zero,
                           //physics: const ClampingScrollPhysics(parent: ClampingScrollPhysics()),

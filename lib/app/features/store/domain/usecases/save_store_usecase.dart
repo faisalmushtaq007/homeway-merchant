@@ -7,6 +7,6 @@ class SaveStoreUseCase extends UseCaseIO<StoreEntity, DataSourceState<StoreEntit
   final StoreRepository storeRepository;
   @override
   Future<DataSourceState<StoreEntity>> call(StoreEntity input) async {
-    throw UnimplementedError();
+    return storeRepository.saveStore(storeEntity: input);
   }
 }

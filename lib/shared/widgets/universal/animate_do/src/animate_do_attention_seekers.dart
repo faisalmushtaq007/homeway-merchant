@@ -42,7 +42,7 @@ class Bounce extends StatefulWidget {
 }
 
 /// State class, where the magic happens
-class _BounceState extends State<Bounce> with SingleTickerProviderStateMixin {
+class _BounceState extends State<Bounce> with TickerProviderStateMixin {
   AnimationController? controller;
   bool disposed = false;
   late Animation<double> animationBounce;
@@ -61,15 +61,11 @@ class _BounceState extends State<Bounce> with SingleTickerProviderStateMixin {
 
     controller = AnimationController(duration: widget.duration, vsync: this);
 
-    animationUp = Tween<double>(begin: 0, end: widget.from * -1).animate(
-        CurvedAnimation(
-            curve: const Interval(0, 0.35, curve: Curves.easeInOut),
-            parent: controller!));
+    animationUp =
+        Tween<double>(begin: 0, end: widget.from * -1).animate(CurvedAnimation(curve: const Interval(0, 0.35, curve: Curves.easeInOut), parent: controller!));
 
-    animationBounce = Tween<double>(begin: widget.from * -1, end: 0.0).animate(
-        CurvedAnimation(
-            curve: const Interval(0.35, 1, curve: Curves.bounceOut),
-            parent: controller!));
+    animationBounce =
+        Tween<double>(begin: widget.from * -1, end: 0.0).animate(CurvedAnimation(curve: const Interval(0.35, 1, curve: Curves.bounceOut), parent: controller!));
 
     if (!widget.manualTrigger && widget.animate) {
       Future.delayed(widget.delay, () {
@@ -99,12 +95,7 @@ class _BounceState extends State<Bounce> with SingleTickerProviderStateMixin {
         animation: controller!,
         builder: (BuildContext context, Widget? child) {
           return Transform.translate(
-              offset: Offset(
-                  0,
-                  (animationUp.value == (widget.from * -1))
-                      ? animationBounce.value
-                      : animationUp.value),
-              child: widget.child);
+              offset: Offset(0, (animationUp.value == (widget.from * -1)) ? animationBounce.value : animationUp.value), child: widget.child);
         });
   }
 }
@@ -169,14 +160,10 @@ class _FlashState extends State<Flash> with SingleTickerProviderStateMixin {
 
     controller = AnimationController(duration: widget.duration, vsync: this);
 
-    opacityOut1 = Tween<double>(begin: 1, end: 0).animate(
-        CurvedAnimation(parent: controller!, curve: const Interval(0, 0.25)));
-    opacityIn1 = Tween<double>(begin: 0, end: 1).animate(
-        CurvedAnimation(parent: controller!, curve: const Interval(0.25, 0.5)));
-    opacityOut2 = Tween<double>(begin: 1, end: 0).animate(
-        CurvedAnimation(parent: controller!, curve: const Interval(0.5, 0.75)));
-    opacityIn2 = Tween<double>(begin: 0, end: 1).animate(
-        CurvedAnimation(parent: controller!, curve: const Interval(0.75, 1)));
+    opacityOut1 = Tween<double>(begin: 1, end: 0).animate(CurvedAnimation(parent: controller!, curve: const Interval(0, 0.25)));
+    opacityIn1 = Tween<double>(begin: 0, end: 1).animate(CurvedAnimation(parent: controller!, curve: const Interval(0.25, 0.5)));
+    opacityOut2 = Tween<double>(begin: 1, end: 0).animate(CurvedAnimation(parent: controller!, curve: const Interval(0.5, 0.75)));
+    opacityIn2 = Tween<double>(begin: 0, end: 1).animate(CurvedAnimation(parent: controller!, curve: const Interval(0.75, 1)));
 
     if (!widget.manualTrigger && widget.animate) {
       Future.delayed(widget.delay, () {
@@ -258,7 +245,7 @@ class Pulse extends StatefulWidget {
 }
 
 /// State class, where the magic happens
-class _PulseState extends State<Pulse> with SingleTickerProviderStateMixin {
+class _PulseState extends State<Pulse> with TickerProviderStateMixin {
   AnimationController? controller;
   bool disposed = false;
   late Animation<double> animationInc;
@@ -276,13 +263,9 @@ class _PulseState extends State<Pulse> with SingleTickerProviderStateMixin {
 
     controller = AnimationController(duration: widget.duration, vsync: this);
 
-    animationInc = Tween<double>(begin: 1, end: 1.5).animate(CurvedAnimation(
-        parent: controller!,
-        curve: const Interval(0, 0.5, curve: Curves.easeOut)));
+    animationInc = Tween<double>(begin: 1, end: 1.5).animate(CurvedAnimation(parent: controller!, curve: const Interval(0, 0.5, curve: Curves.easeOut)));
 
-    animationDec = Tween<double>(begin: 1.5, end: 1).animate(CurvedAnimation(
-        parent: controller!,
-        curve: const Interval(0.5, 1, curve: Curves.easeIn)));
+    animationDec = Tween<double>(begin: 1.5, end: 1).animate(CurvedAnimation(parent: controller!, curve: const Interval(0.5, 1, curve: Curves.easeIn)));
 
     if (!widget.manualTrigger && widget.animate) {
       Future.delayed(widget.delay, () {
@@ -312,9 +295,7 @@ class _PulseState extends State<Pulse> with SingleTickerProviderStateMixin {
         animation: controller!,
         builder: (BuildContext context, Widget? child) {
           return Transform.scale(
-            scale: (controller!.value < 0.5)
-                ? animationInc.value
-                : animationDec.value,
+            scale: (controller!.value < 0.5) ? animationInc.value : animationDec.value,
             child: widget.child,
           );
         });
@@ -361,7 +342,7 @@ class Swing extends StatefulWidget {
 }
 
 /// State class, where the magic happens
-class _SwingState extends State<Swing> with SingleTickerProviderStateMixin {
+class _SwingState extends State<Swing> with TickerProviderStateMixin {
   AnimationController? controller;
   bool disposed = false;
   late Animation<double> animationRotation1;
@@ -383,35 +364,23 @@ class _SwingState extends State<Swing> with SingleTickerProviderStateMixin {
 
     controller = AnimationController(duration: widget.duration, vsync: this);
 
-    animationRotation1 = Tween<double>(begin: 0, end: -0.5).animate(
-        CurvedAnimation(
-            parent: controller!,
-            curve: const Interval(0, 0.1666, curve: Curves.easeOut)));
+    animationRotation1 =
+        Tween<double>(begin: 0, end: -0.5).animate(CurvedAnimation(parent: controller!, curve: const Interval(0, 0.1666, curve: Curves.easeOut)));
 
-    animationRotation2 = Tween<double>(begin: -0.5, end: 0.5).animate(
-        CurvedAnimation(
-            parent: controller!,
-            curve: const Interval(0.1666, 0.3333, curve: Curves.easeInOut)));
+    animationRotation2 =
+        Tween<double>(begin: -0.5, end: 0.5).animate(CurvedAnimation(parent: controller!, curve: const Interval(0.1666, 0.3333, curve: Curves.easeInOut)));
 
-    animationRotation3 = Tween<double>(begin: 0.5, end: -0.5).animate(
-        CurvedAnimation(
-            parent: controller!,
-            curve: const Interval(0.3333, 0.4999, curve: Curves.easeInOut)));
+    animationRotation3 =
+        Tween<double>(begin: 0.5, end: -0.5).animate(CurvedAnimation(parent: controller!, curve: const Interval(0.3333, 0.4999, curve: Curves.easeInOut)));
 
-    animationRotation4 = Tween<double>(begin: -0.5, end: 0.4).animate(
-        CurvedAnimation(
-            parent: controller!,
-            curve: const Interval(0.4999, 0.6666, curve: Curves.easeInOut)));
+    animationRotation4 =
+        Tween<double>(begin: -0.5, end: 0.4).animate(CurvedAnimation(parent: controller!, curve: const Interval(0.4999, 0.6666, curve: Curves.easeInOut)));
 
-    animationRotation5 = Tween<double>(begin: 0.4, end: -0.4).animate(
-        CurvedAnimation(
-            parent: controller!,
-            curve: const Interval(0.6666, 0.8333, curve: Curves.easeInOut)));
+    animationRotation5 =
+        Tween<double>(begin: 0.4, end: -0.4).animate(CurvedAnimation(parent: controller!, curve: const Interval(0.6666, 0.8333, curve: Curves.easeInOut)));
 
-    animationRotation6 = Tween<double>(begin: -0.4, end: 0).animate(
-        CurvedAnimation(
-            parent: controller!,
-            curve: const Interval(0.8333, 1, curve: Curves.easeOut)));
+    animationRotation6 =
+        Tween<double>(begin: -0.4, end: 0).animate(CurvedAnimation(parent: controller!, curve: const Interval(0.8333, 1, curve: Curves.easeOut)));
 
     if (!widget.manualTrigger && widget.animate) {
       Future.delayed(widget.delay, () {
@@ -503,7 +472,7 @@ class Spin extends StatefulWidget {
 }
 
 /// State class, where the magic happens
-class _SpinState extends State<Spin> with SingleTickerProviderStateMixin {
+class _SpinState extends State<Spin> with TickerProviderStateMixin {
   AnimationController? controller;
   bool disposed = false;
   late Animation<double> spin;
@@ -521,8 +490,7 @@ class _SpinState extends State<Spin> with SingleTickerProviderStateMixin {
 
     controller = AnimationController(duration: widget.duration, vsync: this);
 
-    spin = Tween<double>(begin: 0, end: widget.spins * 2)
-        .animate(CurvedAnimation(parent: controller!, curve: Curves.easeInOut));
+    spin = Tween<double>(begin: 0, end: widget.spins * 2).animate(CurvedAnimation(parent: controller!, curve: Curves.easeInOut));
 
     if (!widget.manualTrigger && widget.animate) {
       Future.delayed(widget.delay, () {
@@ -601,8 +569,7 @@ class SpinPerfect extends StatefulWidget {
 }
 
 /// State class, where the magic happens
-class _SpinPerfectState extends State<SpinPerfect>
-    with SingleTickerProviderStateMixin {
+class _SpinPerfectState extends State<SpinPerfect> with TickerProviderStateMixin {
   AnimationController? controller;
   bool disposed = false;
   late Animation<double> spin;
@@ -620,8 +587,7 @@ class _SpinPerfectState extends State<SpinPerfect>
 
     controller = AnimationController(duration: widget.duration, vsync: this);
 
-    spin = Tween<double>(begin: 0, end: widget.spins * 2)
-        .animate(CurvedAnimation(parent: controller!, curve: Curves.linear));
+    spin = Tween<double>(begin: 0, end: widget.spins * 2).animate(CurvedAnimation(parent: controller!, curve: Curves.linear));
 
     if (!widget.manualTrigger && widget.animate) {
       Future.delayed(widget.delay, () {
@@ -698,7 +664,7 @@ class Dance extends StatefulWidget {
 }
 
 /// State class, where the magic happens
-class _DanceState extends State<Dance> with SingleTickerProviderStateMixin {
+class _DanceState extends State<Dance> with TickerProviderStateMixin {
   AnimationController? controller;
   bool disposed = false;
   late Animation<double> step1;
@@ -718,17 +684,11 @@ class _DanceState extends State<Dance> with SingleTickerProviderStateMixin {
 
     controller = AnimationController(duration: widget.duration, vsync: this);
 
-    step1 = Tween<double>(begin: 0, end: -0.2).animate(CurvedAnimation(
-        parent: controller!,
-        curve: const Interval(0, 0.3333, curve: Curves.bounceOut)));
+    step1 = Tween<double>(begin: 0, end: -0.2).animate(CurvedAnimation(parent: controller!, curve: const Interval(0, 0.3333, curve: Curves.bounceOut)));
 
-    step2 = Tween<double>(begin: -0.2, end: 0.2).animate(CurvedAnimation(
-        parent: controller!,
-        curve: const Interval(0.3333, 0.6666, curve: Curves.bounceOut)));
+    step2 = Tween<double>(begin: -0.2, end: 0.2).animate(CurvedAnimation(parent: controller!, curve: const Interval(0.3333, 0.6666, curve: Curves.bounceOut)));
 
-    step3 = Tween<double>(begin: 0.2, end: 0).animate(CurvedAnimation(
-        parent: controller!,
-        curve: const Interval(0.6666, 1, curve: Curves.bounceOut)));
+    step3 = Tween<double>(begin: 0.2, end: 0).animate(CurvedAnimation(parent: controller!, curve: const Interval(0.6666, 1, curve: Curves.bounceOut)));
 
     if (!widget.manualTrigger && widget.animate) {
       Future.delayed(widget.delay, () {
@@ -763,10 +723,7 @@ class _DanceState extends State<Dance> with SingleTickerProviderStateMixin {
                   ? step2.value
                   : step3.value;
 
-          return Transform(
-              alignment: FractionalOffset.center,
-              transform: Matrix4.skew(0, animation),
-              child: widget.child);
+          return Transform(alignment: FractionalOffset.center, transform: Matrix4.skew(0, animation), child: widget.child);
         });
   }
 }
@@ -813,8 +770,7 @@ class Roulette extends StatefulWidget {
 }
 
 /// State class, where the magic happens
-class _RouletteState extends State<Roulette>
-    with SingleTickerProviderStateMixin {
+class _RouletteState extends State<Roulette> with TickerProviderStateMixin {
   AnimationController? controller;
   bool disposed = false;
   late Animation<double> spin;
@@ -832,8 +788,7 @@ class _RouletteState extends State<Roulette>
 
     controller = AnimationController(duration: widget.duration, vsync: this);
 
-    spin = Tween<double>(begin: 0, end: widget.spins * 2).animate(
-        CurvedAnimation(parent: controller!, curve: Curves.elasticOut));
+    spin = Tween<double>(begin: 0, end: widget.spins * 2).animate(CurvedAnimation(parent: controller!, curve: Curves.elasticOut));
 
     if (!widget.manualTrigger && widget.animate) {
       Future.delayed(widget.delay, () {

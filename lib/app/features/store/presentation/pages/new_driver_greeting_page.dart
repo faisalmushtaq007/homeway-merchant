@@ -145,7 +145,7 @@ class NewDriverGreetingPage extends StatelessWidget {
                               children: [
                                 const Icon(Icons.store),
                                 Text(
-                                  'Driver ID #HMW${storeOwnDeliveryPartnerEntity.driverID}',
+                                  'Driver ID #HMW-DRIVER-${storeOwnDeliveryPartnerEntity.driverID}',
                                   textDirection: serviceLocator<LanguageController>().targetTextDirection,
                                   textAlign: TextAlign.center,
                                   style: context.titleMedium!.copyWith(

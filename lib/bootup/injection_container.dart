@@ -354,10 +354,11 @@ void _setUpUseCases() {
 }
 
 void _setUpRepository() {
-  serviceLocator.registerSingleton<AddonsLocalDbRepository>(AddonsLocalDbRepository());
-  serviceLocator.registerSingleton<StoreOwnDeliveryPartnersLocalDbRepository>(StoreOwnDeliveryPartnersLocalDbRepository());
-  serviceLocator.registerSingleton<StoreLocalDbRepository>(StoreLocalDbRepository());
-  serviceLocator.registerSingleton<MenuLocalDbRepository>(MenuLocalDbRepository());
+  serviceLocator.registerSingleton<AddonsLocalDbRepository<Addons>>(AddonsLocalDbRepository<Addons>());
+  serviceLocator.registerSingleton<StoreOwnDeliveryPartnersLocalDbRepository<StoreOwnDeliveryPartnersInfo>>(
+      StoreOwnDeliveryPartnersLocalDbRepository<StoreOwnDeliveryPartnersInfo>());
+  serviceLocator.registerSingleton<StoreLocalDbRepository<StoreEntity>>(StoreLocalDbRepository<StoreEntity>());
+  serviceLocator.registerSingleton<MenuLocalDbRepository<MenuEntity>>(MenuLocalDbRepository<MenuEntity>());
   serviceLocator.registerSingleton<UserLocalDbRepository>(UserLocalDbRepository());
   serviceLocator.registerSingleton<AuthenticationDataSource>(AuthenticationRemoteDataSource());
   serviceLocator.registerSingleton<AuthenticationRepository>(
@@ -366,18 +367,18 @@ void _setUpRepository() {
     ),
   );
   // Store
-  serviceLocator.registerLazySingleton<StoreDataSource>(StoreRemoteDataSource());
-  serviceLocator.registerLazySingleton<StoreRepository>(
-    () => StoreRepositoryImplement(
+  serviceLocator.registerSingleton<StoreDataSource>(StoreRemoteDataSource());
+  serviceLocator.registerSingleton<StoreRepository>(
+    StoreRepositoryImplement(
       remoteDataSource: serviceLocator(),
-      storeLocalDataSource: serviceLocator(),
-      driverLocalDataSource: serviceLocator(),
+      storeLocalDataSource: serviceLocator<StoreLocalDbRepository<StoreEntity>>(),
+      driverLocalDataSource: serviceLocator<StoreOwnDeliveryPartnersLocalDbRepository<StoreOwnDeliveryPartnersInfo>>(),
     ),
   );
   // Menu
-  serviceLocator.registerLazySingleton<MenuDataSource>(MenuRemoteDataSource());
-  serviceLocator.registerLazySingleton<MenuRepository>(
-    () => MenuRepositoryImplement(
+  serviceLocator.registerSingleton<MenuDataSource>(MenuRemoteDataSource());
+  serviceLocator.registerSingleton<MenuRepository>(
+    MenuRepositoryImplement(
       remoteDataSource: serviceLocator(),
       menuLocalDataSource: serviceLocator(),
       addonsLocalDataSource: serviceLocator(),

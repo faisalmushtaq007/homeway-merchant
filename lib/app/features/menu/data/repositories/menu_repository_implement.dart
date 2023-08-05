@@ -7,8 +7,8 @@ class MenuRepositoryImplement implements MenuRepository {
     required this.addonsLocalDataSource,
   });
   final MenuDataSource remoteDataSource;
-  final BaseMenuLocalDbRepository menuLocalDataSource;
-  final BaseAddonsLocalDbRepository addonsLocalDataSource;
+  final MenuLocalDbRepository<MenuEntity> menuLocalDataSource;
+  final AddonsLocalDbRepository<Addons> addonsLocalDataSource;
 
   @override
   Future<ResultState<bool>> deleteAllMenu() {

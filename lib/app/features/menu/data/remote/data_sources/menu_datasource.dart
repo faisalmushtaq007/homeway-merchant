@@ -1,6 +1,6 @@
 part of 'package:homemakers_merchant/app/features/menu/index.dart';
 
-abstract class MenuDataSource {
+abstract interface class MenuDataSource {
   Future<ApiResultState<MenuEntity>> saveMenu({
     required MenuEntity menuEntity,
   });

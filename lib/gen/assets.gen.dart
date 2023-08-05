@@ -214,6 +214,10 @@ class $AssetsSvgGen {
   SvgGenImage get restaurantType =>
       const SvgGenImage('assets/svg/restaurant_type.svg');
 
+  /// File path: assets/svg/sorry-image-not-available.svg
+  SvgGenImage get sorryImageNotAvailable =>
+      const SvgGenImage('assets/svg/sorry-image-not-available.svg');
+
   /// File path: assets/svg/splashbackground.svg
   SvgGenImage get splashbackground =>
       const SvgGenImage('assets/svg/splashbackground.svg');
@@ -226,6 +230,7 @@ class $AssetsSvgGen {
         offlineDriver,
         onlineDriver,
         restaurantType,
+        sorryImageNotAvailable,
         splashbackground
       ];
 }

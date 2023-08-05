@@ -1,6 +1,6 @@
 part of 'package:homemakers_merchant/app/features/store/index.dart';
 
-abstract class StoreDataSource {
+abstract interface class StoreDataSource {
   Future<ApiResultState<StoreEntity>> saveStore({
     required StoreEntity storeEntity,
   });

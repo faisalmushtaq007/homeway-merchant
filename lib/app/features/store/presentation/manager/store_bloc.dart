@@ -8,8 +8,10 @@ import 'package:homemakers_merchant/app/features/store/common/store_enum.dart';
 import 'package:homemakers_merchant/app/features/store/domain/entities/store_entity.dart';
 import 'package:homemakers_merchant/app/features/store/index.dart';
 import 'package:homemakers_merchant/bootup/injection_container.dart';
+import 'package:homemakers_merchant/core/extensions/global_extensions/dart_extensions.dart';
 import 'package:homemakers_merchant/core/local/database/base/identifiable.dart';
 import 'package:homemakers_merchant/core/local/database/base/repository_failure.dart';
+import 'package:homemakers_merchant/shared/states/data_source_state.dart';
 import 'package:homemakers_merchant/utils/app_equatable/app_equatable.dart';
 import 'package:homemakers_merchant/utils/app_log.dart';
 import 'package:homemakers_merchant/utils/functional/functional.dart';
@@ -74,30 +76,58 @@ class StoreBloc extends Bloc<StoreEvent, StoreState> {
 
   FutureOr<void> _saveStore(SaveStore event, Emitter<StoreState> emit) async {
     try {
-      Either<RepositoryBaseFailure, StoreEntity> result;
+      DataSourceState<StoreEntity> result;
+      StoreEntity storeEntity = StoreEntity();
       if (!event.hasNewStore && event.currentIndex != -1) {
-        result = await serviceLocator<StoreLocalDbRepository>().update(event.storeEntity, UniqueId(event.storeEntity.storeID));
+        result = await serviceLocator<EditStoreUseCase>()(id: event.storeEntity.storeID, input: event.storeEntity);
       } else {
-        result = await serviceLocator<StoreLocalDbRepository>().add(event.storeEntity);
+        result = await serviceLocator<SaveStoreUseCase>()(event.storeEntity);
       }
-      result.fold((left) {
+      result.when(
+        remote: (data, meta) {
+          appLog.d('Remote');
+        },
+        localDb: (data, meta) {
+          appLog.d('Local');
+          emit(
+            SaveStoreState(
+              storeEntity: data ?? event.storeEntity,
+              hasNewStore: event.hasNewStore,
+            ),
+          );
+        },
+        error: (dataSourceFailure, reason, error, networkException, stackTrace, exception, extra) {
+          appLog.d('Error ${reason}');
+          emit(
+            StoreExceptionState(
+              message: reason,
+              //exception: e as Exception,
+              stackTrace: stackTrace,
+              storeStateStage: StoreStateStage.createNewWithStore,
+            ),
+          );
+        },
+      );
+      /*result.fold((left) {
         appLog.d('Save Store error ${left.toString()}');
       }, (right) {
+        storeEntity = right;
         appLog.d('Save StoreID : ${right.storeID}, ${right.storeName}');
       });
       emit(
         SaveStoreState(
-          storeEntity: event.storeEntity,
+          storeEntity: storeEntity.storeID.toString().isEmptyOrNull ? event.storeEntity : storeEntity,
           hasNewStore: event.hasNewStore,
         ),
-      );
+      );*/
     } catch (e, s) {
+      appLog.e('Save store ${e.toString()}');
       emit(
         StoreExceptionState(
           message: 'Something went wrong during saving your store details, please try again',
           //exception: e as Exception,
           stackTrace: s,
-          storeStateStage: StoreStateStage.getStore,
+          storeStateStage: StoreStateStage.createNewWithStore,
         ),
       );
     }
@@ -176,6 +206,7 @@ class StoreBloc extends Bloc<StoreEvent, StoreState> {
 
       return;
     } catch (e, s) {
+      appLog.e('Get All store ${e.toString()}');
       emit(
         StoreExceptionState(
           message: 'Something went wrong during getting your all stores, please try again',
@@ -209,6 +240,7 @@ class StoreBloc extends Bloc<StoreEvent, StoreState> {
             storeOwnDeliveryPartnerEntity: driverEntity, hasNewDriver: event.haveNewDriver, driverStateStage: DriverStateStage.success),
       );
     } catch (e, s) {
+      appLog.e('Save Driver store ${e.toString()}');
       emit(
         DriverExceptionState(
           message: 'Something went wrong during getting your all drivers, please try again',

@@ -7,6 +7,6 @@ class GetAllStoreUseCase extends UseCase<DataSourceState<List<StoreEntity>>> {
   final StoreRepository storeRepository;
   @override
   Future<DataSourceState<List<StoreEntity>>> call() async {
-    throw UnimplementedError();
+    return storeRepository.getAllStore();
   }
 }

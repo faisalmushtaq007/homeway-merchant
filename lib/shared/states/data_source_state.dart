@@ -35,5 +35,6 @@ class DataSourceState<T> with _$DataSourceState<T> {
     NetworkException? networkException,
     StackTrace? stackTrace,
     Exception? exception,
+    dynamic extra,
   }) = _DataSourceError<T>;
 }

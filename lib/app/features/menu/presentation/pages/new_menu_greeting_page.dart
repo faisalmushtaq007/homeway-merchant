@@ -183,7 +183,7 @@ class _NewMenuGreetingPageView extends WidgetView<NewMenuGreetingPage, _NewMenuG
                               children: [
                                 Icon(Icons.restaurant_menu),
                                 Text(
-                                  'Menu ID #HMW${widget.menuEntity.menuId}',
+                                  'Menu ID #HMW-MENU-${widget.menuEntity.menuId}',
                                   textDirection: serviceLocator<LanguageController>().targetTextDirection,
                                   textAlign: TextAlign.center,
                                   style: context.titleMedium!.copyWith(

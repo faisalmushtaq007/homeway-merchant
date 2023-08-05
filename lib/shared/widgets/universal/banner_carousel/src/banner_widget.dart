@@ -69,7 +69,9 @@ class BannerWidget extends StatelessWidget {
           // indicates where image will be loaded from, types are [network, asset,file]
           imageType: (_bannerModel.imagePath.isNotEmpty && (_bannerModel.imagePath.contains("https://") || _bannerModel.imagePath.contains("http://")))
               ? ImageType.network
-              : ImageType.file,
+              : (_bannerModel.imagePath.isNotEmpty && _bannerModel.imagePath.contains(".svg"))
+                  ? ImageType.svg
+                  : ImageType.file,
           // indicates what shape you would like to be with image [rectangle, oval,circle or none]
           imageShape: ImageShape.rectangle,
           // image default box fit

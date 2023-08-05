@@ -181,6 +181,10 @@ class _StoreCardState extends State<StoreCard> {
           {
             return ImageType.file;
           }
+        case (final String path) when path.contains('.svg'):
+          {
+            return ImageType.svg;
+          }
         case _:
           {
             return ImageType.text;

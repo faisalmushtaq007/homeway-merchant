@@ -145,7 +145,7 @@ class NewStoreGreetingPage extends StatelessWidget {
                               children: [
                                 const Icon(Icons.store),
                                 Text(
-                                  'Store ID #HMW${storeEntity.storeID}',
+                                  'Store ID #HMW-STORE-${storeEntity.storeID}',
                                   textDirection: serviceLocator<LanguageController>().targetTextDirection,
                                   textAlign: TextAlign.center,
                                   style: context.titleMedium!.copyWith(

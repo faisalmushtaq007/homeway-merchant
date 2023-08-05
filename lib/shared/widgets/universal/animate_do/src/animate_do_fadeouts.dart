@@ -36,7 +36,7 @@ class FadeOut extends StatefulWidget {
 }
 
 /// State class, where the magic happens
-class _FadeOutState extends State<FadeOut> with SingleTickerProviderStateMixin {
+class _FadeOutState extends State<FadeOut> with TickerProviderStateMixin {
   late AnimationController controller;
   bool disposed = false;
   late Animation<double> animation;
@@ -53,8 +53,7 @@ class _FadeOutState extends State<FadeOut> with SingleTickerProviderStateMixin {
     super.initState();
 
     controller = AnimationController(duration: widget.duration, vsync: this);
-    animation = Tween(begin: 1.0, end: 0.0)
-        .animate(CurvedAnimation(curve: Curves.easeOut, parent: controller));
+    animation = Tween(begin: 1.0, end: 0.0).animate(CurvedAnimation(curve: Curves.easeOut, parent: controller));
 
     /// Manual trigger false and animate = true
     /// No delay in place, then start the animation
@@ -132,8 +131,7 @@ class FadeOutDown extends StatefulWidget {
 }
 
 /// State class, where the magic happens
-class _FadeOutDownState extends State<FadeOutDown>
-    with SingleTickerProviderStateMixin {
+class _FadeOutDownState extends State<FadeOutDown> with TickerProviderStateMixin {
   AnimationController? controller;
   bool disposed = false;
   late Animation<double> animation;
@@ -152,11 +150,9 @@ class _FadeOutDownState extends State<FadeOutDown>
 
     controller = AnimationController(duration: widget.duration, vsync: this);
 
-    animation = Tween<double>(begin: 0, end: widget.from)
-        .animate(CurvedAnimation(parent: controller!, curve: Curves.easeOut));
+    animation = Tween<double>(begin: 0, end: widget.from).animate(CurvedAnimation(parent: controller!, curve: Curves.easeOut));
 
-    opacity = Tween<double>(begin: 1.0, end: 0.0).animate(
-        CurvedAnimation(parent: controller!, curve: const Interval(0, 0.65)));
+    opacity = Tween<double>(begin: 1.0, end: 0.0).animate(CurvedAnimation(parent: controller!, curve: const Interval(0, 0.65)));
 
     /// Manual trigger false and animate = true
     /// No delay in place, then start the animation
@@ -280,8 +276,7 @@ class FadeOutUp extends StatefulWidget {
 }
 
 /// State class, where the magic happens
-class _FadeOutUpState extends State<FadeOutUp>
-    with SingleTickerProviderStateMixin {
+class _FadeOutUpState extends State<FadeOutUp> with TickerProviderStateMixin {
   AnimationController? controller;
   bool disposed = false;
   late Animation<double> animation;
@@ -299,10 +294,8 @@ class _FadeOutUpState extends State<FadeOutUp>
 
     controller = AnimationController(duration: widget.duration, vsync: this);
 
-    animation = Tween<double>(begin: 0.0, end: widget.from * -1)
-        .animate(CurvedAnimation(parent: controller!, curve: Curves.easeOut));
-    opacity = Tween<double>(begin: 1.0, end: 0.0).animate(
-        CurvedAnimation(parent: controller!, curve: const Interval(0, 0.65)));
+    animation = Tween<double>(begin: 0.0, end: widget.from * -1).animate(CurvedAnimation(parent: controller!, curve: Curves.easeOut));
+    opacity = Tween<double>(begin: 1.0, end: 0.0).animate(CurvedAnimation(parent: controller!, curve: const Interval(0, 0.65)));
 
     /// Manual trigger false and animate = true
     /// No delay in place, then start the animation
@@ -426,8 +419,7 @@ class FadeOutLeft extends StatefulWidget {
 }
 
 /// State class, where the magic happens
-class _FadeOutLeftState extends State<FadeOutLeft>
-    with SingleTickerProviderStateMixin {
+class _FadeOutLeftState extends State<FadeOutLeft> with TickerProviderStateMixin {
   AnimationController? controller;
   bool disposed = false;
   late Animation<double> animation;
@@ -445,10 +437,8 @@ class _FadeOutLeftState extends State<FadeOutLeft>
 
     controller = AnimationController(duration: widget.duration, vsync: this);
 
-    animation = Tween<double>(begin: 0, end: widget.from * -1)
-        .animate(CurvedAnimation(parent: controller!, curve: Curves.easeOut));
-    opacity = Tween<double>(begin: 1.0, end: 0.0).animate(
-        CurvedAnimation(parent: controller!, curve: const Interval(0, 0.65)));
+    animation = Tween<double>(begin: 0, end: widget.from * -1).animate(CurvedAnimation(parent: controller!, curve: Curves.easeOut));
+    opacity = Tween<double>(begin: 1.0, end: 0.0).animate(CurvedAnimation(parent: controller!, curve: const Interval(0, 0.65)));
 
     /// Manual trigger false and animate = true
     /// No delay in place, then start the animation

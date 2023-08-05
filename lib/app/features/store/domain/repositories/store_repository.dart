@@ -22,7 +22,7 @@ abstract interface class StoreRepository {
     required int storeID,
   });
 
-  Future<DataSourceState<StoreEntity>> getAllStore();
+  Future<DataSourceState<List<StoreEntity>>> getAllStore();
 
   //Driver
   Future<DataSourceState<StoreOwnDeliveryPartnersInfo>> saveDriver({

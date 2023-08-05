@@ -38,7 +38,7 @@ class FadeIn extends StatefulWidget {
 
 /// FadeState class
 /// The animation magic happens here
-class _FadeInState extends State<FadeIn> with SingleTickerProviderStateMixin {
+class _FadeInState extends State<FadeIn> with TickerProviderStateMixin {
   /// Animation controller that controls this animation
   AnimationController? controller;
 
@@ -138,8 +138,7 @@ class FadeInDown extends StatefulWidget {
 
 /// FadeState class
 /// The animation magic happens here
-class _FadeInDownState extends State<FadeInDown>
-    with SingleTickerProviderStateMixin {
+class _FadeInDownState extends State<FadeInDown> with TickerProviderStateMixin {
   AnimationController? controller;
 
   /// is the widget disposed?
@@ -164,11 +163,9 @@ class _FadeInDownState extends State<FadeInDown>
 
     controller = AnimationController(duration: widget.duration, vsync: this);
 
-    animation = Tween<double>(begin: widget.from * -1, end: 0)
-        .animate(CurvedAnimation(parent: controller!, curve: Curves.easeOut));
+    animation = Tween<double>(begin: widget.from * -1, end: 0).animate(CurvedAnimation(parent: controller!, curve: Curves.easeOut));
 
-    opacity = Tween<double>(begin: 0, end: 1).animate(
-        CurvedAnimation(parent: controller!, curve: const Interval(0, 0.65)));
+    opacity = Tween<double>(begin: 0, end: 1).animate(CurvedAnimation(parent: controller!, curve: const Interval(0, 0.65)));
 
     if (!widget.manualTrigger && widget.animate) {
       Future.delayed(widget.delay, () {
@@ -242,14 +239,8 @@ class FadeInDownBig extends StatelessWidget {
   }
 
   @override
-  Widget build(BuildContext context) => FadeInDown(
-      child: child,
-      duration: duration,
-      delay: delay,
-      controller: controller,
-      manualTrigger: manualTrigger,
-      animate: animate,
-      from: from);
+  Widget build(BuildContext context) =>
+      FadeInDown(child: child, duration: duration, delay: delay, controller: controller, manualTrigger: manualTrigger, animate: animate, from: from);
 }
 
 /// Class [FadeInUp]:
@@ -291,8 +282,7 @@ class FadeInUp extends StatefulWidget {
 
 /// FadeState class
 /// The animation magic happens here
-class _FadeInUpState extends State<FadeInUp>
-    with SingleTickerProviderStateMixin {
+class _FadeInUpState extends State<FadeInUp> with TickerProviderStateMixin {
   /// Animation controller if requested
   AnimationController? controller;
 
@@ -318,10 +308,8 @@ class _FadeInUpState extends State<FadeInUp>
 
     controller = AnimationController(duration: widget.duration, vsync: this);
 
-    animation = Tween<double>(begin: widget.from, end: 0)
-        .animate(CurvedAnimation(parent: controller!, curve: Curves.easeOut));
-    opacity = Tween<double>(begin: 0, end: 1).animate(
-        CurvedAnimation(parent: controller!, curve: const Interval(0, 0.65)));
+    animation = Tween<double>(begin: widget.from, end: 0).animate(CurvedAnimation(parent: controller!, curve: Curves.easeOut));
+    opacity = Tween<double>(begin: 0, end: 1).animate(CurvedAnimation(parent: controller!, curve: const Interval(0, 0.65)));
 
     if (!widget.manualTrigger && widget.animate) {
       Future.delayed(widget.delay, () {
@@ -444,8 +432,7 @@ class FadeInLeft extends StatefulWidget {
 
 /// FadeState class
 /// The animation magic happens here
-class _FadeInLeftState extends State<FadeInLeft>
-    with SingleTickerProviderStateMixin {
+class _FadeInLeftState extends State<FadeInLeft> with TickerProviderStateMixin {
   AnimationController? controller;
   bool disposed = false;
   late Animation<double> animation;
@@ -463,10 +450,8 @@ class _FadeInLeftState extends State<FadeInLeft>
 
     controller = AnimationController(duration: widget.duration, vsync: this);
 
-    animation = Tween<double>(begin: widget.from * -1, end: 0)
-        .animate(CurvedAnimation(parent: controller!, curve: Curves.easeOut));
-    opacity = Tween<double>(begin: 0, end: 1).animate(
-        CurvedAnimation(parent: controller!, curve: const Interval(0, 0.65)));
+    animation = Tween<double>(begin: widget.from * -1, end: 0).animate(CurvedAnimation(parent: controller!, curve: Curves.easeOut));
+    opacity = Tween<double>(begin: 0, end: 1).animate(CurvedAnimation(parent: controller!, curve: const Interval(0, 0.65)));
 
     if (!widget.manualTrigger && widget.animate) {
       Future.delayed(widget.delay, () {
@@ -589,8 +574,7 @@ class FadeInRight extends StatefulWidget {
 
 /// FadeState class
 /// The animation magic happens here
-class _FadeInRightState extends State<FadeInRight>
-    with SingleTickerProviderStateMixin {
+class _FadeInRightState extends State<FadeInRight> with TickerProviderStateMixin {
   AnimationController? controller;
   bool disposed = false;
   late Animation<double> animation;
@@ -608,10 +592,8 @@ class _FadeInRightState extends State<FadeInRight>
 
     controller = AnimationController(duration: widget.duration, vsync: this);
 
-    animation = Tween<double>(begin: widget.from, end: 0)
-        .animate(CurvedAnimation(parent: controller!, curve: Curves.easeOut));
-    opacity = Tween<double>(begin: 0, end: 1).animate(
-        CurvedAnimation(parent: controller!, curve: const Interval(0, 0.65)));
+    animation = Tween<double>(begin: widget.from, end: 0).animate(CurvedAnimation(parent: controller!, curve: Curves.easeOut));
+    opacity = Tween<double>(begin: 0, end: 1).animate(CurvedAnimation(parent: controller!, curve: const Interval(0, 0.65)));
 
     if (!widget.manualTrigger && widget.animate) {
       Future.delayed(widget.delay, () {
