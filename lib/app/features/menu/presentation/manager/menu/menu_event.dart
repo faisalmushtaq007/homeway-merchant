@@ -25,14 +25,14 @@ class RemoveByIDMenu extends MenuEvent {
   RemoveByIDMenu({
     this.menuEntity,
     this.index = -1,
-    this.storeID = '',
+    this.menuID = '',
     this.menuEntities = const [],
   });
 
   final MenuEntity? menuEntity;
   final int index;
   final List<MenuEntity> menuEntities;
-  final String storeID;
+  final String menuID;
 
   @override
   bool get cacheHash => true;
@@ -42,7 +42,7 @@ class RemoveByIDMenu extends MenuEvent {
         menuEntity,
         index,
         menuEntities,
-        storeID,
+        menuID,
       ];
 }
 

@@ -39,8 +39,53 @@ enum MenuSelectionUseCase {
   view,
   removeFromStore,
   deleteAll,
+  getByID,
+  getAll,
   edit,
   none,
+  loading,
+  processing,
+  progressing,
+  loaded,
+  success,
+  failed,
+  exception,
+  empty,
+  ;
+
+  @override
+  String toString() {
+    return name;
+  }
+}
+
+enum AddonsSelectionUseCase {
+  createNewWithStore,
+  createNewWithoutStore,
+  associateExistingMultipleStore,
+  delete,
+  view,
+  removeFromStore,
+  deleteAll,
+  save,
+  getByID,
+  getAll,
+  edit,
+  none,
+  loading,
+  processing,
+  progressing,
+  loaded,
+  success,
+  failed,
+  exception,
+  empty,
+  ;
+
+  @override
+  String toString() {
+    return name;
+  }
 }
 
 enum MenuStateStatus {

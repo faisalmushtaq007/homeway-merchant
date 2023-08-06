@@ -8,6 +8,7 @@ import 'package:homemakers_merchant/app/features/menu/index.dart';
 import 'package:homemakers_merchant/app/features/profile/domain/entities/user_entity.dart';
 import 'package:homemakers_merchant/app/features/store/domain/entities/store_entity.dart';
 import 'package:homemakers_merchant/bootup/injection_container.dart';
+import 'package:homemakers_merchant/shared/states/data_source_state.dart';
 import 'package:homemakers_merchant/utils/app_equatable/app_equatable.dart';
 import 'package:homemakers_merchant/utils/app_log.dart';
 
@@ -27,6 +28,18 @@ class MenuBloc extends Bloc<MenuEvent, MenuState> {
     );
     on<SaveAddons>(
       _saveAddons,
+      transformer: sequential(),
+    );
+    on<RemoveByIDAddons>(
+      _removeByIDAddons,
+      transformer: sequential(),
+    );
+    on<RemoveAllAddons>(
+      _removeAllAddons,
+      transformer: sequential(),
+    );
+    on<GetByIDAddons>(
+      _getByIDAddons,
       transformer: sequential(),
     );
     on<SelectAddonsMaxPortion>(
@@ -87,34 +100,65 @@ class MenuBloc extends Bloc<MenuEvent, MenuState> {
     try {
       emit(
         AddonsLoadingState(
-          message: '',
+          message: 'Please wait while we are fetching your menu',
           isLoading: true,
         ),
       );
-      List<Addons> _menuAvailableAddons = List<Addons>.from(localMenuAddons.toList());
-      await Future.delayed(
-          const Duration(
-            milliseconds: 500,
-          ),
-          () {});
-      if (_menuAvailableAddons.isEmpty) {
-        emit(
-          GetEmptyAddonsState(
-            message: 'Addons is empty',
-            addonsEntities: [],
-          ),
-        );
-      } else {
-        emit(GetAllAddonsState(
-          addonsEntities: _menuAvailableAddons.toList(),
-        ));
-      }
+      //List<Addons> _menuAvailableAddons = List<Addons>.from(localMenuAddons.toList());
+      final DataSourceState<List<Addons>> result = await serviceLocator<GetAllAddonsUseCase>()();
+      result.when(
+        remote: (data, meta) {
+          appLog.d('Addons bloc get all remote');
+          if (data == null || data.isEmpty) {
+            emit(
+              GetEmptyAddonsState(
+                message: 'Your addons is empty',
+                addonsEntities: [],
+              ),
+            );
+          } else {
+            emit(GetAllAddonsState(
+              addonsEntities: data.toList(),
+            ));
+          }
+        },
+        localDb: (data, meta) {
+          appLog.d('Addons bloc get all local');
+          if (data == null || data.isEmpty) {
+            emit(
+              GetEmptyAddonsState(
+                message: 'Your addons is empty',
+                addonsEntities: [],
+              ),
+            );
+          } else {
+            emit(GetAllAddonsState(
+              addonsEntities: data.toList(),
+            ));
+          }
+        },
+        error: (dataSourceFailure, reason, error, networkException, stackTrace, exception, extra) {
+          appLog.d('Addons bloc get all error $reason');
+          emit(
+            AddonsExceptionState(
+              message: reason,
+              //exception: e as Exception,
+              stackTrace: stackTrace,
+              addonsSelectionUseCase: AddonsSelectionUseCase.getAll,
+            ),
+          );
+        },
+      );
     } catch (e, s) {
-      emit(AddonsExceptionState(
-        message: 'Something went wrong',
-        //exception: e as Exception,
-        stackTrace: s,
-      ));
+      appLog.e('Addons bloc get all exception $e');
+      emit(
+        AddonsExceptionState(
+          message: 'Something went wrong during saving your store details, please try again',
+          //exception: e as Exception,
+          stackTrace: s,
+          addonsSelectionUseCase: AddonsSelectionUseCase.getAll,
+        ),
+      );
     }
   }
 
@@ -142,35 +186,60 @@ class MenuBloc extends Bloc<MenuEvent, MenuState> {
   }
 
   FutureOr<void> _saveAddons(SaveAddons event, Emitter<MenuState> emit) async {
-    final newIndex = localMenuAddons.toList().length - 1;
-    final Addons currentSaveAddons = event.addonsEntity;
-    if (!event.hasNewAddons && event.currentIndex != -1) {
-      final currentCacheSaveAddons = currentSaveAddons.copyWith();
-      // Save into local menu addons list
-      localMenuAddons.removeAt(event.currentIndex);
-      localMenuAddons.insert(event.currentIndex, currentCacheSaveAddons);
-      serviceLocator<List<Addons>>().removeAt(event.currentIndex);
-      serviceLocator<List<Addons>>().insert(0, currentSaveAddons);
-      serviceLocator<AppUserEntity>().addons = serviceLocator<List<Addons>>();
-      //
+    try {
+      DataSourceState<Addons> result;
+      if (!event.hasNewAddons && event.currentIndex != -1) {
+        result = await serviceLocator<EditAddonsUseCase>()(id: event.addonsEntity.addonsID, input: event.addonsEntity);
+      } else {
+        result = await serviceLocator<SaveAddonsUseCase>()(event.addonsEntity);
+      }
+      await result.when(
+        remote: (data, meta) async {
+          appLog.d('Addons bloc save remote ${data?.toMap()}');
+          emit(
+            SaveAddonsState(
+              addonsEntity: data ?? event.addonsEntity,
+              hasNewAddons: event.hasNewAddons,
+            ),
+          );
+          await Future.delayed(const Duration(milliseconds: 500), () {});
+          emit(NavigateToAddonsMenuState(addonsEntity: data ?? event.addonsEntity, hasNewAddons: event.hasNewAddons));
+          add(GetAllAddons());
+        },
+        localDb: (data, meta) async {
+          appLog.d('Addons bloc save local ${data?.toMap()}');
+          emit(
+            SaveAddonsState(
+              addonsEntity: data ?? event.addonsEntity,
+              hasNewAddons: event.hasNewAddons,
+            ),
+          );
+          await Future.delayed(const Duration(milliseconds: 500), () {});
+          emit(NavigateToAddonsMenuState(addonsEntity: data ?? event.addonsEntity, hasNewAddons: event.hasNewAddons));
+          add(GetAllAddons());
+        },
+        error: (dataSourceFailure, reason, error, networkException, stackTrace, exception, extra) {
+          appLog.d('Addons bloc save error $reason');
+          emit(
+            AddonsExceptionState(
+              message: reason,
+              //exception: e as Exception,
+              stackTrace: stackTrace,
+              addonsSelectionUseCase: AddonsSelectionUseCase.save,
+            ),
+          );
+        },
+      );
+    } catch (e, s) {
+      appLog.e('Addons bloc save exception $e');
       emit(
-        SaveAddonsState(addonsEntity: currentCacheSaveAddons, hasNewAddons: event.hasNewAddons),
+        AddonsExceptionState(
+          message: 'Something went wrong during saving your store details, please try again',
+          //exception: e as Exception,
+          stackTrace: s,
+          addonsSelectionUseCase: AddonsSelectionUseCase.save,
+        ),
       );
-      await Future.delayed(const Duration(milliseconds: 500), () {});
-      emit(NavigateToAddonsMenuState(addonsEntity: currentCacheSaveAddons, hasNewAddons: event.hasNewAddons));
-      add(GetAllAddons());
-    } else {
-      final currentCacheSaveAddons = currentSaveAddons.copyWith(
-        addonsID: newIndex,
-      );
-      localMenuAddons.insert(0, currentCacheSaveAddons);
-      serviceLocator<List<Addons>>().insert(0, currentCacheSaveAddons);
-      serviceLocator<AppUserEntity>().addons = serviceLocator<List<Addons>>();
-      emit(
-        SaveAddonsState(addonsEntity: currentCacheSaveAddons, hasNewAddons: event.hasNewAddons),
-      );
-      await Future.delayed(const Duration(milliseconds: 500), () {});
-      emit(NavigateToAddonsMenuState(addonsEntity: currentCacheSaveAddons, hasNewAddons: event.hasNewAddons));
     }
   }
 
@@ -290,76 +359,79 @@ class MenuBloc extends Bloc<MenuEvent, MenuState> {
       emit(
         GetAllMenuState(
           menuEntities: [],
-          message: 'Your menu is loading...',
+          message: 'Please wait while we are fetching your menu',
           menuStateStatus: MenuStateStatus.loading,
         ),
       );
-      //final List<MenuEntity> listOfMenus = serviceLocator<List<MenuEntity>>();
-      final List<MenuEntity> listOfMenus = [
-        MenuEntity(
-          menuName: 'Soya Chilli',
-          menuCategories: [
-            Category(
-              title: 'Arabic',
-            )
-          ],
-          menuImages: [
-            MenuImage(
-                imageId: '0',
-                assetPath:
-                    'https://img.freepik.com/premium-photo/dum-handi-chicken-biryani-is-prepared-earthen-clay-pot-called-haandi-popular-indian-non-vegetarian-food_466689-52225.jpg',
-                assetExtension: '.jpg')
-          ],
+      final DataSourceState<List<MenuEntity>> result = await serviceLocator<GetAllMenuUseCase>()();
+      result.when(
+        remote: (data, meta) {
+          appLog.d('Menu bloc get all remote');
+          if (data == null || data.isEmpty) {
+            emit(
+              GetAllMenuState(
+                menuEntities: [],
+                message: 'Your menu is empty',
+                menuStateStatus: MenuStateStatus.empty,
+              ),
+            );
+          } else {
+            emit(
+              GetAllMenuState(
+                menuEntities: data.toList(),
+                menuStateStatus: MenuStateStatus.success,
+              ),
+            );
+          }
+        },
+        localDb: (data, meta) {
+          appLog.d('Menu bloc get all local');
+          if (data == null || data.isEmpty) {
+            emit(
+              GetAllMenuState(
+                menuEntities: [],
+                message: 'Your menu is empty',
+                menuStateStatus: MenuStateStatus.empty,
+              ),
+            );
+          } else {
+            emit(
+              GetAllMenuState(
+                menuEntities: data.toList(),
+                menuStateStatus: MenuStateStatus.success,
+              ),
+            );
+          }
+        },
+        error: (dataSourceFailure, reason, error, networkException, stackTrace, exception, extra) {
+          appLog.d('Store bloc get all error $reason');
+          emit(
+            MenuExceptionState(
+              message: reason,
+              //exception: e as Exception,
+              stackTrace: stackTrace,
+              menuSelectionUseCase: MenuSelectionUseCase.getAll,
+            ),
+          );
+          emit(
+            GetAllMenuState(
+              menuEntities: [],
+              message: 'Something went wrong, please try again',
+              menuStateStatus: MenuStateStatus.exception,
+            ),
+          );
+        },
+      );
+    } catch (e, s) {
+      appLog.e('Menu bloc get all exception $e');
+      emit(
+        MenuExceptionState(
+          message: 'Something went wrong during saving your store details, please try again',
+          //exception: e as Exception,
+          stackTrace: s,
+          menuSelectionUseCase: MenuSelectionUseCase.getAll,
         ),
-        MenuEntity(
-          menuName: 'Briyani',
-          menuCategories: [
-            Category(
-              title: 'Arabic',
-            )
-          ],
-          menuImages: [
-            MenuImage(
-                imageId: '1',
-                assetPath:
-                    'https://img.freepik.com/premium-photo/chicken-dhum-biriyani-using-jeera-rice-spices-arranged-earthen-ware_527904-513.jpg?size=626&ext=jpg',
-                assetExtension: '.jpg')
-          ],
-        ),
-        MenuEntity(
-          menuName: 'Paneer Chilli',
-          menuCategories: [
-            Category(
-              title: 'Arabic',
-            )
-          ],
-          menuImages: [
-            MenuImage(
-                imageId: '2',
-                assetPath:
-                    'https://img.freepik.com/premium-photo/dum-handi-chicken-biryani-is-prepared-earthen-clay-pot-called-haandi-popular-indian-non-vegetarian-food_466689-52414.jpg',
-                assetExtension: '.jpg')
-          ],
-        ),
-      ];
-      Future.delayed(const Duration(seconds: 1), () {});
-      if (listOfMenus.isEmpty) {
-        emit(
-          GetAllMenuState(
-            menuEntities: [],
-            message: 'Your menu is empty',
-            menuStateStatus: MenuStateStatus.empty,
-          ),
-        );
-      } else {
-        emit(
-          GetAllMenuState(
-            menuEntities: listOfMenus.toList(),
-            menuStateStatus: MenuStateStatus.success,
-          ),
-        );
-      }
-    } catch (e) {
+      );
       emit(
         GetAllMenuState(
           menuEntities: [],
@@ -372,22 +444,50 @@ class MenuBloc extends Bloc<MenuEvent, MenuState> {
 
   FutureOr<void> _saveMenu(SaveMenu event, Emitter<MenuState> emit) async {
     try {
-      // Save menu
-      final MenuEntity menuEntity = event.menuEntity;
+      DataSourceState<MenuEntity> result;
       if (!event.hasNewMenu && event.currentIndex != -1) {
-        serviceLocator<List<MenuEntity>>().removeAt(event.currentIndex);
-        serviceLocator<List<MenuEntity>>().insert(event.currentIndex, menuEntity);
+        result = await serviceLocator<EditMenuUseCase>()(id: event.menuEntity.menuId, input: event.menuEntity);
       } else {
-        serviceLocator<List<MenuEntity>>().insert(0, menuEntity);
+        result = await serviceLocator<SaveMenuUseCase>()(event.menuEntity);
       }
-      serviceLocator<AppUserEntity>().menus = serviceLocator<List<MenuEntity>>();
-      emit(
-        SaveMenuState(menuEntity: menuEntity, hasNewMenu: event.hasNewMenu, menuStateStatus: MenuStateStatus.success),
+      await result.when(
+        remote: (data, meta) async {
+          appLog.d('Menu bloc save remote ${data?.toMap()}');
+          emit(
+            SaveMenuState(menuEntity: data ?? event.menuEntity, hasNewMenu: event.hasNewMenu, menuStateStatus: MenuStateStatus.success),
+          );
+        },
+        localDb: (data, meta) async {
+          appLog.d('Menu bloc save local ${data?.toMap()}');
+          emit(
+            SaveMenuState(menuEntity: data ?? event.menuEntity, hasNewMenu: event.hasNewMenu, menuStateStatus: MenuStateStatus.success),
+          );
+        },
+        error: (dataSourceFailure, reason, error, networkException, stackTrace, exception, extra) {
+          appLog.d('Menu bloc save error $reason');
+          emit(
+            MenuExceptionState(
+              message: reason,
+              //exception: e as Exception,
+              stackTrace: stackTrace,
+              menuSelectionUseCase: MenuSelectionUseCase.createNewWithStore,
+            ),
+          );
+          emit(
+            SaveMenuState(menuEntity: event.menuEntity, hasNewMenu: event.hasNewMenu, menuStateStatus: MenuStateStatus.exception),
+          );
+        },
       );
-      await Future.delayed(const Duration(milliseconds: 500), () {
-        serviceLocator.resetLazySingleton<MenuEntity>();
-      });
-    } catch (e) {
+    } catch (e, s) {
+      appLog.e('Menu bloc save exception $e');
+      emit(
+        MenuExceptionState(
+          message: 'Something went wrong during saving your store details, please try again',
+          //exception: e as Exception,
+          stackTrace: s,
+          menuSelectionUseCase: MenuSelectionUseCase.createNewWithStore,
+        ),
+      );
       emit(
         SaveMenuState(menuEntity: event.menuEntity, hasNewMenu: event.hasNewMenu, menuStateStatus: MenuStateStatus.exception),
       );
@@ -395,15 +495,162 @@ class MenuBloc extends Bloc<MenuEvent, MenuState> {
   }
 
   FutureOr<void> _removeByIDMenu(RemoveByIDMenu event, Emitter<MenuState> emit) async {
-    try {} catch (e) {}
+    try {
+      final DataSourceState<bool> result = await serviceLocator<DeleteMenuUseCase>()(
+        input: event.menuEntity,
+        id: int.parse(event.menuID),
+      );
+      result.when(
+        remote: (data, meta) {
+          appLog.d('Menu bloc delete remote $data');
+          emit(
+            DeleteMenuState(
+              menuEntities: event.menuEntities.toList(),
+              index: event.index,
+              menuEntity: event.menuEntity,
+              menuID: event.menuID,
+              hasDelete: data ?? false,
+            ),
+          );
+        },
+        localDb: (data, meta) {
+          appLog.d('Menu bloc delete local $data');
+          emit(
+            DeleteMenuState(
+              menuEntities: event.menuEntities.toList(),
+              index: event.index,
+              menuEntity: event.menuEntity,
+              menuID: event.menuID,
+              hasDelete: data ?? false,
+            ),
+          );
+        },
+        error: (dataSourceFailure, reason, error, networkException, stackTrace, exception, extra) {
+          appLog.d('Menu bloc delete error $reason');
+          emit(
+            MenuExceptionState(
+              message: reason,
+              //exception: e as Exception,
+              stackTrace: stackTrace,
+              menuSelectionUseCase: MenuSelectionUseCase.delete,
+            ),
+          );
+        },
+      );
+    } catch (e, s) {
+      appLog.e('Menu bloc delete exception $e');
+      emit(
+        MenuExceptionState(
+          message: 'Something went wrong during getting your all drivers, please try again',
+          //exception: e as Exception,
+          stackTrace: s,
+          menuSelectionUseCase: MenuSelectionUseCase.delete,
+        ),
+      );
+    }
   }
 
   FutureOr<void> _removeAllMenu(RemoveAllMenu event, Emitter<MenuState> emit) async {
-    try {} catch (e) {}
+    try {
+      final DataSourceState<bool> result = await serviceLocator<DeleteAllMenuUseCase>()();
+      result.when(
+        remote: (data, meta) {
+          appLog.d('Menu bloc delete all remote $data');
+          emit(
+            DeleteAllMenuState(
+              message: 'Deleted all your menu',
+              menuEntities: [],
+              hasDeleteAll: data ?? false,
+            ),
+          );
+        },
+        localDb: (data, meta) {
+          appLog.d('Menu bloc delete all local $data');
+          emit(
+            DeleteAllAddonsState(
+              message: 'Deleted all your menus',
+              addonsEntities: [],
+              hasDeleteAll: data ?? false,
+            ),
+          );
+        },
+        error: (dataSourceFailure, reason, error, networkException, stackTrace, exception, extra) {
+          appLog.d('Menu bloc delete all error $reason');
+          emit(
+            MenuExceptionState(
+              message: reason,
+              //exception: e as Exception,
+              stackTrace: stackTrace,
+              menuSelectionUseCase: MenuSelectionUseCase.deleteAll,
+            ),
+          );
+        },
+      );
+    } catch (e, s) {
+      appLog.e('Menu bloc delete all exception $e');
+      emit(
+        MenuExceptionState(
+          message: 'Something went wrong during getting your all drivers, please try again',
+          //exception: e as Exception,
+          stackTrace: s,
+          menuSelectionUseCase: MenuSelectionUseCase.deleteAll,
+        ),
+      );
+    }
   }
 
   FutureOr<void> _getByIDMenu(GetByIDMenu event, Emitter<MenuState> emit) async {
-    try {} catch (e) {}
+    try {
+      final DataSourceState<MenuEntity> result = await serviceLocator<GetMenuUseCase>()(
+        input: event.menuEntity,
+        id: int.parse(event.menuID),
+      );
+      result.when(
+        remote: (data, meta) {
+          appLog.d('Menu bloc edit remote ${data?.toMap()}');
+          emit(
+            GetMenuState(
+              menuEntity: data ?? event.menuEntity,
+              index: event.index,
+              menuEntities: event.menuEntities.toList(),
+              menuID: event.menuID,
+            ),
+          );
+        },
+        localDb: (data, meta) {
+          appLog.d('Menu bloc edit local ${data?.toMap()}');
+          emit(
+            GetMenuState(
+              menuEntity: data ?? event.menuEntity,
+              index: event.index,
+              menuEntities: event.menuEntities.toList(),
+              menuID: event.menuID,
+            ),
+          );
+        },
+        error: (dataSourceFailure, reason, error, networkException, stackTrace, exception, extra) {
+          appLog.d('Menu bloc edit error $reason');
+          emit(
+            MenuExceptionState(
+              message: reason,
+              //exception: e as Exception,
+              stackTrace: stackTrace,
+              menuSelectionUseCase: MenuSelectionUseCase.getByID,
+            ),
+          );
+        },
+      );
+    } catch (e, s) {
+      appLog.e('Menu bloc get exception $e');
+      emit(
+        MenuExceptionState(
+          message: 'Something went wrong during getting your store details, please try again',
+          //exception: e as Exception,
+          stackTrace: s,
+          menuSelectionUseCase: MenuSelectionUseCase.getByID,
+        ),
+      );
+    }
   }
 
   FutureOr<void> _selectAllMenu(SelectAllMenu event, Emitter<MenuState> emit) async {
@@ -552,5 +799,162 @@ class MenuBloc extends Bloc<MenuEvent, MenuState> {
         ),
       );
     }*/
+  }
+
+  FutureOr<void> _removeByIDAddons(RemoveByIDAddons event, Emitter<MenuState> emit) async {
+    try {
+      final DataSourceState<bool> result = await serviceLocator<DeleteAddonsUseCase>()(
+        input: event.addonsEntity,
+        id: int.parse(event.addonsID),
+      );
+      result.when(
+        remote: (data, meta) {
+          appLog.d('Addons bloc delete remote $data');
+          emit(
+            DeleteAddonsState(
+              addonsEntity: event.addonsEntity,
+              index: event.index,
+              addonsEntities: event.addonsEntities.toList(),
+              addonsID: event.addonsID,
+              hasDelete: data ?? false,
+            ),
+          );
+        },
+        localDb: (data, meta) {
+          appLog.d('Addons bloc delete local $data');
+          emit(
+            DeleteAddonsState(
+              addonsEntity: event.addonsEntity,
+              index: event.index,
+              addonsEntities: event.addonsEntities.toList(),
+              addonsID: event.addonsID,
+              hasDelete: data ?? false,
+            ),
+          );
+        },
+        error: (dataSourceFailure, reason, error, networkException, stackTrace, exception, extra) {
+          appLog.d('Addons bloc delete error $reason');
+          emit(
+            AddonsExceptionState(
+              message: reason,
+              //exception: e as Exception,
+              stackTrace: stackTrace,
+              addonsSelectionUseCase: AddonsSelectionUseCase.delete,
+            ),
+          );
+        },
+      );
+    } catch (e, s) {
+      appLog.e('Addons bloc delete exception $e');
+      emit(
+        AddonsExceptionState(
+          message: 'Something went wrong during getting your all drivers, please try again',
+          //exception: e as Exception,
+          stackTrace: s,
+          addonsSelectionUseCase: AddonsSelectionUseCase.delete,
+        ),
+      );
+    }
+  }
+
+  FutureOr<void> _removeAllAddons(RemoveAllAddons event, Emitter<MenuState> emit) async {
+    try {
+      final DataSourceState<bool> result = await serviceLocator<DeleteAllAddonsUseCase>()();
+      result.when(
+        remote: (data, meta) {
+          appLog.d('Addons bloc delete all remote $data');
+          emit(
+            DeleteAllAddonsState(
+              message: 'Delete all your addons',
+              addonsEntities: [],
+              hasDeleteAll: data ?? false,
+            ),
+          );
+        },
+        localDb: (data, meta) {
+          appLog.d('Driver bloc delete all local $data');
+          emit(
+            DeleteAllAddonsState(
+              message: 'Delete all your addons',
+              addonsEntities: [],
+              hasDeleteAll: data ?? false,
+            ),
+          );
+        },
+        error: (dataSourceFailure, reason, error, networkException, stackTrace, exception, extra) {
+          appLog.d('Driver bloc delete all error $reason');
+          emit(
+            AddonsExceptionState(
+              message: reason,
+              //exception: e as Exception,
+              stackTrace: stackTrace,
+              addonsSelectionUseCase: AddonsSelectionUseCase.deleteAll,
+            ),
+          );
+        },
+      );
+    } catch (e, s) {
+      appLog.e('Addons bloc delete all exception $e');
+      emit(
+        AddonsExceptionState(
+          message: 'Something went wrong during getting your all drivers, please try again',
+          //exception: e as Exception,
+          stackTrace: s,
+          addonsSelectionUseCase: AddonsSelectionUseCase.deleteAll,
+        ),
+      );
+    }
+  }
+
+  FutureOr<void> _getByIDAddons(GetByIDAddons event, Emitter<MenuState> emit) async {
+    try {
+      final DataSourceState<Addons> result = await serviceLocator<GetAddonsUseCase>()(
+        input: event.addonsEntity,
+        id: int.parse(event.addonsID),
+      );
+      result.when(
+        remote: (data, meta) {
+          appLog.d('Addons bloc get remote ${data?.toMap()}');
+          emit(
+            GetAddonsState(
+              addonsEntity: data ?? event.addonsEntity,
+              index: event.index,
+              addonsEntities: event.addonsEntities.toList(),
+              addonsID: event.addonsID,
+            ),
+          );
+        },
+        localDb: (data, meta) {
+          appLog.d('Addons bloc get local ${data?.toMap()}');
+          emit(
+            GetAddonsState(
+              addonsEntity: data ?? event.addonsEntity,
+              index: event.index,
+              addonsEntities: event.addonsEntities.toList(),
+              addonsID: event.addonsID,
+            ),
+          );
+        },
+        error: (dataSourceFailure, reason, error, networkException, stackTrace, exception, extra) {
+          appLog.d('Addons bloc get error $reason');
+          emit(
+            AddonsExceptionState(
+                message: reason,
+                //exception: e as Exception,
+                stackTrace: stackTrace,
+                addonsSelectionUseCase: AddonsSelectionUseCase.getByID),
+          );
+        },
+      );
+    } catch (e, s) {
+      appLog.e('Addons bloc get exception $e');
+      emit(
+        AddonsExceptionState(
+            message: 'Something went wrong during getting your store details, please try again',
+            //exception: e as Exception,
+            stackTrace: s,
+            addonsSelectionUseCase: AddonsSelectionUseCase.getByID),
+      );
+    }
   }
 }

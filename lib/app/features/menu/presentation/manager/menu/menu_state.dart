@@ -94,21 +94,19 @@ class MenuExceptionState extends MenuState {
     required this.message,
     this.stackTrace,
     this.exception,
+    this.menuSelectionUseCase = MenuSelectionUseCase.none,
   });
 
   final String message;
   final StackTrace? stackTrace;
   final Exception? exception;
+  final MenuSelectionUseCase menuSelectionUseCase;
 
   @override
   bool get cacheHash => true;
 
   @override
-  List<Object?> get hashParameters => [
-        message,
-        stackTrace,
-        exception,
-      ];
+  List<Object?> get hashParameters => [message, stackTrace, exception, menuSelectionUseCase];
 }
 
 class DeleteMenuState extends MenuState {
@@ -117,12 +115,16 @@ class DeleteMenuState extends MenuState {
     this.index = -1,
     this.menuID = '',
     this.menuEntities = const [],
+    this.hasDelete = false,
+    this.message = '',
   });
 
   final MenuEntity? menuEntity;
   final int index;
   final List<MenuEntity> menuEntities;
   final String menuID;
+  final bool hasDelete;
+  final String message;
 
   @override
   bool get cacheHash => true;
@@ -133,19 +135,34 @@ class DeleteMenuState extends MenuState {
         index,
         menuEntities,
         menuID,
+        hasDelete,
+        message,
       ];
 }
 
 class DeleteAllMenuState extends MenuState {
-  DeleteAllMenuState({this.menuEntities = const []});
+  DeleteAllMenuState({
+    this.menuEntities = const [],
+    this.menuSelectionUseCase = MenuSelectionUseCase.none,
+    this.message = '',
+    this.hasDeleteAll = false,
+  });
 
   final List<MenuEntity> menuEntities;
+  final MenuSelectionUseCase menuSelectionUseCase;
+  final bool hasDeleteAll;
+  final String message;
 
   @override
   bool get cacheHash => true;
 
   @override
-  List<Object?> get hashParameters => [menuEntities];
+  List<Object?> get hashParameters => [
+        menuEntities,
+        hasDeleteAll,
+        menuSelectionUseCase,
+        message,
+      ];
 }
 
 class GetAllMenuState extends MenuState {
@@ -292,11 +309,13 @@ class AddonsExceptionState extends MenuState {
     required this.message,
     this.stackTrace,
     this.exception,
+    this.addonsSelectionUseCase = AddonsSelectionUseCase.none,
   });
 
   final String message;
   final StackTrace? stackTrace;
   final Exception? exception;
+  final AddonsSelectionUseCase addonsSelectionUseCase;
 
   @override
   bool get cacheHash => true;
@@ -306,6 +325,7 @@ class AddonsExceptionState extends MenuState {
         message,
         stackTrace,
         exception,
+        addonsSelectionUseCase,
       ];
 }
 
@@ -315,12 +335,16 @@ class DeleteAddonsState extends MenuState {
     this.index = -1,
     this.addonsID = '',
     this.addonsEntities = const [],
+    this.message = '',
+    this.hasDelete = false,
   });
 
   final Addons? addonsEntity;
   final int index;
   final List<Addons> addonsEntities;
   final String addonsID;
+  final bool hasDelete;
+  final String message;
 
   @override
   bool get cacheHash => true;
@@ -331,19 +355,34 @@ class DeleteAddonsState extends MenuState {
         index,
         addonsEntities,
         addonsID,
+        hasDelete,
+        message,
       ];
 }
 
 class DeleteAllAddonsState extends MenuState {
-  DeleteAllAddonsState({this.addonsEntities = const []});
+  DeleteAllAddonsState({
+    this.addonsEntities = const [],
+    this.addonsSelectionUseCase = AddonsSelectionUseCase.none,
+    this.message = '',
+    this.hasDeleteAll = false,
+  });
 
   final List<Addons> addonsEntities;
+  final AddonsSelectionUseCase addonsSelectionUseCase;
+  final bool hasDeleteAll;
+  final String message;
 
   @override
   bool get cacheHash => true;
 
   @override
-  List<Object?> get hashParameters => [addonsEntities];
+  List<Object?> get hashParameters => [
+        addonsEntities,
+        addonsSelectionUseCase,
+        hasDeleteAll,
+        message,
+      ];
 }
 
 class GetAllAddonsState extends MenuState {
