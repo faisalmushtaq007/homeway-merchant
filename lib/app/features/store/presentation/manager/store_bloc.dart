@@ -77,7 +77,6 @@ class StoreBloc extends Bloc<StoreEvent, StoreState> {
   FutureOr<void> _saveStore(SaveStore event, Emitter<StoreState> emit) async {
     try {
       DataSourceState<StoreEntity> result;
-      StoreEntity storeEntity = StoreEntity();
       if (!event.hasNewStore && event.currentIndex != -1) {
         result = await serviceLocator<EditStoreUseCase>()(id: event.storeEntity.storeID, input: event.storeEntity);
       } else {
@@ -85,10 +84,16 @@ class StoreBloc extends Bloc<StoreEvent, StoreState> {
       }
       result.when(
         remote: (data, meta) {
-          appLog.d('Remote');
+          appLog.d('Store bloc save remote ${data?.toMap()}');
+          emit(
+            SaveStoreState(
+              storeEntity: data ?? event.storeEntity,
+              hasNewStore: event.hasNewStore,
+            ),
+          );
         },
         localDb: (data, meta) {
-          appLog.d('Local');
+          appLog.d('Store bloc save local ${data?.toMap()}');
           emit(
             SaveStoreState(
               storeEntity: data ?? event.storeEntity,
@@ -97,7 +102,7 @@ class StoreBloc extends Bloc<StoreEvent, StoreState> {
           );
         },
         error: (dataSourceFailure, reason, error, networkException, stackTrace, exception, extra) {
-          appLog.d('Error ${reason}');
+          appLog.d('Store bloc save error $reason');
           emit(
             StoreExceptionState(
               message: reason,
@@ -108,20 +113,8 @@ class StoreBloc extends Bloc<StoreEvent, StoreState> {
           );
         },
       );
-      /*result.fold((left) {
-        appLog.d('Save Store error ${left.toString()}');
-      }, (right) {
-        storeEntity = right;
-        appLog.d('Save StoreID : ${right.storeID}, ${right.storeName}');
-      });
-      emit(
-        SaveStoreState(
-          storeEntity: storeEntity.storeID.toString().isEmptyOrNull ? event.storeEntity : storeEntity,
-          hasNewStore: event.hasNewStore,
-        ),
-      );*/
     } catch (e, s) {
-      appLog.e('Save store ${e.toString()}');
+      appLog.e('Store bloc save exception $e');
       emit(
         StoreExceptionState(
           message: 'Something went wrong during saving your store details, please try again',
@@ -135,15 +128,47 @@ class StoreBloc extends Bloc<StoreEvent, StoreState> {
 
   FutureOr<void> _getStore(GetStore event, Emitter<StoreState> emit) async {
     try {
-      emit(
-        GetStoreState(
-          storeEntity: event.storeEntity,
-          index: event.index,
-          storeEntities: event.storeEntities.toList(),
-          storeID: event.storeID,
-        ),
+      final DataSourceState<StoreEntity> result = await serviceLocator<GetStoreUseCase>()(
+        input: event.storeEntity,
+        id: event.storeID.isNotEmpty ? int.parse(event.storeID) : event.storeEntity?.storeID ?? -1,
+      );
+      result.when(
+        remote: (data, meta) {
+          appLog.d('Store bloc edit remote ${data?.toMap()}');
+          emit(
+            GetStoreState(
+              storeEntity: data ?? event.storeEntity,
+              index: event.index,
+              storeEntities: event.storeEntities.toList(),
+              storeID: event.storeID,
+            ),
+          );
+        },
+        localDb: (data, meta) {
+          appLog.d('Store bloc edit local ${data?.toMap()}');
+          emit(
+            GetStoreState(
+              storeEntity: data ?? event.storeEntity,
+              index: event.index,
+              storeEntities: event.storeEntities.toList(),
+              storeID: event.storeID,
+            ),
+          );
+        },
+        error: (dataSourceFailure, reason, error, networkException, stackTrace, exception, extra) {
+          appLog.d('Store bloc edit error $reason');
+          emit(
+            StoreExceptionState(
+              message: reason,
+              //exception: e as Exception,
+              stackTrace: stackTrace,
+              storeStateStage: StoreStateStage.getStore,
+            ),
+          );
+        },
       );
     } catch (e, s) {
+      appLog.e('Store bloc get exception $e');
       emit(
         StoreExceptionState(
           message: 'Something went wrong during getting your store details, please try again',
@@ -156,57 +181,155 @@ class StoreBloc extends Bloc<StoreEvent, StoreState> {
   }
 
   FutureOr<void> _deleteStore(DeleteStore event, Emitter<StoreState> emit) async {
-    emit(
-      DeleteStoreState(
-        storeEntity: event.storeEntity,
-        index: event.index,
-        storeEntities: event.storeEntities.toList(),
-        storeID: event.storeID,
-      ),
-    );
+    try {
+      final DataSourceState<bool> result = await serviceLocator<DeleteStoreUseCase>()(
+        input: event.storeEntity,
+        id: event.storeID.isNotEmpty ? int.parse(event.storeID) : event.storeEntity?.storeID ?? -1,
+      );
+      result.when(
+        remote: (data, meta) {
+          appLog.d('Store bloc delete remote $data');
+          emit(
+            DeleteStoreState(
+              storeEntity: event.storeEntity,
+              index: event.index,
+              storeEntities: event.storeEntities.toList(),
+              storeID: event.storeID,
+              hasDelete: data ?? false,
+            ),
+          );
+        },
+        localDb: (data, meta) {
+          appLog.d('Store bloc delete local $data');
+          emit(
+            DeleteStoreState(
+              storeEntity: event.storeEntity,
+              index: event.index,
+              storeEntities: event.storeEntities.toList(),
+              storeID: event.storeID,
+              hasDelete: data ?? false,
+            ),
+          );
+        },
+        error: (dataSourceFailure, reason, error, networkException, stackTrace, exception, extra) {
+          appLog.d('Store bloc delete error $reason');
+          emit(
+            StoreExceptionState(
+              message: reason,
+              //exception: e as Exception,
+              stackTrace: stackTrace,
+              storeStateStage: StoreStateStage.delete,
+            ),
+          );
+        },
+      );
+    } catch (e, s) {
+      appLog.e('Store bloc delete exception $e');
+      emit(
+        StoreExceptionState(
+          message: 'Something went wrong during getting your store details, please try again',
+          //exception: e as Exception,
+          stackTrace: s,
+          storeStateStage: StoreStateStage.delete,
+        ),
+      );
+    }
   }
 
   FutureOr<void> _deleteAllStore(DeleteAllStore event, Emitter<StoreState> emit) async {
-    emit(
-      DeleteAllStoreState(
-        storeEntities: [],
-      ),
-    );
+    try {
+      final DataSourceState<bool> result = await serviceLocator<DeleteAllStoreUseCase>()();
+      result.when(
+        remote: (data, meta) {
+          appLog.d('Store bloc delete all remote $data');
+          emit(
+            DeleteAllStoreState(
+              storeEntities: [],
+              hasDeleteAll: data ?? false,
+            ),
+          );
+        },
+        localDb: (data, meta) {
+          appLog.d('Store bloc delete all local $data');
+          emit(
+            DeleteAllStoreState(
+              storeEntities: [],
+              hasDeleteAll: data ?? false,
+            ),
+          );
+        },
+        error: (dataSourceFailure, reason, error, networkException, stackTrace, exception, extra) {
+          appLog.d('Store bloc delete all error $reason');
+          emit(
+            StoreExceptionState(
+              message: reason,
+              //exception: e as Exception,
+              stackTrace: stackTrace,
+              storeStateStage: StoreStateStage.deleteAll,
+            ),
+          );
+        },
+      );
+    } catch (e, s) {
+      appLog.e('Store bloc delete all exception $e');
+      emit(
+        StoreExceptionState(
+          message: 'Something went wrong during getting your store details, please try again',
+          //exception: e as Exception,
+          stackTrace: s,
+          storeStateStage: StoreStateStage.deleteAll,
+        ),
+      );
+    }
   }
 
   FutureOr<void> _getAllStore(GetAllStore event, Emitter<StoreState> emit) async {
     try {
       emit(StoreLoadingState(isLoading: true, message: 'Please wait while we are fetching your store...'));
-      List<StoreEntity> listOfStores = List<StoreEntity>.from(serviceLocator<List<StoreEntity>>().toList());
-      if (listOfStores.isEmpty) {
-        listOfStores = serviceLocator<AppUserEntity>().stores.toList();
-      }
-      final result = await serviceLocator<StoreLocalDbRepository>().getAll();
-      result.fold((left) {
-        debugPrint('Store get all error ${left.toString()}');
-        listOfStores = [];
-      }, (right) {
-        debugPrint('Store get all ${right.length}');
-        listOfStores = List<StoreEntity>.from(right.toList());
-      });
-      //await Future.delayed(const Duration(milliseconds: 300), () {});
-      //emit(StoreLoadingState(isLoading: false, message: ''));
-      //await Future.delayed(const Duration(milliseconds: 300), () {});
-      if (listOfStores.isEmpty) {
-        emit(
-          GetEmptyStoreState(message: 'Store is empty', storeEntities: []),
-        );
-      } else {
-        emit(
-          GetAllStoreState(
-            storeEntities: listOfStores.toList(),
-          ),
-        );
-      }
-
-      return;
+      final DataSourceState<List<StoreEntity>> result = await serviceLocator<GetAllStoreUseCase>()();
+      result.when(
+        remote: (data, meta) {
+          appLog.d('Store bloc get all remote');
+          if (data == null || data.isEmpty) {
+            emit(
+              GetEmptyStoreState(message: 'Store is empty', storeEntities: []),
+            );
+          } else {
+            emit(
+              GetAllStoreState(
+                storeEntities: data.toList(),
+              ),
+            );
+          }
+        },
+        localDb: (data, meta) {
+          appLog.d('Store bloc get all local');
+          if (data == null || data.isEmpty) {
+            emit(
+              GetEmptyStoreState(message: 'Store is empty', storeEntities: []),
+            );
+          } else {
+            emit(
+              GetAllStoreState(
+                storeEntities: data.toList(),
+              ),
+            );
+          }
+        },
+        error: (dataSourceFailure, reason, error, networkException, stackTrace, exception, extra) {
+          appLog.d('Store bloc get all error $reason');
+          emit(
+            StoreExceptionState(
+              message: reason,
+              //exception: e as Exception,
+              stackTrace: stackTrace,
+              storeStateStage: StoreStateStage.getAllStore,
+            ),
+          );
+        },
+      );
     } catch (e, s) {
-      appLog.e('Get All store ${e.toString()}');
+      appLog.e('Store bloc get all $e');
       emit(
         StoreExceptionState(
           message: 'Something went wrong during getting your all stores, please try again',
@@ -220,40 +343,110 @@ class StoreBloc extends Bloc<StoreEvent, StoreState> {
 
   FutureOr<void> _saveDriver(SaveDriver event, Emitter<StoreState> emit) async {
     try {
-      final StoreOwnDeliveryPartnersInfo driverEntity = event.storeOwnDeliveryPartnerEntity;
+      DataSourceState<StoreOwnDeliveryPartnersInfo> result;
       if (!event.haveNewDriver && event.currentIndex != -1) {
-        serviceLocator<List<StoreOwnDeliveryPartnersInfo>>().removeAt(event.currentIndex);
-        serviceLocator<List<StoreOwnDeliveryPartnersInfo>>().insert(event.currentIndex, driverEntity);
+        result = await serviceLocator<EditDriverUseCase>()(
+          id: event.storeOwnDeliveryPartnerEntity.driverID,
+          input: event.storeOwnDeliveryPartnerEntity,
+        );
       } else {
-        serviceLocator<List<StoreOwnDeliveryPartnersInfo>>().insert(0, driverEntity);
+        result = await serviceLocator<SaveDriverUseCase>()(event.storeOwnDeliveryPartnerEntity);
       }
-      // Save menu
-      serviceLocator<AppUserEntity>().drivers = List<StoreOwnDeliveryPartnersInfo>.from(serviceLocator<List<StoreOwnDeliveryPartnersInfo>>().toList());
-      emit(
-        SaveDriverState(storeOwnDeliveryPartnerEntity: driverEntity, hasNewDriver: event.haveNewDriver, driverStateStage: DriverStateStage.success),
-      );
-      await Future.delayed(const Duration(milliseconds: 500), () {
-        serviceLocator.resetLazySingleton<StoreOwnDeliveryPartnersInfo>();
-      });
-      emit(
-        NavigateToNewDriverGreetingPageState(
-            storeOwnDeliveryPartnerEntity: driverEntity, hasNewDriver: event.haveNewDriver, driverStateStage: DriverStateStage.success),
+      await result.when(
+        remote: (data, meta) async {
+          appLog.d('Driver bloc save remote ${data?.toMap()}');
+          emit(
+            SaveDriverState(storeOwnDeliveryPartnerEntity: data!, hasNewDriver: event.haveNewDriver, driverStateStage: DriverStateStage.success),
+          );
+          await Future.delayed(const Duration(milliseconds: 500), () {
+            serviceLocator.resetLazySingleton<StoreOwnDeliveryPartnersInfo>();
+          });
+          emit(
+            NavigateToNewDriverGreetingPageState(
+                storeOwnDeliveryPartnerEntity: data, hasNewDriver: event.haveNewDriver, driverStateStage: DriverStateStage.success),
+          );
+        },
+        localDb: (data, meta) async {
+          appLog.d('Driver bloc save local ${data?.toMap()}');
+          emit(
+            SaveDriverState(storeOwnDeliveryPartnerEntity: data!, hasNewDriver: event.haveNewDriver, driverStateStage: DriverStateStage.success),
+          );
+          await Future.delayed(const Duration(milliseconds: 500), () {
+            serviceLocator.resetLazySingleton<StoreOwnDeliveryPartnersInfo>();
+          });
+          emit(
+            NavigateToNewDriverGreetingPageState(
+                storeOwnDeliveryPartnerEntity: data, hasNewDriver: event.haveNewDriver, driverStateStage: DriverStateStage.success),
+          );
+        },
+        error: (dataSourceFailure, reason, error, networkException, stackTrace, exception, extra) {
+          appLog.d('Driver bloc save error $reason');
+          emit(
+            DriverExceptionState(
+                message: reason,
+                //exception: e as Exception,
+                stackTrace: stackTrace,
+                driverStateStage: DriverStateStage.saveDriver),
+          );
+        },
       );
     } catch (e, s) {
-      appLog.e('Save Driver store ${e.toString()}');
+      appLog.e('Driver bloc save exception $e');
       emit(
         DriverExceptionState(
-          message: 'Something went wrong during getting your all drivers, please try again',
-          //exception: e as Exception,
-          stackTrace: s,
-          driverStateStage: DriverStateStage.saveDriver,
-        ),
+            message: 'Something went wrong during saving your store details, please try again',
+            //exception: e as Exception,
+            stackTrace: s,
+            driverStateStage: DriverStateStage.saveDriver),
       );
     }
   }
 
   FutureOr<void> _deleteDriver(DeleteDriver event, Emitter<StoreState> emit) async {
-    try {} catch (e, s) {
+    try {
+      final DataSourceState<bool> result = await serviceLocator<DeleteDriverUseCase>()(
+        input: event.storeOwnDeliveryPartnerEntity,
+        id: event.driverID.isNotEmpty ? int.parse(event.driverID) : event.storeOwnDeliveryPartnerEntity?.driverID ?? -1,
+      );
+      result.when(
+        remote: (data, meta) {
+          appLog.d('Driver bloc delete remote $data');
+          emit(
+            DeleteDriverState(
+              storeOwnDeliveryPartnerEntity: event.storeOwnDeliveryPartnerEntity,
+              index: event.index,
+              storeOwnDeliveryPartnerEntities: event.storeOwnDeliveryPartnerEntities.toList(),
+              driverID: event.driverID,
+              hasDelete: data ?? false,
+            ),
+          );
+        },
+        localDb: (data, meta) {
+          appLog.d('Driver bloc delete local $data');
+          emit(
+            DeleteDriverState(
+              storeOwnDeliveryPartnerEntity: event.storeOwnDeliveryPartnerEntity,
+              index: event.index,
+              storeOwnDeliveryPartnerEntities: event.storeOwnDeliveryPartnerEntities.toList(),
+              driverID: event.driverID,
+              hasDelete: data ?? false,
+            ),
+          );
+        },
+        error: (dataSourceFailure, reason, error, networkException, stackTrace, exception, extra) {
+          appLog.d('Driver bloc delete error $reason');
+          emit(
+            DriverExceptionState(
+              message: reason,
+              //exception: e as Exception,
+              stackTrace: stackTrace,
+              driverStateStage: DriverStateStage.deleteDriver,
+            ),
+          );
+        },
+      );
+    } catch (e, s) {
+      appLog.e('Driver bloc delete exception $e');
       emit(
         DriverExceptionState(
           message: 'Something went wrong during getting your all drivers, please try again',
@@ -266,7 +459,43 @@ class StoreBloc extends Bloc<StoreEvent, StoreState> {
   }
 
   FutureOr<void> _deleteAllDriver(DeleteAllDriver event, Emitter<StoreState> emit) async {
-    try {} catch (e, s) {
+    try {
+      final DataSourceState<bool> result = await serviceLocator<DeleteAllDriverUseCase>()();
+      result.when(
+        remote: (data, meta) {
+          appLog.d('Driver bloc delete all remote $data');
+          emit(
+            DeleteAllDriverState(
+              message: 'Driver is empty',
+              storeOwnDeliveryPartnerEntities: [],
+              hasDeleteAll: data ?? false,
+            ),
+          );
+        },
+        localDb: (data, meta) {
+          appLog.d('Driver bloc delete all local $data');
+          emit(
+            DeleteAllDriverState(
+              message: 'Driver is empty',
+              storeOwnDeliveryPartnerEntities: [],
+              hasDeleteAll: data ?? false,
+            ),
+          );
+        },
+        error: (dataSourceFailure, reason, error, networkException, stackTrace, exception, extra) {
+          appLog.d('Driver bloc delete all error $reason');
+          emit(
+            DriverExceptionState(
+              message: reason,
+              //exception: e as Exception,
+              stackTrace: stackTrace,
+              driverStateStage: DriverStateStage.deleteAllDriver,
+            ),
+          );
+        },
+      );
+    } catch (e, s) {
+      appLog.e('Driver bloc delete all exception $e');
       emit(
         DriverExceptionState(
           message: 'Something went wrong during getting your all drivers, please try again',
@@ -287,52 +516,56 @@ class StoreBloc extends Bloc<StoreEvent, StoreState> {
           driverStateStage: DriverStateStage.getAllDriver,
         ),
       );
-      List<StoreOwnDeliveryPartnersInfo> listOfDrivers = List<StoreOwnDeliveryPartnersInfo>.from(serviceLocator<List<StoreOwnDeliveryPartnersInfo>>().toList());
-      if (listOfDrivers.isEmpty) {
-        listOfDrivers = serviceLocator<AppUserEntity>().drivers;
-      }
-      /*await Future.delayed(const Duration(milliseconds: 300), () {});
-      emit(DriverLoadingState(
-        isLoading: false,
-        message: '',
-        driverStateStage: DriverStateStage.getAllDriver,
-      ));*/
-      listOfDrivers = [
-        StoreOwnDeliveryPartnersInfo(
-          driverID: 0,
-          driverName: 'Sonu',
-          driverMobileNumber: '',
-          drivingLicenseNumber: '1234',
-          vehicleInfo: VehicleInfo(vehicleID: '0', vehicleType: '2 Wheeler', vehicleNumber: '12345'),
-        ),
-        StoreOwnDeliveryPartnersInfo(
-          driverID: 1,
-          driverName: 'Monu',
-          driverMobileNumber: '',
-          drivingLicenseNumber: '123456',
-          vehicleInfo: VehicleInfo(vehicleID: '1', vehicleType: '3 Wheeler', vehicleNumber: '12345789'),
-        ),
-      ];
-      //await Future.delayed(const Duration(milliseconds: 300), () {});
-      if (listOfDrivers.isEmpty) {
-        emit(
-          DriverEmptyState(
-            message: 'Driver is empty',
-            storeOwnDeliveryPartnerEntities: [],
-            isEmpty: true,
-            driverStateStage: DriverStateStage.getAllDriver,
-          ),
-        );
-      } else {
-        emit(
-          GetAllDriverState(
-            storeOwnDeliveryPartnerEntities: listOfDrivers.toList(),
-            driverStateStage: DriverStateStage.getAllDriver,
-          ),
-        );
-      }
-
-      return;
+      final DataSourceState<List<StoreOwnDeliveryPartnersInfo>> result = await serviceLocator<GetAllDriverUseCase>()();
+      result.when(
+        remote: (data, meta) {
+          appLog.d('Driver bloc get all remote');
+          if (data == null || data.isEmpty) {
+            emit(
+              DriverEmptyState(
+                message: 'Driver is empty',
+                storeOwnDeliveryPartnerEntities: [],
+                isEmpty: true,
+              ),
+            );
+          } else {
+            emit(
+              GetAllDriverState(
+                storeOwnDeliveryPartnerEntities: data.toList(),
+              ),
+            );
+          }
+        },
+        localDb: (data, meta) {
+          appLog.d('Driver bloc get all local');
+          if (data == null || data.isEmpty) {
+            emit(
+              DriverEmptyState(
+                message: 'Driver is empty',
+                storeOwnDeliveryPartnerEntities: [],
+                isEmpty: true,
+              ),
+            );
+          } else {
+            emit(
+              GetAllDriverState(
+                storeOwnDeliveryPartnerEntities: data.toList(),
+              ),
+            );
+          }
+        },
+        error: (dataSourceFailure, reason, error, networkException, stackTrace, exception, extra) {
+          appLog.d('Driver bloc get all error $reason');
+          emit(
+            DriverExceptionState(
+              message: reason,
+              //exception: e as Exception,
+              stackTrace: stackTrace,
+              driverStateStage: DriverStateStage.getAllDriver,
+            ),
+          );
+        },
+      );
     } catch (e, s) {
       emit(
         DriverExceptionState(
@@ -346,7 +579,48 @@ class StoreBloc extends Bloc<StoreEvent, StoreState> {
   }
 
   FutureOr<void> _getDriver(GetDriver event, Emitter<StoreState> emit) async {
-    try {} catch (e, s) {
+    try {
+      final DataSourceState<StoreOwnDeliveryPartnersInfo> result = await serviceLocator<GetDriverUseCase>()(
+        input: event.storeOwnDeliveryPartnerEntity,
+        id: event.driverID.isNotEmpty ? int.parse(event.driverID) : event.storeOwnDeliveryPartnerEntity?.driverID ?? -1,
+      );
+      result.when(
+        remote: (data, meta) {
+          appLog.d('Driver bloc edit remote ${data?.toMap()}');
+          emit(
+            GetDriverState(
+              storeOwnDeliveryPartnerEntity: data ?? event.storeOwnDeliveryPartnerEntity,
+              index: event.index,
+              storeOwnDeliveryPartnerEntities: event.storeOwnDeliveryPartnerEntities.toList(),
+              driverID: event.driverID,
+            ),
+          );
+        },
+        localDb: (data, meta) {
+          appLog.d('Driver bloc edit local ${data?.toMap()}');
+          emit(
+            GetDriverState(
+              storeOwnDeliveryPartnerEntity: data ?? event.storeOwnDeliveryPartnerEntity,
+              index: event.index,
+              storeOwnDeliveryPartnerEntities: event.storeOwnDeliveryPartnerEntities.toList(),
+              driverID: event.driverID,
+            ),
+          );
+        },
+        error: (dataSourceFailure, reason, error, networkException, stackTrace, exception, extra) {
+          appLog.d('Driver bloc edit error $reason');
+          emit(
+            DriverExceptionState(
+              message: reason,
+              //exception: e as Exception,
+              stackTrace: stackTrace,
+              driverStateStage: DriverStateStage.getDriver,
+            ),
+          );
+        },
+      );
+    } catch (e, s) {
+      appLog.e('Driver bloc edit exception $e');
       emit(
         DriverExceptionState(
           message: 'Something went wrong during getting your all drivers, please try again',

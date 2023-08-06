@@ -126,12 +126,14 @@ class DeleteStoreState extends StoreState {
     this.index = -1,
     this.storeID = '',
     this.storeEntities = const [],
+    this.hasDelete = false,
   });
 
   final StoreEntity? storeEntity;
   final int index;
   final List<StoreEntity> storeEntities;
   final String storeID;
+  final bool hasDelete;
 
   @override
   bool get cacheHash => true;
@@ -142,19 +144,24 @@ class DeleteStoreState extends StoreState {
         index,
         storeEntities,
         storeID,
+        hasDelete,
       ];
 }
 
 class DeleteAllStoreState extends StoreState {
-  DeleteAllStoreState({this.storeEntities = const []});
+  DeleteAllStoreState({
+    this.storeEntities = const [],
+    this.hasDeleteAll = false,
+  });
 
   final List<StoreEntity> storeEntities;
+  final bool hasDeleteAll;
 
   @override
   bool get cacheHash => true;
 
   @override
-  List<Object?> get hashParameters => [storeEntities];
+  List<Object?> get hashParameters => [storeEntities, hasDeleteAll];
 }
 
 class GetAllStoreState extends StoreState {
@@ -279,15 +286,17 @@ class DeleteDriverState extends StoreState {
     this.storeOwnDeliveryPartnerEntity,
     this.index = -1,
     this.driverID = '',
-    this.storeEntities = const [],
+    this.storeOwnDeliveryPartnerEntities = const [],
     this.driverStateStage = DriverStateStage.deleteDriver,
+    this.hasDelete = true,
   });
 
   final StoreOwnDeliveryPartnersInfo? storeOwnDeliveryPartnerEntity;
   final int index;
-  final List<StoreOwnDeliveryPartnersInfo> storeEntities;
+  final List<StoreOwnDeliveryPartnersInfo> storeOwnDeliveryPartnerEntities;
   final String driverID;
   final DriverStateStage driverStateStage;
+  final bool hasDelete;
 
   @override
   bool get cacheHash => true;
@@ -296,28 +305,35 @@ class DeleteDriverState extends StoreState {
   List<Object?> get hashParameters => [
         storeOwnDeliveryPartnerEntity,
         index,
-        storeEntities,
+        storeOwnDeliveryPartnerEntities,
         driverID,
         driverStateStage,
+        hasDelete,
       ];
 }
 
 class DeleteAllDriverState extends StoreState {
   DeleteAllDriverState({
-    this.storeEntities = const [],
+    this.storeOwnDeliveryPartnerEntities = const [],
     this.driverStateStage = DriverStateStage.deleteAllDriver,
+    this.hasDeleteAll = false,
+    this.message = '',
   });
 
-  final List<StoreOwnDeliveryPartnersInfo> storeEntities;
+  final List<StoreOwnDeliveryPartnersInfo> storeOwnDeliveryPartnerEntities;
   final DriverStateStage driverStateStage;
+  final bool hasDeleteAll;
+  final String message;
 
   @override
   bool get cacheHash => true;
 
   @override
   List<Object?> get hashParameters => [
-        storeEntities,
+        storeOwnDeliveryPartnerEntities,
         driverStateStage,
+        hasDeleteAll,
+        message,
       ];
 }
 
@@ -345,14 +361,14 @@ class GetDriverState extends StoreState {
     this.storeOwnDeliveryPartnerEntity,
     this.index = -1,
     this.storeOwnDeliveryPartnerEntities = const [],
-    this.storeID = '',
+    this.driverID = '',
     this.driverStateStage = DriverStateStage.none,
   });
 
   final StoreOwnDeliveryPartnersInfo? storeOwnDeliveryPartnerEntity;
   final int index;
   final List<StoreOwnDeliveryPartnersInfo> storeOwnDeliveryPartnerEntities;
-  final String storeID;
+  final String driverID;
   final DriverStateStage driverStateStage;
 
   @override
@@ -363,7 +379,7 @@ class GetDriverState extends StoreState {
         storeOwnDeliveryPartnerEntity,
         index,
         storeOwnDeliveryPartnerEntities,
-        storeID,
+        driverID,
         driverStateStage,
       ];
 }

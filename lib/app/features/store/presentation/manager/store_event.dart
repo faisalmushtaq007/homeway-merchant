@@ -124,12 +124,12 @@ class DeleteDriver extends StoreEvent with AppEquatable {
     this.storeOwnDeliveryPartnerEntity,
     this.index = -1,
     this.driverID = '',
-    this.storeEntities = const [],
+    this.storeOwnDeliveryPartnerEntities = const [],
   });
 
   final StoreOwnDeliveryPartnersInfo? storeOwnDeliveryPartnerEntity;
   final int index;
-  final List<StoreOwnDeliveryPartnersInfo> storeEntities;
+  final List<StoreOwnDeliveryPartnersInfo> storeOwnDeliveryPartnerEntities;
   final String driverID;
 
   @override
@@ -139,21 +139,21 @@ class DeleteDriver extends StoreEvent with AppEquatable {
   List<Object?> get hashParameters => [
         storeOwnDeliveryPartnerEntity,
         index,
-        storeEntities,
+        storeOwnDeliveryPartnerEntities,
         driverID,
       ];
 }
 
 class DeleteAllDriver extends StoreEvent with AppEquatable {
-  DeleteAllDriver({this.storeEntities = const []});
+  DeleteAllDriver({this.storeOwnDeliveryPartnerEntity = const []});
 
-  final List<StoreOwnDeliveryPartnersInfo> storeEntities;
+  final List<StoreOwnDeliveryPartnersInfo> storeOwnDeliveryPartnerEntity;
 
   @override
   bool get cacheHash => true;
 
   @override
-  List<Object?> get hashParameters => [storeEntities];
+  List<Object?> get hashParameters => [storeOwnDeliveryPartnerEntity];
 }
 
 class GetAllDriver extends StoreEvent with AppEquatable {
@@ -171,13 +171,13 @@ class GetDriver extends StoreEvent with AppEquatable {
     this.storeOwnDeliveryPartnerEntity,
     this.index = -1,
     this.storeOwnDeliveryPartnerEntities = const [],
-    this.storeID = '',
+    this.driverID = '',
   });
 
   final StoreOwnDeliveryPartnersInfo? storeOwnDeliveryPartnerEntity;
   final int index;
   final List<StoreOwnDeliveryPartnersInfo> storeOwnDeliveryPartnerEntities;
-  final String storeID;
+  final String driverID;
 
   @override
   bool get cacheHash => true;
@@ -187,7 +187,7 @@ class GetDriver extends StoreEvent with AppEquatable {
         storeOwnDeliveryPartnerEntity,
         index,
         storeOwnDeliveryPartnerEntities,
-        storeID,
+        driverID,
       ];
 }
 
