@@ -7,6 +7,6 @@ class GetDriverUseCase extends UseCaseByID<StoreOwnDeliveryPartnersInfo, int, Da
   final StoreRepository storeRepository;
   @override
   Future<DataSourceState<StoreOwnDeliveryPartnersInfo>> call({required int id, StoreOwnDeliveryPartnersInfo? input}) async {
-    throw UnimplementedError();
+    return storeRepository.getDriver(storeOwnDeliveryPartnersInfo: input, driverID: id);
   }
 }

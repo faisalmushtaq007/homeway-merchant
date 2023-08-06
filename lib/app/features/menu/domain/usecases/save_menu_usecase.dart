@@ -8,6 +8,6 @@ class SaveMenuUseCase extends UseCaseIO<MenuEntity, DataSourceState<MenuEntity>>
   final MenuRepository menuRepository;
   @override
   Future<DataSourceState<MenuEntity>> call(MenuEntity input) async {
-    throw UnimplementedError();
+    return menuRepository.saveMenu(menuEntity: input);
   }
 }

@@ -11,15 +11,15 @@ abstract interface class StoreRepository {
   });
 
   Future<DataSourceState<bool>> deleteStore({
-    StoreEntity? storeEntity,
     required int storeID,
+    StoreEntity? storeEntity,
   });
 
   Future<DataSourceState<bool>> deleteAllStore();
 
   Future<DataSourceState<StoreEntity>> getStore({
-    StoreEntity? storeEntity,
     required int storeID,
+    StoreEntity? storeEntity,
   });
 
   Future<DataSourceState<List<StoreEntity>>> getAllStore();
@@ -35,15 +35,15 @@ abstract interface class StoreRepository {
   });
 
   Future<DataSourceState<bool>> deleteDriver({
-    StoreOwnDeliveryPartnersInfo? storeOwnDeliveryPartnersInfo,
     required int driverID,
+    StoreOwnDeliveryPartnersInfo? storeOwnDeliveryPartnersInfo,
   });
 
   Future<DataSourceState<bool>> deleteAllDriver();
 
   Future<DataSourceState<StoreOwnDeliveryPartnersInfo>> getDriver({
-    StoreOwnDeliveryPartnersInfo? storeOwnDeliveryPartnersInfo,
     required int driverID,
+    StoreOwnDeliveryPartnersInfo? storeOwnDeliveryPartnersInfo,
   });
 
   Future<DataSourceState<List<StoreOwnDeliveryPartnersInfo>>> getAllDriver();

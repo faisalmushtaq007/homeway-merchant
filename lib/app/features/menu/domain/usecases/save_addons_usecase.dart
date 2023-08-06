@@ -8,6 +8,6 @@ class SaveAddonsUseCase extends UseCaseIO<Addons, DataSourceState<Addons>> {
   final MenuRepository menuRepository;
   @override
   Future<DataSourceState<Addons>> call(Addons input) async {
-    throw UnimplementedError();
+    return menuRepository.saveAddons(addons: input);
   }
 }

@@ -7,8 +7,7 @@ class DeleteMenuUseCase extends UseCaseByID<MenuEntity, int, DataSourceState<boo
 
   final MenuRepository menuRepository;
   @override
-  Future<DataSourceState<bool>> call({required int id, MenuEntity? input}) {
-    // TODO: implement call
-    throw UnimplementedError();
+  Future<DataSourceState<bool>> call({required int id, MenuEntity? input}) async {
+    return menuRepository.deleteMenu(menuEntity: input, menuID: id);
   }
 }

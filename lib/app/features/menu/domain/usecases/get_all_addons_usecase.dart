@@ -8,6 +8,6 @@ class GetAllAddonsUseCase extends UseCase<DataSourceState<List<Addons>>> {
   final MenuRepository menuRepository;
   @override
   Future<DataSourceState<List<Addons>>> call() async {
-    throw UnimplementedError();
+    return menuRepository.getAllAddons();
   }
 }

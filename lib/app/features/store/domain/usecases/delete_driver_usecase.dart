@@ -7,6 +7,6 @@ class DeleteDriverUseCase extends UseCaseByID<StoreOwnDeliveryPartnersInfo, int,
   final StoreRepository storeRepository;
   @override
   Future<DataSourceState<bool>> call({required int id, StoreOwnDeliveryPartnersInfo? input}) async {
-    throw UnimplementedError();
+    return storeRepository.deleteDriver(storeOwnDeliveryPartnersInfo: input, driverID: id);
   }
 }

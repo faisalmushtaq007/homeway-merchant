@@ -7,6 +7,6 @@ class DeleteStoreUseCase extends UseCaseByID<StoreEntity, int, DataSourceState<b
   final StoreRepository storeRepository;
   @override
   Future<DataSourceState<bool>> call({required int id, StoreEntity? input}) async {
-    throw UnimplementedError();
+    return storeRepository.deleteStore(storeEntity: input, storeID: id);
   }
 }

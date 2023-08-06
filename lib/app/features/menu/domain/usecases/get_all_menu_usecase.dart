@@ -8,6 +8,6 @@ class GetAllMenuUseCase extends UseCase<DataSourceState<List<MenuEntity>>> {
   final MenuRepository menuRepository;
   @override
   Future<DataSourceState<List<MenuEntity>>> call() async {
-    throw UnimplementedError();
+    return menuRepository.getAllMenu();
   }
 }

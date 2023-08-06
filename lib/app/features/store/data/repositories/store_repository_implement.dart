@@ -19,8 +19,8 @@ class StoreRepositoryImplement implements StoreRepository {
 
   @override
   Future<DataSourceState<bool>> deleteStore({
-    StoreEntity? storeEntity,
     required int storeID,
+    StoreEntity? storeEntity,
   }) {
     var connectivity = serviceLocator<ConnectivityService>().getCurrentInternetStatus();
     if (connectivity.$2 == InternetConnectivityState.internet) {
@@ -106,7 +106,7 @@ class StoreRepositoryImplement implements StoreRepository {
   }
 
   @override
-  Future<DataSourceState<StoreEntity>> getStore({StoreEntity? storeEntity, required int storeID}) {
+  Future<DataSourceState<StoreEntity>> getStore({required int storeID, StoreEntity? storeEntity}) {
     var connectivity = serviceLocator<ConnectivityService>().getCurrentInternetStatus();
     if (connectivity.$2 == InternetConnectivityState.internet) {
     } else {}
@@ -169,7 +169,7 @@ class StoreRepositoryImplement implements StoreRepository {
   }
 
   @override
-  Future<DataSourceState<bool>> deleteDriver({StoreOwnDeliveryPartnersInfo? storeOwnDeliveryPartnersInfo, required int driverID}) {
+  Future<DataSourceState<bool>> deleteDriver({required int driverID, StoreOwnDeliveryPartnersInfo? storeOwnDeliveryPartnersInfo}) {
     var connectivity = serviceLocator<ConnectivityService>().getCurrentInternetStatus();
     if (connectivity.$2 == InternetConnectivityState.internet) {
     } else {}
@@ -194,7 +194,7 @@ class StoreRepositoryImplement implements StoreRepository {
   }
 
   @override
-  Future<DataSourceState<StoreOwnDeliveryPartnersInfo>> getDriver({StoreOwnDeliveryPartnersInfo? storeOwnDeliveryPartnersInfo, required int driverID}) {
+  Future<DataSourceState<StoreOwnDeliveryPartnersInfo>> getDriver({required int driverID, StoreOwnDeliveryPartnersInfo? storeOwnDeliveryPartnersInfo}) {
     var connectivity = serviceLocator<ConnectivityService>().getCurrentInternetStatus();
     if (connectivity.$2 == InternetConnectivityState.internet) {
     } else {}

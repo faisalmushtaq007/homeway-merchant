@@ -7,6 +7,6 @@ class SaveDriverUseCase extends UseCaseIO<StoreOwnDeliveryPartnersInfo, DataSour
   final StoreRepository storeRepository;
   @override
   Future<DataSourceState<StoreOwnDeliveryPartnersInfo>> call(StoreOwnDeliveryPartnersInfo input) async {
-    throw UnimplementedError();
+    return storeRepository.saveDriver(storeOwnDeliveryPartnersInfo: input);
   }
 }

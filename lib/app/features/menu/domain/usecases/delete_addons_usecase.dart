@@ -7,8 +7,7 @@ class DeleteAddonsUseCase extends UseCaseByID<Addons, int, DataSourceState<bool>
 
   final MenuRepository menuRepository;
   @override
-  Future<DataSourceState<bool>> call({required int id, Addons? input}) {
-    // TODO: implement call
-    throw UnimplementedError();
+  Future<DataSourceState<bool>> call({required int id, Addons? input}) async {
+    return menuRepository.deleteAddons(addons: input, addonsID: id);
   }
 }

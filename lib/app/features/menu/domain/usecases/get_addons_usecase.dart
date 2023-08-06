@@ -7,8 +7,7 @@ class GetAddonsUseCase extends UseCaseByID<Addons, int, DataSourceState<Addons>>
 
   final MenuRepository menuRepository;
   @override
-  Future<DataSourceState<Addons>> call({required int id, Addons? input}) {
-    // TODO: implement call
-    throw UnimplementedError();
+  Future<DataSourceState<Addons>> call({required int id, Addons? input}) async {
+    return menuRepository.getAddons(addons: input, addonsID: id);
   }
 }

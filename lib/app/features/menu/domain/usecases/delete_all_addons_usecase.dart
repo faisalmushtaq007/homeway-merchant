@@ -9,6 +9,6 @@ class DeleteAllAddonsUseCase extends UseCase<DataSourceState<bool>> {
 
   @override
   Future<DataSourceState<bool>> call() async {
-    throw UnimplementedError();
+    return menuRepository.deleteAllAddons();
   }
 }

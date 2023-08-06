@@ -9,7 +9,7 @@ class BindDriverWithStoreUseCase
 
   @override
   Future<DataSourceState<List<StoreOwnDeliveryPartnersInfo>>> call(
-      {required List<StoreOwnDeliveryPartnersInfo> source, required List<StoreEntity> destination}) {
+      {required List<StoreOwnDeliveryPartnersInfo> source, required List<StoreEntity> destination}) async {
     // TODO: implement call
     throw UnimplementedError();
   }

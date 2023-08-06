@@ -7,6 +7,6 @@ class GetAllDriverUseCase extends UseCase<DataSourceState<List<StoreOwnDeliveryP
   final StoreRepository storeRepository;
   @override
   Future<DataSourceState<List<StoreOwnDeliveryPartnersInfo>>> call() async {
-    throw UnimplementedError();
+    return storeRepository.getAllDriver();
   }
 }

@@ -7,6 +7,6 @@ class DeleteAllDriverUseCase extends UseCase<DataSourceState<bool>> {
   final StoreRepository storeRepository;
   @override
   Future<DataSourceState<bool>> call() async {
-    throw UnimplementedError();
+    return storeRepository.deleteAllDriver();
   }
 }

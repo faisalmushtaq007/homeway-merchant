@@ -7,8 +7,7 @@ class GetMenuUseCase extends UseCaseByID<MenuEntity, int, DataSourceState<MenuEn
 
   final MenuRepository menuRepository;
   @override
-  Future<DataSourceState<MenuEntity>> call({required int id, MenuEntity? input}) {
-    // TODO: implement call
-    throw UnimplementedError();
+  Future<DataSourceState<MenuEntity>> call({required int id, MenuEntity? input}) async {
+    return menuRepository.getMenu(menuEntity: input, menuID: id);
   }
 }

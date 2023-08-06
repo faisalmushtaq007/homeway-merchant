@@ -7,6 +7,6 @@ class GetStoreUseCase extends UseCaseByID<StoreEntity, int, DataSourceState<Stor
   final StoreRepository storeRepository;
   @override
   Future<DataSourceState<StoreEntity>> call({required int id, StoreEntity? input}) async {
-    throw UnimplementedError();
+    return storeRepository.getStore(storeEntity: input, storeID: id);
   }
 }
