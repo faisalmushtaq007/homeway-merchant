@@ -48,7 +48,7 @@ class StoreLocalDbRepository<Store extends StoreEntity> implements BaseStoreLoca
   }
 
   @override
-  Future<Either<RepositoryBaseFailure, bool>> deleteAll(StoreEntity entity) async {
+  Future<Either<RepositoryBaseFailure, bool>> deleteAll() async {
     final result = await tryCatch<bool>(() async {
       final db = await _db;
       int count = 0;
@@ -119,5 +119,23 @@ class StoreLocalDbRepository<Store extends StoreEntity> implements BaseStoreLoca
       return StoreEntity.fromMap(result);
     });
     return result;
+  }
+
+  @override
+  Future<Either<RepositoryBaseFailure, bool>> deleteByIdAndEntity(UniqueId uniqueId, StoreEntity entity) {
+    // TODO: implement deleteByIdAndEntity
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<Either<RepositoryBaseFailure, StoreEntity>> getByIdAndEntity(UniqueId uniqueId, StoreEntity entity) {
+    // TODO: implement getByIdAndEntity
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<Either<RepositoryBaseFailure, StoreEntity>> updateByIdAndEntity(UniqueId uniqueId, StoreEntity entity) {
+    // TODO: implement updateByIdAndEntity
+    throw UnimplementedError();
   }
 }

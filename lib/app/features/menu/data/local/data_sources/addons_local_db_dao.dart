@@ -35,7 +35,7 @@ class AddonsLocalDbRepository<Extras extends Addons> implements BaseAddonsLocalD
   }
 
   @override
-  Future<Either<RepositoryBaseFailure, bool>> deleteAll(Addons entity) async {
+  Future<Either<RepositoryBaseFailure, bool>> deleteAll() async {
     throw UnimplementedError();
   }
 
@@ -88,5 +88,23 @@ class AddonsLocalDbRepository<Extras extends Addons> implements BaseAddonsLocalD
       return Addons.fromMap(result);
     });
     return result;
+  }
+
+  @override
+  Future<Either<RepositoryBaseFailure, bool>> deleteByIdAndEntity(UniqueId uniqueId, Addons entity) {
+    // TODO: implement deleteByIdAndEntity
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<Either<RepositoryBaseFailure, Addons>> getByIdAndEntity(UniqueId uniqueId, Addons entity) {
+    // TODO: implement getByIdAndEntity
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<Either<RepositoryBaseFailure, Addons>> updateByIdAndEntity(UniqueId uniqueId, Addons entity) {
+    // TODO: implement updateByIdAndEntity
+    throw UnimplementedError();
   }
 }

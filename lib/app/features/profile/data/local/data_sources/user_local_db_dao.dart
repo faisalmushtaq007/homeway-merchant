@@ -46,7 +46,7 @@ class UserLocalDbRepository<User extends AppUserEntity> implements BaseUserLocal
   }
 
   @override
-  Future<Either<RepositoryBaseFailure, bool>> deleteAll(AppUserEntity entity) async {
+  Future<Either<RepositoryBaseFailure, bool>> deleteAll() async {
     throw UnimplementedError();
   }
 

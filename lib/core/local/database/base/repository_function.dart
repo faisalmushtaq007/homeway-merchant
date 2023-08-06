@@ -4,31 +4,27 @@ import 'repository_failure.dart';
 
 import 'identifiable.dart';
 
-
 import './repository.dart';
 
-typedef GetByIdFunc<T> = Future<Either<RepositoryBaseFailure, T>> Function(
-    UniqueId);
+typedef GetByIdFunc<T> = Future<Either<RepositoryBaseFailure, T>> Function(UniqueId);
 
-typedef GetAllFunc<T> = Future<Either<RepositoryBaseFailure, List<T>>>
-    Function();
+typedef GetAllFunc<T> = Future<Either<RepositoryBaseFailure, List<T>>> Function();
 
-typedef UpdateFunc<T> = Future<Either<RepositoryBaseFailure, T>> Function(T,
-    [UniqueId uniqueId]);
+typedef UpdateFunc<T> = Future<Either<RepositoryBaseFailure, T>> Function(T, [UniqueId uniqueId]);
 typedef AddFunc<T> = Future<Either<RepositoryBaseFailure, T>> Function(T);
 typedef DeleteFunc<T> = Future<Either<RepositoryBaseFailure, bool>> Function(T);
-typedef DeleteAllFunc<T> = Future<Either<RepositoryBaseFailure, bool>> Function(
-    T);
-typedef DeleteByIdFunc<T> = Future<Either<RepositoryBaseFailure, bool>>
-    Function(UniqueId uniqueId);
+typedef DeleteAllFunc<T> = Future<Either<RepositoryBaseFailure, bool>> Function();
+typedef DeleteByIdFunc<T> = Future<Either<RepositoryBaseFailure, bool>> Function(UniqueId uniqueId);
+typedef DeleteByIdAndEntityFunc<T> = Future<Either<RepositoryBaseFailure, bool>> Function(UniqueId uniqueId, T input);
+typedef GetByIdAndEntityFunc<T> = Future<Either<RepositoryBaseFailure, bool>> Function(UniqueId uniqueId, T input);
+typedef UdpateByIdAndEntityFunc<T> = Future<Either<RepositoryBaseFailure, bool>> Function(UniqueId uniqueId, T input);
 
 class GetByIdFunction<T> implements GetById<T> {
   GetByIdFunction(this.function);
   final GetByIdFunc<T> function;
 
   @override
-  Future<Either<RepositoryBaseFailure, T?>> getById(UniqueId id) =>
-      function(id);
+  Future<Either<RepositoryBaseFailure, T?>> getById(UniqueId id) => function(id);
 }
 
 class GetAllFunction<T> implements GetAll<T> {
@@ -44,9 +40,7 @@ class UpdateFunction<T> implements Update<T> {
   final UpdateFunc<T> function;
 
   @override
-  Future<Either<RepositoryBaseFailure, T>> update(
-          T entity, UniqueId? uniqueId) =>
-      function(entity, uniqueId);
+  Future<Either<RepositoryBaseFailure, T>> update(T entity, UniqueId? uniqueId) => function(entity, uniqueId);
 }
 
 class AddFunction<T> implements Add<T> {
@@ -73,10 +67,7 @@ class DeleteAllFunction<T> implements DeleteAll<T> {
   final DeleteAllFunc function;
 
   @override
-  Future<Either<RepositoryBaseFailure, bool>> deleteAll(
-    T entity,
-  ) =>
-      function(entity);
+  Future<Either<RepositoryBaseFailure, bool>> deleteAll() => function();
 }
 
 class DeleteByIdFunction<T> implements DeleteById<T> {

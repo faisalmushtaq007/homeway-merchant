@@ -35,7 +35,7 @@ class MenuLocalDbRepository<Menu extends MenuEntity> implements BaseMenuLocalDbR
   }
 
   @override
-  Future<Either<RepositoryBaseFailure, bool>> deleteAll(MenuEntity entity) async {
+  Future<Either<RepositoryBaseFailure, bool>> deleteAll() async {
     throw UnimplementedError();
   }
 
@@ -88,5 +88,23 @@ class MenuLocalDbRepository<Menu extends MenuEntity> implements BaseMenuLocalDbR
       return MenuEntity.fromMap(result);
     });
     return result;
+  }
+
+  @override
+  Future<Either<RepositoryBaseFailure, bool>> deleteByIdAndEntity(UniqueId uniqueId, MenuEntity entity) {
+    // TODO: implement deleteByIdAndEntity
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<Either<RepositoryBaseFailure, MenuEntity>> getByIdAndEntity(UniqueId uniqueId, MenuEntity entity) {
+    // TODO: implement getByIdAndEntity
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<Either<RepositoryBaseFailure, MenuEntity>> updateByIdAndEntity(UniqueId uniqueId, MenuEntity entity) {
+    // TODO: implement updateByIdAndEntity
+    throw UnimplementedError();
   }
 }

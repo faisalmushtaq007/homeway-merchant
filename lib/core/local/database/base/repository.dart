@@ -117,12 +117,27 @@ abstract class GetCurrentUserTokenByID<EntityType> extends BaseRepositoryOperati
 
 abstract class DeleteAll<EntityType> extends BaseRepositoryOperation<EntityType> {
   /// Completely remove the entity instance from repository
-  Future<Either<RepositoryBaseFailure, bool>> deleteAll(EntityType entity);
+  Future<Either<RepositoryBaseFailure, bool>> deleteAll();
 }
 
 abstract class DeleteById<EntityType> extends BaseRepositoryOperation<EntityType> {
   /// Completely remove the entity instance from repository
   Future<Either<RepositoryBaseFailure, bool>> deleteById(UniqueId uniqueId);
+}
+
+abstract class DeleteByIdAndEntity<EntityType> extends BaseRepositoryOperation<EntityType> {
+  /// Completely remove the entity instance from repository
+  Future<Either<RepositoryBaseFailure, bool>> deleteByIdAndEntity(UniqueId uniqueId, EntityType entity);
+}
+
+abstract class UpdateByIdAndEntity<EntityType> extends BaseRepositoryOperation<EntityType> {
+  /// Completely update the entity instance from repository
+  Future<Either<RepositoryBaseFailure, EntityType>> updateByIdAndEntity(UniqueId uniqueId, EntityType entity);
+}
+
+abstract class GetByIdAndEntity<EntityType> extends BaseRepositoryOperation<EntityType> {
+  /// Completely get the entity instance from repository
+  Future<Either<RepositoryBaseFailure, EntityType>> getByIdAndEntity(UniqueId uniqueId, EntityType entity);
 }
 
 abstract class FindUserByTokenOrID<EntityType> extends BaseRepositoryOperation<EntityType> {

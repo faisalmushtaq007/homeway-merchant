@@ -44,8 +44,22 @@ class StoreOwnDeliveryPartnersLocalDbRepository<Driver extends StoreOwnDeliveryP
   }
 
   @override
-  Future<Either<RepositoryBaseFailure, bool>> deleteAll(StoreOwnDeliveryPartnersInfo entity) async {
-    throw UnimplementedError();
+  Future<Either<RepositoryBaseFailure, bool>> deleteAll() async {
+    final result = await tryCatch<bool>(() async {
+      final db = await _db;
+      int count = 0;
+      await db.transaction((transaction) async {
+        // Delete all
+        await _store.delete(transaction);
+        count++;
+      });
+      if (count >= 0) {
+        return true;
+      } else {
+        return false;
+      }
+    });
+    return result;
   }
 
   @override
@@ -97,5 +111,23 @@ class StoreOwnDeliveryPartnersLocalDbRepository<Driver extends StoreOwnDeliveryP
       return StoreOwnDeliveryPartnersInfo.fromMap(result);
     });
     return result;
+  }
+
+  @override
+  Future<Either<RepositoryBaseFailure, bool>> deleteByIdAndEntity(UniqueId uniqueId, StoreOwnDeliveryPartnersInfo entity) {
+    // TODO: implement deleteByIdAndEntity
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<Either<RepositoryBaseFailure, StoreOwnDeliveryPartnersInfo>> getByIdAndEntity(UniqueId uniqueId, StoreOwnDeliveryPartnersInfo entity) {
+    // TODO: implement getByIdAndEntity
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<Either<RepositoryBaseFailure, StoreOwnDeliveryPartnersInfo>> updateByIdAndEntity(UniqueId uniqueId, StoreOwnDeliveryPartnersInfo entity) {
+    // TODO: implement updateByIdAndEntity
+    throw UnimplementedError();
   }
 }

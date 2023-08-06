@@ -11,42 +11,354 @@ class MenuRepositoryImplement implements MenuRepository {
   final AddonsLocalDbRepository<Addons> addonsLocalDataSource;
 
   @override
-  Future<DataSourceState<bool>> deleteAllMenu() {
-    // TODO: implement deleteAllMenu
-    throw UnimplementedError();
+  Future<DataSourceState<bool>> deleteAllMenu() async {
+    try {
+      var connectivity = serviceLocator<ConnectivityService>().getCurrentInternetStatus();
+      if (connectivity.$2 == InternetConnectivityState.internet) {
+        // Local DB
+        // Save to local
+        final Either<RepositoryBaseFailure, bool> result = await menuLocalDataSource.deleteAll();
+        // Return result
+        return result.fold((l) {
+          final RepositoryFailure failure = l as RepositoryFailure;
+          appLog.d('Delete all menu local error ${failure.message}');
+          return DataSourceState<bool>.error(
+            reason: failure.message,
+            dataSourceFailure: DataSourceFailure.local,
+            stackTrace: failure.stacktrace,
+          );
+        }, (r) {
+          appLog.d('Delete all menu to local : $r,');
+          return DataSourceState<bool>.localDb(data: r);
+        });
+      } else {
+        // Remote
+        // Save to server
+        final ApiResultState<bool> result = await remoteDataSource.deleteAllMenu();
+        // Return result
+        return result.when(
+          success: (data) {
+            appLog.d('Delete all menu to remote');
+            return DataSourceState<bool>.remote(
+              data: data,
+            );
+          },
+          failure: (reason, error, exception, stackTrace) {
+            appLog.d('Delete all menu remote error $reason');
+            return DataSourceState<bool>.error(
+              reason: reason,
+              dataSourceFailure: DataSourceFailure.remote,
+              stackTrace: stackTrace,
+              error: error,
+              networkException: exception,
+            );
+          },
+        );
+      }
+    } catch (e, s) {
+      appLog.e('Delete all menu exception $e');
+      return DataSourceState<bool>.error(
+        reason: e.toString(),
+        dataSourceFailure: DataSourceFailure.local,
+        stackTrace: s,
+        error: e,
+        exception: e as Exception,
+      );
+    }
   }
 
   @override
-  Future<DataSourceState<bool>> deleteMenu({required int menuID, MenuEntity? menuEntity}) {
-    // TODO: implement deleteMenu
-    throw UnimplementedError();
+  Future<DataSourceState<bool>> deleteMenu({required int menuID, MenuEntity? menuEntity}) async {
+    try {
+      var connectivity = serviceLocator<ConnectivityService>().getCurrentInternetStatus();
+      if (connectivity.$2 == InternetConnectivityState.internet) {
+        // Local DB
+        // Save to local
+        final Either<RepositoryBaseFailure, bool> result = await menuLocalDataSource.deleteById(UniqueId(menuID));
+        // Return result
+        return result.fold((l) {
+          final RepositoryFailure failure = l as RepositoryFailure;
+          appLog.d('Delete menu local error ${failure.message}');
+          return DataSourceState<bool>.error(
+            reason: failure.message,
+            dataSourceFailure: DataSourceFailure.local,
+            stackTrace: failure.stacktrace,
+          );
+        }, (r) {
+          appLog.d('Delete menu to local : $r');
+          return DataSourceState<bool>.localDb(data: r);
+        });
+      } else {
+        // Remote
+        // Save to server
+        final ApiResultState<bool> result = await remoteDataSource.deleteMenu(menuID: menuID, menuEntity: menuEntity);
+        // Return result
+        return result.when(
+          success: (data) {
+            appLog.d('Delete menu to remote');
+            return DataSourceState<bool>.remote(
+              data: data,
+            );
+          },
+          failure: (reason, error, exception, stackTrace) {
+            appLog.d('Delete menu remote error $reason');
+            return DataSourceState<bool>.error(
+              reason: reason,
+              dataSourceFailure: DataSourceFailure.remote,
+              stackTrace: stackTrace,
+              error: error,
+              networkException: exception,
+            );
+          },
+        );
+      }
+    } catch (e, s) {
+      appLog.e('Delete menu exception $e');
+      return DataSourceState<bool>.error(
+        reason: e.toString(),
+        dataSourceFailure: DataSourceFailure.local,
+        stackTrace: s,
+        error: e,
+        exception: e as Exception,
+      );
+    }
   }
 
   @override
   Future<DataSourceState<MenuEntity>> editMenu({
     required MenuEntity menuEntity,
     required int menuID,
-  }) {
-    // TODO: implement editMenu
-    throw UnimplementedError();
+  }) async {
+    try {
+      var connectivity = serviceLocator<ConnectivityService>().getCurrentInternetStatus();
+      if (connectivity.$2 == InternetConnectivityState.internet) {
+        // Local DB
+        // Save to local
+        final Either<RepositoryBaseFailure, MenuEntity> result = await menuLocalDataSource.update(menuEntity, UniqueId(menuID));
+        // Return result
+        return result.fold((l) {
+          final RepositoryFailure failure = l as RepositoryFailure;
+          appLog.d('Edit menu local error ${failure.message}');
+          return DataSourceState<MenuEntity>.error(
+            reason: failure.message,
+            dataSourceFailure: DataSourceFailure.local,
+            stackTrace: failure.stacktrace,
+          );
+        }, (r) {
+          appLog.d('Edit menu local : ${r.menuId}, ${r.menuName}');
+          return DataSourceState<MenuEntity>.localDb(data: r);
+        });
+      } else {
+        // Remote
+        // Save to server
+        final ApiResultState<MenuEntity> result = await remoteDataSource.editMenu(
+          menuEntity: menuEntity,
+          menuID: menuID,
+        );
+        // Return result
+        return result.when(
+          success: (data) {
+            appLog.d('Edit menu to remote');
+            return DataSourceState<MenuEntity>.remote(
+              data: data,
+            );
+          },
+          failure: (reason, error, exception, stackTrace) {
+            appLog.d('Edit menu remote error $reason');
+            return DataSourceState<MenuEntity>.error(
+              reason: reason,
+              dataSourceFailure: DataSourceFailure.remote,
+              stackTrace: stackTrace,
+              error: error,
+              networkException: exception,
+            );
+          },
+        );
+      }
+    } catch (e, s) {
+      appLog.e('Edit menu exception $e');
+      return DataSourceState<MenuEntity>.error(
+        reason: e.toString(),
+        dataSourceFailure: DataSourceFailure.local,
+        stackTrace: s,
+        error: e,
+        exception: e as Exception,
+      );
+    }
   }
 
   @override
-  Future<DataSourceState<List<MenuEntity>>> getAllMenu() {
-    // TODO: implement getAllMenu
-    throw UnimplementedError();
+  Future<DataSourceState<List<MenuEntity>>> getAllMenu() async {
+    try {
+      var connectivity = serviceLocator<ConnectivityService>().getCurrentInternetStatus();
+      if (connectivity.$2 == InternetConnectivityState.internet) {
+        // Local DB
+        // Save to local
+        final Either<RepositoryBaseFailure, List<MenuEntity>> result = await menuLocalDataSource.getAll();
+        // Return result
+        return result.fold((l) {
+          final RepositoryFailure failure = l as RepositoryFailure;
+          appLog.d('Get all menu local error ${failure.message}');
+          return DataSourceState<List<MenuEntity>>.error(
+            reason: failure.message,
+            dataSourceFailure: DataSourceFailure.local,
+            stackTrace: failure.stacktrace,
+          );
+        }, (r) {
+          appLog.d('Get all menu local : ${r.length}');
+          return DataSourceState<List<MenuEntity>>.localDb(data: r);
+        });
+      } else {
+        // Remote
+        // Save to server
+        final ApiResultState<List<MenuEntity>> result = await remoteDataSource.getAllMenu();
+        // Return result
+        return result.when(
+          success: (data) {
+            appLog.d('Get all menu from remote');
+            return DataSourceState<List<MenuEntity>>.remote(
+              data: data.toList(),
+            );
+          },
+          failure: (reason, error, exception, stackTrace) {
+            appLog.d('Get all menu remote error $reason');
+            return DataSourceState<List<MenuEntity>>.error(
+              reason: reason,
+              dataSourceFailure: DataSourceFailure.remote,
+              stackTrace: stackTrace,
+              error: error,
+              networkException: exception,
+            );
+          },
+        );
+      }
+    } catch (e, s) {
+      appLog.e('Get all menu exception $e');
+      return DataSourceState<List<MenuEntity>>.error(
+        reason: e.toString(),
+        dataSourceFailure: DataSourceFailure.local,
+        stackTrace: s,
+        error: e,
+        exception: e as Exception,
+      );
+    }
   }
 
   @override
-  Future<DataSourceState<MenuEntity>> getMenu({required int menuID, MenuEntity? menuEntity}) {
-    // TODO: implement getMenu
-    throw UnimplementedError();
+  Future<DataSourceState<MenuEntity>> getMenu({required int menuID, MenuEntity? menuEntity}) async {
+    try {
+      var connectivity = serviceLocator<ConnectivityService>().getCurrentInternetStatus();
+      if (connectivity.$2 == InternetConnectivityState.internet) {
+        // Local DB
+        // Save to local
+        final Either<RepositoryBaseFailure, MenuEntity?> result = await menuLocalDataSource.getById(UniqueId(menuID));
+        // Return result
+        return result.fold((l) {
+          final RepositoryFailure failure = l as RepositoryFailure;
+          appLog.d('Get menu local error ${failure.message}');
+          return DataSourceState<MenuEntity>.error(
+            reason: failure.message,
+            dataSourceFailure: DataSourceFailure.local,
+            stackTrace: failure.stacktrace,
+          );
+        }, (r) {
+          appLog.d('Get menu to local : ${r?.menuId}, ${r?.menuName}');
+          return DataSourceState<MenuEntity>.localDb(data: r);
+        });
+      } else {
+        // Remote
+        // Save to server
+        final ApiResultState<MenuEntity> result = await remoteDataSource.getMenu(
+          menuEntity: menuEntity,
+          menuID: menuID,
+        );
+        // Return result
+        return result.when(
+          success: (data) {
+            appLog.d('Get menu to remote');
+            return DataSourceState<MenuEntity>.remote(
+              data: data,
+            );
+          },
+          failure: (reason, error, exception, stackTrace) {
+            appLog.d('Get menu remote error $reason');
+            return DataSourceState<MenuEntity>.error(
+              reason: reason,
+              dataSourceFailure: DataSourceFailure.remote,
+              stackTrace: stackTrace,
+              error: error,
+              networkException: exception,
+            );
+          },
+        );
+      }
+    } catch (e, s) {
+      appLog.d('Get menu exception $e');
+      return DataSourceState<MenuEntity>.error(
+        reason: e.toString(),
+        dataSourceFailure: DataSourceFailure.local,
+        stackTrace: s,
+        error: e,
+        exception: e as Exception,
+      );
+    }
   }
 
   @override
-  Future<DataSourceState<MenuEntity>> saveMenu({required MenuEntity menuEntity}) {
-    // TODO: implement saveMenu
-    throw UnimplementedError();
+  Future<DataSourceState<MenuEntity>> saveMenu({required MenuEntity menuEntity}) async {
+    try {
+      var connectivity = serviceLocator<ConnectivityService>().getCurrentInternetStatus();
+      if (connectivity.$2 == InternetConnectivityState.internet) {
+        // Local DB
+        // Save to local
+        final Either<RepositoryBaseFailure, MenuEntity> result = await menuLocalDataSource.add(menuEntity);
+        // Return result
+        return result.fold((l) {
+          final RepositoryFailure failure = l as RepositoryFailure;
+          appLog.d('Save menu local error ${failure.message}');
+          return DataSourceState<MenuEntity>.error(
+            reason: failure.message,
+            dataSourceFailure: DataSourceFailure.local,
+            stackTrace: failure.stacktrace,
+          );
+        }, (r) {
+          appLog.d('Save menu to local : ${r.menuId}, ${r.menuName}');
+          return DataSourceState<MenuEntity>.localDb(data: r);
+        });
+      } else {
+        // Remote
+        // Save to server
+        final ApiResultState<MenuEntity> result = await remoteDataSource.saveMenu(menuEntity: menuEntity);
+        // Return result
+        return result.when(
+          success: (data) {
+            appLog.d('Save menu to remote');
+            return DataSourceState<MenuEntity>.remote(
+              data: data,
+            );
+          },
+          failure: (reason, error, exception, stackTrace) {
+            appLog.d('Save menu remote error $reason');
+            return DataSourceState<MenuEntity>.error(
+              reason: reason,
+              dataSourceFailure: DataSourceFailure.remote,
+              stackTrace: stackTrace,
+              error: error,
+              networkException: exception,
+            );
+          },
+        );
+      }
+    } catch (e, s) {
+      appLog.d('Save menu exception $e');
+      return DataSourceState<MenuEntity>.error(
+        reason: e.toString(),
+        dataSourceFailure: DataSourceFailure.local,
+        stackTrace: s,
+        error: e,
+        exception: e as Exception,
+      );
+    }
   }
 
   @override
@@ -62,42 +374,354 @@ class MenuRepositoryImplement implements MenuRepository {
   }
 
   @override
-  Future<DataSourceState<bool>> deleteAddons({required int addonsID, Addons? addons}) {
-    // TODO: implement deleteAddons
-    throw UnimplementedError();
+  Future<DataSourceState<bool>> deleteAddons({required int addonsID, Addons? addons}) async {
+    try {
+      var connectivity = serviceLocator<ConnectivityService>().getCurrentInternetStatus();
+      if (connectivity.$2 == InternetConnectivityState.internet) {
+        // Local DB
+        // Save to local
+        final Either<RepositoryBaseFailure, bool> result = await addonsLocalDataSource.deleteById(UniqueId(addonsID));
+        // Return result
+        return result.fold((l) {
+          final RepositoryFailure failure = l as RepositoryFailure;
+          appLog.d('Delete addons local error ${failure.message}');
+          return DataSourceState<bool>.error(
+            reason: failure.message,
+            dataSourceFailure: DataSourceFailure.local,
+            stackTrace: failure.stacktrace,
+          );
+        }, (r) {
+          appLog.d('Delete addons to local : $r');
+          return DataSourceState<bool>.localDb(data: r);
+        });
+      } else {
+        // Remote
+        // Save to server
+        final ApiResultState<bool> result = await remoteDataSource.deleteAddons(addonsID: addonsID, addons: addons);
+        // Return result
+        return result.when(
+          success: (data) {
+            appLog.d('Delete addons to remote');
+            return DataSourceState<bool>.remote(
+              data: data,
+            );
+          },
+          failure: (reason, error, exception, stackTrace) {
+            appLog.d('Delete addons remote error $reason');
+            return DataSourceState<bool>.error(
+              reason: reason,
+              dataSourceFailure: DataSourceFailure.remote,
+              stackTrace: stackTrace,
+              error: error,
+              networkException: exception,
+            );
+          },
+        );
+      }
+    } catch (e, s) {
+      appLog.e('Delete addons exception $e');
+      return DataSourceState<bool>.error(
+        reason: e.toString(),
+        dataSourceFailure: DataSourceFailure.local,
+        stackTrace: s,
+        error: e,
+        exception: e as Exception,
+      );
+    }
   }
 
   @override
-  Future<DataSourceState<bool>> deleteAllAddons() {
-    // TODO: implement deleteAllAddons
-    throw UnimplementedError();
+  Future<DataSourceState<bool>> deleteAllAddons() async {
+    try {
+      var connectivity = serviceLocator<ConnectivityService>().getCurrentInternetStatus();
+      if (connectivity.$2 == InternetConnectivityState.internet) {
+        // Local DB
+        // Save to local
+        final Either<RepositoryBaseFailure, bool> result = await addonsLocalDataSource.deleteAll();
+        // Return result
+        return result.fold((l) {
+          final RepositoryFailure failure = l as RepositoryFailure;
+          appLog.d('Delete all addons local error ${failure.message}');
+          return DataSourceState<bool>.error(
+            reason: failure.message,
+            dataSourceFailure: DataSourceFailure.local,
+            stackTrace: failure.stacktrace,
+          );
+        }, (r) {
+          appLog.d('Delete all addons to local : $r,');
+          return DataSourceState<bool>.localDb(data: r);
+        });
+      } else {
+        // Remote
+        // Save to server
+        final ApiResultState<bool> result = await remoteDataSource.deleteAllAddons();
+        // Return result
+        return result.when(
+          success: (data) {
+            appLog.d('Delete all addons to remote');
+            return DataSourceState<bool>.remote(
+              data: data,
+            );
+          },
+          failure: (reason, error, exception, stackTrace) {
+            appLog.d('Delete all addons remote error $reason');
+            return DataSourceState<bool>.error(
+              reason: reason,
+              dataSourceFailure: DataSourceFailure.remote,
+              stackTrace: stackTrace,
+              error: error,
+              networkException: exception,
+            );
+          },
+        );
+      }
+    } catch (e, s) {
+      appLog.e('Delete all addons exception $e');
+      return DataSourceState<bool>.error(
+        reason: e.toString(),
+        dataSourceFailure: DataSourceFailure.local,
+        stackTrace: s,
+        error: e,
+        exception: e as Exception,
+      );
+    }
   }
 
   @override
   Future<DataSourceState<Addons>> editAddons({
     required Addons addons,
     required int addonsID,
-  }) {
-    // TODO: implement editAddons
-    throw UnimplementedError();
+  }) async {
+    try {
+      var connectivity = serviceLocator<ConnectivityService>().getCurrentInternetStatus();
+      if (connectivity.$2 == InternetConnectivityState.internet) {
+        // Local DB
+        // Save to local
+        final Either<RepositoryBaseFailure, Addons> result = await addonsLocalDataSource.update(addons, UniqueId(addonsID));
+        // Return result
+        return result.fold((l) {
+          final RepositoryFailure failure = l as RepositoryFailure;
+          appLog.d('Edit addons local error ${failure.message}');
+          return DataSourceState<Addons>.error(
+            reason: failure.message,
+            dataSourceFailure: DataSourceFailure.local,
+            stackTrace: failure.stacktrace,
+          );
+        }, (r) {
+          appLog.d('Edit addons local : ${r.addonsID}, ${r.title}');
+          return DataSourceState<Addons>.localDb(data: r);
+        });
+      } else {
+        // Remote
+        // Save to server
+        final ApiResultState<Addons> result = await remoteDataSource.editAddons(
+          addons: addons,
+          addonsID: addonsID,
+        );
+        // Return result
+        return result.when(
+          success: (data) {
+            appLog.d('Edit addons to remote');
+            return DataSourceState<Addons>.remote(
+              data: data,
+            );
+          },
+          failure: (reason, error, exception, stackTrace) {
+            appLog.d('Edit addons remote error $reason');
+            return DataSourceState<Addons>.error(
+              reason: reason,
+              dataSourceFailure: DataSourceFailure.remote,
+              stackTrace: stackTrace,
+              error: error,
+              networkException: exception,
+            );
+          },
+        );
+      }
+    } catch (e, s) {
+      appLog.e('Edit addons exception $e');
+      return DataSourceState<Addons>.error(
+        reason: e.toString(),
+        dataSourceFailure: DataSourceFailure.local,
+        stackTrace: s,
+        error: e,
+        exception: e as Exception,
+      );
+    }
   }
 
   @override
-  Future<DataSourceState<Addons>> getAddons({required int addonsID, Addons? addons}) {
-    // TODO: implement getAddons
-    throw UnimplementedError();
+  Future<DataSourceState<Addons>> getAddons({required int addonsID, Addons? addons}) async {
+    try {
+      var connectivity = serviceLocator<ConnectivityService>().getCurrentInternetStatus();
+      if (connectivity.$2 == InternetConnectivityState.internet) {
+        // Local DB
+        // Save to local
+        final Either<RepositoryBaseFailure, Addons?> result = await addonsLocalDataSource.getById(UniqueId(addonsID));
+        // Return result
+        return result.fold((l) {
+          final RepositoryFailure failure = l as RepositoryFailure;
+          appLog.d('Get addons local error ${failure.message}');
+          return DataSourceState<Addons>.error(
+            reason: failure.message,
+            dataSourceFailure: DataSourceFailure.local,
+            stackTrace: failure.stacktrace,
+          );
+        }, (r) {
+          appLog.d('Get addons to local : ${r?.addonsID}, ${r?.title}');
+          return DataSourceState<Addons>.localDb(data: r);
+        });
+      } else {
+        // Remote
+        // Save to server
+        final ApiResultState<Addons> result = await remoteDataSource.getAddons(
+          addons: addons,
+          addonsID: addonsID,
+        );
+        // Return result
+        return result.when(
+          success: (data) {
+            appLog.d('Get addons to remote');
+            return DataSourceState<Addons>.remote(
+              data: data,
+            );
+          },
+          failure: (reason, error, exception, stackTrace) {
+            appLog.d('Get addons remote error $reason');
+            return DataSourceState<Addons>.error(
+              reason: reason,
+              dataSourceFailure: DataSourceFailure.remote,
+              stackTrace: stackTrace,
+              error: error,
+              networkException: exception,
+            );
+          },
+        );
+      }
+    } catch (e, s) {
+      appLog.d('Get addons exception $e');
+      return DataSourceState<Addons>.error(
+        reason: e.toString(),
+        dataSourceFailure: DataSourceFailure.local,
+        stackTrace: s,
+        error: e,
+        exception: e as Exception,
+      );
+    }
   }
 
   @override
-  Future<DataSourceState<List<Addons>>> getAllAddons() {
-    // TODO: implement getAllAddons
-    throw UnimplementedError();
+  Future<DataSourceState<List<Addons>>> getAllAddons() async {
+    try {
+      var connectivity = serviceLocator<ConnectivityService>().getCurrentInternetStatus();
+      if (connectivity.$2 == InternetConnectivityState.internet) {
+        // Local DB
+        // Save to local
+        final Either<RepositoryBaseFailure, List<Addons>> result = await addonsLocalDataSource.getAll();
+        // Return result
+        return result.fold((l) {
+          final RepositoryFailure failure = l as RepositoryFailure;
+          appLog.d('Get all addons local error ${failure.message}');
+          return DataSourceState<List<Addons>>.error(
+            reason: failure.message,
+            dataSourceFailure: DataSourceFailure.local,
+            stackTrace: failure.stacktrace,
+          );
+        }, (r) {
+          appLog.d('Get all addons local : ${r.length}');
+          return DataSourceState<List<Addons>>.localDb(data: r);
+        });
+      } else {
+        // Remote
+        // Save to server
+        final ApiResultState<List<Addons>> result = await remoteDataSource.getAllAddons();
+        // Return result
+        return result.when(
+          success: (data) {
+            appLog.d('Get all addons from remote');
+            return DataSourceState<List<Addons>>.remote(
+              data: data.toList(),
+            );
+          },
+          failure: (reason, error, exception, stackTrace) {
+            appLog.d('Get all addons remote error $reason');
+            return DataSourceState<List<Addons>>.error(
+              reason: reason,
+              dataSourceFailure: DataSourceFailure.remote,
+              stackTrace: stackTrace,
+              error: error,
+              networkException: exception,
+            );
+          },
+        );
+      }
+    } catch (e, s) {
+      appLog.e('Get all addons exception $e');
+      return DataSourceState<List<Addons>>.error(
+        reason: e.toString(),
+        dataSourceFailure: DataSourceFailure.local,
+        stackTrace: s,
+        error: e,
+        exception: e as Exception,
+      );
+    }
   }
 
   @override
-  Future<DataSourceState<Addons>> saveAddons({required Addons addons}) {
-    // TODO: implement saveAddons
-    throw UnimplementedError();
+  Future<DataSourceState<Addons>> saveAddons({required Addons addons}) async {
+    try {
+      var connectivity = serviceLocator<ConnectivityService>().getCurrentInternetStatus();
+      if (connectivity.$2 == InternetConnectivityState.internet) {
+        // Local DB
+        // Save to local
+        final Either<RepositoryBaseFailure, Addons> result = await addonsLocalDataSource.add(addons);
+        // Return result
+        return result.fold((l) {
+          final RepositoryFailure failure = l as RepositoryFailure;
+          appLog.d('Save addons local error ${failure.message}');
+          return DataSourceState<Addons>.error(
+            reason: failure.message,
+            dataSourceFailure: DataSourceFailure.local,
+            stackTrace: failure.stacktrace,
+          );
+        }, (r) {
+          appLog.d('Save addons to local : ${r.addonsID}, ${r.title}');
+          return DataSourceState<Addons>.localDb(data: r);
+        });
+      } else {
+        // Remote
+        // Save to server
+        final ApiResultState<Addons> result = await remoteDataSource.saveAddons(addons: addons);
+        // Return result
+        return result.when(
+          success: (data) {
+            appLog.d('Save addons to remote');
+            return DataSourceState<Addons>.remote(
+              data: data,
+            );
+          },
+          failure: (reason, error, exception, stackTrace) {
+            appLog.d('Save addons remote error $reason');
+            return DataSourceState<Addons>.error(
+              reason: reason,
+              dataSourceFailure: DataSourceFailure.remote,
+              stackTrace: stackTrace,
+              error: error,
+              networkException: exception,
+            );
+          },
+        );
+      }
+    } catch (e, s) {
+      appLog.d('Save addons exception $e');
+      return DataSourceState<Addons>.error(
+        reason: e.toString(),
+        dataSourceFailure: DataSourceFailure.local,
+        stackTrace: s,
+        error: e,
+        exception: e as Exception,
+      );
+    }
   }
 
   @override

@@ -10,16 +10,45 @@ abstract interface class StoreDataSource {
   });
 
   Future<ApiResultState<bool>> deleteStore({
-    StoreEntity? storeEntity,
     required int storeID,
+    StoreEntity? storeEntity,
   });
 
   Future<ApiResultState<bool>> deleteAllStore();
 
   Future<ApiResultState<StoreEntity>> getStore({
-    StoreEntity? storeEntity,
     required int storeID,
+    StoreEntity? storeEntity,
   });
 
-  Future<ApiResultState<StoreEntity>> getAllStore();
+  Future<ApiResultState<List<StoreEntity>>> getAllStore();
+
+  // Driver
+  Future<ApiResultState<StoreOwnDeliveryPartnersInfo>> saveDriver({
+    required StoreOwnDeliveryPartnersInfo storeOwnDeliveryPartnersInfo,
+  });
+
+  Future<ApiResultState<StoreOwnDeliveryPartnersInfo>> editDriver({
+    required StoreOwnDeliveryPartnersInfo storeOwnDeliveryPartnersInfo,
+    required int driverID,
+  });
+
+  Future<ApiResultState<bool>> deleteDriver({
+    required int driverID,
+    StoreOwnDeliveryPartnersInfo? storeOwnDeliveryPartnersInfo,
+  });
+
+  Future<ApiResultState<bool>> deleteAllDriver();
+
+  Future<ApiResultState<StoreOwnDeliveryPartnersInfo>> getDriver({
+    required int driverID,
+    StoreOwnDeliveryPartnersInfo? storeOwnDeliveryPartnersInfo,
+  });
+
+  Future<ApiResultState<List<StoreOwnDeliveryPartnersInfo>>> getAllDriver();
+
+  Future<ApiResultState<List<StoreEntity>>> bindDriverWithStores({required List<StoreOwnDeliveryPartnersInfo> source, required List<StoreEntity> destination});
+
+  Future<ApiResultState<List<StoreEntity>>> unBindDriverWithStores(
+      {required List<StoreOwnDeliveryPartnersInfo> source, required List<StoreEntity> destination});
 }
