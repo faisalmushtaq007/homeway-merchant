@@ -164,13 +164,13 @@ abstract class AddOrUpdateUser<EntityType> extends BaseRepositoryOperation<Entit
 }
 
 // Binding
-abstract class BaseRepositoryBindOperation<Source, Destination> {
-  BindingSourceToDestinationFunc<Source, Destination> binding(Source source, Destination destination);
+abstract class BaseRepositoryBindOperation<T, R> {
+  BindingSourceToDestinationFunc<T, R> binding(List<T> source, List<R> destination);
 }
 
-abstract class BindSourceToDestination<Source, Destination> implements BaseRepositoryBindOperation<Source, Destination> {
+abstract class BindSourceToDestination<T, R> implements BaseRepositoryBindOperation<T, R> {
   @override
-  BindingSourceToDestinationFunc<Source, Destination> binding(Source source, Destination destination);
+  BindingSourceToDestinationFunc<T, R> binding(List<T> source, List<R> destination);
 }
 
 // Add all

@@ -76,6 +76,10 @@ class _StoreCardState extends State<StoreCard> {
                 'index': widget.currentIndex,
                 'allStores': widget.listOfAllStoreEntities.toList(),
               });
+              if (!mounted) {
+                return;
+              }
+              context.read<StoreBloc>().add(GetAllStore());
             }
           case 1:
             {}

@@ -89,11 +89,15 @@ class StoreLocalDbRepository<Store extends StoreEntity> implements BaseStoreLoca
   Future<Either<RepositoryBaseFailure, List<StoreEntity>>> getAll() async {
     final result = await tryCatch<List<StoreEntity>>(() async {
       final snapshots = await _store.find(await _db);
-      return snapshots
-          .map((snapshot) => StoreEntity.fromMap(snapshot.value).copyWith(
-                storeID: snapshot.key,
-              ))
-          .toList(growable: false);
+      if (snapshots.isEmptyOrNull) {
+        return <StoreEntity>[];
+      } else {
+        return snapshots
+            .map((snapshot) => StoreEntity.fromMap(snapshot.value).copyWith(
+                  storeID: snapshot.key,
+                ))
+            .toList(growable: false);
+      }
     });
     return result;
   }

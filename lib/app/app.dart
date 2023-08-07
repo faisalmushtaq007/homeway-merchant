@@ -101,7 +101,7 @@ class _AppState extends State<App> with GetItStateMixin {
           key: const Key('store_bloc_provider'),
           create: (context) => serviceLocator(),
         ),
-        BlocProvider<StoreBloc>(
+        BlocProvider<MenuBloc>(
           key: const Key('menu_bloc_provider'),
           create: (context) => serviceLocator(),
         ),

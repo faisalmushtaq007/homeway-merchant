@@ -4,14 +4,14 @@ class MenuLocalDbRepository<Menu extends MenuEntity> implements BaseMenuLocalDbR
   // Completer is used for transforming synchronous code into asynchronous code.
   Future<Database> get _db async => AppDatabase.instance.database;
 
-  StoreRef<int, Map<String, dynamic>> get _store => AppDatabase.instance.store;
+  StoreRef<int, Map<String, dynamic>> get _menu => AppDatabase.instance.menu;
 
   @override
   Future<Either<RepositoryBaseFailure, MenuEntity>> add(MenuEntity entity) async {
     final result = await tryCatch<MenuEntity>(() async {
-      final int recordID = await _store.add(await _db, entity.toMap());
+      final int recordID = await _menu.add(await _db, entity.toMap());
       //final MenuEntity recordMenuEntity = entity.copyWith(storeID: recordID.toString());
-      final value = await _store.record(recordID).get(await _db);
+      final value = await _menu.record(recordID).get(await _db);
       if (value != null) {
         return MenuEntity.fromMap(value).copyWith(menuId: recordID);
       } else {
@@ -26,7 +26,7 @@ class MenuLocalDbRepository<Menu extends MenuEntity> implements BaseMenuLocalDbR
     final result = await tryCatch<bool>(() async {
       final int key = entity.menuId;
       final finder = Finder(filter: Filter.byKey(key));
-      await _store.delete(
+      await _menu.delete(
         await _db,
         finder: finder,
       );
@@ -42,9 +42,9 @@ class MenuLocalDbRepository<Menu extends MenuEntity> implements BaseMenuLocalDbR
   @override
   Future<Either<RepositoryBaseFailure, bool>> deleteById(UniqueId uniqueId) async {
     final result = await tryCatch<bool>(() async {
-      final value = await _store.record(uniqueId.value).get(await _db);
+      final value = await _menu.record(uniqueId.value).get(await _db);
       if (value != null) {
-        await _store.delete(
+        await _menu.delete(
           await _db,
         );
         return true;
@@ -57,12 +57,18 @@ class MenuLocalDbRepository<Menu extends MenuEntity> implements BaseMenuLocalDbR
   @override
   Future<Either<RepositoryBaseFailure, List<MenuEntity>>> getAll() async {
     final result = await tryCatch<List<MenuEntity>>(() async {
-      final snapshots = await _store.find(await _db);
-      return snapshots
-          .map((snapshot) => MenuEntity.fromMap(snapshot.value).copyWith(
+      final snapshots = await _menu.find(await _db);
+      if (snapshots.isEmptyOrNull) {
+        return <MenuEntity>[];
+      } else {
+        return snapshots
+            .map(
+              (snapshot) => MenuEntity.fromMap(snapshot.value).copyWith(
                 menuId: snapshot.key,
-              ))
-          .toList(growable: false);
+              ),
+            )
+            .toList(growable: false);
+      }
     });
     return result;
   }
@@ -70,7 +76,7 @@ class MenuLocalDbRepository<Menu extends MenuEntity> implements BaseMenuLocalDbR
   @override
   Future<Either<RepositoryBaseFailure, MenuEntity?>> getById(UniqueId id) async {
     final result = await tryCatch<MenuEntity?>(() async {
-      final value = await _store.record(id.value).get(await _db);
+      final value = await _menu.record(id.value).get(await _db);
       if (value != null) {
         return MenuEntity.fromMap(value);
       }
@@ -83,8 +89,8 @@ class MenuLocalDbRepository<Menu extends MenuEntity> implements BaseMenuLocalDbR
   Future<Either<RepositoryBaseFailure, MenuEntity>> update(MenuEntity entity, UniqueId uniqueId) async {
     final result = await tryCatch<MenuEntity>(() async {
       final int key = entity.menuId;
-      final value = await _store.record(key).get(await _db);
-      final result = await _store.record(key).put(await _db, entity.toMap(), merge: (value != null) || false);
+      final value = await _menu.record(key).get(await _db);
+      final result = await _menu.record(key).put(await _db, entity.toMap(), merge: (value != null) || false);
       return MenuEntity.fromMap(result);
     });
     return result;
@@ -105,6 +111,14 @@ class MenuLocalDbRepository<Menu extends MenuEntity> implements BaseMenuLocalDbR
   @override
   Future<Either<RepositoryBaseFailure, MenuEntity>> updateByIdAndEntity(UniqueId uniqueId, MenuEntity entity) {
     // TODO: implement updateByIdAndEntity
+    throw UnimplementedError();
+  }
+}
+
+class MenuBindingWithStoreLocalDbDbRepository<MenuEntity, StoreEntity> implements BindSourceToDestination<MenuEntity, StoreEntity> {
+  @override
+  BindingSourceToDestinationFunc<MenuEntity, StoreEntity> binding(List<MenuEntity> source, List<StoreEntity> destination) {
+    // TODO: implement binding
     throw UnimplementedError();
   }
 }

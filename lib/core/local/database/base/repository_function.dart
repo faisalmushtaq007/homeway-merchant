@@ -15,7 +15,7 @@ typedef DeleteByIdFunc<T> = Future<Either<RepositoryBaseFailure, bool>> Function
 typedef DeleteByIdAndEntityFunc<T> = Future<Either<RepositoryBaseFailure, bool>> Function(UniqueId uniqueId, T input);
 typedef GetByIdAndEntityFunc<T> = Future<Either<RepositoryBaseFailure, bool>> Function(UniqueId uniqueId, T input);
 typedef UdpateByIdAndEntityFunc<T> = Future<Either<RepositoryBaseFailure, bool>> Function(UniqueId uniqueId, T input);
-typedef BindingSourceToDestinationFunc<T, R> = Future<Either<RepositoryBaseFailure, R>> Function(T source, R destination);
+typedef BindingSourceToDestinationFunc<T, R> = Future<Either<RepositoryBaseFailure, List<R>>> Function(List<T> source, List<R> destination);
 typedef AddAllFunc<T> = Future<Either<RepositoryBaseFailure, List<T>>> Function(List<T> listOfNewData);
 typedef UpdateAllFunc<T> = Future<Either<RepositoryBaseFailure, List<T>>> Function(List<T> listOfExistingData);
 
@@ -40,7 +40,7 @@ class UpdateFunction<T> implements Update<T> {
   final UpdateFunc<T> function;
 
   @override
-  Future<Either<RepositoryBaseFailure, T>> update(T entity, UniqueId? uniqueId) => function(entity, uniqueId);
+  Future<Either<RepositoryBaseFailure, T>> update(T entity, UniqueId uniqueId) => function(entity, uniqueId);
 }
 
 class AddFunction<T> implements Add<T> {

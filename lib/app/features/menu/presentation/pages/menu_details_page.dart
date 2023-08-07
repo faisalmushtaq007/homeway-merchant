@@ -1,27 +1,52 @@
 part of 'package:homemakers_merchant/app/features/menu/index.dart';
 
 class MenuDetailsPage extends StatefulWidget {
-  const MenuDetailsPage({super.key});
+  const MenuDetailsPage({
+    super.key,
+    required this.menuEntity,
+    this.index = -1,
+    this.menuEntities = const [],
+  });
+
+  final MenuEntity menuEntity;
+  final int index;
+  final List<MenuEntity> menuEntities;
 
   @override
-  _StoreDetailsPageController createState() => _StoreDetailsPageController();
+  _MenuDetailsPageController createState() => _MenuDetailsPageController();
 }
 
-class _StoreDetailsPageController extends State<MenuDetailsPage> {
+class _MenuDetailsPageController extends State<MenuDetailsPage> {
   late final ScrollController scrollController;
   late final ScrollController innerScrollController;
+  MenuEntity menuEntity = MenuEntity();
+  CustomPortion? customPortion;
+  bool hasCustomPortion = false;
+  List<CustomPortion> customPortions = [];
+  List<Addons> listOfAddons = [];
 
   @override
   void initState() {
     super.initState();
+    menuEntity = widget.menuEntity;
     scrollController = ScrollController();
     innerScrollController = ScrollController();
+    customPortions = [];
+    listOfAddons = [];
+    customPortion = menuEntity.customPortion;
+    hasCustomPortion = menuEntity.hasCustomPortion;
+    customPortions = menuEntity.customPortions.toList();
+    listOfAddons = menuEntity.addons.toList();
   }
 
   @override
   void dispose() {
     scrollController.dispose();
     innerScrollController.dispose();
+
+    hasCustomPortion = false;
+    customPortions = [];
+    listOfAddons = [];
     super.dispose();
   }
 
@@ -35,7 +60,7 @@ class _StoreDetailsPageController extends State<MenuDetailsPage> {
       );
 }
 
-class _StoreDetailsPageView extends WidgetView<MenuDetailsPage, _StoreDetailsPageController> {
+class _StoreDetailsPageView extends WidgetView<MenuDetailsPage, _MenuDetailsPageController> {
   const _StoreDetailsPageView(super.state);
 
   @override
@@ -82,22 +107,49 @@ class _StoreDetailsPageView extends WidgetView<MenuDetailsPage, _StoreDetailsPag
                 start: margins * 2.5,
                 end: margins * 2.5,
               ),
-              child: Stack(
-                children: [
-                  CustomScrollView(
-                    controller: state.innerScrollController,
-                    slivers: [
-                      SliverList(
-                        delegate: SliverChildListDelegate([
-                          Column(
-                            mainAxisSize: MainAxisSize.min,
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.stretch,
-                            children: [],
+              child: CustomScrollView(
+                controller: state.innerScrollController,
+                slivers: [
+                  SliverList(
+                    delegate: SliverChildListDelegate([
+                      Column(
+                        textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                        mainAxisSize: MainAxisSize.min,
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          // Top section
+                          MenuDetailsNameImageWidget(
+                            menuEntity: state.menuEntity,
                           ),
-                        ]),
+                          const Divider(),
+                          // Description section
+                          WrapText(
+                            'The Flutter framework has been optimized to make rerunning build methods fast, so that you can just rebuild anything that needs updating rather than having to individually change instances of widgets.',
+                            breakWordCharacter: '-',
+                            smartSizeMode: true,
+                            asyncMode: true,
+                            minFontSize: 14,
+                            maxFontSize: 18,
+                            textStyle: context.bodyMedium!.copyWith(),
+                          ),
+                          const Divider(),
+                          MenuComponentWidget(
+                            menuEntity: state.menuEntity,
+                          ),
+                          const Divider(),
+                          MenuPriceInfoWidget(menuEntity: state.menuEntity),
+                          const Divider(),
+                          ListTile(
+                            dense: true,
+                            title: Text(
+                              'Extra Includes',
+                              textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                            ),
+                          ),
+                          Card(),
+                        ],
                       ),
-                    ],
+                    ]),
                   ),
                 ],
               ),

@@ -80,19 +80,19 @@ class _StoreDetailsPageController extends State<StoreDetailsPage> {
         titleTextColor: context.colorScheme.primary,
         subTitleTextColor: context.colorScheme.primary,
       ),
-      StoreOrderInfo(
+      const StoreOrderInfo(
         title: 'Schedule',
         subTitle: '4',
         titleTextColor: Color.fromRGBO(42, 45, 50, 1),
         subTitleTextColor: Color.fromRGBO(42, 45, 50, 1),
       ),
-      StoreOrderInfo(
+      const StoreOrderInfo(
         title: 'Ongoing',
         subTitle: '2',
         titleTextColor: Color.fromRGBO(255, 90, 39, 1),
         subTitleTextColor: Color.fromRGBO(255, 90, 39, 1),
       ),
-      StoreOrderInfo(
+      const StoreOrderInfo(
         title: 'Delivered',
         subTitle: '75',
         titleTextColor: Color.fromRGBO(69, 201, 125, 1),
@@ -192,7 +192,7 @@ class _StoreDetailsPageView extends WidgetView<StoreDetailsPage, _StoreDetailsPa
                         height: 150,
                         child: BannerCarousel(
                           banners: state.listBanners,
-                          customizedIndicators: IndicatorModel.animation(width: 20, height: 5, spaceBetween: 2, widthAnimation: 50),
+                          customizedIndicators: const IndicatorModel.animation(width: 20, height: 5, spaceBetween: 2, widthAnimation: 50),
                           height: 150,
                           activeColor: Colors.amberAccent,
                           disableColor: Colors.white,
@@ -255,7 +255,7 @@ class _StoreDetailsPageView extends WidgetView<StoreDetailsPage, _StoreDetailsPa
                                   ],
                                 ),
                                 const AnimatedGap(8, duration: Duration(milliseconds: 200)),
-                                Divider(),
+                                const Divider(),
                                 IntrinsicHeight(
                                   child: Row(
                                     mainAxisSize: MainAxisSize.min,
@@ -265,11 +265,11 @@ class _StoreDetailsPageView extends WidgetView<StoreDetailsPage, _StoreDetailsPa
                                       IntrinsicHeight(
                                         child: TextButton.icon(
                                           onPressed: () {},
-                                          icon: Icon(Icons.share),
-                                          label: Text('Share Store'),
+                                          icon: const Icon(Icons.share),
+                                          label: const Text('Share Store'),
                                         ),
                                       ),
-                                      Spacer(),
+                                      const Spacer(),
                                       IntrinsicHeight(
                                         child: Row(
                                           mainAxisSize: MainAxisSize.min,
@@ -285,14 +285,14 @@ class _StoreDetailsPageView extends WidgetView<StoreDetailsPage, _StoreDetailsPa
                                                 onChanged: state.onStoreOnlineChanged,
                                               ),
                                             ),
-                                            Text('Store Online'),
+                                            const Text('Store Online'),
                                           ],
                                         ),
                                       ),
                                     ],
                                   ),
                                 ),
-                                Divider(),
+                                const Divider(),
                                 const AnimatedGap(8, duration: Duration(milliseconds: 200)),
                                 Card(
                                   child: ListTile(
@@ -321,8 +321,8 @@ class _StoreDetailsPageView extends WidgetView<StoreDetailsPage, _StoreDetailsPa
                                                 isHalfAllowed: true,
                                               ),
                                               Container(
-                                                padding: EdgeInsetsDirectional.symmetric(vertical: 2, horizontal: 8),
-                                                margin: EdgeInsetsDirectional.only(end: 8),
+                                                padding: const EdgeInsetsDirectional.symmetric(vertical: 2, horizontal: 8),
+                                                margin: const EdgeInsetsDirectional.only(end: 8),
                                                 child: Text(
                                                   "${4.5.toStringAsPrecision(2)}/${5.toStringAsPrecision(2)}",
                                                 ),
@@ -339,7 +339,7 @@ class _StoreDetailsPageView extends WidgetView<StoreDetailsPage, _StoreDetailsPa
                                         )
                                       ],
                                     ),
-                                    subtitle: Text(
+                                    subtitle: const Text(
                                       '450 Ratings',
                                     ),
                                   ),
@@ -387,7 +387,7 @@ class _StoreDetailsPageView extends WidgetView<StoreDetailsPage, _StoreDetailsPa
                                                   ),
                                                 ),
                                                 const AnimatedGap(6, duration: Duration(milliseconds: 200)),
-                                                VerticalDivider(
+                                                const VerticalDivider(
                                                   thickness: 0.75,
                                                   indent: 6,
                                                   endIndent: 6,
@@ -398,18 +398,18 @@ class _StoreDetailsPageView extends WidgetView<StoreDetailsPage, _StoreDetailsPa
                                                     scrollDirection: Axis.horizontal,
                                                     shrinkWrap: true,
                                                     separatorBuilder: (context, index) {
-                                                      return Row(
+                                                      return const Row(
                                                         mainAxisSize: MainAxisSize.min,
                                                         mainAxisAlignment: MainAxisAlignment.start,
                                                         crossAxisAlignment: CrossAxisAlignment.center,
                                                         children: [
-                                                          const AnimatedGap(4, duration: Duration(milliseconds: 200)),
+                                                          AnimatedGap(4, duration: Duration(milliseconds: 200)),
                                                           VerticalDivider(
                                                             thickness: 0.75,
                                                             indent: 6,
                                                             endIndent: 6,
                                                           ),
-                                                          const AnimatedGap(4, duration: Duration(milliseconds: 200)),
+                                                          AnimatedGap(4, duration: Duration(milliseconds: 200)),
                                                         ],
                                                       );
                                                     },

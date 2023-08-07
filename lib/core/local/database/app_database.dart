@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/foundation.dart';
+import 'package:homemakers_merchant/app/features/menu/index.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sembast/sembast.dart';
@@ -22,9 +23,20 @@ class AppDatabase {
   Completer<Database>? _dbOpenCompleter;
 
   bool isInitialized = false;
-  StoreRef<int, Map<String, dynamic>> _store = StoreRef<int, Map<String, dynamic>>.main();
+  StoreRef<int, Map<String, dynamic>> _user = StoreRef<int, Map<String, dynamic>>.main();
+  StoreRef<int, Map<String, dynamic>> get user => _user;
 
+  StoreRef<int, Map<String, dynamic>> _store = StoreRef<int, Map<String, dynamic>>.main();
   StoreRef<int, Map<String, dynamic>> get store => _store;
+
+  StoreRef<int, Map<String, dynamic>> _menu = StoreRef<int, Map<String, dynamic>>.main();
+  StoreRef<int, Map<String, dynamic>> get menu => _menu;
+
+  StoreRef<int, Map<String, dynamic>> _addons = StoreRef<int, Map<String, dynamic>>.main();
+  StoreRef<int, Map<String, dynamic>> get addons => _addons;
+
+  StoreRef<int, Map<String, dynamic>> _driver = StoreRef<int, Map<String, dynamic>>.main();
+  StoreRef<int, Map<String, dynamic>> get driver => _driver;
 
   //late RecordRef<int, Map<String, dynamic>> _record;
 
@@ -48,7 +60,11 @@ class AppDatabase {
     final appDocumentDir = await getApplicationDocumentsDirectory();
     // Path with the form: /platform-specific-directory/demo.db
     final dbPath = join(appDocumentDir.path, 'homewaymerchant.db');
+    _user = StoreRef<int, Map<String, dynamic>>('user');
     _store = StoreRef<int, Map<String, dynamic>>.main();
+    _menu = StoreRef<int, Map<String, dynamic>>('menu');
+    _addons = StoreRef<int, Map<String, dynamic>>('addons');
+    _driver = StoreRef<int, Map<String, dynamic>>('driver');
     Database database;
     if (kIsWeb) {
       final factory = databaseFactoryWeb;

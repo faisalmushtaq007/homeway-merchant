@@ -80,7 +80,18 @@ class _MenuCardWidgetState extends State<MenuCardWidget> {
         switch (_popupMenuItemIndex) {
           case 0:
             {
-              final navigateToMenuDetailsPage = await context.push(Routes.MENU_DETAILS_PAGE);
+              final navigateToMenuDetailsPage = await context.push(
+                Routes.MENU_DETAILS_PAGE,
+                extra: {
+                  'menu': widget.menuEntity,
+                  'allMenus': widget.listOfAllMenuEntities.toList(),
+                  'index': widget.currentIndex,
+                },
+              );
+              if (!mounted) {
+                return;
+              }
+              context.read<MenuBloc>().add(GetAllMenu());
             }
           case 1:
             {}

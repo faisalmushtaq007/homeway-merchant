@@ -383,7 +383,7 @@ class _StoreExpandedCardWidgetController<T, S> extends State<StoreExpandedCardWi
                       fontSize: 16,
                     ),
                     placeholderBackgroundColor: context.colorScheme.primary.withOpacity(0.5),
-                    imageType: _findImageType(
+                    imageType: findImageType(
                         'https://img.freepik.com/premium-photo/dum-handi-chicken-biryani-is-prepared-earthen-clay-pot-called-haandi-popular-indian-non-vegetarian-food_466689-52225.jpg'),
                   ),
                 ),
@@ -466,27 +466,6 @@ class _StoreExpandedCardWidgetController<T, S> extends State<StoreExpandedCardWi
       },
       itemCount: widget.expandableCardInfo.storeEntity.menuEntities.length,
     );
-  }
-
-  ImageType _findImageType(String? assetsPath) {
-    if (assetsPath.isEmptyOrNull) {
-      return ImageType.text;
-    } else {
-      switch (assetsPath) {
-        case (final String path) when path.startsWith('http') || path.startsWith('https'):
-          {
-            return ImageType.network;
-          }
-        case (final String path) when path.startsWith('/') || path.startsWith('//'):
-          {
-            return ImageType.file;
-          }
-        case _:
-          {
-            return ImageType.text;
-          }
-      }
-    }
   }
 
   Widget _storeAvailablePaymentMethods(BuildContext context) {

@@ -4,14 +4,14 @@ class AddonsLocalDbRepository<Extras extends Addons> implements BaseAddonsLocalD
   // Completer is used for transforming synchronous code into asynchronous code.
   Future<Database> get _db async => AppDatabase.instance.database;
 
-  StoreRef<int, Map<String, dynamic>> get _store => AppDatabase.instance.store;
+  StoreRef<int, Map<String, dynamic>> get _addons => AppDatabase.instance.addons;
 
   @override
   Future<Either<RepositoryBaseFailure, Addons>> add(Addons entity) async {
     final result = await tryCatch<Addons>(() async {
-      final int recordID = await _store.add(await _db, entity.toMap());
+      final int recordID = await _addons.add(await _db, entity.toMap());
       //final Addons recordAddons = entity.copyWith(storeID: recordID.toString());
-      final value = await _store.record(recordID).get(await _db);
+      final value = await _addons.record(recordID).get(await _db);
       if (value != null) {
         return Addons.fromMap(value).copyWith(addonsID: recordID);
       } else {
@@ -26,7 +26,7 @@ class AddonsLocalDbRepository<Extras extends Addons> implements BaseAddonsLocalD
     final result = await tryCatch<bool>(() async {
       final int key = entity.addonsID;
       final finder = Finder(filter: Filter.byKey(key));
-      await _store.delete(
+      await _addons.delete(
         await _db,
         finder: finder,
       );
@@ -42,9 +42,9 @@ class AddonsLocalDbRepository<Extras extends Addons> implements BaseAddonsLocalD
   @override
   Future<Either<RepositoryBaseFailure, bool>> deleteById(UniqueId uniqueId) async {
     final result = await tryCatch<bool>(() async {
-      final value = await _store.record(uniqueId.value).get(await _db);
+      final value = await _addons.record(uniqueId.value).get(await _db);
       if (value != null) {
-        await _store.delete(
+        await _addons.delete(
           await _db,
         );
         return true;
@@ -57,12 +57,16 @@ class AddonsLocalDbRepository<Extras extends Addons> implements BaseAddonsLocalD
   @override
   Future<Either<RepositoryBaseFailure, List<Addons>>> getAll() async {
     final result = await tryCatch<List<Addons>>(() async {
-      final snapshots = await _store.find(await _db);
-      return snapshots
-          .map((snapshot) => Addons.fromMap(snapshot.value).copyWith(
-                addonsID: snapshot.key,
-              ))
-          .toList(growable: false);
+      final snapshots = await _addons.find(await _db);
+      if (snapshots.isEmptyOrNull) {
+        return <Addons>[];
+      } else {
+        return snapshots
+            .map((snapshot) => Addons.fromMap(snapshot.value).copyWith(
+                  addonsID: snapshot.key,
+                ))
+            .toList(growable: false);
+      }
     });
     return result;
   }
@@ -70,7 +74,7 @@ class AddonsLocalDbRepository<Extras extends Addons> implements BaseAddonsLocalD
   @override
   Future<Either<RepositoryBaseFailure, Addons?>> getById(UniqueId id) async {
     final result = await tryCatch<Addons?>(() async {
-      final value = await _store.record(id.value).get(await _db);
+      final value = await _addons.record(id.value).get(await _db);
       if (value != null) {
         return Addons.fromMap(value);
       }
@@ -83,8 +87,8 @@ class AddonsLocalDbRepository<Extras extends Addons> implements BaseAddonsLocalD
   Future<Either<RepositoryBaseFailure, Addons>> update(Addons entity, UniqueId uniqueId) async {
     final result = await tryCatch<Addons>(() async {
       final int key = entity.addonsID;
-      final value = await _store.record(key).get(await _db);
-      final result = await _store.record(key).put(await _db, entity.toMap(), merge: (value != null) || false);
+      final value = await _addons.record(key).get(await _db);
+      final result = await _addons.record(key).put(await _db, entity.toMap(), merge: (value != null) || false);
       return Addons.fromMap(result);
     });
     return result;
@@ -105,6 +109,14 @@ class AddonsLocalDbRepository<Extras extends Addons> implements BaseAddonsLocalD
   @override
   Future<Either<RepositoryBaseFailure, Addons>> updateByIdAndEntity(UniqueId uniqueId, Addons entity) {
     // TODO: implement updateByIdAndEntity
+    throw UnimplementedError();
+  }
+}
+
+class AddonsBindingWithMenuLocalDbDbRepository<Addons, MenuEntity> implements BaseRepositoryBindOperation<Addons, MenuEntity> {
+  @override
+  BindingSourceToDestinationFunc<Addons, MenuEntity> binding(List<Addons> source, List<MenuEntity> destination) {
+    // TODO: implement binding
     throw UnimplementedError();
   }
 }

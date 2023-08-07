@@ -25,12 +25,14 @@ class _AllMenuPageController extends State<AllMenuPage> {
     listOfAllMenus.clear();
     listOfAllSelectedMenus = [];
     listOfAllSelectedMenus.clear();
+    if (mounted) {
+      context.read<MenuBloc>().add(GetAllMenu());
+    }
   }
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    context.read<MenuBloc>().add(GetAllMenu());
   }
 
   @override

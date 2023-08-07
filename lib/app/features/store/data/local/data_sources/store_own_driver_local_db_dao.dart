@@ -4,14 +4,14 @@ class StoreOwnDeliveryPartnersLocalDbRepository<Driver extends StoreOwnDeliveryP
     implements BaseStoreOwnDriverLocalDbRepository<StoreOwnDeliveryPartnersInfo> {
   // Completer is used for transforming synchronous code into asynchronous code.
   Future<Database> get _db async => AppDatabase.instance.database;
-  StoreRef<int, Map<String, dynamic>> get _store => AppDatabase.instance.store;
+  StoreRef<int, Map<String, dynamic>> get _driver => AppDatabase.instance.driver;
 
   @override
   Future<Either<RepositoryBaseFailure, StoreOwnDeliveryPartnersInfo>> add(StoreOwnDeliveryPartnersInfo entity) async {
     final result = await tryCatch<StoreOwnDeliveryPartnersInfo>(() async {
-      final int recordID = await _store.add(await _db, entity.toMap());
+      final int recordID = await _driver.add(await _db, entity.toMap());
       //final StoreOwnDeliveryPartnersInfo recordStoreOwnDeliveryPartnersInfo = entity.copyWith(driverID: recordID.toString());
-      final value = await _store.record(recordID).get(await _db);
+      final value = await _driver.record(recordID).get(await _db);
       if (value != null) {
         return StoreOwnDeliveryPartnersInfo.fromMap(value).copyWith(driverID: recordID);
       } else {
@@ -35,7 +35,7 @@ class StoreOwnDeliveryPartnersLocalDbRepository<Driver extends StoreOwnDeliveryP
     final result = await tryCatch<bool>(() async {
       final int key = entity.driverID;
       final finder = Finder(filter: Filter.byKey(key));
-      await _store.delete(
+      await _driver.delete(
         await _db,
         finder: finder,
       );
@@ -50,7 +50,7 @@ class StoreOwnDeliveryPartnersLocalDbRepository<Driver extends StoreOwnDeliveryP
       int count = 0;
       await db.transaction((transaction) async {
         // Delete all
-        await _store.delete(transaction);
+        await _driver.delete(transaction);
         count++;
       });
       if (count >= 0) {
@@ -65,9 +65,9 @@ class StoreOwnDeliveryPartnersLocalDbRepository<Driver extends StoreOwnDeliveryP
   @override
   Future<Either<RepositoryBaseFailure, bool>> deleteById(UniqueId uniqueId) async {
     final result = await tryCatch<bool>(() async {
-      final value = await _store.record(uniqueId.value).get(await _db);
+      final value = await _driver.record(uniqueId.value).get(await _db);
       if (value != null) {
-        await _store.delete(
+        await _driver.delete(
           await _db,
         );
         return true;
@@ -80,12 +80,16 @@ class StoreOwnDeliveryPartnersLocalDbRepository<Driver extends StoreOwnDeliveryP
   @override
   Future<Either<RepositoryBaseFailure, List<StoreOwnDeliveryPartnersInfo>>> getAll() async {
     final result = await tryCatch<List<StoreOwnDeliveryPartnersInfo>>(() async {
-      final snapshots = await _store.find(await _db);
-      return snapshots
-          .map((snapshot) => StoreOwnDeliveryPartnersInfo.fromMap(snapshot.value).copyWith(
-                driverID: snapshot.key,
-              ))
-          .toList(growable: false);
+      final snapshots = await _driver.find(await _db);
+      if (snapshots.isEmptyOrNull) {
+        return <StoreOwnDeliveryPartnersInfo>[];
+      } else {
+        return snapshots
+            .map((snapshot) => StoreOwnDeliveryPartnersInfo.fromMap(snapshot.value).copyWith(
+                  driverID: snapshot.key,
+                ))
+            .toList(growable: false);
+      }
     });
     return result;
   }
@@ -93,7 +97,7 @@ class StoreOwnDeliveryPartnersLocalDbRepository<Driver extends StoreOwnDeliveryP
   @override
   Future<Either<RepositoryBaseFailure, StoreOwnDeliveryPartnersInfo?>> getById(UniqueId id) async {
     final result = await tryCatch<StoreOwnDeliveryPartnersInfo?>(() async {
-      final value = await _store.record(id.value).get(await _db);
+      final value = await _driver.record(id.value).get(await _db);
       if (value != null) {
         return StoreOwnDeliveryPartnersInfo.fromMap(value);
       }
@@ -106,8 +110,8 @@ class StoreOwnDeliveryPartnersLocalDbRepository<Driver extends StoreOwnDeliveryP
   Future<Either<RepositoryBaseFailure, StoreOwnDeliveryPartnersInfo>> update(StoreOwnDeliveryPartnersInfo entity, UniqueId uniqueId) async {
     final result = await tryCatch<StoreOwnDeliveryPartnersInfo>(() async {
       final int key = entity.driverID;
-      final value = await _store.record(key).get(await _db);
-      final result = await _store.record(key).put(await _db, entity.toMap(), merge: (value != null) || false);
+      final value = await _driver.record(key).get(await _db);
+      final result = await _driver.record(key).put(await _db, entity.toMap(), merge: (value != null) || false);
       return StoreOwnDeliveryPartnersInfo.fromMap(result);
     });
     return result;
@@ -128,6 +132,15 @@ class StoreOwnDeliveryPartnersLocalDbRepository<Driver extends StoreOwnDeliveryP
   @override
   Future<Either<RepositoryBaseFailure, StoreOwnDeliveryPartnersInfo>> updateByIdAndEntity(UniqueId uniqueId, StoreOwnDeliveryPartnersInfo entity) {
     // TODO: implement updateByIdAndEntity
+    throw UnimplementedError();
+  }
+}
+
+class StoreOwnDriverBindingWithStoreLocalDbDbRepository<StoreOwnDeliveryPartnersInfo, StoreEntity>
+    implements BaseRepositoryBindOperation<StoreOwnDeliveryPartnersInfo, StoreEntity> {
+  @override
+  BindingSourceToDestinationFunc<StoreOwnDeliveryPartnersInfo, StoreEntity> binding(List<StoreOwnDeliveryPartnersInfo> source, List<StoreEntity> destination) {
+    // TODO: implement binding
     throw UnimplementedError();
   }
 }
