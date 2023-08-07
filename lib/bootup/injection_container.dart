@@ -30,6 +30,7 @@ import 'package:homemakers_merchant/config/translation/app_translator.dart';
 import 'package:homemakers_merchant/core/constants/global_app_constants.dart';
 import 'package:homemakers_merchant/core/interface/storage_interface.dart';
 import 'package:homemakers_merchant/core/keys/app_key.dart';
+import 'package:homemakers_merchant/core/local/database/app_database.dart';
 import 'package:homemakers_merchant/core/network/http/base_response_error_model.dart';
 import 'package:homemakers_merchant/core/network/http/interceptor/token/fresh_token_interceptor.dart';
 import 'package:homemakers_merchant/core/service/connectivity_bloc/connectivity_bloc.dart';
@@ -44,6 +45,7 @@ import 'package:network_manager/network_manager.dart';
 GetIt serviceLocator = GetIt.instance;
 
 Future<void> setupGetIt() async {
+  await AppDatabase.instance.database;
   _setupGetIt();
   _setUpModel();
   await _setUpAppSetting();

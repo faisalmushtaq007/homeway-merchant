@@ -12,10 +12,13 @@ class MenuLocalDbRepository<Menu extends MenuEntity> implements BaseMenuLocalDbR
       final int recordID = await _menu.add(await _db, entity.toMap());
       //final MenuEntity recordMenuEntity = entity.copyWith(storeID: recordID.toString());
       final value = await _menu.record(recordID).get(await _db);
+
       if (value != null) {
+        print('Menu local db IF ${MenuEntity.fromMap(value).copyWith(menuId: recordID).toMap()}');
         return MenuEntity.fromMap(value).copyWith(menuId: recordID);
       } else {
-        return entity.copyWith(menuId: recordID);
+        print('Menu local db ELSE ${MenuEntity.fromMap(entity.copyWith(menuId: recordID).toMap())}');
+        return MenuEntity.fromMap(entity.copyWith(menuId: recordID).toMap());
       }
     });
     return result;
@@ -58,6 +61,7 @@ class MenuLocalDbRepository<Menu extends MenuEntity> implements BaseMenuLocalDbR
   Future<Either<RepositoryBaseFailure, List<MenuEntity>>> getAll() async {
     final result = await tryCatch<List<MenuEntity>>(() async {
       final snapshots = await _menu.find(await _db);
+      print('Menu Get ALL ${snapshots}');
       if (snapshots.isEmptyOrNull) {
         return <MenuEntity>[];
       } else {

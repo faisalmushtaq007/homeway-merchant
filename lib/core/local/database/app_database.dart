@@ -61,7 +61,7 @@ class AppDatabase {
     // Path with the form: /platform-specific-directory/demo.db
     final dbPath = join(appDocumentDir.path, 'homewaymerchant.db');
     _user = StoreRef<int, Map<String, dynamic>>('user');
-    _store = StoreRef<int, Map<String, dynamic>>.main();
+    _store = StoreRef<int, Map<String, dynamic>>('store');
     _menu = StoreRef<int, Map<String, dynamic>>('menu');
     _addons = StoreRef<int, Map<String, dynamic>>('addons');
     _driver = StoreRef<int, Map<String, dynamic>>('driver');

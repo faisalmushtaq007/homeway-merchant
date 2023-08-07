@@ -89,6 +89,7 @@ class StoreLocalDbRepository<Store extends StoreEntity> implements BaseStoreLoca
   Future<Either<RepositoryBaseFailure, List<StoreEntity>>> getAll() async {
     final result = await tryCatch<List<StoreEntity>>(() async {
       final snapshots = await _store.find(await _db);
+      print('Store Get ALL ${snapshots}');
       if (snapshots.isEmptyOrNull) {
         return <StoreEntity>[];
       } else {

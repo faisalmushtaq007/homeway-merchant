@@ -184,8 +184,8 @@ class _SaveMenuPageController extends State<SaveMenuPage> with AutomaticKeepAliv
     context.read<MenuBloc>().add(
           SaveMenu(
             menuEntity: serviceLocator<MenuEntity>().copyWith(
-              menuId: (DateTime.now().millisecondsSinceEpoch - DateTime.now().millisecond) ~/ 1000,
-            ),
+                //menuId: (DateTime.now().millisecondsSinceEpoch - DateTime.now().millisecond) ~/ 1000,
+                ),
             hasNewMenu: widget.haveNewMenu,
           ),
         );
