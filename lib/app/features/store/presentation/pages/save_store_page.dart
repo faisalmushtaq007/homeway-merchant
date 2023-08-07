@@ -551,6 +551,10 @@ class _SaveStorePageState extends State<SaveStorePage> {
                                             validator: (value) {
                                               if (value == null || value.isEmpty) {
                                                 return 'Select open time';
+                                              } else if (compareOpenAndCloseTime(
+                                                  openingTime: _storeOpeningTimeController.value.text.trim(),
+                                                  closingTime: _storeClosingTimeController.value.text.trim())) {
+                                                return 'Select valid open time';
                                               } else {
                                                 return null;
                                               }
@@ -580,6 +584,10 @@ class _SaveStorePageState extends State<SaveStorePage> {
                                             validator: (value) {
                                               if (value == null || value.isEmpty) {
                                                 return 'Select close time';
+                                              } else if (compareOpenAndCloseTime(
+                                                  openingTime: _storeOpeningTimeController.value.text.trim(),
+                                                  closingTime: _storeClosingTimeController.value.text.trim())) {
+                                                return 'Select valid close time';
                                               } else {
                                                 return null;
                                               }
