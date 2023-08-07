@@ -1,3 +1,4 @@
+import 'package:homemakers_merchant/core/local/database/base/repository_function.dart';
 import 'package:homemakers_merchant/utils/functional/functional.dart';
 import 'repository_operation.dart';
 import 'repository.dart';
@@ -160,4 +161,34 @@ abstract class AddOrUpdateUser<EntityType> extends BaseRepositoryOperation<Entit
     required EntityType entity,
     bool checkIfUserLoggedIn = false,
   });
+}
+
+// Binding
+abstract class BaseRepositoryBindOperation<Source, Destination> {
+  BindingSourceToDestinationFunc<Source, Destination> binding(Source source, Destination destination);
+}
+
+abstract class BindSourceToDestination<Source, Destination> implements BaseRepositoryBindOperation<Source, Destination> {
+  @override
+  BindingSourceToDestinationFunc<Source, Destination> binding(Source source, Destination destination);
+}
+
+// Add all
+abstract class BaseRepositoryAddAllOperation<EntityType> {
+  BaseRepositoryAddAllOperation<EntityType> addALL(EntityType entities);
+}
+
+abstract class AddAll<EntityType> implements BaseRepositoryAddAllOperation<EntityType> {
+  @override
+  BaseRepositoryAddAllOperation<EntityType> addALL(EntityType entities);
+}
+
+// Update all
+abstract class BaseRepositoryUpdateAllOperation<EntityType> {
+  BaseRepositoryUpdateAllOperation<EntityType> updateALL(EntityType entities);
+}
+
+abstract class UpdateAll<EntityType> implements BaseRepositoryUpdateAllOperation<EntityType> {
+  @override
+  BaseRepositoryUpdateAllOperation<EntityType> updateALL(EntityType entities);
 }

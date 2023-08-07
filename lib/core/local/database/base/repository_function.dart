@@ -1,10 +1,7 @@
+import 'package:homemakers_merchant/core/local/database/base/identifiable.dart';
+import 'package:homemakers_merchant/core/local/database/base/repository.dart';
+import 'package:homemakers_merchant/core/local/database/base/repository_failure.dart';
 import 'package:homemakers_merchant/utils/functional/functional.dart';
-
-import 'repository_failure.dart';
-
-import 'identifiable.dart';
-
-import './repository.dart';
 
 typedef GetByIdFunc<T> = Future<Either<RepositoryBaseFailure, T>> Function(UniqueId);
 
@@ -18,6 +15,9 @@ typedef DeleteByIdFunc<T> = Future<Either<RepositoryBaseFailure, bool>> Function
 typedef DeleteByIdAndEntityFunc<T> = Future<Either<RepositoryBaseFailure, bool>> Function(UniqueId uniqueId, T input);
 typedef GetByIdAndEntityFunc<T> = Future<Either<RepositoryBaseFailure, bool>> Function(UniqueId uniqueId, T input);
 typedef UdpateByIdAndEntityFunc<T> = Future<Either<RepositoryBaseFailure, bool>> Function(UniqueId uniqueId, T input);
+typedef BindingSourceToDestinationFunc<T, R> = Future<Either<RepositoryBaseFailure, R>> Function(T source, R destination);
+typedef AddAllFunc<T> = Future<Either<RepositoryBaseFailure, List<T>>> Function(List<T> listOfNewData);
+typedef UpdateAllFunc<T> = Future<Either<RepositoryBaseFailure, List<T>>> Function(List<T> listOfExistingData);
 
 class GetByIdFunction<T> implements GetById<T> {
   GetByIdFunction(this.function);
