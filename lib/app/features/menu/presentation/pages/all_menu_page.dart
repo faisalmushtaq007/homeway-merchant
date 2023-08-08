@@ -26,7 +26,8 @@ class _AllMenuPageController extends State<AllMenuPage> {
     listOfAllSelectedMenus = [];
     listOfAllSelectedMenus.clear();
     if (mounted) {
-      serviceLocator<MenuRepository>().deleteMenu(menuID: 1).whenComplete(() => context.read<MenuBloc>().add(GetAllMenu()));
+      context.read<MenuBloc>().add(GetAllMenu());
+      //serviceLocator<MenuRepository>().deleteMenu(menuID: 1).whenComplete(() => context.read<MenuBloc>().add(GetAllMenu()));
     }
   }
 

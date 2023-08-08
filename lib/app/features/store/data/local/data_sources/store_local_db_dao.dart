@@ -12,21 +12,15 @@ class StoreLocalDbRepository<Store extends StoreEntity> implements BaseStoreLoca
       //final StoreEntity recordStoreEntity = entity.copyWith(storeID: recordID.toString());
       final value = await _store.record(recordID).get(await _db);
       if (value != null) {
-        return StoreEntity.fromMap(value).copyWith(storeID: recordID);
+        final storedStoreEntity = StoreEntity.fromMap(value);
+        final storeEntity = storedStoreEntity.copyWith(storeID: recordID);
+        return storeEntity;
       } else {
-        return entity.copyWith(storeID: recordID);
+        final storeEntity = entity.copyWith(storeID: recordID);
+        return storeEntity;
       }
     });
     return result;
-    /*final int recordID = await _store.add(await _db, entity.toMap());
-    //final StoreEntity recordStoreEntity = entity.copyWith(storeID: recordID.toString());
-    final value = await _store.record(recordID).get(await _db);
-    if (value != null) {
-      debugPrint('Save value ${value}');
-      return Right(StoreEntity.fromMap(value).copyWith(storeID: recordID));
-    } else {
-      return Right(entity.copyWith(storeID: recordID));
-    }*/
   }
 
   @override

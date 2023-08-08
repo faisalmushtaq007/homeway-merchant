@@ -13,21 +13,15 @@ class StoreOwnDeliveryPartnersLocalDbRepository<Driver extends StoreOwnDeliveryP
       //final StoreOwnDeliveryPartnersInfo recordStoreOwnDeliveryPartnersInfo = entity.copyWith(driverID: recordID.toString());
       final value = await _driver.record(recordID).get(await _db);
       if (value != null) {
-        return StoreOwnDeliveryPartnersInfo.fromMap(value).copyWith(driverID: recordID);
+        final storedDriverEntity = StoreOwnDeliveryPartnersInfo.fromMap(value);
+        final driverEntity = storedDriverEntity.copyWith(driverID: recordID);
+        return driverEntity;
       } else {
-        return entity.copyWith(driverID: recordID);
+        final driverEntity = entity.copyWith(driverID: recordID);
+        return driverEntity;
       }
     });
     return result;
-    /*final int recordID = await _store.add(await _db, entity.toMap());
-    //final StoreOwnDeliveryPartnersInfo recordStoreOwnDeliveryPartnersInfo = entity.copyWith(driverID: recordID.toString());
-    final value = await _store.record(recordID).get(await _db);
-    if (value != null) {
-      debugPrint('Save value ${value}');
-      return Right(StoreOwnDeliveryPartnersInfo.fromMap(value).copyWith(driverID: recordID));
-    } else {
-      return Right(entity.copyWith(driverID: recordID));
-    }*/
   }
 
   @override

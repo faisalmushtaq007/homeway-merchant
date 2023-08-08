@@ -8,31 +8,20 @@ class MenuLocalDbRepository<Menu extends MenuEntity> implements BaseMenuLocalDbR
 
   @override
   Future<Either<RepositoryBaseFailure, MenuEntity>> add(MenuEntity entity) async {
-    final int recordID = await _menu.add(await _db, entity.toMap());
-    //final MenuEntity recordMenuEntity = entity.copyWith(storeID: recordID.toString());
-    final value = await _menu.record(recordID).get(await _db);
-    print(value ?? 'NONE');
-    if (value != null) {
-      //print('Menu local db IF ${MenuEntity.fromMap(value).copyWith(menuId: recordID).toMap()}');
-      return Right(MenuEntity.fromMap(value).copyWith(menuId: recordID));
-    } else {
-      //print('Menu local db ELSE ${MenuEntity.fromMap(entity.copyWith(menuId: recordID).toMap())}');
-      return Right(MenuEntity.fromMap(entity.copyWith(menuId: recordID).toMap()));
-    }
-    /*final result = await tryCatch<MenuEntity>(() async {
+    final result = await tryCatch<MenuEntity>(() async {
       final int recordID = await _menu.add(await _db, entity.toMap());
       //final MenuEntity recordMenuEntity = entity.copyWith(storeID: recordID.toString());
       final value = await _menu.record(recordID).get(await _db);
-      print(value ?? 'NONE');
       if (value != null) {
-        //print('Menu local db IF ${MenuEntity.fromMap(value).copyWith(menuId: recordID).toMap()}');
-        return MenuEntity.fromMap(value).copyWith(menuId: recordID);
+        final storeEntity = MenuEntity.fromMap(value);
+        final menuEntity = storeEntity.copyWith(menuId: recordID);
+        return menuEntity;
       } else {
-        //print('Menu local db ELSE ${MenuEntity.fromMap(entity.copyWith(menuId: recordID).toMap())}');
-        return MenuEntity.fromMap(entity.copyWith(menuId: recordID).toMap());
+        final menuEntity = entity.copyWith(menuId: recordID);
+        return menuEntity;
       }
     });
-    return result;*/
+    return result;
   }
 
   @override
@@ -50,7 +39,21 @@ class MenuLocalDbRepository<Menu extends MenuEntity> implements BaseMenuLocalDbR
 
   @override
   Future<Either<RepositoryBaseFailure, bool>> deleteAll() async {
-    throw UnimplementedError();
+    final result = await tryCatch<bool>(() async {
+      final db = await _db;
+      int count = 0;
+      await db.transaction((transaction) async {
+        // Delete all
+        await _menu.delete(transaction);
+        count++;
+      });
+      if (count >= 0) {
+        return true;
+      } else {
+        return false;
+      }
+    });
+    return result;
   }
 
   @override
@@ -58,14 +61,11 @@ class MenuLocalDbRepository<Menu extends MenuEntity> implements BaseMenuLocalDbR
     final result = await tryCatch<bool>(() async {
       final value = await _menu.record(uniqueId.value).get(await _db);
       if (value != null) {
-        appLog.d('value 0${value}');
         int counter = await _menu.delete(
           await _db,
         );
-        appLog.d('counter ${counter}');
         return true;
       }
-      appLog.d('value 2 NULL');
       return false;
     });
     return result;
@@ -75,7 +75,6 @@ class MenuLocalDbRepository<Menu extends MenuEntity> implements BaseMenuLocalDbR
   Future<Either<RepositoryBaseFailure, List<MenuEntity>>> getAll() async {
     final result = await tryCatch<List<MenuEntity>>(() async {
       final snapshots = await _menu.find(await _db);
-      print('Menu Get ALL ${snapshots}');
       if (snapshots.isEmptyOrNull) {
         return <MenuEntity>[];
       } else {

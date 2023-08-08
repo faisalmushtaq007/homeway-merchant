@@ -117,28 +117,33 @@ class _StoreDetailsPageView extends WidgetView<MenuDetailsPage, _MenuDetailsPage
                         mainAxisSize: MainAxisSize.min,
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
+                          const AnimatedGap(8, duration: Duration(milliseconds: 100)),
                           // Top section
                           MenuDetailsNameImageWidget(
                             menuEntity: state.menuEntity,
                           ),
-                          const Divider(),
+                          const AnimatedGap(8, duration: Duration(milliseconds: 100)),
+                          const Divider(thickness: 0.75),
                           // Description section
                           WrapText(
                             'The Flutter framework has been optimized to make rerunning build methods fast, so that you can just rebuild anything that needs updating rather than having to individually change instances of widgets.',
                             breakWordCharacter: '-',
                             smartSizeMode: true,
                             asyncMode: true,
-                            minFontSize: 14,
-                            maxFontSize: 18,
+                            minFontSize: 13,
+                            maxFontSize: 15,
                             textStyle: context.bodyMedium!.copyWith(),
                           ),
-                          const Divider(),
+                          const AnimatedGap(8, duration: Duration(milliseconds: 100)),
+                          const Divider(thickness: 0.75),
                           MenuComponentWidget(
                             menuEntity: state.menuEntity,
                           ),
-                          const Divider(),
+                          const AnimatedGap(8, duration: Duration(milliseconds: 100)),
+                          const Divider(thickness: 0.75),
                           MenuPriceInfoWidget(menuEntity: state.menuEntity),
-                          const Divider(),
+                          const AnimatedGap(8, duration: Duration(milliseconds: 100)),
+                          const Divider(thickness: 0.75),
                           ListTile(
                             dense: true,
                             title: Text(
@@ -146,6 +151,7 @@ class _StoreDetailsPageView extends WidgetView<MenuDetailsPage, _MenuDetailsPage
                               textDirection: serviceLocator<LanguageController>().targetTextDirection,
                             ),
                           ),
+                          const AnimatedGap(8, duration: Duration(milliseconds: 100)),
                           Card(),
                         ],
                       ),

@@ -13,9 +13,12 @@ class AddonsLocalDbRepository<Extras extends Addons> implements BaseAddonsLocalD
       //final Addons recordAddons = entity.copyWith(storeID: recordID.toString());
       final value = await _addons.record(recordID).get(await _db);
       if (value != null) {
-        return Addons.fromMap(value).copyWith(addonsID: recordID);
+        final addonsEntity = Addons.fromMap(value);
+        final addons = addonsEntity.copyWith(addonsID: recordID);
+        return addons;
       } else {
-        return entity.copyWith(addonsID: recordID);
+        final addons = entity.copyWith(addonsID: recordID);
+        return addons;
       }
     });
     return result;
@@ -36,7 +39,21 @@ class AddonsLocalDbRepository<Extras extends Addons> implements BaseAddonsLocalD
 
   @override
   Future<Either<RepositoryBaseFailure, bool>> deleteAll() async {
-    throw UnimplementedError();
+    final result = await tryCatch<bool>(() async {
+      final db = await _db;
+      int count = 0;
+      await db.transaction((transaction) async {
+        // Delete all
+        await _addons.delete(transaction);
+        count++;
+      });
+      if (count >= 0) {
+        return true;
+      } else {
+        return false;
+      }
+    });
+    return result;
   }
 
   @override
