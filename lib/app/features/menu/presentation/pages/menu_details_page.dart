@@ -50,6 +50,10 @@ class _MenuDetailsPageController extends State<MenuDetailsPage> {
     super.dispose();
   }
 
+  void editCurrentMenu() {}
+
+  void addNewMenu() {}
+
   @override
   Widget build(BuildContext context) => BlocBuilder<MenuBloc, MenuState>(
         bloc: context.watch<MenuBloc>(),
@@ -141,7 +145,12 @@ class _StoreDetailsPageView extends WidgetView<MenuDetailsPage, _MenuDetailsPage
                           ),
                           const AnimatedGap(8, duration: Duration(milliseconds: 100)),
                           const Divider(thickness: 0.75),
-                          MenuPriceInfoWidget(menuEntity: state.menuEntity),
+                          Flexible(
+                            child: MenuPriceInfoWidget(
+                              menuEntity: state.menuEntity,
+                              key: const Key('menu-details-portions-price-widget'),
+                            ),
+                          ),
                           const AnimatedGap(8, duration: Duration(milliseconds: 100)),
                           const Divider(thickness: 0.75),
                           ListTile(
@@ -149,10 +158,74 @@ class _StoreDetailsPageView extends WidgetView<MenuDetailsPage, _MenuDetailsPage
                             title: Text(
                               'Extra Includes',
                               textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                              style: context.titleMedium!.copyWith(fontWeight: FontWeight.w600),
                             ),
                           ),
                           const AnimatedGap(8, duration: Duration(milliseconds: 100)),
-                          Card(),
+                          Flexible(
+                            child: MenuPriceInfoWidget(
+                              menuEntity: state.menuEntity,
+                              hasAddons: true,
+                              key: const Key('menu-details-addons-price-widget'),
+                            ),
+                          ),
+                          const AnimatedGap(24, duration: Duration(milliseconds: 200)),
+                          // Buttons
+
+                          Align(
+                            alignment: AlignmentDirectional.bottomCenter,
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Expanded(
+                                  flex: 1,
+                                  child: ElevatedButton(
+                                    onPressed: state.editCurrentMenu,
+                                    style: ElevatedButton.styleFrom(
+                                      backgroundColor: Colors.white,
+                                      //minimumSize: Size(100, 40),
+                                      side: const BorderSide(
+                                        color: Color.fromRGBO(
+                                          165,
+                                          166,
+                                          168,
+                                          1.0,
+                                        ),
+                                      ),
+                                    ),
+                                    child: Text(
+                                      'Edit',
+                                      textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                      style: const TextStyle(
+                                        color: Color.fromRGBO(127, 129, 132, 1.0),
+                                      ),
+                                    ).translate(),
+                                  ),
+                                ),
+                                const AnimatedGap(
+                                  24,
+                                  duration: Duration(milliseconds: 100),
+                                ),
+                                Expanded(
+                                  flex: 2,
+                                  child: ElevatedButton(
+                                    onPressed: state.addNewMenu,
+                                    style: ElevatedButton.styleFrom(
+                                        //minimumSize: Size(180, 40),
+                                        //backgroundColor: const Color.fromRGBO(69, 201, 125, 1),
+                                        ),
+                                    child: Text(
+                                      'Add New Menu',
+                                      textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                      //style: TextStyle(color:  Colors.white),
+                                    ).translate(),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
                         ],
                       ),
                     ]),

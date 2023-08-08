@@ -36,7 +36,7 @@ class AppRouter {
 
   AppRouter._();
 
-  static const String INITIAL = Routes.PRIMARY_DASHBOARD_PAGE;
+  static const String INITIAL = Routes.ALL_MENU_PAGE;
 
   static final GoRouter _router = GoRouter(
     debugLogDiagnostics: true,

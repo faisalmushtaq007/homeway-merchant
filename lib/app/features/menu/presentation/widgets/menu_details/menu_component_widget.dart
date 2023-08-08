@@ -59,12 +59,12 @@ class _MenuComponentWidgetState extends State<MenuComponentWidget> {
     // Initialize
     menuAvailableFoodTypes = List.from(widget.menuEntity.storeAvailableFoodTypes.toList());
     menuAvailableFoodPreparationType = List.from(widget.menuEntity.storeAvailableFoodPreparationType.toList());
+    tasteType = widget.menuEntity.tasteType;
     listOfAddons = List.from(widget.menuEntity.addons.toList());
     addonsEntities = List.from(widget.menuEntity.addons.toList());
     menuAvailableInDays = List.from(widget.menuEntity.menuAvailableInDays.toList());
     hasCustomPortion = widget.menuEntity.hasCustomPortion;
     customPortions = List.from(widget.menuEntity.customPortions.toList());
-    menuAvailableInDays = List.from(widget.menuEntity.menuAvailableInDays.toList());
     menuPortions = List.from(widget.menuEntity.menuPortions.toList());
     menuMinPreparationTime = widget.menuEntity.menuMinPreparationTime;
     menuMaxPreparationTime = widget.menuEntity.menuMaxPreparationTime;
@@ -190,7 +190,7 @@ class _MenuComponentWidgetState extends State<MenuComponentWidget> {
                 shrinkWrap: true,
                 itemBuilder: (context, index) {
                   return SizedBox(
-                    width: context.width / 2.25,
+                    width: context.width / 2.15,
                     child: Card(
                       key: ValueKey(index),
                       margin: const EdgeInsetsDirectional.only(bottom: 0, end: 8, top: 0),
@@ -303,32 +303,174 @@ class _MenuComponentWidgetState extends State<MenuComponentWidget> {
     menuAvailableFoodPreparationType.asMap().forEach((key, value) {
       menuTypes.add(value.title);
     });
-    return LayoutBuilder(
-      builder: (context, constraints) {
-        return ScrollableColumn();
-      },
+    return WrapAndMoreWidget(
+      menuTypes: menuTypes.toList(),
+      wrapAndMoreKey: const Key('menu-type-wrapandmore-key'),
+      key: const Key('menu-type-wrapandmore-widegt-key'),
     );
-    return const Offstage();
   }
 
   Widget _menuTasteLevel(BuildContext context) {
+    List<String> tasteLevels = [];
+    if (tasteType != null) {
+      tasteLevels.add(tasteType?.title ?? '');
+      tasteType?.tasteLevel.asMap().forEach((key, value) {
+        tasteLevels.add(value.title);
+      });
+      return WrapAndMoreWidget(
+        menuTypes: tasteLevels.toList(),
+        wrapAndMoreKey: const Key('tasteLevels-wrapandmore-key'),
+        key: const Key('tasteLevels-wrapandmore-widegt-key'),
+      );
+    }
     return const Offstage();
   }
 
   Widget _menuPortions(BuildContext context) {
+    List<String> menuPortionName = [];
+    menuPortions.asMap().forEach((key, value) {
+      menuPortionName.add(value.title);
+    });
+    if (hasCustomPortion && customPortion != null) {
+      menuPortionName.add(customPortion?.title ?? '');
+    }
+    if (menuPortionName.isNotNullOrEmpty) {
+      return WrapAndMoreWidget(
+        menuTypes: menuPortionName,
+        wrapAndMoreKey: const Key('menuPortionName-wrapandmore-key'),
+        key: const Key('menuPortionName-wrapandmore-widegt-key'),
+      );
+    }
     return const Offstage();
   }
 
   Widget _menuAddons(BuildContext context) {
+    List<String> addons = [];
+    if (addonsEntities.isNotNullOrEmpty) {
+      addonsEntities.asMap().forEach((key, value) {
+        addons.add(value.title);
+      });
+      return WrapAndMoreWidget(
+        menuTypes: addons.toList(),
+        wrapAndMoreKey: const Key('addons-wrapandmore-key'),
+        key: const Key('addons-wrapandmore-widegt-key'),
+      );
+    }
     return const Offstage();
   }
 
   Widget _menuAvailability(BuildContext context) {
+    List<String> availableDaysAndTime = [];
+    List<String> availability = [];
+    if (menuAvailableInDays.isNotNullOrEmpty) {
+      menuAvailableInDays.asMap().forEach((key, value) {
+        availableDaysAndTime.add(value.shortName);
+      });
+      availability.add(availableDaysAndTime.join(', '));
+      availability.add('$menuAvailableFromTime - $menuAvailableToTime');
+      return WrapAndMoreWidget(
+        menuTypes: availability.toList(),
+        wrapAndMoreKey: const Key('availableDaysAndTime-wrapandmore-key'),
+        key: const Key('availableDaysAndTime-wrapandmore-widegt-key'),
+      );
+    }
     return const Offstage();
   }
 
   Widget _menuPreparationTime(BuildContext context) {
-    return const Offstage();
+    List<String> preparationTiming = [];
+    if (!menuMinPreparationTime.isEmptyOrNull) {
+      preparationTiming.add('Min - $menuMinPreparationTime');
+    }
+    if (!menuMaxPreparationTime.isEmptyOrNull) {
+      preparationTiming.add('Max - $menuMaxPreparationTime');
+    }
+    return WrapAndMoreWidget(
+      menuTypes: preparationTiming.toList(),
+      wrapAndMoreKey: const Key('menuMinPreparationTime-wrapandmore-key'),
+      key: const Key('menuMinPreparationTime-wrapandmore-widegt-key'),
+    );
+  }
+}
+
+class WrapAndMoreWidget extends StatelessWidget {
+  const WrapAndMoreWidget({
+    super.key,
+    required this.menuTypes,
+    required this.wrapAndMoreKey,
+  });
+
+  final List<String> menuTypes;
+  final Key wrapAndMoreKey;
+
+  @override
+  Widget build(BuildContext context) {
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        return Container(
+          height: constraints.minHeight,
+          width: constraints.minWidth,
+          padding: const EdgeInsetsDirectional.only(start: 12, end: 8, bottom: 0, top: 2),
+          child: WrapAndMore(
+            //maxLine: 2,
+            spacing: 4,
+            maxRow: menuTypes.length > 4 ? 4 : 5,
+            runSpacing: 4,
+            key: wrapAndMoreKey,
+            //direction: Axis.vertical,
+            overflowWidget: (restChildrenCount) {
+              return Row(
+                children: [
+                  Text(
+                    '+ $restChildrenCount more',
+                    style: TextStyle(color: Colors.grey),
+                  ),
+                ],
+              );
+            },
+            children: List.generate(
+              menuTypes.length,
+              (index) => SizedBox(
+                width: context.width / 2.15,
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                  children: [
+                    const Icon(
+                      Icons.check,
+                      color: Color.fromRGBO(69, 201, 125, 1),
+                      size: 20,
+                    ),
+                    const AnimatedGap(6, duration: Duration(milliseconds: 200)),
+                    /*Flexible(
+                      child: WrapText(
+                        menuTypes[index],
+                        breakWordCharacter: '-',
+                        smartSizeMode: true,
+                        asyncMode: true,
+                        minFontSize: 12,
+                        maxFontSize: 13,
+                        textStyle: context.bodyMedium!.copyWith(fontSize: 12),
+                      ),
+                    ),*/
+
+                    Flexible(
+                      child: Wrap(
+                        children: [
+                          Text(menuTypes[index]),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        );
+      },
+    );
   }
 }
 

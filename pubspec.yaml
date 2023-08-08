@@ -143,6 +143,10 @@ dependencies:
   transparent_image: ^2.0.1
   url_launcher: ^6.1.11
   uuid: ^3.0.7
+  wrap_and_more:
+    git:
+      url: 'https://github.com/prasant10050/wrap_and_more.git'
+      ref: main
 
 dev_dependencies:
   bloc_test: ^9.1.3

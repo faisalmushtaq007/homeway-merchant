@@ -34,6 +34,7 @@ import 'package:homemakers_merchant/shared/widgets/universal/async_builder/async
 import 'package:homemakers_merchant/shared/widgets/universal/double_tap_exit/double_tap_to_exit.dart';
 import 'package:homemakers_merchant/shared/widgets/universal/one_context/one_context.dart';
 import 'package:homemakers_merchant/shared/widgets/universal/phone_number_text_field/phone_form_field_bloc.dart';
+import 'package:homemakers_merchant/shared/widgets/universal/wrap_and_more/src/wrap_and_more_controller.dart';
 import 'package:homemakers_merchant/theme/flex_theme_dark.dart';
 import 'package:homemakers_merchant/theme/flex_theme_light.dart';
 import 'package:homemakers_merchant/theme/theme_code.dart';
@@ -61,11 +62,13 @@ class _AppState extends State<App> with GetItStateMixin {
     final UserModelStorageController initUserModelStorageController = get<UserModelStorageController>();
     final LanguageController initLanguageController = get<LanguageController>();
     final ThemeController initThemeController = get<ThemeController>();
+    final WrapAndMoreController initWrapAndMoreController = get<WrapAndMoreController>();
 
     final permissionController = watchOnly((PermissionController controller) => controller);
     final userModelStorageController = watchOnly((UserModelStorageController controller) => controller);
     final languageController = watchOnly((LanguageController controller) => controller);
     final themeController = watchOnly((ThemeController controller) => controller);
+    final wrapAndMoreController = watchOnly((WrapAndMoreController controller) => controller);
 
     return MultiBlocProvider(
       providers: [
@@ -112,6 +115,7 @@ class _AppState extends State<App> with GetItStateMixin {
           permissionController,
           userModelStorageController,
           languageController,
+          wrapAndMoreController,
         ],
         builder: (BuildContext context, Widget? child) {
           final materialLightTheme = flexThemeLight(themeController);

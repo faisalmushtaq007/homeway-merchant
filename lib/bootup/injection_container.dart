@@ -36,6 +36,7 @@ import 'package:homemakers_merchant/core/network/http/interceptor/token/fresh_to
 import 'package:homemakers_merchant/core/service/connectivity_bloc/connectivity_bloc.dart';
 import 'package:homemakers_merchant/core/service/connectivity_bloc/src/connectivity_bloc/connectivity_service.dart';
 import 'package:homemakers_merchant/shared/widgets/universal/phone_number_text_field/phone_form_field_bloc.dart';
+import 'package:homemakers_merchant/shared/widgets/universal/wrap_and_more/src/wrap_and_more_controller.dart';
 import 'package:homemakers_merchant/theme/theme_controller.dart';
 import 'package:homemakers_merchant/theme/theme_service.dart';
 import 'package:homemakers_merchant/theme/theme_service_hive.dart';
@@ -99,6 +100,8 @@ void _setUpModel() {
 }
 
 Future<void> _setUpAppSetting() async {
+  // Wrap and More Controller
+  serviceLocator.registerSingleton<WrapAndMoreController>(WrapAndMoreController());
   serviceLocator.registerSingleton<ThemeService>(ThemeServiceHive('app_color_scheme_box'));
   //final ThemeService themeService = ThemeServicePrefs();
   //final ThemeService themeService = ThemeServiceHive('app_color_scheme_box');
