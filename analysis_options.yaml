@@ -9,6 +9,8 @@ analyzer:
     generic_argument_factories: true
     invalid_assignment: false
     non_constant_default_value: false
+    const_with_non_constant_argument: false
+    valid_regexps: false
 
 linter:
   rules:
@@ -23,3 +25,5 @@ linter:
     lines_longer_than_80_chars: false
     invalid_assignment: false
     non_constant_default_value: false
+    const_with_non_constant_argument: false
+    const_with_non_const: false

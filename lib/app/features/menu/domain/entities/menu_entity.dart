@@ -22,13 +22,13 @@ class MenuEntity with AppEquatable {
     this.timeOfPeriodWise = const [],
     this.metaInfoOfMenu = const {},
     this.nutrients = const [],
-    this.menuTiming = Timing(),
-    this.tasteType = TasteType(),
-    this.stock = Stock(),
-    this.customPortion = CustomPortion(),
+    this.menuTiming,
+    this.tasteType,
+    this.stock,
+    this.customPortion,
     this.menuMaxPreparationTime = '',
     this.menuMinPreparationTime = '',
-    this.ratingAndReviewEntity = RatingAndReviewEntity(),
+    this.ratingAndReviewEntity,
   });
 
   factory MenuEntity.fromMap(Map<String, dynamic> map) {
@@ -84,13 +84,13 @@ class MenuEntity with AppEquatable {
   List<TimeOfPeriodWise> timeOfPeriodWise;
   Map<String, dynamic> metaInfoOfMenu;
   List<Nutrients> nutrients;
-  Timing menuTiming;
-  TasteType? tasteType;
-  Stock stock;
-  CustomPortion customPortion;
+  Timing? menuTiming = Timing();
+  TasteType? tasteType = TasteType();
+  Stock? stock = Stock();
+  CustomPortion? customPortion = CustomPortion();
   String menuMinPreparationTime;
   String menuMaxPreparationTime;
-  RatingAndReviewEntity ratingAndReviewEntity;
+  RatingAndReviewEntity? ratingAndReviewEntity = RatingAndReviewEntity();
 
   @override
   bool get cacheHash => true;
@@ -292,7 +292,7 @@ class MenuImage with AppEquatable {
       assetExtension: assetExtension ?? this.assetExtension,
       hasBase64: hasBase64 ?? this.hasBase64,
       valueOfBase64: valueOfBase64 ?? this.valueOfBase64 ?? '',
-      assetsUploadStatus: assetsUploadStatus?.name ?? this.assetsUploadStatus.name,
+      assetsUploadStatus: assetsUploadStatus ?? this.assetsUploadStatus,
     );
   }
 }

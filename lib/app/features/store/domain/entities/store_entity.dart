@@ -309,10 +309,10 @@ class StoreOwnDeliveryPartnersInfo with AppEquatable {
     this.driverName = '',
     this.driverMobileNumber = '',
     this.drivingLicenseNumber = '',
-    this.vehicleInfo = VehicleInfo(),
+    this.vehicleInfo,
     this.hasOnline = true,
-    this.ratingAndReviewEntity = RatingAndReviewEntity(),
-    this.imageEntity = ImageEntity(),
+    this.ratingAndReviewEntity,
+    this.imageEntity,
     this.hasDriverImage = false,
   });
 
@@ -334,10 +334,10 @@ class StoreOwnDeliveryPartnersInfo with AppEquatable {
   String driverName;
   String driverMobileNumber;
   String drivingLicenseNumber;
-  VehicleInfo vehicleInfo;
+  VehicleInfo? vehicleInfo = VehicleInfo();
   bool hasOnline;
-  RatingAndReviewEntity ratingAndReviewEntity;
-  ImageEntity imageEntity;
+  RatingAndReviewEntity? ratingAndReviewEntity = RatingAndReviewEntity();
+  ImageEntity? imageEntity = ImageEntity();
   bool hasDriverImage;
 
   @override
@@ -452,8 +452,8 @@ class StoreWorkingDayAndTime with AppEquatable {
     this.shortName = '',
     this.id = -1,
     this.hasSelected = false,
-    this.closingTime = DateTime.now(),
-    this.openingTime = DateTime.now(),
+    this.closingTime,
+    this.openingTime,
   });
 
   factory StoreWorkingDayAndTime.fromMap(Map<String, dynamic> map) {
@@ -462,8 +462,8 @@ class StoreWorkingDayAndTime with AppEquatable {
       shortName: map['shortName'] as String,
       id: map['id'] as int,
       hasSelected: map['hasSelected'] as bool,
-      openingTime: map['openingTime'] as DateTime,
-      closingTime: map['closingTime'] as DateTime,
+      openingTime: map['openingTime'] != null ? map['openingTime'] : DateTime.now() as DateTime,
+      closingTime: map['closingTime'] != null ? map['openingTime'] : DateTime.now() as DateTime,
     );
   }
 
@@ -471,8 +471,8 @@ class StoreWorkingDayAndTime with AppEquatable {
   String shortName;
   int id;
   bool hasSelected;
-  DateTime openingTime;
-  DateTime closingTime;
+  DateTime? openingTime = DateTime.now();
+  DateTime? closingTime = DateTime.now();
 
   @override
   bool get cacheHash => true;
