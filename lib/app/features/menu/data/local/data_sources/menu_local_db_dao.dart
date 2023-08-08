@@ -8,20 +8,31 @@ class MenuLocalDbRepository<Menu extends MenuEntity> implements BaseMenuLocalDbR
 
   @override
   Future<Either<RepositoryBaseFailure, MenuEntity>> add(MenuEntity entity) async {
-    final result = await tryCatch<MenuEntity>(() async {
+    final int recordID = await _menu.add(await _db, entity.toMap());
+    //final MenuEntity recordMenuEntity = entity.copyWith(storeID: recordID.toString());
+    final value = await _menu.record(recordID).get(await _db);
+    print(value ?? 'NONE');
+    if (value != null) {
+      //print('Menu local db IF ${MenuEntity.fromMap(value).copyWith(menuId: recordID).toMap()}');
+      return Right(MenuEntity.fromMap(value).copyWith(menuId: recordID));
+    } else {
+      //print('Menu local db ELSE ${MenuEntity.fromMap(entity.copyWith(menuId: recordID).toMap())}');
+      return Right(MenuEntity.fromMap(entity.copyWith(menuId: recordID).toMap()));
+    }
+    /*final result = await tryCatch<MenuEntity>(() async {
       final int recordID = await _menu.add(await _db, entity.toMap());
       //final MenuEntity recordMenuEntity = entity.copyWith(storeID: recordID.toString());
       final value = await _menu.record(recordID).get(await _db);
-
+      print(value ?? 'NONE');
       if (value != null) {
-        print('Menu local db IF ${MenuEntity.fromMap(value).copyWith(menuId: recordID).toMap()}');
+        //print('Menu local db IF ${MenuEntity.fromMap(value).copyWith(menuId: recordID).toMap()}');
         return MenuEntity.fromMap(value).copyWith(menuId: recordID);
       } else {
-        print('Menu local db ELSE ${MenuEntity.fromMap(entity.copyWith(menuId: recordID).toMap())}');
+        //print('Menu local db ELSE ${MenuEntity.fromMap(entity.copyWith(menuId: recordID).toMap())}');
         return MenuEntity.fromMap(entity.copyWith(menuId: recordID).toMap());
       }
     });
-    return result;
+    return result;*/
   }
 
   @override
@@ -47,11 +58,14 @@ class MenuLocalDbRepository<Menu extends MenuEntity> implements BaseMenuLocalDbR
     final result = await tryCatch<bool>(() async {
       final value = await _menu.record(uniqueId.value).get(await _db);
       if (value != null) {
-        await _menu.delete(
+        appLog.d('value 0${value}');
+        int counter = await _menu.delete(
           await _db,
         );
+        appLog.d('counter ${counter}');
         return true;
       }
+      appLog.d('value 2 NULL');
       return false;
     });
     return result;

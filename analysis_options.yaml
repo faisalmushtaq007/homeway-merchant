@@ -8,6 +8,7 @@ analyzer:
     argument_type_not_assignable: ignore
     generic_argument_factories: true
     invalid_assignment: false
+    non_constant_default_value: false
 
 linter:
   rules:
@@ -21,3 +22,4 @@ linter:
     cascade_invocations: false
     lines_longer_than_80_chars: false
     invalid_assignment: false
+    non_constant_default_value: false

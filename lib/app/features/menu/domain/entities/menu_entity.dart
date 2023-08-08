@@ -22,13 +22,13 @@ class MenuEntity with AppEquatable {
     this.timeOfPeriodWise = const [],
     this.metaInfoOfMenu = const {},
     this.nutrients = const [],
-    this.menuTiming,
-    this.tasteType,
-    this.stock,
-    this.customPortion,
+    this.menuTiming = Timing(),
+    this.tasteType = TasteType(),
+    this.stock = Stock(),
+    this.customPortion = CustomPortion(),
     this.menuMaxPreparationTime = '',
     this.menuMinPreparationTime = '',
-    this.ratingAndReviewEntity,
+    this.ratingAndReviewEntity = RatingAndReviewEntity(),
   });
 
   factory MenuEntity.fromMap(Map<String, dynamic> map) {
@@ -54,13 +54,13 @@ class MenuEntity with AppEquatable {
       timeOfPeriodWise: map['timeOfPeriodWise'].map((e) => TimeOfPeriodWise.fromMap(e)).toList().cast<TimeOfPeriodWise>(),
       metaInfoOfMenu: map['metaInfoOfMenu'] as Map<String, dynamic>,
       nutrients: map['nutrients'].map((e) => Nutrients.fromMap(e)).toList().cast<Nutrients>(),
-      menuTiming: (map['menuTiming'] != null) ? Timing.fromMap(map['menuTiming']) : null,
-      tasteType: (map['tasteType'] != null) ? TasteType.fromMap(map['tasteType']) : null,
-      stock: (map['stock'] != null) ? Stock.fromMap(map['stock']) : null,
-      customPortion: (map['customPortion'] != null) ? CustomPortion.fromMap(map['customPortion']) : null,
+      menuTiming: (map['menuTiming'] != null) ? Timing.fromMap(map['menuTiming']) : Timing(),
+      tasteType: (map['tasteType'] != null) ? TasteType.fromMap(map['tasteType']) : TasteType(),
+      stock: (map['stock'] != null) ? Stock.fromMap(map['stock']) : Stock(),
+      customPortion: (map['customPortion'] != null) ? CustomPortion.fromMap(map['customPortion']) : CustomPortion(),
       menuMinPreparationTime: map['menuMinPreparationTime'] as String,
       menuMaxPreparationTime: map['menuMaxPreparationTime'] as String,
-      ratingAndReviewEntity: (map['ratingAndReviewEntity'] != null) ? RatingAndReviewEntity.fromMap(map['ratingAndReviewEntity']) : null,
+      ratingAndReviewEntity: (map['ratingAndReviewEntity'] != null) ? RatingAndReviewEntity.fromMap(map['ratingAndReviewEntity']) : RatingAndReviewEntity(),
     );
   }
 
@@ -84,13 +84,13 @@ class MenuEntity with AppEquatable {
   List<TimeOfPeriodWise> timeOfPeriodWise;
   Map<String, dynamic> metaInfoOfMenu;
   List<Nutrients> nutrients;
-  Timing? menuTiming;
+  Timing menuTiming;
   TasteType? tasteType;
-  Stock? stock;
-  CustomPortion? customPortion;
+  Stock stock;
+  CustomPortion customPortion;
   String menuMinPreparationTime;
   String menuMaxPreparationTime;
-  RatingAndReviewEntity? ratingAndReviewEntity;
+  RatingAndReviewEntity ratingAndReviewEntity;
 
   @override
   bool get cacheHash => true;
@@ -129,25 +129,25 @@ class MenuEntity with AppEquatable {
   Map<String, dynamic> toMap() {
     return {
       'menuId': this.menuId,
-      'menuImages': this.menuImages.map((e) => e.toMap()).toList(growable: false),
+      'menuImages': this.menuImages.map((e) => e.toMap()).toList(),
       'menuName': this.menuName,
       'menuDescription': this.menuDescription,
-      'menuCategories': this.menuCategories.map((e) => e.toMap()).toList(growable: false),
-      'ingredients': this.ingredients.map((e) => e.toMap()).toList(growable: false),
-      'storeAvailableFoodTypes': this.storeAvailableFoodTypes.map((e) => e.toMap()).toList(growable: false),
-      'storeAvailableFoodPreparationType': this.storeAvailableFoodPreparationType.map((e) => e.toMap()).toList(growable: false),
-      'menuPortions': this.menuPortions.map((e) => e.toMap()).toList(growable: false),
+      'menuCategories': this.menuCategories.map((e) => e.toMap()).toList(),
+      'ingredients': this.ingredients.map((e) => e.toMap()).toList(),
+      'storeAvailableFoodTypes': this.storeAvailableFoodTypes.map((e) => e.toMap()).toList(),
+      'storeAvailableFoodPreparationType': this.storeAvailableFoodPreparationType.map((e) => e.toMap()).toList(),
+      'menuPortions': this.menuPortions.map((e) => e.toMap()).toList(),
       'hasCustomPortion': this.hasCustomPortion,
-      'customPortions': this.customPortions.map((e) => e.toMap()).toList(growable: false),
-      'addons': this.addons.map((e) => e.toMap()).toList(growable: false),
+      'customPortions': this.customPortions.map((e) => e.toMap()).toList(),
+      'addons': this.addons.map((e) => e.toMap()).toList(),
       'menuAvailableFromTime': this.menuAvailableFromTime,
       'menuAvailableToTime': this.menuAvailableToTime,
-      'menuAvailableInDays': this.menuAvailableInDays.map((e) => e.toMap()).toList(growable: false),
+      'menuAvailableInDays': this.menuAvailableInDays.map((e) => e.toMap()).toList(),
       'minStockAvailable': this.minStockAvailable,
       'maxStockAvailable': this.maxStockAvailable,
-      'timeOfPeriodWise': this.timeOfPeriodWise.map((e) => e.toMap()).toList(growable: false),
+      'timeOfPeriodWise': this.timeOfPeriodWise.map((e) => e.toMap()).toList(),
       'metaInfoOfMenu': this.metaInfoOfMenu,
-      'nutrients': this.nutrients.map((e) => e.toMap()).toList(growable: false),
+      'nutrients': this.nutrients.map((e) => e.toMap()).toList(),
       'menuTiming': this.menuTiming?.toMap(),
       'tasteType': this.tasteType?.toMap(),
       'stock': this.stock?.toMap(),
@@ -221,12 +221,12 @@ class MenuEntity with AppEquatable {
 
 class MenuImage with AppEquatable {
   MenuImage({
-    required this.imageId,
-    required this.assetPath,
+    this.imageId = '',
+    this.assetPath = '',
     this.metaInfo = const {},
-    required this.assetExtension,
+    this.assetExtension = '',
     this.hasBase64 = false,
-    this.valueOfBase64,
+    this.valueOfBase64 = '',
     this.assetsUploadStatus = AssetsUploadStatus.none,
   });
 
@@ -271,7 +271,7 @@ class MenuImage with AppEquatable {
       'metaInfo': this.metaInfo,
       'assetExtension': this.assetExtension,
       'hasBase64': this.hasBase64,
-      'valueOfBase64': this.valueOfBase64,
+      'valueOfBase64': this.valueOfBase64 ?? '',
       'assetsUploadStatus': this.assetsUploadStatus.name,
     };
   }
@@ -291,19 +291,19 @@ class MenuImage with AppEquatable {
       metaInfo: metaInfo ?? this.metaInfo,
       assetExtension: assetExtension ?? this.assetExtension,
       hasBase64: hasBase64 ?? this.hasBase64,
-      valueOfBase64: valueOfBase64 ?? this.valueOfBase64,
-      assetsUploadStatus: assetsUploadStatus ?? this.assetsUploadStatus,
+      valueOfBase64: valueOfBase64 ?? this.valueOfBase64 ?? '',
+      assetsUploadStatus: assetsUploadStatus?.name ?? this.assetsUploadStatus.name,
     );
   }
 }
 
 class Ingredients with AppEquatable {
   Ingredients({
-    required this.ingredientsId,
-    required this.title,
-    required this.hasSelected,
-    required this.value,
-    required this.metaInfo,
+    this.ingredientsId = '',
+    this.title = '',
+    this.hasSelected = false,
+    this.value,
+    this.metaInfo = const <String, dynamic>{},
   });
 
   factory Ingredients.fromMap(Map<String, dynamic> map) {
@@ -363,12 +363,12 @@ class Ingredients with AppEquatable {
 
 class Nutrients with AppEquatable {
   Nutrients({
-    required this.nutrientsId,
-    required this.title,
-    required this.hasSelected,
-    required this.value,
-    required this.unit,
-    required this.metaInfo,
+    this.nutrientsId = '',
+    this.title = '',
+    this.hasSelected = false,
+    this.value,
+    this.unit = '0',
+    this.metaInfo = const <String, dynamic>{},
   });
 
   factory Nutrients.fromMap(Map<String, dynamic> map) {
@@ -434,8 +434,8 @@ class Nutrients with AppEquatable {
 
 class MenuType with AppEquatable {
   MenuType({
-    required this.title,
-    required this.id,
+    this.title = '',
+    this.id = -1,
     this.hasSelected = false,
   });
 
@@ -480,8 +480,8 @@ class MenuType with AppEquatable {
 
 class MenuPreparationType with AppEquatable {
   MenuPreparationType({
-    required this.title,
-    required this.id,
+    this.title = '',
+    this.id = -1,
     this.hasSelected = false,
   });
 
@@ -526,11 +526,11 @@ class MenuPreparationType with AppEquatable {
 
 class TasteType with AppEquatable {
   TasteType({
-    required this.tasteTypeId,
-    required this.title,
-    required this.hasSelected,
-    required this.tasteLevel,
-    required this.hasTasteLevel,
+    this.tasteTypeId = '',
+    this.title = '',
+    this.hasSelected = false,
+    this.tasteLevel = const [],
+    this.hasTasteLevel = false,
   });
 
   factory TasteType.fromMap(Map<String, dynamic> map) {
@@ -566,7 +566,7 @@ class TasteType with AppEquatable {
       'tasteTypeId': this.tasteTypeId,
       'title': this.title,
       'hasSelected': this.hasSelected,
-      'tasteLevel': this.tasteLevel.map((e) => e.toMap()).toList(growable: false),
+      'tasteLevel': this.tasteLevel.map((e) => e.toMap()).toList(),
       'hasTasteLevel': this.hasTasteLevel,
     };
   }
@@ -590,9 +590,9 @@ class TasteType with AppEquatable {
 
 class TasteLevel with AppEquatable {
   TasteLevel({
-    required this.tasteLevelId,
-    required this.title,
-    required this.hasSelected,
+    this.tasteLevelId = '',
+    this.title = '',
+    this.hasSelected = false,
   });
 
   factory TasteLevel.fromMap(Map<String, dynamic> map) {
@@ -640,15 +640,15 @@ class TasteLevel with AppEquatable {
 
 class MenuPortion with AppEquatable {
   MenuPortion({
-    required this.portionID,
-    required this.title,
-    required this.quantity,
-    required this.maxServingPerson,
-    required this.defaultPrice,
-    required this.finalPrice,
-    required this.discountedPrice,
-    required this.hasSelected,
-    required this.unit,
+    this.portionID = '',
+    this.title = '',
+    this.quantity = 0.0,
+    this.maxServingPerson = 0,
+    this.defaultPrice = 0.0,
+    this.finalPrice = 0.0,
+    this.discountedPrice = 0.0,
+    this.hasSelected = false,
+    this.unit = '',
     this.currency = 'SAR',
     this.description = '',
   });
@@ -747,15 +747,15 @@ class MenuPortion with AppEquatable {
 class CustomPortion with AppEquatable {
   CustomPortion({
     this.customPortionID = '0',
-    required this.title,
-    required this.maxServingPerson,
-    required this.quantity,
+    this.title = '',
+    this.maxServingPerson = 0,
+    this.quantity = 0.0,
     this.defaultPrice = 0.0,
     this.finalPrice = 0.0,
     this.discountedPrice = 0.0,
     this.otherInfo = const {},
     this.hasSelected = false,
-    required this.unit,
+    this.unit = '0',
     this.currency = 'SAR',
     this.description = '',
   });
@@ -883,12 +883,13 @@ class Addons with AppEquatable {
       discountedPrice: map['discountedPrice'] as double,
       hasSelected: map['hasSelected'] as bool,
       unit: map['unit'] as String,
-      addonsImage: (map['addonsImage'] != null) ? MenuImage.fromMap(map['addonsImage']) : null,
+      addonsImage: (map['addonsImage'] != null) ? MenuImage.fromMap(map['addonsImage']) : MenuImage(),
       currency: map['currency'] as String,
       description: map['description'] as String,
       hasOwnAddons: map['hasOwnAddons'] as bool,
     );
   }
+
   int addonsID;
   String title;
   double quantity;
@@ -972,9 +973,9 @@ class Addons with AppEquatable {
 
 class MenuAvailableDayAndTime with AppEquatable {
   MenuAvailableDayAndTime({
-    required this.day,
-    required this.shortName,
-    required this.id,
+    this.day = '',
+    this.shortName = '',
+    this.id = -1,
     this.hasSelected = false,
     this.closingTime,
     this.openingTime,
@@ -1043,9 +1044,9 @@ class MenuAvailableDayAndTime with AppEquatable {
 
 class TimeOfPeriodWise with AppEquatable {
   TimeOfPeriodWise({
-    required this.timeOfPeriodWiseId,
-    required this.title,
-    required this.hasSelected,
+    this.timeOfPeriodWiseId = '',
+    this.title = '',
+    this.hasSelected = false,
   });
 
   factory TimeOfPeriodWise.fromMap(Map<String, dynamic> map) {
@@ -1093,11 +1094,11 @@ class TimeOfPeriodWise with AppEquatable {
 
 class Timing with AppEquatable {
   Timing({
-    required this.timingID,
-    required this.minPreparingTime,
-    required this.maxPreparingTime,
-    required this.minDeliveryTime,
-    required this.maxDeliveryTiming,
+    this.timingID = '',
+    this.minPreparingTime = '',
+    this.maxPreparingTime = '',
+    this.minDeliveryTime = '',
+    this.maxDeliveryTiming = '',
   });
 
   factory Timing.fromMap(Map<String, dynamic> map) {
@@ -1158,7 +1159,7 @@ class Timing with AppEquatable {
 class Category with AppEquatable {
   Category({
     this.categoryId = '0',
-    required this.title,
+    this.title = '',
     this.hasSelected = false,
   });
 
@@ -1207,9 +1208,9 @@ class Category with AppEquatable {
 
 class Stock with AppEquatable {
   Stock({
-    required this.stockID,
-    required this.minStockQuantity,
-    required this.maxStockQuantity,
+    this.stockID = '',
+    this.minStockQuantity = 0,
+    this.maxStockQuantity = 0,
   });
 
   factory Stock.fromMap(Map<String, dynamic> map) {

@@ -13,7 +13,7 @@ class ImageEntity with AppEquatable {
 
   factory ImageEntity.fromMap(Map<String, dynamic> map) {
     return ImageEntity(
-      imageType: map['imageType'] as ImageType,
+      imageType: ImageType.values.byName(map['imageType']),
       imagePath: map['imagePath'] as String,
       icon: map['icon'] as Icon,
       hasIcon: map['hasIcon'] as bool,

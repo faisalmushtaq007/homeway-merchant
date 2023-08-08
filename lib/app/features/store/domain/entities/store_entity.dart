@@ -30,7 +30,7 @@ class StoreEntity with AppEquatable {
   factory StoreEntity.fromMap(Map<String, dynamic> map) {
     return StoreEntity(
       storeName: map['storeName'] as String,
-      storeAddress: (map['storeAddress'] != null) ? AddressModel.fromJson(map['storeAddress']) : null,
+      storeAddress: (map['storeAddress'] != null) ? AddressModel.fromJson(map['storeAddress']) : AddressModel(),
       storeImagePath: map['storeImagePath'] as String,
       storeImageMetaData: map['storeImageMetaData'] as Map<String, dynamic>,
       storeAvailableFoodTypes: map['storeAvailableFoodTypes'].map((e) => StoreAvailableFoodTypes.fromMap(e)).toList().cast<StoreAvailableFoodTypes>(),
@@ -48,7 +48,7 @@ class StoreEntity with AppEquatable {
       storeID: map['storeID'] as int,
       menuEntities: map['menuEntities'].map((e) => MenuEntity.fromMap(e)).toList().cast<MenuEntity>(),
       hasNewStore: map['hasNewStore'] as bool,
-      ratingAndReviewEntity: (map['ratingAndReviewEntity'] != null) ? RatingAndReviewEntity.fromMap(map['ratingAndReviewEntity']) : null,
+      ratingAndReviewEntity: (map['ratingAndReviewEntity'] != null) ? RatingAndReviewEntity.fromMap(map['ratingAndReviewEntity']) : RatingAndReviewEntity(),
     );
   }
 
@@ -144,18 +144,18 @@ class StoreEntity with AppEquatable {
       'storeAddress': this.storeAddress?.toMap(),
       'storeImagePath': this.storeImagePath,
       'storeImageMetaData': this.storeImageMetaData,
-      'storeAvailableFoodTypes': this.storeAvailableFoodTypes.map((e) => e.toMap()).toList(growable: false),
-      'storeAvailableFoodPreparationType': this.storeAvailableFoodPreparationType.map((e) => e.toMap()).toList(growable: false),
+      'storeAvailableFoodTypes': this.storeAvailableFoodTypes.map((e) => e.toMap()).toList(),
+      'storeAvailableFoodPreparationType': this.storeAvailableFoodPreparationType.map((e) => e.toMap()).toList(),
       'hasStoreOwnDeliveryPartners': this.hasStoreOwnDeliveryPartners,
-      'storeOwnDeliveryPartnersInfo': this.storeOwnDeliveryPartnersInfo.map((e) => e.toMap()).toList(growable: false),
+      'storeOwnDeliveryPartnersInfo': this.storeOwnDeliveryPartnersInfo.map((e) => e.toMap()).toList(),
       'storeMaximumFoodDeliveryTime': this.storeMaximumFoodDeliveryTime,
       'storeMaximumFoodDeliveryRadius': this.storeMaximumFoodDeliveryRadius,
-      'storeAcceptedPaymentModes': this.storeAcceptedPaymentModes.map((e) => e.toMap()).toList(growable: false),
-      'storeWorkingDays': this.storeWorkingDays.map((e) => e.toMap()).toList(growable: false),
+      'storeAcceptedPaymentModes': this.storeAcceptedPaymentModes.map((e) => e.toMap()).toList(),
+      'storeWorkingDays': this.storeWorkingDays.map((e) => e.toMap()).toList(),
       'storeOpeningTime': this.storeOpeningTime,
       'storeClosingTime': this.storeClosingTime,
       'storeID': this.storeID,
-      'menuEntities': this.menuEntities.map((e) => e.toMap()).toList(growable: false),
+      'menuEntities': this.menuEntities.map((e) => e.toMap()).toList(),
       'hasNewStore': this.hasNewStore,
     };
   }
@@ -163,8 +163,8 @@ class StoreEntity with AppEquatable {
 
 class StoreAvailableFoodTypes with AppEquatable {
   StoreAvailableFoodTypes({
-    required this.title,
-    required this.id,
+    this.title = '',
+    this.id = -1,
     this.hasSelected = false,
   });
 
@@ -209,8 +209,8 @@ class StoreAvailableFoodTypes with AppEquatable {
 
 class StoreAvailableFoodPreparationType with AppEquatable {
   StoreAvailableFoodPreparationType({
-    required this.title,
-    required this.id,
+    this.title = '',
+    this.id = -1,
     this.hasSelected = false,
   });
 
@@ -255,8 +255,8 @@ class StoreAvailableFoodPreparationType with AppEquatable {
 
 class StoreAcceptedPaymentModes with AppEquatable {
   StoreAcceptedPaymentModes({
-    required this.title,
-    required this.id,
+    this.title = '',
+    this.id = -1,
     this.icon,
     this.hasSelected = false,
   });
@@ -309,10 +309,10 @@ class StoreOwnDeliveryPartnersInfo with AppEquatable {
     this.driverName = '',
     this.driverMobileNumber = '',
     this.drivingLicenseNumber = '',
-    this.vehicleInfo,
+    this.vehicleInfo = VehicleInfo(),
     this.hasOnline = true,
-    this.ratingAndReviewEntity,
-    this.imageEntity,
+    this.ratingAndReviewEntity = RatingAndReviewEntity(),
+    this.imageEntity = ImageEntity(),
     this.hasDriverImage = false,
   });
 
@@ -322,21 +322,22 @@ class StoreOwnDeliveryPartnersInfo with AppEquatable {
       driverID: map['driverID'] as int,
       driverMobileNumber: map['driverMobileNumber'] as String,
       drivingLicenseNumber: map['drivingLicenseNumber'] as String,
-      vehicleInfo: (map['vehicleInfo'] != null) ? VehicleInfo.fromMap(map['vehicleInfo']) : null,
+      vehicleInfo: (map['vehicleInfo'] != null) ? VehicleInfo.fromMap(map['vehicleInfo']) : VehicleInfo(),
       hasOnline: map['hasOnline'] as bool,
-      ratingAndReviewEntity: (map['ratingAndReviewEntity'] != null) ? RatingAndReviewEntity.fromMap(map['ratingAndReviewEntity']) : null,
+      ratingAndReviewEntity: (map['ratingAndReviewEntity'] != null) ? RatingAndReviewEntity.fromMap(map['ratingAndReviewEntity']) : RatingAndReviewEntity(),
       hasDriverImage: map['hasDriverImage'] as bool,
-      imageEntity: (map['imageEntity'] != null) ? ImageEntity.fromMap(map['imageEntity']) : null,
+      imageEntity: (map['imageEntity'] != null) ? ImageEntity.fromMap(map['imageEntity']) : ImageEntity(),
     );
   }
+
   int driverID;
   String driverName;
   String driverMobileNumber;
   String drivingLicenseNumber;
-  VehicleInfo? vehicleInfo;
+  VehicleInfo vehicleInfo;
   bool hasOnline;
-  RatingAndReviewEntity? ratingAndReviewEntity;
-  ImageEntity? imageEntity;
+  RatingAndReviewEntity ratingAndReviewEntity;
+  ImageEntity imageEntity;
   bool hasDriverImage;
 
   @override
@@ -447,12 +448,12 @@ class VehicleInfo with AppEquatable {
 
 class StoreWorkingDayAndTime with AppEquatable {
   StoreWorkingDayAndTime({
-    required this.day,
-    required this.shortName,
-    required this.id,
+    this.day = '',
+    this.shortName = '',
+    this.id = -1,
     this.hasSelected = false,
-    this.closingTime,
-    this.openingTime,
+    this.closingTime = DateTime.now(),
+    this.openingTime = DateTime.now(),
   });
 
   factory StoreWorkingDayAndTime.fromMap(Map<String, dynamic> map) {
@@ -461,8 +462,8 @@ class StoreWorkingDayAndTime with AppEquatable {
       shortName: map['shortName'] as String,
       id: map['id'] as int,
       hasSelected: map['hasSelected'] as bool,
-      openingTime: map['openingTime'] as DateTime?,
-      closingTime: map['closingTime'] as DateTime?,
+      openingTime: map['openingTime'] as DateTime,
+      closingTime: map['closingTime'] as DateTime,
     );
   }
 
@@ -470,8 +471,8 @@ class StoreWorkingDayAndTime with AppEquatable {
   String shortName;
   int id;
   bool hasSelected;
-  DateTime? openingTime;
-  DateTime? closingTime;
+  DateTime openingTime;
+  DateTime closingTime;
 
   @override
   bool get cacheHash => true;

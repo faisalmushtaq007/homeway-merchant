@@ -2,10 +2,10 @@ import 'package:homemakers_merchant/utils/app_equatable/app_equatable.dart';
 
 class RatingAndReviewEntity with AppEquatable {
   RatingAndReviewEntity({
-    required this.rating,
-    required this.numberOfReviews,
-    required this.customerReview,
-    required this.ratingId,
+    this.rating = 0.0,
+    this.numberOfReviews = 0,
+    this.customerReview = '',
+    this.ratingId = '',
   });
 
   factory RatingAndReviewEntity.fromMap(Map<String, dynamic> map) {
