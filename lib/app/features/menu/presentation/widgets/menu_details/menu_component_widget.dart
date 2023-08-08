@@ -408,8 +408,8 @@ class WrapAndMoreWidget extends StatelessWidget {
     return LayoutBuilder(
       builder: (context, constraints) {
         return Container(
-          height: constraints.minHeight,
-          width: constraints.minWidth,
+          height: constraints.maxHeight,
+          width: constraints.maxWidth,
           padding: const EdgeInsetsDirectional.only(start: 12, end: 8, bottom: 0, top: 2),
           child: WrapAndMore(
             //maxLine: 2,
