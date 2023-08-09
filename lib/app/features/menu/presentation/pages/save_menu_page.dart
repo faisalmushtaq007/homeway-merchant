@@ -19,17 +19,17 @@ class SaveMenuPage extends StatefulWidget {
 class _SaveMenuPageController extends State<SaveMenuPage> with AutomaticKeepAliveClientMixin<SaveMenuPage>, WidgetsBindingObserver {
   late final ScrollController scrollController;
   late final ScrollController _screenScrollController;
-  int _currentPageIndex = 0;
+  int _currentPageIndex = 2;
 
   // StepProgressController
-  final StepProgressController stepProgressController = StepProgressController(totalStep: 5, initialStep: 0);
+  final StepProgressController stepProgressController = StepProgressController(totalStep: 5, initialStep: 2);
   PageController controller = PageController(
-    initialPage: 0,
+    initialPage: 2,
   );
   FormPageStyle? formPageStyle = const FormPageStyle();
 
   // PageView
-  PreloadPageController preloadPageController = PreloadPageController(initialPage: 0);
+  PreloadPageController preloadPageController = PreloadPageController(initialPage: 2);
 
   // ProgressIndicatorType
   ProgressIndicatorType progress = ProgressIndicatorType.linear;
@@ -283,6 +283,7 @@ class _SaveMenuPageView extends WidgetView<SaveMenuPage, _SaveMenuPageController
             padding: EdgeInsetsDirectional.fromSTEB(0, topPadding, 0, 0),
             child: Stack(
               alignment: AlignmentDirectional.topCenter,
+              clipBehavior: Clip.none,
               children: [
                 CustomScrollView(
                   controller: state._screenScrollController,
@@ -301,7 +302,7 @@ class _SaveMenuPageView extends WidgetView<SaveMenuPage, _SaveMenuPageController
                             padding: EdgeInsetsDirectional.only(
                               start: margins * 2.25,
                               end: margins * 2.25,
-                              top: margins * 2.25,
+                              //top: margins * 2.25,
                               bottom: margins,
                             ),
                             duration: const Duration(
@@ -323,43 +324,68 @@ class _SaveMenuPageView extends WidgetView<SaveMenuPage, _SaveMenuPageController
                                 ),
                               ],
                             ),
-                            child: PreloadPageView.builder(
-                              controller: state.preloadPageController,
-                              itemCount: state.pages.length,
-                              preloadPagesCount: 0,
-                              physics: const NeverScrollableScrollPhysics(),
-                              onPageChanged: state.onPageChanged,
-                              itemBuilder: (context, index) {
-                                return SingleChildScrollView(
-                                  physics: const ClampingScrollPhysics(),
-                                  child: Column(
+                            child: Column(
+                              children: [
+                                SizedBox(
+                                  height: 26,
+                                  child: Stack(
+                                    alignment: AlignmentDirectional.topCenter,
+                                    clipBehavior: Clip.none,
                                     children: [
-                                      const AnimatedGap(18, duration: Duration(milliseconds: 500)),
-                                      Wrap(
-                                        alignment: WrapAlignment.center,
-                                        crossAxisAlignment: WrapCrossAlignment.center,
-                                        children: [
-                                          AnimatedSwitcher(
-                                            duration: const Duration(
-                                              milliseconds: 500,
-                                            ),
-                                            child: Text(
-                                              '${(!widget.haveNewMenu && widget.menuEntity != null && widget.menuEntity?.menuName != null) ? widget.menuEntity?.menuName : 'Add new menu'}',
-                                              style: context.titleLarge!.copyWith(
-                                                color: context.primaryColor,
-                                                fontWeight: FontWeight.bold,
-                                                fontSize: 24,
-                                              ),
-                                            ).translate(),
-                                          ),
-                                        ],
+                                      AnimatedPositioned(
+                                        duration: const Duration(milliseconds: 300),
+                                        top: -42,
+                                        child: DisplayImage(
+                                          imagePath: '',
+                                          onPressed: () {},
+                                          hasIconImage: true,
+                                          hasEditButton: false,
+                                        ),
                                       ),
-                                      const AnimatedGap(12, duration: Duration(milliseconds: 500)),
-                                      state.pages[index].body,
                                     ],
                                   ),
-                                );
-                              },
+                                ),
+                                Expanded(
+                                  child: PreloadPageView.builder(
+                                    controller: state.preloadPageController,
+                                    itemCount: state.pages.length,
+                                    preloadPagesCount: 0,
+                                    physics: const NeverScrollableScrollPhysics(),
+                                    onPageChanged: state.onPageChanged,
+                                    itemBuilder: (context, index) {
+                                      return SingleChildScrollView(
+                                        physics: const ClampingScrollPhysics(),
+                                        child: Column(
+                                          children: [
+                                            Wrap(
+                                              alignment: WrapAlignment.center,
+                                              crossAxisAlignment: WrapCrossAlignment.center,
+                                              children: [
+                                                AnimatedSwitcher(
+                                                  duration: const Duration(
+                                                    milliseconds: 500,
+                                                  ),
+                                                  child: Text(
+                                                    '${(!widget.haveNewMenu && widget.menuEntity != null && widget.menuEntity?.menuName != null) ? widget.menuEntity?.menuName : 'Add new menu'}',
+                                                    style: context.titleLarge!.copyWith(
+                                                      color: context.primaryColor,
+                                                      fontWeight: FontWeight.bold,
+                                                      //fontSize: 20,
+                                                    ),
+                                                    textAlign: TextAlign.center,
+                                                  ).translate(),
+                                                ),
+                                              ],
+                                            ),
+                                            const AnimatedGap(6, duration: Duration(milliseconds: 500)),
+                                            state.pages[index].body,
+                                          ],
+                                        ),
+                                      );
+                                    },
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
                           Progress(
@@ -439,7 +465,7 @@ class _SaveMenuPageView extends WidgetView<SaveMenuPage, _SaveMenuPageController
                     ),
                   ],
                 ),
-                AnimatedPositioned(
+                /*AnimatedPositioned(
                   duration: const Duration(milliseconds: 300),
                   top: (state.isKeyboardOpen) ? -(MediaQuery.of(context).viewInsets.bottom - margins * 1.5) : 8,
                   child: DisplayImage(
@@ -448,7 +474,7 @@ class _SaveMenuPageView extends WidgetView<SaveMenuPage, _SaveMenuPageController
                     hasIconImage: true,
                     hasEditButton: false,
                   ),
-                ),
+                ),*/
               ],
             ),
           ),

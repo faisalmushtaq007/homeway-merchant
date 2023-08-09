@@ -347,223 +347,119 @@ class _MenuForm3PageState extends State<MenuForm3Page> with AutomaticKeepAliveCl
                 ],
               ),
               const AnimatedGap(8, duration: Duration(milliseconds: 500)),
-              Card(
-                margin: EdgeInsetsDirectional.zero,
-                elevation: 0,
-                shape: RoundedRectangleBorder(
-                  side: const BorderSide(
-                    color: Color.fromRGBO(201, 201, 203, 1),
-                  ),
-                  borderRadius: BorderRadiusDirectional.circular(10.0),
-                ),
-                child: IntrinsicHeight(
-                  child: Row(
-                    textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Expanded(
-                        child: Padding(
-                          child: Text(
-                            'Minimum time',
-                            style: context.labelLarge,
-                            textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                          ),
-                          padding: const EdgeInsetsDirectional.only(
-                            start: 16,
-                          ),
-                        ),
-                      ),
-                      const VerticalDivider(
-                        color: Color.fromRGBO(201, 201, 203, 1),
-                        thickness: 1,
-                      ),
-                      Expanded(
-                        child: AppTextFieldWidget(
-                          controller: _menuMinPreparationTimeController,
-                          textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                          //focusNode: menuForm3FocusList[0],
-                          textInputAction: TextInputAction.next,
-                          //onFieldSubmitted: (_) => fieldFocusChange(context, menuForm3FocusList[0], menuForm3FocusList[1]),
-                          //keyboardType: TextInputType.numberWithOptions(),
-                          readOnly: true,
-                          decoration: InputDecoration(
-                            hintText: 'Min or Hr',
-                            border: InputBorder.none,
-                            focusedErrorBorder: InputBorder.none,
-                            focusedBorder: InputBorder.none,
-                            enabledBorder: InputBorder.none,
-                            disabledBorder: InputBorder.none,
-                            errorBorder: InputBorder.none,
-                            isDense: true,
-                            contentPadding: const EdgeInsetsDirectional.symmetric(horizontal: 8, vertical: 14),
-                            suffixIcon: IconButton(
-                              onPressed: () async {
-                                final String? timing = await selectTiming(context);
-                                if (timing != null) {
-                                  setState(() {
-                                    _menuMinPreparationTimeController.text = timing ?? '';
-                                    final cacheMenuTiming = _menuPreparationTiming?.copyWith(
-                                      minPreparingTime: _menuMinPreparationTimeController.value.text.trim(),
-                                    );
-                                  });
-                                }
-                              },
-                              icon: const Icon(
-                                Icons.arrow_drop_down,
-                              ),
-                            ),
-                          ),
-                          validator: (value) {
-                            return ValidatorGroup<String>([
-                              const RequiredValidator<String>(errorMessage: 'Select minimum preparation time'),
-                              CustomValidator<String>(
-                                validator: (value) {
-                                  //final intInStr = RegExp(r'\d+');
-                                  final maximumTime = int.parse(_menuMaxPreparationTimeController.value.text.trim().replaceAll(RegExp(r'[^0-9]'), ''));
-                                  final minimumTime = int.parse(_menuMinPreparationTimeController.value.text.trim().replaceAll(RegExp(r'[^0-9]'), ''));
-                                  if (minimumTime > maximumTime) {
-                                    return 'Select valid minimum preparation time';
-                                  }
-                                  return null;
-                                },
-                              ),
-                            ]).validate(value);
-                          },
-                          onChanged: (value) {
-                            serviceLocator<MenuEntity>().menuMinPreparationTime = value;
-                            context.read<MenuBloc>().add(
-                                  PushMenuEntityData(
-                                    menuEntity: serviceLocator<MenuEntity>(),
-                                    menuFormStage: MenuFormStage.form3,
-                                    menuEntityStatus: MenuEntityStatus.push,
-                                  ),
-                                );
-                          },
-                          onSaved: (newValue) {
-                            serviceLocator<MenuEntity>().menuMinPreparationTime = _menuMinPreparationTimeController.value.text.trim();
-                            context.read<MenuBloc>().add(
-                                  PushMenuEntityData(
-                                    menuEntity: serviceLocator<MenuEntity>(),
-                                    menuFormStage: MenuFormStage.form3,
-                                    menuEntityStatus: MenuEntityStatus.push,
-                                  ),
-                                );
-                          },
-                        ),
-                      ),
-                    ],
+              MenuPreparationTimeWidget(
+                key: const Key('menu-preparation-minimum-time'),
+                title: 'Minimum time',
+                controller: _menuMinPreparationTimeController,
+                suffixIcon: IconButton(
+                  onPressed: () async {
+                    final String? timing = await selectTiming(context);
+                    if (timing != null) {
+                      setState(() {
+                        _menuMinPreparationTimeController.text = timing ?? '';
+                        final cacheMenuTiming = _menuPreparationTiming?.copyWith(
+                          minPreparingTime: _menuMinPreparationTimeController.value.text.trim(),
+                        );
+                      });
+                    }
+                  },
+                  icon: const Icon(
+                    Icons.arrow_drop_down,
                   ),
                 ),
+                validator: (value) {
+                  return ValidatorGroup<String>([
+                    const RequiredValidator<String>(errorMessage: 'Select minimum preparation time'),
+                    CustomValidator<String>(
+                      validator: (value) {
+                        //final intInStr = RegExp(r'\d+');
+                        final maximumTime = int.parse(_menuMaxPreparationTimeController.value.text.trim().replaceAll(RegExp(r'[^0-9]'), ''));
+                        final minimumTime = int.parse(_menuMinPreparationTimeController.value.text.trim().replaceAll(RegExp(r'[^0-9]'), ''));
+                        if (minimumTime > maximumTime) {
+                          return 'Select valid minimum preparation time';
+                        }
+                        return null;
+                      },
+                    ),
+                  ]).validate(value);
+                },
+                onChanged: (value) {
+                  serviceLocator<MenuEntity>().menuMinPreparationTime = value;
+                  context.read<MenuBloc>().add(
+                        PushMenuEntityData(
+                          menuEntity: serviceLocator<MenuEntity>(),
+                          menuFormStage: MenuFormStage.form3,
+                          menuEntityStatus: MenuEntityStatus.push,
+                        ),
+                      );
+                },
+                onSaved: (newValue) {
+                  serviceLocator<MenuEntity>().menuMinPreparationTime = _menuMinPreparationTimeController.value.text.trim();
+                  context.read<MenuBloc>().add(
+                        PushMenuEntityData(
+                          menuEntity: serviceLocator<MenuEntity>(),
+                          menuFormStage: MenuFormStage.form3,
+                          menuEntityStatus: MenuEntityStatus.push,
+                        ),
+                      );
+                },
               ),
               const AnimatedGap(12, duration: Duration(milliseconds: 500)),
-              Card(
-                margin: EdgeInsetsDirectional.zero,
-                elevation: 0,
-                shape: RoundedRectangleBorder(
-                  side: const BorderSide(
-                    color: Color.fromRGBO(201, 201, 203, 1),
-                  ),
-                  borderRadius: BorderRadiusDirectional.circular(10.0),
-                ),
-                child: IntrinsicHeight(
-                  child: Row(
-                    textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Expanded(
-                        child: Padding(
-                          child: Text(
-                            'Maximum time',
-                            style: context.labelLarge,
-                            textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                          ),
-                          padding: const EdgeInsetsDirectional.only(
-                            start: 16,
-                          ),
-                        ),
-                      ),
-                      const VerticalDivider(
-                        color: Color.fromRGBO(201, 201, 203, 1),
-                        thickness: 1,
-                      ),
-                      Expanded(
-                        child: AppTextFieldWidget(
-                          controller: _menuMaxPreparationTimeController,
-                          readOnly: true,
-                          textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                          //focusNode: menuForm3FocusList[1],
-                          textInputAction: TextInputAction.next,
-                          //onFieldSubmitted: (_) => fieldFocusChange(context, menuForm3FocusList[1], menuForm3FocusList[2]),
-                          //keyboardType: TextInputType.numberWithOptions(),
-                          decoration: InputDecoration(
-                            hintText: 'Min or Hr',
-                            border: InputBorder.none,
-                            focusedErrorBorder: InputBorder.none,
-                            focusedBorder: InputBorder.none,
-                            enabledBorder: InputBorder.none,
-                            disabledBorder: InputBorder.none,
-                            errorBorder: InputBorder.none,
-                            isDense: true,
-                            contentPadding: const EdgeInsetsDirectional.symmetric(horizontal: 8, vertical: 14),
-                            suffixIcon: IconButton(
-                              onPressed: () async {
-                                final String? timing = await selectTiming(context);
-                                if (timing != null) {
-                                  setState(() {
-                                    _menuMaxPreparationTimeController.text = timing ?? '';
-                                    final cacheMenuTiming = _menuPreparationTiming?.copyWith(
-                                      maxPreparingTime: _menuMaxPreparationTimeController.value.text.trim(),
-                                    );
-                                  });
-                                }
-                              },
-                              icon: const Icon(
-                                Icons.arrow_drop_down,
-                              ),
-                            ),
-                          ),
-                          validator: (value) {
-                            return ValidatorGroup<String>([
-                              const RequiredValidator<String>(errorMessage: 'Select maximum preparation time'),
-                              CustomValidator<String>(
-                                validator: (value) {
-                                  final maximumTime = int.parse(_menuMaxPreparationTimeController.value.text.trim().replaceAll(RegExp(r'[^0-9]'), ''));
-                                  final minimumTime = int.parse(_menuMinPreparationTimeController.value.text.trim().replaceAll(RegExp(r'[^0-9]'), ''));
-                                  if (maximumTime < minimumTime) {
-                                    return 'Select valid maximum preparation time';
-                                  }
-                                  return null;
-                                },
-                              ),
-                            ]).validate(value);
-                          },
-                          onChanged: (value) {
-                            serviceLocator<MenuEntity>().menuMaxPreparationTime = value;
-                            context.read<MenuBloc>().add(
-                                  PushMenuEntityData(
-                                    menuEntity: serviceLocator<MenuEntity>(),
-                                    menuFormStage: MenuFormStage.form3,
-                                    menuEntityStatus: MenuEntityStatus.push,
-                                  ),
-                                );
-                          },
-                          onSaved: (newValue) {
-                            serviceLocator<MenuEntity>().menuMaxPreparationTime = _menuMaxPreparationTimeController.value.text.trim();
-                            context.read<MenuBloc>().add(
-                                  PushMenuEntityData(
-                                    menuEntity: serviceLocator<MenuEntity>(),
-                                    menuFormStage: MenuFormStage.form3,
-                                    menuEntityStatus: MenuEntityStatus.push,
-                                  ),
-                                );
-                          },
-                        ),
-                      ),
-                    ],
+              MenuPreparationTimeWidget(
+                key: const Key('menu-preparation-maximum-time'),
+                title: 'Maximum time',
+                controller: _menuMaxPreparationTimeController,
+                suffixIcon: IconButton(
+                  onPressed: () async {
+                    final String? timing = await selectTiming(context);
+                    if (timing != null) {
+                      setState(() {
+                        _menuMaxPreparationTimeController.text = timing ?? '';
+                        final cacheMenuTiming = _menuPreparationTiming?.copyWith(
+                          minPreparingTime: _menuMaxPreparationTimeController.value.text.trim(),
+                        );
+                      });
+                    }
+                  },
+                  icon: const Icon(
+                    Icons.arrow_drop_down,
                   ),
                 ),
+                validator: (value) {
+                  return ValidatorGroup<String>([
+                    const RequiredValidator<String>(errorMessage: 'Select maximum preparation time'),
+                    CustomValidator<String>(
+                      validator: (value) {
+                        final maximumTime = int.parse(_menuMaxPreparationTimeController.value.text.trim().replaceAll(RegExp(r'[^0-9]'), ''));
+                        final minimumTime = int.parse(_menuMinPreparationTimeController.value.text.trim().replaceAll(RegExp(r'[^0-9]'), ''));
+                        if (maximumTime < minimumTime) {
+                          return 'Select valid maximum preparation time';
+                        }
+                        return null;
+                      },
+                    ),
+                  ]).validate(value);
+                },
+                onChanged: (value) {
+                  serviceLocator<MenuEntity>().menuMaxPreparationTime = value;
+                  context.read<MenuBloc>().add(
+                        PushMenuEntityData(
+                          menuEntity: serviceLocator<MenuEntity>(),
+                          menuFormStage: MenuFormStage.form3,
+                          menuEntityStatus: MenuEntityStatus.push,
+                        ),
+                      );
+                },
+                onSaved: (newValue) {
+                  serviceLocator<MenuEntity>().menuMaxPreparationTime = _menuMaxPreparationTimeController.value.text.trim();
+                  context.read<MenuBloc>().add(
+                        PushMenuEntityData(
+                          menuEntity: serviceLocator<MenuEntity>(),
+                          menuFormStage: MenuFormStage.form3,
+                          menuEntityStatus: MenuEntityStatus.push,
+                        ),
+                      );
+                },
               ),
               const Divider(),
               Column(
@@ -588,107 +484,113 @@ class _MenuForm3PageState extends State<MenuForm3Page> with AutomaticKeepAliveCl
                 ],
               ),
               const AnimatedGap(12, duration: Duration(milliseconds: 500)),
-              AppTextFieldWidget(
-                controller: _menuMinStockQuantityController,
+              Directionality(
                 textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                focusNode: menuForm3FocusList[0],
-                textInputAction: TextInputAction.next,
-                onFieldSubmitted: (_) => fieldFocusChange(context, menuForm3FocusList[0], menuForm3FocusList[1]),
-                keyboardType: const TextInputType.numberWithOptions(),
-                decoration: InputDecoration(
-                  labelText: 'Minimum Quantity',
-                  hintText: 'Enter minimum stock quantity',
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  isDense: true,
-                ),
-                validator: (value) {
-                  return ValidatorGroup<String>([
-                    const RequiredValidator<String>(errorMessage: 'Enter minimum stock quantity'),
-                    CustomValidator<String>(
-                      validator: (value) {
-                        final maximumStockValue = int.parse(_menuMaxStockQuantityController.value.text.trim().replaceAll(RegExp(r'[^0-9]'), ''));
-                        final minimumStockValue = int.parse(_menuMinStockQuantityController.value.text.trim().replaceAll(RegExp(r'[^0-9]'), ''));
-                        if (minimumStockValue > maximumStockValue) {
-                          return 'Enter valid minimum quantity';
-                        }
-                        return null;
-                      },
+                child: AppTextFieldWidget(
+                  controller: _menuMinStockQuantityController,
+                  textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                  focusNode: menuForm3FocusList[0],
+                  textInputAction: TextInputAction.next,
+                  onFieldSubmitted: (_) => fieldFocusChange(context, menuForm3FocusList[0], menuForm3FocusList[1]),
+                  keyboardType: const TextInputType.numberWithOptions(),
+                  decoration: InputDecoration(
+                    labelText: 'Minimum Quantity',
+                    hintText: 'Enter minimum stock quantity',
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
                     ),
-                  ]).validate(value);
-                },
-                onChanged: (value) {
-                  serviceLocator<MenuEntity>().minStockAvailable = int.tryParse(value) ?? 0;
-                  context.read<MenuBloc>().add(
-                        PushMenuEntityData(
-                          menuEntity: serviceLocator<MenuEntity>(),
-                          menuFormStage: MenuFormStage.form3,
-                          menuEntityStatus: MenuEntityStatus.push,
-                        ),
-                      );
-                },
-                onSaved: (newValue) {
-                  serviceLocator<MenuEntity>().minStockAvailable = int.tryParse(_menuMinStockQuantityController.value.text.trim()) ?? 0;
-                  context.read<MenuBloc>().add(
-                        PushMenuEntityData(
-                          menuEntity: serviceLocator<MenuEntity>(),
-                          menuFormStage: MenuFormStage.form3,
-                          menuEntityStatus: MenuEntityStatus.push,
-                        ),
-                      );
-                },
+                    isDense: true,
+                  ),
+                  validator: (value) {
+                    return ValidatorGroup<String>([
+                      const RequiredValidator<String>(errorMessage: 'Enter minimum stock quantity'),
+                      CustomValidator<String>(
+                        validator: (value) {
+                          final maximumStockValue = int.parse(_menuMaxStockQuantityController.value.text.trim().replaceAll(RegExp(r'[^0-9]'), ''));
+                          final minimumStockValue = int.parse(_menuMinStockQuantityController.value.text.trim().replaceAll(RegExp(r'[^0-9]'), ''));
+                          if (minimumStockValue > maximumStockValue) {
+                            return 'Enter valid minimum quantity';
+                          }
+                          return null;
+                        },
+                      ),
+                    ]).validate(value);
+                  },
+                  onChanged: (value) {
+                    serviceLocator<MenuEntity>().minStockAvailable = int.tryParse(value) ?? 0;
+                    context.read<MenuBloc>().add(
+                          PushMenuEntityData(
+                            menuEntity: serviceLocator<MenuEntity>(),
+                            menuFormStage: MenuFormStage.form3,
+                            menuEntityStatus: MenuEntityStatus.push,
+                          ),
+                        );
+                  },
+                  onSaved: (newValue) {
+                    serviceLocator<MenuEntity>().minStockAvailable = int.tryParse(_menuMinStockQuantityController.value.text.trim()) ?? 0;
+                    context.read<MenuBloc>().add(
+                          PushMenuEntityData(
+                            menuEntity: serviceLocator<MenuEntity>(),
+                            menuFormStage: MenuFormStage.form3,
+                            menuEntityStatus: MenuEntityStatus.push,
+                          ),
+                        );
+                  },
+                ),
               ),
               const AnimatedGap(12, duration: Duration(milliseconds: 500)),
-              AppTextFieldWidget(
-                controller: _menuMaxStockQuantityController,
+              Directionality(
                 textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                focusNode: menuForm3FocusList[1],
-                textInputAction: TextInputAction.done,
-                keyboardType: const TextInputType.numberWithOptions(),
-                decoration: InputDecoration(
-                  labelText: 'Maximum Quantity',
-                  hintText: 'Enter maximum stock quantity',
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  isDense: true,
-                ),
-                validator: (value) {
-                  return ValidatorGroup<String>([
-                    const RequiredValidator<String>(errorMessage: 'Enter maximum stock quantity'),
-                    CustomValidator<String>(
-                      validator: (value) {
-                        final maximumStockValue = int.parse(_menuMaxStockQuantityController.value.text.trim().replaceAll(RegExp(r'[^0-9]'), ''));
-                        final minimumStockValue = int.parse(_menuMinStockQuantityController.value.text.trim().replaceAll(RegExp(r'[^0-9]'), ''));
-                        if (maximumStockValue < minimumStockValue) {
-                          return 'Enter valid maximum quantity';
-                        }
-                        return null;
-                      },
+                child: AppTextFieldWidget(
+                  controller: _menuMaxStockQuantityController,
+                  textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                  focusNode: menuForm3FocusList[1],
+                  textInputAction: TextInputAction.done,
+                  keyboardType: const TextInputType.numberWithOptions(),
+                  decoration: InputDecoration(
+                    labelText: 'Maximum Quantity',
+                    hintText: 'Enter maximum stock quantity',
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
                     ),
-                  ]).validate(value);
-                },
-                onChanged: (value) {
-                  serviceLocator<MenuEntity>().maxStockAvailable = int.tryParse(value) ?? 0;
-                  context.read<MenuBloc>().add(
-                        PushMenuEntityData(
-                          menuEntity: serviceLocator<MenuEntity>(),
-                          menuFormStage: MenuFormStage.form3,
-                          menuEntityStatus: MenuEntityStatus.push,
-                        ),
-                      );
-                },
-                onSaved: (newValue) {
-                  serviceLocator<MenuEntity>().maxStockAvailable = int.tryParse(_menuMaxStockQuantityController.value.text.trim()) ?? 0;
-                  context.read<MenuBloc>().add(
-                        PushMenuEntityData(
-                          menuEntity: serviceLocator<MenuEntity>(),
-                          menuFormStage: MenuFormStage.form3,
-                          menuEntityStatus: MenuEntityStatus.push,
-                        ),
-                      );
-                },
+                    isDense: true,
+                  ),
+                  validator: (value) {
+                    return ValidatorGroup<String>([
+                      const RequiredValidator<String>(errorMessage: 'Enter maximum stock quantity'),
+                      CustomValidator<String>(
+                        validator: (value) {
+                          final maximumStockValue = int.parse(_menuMaxStockQuantityController.value.text.trim().replaceAll(RegExp(r'[^0-9]'), ''));
+                          final minimumStockValue = int.parse(_menuMinStockQuantityController.value.text.trim().replaceAll(RegExp(r'[^0-9]'), ''));
+                          if (maximumStockValue < minimumStockValue) {
+                            return 'Enter valid maximum quantity';
+                          }
+                          return null;
+                        },
+                      ),
+                    ]).validate(value);
+                  },
+                  onChanged: (value) {
+                    serviceLocator<MenuEntity>().maxStockAvailable = int.tryParse(value) ?? 0;
+                    context.read<MenuBloc>().add(
+                          PushMenuEntityData(
+                            menuEntity: serviceLocator<MenuEntity>(),
+                            menuFormStage: MenuFormStage.form3,
+                            menuEntityStatus: MenuEntityStatus.push,
+                          ),
+                        );
+                  },
+                  onSaved: (newValue) {
+                    serviceLocator<MenuEntity>().maxStockAvailable = int.tryParse(_menuMaxStockQuantityController.value.text.trim()) ?? 0;
+                    context.read<MenuBloc>().add(
+                          PushMenuEntityData(
+                            menuEntity: serviceLocator<MenuEntity>(),
+                            menuFormStage: MenuFormStage.form3,
+                            menuEntityStatus: MenuEntityStatus.push,
+                          ),
+                        );
+                  },
+                ),
               ),
             ],
           );

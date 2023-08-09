@@ -71,7 +71,8 @@ class PageBody extends StatelessWidget {
             child: ConstrainedBox(
               constraints: constraints,
               child: ScrollConfiguration(
-                behavior: const DragScrollBehavior().copyWith(scrollbars: false), //ScrollConfiguration.of(context).copyWith(scrollbars: false),
+                behavior:
+                    const DragScrollBehavior().copyWith(scrollbars: false, overscroll: false), //ScrollConfiguration.of(context).copyWith(scrollbars: false),
                 child: Padding(
                   padding: padding,
                   child: child,
