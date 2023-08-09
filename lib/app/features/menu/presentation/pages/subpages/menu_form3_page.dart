@@ -44,7 +44,7 @@ class _MenuForm3PageState extends State<MenuForm3Page> with AutomaticKeepAliveCl
     _menuAvailableDays = [];
     _selectedWorkingDays = [];
     _menuAvailablePreparationTimings = [];
-    maximumDeliveryTimeFormatter = MaskTextInputFormatter(mask: "##", filter: {"#": RegExp(r'[0-9]')}, type: MaskAutoCompletionType.lazy);
+    maximumDeliveryTimeFormatter = MaskTextInputFormatter(mask: '##', filter: {'#': RegExp(r'[0-9]')}, type: MaskAutoCompletionType.lazy);
     initializeMenuWorkingDays();
     initializeMenuAvailableTimings();
   }
@@ -210,18 +210,25 @@ class _MenuForm3PageState extends State<MenuForm3Page> with AutomaticKeepAliveCl
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10),
                         ),
-                        suffixIcon: Icon(
+                        suffixIcon: const Icon(
                           Icons.arrow_drop_down,
                         ),
                         isDense: true,
-                        contentPadding: EdgeInsetsDirectional.symmetric(vertical: 8, horizontal: 12),
+                        contentPadding: const EdgeInsetsDirectional.symmetric(vertical: 8, horizontal: 12),
                       ),
                       validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Select menu available from';
-                        } else {
-                          return null;
-                        }
+                        return ValidatorGroup<String>([
+                          const RequiredValidator<String>(errorMessage: 'Select valid time'),
+                          CustomValidator<String>(
+                            validator: (value) {
+                              if (compareOpenAndCloseTime(
+                                  openingTime: _menuOpeningTimeController.value.text.trim(), closingTime: _menuClosingTimeController.value.text.trim())) {
+                                return 'Select valid time';
+                              }
+                              return null;
+                            },
+                          ),
+                        ]).validate(value);
                       },
                       onSaved: (newValue) {
                         serviceLocator<MenuEntity>().menuAvailableFromTime = _menuOpeningTimeController.value.text.trim();
@@ -261,18 +268,25 @@ class _MenuForm3PageState extends State<MenuForm3Page> with AutomaticKeepAliveCl
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10),
                         ),
-                        suffixIcon: Icon(
+                        suffixIcon: const Icon(
                           Icons.arrow_drop_down,
                         ),
                         isDense: true,
-                        contentPadding: EdgeInsetsDirectional.symmetric(vertical: 8, horizontal: 12),
+                        contentPadding: const EdgeInsetsDirectional.symmetric(vertical: 8, horizontal: 12),
                       ),
                       validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Select menu available to';
-                        } else {
-                          return null;
-                        }
+                        return ValidatorGroup<String>([
+                          const RequiredValidator<String>(errorMessage: 'Select valid time'),
+                          CustomValidator<String>(
+                            validator: (value) {
+                              if (compareOpenAndCloseTime(
+                                  openingTime: _menuOpeningTimeController.value.text.trim(), closingTime: _menuClosingTimeController.value.text.trim())) {
+                                return 'Select valid time';
+                              }
+                              return null;
+                            },
+                          ),
+                        ]).validate(value);
                       },
                       onSaved: (newValue) {
                         serviceLocator<MenuEntity>().menuAvailableToTime = _menuClosingTimeController.value.text.trim();
@@ -300,7 +314,7 @@ class _MenuForm3PageState extends State<MenuForm3Page> with AutomaticKeepAliveCl
                   ),
                 ],
               ),
-              Divider(),
+              const Divider(),
               Column(
                 textDirection: serviceLocator<LanguageController>().targetTextDirection,
                 mainAxisSize: MainAxisSize.min,
@@ -337,7 +351,7 @@ class _MenuForm3PageState extends State<MenuForm3Page> with AutomaticKeepAliveCl
                 margin: EdgeInsetsDirectional.zero,
                 elevation: 0,
                 shape: RoundedRectangleBorder(
-                  side: BorderSide(
+                  side: const BorderSide(
                     color: Color.fromRGBO(201, 201, 203, 1),
                   ),
                   borderRadius: BorderRadiusDirectional.circular(10.0),
@@ -355,12 +369,12 @@ class _MenuForm3PageState extends State<MenuForm3Page> with AutomaticKeepAliveCl
                             style: context.labelLarge,
                             textDirection: serviceLocator<LanguageController>().targetTextDirection,
                           ),
-                          padding: EdgeInsetsDirectional.only(
+                          padding: const EdgeInsetsDirectional.only(
                             start: 16,
                           ),
                         ),
                       ),
-                      VerticalDivider(
+                      const VerticalDivider(
                         color: Color.fromRGBO(201, 201, 203, 1),
                         thickness: 1,
                       ),
@@ -382,7 +396,7 @@ class _MenuForm3PageState extends State<MenuForm3Page> with AutomaticKeepAliveCl
                             disabledBorder: InputBorder.none,
                             errorBorder: InputBorder.none,
                             isDense: true,
-                            contentPadding: EdgeInsetsDirectional.symmetric(horizontal: 8, vertical: 14),
+                            contentPadding: const EdgeInsetsDirectional.symmetric(horizontal: 8, vertical: 14),
                             suffixIcon: IconButton(
                               onPressed: () async {
                                 final String? timing = await selectTiming(context);
@@ -395,16 +409,26 @@ class _MenuForm3PageState extends State<MenuForm3Page> with AutomaticKeepAliveCl
                                   });
                                 }
                               },
-                              icon: Icon(
+                              icon: const Icon(
                                 Icons.arrow_drop_down,
                               ),
                             ),
                           ),
                           validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Enter minimum time';
-                            }
-                            return null;
+                            return ValidatorGroup<String>([
+                              const RequiredValidator<String>(errorMessage: 'Select minimum preparation time'),
+                              CustomValidator<String>(
+                                validator: (value) {
+                                  //final intInStr = RegExp(r'\d+');
+                                  final maximumTime = int.parse(_menuMaxPreparationTimeController.value.text.trim().replaceAll(RegExp(r'[^0-9]'), ''));
+                                  final minimumTime = int.parse(_menuMinPreparationTimeController.value.text.trim().replaceAll(RegExp(r'[^0-9]'), ''));
+                                  if (minimumTime > maximumTime) {
+                                    return 'Select valid minimum preparation time';
+                                  }
+                                  return null;
+                                },
+                              ),
+                            ]).validate(value);
                           },
                           onChanged: (value) {
                             serviceLocator<MenuEntity>().menuMinPreparationTime = value;
@@ -437,7 +461,7 @@ class _MenuForm3PageState extends State<MenuForm3Page> with AutomaticKeepAliveCl
                 margin: EdgeInsetsDirectional.zero,
                 elevation: 0,
                 shape: RoundedRectangleBorder(
-                  side: BorderSide(
+                  side: const BorderSide(
                     color: Color.fromRGBO(201, 201, 203, 1),
                   ),
                   borderRadius: BorderRadiusDirectional.circular(10.0),
@@ -455,12 +479,12 @@ class _MenuForm3PageState extends State<MenuForm3Page> with AutomaticKeepAliveCl
                             style: context.labelLarge,
                             textDirection: serviceLocator<LanguageController>().targetTextDirection,
                           ),
-                          padding: EdgeInsetsDirectional.only(
+                          padding: const EdgeInsetsDirectional.only(
                             start: 16,
                           ),
                         ),
                       ),
-                      VerticalDivider(
+                      const VerticalDivider(
                         color: Color.fromRGBO(201, 201, 203, 1),
                         thickness: 1,
                       ),
@@ -482,7 +506,7 @@ class _MenuForm3PageState extends State<MenuForm3Page> with AutomaticKeepAliveCl
                             disabledBorder: InputBorder.none,
                             errorBorder: InputBorder.none,
                             isDense: true,
-                            contentPadding: EdgeInsetsDirectional.symmetric(horizontal: 8, vertical: 14),
+                            contentPadding: const EdgeInsetsDirectional.symmetric(horizontal: 8, vertical: 14),
                             suffixIcon: IconButton(
                               onPressed: () async {
                                 final String? timing = await selectTiming(context);
@@ -495,16 +519,25 @@ class _MenuForm3PageState extends State<MenuForm3Page> with AutomaticKeepAliveCl
                                   });
                                 }
                               },
-                              icon: Icon(
+                              icon: const Icon(
                                 Icons.arrow_drop_down,
                               ),
                             ),
                           ),
                           validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Enter minimum time';
-                            }
-                            return null;
+                            return ValidatorGroup<String>([
+                              const RequiredValidator<String>(errorMessage: 'Select maximum preparation time'),
+                              CustomValidator<String>(
+                                validator: (value) {
+                                  final maximumTime = int.parse(_menuMaxPreparationTimeController.value.text.trim().replaceAll(RegExp(r'[^0-9]'), ''));
+                                  final minimumTime = int.parse(_menuMinPreparationTimeController.value.text.trim().replaceAll(RegExp(r'[^0-9]'), ''));
+                                  if (maximumTime < minimumTime) {
+                                    return 'Select valid maximum preparation time';
+                                  }
+                                  return null;
+                                },
+                              ),
+                            ]).validate(value);
                           },
                           onChanged: (value) {
                             serviceLocator<MenuEntity>().menuMaxPreparationTime = value;
@@ -532,7 +565,7 @@ class _MenuForm3PageState extends State<MenuForm3Page> with AutomaticKeepAliveCl
                   ),
                 ),
               ),
-              Divider(),
+              const Divider(),
               Column(
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -561,7 +594,7 @@ class _MenuForm3PageState extends State<MenuForm3Page> with AutomaticKeepAliveCl
                 focusNode: menuForm3FocusList[0],
                 textInputAction: TextInputAction.next,
                 onFieldSubmitted: (_) => fieldFocusChange(context, menuForm3FocusList[0], menuForm3FocusList[1]),
-                keyboardType: TextInputType.numberWithOptions(),
+                keyboardType: const TextInputType.numberWithOptions(),
                 decoration: InputDecoration(
                   labelText: 'Minimum Quantity',
                   hintText: 'Enter minimum stock quantity',
@@ -571,10 +604,19 @@ class _MenuForm3PageState extends State<MenuForm3Page> with AutomaticKeepAliveCl
                   isDense: true,
                 ),
                 validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Enter minimum stock quantity';
-                  }
-                  return null;
+                  return ValidatorGroup<String>([
+                    const RequiredValidator<String>(errorMessage: 'Enter minimum stock quantity'),
+                    CustomValidator<String>(
+                      validator: (value) {
+                        final maximumStockValue = int.parse(_menuMaxStockQuantityController.value.text.trim().replaceAll(RegExp(r'[^0-9]'), ''));
+                        final minimumStockValue = int.parse(_menuMinStockQuantityController.value.text.trim().replaceAll(RegExp(r'[^0-9]'), ''));
+                        if (minimumStockValue > maximumStockValue) {
+                          return 'Enter valid minimum quantity';
+                        }
+                        return null;
+                      },
+                    ),
+                  ]).validate(value);
                 },
                 onChanged: (value) {
                   serviceLocator<MenuEntity>().minStockAvailable = int.tryParse(value) ?? 0;
@@ -603,7 +645,7 @@ class _MenuForm3PageState extends State<MenuForm3Page> with AutomaticKeepAliveCl
                 textDirection: serviceLocator<LanguageController>().targetTextDirection,
                 focusNode: menuForm3FocusList[1],
                 textInputAction: TextInputAction.done,
-                keyboardType: TextInputType.numberWithOptions(),
+                keyboardType: const TextInputType.numberWithOptions(),
                 decoration: InputDecoration(
                   labelText: 'Maximum Quantity',
                   hintText: 'Enter maximum stock quantity',
@@ -613,10 +655,19 @@ class _MenuForm3PageState extends State<MenuForm3Page> with AutomaticKeepAliveCl
                   isDense: true,
                 ),
                 validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Enter maximum stock quantity';
-                  }
-                  return null;
+                  return ValidatorGroup<String>([
+                    const RequiredValidator<String>(errorMessage: 'Enter maximum stock quantity'),
+                    CustomValidator<String>(
+                      validator: (value) {
+                        final maximumStockValue = int.parse(_menuMaxStockQuantityController.value.text.trim().replaceAll(RegExp(r'[^0-9]'), ''));
+                        final minimumStockValue = int.parse(_menuMinStockQuantityController.value.text.trim().replaceAll(RegExp(r'[^0-9]'), ''));
+                        if (maximumStockValue < minimumStockValue) {
+                          return 'Enter valid maximum quantity';
+                        }
+                        return null;
+                      },
+                    ),
+                  ]).validate(value);
                 },
                 onChanged: (value) {
                   serviceLocator<MenuEntity>().maxStockAvailable = int.tryParse(value) ?? 0;
@@ -689,7 +740,7 @@ class _MenuForm3PageState extends State<MenuForm3Page> with AutomaticKeepAliveCl
         minVerticalPadding: 0,
         minLeadingWidth: 0,
         horizontalTitleGap: 0,
-        visualDensity: VisualDensity(vertical: -1, horizontal: 0),
+        visualDensity: const VisualDensity(vertical: -1, horizontal: 0),
         title: Text(
           '${_menuAvailablePreparationTimings[index]}',
           textDirection: serviceLocator<LanguageController>().targetTextDirection,
