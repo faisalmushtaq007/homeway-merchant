@@ -43,6 +43,7 @@ class _SaveStorePageState extends State<SaveStorePage> {
   TextEditingController _storeOwnerDriverNameController = TextEditingController();
   TextEditingController _storeOwnerDriverPhoneNumberController = TextEditingController();
   TextEditingController _storeOwnerDriverLicenseController = TextEditingController();
+  List<StoreOwnDeliveryPartnersInfo> _selectedStoreOwnDrivers = [];
 
   final deliveryTimeMuskeyFormatter = MuskeyFormatter(
     masks: ['### min'],
@@ -86,12 +87,15 @@ class _SaveStorePageState extends State<SaveStorePage> {
     _selectedFoodPreparationType = [];
     _selectedAcceptedPaymentModes = [];
     _selectedWorkingDays = [];
+    listBanners = [];
+    listBanners.clear();
+    _selectedStoreOwnDrivers = [];
+    _selectedStoreOwnDrivers.clear();
     initializeStoreAcceptedPaymentModes();
     initializeStoreAvailableFoodPreparationType();
     initializeStoreWorkingDays();
     initializeStoreAvailableFoodTypes();
-    listBanners = [];
-    listBanners.clear();
+    initializeStoreAvailableDrivers();
     maximumDeliveryTimeFormatter = MaskTextInputFormatter(mask: "##", filter: {"#": RegExp(r'[0-9]')}, type: MaskAutoCompletionType.lazy);
   }
 
@@ -119,6 +123,8 @@ class _SaveStorePageState extends State<SaveStorePage> {
     _storeWorkingDays = [];
     file_images = [];
     cross_file_images = [];
+    _selectedStoreOwnDrivers = [];
+    _selectedStoreOwnDrivers.clear();
     focusList.asMap().forEach((key, value) => value.dispose());
     scrollController.dispose();
     innerScrollController.dispose();
@@ -161,6 +167,8 @@ class _SaveStorePageState extends State<SaveStorePage> {
   void initializeStoreWorkingDays() {
     _storeWorkingDays = List<StoreWorkingDayAndTime>.from(localStoreWorkingDays.toList());
   }
+
+  initializeStoreAvailableDrivers() {}
 
   @override
   Widget build(BuildContext context) {
@@ -695,111 +703,48 @@ class _SaveStorePageState extends State<SaveStorePage> {
                                           AnimatedCrossFade(
                                             firstChild: const SizedBox.shrink(),
                                             secondChild: Column(
-                                              mainAxisSize: MainAxisSize.min,
-                                              crossAxisAlignment: CrossAxisAlignment.stretch,
                                               children: [
-                                                const AnimatedGap(8, duration: Duration(milliseconds: 500)),
-                                                Row(
-                                                  mainAxisSize: MainAxisSize.min,
-                                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                                  textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                                                  children: [
-                                                    Expanded(
-                                                      child: StoreTextFieldWidget(
-                                                        controller: _storeOwnerDriverNameController,
-                                                        focusNode: focusList[4],
-                                                        textInputAction: TextInputAction.next,
-                                                        onFieldSubmitted: (_) => fieldFocusChange(context, focusList[4], focusList[5]),
-                                                        decoration: InputDecoration(
-                                                          labelText: 'Driver name',
-                                                          hintText: 'Enter driver name',
-                                                          border: OutlineInputBorder(
-                                                            borderRadius: BorderRadius.circular(10),
-                                                          ),
-                                                          isDense: true,
-                                                        ),
-                                                        validator: (value) {
-                                                          if (_hasStoreOwnDeliveryService) {
-                                                            if (value == null || value.isEmpty) {
-                                                              return 'Please enter driver name';
-                                                            } else {
-                                                              return null;
-                                                            }
-                                                          }
-                                                          return null;
-                                                        },
-                                                      ),
-                                                    )
-                                                  ],
+                                                StoreOwnDriverFormField(
+                                                  key: const Key('store-own-driver-formfield'),
+                                                  onSelectionChanged: (List<StoreOwnDeliveryPartnersInfo> selectedStoreOwnDrivers) {
+                                                    _selectedStoreOwnDrivers = List<StoreOwnDeliveryPartnersInfo>.from(selectedStoreOwnDrivers);
+                                                    setState(() {});
+                                                  },
+                                                  availableDriverList: _selectedStoreOwnDrivers.toList(),
+                                                  initialSelectedAvailableDriverList: [],
                                                 ),
                                                 const AnimatedGap(12, duration: Duration(milliseconds: 500)),
-                                                Row(
-                                                  mainAxisSize: MainAxisSize.min,
-                                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                                  textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                                                  children: [
-                                                    Expanded(
-                                                      child: StoreTextFieldWidget(
-                                                        controller: _storeOwnerDriverPhoneNumberController,
-                                                        focusNode: focusList[5],
-                                                        textInputAction: TextInputAction.next,
-                                                        onFieldSubmitted: (_) => fieldFocusChange(context, focusList[5], focusList[6]),
-                                                        decoration: InputDecoration(
-                                                          labelText: 'Driver mobile number',
-                                                          hintText: 'Enter driver mobile number',
-                                                          border: OutlineInputBorder(
-                                                            borderRadius: BorderRadius.circular(10),
-                                                          ),
-                                                          isDense: true,
-                                                        ),
-                                                        validator: (value) {
-                                                          if (_hasStoreOwnDeliveryService) {
-                                                            if (value == null || value.isEmpty) {
-                                                              return 'Please enter driver mobile number';
-                                                            } else {
-                                                              return null;
-                                                            }
-                                                          }
-                                                          return null;
-                                                        },
+                                                ElevatedButton.icon(
+                                                  style: ElevatedButton.styleFrom(
+                                                    //visualDensity: VisualDensity(vertical: -1, horizontal: 0),
+                                                    shape: const RoundedRectangleBorder(
+                                                      borderRadius: BorderRadius.all(
+                                                        Radius.circular(10),
                                                       ),
-                                                    )
-                                                  ],
-                                                ),
-                                                const AnimatedGap(12, duration: Duration(milliseconds: 500)),
-                                                Row(
-                                                  mainAxisSize: MainAxisSize.min,
-                                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                                  textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                                                  children: [
-                                                    Expanded(
-                                                      child: StoreTextFieldWidget(
-                                                        controller: _storeOwnerDriverLicenseController,
-                                                        focusNode: focusList[6],
-                                                        textInputAction: TextInputAction.next,
-                                                        onFieldSubmitted: (_) => fieldFocusChange(context, focusList[6], focusList[7]),
-                                                        decoration: InputDecoration(
-                                                          labelText: 'Driver driving license number',
-                                                          hintText: 'Enter driver driving license',
-                                                          border: OutlineInputBorder(
-                                                            borderRadius: BorderRadius.circular(10),
-                                                          ),
-                                                          isDense: true,
-                                                        ),
-                                                        validator: (value) {
-                                                          if (_hasStoreOwnDeliveryService) {
-                                                            if (value == null || value.isEmpty) {
-                                                              return 'Please enter driver driving license';
-                                                            } else {
-                                                              return null;
-                                                            }
-                                                          }
-                                                          return null;
-                                                        },
-                                                      ),
-                                                    )
-                                                  ],
-                                                ),
+                                                    ),
+                                                    backgroundColor: const Color.fromRGBO(238, 238, 238, 1.0),
+                                                  ),
+                                                  icon: const Icon(
+                                                    Icons.add,
+                                                    color: Color.fromRGBO(42, 45, 48, 1.0),
+                                                  ),
+                                                  label: Text(
+                                                    'Add Driver',
+                                                    style: const TextStyle(
+                                                      color: Color.fromRGBO(42, 45, 50, 1.0),
+                                                    ),
+                                                    textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                                  ).translate(),
+                                                  onPressed: () async {
+                                                    final List<StoreOwnDeliveryPartnersInfo>? returnSelectedDriver =
+                                                        await context.push<List<StoreOwnDeliveryPartnersInfo>>(Routes.ALL_DRIVER_PAGE);
+                                                    if (returnSelectedDriver.isNotNullOrEmpty) {
+                                                      setState(() {
+                                                        _selectedStoreOwnDrivers = List<StoreOwnDeliveryPartnersInfo>.from(returnSelectedDriver!.toList());
+                                                      });
+                                                    }
+                                                  },
+                                                )
                                               ],
                                             ),
                                             crossFadeState: (_hasStoreOwnDeliveryService == true) ? CrossFadeState.showSecond : CrossFadeState.showFirst,

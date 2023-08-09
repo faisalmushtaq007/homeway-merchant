@@ -398,7 +398,6 @@ class _SaveDriverPageView extends WidgetView<SaveDriverPage, _SaveDriverPageCont
                                             borderRadius: BorderRadius.circular(10),
                                           ),
                                           isDense: true,
-                                          suffixText: state.currency,
                                         ),
                                         validator: (value) {
                                           if (value == null || value.isEmpty) {
@@ -458,7 +457,6 @@ class _SaveDriverPageView extends WidgetView<SaveDriverPage, _SaveDriverPageCont
                                               borderRadius: BorderRadius.circular(10),
                                             ),
                                             isDense: true,
-                                            suffixText: state.currency,
                                             prefixIcon: const Icon(
                                               Icons.drive_eta,
                                             )),

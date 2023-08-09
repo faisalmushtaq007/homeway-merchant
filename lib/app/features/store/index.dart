@@ -265,6 +265,7 @@ import 'package:homemakers_merchant/utils/functional/either/either.dart';
 import 'package:sembast/sembast.dart';
 import 'package:homemakers_merchant/shared/states/result_state.dart';
 
+part 'package:homemakers_merchant/app/features/store/presentation/widgets/store_own_drivers_form_field_widget.dart';
 part 'package:homemakers_merchant/app/features/store/presentation/widgets/store_card_widget.dart';
 part 'package:homemakers_merchant/app/features/store/presentation/widgets/driver_card_widget.dart';
 part 'package:homemakers_merchant/app/features/store/presentation/widgets/store_text_field_widget.dart';
