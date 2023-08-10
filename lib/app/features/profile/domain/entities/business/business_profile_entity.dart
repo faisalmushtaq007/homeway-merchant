@@ -1,13 +1,13 @@
-import 'package:homemakers_merchant/app/features/address/domain/entities/address_model.dart';
+part of 'package:homemakers_merchant/app/features/profile/index.dart';
 
 class BusinessProfileEntity {
   const BusinessProfileEntity({
-    this.userName,
+    this.userName = '',
     this.id = -1,
-    this.businessPhoneNumber,
+    this.businessPhoneNumber = '',
     this.businessAddress,
-    this.businessEmailAddress,
-    this.businessName,
+    this.businessEmailAddress = '',
+    this.businessName = '',
   });
 
   factory BusinessProfileEntity.fromMap(Map<String, dynamic> map) {
@@ -15,7 +15,7 @@ class BusinessProfileEntity {
       id: map['id'] as int,
       userName: map['userName'] as String,
       businessPhoneNumber: map['businessPhoneNumber'] as String,
-      businessAddress: map['businessAddress'] as AddressModel,
+      businessAddress: map['businessAddress'] ?? AddressModel() as AddressModel,
       businessEmailAddress: map['businessEmailAddress'] as String,
       businessName: map['businessName'] as String,
     );

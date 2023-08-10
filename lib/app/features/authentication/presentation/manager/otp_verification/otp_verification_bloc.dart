@@ -8,7 +8,7 @@ import 'package:homemakers_merchant/app/features/authentication/domain/entities/
 import 'package:homemakers_merchant/app/features/authentication/domain/entities/phone_number_verification/verify_otp_entity.dart';
 import 'package:homemakers_merchant/app/features/authentication/domain/use_cases/send_otp_usecase.dart';
 import 'package:homemakers_merchant/app/features/authentication/domain/use_cases/verify_otp_usecase.dart';
-import 'package:homemakers_merchant/app/features/profile/domain/entities/user_entity.dart';
+import 'package:homemakers_merchant/app/features/profile/index.dart';
 import 'package:homemakers_merchant/core/extensions/global_extensions/dart_extensions.dart';
 import 'package:homemakers_merchant/shared/states/result_state.dart';
 import 'package:homemakers_merchant/utils/app_equatable/app_equatable.dart';

@@ -1,34 +1,4 @@
-import 'package:flex_color_scheme/flex_color_scheme.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
-import 'package:go_router/go_router.dart';
-import 'package:homemakers_merchant/app/features/authentication/presentation/manager/phone_number_verification_bloc.dart';
-import 'package:homemakers_merchant/app/features/authentication/presentation/pages/phone_number_verification_page.dart';
-import 'package:homemakers_merchant/app/features/profile/common/profile_status_enum.dart';
-import 'package:homemakers_merchant/app/features/profile/domain/entities/bank/bank_info_tile_model.dart';
-import 'package:homemakers_merchant/app/features/profile/domain/entities/user_entity.dart';
-import 'package:homemakers_merchant/app/features/profile/presentation/widgets/bank/bank_information_tile_widget.dart';
-import 'package:homemakers_merchant/app/features/profile/presentation/widgets/bank/confirm_bank_information_dialog.dart';
-import 'package:homemakers_merchant/base/app_base.dart';
-import 'package:homemakers_merchant/bootup/injection_container.dart';
-import 'package:homemakers_merchant/config/translation/app_translator.dart';
-import 'package:homemakers_merchant/config/translation/extension/string_extension.dart';
-import 'package:homemakers_merchant/config/translation/extension/text_extension.dart';
-import 'package:homemakers_merchant/config/translation/language_controller.dart';
-import 'package:homemakers_merchant/config/translation/widgets/language_selection_widget.dart';
-import 'package:homemakers_merchant/core/constants/global_app_constants.dart';
-import 'package:homemakers_merchant/core/extensions/app_extension.dart';
-import 'package:homemakers_merchant/core/extensions/string/pattern.dart';
-import 'package:homemakers_merchant/shared/router/app_pages.dart';
-import 'package:homemakers_merchant/shared/widgets/app/page_body.dart';
-import 'package:homemakers_merchant/shared/widgets/universal/animated_gap/gap.dart';
-import 'package:homemakers_merchant/shared/widgets/universal/animated_gap/src/widgets/gap.dart';
-import 'package:homemakers_merchant/shared/widgets/universal/multi_stream_builder/multi_stream_builder.dart';
-import 'package:homemakers_merchant/shared/widgets/universal/phone_number_text_field/phone_form_field_bloc.dart';
-import 'package:homemakers_merchant/shared/widgets/universal/phone_number_text_field/phonenumber_form_field_widget.dart';
-import 'package:homemakers_merchant/utils/input_formatters/muskey.dart';
+part of 'package:homemakers_merchant/app/features/profile/index.dart';
 
 class BankInformationPage extends StatefulWidget {
   const BankInformationPage({super.key});

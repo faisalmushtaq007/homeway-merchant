@@ -14,7 +14,7 @@ import 'package:homemakers_merchant/app/features/permission/presentation/bloc/pe
 
 import 'package:homemakers_merchant/app/features/profile/presentation/manager/bank/bank_information_bloc.dart';
 import 'package:homemakers_merchant/app/features/profile/presentation/manager/document/business_document_bloc.dart';
-import 'package:homemakers_merchant/app/features/profile/presentation/manager/user_model_storage_controller.dart';
+import 'package:homemakers_merchant/app/features/profile/index.dart';
 import 'package:homemakers_merchant/app/features/store/presentation/manager/store_bloc.dart';
 import 'package:homemakers_merchant/config/permission/permission_controller.dart';
 import 'package:homemakers_merchant/config/permission/permission_service.dart';

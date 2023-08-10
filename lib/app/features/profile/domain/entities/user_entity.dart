@@ -1,16 +1,9 @@
-import 'package:homemakers_merchant/app/features/address/domain/entities/address_model.dart';
-import 'package:homemakers_merchant/app/features/menu/index.dart';
-import 'package:homemakers_merchant/app/features/profile/common/profile_status_enum.dart';
-import 'package:homemakers_merchant/app/features/profile/domain/entities/business/business_profile_entity.dart';
-import 'package:homemakers_merchant/app/features/profile/domain/entities/business/business_type_entity.dart';
-import 'package:homemakers_merchant/app/features/store/domain/entities/store_entity.dart';
-import 'package:homemakers_merchant/core/common/entity/ratingAndReviewEntity.dart';
-import 'package:network_manager/network_manager.dart';
+part of 'package:homemakers_merchant/app/features/profile/index.dart';
 
 class AppUserEntity extends INetworkModel<AppUserEntity> {
   AppUserEntity({
     this.userID = -1,
-    this.phoneNumber,
+    this.phoneNumber = '',
     this.businessProfile,
     this.stores = const [],
     this.token = '',
@@ -28,22 +21,22 @@ class AppUserEntity extends INetworkModel<AppUserEntity> {
     return AppUserEntity(
       userID: map['userID'] as int,
       phoneNumber: map['phoneNumber'] as String,
-      businessProfile: (map['businessProfile'] != null) ? BusinessProfileEntity.fromMap(map['businessProfile']) : null,
+      businessProfile: (map['businessProfile'] != null) ? BusinessProfileEntity.fromMap(map['businessProfile']) : BusinessProfileEntity(),
       stores: map['stores'].map((e) => StoreEntity.fromMap(e)).toList().cast<StoreEntity>(),
       token: map['token'] as String,
-      tokenCreationDateTime: map['tokenCreationDateTime'] as DateTime,
+      tokenCreationDateTime: map['tokenCreationDateTime'] ?? DateTime.now() as DateTime,
       hasUserAuthenticated: map['hasUserAuthenticated'] as bool,
-      businessTypeEntity: (map['businessTypeEntity'] != null) ? BusinessTypeEntity.fromMap(map['businessTypeEntity']) : null,
+      businessTypeEntity: (map['businessTypeEntity'] != null) ? BusinessTypeEntity.fromMap(map['businessTypeEntity']) : BusinessTypeEntity(),
       currentProfileStatus: (map['currentProfileStatus'] != null) ? CurrentProfileStatus.values.byName(map['currentProfileStatus']) : CurrentProfileStatus.none,
       menus: map['menus'].map((e) => MenuEntity.fromMap(e)).toList().cast<MenuEntity>(),
       drivers: map['drivers'].map((e) => StoreOwnDeliveryPartnersInfo.fromMap(e)).toList().cast<StoreOwnDeliveryPartnersInfo>(),
       addons: map['addons'].map((e) => Addons.fromMap(e)).toList().cast<Addons>(),
-      ratingAndReviewEntity: (map['ratingAndReviewEntity'] != null) ? RatingAndReviewEntity.fromMap(map['ratingAndReviewEntity']) : null,
+      ratingAndReviewEntity: (map['ratingAndReviewEntity'] != null) ? RatingAndReviewEntity.fromMap(map['ratingAndReviewEntity']) : RatingAndReviewEntity(),
     );
   }
 
   int userID;
-  String? phoneNumber;
+  String phoneNumber;
   BusinessProfileEntity? businessProfile;
   List<StoreEntity> stores;
   List<MenuEntity> menus;

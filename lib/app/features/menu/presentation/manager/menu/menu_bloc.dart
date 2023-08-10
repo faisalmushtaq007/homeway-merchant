@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:homemakers_merchant/app/app.dart';
 import 'package:homemakers_merchant/app/features/address/domain/entities/address_model.dart';
 import 'package:homemakers_merchant/app/features/menu/index.dart';
-import 'package:homemakers_merchant/app/features/profile/domain/entities/user_entity.dart';
+import 'package:homemakers_merchant/app/features/profile/index.dart';
 import 'package:homemakers_merchant/app/features/store/domain/entities/store_entity.dart';
 import 'package:homemakers_merchant/bootup/injection_container.dart';
 import 'package:homemakers_merchant/shared/states/data_source_state.dart';

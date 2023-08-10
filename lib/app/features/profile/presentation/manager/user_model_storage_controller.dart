@@ -1,11 +1,4 @@
-import 'dart:async';
-
-import 'package:flutter/foundation.dart';
-import 'package:homemakers_merchant/app/features/profile/domain/entities/user_entity.dart';
-
-import 'package:homemakers_merchant/bootup/injection_container.dart';
-import 'package:homemakers_merchant/core/constants/global_app_constants.dart';
-import 'package:homemakers_merchant/core/interface/storage_interface.dart';
+part of 'package:homemakers_merchant/app/features/profile/index.dart';
 
 class UserModelStorageController with ChangeNotifier {
   UserModelStorageController(this._userModelStorageService);

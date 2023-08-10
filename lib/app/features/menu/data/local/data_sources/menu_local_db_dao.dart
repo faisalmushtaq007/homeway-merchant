@@ -112,9 +112,13 @@ class MenuLocalDbRepository<Menu extends MenuEntity> implements BaseMenuLocalDbR
               await _db,
               entity.toMap(),
             );
-        return MenuEntity.fromMap(result);
+        if (result != null) {
+          return MenuEntity.fromMap(result);
+        } else {
+          return upsert(id: uniqueId, entity: entity);
+        }
       } else {
-        return upsert(id: uniqueId.value, entity: entity);
+        return upsert(id: uniqueId, entity: entity);
       }
     });
     return result;

@@ -1,35 +1,4 @@
-import 'package:animator/animator.dart';
-import 'package:flex_color_scheme/flex_color_scheme.dart';
-import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:go_router/go_router.dart';
-import 'package:homemakers_merchant/app/features/permission/presentation/bloc/permission_bloc.dart';
-import 'package:homemakers_merchant/app/features/profile/common/profile_status_enum.dart';
-import 'package:homemakers_merchant/app/features/profile/data/local/data_sources/business_type_list_data.dart';
-import 'package:homemakers_merchant/app/features/profile/domain/entities/business/business_type_entity.dart';
-import 'package:homemakers_merchant/app/features/profile/domain/entities/user_entity.dart';
-import 'package:homemakers_merchant/base/widget_view.dart';
-import 'package:homemakers_merchant/bootup/injection_container.dart';
-import 'package:homemakers_merchant/config/translation/extension/text_extension.dart';
-import 'package:homemakers_merchant/config/translation/language_controller.dart';
-import 'package:homemakers_merchant/config/translation/widgets/language_selection_widget.dart';
-import 'package:homemakers_merchant/core/constants/global_app_constants.dart';
-import 'package:homemakers_merchant/core/extensions/app_extension.dart';
-import 'package:homemakers_merchant/shared/widgets/app/app_logo.dart';
-import 'package:homemakers_merchant/shared/widgets/app/page_body.dart';
-import 'package:homemakers_merchant/shared/widgets/universal/animate_do/animate_do.dart';
-import 'package:homemakers_merchant/shared/widgets/universal/animated_gap/gap.dart';
-import 'package:homemakers_merchant/shared/widgets/universal/carousel_animation/carousel_animations.dart';
-import 'package:homemakers_merchant/shared/widgets/universal/constrained_scrollable_views/constrained_scrollable_views.dart';
-import 'package:homemakers_merchant/shared/router/app_pages.dart';
-import 'package:homemakers_merchant/shared/widgets/app/page_body.dart';
-import 'package:go_router/go_router.dart';
-import 'package:homemakers_merchant/shared/widgets/universal/infinity_scroll/infinite_carousel.dart';
-import 'package:homemakers_merchant/utils/app_scroll_behavior.dart';
+part of 'package:homemakers_merchant/app/features/profile/index.dart';
 
 class ConfirmBusinessTypePage extends StatefulWidget {
   const ConfirmBusinessTypePage({super.key});

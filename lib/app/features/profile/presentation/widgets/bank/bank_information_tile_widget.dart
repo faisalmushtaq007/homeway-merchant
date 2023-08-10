@@ -1,9 +1,4 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
-import 'package:homemakers_merchant/app/features/profile/domain/entities/bank/bank_info_tile_model.dart';
-import 'package:homemakers_merchant/bootup/injection_container.dart';
-import 'package:homemakers_merchant/config/translation/language_controller.dart';
-import 'package:homemakers_merchant/core/extensions/app_extension.dart';
+part of 'package:homemakers_merchant/app/features/profile/index.dart';
 
 class BankInformationTileWidget extends StatelessWidget {
   const BankInformationTileWidget({
@@ -23,16 +18,14 @@ class BankInformationTileWidget extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.stretch,
-          textDirection:
-              serviceLocator<LanguageController>().targetTextDirection,
+          textDirection: serviceLocator<LanguageController>().targetTextDirection,
           children: [
             Text(
               bankInfoTile.label,
               style: context.labelLarge!.copyWith(
                 color: const Color.fromRGBO(165, 166, 168, 1),
               ),
-              textDirection:
-                  serviceLocator<LanguageController>().targetTextDirection,
+              textDirection: serviceLocator<LanguageController>().targetTextDirection,
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
             ),
@@ -44,8 +37,7 @@ class BankInformationTileWidget extends StatelessWidget {
               style: context.labelLarge!.copyWith(
                 color: const Color.fromRGBO(42, 45, 50, 1),
               ),
-              textDirection:
-                  serviceLocator<LanguageController>().targetTextDirection,
+              textDirection: serviceLocator<LanguageController>().targetTextDirection,
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
             ),

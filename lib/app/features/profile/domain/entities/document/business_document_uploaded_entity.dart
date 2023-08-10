@@ -1,6 +1,4 @@
-import 'package:flutter/material.dart';
-import 'package:homemakers_merchant/app/features/profile/common/document_type_enum.dart';
-import 'package:homemakers_merchant/utils/app_equatable/src/app_equatable.dart';
+part of 'package:homemakers_merchant/app/features/profile/index.dart';
 
 class BusinessDocumentUploadedEntity with AppEquatable {
   BusinessDocumentUploadedEntity({
@@ -20,17 +18,12 @@ class BusinessDocumentUploadedEntity with AppEquatable {
     return BusinessDocumentUploadedEntity(
       documentType: map['documentType'] as DocumentType,
       documentIDNumber: map['documentIDNumber'] as String,
-      documentFrontAssets:
-          map['documentFrontAssets'] as BusinessDocumentAssetsEntity,
-      documentBackAssets:
-          map['documentBackAssets'] as BusinessDocumentAssetsEntity,
-      documentFrontAssetsUploadStatus:
-          map['documentFrontAssetsUploadStatus'] as DocumentUploadStatus,
-      documentBackAssetsUploadStatus:
-          map['documentBackAssetsUploadStatus'] as DocumentUploadStatus,
+      documentFrontAssets: map['documentFrontAssets'] as BusinessDocumentAssetsEntity,
+      documentBackAssets: map['documentBackAssets'] as BusinessDocumentAssetsEntity,
+      documentFrontAssetsUploadStatus: map['documentFrontAssetsUploadStatus'] as DocumentUploadStatus,
+      documentBackAssetsUploadStatus: map['documentBackAssetsUploadStatus'] as DocumentUploadStatus,
       hasDocumentFrontSide: map['hasDocumentFrontSide'] as bool,
-      businessDocumentAssetsEntity: map['businessDocumentAssetsEntity']
-          as List<BusinessDocumentAssetsEntity>,
+      businessDocumentAssetsEntity: map['businessDocumentAssetsEntity'] as List<BusinessDocumentAssetsEntity>,
       hasButtonEnable: map['hasButtonEnable'] as bool,
       hasTextFieldEnable: map['hasTextFieldEnable'] as bool,
     );
@@ -81,13 +74,10 @@ class BusinessDocumentUploadedEntity with AppEquatable {
       documentIDNumber: documentIDNumber ?? this.documentIDNumber,
       documentFrontAssets: documentFrontAssets ?? this.documentFrontAssets,
       documentBackAssets: documentBackAssets ?? this.documentBackAssets,
-      documentFrontAssetsUploadStatus: documentFrontAssetsUploadStatus ??
-          this.documentFrontAssetsUploadStatus,
-      documentBackAssetsUploadStatus:
-          documentBackAssetsUploadStatus ?? this.documentBackAssetsUploadStatus,
+      documentFrontAssetsUploadStatus: documentFrontAssetsUploadStatus ?? this.documentFrontAssetsUploadStatus,
+      documentBackAssetsUploadStatus: documentBackAssetsUploadStatus ?? this.documentBackAssetsUploadStatus,
       hasDocumentFrontSide: hasDocumentFrontSide ?? this.hasDocumentFrontSide,
-      businessDocumentAssetsEntity:
-          businessDocumentAssetsEntity ?? this.businessDocumentAssetsEntity,
+      businessDocumentAssetsEntity: businessDocumentAssetsEntity ?? this.businessDocumentAssetsEntity,
       hasButtonEnable: hasButtonEnable ?? this.hasButtonEnable,
       hasTextFieldEnable: hasTextFieldEnable ?? this.hasTextFieldEnable,
     );
@@ -140,10 +130,8 @@ class BusinessDocumentAssetsEntity with AppEquatable {
       assetsUploadStatus: map['assetsUploadStatus'] as DocumentUploadStatus,
       assetIdNumber: map['assetIdNumber'] as String,
       hasAssetsFrontSide: map['hasAssetsFrontSide'] as bool,
-      backSideAssetsInfo:
-          map['backSideAssetsInfo'] as BusinessDocumentAssetsEntity,
-      textEditingController:
-          map['textEditingController'] as TextEditingController,
+      backSideAssetsInfo: map['backSideAssetsInfo'] as BusinessDocumentAssetsEntity,
+      textEditingController: map['textEditingController'] as TextEditingController,
     );
   }
 
@@ -208,8 +196,7 @@ class BusinessDocumentAssetsEntity with AppEquatable {
       assetIdNumber: assetIdNumber ?? this.assetIdNumber,
       hasAssetsFrontSide: hasAssetsFrontSide ?? this.hasAssetsFrontSide,
       backSideAssetsInfo: backSideAssetsInfo ?? this.backSideAssetsInfo,
-      textEditingController:
-          textEditingController ?? this.textEditingController,
+      textEditingController: textEditingController ?? this.textEditingController,
     );
   }
 

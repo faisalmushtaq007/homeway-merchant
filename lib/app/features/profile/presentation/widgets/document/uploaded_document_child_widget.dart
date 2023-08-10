@@ -1,12 +1,4 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:homemakers_merchant/app/features/profile/domain/entities/document/business_document_uploaded_entity.dart';
-import 'package:homemakers_merchant/app/features/profile/presentation/manager/document/business_document_bloc.dart';
-import 'package:homemakers_merchant/bootup/injection_container.dart';
-import 'package:homemakers_merchant/config/translation/language_controller.dart';
-import 'package:homemakers_merchant/utils/app_log.dart';
-import 'package:implicitly_animated_reorderable_list_2/implicitly_animated_reorderable_list_2.dart';
-import 'package:implicitly_animated_reorderable_list_2/transitions.dart';
+part of 'package:homemakers_merchant/app/features/profile/index.dart';
 
 class UploadedDocumentChildWidget extends StatefulWidget {
   const UploadedDocumentChildWidget({
@@ -31,12 +23,10 @@ class UploadedDocumentChildWidget extends StatefulWidget {
   final ValueChanged<String>? onSubmitted;
 
   @override
-  State<UploadedDocumentChildWidget> createState() =>
-      _UploadedDocumentChildWidgetState();
+  State<UploadedDocumentChildWidget> createState() => _UploadedDocumentChildWidgetState();
 }
 
-class _UploadedDocumentChildWidgetState
-    extends State<UploadedDocumentChildWidget> {
+class _UploadedDocumentChildWidgetState extends State<UploadedDocumentChildWidget> {
   List<BusinessDocumentAssetsEntity> allBusinessDocumentAssets = [];
   List<Widget> allBusinessDocumentAssetsWidgets = [];
   ScrollController scrollController = ScrollController();
@@ -44,8 +34,7 @@ class _UploadedDocumentChildWidgetState
 
   @override
   void initState() {
-    textEditingController =
-        widget.textEditingController ?? TextEditingController();
+    textEditingController = widget.textEditingController ?? TextEditingController();
     allBusinessDocumentAssets = [];
     allBusinessDocumentAssets.clear();
     allBusinessDocumentAssetsWidgets = [];
@@ -91,9 +80,7 @@ class _UploadedDocumentChildWidgetState
                 sizeFraction: 0.7,
                 curve: Curves.easeInOut,
                 animation: animation,
-                child: index == 0 && widget.hasEnableTextField
-                    ? _buildTextFieldItem(assets, index)
-                    : _buildItem(assets, index),
+                child: index == 0 && widget.hasEnableTextField ? _buildTextFieldItem(assets, index) : _buildItem(assets, index),
               );
             },
             updateItemBuilder: (context, animation, assets) {
@@ -165,8 +152,7 @@ class _UploadedDocumentChildWidgetState
               controller: textEditingController,
               keyboardType: TextInputType.text,
               textInputAction: TextInputAction.done,
-              textDirection:
-                  serviceLocator<LanguageController>().targetTextDirection,
+              textDirection: serviceLocator<LanguageController>().targetTextDirection,
               decoration: InputDecoration(
                 labelText: widget.labelOfTextField,
                 alignLabelWithHint: true,
@@ -178,8 +164,7 @@ class _UploadedDocumentChildWidgetState
                 context.read<BusinessDocumentBloc>().add(
                       TradeLicenseNumberOnChanged(
                         textEditingController: textEditingController,
-                        currentUpdatedValue:
-                            textEditingController.value.text.trim(),
+                        currentUpdatedValue: textEditingController.value.text.trim(),
                         index: index,
                       ),
                     );

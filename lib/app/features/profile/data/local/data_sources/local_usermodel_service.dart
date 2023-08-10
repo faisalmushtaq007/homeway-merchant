@@ -1,11 +1,4 @@
-import 'package:homemakers_merchant/bootup/bootstrap.dart';
-import 'package:homemakers_merchant/bootup/injection_container.dart';
-import 'package:homemakers_merchant/core/interface/storage_interface.dart';
-import 'dart:async';
-
-import 'package:flutter/foundation.dart';
-import 'package:hive/hive.dart';
-import 'package:homemakers_merchant/utils/app_data_dir/app_data_dir.dart';
+part of 'package:homemakers_merchant/app/features/profile/index.dart';
 
 class LocalUserModelService implements IStorageService {
   LocalUserModelService(this.boxName);

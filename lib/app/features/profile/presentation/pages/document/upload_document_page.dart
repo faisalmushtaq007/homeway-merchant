@@ -1,37 +1,4 @@
-import 'dart:io';
-import 'package:file_saver/file_saver.dart' as fileSaver;
-import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
-import 'package:go_router/go_router.dart';
-import 'package:google_ml_kit/google_ml_kit.dart';
-import 'package:homemakers_merchant/app/features/profile/common/document_picker_source_enum.dart';
-import 'package:homemakers_merchant/app/features/profile/common/document_type_enum.dart';
-import 'package:homemakers_merchant/app/features/profile/presentation/manager/document/business_document_bloc.dart';
-import 'package:homemakers_merchant/app/features/profile/presentation/widgets/bank/confirm_bank_information_dialog.dart';
-import 'package:homemakers_merchant/app/features/profile/presentation/widgets/document/image_edit/common_widget.dart';
-import 'package:homemakers_merchant/app/features/profile/presentation/widgets/document/image_edit/crop_editor_helper.dart';
-import 'package:homemakers_merchant/app/features/profile/presentation/widgets/document/uploaded_document_placeholder_widget.dart';
-import 'package:homemakers_merchant/config/translation/extension/text_extension.dart';
-import 'package:homemakers_merchant/core/extensions/app_extension.dart';
-import 'package:homemakers_merchant/shared/widgets/universal/animated_gap/gap.dart';
-import 'package:homemakers_merchant/shared/widgets/universal/constrained_scrollable_views/constrained_scrollable_views.dart';
-import 'package:homemakers_merchant/shared/widgets/universal/one_context/one_context.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:new_image_crop/data/data_editor_config.dart';
-import 'package:new_image_crop/ui/dialog/image_editor_component/image_editor_plane.dart';
-import 'package:path/path.dart' as path;
-import 'package:permission_handler/permission_handler.dart';
-import 'package:google_mlkit_text_recognition/google_mlkit_text_recognition.dart';
-import 'package:flex_color_scheme/flex_color_scheme.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
-import 'package:homemakers_merchant/app/features/permission/presentation/bloc/permission_bloc.dart';
-import 'package:homemakers_merchant/bootup/injection_container.dart';
-import 'package:homemakers_merchant/config/translation/language_controller.dart';
-import 'package:homemakers_merchant/config/translation/widgets/language_selection_widget.dart';
-import 'package:homemakers_merchant/core/constants/global_app_constants.dart';
-import 'package:homemakers_merchant/shared/widgets/app/page_body.dart';
+part of 'package:homemakers_merchant/app/features/profile/index.dart';
 
 class UploadDocumentPage extends StatefulWidget {
   const UploadDocumentPage({this.documentType = DocumentType.tradeLicence, super.key});

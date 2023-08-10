@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+part of 'package:homemakers_merchant/app/features/profile/index.dart';
 
 abstract class ICommonDialogProperties {
   /// The title for the dialog box

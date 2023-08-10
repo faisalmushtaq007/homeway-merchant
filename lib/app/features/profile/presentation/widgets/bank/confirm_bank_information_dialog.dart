@@ -1,8 +1,4 @@
-import 'package:flutter/material.dart';
-import 'package:homemakers_merchant/app/features/profile/presentation/widgets/bank/common_dialog_properties.dart';
-import 'package:homemakers_merchant/bootup/injection_container.dart';
-import 'package:homemakers_merchant/config/translation/language_controller.dart';
-import 'package:homemakers_merchant/core/extensions/app_extension.dart';
+part of 'package:homemakers_merchant/app/features/profile/index.dart';
 
 // copied from flutter calendar picker
 const Duration _dialogSizeAnimationDuration = Duration(milliseconds: 200);
@@ -32,8 +28,7 @@ Future<T?> showConfirmationDialog<T extends Object?>({
 
   return showGeneralDialog(
     context: context,
-    pageBuilder: (BuildContext buildContext, Animation<double> animation,
-        Animation<double> secondaryAnimation) {
+    pageBuilder: (BuildContext buildContext, Animation<double> animation, Animation<double> secondaryAnimation) {
       final Widget pageChild = Builder(builder: builder);
       return SafeArea(
         top: false,
@@ -46,8 +41,7 @@ Future<T?> showConfirmationDialog<T extends Object?>({
     barrierLabel: MaterialLocalizations.of(context).modalBarrierDismissLabel,
     barrierColor: barrierColor ?? Colors.black54,
     transitionDuration: duration ?? const Duration(milliseconds: 400),
-    transitionBuilder: (BuildContext context, Animation<double> animation,
-        Animation<double> secondaryAnimation, Widget child) {
+    transitionBuilder: (BuildContext context, Animation<double> animation, Animation<double> secondaryAnimation, Widget child) {
       return FadeTransition(opacity: animation, child: child);
     },
   );
@@ -55,8 +49,7 @@ Future<T?> showConfirmationDialog<T extends Object?>({
 
 /// This is a support widget that returns an Dialog with checkboxes as a Widget.
 /// It is designed to be used in the showDialog method of other fields.
-class ResponsiveDialog extends StatefulWidget
-    implements ICommonDialogProperties {
+class ResponsiveDialog extends StatefulWidget implements ICommonDialogProperties {
   ResponsiveDialog({
     super.key,
     required this.context,
@@ -121,12 +114,8 @@ class _ResponsiveDialogState extends State<ResponsiveDialog> {
 
   Widget header(BuildContext context, Orientation orientation) {
     return Container(
-      height: (orientation == Orientation.portrait)
-          ? kPickerHeaderPortraitHeight
-          : null,
-      width: (orientation == Orientation.landscape)
-          ? kPickerHeaderLandscapeWidth
-          : null,
+      height: (orientation == Orientation.portrait) ? kPickerHeaderPortraitHeight : null,
+      width: (orientation == Orientation.landscape) ? kPickerHeaderLandscapeWidth : null,
       padding: const EdgeInsetsDirectional.only(
         top: 20,
         start: 12,
@@ -139,8 +128,7 @@ class _ResponsiveDialogState extends State<ResponsiveDialog> {
         textDirection: serviceLocator<LanguageController>().targetTextDirection,
         children: [
           Text(
-            textDirection:
-                serviceLocator<LanguageController>().targetTextDirection,
+            textDirection: serviceLocator<LanguageController>().targetTextDirection,
             widget.title!,
             style: context.titleLarge!.copyWith(fontWeight: FontWeight.bold),
           ),
@@ -169,37 +157,28 @@ class _ResponsiveDialogState extends State<ResponsiveDialog> {
                 textStyle: context.labelLarge,
               ),
               child: Text(
-                textDirection:
-                    serviceLocator<LanguageController>().targetTextDirection,
+                textDirection: serviceLocator<LanguageController>().targetTextDirection,
                 widget.cancelText ?? localizations.cancelButtonLabel,
                 style: context.labelLarge!.copyWith(
                   color: Color.fromRGBO(127, 129, 132, 1.0),
                 ),
               ),
-              onPressed: () => (widget.cancelPressed == null)
-                  ? Navigator.of(context).pop()
-                  : widget.cancelPressed!(),
+              onPressed: () => (widget.cancelPressed == null) ? Navigator.of(context).pop() : widget.cancelPressed!(),
             )
           else
             const SizedBox.shrink(),
           ElevatedButton(
             key: const Key('confirm-dialog-positive-button'),
-            style: ElevatedButton.styleFrom(
-                backgroundColor: Color.fromRGBO(69, 201, 125, 1),
-                textStyle: context.labelLarge,
-                minimumSize: const Size(120, 36)),
+            style: ElevatedButton.styleFrom(backgroundColor: Color.fromRGBO(69, 201, 125, 1), textStyle: context.labelLarge, minimumSize: const Size(120, 36)),
             child: Text(
-              textDirection:
-                  serviceLocator<LanguageController>().targetTextDirection,
+              textDirection: serviceLocator<LanguageController>().targetTextDirection,
               widget.confirmText ?? localizations.okButtonLabel,
               style: context.labelLarge!.copyWith(
                 color: Colors.white,
               ),
               //style: TextStyle(color: _buttonTextColor),
             ),
-            onPressed: () => (widget.okPressed == null)
-                ? Navigator.of(context).pop()
-                : widget.okPressed!(),
+            onPressed: () => (widget.okPressed == null) ? Navigator.of(context).pop() : widget.okPressed!(),
           ),
         ],
       ),
@@ -210,10 +189,8 @@ class _ResponsiveDialogState extends State<ResponsiveDialog> {
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
     _headerColor = widget.headerColor ?? theme.primaryColor;
-    _headerTextColor =
-        widget.headerTextColor ?? theme.primaryTextTheme.titleLarge?.color;
-    _buttonTextColor =
-        widget.buttonTextColor ?? theme.textTheme.labelLarge?.color;
+    _headerTextColor = widget.headerTextColor ?? theme.primaryTextTheme.titleLarge?.color;
+    _buttonTextColor = widget.buttonTextColor ?? theme.textTheme.labelLarge?.color;
     _backgroundColor = widget.backgroundColor ?? theme.dialogBackgroundColor;
 
     final Orientation orientation = MediaQuery.of(context).orientation;
@@ -254,15 +231,12 @@ class _ResponsiveDialogState extends State<ResponsiveDialog> {
                   bottom: 16,
                 ),
                 child: Row(
-                  textDirection:
-                      serviceLocator<LanguageController>().targetTextDirection,
+                  textDirection: serviceLocator<LanguageController>().targetTextDirection,
                   children: [
                     Text(
-                      textDirection: serviceLocator<LanguageController>()
-                          .targetTextDirection,
+                      textDirection: serviceLocator<LanguageController>().targetTextDirection,
                       widget.title!,
-                      style: context.titleLarge!
-                          .copyWith(fontWeight: FontWeight.bold),
+                      style: context.titleLarge!.copyWith(fontWeight: FontWeight.bold),
                     ),
                   ],
                 ),

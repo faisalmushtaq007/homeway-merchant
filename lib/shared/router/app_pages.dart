@@ -20,11 +20,7 @@ import 'package:homemakers_merchant/app/features/menu/index.dart';
 import 'package:homemakers_merchant/app/features/onboarding/presentation/pages/onboarding_page.dart';
 import 'package:homemakers_merchant/app/features/onboarding/presentation/pages/splash_page.dart';
 import 'package:homemakers_merchant/app/features/profile/common/document_type_enum.dart';
-import 'package:homemakers_merchant/app/features/profile/presentation/pages/bank/bank_information_page.dart';
-import 'package:homemakers_merchant/app/features/profile/presentation/pages/business/business_information_page.dart';
-import 'package:homemakers_merchant/app/features/profile/presentation/pages/document/business_document_page.dart';
-import 'package:homemakers_merchant/app/features/profile/presentation/pages/document/upload_document_page.dart';
-import 'package:homemakers_merchant/app/features/profile/presentation/pages/business/select_business_type_page.dart';
+import 'package:homemakers_merchant/app/features/profile/index.dart';
 import 'package:homemakers_merchant/app/features/store/domain/entities/store_entity.dart';
 import 'package:homemakers_merchant/app/features/store/index.dart';
 

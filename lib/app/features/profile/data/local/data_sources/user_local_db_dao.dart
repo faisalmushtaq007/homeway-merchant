@@ -1,15 +1,4 @@
-import 'package:homemakers_merchant/app/features/menu/index.dart';
-import 'package:homemakers_merchant/app/features/profile/data/local/data_sources/user_local_db_base_repository.dart';
-import 'package:homemakers_merchant/app/features/profile/domain/entities/user_entity.dart';
-
-import 'package:homemakers_merchant/core/local/database/app_database.dart';
-import 'package:homemakers_merchant/core/local/database/base/identifiable.dart';
-import 'package:homemakers_merchant/core/local/database/base/repository_failure.dart';
-import 'package:homemakers_merchant/core/local/database/base/tryCatch.dart';
-import 'package:homemakers_merchant/utils/functional/either/either.dart';
-import 'package:sembast/sembast.dart';
-
-import 'package:sembast/utils/value_utils.dart';
+part of 'package:homemakers_merchant/app/features/profile/index.dart';
 
 class UserLocalDbRepository<User extends AppUserEntity> implements BaseUserLocalDbRepository<AppUserEntity> {
   // Completer is used for transforming synchronous code into asynchronous code.
@@ -100,9 +89,13 @@ class UserLocalDbRepository<User extends AppUserEntity> implements BaseUserLocal
               await _db,
               entity.toMap(),
             );
-        return AppUserEntity.fromMap(result);
+        if (result != null) {
+          return AppUserEntity.fromMap(result);
+        } else {
+          return upsert(id: uniqueId, entity: entity);
+        }
       } else {
-        return upsert(id: uniqueId.value, entity: entity);
+        return upsert(id: uniqueId, entity: entity);
       }
     });
     return result;

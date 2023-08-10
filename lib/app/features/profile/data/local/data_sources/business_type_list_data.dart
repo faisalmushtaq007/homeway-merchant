@@ -1,5 +1,4 @@
-import 'package:homemakers_merchant/app/features/profile/domain/entities/business/business_type_entity.dart';
-import 'package:homemakers_merchant/gen/assets.gen.dart';
+part of 'package:homemakers_merchant/app/features/profile/index.dart';
 
 List<BusinessTypeEntity> businessTypeList = [
   BusinessTypeEntity(

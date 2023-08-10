@@ -110,9 +110,13 @@ class AddonsLocalDbRepository<Extras extends Addons> implements BaseAddonsLocalD
               await _db,
               entity.toMap(),
             );
-        return Addons.fromMap(result);
+        if (result != null) {
+          return Addons.fromMap(result);
+        } else {
+          return upsert(id: uniqueId, entity: entity);
+        }
       } else {
-        return upsert(id: uniqueId.value, entity: entity);
+        return upsert(id: uniqueId, entity: entity);
       }
     });
     return result;

@@ -1,10 +1,10 @@
-import 'package:flutter/widgets.dart';
+part of 'package:homemakers_merchant/app/features/profile/index.dart';
 
 class BusinessTypeEntity {
   BusinessTypeEntity({
     this.id = -1,
-    required this.businessTypeId,
-    required this.businessTypeName,
+    this.businessTypeId = '',
+    this.businessTypeName = '',
     this.localAssetPath = '',
     this.remoteAssetPath,
     this.metaData,

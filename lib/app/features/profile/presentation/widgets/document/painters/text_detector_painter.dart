@@ -1,13 +1,7 @@
-import 'dart:ui';
-import 'dart:ui' as ui;
-
-import 'package:flutter/material.dart';
-import 'package:google_mlkit_text_recognition/google_mlkit_text_recognition.dart';
-import 'package:homemakers_merchant/app/features/profile/presentation/widgets/document/coordinates_translator.dart';
+part of 'package:homemakers_merchant/app/features/profile/index.dart';
 
 class TextRecognizerPainter extends CustomPainter {
-  TextRecognizerPainter(
-      this.recognizedText, this.absoluteImageSize, this.rotation);
+  TextRecognizerPainter(this.recognizedText, this.absoluteImageSize, this.rotation);
 
   final RecognizedText recognizedText;
   final Size absoluteImageSize;
@@ -24,24 +18,16 @@ class TextRecognizerPainter extends CustomPainter {
 
     for (final textBlock in recognizedText.blocks) {
       final ParagraphBuilder builder = ParagraphBuilder(
-        ParagraphStyle(
-            textAlign: TextAlign.left,
-            fontSize: 16,
-            textDirection: TextDirection.ltr),
+        ParagraphStyle(textAlign: TextAlign.left, fontSize: 16, textDirection: TextDirection.ltr),
       );
-      builder.pushStyle(
-          ui.TextStyle(color: Colors.lightGreenAccent, background: background));
+      builder.pushStyle(ui.TextStyle(color: Colors.lightGreenAccent, background: background));
       builder.addText(textBlock.text);
       builder.pop();
 
-      final left = translateX(
-          textBlock.boundingBox.left, rotation, size, absoluteImageSize);
-      final top = translateY(
-          textBlock.boundingBox.top, rotation, size, absoluteImageSize);
-      final right = translateX(
-          textBlock.boundingBox.right, rotation, size, absoluteImageSize);
-      final bottom = translateY(
-          textBlock.boundingBox.bottom, rotation, size, absoluteImageSize);
+      final left = translateX(textBlock.boundingBox.left, rotation, size, absoluteImageSize);
+      final top = translateY(textBlock.boundingBox.top, rotation, size, absoluteImageSize);
+      final right = translateX(textBlock.boundingBox.right, rotation, size, absoluteImageSize);
+      final bottom = translateY(textBlock.boundingBox.bottom, rotation, size, absoluteImageSize);
 
       canvas.drawRect(
         Rect.fromLTRB(left, top, right, bottom),
