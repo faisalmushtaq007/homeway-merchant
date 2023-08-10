@@ -103,6 +103,25 @@ class StoreOwnDeliveryPartnersLocalDbRepository<Driver extends StoreOwnDeliveryP
   @override
   Future<Either<RepositoryBaseFailure, StoreOwnDeliveryPartnersInfo>> update(StoreOwnDeliveryPartnersInfo entity, UniqueId uniqueId) async {
     final result = await tryCatch<StoreOwnDeliveryPartnersInfo>(() async {
+      final int key = uniqueId.value;
+      final value = await _driver.record(key).get(await _db);
+      if (value != null) {
+        final result = await _driver.record(key).update(
+              await _db,
+              entity.toMap(),
+            );
+        return StoreOwnDeliveryPartnersInfo.fromMap(result);
+      } else {
+        return upsert(id: uniqueId.value, entity: entity);
+      }
+    });
+    return result;
+  }
+
+  @override
+  Future<Either<RepositoryBaseFailure, StoreOwnDeliveryPartnersInfo>> upsert(
+      {UniqueId? id, String? token, required StoreOwnDeliveryPartnersInfo entity, bool checkIfUserLoggedIn = false}) async {
+    final result = await tryCatch<StoreOwnDeliveryPartnersInfo>(() async {
       final int key = entity.driverID;
       final value = await _driver.record(key).get(await _db);
       final result = await _driver.record(key).put(await _db, entity.toMap(), merge: (value != null) || false);

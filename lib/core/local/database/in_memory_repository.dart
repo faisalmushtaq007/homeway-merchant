@@ -104,7 +104,7 @@ class InMemoryRepository<E extends WithId> implements Repository<E> {
   }
 
   @override
-  Future<Either<RepositoryBaseFailure, E>> addOrUpdateUser({UniqueId? id, String? token, required E entity, bool checkIfUserLoggedIn = false}) {
+  Future<Either<RepositoryBaseFailure, E>> upsert({UniqueId? id, String? token, required E entity, bool checkIfUserLoggedIn = false}) {
     // TODO: implement addOrUpdateUser
     throw UnimplementedError();
   }

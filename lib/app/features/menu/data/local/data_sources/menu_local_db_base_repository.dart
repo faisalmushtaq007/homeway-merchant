@@ -8,7 +8,8 @@ abstract interface class BaseMenuLocalDbRepository<T extends MenuEntity>
         DeleteById<T>,
         DeleteByIdAndEntity<T>,
         GetByIdAndEntity<T>,
-        UpdateByIdAndEntity<T> {}
+        UpdateByIdAndEntity<T>,
+        AddOrUpdateUser<T> {}
 
 abstract interface class BaseAddonsLocalDbRepository<T extends Addons>
     implements
@@ -18,4 +19,5 @@ abstract interface class BaseAddonsLocalDbRepository<T extends Addons>
         DeleteById<T>,
         DeleteByIdAndEntity<T>,
         GetByIdAndEntity<T>,
-        UpdateByIdAndEntity<T> {}
+        UpdateByIdAndEntity<T>,
+        AddOrUpdateUser<T> {}

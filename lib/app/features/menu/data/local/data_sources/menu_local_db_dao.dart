@@ -105,6 +105,24 @@ class MenuLocalDbRepository<Menu extends MenuEntity> implements BaseMenuLocalDbR
   @override
   Future<Either<RepositoryBaseFailure, MenuEntity>> update(MenuEntity entity, UniqueId uniqueId) async {
     final result = await tryCatch<MenuEntity>(() async {
+      final int key = uniqueId.value;
+      final value = await _menu.record(key).get(await _db);
+      if (value != null) {
+        final result = await _menu.record(key).update(
+              await _db,
+              entity.toMap(),
+            );
+        return MenuEntity.fromMap(result);
+      } else {
+        return upsert(id: uniqueId.value, entity: entity);
+      }
+    });
+    return result;
+  }
+
+  @override
+  Future<Either<RepositoryBaseFailure, MenuEntity>> upsert({UniqueId? id, String? token, required MenuEntity entity, bool checkIfUserLoggedIn = false}) async {
+    final result = await tryCatch<MenuEntity>(() async {
       final int key = entity.menuId;
       final value = await _menu.record(key).get(await _db);
       final result = await _menu.record(key).put(await _db, entity.toMap(), merge: (value != null) || false);

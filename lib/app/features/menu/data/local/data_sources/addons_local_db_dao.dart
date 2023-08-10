@@ -103,6 +103,24 @@ class AddonsLocalDbRepository<Extras extends Addons> implements BaseAddonsLocalD
   @override
   Future<Either<RepositoryBaseFailure, Addons>> update(Addons entity, UniqueId uniqueId) async {
     final result = await tryCatch<Addons>(() async {
+      final int key = uniqueId.value;
+      final value = await _addons.record(key).get(await _db);
+      if (value != null) {
+        final result = await _addons.record(key).update(
+              await _db,
+              entity.toMap(),
+            );
+        return Addons.fromMap(result);
+      } else {
+        return upsert(id: uniqueId.value, entity: entity);
+      }
+    });
+    return result;
+  }
+
+  @override
+  Future<Either<RepositoryBaseFailure, Addons>> upsert({UniqueId? id, String? token, required Addons entity, bool checkIfUserLoggedIn = false}) async {
+    final result = await tryCatch<Addons>(() async {
       final int key = entity.addonsID;
       final value = await _addons.record(key).get(await _db);
       final result = await _addons.record(key).put(await _db, entity.toMap(), merge: (value != null) || false);

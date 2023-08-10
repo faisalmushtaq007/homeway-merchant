@@ -15,14 +15,14 @@ class UserLocalDbRepository<User extends AppUserEntity> implements BaseUserLocal
   // Completer is used for transforming synchronous code into asynchronous code.
   Future<Database> get _db async => AppDatabase.instance.database;
 
-  StoreRef<int, Map<String, dynamic>> get _store => AppDatabase.instance.store;
+  StoreRef<int, Map<String, dynamic>> get _user => AppDatabase.instance.user;
 
   @override
   Future<Either<RepositoryBaseFailure, AppUserEntity>> add(AppUserEntity entity) async {
     final result = await tryCatch<AppUserEntity>(() async {
-      final int recordID = await _store.add(await _db, entity.toMap());
+      final int recordID = await _user.add(await _db, entity.toMap());
       //final AppUserEntity recordAppUserEntity = entity.copyWith(storeID: recordID.toString());
-      final value = await _store.record(recordID).get(await _db);
+      final value = await _user.record(recordID).get(await _db);
       if (value != null) {
         return AppUserEntity.fromMap(value).copyWith(userID: recordID);
       } else {
@@ -37,7 +37,7 @@ class UserLocalDbRepository<User extends AppUserEntity> implements BaseUserLocal
     final result = await tryCatch<bool>(() async {
       final int key = entity.userID;
       final finder = Finder(filter: Filter.byKey(key));
-      await _store.delete(
+      await _user.delete(
         await _db,
         finder: finder,
       );
@@ -53,9 +53,9 @@ class UserLocalDbRepository<User extends AppUserEntity> implements BaseUserLocal
   @override
   Future<Either<RepositoryBaseFailure, bool>> deleteById(UniqueId uniqueId) async {
     final result = await tryCatch<bool>(() async {
-      final value = await _store.record(uniqueId.value).get(await _db);
+      final value = await _user.record(uniqueId.value).get(await _db);
       if (value != null) {
-        await _store.delete(
+        await _user.delete(
           await _db,
         );
         return true;
@@ -68,7 +68,7 @@ class UserLocalDbRepository<User extends AppUserEntity> implements BaseUserLocal
   @override
   Future<Either<RepositoryBaseFailure, List<AppUserEntity>>> getAll() async {
     final result = await tryCatch<List<AppUserEntity>>(() async {
-      final snapshots = await _store.find(await _db);
+      final snapshots = await _user.find(await _db);
       return snapshots
           .map((snapshot) => AppUserEntity.fromMap(snapshot.value).copyWith(
                 userID: snapshot.key,
@@ -81,7 +81,7 @@ class UserLocalDbRepository<User extends AppUserEntity> implements BaseUserLocal
   @override
   Future<Either<RepositoryBaseFailure, AppUserEntity?>> getById(UniqueId id) async {
     final result = await tryCatch<AppUserEntity?>(() async {
-      final value = await _store.record(id.value).get(await _db);
+      final value = await _user.record(id.value).get(await _db);
       if (value != null) {
         return AppUserEntity.fromMap(value);
       }
@@ -93,9 +93,28 @@ class UserLocalDbRepository<User extends AppUserEntity> implements BaseUserLocal
   @override
   Future<Either<RepositoryBaseFailure, AppUserEntity>> update(AppUserEntity entity, UniqueId uniqueId) async {
     final result = await tryCatch<AppUserEntity>(() async {
+      final int key = uniqueId.value;
+      final value = await _user.record(key).get(await _db);
+      if (value != null) {
+        final result = await _user.record(key).update(
+              await _db,
+              entity.toMap(),
+            );
+        return AppUserEntity.fromMap(result);
+      } else {
+        return upsert(id: uniqueId.value, entity: entity);
+      }
+    });
+    return result;
+  }
+
+  @override
+  Future<Either<RepositoryBaseFailure, AppUserEntity>> upsert(
+      {UniqueId? id, String? token, required AppUserEntity entity, bool checkIfUserLoggedIn = false}) async {
+    final result = await tryCatch<AppUserEntity>(() async {
       final int key = entity.userID;
-      final value = await _store.record(key).get(await _db);
-      final result = await _store.record(key).put(await _db, entity.toMap(), merge: (value != null) || false);
+      final value = await _user.record(key).get(await _db);
+      final result = await _user.record(key).put(await _db, entity.toMap(), merge: (value != null) || false);
       return AppUserEntity.fromMap(result);
     });
     return result;

@@ -155,7 +155,7 @@ abstract class AddOrUpdateUser<EntityType> extends BaseRepositoryOperation<Entit
   /// Returns the object with the given a model
   ///
   /// Will return a Failure if no corresponding entity for id is found.
-  Future<Either<RepositoryBaseFailure, EntityType>> addOrUpdateUser({
+  Future<Either<RepositoryBaseFailure, EntityType>> upsert({
     UniqueId? id,
     String? token,
     required EntityType entity,

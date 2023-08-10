@@ -8,7 +8,8 @@ abstract interface class BaseStoreLocalDbRepository<T extends StoreEntity>
         DeleteById<T>,
         DeleteByIdAndEntity<T>,
         GetByIdAndEntity<T>,
-        UpdateByIdAndEntity<T> {}
+        UpdateByIdAndEntity<T>,
+        AddOrUpdateUser<T> {}
 
 abstract interface class BaseStoreOwnDriverLocalDbRepository<T extends StoreOwnDeliveryPartnersInfo>
     implements
@@ -18,4 +19,5 @@ abstract interface class BaseStoreOwnDriverLocalDbRepository<T extends StoreOwnD
         DeleteById<T>,
         DeleteByIdAndEntity<T>,
         GetByIdAndEntity<T>,
-        UpdateByIdAndEntity<T> {}
+        UpdateByIdAndEntity<T>,
+        AddOrUpdateUser<T> {}

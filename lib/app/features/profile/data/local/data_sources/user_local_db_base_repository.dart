@@ -3,4 +3,5 @@ import 'package:homemakers_merchant/app/features/profile/domain/entities/user_en
 
 import 'package:homemakers_merchant/core/local/database/base/repository.dart';
 
-abstract class BaseUserLocalDbRepository<T extends AppUserEntity> implements ReadOnlyRepository<T>, WriteOnlyRepository<T>, DeleteAll<T>, DeleteById<T> {}
+abstract class BaseUserLocalDbRepository<T extends AppUserEntity>
+    implements ReadOnlyRepository<T>, WriteOnlyRepository<T>, DeleteAll<T>, DeleteById<T>, AddOrUpdateUser<T> {}

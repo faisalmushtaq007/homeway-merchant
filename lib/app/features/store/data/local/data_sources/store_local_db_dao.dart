@@ -112,6 +112,25 @@ class StoreLocalDbRepository<Store extends StoreEntity> implements BaseStoreLoca
   @override
   Future<Either<RepositoryBaseFailure, StoreEntity>> update(StoreEntity entity, UniqueId uniqueId) async {
     final result = await tryCatch<StoreEntity>(() async {
+      final int key = uniqueId.value;
+      final value = await _store.record(key).get(await _db);
+      if (value != null) {
+        final result = await _store.record(key).update(
+              await _db,
+              entity.toMap(),
+            );
+        return StoreEntity.fromMap(result);
+      } else {
+        return upsert(id: uniqueId.value, entity: entity);
+      }
+    });
+    return result;
+  }
+
+  @override
+  Future<Either<RepositoryBaseFailure, StoreEntity>> upsert(
+      {UniqueId? id, String? token, required StoreEntity entity, bool checkIfUserLoggedIn = false}) async {
+    final result = await tryCatch<StoreEntity>(() async {
       final int key = entity.storeID;
       final value = await _store.record(key).get(await _db);
       final result = await _store.record(key).put(await _db, entity.toMap(), merge: (value != null) || false);
