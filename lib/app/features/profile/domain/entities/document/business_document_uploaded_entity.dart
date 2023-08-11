@@ -2,7 +2,8 @@ part of 'package:homemakers_merchant/app/features/profile/index.dart';
 
 class BusinessDocumentUploadedEntity with AppEquatable {
   BusinessDocumentUploadedEntity({
-    required this.documentType,
+    this.documentID = -1,
+    this.documentType = DocumentType.tradeLicence,
     this.businessDocumentAssetsEntity = const [],
     this.documentIDNumber = '',
     this.documentFrontAssets,
@@ -16,19 +17,26 @@ class BusinessDocumentUploadedEntity with AppEquatable {
 
   factory BusinessDocumentUploadedEntity.fromMap(Map<String, dynamic> map) {
     return BusinessDocumentUploadedEntity(
-      documentType: map['documentType'] as DocumentType,
+      documentID: map['documentID'],
+      documentType: (map['documentType'] != null) ? DocumentType.values.byName(map['documentType']) : DocumentType.tradeLicence,
       documentIDNumber: map['documentIDNumber'] as String,
-      documentFrontAssets: map['documentFrontAssets'] as BusinessDocumentAssetsEntity,
-      documentBackAssets: map['documentBackAssets'] as BusinessDocumentAssetsEntity,
-      documentFrontAssetsUploadStatus: map['documentFrontAssetsUploadStatus'] as DocumentUploadStatus,
-      documentBackAssetsUploadStatus: map['documentBackAssetsUploadStatus'] as DocumentUploadStatus,
+      documentFrontAssets:
+          map['documentFrontAssets'] != null ? BusinessDocumentAssetsEntity.fromMap(map['documentFrontAssets']) : BusinessDocumentAssetsEntity(),
+      documentBackAssets: map['documentBackAssets'] != null ? BusinessDocumentAssetsEntity.fromMap(map['documentBackAssets']) : BusinessDocumentAssetsEntity(),
+      documentFrontAssetsUploadStatus: (map['documentFrontAssetsUploadStatus'] != null)
+          ? DocumentUploadStatus.values.byName(map['documentFrontAssetsUploadStatus'])
+          : DocumentUploadStatus.none,
+      documentBackAssetsUploadStatus: (map['documentBackAssetsUploadStatus'] != null)
+          ? DocumentUploadStatus.values.byName(map['documentBackAssetsUploadStatus'])
+          : DocumentUploadStatus.none,
       hasDocumentFrontSide: map['hasDocumentFrontSide'] as bool,
-      businessDocumentAssetsEntity: map['businessDocumentAssetsEntity'] as List<BusinessDocumentAssetsEntity>,
+      businessDocumentAssetsEntity:
+          map['businessDocumentAssetsEntity'].map((e) => BusinessDocumentAssetsEntity.fromMap(e)).toList().cast<BusinessDocumentAssetsEntity>(),
       hasButtonEnable: map['hasButtonEnable'] as bool,
       hasTextFieldEnable: map['hasTextFieldEnable'] as bool,
     );
   }
-
+  int documentID;
   DocumentType documentType;
   String documentIDNumber;
   BusinessDocumentAssetsEntity? documentFrontAssets;
@@ -55,9 +63,11 @@ class BusinessDocumentUploadedEntity with AppEquatable {
         businessDocumentAssetsEntity,
         hasButtonEnable,
         hasTextFieldEnable,
+        documentID,
       ];
 
   BusinessDocumentUploadedEntity copyWith({
+    int? documentID,
     DocumentType? documentType,
     String? documentIDNumber,
     BusinessDocumentAssetsEntity? documentFrontAssets,
@@ -70,6 +80,7 @@ class BusinessDocumentUploadedEntity with AppEquatable {
     bool? hasTextFieldEnable,
   }) {
     return BusinessDocumentUploadedEntity(
+      documentID: documentID ?? this.documentID,
       documentType: documentType ?? this.documentType,
       documentIDNumber: documentIDNumber ?? this.documentIDNumber,
       documentFrontAssets: documentFrontAssets ?? this.documentFrontAssets,
@@ -85,6 +96,7 @@ class BusinessDocumentUploadedEntity with AppEquatable {
 
   Map<String, dynamic> toMap() {
     return {
+      'documentID': this.documentID,
       'documentType': this.documentType,
       'documentIDNumber': this.documentIDNumber,
       'documentFrontAssets': this.documentFrontAssets,
@@ -101,11 +113,11 @@ class BusinessDocumentUploadedEntity with AppEquatable {
 
 class BusinessDocumentAssetsEntity with AppEquatable {
   BusinessDocumentAssetsEntity({
-    required this.assetName,
-    required this.assetOriginalName,
-    required this.assetPath,
-    required this.assetExtension,
-    required this.assetIdNumber,
+    this.assetName = '',
+    this.assetOriginalName = '',
+    this.assetPath = '',
+    this.assetExtension = '',
+    this.assetIdNumber = '',
     this.assetBase64Code = '',
     this.assetUrl = '',
     this.assetMoreInfo = const {},

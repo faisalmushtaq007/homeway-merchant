@@ -1,7 +1,9 @@
 part of 'package:homemakers_merchant/app/features/profile/index.dart';
 
 class BankInformationPage extends StatefulWidget {
-  const BankInformationPage({super.key});
+  const BankInformationPage({super.key, this.paymentBankEntity, this.hasEditBankInformation = false});
+  final bool hasEditBankInformation;
+  final PaymentBankEntity? paymentBankEntity;
 
   @override
   State<BankInformationPage> createState() => _BankInformationPageState();
@@ -562,6 +564,23 @@ class _BankInformationPageState extends State<BankInformationPage> with SingleTi
                                       if (!mounted) {
                                         return;
                                       }
+                                      PaymentBankEntity paymentBankEntity;
+                                      if (widget.hasEditBankInformation && widget.paymentBankEntity != null) {
+                                        widget.paymentBankEntity?.copyWith(
+                                          ibanNumber: ibanNumber,
+                                          bankHolderName: accountHolderName,
+                                          accountNumber: confirmAccountNumber,
+                                          bankName: bankName,
+                                          acceptPaymentMode: AcceptPaymentMode.cash,
+                                        );
+                                      }
+                                      paymentBankEntity = PaymentBankEntity(
+                                        accountNumber: confirmAccountNumber,
+                                        bankHolderName: accountHolderName,
+                                        bankName: bankName,
+                                        ibanNumber: ibanNumber,
+                                        acceptPaymentMode: AcceptPaymentMode.cash,
+                                      );
                                       serviceLocator<AppUserEntity>().currentProfileStatus = CurrentProfileStatus.paymentDetailSaved;
                                       context.push(Routes.DOCUMENT_LIST_PAGE);
                                     }

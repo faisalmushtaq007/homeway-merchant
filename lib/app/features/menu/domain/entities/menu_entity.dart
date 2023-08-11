@@ -238,7 +238,7 @@ class MenuImage with AppEquatable {
       assetExtension: map['assetExtension'] as String,
       hasBase64: map['hasBase64'] as bool,
       valueOfBase64: map['valueOfBase64'] as String,
-      assetsUploadStatus: AssetsUploadStatus.values.byName(map['assetsUploadStatus']),
+      assetsUploadStatus: (map['assetsUploadStatus'] != null) ? AssetsUploadStatus.values.byName(map['assetsUploadStatus']) : AssetsUploadStatus.none,
     );
   }
 

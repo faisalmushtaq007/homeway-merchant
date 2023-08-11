@@ -23,20 +23,29 @@ class AppDatabase {
   Completer<Database>? _dbOpenCompleter;
 
   bool isInitialized = false;
-  StoreRef<int, Map<String, dynamic>> _user = StoreRef<int, Map<String, dynamic>>.main();
+  StoreRef<int, Map<String, dynamic>> _user = StoreRef<int, Map<String, dynamic>>('user');
   StoreRef<int, Map<String, dynamic>> get user => _user;
 
-  StoreRef<int, Map<String, dynamic>> _store = StoreRef<int, Map<String, dynamic>>.main();
+  StoreRef<int, Map<String, dynamic>> _store = StoreRef<int, Map<String, dynamic>>('store');
   StoreRef<int, Map<String, dynamic>> get store => _store;
 
-  StoreRef<int, Map<String, dynamic>> _menu = StoreRef<int, Map<String, dynamic>>.main();
+  StoreRef<int, Map<String, dynamic>> _menu = StoreRef<int, Map<String, dynamic>>('menu');
   StoreRef<int, Map<String, dynamic>> get menu => _menu;
 
-  StoreRef<int, Map<String, dynamic>> _addons = StoreRef<int, Map<String, dynamic>>.main();
+  StoreRef<int, Map<String, dynamic>> _addons = StoreRef<int, Map<String, dynamic>>('addons');
   StoreRef<int, Map<String, dynamic>> get addons => _addons;
 
-  StoreRef<int, Map<String, dynamic>> _driver = StoreRef<int, Map<String, dynamic>>.main();
+  StoreRef<int, Map<String, dynamic>> _driver = StoreRef<int, Map<String, dynamic>>('driver');
   StoreRef<int, Map<String, dynamic>> get driver => _driver;
+
+  StoreRef<int, Map<String, dynamic>> _businessProfile = StoreRef<int, Map<String, dynamic>>('business_profile');
+  StoreRef<int, Map<String, dynamic>> get businessProfile => _businessProfile;
+
+  StoreRef<int, Map<String, dynamic>> _businessDocument = StoreRef<int, Map<String, dynamic>>('business_document');
+  StoreRef<int, Map<String, dynamic>> get businessDocument => _businessDocument;
+
+  StoreRef<int, Map<String, dynamic>> _paymentBank = StoreRef<int, Map<String, dynamic>>('payment_bank');
+  StoreRef<int, Map<String, dynamic>> get paymentBank => _paymentBank;
 
   //late RecordRef<int, Map<String, dynamic>> _record;
 
@@ -65,6 +74,9 @@ class AppDatabase {
     _menu = StoreRef<int, Map<String, dynamic>>('menu');
     _addons = StoreRef<int, Map<String, dynamic>>('addons');
     _driver = StoreRef<int, Map<String, dynamic>>('driver');
+    _businessProfile = StoreRef<int, Map<String, dynamic>>('business_profile');
+    _businessDocument = StoreRef<int, Map<String, dynamic>>('business_document');
+    _paymentBank = StoreRef<int, Map<String, dynamic>>('payment_bank');
     Database database;
     if (kIsWeb) {
       final factory = databaseFactoryWeb;

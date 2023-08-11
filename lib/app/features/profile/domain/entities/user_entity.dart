@@ -15,6 +15,9 @@ class AppUserEntity extends INetworkModel<AppUserEntity> {
     this.drivers = const [],
     this.addons = const [],
     this.ratingAndReviewEntity,
+    this.paymentBankEntity,
+    this.hasMultiplePaymentBanks = false,
+    this.paymentBankEntities = const [],
   });
 
   factory AppUserEntity.fromMap(Map<String, dynamic> map) {
@@ -32,6 +35,11 @@ class AppUserEntity extends INetworkModel<AppUserEntity> {
       drivers: map['drivers'].map((e) => StoreOwnDeliveryPartnersInfo.fromMap(e)).toList().cast<StoreOwnDeliveryPartnersInfo>(),
       addons: map['addons'].map((e) => Addons.fromMap(e)).toList().cast<Addons>(),
       ratingAndReviewEntity: (map['ratingAndReviewEntity'] != null) ? RatingAndReviewEntity.fromMap(map['ratingAndReviewEntity']) : RatingAndReviewEntity(),
+      paymentBankEntities: (map['paymentBankEntities'] != null)
+          ? map['paymentBankEntities'].map((e) => PaymentBankEntity.fromMap(e)).toList().cast<PaymentBankEntity>()
+          : <PaymentBankEntity>[],
+      hasMultiplePaymentBanks: (map['hasMultiplePaymentBanks'] != null) ? map['paymentBankEntity'] : false,
+      paymentBankEntity: (map['paymentBankEntity'] != null) ? PaymentBankEntity.fromMap(map['paymentBankEntity']) : PaymentBankEntity(),
     );
   }
 
@@ -48,6 +56,9 @@ class AppUserEntity extends INetworkModel<AppUserEntity> {
   CurrentProfileStatus currentProfileStatus;
   List<Addons> addons;
   RatingAndReviewEntity? ratingAndReviewEntity;
+  PaymentBankEntity? paymentBankEntity;
+  bool hasMultiplePaymentBanks;
+  List<PaymentBankEntity> paymentBankEntities;
 
   AppUserEntity copyWith(
       {int? userID,

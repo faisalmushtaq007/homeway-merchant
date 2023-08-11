@@ -2,7 +2,7 @@ part of 'package:homemakers_merchant/app/features/profile/index.dart';
 
 class BusinessTypeEntity {
   BusinessTypeEntity({
-    this.id = -1,
+    this.businessTypeID = -1,
     this.businessTypeId = '',
     this.businessTypeName = '',
     this.localAssetPath = '',
@@ -15,7 +15,7 @@ class BusinessTypeEntity {
 
   factory BusinessTypeEntity.fromMap(Map<String, dynamic> map) {
     return BusinessTypeEntity(
-      id: map['id'] as int,
+      businessTypeID: map['businessTypeID'] as int,
       businessTypeId: map['businessTypeId'] as String,
       businessTypeName: map['businessTypeName'] as String,
       localAssetPath: map['localAssetPath'] as String,
@@ -25,7 +25,7 @@ class BusinessTypeEntity {
     );
   }
 
-  final int id;
+  final int businessTypeID;
   final String? businessTypeId;
   final String? businessTypeName;
   final String localAssetPath;
@@ -37,7 +37,7 @@ class BusinessTypeEntity {
 
   Map<String, dynamic> toMap() {
     return {
-      'id': this.id,
+      'businessTypeID': this.businessTypeID,
       'businessTypeId': this.businessTypeId,
       'businessTypeName': this.businessTypeName,
       'localAssetPath': this.localAssetPath,
@@ -48,7 +48,7 @@ class BusinessTypeEntity {
   }
 
   BusinessTypeEntity copyWith({
-    int? id,
+    int? businessTypeID,
     String? businessTypeId,
     String? businessTypeName,
     String? localAssetPath,
@@ -59,7 +59,7 @@ class BusinessTypeEntity {
     bool? hasSelected,
   }) {
     return BusinessTypeEntity(
-      id: id ?? this.id,
+      businessTypeID: businessTypeID ?? this.businessTypeID,
       businessTypeId: businessTypeId ?? this.businessTypeId,
       businessTypeName: businessTypeName ?? this.businessTypeName,
       localAssetPath: localAssetPath ?? this.localAssetPath,

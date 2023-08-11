@@ -36,7 +36,21 @@ class UserLocalDbRepository<User extends AppUserEntity> implements BaseUserLocal
 
   @override
   Future<Either<RepositoryBaseFailure, bool>> deleteAll() async {
-    throw UnimplementedError();
+    final result = await tryCatch<bool>(() async {
+      final db = await _db;
+      int count = 0;
+      await db.transaction((transaction) async {
+        // Delete all
+        await _user.delete(transaction);
+        count++;
+      });
+      if (count >= 0) {
+        return true;
+      } else {
+        return false;
+      }
+    });
+    return result;
   }
 
   @override
@@ -111,5 +125,23 @@ class UserLocalDbRepository<User extends AppUserEntity> implements BaseUserLocal
       return AppUserEntity.fromMap(result);
     });
     return result;
+  }
+
+  @override
+  Future<Either<RepositoryBaseFailure, bool>> deleteByIdAndEntity(UniqueId uniqueId, AppUserEntity entity) {
+    // TODO: implement deleteByIdAndEntity
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<Either<RepositoryBaseFailure, AppUserEntity>> getByIdAndEntity(UniqueId uniqueId, AppUserEntity entity) {
+    // TODO: implement getByIdAndEntity
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<Either<RepositoryBaseFailure, AppUserEntity>> updateByIdAndEntity(UniqueId uniqueId, AppUserEntity entity) {
+    // TODO: implement updateByIdAndEntity
+    throw UnimplementedError();
   }
 }

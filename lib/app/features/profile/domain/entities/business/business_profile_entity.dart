@@ -3,33 +3,42 @@ part of 'package:homemakers_merchant/app/features/profile/index.dart';
 class BusinessProfileEntity {
   const BusinessProfileEntity({
     this.userName = '',
-    this.id = -1,
+    this.businessProfileID = -1,
     this.businessPhoneNumber = '',
     this.businessAddress,
     this.businessEmailAddress = '',
     this.businessName = '',
+    this.businessTypeEntity,
+    this.businessDocumentUploadedEntity,
   });
 
   factory BusinessProfileEntity.fromMap(Map<String, dynamic> map) {
     return BusinessProfileEntity(
-      id: map['id'] as int,
+      businessProfileID: map['businessProfileID'] as int,
       userName: map['userName'] as String,
       businessPhoneNumber: map['businessPhoneNumber'] as String,
       businessAddress: map['businessAddress'] ?? AddressModel() as AddressModel,
       businessEmailAddress: map['businessEmailAddress'] as String,
       businessName: map['businessName'] as String,
+      businessTypeEntity: map['businessTypeEntity'] != null ? BusinessTypeEntity.fromMap(map['businessTypeEntity']) : BusinessTypeEntity(),
+      businessDocumentUploadedEntity: map['businessDocumentUploadedEntity'] != null
+          ? BusinessDocumentUploadedEntity.fromMap(map['businessDocumentUploadedEntity'])
+          : BusinessDocumentUploadedEntity(),
     );
   }
-  final int id;
+
+  final int businessProfileID;
   final String? userName;
   final String? businessPhoneNumber;
   final AddressModel? businessAddress;
   final String? businessEmailAddress;
   final String? businessName;
+  final BusinessTypeEntity? businessTypeEntity;
+  final BusinessDocumentUploadedEntity? businessDocumentUploadedEntity;
 
   Map<String, dynamic> toMap() {
     return {
-      'id': this.id,
+      'businessProfileID': this.businessProfileID,
       'userName': this.userName,
       'businessPhoneNumber': this.businessPhoneNumber,
       'businessAddress': this.businessAddress,
@@ -39,7 +48,7 @@ class BusinessProfileEntity {
   }
 
   BusinessProfileEntity copyWith({
-    int? id,
+    int? businessProfileID,
     String? userName,
     String? businessPhoneNumber,
     AddressModel? businessAddress,
@@ -47,7 +56,7 @@ class BusinessProfileEntity {
     String? businessName,
   }) {
     return BusinessProfileEntity(
-      id: id ?? this.id,
+      businessProfileID: businessProfileID ?? this.businessProfileID,
       userName: userName ?? this.userName,
       businessPhoneNumber: businessPhoneNumber ?? this.businessPhoneNumber,
       businessAddress: businessAddress ?? this.businessAddress,
