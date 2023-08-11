@@ -9,14 +9,14 @@ class BusinessDocumentRepositoryImplement implements UserBusinessDocumentReposit
 
   @override
   Future<DataSourceState<bool>> deleteBusinessDocument(
-      {required int appUserID, AppUserEntity? appUserEntity, BusinessDocumentUploadedEntity? businessDocumentUploadedEntity}) {
+      {required int documentID, int? appUserID, AppUserEntity? appUserEntity, BusinessDocumentUploadedEntity? businessDocumentUploadedEntity}) {
     // TODO: implement deleteBusinessDocument
     throw UnimplementedError();
   }
 
   @override
   Future<DataSourceState<BusinessDocumentUploadedEntity>> editBusinessDocument(
-      {AppUserEntity? appUserEntity, required int appUserID, required BusinessDocumentUploadedEntity businessDocumentUploadedEntity}) {
+      {AppUserEntity? appUserEntity, int? appUserID, required BusinessDocumentUploadedEntity businessDocumentUploadedEntity, required int documentID}) {
     // TODO: implement editBusinessDocument
     throw UnimplementedError();
   }
@@ -29,7 +29,7 @@ class BusinessDocumentRepositoryImplement implements UserBusinessDocumentReposit
 
   @override
   Future<DataSourceState<BusinessDocumentUploadedEntity>> getBusinessDocument(
-      {required int appUserID, AppUserEntity? appUserEntity, BusinessDocumentUploadedEntity? businessDocumentUploadedEntity}) {
+      {int? appUserID, required int documentID, AppUserEntity? appUserEntity, BusinessDocumentUploadedEntity? businessDocumentUploadedEntity}) {
     // TODO: implement getBusinessDocument
     throw UnimplementedError();
   }

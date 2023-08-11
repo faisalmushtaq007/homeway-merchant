@@ -8,12 +8,14 @@ abstract interface class UserBusinessDocumentRepository {
 
   Future<DataSourceState<BusinessDocumentUploadedEntity>> editBusinessDocument({
     AppUserEntity? appUserEntity,
-    required int appUserID,
+    int? appUserID,
     required BusinessDocumentUploadedEntity businessDocumentUploadedEntity,
+    required int documentID,
   });
 
   Future<DataSourceState<bool>> deleteBusinessDocument({
-    required int appUserID,
+    required int documentID,
+    int? appUserID,
     AppUserEntity? appUserEntity,
     BusinessDocumentUploadedEntity? businessDocumentUploadedEntity,
   });
@@ -23,7 +25,8 @@ abstract interface class UserBusinessDocumentRepository {
   });
 
   Future<DataSourceState<BusinessDocumentUploadedEntity>> getBusinessDocument({
-    required int appUserID,
+    int? appUserID,
+    required int documentID,
     AppUserEntity? appUserEntity,
     BusinessDocumentUploadedEntity? businessDocumentUploadedEntity,
   });
