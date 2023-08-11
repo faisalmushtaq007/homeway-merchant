@@ -4,6 +4,7 @@ import 'package:homemakers_merchant/app/features/menu/index.dart';
 import 'package:homemakers_merchant/core/common/entity/image_entity.dart';
 import 'package:homemakers_merchant/core/common/entity/ratingAndReviewEntity.dart';
 import 'package:homemakers_merchant/utils/app_equatable/app_equatable.dart';
+import 'package:sembast/timestamp.dart';
 
 class StoreEntity with AppEquatable {
   StoreEntity({
@@ -462,8 +463,8 @@ class StoreWorkingDayAndTime with AppEquatable {
       shortName: map['shortName'] as String,
       id: map['id'] as int,
       hasSelected: map['hasSelected'] as bool,
-      openingTime: map['openingTime'] != null ? map['openingTime'] : DateTime.now() as DateTime,
-      closingTime: map['closingTime'] != null ? map['openingTime'] : DateTime.now() as DateTime,
+      openingTime: map['openingTime'] != null ? Timestamp.parse(map['openingTime'].toString()).toDateTime() : DateTime.now(),
+      closingTime: map['closingTime'] != null ? Timestamp.parse(map['closingTime'].toString()).toDateTime() : DateTime.now(),
     );
   }
 
@@ -492,8 +493,8 @@ class StoreWorkingDayAndTime with AppEquatable {
       'title': this.day,
       'id': this.id,
       'hasSelected': this.hasSelected,
-      'closingTime': this.closingTime,
-      'openingTime': this.openingTime,
+      'closingTime': Timestamp.fromDateTime(this.closingTime),
+      'openingTime': Timestamp.fromDateTime(this.openingTime),
       'shortName': this.shortName,
     };
   }

@@ -288,3 +288,123 @@ extension StringEnhanceExtensions on String {
     return buffer.toString();
   }
 }
+
+extension StringWordCapitalize on String {
+  /// Returns a copy of this string having its first letter uppercased, or the
+  /// original string, if it's empty or already starts with an upper case
+  /// letter.
+  ///
+  /// ```dart
+  /// print('abcd'.capitalize()) // Abcd
+  /// print('Abcd'.capitalize()) // Abcd
+  /// ```
+  String capitalize() {
+    switch (length) {
+      case 0:
+        return this;
+      case 1:
+        return toUpperCase();
+      default:
+        return substring(0, 1).toUpperCase() + substring(1);
+    }
+  }
+
+  /// Returns a copy of this string having its first letter lowercased, or the
+  /// original string, if it's empty or already starts with a lower case letter.
+  ///
+  /// ```dart
+  /// print('abcd'.decapitalize()) // abcd
+  /// print('Abcd'.decapitalize()) // abcd
+  /// ```
+  String decapitalize() {
+    switch (length) {
+      case 0:
+        return this;
+      case 1:
+        return toLowerCase();
+      default:
+        return substring(0, 1).toLowerCase() + substring(1);
+    }
+  }
+
+  String wordFormatCapitalize() {
+    final result = split(' ');
+    final buffer = StringBuffer();
+    buffer.write(result.map((e) => e.capitalize()).join(' '));
+    return buffer.toString();
+  }
+
+  /// Returns a copy of this string in PascalCase style, or the original string,
+  /// if it's empty.
+  ///
+  /// ```dart
+  /// print('Hello World'.pascal()) // HelloWorld
+  /// print('helloWorld'.pascal()) // HelloWorld
+  /// print('long   space'.pascal()) // LongSpace
+  /// ```
+  String pascal() {
+    switch (length) {
+      case 0:
+        return this;
+      case 1:
+        return toUpperCase();
+      default:
+        return splitMapJoin(
+          RegExp(r'\s+'),
+          onMatch: (m) => '',
+          onNonMatch: (n) => n.capitalize(),
+        );
+    }
+  }
+
+  /// Returns a copy of this string in snake_case style, or the original string,
+  /// if it's empty.
+  ///
+  /// ```dart
+  /// print('Hello World'.pascal()) // hello_world
+  /// print('helloWorld'.pascal()) // hello_world
+  /// print('long   space'.pascal()) // long_space
+  /// ```
+  String snake() {
+    switch (length) {
+      case 0:
+        return this;
+      case 1:
+        return toLowerCase();
+      default:
+        return splitMapJoin(
+          RegExp('[A-Z]'),
+          onMatch: (m) => ' ${m[0]}'.toLowerCase(),
+          onNonMatch: (n) => n.decapitalize(),
+        ).trim().splitMapJoin(
+              RegExp(r'\s+'),
+              onMatch: (m) => '_',
+              onNonMatch: (n) => n.decapitalize(),
+            );
+    }
+  }
+
+  /// Returns a copy of this string in kebab-case style, or the original string,
+  /// if it's empty.
+  ///
+  /// ```dart
+  /// print('Hello World'.pascal()) // hello-world
+  /// print('helloWorld'.pascal()) // hello-world
+  /// print('long   space'.pascal()) // long-space
+  /// ```
+  String kebab() {
+    return snake().replaceAll('_', '-');
+  }
+
+  /// Returns a copy of this string in dot.case style, or the original string,
+  /// if it's empty.
+  ///
+  /// ```dart
+  /// print('Hello World'.dot()) // hello.world
+  /// print('helloWorld'.dot()) // hello.world
+  /// print('long   space'.dot()) // long.space
+  /// ```
+  String dot() {
+    return snake().replaceAll('_', '.');
+  }
+}

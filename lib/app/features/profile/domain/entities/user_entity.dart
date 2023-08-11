@@ -18,6 +18,7 @@ class AppUserEntity extends INetworkModel<AppUserEntity> {
     this.paymentBankEntity,
     this.hasMultiplePaymentBanks = false,
     this.paymentBankEntities = const [],
+    this.hasCurrentUser = false,
   });
 
   factory AppUserEntity.fromMap(Map<String, dynamic> map) {
@@ -40,6 +41,7 @@ class AppUserEntity extends INetworkModel<AppUserEntity> {
           : <PaymentBankEntity>[],
       hasMultiplePaymentBanks: (map['hasMultiplePaymentBanks'] != null) ? map['paymentBankEntity'] : false,
       paymentBankEntity: (map['paymentBankEntity'] != null) ? PaymentBankEntity.fromMap(map['paymentBankEntity']) : PaymentBankEntity(),
+      hasCurrentUser: (map['hasCurrentUser'] != null) ? map['hasCurrentUser'] : false,
     );
   }
 
@@ -59,21 +61,24 @@ class AppUserEntity extends INetworkModel<AppUserEntity> {
   PaymentBankEntity? paymentBankEntity;
   bool hasMultiplePaymentBanks;
   List<PaymentBankEntity> paymentBankEntities;
+  bool hasCurrentUser;
 
-  AppUserEntity copyWith(
-      {int? userID,
-      String? phoneNumber,
-      BusinessProfileEntity? businessProfile,
-      List<StoreEntity>? stores,
-      String? token,
-      DateTime? tokenCreationDateTime,
-      bool? hasUserAuthenticated,
-      BusinessTypeEntity? businessTypeEntity,
-      CurrentProfileStatus? currentProfileStatus,
-      List<MenuEntity>? menus,
-      List<StoreOwnDeliveryPartnersInfo>? drivers,
-      List<Addons>? addons,
-      RatingAndReviewEntity? ratingAndReviewEntity}) {
+  AppUserEntity copyWith({
+    int? userID,
+    String? phoneNumber,
+    BusinessProfileEntity? businessProfile,
+    List<StoreEntity>? stores,
+    String? token,
+    DateTime? tokenCreationDateTime,
+    bool? hasUserAuthenticated,
+    BusinessTypeEntity? businessTypeEntity,
+    CurrentProfileStatus? currentProfileStatus,
+    List<MenuEntity>? menus,
+    List<StoreOwnDeliveryPartnersInfo>? drivers,
+    List<Addons>? addons,
+    RatingAndReviewEntity? ratingAndReviewEntity,
+    bool? hasCurrentUser,
+  }) {
     return AppUserEntity(
       userID: userID ?? this.userID,
       phoneNumber: phoneNumber ?? this.phoneNumber,
@@ -88,6 +93,7 @@ class AppUserEntity extends INetworkModel<AppUserEntity> {
       drivers: drivers ?? this.drivers,
       addons: addons ?? this.addons,
       ratingAndReviewEntity: ratingAndReviewEntity ?? this.ratingAndReviewEntity,
+      hasCurrentUser: hasCurrentUser ?? this.hasCurrentUser,
     );
   }
 
@@ -106,6 +112,7 @@ class AppUserEntity extends INetworkModel<AppUserEntity> {
       'drivers': this.drivers.map((e) => e.toMap()).toList(growable: false),
       'addons': this.addons.map((e) => e.toMap()).toList(growable: false),
       'ratingAndReviewEntity': this.ratingAndReviewEntity?.toMap(),
+      'hasCurrentUser': this.hasCurrentUser,
     };
   }
 

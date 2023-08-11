@@ -987,8 +987,8 @@ class MenuAvailableDayAndTime with AppEquatable {
       shortName: map['shortName'] as String,
       id: map['id'] as int,
       hasSelected: map['hasSelected'] as bool,
-      openingTime: map['openingTime'] as DateTime?,
-      closingTime: map['closingTime'] as DateTime?,
+      openingTime: Timestamp.parse(map['openingTime'].toString()).toDateTime(),
+      closingTime: Timestamp.parse(map['closingTime'].toString()).toDateTime(),
     );
   }
 
@@ -996,8 +996,8 @@ class MenuAvailableDayAndTime with AppEquatable {
   String shortName;
   int id;
   bool hasSelected;
-  DateTime? openingTime;
-  DateTime? closingTime;
+  DateTime? openingTime = DateTime.now();
+  DateTime? closingTime = DateTime.now();
 
   @override
   bool get cacheHash => true;
@@ -1017,8 +1017,8 @@ class MenuAvailableDayAndTime with AppEquatable {
       'title': this.day,
       'id': this.id,
       'hasSelected': this.hasSelected,
-      'closingTime': this.closingTime,
-      'openingTime': this.openingTime,
+      'closingTime': Timestamp.fromDateTime(this.closingTime),
+      'openingTime': Timestamp.fromDateTime(this.openingTime),
       'shortName': this.shortName,
     };
   }

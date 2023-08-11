@@ -16,8 +16,11 @@ typedef DeleteByIdAndEntityFunc<T> = Future<Either<RepositoryBaseFailure, bool>>
 typedef GetByIdAndEntityFunc<T> = Future<Either<RepositoryBaseFailure, bool>> Function(UniqueId uniqueId, T input);
 typedef UdpateByIdAndEntityFunc<T> = Future<Either<RepositoryBaseFailure, bool>> Function(UniqueId uniqueId, T input);
 typedef BindingSourceToDestinationFunc<T, R> = Future<Either<RepositoryBaseFailure, List<R>>> Function(List<T> source, List<R> destination);
+typedef UnBindingSourceToDestinationFunc<T, R> = Future<Either<RepositoryBaseFailure, List<R>>> Function(List<T> source, List<R> destination);
 typedef AddAllFunc<T> = Future<Either<RepositoryBaseFailure, List<T>>> Function(List<T> listOfNewData);
 typedef UpdateAllFunc<T> = Future<Either<RepositoryBaseFailure, List<T>>> Function(List<T> listOfExistingData);
+typedef BindingFunc<T, R> = Future<Either<RepositoryBaseFailure, R>> Function(T source, R destination);
+typedef UnBindingFunc<T, R> = Future<Either<RepositoryBaseFailure, R>> Function(T source, R destination);
 
 class GetByIdFunction<T> implements GetById<T> {
   GetByIdFunction(this.function);

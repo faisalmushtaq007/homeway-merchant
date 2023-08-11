@@ -50,3 +50,23 @@ enum CurrentProfileStatus {
     return '$name:($statusID)';
   }
 }
+
+enum BusinessProfileStatus {
+  none,
+  saveBusinessProfile,
+  saveBusinessType,
+  deleteBusinessProfile,
+  deleteBusinessType,
+  getBusinessProfile,
+  getBusinessType,
+  navigateToAddressPage,
+  exceptionForBusinessProfile,
+  failedForBusinessProfile,
+  exceptionForBusinessType,
+  failedForBusinessType,
+  loadingBusinessProfile,
+  loadingBusinessType,
+  processingBusinessProfile,
+  processingBusinessType,
+  ;
+}

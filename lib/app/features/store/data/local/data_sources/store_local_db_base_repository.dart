@@ -21,3 +21,5 @@ abstract interface class BaseStoreOwnDriverLocalDbRepository<T extends StoreOwnD
         GetByIdAndEntity<T>,
         UpdateByIdAndEntity<T>,
         AddOrUpdateUser<T> {}
+
+abstract interface class BaseStoreBindingWithUser<T extends StoreEntity, R extends AppUserEntity> implements Binding<T, R> {}

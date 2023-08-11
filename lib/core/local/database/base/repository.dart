@@ -166,11 +166,14 @@ abstract class AddOrUpdateUser<EntityType> extends BaseRepositoryOperation<Entit
 // Binding
 abstract class BaseRepositoryBindOperation<T, R> {
   BindingSourceToDestinationFunc<T, R> binding(List<T> source, List<R> destination);
+  BindingSourceToDestinationFunc<T, R> unbinding(List<T> source, List<R> destination);
 }
 
 abstract class BindSourceToDestination<T, R> implements BaseRepositoryBindOperation<T, R> {
   @override
   BindingSourceToDestinationFunc<T, R> binding(List<T> source, List<R> destination);
+  @override
+  BindingSourceToDestinationFunc<T, R> unbinding(List<T> source, List<R> destination);
 }
 
 // Add all
@@ -191,4 +194,10 @@ abstract class BaseRepositoryUpdateAllOperation<EntityType> {
 abstract class UpdateAll<EntityType> implements BaseRepositoryUpdateAllOperation<EntityType> {
   @override
   BaseRepositoryUpdateAllOperation<EntityType> updateALL(EntityType entities);
+}
+
+// Binding & Unbinding
+abstract class Binding<T, R> {
+  Future<Either<RepositoryBaseFailure, R>> binding(T source, R destination);
+  Future<Either<RepositoryBaseFailure, R>> unbinding(T source, R destination);
 }

@@ -152,10 +152,20 @@ class AddonsLocalDbRepository<Extras extends Addons> implements BaseAddonsLocalD
   }
 }
 
-class AddonsBindingWithMenuLocalDbDbRepository<Addons, MenuEntity> implements BaseRepositoryBindOperation<Addons, MenuEntity> {
+class AddonsBindingWithMenuLocalDbDbRepository<Addons, MenuEntity> implements Binding<List<StoreOwnDeliveryPartnersInfo>, List<StoreEntity>> {
+  Future<Database> get _db async => AppDatabase.instance.database;
+  StoreRef<int, Map<String, dynamic>> get _menu => AppDatabase.instance.menu;
+  StoreRef<int, Map<String, dynamic>> get _addons => AppDatabase.instance.addons;
+
   @override
-  BindingSourceToDestinationFunc<Addons, MenuEntity> binding(List<Addons> source, List<MenuEntity> destination) {
+  Future<Either<RepositoryBaseFailure, List<StoreEntity>>> binding(List<StoreOwnDeliveryPartnersInfo> source, List<StoreEntity> destination) async {
     // TODO: implement binding
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<Either<RepositoryBaseFailure, List<StoreEntity>>> unbinding(List<StoreOwnDeliveryPartnersInfo> source, List<StoreEntity> destination) async {
+    // TODO: implement unbinding
     throw UnimplementedError();
   }
 }

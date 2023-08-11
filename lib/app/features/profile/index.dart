@@ -73,7 +73,9 @@ import 'package:network_manager/network_manager.dart';
 import 'package:new_image_crop/data/data_editor_config.dart';
 import 'package:new_image_crop/ui/dialog/image_editor_component/image_editor_plane.dart';
 import 'package:sembast/sembast.dart';
-
+import 'package:homemakers_merchant/app/features/profile/presentation/manager/profile/business_profile_bloc.dart';
+import 'package:homemakers_merchant/app/features/profile/presentation/manager/bank/bank_information_bloc.dart';
+import 'package:homemakers_merchant/app/features/profile/presentation/manager/document/business_document_bloc.dart';
 //Data
 part 'package:homemakers_merchant/app/features/profile/data/local/data_sources/business_type_list_data.dart';
 part 'package:homemakers_merchant/app/features/profile/data/local/data_sources/local_usermodel_service.dart';

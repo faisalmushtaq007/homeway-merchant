@@ -154,10 +154,20 @@ class StoreOwnDeliveryPartnersLocalDbRepository<Driver extends StoreOwnDeliveryP
 }
 
 class StoreOwnDriverBindingWithStoreLocalDbDbRepository<StoreOwnDeliveryPartnersInfo, StoreEntity>
-    implements BaseRepositoryBindOperation<StoreOwnDeliveryPartnersInfo, StoreEntity> {
+    implements Binding<List<StoreOwnDeliveryPartnersInfo>, List<StoreEntity>> {
+  Future<Database> get _db async => AppDatabase.instance.database;
+  StoreRef<int, Map<String, dynamic>> get _store => AppDatabase.instance.store;
+  StoreRef<int, Map<String, dynamic>> get _driver => AppDatabase.instance.driver;
+
   @override
-  BindingSourceToDestinationFunc<StoreOwnDeliveryPartnersInfo, StoreEntity> binding(List<StoreOwnDeliveryPartnersInfo> source, List<StoreEntity> destination) {
+  Future<Either<RepositoryBaseFailure, List<StoreEntity>>> binding(List<StoreOwnDeliveryPartnersInfo> source, List<StoreEntity> destination) async {
     // TODO: implement binding
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<Either<RepositoryBaseFailure, List<StoreEntity>>> unbinding(List<StoreOwnDeliveryPartnersInfo> source, List<StoreEntity> destination) async {
+    // TODO: implement unbinding
     throw UnimplementedError();
   }
 }

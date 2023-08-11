@@ -160,3 +160,63 @@ class StoreLocalDbRepository<Store extends StoreEntity> implements BaseStoreLoca
     throw UnimplementedError();
   }
 }
+
+class StoreBindingWithUserLocalDbDbRepository<T extends StoreEntity, R extends AppUserEntity> implements Binding<List<StoreEntity>, AppUserEntity> {
+  const StoreBindingWithUserLocalDbDbRepository({
+    required this.storeLocalDbRepository,
+    required this.userLocalDbRepository,
+  });
+  Future<Database> get _db async => AppDatabase.instance.database;
+  StoreRef<int, Map<String, dynamic>> get _user => AppDatabase.instance.user;
+  StoreRef<int, Map<String, dynamic>> get _store => AppDatabase.instance.store;
+  final StoreLocalDbRepository storeLocalDbRepository;
+  final UserLocalDbRepository userLocalDbRepository;
+
+  @override
+  Future<Either<RepositoryBaseFailure, AppUserEntity>> binding(List<StoreEntity> source, AppUserEntity destination) async {
+    final db = await _db;
+    final users = await userLocalDbRepository.getAll();
+    if (users.isRight()) {
+      // Check current user, now skip it
+      final currentUserMap = cloneMap(users.right[0].toMap());
+      var cacheStores = currentUserMap['stores'] as List<StoreEntity>;
+
+      final result = await tryCatch<AppUserEntity>(() async {
+        await db.transaction((txn) async {
+          // !Wrong the following code will deadlock
+          // Don't use the db object in the transaction
+          // await record.put(db, {'name': 'fish'});
+          // correct, txn in used
+          // Modify the store result
+          final record = _user.record(users.right[0].userID);
+          final value = await record.get(await _db);
+          var currentUser = cloneMap(value);
+          currentUser['stores'] = currentUserMap['stores'] as List<StoreEntity>..addAll(source.toList());
+          final result = await record.update(txn, {'stores': currentUser['stores']});
+          if (result != null) {
+            return AppUserEntity.fromMap(result);
+          } else {
+            return AppUserEntity.fromMap(currentUser);
+          }
+        });
+      });
+      return result;
+    } else {
+      return Left(users.left);
+    }
+  }
+
+  @override
+  Future<Either<RepositoryBaseFailure, AppUserEntity>> unbinding(List<StoreEntity> source, AppUserEntity destination) async {
+    final db = await _db;
+    final result = await tryCatch<AppUserEntity>(() async {
+      await db.transaction((txn) async {
+        // !Wrong the following code will deadlock
+        // Don't use the db object in the transaction
+        // await record.put(db, {'name': 'fish'});
+        // correct, txn in used
+      });
+    });
+    return result;
+  }
+}

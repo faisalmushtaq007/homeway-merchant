@@ -154,10 +154,20 @@ class MenuLocalDbRepository<Menu extends MenuEntity> implements BaseMenuLocalDbR
   }
 }
 
-class MenuBindingWithStoreLocalDbDbRepository<MenuEntity, StoreEntity> implements BindSourceToDestination<MenuEntity, StoreEntity> {
+class MenuBindingWithStoreLocalDbDbRepository<MenuEntity, StoreEntity> implements Binding<List<MenuEntity>, List<StoreEntity>> {
+  Future<Database> get _db async => AppDatabase.instance.database;
+  StoreRef<int, Map<String, dynamic>> get _menu => AppDatabase.instance.menu;
+  StoreRef<int, Map<String, dynamic>> get _store => AppDatabase.instance.store;
+
   @override
-  BindingSourceToDestinationFunc<MenuEntity, StoreEntity> binding(List<MenuEntity> source, List<StoreEntity> destination) {
+  Future<Either<RepositoryBaseFailure, List<StoreEntity>>> binding(List<MenuEntity> source, List<StoreEntity> destination) async {
     // TODO: implement binding
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<Either<RepositoryBaseFailure, List<StoreEntity>>> unbinding(List<MenuEntity> source, List<StoreEntity> destination) async {
+    // TODO: implement unbinding
     throw UnimplementedError();
   }
 }
