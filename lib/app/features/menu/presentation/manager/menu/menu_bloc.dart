@@ -149,6 +149,7 @@ class MenuBloc extends Bloc<MenuEvent, MenuState> {
           );
         },
       );
+      return;
     } catch (e, s) {
       appLog.e('Addons bloc get all exception $e');
       emit(
@@ -159,6 +160,7 @@ class MenuBloc extends Bloc<MenuEvent, MenuState> {
           addonsSelectionUseCase: AddonsSelectionUseCase.getAll,
         ),
       );
+      return;
     }
   }
 

@@ -24,8 +24,8 @@ class _MenuAllAddonsPageController extends State<MenuAllAddonsPage> {
     listViewBuilderScrollController = ScrollController();
     _menuAvailableAddons = [];
     _selectedAddons = [];
-
-    initMenuAddons();
+    //initMenuAddons();
+    context.read<MenuBloc>().add(GetAllAddons());
   }
 
   @override
@@ -45,7 +45,6 @@ class _MenuAllAddonsPageController extends State<MenuAllAddonsPage> {
   }
 
   void initMenuAddons() {
-    context.read<MenuBloc>().add(GetAllAddons());
     //_menuAvailableAddons = List<Addons>.from(localMenuAddons.toList());
   }
 

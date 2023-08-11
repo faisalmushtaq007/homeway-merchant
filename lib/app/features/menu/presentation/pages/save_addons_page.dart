@@ -450,21 +450,43 @@ class _SaveAddonsPageView extends WidgetView<SaveAddonsPage, _SaveAddonsPageCont
                             onPressed: () {
                               if (_SaveAddonsPageController.saveAddonsFormKey.currentState!.validate()) {
                                 _SaveAddonsPageController.saveAddonsFormKey.currentState!.save();
-                                context.read<MenuBloc>().add(
-                                      SaveAddons(
-                                        addonsEntity: Addons(
-                                          title: state.addonsNameTextEditingController.value.text.trim(),
-                                          description: state.addonsDescriptionTextEditingController.value.text.trim(),
-                                          quantity: double.parse(state.addonsQuantityTextEditingController.value.text.trim()),
-                                          defaultPrice: 0.0,
-                                          finalPrice: double.parse(state.addonsPriceTextEditingController.value.text.trim()),
-                                          discountedPrice: 0.0,
-                                          hasSelected: false,
-                                          unit: state.addonsUnitTextEditingController.value.text.trim(),
-                                          currency: state.currency,
+                                Addons addonsEntity;
+                                if (widget.haveOwnAddons && !widget.haveNewAddons && widget.addons != null) {
+                                  addonsEntity = widget.addons!.copyWith(
+                                    title: state.addonsNameTextEditingController.value.text.trim(),
+                                    description: state.addonsDescriptionTextEditingController.value.text.trim(),
+                                    quantity: double.parse(state.addonsQuantityTextEditingController.value.text.trim()),
+                                    defaultPrice: 0.0,
+                                    finalPrice: double.parse(state.addonsPriceTextEditingController.value.text.trim()),
+                                    discountedPrice: 0.0,
+                                    unit: state.addonsUnitTextEditingController.value.text.trim(),
+                                    currency: state.currency,
+                                    addonsImage: MenuImage(),
+                                  );
+                                  context.read<MenuBloc>().add(
+                                        SaveAddons(
+                                          addonsEntity: addonsEntity,
                                         ),
-                                      ),
-                                    );
+                                      );
+                                } else if (widget.haveOwnAddons && widget.haveNewAddons) {
+                                  addonsEntity = Addons(
+                                    title: state.addonsNameTextEditingController.value.text.trim(),
+                                    description: state.addonsDescriptionTextEditingController.value.text.trim(),
+                                    quantity: double.parse(state.addonsQuantityTextEditingController.value.text.trim()),
+                                    finalPrice: double.parse(state.addonsPriceTextEditingController.value.text.trim()),
+                                    unit: state.addonsUnitTextEditingController.value.text.trim(),
+                                    currency: state.currency,
+                                    hasOwnAddons: true,
+                                    addonsImage: MenuImage(),
+                                  );
+                                  context.read<MenuBloc>().add(
+                                        SaveAddons(
+                                          addonsEntity: addonsEntity,
+                                        ),
+                                      );
+                                } else {
+                                  // Invalid case
+                                }
                               }
                               return;
                             },

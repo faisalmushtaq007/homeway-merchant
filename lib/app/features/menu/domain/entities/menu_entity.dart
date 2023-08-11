@@ -34,7 +34,7 @@ class MenuEntity with AppEquatable {
   factory MenuEntity.fromMap(Map<String, dynamic> map) {
     return MenuEntity(
       menuId: map['menuId'] as int,
-      menuImages: map['menuImages'].map((e) => MenuImage.fromMap(e)).toList().cast<MenuImage>(),
+      menuImages: (map['menuImages'] != null) ? map['menuImages'].map((e) => MenuImage.fromMap(e)).toList().cast<MenuImage>() : MenuImage(),
       menuName: map['menuName'] as String,
       menuDescription: map['menuDescription'] as String,
       menuCategories: map['menuCategories'].map((e) => Category.fromMap(e)).toList().cast<Category>(),
@@ -247,7 +247,7 @@ class MenuImage with AppEquatable {
   Map<String, dynamic> metaInfo;
   String assetExtension;
   bool hasBase64;
-  String? valueOfBase64;
+  String valueOfBase64;
   AssetsUploadStatus assetsUploadStatus;
 
   @override
@@ -875,7 +875,7 @@ class Addons with AppEquatable {
 
   factory Addons.fromMap(Map<String, dynamic> map) {
     return Addons(
-      addonsID: map['addonsD'] as int,
+      addonsID: map['addonsID'] as int,
       title: map['title'] as String,
       quantity: map['quantity'] as double,
       defaultPrice: map['defaultPrice'] as double,
