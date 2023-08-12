@@ -1,9 +1,15 @@
 part of 'package:homemakers_merchant/app/features/profile/index.dart';
 
 class BankInformationPage extends StatefulWidget {
-  const BankInformationPage({super.key, this.paymentBankEntity, this.hasEditBankInformation = false});
+  const BankInformationPage({
+    super.key,
+    this.paymentBankEntity,
+    this.hasEditBankInformation = false,
+    this.currentIndex = -1,
+  });
   final bool hasEditBankInformation;
   final PaymentBankEntity? paymentBankEntity;
+  final int currentIndex;
 
   @override
   State<BankInformationPage> createState() => _BankInformationPageState();

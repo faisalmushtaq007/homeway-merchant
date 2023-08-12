@@ -20,7 +20,7 @@ class BusinessInformationPage extends StatefulWidget {
 
 class _BusinessInformationPageState extends State<BusinessInformationPage> with SingleTickerProviderStateMixin {
   late final ScrollController scrollController;
-
+  late final ScrollController innerScrollController;
   late AnimationController _animationController;
   late Animation<double> _animation;
 
@@ -36,11 +36,33 @@ class _BusinessInformationPageState extends State<BusinessInformationPage> with 
   String? phoneValidation;
   String userEnteredPhoneNumber = '';
   PhoneNumberVerification phoneNumberVerification = PhoneNumberVerification.none;
+  BusinessProfileEntity? businessProfileEntity;
+  bool hasEditBusinessProfile = false;
+  int currentIndex = -1;
+  BusinessTypeEntity? businessTypeEntity;
+  final isoCodeNameMap = IsoCode.values.asNameMap();
+  IsoCode defaultCountry = IsoCode.SA;
+  PhoneNumber initialPhoneNumberValue = PhoneNumber(
+    isoCode: IsoCode.values.asNameMap().values.byName('SA'),
+    nsn: '',
+  );
+  PhoneController controller = PhoneController(
+    PhoneNumber(
+      isoCode: IsoCode.values.asNameMap().values.byName('SA'),
+      nsn: '',
+    ),
+  );
+  int businessProfileID = -1;
+  ValueNotifier<PhoneNumberVerification> valueNotifierPhoneNumberVerification = ValueNotifier<PhoneNumberVerification>(
+    PhoneNumberVerification.none,
+  );
+  bool mobileOnly = true;
 
   @override
   void initState() {
     super.initState();
     scrollController = ScrollController();
+    innerScrollController = ScrollController();
     _animationController = AnimationController(
       vsync: this,
       duration: Duration(seconds: 2),
@@ -52,11 +74,29 @@ class _BusinessInformationPageState extends State<BusinessInformationPage> with 
       ),
     );
     _animationController.forward();
+    businessProfileEntity = widget.businessProfileEntity;
+    hasEditBusinessProfile = widget.hasEditBusinessProfile;
+    currentIndex = widget.currentIndex;
+    businessTypeEntity = widget.businessTypeEntity;
+    initialPhoneNumberValue = PhoneNumber(
+      isoCode: isoCodeNameMap.values.byName('SA'),
+      nsn: '',
+    );
+    controller = PhoneController(initialPhoneNumberValue);
+    controller.value = initialPhoneNumberValue;
+    if (mounted) {
+      context.read<BusinessProfileBloc>().add(GetBusinessProfile(
+            businessProfileID: widget.businessProfileEntity?.businessProfileID ?? -1,
+            businessProfileEntity: widget.businessProfileEntity,
+            index: widget.currentIndex,
+          ));
+    }
   }
 
   @override
   void dispose() {
     scrollController.dispose();
+    innerScrollController.dispose();
     _animationController.dispose();
     _usernameController.dispose();
     _businessNameController.dispose();
@@ -64,6 +104,73 @@ class _BusinessInformationPageState extends State<BusinessInformationPage> with 
     _phoneController.dispose();
     _addressController.dispose();
     super.dispose();
+  }
+
+  void onPhoneNumberChanged(
+    PhoneNumber? phoneNumbers,
+  ) {
+    if (phoneNumbers.isNotNull) {
+      initialPhoneNumberValue = phoneNumbers!;
+    }
+    userEnteredPhoneNumber = '+${phoneNumbers?.countryCode} ${phoneNumbers?.getFormattedNsn().trim()}';
+    String countryDialCode = '+${phoneNumbers?.countryCode ?? '+966'}';
+    String country = phoneNumbers?.isoCode.name ?? 'SA';
+    final result = getValidator(isAllowEmpty: false);
+    phoneValidation = result?.call(initialPhoneNumberValue);
+
+    if (phoneValidation != null && phoneValidation!.isNotEmpty) {
+      valueNotifierPhoneNumberVerification.value = PhoneNumberVerification.invalid;
+    } else {
+      if (phoneValidation == null && phoneNumbers != null && phoneNumbers.getFormattedNsn().trim().isNotEmpty) {
+        valueNotifierPhoneNumberVerification.value = PhoneNumberVerification.valid;
+      } else {
+        valueNotifierPhoneNumberVerification.value = PhoneNumberVerification.none;
+      }
+    }
+    //setState(() {});
+  }
+
+  void phoneNumberValidationChanged(
+    String? value,
+    PhoneNumber? phoneNumbers,
+    PhoneController phoneNumberControllers,
+  ) {
+    phoneValidation = value;
+    if (phoneNumbers.isNotNull) {
+      initialPhoneNumberValue = phoneNumbers!;
+    }
+    userEnteredPhoneNumber = '+${phoneNumbers?.countryCode} ${phoneNumbers?.getFormattedNsn().trim()}';
+    controller = phoneNumberControllers;
+    if (phoneValidation != null && phoneValidation!.isNotEmpty) {
+      phoneNumberVerification = PhoneNumberVerification.invalid;
+      valueNotifierPhoneNumberVerification.value = PhoneNumberVerification.invalid;
+    } else {
+      if (phoneValidation == null && phoneNumberControllers.value != null && phoneNumberControllers.value!.getFormattedNsn().trim().isNotEmpty) {
+        phoneNumberVerification = PhoneNumberVerification.valid;
+        valueNotifierPhoneNumberVerification.value = PhoneNumberVerification.valid;
+      } else {
+        phoneNumberVerification = PhoneNumberVerification.none;
+        valueNotifierPhoneNumberVerification.value = PhoneNumberVerification.none;
+      }
+    }
+    //setState(() {});
+  }
+
+  PhoneNumberInputValidator? getValidator({bool isAllowEmpty = false}) {
+    List<PhoneNumberInputValidator> validators = [];
+    if (!isAllowEmpty) {
+      validators.add(
+        PhoneValidator.required(errorText: "Phone number can't be empty"),
+      );
+    }
+
+    if (mobileOnly) {
+      validators.add(PhoneValidator.validMobile(allowEmpty: isAllowEmpty));
+    } else {
+      validators.add(PhoneValidator.valid(allowEmpty: isAllowEmpty));
+    }
+    //update();
+    return validators.isNotEmpty ? PhoneValidator.compose(validators) : null;
   }
 
   @override
@@ -83,7 +190,7 @@ class _BusinessInformationPageState extends State<BusinessInformationPage> with 
         noAppBar: true,
       ),
       child: Scaffold(
-        resizeToAvoidBottomInset: false,
+        resizeToAvoidBottomInset: true,
         appBar: AppBar(
           actions: const [
             Padding(
@@ -100,499 +207,572 @@ class _BusinessInformationPageState extends State<BusinessInformationPage> with 
               minWidth: double.infinity,
               minHeight: media.size.height,
             ),
-            child: AnimatedBuilder(
-              animation: _animationController,
-              builder: (BuildContext context, Widget? child) {
-                return Transform(
-                  transform: Matrix4.translationValues(
-                    _animation.value * width,
-                    0.0,
-                    0.0,
-                  ),
-                  child: Form(
-                    key: _createBusinessProfileFormKey,
-                    child: Padding(
-                      padding: EdgeInsetsDirectional.only(
-                        top: topPadding,
-                        //bottom: bottomPadding,
-                      ),
-                      child: Stack(
-                        alignment: Alignment.topLeft,
-                        clipBehavior: Clip.none,
-                        textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                        children: [
-                          ListView(
-                            controller: scrollController,
-                            shrinkWrap: true,
-                            padding: EdgeInsetsDirectional.only(
-                              start: margins * 2.5,
-                              end: margins * 2.5,
-                            ),
-                            children: [
-                              Text(
-                                'Enter the business details',
-                                style: context.titleLarge,
-                                textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                              ).translate(),
-                              const AnimatedGap(
-                                16,
-                                duration: Duration(
-                                  milliseconds: 300,
-                                ),
-                              ),
-                              MultiStreamBuilder(
-                                key: const Key(
-                                  'business-fullname-textFormField-key',
-                                ),
-                                buildWhen: (previousDataList, latestDataList) => previousDataList != latestDataList,
-                                streams: [
-                                  Stream.fromFuture(
-                                    AppTranslator.instance.translate('Full name'),
-                                  ),
-                                  Stream.fromFuture(
-                                    AppTranslator.instance.translate('Please enter a full name'),
-                                  ),
-                                  Stream.fromFuture(
-                                    AppTranslator.instance.translate(
-                                      _usernameController.value.text.trim(),
-                                    ),
-                                  ),
-                                ],
-                                initialStreamValue: const ['Full name', 'Please enter a full name', ''],
-                                builder: (context, snapshot) {
-                                  final String translateString = snapshot[2] as String;
-                                  return Directionality(
+            child: SlideInLeft(
+              key: const Key('select-business-information-page-slideleft-widget'),
+              delay: const Duration(milliseconds: 500),
+              child: Container(
+                constraints: BoxConstraints(
+                  minWidth: double.infinity,
+                  minHeight: media.size.height,
+                ),
+                padding: EdgeInsetsDirectional.only(
+                  top: topPadding,
+                  start: margins * 2.5,
+                  end: margins * 2.5,
+                  //bottom: bottomPadding,
+                ),
+                child: BlocListener<BusinessProfileBloc, BusinessProfileState>(
+                  bloc: context.watch<BusinessProfileBloc>(),
+                  listener: (context, state) {
+                    switch (state) {
+                      case SaveBusinessProfileState():
+                        {
+                          SchedulerBinding.instance.addPostFrameCallback((_) async {
+                            await context.push(
+                              Routes.CONFIRM_BUSINESS_TYPE_PAGE,
+                              extra: {
+                                'businessProfileEntity': state.businessProfileEntity,
+                                'hasEditBusinessProfile': state.hasEditBusinessProfile,
+                                'currentIndex': state.currentIndex,
+                                'businessTypeEntity': state.businessProfileEntity.businessTypeEntity ?? BusinessTypeEntity(),
+                              },
+                            );
+                            return;
+                          });
+                        }
+                      case _:
+                        {}
+                    }
+                  },
+                  child: BlocBuilder<BusinessProfileBloc, BusinessProfileState>(
+                    builder: (context, state) {
+                      switch (state) {
+                        case SaveBusinessProfileState():
+                          {
+                            _usernameController.text = state.businessProfileEntity.userName ?? '';
+                            _addressController.text = state.businessProfileEntity.businessAddress?.address?.area ?? '';
+                            _emailController.text = state.businessProfileEntity.businessEmailAddress ?? '';
+                            _businessNameController.text = state.businessProfileEntity.businessName ?? '';
+                            userEnteredPhoneNumber = state.businessProfileEntity.businessPhoneNumber ?? '';
+                            hasEditBusinessProfile = state.hasEditBusinessProfile;
+                          }
+                        case GetBusinessProfileState():
+                          {
+                            businessProfileEntity = state.businessProfileEntity;
+                            businessProfileID = state.businessProfileID;
+                            initialPhoneNumberValue = PhoneNumber(
+                              isoCode: isoCodeNameMap.values.byName('SA'),
+                              nsn: businessProfileEntity?.businessPhoneNumber ?? '',
+                            );
+                            _usernameController.text = businessProfileEntity?.userName ?? '';
+                            _addressController.text = businessProfileEntity?.businessAddress?.address?.area ?? '';
+                            _emailController.text = businessProfileEntity?.businessEmailAddress ?? '';
+                            _businessNameController.text = businessProfileEntity?.businessName ?? '';
+                            userEnteredPhoneNumber = businessProfileEntity?.businessPhoneNumber ?? '';
+                          }
+                        case _:
+                          {}
+                      }
+                      return Form(
+                        key: _createBusinessProfileFormKey,
+                        child: CustomScrollView(
+                          controller: innerScrollController,
+                          shrinkWrap: true,
+                          slivers: [
+                            SliverList(
+                              delegate: SliverChildListDelegate(
+                                [
+                                  Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment: CrossAxisAlignment.stretch,
                                     textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                                    child: TextFormField(
-                                      controller: _usernameController,
-                                      textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                                      decoration: InputDecoration(
-                                        labelText: snapshot[0],
-                                        isDense: true,
-                                      ),
-                                      validator: (value) {
-                                        if (value == null || value.isEmpty) {
-                                          return '${snapshot[1]}';
-                                        }
-                                        return null;
-                                      },
-                                    ),
-                                  );
-                                },
-                              ),
-                              const AnimatedGap(
-                                16,
-                                duration: Duration(
-                                  milliseconds: 300,
-                                ),
-                              ),
-                              MultiStreamBuilder(
-                                key: const Key(
-                                  'business-name-textFormField-key',
-                                ),
-                                buildWhen: (previousDataList, latestDataList) => previousDataList != latestDataList,
-                                streams: [
-                                  Stream.fromFuture(
-                                    AppTranslator.instance.translate('Business name'),
-                                  ),
-                                  Stream.fromFuture(
-                                    AppTranslator.instance.translate(
-                                      'Please enter a business name',
-                                    ),
-                                  ),
-                                  Stream.fromFuture(
-                                    AppTranslator.instance.translate(
-                                      _businessNameController.value.text.trim(),
-                                    ),
-                                  ),
-                                ],
-                                initialStreamValue: const ['Business name', 'Please enter a business name', ''],
-                                builder: (context, snapshot) {
-                                  return Directionality(
-                                    textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                                    child: TextFormField(
-                                      controller: _businessNameController,
-                                      textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                                      decoration: InputDecoration(
-                                        labelText: snapshot[0],
-                                        isDense: true,
-                                      ),
-                                      validator: (value) {
-                                        if (value == null || value.isEmpty) {
-                                          return '${snapshot[1]}';
-                                        }
-                                        return null;
-                                      },
-                                    ),
-                                  );
-                                },
-                              ),
-                              const AnimatedGap(
-                                16,
-                                duration: Duration(
-                                  milliseconds: 300,
-                                ),
-                              ),
-                              MultiStreamBuilder(
-                                key: const Key(
-                                  'business-email-address-textFormField-key',
-                                ),
-                                buildWhen: (previousDataList, latestDataList) => previousDataList != latestDataList,
-                                streams: [
-                                  Stream.fromFuture(
-                                    AppTranslator.instance.translate('Business email address'),
-                                  ),
-                                  Stream.fromFuture(
-                                    AppTranslator.instance.translate(
-                                      'Please enter an email address',
-                                    ),
-                                  ),
-                                  Stream.fromFuture(
-                                    AppTranslator.instance.translate(
-                                      'Please enter a valid email address',
-                                    ),
-                                  ),
-                                  Stream.fromFuture(
-                                    AppTranslator.instance.translate(
-                                      _emailController.value.text.trim(),
-                                    ),
-                                  ),
-                                ],
-                                initialStreamValue: const ['Business email address', 'Please enter an email address', 'Please enter a valid email address', ''],
-                                builder: (context, snapshot) {
-                                  return Directionality(
-                                    textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                                    child: TextFormField(
-                                      controller: _emailController,
-                                      textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                                      decoration: InputDecoration(
-                                        labelText: snapshot[0],
-                                        isDense: true,
-                                      ),
-                                      validator: (value) {
-                                        if (value == null || value.isEmpty) {
-                                          return '${snapshot[1]}';
-                                        }
-                                        /*else if (!value.contains('@')) {
-                                          return 'Please enter a valid email address'.tr();
-                                        }*/
-                                        else if (!value.hasValidEmailAddress(value)) {
-                                          return '${snapshot[2]}';
-                                        }
-                                        return null;
-                                      },
-                                    ),
-                                  );
-                                },
-                              ),
-                              const AnimatedGap(
-                                16,
-                                duration: Duration(
-                                  milliseconds: 300,
-                                ),
-                              ),
-                              Row(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  Flexible(
-                                    child: BlocBuilder<PhoneFormFieldBloc, PhoneNumberFormFieldState>(
-                                      bloc: context.read<PhoneFormFieldBloc>(),
-                                      buildWhen: (previous, current) => previous != current,
-                                      builder: (context, state) {
-                                        state.maybeWhen(
-                                          orElse: () {},
-                                          validate: (
-                                            isAllowEmpty,
-                                            mobileOnly,
-                                            phoneNumberInputValidator,
-                                            phoneValidation,
-                                            phoneController,
-                                            phoneNumber,
-                                            phoneNumberVerification,
-                                            userEnteredPhoneNumber,
-                                            countryDialCode,
-                                            country,
-                                          ) {
-                                            this.phoneNumberVerification = phoneNumberVerification;
-                                            this.userEnteredPhoneNumber = userEnteredPhoneNumber;
-                                          },
-                                        );
-                                        return MultiStreamBuilder(
-                                          key: const Key(
-                                            'business-phone-number-textFormField-key',
-                                          ),
-                                          buildWhen: (
-                                            previousDataList,
-                                            latestDataList,
-                                          ) =>
-                                              previousDataList != latestDataList,
-                                          streams: [
-                                            Stream.fromFuture(
-                                              AppTranslator.instance.translate(
-                                                'Business phone number',
-                                              ),
-                                            ),
-                                            Stream.fromFuture(
-                                              AppTranslator.instance.translate(
-                                                '$phoneValidation',
-                                              ),
-                                            ),
-                                          ],
-                                          initialStreamValue: [
-                                            'Business phone number',
-                                            phoneValidation,
-                                          ],
-                                          builder: (context, snapshot) {
-                                            return Directionality(
-                                              textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                                              child: PhoneNumberFieldWidget(
-                                                key: const Key(
-                                                  'user-business-phone-number-widget-key',
-                                                ),
-                                                isCountryChipPersistent: false,
-                                                outlineBorder: true,
-                                                shouldFormat: true,
-                                                useRtl: false,
-                                                withLabel: true,
-                                                decoration: InputDecoration(
-                                                  labelText: snapshot[0],
-                                                  alignLabelWithHint: true,
-                                                  //hintText: 'Mobile number',
-                                                  errorText: phoneValidation,
-                                                  isDense: true,
-                                                ),
-                                                isAllowEmpty: false,
-                                                autofocus: false,
-                                                style: context.bodyLarge,
-                                                showFlagInInput: false,
-                                                countryCodeStyle: context.bodyLarge,
-                                              ),
-                                            );
-                                          },
-                                        );
-                                      },
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              const AnimatedGap(
-                                16,
-                                duration: Duration(
-                                  milliseconds: 300,
-                                ),
-                              ),
-                              MultiStreamBuilder(
-                                key: const Key(
-                                  'business-address-textFormField-key',
-                                ),
-                                buildWhen: (previousDataList, latestDataList) => previousDataList != latestDataList,
-                                streams: [
-                                  Stream.fromFuture(
-                                    AppTranslator.instance.translate('Business address'),
-                                  ),
-                                  Stream.fromFuture(
-                                    AppTranslator.instance.translate('Please enter an address'),
-                                  ),
-                                  Stream.fromFuture(
-                                    AppTranslator.instance.translate(
-                                      _addressController.value.text.trim(),
-                                    ),
-                                  ),
-                                ],
-                                initialStreamValue: const ['Business address', 'Please enter an address', ''],
-                                builder: (context, snapshot) {
-                                  return Directionality(
-                                    textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                                    child: TextFormField(
-                                      controller: _addressController,
-                                      textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                                      maxLines: 3,
-                                      decoration: InputDecoration(
-                                        labelText: snapshot[0],
-                                        isDense: true,
-                                        suffixIcon: Container(
-                                          width: kMinInteractiveDimension * 1.05,
-                                          constraints: BoxConstraints(
-                                            minWidth: kMinInteractiveDimension * 1.05,
-                                            minHeight: kMinInteractiveDimension * 2,
-                                          ),
-                                          decoration: BoxDecoration(
-                                            border: BorderDirectional(
-                                              start: BorderSide(
-                                                width: 1.0,
-                                                color: Color.fromRGBO(
-                                                  201,
-                                                  201,
-                                                  203,
-                                                  1.0,
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                          child: Row(
-                                            children: [
-                                              IconButton(
-                                                onPressed: () {},
-                                                icon: Icon(
-                                                  Icons.my_location,
-                                                ),
-                                              ),
-                                            ],
-                                          ),
+                                    children: [
+                                      Text(
+                                        'Enter the business details',
+                                        style: context.titleLarge,
+                                        textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                      ).translate(),
+                                      const AnimatedGap(
+                                        16,
+                                        duration: Duration(
+                                          milliseconds: 300,
                                         ),
                                       ),
-                                      validator: (value) {
-                                        if (value == null || value.isEmpty) {
-                                          return '${snapshot[1]}';
-                                        }
-                                        return null;
+                                      MultiStreamBuilder(
+                                        key: const Key(
+                                          'business-fullname-textFormField-key',
+                                        ),
+                                        buildWhen: (previousDataList, latestDataList) => previousDataList != latestDataList,
+                                        streams: [
+                                          Stream.fromFuture(
+                                            AppTranslator.instance.translate('Full name'),
+                                          ),
+                                          Stream.fromFuture(
+                                            AppTranslator.instance.translate('Please enter a full name'),
+                                          ),
+                                          Stream.fromFuture(
+                                            AppTranslator.instance.translate(
+                                              _usernameController.value.text.trim(),
+                                            ),
+                                          ),
+                                        ],
+                                        initialStreamValue: const ['Full name', 'Please enter a full name', ''],
+                                        builder: (context, snapshot) {
+                                          final String translateString = snapshot[2] as String;
+                                          return Directionality(
+                                            textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                            child: TextFormField(
+                                              controller: _usernameController,
+                                              textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                              decoration: InputDecoration(
+                                                labelText: snapshot[0],
+                                                isDense: true,
+                                              ),
+                                              validator: (value) {
+                                                if (value == null || value.isEmpty) {
+                                                  return '${snapshot[1]}';
+                                                }
+                                                return null;
+                                              },
+                                            ),
+                                          );
+                                        },
+                                      ),
+                                      const AnimatedGap(
+                                        16,
+                                        duration: Duration(
+                                          milliseconds: 300,
+                                        ),
+                                      ),
+                                      MultiStreamBuilder(
+                                        key: const Key(
+                                          'business-name-textFormField-key',
+                                        ),
+                                        buildWhen: (previousDataList, latestDataList) => previousDataList != latestDataList,
+                                        streams: [
+                                          Stream.fromFuture(
+                                            AppTranslator.instance.translate('Business name'),
+                                          ),
+                                          Stream.fromFuture(
+                                            AppTranslator.instance.translate(
+                                              'Please enter a business name',
+                                            ),
+                                          ),
+                                          Stream.fromFuture(
+                                            AppTranslator.instance.translate(
+                                              _businessNameController.value.text.trim(),
+                                            ),
+                                          ),
+                                        ],
+                                        initialStreamValue: const ['Business name', 'Please enter a business name', ''],
+                                        builder: (context, snapshot) {
+                                          return Directionality(
+                                            textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                            child: TextFormField(
+                                              controller: _businessNameController,
+                                              textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                              decoration: InputDecoration(
+                                                labelText: snapshot[0],
+                                                isDense: true,
+                                              ),
+                                              validator: (value) {
+                                                if (value == null || value.isEmpty) {
+                                                  return '${snapshot[1]}';
+                                                }
+                                                return null;
+                                              },
+                                            ),
+                                          );
+                                        },
+                                      ),
+                                      const AnimatedGap(
+                                        16,
+                                        duration: Duration(
+                                          milliseconds: 300,
+                                        ),
+                                      ),
+                                      MultiStreamBuilder(
+                                        key: const Key(
+                                          'business-email-address-textFormField-key',
+                                        ),
+                                        buildWhen: (previousDataList, latestDataList) => previousDataList != latestDataList,
+                                        streams: [
+                                          Stream.fromFuture(
+                                            AppTranslator.instance.translate('Business email address'),
+                                          ),
+                                          Stream.fromFuture(
+                                            AppTranslator.instance.translate(
+                                              'Please enter an email address',
+                                            ),
+                                          ),
+                                          Stream.fromFuture(
+                                            AppTranslator.instance.translate(
+                                              'Please enter a valid email address',
+                                            ),
+                                          ),
+                                          Stream.fromFuture(
+                                            AppTranslator.instance.translate(
+                                              _emailController.value.text.trim(),
+                                            ),
+                                          ),
+                                        ],
+                                        initialStreamValue: const [
+                                          'Business email address',
+                                          'Please enter an email address',
+                                          'Please enter a valid email address',
+                                          ''
+                                        ],
+                                        builder: (context, snapshot) {
+                                          return Directionality(
+                                            textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                            child: TextFormField(
+                                              controller: _emailController,
+                                              textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                              decoration: InputDecoration(
+                                                labelText: snapshot[0],
+                                                isDense: true,
+                                              ),
+                                              validator: (value) {
+                                                if (value == null || value.isEmpty) {
+                                                  return '${snapshot[1]}';
+                                                }
+                                                /*else if (!value.contains('@')) {
+                                            return 'Please enter a valid email address'.tr();
+                                          }*/
+                                                else if (!value.hasValidEmailAddress(value)) {
+                                                  return '${snapshot[2]}';
+                                                }
+                                                return null;
+                                              },
+                                            ),
+                                          );
+                                        },
+                                      ),
+                                      const AnimatedGap(
+                                        16,
+                                        duration: Duration(
+                                          milliseconds: 300,
+                                        ),
+                                      ),
+                                      Row(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          Flexible(
+                                            child: BlocBuilder<PhoneFormFieldBloc, PhoneNumberFormFieldState>(
+                                              bloc: context.read<PhoneFormFieldBloc>(),
+                                              buildWhen: (previous, current) => previous != current,
+                                              builder: (context, state) {
+                                                state.maybeWhen(
+                                                  orElse: () {},
+                                                  validate: (
+                                                    isAllowEmpty,
+                                                    mobileOnly,
+                                                    phoneNumberInputValidator,
+                                                    phoneValidation,
+                                                    phoneController,
+                                                    phoneNumber,
+                                                    phoneNumberVerification,
+                                                    userEnteredPhoneNumber,
+                                                    countryDialCode,
+                                                    country,
+                                                  ) {
+                                                    if (phoneNumber != null) {
+                                                      initialPhoneNumberValue = phoneNumber;
+                                                    }
+                                                    controller = phoneController;
+                                                    this.phoneNumberVerification = phoneNumberVerification;
+                                                    this.userEnteredPhoneNumber = userEnteredPhoneNumber;
+                                                  },
+                                                );
+                                                return MultiStreamBuilder(
+                                                  key: const Key(
+                                                    'business-phone-number-textFormField-key',
+                                                  ),
+                                                  buildWhen: (
+                                                    previousDataList,
+                                                    latestDataList,
+                                                  ) =>
+                                                      previousDataList != latestDataList,
+                                                  streams: [
+                                                    Stream.fromFuture(
+                                                      AppTranslator.instance.translate(
+                                                        'Business phone number',
+                                                      ),
+                                                    ),
+                                                    Stream.fromFuture(
+                                                      AppTranslator.instance.translate(
+                                                        '$phoneValidation',
+                                                      ),
+                                                    ),
+                                                  ],
+                                                  initialStreamValue: [
+                                                    'Business phone number',
+                                                    phoneValidation,
+                                                  ],
+                                                  builder: (context, snapshot) {
+                                                    return Directionality(
+                                                      textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                                      child: PhoneNumberFieldWidget(
+                                                        key: const Key(
+                                                          'user-business-phone-number-widget-key',
+                                                        ),
+                                                        isCountryChipPersistent: false,
+                                                        outlineBorder: true,
+                                                        shouldFormat: true,
+                                                        useRtl: false,
+                                                        withLabel: true,
+                                                        decoration: InputDecoration(
+                                                          labelText: snapshot[0],
+                                                          alignLabelWithHint: true,
+                                                          //hintText: 'Mobile number',
+                                                          errorText: phoneValidation,
+                                                          isDense: true,
+                                                        ),
+                                                        isAllowEmpty: false,
+                                                        autofocus: false,
+                                                        style: context.bodyLarge,
+                                                        showFlagInInput: false,
+                                                        countryCodeStyle: context.bodyLarge,
+                                                        initialPhoneNumberValue: initialPhoneNumberValue,
+                                                        onPhoneNumberChanged: onPhoneNumberChanged,
+                                                        //phoneNumberValidationChanged: phoneNumberValidationChanged,
+                                                        haveStateManagement: false,
+                                                        keyboardType: const TextInputType.numberWithOptions(),
+                                                        textInputAction: TextInputAction.done,
+                                                      ),
+                                                    );
+                                                  },
+                                                );
+                                              },
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      const AnimatedGap(
+                                        16,
+                                        duration: Duration(
+                                          milliseconds: 300,
+                                        ),
+                                      ),
+                                      MultiStreamBuilder(
+                                        key: const Key(
+                                          'business-address-textFormField-key',
+                                        ),
+                                        buildWhen: (previousDataList, latestDataList) => previousDataList != latestDataList,
+                                        streams: [
+                                          Stream.fromFuture(
+                                            AppTranslator.instance.translate('Business address'),
+                                          ),
+                                          Stream.fromFuture(
+                                            AppTranslator.instance.translate('Please enter an address'),
+                                          ),
+                                          Stream.fromFuture(
+                                            AppTranslator.instance.translate(
+                                              _addressController.value.text.trim(),
+                                            ),
+                                          ),
+                                        ],
+                                        initialStreamValue: const ['Business address', 'Please enter an address', ''],
+                                        builder: (context, snapshot) {
+                                          return Directionality(
+                                            textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                            child: TextFormField(
+                                              controller: _addressController,
+                                              textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                              maxLines: 3,
+                                              decoration: InputDecoration(
+                                                labelText: snapshot[0],
+                                                isDense: true,
+                                                suffixIcon: Container(
+                                                  width: kMinInteractiveDimension * 1.05,
+                                                  constraints: BoxConstraints(
+                                                    minWidth: kMinInteractiveDimension * 1.05,
+                                                    minHeight: kMinInteractiveDimension * 2,
+                                                  ),
+                                                  decoration: BoxDecoration(
+                                                    border: BorderDirectional(
+                                                      start: BorderSide(
+                                                        width: 1.0,
+                                                        color: Color.fromRGBO(
+                                                          201,
+                                                          201,
+                                                          203,
+                                                          1.0,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  child: Row(
+                                                    children: [
+                                                      IconButton(
+                                                        onPressed: () {},
+                                                        icon: Icon(
+                                                          Icons.my_location,
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                              ),
+                                              validator: (value) {
+                                                if (value == null || value.isEmpty) {
+                                                  return '${snapshot[1]}';
+                                                }
+                                                return null;
+                                              },
+                                            ),
+                                          );
+                                        },
+                                      ),
+                                      /*                              const AnimatedGap(
+                                  16,
+                                  duration: Duration(
+                                    milliseconds: 300,
+                                  ),
+                                ),
+                                MultiStreamBuilder(
+                                  key: const Key(
+                                    'business-fullname-textFormField-key',
+                                  ),
+                                  buildWhen: (previousDataList, latestDataList) =>
+                                      previousDataList != latestDataList,
+                                  streams: [
+                                    Stream.fromFuture(
+                                      AppTranslator.instance.translate('Gender'),
+                                    ),
+                                    Stream.fromFuture(
+                                      AppTranslator.instance.translate('Male'),
+                                    ),
+                                    Stream.fromFuture(
+                                      AppTranslator.instance.translate(
+                                        'Female',
+                                      ),
+                                    ),
+                                    Stream.fromFuture(
+                                      AppTranslator.instance.translate(
+                                        'Other',
+                                      ),
+                                    ),
+                                    Stream.fromFuture(
+                                      AppTranslator.instance.translate(
+                                        _selectedGender,
+                                      ),
+                                    ),
+                                  ],
+                                  initialStreamValue: [
+                                    'Gender',
+                                    'Male',
+                                    'Female',
+                                    'Other',
+                                    _selectedGender
+                                  ],
+                                  builder: (context, snapshot) {
+                                    return DropdownButtonFormField<String>(
+                                      decoration: InputDecoration(
+                                        labelText: snapshot[0],
+                                        isDense: true,
+                                      ),
+                                      value: snapshot[4],
+                                      items: [
+                                        DropdownMenuItem<String>(
+                                          value: snapshot[1],
+                                          child: Text('Male').translate(),
+                                        ),
+                                        DropdownMenuItem<String>(
+                                          value: snapshot[2],
+                                          child: Text('Female').translate(),
+                                        ),
+                                        DropdownMenuItem<String>(
+                                          value: snapshot[3],
+                                          child: Text('Other').translate(),
+                                        ),
+                                      ],
+                                      onChanged: (String? value) {
+                                        setState(() {
+                                          _selectedGender = value!;
+                                        });
                                       },
-                                    ),
-                                  );
-                                },
-                              ),
-/*                              const AnimatedGap(
-                                16,
-                                duration: Duration(
-                                  milliseconds: 300,
-                                ),
-                              ),
-                              MultiStreamBuilder(
-                                key: const Key(
-                                  'business-fullname-textFormField-key',
-                                ),
-                                buildWhen: (previousDataList, latestDataList) =>
-                                    previousDataList != latestDataList,
-                                streams: [
-                                  Stream.fromFuture(
-                                    AppTranslator.instance.translate('Gender'),
-                                  ),
-                                  Stream.fromFuture(
-                                    AppTranslator.instance.translate('Male'),
-                                  ),
-                                  Stream.fromFuture(
-                                    AppTranslator.instance.translate(
-                                      'Female',
-                                    ),
-                                  ),
-                                  Stream.fromFuture(
-                                    AppTranslator.instance.translate(
-                                      'Other',
-                                    ),
-                                  ),
-                                  Stream.fromFuture(
-                                    AppTranslator.instance.translate(
-                                      _selectedGender,
-                                    ),
-                                  ),
-                                ],
-                                initialStreamValue: [
-                                  'Gender',
-                                  'Male',
-                                  'Female',
-                                  'Other',
-                                  _selectedGender
-                                ],
-                                builder: (context, snapshot) {
-                                  return DropdownButtonFormField<String>(
-                                    decoration: InputDecoration(
-                                      labelText: snapshot[0],
-                                      isDense: true,
-                                    ),
-                                    value: snapshot[4],
-                                    items: [
-                                      DropdownMenuItem<String>(
-                                        value: snapshot[1],
-                                        child: Text('Male').translate(),
+                                    );
+                                  },
+                                ),*/
+                                      AnimatedGap(
+                                        context.height / 3.15 - bottomPadding,
+                                        duration: const Duration(
+                                          milliseconds: 300,
+                                        ),
                                       ),
-                                      DropdownMenuItem<String>(
-                                        value: snapshot[2],
-                                        child: Text('Female').translate(),
-                                      ),
-                                      DropdownMenuItem<String>(
-                                        value: snapshot[3],
-                                        child: Text('Other').translate(),
+                                      Align(
+                                        alignment: AlignmentDirectional.bottomCenter,
+                                        child: Row(
+                                          children: [
+                                            Expanded(
+                                              child: ElevatedButton(
+                                                onPressed: () async {
+                                                  if (_createBusinessProfileFormKey.currentState!.validate()) {
+                                                    _createBusinessProfileFormKey.currentState!.save();
+                                                    //await Future.delayed(const Duration(milliseconds: 500), () {});
+                                                    BusinessProfileEntity businessProfileEntity;
+                                                    if (widget.hasEditBusinessProfile && widget.businessProfileEntity.isNotNull) {
+                                                      // Edit
+                                                      businessProfileEntity = widget.businessProfileEntity!.copyWith(
+                                                        userName: _usernameController.value.text,
+                                                        businessAddress: AddressModel(
+                                                          address: AddressBean(area: _addressController.value.text),
+                                                        ),
+                                                        businessEmailAddress: _emailController.value.text,
+                                                        businessName: _businessNameController.value.text,
+                                                        businessPhoneNumber: userEnteredPhoneNumber,
+                                                        businessProfileID: widget.businessProfileEntity?.businessProfileID,
+                                                      );
+                                                    } else {
+                                                      // New
+                                                      businessProfileEntity = BusinessProfileEntity(
+                                                        userName: _usernameController.value.text,
+                                                        businessAddress: AddressModel(
+                                                          address: AddressBean(area: _addressController.value.text),
+                                                        ),
+                                                        businessEmailAddress: _emailController.value.text,
+                                                        businessName: _businessNameController.value.text,
+                                                        businessPhoneNumber: userEnteredPhoneNumber,
+                                                        businessTypeEntity: BusinessTypeEntity(),
+                                                      );
+                                                    }
+                                                    serviceLocator<AppUserEntity>().currentProfileStatus = CurrentProfileStatus.basicProfileSaved;
+                                                    serviceLocator<AppUserEntity>().businessProfile = businessProfileEntity;
+                                                    if (!mounted) {
+                                                      return;
+                                                    }
+                                                    context.read<BusinessProfileBloc>().add(
+                                                          SaveBusinessProfile(
+                                                            businessProfileEntity: businessProfileEntity,
+                                                            hasEditBusinessProfile: widget.hasEditBusinessProfile,
+                                                            currentIndex: widget.currentIndex,
+                                                          ),
+                                                        );
+                                                  }
+                                                },
+                                                child: Text(
+                                                  'Next',
+                                                  textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                                ).translate(),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
                                       ),
                                     ],
-                                    onChanged: (String? value) {
-                                      setState(() {
-                                        _selectedGender = value!;
-                                      });
-                                    },
-                                  );
-                                },
-                              ),*/
-                              AnimatedGap(
-                                context.height / 3.15 - bottomPadding,
-                                duration: Duration(
-                                  milliseconds: 300,
-                                ),
-                              ),
-                              SizedBox(
-                                width: context.width - margins * 5,
-                                child: ElevatedButton(
-                                  onPressed: () async {
-                                    if (_createBusinessProfileFormKey.currentState!.validate()) {
-                                      _createBusinessProfileFormKey.currentState!.save();
-                                      await Future.delayed(const Duration(milliseconds: 500), () {});
-                                      if (!mounted) {
-                                        return;
-                                      }
-                                      var businessProfile = serviceLocator<BusinessProfileEntity>().copyWith(
-                                        userName: _usernameController.value.text,
-                                        businessAddress: AddressModel(
-                                          address: AddressBean(area: _addressController.value.text),
-                                        ),
-                                        businessEmailAddress: _emailController.value.text,
-                                        businessName: _businessNameController.value.text,
-                                        businessPhoneNumber: userEnteredPhoneNumber,
-                                      );
-                                      serviceLocator<AppUserEntity>().currentProfileStatus = CurrentProfileStatus.basicProfileSaved;
-                                      serviceLocator<AppUserEntity>().businessProfile = businessProfile;
-                                      context.push(Routes.CONFIRM_BUSINESS_TYPE_PAGE);
-                                    }
-                                  },
-                                  child: Text(
-                                    'Next',
-                                    textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                                  ).translate(),
-                                ),
-                              ),
-                            ],
-                          ),
-
-                          /*Align(
-                            alignment: Alignment.bottomCenter,
-                            child: SizedBox(
-                              width: context.width - margins * 5,
-                              child: ElevatedButton(
-                                onPressed: () {
-                                  if (_createBusinessProfileFormKey.currentState!
-                                      .validate()) {
-                                    // Registration logic here
-                                    final username = _usernameController.text;
-                                    final email = _emailController.text;
-                                    final phone = userEnteredPhoneNumber;
-                                    final address = _addressController.text;
-
-                                    // Print the entered information
-                                    print('Username: $username');
-                                    print('Email: $email');
-                                    print('Phone: $phone');
-                                    print('Address: $address');
-                                    print('Gender: $_selectedGender');
-                                  }
-                                },
-                                child: Text('Next'.tr()),
+                                  ),
+                                ],
                               ),
                             ),
-                          ),*/
-                        ],
-                      ),
-                    ),
+                          ],
+                        ),
+                      );
+                    },
                   ),
-                );
-              },
+                ),
+              ),
             ),
           ),
         ),

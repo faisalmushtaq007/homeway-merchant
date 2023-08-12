@@ -31,7 +31,7 @@ class AppRouter {
 
   AppRouter._();
 
-  static const String INITIAL = Routes.ALL_ADDONS_PAGE;
+  static const String INITIAL = Routes.CREATE_BUSINESS_PROFILE_PAGE;
 
   static final GoRouter _router = GoRouter(
     debugLogDiagnostics: true,
@@ -79,11 +79,26 @@ class AppRouter {
       ),
       GoRoute(
         path: Routes.CREATE_BUSINESS_PROFILE_PAGE,
-        builder: (context, state) => const BusinessInformationPage(),
+        builder: (context, state) {
+          final Map<String, dynamic>? args = state.extra as Map<String, dynamic>?;
+          return BusinessInformationPage(
+            businessProfileEntity: args?['businessProfileEntity'] as BusinessProfileEntity?,
+            hasEditBusinessProfile: args?['hasEditBusinessProfile'] ?? false as bool,
+            currentIndex: args?['currentIndex'] ?? -1 as int,
+          );
+        },
       ),
       GoRoute(
         path: Routes.DOCUMENT_LIST_PAGE,
-        builder: (context, state) => const BusinessDocumentPage(),
+        builder: (context, state) {
+          final Map<String, dynamic>? args = state.extra as Map<String, dynamic>?;
+          return BusinessDocumentPage(
+            businessDocumentUploadedEntities:
+                args?['businessDocumentUploadedEntities'] ?? <BusinessDocumentUploadedEntity>[] as List<BusinessDocumentUploadedEntity>,
+            hasEditBusinessDocument: args?['hasEditBusinessDocument'] ?? false as bool,
+            currentIndex: args?['currentIndex'] ?? -1 as int,
+          );
+        },
       ),
       GoRoute(
         path: Routes.UPLOAD_DOCUMENT_PAGE,
@@ -94,9 +109,15 @@ class AppRouter {
         builder: (context, state) => const AddressFormPage(),
       ),
       GoRoute(
-        path: Routes.BANK_INFORMATION_PAGE,
-        builder: (context, state) => const BankInformationPage(),
-      ),
+          path: Routes.BANK_INFORMATION_PAGE,
+          builder: (context, state) {
+            final Map<String, dynamic>? args = state.extra as Map<String, dynamic>?;
+            return BankInformationPage(
+              paymentBankEntity: args?['paymentBankEntity'] as PaymentBankEntity?,
+              hasEditBankInformation: args?['hasEditBankInformation'] ?? false as bool,
+              currentIndex: args?['currentIndex'] ?? -1 as int,
+            );
+          }),
       GoRoute(
         path: Routes.WELCOME_PAGE,
         builder: (context, state) => const WelcomePage(),
@@ -139,7 +160,15 @@ class AppRouter {
       ),
       GoRoute(
         path: Routes.CONFIRM_BUSINESS_TYPE_PAGE,
-        builder: (context, state) => const ConfirmBusinessTypePage(),
+        builder: (context, state) {
+          final Map<String, dynamic>? args = state.extra as Map<String, dynamic>?;
+          return ConfirmBusinessTypePage(
+            businessProfileEntity: args?['businessProfileEntity'] as BusinessProfileEntity?,
+            hasEditBusinessProfile: args?['hasEditBusinessProfile'] ?? false as bool,
+            currentIndex: args?['currentIndex'] ?? -1 as int,
+            businessTypeEntity: args?['businessTypeEntity'] as BusinessTypeEntity?,
+          );
+        },
       ),
       GoRoute(
         path: Routes.ALL_MENU_PAGE,
@@ -236,15 +265,16 @@ class AppRouter {
         },
       ),
       GoRoute(
-          path: Routes.MENU_PREVIEW_PAGE,
-          builder: (context, state) {
-            final Map<String, dynamic>? args = state.extra as Map<String, dynamic>?;
-            return MenuDetailsPage(
-              menuEntity: args?['menu'] ?? MenuEntity() as MenuEntity,
-              index: args?['index'] ?? -1 as int,
-              menuEntities: args?['allMenus'] ?? <MenuEntity>[] as List<MenuEntity>,
-            );
-          }),
+        path: Routes.MENU_PREVIEW_PAGE,
+        builder: (context, state) {
+          final Map<String, dynamic>? args = state.extra as Map<String, dynamic>?;
+          return MenuDetailsPage(
+            menuEntity: args?['menu'] ?? MenuEntity() as MenuEntity,
+            index: args?['index'] ?? -1 as int,
+            menuEntities: args?['allMenus'] ?? <MenuEntity>[] as List<MenuEntity>,
+          );
+        },
+      ),
       GoRoute(
         path: Routes.STORE_DETAILS_PAGE,
         builder: (context, state) {

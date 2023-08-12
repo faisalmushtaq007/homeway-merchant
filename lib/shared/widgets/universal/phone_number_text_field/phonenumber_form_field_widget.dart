@@ -42,6 +42,7 @@ class PhoneNumberFieldWidget extends StatefulWidget {
     this.keyboardType = TextInputType.phone,
     this.phoneNumberFocusNode,
     this.onPhoneNumberValidationMessage,
+    this.initialPhoneNumberValue,
   });
 
   final CountrySelectorNavigator selectorNavigator;
@@ -74,6 +75,7 @@ class PhoneNumberFieldWidget extends StatefulWidget {
   final TextInputAction textInputAction;
   final FocusNode? phoneNumberFocusNode;
   final ValueChanged<PhoneNumberVerification?>? onPhoneNumberValidationMessage;
+  final PhoneNumber? initialPhoneNumberValue;
 
   @override
   State<PhoneNumberFieldWidget> createState() => _PhoneNumberFieldWidgetState();
@@ -112,10 +114,11 @@ class _PhoneNumberFieldWidgetState extends State<PhoneNumberFieldWidget> {
 
   @override
   void initState() {
-    initialPhoneNumberValue = PhoneNumber(
-      isoCode: isoCodeNameMap.values.byName('SA'),
-      nsn: '',
-    );
+    initialPhoneNumberValue = widget.initialPhoneNumberValue ??
+        PhoneNumber(
+          isoCode: isoCodeNameMap.values.byName('SA'),
+          nsn: '',
+        );
     controller = PhoneController(initialPhoneNumberValue);
     controller.value = initialPhoneNumberValue;
     defaultCountry = isoCodeNameMap.values.byName('SA');

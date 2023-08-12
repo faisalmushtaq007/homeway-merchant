@@ -1,8 +1,17 @@
 part of 'package:homemakers_merchant/app/features/profile/index.dart';
 
 class ConfirmBusinessTypePage extends StatefulWidget {
-  const ConfirmBusinessTypePage({super.key});
-
+  const ConfirmBusinessTypePage({
+    super.key,
+    this.currentIndex = -1,
+    this.hasEditBusinessProfile = false,
+    this.businessProfileEntity,
+    this.businessTypeEntity,
+  });
+  final BusinessProfileEntity? businessProfileEntity;
+  final bool hasEditBusinessProfile;
+  final int currentIndex;
+  final BusinessTypeEntity? businessTypeEntity;
   @override
   _ConfirmBusinessTypePageController createState() => _ConfirmBusinessTypePageController();
 }
@@ -106,9 +115,9 @@ class _ConfirmBusinessTypePageView extends WidgetView<ConfirmBusinessTypePage, _
       ),
       child: Directionality(
         textDirection: serviceLocator<LanguageController>().targetTextDirection,
-        child: PlatformScaffold(
-          appBar: PlatformAppBar(
-            trailingActions: const [
+        child: Scaffold(
+          appBar: AppBar(
+            actions: const [
               Padding(
                 padding: EdgeInsetsDirectional.symmetric(horizontal: 14),
                 child: LanguageSelectionWidget(),
@@ -116,7 +125,7 @@ class _ConfirmBusinessTypePageView extends WidgetView<ConfirmBusinessTypePage, _
             ],
           ),
           body: SlideInLeft(
-            key: const Key('select-business-type-page-zoomin-widget'),
+            key: const Key('select-business-type-page-slideleft-widget'),
             delay: const Duration(milliseconds: 500),
             child: PageBody(
               controller: scrollController,

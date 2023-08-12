@@ -1,7 +1,16 @@
 part of 'package:homemakers_merchant/app/features/profile/index.dart';
 
 class BusinessDocumentPage extends StatefulWidget {
-  const BusinessDocumentPage({super.key});
+  const BusinessDocumentPage({
+    super.key,
+    this.currentIndex = -1,
+    this.hasEditBusinessDocument = false,
+    this.businessDocumentUploadedEntities = const [],
+  });
+
+  final int currentIndex;
+  final List<BusinessDocumentUploadedEntity> businessDocumentUploadedEntities;
+  final bool hasEditBusinessDocument;
 
   @override
   State<BusinessDocumentPage> createState() => _BusinessDocumentPageState();
