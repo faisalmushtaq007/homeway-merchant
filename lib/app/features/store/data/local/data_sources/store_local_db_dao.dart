@@ -177,7 +177,7 @@ class StoreBindingWithUserLocalDbDbRepository<T extends StoreEntity, R extends A
     final db = await _db;
     final users = await userLocalDbRepository.getAll();
     if (users.isRight()) {
-      // Check current user, now skip it
+      // Todo:(prasant) - Check current user, now skip it
       final currentUserMap = cloneMap(users.right[0].toMap());
       var cacheStores = currentUserMap['stores'] as List<StoreEntity>;
 
@@ -190,13 +190,17 @@ class StoreBindingWithUserLocalDbDbRepository<T extends StoreEntity, R extends A
           // Modify the store result
           final record = _user.record(users.right[0].userID);
           final value = await record.get(await _db);
-          var currentUser = cloneMap(value);
-          currentUser['stores'] = currentUserMap['stores'] as List<StoreEntity>..addAll(source.toList());
-          final result = await record.update(txn, {'stores': currentUser['stores']});
-          if (result != null) {
-            return AppUserEntity.fromMap(result);
+          if (value != null) {
+            var currentUser = cloneMap(value);
+            currentUser['stores'] = currentUserMap['stores'] as List<StoreEntity>..addAll(source.toList());
+            final result = await record.update(txn, {'stores': currentUser['stores']});
+            if (result != null) {
+              return AppUserEntity.fromMap(result);
+            } else {
+              return AppUserEntity.fromMap(currentUser);
+            }
           } else {
-            return AppUserEntity.fromMap(currentUser);
+            return AppUserEntity.fromMap(currentUserMap);
           }
         });
       });

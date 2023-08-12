@@ -1017,8 +1017,8 @@ class MenuAvailableDayAndTime with AppEquatable {
       'title': this.day,
       'id': this.id,
       'hasSelected': this.hasSelected,
-      'closingTime': Timestamp.fromDateTime(this.closingTime),
-      'openingTime': Timestamp.fromDateTime(this.openingTime),
+      'closingTime': Timestamp.fromDateTime(this.closingTime ?? DateTime.now()),
+      'openingTime': Timestamp.fromDateTime(this.openingTime ?? DateTime.now()),
       'shortName': this.shortName,
     };
   }

@@ -1,6 +1,12 @@
 part of 'package:homemakers_merchant/app/features/profile/index.dart';
 
 class PaymentBankRepositoryImplement implements UserPaymentBankRepository {
+  const PaymentBankRepositoryImplement({
+    required this.remoteDataSource,
+    required this.userPaymentBankLocalDbRepository,
+  });
+  final ProfileDataSource remoteDataSource;
+  final UserPaymentBankLocalDbRepository<PaymentBankEntity> userPaymentBankLocalDbRepository;
   @override
   Future<DataSourceState<bool>> deleteAllPaymentBank({AppUserEntity? appUserEntity}) {
     // TODO: implement deleteAllPaymentBank

@@ -352,15 +352,109 @@ void _setUpUseCases() {
       menuRepository: serviceLocator(),
     ),
   );
+  // User
+  //Profile
+  serviceLocator.registerLazySingleton<DeleteBusinessProfileUseCase>(
+    () => DeleteBusinessProfileUseCase(
+      userBusinessProfileRepository: serviceLocator(),
+    ),
+  );
+  serviceLocator.registerLazySingleton<EditBusinessProfileUseCase>(
+    () => EditBusinessProfileUseCase(
+      userBusinessProfileRepository: serviceLocator(),
+    ),
+  );
+  serviceLocator.registerLazySingleton<GetBusinessProfileUseCase>(
+    () => GetBusinessProfileUseCase(
+      userBusinessProfileRepository: serviceLocator(),
+    ),
+  );
+  serviceLocator.registerLazySingleton<GetAllBusinessProfileUseCase>(
+    () => GetAllBusinessProfileUseCase(
+      userBusinessProfileRepository: serviceLocator(),
+    ),
+  );
+  serviceLocator.registerLazySingleton<DeleteBusinessProfileUseCase>(
+    () => DeleteBusinessProfileUseCase(
+      userBusinessProfileRepository: serviceLocator(),
+    ),
+  );
+  serviceLocator.registerLazySingleton<DeleteAllBusinessProfileUseCase>(
+    () => DeleteAllBusinessProfileUseCase(
+      userBusinessProfileRepository: serviceLocator(),
+    ),
+  );
+  //Document
+  serviceLocator.registerLazySingleton<SaveDocumentUseCase>(
+    () => SaveDocumentUseCase(
+      userBusinessDocumentRepository: serviceLocator(),
+    ),
+  );
+  serviceLocator.registerLazySingleton<EditDocumentUseCase>(
+    () => EditDocumentUseCase(
+      userBusinessDocumentRepository: serviceLocator(),
+    ),
+  );
+  serviceLocator.registerLazySingleton<GetDocumentUseCase>(
+    () => GetDocumentUseCase(
+      userBusinessDocumentRepository: serviceLocator(),
+    ),
+  );
+  serviceLocator.registerLazySingleton<GetAllDocumentUseCase>(
+    () => GetAllDocumentUseCase(
+      userBusinessDocumentRepository: serviceLocator(),
+    ),
+  );
+  serviceLocator.registerLazySingleton<DeleteDocumentUseCase>(
+    () => DeleteDocumentUseCase(
+      userBusinessDocumentRepository: serviceLocator(),
+    ),
+  );
+  serviceLocator.registerLazySingleton<DeleteAllDocumentUseCase>(
+    () => DeleteAllDocumentUseCase(
+      userBusinessDocumentRepository: serviceLocator(),
+    ),
+  );
+  //Payment Bank
+  serviceLocator.registerLazySingleton<SavePaymentBankUseCase>(
+    () => SavePaymentBankUseCase(
+      userPaymentBankRepository: serviceLocator(),
+    ),
+  );
+  serviceLocator.registerLazySingleton<EditPaymentBankUseCase>(
+    () => EditPaymentBankUseCase(
+      userPaymentBankRepository: serviceLocator(),
+    ),
+  );
+  serviceLocator.registerLazySingleton<GetPaymentBankUseCase>(
+    () => GetPaymentBankUseCase(
+      userPaymentBankRepository: serviceLocator(),
+    ),
+  );
+  serviceLocator.registerLazySingleton<GetAllPaymentBankUseCase>(
+    () => GetAllPaymentBankUseCase(
+      userPaymentBankRepository: serviceLocator(),
+    ),
+  );
+  serviceLocator.registerLazySingleton<DeletePaymentBankUseCase>(
+    () => DeletePaymentBankUseCase(
+      userPaymentBankRepository: serviceLocator(),
+    ),
+  );
+  serviceLocator.registerLazySingleton<DeleteAllPaymentBankUseCase>(
+    () => DeleteAllPaymentBankUseCase(
+      userPaymentBankRepository: serviceLocator(),
+    ),
+  );
 }
 
 void _setUpRepository() {
   serviceLocator.registerSingleton<AddonsLocalDbRepository<Addons>>(AddonsLocalDbRepository<Addons>());
   serviceLocator.registerSingleton<StoreOwnDeliveryPartnersLocalDbRepository<StoreOwnDeliveryPartnersInfo>>(
-      StoreOwnDeliveryPartnersLocalDbRepository<StoreOwnDeliveryPartnersInfo>());
+    StoreOwnDeliveryPartnersLocalDbRepository<StoreOwnDeliveryPartnersInfo>(),
+  );
   serviceLocator.registerSingleton<StoreLocalDbRepository<StoreEntity>>(StoreLocalDbRepository<StoreEntity>());
   serviceLocator.registerSingleton<MenuLocalDbRepository<MenuEntity>>(MenuLocalDbRepository<MenuEntity>());
-  serviceLocator.registerSingleton<UserLocalDbRepository>(UserLocalDbRepository());
   serviceLocator.registerSingleton<AuthenticationDataSource>(AuthenticationRemoteDataSource());
   serviceLocator.registerSingleton<AuthenticationRepository>(
     AuthenticationRepositoryImplement(
@@ -385,6 +479,49 @@ void _setUpRepository() {
       addonsLocalDataSource: serviceLocator(),
     ),
   );
+  // User
+  // local db
+  serviceLocator.registerSingleton<UserLocalDbRepository<AppUserEntity>>(UserLocalDbRepository<AppUserEntity>());
+  serviceLocator.registerSingleton<UserBusinessProfileLocalDbRepository<BusinessProfileEntity>>(UserBusinessProfileLocalDbRepository<BusinessProfileEntity>());
+  serviceLocator.registerSingleton<UserBusinessDocumentLocalDbRepository<BusinessDocumentUploadedEntity>>(
+    UserBusinessDocumentLocalDbRepository<BusinessDocumentUploadedEntity>(),
+  );
+  serviceLocator.registerSingleton<UserPaymentBankLocalDbRepository<PaymentBankEntity>>(UserPaymentBankLocalDbRepository<PaymentBankEntity>());
+  // remote
+  serviceLocator.registerSingleton<ProfileDataSource>(ProfileRemoteDataSource());
+  //repository payment
+  serviceLocator.registerSingleton<UserPaymentBankRepository>(
+    PaymentBankRepositoryImplement(
+      remoteDataSource: serviceLocator(),
+      userPaymentBankLocalDbRepository: serviceLocator(),
+    ),
+  );
+  //repository payment
+  serviceLocator.registerSingleton<UserBusinessProfileRepository>(
+    BusinessProfileRepositoryImplement(
+      remoteDataSource: serviceLocator(),
+      userBusinessProfileLocalDbRepository: serviceLocator(),
+    ),
+  );
+  //repository payment
+  serviceLocator.registerSingleton<UserBusinessDocumentRepository>(
+    BusinessDocumentRepositoryImplement(
+      remoteDataSource: serviceLocator(),
+      userBusinessDocumentLocalDbRepository: serviceLocator(),
+    ),
+  );
+  serviceLocator.registerSingleton<MenuRepository>(
+    MenuRepositoryImplement(
+      remoteDataSource: serviceLocator(),
+      menuLocalDataSource: serviceLocator(),
+      addonsLocalDataSource: serviceLocator(),
+    ),
+  );
+  // Business Profile
+
+  // Document
+
+  // Payment Bank
 }
 
 void _setUpStateManagement() {

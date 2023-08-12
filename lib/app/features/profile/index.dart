@@ -98,12 +98,14 @@ part 'package:homemakers_merchant/app/features/profile/data/local/data_sources/u
 part 'package:homemakers_merchant/app/features/profile/data/local/data_sources/user_payment_bank_local_db_dao.dart';
 // Domain
 part 'package:homemakers_merchant/app/features/profile/domain/repositories/document/document_repository.dart';
+// profile usecase
 part 'package:homemakers_merchant/app/features/profile/domain/use_cases/profile/get_profile_usecase.dart';
 part 'package:homemakers_merchant/app/features/profile/domain/use_cases/profile/get_business_profile_usecase.dart';
 part 'package:homemakers_merchant/app/features/profile/domain/use_cases/profile/get_all_business_profile_usecase.dart';
 part 'package:homemakers_merchant/app/features/profile/domain/use_cases/profile/save_business_profile_usecase.dart';
 part 'package:homemakers_merchant/app/features/profile/domain/use_cases/profile/edit_business_profile_usecase.dart';
 part 'package:homemakers_merchant/app/features/profile/domain/use_cases/profile/delete_business_profile_usecase.dart';
+part 'package:homemakers_merchant/app/features/profile/domain/use_cases/profile/delete_all_business_profile_usecase.dart';
 // payment bank usecase
 part 'package:homemakers_merchant/app/features/profile/domain/use_cases/payment_bank/get_payment_bank_usecase.dart';
 part 'package:homemakers_merchant/app/features/profile/domain/use_cases/payment_bank/get_all_payment_bank_usecase.dart';

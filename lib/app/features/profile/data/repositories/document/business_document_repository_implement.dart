@@ -1,6 +1,14 @@
 part of 'package:homemakers_merchant/app/features/profile/index.dart';
 
 class BusinessDocumentRepositoryImplement implements UserBusinessDocumentRepository {
+  const BusinessDocumentRepositoryImplement({
+    required this.remoteDataSource,
+    required this.userBusinessDocumentLocalDbRepository,
+  });
+
+  final ProfileDataSource remoteDataSource;
+  final UserBusinessDocumentLocalDbRepository<BusinessDocumentUploadedEntity> userBusinessDocumentLocalDbRepository;
+
   @override
   Future<DataSourceState<bool>> deleteAllBusinessDocument({AppUserEntity? appUserEntity}) {
     // TODO: implement deleteAllBusinessDocument
