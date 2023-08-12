@@ -50,19 +50,16 @@ ThemeData flexThemeDark(ThemeController controller) {
   // harmonization towards the effective surface tint color. Regardless of what
   // settings and config we have used in the Themes Playground to define and
   // make our surface tint color, even custom one is adjusted for.
-  final Color source =
-      flexColorSchemeDark(controller, Colors.black).toScheme.surfaceTint;
+  final Color source = flexColorSchemeDark(controller, Colors.black).toScheme.surfaceTint;
   // Now we can use a function that takes our ThemeController and source color,
   // which is the effective primary color, the get the effective ThemeData.
   return flexColorSchemeDark(controller, source).toTheme.copyWith(
-        // TODO(rydmike): Remove Drawer workaround when Flutter SDK has a fix.
+        // TODO(prasant)(rydmike): Remove Drawer workaround when Flutter SDK has a fix.
         // This is a fix to avoid the Flutter Drawer width bug,
         // https://github.com/flutter/flutter/issues/123507 and overflow bug
         // https://github.com/flutter/flutter/issues/123380
         // when it animates via zero width in null default to widget default.
-        drawerTheme: controller.useSubThemes
-            ? null
-            : DrawerThemeData(width: controller.useMaterial3 ? 360 : 304),
+        drawerTheme: controller.useSubThemes ? null : DrawerThemeData(width: controller.useMaterial3 ? 360 : 304),
       );
 }
 
@@ -120,17 +117,10 @@ FlexColorScheme flexColorSchemeDark(ThemeController controller, Color source) {
             blendOnColors: controller.blendDarkOnColors,
             useFlutterDefaults: controller.useFlutterDefaults,
             // Platform adaptive theming feature settings.
-            adaptiveRemoveElevationTint: controller
-                .adaptiveRemoveElevationTintDark
-                ?.setting(controller.fakeIsWeb),
-            adaptiveElevationShadowsBack: controller
-                .adaptiveElevationShadowsBackDark
-                ?.setting(controller.fakeIsWeb),
-            adaptiveAppBarScrollUnderOff: controller
-                .adaptiveAppBarScrollUnderOffDark
-                ?.setting(controller.fakeIsWeb),
-            adaptiveRadius:
-                controller.adaptiveRadius?.setting(controller.fakeIsWeb),
+            adaptiveRemoveElevationTint: controller.adaptiveRemoveElevationTintDark?.setting(controller.fakeIsWeb),
+            adaptiveElevationShadowsBack: controller.adaptiveElevationShadowsBackDark?.setting(controller.fakeIsWeb),
+            adaptiveAppBarScrollUnderOff: controller.adaptiveAppBarScrollUnderOffDark?.setting(controller.fakeIsWeb),
+            adaptiveRadius: controller.adaptiveRadius?.setting(controller.fakeIsWeb),
             // Text theme settings.
             blendTextTheme: controller.blendDarkTextTheme,
             useTextTheme: controller.useTextTheme,
@@ -151,33 +141,25 @@ FlexColorScheme flexColorSchemeDark(ThemeController controller, Color source) {
             // ElevatedButton settings.
             elevatedButtonRadius: controller.elevatedButtonBorderRadius,
             elevatedButtonSchemeColor: controller.elevatedButtonSchemeColor,
-            elevatedButtonSecondarySchemeColor:
-                controller.elevatedButtonSecondarySchemeColor,
+            elevatedButtonSecondarySchemeColor: controller.elevatedButtonSecondarySchemeColor,
             // OutlineButton settings.
             outlinedButtonRadius: controller.outlinedButtonBorderRadius,
             outlinedButtonSchemeColor: controller.outlinedButtonSchemeColor,
-            outlinedButtonOutlineSchemeColor:
-                controller.outlinedButtonOutlineSchemeColor,
+            outlinedButtonOutlineSchemeColor: controller.outlinedButtonOutlineSchemeColor,
             outlinedButtonBorderWidth: controller.outlinedButtonBorderWidth,
-            outlinedButtonPressedBorderWidth:
-                controller.outlinedButtonPressedBorderWidth,
+            outlinedButtonPressedBorderWidth: controller.outlinedButtonPressedBorderWidth,
             // ToggleButtons settings.
             toggleButtonsRadius: controller.toggleButtonsBorderRadius,
             toggleButtonsSchemeColor: controller.toggleButtonsSchemeColor,
-            toggleButtonsUnselectedSchemeColor:
-                controller.toggleButtonsUnselectedSchemeColor,
-            toggleButtonsBorderSchemeColor:
-                controller.toggleButtonsBorderSchemeColor,
+            toggleButtonsUnselectedSchemeColor: controller.toggleButtonsUnselectedSchemeColor,
+            toggleButtonsBorderSchemeColor: controller.toggleButtonsBorderSchemeColor,
             toggleButtonsBorderWidth: controller.toggleButtonsBorderWidth,
             // SegmentedButtons settings.
             segmentedButtonRadius: controller.segmentedButtonBorderRadius,
             segmentedButtonSchemeColor: controller.segmentedButtonSchemeColor,
-            segmentedButtonUnselectedSchemeColor:
-                controller.segmentedButtonUnselectedSchemeColor,
-            segmentedButtonUnselectedForegroundSchemeColor:
-                controller.segmentedButtonUnselectedForegroundSchemeColor,
-            segmentedButtonBorderSchemeColor:
-                controller.segmentedButtonBorderSchemeColor,
+            segmentedButtonUnselectedSchemeColor: controller.segmentedButtonUnselectedSchemeColor,
+            segmentedButtonUnselectedForegroundSchemeColor: controller.segmentedButtonUnselectedForegroundSchemeColor,
+            segmentedButtonBorderSchemeColor: controller.segmentedButtonBorderSchemeColor,
             segmentedButtonBorderWidth: controller.segmentedButtonBorderWidth,
             // Switch, CheckBox, Radio (toggles) settings.
             switchSchemeColor: controller.switchSchemeColor,
@@ -194,24 +176,17 @@ FlexColorScheme flexColorSchemeDark(ThemeController controller, Color source) {
             sliderTrackHeight: controller.sliderTrackHeight,
             // Input decoration (TextField) settings.
             inputDecoratorSchemeColor: controller.inputDecoratorSchemeColorDark,
-            inputDecoratorBorderSchemeColor:
-                controller.inputDecoratorBorderSchemeColorDark,
+            inputDecoratorBorderSchemeColor: controller.inputDecoratorBorderSchemeColorDark,
             inputDecoratorIsFilled: controller.inputDecoratorIsFilled,
             inputDecoratorBorderType: controller.inputDecoratorBorderType,
             inputDecoratorRadius: controller.inputDecoratorBorderRadius,
-            inputDecoratorUnfocusedHasBorder:
-                controller.inputDecoratorUnfocusedHasBorder,
-            inputDecoratorBackgroundAlpha:
-                controller.inputDecoratorBackgroundAlphaDark,
-            inputDecoratorFocusedHasBorder:
-                controller.inputDecoratorFocusedHasBorder,
-            inputDecoratorUnfocusedBorderIsColored:
-                controller.inputDecoratorUnfocusedBorderIsColored,
+            inputDecoratorUnfocusedHasBorder: controller.inputDecoratorUnfocusedHasBorder,
+            inputDecoratorBackgroundAlpha: controller.inputDecoratorBackgroundAlphaDark,
+            inputDecoratorFocusedHasBorder: controller.inputDecoratorFocusedHasBorder,
+            inputDecoratorUnfocusedBorderIsColored: controller.inputDecoratorUnfocusedBorderIsColored,
             inputDecoratorBorderWidth: controller.inputDecoratorBorderWidth,
-            inputDecoratorFocusedBorderWidth:
-                controller.inputDecoratorFocusedBorderWidth,
-            inputDecoratorPrefixIconSchemeColor:
-                controller.inputDecoratorPrefixIconDarkSchemeColor,
+            inputDecoratorFocusedBorderWidth: controller.inputDecoratorFocusedBorderWidth,
+            inputDecoratorPrefixIconSchemeColor: controller.inputDecoratorPrefixIconDarkSchemeColor,
             // FAB settings.
             fabRadius: controller.fabBorderRadius,
             fabUseShape: controller.fabUseShape,
@@ -231,21 +206,15 @@ FlexColorScheme flexColorSchemeDark(ThemeController controller, Color source) {
             popupMenuOpacity: controller.popupMenuOpacity,
             // Tooltip
             tooltipRadius: controller.tooltipRadius,
-            tooltipWaitDuration: controller.tooltipWaitDuration == null
-                ? null
-                : Duration(milliseconds: controller.tooltipWaitDuration!),
-            tooltipShowDuration: controller.tooltipShowDuration == null
-                ? null
-                : Duration(milliseconds: controller.tooltipShowDuration!),
+            tooltipWaitDuration: controller.tooltipWaitDuration == null ? null : Duration(milliseconds: controller.tooltipWaitDuration!),
+            tooltipShowDuration: controller.tooltipShowDuration == null ? null : Duration(milliseconds: controller.tooltipShowDuration!),
             tooltipSchemeColor: controller.tooltipSchemeColor,
             tooltipOpacity: controller.tooltipOpacity,
             // Dialog settings.
             dialogBackgroundSchemeColor: controller.dialogBackgroundSchemeColor,
             dialogRadius: controller.dialogBorderRadius,
-            useInputDecoratorThemeInDialogs:
-                controller.useInputDecoratorThemeInDialogs,
-            datePickerHeaderBackgroundSchemeColor:
-                controller.datePickerHeaderBackgroundSchemeColor,
+            useInputDecoratorThemeInDialogs: controller.useInputDecoratorThemeInDialogs,
+            datePickerHeaderBackgroundSchemeColor: controller.datePickerHeaderBackgroundSchemeColor,
             datePickerDialogRadius: controller.dialogBorderRadius,
             timePickerDialogRadius: controller.dialogBorderRadius,
             timePickerElementRadius: controller.timePickerElementRadius,
@@ -256,18 +225,14 @@ FlexColorScheme flexColorSchemeDark(ThemeController controller, Color source) {
             snackBarBackgroundSchemeColor: controller.snackBarSchemeColor,
             snackBarActionSchemeColor: controller.snackBarActionSchemeColor,
             // AppBar settings.
-            appBarBackgroundSchemeColor:
-                controller.appBarBackgroundSchemeColorDark,
-            appBarScrolledUnderElevation:
-                controller.appBarScrolledUnderElevationDark,
+            appBarBackgroundSchemeColor: controller.appBarBackgroundSchemeColorDark,
+            appBarScrolledUnderElevation: controller.appBarScrolledUnderElevationDark,
             // BottomAppBarSettings.
             bottomAppBarSchemeColor: controller.bottomAppBarSchemeColor,
             // TabBar settings.
             tabBarItemSchemeColor: controller.tabBarItemSchemeColorDark,
-            tabBarUnselectedItemSchemeColor:
-                controller.tabBarUnselectedItemSchemeColorDark,
-            tabBarUnselectedItemOpacity:
-                controller.tabBarUnselectedItemOpacityDark,
+            tabBarUnselectedItemSchemeColor: controller.tabBarUnselectedItemSchemeColorDark,
+            tabBarUnselectedItemOpacity: controller.tabBarUnselectedItemOpacityDark,
             tabBarIndicatorSchemeColor: controller.tabBarIndicatorDark,
             tabBarIndicatorSize: controller.tabBarIndicatorSize,
             tabBarIndicatorWeight: controller.tabBarIndicatorWeight,
@@ -282,39 +247,26 @@ FlexColorScheme flexColorSchemeDark(ThemeController controller, Color source) {
             drawerIndicatorRadius: controller.drawerIndicatorBorderRadius,
             drawerIndicatorSchemeColor: controller.drawerIndicatorSchemeColor,
             drawerIndicatorOpacity: controller.drawerIndicatorOpacity,
-            drawerSelectedItemSchemeColor:
-                controller.drawerSelectedItemSchemeColor,
-            drawerUnselectedItemSchemeColor:
-                controller.drawerUnselectedItemSchemeColor,
+            drawerSelectedItemSchemeColor: controller.drawerSelectedItemSchemeColor,
+            drawerUnselectedItemSchemeColor: controller.drawerUnselectedItemSchemeColor,
             // BottomSheet settings.
             bottomSheetBackgroundColor: controller.bottomSheetSchemeColor,
-            bottomSheetModalBackgroundColor:
-                controller.bottomSheetModalSchemeColor,
+            bottomSheetModalBackgroundColor: controller.bottomSheetModalSchemeColor,
             bottomSheetRadius: controller.bottomSheetBorderRadius,
             bottomSheetElevation: controller.bottomSheetElevation,
             bottomSheetModalElevation: controller.bottomSheetModalElevation,
             // BottomNavigationBar settings.
-            bottomNavigationBarSelectedLabelSchemeColor:
-                controller.bottomNavBarSelectedSchemeColor,
-            bottomNavigationBarUnselectedLabelSchemeColor:
-                controller.bottomNavBarUnselectedSchemeColor,
-            bottomNavigationBarMutedUnselectedLabel:
-                controller.bottomNavBarMuteUnselected,
-            bottomNavigationBarSelectedIconSchemeColor:
-                controller.bottomNavBarSelectedSchemeColor,
-            bottomNavigationBarUnselectedIconSchemeColor:
-                controller.bottomNavBarUnselectedSchemeColor,
-            bottomNavigationBarMutedUnselectedIcon:
-                controller.bottomNavBarMuteUnselected,
-            bottomNavigationBarBackgroundSchemeColor:
-                controller.bottomNavBarBackgroundSchemeColor,
+            bottomNavigationBarSelectedLabelSchemeColor: controller.bottomNavBarSelectedSchemeColor,
+            bottomNavigationBarUnselectedLabelSchemeColor: controller.bottomNavBarUnselectedSchemeColor,
+            bottomNavigationBarMutedUnselectedLabel: controller.bottomNavBarMuteUnselected,
+            bottomNavigationBarSelectedIconSchemeColor: controller.bottomNavBarSelectedSchemeColor,
+            bottomNavigationBarUnselectedIconSchemeColor: controller.bottomNavBarUnselectedSchemeColor,
+            bottomNavigationBarMutedUnselectedIcon: controller.bottomNavBarMuteUnselected,
+            bottomNavigationBarBackgroundSchemeColor: controller.bottomNavBarBackgroundSchemeColor,
             bottomNavigationBarOpacity: controller.bottomNavigationBarOpacity,
-            bottomNavigationBarElevation:
-                controller.bottomNavigationBarElevation,
-            bottomNavigationBarShowSelectedLabels:
-                controller.bottomNavShowSelectedLabels,
-            bottomNavigationBarShowUnselectedLabels:
-                controller.bottomNavShowUnselectedLabels,
+            bottomNavigationBarElevation: controller.bottomNavigationBarElevation,
+            bottomNavigationBarShowSelectedLabels: controller.bottomNavShowSelectedLabels,
+            bottomNavigationBarShowUnselectedLabels: controller.bottomNavShowUnselectedLabels,
             // Menu, MenuBar and MenuButton settings.
             menuRadius: controller.menuRadius,
             menuElevation: controller.menuElevation,
@@ -327,63 +279,43 @@ FlexColorScheme flexColorSchemeDark(ThemeController controller, Color source) {
               controller.menuPaddingBottom ?? 0,
             ),
             //
-            menuBarBackgroundSchemeColor:
-                controller.menuBarBackgroundSchemeColor,
+            menuBarBackgroundSchemeColor: controller.menuBarBackgroundSchemeColor,
             menuBarRadius: controller.menuBarRadius,
             menuBarElevation: controller.menuBarElevation,
             menuBarShadowColor: controller.menuBarShadowColor,
             //
-            menuItemBackgroundSchemeColor:
-                controller.menuItemBackgroundSchemeColor,
-            menuItemForegroundSchemeColor:
-                controller.menuItemForegroundSchemeColor,
-            menuIndicatorBackgroundSchemeColor:
-                controller.menuIndicatorBackgroundSchemeColor,
-            menuIndicatorForegroundSchemeColor:
-                controller.menuIndicatorForegroundSchemeColor,
+            menuItemBackgroundSchemeColor: controller.menuItemBackgroundSchemeColor,
+            menuItemForegroundSchemeColor: controller.menuItemForegroundSchemeColor,
+            menuIndicatorBackgroundSchemeColor: controller.menuIndicatorBackgroundSchemeColor,
+            menuIndicatorForegroundSchemeColor: controller.menuIndicatorForegroundSchemeColor,
             menuIndicatorRadius: controller.menuIndicatorRadius,
             // NavigationBar settings.
-            navigationBarSelectedLabelSchemeColor:
-                controller.navBarSelectedLabelSchemeColor,
-            navigationBarUnselectedLabelSchemeColor:
-                controller.navBarUnselectedSchemeColor,
+            navigationBarSelectedLabelSchemeColor: controller.navBarSelectedLabelSchemeColor,
+            navigationBarUnselectedLabelSchemeColor: controller.navBarUnselectedSchemeColor,
             navigationBarMutedUnselectedLabel: controller.navBarMuteUnselected,
-            navigationBarSelectedIconSchemeColor:
-                controller.navBarSelectedIconSchemeColor,
-            navigationBarUnselectedIconSchemeColor:
-                controller.navBarUnselectedSchemeColor,
+            navigationBarSelectedIconSchemeColor: controller.navBarSelectedIconSchemeColor,
+            navigationBarUnselectedIconSchemeColor: controller.navBarUnselectedSchemeColor,
             navigationBarMutedUnselectedIcon: controller.navBarMuteUnselected,
-            navigationBarIndicatorSchemeColor:
-                controller.navBarIndicatorSchemeColor,
+            navigationBarIndicatorSchemeColor: controller.navBarIndicatorSchemeColor,
             navigationBarIndicatorOpacity: controller.navBarIndicatorOpacity,
-            navigationBarIndicatorRadius:
-                controller.navBarIndicatorBorderRadius,
-            navigationBarBackgroundSchemeColor:
-                controller.navBarBackgroundSchemeColor,
+            navigationBarIndicatorRadius: controller.navBarIndicatorBorderRadius,
+            navigationBarBackgroundSchemeColor: controller.navBarBackgroundSchemeColor,
             navigationBarOpacity: controller.navBarOpacity,
             navigationBarElevation: controller.navBarElevation,
             navigationBarHeight: controller.navBarHeight,
             navigationBarLabelBehavior: controller.navBarLabelBehavior,
             // NavigationRail settings.
-            navigationRailSelectedLabelSchemeColor:
-                controller.navRailSelectedLabelSchemeColor,
-            navigationRailUnselectedLabelSchemeColor:
-                controller.navRailUnselectedSchemeColor,
-            navigationRailMutedUnselectedLabel:
-                controller.navRailMuteUnselected,
-            navigationRailSelectedIconSchemeColor:
-                controller.navRailSelectedIconSchemeColor,
-            navigationRailUnselectedIconSchemeColor:
-                controller.navRailUnselectedSchemeColor,
+            navigationRailSelectedLabelSchemeColor: controller.navRailSelectedLabelSchemeColor,
+            navigationRailUnselectedLabelSchemeColor: controller.navRailUnselectedSchemeColor,
+            navigationRailMutedUnselectedLabel: controller.navRailMuteUnselected,
+            navigationRailSelectedIconSchemeColor: controller.navRailSelectedIconSchemeColor,
+            navigationRailUnselectedIconSchemeColor: controller.navRailUnselectedSchemeColor,
             navigationRailMutedUnselectedIcon: controller.navRailMuteUnselected,
             navigationRailUseIndicator: controller.navRailUseIndicator,
-            navigationRailIndicatorSchemeColor:
-                controller.navRailIndicatorSchemeColor,
+            navigationRailIndicatorSchemeColor: controller.navRailIndicatorSchemeColor,
             navigationRailIndicatorOpacity: controller.navRailIndicatorOpacity,
-            navigationRailIndicatorRadius:
-                controller.navRailIndicatorBorderRadius,
-            navigationRailBackgroundSchemeColor:
-                controller.navRailBackgroundSchemeColor,
+            navigationRailIndicatorRadius: controller.navRailIndicatorBorderRadius,
+            navigationRailBackgroundSchemeColor: controller.navRailBackgroundSchemeColor,
             navigationRailOpacity: controller.navRailOpacity,
             navigationRailElevation: controller.navRailElevation,
             navigationRailLabelType: controller.navRailLabelType,

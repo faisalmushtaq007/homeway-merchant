@@ -480,7 +480,7 @@ class BusinessDocumentBloc extends Bloc<BusinessDocumentEvent, BusinessDocumentS
       _customPaint = CustomPaint(painter: painter);
     } else {
       _text = 'Recognized text:\n\n${recognizedText.text}';
-      // TODO: set _customPaint to draw boundingRect on top of image
+      // TODO(prasant): set _customPaint to draw boundingRect on top of image
       _customPaint = null;
       appLog.d(_text);
     }

@@ -35,8 +35,7 @@ import 'flex_theme_light.dart';
 /// ThemeData is created with, thus using the same colors in your custom
 /// sub-themes.
 ThemeData themeDataLight(ThemeController controller) {
-  final ColorScheme colorScheme =
-      flexColorSchemeLight(controller, Colors.black).toScheme;
+  final ColorScheme colorScheme = flexColorSchemeLight(controller, Colors.black).toScheme;
 
   return ThemeData(
     brightness: Brightness.light,
@@ -61,14 +60,12 @@ ThemeData themeDataLight(ThemeController controller) {
     visualDensity: GlobalApp.visualDensity,
     platform: controller.platform,
     useMaterial3: controller.useMaterial3,
-    typography: controller.useMaterial3
-        ? Typography.material2021(platform: controller.platform)
-        : Typography.material2018(platform: controller.platform),
+    typography: controller.useMaterial3 ? Typography.material2021(platform: controller.platform) : Typography.material2018(platform: controller.platform),
     // Add a custom theme extension with light mode code highlight colors.
     extensions: <ThemeExtension<dynamic>>{
       CodeTheme.harmonized(colorScheme.surfaceTint, Brightness.light),
     },
-    // TODO(rydmike): Remove Drawer workaround when Flutter SDK has a fix.
+    // TODO(prasant)(rydmike): Remove Drawer workaround when Flutter SDK has a fix.
     // See: https://github.com/flutter/flutter/issues/123507
     // This is a fix to avoid the Flutter Drawer width bug and overflow bug
     // when it animates via zero width in null default to widget default.

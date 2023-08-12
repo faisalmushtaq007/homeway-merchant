@@ -75,7 +75,7 @@ class UserPaymentBankLocalDbRepository<T extends PaymentBankEntity> implements B
 
   @override
   Future<Either<RepositoryBaseFailure, bool>> deleteByIdAndEntity(UniqueId uniqueId, PaymentBankEntity entity) async {
-    // TODO: implement deleteByIdAndEntity
+    // TODO(prasant): implement deleteByIdAndEntity
     throw UnimplementedError();
   }
 
@@ -112,7 +112,7 @@ class UserPaymentBankLocalDbRepository<T extends PaymentBankEntity> implements B
 
   @override
   Future<Either<RepositoryBaseFailure, PaymentBankEntity>> getByIdAndEntity(UniqueId uniqueId, PaymentBankEntity entity) async {
-    // TODO: implement getByIdAndEntity
+    // TODO(prasant): implement getByIdAndEntity
     throw UnimplementedError();
   }
 
@@ -140,7 +140,7 @@ class UserPaymentBankLocalDbRepository<T extends PaymentBankEntity> implements B
 
   @override
   Future<Either<RepositoryBaseFailure, PaymentBankEntity>> updateByIdAndEntity(UniqueId uniqueId, PaymentBankEntity entity) async {
-    // TODO: implement updateByIdAndEntity
+    // TODO(prasant): implement updateByIdAndEntity
     throw UnimplementedError();
   }
 

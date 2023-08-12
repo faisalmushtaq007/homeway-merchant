@@ -129,19 +129,19 @@ class UserLocalDbRepository<User extends AppUserEntity> implements BaseUserLocal
 
   @override
   Future<Either<RepositoryBaseFailure, bool>> deleteByIdAndEntity(UniqueId uniqueId, AppUserEntity entity) {
-    // TODO: implement deleteByIdAndEntity
+    // TODO(prasant): implement deleteByIdAndEntity
     throw UnimplementedError();
   }
 
   @override
   Future<Either<RepositoryBaseFailure, AppUserEntity>> getByIdAndEntity(UniqueId uniqueId, AppUserEntity entity) {
-    // TODO: implement getByIdAndEntity
+    // TODO(prasant): implement getByIdAndEntity
     throw UnimplementedError();
   }
 
   @override
   Future<Either<RepositoryBaseFailure, AppUserEntity>> updateByIdAndEntity(UniqueId uniqueId, AppUserEntity entity) {
-    // TODO: implement updateByIdAndEntity
+    // TODO(prasant): implement updateByIdAndEntity
     throw UnimplementedError();
   }
 }

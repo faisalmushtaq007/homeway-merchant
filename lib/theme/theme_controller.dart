@@ -56,8 +56,7 @@ class ThemeController with ChangeNotifier {
     //
     // GENERAL SETTINGS.
     // ThemeMode, use FlexColorScheme and sub-themes, current scheme, view, etc.
-    _themeMode =
-        await _themeService.load(Store.keyThemeMode, Store.defaultThemeMode);
+    _themeMode = await _themeService.load(Store.keyThemeMode, Store.defaultThemeMode);
     _useFlexColorScheme = await _themeService.load(
       Store.keyUseFlexColorScheme,
       Store.defaultUseFlexColorScheme,
@@ -116,8 +115,7 @@ class ThemeController with ChangeNotifier {
       Store.keyConfirmPremade,
       Store.defaultConfirmPremade,
     );
-    _viewIndex =
-        await _themeService.load(Store.keyViewIndex, Store.defaultViewIndex);
+    _viewIndex = await _themeService.load(Store.keyViewIndex, Store.defaultViewIndex);
     _sideViewIndex = await _themeService.load(
       Store.keySideViewIndex,
       Store.defaultSideViewIndex,
@@ -134,8 +132,7 @@ class ThemeController with ChangeNotifier {
       Store.keySimulatorComponentsIndex,
       Store.defaultSimulatorComponentsIndex,
     );
-    _deviceSize =
-        await _themeService.load(Store.keyDeviceSize, Store.defaultDeviceSize);
+    _deviceSize = await _themeService.load(Store.keyDeviceSize, Store.defaultDeviceSize);
     _showSchemeInput = await _themeService.load(
       Store.keyShowSchemeInput,
       Store.defaultShowSchemeInput,
@@ -149,10 +146,8 @@ class ThemeController with ChangeNotifier {
       Store.keyUseM2StyleDividerInM3,
       Store.defaultUseM2StyleDividerInM3,
     );
-    _useAppFont =
-        await _themeService.load(Store.keyUseAppFont, Store.defaultUseAppFont);
-    _usedScheme =
-        await _themeService.load(Store.keyUsedScheme, Store.defaultUsedScheme);
+    _useAppFont = await _themeService.load(Store.keyUseAppFont, Store.defaultUseAppFont);
+    _usedScheme = await _themeService.load(Store.keyUsedScheme, Store.defaultUsedScheme);
     _schemeIndex = await _themeService.load(
       Store.keySchemeIndex,
       Store.defaultSchemeIndex,
@@ -195,8 +190,7 @@ class ThemeController with ChangeNotifier {
       Store.keySurfaceModeDark,
       Store.defaultSurfaceModeDark,
     );
-    _blendLevel =
-        await _themeService.load(Store.keyBlendLevel, Store.defaultBlendLevel);
+    _blendLevel = await _themeService.load(Store.keyBlendLevel, Store.defaultBlendLevel);
     _blendLevelDark = await _themeService.load(
       Store.keyBlendLevelDark,
       Store.defaultBlendLevelDark,
@@ -209,8 +203,7 @@ class ThemeController with ChangeNotifier {
       Store.keyBlendOnLevelDark,
       Store.defaultBlendOnLevelDark,
     );
-    _usedColors =
-        await _themeService.load(Store.keyUsedColors, Store.defaultUsedColors);
+    _usedColors = await _themeService.load(Store.keyUsedColors, Store.defaultUsedColors);
     _swapLegacyColors = await _themeService.load(
       Store.keySwapLegacyColors,
       Store.defaultSwapLegacyColors,
@@ -648,8 +641,7 @@ class ThemeController with ChangeNotifier {
     );
     //
     // Menu, MenuBar and MenuButton SETTINGS.
-    _menuRadius =
-        await _themeService.load(Store.keyMenuRadius, Store.defaultMenuRadius);
+    _menuRadius = await _themeService.load(Store.keyMenuRadius, Store.defaultMenuRadius);
     _menuElevation = await _themeService.load(
       Store.keyMenuElevation,
       Store.defaultMenuElevation,
@@ -2566,8 +2558,7 @@ class ThemeController with ChangeNotifier {
   }
 
   late AdaptiveTheme? _adaptiveRemoveElevationTintLight;
-  AdaptiveTheme? get adaptiveRemoveElevationTintLight =>
-      _adaptiveRemoveElevationTintLight;
+  AdaptiveTheme? get adaptiveRemoveElevationTintLight => _adaptiveRemoveElevationTintLight;
   void setAdaptiveRemoveElevationTintLight(
     AdaptiveTheme? value, [
     bool notify = true,
@@ -2581,8 +2572,7 @@ class ThemeController with ChangeNotifier {
   }
 
   late AdaptiveTheme? _adaptiveElevationShadowsBackLight;
-  AdaptiveTheme? get adaptiveElevationShadowsBackLight =>
-      _adaptiveElevationShadowsBackLight;
+  AdaptiveTheme? get adaptiveElevationShadowsBackLight => _adaptiveElevationShadowsBackLight;
   void setAdaptiveElevationShadowsBackLight(
     AdaptiveTheme? value, [
     bool notify = true,
@@ -2596,8 +2586,7 @@ class ThemeController with ChangeNotifier {
   }
 
   late AdaptiveTheme? _adaptiveAppBarScrollUnderOffLight;
-  AdaptiveTheme? get adaptiveAppBarScrollUnderOffLight =>
-      _adaptiveAppBarScrollUnderOffLight;
+  AdaptiveTheme? get adaptiveAppBarScrollUnderOffLight => _adaptiveAppBarScrollUnderOffLight;
   void setAdaptiveAppBarScrollUnderOffLight(
     AdaptiveTheme? value, [
     bool notify = true,
@@ -2611,8 +2600,7 @@ class ThemeController with ChangeNotifier {
   }
 
   late AdaptiveTheme? _adaptiveRemoveElevationTintDark;
-  AdaptiveTheme? get adaptiveRemoveElevationTintDark =>
-      _adaptiveRemoveElevationTintDark;
+  AdaptiveTheme? get adaptiveRemoveElevationTintDark => _adaptiveRemoveElevationTintDark;
   void setAdaptiveRemoveElevationTintDark(
     AdaptiveTheme? value, [
     bool notify = true,
@@ -2626,8 +2614,7 @@ class ThemeController with ChangeNotifier {
   }
 
   late AdaptiveTheme? _adaptiveElevationShadowsBackDark;
-  AdaptiveTheme? get adaptiveElevationShadowsBackDark =>
-      _adaptiveElevationShadowsBackDark;
+  AdaptiveTheme? get adaptiveElevationShadowsBackDark => _adaptiveElevationShadowsBackDark;
   void setAdaptiveElevationShadowsBackDark(
     AdaptiveTheme? value, [
     bool notify = true,
@@ -2641,8 +2628,7 @@ class ThemeController with ChangeNotifier {
   }
 
   late AdaptiveTheme? _adaptiveAppBarScrollUnderOffDark;
-  AdaptiveTheme? get adaptiveAppBarScrollUnderOffDark =>
-      _adaptiveAppBarScrollUnderOffDark;
+  AdaptiveTheme? get adaptiveAppBarScrollUnderOffDark => _adaptiveAppBarScrollUnderOffDark;
   void setAdaptiveAppBarScrollUnderOffDark(
     AdaptiveTheme? value, [
     bool notify = true,
@@ -3323,8 +3309,7 @@ class ThemeController with ChangeNotifier {
   // ===========================================================================
 
   late SchemeColor? _inputDecoratorSchemeColorLight;
-  SchemeColor? get inputDecoratorSchemeColorLight =>
-      _inputDecoratorSchemeColorLight;
+  SchemeColor? get inputDecoratorSchemeColorLight => _inputDecoratorSchemeColorLight;
   void setInputDecoratorSchemeColorLight(
     SchemeColor? value, [
     bool notify = true,
@@ -3338,8 +3323,7 @@ class ThemeController with ChangeNotifier {
   }
 
   late SchemeColor? _inputDecoratorSchemeColorDark;
-  SchemeColor? get inputDecoratorSchemeColorDark =>
-      _inputDecoratorSchemeColorDark;
+  SchemeColor? get inputDecoratorSchemeColorDark => _inputDecoratorSchemeColorDark;
   void setInputDecoratorSchemeColorDark(
     SchemeColor? value, [
     bool notify = true,
@@ -3353,8 +3337,7 @@ class ThemeController with ChangeNotifier {
   }
 
   late SchemeColor? _inputDecoratorBorderSchemeColorLight;
-  SchemeColor? get inputDecoratorBorderSchemeColorLight =>
-      _inputDecoratorBorderSchemeColorLight;
+  SchemeColor? get inputDecoratorBorderSchemeColorLight => _inputDecoratorBorderSchemeColorLight;
   void setInputDecoratorBorderSchemeColorLight(
     SchemeColor? value, [
     bool notify = true,
@@ -3371,8 +3354,7 @@ class ThemeController with ChangeNotifier {
   }
 
   late SchemeColor? _inputDecoratorBorderSchemeColorDark;
-  SchemeColor? get inputDecoratorBorderSchemeColorDark =>
-      _inputDecoratorBorderSchemeColorDark;
+  SchemeColor? get inputDecoratorBorderSchemeColorDark => _inputDecoratorBorderSchemeColorDark;
   void setInputDecoratorBorderSchemeColorDark(
     SchemeColor? value, [
     bool notify = true,
@@ -3399,8 +3381,7 @@ class ThemeController with ChangeNotifier {
   }
 
   late int? _inputDecoratorBackgroundAlphaLight;
-  int? get inputDecoratorBackgroundAlphaLight =>
-      _inputDecoratorBackgroundAlphaLight;
+  int? get inputDecoratorBackgroundAlphaLight => _inputDecoratorBackgroundAlphaLight;
   void setInputDecoratorBackgroundAlphaLight(int? value, [bool notify = true]) {
     if (value == _inputDecoratorBackgroundAlphaLight) return;
     _inputDecoratorBackgroundAlphaLight = value;
@@ -3411,8 +3392,7 @@ class ThemeController with ChangeNotifier {
   }
 
   late int? _inputDecoratorBackgroundAlphaDark;
-  int? get inputDecoratorBackgroundAlphaDark =>
-      _inputDecoratorBackgroundAlphaDark;
+  int? get inputDecoratorBackgroundAlphaDark => _inputDecoratorBackgroundAlphaDark;
   void setInputDecoratorBackgroundAlphaDark(int? value, [bool notify = true]) {
     if (value == _inputDecoratorBackgroundAlphaDark) return;
     _inputDecoratorBackgroundAlphaDark = value;
@@ -3445,8 +3425,7 @@ class ThemeController with ChangeNotifier {
   }
 
   late bool _inputDecoratorUnfocusedHasBorder;
-  bool get inputDecoratorUnfocusedHasBorder =>
-      _inputDecoratorUnfocusedHasBorder;
+  bool get inputDecoratorUnfocusedHasBorder => _inputDecoratorUnfocusedHasBorder;
   void setInputDecoratorUnfocusedHasBorder(bool? value, [bool notify = true]) {
     if (value == null) return;
     if (value == _inputDecoratorUnfocusedHasBorder) return;
@@ -3470,8 +3449,7 @@ class ThemeController with ChangeNotifier {
   }
 
   late bool _inputDecoratorUnfocusedBorderIsColored;
-  bool get inputDecoratorUnfocusedBorderIsColored =>
-      _inputDecoratorUnfocusedBorderIsColored;
+  bool get inputDecoratorUnfocusedBorderIsColored => _inputDecoratorUnfocusedBorderIsColored;
   void setInputDecoratorUnfocusedBorderIsColored(
     bool? value, [
     bool notify = true,
@@ -3498,8 +3476,7 @@ class ThemeController with ChangeNotifier {
   }
 
   late double? _inputDecoratorFocusedBorderWidth;
-  double? get inputDecoratorFocusedBorderWidth =>
-      _inputDecoratorFocusedBorderWidth;
+  double? get inputDecoratorFocusedBorderWidth => _inputDecoratorFocusedBorderWidth;
   void setInputDecoratorFocusedBorderWidth(
     double? value, [
     bool notify = true,
@@ -3513,8 +3490,7 @@ class ThemeController with ChangeNotifier {
   }
 
   late SchemeColor? _inputDecoratorPrefixIconSchemeColor;
-  SchemeColor? get inputDecoratorPrefixIconSchemeColor =>
-      _inputDecoratorPrefixIconSchemeColor;
+  SchemeColor? get inputDecoratorPrefixIconSchemeColor => _inputDecoratorPrefixIconSchemeColor;
   void setInputDecoratorPrefixIconSchemeColor(
     SchemeColor? value, [
     bool notify = true,
@@ -3531,8 +3507,7 @@ class ThemeController with ChangeNotifier {
   }
 
   late SchemeColor? _inputDecoratorPrefixIconDarkSchemeColor;
-  SchemeColor? get inputDecoratorPrefixIconDarkSchemeColor =>
-      _inputDecoratorPrefixIconDarkSchemeColor;
+  SchemeColor? get inputDecoratorPrefixIconDarkSchemeColor => _inputDecoratorPrefixIconDarkSchemeColor;
   void setInputDecoratorPrefixIconDarkSchemeColor(
     SchemeColor? value, [
     bool notify = true,
@@ -3610,8 +3585,7 @@ class ThemeController with ChangeNotifier {
   }
 
   late double? _appBarScrolledUnderElevationLight;
-  double? get appBarScrolledUnderElevationLight =>
-      _appBarScrolledUnderElevationLight;
+  double? get appBarScrolledUnderElevationLight => _appBarScrolledUnderElevationLight;
   void setAppBarScrolledUnderElevationLight(
     double? value, [
     bool notify = true,
@@ -3625,8 +3599,7 @@ class ThemeController with ChangeNotifier {
   }
 
   late double? _appBarScrolledUnderElevationDark;
-  double? get appBarScrolledUnderElevationDark =>
-      _appBarScrolledUnderElevationDark;
+  double? get appBarScrolledUnderElevationDark => _appBarScrolledUnderElevationDark;
   void setAppBarScrolledUnderElevationDark(
     double? value, [
     bool notify = true,
@@ -3668,8 +3641,7 @@ class ThemeController with ChangeNotifier {
   }
 
   late SchemeColor? _appBarBackgroundSchemeColorLight;
-  SchemeColor? get appBarBackgroundSchemeColorLight =>
-      _appBarBackgroundSchemeColorLight;
+  SchemeColor? get appBarBackgroundSchemeColorLight => _appBarBackgroundSchemeColorLight;
   void setAppBarBackgroundSchemeColorLight(
     SchemeColor? value, [
     bool notify = true,
@@ -3683,8 +3655,7 @@ class ThemeController with ChangeNotifier {
   }
 
   late SchemeColor? _appBarBackgroundSchemeColorDark;
-  SchemeColor? get appBarBackgroundSchemeColorDark =>
-      _appBarBackgroundSchemeColorDark;
+  SchemeColor? get appBarBackgroundSchemeColorDark => _appBarBackgroundSchemeColorDark;
   void setAppBarBackgroundSchemeColorDark(
     SchemeColor? value, [
     bool notify = true,
@@ -3758,8 +3729,7 @@ class ThemeController with ChangeNotifier {
   }
 
   late SchemeColor? _tabBarUnselectedItemSchemeColorLight;
-  SchemeColor? get tabBarUnselectedItemSchemeColorLight =>
-      _tabBarUnselectedItemSchemeColorLight;
+  SchemeColor? get tabBarUnselectedItemSchemeColorLight => _tabBarUnselectedItemSchemeColorLight;
   void setTabBarUnselectedItemSchemeColorLight(
     SchemeColor? value, [
     bool notify = true,
@@ -3776,8 +3746,7 @@ class ThemeController with ChangeNotifier {
   }
 
   late SchemeColor? _tabBarUnselectedItemSchemeColorDark;
-  SchemeColor? get tabBarUnselectedItemSchemeColorDark =>
-      _tabBarUnselectedItemSchemeColorDark;
+  SchemeColor? get tabBarUnselectedItemSchemeColorDark => _tabBarUnselectedItemSchemeColorDark;
   void setTabBarUnselectedItemSchemeColorDark(
     SchemeColor? value, [
     bool notify = true,
@@ -3794,8 +3763,7 @@ class ThemeController with ChangeNotifier {
   }
 
   late double? _tabBarUnselectedItemOpacityLight;
-  double? get tabBarUnselectedItemOpacityLight =>
-      _tabBarUnselectedItemOpacityLight;
+  double? get tabBarUnselectedItemOpacityLight => _tabBarUnselectedItemOpacityLight;
   void setTabBarUnselectedItemOpacityLight(
     double? value, [
     bool notify = true,
@@ -3809,8 +3777,7 @@ class ThemeController with ChangeNotifier {
   }
 
   late double? _tabBarUnselectedItemOpacityDark;
-  double? get tabBarUnselectedItemOpacityDark =>
-      _tabBarUnselectedItemOpacityDark;
+  double? get tabBarUnselectedItemOpacityDark => _tabBarUnselectedItemOpacityDark;
   void setTabBarUnselectedItemOpacityDark(double? value, [bool notify = true]) {
     if (value == _tabBarUnselectedItemOpacityDark) return;
     _tabBarUnselectedItemOpacityDark = value;
@@ -3938,8 +3905,7 @@ class ThemeController with ChangeNotifier {
   }
 
   late SchemeColor? _drawerSelectedItemSchemeColor;
-  SchemeColor? get drawerSelectedItemSchemeColor =>
-      _drawerSelectedItemSchemeColor;
+  SchemeColor? get drawerSelectedItemSchemeColor => _drawerSelectedItemSchemeColor;
   void setDrawerSelectedItemSchemeColor(
     SchemeColor? value, [
     bool notify = true,
@@ -3953,8 +3919,7 @@ class ThemeController with ChangeNotifier {
   }
 
   late SchemeColor? _drawerUnselectedItemSchemeColor;
-  SchemeColor? get drawerUnselectedItemSchemeColor =>
-      _drawerUnselectedItemSchemeColor;
+  SchemeColor? get drawerUnselectedItemSchemeColor => _drawerUnselectedItemSchemeColor;
   void setDrawerUnselectedItemSchemeColor(
     SchemeColor? value, [
     bool notify = true,
@@ -4055,8 +4020,7 @@ class ThemeController with ChangeNotifier {
   // ===========================================================================
 
   late SchemeColor? _bottomNavBarBackgroundSchemeColor;
-  SchemeColor? get bottomNavBarBackgroundSchemeColor =>
-      _bottomNavBarBackgroundSchemeColor;
+  SchemeColor? get bottomNavBarBackgroundSchemeColor => _bottomNavBarBackgroundSchemeColor;
   void setBottomNavBarBackgroundSchemeColor(
     SchemeColor? value, [
     bool notify = true,
@@ -4089,8 +4053,7 @@ class ThemeController with ChangeNotifier {
   }
 
   late SchemeColor? _bottomNavBarSelectedSchemeColor;
-  SchemeColor? get bottomNavBarSelectedSchemeColor =>
-      _bottomNavBarSelectedSchemeColor;
+  SchemeColor? get bottomNavBarSelectedSchemeColor => _bottomNavBarSelectedSchemeColor;
   void setBottomNavBarSelectedSchemeColor(
     SchemeColor? value, [
     bool notify = true,
@@ -4107,8 +4070,7 @@ class ThemeController with ChangeNotifier {
   }
 
   late SchemeColor? _bottomNavBarUnselectedSchemeColor;
-  SchemeColor? get bottomNavBarUnselectedSchemeColor =>
-      _bottomNavBarUnselectedSchemeColor;
+  SchemeColor? get bottomNavBarUnselectedSchemeColor => _bottomNavBarUnselectedSchemeColor;
   void setBottomNavBarUnselectedSchemeColor(
     SchemeColor? value, [
     bool notify = true,
@@ -4229,8 +4191,7 @@ class ThemeController with ChangeNotifier {
   }
 
   late SchemeColor? _menuBarBackgroundSchemeColor;
-  SchemeColor? get menuBarBackgroundSchemeColor =>
-      _menuBarBackgroundSchemeColor;
+  SchemeColor? get menuBarBackgroundSchemeColor => _menuBarBackgroundSchemeColor;
   void setMenuBarBackgroundSchemeColor(
     SchemeColor? value, [
     bool notify = true,
@@ -4269,8 +4230,7 @@ class ThemeController with ChangeNotifier {
   }
 
   late SchemeColor? _menuItemBackgroundSchemeColor;
-  SchemeColor? get menuItemBackgroundSchemeColor =>
-      _menuItemBackgroundSchemeColor;
+  SchemeColor? get menuItemBackgroundSchemeColor => _menuItemBackgroundSchemeColor;
   void setMenuItemBackgroundSchemeColor(
     SchemeColor? value, [
     bool notify = true,
@@ -4284,8 +4244,7 @@ class ThemeController with ChangeNotifier {
   }
 
   late SchemeColor? _menuItemForegroundSchemeColor;
-  SchemeColor? get menuItemForegroundSchemeColor =>
-      _menuItemForegroundSchemeColor;
+  SchemeColor? get menuItemForegroundSchemeColor => _menuItemForegroundSchemeColor;
   void setMenuItemForegroundSchemeColor(
     SchemeColor? value, [
     bool notify = true,
@@ -4299,8 +4258,7 @@ class ThemeController with ChangeNotifier {
   }
 
   late SchemeColor? _menuIndicatorBackgroundSchemeColor;
-  SchemeColor? get menuIndicatorBackgroundSchemeColor =>
-      _menuIndicatorBackgroundSchemeColor;
+  SchemeColor? get menuIndicatorBackgroundSchemeColor => _menuIndicatorBackgroundSchemeColor;
   void setMenuIndicatorBackgroundSchemeColor(
     SchemeColor? value, [
     bool notify = true,
@@ -4314,8 +4272,7 @@ class ThemeController with ChangeNotifier {
   }
 
   late SchemeColor? _menuIndicatorForegroundSchemeColor;
-  SchemeColor? get menuIndicatorForegroundSchemeColor =>
-      _menuIndicatorForegroundSchemeColor;
+  SchemeColor? get menuIndicatorForegroundSchemeColor => _menuIndicatorForegroundSchemeColor;
   void setMenuIndicatorForegroundSchemeColor(
     SchemeColor? value, [
     bool notify = true,
@@ -4381,8 +4338,7 @@ class ThemeController with ChangeNotifier {
   }
 
   late SchemeColor? _navBarSelectedIconSchemeColor;
-  SchemeColor? get navBarSelectedIconSchemeColor =>
-      _navBarSelectedIconSchemeColor;
+  SchemeColor? get navBarSelectedIconSchemeColor => _navBarSelectedIconSchemeColor;
   void setNavBarSelectedIconSchemeColor(
     SchemeColor? value, [
     bool notify = true,
@@ -4396,8 +4352,7 @@ class ThemeController with ChangeNotifier {
   }
 
   late SchemeColor? _navBarSelectedLabelSchemeColor;
-  SchemeColor? get navBarSelectedLabelSchemeColor =>
-      _navBarSelectedLabelSchemeColor;
+  SchemeColor? get navBarSelectedLabelSchemeColor => _navBarSelectedLabelSchemeColor;
   void setNavBarSelectedLabelSchemeColor(
     SchemeColor? value, [
     bool notify = true,
@@ -4460,8 +4415,7 @@ class ThemeController with ChangeNotifier {
   }
 
   late NavigationDestinationLabelBehavior _navBarLabelBehavior;
-  NavigationDestinationLabelBehavior get navBarLabelBehavior =>
-      _navBarLabelBehavior;
+  NavigationDestinationLabelBehavior get navBarLabelBehavior => _navBarLabelBehavior;
   void setNavBarLabelBehavior(
     NavigationDestinationLabelBehavior value, [
     bool notify = true,
@@ -4476,8 +4430,7 @@ class ThemeController with ChangeNotifier {
   // ===========================================================================
 
   late SchemeColor? _navRailBackgroundSchemeColor;
-  SchemeColor? get navRailBackgroundSchemeColor =>
-      _navRailBackgroundSchemeColor;
+  SchemeColor? get navRailBackgroundSchemeColor => _navRailBackgroundSchemeColor;
   void setNavRailBackgroundSchemeColor(
     SchemeColor? value, [
     bool notify = true,
@@ -4508,8 +4461,7 @@ class ThemeController with ChangeNotifier {
   }
 
   late SchemeColor? _navRailSelectedIconSchemeColor;
-  SchemeColor? get navRailSelectedIconSchemeColor =>
-      _navRailSelectedIconSchemeColor;
+  SchemeColor? get navRailSelectedIconSchemeColor => _navRailSelectedIconSchemeColor;
   void setNavRailSelectedIconSchemeColor(
     SchemeColor? value, [
     bool notify = true,
@@ -4523,8 +4475,7 @@ class ThemeController with ChangeNotifier {
   }
 
   late SchemeColor? _navRailSelectedLabelSchemeColor;
-  SchemeColor? get navRailSelectedLabelSchemeColor =>
-      _navRailSelectedLabelSchemeColor;
+  SchemeColor? get navRailSelectedLabelSchemeColor => _navRailSelectedLabelSchemeColor;
   void setNavRailSelectedLabelSchemeColor(
     SchemeColor? value, [
     bool notify = true,
@@ -4538,8 +4489,7 @@ class ThemeController with ChangeNotifier {
   }
 
   late SchemeColor? _navRailUnselectedSchemeColor;
-  SchemeColor? get navRailUnselectedSchemeColor =>
-      _navRailUnselectedSchemeColor;
+  SchemeColor? get navRailUnselectedSchemeColor => _navRailUnselectedSchemeColor;
   void setNavRailUnselectedSchemeColor(
     SchemeColor? value, [
     bool notify = true,
@@ -4661,8 +4611,7 @@ class ThemeController with ChangeNotifier {
   }
 
   late SchemeColor? _elevatedButtonSecondarySchemeColor;
-  SchemeColor? get elevatedButtonSecondarySchemeColor =>
-      _elevatedButtonSecondarySchemeColor;
+  SchemeColor? get elevatedButtonSecondarySchemeColor => _elevatedButtonSecondarySchemeColor;
   void setElevatedButtonSecondarySchemeColor(
     SchemeColor? value, [
     bool notify = true,
@@ -4694,8 +4643,7 @@ class ThemeController with ChangeNotifier {
   }
 
   late SchemeColor? _outlinedButtonOutlineSchemeColor;
-  SchemeColor? get outlinedButtonOutlineSchemeColor =>
-      _outlinedButtonOutlineSchemeColor;
+  SchemeColor? get outlinedButtonOutlineSchemeColor => _outlinedButtonOutlineSchemeColor;
   void setOutlinedButtonOutlineSchemeColor(
     SchemeColor? value, [
     bool notify = true,
@@ -4727,8 +4675,7 @@ class ThemeController with ChangeNotifier {
   }
 
   late double? _outlinedButtonPressedBorderWidth;
-  double? get outlinedButtonPressedBorderWidth =>
-      _outlinedButtonPressedBorderWidth;
+  double? get outlinedButtonPressedBorderWidth => _outlinedButtonPressedBorderWidth;
   void setOutlinedButtonPressedBorderWidth(
     double? value, [
     bool notify = true,
@@ -4754,8 +4701,7 @@ class ThemeController with ChangeNotifier {
   }
 
   late SchemeColor? _toggleButtonsUnselectedSchemeColor;
-  SchemeColor? get toggleButtonsUnselectedSchemeColor =>
-      _toggleButtonsUnselectedSchemeColor;
+  SchemeColor? get toggleButtonsUnselectedSchemeColor => _toggleButtonsUnselectedSchemeColor;
   void setToggleButtonsUnselectedSchemeColor(
     SchemeColor? value, [
     bool notify = true,
@@ -4769,8 +4715,7 @@ class ThemeController with ChangeNotifier {
   }
 
   late SchemeColor? _toggleButtonsBorderSchemeColor;
-  SchemeColor? get toggleButtonsBorderSchemeColor =>
-      _toggleButtonsBorderSchemeColor;
+  SchemeColor? get toggleButtonsBorderSchemeColor => _toggleButtonsBorderSchemeColor;
   void setToggleButtonsBorderSchemeColor(
     SchemeColor? value, [
     bool notify = true,
@@ -4814,8 +4759,7 @@ class ThemeController with ChangeNotifier {
   }
 
   late SchemeColor? _segmentedButtonUnselectedSchemeColor;
-  SchemeColor? get segmentedButtonUnselectedSchemeColor =>
-      _segmentedButtonUnselectedSchemeColor;
+  SchemeColor? get segmentedButtonUnselectedSchemeColor => _segmentedButtonUnselectedSchemeColor;
   void setSegmentedButtonUnselectedSchemeColor(
     SchemeColor? value, [
     bool notify = true,
@@ -4832,8 +4776,7 @@ class ThemeController with ChangeNotifier {
   }
 
   late SchemeColor? _segmentedButtonUnselectedForegroundSchemeColor;
-  SchemeColor? get segmentedButtonUnselectedForegroundSchemeColor =>
-      _segmentedButtonUnselectedForegroundSchemeColor;
+  SchemeColor? get segmentedButtonUnselectedForegroundSchemeColor => _segmentedButtonUnselectedForegroundSchemeColor;
   void setSegmentedButtonUnselectedForegroundSchemeColor(
     SchemeColor? value, [
     bool notify = true,
@@ -4850,8 +4793,7 @@ class ThemeController with ChangeNotifier {
   }
 
   late SchemeColor? _segmentedButtonBorderSchemeColor;
-  SchemeColor? get segmentedButtonBorderSchemeColor =>
-      _segmentedButtonBorderSchemeColor;
+  SchemeColor? get segmentedButtonBorderSchemeColor => _segmentedButtonBorderSchemeColor;
   void setSegmentedButtonBorderSchemeColor(
     SchemeColor? value, [
     bool notify = true,
@@ -4963,8 +4905,7 @@ class ThemeController with ChangeNotifier {
   }
 
   late FlexSliderIndicatorType? _sliderValueIndicatorType;
-  FlexSliderIndicatorType? get sliderValueIndicatorType =>
-      _sliderValueIndicatorType;
+  FlexSliderIndicatorType? get sliderValueIndicatorType => _sliderValueIndicatorType;
   void setSliderValueIndicatorType(
     FlexSliderIndicatorType? value, [
     bool notify = true,
@@ -5168,8 +5109,7 @@ class ThemeController with ChangeNotifier {
   }
 
   late SchemeColor? _datePickerHeaderBackgroundSchemeColor;
-  SchemeColor? get datePickerHeaderBackgroundSchemeColor =>
-      _datePickerHeaderBackgroundSchemeColor;
+  SchemeColor? get datePickerHeaderBackgroundSchemeColor => _datePickerHeaderBackgroundSchemeColor;
   void setDatePickerHeaderBackgroundSchemeColor(
     SchemeColor? value, [
     bool notify = true,
@@ -5348,9 +5288,9 @@ class ThemeController with ChangeNotifier {
   // Helper ChangeNotifiers tucked into ThemeController.
   // The ChangeNotifiers below should be in its own controller.
   // Maybe that it is not is what started to cause issues on WEB builds?
-  // TODO(rydmike): Try own hover controller and see if it fixes the issue.
+  // TODO(prasant)(rydmike): Try own hover controller and see if it fixes the issue.
 
-  // TODO(rydmike): Removed tone hover indication feature 16.3.2023.
+  // TODO(prasant)(rydmike): Removed tone hover indication feature 16.3.2023.
   // For some reason tone hover feature started causing issues in WEB release
   // mode builds, but only in WEB release mode on both SKIA and HTML. No idea
   // why that happens only on web release mode and not in its debug mode or

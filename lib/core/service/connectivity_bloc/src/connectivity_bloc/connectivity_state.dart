@@ -5,58 +5,55 @@ abstract class ConnectivityState with AppEquatable {}
 
 class ConnectivityInitialState extends ConnectivityState {
   @override
-  // TODO: implement cacheHash
+  // TODO(prasant): implement cacheHash
   bool get cacheHash => true;
 
   @override
-  // TODO: implement hashParameters
+  // TODO(prasant): implement hashParameters
   List<Object?> get hashParameters => [];
 }
 
 class ConnectivityConnectedState extends ConnectivityState {
-  ConnectivityConnectedState(
-      {required this.connectivityResult, required this.connectivityStatus});
+  ConnectivityConnectedState({required this.connectivityResult, required this.connectivityStatus});
 
   final ConnectivityResult connectivityResult;
   final InternetConnectivityStatus connectivityStatus;
 
   @override
-  // TODO: implement cacheHash
+  // TODO(prasant): implement cacheHash
   bool get cacheHash => true;
 
   @override
-  // TODO: implement hashParameters
+  // TODO(prasant): implement hashParameters
   List<Object?> get hashParameters => [connectivityResult, connectivityStatus];
 }
 
 class ConnectivityDisconnectedState extends ConnectivityState {
-  ConnectivityDisconnectedState(
-      {required this.connectivityResult, required this.connectivityStatus});
+  ConnectivityDisconnectedState({required this.connectivityResult, required this.connectivityStatus});
 
   final ConnectivityResult connectivityResult;
   final InternetConnectivityStatus connectivityStatus;
 
   @override
-  // TODO: implement cacheHash
+  // TODO(prasant): implement cacheHash
   bool get cacheHash => true;
 
   @override
-  // TODO: implement hashParameters
+  // TODO(prasant): implement hashParameters
   List<Object?> get hashParameters => [connectivityResult, connectivityStatus];
 }
 
 class ConnectivityWeakConnectedState extends ConnectivityState {
-  ConnectivityWeakConnectedState(
-      {required this.connectivityResult, required this.connectivityStatus});
+  ConnectivityWeakConnectedState({required this.connectivityResult, required this.connectivityStatus});
 
   final ConnectivityResult connectivityResult;
   final InternetConnectivityStatus connectivityStatus;
 
   @override
-  // TODO: implement cacheHash
+  // TODO(prasant): implement cacheHash
   bool get cacheHash => true;
 
   @override
-  // TODO: implement hashParameters
+  // TODO(prasant): implement hashParameters
   List<Object?> get hashParameters => [connectivityResult, connectivityStatus];
 }

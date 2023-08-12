@@ -134,14 +134,18 @@ dependencies:
   rxdart: ^0.27.7
   saver_gallery: ^2.0.1
   sembast: ^3.4.9
-  sliver_tools: ^0.2.10
+  sherlock:
+    git:
+      url: 'https://github.com/prasant10050/sherlock.git'
+      ref: main
+  sliver_tools: ^0.2.12
   synchronized: ^3.1.0
   timelines:
     git:
       url: 'https://github.com/prasant10050/timelines.git'
       ref: main
   transparent_image: ^2.0.1
-  url_launcher: ^6.1.11
+  url_launcher: ^6.1.12
   uuid: ^3.0.7
   wrap_and_more:
     git:

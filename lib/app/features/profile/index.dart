@@ -45,6 +45,7 @@ import 'package:homemakers_merchant/core/local/database/base/identifiable.dart';
 import 'package:homemakers_merchant/core/local/database/base/repository.dart';
 import 'package:homemakers_merchant/core/local/database/base/repository_failure.dart';
 import 'package:homemakers_merchant/core/local/database/base/tryCatch.dart';
+import 'package:homemakers_merchant/core/service/connectivity_bloc/src/connectivity_bloc/connectivity_service.dart';
 import 'package:homemakers_merchant/gen/assets.gen.dart';
 import 'package:homemakers_merchant/shared/router/app_pages.dart';
 import 'package:homemakers_merchant/shared/states/api_result_state.dart';

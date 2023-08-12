@@ -4,49 +4,46 @@ part of 'connectivity_bloc.dart';
 abstract class ConnectivityEvent with AppEquatable {}
 
 class OnConnectivityEvent extends ConnectivityEvent {
-  OnConnectivityEvent(
-      {required this.connectivityResult, required this.connectivityStatus});
+  OnConnectivityEvent({required this.connectivityResult, required this.connectivityStatus});
 
   final ConnectivityResult connectivityResult;
   final InternetConnectivityStatus connectivityStatus;
 
   @override
-  // TODO: implement cacheHash
+  // TODO(prasant): implement cacheHash
   bool get cacheHash => true;
 
   @override
-  // TODO: implement hashParameters
+  // TODO(prasant): implement hashParameters
   List<Object?> get hashParameters => [connectivityResult, connectivityStatus];
 }
 
 class OnNotConnectivityEvent extends ConnectivityEvent {
-  OnNotConnectivityEvent(
-      {required this.connectivityResult, required this.connectivityStatus});
+  OnNotConnectivityEvent({required this.connectivityResult, required this.connectivityStatus});
 
   final ConnectivityResult connectivityResult;
   final InternetConnectivityStatus connectivityStatus;
 
   @override
-  // TODO: implement cacheHash
+  // TODO(prasant): implement cacheHash
   bool get cacheHash => true;
 
   @override
-  // TODO: implement hashParameters
+  // TODO(prasant): implement hashParameters
   List<Object?> get hashParameters => [connectivityResult, connectivityStatus];
 }
 
 class OnWeakConnectivityEvent extends ConnectivityEvent {
-  OnWeakConnectivityEvent(
-      {required this.connectivityResult, required this.connectivityStatus});
+  OnWeakConnectivityEvent({required this.connectivityResult, required this.connectivityStatus});
 
   final ConnectivityResult connectivityResult;
   final InternetConnectivityStatus connectivityStatus;
 
   @override
-  // TODO: implement cacheHash
+  // TODO(prasant): implement cacheHash
   bool get cacheHash => true;
 
   @override
-  // TODO: implement hashParameters
+  // TODO(prasant): implement hashParameters
   List<Object?> get hashParameters => [connectivityResult, connectivityStatus];
 }

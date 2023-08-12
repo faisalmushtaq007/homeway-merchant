@@ -75,7 +75,7 @@ class UserBusinessProfileLocalDbRepository<T extends BusinessProfileEntity> impl
 
   @override
   Future<Either<RepositoryBaseFailure, bool>> deleteByIdAndEntity(UniqueId uniqueId, BusinessProfileEntity entity) async {
-    // TODO: implement deleteByIdAndEntity
+    // TODO(prasant): implement deleteByIdAndEntity
     throw UnimplementedError();
   }
 
@@ -112,7 +112,7 @@ class UserBusinessProfileLocalDbRepository<T extends BusinessProfileEntity> impl
 
   @override
   Future<Either<RepositoryBaseFailure, BusinessProfileEntity>> getByIdAndEntity(UniqueId uniqueId, BusinessProfileEntity entity) async {
-    // TODO: implement getByIdAndEntity
+    // TODO(prasant): implement getByIdAndEntity
     throw UnimplementedError();
   }
 
@@ -140,7 +140,7 @@ class UserBusinessProfileLocalDbRepository<T extends BusinessProfileEntity> impl
 
   @override
   Future<Either<RepositoryBaseFailure, BusinessProfileEntity>> updateByIdAndEntity(UniqueId uniqueId, BusinessProfileEntity entity) async {
-    // TODO: implement updateByIdAndEntity
+    // TODO(prasant): implement updateByIdAndEntity
     throw UnimplementedError();
   }
 

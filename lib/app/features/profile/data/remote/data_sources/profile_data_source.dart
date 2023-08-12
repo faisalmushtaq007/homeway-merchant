@@ -71,18 +71,20 @@ abstract interface class ProfileDataSource {
   });
 
   Future<ApiResultState<BusinessDocumentUploadedEntity>> saveBusinessDocument({
-    AppUserEntity? appUserEntity,
     required BusinessDocumentUploadedEntity businessDocumentUploadedEntity,
+    AppUserEntity? appUserEntity,
   });
 
   Future<ApiResultState<BusinessDocumentUploadedEntity>> editBusinessDocument({
-    AppUserEntity? appUserEntity,
-    required int appUserID,
+    required int documentID,
     required BusinessDocumentUploadedEntity businessDocumentUploadedEntity,
+    AppUserEntity? appUserEntity,
+    int? appUserID,
   });
 
   Future<ApiResultState<bool>> deleteBusinessDocument({
-    required int appUserID,
+    required int documentID,
+    int? appUserID,
     AppUserEntity? appUserEntity,
     BusinessDocumentUploadedEntity? businessDocumentUploadedEntity,
   });
@@ -92,7 +94,8 @@ abstract interface class ProfileDataSource {
   });
 
   Future<ApiResultState<BusinessDocumentUploadedEntity>> getBusinessDocument({
-    required int appUserID,
+    required int documentID,
+    int? appUserID,
     AppUserEntity? appUserEntity,
     BusinessDocumentUploadedEntity? businessDocumentUploadedEntity,
   });

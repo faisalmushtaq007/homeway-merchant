@@ -144,19 +144,19 @@ class StoreLocalDbRepository<Store extends StoreEntity> implements BaseStoreLoca
 
   @override
   Future<Either<RepositoryBaseFailure, bool>> deleteByIdAndEntity(UniqueId uniqueId, StoreEntity entity) {
-    // TODO: implement deleteByIdAndEntity
+    // TODO(prasant): implement deleteByIdAndEntity
     throw UnimplementedError();
   }
 
   @override
   Future<Either<RepositoryBaseFailure, StoreEntity>> getByIdAndEntity(UniqueId uniqueId, StoreEntity entity) {
-    // TODO: implement getByIdAndEntity
+    // TODO(prasant): implement getByIdAndEntity
     throw UnimplementedError();
   }
 
   @override
   Future<Either<RepositoryBaseFailure, StoreEntity>> updateByIdAndEntity(UniqueId uniqueId, StoreEntity entity) {
-    // TODO: implement updateByIdAndEntity
+    // TODO(prasant): implement updateByIdAndEntity
     throw UnimplementedError();
   }
 }

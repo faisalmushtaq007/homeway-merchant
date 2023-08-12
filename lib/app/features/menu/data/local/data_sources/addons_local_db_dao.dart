@@ -135,19 +135,19 @@ class AddonsLocalDbRepository<Extras extends Addons> implements BaseAddonsLocalD
 
   @override
   Future<Either<RepositoryBaseFailure, bool>> deleteByIdAndEntity(UniqueId uniqueId, Addons entity) {
-    // TODO: implement deleteByIdAndEntity
+    // TODO(prasant): implement deleteByIdAndEntity
     throw UnimplementedError();
   }
 
   @override
   Future<Either<RepositoryBaseFailure, Addons>> getByIdAndEntity(UniqueId uniqueId, Addons entity) {
-    // TODO: implement getByIdAndEntity
+    // TODO(prasant): implement getByIdAndEntity
     throw UnimplementedError();
   }
 
   @override
   Future<Either<RepositoryBaseFailure, Addons>> updateByIdAndEntity(UniqueId uniqueId, Addons entity) {
-    // TODO: implement updateByIdAndEntity
+    // TODO(prasant): implement updateByIdAndEntity
     throw UnimplementedError();
   }
 }
@@ -159,13 +159,13 @@ class AddonsBindingWithMenuLocalDbDbRepository<Addons, MenuEntity> implements Bi
 
   @override
   Future<Either<RepositoryBaseFailure, List<StoreEntity>>> binding(List<StoreOwnDeliveryPartnersInfo> source, List<StoreEntity> destination) async {
-    // TODO: implement binding
+    // TODO(prasant): implement binding
     throw UnimplementedError();
   }
 
   @override
   Future<Either<RepositoryBaseFailure, List<StoreEntity>>> unbinding(List<StoreOwnDeliveryPartnersInfo> source, List<StoreEntity> destination) async {
-    // TODO: implement unbinding
+    // TODO(prasant): implement unbinding
     throw UnimplementedError();
   }
 }

@@ -493,21 +493,21 @@ void _setUpRepository() {
   serviceLocator.registerSingleton<UserPaymentBankRepository>(
     PaymentBankRepositoryImplement(
       remoteDataSource: serviceLocator(),
-      userPaymentBankLocalDbRepository: serviceLocator(),
+      paymentBankLocalDataSource: serviceLocator(),
     ),
   );
   //repository payment
   serviceLocator.registerSingleton<UserBusinessProfileRepository>(
     BusinessProfileRepositoryImplement(
       remoteDataSource: serviceLocator(),
-      userBusinessProfileLocalDbRepository: serviceLocator(),
+      businessProfileLocalDataSource: serviceLocator(),
     ),
   );
   //repository payment
   serviceLocator.registerSingleton<UserBusinessDocumentRepository>(
     BusinessDocumentRepositoryImplement(
       remoteDataSource: serviceLocator(),
-      userBusinessDocumentLocalDbRepository: serviceLocator(),
+      businessDocumentLocalDataSource: serviceLocator(),
     ),
   );
   serviceLocator.registerSingleton<MenuRepository>(
