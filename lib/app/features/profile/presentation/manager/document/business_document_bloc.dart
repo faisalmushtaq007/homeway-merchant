@@ -9,13 +9,11 @@ import 'package:bloc_concurrency/bloc_concurrency.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:homemakers_merchant/app/features/profile/common/document_picker_source_enum.dart';
-import 'package:homemakers_merchant/app/features/profile/common/document_type_enum.dart';
 import 'package:homemakers_merchant/app/features/profile/index.dart';
-import 'package:homemakers_merchant/app/features/profile/presentation/widgets/document/image_edit/common_widget.dart';
 import 'package:homemakers_merchant/app/features/profile/presentation/widgets/document/image_edit/crop_editor_helper.dart';
+import 'package:homemakers_merchant/bootup/injection_container.dart';
 import 'package:homemakers_merchant/core/extensions/global_extensions/dart_extensions.dart';
-import 'package:homemakers_merchant/utils/app_equatable/app_equatable.dart';
+import 'package:homemakers_merchant/shared/states/data_source_state.dart';
 import 'package:homemakers_merchant/utils/app_log.dart';
 import 'package:homemakers_merchant/utils/universal_platform/universal_platform.dart';
 import 'package:image_picker/image_picker.dart';
@@ -83,8 +81,6 @@ class BusinessDocumentBloc extends Bloc<BusinessDocumentEvent, BusinessDocumentS
                     assetOriginalName: path.basenameWithoutExtension(xFile.path ?? file.path),
                     assetExtension: fileExtension,
                     assetsUploadStatus: DocumentUploadStatus.uploaded,
-                    hasAssetsFrontSide: true,
-                    assetIdNumber: '',
                   );
                 }
 
@@ -155,6 +151,11 @@ class BusinessDocumentBloc extends Bloc<BusinessDocumentEvent, BusinessDocumentS
               uploadedData: value.uploadedData,
             ));
           },
+          saveBusinessDocument: (SaveBusinessDocument value) => _saveBusinessDocument(value, emit),
+          deleteAllBusinessDocument: (DeleteAllBusinessDocument value) => _deleteAllBusinessDocument(value, emit),
+          deleteBusinessDocument: (DeleteBusinessDocument value) => _deleteBusinessDocument(value, emit),
+          getAllBusinessDocument: (GetAllBusinessDocument value) => _getAllBusinessDocument(value, emit),
+          getBusinessDocument: (GetBusinessDocument value) => _getBusinessDocument(value, emit),
         );
       },
       //transformer: sequential(),
@@ -487,4 +488,278 @@ class BusinessDocumentBloc extends Bloc<BusinessDocumentEvent, BusinessDocumentS
   }
 
   Future<void> _assetsRemove(AssetsRemove value, Emitter<BusinessDocumentState> emit) async {}
+
+  Future<void> _saveBusinessDocument(SaveBusinessDocument event, Emitter<BusinessDocumentState> emit) async {
+    try {
+      DataSourceState<BusinessDocumentUploadedEntity> result;
+      if (!event.hasEditBusinessDocument && event.currentIndex != -1) {
+        result = await serviceLocator<EditDocumentUseCase>()(id: event.businessDocumentUploadedEntity.documentID, input: event.businessDocumentUploadedEntity);
+      } else {
+        result = await serviceLocator<SaveDocumentUseCase>()(event.businessDocumentUploadedEntity);
+      }
+      result.when(
+        remote: (data, meta) {
+          appLog.d('Business Document bloc save remote ${data?.toMap()}');
+          emit(
+            SaveBusinessDocumentState(
+              businessDocumentUploadedEntity: data ?? event.businessDocumentUploadedEntity,
+              hasEditBusinessDocument: event.hasEditBusinessDocument,
+            ),
+          );
+        },
+        localDb: (data, meta) {
+          appLog.d('Business Document bloc save local ${data?.toMap()}');
+          emit(
+            SaveBusinessDocumentState(
+              businessDocumentUploadedEntity: data ?? event.businessDocumentUploadedEntity,
+              hasEditBusinessDocument: event.hasEditBusinessDocument,
+            ),
+          );
+        },
+        error: (dataSourceFailure, reason, error, networkException, stackTrace, exception, extra) {
+          appLog.d('Business Document bloc save error $reason');
+          emit(
+            BusinessDocumentExceptionState(
+              message: reason,
+              //exception: e as Exception,
+              stackTrace: stackTrace,
+              businessDocumentStatus: BusinessDocumentStatus.saveBusinessDocument,
+            ),
+          );
+        },
+      );
+      return;
+    } catch (e, s) {
+      appLog.e('Business Document bloc save exception $e');
+      emit(
+        BusinessDocumentExceptionState(
+          message: 'Something went wrong during saving your store details, please try again',
+          //exception: e as Exception,
+          stackTrace: s,
+          businessDocumentStatus: BusinessDocumentStatus.saveBusinessDocument,
+        ),
+      );
+    }
+  }
+
+  Future<void> _deleteAllBusinessDocument(DeleteAllBusinessDocument event, Emitter<BusinessDocumentState> emit) async {
+    try {
+      final DataSourceState<bool> result = await serviceLocator<DeleteAllDocumentUseCase>()();
+      result.when(
+        remote: (data, meta) {
+          appLog.d('Business Document bloc delete all remote $data');
+          emit(
+            DeleteAllBusinessDocumentState(
+              allBusinessDocuments: [],
+              hasDeleteAll: data ?? false,
+            ),
+          );
+        },
+        localDb: (data, meta) {
+          appLog.d('Business Document bloc delete all local $data');
+          emit(
+            DeleteAllBusinessDocumentState(
+              allBusinessDocuments: [],
+              hasDeleteAll: data ?? false,
+            ),
+          );
+        },
+        error: (dataSourceFailure, reason, error, networkException, stackTrace, exception, extra) {
+          appLog.d('Business Document bloc delete all error $reason');
+          emit(
+            BusinessDocumentExceptionState(
+              message: reason,
+              //exception: e as Exception,
+              stackTrace: stackTrace,
+              businessDocumentStatus: BusinessDocumentStatus.deleteAllBusinessDocument,
+            ),
+          );
+        },
+      );
+    } catch (e, s) {
+      appLog.e('Business Document bloc delete all exception $e');
+      emit(
+        BusinessDocumentExceptionState(
+          message: 'Something went wrong during getting your store details, please try again',
+          //exception: e as Exception,
+          stackTrace: s,
+          businessDocumentStatus: BusinessDocumentStatus.deleteAllBusinessDocument,
+        ),
+      );
+    }
+  }
+
+  Future<void> _deleteBusinessDocument(DeleteBusinessDocument event, Emitter<BusinessDocumentState> emit) async {
+    try {
+      final DataSourceState<bool> result = await serviceLocator<DeleteDocumentUseCase>()(
+        input: event.businessDocumentUploadedEntity,
+        id: event.documentID,
+      );
+      result.when(
+        remote: (data, meta) {
+          appLog.d('Business Document bloc delete remote $data');
+          emit(
+            DeleteBusinessDocumentState(
+              businessDocumentUploadedEntity: event.businessDocumentUploadedEntity,
+              currentIndex: event.currentIndex,
+              allBusinessDocuments: event.allBusinessDocuments.toList(),
+              documentID: event.documentID,
+              hasDelete: data ?? false,
+            ),
+          );
+        },
+        localDb: (data, meta) {
+          appLog.d('Business Document bloc delete local $data');
+          emit(
+            DeleteBusinessDocumentState(
+              businessDocumentUploadedEntity: event.businessDocumentUploadedEntity,
+              currentIndex: event.currentIndex,
+              allBusinessDocuments: event.allBusinessDocuments.toList(),
+              documentID: event.documentID,
+              hasDelete: data ?? false,
+            ),
+          );
+        },
+        error: (dataSourceFailure, reason, error, networkException, stackTrace, exception, extra) {
+          appLog.d('Business Document bloc delete error $reason');
+          emit(
+            BusinessDocumentExceptionState(
+              message: reason,
+              //exception: e as Exception,
+              stackTrace: stackTrace,
+              businessDocumentStatus: BusinessDocumentStatus.deleteBusinessDocument,
+            ),
+          );
+        },
+      );
+    } catch (e, s) {
+      appLog.e('Business Document bloc delete exception $e');
+      emit(
+        BusinessDocumentExceptionState(
+          message: 'Something went wrong during getting your store details, please try again',
+          //exception: e as Exception,
+          stackTrace: s,
+          businessDocumentStatus: BusinessDocumentStatus.deleteBusinessDocument,
+        ),
+      );
+    }
+  }
+
+  Future<void> _getAllBusinessDocument(GetAllBusinessDocument event, Emitter<BusinessDocumentState> emit) async {
+    try {
+      emit(BusinessDocumentLoadingState(message: 'Please wait while we are fetching your profile...'));
+      final DataSourceState<List<BusinessDocumentUploadedEntity>> result = await serviceLocator<GetAllDocumentUseCase>()();
+      result.when(
+        remote: (data, meta) {
+          appLog.d('Business Document bloc get all remote');
+          if (data == null || data.isEmpty) {
+            emit(
+              BusinessDocumentEmptyState(
+                message: 'Business Document is empty',
+                allBusinessDocuments: [],
+                businessDocumentStatus: BusinessDocumentStatus.getAllBusinessDocument,
+              ),
+            );
+          } else {
+            emit(
+              GetAllBusinessDocumentState(
+                allBusinessDocuments: data.toList(),
+              ),
+            );
+          }
+        },
+        localDb: (data, meta) {
+          appLog.d('Business Document bloc get all local');
+          if (data == null || data.isEmpty) {
+            emit(
+              BusinessDocumentEmptyState(
+                message: 'Business Document is empty',
+                allBusinessDocuments: [],
+                businessDocumentStatus: BusinessDocumentStatus.getAllBusinessDocument,
+              ),
+            );
+          } else {
+            emit(
+              GetAllBusinessDocumentState(
+                allBusinessDocuments: data.toList(),
+              ),
+            );
+          }
+        },
+        error: (dataSourceFailure, reason, error, networkException, stackTrace, exception, extra) {
+          appLog.d('Business Document bloc get all error $reason');
+          emit(
+            BusinessDocumentExceptionState(
+              message: reason,
+              //exception: e as Exception,
+              stackTrace: stackTrace,
+              businessDocumentStatus: BusinessDocumentStatus.getAllBusinessDocument,
+            ),
+          );
+        },
+      );
+    } catch (e, s) {
+      appLog.e('Business Document bloc get all $e');
+      emit(
+        BusinessDocumentExceptionState(
+          message: 'Something went wrong during getting your all stores, please try again',
+          //exception: e as Exception,
+          stackTrace: s,
+          businessDocumentStatus: BusinessDocumentStatus.getAllBusinessDocument,
+        ),
+      );
+    }
+  }
+
+  Future<void> _getBusinessDocument(GetBusinessDocument event, Emitter<BusinessDocumentState> emit) async {
+    try {
+      final DataSourceState<BusinessDocumentUploadedEntity> result = await serviceLocator<GetDocumentUseCase>()(
+        input: event.businessDocumentUploadedEntity,
+        id: event.documentID,
+      );
+      result.when(
+        remote: (data, meta) {
+          appLog.d('Business Document bloc edit remote ${data?.toMap()}');
+          emit(
+            GetBusinessDocumentState(
+              businessDocumentUploadedEntity: data ?? event.businessDocumentUploadedEntity,
+              currentIndex: event.currentIndex,
+              documentID: event.documentID,
+            ),
+          );
+        },
+        localDb: (data, meta) {
+          appLog.d('Business Document bloc edit local ${data?.toMap()}');
+          emit(
+            GetBusinessDocumentState(
+              businessDocumentUploadedEntity: data ?? event.businessDocumentUploadedEntity,
+              currentIndex: event.currentIndex,
+              documentID: event.documentID,
+            ),
+          );
+        },
+        error: (dataSourceFailure, reason, error, networkException, stackTrace, exception, extra) {
+          appLog.d('Business Document bloc edit error $reason');
+          emit(
+            BusinessDocumentExceptionState(
+              message: reason,
+              //exception: e as Exception,
+              stackTrace: stackTrace,
+              businessDocumentStatus: BusinessDocumentStatus.getBusinessDocument,
+            ),
+          );
+        },
+      );
+    } catch (e, s) {
+      appLog.e('Business Document bloc get exception $e');
+      emit(
+        BusinessDocumentExceptionState(
+          message: 'Something went wrong during getting your store details, please try again',
+          //exception: e as Exception,
+          stackTrace: s,
+          businessDocumentStatus: BusinessDocumentStatus.getBusinessDocument,
+        ),
+      );
+    }
+  }
 }

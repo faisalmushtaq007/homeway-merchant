@@ -34,13 +34,13 @@ class SaveBusinessProfileState extends BusinessProfileState {
 
 class GetBusinessProfileState extends BusinessProfileState {
   GetBusinessProfileState({
-    required this.businessProfileEntity,
+    this.businessProfileEntity,
     this.businessProfileStatus = BusinessProfileStatus.getBusinessType,
     this.index = -1,
     this.businessProfileID = -1,
   });
 
-  final BusinessProfileEntity businessProfileEntity;
+  final BusinessProfileEntity? businessProfileEntity;
   final int index;
   final BusinessProfileStatus businessProfileStatus;
   final int businessProfileID;

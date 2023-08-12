@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
-import 'package:homemakers_merchant/app/features/profile/common/profile_status_enum.dart';
 import 'package:homemakers_merchant/app/features/profile/index.dart';
 import 'package:homemakers_merchant/bootup/injection_container.dart';
 import 'package:homemakers_merchant/shared/states/data_source_state.dart';
@@ -94,9 +93,9 @@ class BusinessProfileBloc extends Bloc<BusinessProfileEvent, BusinessProfileStat
 
   FutureOr<void> _getBusinessProfile(GetBusinessProfile event, Emitter<BusinessProfileState> emit) async {
     try {
-      final DataSourceState<BusinessTypeEntity> result = await serviceLocator<GetBusinessProfileUseCase>()(
+      final DataSourceState<BusinessProfileEntity> result = await serviceLocator<GetBusinessProfileUseCase>()(
         input: event.businessProfileEntity,
-        id: int.parse(event.businessProfileID),
+        id: event.businessProfileID,
       );
       result.when(
         remote: (data, meta) {
@@ -150,7 +149,7 @@ class BusinessProfileBloc extends Bloc<BusinessProfileEvent, BusinessProfileStat
     try {
       final DataSourceState<bool> result = await serviceLocator<DeleteBusinessProfileUseCase>()(
         input: event.businessProfileEntity,
-        id: int.parse(event.businessProfileID),
+        id: event.businessProfileID,
       );
       result.when(
         remote: (data, meta) {

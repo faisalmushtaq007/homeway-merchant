@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
-import 'package:homemakers_merchant/app/features/profile/common/profile_status_enum.dart';
 import 'package:homemakers_merchant/app/features/profile/index.dart';
 import 'package:homemakers_merchant/bootup/injection_container.dart';
 import 'package:homemakers_merchant/shared/states/data_source_state.dart';
@@ -75,11 +74,9 @@ class PaymentBankBloc extends Bloc<PaymentBankEvent, PaymentBankState> {
 
   FutureOr<void> _getPaymentBank(GetPaymentBank event, Emitter<PaymentBankState> emit) async {
     try {
-      final DataSourceState<BusinessTypeEntity> result = await serviceLocator<GetPaymentBankUseCase>()(
+      final DataSourceState<PaymentBankEntity> result = await serviceLocator<GetPaymentBankUseCase>()(
         input: event.paymentBankEntity,
-        id: int.parse(
-          event.paymentBankID,
-        ),
+        id: event.paymentBankID,
       );
       result.when(
         remote: (data, meta) {
@@ -133,7 +130,7 @@ class PaymentBankBloc extends Bloc<PaymentBankEvent, PaymentBankState> {
     try {
       final DataSourceState<bool> result = await serviceLocator<DeletePaymentBankUseCase>()(
         input: event.paymentBankEntity,
-        id: int.parse(event.paymentBankID),
+        id: event.paymentBankID,
       );
       result.when(
         remote: (data, meta) {

@@ -1,5 +1,4 @@
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
+part of 'package:homemakers_merchant/app/features/profile/index.dart';
 
 enum DocumentPickerSource {
   camera(
@@ -24,10 +23,7 @@ enum DocumentPickerSource {
   ),
   ;
 
-  const DocumentPickerSource(
-      {required this.documentPickerName,
-      required this.pickerSourceID,
-      required this.icon});
+  const DocumentPickerSource({required this.documentPickerName, required this.pickerSourceID, required this.icon});
 
   final int pickerSourceID;
   final String documentPickerName;

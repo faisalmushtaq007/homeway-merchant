@@ -291,4 +291,73 @@ class BusinessDocumentState with _$BusinessDocumentState {
     required String reason,
     StackTrace? stackTrace,
   }) = SaveCropDocumentErrorState;
+
+  factory BusinessDocumentState.saveBusinessDocumentState({
+    @Default([]) List<BusinessDocumentUploadedEntity> allBusinessDocuments,
+    @Default(BusinessDocumentStatus.saveBusinessDocument) BusinessDocumentStatus businessDocumentStatus,
+    required BusinessDocumentUploadedEntity businessDocumentUploadedEntity,
+    @Default(false) bool hasEditBusinessDocument,
+    @Default(-1) int currentIndex,
+  }) = SaveBusinessDocumentState;
+
+  factory BusinessDocumentState.getBusinessDocumentState({
+    @Default([]) List<BusinessDocumentUploadedEntity> allBusinessDocuments,
+    @Default(BusinessDocumentStatus.getBusinessDocument) BusinessDocumentStatus businessDocumentStatus,
+    @Default(-1) int documentID,
+    BusinessDocumentUploadedEntity? businessDocumentUploadedEntity,
+    @Default(-1) int currentIndex,
+  }) = GetBusinessDocumentState;
+
+  factory BusinessDocumentState.getAllBusinessDocumentState({
+    @Default([]) List<BusinessDocumentUploadedEntity> allBusinessDocuments,
+    @Default(BusinessDocumentStatus.getAllBusinessDocument) BusinessDocumentStatus businessDocumentStatus,
+  }) = GetAllBusinessDocumentState;
+
+  factory BusinessDocumentState.deleteBusinessDocumentState({
+    @Default([]) List<BusinessDocumentUploadedEntity> allBusinessDocuments,
+    @Default(BusinessDocumentStatus.deleteBusinessDocument) BusinessDocumentStatus businessDocumentStatus,
+    @Default(-1) int documentID,
+    BusinessDocumentUploadedEntity? businessDocumentUploadedEntity,
+    @Default(-1) int currentIndex,
+    @Default(false) bool hasDelete,
+  }) = DeleteBusinessDocumentState;
+
+  factory BusinessDocumentState.deleteAllBusinessDocumentState({
+    @Default([]) List<BusinessDocumentUploadedEntity> allBusinessDocuments,
+    @Default(BusinessDocumentStatus.deleteAllBusinessDocument) BusinessDocumentStatus businessDocumentStatus,
+    @Default(-1) int documentID,
+    BusinessDocumentUploadedEntity? businessDocumentUploadedEntity,
+    @Default(false) bool hasDeleteAll,
+  }) = DeleteAllBusinessDocumentState;
+
+  factory BusinessDocumentState.failedBusinessDocumentState({
+    @Default('') String message,
+    @Default(BusinessDocumentStatus.failedForBusinessDocument) BusinessDocumentStatus businessDocumentStatus,
+  }) = BusinessDocumentFailedState;
+
+  factory BusinessDocumentState.loadingBusinessDocumentState({
+    @Default('') String message,
+    @Default(true) bool isLoading,
+    @Default(BusinessDocumentStatus.loadingForBusinessDocument) BusinessDocumentStatus businessDocumentStatus,
+  }) = BusinessDocumentLoadingState;
+
+  factory BusinessDocumentState.processingBusinessDocumentState({
+    @Default('') String message,
+    @Default(true) bool isProcessing,
+    @Default(BusinessDocumentStatus.processingForBusinessDocument) BusinessDocumentStatus businessDocumentStatus,
+  }) = BusinessDocumentProcessingState;
+
+  factory BusinessDocumentState.emptyBusinessDocumentState({
+    @Default('') String message,
+    @Default(true) bool isEmpty,
+    @Default([]) List<BusinessDocumentUploadedEntity> allBusinessDocuments,
+    @Default(BusinessDocumentStatus.emptyForBusinessDocument) BusinessDocumentStatus businessDocumentStatus,
+  }) = BusinessDocumentEmptyState;
+
+  factory BusinessDocumentState.exceptionBusinessDocumentState({
+    @Default('') String message,
+    StackTrace? stackTrace,
+    Exception? exception,
+    @Default(BusinessDocumentStatus.exceptionForBusinessDocument) BusinessDocumentStatus businessDocumentStatus,
+  }) = BusinessDocumentExceptionState;
 }

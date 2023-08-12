@@ -1,3 +1,5 @@
+part of 'package:homemakers_merchant/app/features/profile/index.dart';
+
 enum CurrentProfileStatus {
   phoneNumberVerified(
     statusID: 1,
@@ -75,6 +77,11 @@ enum BusinessProfileStatus {
   getAllBusinessProfile,
   getAllBusinessType,
   ;
+
+  @override
+  String toString() {
+    return name;
+  }
 }
 
 enum PaymentBankStatus {
@@ -91,4 +98,9 @@ enum PaymentBankStatus {
   deleteAllPaymentBank,
   getAllPaymentBank,
   ;
+
+  @override
+  String toString() {
+    return name;
+  }
 }

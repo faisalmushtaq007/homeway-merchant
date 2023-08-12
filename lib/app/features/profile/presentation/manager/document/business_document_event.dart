@@ -89,6 +89,7 @@ class BusinessDocumentEvent with _$BusinessDocumentEvent {
     required int currentIndex,
     @Default([]) List<dynamic> uploadedData,
   }) = AddNewDocument;
+
   factory BusinessDocumentEvent.addNewAsset({
     @Default(DocumentType.tradeLicence) DocumentType documentType,
     @Default(0) int indexOfTextField,
@@ -175,4 +176,40 @@ class BusinessDocumentEvent with _$BusinessDocumentEvent {
     ImageEditorController? imageEditorController,
     Image? image,
   }) = SaveCropDocument;
+
+  factory BusinessDocumentEvent.saveBusinessDocument({
+    @Default([]) List<BusinessDocumentUploadedEntity> allBusinessDocuments,
+    @Default(BusinessDocumentStatus.none) BusinessDocumentStatus businessDocumentStatus,
+    required BusinessDocumentUploadedEntity businessDocumentUploadedEntity,
+    @Default(false) bool hasEditBusinessDocument,
+    @Default(-1) int currentIndex,
+  }) = SaveBusinessDocument;
+
+  factory BusinessDocumentEvent.getBusinessDocument({
+    @Default([]) List<BusinessDocumentUploadedEntity> allBusinessDocuments,
+    @Default(BusinessDocumentStatus.none) BusinessDocumentStatus businessDocumentStatus,
+    @Default(-1) int documentID,
+    BusinessDocumentUploadedEntity? businessDocumentUploadedEntity,
+    @Default(-1) int currentIndex,
+  }) = GetBusinessDocument;
+
+  factory BusinessDocumentEvent.getAllBusinessDocument({
+    @Default([]) List<BusinessDocumentUploadedEntity> allBusinessDocuments,
+    @Default(BusinessDocumentStatus.none) BusinessDocumentStatus businessDocumentStatus,
+  }) = GetAllBusinessDocument;
+
+  factory BusinessDocumentEvent.deleteBusinessDocument({
+    @Default([]) List<BusinessDocumentUploadedEntity> allBusinessDocuments,
+    @Default(BusinessDocumentStatus.none) BusinessDocumentStatus businessDocumentStatus,
+    @Default(-1) int documentID,
+    BusinessDocumentUploadedEntity? businessDocumentUploadedEntity,
+    @Default(-1) int currentIndex,
+  }) = DeleteBusinessDocument;
+
+  factory BusinessDocumentEvent.deleteAllBusinessDocument({
+    @Default([]) List<BusinessDocumentUploadedEntity> allBusinessDocuments,
+    @Default(BusinessDocumentStatus.none) BusinessDocumentStatus businessDocumentStatus,
+    @Default(-1) int documentID,
+    BusinessDocumentUploadedEntity? businessDocumentUploadedEntity,
+  }) = DeleteAllBusinessDocument;
 }

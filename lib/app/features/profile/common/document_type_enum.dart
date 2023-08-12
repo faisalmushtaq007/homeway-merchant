@@ -1,3 +1,5 @@
+part of 'package:homemakers_merchant/app/features/profile/index.dart';
+
 enum DocumentType {
   tradeLicence(
     documentTypeID: 1,

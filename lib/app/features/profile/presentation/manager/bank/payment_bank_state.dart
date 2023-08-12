@@ -32,13 +32,13 @@ class SavePaymentBankState extends PaymentBankState {
 
 class GetPaymentBankState extends PaymentBankState {
   GetPaymentBankState({
-    required this.paymentBankEntity,
+    this.paymentBankEntity,
     this.paymentBankStatus = PaymentBankStatus.getAllPaymentBank,
     this.index = -1,
     this.paymentBankID = -1,
   });
 
-  final PaymentBankEntity paymentBankEntity;
+  final PaymentBankEntity? paymentBankEntity;
   final int index;
   final PaymentBankStatus paymentBankStatus;
   final int paymentBankID;

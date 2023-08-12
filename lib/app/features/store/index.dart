@@ -6,9 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:homemakers_merchant/app/features/authentication/presentation/manager/phone_number_verification_bloc.dart';
 import 'package:homemakers_merchant/app/features/menu/index.dart';
 import 'package:homemakers_merchant/app/features/menu/presentation/widgets/display_image_widget.dart';
-import 'package:homemakers_merchant/app/features/profile/common/document_type_enum.dart';
 import 'package:homemakers_merchant/app/features/store/common/store_enum.dart';
-
 import 'package:homemakers_merchant/app/features/store/domain/entities/store_entity.dart';
 import 'package:homemakers_merchant/app/features/store/presentation/manager/store_bloc.dart';
 import 'package:homemakers_merchant/app/features/store/presentation/widgets/store_order_card_widget.dart';

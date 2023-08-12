@@ -19,9 +19,6 @@ import 'package:homemakers_merchant/app/features/address/domain/entities/address
 import 'package:homemakers_merchant/app/features/authentication/presentation/manager/phone_number_verification_bloc.dart';
 import 'package:homemakers_merchant/app/features/menu/index.dart';
 import 'package:homemakers_merchant/app/features/permission/presentation/bloc/permission_bloc.dart';
-import 'package:homemakers_merchant/app/features/profile/common/document_picker_source_enum.dart';
-import 'package:homemakers_merchant/app/features/profile/common/document_type_enum.dart';
-import 'package:homemakers_merchant/app/features/profile/common/profile_status_enum.dart';
 import 'package:homemakers_merchant/app/features/profile/presentation/manager/document/business_document_bloc.dart';
 import 'package:homemakers_merchant/app/features/profile/presentation/widgets/document/image_edit/crop_editor_helper.dart';
 import 'package:homemakers_merchant/app/features/store/domain/entities/store_entity.dart';
@@ -77,6 +74,7 @@ import 'package:sembast/sembast.dart';
 import 'package:homemakers_merchant/app/features/profile/presentation/manager/profile/business_profile_bloc.dart';
 import 'package:homemakers_merchant/app/features/profile/presentation/manager/bank/payment_bank_bloc.dart';
 import 'package:homemakers_merchant/app/features/profile/presentation/manager/document/business_document_bloc.dart';
+import 'package:flutter/cupertino.dart';
 //Data
 part 'package:homemakers_merchant/app/features/profile/data/local/data_sources/business_type_list_data.dart';
 part 'package:homemakers_merchant/app/features/profile/data/local/data_sources/local_usermodel_service.dart';
@@ -138,3 +136,8 @@ part 'package:homemakers_merchant/app/features/profile/presentation/widgets/docu
 part 'package:homemakers_merchant/app/features/profile/presentation/widgets/document/painters/text_detector_painter.dart';
 part 'package:homemakers_merchant/app/features/profile/presentation/widgets/document/uploaded_document_child_widget.dart';
 part 'package:homemakers_merchant/app/features/profile/presentation/widgets/document/uploaded_document_placeholder_widget.dart';
+
+part 'package:homemakers_merchant/app/features/profile/common/document_status_enum.dart';
+part 'package:homemakers_merchant/app/features/profile/common/profile_status_enum.dart';
+part 'package:homemakers_merchant/app/features/profile/common/document_type_enum.dart';
+part 'package:homemakers_merchant/app/features/profile/common/document_picker_source_enum.dart';
