@@ -1,12 +1,12 @@
 part of 'package:homemakers_merchant/app/features/profile/index.dart';
 
-class DeleteAllPaymentBankUseCase extends UseCaseByID<StoreEntity, int, DataSourceState<bool>> {
+class DeleteAllPaymentBankUseCase extends UseCase<DataSourceState<bool>> {
   DeleteAllPaymentBankUseCase({
     required this.userPaymentBankRepository,
   });
   final UserPaymentBankRepository userPaymentBankRepository;
   @override
-  Future<DataSourceState<bool>> call({required int id, StoreEntity? input}) async {
+  Future<DataSourceState<bool>> call() async {
     return userPaymentBankRepository.deleteAllPaymentBank();
   }
 }

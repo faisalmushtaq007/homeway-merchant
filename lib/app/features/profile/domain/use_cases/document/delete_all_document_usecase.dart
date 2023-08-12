@@ -1,12 +1,12 @@
 part of 'package:homemakers_merchant/app/features/profile/index.dart';
 
-class DeleteAllDocumentUseCase extends UseCaseByID<BusinessDocumentUploadedEntity, int, DataSourceState<bool>> {
+class DeleteAllDocumentUseCase extends UseCase<DataSourceState<bool>> {
   DeleteAllDocumentUseCase({
     required this.userBusinessDocumentRepository,
   });
   final UserBusinessDocumentRepository userBusinessDocumentRepository;
   @override
-  Future<DataSourceState<bool>> call({required int id, BusinessDocumentUploadedEntity? input}) async {
+  Future<DataSourceState<bool>> call() async {
     return userBusinessDocumentRepository.deleteAllBusinessDocument();
   }
 }

@@ -12,82 +12,207 @@ class BusinessProfileInitial extends BusinessProfileState {
   List<Object?> get hashParameters => [];
 }
 
-class SaveBusinessTypeState extends BusinessProfileState {
-  SaveBusinessTypeState({required this.businessTypeEntity, this.hasEditBusinessType = false});
-
-  final BusinessTypeEntity businessTypeEntity;
-  final bool hasEditBusinessType;
-
-  @override
-  bool get cacheHash => true;
-
-  @override
-  List<Object?> get hashParameters => [businessTypeEntity, hasEditBusinessType];
-}
-
-class GetBusinessTypeState extends BusinessProfileState {
-  GetBusinessTypeState({required this.businessTypeEntity, this.hasEditBusinessType = false});
-
-  final BusinessTypeEntity businessTypeEntity;
-  final bool hasEditBusinessType;
-
-  @override
-  bool get cacheHash => true;
-
-  @override
-  List<Object?> get hashParameters => [businessTypeEntity, hasEditBusinessType];
-}
-
 class SaveBusinessProfileState extends BusinessProfileState {
-  SaveBusinessProfileState({required this.businessProfileEntity, this.hasEditBusinessProfile = false});
+  SaveBusinessProfileState({
+    required this.businessProfileEntity,
+    this.hasEditBusinessProfile = false,
+    this.currentIndex = -1,
+    this.businessProfileStatus = BusinessProfileStatus.saveBusinessProfile,
+  });
 
   final BusinessProfileEntity businessProfileEntity;
   final bool hasEditBusinessProfile;
+  final int currentIndex;
+  final BusinessProfileStatus businessProfileStatus;
 
   @override
   bool get cacheHash => true;
 
   @override
-  List<Object?> get hashParameters => [businessProfileEntity, hasEditBusinessProfile];
-}
-
-class DeleteBusinessProfileState extends BusinessProfileState {
-  DeleteBusinessProfileState({required this.businessProfileID, this.businessProfileEntity});
-
-  final BusinessProfileEntity? businessProfileEntity;
-  final int businessProfileID;
-
-  @override
-  bool get cacheHash => true;
-
-  @override
-  List<Object?> get hashParameters => [businessProfileEntity, businessProfileID];
+  List<Object?> get hashParameters => [businessProfileEntity, hasEditBusinessProfile, currentIndex, businessProfileStatus];
 }
 
 class GetBusinessProfileState extends BusinessProfileState {
-  GetBusinessProfileState({required this.businessProfileID, this.businessProfileEntity});
+  GetBusinessProfileState({
+    required this.businessProfileEntity,
+    this.businessProfileStatus = BusinessProfileStatus.getBusinessType,
+    this.index = -1,
+    this.businessProfileID = -1,
+  });
 
-  final BusinessProfileEntity? businessProfileEntity;
+  final BusinessProfileEntity businessProfileEntity;
+  final int index;
+  final BusinessProfileStatus businessProfileStatus;
   final int businessProfileID;
 
   @override
   bool get cacheHash => true;
 
   @override
-  List<Object?> get hashParameters => [businessProfileEntity, businessProfileID];
+  List<Object?> get hashParameters => [
+        businessProfileEntity,
+        businessProfileStatus,
+        index,
+        businessProfileID,
+      ];
 }
 
-class NavigateToAddressPageState extends BusinessProfileState {
-  NavigateToAddressPageState({this.businessProfileEntity, this.businessTypeEntity});
+class SaveBusinessTypeState extends BusinessProfileState {
+  SaveBusinessTypeState({
+    required this.businessTypeEntity,
+    this.hasEditBusinessType = false,
+    this.businessProfileEntity,
+    this.businessProfileStatus = BusinessProfileStatus.saveBusinessProfile,
+  });
 
+  final BusinessTypeEntity businessTypeEntity;
+  final bool hasEditBusinessType;
   final BusinessProfileEntity? businessProfileEntity;
-  final BusinessTypeEntity? businessTypeEntity;
+  final BusinessProfileStatus businessProfileStatus;
 
   @override
   bool get cacheHash => true;
 
   @override
-  List<Object?> get hashParameters => [businessProfileEntity, businessTypeEntity];
+  List<Object?> get hashParameters => [
+        businessTypeEntity,
+        hasEditBusinessType,
+        businessProfileStatus,
+        hasEditBusinessType,
+      ];
+}
+
+class DeleteBusinessProfileState extends BusinessProfileState {
+  DeleteBusinessProfileState({
+    required this.businessProfileID,
+    this.businessProfileEntity,
+    this.businessProfileStatus = BusinessProfileStatus.deleteBusinessType,
+    this.index = -1,
+    this.businessProfileEntities = const [],
+    this.hasDelete = false,
+  });
+
+  final BusinessProfileEntity? businessProfileEntity;
+  final int businessProfileID;
+  final BusinessProfileStatus businessProfileStatus;
+  final int index;
+  final List<BusinessProfileEntity> businessProfileEntities;
+  final bool hasDelete;
+
+  @override
+  bool get cacheHash => true;
+
+  @override
+  List<Object?> get hashParameters => [
+        businessProfileEntity,
+        businessProfileID,
+        index,
+        businessProfileStatus,
+        businessProfileEntities,
+        hasDelete,
+      ];
+}
+
+class GetBusinessTypeState extends BusinessProfileState {
+  GetBusinessTypeState({
+    required this.businessProfileID,
+    this.businessProfileEntity,
+    this.businessTypeEntity,
+    this.businessProfileStatus = BusinessProfileStatus.getBusinessType,
+  });
+
+  final BusinessProfileEntity? businessProfileEntity;
+  final int businessProfileID;
+  final BusinessTypeEntity? businessTypeEntity;
+  final BusinessProfileStatus businessProfileStatus;
+
+  @override
+  bool get cacheHash => true;
+
+  @override
+  List<Object?> get hashParameters => [businessProfileEntity, businessProfileID, businessTypeEntity, businessProfileStatus];
+}
+
+class NavigateToAddressPageState extends BusinessProfileState {
+  NavigateToAddressPageState({
+    this.businessProfileEntity,
+    this.businessTypeEntity,
+    this.businessProfileStatus = BusinessProfileStatus.navigateToAddressPage,
+  });
+
+  final BusinessProfileEntity? businessProfileEntity;
+  final BusinessTypeEntity? businessTypeEntity;
+  final BusinessProfileStatus businessProfileStatus;
+
+  @override
+  bool get cacheHash => true;
+
+  @override
+  List<Object?> get hashParameters => [businessProfileEntity, businessTypeEntity, businessProfileStatus];
+}
+
+class DeleteAllBusinessProfileState extends BusinessProfileState {
+  DeleteAllBusinessProfileState({
+    this.businessProfileID = -1,
+    this.businessProfileEntity,
+    this.hasDeleteAll = false,
+    this.businessProfileEntities = const [],
+    this.businessProfileStatus = BusinessProfileStatus.deleteAllBusinessProfile,
+  });
+
+  final BusinessProfileEntity? businessProfileEntity;
+  final int businessProfileID;
+  final bool hasDeleteAll;
+  final List<BusinessProfileEntity> businessProfileEntities;
+  final BusinessProfileStatus businessProfileStatus;
+
+  @override
+  bool get cacheHash => true;
+
+  @override
+  List<Object?> get hashParameters => [businessProfileEntity, businessProfileID, businessProfileStatus];
+}
+
+class GetAllBusinessProfileState extends BusinessProfileState {
+  GetAllBusinessProfileState({
+    this.businessProfileID = -1,
+    this.businessProfileEntity,
+    this.businessProfileEntities = const [],
+    this.businessProfileStatus = BusinessProfileStatus.getAllBusinessProfile,
+  });
+
+  final BusinessProfileEntity? businessProfileEntity;
+  final int businessProfileID;
+  final List<BusinessProfileEntity> businessProfileEntities;
+  final BusinessProfileStatus businessProfileStatus;
+
+  @override
+  bool get cacheHash => true;
+
+  @override
+  List<Object?> get hashParameters => [businessProfileEntity, businessProfileID, businessProfileStatus];
+}
+
+class BusinessProfileEmptyState extends BusinessProfileState {
+  BusinessProfileEmptyState({
+    this.businessProfileEntities = const [],
+    this.message = '',
+    this.businessProfileStatus = BusinessProfileStatus.emptyForBusinessType,
+  });
+
+  final List<BusinessProfileEntity> businessProfileEntities;
+  final String message;
+  final BusinessProfileStatus businessProfileStatus;
+
+  @override
+  bool get cacheHash => true;
+
+  @override
+  List<Object?> get hashParameters => [
+        businessProfileEntities,
+        message,
+        businessProfileStatus,
+      ];
 }
 
 class BusinessProfileFailedState extends BusinessProfileState {
@@ -116,6 +241,7 @@ class BusinessProfileExceptionState extends BusinessProfileState {
     this.stackTrace,
     this.exception,
   });
+
   final BusinessProfileStatus businessProfileStatus;
   final String message;
   final StackTrace? stackTrace;
@@ -129,7 +255,8 @@ class BusinessProfileExceptionState extends BusinessProfileState {
 }
 
 class BusinessProfileLoadingState extends BusinessProfileState {
-  BusinessProfileLoadingState({this.message = '', this.businessProfileStatus = BusinessProfileStatus.loadingBusinessProfile, this.isLoading = true});
+  BusinessProfileLoadingState({this.message = '', this.businessProfileStatus = BusinessProfileStatus.loadingForBusinessType, this.isLoading = true});
+
   final bool isLoading;
   final BusinessProfileStatus businessProfileStatus;
   final String message;
@@ -142,7 +269,8 @@ class BusinessProfileLoadingState extends BusinessProfileState {
 }
 
 class BusinessProfileProcessingState extends BusinessProfileState {
-  BusinessProfileProcessingState({this.message = '', this.businessProfileStatus = BusinessProfileStatus.loadingBusinessProfile, this.isProcessing = true});
+  BusinessProfileProcessingState({this.message = '', this.businessProfileStatus = BusinessProfileStatus.loadingForBusinessProfile, this.isProcessing = true});
+
   final bool isProcessing;
   final BusinessProfileStatus businessProfileStatus;
   final String message;

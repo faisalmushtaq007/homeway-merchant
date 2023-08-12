@@ -12,9 +12,10 @@ import 'package:homemakers_merchant/app/features/menu/index.dart';
 import 'package:homemakers_merchant/app/features/onboarding/presentation/pages/splash_page.dart';
 import 'package:homemakers_merchant/app/features/permission/presentation/bloc/permission_bloc.dart';
 
-import 'package:homemakers_merchant/app/features/profile/presentation/manager/bank/bank_information_bloc.dart';
+import 'package:homemakers_merchant/app/features/profile/presentation/manager/bank/payment_bank_bloc.dart';
 import 'package:homemakers_merchant/app/features/profile/presentation/manager/document/business_document_bloc.dart';
 import 'package:homemakers_merchant/app/features/profile/index.dart';
+import 'package:homemakers_merchant/app/features/profile/presentation/manager/profile/business_profile_bloc.dart';
 import 'package:homemakers_merchant/app/features/store/presentation/manager/store_bloc.dart';
 import 'package:homemakers_merchant/config/permission/permission_controller.dart';
 import 'package:homemakers_merchant/config/permission/permission_service.dart';
@@ -96,8 +97,8 @@ class _AppState extends State<App> with GetItStateMixin {
           key: const Key('business_document_bloc_provider'),
           create: (context) => serviceLocator(),
         ),
-        BlocProvider<BankInformationBloc>(
-          key: const Key('bank_informationBloc_bloc_provider'),
+        BlocProvider<PaymentBankBloc>(
+          key: const Key('payment_bank_bloc_provider'),
           create: (context) => serviceLocator(),
         ),
         BlocProvider<StoreBloc>(
@@ -106,6 +107,10 @@ class _AppState extends State<App> with GetItStateMixin {
         ),
         BlocProvider<MenuBloc>(
           key: const Key('menu_bloc_provider'),
+          create: (context) => serviceLocator(),
+        ),
+        BlocProvider<BusinessProfileBloc>(
+          key: const Key('business_profile_bloc_provider'),
           create: (context) => serviceLocator(),
         ),
       ],

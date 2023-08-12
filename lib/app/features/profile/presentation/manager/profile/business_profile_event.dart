@@ -5,14 +5,19 @@ abstract class BusinessProfileEvent with AppEquatable {
 }
 
 class SaveBusinessType extends BusinessProfileEvent {
-  SaveBusinessType({required this.businessTypeEntity, this.hasEditBusinessType = false});
+  SaveBusinessType({
+    required this.businessTypeEntity,
+    this.hasEditBusinessType = false,
+    this.businessProfileEntity,
+  });
   final BusinessTypeEntity businessTypeEntity;
+  final BusinessProfileEntity? businessProfileEntity;
   final bool hasEditBusinessType;
   @override
   bool get cacheHash => true;
 
   @override
-  List<Object?> get hashParameters => [businessTypeEntity, hasEditBusinessType];
+  List<Object?> get hashParameters => [businessTypeEntity, hasEditBusinessType, businessProfileEntity];
 }
 
 class GetBusinessType extends BusinessProfileEvent {
@@ -27,9 +32,10 @@ class GetBusinessType extends BusinessProfileEvent {
 }
 
 class SaveBusinessProfile extends BusinessProfileEvent {
-  SaveBusinessProfile({required this.businessProfileEntity, this.hasEditBusinessProfile = false});
+  SaveBusinessProfile({required this.businessProfileEntity, this.hasEditBusinessProfile = false, this.currentIndex = -1});
   final BusinessProfileEntity businessProfileEntity;
   final bool hasEditBusinessProfile;
+  final int currentIndex;
   @override
   bool get cacheHash => true;
 
@@ -38,7 +44,47 @@ class SaveBusinessProfile extends BusinessProfileEvent {
 }
 
 class DeleteBusinessProfile extends BusinessProfileEvent {
-  DeleteBusinessProfile({required this.businessProfileID, this.businessProfileEntity});
+  DeleteBusinessProfile({
+    required this.businessProfileID,
+    this.businessProfileEntity,
+    this.index = -1,
+    this.businessProfileEntities = const [],
+  });
+  final BusinessProfileEntity? businessProfileEntity;
+  final int businessProfileID;
+  final int index;
+  final List<BusinessProfileEntity> businessProfileEntities;
+
+  @override
+  bool get cacheHash => true;
+
+  @override
+  List<Object?> get hashParameters => [
+        businessProfileEntity,
+        businessProfileID,
+        index,
+        businessProfileEntities,
+      ];
+}
+
+class GetBusinessProfile extends BusinessProfileEvent {
+  GetBusinessProfile({
+    required this.businessProfileID,
+    this.businessProfileEntity,
+    this.index = -1,
+  });
+  final BusinessProfileEntity? businessProfileEntity;
+  final int businessProfileID;
+  final int index;
+  @override
+  bool get cacheHash => true;
+
+  @override
+  List<Object?> get hashParameters => [businessProfileEntity, businessProfileID];
+}
+
+class DeleteAllBusinessProfile extends BusinessProfileEvent {
+  DeleteAllBusinessProfile({this.businessProfileID = -1, this.businessProfileEntity});
   final BusinessProfileEntity? businessProfileEntity;
   final int businessProfileID;
   @override
@@ -48,8 +94,8 @@ class DeleteBusinessProfile extends BusinessProfileEvent {
   List<Object?> get hashParameters => [businessProfileEntity, businessProfileID];
 }
 
-class GetBusinessProfile extends BusinessProfileEvent {
-  GetBusinessProfile({required this.businessProfileID, this.businessProfileEntity});
+class GetAllBusinessProfile extends BusinessProfileEvent {
+  GetAllBusinessProfile({this.businessProfileID = -1, this.businessProfileEntity});
   final BusinessProfileEntity? businessProfileEntity;
   final int businessProfileID;
   @override
