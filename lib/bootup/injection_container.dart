@@ -363,6 +363,11 @@ void _setUpUseCases() {
       userBusinessProfileRepository: serviceLocator(),
     ),
   );
+  serviceLocator.registerLazySingleton<SaveBusinessProfileUseCase>(
+    () => SaveBusinessProfileUseCase(
+      userBusinessProfileRepository: serviceLocator(),
+    ),
+  );
   serviceLocator.registerLazySingleton<GetBusinessProfileUseCase>(
     () => GetBusinessProfileUseCase(
       userBusinessProfileRepository: serviceLocator(),
