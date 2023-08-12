@@ -76,3 +76,19 @@ enum BusinessProfileStatus {
   getAllBusinessType,
   ;
 }
+
+enum PaymentBankStatus {
+  none,
+  savePaymentBank,
+  deletePaymentBank,
+  getPaymentBank,
+  navigateToAddressPage,
+  exceptionForPaymentBank,
+  failedForPaymentBank,
+  loadingForPaymentBank,
+  processingForPaymentBank,
+  emptyForPaymentBank,
+  deleteAllPaymentBank,
+  getAllPaymentBank,
+  ;
+}

@@ -40,7 +40,7 @@ class SaveBusinessProfile extends BusinessProfileEvent {
   bool get cacheHash => true;
 
   @override
-  List<Object?> get hashParameters => [businessProfileEntity, hasEditBusinessProfile];
+  List<Object?> get hashParameters => [businessProfileEntity, hasEditBusinessProfile, currentIndex];
 }
 
 class DeleteBusinessProfile extends BusinessProfileEvent {

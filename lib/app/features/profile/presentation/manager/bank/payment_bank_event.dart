@@ -3,17 +3,15 @@ part of 'payment_bank_bloc.dart';
 abstract class PaymentBankEvent with AppEquatable {}
 
 class SavePaymentBank extends PaymentBankEvent {
-  SavePaymentBank({
-    required this.paymentBankEntity,
-    this.hasEditPaymentBank = false,
-  });
+  SavePaymentBank({required this.paymentBankEntity, this.hasEditPaymentBank = false, this.currentIndex = -1});
   final PaymentBankEntity paymentBankEntity;
   final bool hasEditPaymentBank;
+  final int currentIndex;
   @override
   bool get cacheHash => true;
 
   @override
-  List<Object?> get hashParameters => [paymentBankEntity, hasEditPaymentBank];
+  List<Object?> get hashParameters => [paymentBankEntity, hasEditPaymentBank, currentIndex];
 }
 
 class DeletePaymentBank extends PaymentBankEvent {
