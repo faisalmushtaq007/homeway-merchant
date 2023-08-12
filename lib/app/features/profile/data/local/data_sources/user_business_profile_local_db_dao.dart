@@ -9,6 +9,7 @@ class UserBusinessProfileLocalDbRepository<T extends BusinessProfileEntity> impl
       final int recordID = await _businessProfile.add(await _db, entity.toMap());
       //final BusinessProfileEntity recordBusinessProfileEntity = entity.copyWith(businessProfileID: recordID.toString());
       final value = await _businessProfile.record(recordID).get(await _db);
+      appLog.d('Save ${value ?? ''}');
       if (value != null) {
         final storedBusinessProfileEntity = BusinessProfileEntity.fromMap(value);
         final storeEntity = storedBusinessProfileEntity.copyWith(businessProfileID: recordID);

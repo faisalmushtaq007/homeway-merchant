@@ -58,7 +58,7 @@ class PaymentBankEntity with AppEquatable {
       'bankName': this.bankName,
       'accountNumber': this.accountNumber,
       'ibanNumber': this.ibanNumber,
-      'acceptPaymentMode': this.acceptPaymentMode,
+      'acceptPaymentMode': this.acceptPaymentMode.name,
     };
   }
 

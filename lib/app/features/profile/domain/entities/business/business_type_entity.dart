@@ -6,10 +6,10 @@ class BusinessTypeEntity {
     this.businessTypeId = '',
     this.businessTypeName = '',
     this.localAssetPath = '',
-    this.remoteAssetPath,
-    this.metaData,
-    this.localAssetWidget,
-    this.remoteAssetWidget,
+    this.remoteAssetPath = '',
+    this.metaData = const {},
+    this.localAssetWidget = const Offstage(),
+    this.remoteAssetWidget = const Offstage(),
     this.hasSelected = false,
   });
 

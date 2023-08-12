@@ -17,7 +17,7 @@ class BusinessProfileEntity {
       businessProfileID: map['businessProfileID'] as int,
       userName: map['userName'] as String,
       businessPhoneNumber: map['businessPhoneNumber'] as String,
-      businessAddress: map['businessAddress'] ?? AddressModel() as AddressModel,
+      businessAddress: (map['businessAddress'] != null) ? AddressModel.fromJson(map['businessAddress']) : AddressModel(),
       businessEmailAddress: map['businessEmailAddress'] as String,
       businessName: map['businessName'] as String,
       businessTypeEntity: map['businessTypeEntity'] != null ? BusinessTypeEntity.fromMap(map['businessTypeEntity']) : BusinessTypeEntity(),
@@ -41,9 +41,11 @@ class BusinessProfileEntity {
       'businessProfileID': this.businessProfileID,
       'userName': this.userName,
       'businessPhoneNumber': this.businessPhoneNumber,
-      'businessAddress': this.businessAddress,
+      'businessAddress': this.businessAddress?.toMap(),
       'businessEmailAddress': this.businessEmailAddress,
       'businessName': this.businessName,
+      'businessTypeEntity': this.businessTypeEntity?.toMap(),
+      'businessDocumentUploadedEntity': this.businessDocumentUploadedEntity?.toMap(),
     };
   }
 
