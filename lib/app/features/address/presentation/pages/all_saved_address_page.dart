@@ -24,6 +24,9 @@ class _AllSavedAddressPageController extends State<AllSavedAddressPage> {
     addressEntities.clear();
     context.read<PermissionBloc>().add(const RequestLocationPermissionEvent());
     if (mounted) {
+      widgetState = WidgetState<AddressModel>.loading(
+        context: context,
+      );
       context.read<AddressBloc>().add(GetAllAddress());
     }
   }
@@ -38,7 +41,78 @@ class _AllSavedAddressPageController extends State<AllSavedAddressPage> {
   }
 
   @override
-  Widget build(BuildContext context) => _AllSavedAddressPageView(this);
+  Widget build(BuildContext context) => BlocListener<AddressBloc, AddressState>(
+        key: const Key('all-address-bloc-listerner'),
+        bloc: context.read<AddressBloc>(),
+        listenWhen: (previous, current) => previous != current,
+        listener: (context, state) {
+          switch (state) {
+            case AddressExceptionState():
+              {
+                widgetState = WidgetState<AddressModel>.error(
+                  context: context,
+                  reason: state.message,
+                );
+              }
+            case AddressFailedState():
+              {
+                widgetState = WidgetState<AddressModel>.error(
+                  context: context,
+                  reason: state.message,
+                );
+              }
+            case _:
+              appLog.d('Default case: all address page bloc listener');
+          }
+        },
+        child: BlocBuilder<AddressBloc, AddressState>(
+          key: const Key('all-address-bloc-builder'),
+          bloc: context.read<AddressBloc>(),
+          buildWhen: (previous, current) => previous != current,
+          builder: (context, state) {
+            switch (state) {
+              case GetAllAddressState():
+                {
+                  addressEntities = List<AddressModel>.from(state.addressEntities.toList());
+                  widgetState = WidgetState<AddressModel>.allData(
+                    context: context,
+                  );
+                }
+              case AddressLoadingState():
+                {
+                  widgetState = WidgetState<AddressModel>.loading(
+                    context: context,
+                  );
+                }
+              case AddressEmptyState():
+                {
+                  addressEntities = List<AddressModel>.from(state.addressEntities.toList());
+                  widgetState = WidgetState<AddressModel>.empty(
+                    context: context,
+                    message: state.message,
+                  );
+                }
+              case AddressExceptionState():
+                {
+                  widgetState = WidgetState<AddressModel>.error(
+                    context: context,
+                    reason: state.message,
+                  );
+                }
+              case AddressFailedState():
+                {
+                  widgetState = WidgetState<AddressModel>.error(
+                    context: context,
+                    reason: state.message,
+                  );
+                }
+              case _:
+                appLog.d('Default case: all address page');
+            }
+            return _AllSavedAddressPageView(this);
+          },
+        ),
+      );
 }
 
 class _AllSavedAddressPageView extends WidgetView<AllSavedAddressPage, _AllSavedAddressPageController> {
