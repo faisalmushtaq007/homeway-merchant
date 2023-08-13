@@ -253,6 +253,15 @@ class _BusinessInformationPageState extends State<BusinessInformationPage> with 
                                     _businessNameController.text = state.businessProfileEntity.businessName ?? '';
                                     userEnteredPhoneNumber = state.businessProfileEntity.businessPhoneNumber ?? '';
                                     hasEditBusinessProfile = state.hasEditBusinessProfile;
+                                    initialPhoneNumberValue = PhoneNumber(
+                                      isoCode: isoCodeNameMap.values.byName(state.businessProfileEntity.isoCode ?? 'SA'),
+                                      nsn: state.businessProfileEntity.businessPhoneNumber ?? '',
+                                    );
+                                    controller.value = PhoneNumber(
+                                      isoCode: isoCodeNameMap.values.byName(state.businessProfileEntity.isoCode ?? 'SA'),
+                                      nsn: state.businessProfileEntity.businessPhoneNumber ?? '',
+                                    );
+                                    defaultCountry = isoCodeNameMap.values.byName(state.businessProfileEntity.isoCode ?? 'SA');
                                     SchedulerBinding.instance.addPostFrameCallback((_) async {
                                       await context.push(
                                         Routes.CONFIRM_BUSINESS_TYPE_PAGE,
@@ -279,6 +288,15 @@ class _BusinessInformationPageState extends State<BusinessInformationPage> with 
                                     _emailController.text = businessProfileEntity?.businessEmailAddress ?? '';
                                     _businessNameController.text = businessProfileEntity?.businessName ?? '';
                                     userEnteredPhoneNumber = businessProfileEntity?.businessPhoneNumber ?? '';
+                                    initialPhoneNumberValue = PhoneNumber(
+                                      isoCode: isoCodeNameMap.values.byName(state.businessProfileEntity?.isoCode ?? 'SA'),
+                                      nsn: state.businessProfileEntity?.businessPhoneNumber ?? '',
+                                    );
+                                    controller.value = PhoneNumber(
+                                      isoCode: isoCodeNameMap.values.byName(state.businessProfileEntity?.isoCode ?? 'SA'),
+                                      nsn: state.businessProfileEntity?.businessPhoneNumber ?? '',
+                                    );
+                                    defaultCountry = isoCodeNameMap.values.byName(state.businessProfileEntity?.isoCode ?? 'SA');
                                   }
                                 case _:
                                   {}
@@ -728,6 +746,8 @@ class _BusinessInformationPageState extends State<BusinessInformationPage> with 
                                                     businessName: _businessNameController.value.text,
                                                     businessPhoneNumber: userEnteredPhoneNumber,
                                                     businessProfileID: widget.businessProfileEntity?.businessProfileID,
+                                                    countryDialCode: '',
+                                                    isoCode: '',
                                                   );
                                                 } else {
                                                   // New
@@ -740,6 +760,8 @@ class _BusinessInformationPageState extends State<BusinessInformationPage> with 
                                                     businessName: _businessNameController.value.text,
                                                     businessPhoneNumber: userEnteredPhoneNumber,
                                                     businessTypeEntity: BusinessTypeEntity(),
+                                                    countryDialCode: '',
+                                                    isoCode: '',
                                                   );
                                                 }
                                                 serviceLocator<AppUserEntity>().currentProfileStatus = CurrentProfileStatus.basicProfileSaved;

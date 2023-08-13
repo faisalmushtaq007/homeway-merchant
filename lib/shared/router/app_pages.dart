@@ -2,6 +2,7 @@
 import 'dart:convert';
 
 import 'package:flutter/widgets.dart';
+import 'package:geocoder_buddy/geocoder_buddy.dart';
 import 'package:go_router/go_router.dart';
 import 'package:homemakers_merchant/app/features/address/index.dart';
 import 'package:homemakers_merchant/app/features/authentication/presentation/pages/about_us.dart';
@@ -27,7 +28,7 @@ class AppRouter {
 
   AppRouter._();
 
-  static const String INITIAL = Routes.ADDRESS_FORM_PAGE;
+  static const String INITIAL = Routes.ALL_SAVED_ADDRESS_LIST;
 
   static final GoRouter _router = GoRouter(
     debugLogDiagnostics: true,
@@ -102,7 +103,19 @@ class AppRouter {
       ),
       GoRoute(
         path: Routes.ADDRESS_FORM_PAGE,
-        builder: (context, state) => const AddressFormPage(),
+        builder: (context, state) {
+          final Map<String, dynamic>? args = state.extra as Map<String, dynamic>?;
+          return AddressFormPage(
+            addressModel: args?['addressModel'] as AddressModel?,
+            allAddress: args?['allAddress'] ?? <AddressModel>[] as List<AddressModel>,
+            currentIndex: args?['currentIndex'] ?? -1 as int,
+            hasNewAddress: args?['hasNewAddress'] ?? false as bool,
+            latitude: args?['latitude'] ?? 0.0 as double,
+            locationData: args?['locationData'] as GBData?,
+            longitude: args?['longitude'] ?? 0.0 as double,
+            hasViewAddress: args?['hasViewAddress'] ?? false as bool,
+          );
+        },
       ),
       GoRoute(
           path: Routes.BANK_INFORMATION_PAGE,

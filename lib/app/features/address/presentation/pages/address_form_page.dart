@@ -9,6 +9,8 @@ class AddressFormPage extends StatefulWidget {
     this.latitude = 0.0,
     this.longitude = 0.0,
     this.locationData,
+    this.allAddress = const [],
+    this.hasViewAddress = false,
   });
 
   final AddressModel? addressModel;
@@ -17,6 +19,8 @@ class AddressFormPage extends StatefulWidget {
   final double latitude;
   final double longitude;
   final GBData? locationData;
+  final List<AddressModel> allAddress;
+  final bool hasViewAddress;
 
   @override
   _AddressFormPageController createState() => _AddressFormPageController();
@@ -94,7 +98,7 @@ class _AddressFormPageController extends State<AddressFormPage> {
     latitude = widget.latitude;
     longitude = widget.longitude;
     if (widget.locationData.isNotNull) {
-      locationAddressData = widget.locationData;
+      locationAddressData = widget.locationData!;
     }
     if (widget.addressModel.isNotNull) {}
   }
@@ -585,7 +589,16 @@ class _AddressFormPageView extends WidgetView<AddressFormPage, _AddressFormPageC
                                       onPressed: () {
                                         if (state.addressFormPageFormKey.currentState!.validate()) {
                                           state.addressFormPageFormKey.currentState!.save();
-
+                                          if (widget.hasViewAddress) {
+                                            // View Address
+                                            return;
+                                          } else {
+                                            if (!widget.hasNewAddress && widget.addressModel.isNotNull) {
+                                              // Edit Address
+                                            } else {
+                                              // New Address
+                                            }
+                                          }
                                           return;
                                         }
                                         return;

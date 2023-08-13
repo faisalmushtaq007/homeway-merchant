@@ -21,6 +21,7 @@ import 'package:homemakers_merchant/bootup/injection_container.dart';
 import 'package:homemakers_merchant/config/translation/extension/text_extension.dart';
 import 'package:homemakers_merchant/config/translation/language_controller.dart';
 import 'package:homemakers_merchant/config/translation/widgets/language_selection_widget.dart';
+import 'package:homemakers_merchant/core/common/enum/generic_enum.dart';
 import 'package:homemakers_merchant/core/common/enum/phone_number_verification_enum.dart';
 import 'package:homemakers_merchant/core/constants/global_app_constants.dart';
 import 'package:homemakers_merchant/core/extensions/app_extension.dart';
@@ -35,21 +36,29 @@ import 'package:homemakers_merchant/core/local/database/base/tryCatch.dart';
 import 'package:homemakers_merchant/core/service/connectivity_bloc/src/connectivity_bloc/connectivity_service.dart';
 import 'package:homemakers_merchant/shared/router/app_pages.dart';
 import 'package:homemakers_merchant/shared/states/data_source_state.dart';
+import 'package:homemakers_merchant/shared/states/widget_state.dart';
 import 'package:homemakers_merchant/shared/widgets/app/app_text_field_widget.dart';
 import 'package:homemakers_merchant/shared/widgets/app/page_body.dart';
 import 'package:homemakers_merchant/shared/widgets/universal/animate_do/animate_do.dart';
 import 'package:homemakers_merchant/shared/widgets/universal/animated_gap/gap.dart';
 import 'package:homemakers_merchant/shared/widgets/universal/constrained_scrollable_views/constrained_scrollable_views.dart';
+import 'package:homemakers_merchant/shared/widgets/universal/image_loader/image_helper.dart';
 import 'package:homemakers_merchant/shared/widgets/universal/map/google_map_place/google_map_place.dart';
 import 'package:homemakers_merchant/shared/widgets/universal/phone_number_text_field/phonenumber_form_field_widget.dart';
 import 'package:homemakers_merchant/utils/app_log.dart';
 import 'package:homemakers_merchant/utils/functional/functional.dart';
 import 'package:homemakers_merchant/utils/validation/form_validation/form_validation.dart';
+import 'package:implicitly_animated_reorderable_list_2/implicitly_animated_reorderable_list_2.dart';
 import 'package:location/location.dart' as loc;
 import 'package:phone_form_field/phone_form_field.dart';
 import 'package:homemakers_merchant/shared/states/api_result_state.dart';
 import 'package:network_manager/network_manager.dart';
 import 'package:sembast/sembast.dart';
+import 'package:sherlock/completion.dart';
+import 'package:sherlock/result.dart' as sl;
+import 'package:sherlock/sherlock.dart';
+import 'package:sherlock/widget.dart';
+
 part 'package:homemakers_merchant/app/features/address/presentation/pages/address_form_page.dart';
 part 'package:homemakers_merchant/app/features/address/presentation/pages/all_saved_address_page.dart';
 // Presentation
@@ -57,7 +66,7 @@ part 'package:homemakers_merchant/app/features/address/presentation/pages/all_sa
 part 'package:homemakers_merchant/app/features/address/presentation/pages/pickup_location_from_map.dart';
 // Widgets
 part 'package:homemakers_merchant/app/features/address/presentation/widgets/address_form_maker_widget.dart';
-
+part 'package:homemakers_merchant/app/features/address/presentation/widgets/address_card_widget.dart';
 //Domain
 part 'package:homemakers_merchant/app/features/address/domain/use_cases/get_address_usecase.dart';
 part 'package:homemakers_merchant/app/features/address/domain/use_cases/get_all_address_usecase.dart';

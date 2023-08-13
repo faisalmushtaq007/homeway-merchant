@@ -198,6 +198,10 @@ class $AssetsSvgGen {
 
   $AssetsSvgFlagsGen get flags => const $AssetsSvgFlagsGen();
 
+  /// File path: assets/svg/home_address.svg
+  SvgGenImage get homeAddress =>
+      const SvgGenImage('assets/svg/home_address.svg');
+
   /// File path: assets/svg/home_chef_type.svg
   SvgGenImage get homeChefType =>
       const SvgGenImage('assets/svg/home_chef_type.svg');
@@ -226,6 +230,7 @@ class $AssetsSvgGen {
   List<SvgGenImage> get values => [
         applogo,
         applogodark,
+        homeAddress,
         homeChefType,
         offlineDriver,
         onlineDriver,

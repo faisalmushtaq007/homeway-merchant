@@ -33,7 +33,7 @@ class AddressModel extends INetworkModel<AddressModel> {
         updatedAt: json['updatedAt'] as int? ?? -1,
       );
 
-  int? addressID;
+  int addressID = -1;
 
   String? addressRefId;
 

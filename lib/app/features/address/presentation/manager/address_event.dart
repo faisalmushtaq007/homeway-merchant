@@ -24,7 +24,7 @@ class RemoveAddressByID extends AddressEvent {
   RemoveAddressByID({
     this.addressEntity,
     this.index = -1,
-    this.addressID = '',
+    this.addressID = -1,
     this.addressEntities = const [],
     this.hasRemove = true,
   });
@@ -32,7 +32,7 @@ class RemoveAddressByID extends AddressEvent {
   final AddressModel? addressEntity;
   final int index;
   final List<AddressModel> addressEntities;
-  final String addressID;
+  final int addressID;
   final bool hasRemove;
 
   @override
@@ -63,13 +63,13 @@ class GetAddressByID extends AddressEvent {
     this.addressEntity,
     this.index = -1,
     this.addressEntities = const [],
-    this.addressID = '',
+    this.addressID = -1,
   });
 
   final AddressModel? addressEntity;
   final int index;
   final List<AddressModel> addressEntities;
-  final String addressID;
+  final int addressID;
 
   @override
   bool get cacheHash => true;
@@ -112,13 +112,13 @@ class SelectDefaultAddress extends AddressEvent {
     this.addressEntity,
     this.index = -1,
     this.addressEntities = const [],
-    this.addressID = '',
+    this.addressID = -1,
   });
 
   final AddressModel? addressEntity;
   final int index;
   final List<AddressModel> addressEntities;
-  final String addressID;
+  final int addressID;
 
   @override
   bool get cacheHash => true;

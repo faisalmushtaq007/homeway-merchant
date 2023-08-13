@@ -32,7 +32,7 @@ class RemoveAddressByIDState extends AddressState {
   RemoveAddressByIDState({
     this.addressEntity,
     this.index = -1,
-    this.addressID = '',
+    this.addressID = -1,
     this.addressEntities = const [],
     this.hasRemove = false,
   });
@@ -40,7 +40,7 @@ class RemoveAddressByIDState extends AddressState {
   final AddressModel? addressEntity;
   final int index;
   final List<AddressModel> addressEntities;
-  final String addressID;
+  final int addressID;
   final bool hasRemove;
 
   @override
@@ -71,14 +71,14 @@ class GetAddressByIDState extends AddressState {
     this.addressEntity,
     this.index = -1,
     this.addressEntities = const [],
-    this.addressID = '',
+    this.addressID = -1,
     this.addressStatus = AddressStatus.none,
   });
 
   final AddressModel? addressEntity;
   final int index;
   final List<AddressModel> addressEntities;
-  final String addressID;
+  final int addressID;
   final AddressStatus addressStatus;
 
   @override
@@ -130,13 +130,13 @@ class SelectDefaultAddressState extends AddressState {
     this.addressEntity,
     this.index = -1,
     this.addressEntities = const [],
-    this.addressID = '',
+    this.addressID = -1,
   });
 
   final AddressModel? addressEntity;
   final int index;
   final List<AddressModel> addressEntities;
-  final String addressID;
+  final int addressID;
 
   @override
   bool get cacheHash => true;

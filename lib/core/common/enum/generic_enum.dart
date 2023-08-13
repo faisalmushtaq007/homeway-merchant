@@ -18,3 +18,16 @@ enum BlocStatus<T extends Object> {
     return name;
   }
 }
+
+enum AppOptions<T extends Object> {
+  view<String>(value: 'View'),
+  edit<String>(value: 'Edit'),
+  select<String>(value: 'Select'),
+  remove<String>(value: 'Remove'),
+  delete<String>(value: 'Delete'),
+  setAsDefault<String>(value: 'Set as Default'),
+  ;
+
+  const AppOptions({required this.value});
+  final T value;
+}

@@ -8,6 +8,7 @@ import 'package:homemakers_merchant/utils/app_equatable/app_equatable.dart';
 import 'package:homemakers_merchant/utils/app_log.dart';
 
 part 'address_event.dart';
+
 part 'address_state.dart';
 
 class AddressBloc extends Bloc<AddressEvent, AddressState> {
@@ -17,6 +18,10 @@ class AddressBloc extends Bloc<AddressEvent, AddressState> {
     on<RemoveAddressByID>(_deleteAddress);
     on<GetAllAddress>(_getAllAddress);
     on<RemoveAllAddress>(_deleteAllAddress);
+    on<SelectAllAddress>(_selectAllAddress);
+    on<SelectDefaultAddress>(_selectDefaultAddress);
+    on<ConfirmationOnDefaultAddress>(_confirmationOnDefaultAddress);
+    on<SelectCurrentAddress>(_selectCurrentAddress);
   }
 
   FutureOr<void> _saveAddress(SaveAddress event, Emitter<AddressState> emit) async {
@@ -296,4 +301,12 @@ class AddressBloc extends Bloc<AddressEvent, AddressState> {
       );
     }
   }
+
+  FutureOr<void> _selectAllAddress(SelectAllAddress event, Emitter<AddressState> emit) {}
+
+  FutureOr<void> _selectDefaultAddress(SelectDefaultAddress event, Emitter<AddressState> emit) {}
+
+  FutureOr<void> _confirmationOnDefaultAddress(ConfirmationOnDefaultAddress event, Emitter<AddressState> emit) {}
+
+  FutureOr<void> _selectCurrentAddress(SelectCurrentAddress event, Emitter<AddressState> emit) {}
 }
