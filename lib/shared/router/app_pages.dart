@@ -28,7 +28,7 @@ class AppRouter {
 
   AppRouter._();
 
-  static const String INITIAL = Routes.ALL_SAVED_ADDRESS_LIST;
+  static const String INITIAL = Routes.PICKUP_LOCATION_FROM_MAP_PAGE;
 
   static final GoRouter _router = GoRouter(
     debugLogDiagnostics: true,
@@ -165,9 +165,15 @@ class AppRouter {
       GoRoute(
         path: Routes.PICKUP_LOCATION_FROM_MAP_PAGE,
         // (TODO(prasant):Prasant): Replace and Set object of address model
-        builder: (context, state) => PickupLocationFromMapPage(
-          addressModel: AddressModel(),
-        ), //state.extra as AddressModel
+        builder: (context, state) {
+          final Map<String, dynamic>? args = state.extra as Map<String, dynamic>?;
+          return PickupLocationFromMapPage(
+            addressModel: args?['addressEntity'] as AddressModel?,
+            allAddress: args?['addressEntities'] ?? <AddressModel>[] as List<AddressModel>,
+            currentIndex: args?['currentIndex'] ?? -1 as int,
+            hasNewAddress: args?['haveNewAddress'] ?? true as bool,
+          );
+        }, //state.extra as AddressModel
       ),
       GoRoute(
         path: Routes.CONFIRM_BUSINESS_TYPE_PAGE,
@@ -356,7 +362,6 @@ class AppRouter {
           );
         },
       ),
-      // Address - ALL_SAVED_ADDRESS_LIST
       GoRoute(
         path: Routes.ALL_SAVED_ADDRESS_LIST,
         builder: (context, state) => const AllSavedAddressPage(),

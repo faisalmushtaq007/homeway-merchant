@@ -3,10 +3,16 @@ part of 'package:homemakers_merchant/app/features/address/index.dart';
 class PickupLocationFromMapPage extends StatefulWidget {
   const PickupLocationFromMapPage({
     super.key,
-    required this.addressModel,
+    this.addressModel,
+    this.currentIndex = -1,
+    this.hasNewAddress = true,
+    this.allAddress = const [],
   });
 
-  final AddressModel addressModel;
+  final AddressModel? addressModel;
+  final int currentIndex;
+  final bool hasNewAddress;
+  final List<AddressModel> allAddress;
 
   @override
   _AddressPageController createState() => _AddressPageController();
@@ -41,39 +47,38 @@ class _AddressPageController extends State<PickupLocationFromMapPage> {
   loc.Location location = loc.Location();
   AddressModel? addressModel;
 
-  Future<void> _initData() async {
-    if (widget.addressModel != null) {
-      final sharedAddressModel = widget.addressModel as AddressModel?;
-      addressModel = sharedAddressModel;
-      defaultLatLng = LatLng(addressModel?.address?.latitude ?? defaultLatLng.latitude, addressModel?.address?.longitude ?? defaultLatLng.longitude);
-      getCurrentUserLatlng = defaultLatLng;
-    } else {
-      await fetchUserLocation();
-      defaultLatLng = getCurrentUserLatlng;
-    }
-    GoogleMapController controller = await mapcontroller.future;
-    controller.animateCamera(CameraUpdate.newLatLngZoom(getCurrentUserLatlng, zoomLevel));
-    controller.animateCamera(
-      CameraUpdate.newCameraPosition(CameraPosition(
-        target: getCurrentUserLatlng,
-        zoom: zoomLevel,
-      )),
-    );
-    await setMarker(getCurrentUserLatlng);
-    await fetchAddressDetails(getCurrentUserLatlng);
-  }
-
   @override
   void initState() {
     super.initState();
     context.read<PermissionBloc>().add(const RequestLocationServiceEnable());
-    defaultLatLng = LatLng(24.788137757488556, 46.76468951627612);
+    defaultLatLng = LatLng(23.6724831, 86.817716);
+    getCurrentUserLatlng = defaultLatLng;
     cameraPosition = CameraPosition(
       target: defaultLatLng,
       zoom: zoomLevel,
     );
+    // Check Permission and Get Current Location
+
     setMarker(defaultLatLng);
     fetchAddressDetails(defaultLatLng);
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _initData().then((value) async {
+      GoogleMapController controller = await mapcontroller.future;
+      controller.animateCamera(CameraUpdate.newLatLngZoom(value, zoomLevel));
+      controller.animateCamera(
+        CameraUpdate.newCameraPosition(CameraPosition(
+          target: value,
+          zoom: zoomLevel,
+        )),
+      );
+      await setMarker(value);
+      await fetchAddressDetails(value);
+      return;
+    });
   }
 
   @override
@@ -82,12 +87,31 @@ class _AddressPageController extends State<PickupLocationFromMapPage> {
     super.dispose();
   }
 
+  Future<LatLng> _initData() async {
+    if (widget.addressModel != null) {
+      appLog.d('IF');
+      final sharedAddressModel = widget.addressModel as AddressModel?;
+      addressModel = sharedAddressModel;
+      defaultLatLng = LatLng(addressModel?.address?.latitude ?? defaultLatLng.latitude, addressModel?.address?.longitude ?? defaultLatLng.longitude);
+      getCurrentUserLatlng = defaultLatLng;
+      return defaultLatLng;
+    } else {
+      appLog.d('ELSE 0.0 ${defaultLatLng}, ${getCurrentUserLatlng}');
+      await fetchUserLocation().whenComplete(() => defaultLatLng = getCurrentUserLatlng);
+      appLog.d('ELSE 1.0 ${defaultLatLng}, ${getCurrentUserLatlng}');
+      return defaultLatLng;
+    }
+    appLog.d('OUTSIDE ELSE ${defaultLatLng}, ${getCurrentUserLatlng}');
+    return defaultLatLng;
+  }
+
   void mapCreated(GoogleMapController controller) {
     if (mapcontroller.isCompleted) {
     } else {
       mapcontroller.complete(controller);
     }
     _initData();
+    return;
   }
 
   void onSelected(Place place) async {
@@ -104,6 +128,7 @@ class _AddressPageController extends State<PickupLocationFromMapPage> {
       )),
     );
     //update();
+    return;
   }
 
   Future<void> onCameraMove(CameraPosition cameraPositiona) async {
@@ -127,9 +152,12 @@ class _AddressPageController extends State<PickupLocationFromMapPage> {
     );
     await fetchAddressDetails(defaultLatLng);*/
     setState(() {});
+    return;
   }
 
-  void onCameraMoveStarted() {}
+  void onCameraMoveStarted() {
+    return;
+  }
 
   Future<void> onCameraIdle() async {
     final GoogleMapController mapController = await mapcontroller.future;
@@ -158,6 +186,7 @@ class _AddressPageController extends State<PickupLocationFromMapPage> {
     });*/
 
     setState(() {});
+    return;
   }
 
   /// Hides the autocomplete overlay
@@ -167,6 +196,7 @@ class _AddressPageController extends State<PickupLocationFromMapPage> {
       this.overlayEntry = null;
       setState(() {});
     }
+    return;
   }
 
   /// Moves the marker to the indicated lat,lng
@@ -198,6 +228,7 @@ class _AddressPageController extends State<PickupLocationFromMapPage> {
     //defaultLatLng = latLng;
     //fetchAddressDetails(latLng);
     setState(() {});
+    return;
   }
 
   Future<void> fetchAddressDetails(LatLng latLng) async {
@@ -223,6 +254,7 @@ class _AddressPageController extends State<PickupLocationFromMapPage> {
     appLog.i("fetchAddressDetails - ${locationAddressData?.toJson()}");
 
     setState(() {});
+    return;
   }
 
   /// Moves the camera to the provided location and updates other UI features to
@@ -239,6 +271,7 @@ class _AddressPageController extends State<PickupLocationFromMapPage> {
         zoom: zoomLevel,
       )),
     );
+    return;
   }
 
   Future<void> onTapOnMap(LatLng latLng) async {
@@ -249,6 +282,7 @@ class _AddressPageController extends State<PickupLocationFromMapPage> {
     defaultLatLng = latLng;
     appLog.i("OnTap ${latLng.toJson()} - ${defaultLatLng.toJson()}");
     setState(() {});
+    return;
   }
 
 /*  double calculateRotation(LatLng start, LatLng end) {
@@ -258,11 +292,14 @@ class _AddressPageController extends State<PickupLocationFromMapPage> {
   }*/
 
   void navigateToCompleteAddressScreen() {
-    context.go(Routes.DELIVERY_ADDRESS, extra: {
+    context.push(Routes.ADDRESS_FORM_PAGE, extra: {
       'locationData': locationAddressData,
       'latitude': defaultLatLng.latitude,
       'longitude': defaultLatLng.longitude,
       'addressModel': addressModel,
+      'allAddress': widget.allAddress.toList(),
+      'currentIndex': widget.hasNewAddress,
+      'hasNewAddress': widget.hasNewAddress,
     });
     return;
   }
@@ -272,22 +309,26 @@ class _AddressPageController extends State<PickupLocationFromMapPage> {
     //await _checkNetworkService();
     if (_serviceEnabled) {
       await _checkPermissions();
+      return;
     } else {
       final bool status = await location.requestService();
       if (status) {
-        fetchUserLocation();
+        await fetchUserLocation();
+        return;
       } else {
         // location service is not enabled by user
         return;
       }
     }
     setState(() {});
+    return;
   }
 
   Future<void> _checkService() async {
     final serviceEnabledResult = await location.serviceEnabled();
     _serviceEnabled = serviceEnabledResult;
     setState(() {});
+    return;
   }
 
   Future<void> _checkNetworkService() async {
@@ -311,6 +352,8 @@ class _AddressPageController extends State<PickupLocationFromMapPage> {
       );
       await setMarker(defaultLatLng);
       await fetchAddressDetails(defaultLatLng);
+      setState(() {});
+      return;
     } else if (_permissionGranted == loc.PermissionStatus.denied) {
       await _requestPermission();
       if (_permissionGranted != loc.PermissionStatus.deniedForever) {
@@ -318,14 +361,18 @@ class _AddressPageController extends State<PickupLocationFromMapPage> {
       } else {
         await _checkPermissions();
       }
+      setState(() {});
+      return;
     }
     setState(() {});
+    return;
   }
 
   Future<void> _requestPermission() async {
     final permissionRequestedResult = await location.requestPermission();
     _permissionGranted = permissionRequestedResult;
     setState(() {});
+    return;
   }
 
   Future<void> _getLocation() async {
@@ -350,15 +397,14 @@ class _AddressPageController extends State<PickupLocationFromMapPage> {
       latitude = position.latitude;
       longitude = position.longitude;*/
       loc.LocationData _locationResult = await location.getLocation();
-      await Future.delayed(const Duration(seconds: 5));
-      if (_locationResult != null) {
-        latitude = _locationResult.latitude ?? 0;
-        longitude = _locationResult.longitude ?? 0;
-      }
+      await Future.delayed(const Duration(seconds: 1), () {});
+      latitude = _locationResult.latitude ?? 0;
+      longitude = _locationResult.longitude ?? 0;
       getCurrentUserLatlng = LatLng(latitude, longitude);
       defaultLatLng = getCurrentUserLatlng;
       debugPrint("Location - ${defaultLatLng.toJson()}- ${getCurrentUserLatlng.toJson()}");
       _loading = false;
+      setState(() {});
 
       //await setMarker(defaultLatLng);
       //await fetchAddressDetails(defaultLatLng);
@@ -366,7 +412,7 @@ class _AddressPageController extends State<PickupLocationFromMapPage> {
       _error = err.code;
       _loading = false;
     }
-    setState(() {});
+    return;
   }
 
   void onNewSearch(GBSearchData place) {}
@@ -383,6 +429,7 @@ class _AddressPageController extends State<PickupLocationFromMapPage> {
     );
     await setMarker(defaultLatLng);
     await fetchAddressDetails(defaultLatLng);
+    return;
   }
 
   @override
@@ -434,20 +481,10 @@ class _AddressPageView extends WidgetView<PickupLocationFromMapPage, _AddressPag
       ),
       child: Directionality(
         textDirection: serviceLocator<LanguageController>().targetTextDirection,
-        child: PlatformScaffold(
-          material: (context, platform) {
-            return MaterialScaffoldData(
-              resizeToAvoidBottomInset: false,
-            );
-          },
-          cupertino: (context, platform) {
-            return CupertinoPageScaffoldData(
-              resizeToAvoidBottomInset: false,
-            );
-          },
-          appBar: PlatformAppBar(
+        child: Scaffold(
+          appBar: AppBar(
             automaticallyImplyLeading: true,
-            trailingActions: const [
+            actions: const [
               Padding(
                 padding: EdgeInsetsDirectional.symmetric(horizontal: 14),
                 child: LanguageSelectionWidget(),
@@ -466,140 +503,161 @@ class _AddressPageView extends WidgetView<PickupLocationFromMapPage, _AddressPag
               padding: EdgeInsetsDirectional.only(
                 top: 0,
               ),
-              child: Container(
-                constraints: BoxConstraints(
-                  minWidth: double.infinity,
-                  minHeight: media.size.height,
-                ),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  mainAxisSize: MainAxisSize.min,
-                  textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                  children: [
-                    Flexible(
-                      flex: 3,
-                      child: Stack(
-                        children: [
-                          Animarker(
-                            curve: Curves.ease,
-                            mapId: state.mapcontroller.future.then<int>((value) => value.mapId),
-                            //Grab Google Map Id
-                            markers: state.markers.values.toSet(),
-                            rippleRadius: 0.12,
-                            rippleColor: Colors.teal,
-                            rippleDuration: Duration(milliseconds: 2500),
-                            useRotation: false,
-                            shouldAnimateCamera: true,
-                            key: Key(state.markedIdOfCurrentUser),
-                            child: GoogleMap(
-                              scrollGesturesEnabled: true,
-                              initialCameraPosition: state.cameraPosition!,
-                              onMapCreated: state.mapCreated,
-                              //onCameraMoveStarted: state.onCameraMoveStarted,
-                              //onCameraIdle: state.onCameraIdle,
-                              onCameraMove: state.onCameraMove,
-                              //minMaxZoomPreference: MinMaxZoomPreference(14, 100),
-                              tiltGesturesEnabled: true,
-                              rotateGesturesEnabled: true,
-                              onTap: state.onTapOnMap,
-                              zoomGesturesEnabled: true,
-                              zoomControlsEnabled: true,
-                              gestureRecognizers: Set()
-                                ..add(Factory<EagerGestureRecognizer>(() => EagerGestureRecognizer()))
-                                ..add(
-                                  Factory<OneSequenceGestureRecognizer>(
-                                    () => new EagerGestureRecognizer(),
+              child: SingleChildScrollView(
+                child: Container(
+                  constraints: BoxConstraints(
+                    minWidth: double.infinity,
+                    maxHeight: media.size.height - (media.padding.top + kToolbarHeight + media.padding.bottom),
+                  ),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    mainAxisSize: MainAxisSize.min,
+                    textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                    children: [
+                      Expanded(
+                        flex: 4,
+                        child: Stack(
+                          children: [
+                            Animarker(
+                              curve: Curves.ease,
+                              mapId: state.mapcontroller.future.then<int>((value) => value.mapId),
+                              //Grab Google Map Id
+                              markers: state.markers.values.toSet(),
+                              rippleRadius: 0.12,
+                              rippleColor: Colors.teal,
+                              rippleDuration: Duration(milliseconds: 2500),
+                              useRotation: false,
+                              shouldAnimateCamera: true,
+                              key: Key(state.markedIdOfCurrentUser),
+                              child: GoogleMap(
+                                scrollGesturesEnabled: true,
+                                initialCameraPosition: state.cameraPosition!,
+                                onMapCreated: state.mapCreated,
+                                //onCameraMoveStarted: state.onCameraMoveStarted,
+                                //onCameraIdle: state.onCameraIdle,
+                                onCameraMove: state.onCameraMove,
+                                //minMaxZoomPreference: MinMaxZoomPreference(14, 100),
+                                tiltGesturesEnabled: true,
+                                rotateGesturesEnabled: true,
+                                onTap: state.onTapOnMap,
+                                zoomGesturesEnabled: true,
+                                zoomControlsEnabled: true,
+                                gestureRecognizers: Set()
+                                  ..add(Factory<EagerGestureRecognizer>(() => EagerGestureRecognizer()))
+                                  ..add(
+                                    Factory<OneSequenceGestureRecognizer>(
+                                      () => new EagerGestureRecognizer(),
+                                    ),
                                   ),
-                                ),
-                              key: const Key('address-picker-map'),
-                            ),
-                          ),
-                          PositionedDirectional(
-                            top: 0,
-                            start: 0,
-                            end: 0,
-                            child: Container(
-                              child: SearchGooglePlacesWidget(
-                                  apiKey: 'AIzaSyB6wUuIm0xLJbTFm6qPiwKgULJupJ8IE8s',
-                                  // The language of the autocompletion
-                                  language: 'en',
-                                  // The position used to give better recommendations. In this case we are using the user position
-                                  radius: 30000,
-                                  location: state.defaultLatLng,
-                                  onSelected: state.onSelected,
-                                  onSearch: (Place place) {},
-                                  onNewSearch: state.onNewSearch,
-                                  onNewSelected: state.onNewSelected,
-                                  outerMarginOfSearchTextField: EdgeInsetsDirectional.only(start: margins, end: margins)),
-                            ),
-                          ),
-                          PositionedDirectional(
-                            bottom: 0,
-                            end: margins * 2.5,
-                            start: margins * 2.5,
-                            child: OutlinedButton.icon(
-                              onPressed: () async {
-                                await state.fetchUserLocation();
-                                return;
-                              },
-                              icon: Icon(Icons.gps_fixed_outlined),
-                              label: Text(
-                                'Use current location',
-                              ),
-                              style: OutlinedButton.styleFrom(
-                                padding: EdgeInsetsDirectional.symmetric(horizontal: 16),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadiusDirectional.all(Radius.circular(10)),
-                                ),
+                                key: const Key('address-picker-map'),
                               ),
                             ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    Divider(),
-                    Flexible(
-                        child: Padding(
-                      padding: EdgeInsetsDirectional.only(
-                        bottom: bottomPadding - margins,
-                        start: margins * 2.5,
-                        end: margins * 2.5,
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          SizedBox(
-                            height: 8,
-                          ),
-                          Text('Your location', style: Theme.of(context).textTheme.titleSmall),
-                          SizedBox(
-                            height: 12,
-                          ),
-                          Flexible(
-                            child: Text(
-                              '${state.displayName}',
-                              style: Theme.of(context).textTheme.labelLarge,
+                            PositionedDirectional(
+                              top: 0,
+                              start: 0,
+                              end: 0,
+                              child: Container(
+                                child: SearchGooglePlacesWidget(
+                                    apiKey: 'AIzaSyB6wUuIm0xLJbTFm6qPiwKgULJupJ8IE8s',
+                                    // The language of the autocompletion
+                                    language: 'en',
+                                    // The position used to give better recommendations. In this case we are using the user position
+                                    radius: 30000,
+                                    location: state.defaultLatLng,
+                                    onSelected: state.onSelected,
+                                    onSearch: (Place place) {},
+                                    onNewSearch: state.onNewSearch,
+                                    onNewSelected: state.onNewSelected,
+                                    outerMarginOfSearchTextField: EdgeInsetsDirectional.only(start: margins, end: margins)),
+                              ),
                             ),
-                          ),
-                          SizedBox(
-                            height: 12,
-                          ),
-                          ElevatedButton(
-                            onPressed: state.navigateToCompleteAddressScreen,
-                            child: Text(
-                              'Confirm Location',
-                              style: Theme.of(context).textTheme.titleMedium!.copyWith(
-                                    color: Colors.white,
+                            PositionedDirectional(
+                              bottom: 0,
+                              end: margins * 2.5,
+                              start: margins * 2.5,
+                              child: OutlinedButton.icon(
+                                onPressed: () async {
+                                  await state.fetchUserLocation();
+                                  return;
+                                },
+                                icon: Icon(Icons.gps_fixed_outlined),
+                                label: Text(
+                                  'Use current location',
+                                ),
+                                style: OutlinedButton.styleFrom(
+                                  padding: EdgeInsetsDirectional.symmetric(horizontal: 16),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadiusDirectional.all(Radius.circular(10)),
                                   ),
+                                ),
+                              ),
                             ),
-                            style: ElevatedButton.styleFrom(),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
-                    ))
-                  ],
+                      const AnimatedGap(12, duration: Duration(milliseconds: 100)),
+                      Expanded(
+                          child: Padding(
+                        padding: EdgeInsetsDirectional.only(
+                          //bottom: bottomPadding - margins,
+                          start: margins * 2.5,
+                          end: margins * 2.5,
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Text('Your location',
+                                style: Theme.of(context).textTheme.titleMedium!.copyWith(
+                                      fontWeight: FontWeight.w600,
+                                    )),
+                            const AnimatedGap(6, duration: Duration(milliseconds: 100)),
+                            Flexible(
+                              child: Wrap(
+                                children: [
+                                  Text(
+                                    '${state.displayName}',
+                                    style: Theme.of(context).textTheme.labelLarge,
+                                  ),
+                                ],
+                              ),
+                            ),
+                            const AnimatedGap(6, duration: Duration(milliseconds: 100)),
+                          ],
+                        ),
+                      )),
+                      Padding(
+                        padding: EdgeInsetsDirectional.only(
+                          //bottom: bottomPadding - margins,
+                          start: margins * 2.5,
+                          end: margins * 2.5,
+                        ),
+                        child: ElevatedButton(
+                          onPressed: () async {
+                            await context.push(Routes.ADDRESS_FORM_PAGE, extra: {
+                              'locationData': state.locationAddressData,
+                              'latitude': state.defaultLatLng.latitude,
+                              'longitude': state.defaultLatLng.longitude,
+                              'addressModel': state.addressModel,
+                              'allAddress': widget.allAddress.toList(),
+                              'currentIndex': widget.currentIndex,
+                              'hasNewAddress': widget.hasNewAddress,
+                              'hasViewAddress': false,
+                            });
+                            return;
+                          },
+                          child: Text(
+                            'Confirm Location',
+                            style: context.titleMedium!.copyWith(
+                              color: Colors.white,
+                            ),
+                          ).translate(),
+                          style: ElevatedButton.styleFrom(),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),
