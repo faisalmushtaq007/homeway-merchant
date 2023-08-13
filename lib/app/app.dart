@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:google_mlkit_translation/google_mlkit_translation.dart';
+import 'package:homemakers_merchant/app/features/address/presentation/manager/address_bloc.dart';
 import 'package:homemakers_merchant/app/features/authentication/presentation/manager/otp_verification/otp_verification_bloc.dart';
 import 'package:homemakers_merchant/app/features/authentication/presentation/manager/phone_number_verification_bloc.dart';
 import 'package:homemakers_merchant/app/features/authentication/presentation/pages/login_page.dart';
@@ -111,6 +112,10 @@ class _AppState extends State<App> with GetItStateMixin {
         ),
         BlocProvider<BusinessProfileBloc>(
           key: const Key('business_profile_bloc_provider'),
+          create: (context) => serviceLocator(),
+        ),
+        BlocProvider<AddressBloc>(
+          key: const Key('address_bloc_provider'),
           create: (context) => serviceLocator(),
         ),
       ],

@@ -177,7 +177,7 @@ class _BusinessInformationPageState extends State<BusinessInformationPage> with 
   }
 
   @override
-  void setState(ui.VoidCallback fn) {
+  void setState(VoidCallback fn) {
     if (mounted) {
       SchedulerBinding.instance.addPostFrameCallback((_) {
         super.setState(fn);

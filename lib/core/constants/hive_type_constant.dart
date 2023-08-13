@@ -1,5 +1,3 @@
-import 'package:homemakers_merchant/app/features/address/domain/entities/address_model.dart';
-
 class HiveTypeConstant {
   static const userModel = 0;
   static const addressModel = 1;

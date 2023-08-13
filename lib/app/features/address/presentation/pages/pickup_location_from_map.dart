@@ -1,38 +1,4 @@
-import 'package:async/async.dart';
-import 'package:flutter/foundation.dart';
-import 'package:flutter/gestures.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_animarker/flutter_map_marker_animation.dart';
-import 'package:geocoder_buddy/geocoder_buddy.dart';
-import 'package:geocoding/geocoding.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:homemakers_merchant/app/features/address/domain/entities/address_model.dart';
-import 'package:homemakers_merchant/base/widget_view.dart';
-import 'package:homemakers_merchant/core/constants/global_app_constants.dart';
-import 'package:flex_color_scheme/flex_color_scheme.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
-import 'package:go_router/go_router.dart';
-import 'package:homemakers_merchant/app/features/permission/presentation/bloc/permission_bloc.dart';
-import 'package:homemakers_merchant/bootup/injection_container.dart';
-import 'package:homemakers_merchant/config/translation/extension/text_extension.dart';
-import 'package:homemakers_merchant/config/translation/language_controller.dart';
-import 'package:homemakers_merchant/config/translation/widgets/language_selection_widget.dart';
-import 'package:homemakers_merchant/core/constants/global_app_constants.dart';
-import 'package:homemakers_merchant/core/extensions/app_extension.dart';
-import 'package:homemakers_merchant/core/extensions/aync_extension/async_extension.dart';
-import 'package:homemakers_merchant/shared/widgets/app/app_logo.dart';
-import 'package:homemakers_merchant/shared/widgets/app/page_body.dart';
-import 'package:homemakers_merchant/shared/widgets/universal/animate_do/animate_do.dart';
-import 'package:homemakers_merchant/shared/widgets/universal/animated_gap/gap.dart';
-import 'package:homemakers_merchant/shared/widgets/universal/constrained_scrollable_views/constrained_scrollable_views.dart';
-import 'package:homemakers_merchant/shared/router/app_pages.dart';
-import 'package:homemakers_merchant/shared/widgets/app/page_body.dart';
-import 'package:go_router/go_router.dart';
-import 'package:homemakers_merchant/shared/widgets/universal/map/google_map_place/google_map_place.dart';
-import 'package:homemakers_merchant/utils/app_log.dart';
-import 'package:location/location.dart' as loc;
+part of 'package:homemakers_merchant/app/features/address/index.dart';
 
 class PickupLocationFromMapPage extends StatefulWidget {
   const PickupLocationFromMapPage({
@@ -626,7 +592,6 @@ class _AddressPageView extends WidgetView<PickupLocationFromMapPage, _AddressPag
                               'Confirm Location',
                               style: Theme.of(context).textTheme.titleMedium!.copyWith(
                                     color: Colors.white,
-                                    fontSize: 18,
                                   ),
                             ),
                             style: ElevatedButton.styleFrom(),

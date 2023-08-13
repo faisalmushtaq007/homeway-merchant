@@ -1,12 +1,8 @@
-import 'package:json_annotation/json_annotation.dart';
-import 'package:flutter/foundation.dart';
-import 'package:network_manager/network_manager.dart';
+part of 'package:homemakers_merchant/app/features/address/index.dart';
 
-part 'address_model.g.dart';
-
-@JsonSerializable(explicitToJson: true)
 class AddressModel extends INetworkModel<AddressModel> {
   AddressModel({
+    this.addressID = -1,
     this.isDefault = false,
     this.countryDialCode = '',
     this.address,
@@ -21,66 +17,63 @@ class AddressModel extends INetworkModel<AddressModel> {
     this.updatedAt = -1,
   });
 
-  factory AddressModel.fromJson(Map<String, Object?> json) => _$AddressModelFromJson(json);
+  factory AddressModel.fromJson(Map<String, dynamic> json) => AddressModel(
+        addressID: json['addressID'] as int? ?? -1,
+        isDefault: json['isDefault'] as bool? ?? false,
+        countryDialCode: json['country_dial_code'] as String? ?? '',
+        address: json['address'] == null ? AddressBean() : AddressBean.fromJson(json['address'] as Map<String, dynamic>),
+        addressRefId: json['address_ref_id'] as String? ?? '',
+        isoCode: json['iso_code'] as String? ?? '',
+        phoneNumber: json['phone_number'] as String? ?? '',
+        userId: json['user_id'] as int? ?? -1,
+        fullName: json['full_name'] as String? ?? '',
+        createdAt: json['createdAt'] as int? ?? -1,
+        anonymousUserId: json['anonymous_user_id'] as String? ?? '',
+        boundingbox: (json['boundingbox'] as List<dynamic>?)?.map((e) => e as String).toList() ?? [],
+        updatedAt: json['updatedAt'] as int? ?? -1,
+      );
 
-  @JsonKey(
-    name: 'address_ref_id',
-    defaultValue: '',
-  )
+  int? addressID;
+
   String? addressRefId;
-  @JsonKey(
-    name: 'anonymous_user_id',
-    defaultValue: '',
-  )
+
   String? anonymousUserId;
-  @JsonKey(
-    name: 'user_id',
-    defaultValue: -1,
-  )
+
   int? userId;
-  @JsonKey(
-    name: 'full_name',
-    defaultValue: '',
-  )
+
   String? fullName;
-  @JsonKey(
-    name: 'phone_number',
-    defaultValue: '',
-  )
+
   String? phoneNumber;
-  @JsonKey(
-    name: 'country_dial_code',
-    defaultValue: '',
-  )
+
   String? countryDialCode;
-  @JsonKey(
-    name: 'iso_code',
-    defaultValue: '',
-  )
+
   String? isoCode;
-  @JsonKey(
-    name: 'createdAt',
-    defaultValue: -1,
-  )
+
   int? createdAt;
-  @JsonKey(
-    name: 'updatedAt',
-    defaultValue: -1,
-  )
+
   int? updatedAt;
-  @JsonKey(
-    name: 'address',
-  )
+
   AddressBean? address;
-  @JsonKey(
-    name: 'boundingbox',
-    defaultValue: [],
-  )
+
   List<String>? boundingbox;
-  @JsonKey(name: 'isDefault', defaultValue: false)
+
   bool? isDefault;
 
-  Map<String, dynamic> toMap() => _$AddressModelToJson(this);
+  Map<String, dynamic> toMap() => <String, dynamic>{
+        'addressID': this.addressID,
+        'address_ref_id': this.addressRefId,
+        'anonymous_user_id': this.anonymousUserId,
+        'user_id': this.userId,
+        'full_name': this.fullName,
+        'phone_number': this.phoneNumber,
+        'country_dial_code': this.countryDialCode,
+        'iso_code': this.isoCode,
+        'createdAt': this.createdAt,
+        'updatedAt': this.updatedAt,
+        'address': this.address?.toJson(),
+        'boundingbox': this.boundingbox,
+        'isDefault': this.isDefault,
+      };
 
   @override
   AddressModel fromJson(Map<String, dynamic> json) {
@@ -89,9 +82,40 @@ class AddressModel extends INetworkModel<AddressModel> {
 
   @override
   Map<String, dynamic>? toJson() => toMap();
+
+  AddressModel copyWith({
+    int? addressID,
+    String? addressRefId,
+    String? anonymousUserId,
+    int? userId,
+    String? fullName,
+    String? phoneNumber,
+    String? countryDialCode,
+    String? isoCode,
+    int? createdAt,
+    int? updatedAt,
+    AddressBean? address,
+    List<String>? boundingbox,
+    bool? isDefault,
+  }) {
+    return AddressModel(
+      addressID: addressID ?? this.addressID,
+      addressRefId: addressRefId ?? this.addressRefId,
+      anonymousUserId: anonymousUserId ?? this.anonymousUserId,
+      userId: userId ?? this.userId,
+      fullName: fullName ?? this.fullName,
+      phoneNumber: phoneNumber ?? this.phoneNumber,
+      countryDialCode: countryDialCode ?? this.countryDialCode,
+      isoCode: isoCode ?? this.isoCode,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+      address: address ?? this.address,
+      boundingbox: boundingbox ?? this.boundingbox,
+      isDefault: isDefault ?? this.isDefault,
+    );
+  }
 }
 
-@JsonSerializable(explicitToJson: true)
 class AddressBean extends INetworkModel<AddressBean> {
   AddressBean({
     this.latitude = 0.0,
@@ -129,177 +153,145 @@ class AddressBean extends INetworkModel<AddressBean> {
     this.stateCode = -1,
   });
 
-  factory AddressBean.fromJson(Map<String, Object?> json) => _$AddressBeanFromJson(json);
+  factory AddressBean.fromJson(Map<String, Object?> json) => AddressBean(
+        latitude: (json['latitude'] as num?)?.toDouble() ?? 0.0,
+        longitude: (json['longitude'] as num?)?.toDouble() ?? 0.0,
+        state: json['state'] as String? ?? '',
+        category: json['category'] as String? ?? '',
+        city: json['city'] as String? ?? '',
+        area: json['area'] as String? ?? '',
+        landmark: json['landmark'] as String? ?? '',
+        country: json['country'] as String? ?? '',
+        district: json['district'] as String? ?? '',
+        isDefault: json['isDefault'] as bool? ?? false,
+        addressType: json['address_type'] as String? ?? '',
+        indexOfSavedAddressAs: json['index_of_saved_address'] as int? ?? -1,
+        countryCode: json['country_code'] as int? ?? -1,
+        placeId: json['place_id'] as int? ?? -1,
+        apartment: json['apartment'] as String? ?? '',
+        postalCode: json['postal_code'] as int? ?? -1,
+        displayAddressName: json['display_address_name'] as String? ?? '',
+        savedAddressAs: json['saved_address_as'] as String? ?? '',
+        placeRank: json['place_rank'] as int? ?? -1,
+        village: json['village'] as String? ?? '',
+        type: json['type'] as String? ?? '',
+        town: json['town'] as String? ?? '',
+        suburb: json['suburb'] as String? ?? '',
+        stateDistrict: json['state_district'] as String? ?? '',
+        road: json['road'] as String? ?? '',
+        osmType: json['osm_type'] as String? ?? '',
+        municipality: json['municipality'] as String? ?? '',
+        county: json['county'] as String? ?? '',
+        cityDistrict: json['city_district'] as String? ?? '',
+        cityCode: json['city_code'] as int? ?? -1,
+        osmId: json['osm_id'] as int? ?? -1,
+        pickupAddress: json['pickup_address'] as String? ?? '',
+        stateCode: json['state_code'] as int? ?? -1,
+      );
 
-  @JsonKey(
-    name: 'place_id',
-    defaultValue: -1,
-  )
   int? placeId;
-  @JsonKey(
-    name: 'pickup_address',
-    defaultValue: '',
-  )
+
   String? pickupAddress;
-  @JsonKey(
-    name: 'apartment',
-    defaultValue: '',
-  )
+
   String? apartment;
-  @JsonKey(
-    name: 'area',
-    defaultValue: '',
-  )
+
   String? area;
-  @JsonKey(
-    name: 'landmark',
-    defaultValue: '',
-  )
+
   String? landmark;
-  @JsonKey(
-    name: 'district',
-    defaultValue: '',
-  )
+
   String? district;
-  @JsonKey(
-    name: 'postal_code',
-    defaultValue: -1,
-  )
+
   int? postalCode;
-  @JsonKey(
-    name: 'city',
-    defaultValue: '',
-  )
+
   String? city;
-  @JsonKey(
-    name: 'state',
-    defaultValue: '',
-  )
+
   String? state;
-  @JsonKey(
-    name: 'country',
-    defaultValue: '',
-  )
+
   String? country;
-  @JsonKey(
-    name: 'country_code',
-    defaultValue: -1,
-  )
+
   int? countryCode;
-  @JsonKey(
-    name: 'city_code',
-    defaultValue: -1,
-  )
+
   int? cityCode;
-  @JsonKey(
-    name: 'state_code',
-    defaultValue: -1,
-  )
+
   int? stateCode;
-  @JsonKey(
-    name: 'isDefault',
-    defaultValue: false,
-  )
+
   bool? isDefault;
-  @JsonKey(
-    name: 'saved_address_as',
-    defaultValue: '',
-  )
+
   String? savedAddressAs;
-  @JsonKey(
-    name: 'index_of_saved_address',
-    defaultValue: -1,
-  )
+
   int? indexOfSavedAddressAs;
-  @JsonKey(
-    name: 'latitude',
-    defaultValue: 0.0,
-  )
+
   double? latitude;
-  @JsonKey(
-    name: 'longitude',
-    defaultValue: 0.0,
-  )
+
   double? longitude;
-  @JsonKey(
-    name: 'road',
-    defaultValue: '',
-  )
+
   String? road;
-  @JsonKey(
-    name: 'village',
-    defaultValue: '',
-  )
+
   String? village;
-  @JsonKey(
-    name: 'state_district',
-    defaultValue: '',
-  )
+
   String? stateDistrict;
-  @JsonKey(
-    name: 'city_district',
-    defaultValue: '',
-  )
+
   String? cityDistrict;
-  @JsonKey(
-    name: 'municipality',
-    defaultValue: '',
-  )
+
   String? municipality;
-  @JsonKey(
-    name: 'suburb',
-    defaultValue: '',
-  )
+
   String? suburb;
-  @JsonKey(
-    name: 'town',
-    defaultValue: '',
-  )
+
   String? town;
-  @JsonKey(
-    name: 'county',
-    defaultValue: '',
-  )
+
   String? county;
-  @JsonKey(
-    name: 'osm_type',
-    defaultValue: '',
-  )
+
   String? osmType;
-  @JsonKey(
-    name: 'osm_id',
-    defaultValue: -1,
-  )
+
   int? osmId;
-  @JsonKey(
-    name: 'place_rank',
-    defaultValue: -1,
-  )
+
   int? placeRank;
-  @JsonKey(
-    name: 'category',
-    defaultValue: '',
-  )
+
   String? category;
-  @JsonKey(
-    name: 'type',
-    defaultValue: '',
-  )
+
   String? type;
-  @JsonKey(
-    name: 'address_type',
-    defaultValue: '',
-  )
+
   String? addressType;
 
 //selectedMapAddress
-  @JsonKey(
-    name: 'display_address_name',
-    defaultValue: '',
-  )
+
   String? displayAddressName;
 
-  Map<String, dynamic> toMap() => _$AddressBeanToJson(this);
+  Map<String, dynamic> toMap() => <String, dynamic>{
+        'place_id': this.placeId,
+        'pickup_address': this.pickupAddress,
+        'apartment': this.apartment,
+        'area': this.area,
+        'landmark': this.landmark,
+        'district': this.district,
+        'postal_code': this.postalCode,
+        'city': this.city,
+        'state': this.state,
+        'country': this.country,
+        'country_code': this.countryCode,
+        'city_code': this.cityCode,
+        'state_code': this.stateCode,
+        'isDefault': this.isDefault,
+        'saved_address_as': this.savedAddressAs,
+        'index_of_saved_address': this.indexOfSavedAddressAs,
+        'latitude': this.latitude,
+        'longitude': this.longitude,
+        'road': this.road,
+        'village': this.village,
+        'state_district': this.stateDistrict,
+        'city_district': this.cityDistrict,
+        'municipality': this.municipality,
+        'suburb': this.suburb,
+        'town': this.town,
+        'county': this.county,
+        'osm_type': this.osmType,
+        'osm_id': this.osmId,
+        'place_rank': this.placeRank,
+        'category': this.category,
+        'type': this.type,
+        'address_type': this.addressType,
+        'display_address_name': this.displayAddressName,
+      };
 
   @override
   AddressBean fromJson(Map<String, dynamic> json) {
@@ -308,4 +300,76 @@ class AddressBean extends INetworkModel<AddressBean> {
 
   @override
   Map<String, dynamic>? toJson() => toMap();
+
+  AddressBean copyWith({
+    int? placeId,
+    String? pickupAddress,
+    String? apartment,
+    String? area,
+    String? landmark,
+    String? district,
+    int? postalCode,
+    String? city,
+    String? state,
+    String? country,
+    int? countryCode,
+    int? cityCode,
+    int? stateCode,
+    bool? isDefault,
+    String? savedAddressAs,
+    int? indexOfSavedAddressAs,
+    double? latitude,
+    double? longitude,
+    String? road,
+    String? village,
+    String? stateDistrict,
+    String? cityDistrict,
+    String? municipality,
+    String? suburb,
+    String? town,
+    String? county,
+    String? osmType,
+    int? osmId,
+    int? placeRank,
+    String? category,
+    String? type,
+    String? addressType,
+    String? displayAddressName,
+  }) {
+    return AddressBean(
+      placeId: placeId ?? this.placeId,
+      pickupAddress: pickupAddress ?? this.pickupAddress,
+      apartment: apartment ?? this.apartment,
+      area: area ?? this.area,
+      landmark: landmark ?? this.landmark,
+      district: district ?? this.district,
+      postalCode: postalCode ?? this.postalCode,
+      city: city ?? this.city,
+      state: state ?? this.state,
+      country: country ?? this.country,
+      countryCode: countryCode ?? this.countryCode,
+      cityCode: cityCode ?? this.cityCode,
+      stateCode: stateCode ?? this.stateCode,
+      isDefault: isDefault ?? this.isDefault,
+      savedAddressAs: savedAddressAs ?? this.savedAddressAs,
+      indexOfSavedAddressAs: indexOfSavedAddressAs ?? this.indexOfSavedAddressAs,
+      latitude: latitude ?? this.latitude,
+      longitude: longitude ?? this.longitude,
+      road: road ?? this.road,
+      village: village ?? this.village,
+      stateDistrict: stateDistrict ?? this.stateDistrict,
+      cityDistrict: cityDistrict ?? this.cityDistrict,
+      municipality: municipality ?? this.municipality,
+      suburb: suburb ?? this.suburb,
+      town: town ?? this.town,
+      county: county ?? this.county,
+      osmType: osmType ?? this.osmType,
+      osmId: osmId ?? this.osmId,
+      placeRank: placeRank ?? this.placeRank,
+      category: category ?? this.category,
+      type: type ?? this.type,
+      addressType: addressType ?? this.addressType,
+      displayAddressName: displayAddressName ?? this.displayAddressName,
+    );
+  }
 }

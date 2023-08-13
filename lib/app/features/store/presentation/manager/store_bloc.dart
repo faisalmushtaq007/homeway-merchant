@@ -2,23 +2,15 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:bloc_concurrency/bloc_concurrency.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:homemakers_merchant/app/features/profile/index.dart';
 import 'package:homemakers_merchant/app/features/store/common/store_enum.dart';
-import 'package:homemakers_merchant/app/features/store/domain/entities/store_entity.dart';
 import 'package:homemakers_merchant/app/features/store/index.dart';
 import 'package:homemakers_merchant/bootup/injection_container.dart';
-import 'package:homemakers_merchant/core/extensions/global_extensions/dart_extensions.dart';
-import 'package:homemakers_merchant/core/local/database/base/identifiable.dart';
-import 'package:homemakers_merchant/core/local/database/base/repository_failure.dart';
 import 'package:homemakers_merchant/shared/states/data_source_state.dart';
 import 'package:homemakers_merchant/utils/app_equatable/app_equatable.dart';
 import 'package:homemakers_merchant/utils/app_log.dart';
-import 'package:homemakers_merchant/utils/functional/functional.dart';
-import 'package:meta/meta.dart';
 
 part 'store_event.dart';
-
 part 'store_state.dart';
 
 class StoreBloc extends Bloc<StoreEvent, StoreState> {

@@ -24,7 +24,7 @@ abstract class Routes {
   static const FOODS = _Paths.FOODS;
   static const ADD_FOOD = _Paths.ADD_FOOD;
   static const DELIVERY_ADDRESS = _Paths.DELIVERY_ADDRESS;
-  static const ADDRESS_LIST = _Paths.ADDRESS_LIST;
+  static const ALL_SAVED_ADDRESS_LIST = _Paths.ALL_SAVED_ADDRESS_LIST;
   static const SAVED_ADDRESS = _Paths.SAVED_ADDRESS;
   static const TERMS_AND_CONDITIONS = _Paths.TERMS_AND_CONDITIONS;
   static const ABOUT_US = _Paths.ABOUT_US;
@@ -104,7 +104,7 @@ abstract class _Paths {
   static const FOODS = '/foods';
   static const ADD_FOOD = '/add-food';
   static const DELIVERY_ADDRESS = '/delivery-address'; // delivery_address page
-  static const ADDRESS_LIST = '/address-list'; // address_list page
+  static const ALL_SAVED_ADDRESS_LIST = '/address-list'; // address_list page
   static const SAVED_ADDRESS = '/saved-address';
   static const TERMS_AND_CONDITIONS = '/termsAndConditions';
   static const ABOUT_US = '/aboutUs';

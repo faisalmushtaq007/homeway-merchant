@@ -1,4 +1,5 @@
 import 'package:get_it/get_it.dart';
+import 'package:homemakers_merchant/app/features/address/presentation/manager/address_bloc.dart';
 import 'package:homemakers_merchant/app/features/authentication/data/data_sources/authentication_remote_data_source.dart';
 import 'package:homemakers_merchant/app/features/authentication/domain/repositories/authentication_repository.dart';
 import 'package:homemakers_merchant/app/features/authentication/domain/use_cases/send_otp_usecase.dart';
@@ -11,8 +12,8 @@ import 'package:homemakers_merchant/app/features/profile/index.dart';
 import 'package:homemakers_merchant/app/features/profile/presentation/manager/bank/payment_bank_bloc.dart';
 import 'package:homemakers_merchant/app/features/profile/presentation/manager/document/business_document_bloc.dart';
 import 'package:homemakers_merchant/app/features/profile/presentation/manager/profile/business_profile_bloc.dart';
-import 'package:homemakers_merchant/app/features/store/domain/entities/store_entity.dart';
 import 'package:homemakers_merchant/app/features/store/index.dart';
+import 'package:homemakers_merchant/app/features/address/index.dart';
 import 'package:homemakers_merchant/app/features/store/presentation/manager/store_bloc.dart';
 import 'package:homemakers_merchant/config/permission/permission_controller.dart';
 import 'package:homemakers_merchant/config/permission/permission_service.dart';
@@ -553,4 +554,6 @@ void _setUpStateManagement() {
   serviceLocator.registerFactory<MenuBloc>(() => MenuBloc());
   // Store Bloc
   serviceLocator.registerFactory<StoreBloc>(() => StoreBloc());
+  // Address Bloc
+  serviceLocator.registerFactory<AddressBloc>(() => AddressBloc());
 }

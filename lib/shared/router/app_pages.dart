@@ -3,16 +3,13 @@ import 'dart:convert';
 
 import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
-import 'package:homemakers_merchant/app/features/address/domain/entities/address_model.dart';
-import 'package:homemakers_merchant/app/features/address/presentation/pages/address_form_page.dart';
-import 'package:homemakers_merchant/app/features/address/presentation/pages/pickup_location_from_map.dart';
+import 'package:homemakers_merchant/app/features/address/index.dart';
 import 'package:homemakers_merchant/app/features/authentication/presentation/pages/about_us.dart';
 import 'package:homemakers_merchant/app/features/authentication/presentation/pages/login_page.dart';
 import 'package:homemakers_merchant/app/features/authentication/presentation/pages/otp_verification_page.dart';
 import 'package:homemakers_merchant/app/features/authentication/presentation/pages/phone_number_verification_page.dart';
 import 'package:homemakers_merchant/app/features/authentication/presentation/pages/privacy_and_policy_view.dart';
 import 'package:homemakers_merchant/app/features/authentication/presentation/pages/terms_and_conditions_view.dart';
-
 import 'package:homemakers_merchant/app/features/dashboard/presentation/pages/main_dashboard_page.dart';
 import 'package:homemakers_merchant/app/features/dashboard/presentation/pages/primary_dashboard_page.dart';
 import 'package:homemakers_merchant/app/features/dashboard/presentation/pages/welcome_page.dart';
@@ -20,7 +17,6 @@ import 'package:homemakers_merchant/app/features/menu/index.dart';
 import 'package:homemakers_merchant/app/features/onboarding/presentation/pages/onboarding_page.dart';
 import 'package:homemakers_merchant/app/features/onboarding/presentation/pages/splash_page.dart';
 import 'package:homemakers_merchant/app/features/profile/index.dart';
-import 'package:homemakers_merchant/app/features/store/domain/entities/store_entity.dart';
 import 'package:homemakers_merchant/app/features/store/index.dart';
 
 part 'app_routes.dart';
@@ -31,7 +27,7 @@ class AppRouter {
 
   AppRouter._();
 
-  static const String INITIAL = Routes.CREATE_BUSINESS_PROFILE_PAGE;
+  static const String INITIAL = Routes.ADDRESS_FORM_PAGE;
 
   static final GoRouter _router = GoRouter(
     debugLogDiagnostics: true,
@@ -156,7 +152,9 @@ class AppRouter {
       GoRoute(
         path: Routes.PICKUP_LOCATION_FROM_MAP_PAGE,
         // (TODO(prasant):Prasant): Replace and Set object of address model
-        builder: (context, state) => PickupLocationFromMapPage(addressModel: state.extra! as AddressModel),
+        builder: (context, state) => PickupLocationFromMapPage(
+          addressModel: AddressModel(),
+        ), //state.extra as AddressModel
       ),
       GoRoute(
         path: Routes.CONFIRM_BUSINESS_TYPE_PAGE,
@@ -344,6 +342,11 @@ class AppRouter {
             storeEntities: args?['allStore'] ?? <MenuEntity>[] as List<StoreEntity>,
           );
         },
+      ),
+      // Address - ALL_SAVED_ADDRESS_LIST
+      GoRoute(
+        path: Routes.ALL_SAVED_ADDRESS_LIST,
+        builder: (context, state) => const AllSavedAddressPage(),
       ),
     ],
   );

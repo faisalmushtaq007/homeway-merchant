@@ -1,10 +1,4 @@
-import 'package:flutter/cupertino.dart';
-import 'package:homemakers_merchant/app/features/address/domain/entities/address_model.dart';
-import 'package:homemakers_merchant/app/features/menu/index.dart';
-import 'package:homemakers_merchant/core/common/entity/image_entity.dart';
-import 'package:homemakers_merchant/core/common/entity/ratingAndReviewEntity.dart';
-import 'package:homemakers_merchant/utils/app_equatable/app_equatable.dart';
-import 'package:sembast/timestamp.dart';
+part of 'package:homemakers_merchant/app/features/store/index.dart';
 
 class StoreEntity with AppEquatable {
   StoreEntity({

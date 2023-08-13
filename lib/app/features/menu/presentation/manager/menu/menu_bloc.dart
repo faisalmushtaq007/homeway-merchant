@@ -3,10 +3,10 @@ import 'package:bloc/bloc.dart';
 import 'package:bloc_concurrency/bloc_concurrency.dart';
 import 'package:flutter/material.dart';
 import 'package:homemakers_merchant/app/app.dart';
-import 'package:homemakers_merchant/app/features/address/domain/entities/address_model.dart';
+import 'package:homemakers_merchant/app/features/address/index.dart';
 import 'package:homemakers_merchant/app/features/menu/index.dart';
 import 'package:homemakers_merchant/app/features/profile/index.dart';
-import 'package:homemakers_merchant/app/features/store/domain/entities/store_entity.dart';
+import 'package:homemakers_merchant/app/features/store/index.dart';
 import 'package:homemakers_merchant/bootup/injection_container.dart';
 import 'package:homemakers_merchant/shared/states/data_source_state.dart';
 import 'package:homemakers_merchant/utils/app_equatable/app_equatable.dart';
@@ -747,47 +747,47 @@ class MenuBloc extends Bloc<MenuEvent, MenuState> {
   }
 
   FutureOr<void> _bindMenuWithStores(BindMenuWithStores event, Emitter<MenuState> emit) async {
-    //try {
-    emit(
-      BindMenuWithStoresState(
-        menuEntities: event.menuEntities.toList(),
-        menuStateStatus: MenuStateStatus.exception,
-        listOfSelectedMenuEntities: event.listOfSelectedMenuEntities.toList(),
-        storeEntities: event.storeEntities.toList(),
-        message: 'Processing please wait...',
-        bindMenuToStoreStage: BindMenuToStoreStage.attaching,
-      ),
-    );
-    List<StoreEntity> storeEntities = event.storeEntities;
-    List<StoreEntity> selectedStoreEntities = event.listOfSelectedStoreEntities;
-    List<MenuEntity> menuEntities = event.menuEntities;
-    List<MenuEntity> selectedMenuEntities = event.listOfSelectedMenuEntities;
-    // Update the object
-    selectedStoreEntities.asMap().forEach((key, value) {
-      value.menuEntities = selectedMenuEntities.toList();
-    });
-    storeEntities.asMap().forEach((parentIndex, parentStore) {
-      selectedStoreEntities.asMap().forEach((childIndex, childStore) {
-        if (childStore == parentStore) {
-          serviceLocator<AppUserEntity>().stores[parentIndex].menuEntities = selectedMenuEntities.toList();
-        }
+    try {
+      emit(
+        BindMenuWithStoresState(
+          menuEntities: event.menuEntities.toList(),
+          menuStateStatus: MenuStateStatus.exception,
+          listOfSelectedMenuEntities: event.listOfSelectedMenuEntities.toList(),
+          storeEntities: event.storeEntities.toList(),
+          message: 'Processing please wait...',
+          bindMenuToStoreStage: BindMenuToStoreStage.attaching,
+        ),
+      );
+      List<StoreEntity> storeEntities = event.storeEntities;
+      List<StoreEntity> selectedStoreEntities = event.listOfSelectedStoreEntities;
+      List<MenuEntity> menuEntities = event.menuEntities;
+      List<MenuEntity> selectedMenuEntities = event.listOfSelectedMenuEntities;
+      // Update the object
+      selectedStoreEntities.asMap().forEach((key, value) {
+        value.menuEntities = selectedMenuEntities.toList();
       });
-    });
-    // Search store and update it with selected stores date
-    //serviceLocator<AppUserEntity>().stores;
-    Future.delayed(const Duration(milliseconds: 500), () {});
-    emit(
-      BindMenuWithStoresState(
-        menuEntities: event.menuEntities.toList(),
-        menuStateStatus: MenuStateStatus.success,
-        listOfSelectedMenuEntities: event.listOfSelectedMenuEntities.toList(),
-        storeEntities: serviceLocator<AppUserEntity>().stores.toList(),
-        message: '',
-        bindMenuToStoreStage: BindMenuToStoreStage.attached,
-        listOfSelectedStoreEntities: selectedStoreEntities,
-      ),
-    );
-    /*} catch (e) {
+      storeEntities.asMap().forEach((parentIndex, parentStore) {
+        selectedStoreEntities.asMap().forEach((childIndex, childStore) {
+          if (childStore == parentStore) {
+            serviceLocator<AppUserEntity>().stores[parentIndex].menuEntities = selectedMenuEntities.toList();
+          }
+        });
+      });
+      // Search store and update it with selected stores date
+      //serviceLocator<AppUserEntity>().stores;
+      Future.delayed(const Duration(milliseconds: 500), () {});
+      emit(
+        BindMenuWithStoresState(
+          menuEntities: event.menuEntities.toList(),
+          menuStateStatus: MenuStateStatus.success,
+          listOfSelectedMenuEntities: event.listOfSelectedMenuEntities.toList(),
+          storeEntities: serviceLocator<AppUserEntity>().stores.toList(),
+          message: '',
+          bindMenuToStoreStage: BindMenuToStoreStage.attached,
+          listOfSelectedStoreEntities: selectedStoreEntities,
+        ),
+      );
+    } catch (e) {
       appLog.d('Listener: BindMenuWithStoresState ${e.toString()}');
       emit(
         BindMenuWithStoresState(
@@ -800,7 +800,7 @@ class MenuBloc extends Bloc<MenuEvent, MenuState> {
           listOfSelectedStoreEntities: event.listOfSelectedStoreEntities,
         ),
       );
-    }*/
+    }
   }
 
   FutureOr<void> _removeByIDAddons(RemoveByIDAddons event, Emitter<MenuState> emit) async {
