@@ -39,10 +39,12 @@ class MenuLoadingState extends MenuState {
   MenuLoadingState({
     required this.isLoading,
     required this.message,
+    this.menuStateStatus = MenuStateStatus.loading,
   });
 
   final bool isLoading;
   final String message;
+  final MenuStateStatus menuStateStatus;
 
   @override
   bool get cacheHash => true;
@@ -51,6 +53,7 @@ class MenuLoadingState extends MenuState {
   List<Object?> get hashParameters => [
         isLoading,
         message,
+        menuStateStatus,
       ];
 }
 
@@ -58,10 +61,12 @@ class MenuProcessingState extends MenuState {
   MenuProcessingState({
     required this.isProcessing,
     required this.message,
+    this.menuStateStatus = MenuStateStatus.processing,
   });
 
   final bool isProcessing;
   final String message;
+  final MenuStateStatus menuStateStatus;
 
   @override
   bool get cacheHash => true;
@@ -70,15 +75,18 @@ class MenuProcessingState extends MenuState {
   List<Object?> get hashParameters => [
         isProcessing,
         message,
+        menuStateStatus,
       ];
 }
 
 class MenuFailedState extends MenuState {
   MenuFailedState({
     required this.message,
+    this.menuStateStatus = MenuStateStatus.failed,
   });
 
   final String message;
+  final MenuStateStatus menuStateStatus;
 
   @override
   bool get cacheHash => true;
@@ -86,6 +94,7 @@ class MenuFailedState extends MenuState {
   @override
   List<Object?> get hashParameters => [
         message,
+        menuStateStatus,
       ];
 }
 
@@ -94,19 +103,19 @@ class MenuExceptionState extends MenuState {
     required this.message,
     this.stackTrace,
     this.exception,
-    this.menuSelectionUseCase = MenuSelectionUseCase.none,
+    this.menuStateStatus = MenuStateStatus.exception,
   });
 
   final String message;
   final StackTrace? stackTrace;
   final Exception? exception;
-  final MenuSelectionUseCase menuSelectionUseCase;
+  final MenuStateStatus menuStateStatus;
 
   @override
   bool get cacheHash => true;
 
   @override
-  List<Object?> get hashParameters => [message, stackTrace, exception, menuSelectionUseCase];
+  List<Object?> get hashParameters => [message, stackTrace, exception, menuStateStatus];
 }
 
 class DeleteMenuState extends MenuState {
@@ -143,13 +152,13 @@ class DeleteMenuState extends MenuState {
 class DeleteAllMenuState extends MenuState {
   DeleteAllMenuState({
     this.menuEntities = const [],
-    this.menuSelectionUseCase = MenuSelectionUseCase.none,
+    this.menuStateStatus = MenuStateStatus.none,
     this.message = '',
     this.hasDeleteAll = false,
   });
 
   final List<MenuEntity> menuEntities;
-  final MenuSelectionUseCase menuSelectionUseCase;
+  final MenuStateStatus menuStateStatus;
   final bool hasDeleteAll;
   final String message;
 
@@ -160,7 +169,7 @@ class DeleteAllMenuState extends MenuState {
   List<Object?> get hashParameters => [
         menuEntities,
         hasDeleteAll,
-        menuSelectionUseCase,
+        menuStateStatus,
         message,
       ];
 }
@@ -184,10 +193,15 @@ class GetAllMenuState extends MenuState {
 }
 
 class GetEmptyMenuState extends MenuState {
-  GetEmptyMenuState({this.menuEntities = const [], this.message = ''});
+  GetEmptyMenuState({
+    this.menuEntities = const [],
+    this.message = '',
+    this.menuStateStatus = MenuStateStatus.empty,
+  });
 
   final List<MenuEntity> menuEntities;
   final String message;
+  final MenuStateStatus menuStateStatus;
 
   @override
   bool get cacheHash => true;
@@ -196,6 +210,7 @@ class GetEmptyMenuState extends MenuState {
   List<Object?> get hashParameters => [
         menuEntities,
         message,
+        menuStateStatus,
       ];
 }
 
@@ -254,10 +269,12 @@ class AddonsLoadingState extends MenuState {
   AddonsLoadingState({
     required this.isLoading,
     required this.message,
+    this.addonsSelectionUseCase = AddonsSelectionUseCase.loading,
   });
 
   final bool isLoading;
   final String message;
+  final AddonsSelectionUseCase addonsSelectionUseCase;
 
   @override
   bool get cacheHash => true;
@@ -266,6 +283,7 @@ class AddonsLoadingState extends MenuState {
   List<Object?> get hashParameters => [
         isLoading,
         message,
+        addonsSelectionUseCase,
       ];
 }
 
@@ -273,10 +291,12 @@ class AddonsProcessingState extends MenuState {
   AddonsProcessingState({
     required this.isProcessing,
     required this.message,
+    this.addonsSelectionUseCase = AddonsSelectionUseCase.processing,
   });
 
   final bool isProcessing;
   final String message;
+  final AddonsSelectionUseCase addonsSelectionUseCase;
 
   @override
   bool get cacheHash => true;
@@ -285,15 +305,18 @@ class AddonsProcessingState extends MenuState {
   List<Object?> get hashParameters => [
         isProcessing,
         message,
+        addonsSelectionUseCase,
       ];
 }
 
 class AddonsFailedState extends MenuState {
   AddonsFailedState({
     required this.message,
+    this.addonsSelectionUseCase = AddonsSelectionUseCase.failed,
   });
 
   final String message;
+  final AddonsSelectionUseCase addonsSelectionUseCase;
 
   @override
   bool get cacheHash => true;
@@ -301,6 +324,7 @@ class AddonsFailedState extends MenuState {
   @override
   List<Object?> get hashParameters => [
         message,
+        addonsSelectionUseCase,
       ];
 }
 
@@ -400,10 +424,15 @@ class GetAllAddonsState extends MenuState {
 }
 
 class GetEmptyAddonsState extends MenuState {
-  GetEmptyAddonsState({this.addonsEntities = const [], this.message = ''});
+  GetEmptyAddonsState({
+    this.addonsEntities = const [],
+    this.message = '',
+    this.addonsSelectionUseCase = AddonsSelectionUseCase.emptyForAddons,
+  });
 
   final List<Addons> addonsEntities;
   final String message;
+  final AddonsSelectionUseCase addonsSelectionUseCase;
 
   @override
   bool get cacheHash => true;
@@ -412,6 +441,7 @@ class GetEmptyAddonsState extends MenuState {
   List<Object?> get hashParameters => [
         addonsEntities,
         message,
+        addonsSelectionUseCase,
       ];
 }
 
@@ -536,7 +566,7 @@ class PushMenuEntityDataState extends MenuState {
     this.message = '',
     this.menuEntityStatus = MenuEntityStatus.none,
     this.menuFormStage = MenuFormStage.none,
-    this.menuSelectionUseCase = MenuSelectionUseCase.none,
+    this.menuStateStatus = MenuStateStatus.none,
   });
 
   final List<MenuEntity> menuEntities;
@@ -545,7 +575,7 @@ class PushMenuEntityDataState extends MenuState {
   final String message;
   final MenuEntityStatus menuEntityStatus;
   final MenuFormStage menuFormStage;
-  final MenuSelectionUseCase menuSelectionUseCase;
+  final MenuStateStatus menuStateStatus;
 
   @override
   bool get cacheHash => true;
@@ -557,7 +587,7 @@ class PushMenuEntityDataState extends MenuState {
         menuEntity,
         menuFormStage,
         menuEntityStatus,
-        menuSelectionUseCase,
+        menuStateStatus,
       ];
 }
 
@@ -569,7 +599,7 @@ class PullMenuEntityDataState extends MenuState {
     this.message = '',
     this.menuEntityStatus = MenuEntityStatus.none,
     this.menuFormStage = MenuFormStage.none,
-    this.menuSelectionUseCase = MenuSelectionUseCase.none,
+    this.menuStateStatus = MenuStateStatus.none,
   });
 
   final List<MenuEntity> menuEntities;
@@ -578,7 +608,7 @@ class PullMenuEntityDataState extends MenuState {
   final String message;
   final MenuEntityStatus menuEntityStatus;
   final MenuFormStage menuFormStage;
-  final MenuSelectionUseCase menuSelectionUseCase;
+  final MenuStateStatus menuStateStatus;
 
   @override
   bool get cacheHash => true;
@@ -590,7 +620,7 @@ class PullMenuEntityDataState extends MenuState {
         menuEntity,
         menuFormStage,
         menuEntityStatus,
-        menuSelectionUseCase,
+        menuStateStatus,
       ];
 }
 

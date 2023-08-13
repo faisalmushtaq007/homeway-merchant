@@ -308,7 +308,7 @@ class MenuBloc extends Bloc<MenuEvent, MenuState> {
           menuEntityStatus: event.menuEntityStatus,
           menuFormStage: event.menuFormStage,
           menuEntities: event.menuEntities.toList(),
-          menuSelectionUseCase: event.menuSelectionUseCase,
+          menuStateStatus: event.menuStateStatus,
         ),
       );
     } catch (e) {
@@ -320,7 +320,7 @@ class MenuBloc extends Bloc<MenuEvent, MenuState> {
           menuEntityStatus: event.menuEntityStatus,
           menuFormStage: event.menuFormStage,
           menuEntities: event.menuEntities.toList(),
-          menuSelectionUseCase: event.menuSelectionUseCase,
+          menuStateStatus: event.menuStateStatus,
         ),
       );
     }
@@ -338,7 +338,7 @@ class MenuBloc extends Bloc<MenuEvent, MenuState> {
           menuEntityStatus: event.menuEntityStatus,
           menuFormStage: event.menuFormStage,
           menuEntities: event.menuEntities.toList(),
-          menuSelectionUseCase: event.menuSelectionUseCase,
+          menuStateStatus: event.menuStateStatus,
         ),
       );
     } catch (e) {
@@ -350,7 +350,7 @@ class MenuBloc extends Bloc<MenuEvent, MenuState> {
           menuEntityStatus: event.menuEntityStatus,
           menuFormStage: event.menuFormStage,
           menuEntities: event.menuEntities.toList(),
-          menuSelectionUseCase: event.menuSelectionUseCase,
+          menuStateStatus: event.menuStateStatus,
         ),
       );
     }
@@ -371,7 +371,7 @@ class MenuBloc extends Bloc<MenuEvent, MenuState> {
           appLog.d('Menu bloc get all remote');
           if (data == null || data.isEmpty) {
             emit(
-              GetAllMenuState(
+              GetEmptyMenuState(
                 menuEntities: [],
                 message: 'Your menu is empty',
                 menuStateStatus: MenuStateStatus.empty,
@@ -390,7 +390,7 @@ class MenuBloc extends Bloc<MenuEvent, MenuState> {
           appLog.d('Menu bloc get all local');
           if (data == null || data.isEmpty) {
             emit(
-              GetAllMenuState(
+              GetEmptyMenuState(
                 menuEntities: [],
                 message: 'Your menu is empty',
                 menuStateStatus: MenuStateStatus.empty,
@@ -412,7 +412,7 @@ class MenuBloc extends Bloc<MenuEvent, MenuState> {
               message: reason,
               //exception: e as Exception,
               stackTrace: stackTrace,
-              menuSelectionUseCase: MenuSelectionUseCase.getAll,
+              menuStateStatus: MenuStateStatus.getAll,
             ),
           );
           emit(
@@ -431,7 +431,7 @@ class MenuBloc extends Bloc<MenuEvent, MenuState> {
           message: 'Something went wrong during saving your store details, please try again',
           //exception: e as Exception,
           stackTrace: s,
-          menuSelectionUseCase: MenuSelectionUseCase.getAll,
+          menuStateStatus: MenuStateStatus.getAll,
         ),
       );
       emit(
@@ -472,7 +472,7 @@ class MenuBloc extends Bloc<MenuEvent, MenuState> {
               message: reason,
               //exception: e as Exception,
               stackTrace: stackTrace,
-              menuSelectionUseCase: MenuSelectionUseCase.createNewWithStore,
+              menuStateStatus: MenuStateStatus.createNewWithStore,
             ),
           );
           emit(
@@ -487,7 +487,7 @@ class MenuBloc extends Bloc<MenuEvent, MenuState> {
           message: 'Something went wrong during saving your store details, please try again',
           //exception: e as Exception,
           stackTrace: s,
-          menuSelectionUseCase: MenuSelectionUseCase.createNewWithStore,
+          menuStateStatus: MenuStateStatus.createNewWithStore,
         ),
       );
       emit(
@@ -534,7 +534,7 @@ class MenuBloc extends Bloc<MenuEvent, MenuState> {
               message: reason,
               //exception: e as Exception,
               stackTrace: stackTrace,
-              menuSelectionUseCase: MenuSelectionUseCase.delete,
+              menuStateStatus: MenuStateStatus.delete,
             ),
           );
         },
@@ -546,7 +546,7 @@ class MenuBloc extends Bloc<MenuEvent, MenuState> {
           message: 'Something went wrong during getting your all drivers, please try again',
           //exception: e as Exception,
           stackTrace: s,
-          menuSelectionUseCase: MenuSelectionUseCase.delete,
+          menuStateStatus: MenuStateStatus.delete,
         ),
       );
     }
@@ -583,7 +583,7 @@ class MenuBloc extends Bloc<MenuEvent, MenuState> {
               message: reason,
               //exception: e as Exception,
               stackTrace: stackTrace,
-              menuSelectionUseCase: MenuSelectionUseCase.deleteAll,
+              menuStateStatus: MenuStateStatus.deleteAll,
             ),
           );
         },
@@ -595,7 +595,7 @@ class MenuBloc extends Bloc<MenuEvent, MenuState> {
           message: 'Something went wrong during getting your all drivers, please try again',
           //exception: e as Exception,
           stackTrace: s,
-          menuSelectionUseCase: MenuSelectionUseCase.deleteAll,
+          menuStateStatus: MenuStateStatus.deleteAll,
         ),
       );
     }
@@ -637,7 +637,7 @@ class MenuBloc extends Bloc<MenuEvent, MenuState> {
               message: reason,
               //exception: e as Exception,
               stackTrace: stackTrace,
-              menuSelectionUseCase: MenuSelectionUseCase.getByID,
+              menuStateStatus: MenuStateStatus.getByID,
             ),
           );
         },
@@ -649,7 +649,7 @@ class MenuBloc extends Bloc<MenuEvent, MenuState> {
           message: 'Something went wrong during getting your store details, please try again',
           //exception: e as Exception,
           stackTrace: s,
-          menuSelectionUseCase: MenuSelectionUseCase.getByID,
+          menuStateStatus: MenuStateStatus.getByID,
         ),
       );
     }

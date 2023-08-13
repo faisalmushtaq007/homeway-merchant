@@ -79,8 +79,7 @@ enum AddonsSelectionUseCase {
   success,
   failed,
   exception,
-  empty,
-  ;
+  emptyForAddons;
 
   @override
   String toString() {
@@ -98,6 +97,16 @@ enum MenuStateStatus {
   failed,
   exception,
   empty,
+  createNewWithStore,
+  createNewWithoutStore,
+  associateExistingMultipleStore,
+  delete,
+  view,
+  removeFromStore,
+  deleteAll,
+  getByID,
+  getAll,
+  edit,
   ;
 
   @override

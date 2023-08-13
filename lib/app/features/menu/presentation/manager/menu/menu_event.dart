@@ -285,7 +285,7 @@ class PushMenuEntityData extends MenuEvent {
     this.hasNewMenu = true,
     this.menuEntityStatus = MenuEntityStatus.none,
     this.menuFormStage = MenuFormStage.none,
-    this.menuSelectionUseCase = MenuSelectionUseCase.none,
+    this.menuStateStatus = MenuStateStatus.none,
   });
 
   final List<MenuEntity> menuEntities;
@@ -293,7 +293,7 @@ class PushMenuEntityData extends MenuEvent {
   final MenuEntity menuEntity;
   final MenuEntityStatus menuEntityStatus;
   final MenuFormStage menuFormStage;
-  final MenuSelectionUseCase menuSelectionUseCase;
+  final MenuStateStatus menuStateStatus;
 
   @override
   bool get cacheHash => true;
@@ -305,7 +305,7 @@ class PushMenuEntityData extends MenuEvent {
         menuEntity,
         menuFormStage,
         menuEntityStatus,
-        menuSelectionUseCase,
+        menuStateStatus,
       ];
 }
 
@@ -316,7 +316,7 @@ class PullMenuEntityData extends MenuEvent {
     this.hasNewMenu = true,
     this.menuEntityStatus = MenuEntityStatus.none,
     this.menuFormStage = MenuFormStage.none,
-    this.menuSelectionUseCase = MenuSelectionUseCase.none,
+    this.menuStateStatus = MenuStateStatus.none,
   });
 
   final List<MenuEntity> menuEntities;
@@ -324,13 +324,13 @@ class PullMenuEntityData extends MenuEvent {
   final MenuEntity menuEntity;
   final MenuEntityStatus menuEntityStatus;
   final MenuFormStage menuFormStage;
-  final MenuSelectionUseCase menuSelectionUseCase;
+  final MenuStateStatus menuStateStatus;
 
   @override
   bool get cacheHash => true;
 
   @override
-  List<Object?> get hashParameters => [menuEntities, hasNewMenu, menuEntity, menuFormStage, menuEntityStatus, menuSelectionUseCase];
+  List<Object?> get hashParameters => [menuEntities, hasNewMenu, menuEntity, menuFormStage, menuEntityStatus, menuStateStatus];
 }
 
 class NavigateToStorePage extends MenuEvent {

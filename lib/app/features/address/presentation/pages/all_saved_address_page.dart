@@ -207,7 +207,6 @@ class _AllSavedAddressPageView extends WidgetView<AllSavedAddressPage, _AllSaved
                             crossFadeState: (state.addressEntities.isNotEmpty) ? CrossFadeState.showFirst : CrossFadeState.showSecond,
                           ),
                           Expanded(
-                            flex: 1,
                             child: state.widgetState.maybeWhen(
                               empty: (context, child, message, data) => Center(
                                 key: const Key('get-all-address-empty-widget'),
