@@ -451,6 +451,38 @@ void _setUpUseCases() {
       userPaymentBankRepository: serviceLocator(),
     ),
   );
+  // Address
+  //Payment Bank
+  serviceLocator.registerLazySingleton<SaveAddressUseCase>(
+    () => SaveAddressUseCase(
+      userAddressRepository: serviceLocator(),
+    ),
+  );
+  serviceLocator.registerLazySingleton<EditAddressUseCase>(
+    () => EditAddressUseCase(
+      userAddressRepository: serviceLocator(),
+    ),
+  );
+  serviceLocator.registerLazySingleton<GetAddressUseCase>(
+    () => GetAddressUseCase(
+      userAddressRepository: serviceLocator(),
+    ),
+  );
+  serviceLocator.registerLazySingleton<GetAllAddressUseCase>(
+    () => GetAllAddressUseCase(
+      userAddressRepository: serviceLocator(),
+    ),
+  );
+  serviceLocator.registerLazySingleton<DeleteAddressUseCase>(
+    () => DeleteAddressUseCase(
+      userAddressRepository: serviceLocator(),
+    ),
+  );
+  serviceLocator.registerLazySingleton<DeleteAllAddressUseCase>(
+    () => DeleteAllAddressUseCase(
+      userAddressRepository: serviceLocator(),
+    ),
+  );
 }
 
 void _setUpRepository() {
@@ -494,21 +526,21 @@ void _setUpRepository() {
   serviceLocator.registerSingleton<UserPaymentBankLocalDbRepository<PaymentBankEntity>>(UserPaymentBankLocalDbRepository<PaymentBankEntity>());
   // remote
   serviceLocator.registerSingleton<ProfileDataSource>(ProfileRemoteDataSource());
-  //repository payment
+  //repository UserPaymentBankRepository
   serviceLocator.registerSingleton<UserPaymentBankRepository>(
     PaymentBankRepositoryImplement(
       remoteDataSource: serviceLocator(),
       paymentBankLocalDataSource: serviceLocator(),
     ),
   );
-  //repository payment
+  //repository UserBusinessProfileRepository
   serviceLocator.registerSingleton<UserBusinessProfileRepository>(
     BusinessProfileRepositoryImplement(
       remoteDataSource: serviceLocator(),
       businessProfileLocalDataSource: serviceLocator(),
     ),
   );
-  //repository payment
+  //repository UserBusinessDocumentRepository
   serviceLocator.registerSingleton<UserBusinessDocumentRepository>(
     BusinessDocumentRepositoryImplement(
       remoteDataSource: serviceLocator(),
@@ -522,11 +554,17 @@ void _setUpRepository() {
       addonsLocalDataSource: serviceLocator(),
     ),
   );
-  // Business Profile
-
-  // Document
-
-  // Payment Bank
+  // repository
+  serviceLocator.registerSingleton<AddressLocalDbRepository<AddressModel>>(AddressLocalDbRepository<AddressModel>());
+  // remote
+  serviceLocator.registerSingleton<AddressDataSource>(AddressRemoteDataSource());
+  //repository UserPaymentBankRepository
+  serviceLocator.registerSingleton<UserAddressRepository>(
+    AddressRepositoryImplement(
+      remoteDataSource: serviceLocator(),
+      addressLocalDataSource: serviceLocator(),
+    ),
+  );
 }
 
 void _setUpStateManagement() {
