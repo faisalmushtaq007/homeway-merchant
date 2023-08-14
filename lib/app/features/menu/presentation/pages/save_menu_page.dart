@@ -19,17 +19,17 @@ class SaveMenuPage extends StatefulWidget {
 class _SaveMenuPageController extends State<SaveMenuPage> with AutomaticKeepAliveClientMixin<SaveMenuPage>, WidgetsBindingObserver {
   late final ScrollController scrollController;
   late final ScrollController _screenScrollController;
-  int _currentPageIndex = 0;
+  int _currentPageIndex = 2;
 
   // StepProgressController
-  final StepProgressController stepProgressController = StepProgressController(totalStep: 5, initialStep: 0);
+  final StepProgressController stepProgressController = StepProgressController(totalStep: 5, initialStep: 2);
   PageController controller = PageController(
-    initialPage: 0,
+    initialPage: 2,
   );
   FormPageStyle? formPageStyle = const FormPageStyle();
 
   // PageView
-  PreloadPageController preloadPageController = PreloadPageController(initialPage: 0);
+  PreloadPageController preloadPageController = PreloadPageController(initialPage: 2);
 
   // ProgressIndicatorType
   ProgressIndicatorType progress = ProgressIndicatorType.linear;

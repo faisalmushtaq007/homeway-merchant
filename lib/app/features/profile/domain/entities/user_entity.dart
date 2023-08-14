@@ -28,7 +28,11 @@ class AppUserEntity extends INetworkModel<AppUserEntity> {
       businessProfile: (map['businessProfile'] != null) ? BusinessProfileEntity.fromMap(map['businessProfile']) : BusinessProfileEntity(),
       stores: map['stores'].map((e) => StoreEntity.fromMap(e)).toList().cast<StoreEntity>(),
       token: map['token'] as String,
-      tokenCreationDateTime: map['tokenCreationDateTime'] ?? DateTime.now() as DateTime,
+      tokenCreationDateTime: (map['tokenCreationDateTime'] != null &&
+              (!(map['tokenCreationDateTime'].runtimeType is DateTime)) &&
+              (map['tokenCreationDateTime'].runtimeType is Timestamp || map['tokenCreationDateTime'].runtimeType is String))
+          ? Timestamp.parse(map['tokenCreationDateTime'].toString()).toDateTime()
+          : DateTime.now(),
       hasUserAuthenticated: map['hasUserAuthenticated'] as bool,
       businessTypeEntity: (map['businessTypeEntity'] != null) ? BusinessTypeEntity.fromMap(map['businessTypeEntity']) : BusinessTypeEntity(),
       currentProfileStatus: (map['currentProfileStatus'] != null) ? CurrentProfileStatus.values.byName(map['currentProfileStatus']) : CurrentProfileStatus.none,
@@ -104,7 +108,7 @@ class AppUserEntity extends INetworkModel<AppUserEntity> {
       'businessProfile': this.businessProfile?.toMap(),
       'stores': this.stores.map((e) => e.toMap()).toList(growable: false),
       'token': this.token,
-      'tokenCreationDateTime': this.tokenCreationDateTime,
+      'tokenCreationDateTime': Timestamp.fromDateTime(this.tokenCreationDateTime ?? DateTime.now().toUtc()),
       'hasUserAuthenticated': this.hasUserAuthenticated,
       'businessTypeEntity': this.businessTypeEntity?.toMap(),
       'currentProfileStatus': this.currentProfileStatus.name,

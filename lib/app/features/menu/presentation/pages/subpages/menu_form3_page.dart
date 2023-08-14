@@ -144,10 +144,11 @@ class _MenuForm3PageState extends State<MenuForm3Page> with AutomaticKeepAliveCl
               MultiSelectAvailableWorkingDaysFormField(
                 onSelectionChanged: (List<StoreWorkingDayAndTime> selectedWorkingDays) {
                   _selectedWorkingDays = List<StoreWorkingDayAndTime>.from(selectedWorkingDays);
-                  setState(() {});
+                  appLog.d('Winner ${_selectedWorkingDays.length}');
                   var cacheMenuAvailableDayAndTime =
                       List<MenuAvailableDayAndTime>.from(_selectedWorkingDays.map((e) => MenuAvailableDayAndTime.fromMap(e.toMap())).toList());
                   serviceLocator<MenuEntity>().menuAvailableInDays = cacheMenuAvailableDayAndTime.toList();
+                  setState(() {});
                   context.read<MenuBloc>().add(
                         PushMenuEntityData(
                           menuEntity: serviceLocator<MenuEntity>(),
@@ -158,6 +159,17 @@ class _MenuForm3PageState extends State<MenuForm3Page> with AutomaticKeepAliveCl
                 },
                 availableWorkingDaysList: _menuAvailableDays.toList(),
                 validator: (value) {
+                  return ValidatorGroup<List<StoreWorkingDayAndTime>>([
+                    const RequiredValidator<List<StoreWorkingDayAndTime>>(errorMessage: 'Select valid time'),
+                    CustomValidator<List<StoreWorkingDayAndTime>>(
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Select one or more days';
+                        }
+                        return null;
+                      },
+                    ),
+                  ]).validate(value);
                   if (value == null || value.length == 0) {
                     return 'Select one or more days';
                   } else {

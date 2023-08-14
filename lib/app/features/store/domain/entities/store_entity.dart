@@ -457,8 +457,16 @@ class StoreWorkingDayAndTime with AppEquatable {
       shortName: map['shortName'] as String,
       id: map['id'] as int,
       hasSelected: map['hasSelected'] as bool,
-      openingTime: map['openingTime'] != null ? Timestamp.parse(map['openingTime'].toString()).toDateTime() : DateTime.now(),
-      closingTime: map['closingTime'] != null ? Timestamp.parse(map['closingTime'].toString()).toDateTime() : DateTime.now(),
+      openingTime: (map['openingTime'] != null &&
+              (!(map['openingTime'].runtimeType is DateTime)) &&
+              (map['openingTime'].runtimeType is Timestamp || map['openingTime'].runtimeType is String))
+          ? Timestamp.parse(map['openingTime'].toString()).toDateTime()
+          : DateTime.now(),
+      closingTime: (map['closingTime'] != null &&
+              (!(map['closingTime'].runtimeType is DateTime)) &&
+              (map['closingTime'].runtimeType is Timestamp || map['closingTime'].runtimeType is String))
+          ? Timestamp.parse(map['closingTime'].toString()).toDateTime()
+          : DateTime.now(),
     );
   }
 
@@ -487,8 +495,8 @@ class StoreWorkingDayAndTime with AppEquatable {
       'title': this.day,
       'id': this.id,
       'hasSelected': this.hasSelected,
-      'closingTime': Timestamp.fromDateTime(this.closingTime ?? DateTime.now()),
-      'openingTime': Timestamp.fromDateTime(this.openingTime ?? DateTime.now()),
+      'closingTime': Timestamp.fromDateTime(this.closingTime ?? DateTime.now().toUtc()),
+      'openingTime': Timestamp.fromDateTime(this.openingTime ?? DateTime.now().toUtc()),
       'shortName': this.shortName,
     };
   }
