@@ -682,10 +682,10 @@ class BindMenuWithStoresState extends MenuState {
   final List<MenuEntity> menuEntities;
   final List<MenuEntity> listOfSelectedMenuEntities;
   final List<StoreEntity> storeEntities;
+  final List<StoreEntity> listOfSelectedStoreEntities;
   final MenuStateStatus menuStateStatus;
   final String message;
   final BindMenuToStoreStage bindMenuToStoreStage;
-  final List<StoreEntity> listOfSelectedStoreEntities;
 
   @override
   bool get cacheHash => true;
@@ -699,5 +699,101 @@ class BindMenuWithStoresState extends MenuState {
         message,
         bindMenuToStoreStage,
         listOfSelectedStoreEntities,
+      ];
+}
+
+class BindMenuWithUserState extends MenuState {
+  BindMenuWithUserState({
+    required this.appUserEntity,
+    this.menuEntities = const [],
+    this.listOfSelectedMenuEntities = const [],
+    this.menuStateStatus = MenuStateStatus.none,
+    this.message = '',
+    this.bindMenuToUserStage = BindMenuToUserStage.none,
+  });
+
+  final List<MenuEntity> menuEntities;
+  final List<MenuEntity> listOfSelectedMenuEntities;
+  final MenuStateStatus menuStateStatus;
+  final String message;
+  final BindMenuToUserStage bindMenuToUserStage;
+  final AppUserEntity appUserEntity;
+
+  @override
+  bool get cacheHash => true;
+
+  @override
+  List<Object?> get hashParameters => [
+        menuEntities,
+        listOfSelectedMenuEntities,
+        menuStateStatus,
+        message,
+        bindMenuToUserStage,
+        appUserEntity,
+      ];
+}
+
+class BindAddonsWithMenuState extends MenuState {
+  BindAddonsWithMenuState({
+    this.menuEntities = const [],
+    this.listOfSelectedMenuEntities = const [],
+    this.addonsEntities = const [],
+    this.menuStateStatus = MenuStateStatus.none,
+    this.message = '',
+    this.bindAddonsToMenuStage = BindAddonsToMenuStage.none,
+    this.listOfSelectedAddonsEntities = const [],
+  });
+
+  final List<MenuEntity> menuEntities;
+  final List<MenuEntity> listOfSelectedMenuEntities;
+  final List<Addons> addonsEntities;
+  final List<Addons> listOfSelectedAddonsEntities;
+  final MenuStateStatus menuStateStatus;
+  final String message;
+  final BindAddonsToMenuStage bindAddonsToMenuStage;
+
+  @override
+  bool get cacheHash => true;
+
+  @override
+  List<Object?> get hashParameters => [
+        menuEntities,
+        listOfSelectedMenuEntities,
+        addonsEntities,
+        menuStateStatus,
+        message,
+        bindAddonsToMenuStage,
+        listOfSelectedAddonsEntities,
+      ];
+}
+
+class BindAddonsWithUserState extends MenuState {
+  BindAddonsWithUserState({
+    required this.appUserEntity,
+    this.menuEntities = const [],
+    this.listOfSelectedMenuEntities = const [],
+    this.menuStateStatus = MenuStateStatus.none,
+    this.message = '',
+    this.bindAddonsToUserStage = BindAddonsToUserStage.none,
+  });
+
+  final List<MenuEntity> menuEntities;
+  final List<MenuEntity> listOfSelectedMenuEntities;
+  final MenuStateStatus menuStateStatus;
+  final String message;
+  final BindAddonsToUserStage bindAddonsToUserStage;
+  final AppUserEntity appUserEntity;
+
+  @override
+  bool get cacheHash => true;
+
+  @override
+  List<Object?> get hashParameters => [
+        menuEntities,
+        listOfSelectedMenuEntities,
+        menuStateStatus,
+        message,
+        bindAddonsToUserStage,
+        appUserEntity,
       ];
 }

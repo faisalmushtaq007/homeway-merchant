@@ -504,7 +504,7 @@ class BindDriverWithStoresState extends StoreState {
     this.storeEntities = const [],
     this.storeStateStatus = StoreStateStage.none,
     this.message = '',
-    this.bindDriverToStoreStage = BindDriverToStoreStage.none,
+    this.bindDriverToStoreStage = BindingStage.none,
     this.listOfSelectedStoreEntities = const [],
   });
 
@@ -514,7 +514,7 @@ class BindDriverWithStoresState extends StoreState {
   final List<StoreEntity> listOfSelectedStoreEntities;
   final StoreStateStage storeStateStatus;
   final String message;
-  final BindDriverToStoreStage bindDriverToStoreStage;
+  final BindingStage<BindDriverWithStoresState> bindDriverToStoreStage;
 
   @override
   bool get cacheHash => true;
@@ -531,16 +531,16 @@ class BindDriverWithStoresState extends StoreState {
       ];
 }
 
-class BindDriverWithStoresProcessingState extends StoreState {
-  BindDriverWithStoresProcessingState({
+class BindProcessingState extends StoreState {
+  BindProcessingState({
     required this.isProcessing,
     required this.message,
-    this.bindDriverToStoreStage = BindDriverToStoreStage.none,
+    this.bindDriverToStoreStage = BindingStage.none,
   });
 
   final bool isProcessing;
   final String message;
-  final BindDriverToStoreStage bindDriverToStoreStage;
+  final BindingStage<BindProcessingState> bindDriverToStoreStage;
 
   @override
   bool get cacheHash => true;
@@ -553,16 +553,16 @@ class BindDriverWithStoresProcessingState extends StoreState {
       ];
 }
 
-class BindDriverWithStoresExceptionState extends StoreState {
-  BindDriverWithStoresExceptionState({
+class BindExceptionState extends StoreState {
+  BindExceptionState({
     required this.message,
     this.stackTrace,
     this.exception,
-    this.bindDriverToStoreStage = BindDriverToStoreStage.none,
+    this.bindDriverToStoreStage = BindingStage.none,
   });
 
   final String message;
-  final BindDriverToStoreStage bindDriverToStoreStage;
+  final BindingStage<BindExceptionState> bindDriverToStoreStage;
   final StackTrace? stackTrace;
   final Exception? exception;
 
@@ -578,16 +578,16 @@ class BindDriverWithStoresExceptionState extends StoreState {
       ];
 }
 
-class BindDriverWithStoresLoadingState extends StoreState {
-  BindDriverWithStoresLoadingState({
+class BindLoadingState extends StoreState {
+  BindLoadingState({
     required this.isLoading,
     required this.message,
-    this.bindDriverToStoreStage = BindDriverToStoreStage.none,
+    this.bindDriverToStoreStage = BindingStage.none,
   });
 
   final bool isLoading;
   final String message;
-  final BindDriverToStoreStage bindDriverToStoreStage;
+  final BindingStage<BindLoadingState> bindDriverToStoreStage;
 
   @override
   bool get cacheHash => true;
@@ -600,17 +600,17 @@ class BindDriverWithStoresLoadingState extends StoreState {
       ];
 }
 
-class BindDriverWithStoresEmptyState extends StoreState {
-  BindDriverWithStoresEmptyState({
+class BindEmptyState extends StoreState {
+  BindEmptyState({
     required this.isEmpty,
     required this.message,
-    this.bindDriverToStoreStage = BindDriverToStoreStage.none,
+    this.bindDriverToStoreStage = BindingStage.none,
     this.storeOwnDeliveryPartnerEntities = const [],
   });
 
   final bool isEmpty;
   final String message;
-  final BindDriverToStoreStage bindDriverToStoreStage;
+  final BindingStage<BindEmptyState> bindDriverToStoreStage;
   final List<StoreOwnDeliveryPartnersInfo> storeOwnDeliveryPartnerEntities;
 
   @override
@@ -625,14 +625,14 @@ class BindDriverWithStoresEmptyState extends StoreState {
       ];
 }
 
-class BindDriverWithStoresFailedState extends StoreState {
-  BindDriverWithStoresFailedState({
+class BindFailedState extends StoreState {
+  BindFailedState({
     required this.message,
-    this.bindDriverToStoreStage = BindDriverToStoreStage.none,
+    this.bindDriverToStoreStage = BindingStage.none,
   });
 
   final String message;
-  final BindDriverToStoreStage bindDriverToStoreStage;
+  final BindingStage<BindFailedState> bindDriverToStoreStage;
 
   @override
   bool get cacheHash => true;
@@ -641,5 +641,67 @@ class BindDriverWithStoresFailedState extends StoreState {
   List<Object?> get hashParameters => [
         message,
         bindDriverToStoreStage,
+      ];
+}
+
+class BindDriverWithUserState extends StoreEvent {
+  BindDriverWithUserState({
+    required this.appUserEntity,
+    this.listOfStoreOwnDeliveryPartners = const [],
+    this.listOfSelectedStoreOwnDeliveryPartners = const [],
+    this.storeStateStatus = StoreStateStage.none,
+    this.message = '',
+    this.bindingStage = BindingStage.none,
+  });
+
+  final StoreStateStage storeStateStatus;
+  final String message;
+  final BindingStage<BindDriverWithUserState> bindingStage;
+  final List<StoreOwnDeliveryPartnersInfo> listOfStoreOwnDeliveryPartners;
+  final List<StoreOwnDeliveryPartnersInfo> listOfSelectedStoreOwnDeliveryPartners;
+  final AppUserEntity appUserEntity;
+
+  @override
+  bool get cacheHash => true;
+
+  @override
+  List<Object?> get hashParameters => [
+        listOfStoreOwnDeliveryPartners,
+        listOfSelectedStoreOwnDeliveryPartners,
+        storeStateStatus,
+        message,
+        bindingStage,
+        appUserEntity,
+      ];
+}
+
+class BindStoreWithUserState extends StoreEvent {
+  BindStoreWithUserState({
+    required this.appUserEntity,
+    this.storeEntities = const [],
+    this.listOfSelectedStoreEntities = const [],
+    this.storeStateStatus = StoreStateStage.none,
+    this.message = '',
+    this.bindingStage = BindingStage.none,
+  });
+
+  final StoreStateStage storeStateStatus;
+  final String message;
+  final BindingStage<BindStoreWithUserState> bindingStage;
+  final List<StoreEntity> storeEntities;
+  final List<StoreEntity> listOfSelectedStoreEntities;
+  final AppUserEntity appUserEntity;
+
+  @override
+  bool get cacheHash => true;
+
+  @override
+  List<Object?> get hashParameters => [
+        storeEntities,
+        listOfSelectedStoreEntities,
+        storeStateStatus,
+        message,
+        bindingStage,
+        appUserEntity,
       ];
 }

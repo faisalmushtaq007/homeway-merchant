@@ -51,6 +51,8 @@ enum MenuSelectionUseCase {
   failed,
   exception,
   empty,
+  bindingWithStore,
+  bindingWithUser,
   ;
 
   @override
@@ -79,7 +81,10 @@ enum AddonsSelectionUseCase {
   success,
   failed,
   exception,
-  emptyForAddons;
+  emptyForAddons,
+  bindingWithMenu,
+  bindingWithUser,
+  ;
 
   @override
   String toString() {
@@ -136,6 +141,63 @@ enum ActionOnFindMenu {
 enum MenuOptions { view, edit, removeFromStore, delete }
 
 enum BindMenuToStoreStage {
+  none,
+  select,
+  save,
+  remove,
+  attached,
+  success,
+  failed,
+  exception,
+  attaching,
+  processing,
+  ;
+
+  @override
+  String toString() {
+    return name;
+  }
+}
+
+enum BindMenuToUserStage {
+  none,
+  select,
+  save,
+  remove,
+  attached,
+  success,
+  failed,
+  exception,
+  attaching,
+  processing,
+  ;
+
+  @override
+  String toString() {
+    return name;
+  }
+}
+
+enum BindAddonsToMenuStage {
+  none,
+  select,
+  save,
+  remove,
+  attached,
+  success,
+  failed,
+  exception,
+  attaching,
+  processing,
+  ;
+
+  @override
+  String toString() {
+    return name;
+  }
+}
+
+enum BindAddonsToUserStage {
   none,
   select,
   save,

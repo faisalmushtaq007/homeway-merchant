@@ -23,6 +23,7 @@ enum StoreStateStage {
   failed,
   exception,
   empty,
+  bindingWithUser,
   ;
 
   @override
@@ -49,6 +50,8 @@ enum DriverStateStage {
   exception,
   empty,
   none,
+  bindingWithStore,
+  bindingWithUser,
   ;
 
   @override
@@ -57,7 +60,7 @@ enum DriverStateStage {
   }
 }
 
-enum BindDriverToStoreStage {
+enum BindingStage<T> {
   none,
   select,
   save,
@@ -68,6 +71,14 @@ enum BindDriverToStoreStage {
   exception,
   attaching,
   processing,
+  bindingStoreWithUser,
+  bindingWithUser,
+  bindingAddonsWithUser,
+  bindingAddonsWithMenu,
+  bindingMenuWithUser,
+  bindingMenuWithStore,
+  bindingDriverWithUser,
+  bindingDriverWithStore,
   ;
 
   @override

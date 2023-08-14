@@ -1,8 +1,8 @@
 part of 'store_bloc.dart';
 
-abstract class StoreEvent {}
+abstract class StoreEvent with AppEquatable {}
 
-class SaveStore extends StoreEvent with AppEquatable {
+class SaveStore extends StoreEvent {
   SaveStore({
     required this.storeEntity,
     required this.hasNewStore,
@@ -24,7 +24,7 @@ class SaveStore extends StoreEvent with AppEquatable {
       ];
 }
 
-class DeleteStore extends StoreEvent with AppEquatable {
+class DeleteStore extends StoreEvent {
   DeleteStore({
     this.storeEntity,
     this.index = -1,
@@ -49,7 +49,7 @@ class DeleteStore extends StoreEvent with AppEquatable {
       ];
 }
 
-class DeleteAllStore extends StoreEvent with AppEquatable {
+class DeleteAllStore extends StoreEvent {
   DeleteAllStore({this.storeEntities = const []});
 
   final List<StoreEntity> storeEntities;
@@ -61,7 +61,7 @@ class DeleteAllStore extends StoreEvent with AppEquatable {
   List<Object?> get hashParameters => [storeEntities];
 }
 
-class GetAllStore extends StoreEvent with AppEquatable {
+class GetAllStore extends StoreEvent {
   GetAllStore();
 
   @override
@@ -71,7 +71,7 @@ class GetAllStore extends StoreEvent with AppEquatable {
   List<Object?> get hashParameters => [];
 }
 
-class GetStore extends StoreEvent with AppEquatable {
+class GetStore extends StoreEvent {
   GetStore({
     this.storeEntity,
     this.index = -1,
@@ -97,7 +97,7 @@ class GetStore extends StoreEvent with AppEquatable {
 }
 
 // Driver
-class SaveDriver extends StoreEvent with AppEquatable {
+class SaveDriver extends StoreEvent {
   SaveDriver({
     required this.storeOwnDeliveryPartnerEntity,
     required this.haveNewDriver,
@@ -119,7 +119,7 @@ class SaveDriver extends StoreEvent with AppEquatable {
       ];
 }
 
-class DeleteDriver extends StoreEvent with AppEquatable {
+class DeleteDriver extends StoreEvent {
   DeleteDriver({
     this.storeOwnDeliveryPartnerEntity,
     this.index = -1,
@@ -144,7 +144,7 @@ class DeleteDriver extends StoreEvent with AppEquatable {
       ];
 }
 
-class DeleteAllDriver extends StoreEvent with AppEquatable {
+class DeleteAllDriver extends StoreEvent {
   DeleteAllDriver({this.storeOwnDeliveryPartnerEntity = const []});
 
   final List<StoreOwnDeliveryPartnersInfo> storeOwnDeliveryPartnerEntity;
@@ -156,7 +156,7 @@ class DeleteAllDriver extends StoreEvent with AppEquatable {
   List<Object?> get hashParameters => [storeOwnDeliveryPartnerEntity];
 }
 
-class GetAllDriver extends StoreEvent with AppEquatable {
+class GetAllDriver extends StoreEvent {
   GetAllDriver();
 
   @override
@@ -166,7 +166,7 @@ class GetAllDriver extends StoreEvent with AppEquatable {
   List<Object?> get hashParameters => [];
 }
 
-class GetDriver extends StoreEvent with AppEquatable {
+class GetDriver extends StoreEvent {
   GetDriver({
     this.storeOwnDeliveryPartnerEntity,
     this.index = -1,
@@ -191,14 +191,14 @@ class GetDriver extends StoreEvent with AppEquatable {
       ];
 }
 
-class BindDriverWithStores extends StoreEvent with AppEquatable {
+class BindDriverWithStores extends StoreEvent {
   BindDriverWithStores({
     this.listOfStoreOwnDeliveryPartners = const [],
     this.listOfSelectedStoreOwnDeliveryPartners = const [],
     this.storeEntities = const [],
     this.storeStateStatus = StoreStateStage.none,
     this.message = '',
-    this.bindDriverToStoreStage = BindDriverToStoreStage.none,
+    this.bindDriverToStoreStage = BindingStage.none,
     this.listOfSelectedStoreEntities = const [],
   });
 
@@ -208,7 +208,7 @@ class BindDriverWithStores extends StoreEvent with AppEquatable {
   final List<StoreEntity> listOfSelectedStoreEntities;
   final StoreStateStage storeStateStatus;
   final String message;
-  final BindDriverToStoreStage bindDriverToStoreStage;
+  final BindingStage<BindDriverWithStores> bindDriverToStoreStage;
 
   @override
   bool get cacheHash => true;
@@ -222,5 +222,61 @@ class BindDriverWithStores extends StoreEvent with AppEquatable {
         message,
         bindDriverToStoreStage,
         listOfSelectedStoreEntities,
+      ];
+}
+
+class BindDriverWithUser extends StoreEvent {
+  BindDriverWithUser({
+    this.listOfStoreOwnDeliveryPartners = const [],
+    this.listOfSelectedStoreOwnDeliveryPartners = const [],
+    this.storeStateStatus = StoreStateStage.none,
+    this.message = '',
+    this.bindingStage = BindingStage.none,
+  });
+
+  final StoreStateStage storeStateStatus;
+  final String message;
+  final BindingStage<BindDriverWithUser> bindingStage;
+  final List<StoreOwnDeliveryPartnersInfo> listOfStoreOwnDeliveryPartners;
+  final List<StoreOwnDeliveryPartnersInfo> listOfSelectedStoreOwnDeliveryPartners;
+
+  @override
+  bool get cacheHash => true;
+
+  @override
+  List<Object?> get hashParameters => [
+        listOfStoreOwnDeliveryPartners,
+        listOfSelectedStoreOwnDeliveryPartners,
+        storeStateStatus,
+        message,
+        bindingStage,
+      ];
+}
+
+class BindStoreWithUser extends StoreEvent {
+  BindStoreWithUser({
+    this.storeEntities = const [],
+    this.listOfSelectedStoreEntities = const [],
+    this.storeStateStatus = StoreStateStage.none,
+    this.message = '',
+    this.bindingStage = BindingStage.none,
+  });
+
+  final StoreStateStage storeStateStatus;
+  final String message;
+  final BindingStage<BindDriverWithUser> bindingStage;
+  final List<StoreEntity> storeEntities;
+  final List<StoreEntity> listOfSelectedStoreEntities;
+
+  @override
+  bool get cacheHash => true;
+
+  @override
+  List<Object?> get hashParameters => [
+        storeEntities,
+        listOfSelectedStoreEntities,
+        storeStateStatus,
+        message,
+        bindingStage,
       ];
 }

@@ -96,7 +96,7 @@ class _BindDriverWithStoreController extends State<BindDriverWithStore> {
           switch (state) {
             case BindDriverWithStoresState():
               {
-                if (state.bindDriverToStoreStage == BindDriverToStoreStage.attached) {
+                if (state.bindDriverToStoreStage == BindingStage.attached) {
                   listOfAllSelectedStores = [];
                   listOfAllSelectedStores.clear();
                   context.go(

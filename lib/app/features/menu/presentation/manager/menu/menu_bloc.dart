@@ -94,6 +94,18 @@ class MenuBloc extends Bloc<MenuEvent, MenuState> {
       _bindMenuWithStores,
       transformer: sequential(),
     );
+    on<BindMenuWithUser>(
+      _bindMenuWithUser,
+      transformer: sequential(),
+    );
+    on<BindAddonsWithMenu>(
+      _bindAddonsWithMenu,
+      transformer: sequential(),
+    );
+    on<BindAddonsWithUser>(
+      _bindAddonsWithUser,
+      transformer: sequential(),
+    );
   }
 
   Future<void> _getAllAddons(GetAllAddons event, Emitter<MenuState> emit) async {
@@ -959,4 +971,10 @@ class MenuBloc extends Bloc<MenuEvent, MenuState> {
       );
     }
   }
+
+  FutureOr<void> _bindMenuWithUser(BindMenuWithUser event, Emitter<MenuState> emit) async {}
+
+  FutureOr<void> _bindAddonsWithMenu(BindAddonsWithMenu event, Emitter<MenuState> emit) async {}
+
+  FutureOr<void> _bindAddonsWithUser(BindAddonsWithUser event, Emitter<MenuState> emit) async {}
 }
