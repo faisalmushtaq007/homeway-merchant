@@ -5,11 +5,17 @@ class StoreRepositoryImplement implements StoreRepository {
     required this.remoteDataSource,
     required this.storeLocalDataSource,
     required this.driverLocalDataSource,
+    required this.storeBindingWithUserLocalDataSource,
+    required this.storeOwnDriverBindingWithCurrentUserLocalDataSource,
+    required this.storeOwnDriverBindingWithStoreLocalDataSource,
   });
 
   final StoreDataSource remoteDataSource;
   final StoreLocalDbRepository<StoreEntity> storeLocalDataSource;
   final StoreOwnDeliveryPartnersLocalDbRepository<StoreOwnDeliveryPartnersInfo> driverLocalDataSource;
+  final StoreBindingWithUserLocalDbRepository<StoreEntity, AppUserEntity> storeBindingWithUserLocalDataSource;
+  final StoreOwnDriverBindingWithStoreLocalDbRepository<StoreOwnDeliveryPartnersInfo, StoreEntity> storeOwnDriverBindingWithStoreLocalDataSource;
+  final StoreOwnDriverBindingWithCurrentUserLocalDbRepository<StoreOwnDeliveryPartnersInfo, AppUserEntity> storeOwnDriverBindingWithCurrentUserLocalDataSource;
 
   @override
   Future<DataSourceState<bool>> deleteAllStore() async {
@@ -729,6 +735,38 @@ class StoreRepositoryImplement implements StoreRepository {
   @override
   Future<DataSourceState<List<StoreEntity>>> unBindDriverWithStores(
       {required List<StoreOwnDeliveryPartnersInfo> source, required List<StoreEntity> destination}) {
+    var connectivity = serviceLocator<ConnectivityService>().getCurrentInternetStatus();
+    if (connectivity.$2 == InternetConnectivityState.internet) {
+    } else {}
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<DataSourceState<AppUserEntity>> bindDriverWithUser({required List<StoreOwnDeliveryPartnersInfo> source, required AppUserEntity destination}) {
+    var connectivity = serviceLocator<ConnectivityService>().getCurrentInternetStatus();
+    if (connectivity.$2 == InternetConnectivityState.internet) {
+    } else {}
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<DataSourceState<AppUserEntity>> bindStoreWithUser({required List<StoreEntity> source, required AppUserEntity destination}) {
+    var connectivity = serviceLocator<ConnectivityService>().getCurrentInternetStatus();
+    if (connectivity.$2 == InternetConnectivityState.internet) {
+    } else {}
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<DataSourceState<AppUserEntity>> unBindDriverWithUser({required List<StoreOwnDeliveryPartnersInfo> source, required AppUserEntity destination}) {
+    var connectivity = serviceLocator<ConnectivityService>().getCurrentInternetStatus();
+    if (connectivity.$2 == InternetConnectivityState.internet) {
+    } else {}
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<DataSourceState<AppUserEntity>> unBindStoreWithUser({required List<StoreEntity> source, required AppUserEntity destination}) {
     var connectivity = serviceLocator<ConnectivityService>().getCurrentInternetStatus();
     if (connectivity.$2 == InternetConnectivityState.internet) {
     } else {}

@@ -127,6 +127,8 @@ part 'package:homemakers_merchant/app/features/store/domain/entities/store_entit
 // Repository
 part 'package:homemakers_merchant/app/features/store/domain/repositories/store_repository.dart';
 part 'package:homemakers_merchant/app/features/store/domain/usecases/bind_driver_with_store_usecase.dart';
+part 'package:homemakers_merchant/app/features/store/domain/usecases/bind_driver_with_user_usecase.dart';
+part 'package:homemakers_merchant/app/features/store/domain/usecases/bind_store_with_user_usecase.dart';
 part 'package:homemakers_merchant/app/features/store/domain/usecases/delete_all_driver_usecase.dart';
 part 'package:homemakers_merchant/app/features/store/domain/usecases/delete_all_store_usecase.dart';
 part 'package:homemakers_merchant/app/features/store/domain/usecases/delete_driver_usecase.dart';

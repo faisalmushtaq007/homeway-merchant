@@ -152,19 +152,136 @@ class AddonsLocalDbRepository<Extras extends Addons> implements BaseAddonsLocalD
   }
 }
 
-class AddonsBindingWithMenuLocalDbDbRepository<Addons, MenuEntity> implements Binding<List<StoreOwnDeliveryPartnersInfo>, List<StoreEntity>> {
+class AddonsBindingWithMenuLocalDbDbRepository<T extends Addons, R extends MenuEntity> implements Binding<List<Addons>, List<MenuEntity>> {
+  const AddonsBindingWithMenuLocalDbDbRepository({
+    required this.addonsLocalDbRepository,
+    required this.menuLocalDbRepository,
+  });
+
   Future<Database> get _db async => AppDatabase.instance.database;
+
   StoreRef<int, Map<String, dynamic>> get _menu => AppDatabase.instance.menu;
+
   StoreRef<int, Map<String, dynamic>> get _addons => AppDatabase.instance.addons;
+  final AddonsLocalDbRepository<T> addonsLocalDbRepository;
+  final MenuLocalDbRepository<R> menuLocalDbRepository;
 
   @override
-  Future<Either<RepositoryBaseFailure, List<StoreEntity>>> binding(List<StoreOwnDeliveryPartnersInfo> source, List<StoreEntity> destination) async {
-    // TODO(prasant): implement binding
-    throw UnimplementedError();
+  Future<Either<RepositoryBaseFailure, List<MenuEntity>>> binding(List<Addons> source, List<MenuEntity> destination) async {
+    final db = await _db;
+    final menus = await menuLocalDbRepository.getAll();
+    if (menus.isRight()) {
+      var cacheCurrentMenu = menus.right.toList();
+      final result = await tryCatch<List<MenuEntity>>(() async {
+        await db.transaction((txn) async {
+          // !Wrong the following code will deadlock
+          // Don't use the db object in the transaction
+          // await record.put(db, {'name': 'fish'});
+          // correct, txn in used
+          // Modify the store result
+          if (!cacheCurrentMenu.isNotNullOrEmpty) {
+            cacheCurrentMenu.asMap().forEach((parentMenuKey, parentMenuValue) {
+              destination.asMap().forEach((destinationMenuKey, destinationMenuValue) async {
+                if (parentMenuValue.menuId == destinationMenuValue.menuId) {
+                  // Match
+                  final record = _menu.record(destinationMenuValue.menuId);
+                  final value = await record.get(txn);
+                  var currentTempMenu = cloneMap(value);
+                  parentMenuValue.addons.asMap().forEach((key, value) async {
+                    source.asMap().forEach((addonsKey, addonsValue) async {
+                      // Check if the record exists before adding or updating it.
+                      // Look of existing record
+                      var finder = Finder(filter: Filter.equals('menus.@.addons', addonsValue.addonsID));
+                      var existing = await _menu.query(finder: finder).getSnapshot(txn);
+                      if (existing == null) {
+                        // code not found, add
+                        final data = currentTempMenu['addons'] as List<Addons>..add(addonsValue);
+                        final result = await record.update(txn, {'addons': data.toList()});
+                      } else {
+                        // Update existing
+                        await existing.ref.update(txn, addonsValue.toMap());
+                      }
+                    });
+                  });
+                } else {
+                  // Not Match
+                }
+              });
+            });
+          } else {
+            // Null or empty
+          }
+          return menuLocalDbRepository.getAll();
+        });
+      });
+      return result;
+    } else {
+      return Left(menus.left);
+    }
   }
 
   @override
-  Future<Either<RepositoryBaseFailure, List<StoreEntity>>> unbinding(List<StoreOwnDeliveryPartnersInfo> source, List<StoreEntity> destination) async {
+  Future<Either<RepositoryBaseFailure, List<MenuEntity>>> unbinding(List<Addons> source, List<MenuEntity> destination) async {
+    // TODO(prasant): implement unbinding
+    throw UnimplementedError();
+  }
+}
+
+class AddonsBindingWithCurrentUserLocalDbDbRepository<T extends Addons, R extends AppUserEntity> implements Binding<List<Addons>, AppUserEntity> {
+  const AddonsBindingWithCurrentUserLocalDbDbRepository({
+    required this.addonsLocalDbRepository,
+    required this.userLocalDbRepository,
+  });
+
+  Future<Database> get _db async => AppDatabase.instance.database;
+
+  StoreRef<int, Map<String, dynamic>> get _addons => AppDatabase.instance.addons;
+
+  StoreRef<int, Map<String, dynamic>> get _user => AppDatabase.instance.user;
+
+  final AddonsLocalDbRepository<T> addonsLocalDbRepository;
+  final UserLocalDbRepository<R> userLocalDbRepository;
+
+  @override
+  Future<Either<RepositoryBaseFailure, AppUserEntity>> binding(List<Addons> source, AppUserEntity destination) async {
+    final db = await _db;
+    final users = await userLocalDbRepository.getAll();
+    if (users.isRight()) {
+      // Todo:(prasant) - Check current user, now skip it
+      final currentUserMap = cloneMap(users.right[0].toMap());
+      var cacheAddons = currentUserMap['addons'] as List<Addons>;
+
+      final result = await tryCatch<AppUserEntity>(() async {
+        await db.transaction((txn) async {
+          // !Wrong the following code will deadlock
+          // Don't use the db object in the transaction
+          // await record.put(db, {'name': 'fish'});
+          // correct, txn in used
+          // Modify the store result
+          final record = _user.record(users.right[0].userID);
+          final value = await record.get(txn);
+          if (value != null) {
+            var currentUser = cloneMap(value);
+            currentUser['addons'] = currentUserMap['addons'] as List<Addons>..addAll(source.toList());
+            final result = await record.update(txn, {'addons': currentUser['addons']});
+            if (result != null) {
+              return AppUserEntity.fromMap(result);
+            } else {
+              return AppUserEntity.fromMap(currentUser);
+            }
+          } else {
+            return AppUserEntity.fromMap(currentUserMap);
+          }
+        });
+      });
+      return result;
+    } else {
+      return Left(users.left);
+    }
+  }
+
+  @override
+  Future<Either<RepositoryBaseFailure, AppUserEntity>> unbinding(List<Addons> source, AppUserEntity destination) async {
     // TODO(prasant): implement unbinding
     throw UnimplementedError();
   }

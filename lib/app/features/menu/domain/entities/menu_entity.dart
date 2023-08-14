@@ -1161,6 +1161,7 @@ class Category with AppEquatable {
     this.categoryId = '0',
     this.title = '',
     this.hasSelected = false,
+    this.subCategory = const [],
   });
 
   factory Category.fromMap(Map<String, dynamic> map) {
@@ -1168,12 +1169,14 @@ class Category with AppEquatable {
       categoryId: map['categoryId'] as String,
       title: map['title'] as String,
       hasSelected: map['hasSelected'] as bool,
+      subCategory: map['subCategory'].map((e) => Category.fromMap(e)).toList().cast<Category>(),
     );
   }
 
   String categoryId;
   String title;
   bool hasSelected;
+  List<Category> subCategory;
 
   @override
   bool get cacheHash => true;
@@ -1183,6 +1186,7 @@ class Category with AppEquatable {
         categoryId,
         title,
         hasSelected,
+        subCategory,
       ];
 
   Map<String, dynamic> toMap() {
@@ -1190,6 +1194,7 @@ class Category with AppEquatable {
       'categoryId': this.categoryId,
       'title': this.title,
       'hasSelected': this.hasSelected,
+      'subCategory': this.subCategory.map((e) => e.toMap()).toList(),
     };
   }
 
@@ -1197,11 +1202,13 @@ class Category with AppEquatable {
     String? categoryId,
     String? title,
     bool? hasSelected,
+    List<Category>? subCategory,
   }) {
     return Category(
       categoryId: categoryId ?? this.categoryId,
       title: title ?? this.title,
       hasSelected: hasSelected ?? this.hasSelected,
+      subCategory: subCategory ?? this.subCategory,
     );
   }
 }

@@ -1,4 +1,5 @@
 import 'package:get_it/get_it.dart';
+import 'package:homemakers_merchant/app/features/address/index.dart';
 import 'package:homemakers_merchant/app/features/address/presentation/manager/address_bloc.dart';
 import 'package:homemakers_merchant/app/features/authentication/data/data_sources/authentication_remote_data_source.dart';
 import 'package:homemakers_merchant/app/features/authentication/domain/repositories/authentication_repository.dart';
@@ -13,16 +14,14 @@ import 'package:homemakers_merchant/app/features/profile/presentation/manager/ba
 import 'package:homemakers_merchant/app/features/profile/presentation/manager/document/business_document_bloc.dart';
 import 'package:homemakers_merchant/app/features/profile/presentation/manager/profile/business_profile_bloc.dart';
 import 'package:homemakers_merchant/app/features/store/index.dart';
-import 'package:homemakers_merchant/app/features/address/index.dart';
-import 'package:homemakers_merchant/app/features/store/presentation/manager/store_bloc.dart';
 import 'package:homemakers_merchant/config/permission/permission_controller.dart';
 import 'package:homemakers_merchant/config/permission/permission_service.dart';
+import 'package:homemakers_merchant/config/translation/app_translator.dart';
 import 'package:homemakers_merchant/config/translation/language_controller.dart';
 import 'package:homemakers_merchant/config/translation/language_service.dart';
 import 'package:homemakers_merchant/config/translation/language_service_hive.dart';
 import 'package:homemakers_merchant/config/translation/multiple_language_download.dart';
 import 'package:homemakers_merchant/config/translation/translate_api.dart';
-import 'package:homemakers_merchant/config/translation/app_translator.dart';
 import 'package:homemakers_merchant/core/constants/global_app_constants.dart';
 import 'package:homemakers_merchant/core/interface/storage_interface.dart';
 import 'package:homemakers_merchant/core/keys/app_key.dart';
@@ -36,7 +35,6 @@ import 'package:homemakers_merchant/shared/widgets/universal/wrap_and_more/src/w
 import 'package:homemakers_merchant/theme/theme_controller.dart';
 import 'package:homemakers_merchant/theme/theme_service.dart';
 import 'package:homemakers_merchant/theme/theme_service_hive.dart';
-import 'package:isolate_manager/isolate_manager.dart';
 import 'package:network_manager/network_manager.dart';
 
 GetIt serviceLocator = GetIt.instance;
@@ -505,6 +503,9 @@ void _setUpRepository() {
       remoteDataSource: serviceLocator(),
       storeLocalDataSource: serviceLocator<StoreLocalDbRepository<StoreEntity>>(),
       driverLocalDataSource: serviceLocator<StoreOwnDeliveryPartnersLocalDbRepository<StoreOwnDeliveryPartnersInfo>>(),
+      storeBindingWithUserLocalDataSource: serviceLocator(),
+      storeOwnDriverBindingWithCurrentUserLocalDataSource: serviceLocator(),
+      storeOwnDriverBindingWithStoreLocalDataSource: serviceLocator(),
     ),
   );
   // Menu
@@ -514,6 +515,10 @@ void _setUpRepository() {
       remoteDataSource: serviceLocator(),
       menuLocalDataSource: serviceLocator(),
       addonsLocalDataSource: serviceLocator(),
+      menuBindingWithStoreLocalDataSource: serviceLocator(),
+      menuBindingWithCurrentUserLocalDataSource: serviceLocator(),
+      addonsBindingWithMenuLocalDataSource: serviceLocator(),
+      addonsBindingWithCurrentUserLocalDataSource: serviceLocator(),
     ),
   );
   // User
@@ -552,6 +557,10 @@ void _setUpRepository() {
       remoteDataSource: serviceLocator(),
       menuLocalDataSource: serviceLocator(),
       addonsLocalDataSource: serviceLocator(),
+      addonsBindingWithCurrentUserLocalDataSource: serviceLocator(),
+      addonsBindingWithMenuLocalDataSource: serviceLocator(),
+      menuBindingWithCurrentUserLocalDataSource: serviceLocator(),
+      menuBindingWithStoreLocalDataSource: serviceLocator(),
     ),
   );
   // repository
@@ -563,6 +572,55 @@ void _setUpRepository() {
     AddressRepositoryImplement(
       remoteDataSource: serviceLocator(),
       addressLocalDataSource: serviceLocator(),
+    ),
+  );
+  // Bindings Menu
+  serviceLocator.registerSingleton<MenuBindingWithStoreLocalDbDbRepository>(
+    MenuBindingWithStoreLocalDbDbRepository(
+      menuLocalDbRepository: serviceLocator(),
+      storeLocalDbRepository: serviceLocator,
+    ),
+  );
+  serviceLocator.registerSingleton<MenuBindingWithCurrentUserLocalDbDbRepository>(
+    MenuBindingWithCurrentUserLocalDbDbRepository(
+      menuLocalDbRepository: serviceLocator(),
+      userLocalDbRepository: serviceLocator(),
+    ),
+  );
+
+  //Binding Addons
+  serviceLocator.registerSingleton<AddonsBindingWithMenuLocalDbDbRepository>(
+    AddonsBindingWithMenuLocalDbDbRepository(
+      menuLocalDbRepository: serviceLocator(),
+      addonsLocalDbRepository: serviceLocator,
+    ),
+  );
+  serviceLocator.registerSingleton<AddonsBindingWithCurrentUserLocalDbDbRepository>(
+    AddonsBindingWithCurrentUserLocalDbDbRepository(
+      addonsLocalDbRepository: serviceLocator(),
+      userLocalDbRepository: serviceLocator(),
+    ),
+  );
+
+  // Binding Drivers
+  serviceLocator.registerSingleton<StoreOwnDriverBindingWithStoreLocalDbRepository>(
+    StoreOwnDriverBindingWithStoreLocalDbRepository(
+      storeOwnDriverLocalDbRepository: serviceLocator(),
+      storeLocalDbRepository: serviceLocator,
+    ),
+  );
+  serviceLocator.registerSingleton<StoreOwnDriverBindingWithCurrentUserLocalDbRepository>(
+    StoreOwnDriverBindingWithCurrentUserLocalDbRepository(
+      storeOwnDriverLocalDbRepository: serviceLocator(),
+      userLocalDbRepository: serviceLocator(),
+    ),
+  );
+
+  // Binding Store
+  serviceLocator.registerSingleton<StoreBindingWithUserLocalDbRepository>(
+    StoreBindingWithUserLocalDbRepository(
+      storeLocalDbRepository: serviceLocator(),
+      userLocalDbRepository: serviceLocator,
     ),
   );
 }

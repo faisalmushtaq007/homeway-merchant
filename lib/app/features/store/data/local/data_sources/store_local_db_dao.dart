@@ -161,16 +161,17 @@ class StoreLocalDbRepository<Store extends StoreEntity> implements BaseStoreLoca
   }
 }
 
-class StoreBindingWithUserLocalDbDbRepository<T extends StoreEntity, R extends AppUserEntity> implements Binding<List<StoreEntity>, AppUserEntity> {
-  const StoreBindingWithUserLocalDbDbRepository({
+class StoreBindingWithUserLocalDbRepository<T extends StoreEntity, R extends AppUserEntity> implements Binding<List<StoreEntity>, AppUserEntity> {
+  const StoreBindingWithUserLocalDbRepository({
     required this.storeLocalDbRepository,
     required this.userLocalDbRepository,
   });
   Future<Database> get _db async => AppDatabase.instance.database;
   StoreRef<int, Map<String, dynamic>> get _user => AppDatabase.instance.user;
   StoreRef<int, Map<String, dynamic>> get _store => AppDatabase.instance.store;
-  final StoreLocalDbRepository storeLocalDbRepository;
-  final UserLocalDbRepository userLocalDbRepository;
+
+  final StoreLocalDbRepository<T> storeLocalDbRepository;
+  final UserLocalDbRepository<R> userLocalDbRepository;
 
   @override
   Future<Either<RepositoryBaseFailure, AppUserEntity>> binding(List<StoreEntity> source, AppUserEntity destination) async {
@@ -189,7 +190,7 @@ class StoreBindingWithUserLocalDbDbRepository<T extends StoreEntity, R extends A
           // correct, txn in used
           // Modify the store result
           final record = _user.record(users.right[0].userID);
-          final value = await record.get(await _db);
+          final value = await record.get(txn);
           if (value != null) {
             var currentUser = cloneMap(value);
             currentUser['stores'] = currentUserMap['stores'] as List<StoreEntity>..addAll(source.toList());

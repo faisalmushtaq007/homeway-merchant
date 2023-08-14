@@ -154,19 +154,132 @@ class MenuLocalDbRepository<Menu extends MenuEntity> implements BaseMenuLocalDbR
   }
 }
 
-class MenuBindingWithStoreLocalDbDbRepository<MenuEntity, StoreEntity> implements Binding<List<MenuEntity>, List<StoreEntity>> {
+class MenuBindingWithStoreLocalDbDbRepository<T extends MenuEntity, R extends StoreEntity> implements Binding<List<MenuEntity>, List<StoreEntity>> {
+  const MenuBindingWithStoreLocalDbDbRepository({
+    required this.menuLocalDbRepository,
+    required this.storeLocalDbRepository,
+  });
   Future<Database> get _db async => AppDatabase.instance.database;
   StoreRef<int, Map<String, dynamic>> get _menu => AppDatabase.instance.menu;
   StoreRef<int, Map<String, dynamic>> get _store => AppDatabase.instance.store;
 
+  final MenuLocalDbRepository<T> menuLocalDbRepository;
+  final StoreLocalDbRepository<R> storeLocalDbRepository;
+
   @override
   Future<Either<RepositoryBaseFailure, List<StoreEntity>>> binding(List<MenuEntity> source, List<StoreEntity> destination) async {
-    // TODO(prasant): implement binding
-    throw UnimplementedError();
+    final db = await _db;
+    final stores = await storeLocalDbRepository.getAll();
+    if (stores.isRight()) {
+      var cacheCurrentStore = stores.right.toList();
+      final result = await tryCatch<List<StoreEntity>>(() async {
+        await db.transaction((txn) async {
+          // !Wrong the following code will deadlock
+          // Don't use the db object in the transaction
+          // await record.put(db, {'name': 'fish'});
+          // correct, txn in used
+          // Modify the store result
+          if (!cacheCurrentStore.isNotNullOrEmpty) {
+            cacheCurrentStore.asMap().forEach((parentStoreKey, parentStoreValue) {
+              destination.asMap().forEach((destinationStoreKey, destinationStoreValue) async {
+                if (parentStoreValue.storeID == destinationStoreValue.storeID) {
+                  // Match
+                  final record = _store.record(destinationStoreValue.storeID);
+                  final value = await record.get(txn);
+                  var currentTempMenu = cloneMap(value);
+                  parentStoreValue.menuEntities.asMap().forEach((key, value) async {
+                    source.asMap().forEach((menuKey, menuValue) async {
+                      // Check if the record exists before adding or updating it.
+                      // Look of existing record
+                      var finder = Finder(filter: Filter.equals('stores.@.menus', menuValue.menuId));
+                      var existing = await _store.query(finder: finder).getSnapshot(txn);
+                      if (existing == null) {
+                        // code not found, add
+                        final data = currentTempMenu['menus'] as List<Addons>..add(menuValue);
+                        final result = await record.update(txn, {'menus': data.toList()});
+                      } else {
+                        // Update existing
+                        await existing.ref.update(txn, menuValue.toMap());
+                      }
+                    });
+                  });
+                } else {
+                  // Not Match
+                }
+              });
+            });
+          } else {
+            // Null or empty
+          }
+          return storeLocalDbRepository.getAll();
+        });
+      });
+      return result;
+    } else {
+      return Left(stores.left);
+    }
   }
 
   @override
   Future<Either<RepositoryBaseFailure, List<StoreEntity>>> unbinding(List<MenuEntity> source, List<StoreEntity> destination) async {
+    // TODO(prasant): implement unbinding
+    throw UnimplementedError();
+  }
+}
+
+class MenuBindingWithCurrentUserLocalDbDbRepository<T extends MenuEntity, R extends AppUserEntity> implements Binding<List<MenuEntity>, AppUserEntity> {
+  const MenuBindingWithCurrentUserLocalDbDbRepository({
+    required this.menuLocalDbRepository,
+    required this.userLocalDbRepository,
+  });
+
+  Future<Database> get _db async => AppDatabase.instance.database;
+  StoreRef<int, Map<String, dynamic>> get _menu => AppDatabase.instance.menu;
+  StoreRef<int, Map<String, dynamic>> get _user => AppDatabase.instance.user;
+
+  final MenuLocalDbRepository<T> menuLocalDbRepository;
+  final UserLocalDbRepository<R> userLocalDbRepository;
+
+  @override
+  Future<Either<RepositoryBaseFailure, AppUserEntity>> binding(List<MenuEntity> source, AppUserEntity destination) async {
+    final db = await _db;
+    final users = await userLocalDbRepository.getAll();
+    if (users.isRight()) {
+      // Todo:(prasant) - Check current user, now skip it
+      final currentUserMap = cloneMap(users.right[0].toMap());
+      var cacheMenus = currentUserMap['menus'] as List<MenuEntity>;
+
+      final result = await tryCatch<AppUserEntity>(() async {
+        await db.transaction((txn) async {
+          // !Wrong the following code will deadlock
+          // Don't use the db object in the transaction
+          // await record.put(db, {'name': 'fish'});
+          // correct, txn in used
+          // Modify the store result
+          final record = _user.record(users.right[0].userID);
+          final value = await record.get(await txn);
+          if (value != null) {
+            var currentUser = cloneMap(value);
+            currentUser['menus'] = currentUserMap['menus'] as List<MenuEntity>..addAll(source.toList());
+            final result = await record.update(txn, {'menus': currentUser['menus']});
+            if (result != null) {
+              return AppUserEntity.fromMap(result);
+            } else {
+              return AppUserEntity.fromMap(currentUser);
+            }
+          } else {
+            return AppUserEntity.fromMap(currentUserMap);
+          }
+        });
+      });
+      return result;
+    } else {
+      return Left(users.left);
+    }
+  }
+
+  @override
+  Future<Either<RepositoryBaseFailure, AppUserEntity>> unbinding(List<MenuEntity> source, AppUserEntity destination) async {
     // TODO(prasant): implement unbinding
     throw UnimplementedError();
   }

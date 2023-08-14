@@ -64,6 +64,7 @@ import 'package:network_manager/network_manager.dart';
 import 'package:path/path.dart' as path;
 import 'package:sembast/sembast.dart';
 import 'package:sembast/timestamp.dart';
+import 'package:sembast/utils/value_utils.dart';
 /*import 'package:homemakers_merchant/shared/widgets/universal/wrap_and_more/wrap_and_more.dart';
 import 'package:homemakers_merchant/shared/widgets/universal/wrap_text/wrap_text.dart';*/
 import 'package:wrap_and_more/wrap_and_more.dart';
@@ -89,6 +90,8 @@ part 'package:homemakers_merchant/app/features/menu/domain/entities/menu_entity.
 part 'package:homemakers_merchant/app/features/menu/domain/repositories/menu_repository.dart';
 part 'package:homemakers_merchant/app/features/menu/domain/usecases/bind_addons_with_menu_usecase.dart';
 part 'package:homemakers_merchant/app/features/menu/domain/usecases/bind_menu_with_store_usecase.dart';
+part 'package:homemakers_merchant/app/features/menu/domain/usecases/bind_addons_with_user_usecase.dart';
+part 'package:homemakers_merchant/app/features/menu/domain/usecases/bind_menu_with_user_usecase.dart';
 part 'package:homemakers_merchant/app/features/menu/domain/usecases/delete_addons_usecase.dart';
 part 'package:homemakers_merchant/app/features/menu/domain/usecases/delete_all_addons_usecase.dart';
 part 'package:homemakers_merchant/app/features/menu/domain/usecases/delete_all_menu_usecase.dart';

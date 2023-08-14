@@ -5,10 +5,19 @@ class MenuRepositoryImplement implements MenuRepository {
     required this.remoteDataSource,
     required this.menuLocalDataSource,
     required this.addonsLocalDataSource,
+    required this.addonsBindingWithMenuLocalDataSource,
+    required this.addonsBindingWithCurrentUserLocalDataSource,
+    required this.menuBindingWithStoreLocalDataSource,
+    required this.menuBindingWithCurrentUserLocalDataSource,
   });
+
   final MenuDataSource remoteDataSource;
   final MenuLocalDbRepository<MenuEntity> menuLocalDataSource;
   final AddonsLocalDbRepository<Addons> addonsLocalDataSource;
+  final AddonsBindingWithMenuLocalDbDbRepository<Addons, MenuEntity> addonsBindingWithMenuLocalDataSource;
+  final AddonsBindingWithCurrentUserLocalDbDbRepository<Addons, AppUserEntity> addonsBindingWithCurrentUserLocalDataSource;
+  final MenuBindingWithStoreLocalDbDbRepository<MenuEntity, StoreEntity> menuBindingWithStoreLocalDataSource;
+  final MenuBindingWithCurrentUserLocalDbDbRepository<MenuEntity, AppUserEntity> menuBindingWithCurrentUserLocalDataSource;
 
   @override
   Future<DataSourceState<bool>> deleteAllMenu() async {
@@ -733,6 +742,30 @@ class MenuRepositoryImplement implements MenuRepository {
   @override
   Future<DataSourceState<List<StoreEntity>>> unBindMenuWithStores({required List<MenuEntity> source, required List<StoreEntity> destination}) {
     // TODO(prasant): implement unBindMenuWithStores
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<DataSourceState<AppUserEntity>> bindAddonsWithUser({required List<Addons> source, required AppUserEntity destination}) {
+    // TODO: implement bindAddonsWithUser
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<DataSourceState<AppUserEntity>> bindMenuWithUser({required List<MenuEntity> source, required AppUserEntity destination}) {
+    // TODO: implement bindMenuWithUser
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<DataSourceState<AppUserEntity>> unBindAddonsWithUser({required List<Addons> source, required AppUserEntity destination}) {
+    // TODO: implement unBindAddonsWithUser
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<DataSourceState<AppUserEntity>> unBindMenuWithUser({required List<MenuEntity> source, required AppUserEntity destination}) {
+    // TODO: implement unBindMenuWithUser
     throw UnimplementedError();
   }
 }

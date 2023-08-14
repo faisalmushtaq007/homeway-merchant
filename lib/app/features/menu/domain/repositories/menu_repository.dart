@@ -54,4 +54,19 @@ abstract interface class MenuRepository {
   Future<DataSourceState<List<StoreEntity>>> bindMenuWithStores({required List<MenuEntity> source, required List<StoreEntity> destination});
 
   Future<DataSourceState<List<StoreEntity>>> unBindMenuWithStores({required List<MenuEntity> source, required List<StoreEntity> destination});
+
+  // With User
+  Future<DataSourceState<AppUserEntity>> bindAddonsWithUser({required List<Addons> source, required AppUserEntity destination});
+
+  Future<DataSourceState<AppUserEntity>> unBindAddonsWithUser({
+    required List<Addons> source,
+    required AppUserEntity destination,
+  });
+
+  Future<DataSourceState<AppUserEntity>> bindMenuWithUser({required List<MenuEntity> source, required AppUserEntity destination});
+
+  Future<DataSourceState<AppUserEntity>> unBindMenuWithUser({
+    required List<MenuEntity> source,
+    required AppUserEntity destination,
+  });
 }
