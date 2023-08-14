@@ -575,13 +575,13 @@ void _setUpRepository() {
     ),
   );
   // Bindings Menu
-  serviceLocator.registerSingleton<MenuBindingWithStoreLocalDbDbRepository>(
-    MenuBindingWithStoreLocalDbDbRepository(
+  serviceLocator.registerSingleton<MenuBindingWithStoreLocalDbDbRepository<MenuEntity, StoreEntity>>(
+    MenuBindingWithStoreLocalDbDbRepository<MenuEntity, StoreEntity>(
       menuLocalDbRepository: serviceLocator(),
-      storeLocalDbRepository: serviceLocator,
+      storeLocalDbRepository: serviceLocator(),
     ),
   );
-  serviceLocator.registerSingleton<MenuBindingWithCurrentUserLocalDbDbRepository>(
+  serviceLocator.registerSingleton<MenuBindingWithCurrentUserLocalDbDbRepository<MenuEntity, AppUserEntity>>(
     MenuBindingWithCurrentUserLocalDbDbRepository(
       menuLocalDbRepository: serviceLocator(),
       userLocalDbRepository: serviceLocator(),
@@ -589,38 +589,38 @@ void _setUpRepository() {
   );
 
   //Binding Addons
-  serviceLocator.registerSingleton<AddonsBindingWithMenuLocalDbDbRepository>(
-    AddonsBindingWithMenuLocalDbDbRepository(
+  serviceLocator.registerSingleton<AddonsBindingWithMenuLocalDbDbRepository<Addons, MenuEntity>>(
+    AddonsBindingWithMenuLocalDbDbRepository<Addons, MenuEntity>(
       menuLocalDbRepository: serviceLocator(),
-      addonsLocalDbRepository: serviceLocator,
+      addonsLocalDbRepository: serviceLocator(),
     ),
   );
-  serviceLocator.registerSingleton<AddonsBindingWithCurrentUserLocalDbDbRepository>(
-    AddonsBindingWithCurrentUserLocalDbDbRepository(
+  serviceLocator.registerSingleton<AddonsBindingWithCurrentUserLocalDbDbRepository<Addons, AppUserEntity>>(
+    AddonsBindingWithCurrentUserLocalDbDbRepository<Addons, AppUserEntity>(
       addonsLocalDbRepository: serviceLocator(),
       userLocalDbRepository: serviceLocator(),
     ),
   );
 
   // Binding Drivers
-  serviceLocator.registerSingleton<StoreOwnDriverBindingWithStoreLocalDbRepository>(
-    StoreOwnDriverBindingWithStoreLocalDbRepository(
+  serviceLocator.registerSingleton<StoreOwnDriverBindingWithStoreLocalDbRepository<StoreOwnDeliveryPartnersInfo, StoreEntity>>(
+    StoreOwnDriverBindingWithStoreLocalDbRepository<StoreOwnDeliveryPartnersInfo, StoreEntity>(
       storeOwnDriverLocalDbRepository: serviceLocator(),
-      storeLocalDbRepository: serviceLocator,
+      storeLocalDbRepository: serviceLocator(),
     ),
   );
-  serviceLocator.registerSingleton<StoreOwnDriverBindingWithCurrentUserLocalDbRepository>(
-    StoreOwnDriverBindingWithCurrentUserLocalDbRepository(
+  serviceLocator.registerSingleton<StoreOwnDriverBindingWithCurrentUserLocalDbRepository<StoreOwnDeliveryPartnersInfo, AppUserEntity>>(
+    StoreOwnDriverBindingWithCurrentUserLocalDbRepository<StoreOwnDeliveryPartnersInfo, AppUserEntity>(
       storeOwnDriverLocalDbRepository: serviceLocator(),
       userLocalDbRepository: serviceLocator(),
     ),
   );
 
   // Binding Store
-  serviceLocator.registerSingleton<StoreBindingWithUserLocalDbRepository>(
-    StoreBindingWithUserLocalDbRepository(
+  serviceLocator.registerSingleton<StoreBindingWithUserLocalDbRepository<StoreEntity, AppUserEntity>>(
+    StoreBindingWithUserLocalDbRepository<StoreEntity, AppUserEntity>(
       storeLocalDbRepository: serviceLocator(),
-      userLocalDbRepository: serviceLocator,
+      userLocalDbRepository: serviceLocator(),
     ),
   );
 }
