@@ -484,6 +484,7 @@ void _setUpUseCases() {
 }
 
 void _setUpRepository() {
+  serviceLocator.registerSingleton<UserLocalDbRepository<AppUserEntity>>(UserLocalDbRepository<AppUserEntity>());
   serviceLocator.registerSingleton<AddonsLocalDbRepository<Addons>>(AddonsLocalDbRepository<Addons>());
   serviceLocator.registerSingleton<StoreOwnDeliveryPartnersLocalDbRepository<StoreOwnDeliveryPartnersInfo>>(
     StoreOwnDeliveryPartnersLocalDbRepository<StoreOwnDeliveryPartnersInfo>(),
