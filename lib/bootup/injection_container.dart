@@ -498,6 +498,50 @@ void _setUpRepository() {
   );
   // Store
   serviceLocator.registerSingleton<StoreDataSource>(StoreRemoteDataSource());
+  // Store and Driver local data source
+  serviceLocator.registerSingleton<StoreOwnDriverBindingWithStoreLocalDbRepository<StoreOwnDeliveryPartnersInfo, StoreEntity>>(
+    StoreOwnDriverBindingWithStoreLocalDbRepository<StoreOwnDeliveryPartnersInfo, StoreEntity>(
+      storeLocalDbRepository: serviceLocator(),
+      storeOwnDriverLocalDbRepository: serviceLocator(),
+    ),
+  );
+  serviceLocator.registerSingleton<StoreOwnDriverBindingWithCurrentUserLocalDbRepository<StoreOwnDeliveryPartnersInfo, AppUserEntity>>(
+    StoreOwnDriverBindingWithCurrentUserLocalDbRepository<StoreOwnDeliveryPartnersInfo, AppUserEntity>(
+      storeOwnDriverLocalDbRepository: serviceLocator(),
+      userLocalDbRepository: serviceLocator(),
+    ),
+  );
+  serviceLocator.registerSingleton<StoreBindingWithUserLocalDbRepository<StoreEntity, AppUserEntity>>(
+    StoreBindingWithUserLocalDbRepository<StoreEntity, AppUserEntity>(
+      userLocalDbRepository: serviceLocator(),
+      storeLocalDbRepository: serviceLocator(),
+    ),
+  );
+  // Menu and Addons local data source
+  serviceLocator.registerSingleton<MenuBindingWithStoreLocalDbDbRepository<MenuEntity, StoreEntity>>(
+    MenuBindingWithStoreLocalDbDbRepository<MenuEntity, StoreEntity>(
+      menuLocalDbRepository: serviceLocator(),
+      storeLocalDbRepository: serviceLocator(),
+    ),
+  );
+  serviceLocator.registerSingleton<MenuBindingWithCurrentUserLocalDbDbRepository<MenuEntity, AppUserEntity>>(
+    MenuBindingWithCurrentUserLocalDbDbRepository<MenuEntity, AppUserEntity>(
+      menuLocalDbRepository: serviceLocator(),
+      userLocalDbRepository: serviceLocator(),
+    ),
+  );
+  serviceLocator.registerSingleton<AddonsBindingWithMenuLocalDbDbRepository<Addons, MenuEntity>>(
+    AddonsBindingWithMenuLocalDbDbRepository<Addons, MenuEntity>(
+      menuLocalDbRepository: serviceLocator(),
+      addonsLocalDbRepository: serviceLocator(),
+    ),
+  );
+  serviceLocator.registerSingleton<AddonsBindingWithCurrentUserLocalDbDbRepository<Addons, AppUserEntity>>(
+    AddonsBindingWithCurrentUserLocalDbDbRepository<Addons, AppUserEntity>(
+      addonsLocalDbRepository: serviceLocator(),
+      userLocalDbRepository: serviceLocator(),
+    ),
+  );
   serviceLocator.registerSingleton<StoreRepository>(
     StoreRepositoryImplement(
       remoteDataSource: serviceLocator(),
