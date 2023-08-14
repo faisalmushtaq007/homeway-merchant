@@ -48,19 +48,19 @@ abstract interface class MenuDataSource {
 
   Future<ApiResultState<List<Addons>>> getAllAddons();
 
-  Future<DataSourceState<List<MenuEntity>>> bindAddonsWithMenu({required List<Addons> source, required List<MenuEntity> destination});
+  Future<ApiResultState<List<MenuEntity>>> bindAddonsWithMenu({required List<Addons> source, required List<MenuEntity> destination});
 
-  Future<DataSourceState<List<MenuEntity>>> unBindAddonsWithMenu({required List<Addons> source, required List<MenuEntity> destination});
+  Future<ApiResultState<List<MenuEntity>>> unBindAddonsWithMenu({required List<Addons> source, required List<MenuEntity> destination});
 
-  Future<DataSourceState<List<StoreEntity>>> bindMenuWithStores({required List<MenuEntity> source, required List<StoreEntity> destination});
+  Future<ApiResultState<List<StoreEntity>>> bindMenuWithStores({required List<MenuEntity> source, required List<StoreEntity> destination});
 
-  Future<DataSourceState<List<StoreEntity>>> unBindMenuWithStores({required List<MenuEntity> source, required List<StoreEntity> destination});
+  Future<ApiResultState<List<StoreEntity>>> unBindMenuWithStores({required List<MenuEntity> source, required List<StoreEntity> destination});
 
-  Future<DataSourceState<AppUserEntity>> bindAddonsWithUser({required List<Addons> source, required AppUserEntity destination});
+  Future<ApiResultState<AppUserEntity>> bindAddonsWithUser({required List<Addons> source, required AppUserEntity destination});
 
-  Future<DataSourceState<AppUserEntity>> unBindAddonsWithUser({required List<Addons> source, required AppUserEntity destination});
+  Future<ApiResultState<AppUserEntity>> unBindAddonsWithUser({required List<Addons> source, required AppUserEntity destination});
 
-  Future<DataSourceState<AppUserEntity>> bindMenuWithUser({required List<MenuEntity> source, required AppUserEntity destination});
+  Future<ApiResultState<AppUserEntity>> bindMenuWithUser({required List<MenuEntity> source, required AppUserEntity destination});
 
-  Future<DataSourceState<AppUserEntity>> unBindMenuWithUser({required List<MenuEntity> source, required AppUserEntity destination});
+  Future<ApiResultState<AppUserEntity>> unBindMenuWithUser({required List<MenuEntity> source, required AppUserEntity destination});
 }

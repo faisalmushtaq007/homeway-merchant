@@ -88,25 +88,25 @@ class StoreRemoteDataSource implements StoreDataSource {
   }
 
   @override
-  Future<DataSourceState<AppUserEntity>> bindDriverWithUser({required List<StoreOwnDeliveryPartnersInfo> source, required AppUserEntity destination}) {
+  Future<ApiResultState<AppUserEntity>> bindDriverWithUser({required List<StoreOwnDeliveryPartnersInfo> source, required AppUserEntity destination}) {
     // TODO: implement bindDriverWithUser
     throw UnimplementedError();
   }
 
   @override
-  Future<DataSourceState<AppUserEntity>> bindStoreWithUser({required List<StoreEntity> source, required AppUserEntity destination}) {
+  Future<ApiResultState<AppUserEntity>> bindStoreWithUser({required List<StoreEntity> source, required AppUserEntity destination}) {
     // TODO: implement bindStoreWithUser
     throw UnimplementedError();
   }
 
   @override
-  Future<DataSourceState<AppUserEntity>> unBindDriversWithUser({required List<StoreOwnDeliveryPartnersInfo> source, required AppUserEntity destination}) {
+  Future<ApiResultState<AppUserEntity>> unBindDriversWithUser({required List<StoreOwnDeliveryPartnersInfo> source, required AppUserEntity destination}) {
     // TODO: implement unBindDriversWithUser
     throw UnimplementedError();
   }
 
   @override
-  Future<DataSourceState<AppUserEntity>> unBindStoreWithUser({required List<StoreEntity> source, required AppUserEntity destination}) {
+  Future<ApiResultState<AppUserEntity>> unBindStoreWithUser({required List<StoreEntity> source, required AppUserEntity destination}) {
     // TODO: implement unBindStoreWithUser
     throw UnimplementedError();
   }

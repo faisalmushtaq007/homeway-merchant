@@ -186,7 +186,7 @@ class MenuBindingWithStoreLocalDbDbRepository<T extends MenuEntity, R extends St
                   // Match
                   final record = _store.record(destinationStoreValue.storeID);
                   final value = await record.get(txn);
-                  var currentTempMenu = cloneMap(value);
+                  var currentTempMenu = cloneMap(value!);
                   parentStoreValue.menuEntities.asMap().forEach((key, value) async {
                     source.asMap().forEach((menuKey, menuValue) async {
                       // Check if the record exists before adding or updating it.
@@ -195,7 +195,7 @@ class MenuBindingWithStoreLocalDbDbRepository<T extends MenuEntity, R extends St
                       var existing = await _store.query(finder: finder).getSnapshot(txn);
                       if (existing == null) {
                         // code not found, add
-                        final data = currentTempMenu['menus']! as List<Addons>..add(menuValue);
+                        final data = currentTempMenu['menus']! as List<MenuEntity>..add(menuValue);
                         final result = await record.update(txn, {'menus': data.toList()});
                       } else {
                         // Update existing

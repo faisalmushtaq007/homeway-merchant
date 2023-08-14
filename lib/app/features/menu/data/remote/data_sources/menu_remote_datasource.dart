@@ -43,13 +43,13 @@ class MenuRemoteDataSource implements MenuDataSource {
   }
 
   @override
-  Future<DataSourceState<List<MenuEntity>>> bindAddonsWithMenu({required List<Addons> source, required List<MenuEntity> destination}) {
+  Future<ApiResultState<List<MenuEntity>>> bindAddonsWithMenu({required List<Addons> source, required List<MenuEntity> destination}) {
     // TODO(prasant): implement bindAddonsWithMenu
     throw UnimplementedError();
   }
 
   @override
-  Future<DataSourceState<List<StoreEntity>>> bindMenuWithStores({required List<MenuEntity> source, required List<StoreEntity> destination}) {
+  Future<ApiResultState<List<StoreEntity>>> bindMenuWithStores({required List<MenuEntity> source, required List<StoreEntity> destination}) {
     // TODO(prasant): implement bindMenuWithStores
     throw UnimplementedError();
   }
@@ -91,37 +91,37 @@ class MenuRemoteDataSource implements MenuDataSource {
   }
 
   @override
-  Future<DataSourceState<List<MenuEntity>>> unBindAddonsWithMenu({required List<Addons> source, required List<MenuEntity> destination}) {
+  Future<ApiResultState<List<MenuEntity>>> unBindAddonsWithMenu({required List<Addons> source, required List<MenuEntity> destination}) {
     // TODO(prasant): implement unBindAddonsWithMenu
     throw UnimplementedError();
   }
 
   @override
-  Future<DataSourceState<List<StoreEntity>>> unBindMenuWithStores({required List<MenuEntity> source, required List<StoreEntity> destination}) {
+  Future<ApiResultState<List<StoreEntity>>> unBindMenuWithStores({required List<MenuEntity> source, required List<StoreEntity> destination}) {
     // TODO(prasant): implement unBindMenuWithStores
     throw UnimplementedError();
   }
 
   @override
-  Future<DataSourceState<AppUserEntity>> bindAddonsWithUser({required List<Addons> source, required AppUserEntity destination}) {
+  Future<ApiResultState<AppUserEntity>> bindAddonsWithUser({required List<Addons> source, required AppUserEntity destination}) {
     // TODO: implement bindAddonsWithUser
     throw UnimplementedError();
   }
 
   @override
-  Future<DataSourceState<AppUserEntity>> bindMenuWithUser({required List<MenuEntity> source, required AppUserEntity destination}) {
+  Future<ApiResultState<AppUserEntity>> bindMenuWithUser({required List<MenuEntity> source, required AppUserEntity destination}) {
     // TODO: implement bindMenuWithUser
     throw UnimplementedError();
   }
 
   @override
-  Future<DataSourceState<AppUserEntity>> unBindAddonsWithUser({required List<Addons> source, required AppUserEntity destination}) {
+  Future<ApiResultState<AppUserEntity>> unBindAddonsWithUser({required List<Addons> source, required AppUserEntity destination}) {
     // TODO: implement unBindAddonsWithUser
     throw UnimplementedError();
   }
 
   @override
-  Future<DataSourceState<AppUserEntity>> unBindMenuWithUser({required List<MenuEntity> source, required AppUserEntity destination}) {
+  Future<ApiResultState<AppUserEntity>> unBindMenuWithUser({required List<MenuEntity> source, required AppUserEntity destination}) {
     // TODO: implement unBindMenuWithUser
     throw UnimplementedError();
   }

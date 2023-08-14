@@ -186,7 +186,7 @@ class AddonsBindingWithMenuLocalDbDbRepository<T extends Addons, R extends MenuE
                   // Match
                   final record = _menu.record(destinationMenuValue.menuId);
                   final value = await record.get(txn);
-                  var currentTempMenu = cloneMap(value);
+                  var currentTempMenu = cloneMap(value!);
                   parentMenuValue.addons.asMap().forEach((key, value) async {
                     source.asMap().forEach((addonsKey, addonsValue) async {
                       // Check if the record exists before adding or updating it.
