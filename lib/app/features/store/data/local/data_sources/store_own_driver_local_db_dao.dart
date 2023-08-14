@@ -190,7 +190,7 @@ class StoreOwnDriverBindingWithStoreLocalDbRepository<T extends StoreOwnDelivery
                   // Match
                   final record = _store.record(destinationStoreValue.storeID);
                   final value = await record.get(txn);
-                  var currentTempMenu = cloneMap(value);
+                  var currentTempMenu = cloneMap(value!);
                   parentStoreValue.menuEntities.asMap().forEach((key, value) async {
                     source.asMap().forEach((driverKey, driverValue) async {
                       // Check if the record exists before adding or updating it.
@@ -199,7 +199,7 @@ class StoreOwnDriverBindingWithStoreLocalDbRepository<T extends StoreOwnDelivery
                       var existing = await _store.query(finder: finder).getSnapshot(txn);
                       if (existing == null) {
                         // code not found, add
-                        final data = currentTempMenu['drivers']! as List<Addons>..add(driverValue);
+                        final data = currentTempMenu['drivers']! as List<StoreOwnDeliveryPartnersInfo>..add(driverValue);
                         final result = await record.update(txn, {'drivers': data.toList()});
                       } else {
                         // Update existing

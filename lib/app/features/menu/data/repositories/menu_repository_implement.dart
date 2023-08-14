@@ -454,7 +454,7 @@ class MenuRepositoryImplement implements MenuRepository {
       } else {
         // Remote
         // Save to server
-        final ApiResultState<List<MenuEntity>> result = await remoteDataSource.bindMenuWithStores(
+        final ApiResultState<List<StoreEntity>> result = await remoteDataSource.bindMenuWithStores(
           source: source,
           destination: destination,
         );
