@@ -101,4 +101,28 @@ class MenuRemoteDataSource implements MenuDataSource {
     // TODO(prasant): implement unBindMenuWithStores
     throw UnimplementedError();
   }
+
+  @override
+  Future<DataSourceState<AppUserEntity>> bindAddonsWithUser({required List<Addons> source, required AppUserEntity destination}) {
+    // TODO: implement bindAddonsWithUser
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<DataSourceState<AppUserEntity>> bindMenuWithUser({required List<MenuEntity> source, required AppUserEntity destination}) {
+    // TODO: implement bindMenuWithUser
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<DataSourceState<AppUserEntity>> unBindAddonsWithUser({required List<Addons> source, required AppUserEntity destination}) {
+    // TODO: implement unBindAddonsWithUser
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<DataSourceState<AppUserEntity>> unBindMenuWithUser({required List<MenuEntity> source, required AppUserEntity destination}) {
+    // TODO: implement unBindMenuWithUser
+    throw UnimplementedError();
+  }
 }

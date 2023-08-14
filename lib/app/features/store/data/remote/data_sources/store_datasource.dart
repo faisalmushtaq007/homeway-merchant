@@ -51,4 +51,12 @@ abstract interface class StoreDataSource {
 
   Future<ApiResultState<List<StoreEntity>>> unBindDriverWithStores(
       {required List<StoreOwnDeliveryPartnersInfo> source, required List<StoreEntity> destination});
+
+  Future<DataSourceState<AppUserEntity>> bindDriverWithUser({required List<StoreOwnDeliveryPartnersInfo> source, required AppUserEntity destination});
+
+  Future<DataSourceState<AppUserEntity>> unBindDriversWithUser({required List<StoreOwnDeliveryPartnersInfo> source, required AppUserEntity destination});
+
+  Future<DataSourceState<AppUserEntity>> bindStoreWithUser({required List<StoreEntity> source, required AppUserEntity destination});
+
+  Future<DataSourceState<AppUserEntity>> unBindStoreWithUser({required List<StoreEntity> source, required AppUserEntity destination});
 }

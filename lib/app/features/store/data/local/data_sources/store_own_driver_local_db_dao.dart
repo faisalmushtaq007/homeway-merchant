@@ -195,11 +195,11 @@ class StoreOwnDriverBindingWithStoreLocalDbRepository<T extends StoreOwnDelivery
                     source.asMap().forEach((driverKey, driverValue) async {
                       // Check if the record exists before adding or updating it.
                       // Look of existing record
-                      var finder = Finder(filter: Filter.equals('stores.@.drivers', driverValue.driverID));
+                      final finder = Finder(filter: Filter.equals('stores.@.drivers', driverValue.driverID));
                       var existing = await _store.query(finder: finder).getSnapshot(txn);
                       if (existing == null) {
                         // code not found, add
-                        final data = currentTempMenu['drivers'] as List<Addons>..add(driverValue);
+                        final data = currentTempMenu['drivers']! as List<Addons>..add(driverValue);
                         final result = await record.update(txn, {'drivers': data.toList()});
                       } else {
                         // Update existing

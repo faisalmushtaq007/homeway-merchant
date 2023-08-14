@@ -371,15 +371,123 @@ class MenuRepositoryImplement implements MenuRepository {
   }
 
   @override
-  Future<DataSourceState<List<MenuEntity>>> bindAddonsWithMenu({required List<Addons> source, required List<MenuEntity> destination}) {
-    // TODO(prasant): implement bindAddonsWithMenu
-    throw UnimplementedError();
+  Future<DataSourceState<List<MenuEntity>>> bindAddonsWithMenu({required List<Addons> source, required List<MenuEntity> destination}) async {
+    try {
+      var connectivity = serviceLocator<ConnectivityService>().getCurrentInternetStatus();
+      if (connectivity.$2 == InternetConnectivityState.internet) {
+        // Local DB
+        // Save to local
+        final Either<RepositoryBaseFailure, List<MenuEntity>> result = await addonsBindingWithMenuLocalDataSource.binding(source, destination);
+        // Return result
+        return result.fold((l) {
+          final RepositoryFailure failure = l as RepositoryFailure;
+          appLog.d('Binding addons with menu error ${failure.message}');
+          return DataSourceState<List<MenuEntity>>.error(
+            reason: failure.message,
+            dataSourceFailure: DataSourceFailure.local,
+            stackTrace: failure.stacktrace,
+          );
+        }, (r) {
+          appLog.d('Binding addons with menu local :');
+          return DataSourceState<List<MenuEntity>>.localDb(data: r);
+        });
+      } else {
+        // Remote
+        // Save to server
+        final ApiResultState<List<MenuEntity>> result = await remoteDataSource.bindAddonsWithMenu(
+          source: source,
+          destination: destination,
+        );
+        // Return result
+        return result.when(
+          success: (data) {
+            appLog.d('Binding addons with menu to remote');
+            return DataSourceState<List<MenuEntity>>.remote(
+              data: data,
+            );
+          },
+          failure: (reason, error, exception, stackTrace) {
+            appLog.d('Binding addons with menu remote error $reason');
+            return DataSourceState<List<MenuEntity>>.error(
+              reason: reason,
+              dataSourceFailure: DataSourceFailure.remote,
+              stackTrace: stackTrace,
+              error: error,
+              networkException: exception,
+            );
+          },
+        );
+      }
+    } catch (e, s) {
+      appLog.e('Binding addons with menu exception $e');
+      return DataSourceState<List<MenuEntity>>.error(
+        reason: e.toString(),
+        dataSourceFailure: DataSourceFailure.local,
+        stackTrace: s,
+        error: e,
+        exception: e as Exception,
+      );
+    }
   }
 
   @override
-  Future<DataSourceState<List<StoreEntity>>> bindMenuWithStores({required List<MenuEntity> source, required List<StoreEntity> destination}) {
-    // TODO(prasant): implement bindMenuWithStores
-    throw UnimplementedError();
+  Future<DataSourceState<List<StoreEntity>>> bindMenuWithStores({required List<MenuEntity> source, required List<StoreEntity> destination}) async {
+    try {
+      var connectivity = serviceLocator<ConnectivityService>().getCurrentInternetStatus();
+      if (connectivity.$2 == InternetConnectivityState.internet) {
+        // Local DB
+        // Save to local
+        final Either<RepositoryBaseFailure, List<StoreEntity>> result = await menuBindingWithStoreLocalDataSource.binding(source, destination);
+        // Return result
+        return result.fold((l) {
+          final RepositoryFailure failure = l as RepositoryFailure;
+          appLog.d('Binding menu with store error ${failure.message}');
+          return DataSourceState<List<StoreEntity>>.error(
+            reason: failure.message,
+            dataSourceFailure: DataSourceFailure.local,
+            stackTrace: failure.stacktrace,
+          );
+        }, (r) {
+          appLog.d('Binding menu with store local :');
+          return DataSourceState<List<StoreEntity>>.localDb(data: r);
+        });
+      } else {
+        // Remote
+        // Save to server
+        final ApiResultState<List<MenuEntity>> result = await remoteDataSource.bindMenuWithStores(
+          source: source,
+          destination: destination,
+        );
+        // Return result
+        return result.when(
+          success: (data) {
+            appLog.d('Binding menu with store to remote');
+            return DataSourceState<List<StoreEntity>>.remote(
+              data: data,
+            );
+          },
+          failure: (reason, error, exception, stackTrace) {
+            appLog.d('Binding menu with store remote error $reason');
+            return DataSourceState<List<StoreEntity>>.error(
+              reason: reason,
+              dataSourceFailure: DataSourceFailure.remote,
+              stackTrace: stackTrace,
+              error: error,
+              networkException: exception,
+            );
+          },
+        );
+      }
+    } catch (e, s) {
+      appLog.e('Binding menu with store exception $e');
+      return DataSourceState<List<StoreEntity>>.error(
+        reason: e.toString(),
+        dataSourceFailure: DataSourceFailure.local,
+        stackTrace: s,
+        error: e,
+        exception: e as Exception,
+      );
+    }
   }
 
   @override
@@ -746,15 +854,123 @@ class MenuRepositoryImplement implements MenuRepository {
   }
 
   @override
-  Future<DataSourceState<AppUserEntity>> bindAddonsWithUser({required List<Addons> source, required AppUserEntity destination}) {
-    // TODO: implement bindAddonsWithUser
-    throw UnimplementedError();
+  Future<DataSourceState<AppUserEntity>> bindAddonsWithUser({required List<Addons> source, required AppUserEntity destination}) async {
+    try {
+      var connectivity = serviceLocator<ConnectivityService>().getCurrentInternetStatus();
+      if (connectivity.$2 == InternetConnectivityState.internet) {
+        // Local DB
+        // Save to local
+        final Either<RepositoryBaseFailure, AppUserEntity> result = await addonsBindingWithCurrentUserLocalDataSource.binding(source, destination);
+        // Return result
+        return result.fold((l) {
+          final RepositoryFailure failure = l as RepositoryFailure;
+          appLog.d('Binding addons with user error ${failure.message}');
+          return DataSourceState<AppUserEntity>.error(
+            reason: failure.message,
+            dataSourceFailure: DataSourceFailure.local,
+            stackTrace: failure.stacktrace,
+          );
+        }, (r) {
+          appLog.d('Binding addons with user local :');
+          return DataSourceState<AppUserEntity>.localDb(data: r);
+        });
+      } else {
+        // Remote
+        // Save to server
+        final ApiResultState<AppUserEntity> result = await remoteDataSource.bindAddonsWithUser(
+          source: source,
+          destination: destination,
+        );
+        // Return result
+        return result.when(
+          success: (data) {
+            appLog.d('Binding addons with user to remote');
+            return DataSourceState<AppUserEntity>.remote(
+              data: data,
+            );
+          },
+          failure: (reason, error, exception, stackTrace) {
+            appLog.d('Binding addons with user remote error $reason');
+            return DataSourceState<AppUserEntity>.error(
+              reason: reason,
+              dataSourceFailure: DataSourceFailure.remote,
+              stackTrace: stackTrace,
+              error: error,
+              networkException: exception,
+            );
+          },
+        );
+      }
+    } catch (e, s) {
+      appLog.e('Binding addons with user exception $e');
+      return DataSourceState<AppUserEntity>.error(
+        reason: e.toString(),
+        dataSourceFailure: DataSourceFailure.local,
+        stackTrace: s,
+        error: e,
+        exception: e as Exception,
+      );
+    }
   }
 
   @override
-  Future<DataSourceState<AppUserEntity>> bindMenuWithUser({required List<MenuEntity> source, required AppUserEntity destination}) {
-    // TODO: implement bindMenuWithUser
-    throw UnimplementedError();
+  Future<DataSourceState<AppUserEntity>> bindMenuWithUser({required List<MenuEntity> source, required AppUserEntity destination}) async {
+    try {
+      var connectivity = serviceLocator<ConnectivityService>().getCurrentInternetStatus();
+      if (connectivity.$2 == InternetConnectivityState.internet) {
+        // Local DB
+        // Save to local
+        final Either<RepositoryBaseFailure, AppUserEntity> result = await menuBindingWithCurrentUserLocalDataSource.binding(source, destination);
+        // Return result
+        return result.fold((l) {
+          final RepositoryFailure failure = l as RepositoryFailure;
+          appLog.d('Binding menu with user error ${failure.message}');
+          return DataSourceState<AppUserEntity>.error(
+            reason: failure.message,
+            dataSourceFailure: DataSourceFailure.local,
+            stackTrace: failure.stacktrace,
+          );
+        }, (r) {
+          appLog.d('Binding menu with user local :');
+          return DataSourceState<AppUserEntity>.localDb(data: r);
+        });
+      } else {
+        // Remote
+        // Save to server
+        final ApiResultState<AppUserEntity> result = await remoteDataSource.bindMenuWithUser(
+          source: source,
+          destination: destination,
+        );
+        // Return result
+        return result.when(
+          success: (data) {
+            appLog.d('Binding menu with user to remote');
+            return DataSourceState<AppUserEntity>.remote(
+              data: data,
+            );
+          },
+          failure: (reason, error, exception, stackTrace) {
+            appLog.d('Binding menu with user remote error $reason');
+            return DataSourceState<AppUserEntity>.error(
+              reason: reason,
+              dataSourceFailure: DataSourceFailure.remote,
+              stackTrace: stackTrace,
+              error: error,
+              networkException: exception,
+            );
+          },
+        );
+      }
+    } catch (e, s) {
+      appLog.e('Binding menu with user exception $e');
+      return DataSourceState<AppUserEntity>.error(
+        reason: e.toString(),
+        dataSourceFailure: DataSourceFailure.local,
+        stackTrace: s,
+        error: e,
+        exception: e as Exception,
+      );
+    }
   }
 
   @override

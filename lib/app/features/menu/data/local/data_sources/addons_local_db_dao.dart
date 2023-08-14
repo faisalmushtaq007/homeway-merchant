@@ -195,7 +195,7 @@ class AddonsBindingWithMenuLocalDbDbRepository<T extends Addons, R extends MenuE
                       var existing = await _menu.query(finder: finder).getSnapshot(txn);
                       if (existing == null) {
                         // code not found, add
-                        final data = currentTempMenu['addons'] as List<Addons>..add(addonsValue);
+                        final data = currentTempMenu['addons']! as List<Addons>..add(addonsValue);
                         final result = await record.update(txn, {'addons': data.toList()});
                       } else {
                         // Update existing

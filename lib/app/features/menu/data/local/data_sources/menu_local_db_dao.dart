@@ -195,7 +195,7 @@ class MenuBindingWithStoreLocalDbDbRepository<T extends MenuEntity, R extends St
                       var existing = await _store.query(finder: finder).getSnapshot(txn);
                       if (existing == null) {
                         // code not found, add
-                        final data = currentTempMenu['menus'] as List<Addons>..add(menuValue);
+                        final data = currentTempMenu['menus']! as List<Addons>..add(menuValue);
                         final result = await record.update(txn, {'menus': data.toList()});
                       } else {
                         // Update existing

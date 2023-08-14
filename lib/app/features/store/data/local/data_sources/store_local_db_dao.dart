@@ -192,8 +192,8 @@ class StoreBindingWithUserLocalDbRepository<T extends StoreEntity, R extends App
           final record = _user.record(users.right[0].userID);
           final value = await record.get(txn);
           if (value != null) {
-            var currentUser = cloneMap(value);
-            currentUser['stores'] = currentUserMap['stores'] as List<StoreEntity>..addAll(source.toList());
+            final currentUser = cloneMap(value);
+            currentUser['stores'] = currentUserMap['stores']! as List<StoreEntity>..addAll(source.toList());
             final result = await record.update(txn, {'stores': currentUser['stores']});
             if (result != null) {
               return AppUserEntity.fromMap(result);

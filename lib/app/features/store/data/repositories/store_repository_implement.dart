@@ -371,11 +371,63 @@ class StoreRepositoryImplement implements StoreRepository {
   // Driver
   @override
   Future<DataSourceState<List<StoreEntity>>> bindDriverWithStores(
-      {required List<StoreOwnDeliveryPartnersInfo> source, required List<StoreEntity> destination}) {
-    var connectivity = serviceLocator<ConnectivityService>().getCurrentInternetStatus();
-    if (connectivity.$2 == InternetConnectivityState.internet) {
-    } else {}
-    throw UnimplementedError();
+      {required List<StoreOwnDeliveryPartnersInfo> source, required List<StoreEntity> destination}) async {
+    try {
+      var connectivity = serviceLocator<ConnectivityService>().getCurrentInternetStatus();
+      if (connectivity.$2 == InternetConnectivityState.internet) {
+        // Local DB
+        // Save to local
+        final Either<RepositoryBaseFailure, List<StoreEntity>> result = await storeOwnDriverBindingWithStoreLocalDataSource.binding(source, destination);
+        // Return result
+        return result.fold((l) {
+          final RepositoryFailure failure = l as RepositoryFailure;
+          appLog.d('Binding driver with store local error ${failure.message}');
+          return DataSourceState<List<StoreEntity>>.error(
+            reason: failure.message,
+            dataSourceFailure: DataSourceFailure.local,
+            stackTrace: failure.stacktrace,
+          );
+        }, (r) {
+          appLog.d('Binding driver with store local :');
+          return DataSourceState<List<StoreEntity>>.localDb(data: r);
+        });
+      } else {
+        // Remote
+        // Save to server
+        final ApiResultState<List<StoreEntity>> result = await remoteDataSource.bindDriverWithStores(
+          source: source,
+          destination: destination,
+        );
+        // Return result
+        return result.when(
+          success: (data) {
+            appLog.d('Binding driver with store to remote');
+            return DataSourceState<List<StoreEntity>>.remote(
+              data: data,
+            );
+          },
+          failure: (reason, error, exception, stackTrace) {
+            appLog.d('Binding driver with store remote error $reason');
+            return DataSourceState<List<StoreEntity>>.error(
+              reason: reason,
+              dataSourceFailure: DataSourceFailure.remote,
+              stackTrace: stackTrace,
+              error: error,
+              networkException: exception,
+            );
+          },
+        );
+      }
+    } catch (e, s) {
+      appLog.e('Binding driver with store exception $e');
+      return DataSourceState<List<StoreEntity>>.error(
+        reason: e.toString(),
+        dataSourceFailure: DataSourceFailure.local,
+        stackTrace: s,
+        error: e,
+        exception: e as Exception,
+      );
+    }
   }
 
   @override
@@ -742,19 +794,123 @@ class StoreRepositoryImplement implements StoreRepository {
   }
 
   @override
-  Future<DataSourceState<AppUserEntity>> bindDriverWithUser({required List<StoreOwnDeliveryPartnersInfo> source, required AppUserEntity destination}) {
-    var connectivity = serviceLocator<ConnectivityService>().getCurrentInternetStatus();
-    if (connectivity.$2 == InternetConnectivityState.internet) {
-    } else {}
-    throw UnimplementedError();
+  Future<DataSourceState<AppUserEntity>> bindDriverWithUser({required List<StoreOwnDeliveryPartnersInfo> source, required AppUserEntity destination}) async {
+    try {
+      var connectivity = serviceLocator<ConnectivityService>().getCurrentInternetStatus();
+      if (connectivity.$2 == InternetConnectivityState.internet) {
+        // Local DB
+        // Save to local
+        final Either<RepositoryBaseFailure, AppUserEntity> result = await storeOwnDriverBindingWithCurrentUserLocalDataSource.binding(source, destination);
+        // Return result
+        return result.fold((l) {
+          final RepositoryFailure failure = l as RepositoryFailure;
+          appLog.d('Binding driver with user local error ${failure.message}');
+          return DataSourceState<AppUserEntity>.error(
+            reason: failure.message,
+            dataSourceFailure: DataSourceFailure.local,
+            stackTrace: failure.stacktrace,
+          );
+        }, (r) {
+          appLog.d('Binding driver with user local :');
+          return DataSourceState<AppUserEntity>.localDb(data: r);
+        });
+      } else {
+        // Remote
+        // Save to server
+        final ApiResultState<AppUserEntity> result = await remoteDataSource.bindDriverWithUser(
+          source: source,
+          destination: destination,
+        );
+        // Return result
+        return result.when(
+          success: (data) {
+            appLog.d('Binding driver with user to remote');
+            return DataSourceState<AppUserEntity>.remote(
+              data: data,
+            );
+          },
+          failure: (reason, error, exception, stackTrace) {
+            appLog.d('Binding driver with user remote error $reason');
+            return DataSourceState<AppUserEntity>.error(
+              reason: reason,
+              dataSourceFailure: DataSourceFailure.remote,
+              stackTrace: stackTrace,
+              error: error,
+              networkException: exception,
+            );
+          },
+        );
+      }
+    } catch (e, s) {
+      appLog.e('Binding driver with user exception $e');
+      return DataSourceState<AppUserEntity>.error(
+        reason: e.toString(),
+        dataSourceFailure: DataSourceFailure.local,
+        stackTrace: s,
+        error: e,
+        exception: e as Exception,
+      );
+    }
   }
 
   @override
-  Future<DataSourceState<AppUserEntity>> bindStoreWithUser({required List<StoreEntity> source, required AppUserEntity destination}) {
-    var connectivity = serviceLocator<ConnectivityService>().getCurrentInternetStatus();
-    if (connectivity.$2 == InternetConnectivityState.internet) {
-    } else {}
-    throw UnimplementedError();
+  Future<DataSourceState<AppUserEntity>> bindStoreWithUser({required List<StoreEntity> source, required AppUserEntity destination}) async {
+    try {
+      var connectivity = serviceLocator<ConnectivityService>().getCurrentInternetStatus();
+      if (connectivity.$2 == InternetConnectivityState.internet) {
+        // Local DB
+        // Save to local
+        final Either<RepositoryBaseFailure, AppUserEntity> result = await storeBindingWithUserLocalDataSource.binding(source, destination);
+        // Return result
+        return result.fold((l) {
+          final RepositoryFailure failure = l as RepositoryFailure;
+          appLog.d('Binding stores with user local error ${failure.message}');
+          return DataSourceState<AppUserEntity>.error(
+            reason: failure.message,
+            dataSourceFailure: DataSourceFailure.local,
+            stackTrace: failure.stacktrace,
+          );
+        }, (r) {
+          appLog.d('Binding stores with user local :');
+          return DataSourceState<AppUserEntity>.localDb(data: r);
+        });
+      } else {
+        // Remote
+        // Save to server
+        final ApiResultState<AppUserEntity> result = await remoteDataSource.bindStoreWithUser(
+          source: source,
+          destination: destination,
+        );
+        // Return result
+        return result.when(
+          success: (data) {
+            appLog.d('Binding stores with user to remote');
+            return DataSourceState<AppUserEntity>.remote(
+              data: data,
+            );
+          },
+          failure: (reason, error, exception, stackTrace) {
+            appLog.d('Binding stores with user remote error $reason');
+            return DataSourceState<AppUserEntity>.error(
+              reason: reason,
+              dataSourceFailure: DataSourceFailure.remote,
+              stackTrace: stackTrace,
+              error: error,
+              networkException: exception,
+            );
+          },
+        );
+      }
+    } catch (e, s) {
+      appLog.e('Binding stores with user exception $e');
+      return DataSourceState<AppUserEntity>.error(
+        reason: e.toString(),
+        dataSourceFailure: DataSourceFailure.local,
+        stackTrace: s,
+        error: e,
+        exception: e as Exception,
+      );
+    }
   }
 
   @override
