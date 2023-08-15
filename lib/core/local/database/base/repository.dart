@@ -42,6 +42,16 @@ abstract class GetAll<EntityType> extends BaseRepositoryOperation<EntityType> {
   Future<Either<RepositoryBaseFailure, List<EntityType>>> getAll();
 }
 
+abstract class SaveAll<EntityType> extends BaseRepositoryOperation<EntityType> {
+  /// Returns a list of all entities in repository
+  ///
+  /// Will return empty array if no entities found.
+  Future<Either<RepositoryBaseFailure, List<EntityType>>> saveAll({
+    required List<EntityType> entities,
+    bool hasUpdateAll = false,
+  });
+}
+
 abstract class Delete<EntityType> extends BaseRepositoryOperation<EntityType> {
   /// Completely remove the entity instance from repository
   Future<Either<RepositoryBaseFailure, bool>> delete(EntityType entity);

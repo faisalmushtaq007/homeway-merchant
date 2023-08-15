@@ -15,6 +15,7 @@ import 'package:homemakers_merchant/app/features/dashboard/presentation/pages/ma
 import 'package:homemakers_merchant/app/features/dashboard/presentation/pages/primary_dashboard_page.dart';
 import 'package:homemakers_merchant/app/features/dashboard/presentation/pages/welcome_page.dart';
 import 'package:homemakers_merchant/app/features/menu/index.dart';
+import 'package:homemakers_merchant/app/features/notification/index.dart';
 import 'package:homemakers_merchant/app/features/onboarding/presentation/pages/onboarding_page.dart';
 import 'package:homemakers_merchant/app/features/onboarding/presentation/pages/splash_page.dart';
 import 'package:homemakers_merchant/app/features/profile/index.dart';
@@ -28,7 +29,7 @@ class AppRouter {
 
   AppRouter._();
 
-  static const String INITIAL = Routes.SAVE_MENU_PAGE;
+  static const String INITIAL = Routes.NOTIFICATIONS;
 
   static final GoRouter _router = GoRouter(
     debugLogDiagnostics: true,
@@ -365,6 +366,10 @@ class AppRouter {
       GoRoute(
         path: Routes.ALL_SAVED_ADDRESS_LIST,
         builder: (context, state) => const AllSavedAddressPage(),
+      ),
+      GoRoute(
+        path: Routes.NOTIFICATIONS,
+        builder: (context, state) => const NotificationPage(),
       ),
     ],
   );

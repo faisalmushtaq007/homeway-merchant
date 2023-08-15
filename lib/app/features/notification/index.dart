@@ -1,0 +1,45 @@
+// Part
+//Pages
+import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
+import 'package:homemakers_merchant/base/base_usecase.dart';
+import 'package:homemakers_merchant/base/widget_view.dart';
+import 'package:homemakers_merchant/bootup/injection_container.dart';
+import 'package:homemakers_merchant/core/constants/global_app_constants.dart';
+import 'package:homemakers_merchant/core/extensions/app_extension.dart';
+import 'package:homemakers_merchant/core/extensions/aync_extension/async_extension.dart';
+import 'package:homemakers_merchant/core/extensions/global_extensions/dart_extensions.dart';
+import 'package:homemakers_merchant/core/extensions/global_extensions/src/object.dart';
+import 'package:homemakers_merchant/core/extensions/string/pattern.dart';
+import 'package:homemakers_merchant/core/local/database/app_database.dart';
+import 'package:homemakers_merchant/core/local/database/base/identifiable.dart';
+import 'package:homemakers_merchant/core/local/database/base/repository.dart';
+import 'package:homemakers_merchant/core/local/database/base/repository_failure.dart';
+import 'package:homemakers_merchant/core/local/database/base/tryCatch.dart';
+import 'package:homemakers_merchant/core/service/connectivity_bloc/src/connectivity_bloc/connectivity_service.dart';
+import 'package:homemakers_merchant/shared/states/api_result_state.dart';
+import 'package:homemakers_merchant/shared/states/data_source_state.dart';
+import 'dart:convert';
+
+import 'package:homemakers_merchant/shared/widgets/universal/infinity_scroll_pagination/infinite_scroll_pagination.dart';
+import 'package:homemakers_merchant/utils/app_log.dart';
+import 'package:homemakers_merchant/utils/functional/functional.dart';
+import 'package:sembast/sembast.dart';
+
+part 'package:homemakers_merchant/app/features/notification/presentation/pages/notification_page.dart';
+part 'package:homemakers_merchant/app/features/notification/presentation/widgets/notification_card_widget.dart';
+part 'package:homemakers_merchant/app/features/notification/domain/entities/notification_entity.dart';
+part 'package:homemakers_merchant/app/features/notification/domain/repositories/notification_repository.dart';
+part 'package:homemakers_merchant/app/features/notification/data/repositories/notification_repository_implement.dart';
+part 'package:homemakers_merchant/app/features/notification/domain/usecases/get_notification_usecase.dart';
+part 'package:homemakers_merchant/app/features/notification/domain/usecases/get_all_notification_usecase.dart';
+part 'package:homemakers_merchant/app/features/notification/domain/usecases/save_all_notification_usecase.dart';
+part 'package:homemakers_merchant/app/features/notification/domain/usecases/save_notification_usecase.dart';
+part 'package:homemakers_merchant/app/features/notification/domain/usecases/edit_notification_usecase.dart';
+part 'package:homemakers_merchant/app/features/notification/domain/usecases/edit_all_notification_usecase.dart';
+part 'package:homemakers_merchant/app/features/notification/domain/usecases/delete_notification_usecase.dart';
+part 'package:homemakers_merchant/app/features/notification/domain/usecases/delete_all_notification_usecase.dart';
+part 'package:homemakers_merchant/app/features/notification/data/local/data_sources/notification_local_db_base_repository.dart';
+part 'package:homemakers_merchant/app/features/notification/data/local/data_sources/notification_local_db_dao.dart';
+part 'package:homemakers_merchant/app/features/notification/data/remote/data_sources/notification_data_source.dart';
+part 'package:homemakers_merchant/app/features/notification/data/remote/data_sources/notification_remote_data_source.dart';

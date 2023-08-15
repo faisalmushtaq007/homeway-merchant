@@ -6,6 +6,7 @@ import 'package:homemakers_merchant/app/features/authentication/index.dart';
 import 'package:homemakers_merchant/app/features/authentication/presentation/manager/otp_verification/otp_verification_bloc.dart';
 import 'package:homemakers_merchant/app/features/authentication/presentation/manager/phone_number_verification_bloc.dart';
 import 'package:homemakers_merchant/app/features/menu/index.dart';
+import 'package:homemakers_merchant/app/features/notification/index.dart';
 import 'package:homemakers_merchant/app/features/permission/presentation/bloc/permission_bloc.dart';
 import 'package:homemakers_merchant/app/features/profile/index.dart';
 import 'package:homemakers_merchant/app/features/profile/presentation/manager/bank/payment_bank_bloc.dart';
@@ -479,6 +480,47 @@ void _setUpUseCases() {
       userAddressRepository: serviceLocator(),
     ),
   );
+  // Notification
+  serviceLocator.registerLazySingleton<SaveNotificationUseCase>(
+    () => SaveNotificationUseCase(
+      userNotificationRepository: serviceLocator(),
+    ),
+  );
+  serviceLocator.registerLazySingleton<EditNotificationUseCase>(
+    () => EditNotificationUseCase(
+      userNotificationRepository: serviceLocator(),
+    ),
+  );
+  serviceLocator.registerLazySingleton<GetNotificationUseCase>(
+    () => GetNotificationUseCase(
+      userNotificationRepository: serviceLocator(),
+    ),
+  );
+  serviceLocator.registerLazySingleton<GetAllNotificationUseCase>(
+    () => GetAllNotificationUseCase(
+      userNotificationRepository: serviceLocator(),
+    ),
+  );
+  serviceLocator.registerLazySingleton<DeleteNotificationUseCase>(
+    () => DeleteNotificationUseCase(
+      userNotificationRepository: serviceLocator(),
+    ),
+  );
+  serviceLocator.registerLazySingleton<DeleteAllNotificationUseCase>(
+    () => DeleteAllNotificationUseCase(
+      userNotificationRepository: serviceLocator(),
+    ),
+  );
+  serviceLocator.registerLazySingleton<SaveAllNotificationUseCase>(
+    () => SaveAllNotificationUseCase(
+      userNotificationRepository: serviceLocator(),
+    ),
+  );
+  serviceLocator.registerLazySingleton<EditAllNotificationUseCase>(
+    () => EditAllNotificationUseCase(
+      userNotificationRepository: serviceLocator(),
+    ),
+  );
 }
 
 void _setUpRepository() {
@@ -662,6 +704,18 @@ void _setUpRepository() {
     StoreBindingWithUserLocalDbRepository<StoreEntity, AppUserEntity>(
       storeLocalDbRepository: serviceLocator(),
       userLocalDbRepository: serviceLocator(),
+    ),
+  );
+
+  // Notification
+  serviceLocator.registerSingleton<NotificationLocalDbRepository<NotificationEntity>>(NotificationLocalDbRepository<NotificationEntity>());
+  // remote
+  serviceLocator.registerSingleton<NotificationDataSource>(NotificationRemoteDataSource());
+  //repository UserPaymentBankRepository
+  serviceLocator.registerSingleton<NotificationRepository>(
+    NotificationRepositoryImplement(
+      remoteDataSource: serviceLocator(),
+      notificationLocalDataSource: serviceLocator(),
     ),
   );
 }

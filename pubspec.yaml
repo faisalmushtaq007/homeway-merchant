@@ -56,10 +56,10 @@ dependencies:
       url: 'https://github.com/prasant10050/flutter_platform_widgets.git'
       ref: master
   flutter_secure_storage: ^8.0.0
-  flutter_staggered_grid_view: ^0.6.2
+  flutter_staggered_grid_view: ^0.7.0
   flutter_svg: ^2.0.7
   font_awesome_flutter: ^10.5.0
-  freezed_annotation: ^2.2.0
+  freezed_annotation: ^2.4.1
   geocoder_buddy:
     git:
       url: 'https://github.com/prasant10050/geocoder_buddy.git'
@@ -68,13 +68,13 @@ dependencies:
   geolocator: ^9.0.2
   get_it: ^7.6.0
   get_it_mixin: ^4.2.0
-  go_router: ^9.0.3
+  go_router: ^10.0.0
   google_fonts: ^5.1.0
-  google_maps_flutter: ^2.3.1
-  google_ml_kit: ^0.15.0
-  google_mlkit_language_id: ^0.7.0
-  google_mlkit_text_recognition: ^0.8.1
-  google_mlkit_translation: ^0.7.0
+  google_maps_flutter: ^2.4.0
+  google_ml_kit: ^0.16.2
+  google_mlkit_language_id: ^0.8.0
+  google_mlkit_text_recognition: ^0.10.0
+  google_mlkit_translation: ^0.8.0
   google_sign_in: ^6.1.4
   hive: ^2.2.3
   hive_flutter: ^1.1.0
@@ -162,16 +162,16 @@ dev_dependencies:
       path: packages/runner
   flutter_test:
     sdk: flutter
-  freezed: ^2.3.5
-  go_router_builder: ^2.2.0
-  hive_generator: ^2.0.0
+  freezed: ^2.4.2
+  go_router_builder: ^2.3.0
+  hive_generator: ^2.0.1
   json_serializable: ^6.7.1
-  mocktail: ^0.3.0
+  mocktail: ^1.0.0
   very_good_analysis: ^5.0.0+1
 
 dependency_overrides:
+  analyzer: ^4.4.0
   http: ^1.0.0
-  google_mlkit_text_recognition: ^0.8.1
   source_span: 1.9.1
   dom_tools: ^2.1.0
   markdown: ^4.0.1
