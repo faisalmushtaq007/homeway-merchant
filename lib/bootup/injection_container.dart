@@ -1,10 +1,8 @@
 import 'package:get_it/get_it.dart';
 import 'package:homemakers_merchant/app/features/address/index.dart';
 import 'package:homemakers_merchant/app/features/address/presentation/manager/address_bloc.dart';
-import 'package:homemakers_merchant/app/features/authentication/data/data_sources/authentication_remote_data_source.dart';
-import 'package:homemakers_merchant/app/features/authentication/domain/repositories/authentication_repository.dart';
-import 'package:homemakers_merchant/app/features/authentication/domain/use_cases/send_otp_usecase.dart';
-import 'package:homemakers_merchant/app/features/authentication/domain/use_cases/verify_otp_usecase.dart';
+import 'package:homemakers_merchant/app/features/authentication/index.dart';
+
 import 'package:homemakers_merchant/app/features/authentication/presentation/manager/otp_verification/otp_verification_bloc.dart';
 import 'package:homemakers_merchant/app/features/authentication/presentation/manager/phone_number_verification_bloc.dart';
 import 'package:homemakers_merchant/app/features/menu/index.dart';
@@ -493,9 +491,7 @@ void _setUpRepository() {
   serviceLocator.registerSingleton<MenuLocalDbRepository<MenuEntity>>(MenuLocalDbRepository<MenuEntity>());
   serviceLocator.registerSingleton<AuthenticationDataSource>(AuthenticationRemoteDataSource());
   serviceLocator.registerSingleton<AuthenticationRepository>(
-    AuthenticationRepositoryImplement(
-      authenticationDataSource: serviceLocator(),
-    ),
+    AuthenticationRepositoryImplement(remoteDataSource: serviceLocator(), userLocalDbRepository: serviceLocator()),
   );
   // Store
   serviceLocator.registerSingleton<StoreDataSource>(StoreRemoteDataSource());

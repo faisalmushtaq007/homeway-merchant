@@ -60,7 +60,7 @@ enum DriverStateStage {
   }
 }
 
-enum BindingStage<T> {
+enum BindingStage {
   none,
   select,
   save,

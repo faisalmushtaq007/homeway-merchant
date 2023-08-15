@@ -1,20 +1,4 @@
-import 'package:homemakers_merchant/app/features/authentication/common/constants.dart';
-import 'package:homemakers_merchant/app/features/authentication/data/models/phone_number_verification/send_otp_response_model.dart';
-import 'package:homemakers_merchant/app/features/authentication/data/models/phone_number_verification/verify_otp_response_model.dart';
-import 'package:homemakers_merchant/app/features/authentication/domain/entities/phone_number_verification/send_otp_entity.dart';
-import 'package:homemakers_merchant/app/features/authentication/domain/entities/phone_number_verification/verify_otp_entity.dart';
-import 'package:homemakers_merchant/app/features/profile/index.dart';
-
-import 'package:homemakers_merchant/bootup/injection_container.dart';
-import 'package:homemakers_merchant/core/network/http/base_request_model.dart';
-import 'package:homemakers_merchant/core/network/http/base_response_error_model.dart';
-import 'package:homemakers_merchant/core/network/http/base_response_model.dart';
-import 'package:homemakers_merchant/core/network/http/failure/get_api_exception.dart';
-import 'package:homemakers_merchant/shared/states/api_result_state.dart';
-import 'package:homemakers_merchant/utils/app_log.dart';
-import 'package:network_manager/network_manager.dart';
-
-part 'authentication_data_source.dart';
+part of 'package:homemakers_merchant/app/features/authentication/index.dart';
 
 class AuthenticationRemoteDataSource extends AuthenticationDataSource {
   final client = serviceLocator<INetworkManager<BaseResponseErrorModel>>();
@@ -107,5 +91,41 @@ class AuthenticationRemoteDataSource extends AuthenticationDataSource {
         error: e,
       );
     }
+  }
+
+  @override
+  Future<ApiResultState<bool>> deleteAllAppUser({AppUserEntity? appUserEntity}) {
+    // TODO: implement deleteAllAppUser
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<ApiResultState<bool>> deleteAppUser({required int userID, AppUserEntity? appUserEntity}) {
+    // TODO: implement deleteAppUser
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<ApiResultState<AppUserEntity>> editAppUser({required AppUserEntity appUserEntity, required int userID}) {
+    // TODO: implement editAppUser
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<ApiResultState<List<AppUserEntity>>> getAllAppUser() {
+    // TODO: implement getAllAppUser
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<ApiResultState<AppUserEntity>> getAppUser({required int userID, AppUserEntity? appUserEntity}) {
+    // TODO: implement getAppUser
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<ApiResultState<AppUserEntity>> saveAppUser({required AppUserEntity appUserEntity}) {
+    // TODO: implement saveAppUser
+    throw UnimplementedError();
   }
 }

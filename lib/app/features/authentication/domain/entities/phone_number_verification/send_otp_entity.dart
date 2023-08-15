@@ -1,33 +1,32 @@
-// This file is "main.dart"
-import 'package:flutter/foundation.dart';
-import 'package:json_annotation/json_annotation.dart';
-import 'package:network_manager/network_manager.dart';
+part of 'package:homemakers_merchant/app/features/authentication/index.dart';
 
-part 'send_otp_entity.g.dart';
-
-@JsonSerializable(explicitToJson: true)
 class SendOtpEntity extends INetworkModel<SendOtpEntity> {
   SendOtpEntity({
-    this.countryDialCode,
-    this.appUserType,
-    this.userName,
+    required this.country_dial_code,
+    required this.user_type,
+    required this.userName,
   });
 
-  factory SendOtpEntity.fromJson(Map<String, Object?> json) => _$SendOtpEntityFromJson(json);
+  factory SendOtpEntity.fromJson(Map<String, dynamic> json) => SendOtpEntity(
+        country_dial_code: json['country_dial_code'] ?? '' as String,
+        user_type: json['user_type'] ?? '' as String,
+        userName: json['username'] ?? '' as String,
+      );
 
-  @JsonKey(name: 'username')
-  String? userName;
-  @JsonKey(name: 'country_dial_code')
-  String? countryDialCode;
-  @JsonKey(name: 'user_type')
-  String? appUserType;
+  String userName;
+  String country_dial_code;
+  String user_type;
 
   @override
   SendOtpEntity fromJson(Map<String, dynamic> json) {
     return SendOtpEntity.fromJson(json);
   }
 
-  Map<String, dynamic> toMap() => _$SendOtpEntityToJson(this);
+  Map<String, dynamic> toMap() => <String, dynamic>{
+        'username': userName,
+        'country_dial_code': country_dial_code,
+        'user_type': user_type,
+      };
 
   @override
   Map<String, dynamic> toJson() => toMap();

@@ -208,7 +208,7 @@ class BindDriverWithStores extends StoreEvent {
   final List<StoreEntity> listOfSelectedStoreEntities;
   final StoreStateStage storeStateStatus;
   final String message;
-  final BindingStage<BindDriverWithStores> bindDriverToStoreStage;
+  final BindingStage bindDriverToStoreStage;
 
   @override
   bool get cacheHash => true;
@@ -236,7 +236,7 @@ class BindDriverWithUser extends StoreEvent {
 
   final StoreStateStage storeStateStatus;
   final String message;
-  final BindingStage<BindDriverWithUser> bindingStage;
+  final BindingStage bindingStage;
   final List<StoreOwnDeliveryPartnersInfo> listOfStoreOwnDeliveryPartners;
   final List<StoreOwnDeliveryPartnersInfo> listOfSelectedStoreOwnDeliveryPartners;
 
@@ -264,7 +264,7 @@ class BindStoreWithUser extends StoreEvent {
 
   final StoreStateStage storeStateStatus;
   final String message;
-  final BindingStage<BindDriverWithUser> bindingStage;
+  final BindingStage bindingStage;
   final List<StoreEntity> storeEntities;
   final List<StoreEntity> listOfSelectedStoreEntities;
 

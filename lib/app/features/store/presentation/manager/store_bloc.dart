@@ -2,13 +2,16 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:bloc_concurrency/bloc_concurrency.dart';
+import 'package:homemakers_merchant/app/features/authentication/index.dart';
 import 'package:homemakers_merchant/app/features/profile/index.dart';
 import 'package:homemakers_merchant/app/features/store/common/store_enum.dart';
 import 'package:homemakers_merchant/app/features/store/index.dart';
 import 'package:homemakers_merchant/bootup/injection_container.dart';
+import 'package:homemakers_merchant/core/extensions/global_extensions/dart_extensions.dart';
 import 'package:homemakers_merchant/shared/states/data_source_state.dart';
 import 'package:homemakers_merchant/utils/app_equatable/app_equatable.dart';
 import 'package:homemakers_merchant/utils/app_log.dart';
+import 'package:new_image_crop/extensions/template_extension.dart';
 
 part 'store_event.dart';
 part 'store_state.dart';
@@ -648,9 +651,8 @@ class StoreBloc extends Bloc<StoreEvent, StoreState> {
               listOfSelectedStoreOwnDeliveryPartners: event.listOfSelectedStoreOwnDeliveryPartners,
               listOfStoreOwnDeliveryPartners: event.listOfStoreOwnDeliveryPartners,
               message: event.message,
-              storeEntities: data??event.storeEntities,
+              storeEntities: data ?? event.storeEntities,
               storeStateStatus: StoreStateStage.bindDriverWithStores,
-
             ),
           );
         },
@@ -663,9 +665,8 @@ class StoreBloc extends Bloc<StoreEvent, StoreState> {
               listOfSelectedStoreOwnDeliveryPartners: event.listOfSelectedStoreOwnDeliveryPartners,
               listOfStoreOwnDeliveryPartners: event.listOfStoreOwnDeliveryPartners,
               message: event.message,
-              storeEntities: data??event.storeEntities,
+              storeEntities: data ?? event.storeEntities,
               storeStateStatus: StoreStateStage.bindDriverWithStores,
-
             ),
           );
         },
@@ -744,125 +745,185 @@ class StoreBloc extends Bloc<StoreEvent, StoreState> {
     }*/
   }
 
-  FutureOr<void> _bindDriverWithUser(BindDriverWithUser event, Emitter<StoreState> emit) async{
+  FutureOr<void> _bindDriverWithUser(BindDriverWithUser event, Emitter<StoreState> emit) async {
     try {
-      final DataSourceState<AppUserEntity> result = await serviceLocator<BindDriverWithUserUseCase>()(
-        destination: ,
-        source: event.listOfSelectedStoreOwnDeliveryPartners,
-      );
-      result.when(
+      // Todo(prasant): Check and get current user, skipt it now
+      final DataSourceState<List<AppUserEntity>> getAllUserCase = await serviceLocator<GetAllAppUserUseCase>()();
+      AppUserEntity appUserEntity = AppUserEntity();
+      getAllUserCase.when(
         remote: (data, meta) {
-          appLog.d('Binding Driver with Store remote ${data?.length}');
-          emit(
-            BindDriverWithStoresState(
-              bindDriverToStoreStage: event.bindDriverToStoreStage,
-              listOfSelectedStoreEntities: event.listOfSelectedStoreEntities,
-              listOfSelectedStoreOwnDeliveryPartners: event.listOfSelectedStoreOwnDeliveryPartners,
-              listOfStoreOwnDeliveryPartners: event.listOfStoreOwnDeliveryPartners,
-              message: event.message,
-              storeEntities: data??event.storeEntities,
-              storeStateStatus: StoreStateStage.bindDriverWithStores,
-
-            ),
-          );
+          if (data.isNotNullOrEmpty) {
+            appUserEntity = data![0];
+          }
         },
         localDb: (data, meta) {
-          appLog.d('Binding Driver with Store local ${data?.length}');
-          emit(
-            BindDriverWithStoresState(
-              bindDriverToStoreStage: event.bindDriverToStoreStage,
-              listOfSelectedStoreEntities: event.listOfSelectedStoreEntities,
-              listOfSelectedStoreOwnDeliveryPartners: event.listOfSelectedStoreOwnDeliveryPartners,
-              listOfStoreOwnDeliveryPartners: event.listOfStoreOwnDeliveryPartners,
-              message: event.message,
-              storeEntities: data??event.storeEntities,
-              storeStateStatus: StoreStateStage.bindDriverWithStores,
-
-            ),
-          );
+          if (data.isNotNullOrEmpty) {
+            appUserEntity = data![0];
+          }
         },
         error: (dataSourceFailure, reason, error, networkException, stackTrace, exception, extra) {
-          appLog.d('Binding Driver with Store error $reason');
           emit(
-            BindExceptionState(
-              message: reason,
+            BindFailedState(
+              message: 'Something went wrong during getting your all user or current user, please try again',
               //exception: e as Exception,
-              stackTrace: stackTrace,
-              bindDriverToStoreStage: BindingStage.bindingDriverWithStore,
+              bindDriverToStoreStage: BindingStage.bindingDriverWithUser,
             ),
           );
         },
       );
+      if (appUserEntity.userID != -1) {
+        emit(
+          BindFailedState(
+            message: 'Something went wrong during getting your all user or current user, please try again',
+            //exception: e as Exception,
+            bindDriverToStoreStage: BindingStage.bindingDriverWithUser,
+          ),
+        );
+      } else {
+        final DataSourceState<AppUserEntity> result = await serviceLocator<BindDriverWithUserUseCase>()(
+          destination: appUserEntity,
+          source: event.listOfSelectedStoreOwnDeliveryPartners,
+        );
+        result.when(
+          remote: (data, meta) {
+            appLog.d('Binding Driver with user remote ${data?.userID}');
+            emit(
+              BindDriverWithUserState(
+                listOfSelectedStoreOwnDeliveryPartners: event.listOfSelectedStoreOwnDeliveryPartners,
+                message: event.message,
+                listOfStoreOwnDeliveryPartners: event.listOfStoreOwnDeliveryPartners,
+                storeStateStatus: StoreStateStage.bindingWithUser,
+                appUserEntity: data ?? appUserEntity,
+                bindingStage: BindingStage.bindingDriverWithUser,
+              ),
+            );
+          },
+          localDb: (data, meta) {
+            appLog.d('Binding Driver with user local ${data?.userID}');
+            emit(
+              BindDriverWithUserState(
+                listOfSelectedStoreOwnDeliveryPartners: event.listOfSelectedStoreOwnDeliveryPartners,
+                message: event.message,
+                listOfStoreOwnDeliveryPartners: event.listOfStoreOwnDeliveryPartners,
+                storeStateStatus: StoreStateStage.bindingWithUser,
+                appUserEntity: data ?? appUserEntity,
+                bindingStage: BindingStage.bindingDriverWithUser,
+              ),
+            );
+          },
+          error: (dataSourceFailure, reason, error, networkException, stackTrace, exception, extra) {
+            appLog.d('Binding Driver with user error $reason');
+            emit(
+              BindExceptionState(
+                message: reason,
+                //exception: e as Exception,
+                stackTrace: stackTrace,
+                bindDriverToStoreStage: BindingStage.bindingDriverWithUser,
+              ),
+            );
+          },
+        );
+      }
     } catch (e, s) {
-      appLog.e('Binding Driver with Store exception $e');
+      appLog.e('Binding Driver with store exception $e');
       emit(
         BindExceptionState(
-          message: 'Something went wrong during getting your all drivers, please try again',
+          message: 'Something went wrong during binding driver with store, please try again',
           //exception: e as Exception,
           stackTrace: s,
-          bindDriverToStoreStage: BindingStage.bindingDriverWithStore,
+          bindDriverToStoreStage: BindingStage.bindingDriverWithUser,
         ),
       );
     }
   }
 
-  FutureOr<void> _bindStoreWithUser(BindStoreWithUser event, Emitter<StoreState> emit) async{
+  FutureOr<void> _bindStoreWithUser(BindStoreWithUser event, Emitter<StoreState> emit) async {
     try {
-      final DataSourceState<AppUserEntity> result = await serviceLocator<BindDriverWithStoreUseCase>()(
-        destination: event.listOfSelectedStoreEntities,
-        source: event.listOfSelectedStoreOwnDeliveryPartners,
-      );
-      result.when(
+      // Todo(prasant): Check and get current user, skipt it now
+      final DataSourceState<List<AppUserEntity>> getAllUserCase = await serviceLocator<GetAllAppUserUseCase>()();
+      AppUserEntity appUserEntity = AppUserEntity();
+      getAllUserCase.when(
         remote: (data, meta) {
-          appLog.d('Binding Driver with Store remote ${data?.length}');
-          emit(
-            BindDriverWithStoresState(
-              bindDriverToStoreStage: event.bindDriverToStoreStage,
-              listOfSelectedStoreEntities: event.listOfSelectedStoreEntities,
-              listOfSelectedStoreOwnDeliveryPartners: event.listOfSelectedStoreOwnDeliveryPartners,
-              listOfStoreOwnDeliveryPartners: event.listOfStoreOwnDeliveryPartners,
-              message: event.message,
-              storeEntities: data??event.storeEntities,
-              storeStateStatus: StoreStateStage.bindDriverWithStores,
-
-            ),
-          );
+          if (data.isNotNullOrEmpty) {
+            appUserEntity = data![0];
+          }
         },
         localDb: (data, meta) {
-          appLog.d('Binding Driver with Store local ${data?.length}');
-          emit(
-            BindDriverWithStoresState(
-              bindDriverToStoreStage: event.bindDriverToStoreStage,
-              listOfSelectedStoreEntities: event.listOfSelectedStoreEntities,
-              listOfSelectedStoreOwnDeliveryPartners: event.listOfSelectedStoreOwnDeliveryPartners,
-              listOfStoreOwnDeliveryPartners: event.listOfStoreOwnDeliveryPartners,
-              message: event.message,
-              storeEntities: data??event.storeEntities,
-              storeStateStatus: StoreStateStage.bindDriverWithStores,
-
-            ),
-          );
+          if (data.isNotNullOrEmpty) {
+            appUserEntity = data![0];
+          }
         },
         error: (dataSourceFailure, reason, error, networkException, stackTrace, exception, extra) {
-          appLog.d('Binding Driver with Store error $reason');
           emit(
-            BindExceptionState(
-              message: reason,
+            BindFailedState(
+              message: 'Something went wrong during getting your all user or current user, please try again',
               //exception: e as Exception,
-              stackTrace: stackTrace,
-              bindDriverToStoreStage: BindingStage.bindingDriverWithStore,
+              bindDriverToStoreStage: BindingStage.bindingWithUser,
             ),
           );
         },
       );
+      if (appUserEntity.userID != -1) {
+        emit(
+          BindFailedState(
+            message: 'Something went wrong during getting your all user or current user, please try again',
+            //exception: e as Exception,
+            bindDriverToStoreStage: BindingStage.bindingWithUser,
+          ),
+        );
+      } else {
+        final DataSourceState<AppUserEntity> result = await serviceLocator<BindStoreWithUserUseCase>()(
+          destination: appUserEntity,
+          source: event.listOfSelectedStoreEntities,
+        );
+        result.when(
+          remote: (data, meta) {
+            appLog.d('Binding store with user remote ${data?.userID}');
+            emit(
+              BindStoreWithUserState(
+                listOfSelectedStoreEntities: event.listOfSelectedStoreEntities,
+                message: event.message,
+                storeEntities: event.storeEntities,
+                storeStateStatus: StoreStateStage.bindingWithUser,
+                appUserEntity: data ?? appUserEntity,
+                bindingStage: BindingStage.bindingWithUser,
+              ),
+            );
+          },
+          localDb: (data, meta) {
+            appLog.d('Binding store with user local ${data?.userID}');
+            emit(
+              BindStoreWithUserState(
+                listOfSelectedStoreEntities: event.listOfSelectedStoreEntities,
+                message: event.message,
+                storeEntities: event.storeEntities,
+                storeStateStatus: StoreStateStage.bindingWithUser,
+                appUserEntity: data ?? appUserEntity,
+                bindingStage: BindingStage.bindingWithUser,
+              ),
+            );
+          },
+          error: (dataSourceFailure, reason, error, networkException, stackTrace, exception, extra) {
+            appLog.d('Binding store with user error $reason');
+            emit(
+              BindExceptionState(
+                message: reason,
+                //exception: e as Exception,
+                stackTrace: stackTrace,
+                bindDriverToStoreStage: BindingStage.bindingDriverWithStore,
+              ),
+            );
+          },
+        );
+      }
     } catch (e, s) {
-      appLog.e('Binding Driver with Store exception $e');
+      appLog.e('Binding store with user exception $e');
       emit(
         BindExceptionState(
-          message: 'Something went wrong during getting your all drivers, please try again',
+          message: 'Something went wrong during binding store with user, please try again',
           //exception: e as Exception,
           stackTrace: s,
-          bindDriverToStoreStage: BindingStage.bindingDriverWithStore,
+          bindDriverToStoreStage: BindingStage.bindingWithUser,
         ),
       );
     }

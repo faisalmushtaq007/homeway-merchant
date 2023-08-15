@@ -2,12 +2,7 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:homemakers_merchant/app/features/authentication/common/otp_verification_enum.dart';
-import 'package:homemakers_merchant/app/features/authentication/data/models/phone_number_verification/send_otp_response_model.dart';
-import 'package:homemakers_merchant/app/features/authentication/data/models/phone_number_verification/verify_otp_response_model.dart';
-import 'package:homemakers_merchant/app/features/authentication/domain/entities/phone_number_verification/send_otp_entity.dart';
-import 'package:homemakers_merchant/app/features/authentication/domain/entities/phone_number_verification/verify_otp_entity.dart';
-import 'package:homemakers_merchant/app/features/authentication/domain/use_cases/send_otp_usecase.dart';
-import 'package:homemakers_merchant/app/features/authentication/domain/use_cases/verify_otp_usecase.dart';
+import 'package:homemakers_merchant/app/features/authentication/index.dart';
 import 'package:homemakers_merchant/app/features/profile/index.dart';
 import 'package:homemakers_merchant/core/extensions/global_extensions/dart_extensions.dart';
 import 'package:homemakers_merchant/shared/states/result_state.dart';
@@ -118,7 +113,7 @@ class OtpVerificationBloc extends Bloc<OtpVerificationEvent, OtpVerificationStat
           otpVerificationStatus: OtpVerificationStatus.processing,
         ),
       );
-      if (!event.verifyOtpEntity.login.isEmptyOrNull && event.verifyOtpEntity.otpCode != null) {
+      if (!event.verifyOtpEntity.login.isEmptyOrNull && event.verifyOtpEntity.otp != null) {
         final ResultState<VerifyOtpResponseModel> resultState = await verifyOtpUseCase(event.verifyOtpEntity);
         emit(
           VerifyOtpProcessingState(

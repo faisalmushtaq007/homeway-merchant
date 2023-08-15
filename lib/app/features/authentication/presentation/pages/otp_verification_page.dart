@@ -7,8 +7,7 @@ import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:homemakers_merchant/app/features/authentication/common/otp_verification_enum.dart';
-import 'package:homemakers_merchant/app/features/authentication/domain/entities/phone_number_verification/send_otp_entity.dart';
-import 'package:homemakers_merchant/app/features/authentication/domain/entities/phone_number_verification/verify_otp_entity.dart';
+import 'package:homemakers_merchant/app/features/authentication/index.dart';
 import 'package:homemakers_merchant/app/features/authentication/presentation/manager/otp_verification/otp_verification_bloc.dart';
 import 'package:homemakers_merchant/app/features/authentication/presentation/manager/phone_number_verification_bloc.dart';
 import 'package:homemakers_merchant/app/features/profile/index.dart';
@@ -30,6 +29,7 @@ import 'package:pinput/pinput.dart';
 
 class OTPVerificationPage extends StatefulWidget {
   const OTPVerificationPage({required this.phoneNumber, super.key, this.countryDialCode = '+966', required this.phoneNumberWithoutFormat});
+
   final String phoneNumber;
   final String countryDialCode;
   final String phoneNumberWithoutFormat;
@@ -63,9 +63,9 @@ class _OTPVerificationPageState extends State<OTPVerificationPage> {
     context.read<OtpVerificationBloc>().add(
           SendOtp(
             sendOtpEntity: SendOtpEntity(
-              appUserType: 'merchant',
+              user_type: 'merchant',
               userName: widget.phoneNumberWithoutFormat,
-              countryDialCode: widget.countryDialCode,
+              country_dial_code: widget.countryDialCode,
             ),
             otpVerificationStatus: OtpVerificationStatus.otpSent,
           ),
@@ -118,9 +118,9 @@ class _OTPVerificationPageState extends State<OTPVerificationPage> {
     context.read<OtpVerificationBloc>().add(
           SendOtp(
             sendOtpEntity: SendOtpEntity(
-              appUserType: 'merchant',
+              user_type: 'merchant',
               userName: widget.phoneNumberWithoutFormat,
-              countryDialCode: widget.countryDialCode,
+              country_dial_code: widget.countryDialCode,
             ),
             otpVerificationStatus: OtpVerificationStatus.otpReSent,
           ),
@@ -160,10 +160,17 @@ class _OTPVerificationPageState extends State<OTPVerificationPage> {
         context.read<OtpVerificationBloc>().add(
               VerifyOtp(
                 verifyOtpEntity: VerifyOtpEntity(
-                  appUserType: 'merchant',
+                  user_type: 'merchant',
                   login: widget.phoneNumber,
-                  countryDialCode: '',
-                  otpCode: int.parse(otpController.value.text.trim()),
+                  country_dial_code: '',
+                  otp: int.parse(
+                    otpController.value.text.trim(),
+                  ),
+                  // TOdo(prasant): Check password and db property from backend developer
+                  db: '',
+                  password: int.parse(
+                    otpController.value.text.trim(),
+                  ),
                 ),
                 otpVerificationStatus: OtpVerificationStatus.otpSent,
               ),
