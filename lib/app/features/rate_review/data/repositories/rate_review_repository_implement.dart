@@ -19,14 +19,14 @@ class RateAndReviewRepositoryImplement implements RateAndReviewRepository {
         // Return result
         return result.fold((l) {
           final RepositoryFailure failure = l as RepositoryFailure;
-          appLog.d('Delete all profile local error ${failure.message}');
+          appLog.d('Delete all rate and review local error ${failure.message}');
           return DataSourceState<bool>.error(
             reason: failure.message,
             dataSourceFailure: DataSourceFailure.local,
             stackTrace: failure.stacktrace,
           );
         }, (r) {
-          appLog.d('Delete all notification to local : $r,');
+          appLog.d('Delete all rate and review to local : $r,');
           return DataSourceState<bool>.localDb(data: r);
         });
       } else {
@@ -36,13 +36,13 @@ class RateAndReviewRepositoryImplement implements RateAndReviewRepository {
         // Return result
         return result.when(
           success: (data) {
-            appLog.d('Delete all notification to remote');
+            appLog.d('Delete all rate and review to remote');
             return DataSourceState<bool>.remote(
               data: data,
             );
           },
           failure: (reason, error, exception, stackTrace) {
-            appLog.d('Delete all notification remote error $reason');
+            appLog.d('Delete all rate and review remote error $reason');
             return DataSourceState<bool>.error(
               reason: reason,
               dataSourceFailure: DataSourceFailure.remote,
@@ -54,13 +54,13 @@ class RateAndReviewRepositoryImplement implements RateAndReviewRepository {
         );
       }
     } catch (e, s) {
-      appLog.e('Delete all notification exception $e');
+      appLog.e('Delete all rate and review exception $e');
       return DataSourceState<bool>.error(
         reason: e.toString(),
         dataSourceFailure: DataSourceFailure.local,
         stackTrace: s,
         error: e,
-        exception: e as Exception,
+        //  exception: e as Exception,
       );
     }
   }
@@ -76,14 +76,14 @@ class RateAndReviewRepositoryImplement implements RateAndReviewRepository {
         // Return result
         return result.fold((l) {
           final RepositoryFailure failure = l as RepositoryFailure;
-          appLog.d('Delete notification local error ${failure.message}');
+          appLog.d('Delete rate and review local error ${failure.message}');
           return DataSourceState<bool>.error(
             reason: failure.message,
             dataSourceFailure: DataSourceFailure.local,
             stackTrace: failure.stacktrace,
           );
         }, (r) {
-          appLog.d('Delete notification to local : $r');
+          appLog.d('Delete rate and review to local : $r');
           return DataSourceState<bool>.localDb(data: r);
         });
       } else {
@@ -96,13 +96,13 @@ class RateAndReviewRepositoryImplement implements RateAndReviewRepository {
         // Return result
         return result.when(
           success: (data) {
-            appLog.d('Delete notification to remote');
+            appLog.d('Delete rate and review to remote');
             return DataSourceState<bool>.remote(
               data: data,
             );
           },
           failure: (reason, error, exception, stackTrace) {
-            appLog.d('Delete notification remote error $reason');
+            appLog.d('Delete rate and review remote error $reason');
             return DataSourceState<bool>.error(
               reason: reason,
               dataSourceFailure: DataSourceFailure.remote,
@@ -114,13 +114,13 @@ class RateAndReviewRepositoryImplement implements RateAndReviewRepository {
         );
       }
     } catch (e, s) {
-      appLog.e('Delete notification exception $e');
+      appLog.e('Delete rate and review exception $e');
       return DataSourceState<bool>.error(
         reason: e.toString(),
         dataSourceFailure: DataSourceFailure.local,
         stackTrace: s,
         error: e,
-        exception: e as Exception,
+        //  exception: e as Exception,
       );
     }
   }
@@ -136,14 +136,14 @@ class RateAndReviewRepositoryImplement implements RateAndReviewRepository {
         // Return result
         return result.fold((l) {
           final RepositoryFailure failure = l as RepositoryFailure;
-          appLog.d('Edit notification local error ${failure.message}');
+          appLog.d('Edit rate and review local error ${failure.message}');
           return DataSourceState<RateAndReviewEntity>.error(
             reason: failure.message,
             dataSourceFailure: DataSourceFailure.local,
             stackTrace: failure.stacktrace,
           );
         }, (r) {
-          appLog.d('Edit notification local : ${r.ratingID}');
+          appLog.d('Edit rate and review local : ${r.ratingID}');
           return DataSourceState<RateAndReviewEntity>.localDb(data: r);
         });
       } else {
@@ -156,13 +156,13 @@ class RateAndReviewRepositoryImplement implements RateAndReviewRepository {
         // Return result
         return result.when(
           success: (data) {
-            appLog.d('Edit notification to remote');
+            appLog.d('Edit rate and review to remote');
             return DataSourceState<RateAndReviewEntity>.remote(
               data: data,
             );
           },
           failure: (reason, error, exception, stackTrace) {
-            appLog.d('Edit notification remote error $reason');
+            appLog.d('Edit rate and review remote error $reason');
             return DataSourceState<RateAndReviewEntity>.error(
               reason: reason,
               dataSourceFailure: DataSourceFailure.remote,
@@ -174,13 +174,13 @@ class RateAndReviewRepositoryImplement implements RateAndReviewRepository {
         );
       }
     } catch (e, s) {
-      appLog.e('Edit notification exception $e');
+      appLog.e('Edit rate and review exception $e');
       return DataSourceState<RateAndReviewEntity>.error(
         reason: e.toString(),
         dataSourceFailure: DataSourceFailure.local,
         stackTrace: s,
         error: e,
-        exception: e as Exception,
+        //  exception: e as Exception,
       );
     }
   }
@@ -196,14 +196,14 @@ class RateAndReviewRepositoryImplement implements RateAndReviewRepository {
         // Return result
         return result.fold((l) {
           final RepositoryFailure failure = l as RepositoryFailure;
-          appLog.d('Get all notification local error ${failure.message}');
+          appLog.d('Get all rate and review local error ${failure.message}');
           return DataSourceState<List<RateAndReviewEntity>>.error(
             reason: failure.message,
             dataSourceFailure: DataSourceFailure.local,
             stackTrace: failure.stacktrace,
           );
         }, (r) {
-          appLog.d('Get all notification local : ${r.length}');
+          appLog.d('Get all rate and review local : ${r.length}');
           return DataSourceState<List<RateAndReviewEntity>>.localDb(data: r);
         });
       } else {
@@ -213,13 +213,13 @@ class RateAndReviewRepositoryImplement implements RateAndReviewRepository {
         // Return result
         return result.when(
           success: (data) {
-            appLog.d('Get all notification from remote');
+            appLog.d('Get all rate and review from remote');
             return DataSourceState<List<RateAndReviewEntity>>.remote(
               data: data.toList(),
             );
           },
           failure: (reason, error, exception, stackTrace) {
-            appLog.d('Get all notification remote error $reason');
+            appLog.d('Get all rate and review remote error $reason');
             return DataSourceState<List<RateAndReviewEntity>>.error(
               reason: reason,
               dataSourceFailure: DataSourceFailure.remote,
@@ -231,13 +231,13 @@ class RateAndReviewRepositoryImplement implements RateAndReviewRepository {
         );
       }
     } catch (e, s) {
-      appLog.e('Get all notification exception $e');
+      appLog.e('Get all rate and review exception $e');
       return DataSourceState<List<RateAndReviewEntity>>.error(
         reason: e.toString(),
         dataSourceFailure: DataSourceFailure.local,
         stackTrace: s,
         error: e,
-        exception: e as Exception,
+        //  exception: e as Exception,
       );
     }
   }
@@ -253,14 +253,14 @@ class RateAndReviewRepositoryImplement implements RateAndReviewRepository {
         // Return result
         return result.fold((l) {
           final RepositoryFailure failure = l as RepositoryFailure;
-          appLog.d('Get notification local error ${failure.message}');
+          appLog.d('Get rate and review local error ${failure.message}');
           return DataSourceState<RateAndReviewEntity>.error(
             reason: failure.message,
             dataSourceFailure: DataSourceFailure.local,
             stackTrace: failure.stacktrace,
           );
         }, (r) {
-          appLog.d('Get notification to local : ${r?.ratingID}, ${r?.title}');
+          appLog.d('Get rate and review to local : ${r?.ratingID}, ${r?.title}');
           return DataSourceState<RateAndReviewEntity>.localDb(data: r);
         });
       } else {
@@ -273,13 +273,13 @@ class RateAndReviewRepositoryImplement implements RateAndReviewRepository {
         // Return result
         return result.when(
           success: (data) {
-            appLog.d('Get notification to remote');
+            appLog.d('Get rate and review to remote');
             return DataSourceState<RateAndReviewEntity>.remote(
               data: data,
             );
           },
           failure: (reason, error, exception, stackTrace) {
-            appLog.d('Get notification remote error $reason');
+            appLog.d('Get rate and review remote error $reason');
             return DataSourceState<RateAndReviewEntity>.error(
               reason: reason,
               dataSourceFailure: DataSourceFailure.remote,
@@ -291,13 +291,13 @@ class RateAndReviewRepositoryImplement implements RateAndReviewRepository {
         );
       }
     } catch (e, s) {
-      appLog.d('Get notification exception $e');
+      appLog.d('Get rate and review exception $e');
       return DataSourceState<RateAndReviewEntity>.error(
         reason: e.toString(),
         dataSourceFailure: DataSourceFailure.local,
         stackTrace: s,
         error: e,
-        exception: e as Exception,
+        //  exception: e as Exception,
       );
     }
   }
@@ -313,14 +313,14 @@ class RateAndReviewRepositoryImplement implements RateAndReviewRepository {
         // Return result
         return result.fold((l) {
           final RepositoryFailure failure = l as RepositoryFailure;
-          appLog.d('Save notification local error ${failure.message}');
+          appLog.d('Save rate and review local error ${failure.message}');
           return DataSourceState<RateAndReviewEntity>.error(
             reason: failure.message,
             dataSourceFailure: DataSourceFailure.local,
             stackTrace: failure.stacktrace,
           );
         }, (r) {
-          appLog.d('Save notification to local : ${r.ratingID}, ${r.title}');
+          appLog.d('Save rate and review to local : ${r.ratingID}, ${r.title}');
           return DataSourceState<RateAndReviewEntity>.localDb(data: r);
         });
       } else {
@@ -332,13 +332,13 @@ class RateAndReviewRepositoryImplement implements RateAndReviewRepository {
         // Return result
         return result.when(
           success: (data) {
-            appLog.d('Save notification to remote');
+            appLog.d('Save rate and review to remote');
             return DataSourceState<RateAndReviewEntity>.remote(
               data: data,
             );
           },
           failure: (reason, error, exception, stackTrace) {
-            appLog.d('Save notification remote error $reason');
+            appLog.d('Save rate and review remote error $reason');
             return DataSourceState<RateAndReviewEntity>.error(
               reason: reason,
               dataSourceFailure: DataSourceFailure.remote,
@@ -350,13 +350,13 @@ class RateAndReviewRepositoryImplement implements RateAndReviewRepository {
         );
       }
     } catch (e, s) {
-      appLog.d('Save notification exception $e');
+      appLog.d('Save rate and review exception $e');
       return DataSourceState<RateAndReviewEntity>.error(
         reason: e.toString(),
         dataSourceFailure: DataSourceFailure.local,
         stackTrace: s,
         error: e,
-        exception: e as Exception,
+        //  exception: e as Exception,
       );
     }
   }
@@ -378,14 +378,14 @@ class RateAndReviewRepositoryImplement implements RateAndReviewRepository {
         // Return result
         return result.fold((l) {
           final RepositoryFailure failure = l as RepositoryFailure;
-          appLog.d('Save all notification local error ${failure.message}');
+          appLog.d('Save all rate and review local error ${failure.message}');
           return DataSourceState<List<RateAndReviewEntity>>.error(
             reason: failure.message,
             dataSourceFailure: DataSourceFailure.local,
             stackTrace: failure.stacktrace,
           );
         }, (r) {
-          appLog.d('Save all notification to local : ${r?.length},');
+          appLog.d('Save all rate and review to local : ${r?.length},');
           return DataSourceState<List<RateAndReviewEntity>>.localDb(data: r);
         });
       } else {
@@ -398,13 +398,13 @@ class RateAndReviewRepositoryImplement implements RateAndReviewRepository {
         // Return result
         return result.when(
           success: (data) {
-            appLog.d('Save all notification to remote');
+            appLog.d('Save all rate and review to remote');
             return DataSourceState<List<RateAndReviewEntity>>.remote(
               data: data,
             );
           },
           failure: (reason, error, exception, stackTrace) {
-            appLog.d('Save all notification remote error $reason');
+            appLog.d('Save all rate and review remote error $reason');
             return DataSourceState<List<RateAndReviewEntity>>.error(
               reason: reason,
               dataSourceFailure: DataSourceFailure.remote,
@@ -416,13 +416,13 @@ class RateAndReviewRepositoryImplement implements RateAndReviewRepository {
         );
       }
     } catch (e, s) {
-      appLog.d('Save all notification exception $e');
+      appLog.d('Save all rate and review exception $e');
       return DataSourceState<List<RateAndReviewEntity>>.error(
         reason: e.toString(),
         dataSourceFailure: DataSourceFailure.local,
         stackTrace: s,
         error: e,
-        exception: e as Exception,
+        //  exception: e as Exception,
       );
     }
   }

@@ -6,7 +6,7 @@ ImageType findImageType(String? assetsPath) {
     return ImageType.text;
   } else {
     switch (assetsPath) {
-      case (final String path) when path.startsWith('http') || path.startsWith('https'):
+      case (final String path) when path.startsWith('http') || path.startsWith('https') || path.contains('http') || path.contains('https'):
         {
           return ImageType.network;
         }

@@ -353,6 +353,7 @@ class _NotificationPageView extends WidgetView<NotificationPage, _NotificationPa
                     builderDelegate: PagedChildBuilderDelegate<NotificationEntity>(
                       animateTransitions: true,
                       itemBuilder: (context, notificationResult, index) => NotificationCardWidget(
+                        key: ValueKey(index),
                         notificationEntity: notificationResult,
                       ),
                     ),

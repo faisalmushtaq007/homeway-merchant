@@ -31,6 +31,8 @@ import 'package:homemakers_merchant/shared/widgets/universal/image_loader/image_
 import 'dart:convert';
 
 import 'package:homemakers_merchant/shared/widgets/universal/infinity_scroll_pagination/infinite_scroll_pagination.dart';
+import 'package:homemakers_merchant/shared/widgets/universal/rating/custom_rating_bar/custom_rating_bar.dart';
+import 'package:homemakers_merchant/shared/widgets/universal/reach_readmore/rich_readmore.dart';
 import 'package:homemakers_merchant/utils/app_log.dart';
 import 'package:homemakers_merchant/utils/date_time_format/date_time_format.dart';
 import 'package:homemakers_merchant/utils/functional/functional.dart';

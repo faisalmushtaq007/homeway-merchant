@@ -11,10 +11,13 @@ class RateAndReviewEntity {
     this.priority = -1,
     required this.body,
     this.timestamp = -1,
+    this.userName = '',
+    this.userImage = '',
+    this.userID = -1,
   });
 
   factory RateAndReviewEntity.fromJson(Map<String, dynamic> json) => RateAndReviewEntity(
-        flag: json['flag'],
+        flag: (json['flag'] != null) ? json['flag'] : 0,
         subtitle: json['subtitle'],
         ratingID: json['ratingID'],
         title: json['title'],
@@ -23,17 +26,23 @@ class RateAndReviewEntity {
         priority: json['priority'],
         body: json['body'] != null ? RateAndReviewBody.fromJson(json['body']) : RateAndReviewBody(),
         timestamp: json['timestamp'],
+        userImage: json['user_image'],
+        userID: json['userID'],
+        userName: json['user_name'],
       );
 
-  int flag;
-  String subtitle;
-  int ratingID;
-  String title;
-  String clickAction;
-  String type;
-  int priority;
+  final int flag;
+  final String subtitle;
+  final int ratingID;
+  final String title;
+  final String clickAction;
+  final String type;
+  final int priority;
   RateAndReviewBody body;
   int timestamp;
+  final String userName;
+  final int userID;
+  final String userImage;
 
   Map<String, dynamic> toJson() => {
         'flag': flag,
@@ -45,6 +54,9 @@ class RateAndReviewEntity {
         'priority': priority,
         'body': body.toJson(),
         'timestamp': timestamp,
+        'user_image': userImage,
+        'userID': userID,
+        'user_name': userName,
       };
 
   RateAndReviewEntity copyWith({
@@ -57,6 +69,9 @@ class RateAndReviewEntity {
     int? priority,
     RateAndReviewBody? body,
     int? timestamp,
+    String? userName,
+    int? userId,
+    String? userImage,
   }) {
     return RateAndReviewEntity(
       flag: flag ?? this.flag,
@@ -68,6 +83,9 @@ class RateAndReviewEntity {
       priority: priority ?? this.priority,
       body: body ?? this.body,
       timestamp: timestamp ?? this.timestamp,
+      userName: userName ?? this.userName,
+      userID: userId ?? this.userID,
+      userImage: userImage ?? this.userImage,
     );
   }
 }
@@ -78,25 +96,36 @@ class RateAndReviewBody {
     this.iconUrl = '',
     this.category = '',
     this.message = '',
+    this.rating = 0.0,
+    this.reviewDescription = '',
+    this.ratingOrderDetails,
   });
 
   factory RateAndReviewBody.fromJson(Map<String, dynamic> json) => RateAndReviewBody(
-        imageUrl: json['imageUrl'],
-        iconUrl: json['iconUrl'],
-        category: json['category'],
-        message: json['message'],
-      );
+      imageUrl: json['imageUrl'],
+      iconUrl: json['iconUrl'],
+      category: json['category'],
+      message: json['message'],
+      rating: json['rating'],
+      reviewDescription: json['reviewDescription'],
+      ratingOrderDetails: json['order_details'] != null ? RatingOrderDetails.fromJson(json['order_details']) : RatingOrderDetails());
 
-  String imageUrl;
-  String iconUrl;
-  String category;
-  String message;
+  final String imageUrl;
+  final String iconUrl;
+  final String category;
+  final String message;
+  final double rating;
+  final String reviewDescription;
+  final RatingOrderDetails? ratingOrderDetails;
 
   Map<String, dynamic> toJson() => {
         'imageUrl': imageUrl,
         'iconUrl': iconUrl,
         'category': category,
         'message': message,
+        'reviewDescription': reviewDescription,
+        'rating': rating,
+        'order_details': ratingOrderDetails?.toJson() ?? const <String, dynamic>{},
       };
 
   RateAndReviewBody copyWith({
@@ -104,12 +133,50 @@ class RateAndReviewBody {
     String? iconUrl,
     String? category,
     String? message,
+    String? reviewDescription,
+    double? rating,
   }) {
     return RateAndReviewBody(
       imageUrl: imageUrl ?? this.imageUrl,
       iconUrl: iconUrl ?? this.iconUrl,
       category: category ?? this.category,
       message: message ?? this.message,
+      reviewDescription: reviewDescription ?? this.reviewDescription,
+      rating: rating ?? this.rating,
     );
   }
+}
+
+class RatingOrderDetails {
+  RatingOrderDetails({
+    this.orderID = -1,
+    this.menuName = '',
+    this.orderDate = -1,
+  });
+
+  factory RatingOrderDetails.fromJson(Map<String, dynamic> json) => RatingOrderDetails(
+        orderID: json['orderID'],
+        menuName: json['menu_name'],
+        orderDate: json['order_date'],
+      );
+  final int orderID;
+  final String menuName;
+  final int orderDate;
+
+  RatingOrderDetails copyWith({
+    int? orderID,
+    String? menuName,
+    int? orderDate,
+  }) =>
+      RatingOrderDetails(
+        orderID: orderID ?? this.orderID,
+        menuName: menuName ?? this.menuName,
+        orderDate: orderDate ?? this.orderDate,
+      );
+
+  Map<String, dynamic> toJson() => <String, dynamic>{
+        'orderID': orderID,
+        'menu_name': menuName,
+        'order_date': orderDate,
+      };
 }

@@ -8,7 +8,9 @@ enum DataSourceFailure {
   local,
   none,
   connectivity,
-  ;
+  eitherLocalOrRemote,
+  neitherLocalOrRemote,
+  unknown;
 
   @override
   String toString() {
