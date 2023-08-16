@@ -14,6 +14,7 @@ import 'package:homemakers_merchant/app/features/authentication/presentation/pag
 import 'package:homemakers_merchant/app/features/dashboard/presentation/pages/main_dashboard_page.dart';
 import 'package:homemakers_merchant/app/features/dashboard/presentation/pages/primary_dashboard_page.dart';
 import 'package:homemakers_merchant/app/features/dashboard/presentation/pages/welcome_page.dart';
+import 'package:homemakers_merchant/app/features/faq/index.dart';
 import 'package:homemakers_merchant/app/features/menu/index.dart';
 import 'package:homemakers_merchant/app/features/notification/index.dart';
 import 'package:homemakers_merchant/app/features/onboarding/presentation/pages/onboarding_page.dart';
@@ -30,7 +31,7 @@ class AppRouter {
 
   AppRouter._();
 
-  static const String INITIAL = Routes.RATE_AND_REVIEW_PAGE;
+  static const String INITIAL = Routes.FAQ_PAGE;
 
   static final GoRouter _router = GoRouter(
     debugLogDiagnostics: true,
@@ -375,6 +376,10 @@ class AppRouter {
       GoRoute(
         path: Routes.RATE_AND_REVIEW_PAGE,
         builder: (context, state) => const RateAndReviewPage(),
+      ),
+      GoRoute(
+        path: Routes.FAQ_PAGE,
+        builder: (context, state) => const FaqPage(),
       ),
     ],
   );

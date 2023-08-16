@@ -82,6 +82,7 @@ abstract class Routes {
   static const String STORE_PREVIEW_PAGE = _Paths.STORE_PREVIEW_PAGE;
   static const String MENU_PREVIEW_PAGE = _Paths.MENU_PREVIEW_PAGE;
   static const String RATE_AND_REVIEW_PAGE = _Paths.RATE_AND_REVIEW_PAGE;
+  static const String FAQ_PAGE = _Paths.FAQ_PAGE;
 }
 
 abstract class _Paths {
@@ -163,4 +164,5 @@ abstract class _Paths {
   static const String STORE_PREVIEW_PAGE = '/store-preview';
   static const String MENU_PREVIEW_PAGE = '/menu-preview';
   static const String RATE_AND_REVIEW_PAGE = '/rate-review';
+  static const String FAQ_PAGE = '/faq';
 }
