@@ -56,6 +56,8 @@ class AppDatabase {
   StoreRef<int, Map<String, dynamic>> _order = StoreRef<int, Map<String, dynamic>>('order');
   StoreRef<int, Map<String, dynamic>> get order => _order;
 
+  StoreRef<int, Map<String, dynamic>> _rateAndReview = StoreRef<int, Map<String, dynamic>>('rateAndReview');
+  StoreRef<int, Map<String, dynamic>> get rateAndReview => _rateAndReview;
   //late RecordRef<int, Map<String, dynamic>> _record;
 
   //var factory = databaseFactoryWeb;
@@ -89,6 +91,7 @@ class AppDatabase {
     _address = StoreRef<int, Map<String, dynamic>>('address');
     _notification = StoreRef<int, Map<String, dynamic>>('notification');
     _order = StoreRef<int, Map<String, dynamic>>('order');
+    _rateAndReview = StoreRef<int, Map<String, dynamic>>('rateAndReview');
     Database database;
     if (kIsWeb) {
       final factory = databaseFactoryWeb;

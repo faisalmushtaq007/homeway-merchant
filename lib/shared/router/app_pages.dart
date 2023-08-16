@@ -19,6 +19,7 @@ import 'package:homemakers_merchant/app/features/notification/index.dart';
 import 'package:homemakers_merchant/app/features/onboarding/presentation/pages/onboarding_page.dart';
 import 'package:homemakers_merchant/app/features/onboarding/presentation/pages/splash_page.dart';
 import 'package:homemakers_merchant/app/features/profile/index.dart';
+import 'package:homemakers_merchant/app/features/rate_review/index.dart';
 import 'package:homemakers_merchant/app/features/store/index.dart';
 
 part 'app_routes.dart';
@@ -29,7 +30,7 @@ class AppRouter {
 
   AppRouter._();
 
-  static const String INITIAL = Routes.NOTIFICATIONS;
+  static const String INITIAL = Routes.RATE_AND_REVIEW_PAGE;
 
   static final GoRouter _router = GoRouter(
     debugLogDiagnostics: true,
@@ -370,6 +371,10 @@ class AppRouter {
       GoRoute(
         path: Routes.NOTIFICATIONS,
         builder: (context, state) => const NotificationPage(),
+      ),
+      GoRoute(
+        path: Routes.RATE_AND_REVIEW_PAGE,
+        builder: (context, state) => const RateAndReviewPage(),
       ),
     ],
   );

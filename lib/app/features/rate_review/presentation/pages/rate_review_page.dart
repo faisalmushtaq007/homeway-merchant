@@ -1,15 +1,15 @@
-part of 'package:homemakers_merchant/app/features/notification/index.dart';
+part of 'package:homemakers_merchant/app/features/rate_review/index.dart';
 
-class NotificationPage extends StatefulWidget {
-  const NotificationPage({super.key});
+class RateAndReviewPage extends StatefulWidget {
+  const RateAndReviewPage({super.key});
 
   @override
-  _NotificationPageController createState() => _NotificationPageController();
+  _RateAndReviewPageController createState() => _RateAndReviewPageController();
 }
 
-class _NotificationPageController extends State<NotificationPage> {
+class _RateAndReviewPageController extends State<RateAndReviewPage> {
   static const _pageSize = 20;
-  final PagingController<int, NotificationEntity> _pagingController = PagingController(firstPageKey: 1);
+  final PagingController<int, RateAndReviewEntity> _pagingController = PagingController(firstPageKey: 1);
   String? _searchTerm;
   late final ScrollController scrollController;
   late final ScrollController innerScrollController;
@@ -42,10 +42,10 @@ class _NotificationPageController extends State<NotificationPage> {
   }
 
   Future<void> saveAll() async {
-    final result = await serviceLocator<SaveAllNotificationUseCase>()(
-      <NotificationEntity>[
-        NotificationEntity(
-          body: NotificationBody(
+    final result = await serviceLocator<SaveAllRateAndReviewUseCase>()(
+      <RateAndReviewEntity>[
+        RateAndReviewEntity(
+          body: RateAndReviewBody(
             category: 'Business Profile',
             message: 'Lorem ipsum is placeholder text commonly used in the graphic, print, and publishing industries for previewing layouts and visual mockups',
           ),
@@ -56,8 +56,8 @@ class _NotificationPageController extends State<NotificationPage> {
           type: 'Profile',
           timestamp: 1692190683,
         ),
-        NotificationEntity(
-          body: NotificationBody(
+        RateAndReviewEntity(
+          body: RateAndReviewBody(
             category: 'Business Document',
             message: 'Lorem ipsum is placeholder text commonly used in the graphic, print, and publishing industries for previewing layouts and visual mockups',
           ),
@@ -68,8 +68,8 @@ class _NotificationPageController extends State<NotificationPage> {
           type: 'Document',
           timestamp: 1692190780,
         ),
-        NotificationEntity(
-          body: NotificationBody(
+        RateAndReviewEntity(
+          body: RateAndReviewBody(
             category: 'Order',
             message: 'Lorem ipsum is placeholder text commonly used in the graphic, print, and publishing industries for previewing layouts and visual mockups',
           ),
@@ -80,8 +80,8 @@ class _NotificationPageController extends State<NotificationPage> {
           type: 'New Order',
           timestamp: 1692117514,
         ),
-        NotificationEntity(
-          body: NotificationBody(
+        RateAndReviewEntity(
+          body: RateAndReviewBody(
             category: 'Order',
             message: 'Lorem ipsum is placeholder text commonly used in the graphic, print, and publishing industries for previewing layouts and visual mockups',
           ),
@@ -92,8 +92,8 @@ class _NotificationPageController extends State<NotificationPage> {
           type: 'Delivery',
           timestamp: 1692172955,
         ),
-        NotificationEntity(
-          body: NotificationBody(
+        RateAndReviewEntity(
+          body: RateAndReviewBody(
             category: 'Payment',
             message: 'Lorem ipsum is placeholder text commonly used in the graphic, print, and publishing industries for previewing layouts and visual mockups',
           ),
@@ -104,8 +104,8 @@ class _NotificationPageController extends State<NotificationPage> {
           type: 'Payment',
           timestamp: 1692223078,
         ),
-        NotificationEntity(
-          body: NotificationBody(
+        RateAndReviewEntity(
+          body: RateAndReviewBody(
             category: 'Business Profile',
             message: 'Lorem ipsum is placeholder text commonly used in the graphic, print, and publishing industries for previewing layouts and visual mockups',
           ),
@@ -116,8 +116,8 @@ class _NotificationPageController extends State<NotificationPage> {
           type: 'Profile',
           timestamp: 1692092858,
         ),
-        NotificationEntity(
-          body: NotificationBody(
+        RateAndReviewEntity(
+          body: RateAndReviewBody(
             category: 'Business Document',
             message: 'Lorem ipsum is placeholder text commonly used in the graphic, print, and publishing industries for previewing layouts and visual mockups',
           ),
@@ -128,8 +128,8 @@ class _NotificationPageController extends State<NotificationPage> {
           type: 'Document',
           timestamp: 1692211891,
         ),
-        NotificationEntity(
-          body: NotificationBody(
+        RateAndReviewEntity(
+          body: RateAndReviewBody(
             category: 'Order',
             message: 'Lorem ipsum is placeholder text commonly used in the graphic, print, and publishing industries for previewing layouts and visual mockups',
           ),
@@ -140,8 +140,8 @@ class _NotificationPageController extends State<NotificationPage> {
           type: 'New Order',
           timestamp: 1692123966,
         ),
-        NotificationEntity(
-          body: NotificationBody(
+        RateAndReviewEntity(
+          body: RateAndReviewBody(
             category: 'Order',
             message: 'Lorem ipsum is placeholder text commonly used in the graphic, print, and publishing industries for previewing layouts and visual mockups',
           ),
@@ -152,8 +152,8 @@ class _NotificationPageController extends State<NotificationPage> {
           type: 'Delivery',
           timestamp: 1692188160,
         ),
-        NotificationEntity(
-          body: NotificationBody(
+        RateAndReviewEntity(
+          body: RateAndReviewBody(
             category: 'Payment',
             message: 'Lorem ipsum is placeholder text commonly used in the graphic, print, and publishing industries for previewing layouts and visual mockups',
           ),
@@ -164,8 +164,8 @@ class _NotificationPageController extends State<NotificationPage> {
           type: 'Payment',
           timestamp: 1692223078,
         ),
-        NotificationEntity(
-          body: NotificationBody(
+        RateAndReviewEntity(
+          body: RateAndReviewBody(
             category: 'Business Profile',
             message: 'Lorem ipsum is placeholder text commonly used in the graphic, print, and publishing industries for previewing layouts and visual mockups',
           ),
@@ -176,8 +176,8 @@ class _NotificationPageController extends State<NotificationPage> {
           type: 'Profile',
           timestamp: 1692092858,
         ),
-        NotificationEntity(
-          body: NotificationBody(
+        RateAndReviewEntity(
+          body: RateAndReviewBody(
             category: 'Business Document',
             message: 'Lorem ipsum is placeholder text commonly used in the graphic, print, and publishing industries for previewing layouts and visual mockups',
           ),
@@ -188,8 +188,8 @@ class _NotificationPageController extends State<NotificationPage> {
           type: 'Document',
           timestamp: 1692211891,
         ),
-        NotificationEntity(
-          body: NotificationBody(
+        RateAndReviewEntity(
+          body: RateAndReviewBody(
             category: 'Order',
             message: 'Lorem ipsum is placeholder text commonly used in the graphic, print, and publishing industries for previewing layouts and visual mockups',
           ),
@@ -200,8 +200,8 @@ class _NotificationPageController extends State<NotificationPage> {
           type: 'New Order',
           timestamp: 1692123966,
         ),
-        NotificationEntity(
-          body: NotificationBody(
+        RateAndReviewEntity(
+          body: RateAndReviewBody(
             category: 'Order',
             message: 'Lorem ipsum is placeholder text commonly used in the graphic, print, and publishing industries for previewing layouts and visual mockups',
           ),
@@ -212,8 +212,8 @@ class _NotificationPageController extends State<NotificationPage> {
           type: 'Delivery',
           timestamp: 1692188160,
         ),
-        NotificationEntity(
-          body: NotificationBody(
+        RateAndReviewEntity(
+          body: RateAndReviewBody(
             category: 'Payment',
             message: 'Lorem ipsum is placeholder text commonly used in the graphic, print, and publishing industries for previewing layouts and visual mockups',
           ),
@@ -241,14 +241,14 @@ class _NotificationPageController extends State<NotificationPage> {
 
   Future<void> _fetchPage(int pageKey) async {
     try {
-      await serviceLocator<GetAllNotificationUseCase>()();
+      await serviceLocator<GetAllRateAndReviewUseCase>()();
       // final newItems = await RemoteApi.getBeerList(
       //   pageKey,
       //   _pageSize,
       //   searchTerm: _searchTerm,
       // );
-      List<NotificationEntity> newItems = [];
-      final result = await serviceLocator<GetAllNotificationUseCase>()();
+      List<RateAndReviewEntity> newItems = [];
+      final result = await serviceLocator<GetAllRateAndReviewUseCase>()();
       result.when(
         remote: (data, meta) {
           appLog.d('Get notification to remote ${data?.length}');
@@ -292,11 +292,11 @@ class _NotificationPageController extends State<NotificationPage> {
   }
 
   @override
-  Widget build(BuildContext context) => _NotificationPageView(this);
+  Widget build(BuildContext context) => _RateAndReviewPageView(this);
 }
 
-class _NotificationPageView extends WidgetView<NotificationPage, _NotificationPageController> {
-  const _NotificationPageView(super.state);
+class _RateAndReviewPageView extends WidgetView<RateAndReviewPage, _RateAndReviewPageController> {
+  const _RateAndReviewPageView(super.state);
 
   @override
   Widget build(BuildContext context) {
@@ -320,7 +320,7 @@ class _NotificationPageView extends WidgetView<NotificationPage, _NotificationPa
           appBar: AppBar(
             automaticallyImplyLeading: true,
             title: Text(
-              'Your Notifications',
+              'Your Ratings',
               textDirection: serviceLocator<LanguageController>().targetTextDirection,
             ),
             actions: const [
@@ -348,12 +348,12 @@ class _NotificationPageView extends WidgetView<NotificationPage, _NotificationPa
               ),
               child: CustomScrollView(
                 slivers: <Widget>[
-                  PagedSliverList<int, NotificationEntity>(
+                  PagedSliverList<int, RateAndReviewEntity>(
                     pagingController: state._pagingController,
-                    builderDelegate: PagedChildBuilderDelegate<NotificationEntity>(
+                    builderDelegate: PagedChildBuilderDelegate<RateAndReviewEntity>(
                       animateTransitions: true,
-                      itemBuilder: (context, notificationResult, index) => NotificationCardWidget(
-                        notificationEntity: notificationResult,
+                      itemBuilder: (context, notificationResult, index) => RateAndReviewCardWidget(
+                        rateAndReviewEntity: notificationResult,
                       ),
                     ),
                   ),

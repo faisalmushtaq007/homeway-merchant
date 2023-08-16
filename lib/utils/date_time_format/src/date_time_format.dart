@@ -227,13 +227,11 @@ class DateTimeFormat {
             break;
           // ISO 8601 date (2019-10-15T19:42:05-08:00)
           case 'c':
-            value = DateTimeFormat.format(dateTime,
-                format: DateTimeFormats.iso8601);
+            value = DateTimeFormat.format(dateTime, format: DateTimeFormats.iso8601);
             break;
           // RFC 2822 date (Tue, 15 Oct 2019 17:42:05 -0800)
           case 'r':
-            value =
-                DateTimeFormat.format(dateTime, format: DateTimeFormats.rss);
+            value = DateTimeFormat.format(dateTime, format: DateTimeFormats.rss);
             break;
           // Seconds since Unix Epoch
           case 'U':
@@ -399,8 +397,7 @@ class DateTimeFormat {
       unitsOfTime.addAll({unitOfTime: units});
     }
 
-    final maxUnitOfTimeIndex =
-        unitsOfTime.values.toList().indexWhere((count) => count > 0);
+    final maxUnitOfTimeIndex = unitsOfTime.values.toList().indexWhere((count) => count > 0);
 
     var minUnitOfTimeIndex = maxUnitOfTimeIndex + levelOfPrecision;
 
@@ -456,8 +453,7 @@ class DateTimeFormat {
 
               final daysInMonth = _daysInMonth(month, year);
 
-              if (units! >= daysInMonth ||
-                  (!lastUnit && units > daysInMonth / 2)) {
+              if (units! >= daysInMonth || (!lastUnit && units > daysInMonth / 2)) {
                 unitsOfTime[UnitOfTime.day] = 0;
                 increaseUnitOfTime(UnitOfTime.month);
               }
@@ -599,6 +595,12 @@ class DateTimeFormat {
         label = abbreviations![unit]!;
       } else if (unit == UnitOfTime.month) {
         label = 'mo';
+      } else if (unit == UnitOfTime.hour) {
+        label = 'h';
+      } else if (unit == UnitOfTime.minute) {
+        label = 'm';
+      } else if (unit == UnitOfTime.second) {
+        label = 's';
       } else if (unit == UnitOfTime.millisecond) {
         label = 'ms';
       } else if (unit == UnitOfTime.microsecond) {
@@ -795,8 +797,7 @@ class DateTimeFormat {
   }
 
   /// Returns `true` if [year] is a leap year, otherwise returns `false`.
-  static bool _isLeapYear(int year) =>
-      year % 100 == 0 ? year % 400 == 0 : year % 4 == 0;
+  static bool _isLeapYear(int year) => year % 100 == 0 ? year % 400 == 0 : year % 4 == 0;
 
   /// Returns the suffix (`st`, `nd`, `rd`, or `th`) of [day].
   static String _suffixOfDay(int day) {
@@ -835,16 +836,14 @@ class DateTimeFormat {
     var timeZoneName = dateTime.timeZoneName;
 
     if (timeZoneName.startsWith('UTC')) {
-      if (RegExp(r'[+-][0-9]{2}')
-          .hasMatch(timeZoneName.substring(timeZoneName.length - 3))) {
+      if (RegExp(r'[+-][0-9]{2}').hasMatch(timeZoneName.substring(timeZoneName.length - 3))) {
         timeZoneName += '00';
       }
 
       return timeZoneName;
     }
 
-    if (timeZoneName.length < 6 &&
-        RegExp('[A-Z]{${timeZoneName.length}}').hasMatch(timeZoneName)) {
+    if (timeZoneName.length < 6 && RegExp('[A-Z]{${timeZoneName.length}}').hasMatch(timeZoneName)) {
       return dateTime.timeZoneName;
     }
 

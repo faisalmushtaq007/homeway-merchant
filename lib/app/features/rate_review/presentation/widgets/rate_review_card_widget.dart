@@ -1,19 +1,19 @@
-part of 'package:homemakers_merchant/app/features/notification/index.dart';
+part of 'package:homemakers_merchant/app/features/rate_review/index.dart';
 
-class NotificationCardWidget extends StatelessWidget {
-  const NotificationCardWidget({
-    required this.notificationEntity,
+class RateAndReviewCardWidget extends StatelessWidget {
+  const RateAndReviewCardWidget({
+    required this.rateAndReviewEntity,
     super.key,
   });
 
-  final NotificationEntity notificationEntity;
+  final RateAndReviewEntity rateAndReviewEntity;
 
   @override
   Widget build(BuildContext context) {
-    final String imagePath = notificationEntity.body.iconUrl.isNotEmpty
-        ? notificationEntity.body.iconUrl
-        : notificationEntity.body.imageUrl.isNotEmpty
-            ? notificationEntity.body.imageUrl
+    final String imagePath = rateAndReviewEntity.body.iconUrl.isNotEmpty
+        ? rateAndReviewEntity.body.iconUrl
+        : rateAndReviewEntity.body.imageUrl.isNotEmpty
+            ? rateAndReviewEntity.body.imageUrl
             : 'assets/svg/mail.svg';
     final minLeadingWidth = 26.0;
     final radius = 28.0;
@@ -59,7 +59,7 @@ class NotificationCardWidget extends StatelessWidget {
             // loader builder widget, default as icon if null
             loaderBuilder: const CircularProgressIndicator(),
             matchTextDirection: true,
-            placeholderText: notificationEntity.title,
+            placeholderText: rateAndReviewEntity.title,
             placeholderTextStyle: context.labelLarge!.copyWith(
               color: Colors.white,
               fontSize: 16,
@@ -78,10 +78,10 @@ class NotificationCardWidget extends StatelessWidget {
               textDirection: serviceLocator<LanguageController>().targetTextDirection,
               children: [
                 Text(
-                  notificationEntity.title,
+                  rateAndReviewEntity.title,
                   style: context.titleMedium!.copyWith(
                     fontWeight: FontWeight.w600,
-                    color: notificationEntity.flag == 0 ? null : Colors.grey[500],
+                    color: rateAndReviewEntity.flag == 0 ? null : Colors.grey[500],
                   ),
                 ).translate(),
               ],
@@ -90,10 +90,10 @@ class NotificationCardWidget extends StatelessWidget {
               textDirection: serviceLocator<LanguageController>().targetTextDirection,
               children: [
                 Text(
-                  notificationEntity.body.message,
+                  rateAndReviewEntity.body.message,
                   overflow: TextOverflow.ellipsis,
                   style: context.bodyMedium!.copyWith(
-                    color: notificationEntity.flag == 0 ? null : Colors.grey[400],
+                    color: rateAndReviewEntity.flag == 0 ? null : Colors.grey[400],
                   ),
                 ).translate(),
               ],
@@ -123,7 +123,7 @@ class NotificationCardWidget extends StatelessWidget {
                         DateTimeFormat.relative(
                           DateTime.now().subtract(
                             DateTime.now().difference(
-                              DateTime.fromMillisecondsSinceEpoch(notificationEntity.timestamp * 1000),
+                              DateTime.fromMillisecondsSinceEpoch(rateAndReviewEntity.timestamp * 1000),
                             ),
                           ),
                           appendIfAfter: 'ago',
@@ -138,7 +138,7 @@ class NotificationCardWidget extends StatelessWidget {
                     ],
                   ),
                   const AnimatedGap(6, duration: Duration(milliseconds: 200)),
-                  notificationEntity.flag == 0
+                  rateAndReviewEntity.flag == 0
                       ? Container(
                           width: 40.0,
                           height: 20.0,

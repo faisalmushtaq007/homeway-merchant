@@ -12,6 +12,7 @@ import 'package:homemakers_merchant/app/features/profile/index.dart';
 import 'package:homemakers_merchant/app/features/profile/presentation/manager/bank/payment_bank_bloc.dart';
 import 'package:homemakers_merchant/app/features/profile/presentation/manager/document/business_document_bloc.dart';
 import 'package:homemakers_merchant/app/features/profile/presentation/manager/profile/business_profile_bloc.dart';
+import 'package:homemakers_merchant/app/features/rate_review/index.dart';
 import 'package:homemakers_merchant/app/features/store/index.dart';
 import 'package:homemakers_merchant/config/permission/permission_controller.dart';
 import 'package:homemakers_merchant/config/permission/permission_service.dart';
@@ -481,44 +482,85 @@ void _setUpUseCases() {
     ),
   );
   // Notification
-  serviceLocator.registerLazySingleton<SaveNotificationUseCase>(
-    () => SaveNotificationUseCase(
-      userNotificationRepository: serviceLocator(),
+  serviceLocator.registerLazySingleton<SaveRateAndReviewUseCase>(
+    () => SaveRateAndReviewUseCase(
+      userRateAndReviewRepository: serviceLocator(),
     ),
   );
-  serviceLocator.registerLazySingleton<EditNotificationUseCase>(
-    () => EditNotificationUseCase(
-      userNotificationRepository: serviceLocator(),
+  serviceLocator.registerLazySingleton<EditRateAndReviewUseCase>(
+    () => EditRateAndReviewUseCase(
+      userRateAndReviewRepository: serviceLocator(),
     ),
   );
-  serviceLocator.registerLazySingleton<GetNotificationUseCase>(
-    () => GetNotificationUseCase(
-      userNotificationRepository: serviceLocator(),
+  serviceLocator.registerLazySingleton<GetRateAndReviewUseCase>(
+    () => GetRateAndReviewUseCase(
+      userRateAndReviewRepository: serviceLocator(),
     ),
   );
-  serviceLocator.registerLazySingleton<GetAllNotificationUseCase>(
-    () => GetAllNotificationUseCase(
-      userNotificationRepository: serviceLocator(),
+  serviceLocator.registerLazySingleton<GetAllRateAndReviewUseCase>(
+    () => GetAllRateAndReviewUseCase(
+      userRateAndReviewRepository: serviceLocator(),
     ),
   );
-  serviceLocator.registerLazySingleton<DeleteNotificationUseCase>(
-    () => DeleteNotificationUseCase(
-      userNotificationRepository: serviceLocator(),
+  serviceLocator.registerLazySingleton<DeleteRateAndReviewUseCase>(
+    () => DeleteRateAndReviewUseCase(
+      userRateAndReviewRepository: serviceLocator(),
     ),
   );
-  serviceLocator.registerLazySingleton<DeleteAllNotificationUseCase>(
-    () => DeleteAllNotificationUseCase(
-      userNotificationRepository: serviceLocator(),
+  serviceLocator.registerLazySingleton<DeleteAllRateAndReviewUseCase>(
+    () => DeleteAllRateAndReviewUseCase(
+      userRateAndReviewRepository: serviceLocator(),
     ),
   );
-  serviceLocator.registerLazySingleton<SaveAllNotificationUseCase>(
-    () => SaveAllNotificationUseCase(
-      userNotificationRepository: serviceLocator(),
+  serviceLocator.registerLazySingleton<SaveAllRateAndReviewUseCase>(
+    () => SaveAllRateAndReviewUseCase(
+      userRateAndReviewRepository: serviceLocator(),
     ),
   );
-  serviceLocator.registerLazySingleton<EditAllNotificationUseCase>(
-    () => EditAllNotificationUseCase(
-      userNotificationRepository: serviceLocator(),
+  serviceLocator.registerLazySingleton<EditAllRateAndReviewUseCase>(
+    () => EditAllRateAndReviewUseCase(
+      userRateAndReviewRepository: serviceLocator(),
+    ),
+  );
+  // Rate and Review
+  serviceLocator.registerLazySingleton<SaveRateAndReviewUseCase>(
+    () => SaveRateAndReviewUseCase(
+      userRateAndReviewRepository: serviceLocator(),
+    ),
+  );
+  serviceLocator.registerLazySingleton<EditRateAndReviewUseCase>(
+    () => EditRateAndReviewUseCase(
+      userRateAndReviewRepository: serviceLocator(),
+    ),
+  );
+  serviceLocator.registerLazySingleton<GetRateAndReviewUseCase>(
+    () => GetRateAndReviewUseCase(
+      userRateAndReviewRepository: serviceLocator(),
+    ),
+  );
+  serviceLocator.registerLazySingleton<GetAllRateAndReviewUseCase>(
+    () => GetAllRateAndReviewUseCase(
+      userRateAndReviewRepository: serviceLocator(),
+    ),
+  );
+  serviceLocator.registerLazySingleton<DeleteRateAndReviewUseCase>(
+    () => DeleteRateAndReviewUseCase(
+      userRateAndReviewRepository: serviceLocator(),
+    ),
+  );
+  serviceLocator.registerLazySingleton<DeleteAllRateAndReviewUseCase>(
+    () => DeleteAllRateAndReviewUseCase(
+      userRateAndReviewRepository: serviceLocator(),
+    ),
+  );
+  serviceLocator.registerLazySingleton<SaveAllRateAndReviewUseCase>(
+    () => SaveAllRateAndReviewUseCase(
+      userRateAndReviewRepository: serviceLocator(),
+    ),
+  );
+  serviceLocator.registerLazySingleton<EditAllRateAndReviewUseCase>(
+    () => EditAllRateAndReviewUseCase(
+      userRateAndReviewRepository: serviceLocator(),
     ),
   );
 }
@@ -714,6 +756,17 @@ void _setUpRepository() {
   //repository UserPaymentBankRepository
   serviceLocator.registerSingleton<NotificationRepository>(
     NotificationRepositoryImplement(
+      remoteDataSource: serviceLocator(),
+      notificationLocalDataSource: serviceLocator(),
+    ),
+  );
+  // Rate and Review
+  serviceLocator.registerSingleton<RateAndReviewLocalDbRepository<RateAndReviewEntity>>(RateAndReviewLocalDbRepository<RateAndReviewEntity>());
+  // remote
+  serviceLocator.registerSingleton<RateAndReviewDataSource>(RateAndReviewRemoteDataSource());
+  //repository UserPaymentBankRepository
+  serviceLocator.registerSingleton<RateAndReviewRepository>(
+    RateAndReviewRepositoryImplement(
       remoteDataSource: serviceLocator(),
       notificationLocalDataSource: serviceLocator(),
     ),
