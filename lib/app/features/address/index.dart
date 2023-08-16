@@ -47,6 +47,7 @@ import 'package:homemakers_merchant/shared/widgets/universal/map/google_map_plac
 import 'package:homemakers_merchant/shared/widgets/universal/phone_number_text_field/phonenumber_form_field_widget.dart';
 import 'package:homemakers_merchant/utils/app_log.dart';
 import 'package:homemakers_merchant/utils/functional/functional.dart';
+import 'package:homemakers_merchant/utils/image_type.dart';
 import 'package:homemakers_merchant/utils/validation/form_validation/form_validation.dart';
 import 'package:implicitly_animated_reorderable_list_2/implicitly_animated_reorderable_list_2.dart';
 import 'package:location/location.dart' as loc;

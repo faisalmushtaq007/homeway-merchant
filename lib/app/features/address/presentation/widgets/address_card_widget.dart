@@ -188,35 +188,6 @@ class _AddressCardWidgetController extends State<AddressCardWidget> {
     });
   }
 
-  ImageType _findImageType(String? assetsPath) {
-    if (assetsPath.isEmptyOrNull) {
-      return ImageType.text;
-    } else {
-      switch (assetsPath) {
-        case (final String path) when path.startsWith('http') || path.startsWith('https'):
-          {
-            return ImageType.network;
-          }
-        case (final String path) when path.startsWith('/') || path.startsWith('//'):
-          {
-            return ImageType.file;
-          }
-        case (final String path) when path.contains('.jpg') || path.contains('.png'):
-          {
-            return ImageType.file;
-          }
-        case (final String path) when path.contains('.svg'):
-          {
-            return ImageType.svg;
-          }
-        case _:
-          {
-            return ImageType.text;
-          }
-      }
-    }
-  }
-
   @override
   void initState() {
     super.initState();
@@ -261,7 +232,7 @@ class _AddressCardWidgetView extends WidgetView<AddressCardWidget, _AddressCardW
         // alignment of image
         //alignment: Alignment.center,
         // indicates where image will be loaded from, types are [network, asset,file]
-        imageType: state._findImageType(widget.addressEntity.address?.area),
+        imageType: findImageType(widget.addressEntity.address?.area),
         // indicates what shape you would like to be with image [rectangle, oval,circle or none]
         imageShape: ImageShape.rectangle,
         // image default box fit

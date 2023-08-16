@@ -1,10 +1,14 @@
 // Part
 //Pages
+import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:homemakers_merchant/base/base_usecase.dart';
 import 'package:homemakers_merchant/base/widget_view.dart';
 import 'package:homemakers_merchant/bootup/injection_container.dart';
+import 'package:homemakers_merchant/config/translation/language_controller.dart';
+import 'package:homemakers_merchant/config/translation/widgets/language_selection_widget.dart';
 import 'package:homemakers_merchant/core/constants/global_app_constants.dart';
 import 'package:homemakers_merchant/core/extensions/app_extension.dart';
 import 'package:homemakers_merchant/core/extensions/aync_extension/async_extension.dart';
@@ -19,11 +23,16 @@ import 'package:homemakers_merchant/core/local/database/base/tryCatch.dart';
 import 'package:homemakers_merchant/core/service/connectivity_bloc/src/connectivity_bloc/connectivity_service.dart';
 import 'package:homemakers_merchant/shared/states/api_result_state.dart';
 import 'package:homemakers_merchant/shared/states/data_source_state.dart';
+import 'package:homemakers_merchant/shared/widgets/app/page_body.dart';
+import 'package:homemakers_merchant/shared/widgets/universal/animate_do/animate_do.dart';
+import 'package:homemakers_merchant/shared/widgets/universal/animated_gap/gap.dart';
+import 'package:homemakers_merchant/shared/widgets/universal/image_loader/image_helper.dart';
 import 'dart:convert';
 
 import 'package:homemakers_merchant/shared/widgets/universal/infinity_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:homemakers_merchant/utils/app_log.dart';
 import 'package:homemakers_merchant/utils/functional/functional.dart';
+import 'package:homemakers_merchant/utils/image_type.dart';
 import 'package:sembast/sembast.dart';
 
 part 'package:homemakers_merchant/app/features/notification/presentation/pages/notification_page.dart';
