@@ -260,7 +260,7 @@ class _FaqPageController extends State<FaqPage> {
                 "-  Copies of the below documents are mandatory \n-  FSSAI Licence OR FSSAI Acknowledgement \n-  Pan Card \n-  GSTIN Certificate \n-  Cancelled Cheque OR bank Passbook \n-  Menu"),
         FaqEntity(
           faqID: 3,
-          question: 'After I submit all documents, how long will it take for my business to go live on Swiggy?',
+          question: 'After I submit all documents, how long will it take for my business to go live on HomeWay?',
           answer:
               'After all mandatory documents have been received and verified it takes upto 7-10 working days for the onboarding to be completed and make your business live on the platform.',
         ),
