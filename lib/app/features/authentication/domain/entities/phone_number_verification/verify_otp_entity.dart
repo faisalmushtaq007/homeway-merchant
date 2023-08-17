@@ -4,19 +4,22 @@ class VerifyOtpEntity extends INetworkModel<VerifyOtpEntity> {
   VerifyOtpEntity({
     required this.login,
     required this.user_type,
-    required this.country_dial_code,
+    this.country_dial_code = '+966',
     required this.otp,
     required this.db,
     required this.password,
+    this.isoCode = 'SA',
   });
 
   factory VerifyOtpEntity.fromJson(Map<String, dynamic> json) => VerifyOtpEntity(
-      login: json['login'] ?? '' as String,
-      user_type: json['user_type'] ?? 'merchant' as String,
-      country_dial_code: json['country_dial_code'] ?? '' as String,
-      otp: json['otp'] ?? -1 as int,
-      password: json['password'] ?? '' as int,
-      db: json['db'] ?? '' as String);
+        login: json['login'] ?? '' as String,
+        user_type: json['user_type'] ?? 'merchant' as String,
+        country_dial_code: json['country_dial_code'] ?? '' as String,
+        otp: json['otp'] ?? -1 as int,
+        password: json['password'] ?? '' as int,
+        db: json['db'] ?? '' as String,
+        isoCode: json['isoCode'] as String,
+      );
 
   String login;
   String country_dial_code;
@@ -24,6 +27,7 @@ class VerifyOtpEntity extends INetworkModel<VerifyOtpEntity> {
   int password;
   String db;
   String user_type;
+  String isoCode;
 
   @override
   VerifyOtpEntity fromJson(Map<String, dynamic> json) {
@@ -37,6 +41,7 @@ class VerifyOtpEntity extends INetworkModel<VerifyOtpEntity> {
         'password': password,
         'db': db,
         'user_type': user_type,
+        'isoCode': isoCode,
       };
 
   @override

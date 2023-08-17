@@ -4,9 +4,11 @@ import 'package:bloc/bloc.dart';
 import 'package:homemakers_merchant/app/features/authentication/common/otp_verification_enum.dart';
 import 'package:homemakers_merchant/app/features/authentication/index.dart';
 import 'package:homemakers_merchant/app/features/profile/index.dart';
+import 'package:homemakers_merchant/bootup/injection_container.dart';
 import 'package:homemakers_merchant/core/extensions/global_extensions/dart_extensions.dart';
 import 'package:homemakers_merchant/shared/states/result_state.dart';
 import 'package:homemakers_merchant/utils/app_equatable/app_equatable.dart';
+import 'package:homemakers_merchant/utils/app_log.dart';
 import 'package:meta/meta.dart';
 
 part 'otp_verification_event.dart';
@@ -149,6 +151,26 @@ class OtpVerificationBloc extends Bloc<OtpVerificationEvent, OtpVerificationStat
               ),
             );
             return;
+          },
+        );
+        appLog.d('Otp bloc save local processing');
+        final result = await serviceLocator<SaveAppUserUseCase>()(
+          AppUserEntity(
+            isoCode: event.verifyOtpEntity.isoCode,
+            country_dial_code: event.verifyOtpEntity.country_dial_code,
+            phoneNumber: event.verifyOtpEntity.login,
+            hasCurrentUser: true,
+          ),
+        );
+        result.when(
+          remote: (data, meta) {
+            appLog.d('Otp bloc save local ${data?.toMap()}');
+          },
+          localDb: (data, meta) {
+            appLog.d('Otp bloc save local ${data?.toMap()}');
+          },
+          error: (dataSourceFailure, reason, error, networkException, stackTrace, exception, extra) {
+            appLog.e('Otp bloc save local exception: $reason');
           },
         );
       } else {

@@ -206,6 +206,9 @@ class $AssetsSvgGen {
   SvgGenImage get homeChefType =>
       const SvgGenImage('assets/svg/home_chef_type.svg');
 
+  /// File path: assets/svg/mail.svg
+  SvgGenImage get mail => const SvgGenImage('assets/svg/mail.svg');
+
   /// File path: assets/svg/offline_driver.svg
   SvgGenImage get offlineDriver =>
       const SvgGenImage('assets/svg/offline_driver.svg');
@@ -213,6 +216,9 @@ class $AssetsSvgGen {
   /// File path: assets/svg/online_driver.svg
   SvgGenImage get onlineDriver =>
       const SvgGenImage('assets/svg/online_driver.svg');
+
+  /// File path: assets/svg/receive.svg
+  SvgGenImage get receive => const SvgGenImage('assets/svg/receive.svg');
 
   /// File path: assets/svg/restaurant_type.svg
   SvgGenImage get restaurantType =>
@@ -232,8 +238,10 @@ class $AssetsSvgGen {
         applogodark,
         homeAddress,
         homeChefType,
+        mail,
         offlineDriver,
         onlineDriver,
+        receive,
         restaurantType,
         sorryImageNotAvailable,
         splashbackground

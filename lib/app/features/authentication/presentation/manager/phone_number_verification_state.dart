@@ -8,10 +8,11 @@ class PhoneNumberVerificationState with _$PhoneNumberVerificationState {
   const factory PhoneNumberVerificationState.success({
     @Default(PhoneNumberVerification.otpSent) PhoneNumberVerification phoneNumberVerification,
     required String userEnteredPhoneNumber,
-    required String countryDialCode,
+    @Default('+966') String countryDialCode,
     required String country,
     required PhoneController phoneController,
     required PhoneNumber phoneNumber,
+    @Default('SA') String isoCode,
     @Default(
       AsyncBtnState.success,
     )
@@ -41,22 +42,24 @@ class PhoneNumberVerificationState with _$PhoneNumberVerificationState {
 
   const factory PhoneNumberVerificationState.validatePhoneNumber({
     required String phoneNumber,
-    required String countryDialCode,
+    @Default('+966') String countryDialCode,
     required String country,
     PhoneNumberInputValidator? phoneNumberInputValidator,
     String? phoneValidation,
     PhoneNumber? enteredPhoneNumber,
     @Default(PhoneNumberVerification.none) PhoneNumberVerification phoneNumberVerification,
     required PhoneController phoneController,
+    @Default('SA') String isoCode,
   }) = PhoneNumberVerificationValidatePhoneNumber;
 
   const factory PhoneNumberVerificationState.phoneNumberChanged({
     required String phoneNumber,
-    required String countryDialCode,
+    @Default('+966') String countryDialCode,
     required String country,
     PhoneNumberInputValidator? phoneNumberInputValidator,
     String? phoneValidation,
     PhoneNumber? enteredPhoneNumber,
     required PhoneController phoneController,
+    @Default('SA') String isoCode,
   }) = PhoneNumberVerificationPhoneNumberChanged;
 }

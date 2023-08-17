@@ -19,12 +19,18 @@ class AppUserEntity extends INetworkModel<AppUserEntity> {
     this.hasMultiplePaymentBanks = false,
     this.paymentBankEntities = const [],
     this.hasCurrentUser = false,
+    this.country_dial_code = '+966',
+    this.user_type = 'merchant',
+    this.isoCode = 'SA',
   });
 
   factory AppUserEntity.fromMap(Map<String, dynamic> map) {
     return AppUserEntity(
       userID: map['userID'] as int,
       phoneNumber: map['phoneNumber'] as String,
+      country_dial_code: map['country_dial_code'] ?? '+966' as String,
+      user_type: map['user_type'] ?? 'merchant' as String,
+      isoCode: map['isoCode'] ?? 'SA' as String,
       businessProfile: (map['businessProfile'] != null) ? BusinessProfileEntity.fromMap(map['businessProfile']) : BusinessProfileEntity(),
       stores: map['stores'].map((e) => StoreEntity.fromMap(e)).toList().cast<StoreEntity>(),
       token: map['token'] as String,
@@ -51,6 +57,9 @@ class AppUserEntity extends INetworkModel<AppUserEntity> {
 
   int userID;
   String phoneNumber;
+  String country_dial_code;
+  String isoCode;
+  String user_type;
   BusinessProfileEntity? businessProfile;
   List<StoreEntity> stores;
   List<MenuEntity> menus;
@@ -82,6 +91,9 @@ class AppUserEntity extends INetworkModel<AppUserEntity> {
     List<Addons>? addons,
     RatingAndReviewEntity? ratingAndReviewEntity,
     bool? hasCurrentUser,
+    String? country_dial_code,
+    String? isoCode,
+    String? user_type,
   }) {
     return AppUserEntity(
       userID: userID ?? this.userID,
@@ -98,6 +110,9 @@ class AppUserEntity extends INetworkModel<AppUserEntity> {
       addons: addons ?? this.addons,
       ratingAndReviewEntity: ratingAndReviewEntity ?? this.ratingAndReviewEntity,
       hasCurrentUser: hasCurrentUser ?? this.hasCurrentUser,
+      country_dial_code: country_dial_code ?? this.country_dial_code,
+      isoCode: isoCode ?? this.isoCode,
+      user_type: user_type ?? this.user_type,
     );
   }
 
@@ -117,6 +132,9 @@ class AppUserEntity extends INetworkModel<AppUserEntity> {
       'addons': this.addons.map((e) => e.toMap()).toList(growable: false),
       'ratingAndReviewEntity': this.ratingAndReviewEntity?.toMap(),
       'hasCurrentUser': this.hasCurrentUser,
+      'country_dial_code': this.country_dial_code,
+      'user_type': this.user_type,
+      'isoCode': this.isoCode,
     };
   }
 

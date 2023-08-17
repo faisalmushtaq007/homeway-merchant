@@ -361,6 +361,7 @@ class PhoneNumberValidationIconWidget extends StatelessWidget {
             enteredPhoneNumber,
             phoneNumberVerification,
             phoneController,
+            isoCode,
           ) {
             if (phoneNumberVerification == PhoneNumberVerification.valid) {
               return const Icon(
