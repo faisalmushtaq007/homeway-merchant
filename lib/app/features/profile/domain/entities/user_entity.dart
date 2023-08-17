@@ -22,6 +22,8 @@ class AppUserEntity extends INetworkModel<AppUserEntity> {
     this.country_dial_code = '+966',
     this.user_type = 'merchant',
     this.isoCode = 'SA',
+    this.access_token='',
+    this.uid='',
   });
 
   factory AppUserEntity.fromMap(Map<String, dynamic> map) {
@@ -52,6 +54,8 @@ class AppUserEntity extends INetworkModel<AppUserEntity> {
       hasMultiplePaymentBanks: (map['hasMultiplePaymentBanks'] != null) ? map['paymentBankEntity'] : false,
       paymentBankEntity: (map['paymentBankEntity'] != null) ? PaymentBankEntity.fromMap(map['paymentBankEntity']) : PaymentBankEntity(),
       hasCurrentUser: (map['hasCurrentUser'] != null) ? map['hasCurrentUser'] : false,
+      uid: map['uid']??'' as String,
+      access_token: map['access_token']??'' as String,
     );
   }
 
@@ -75,6 +79,8 @@ class AppUserEntity extends INetworkModel<AppUserEntity> {
   bool hasMultiplePaymentBanks;
   List<PaymentBankEntity> paymentBankEntities;
   bool hasCurrentUser;
+  String uid;
+  String access_token;
 
   AppUserEntity copyWith({
     int? userID,
@@ -94,6 +100,8 @@ class AppUserEntity extends INetworkModel<AppUserEntity> {
     String? country_dial_code,
     String? isoCode,
     String? user_type,
+    String? uid,
+    String? access_token,
   }) {
     return AppUserEntity(
       userID: userID ?? this.userID,
@@ -113,6 +121,8 @@ class AppUserEntity extends INetworkModel<AppUserEntity> {
       country_dial_code: country_dial_code ?? this.country_dial_code,
       isoCode: isoCode ?? this.isoCode,
       user_type: user_type ?? this.user_type,
+        uid:uid??this.uid,
+        access_token:access_token??this.access_token,
     );
   }
 
@@ -135,6 +145,8 @@ class AppUserEntity extends INetworkModel<AppUserEntity> {
       'country_dial_code': this.country_dial_code,
       'user_type': this.user_type,
       'isoCode': this.isoCode,
+      'uid': this.uid,
+      'access_token': this.access_token,
     };
   }
 

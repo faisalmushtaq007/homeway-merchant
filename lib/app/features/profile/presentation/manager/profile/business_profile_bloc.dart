@@ -1,8 +1,10 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
+import 'package:homemakers_merchant/app/features/authentication/index.dart';
 import 'package:homemakers_merchant/app/features/profile/index.dart';
 import 'package:homemakers_merchant/bootup/injection_container.dart';
+import 'package:homemakers_merchant/core/extensions/global_extensions/src/object.dart';
 import 'package:homemakers_merchant/shared/states/data_source_state.dart';
 import 'package:homemakers_merchant/utils/app_equatable/app_equatable.dart';
 import 'package:homemakers_merchant/utils/app_log.dart';
@@ -31,7 +33,7 @@ class BusinessProfileBloc extends Bloc<BusinessProfileEvent, BusinessProfileStat
       } else {
         result = await serviceLocator<SaveBusinessProfileUseCase>()(event.businessProfileEntity);
       }
-      result.when(
+      await result.when(
         remote: (data, meta) {
           appLog.d('Profile bloc save remote ${data?.toMap()}');
           emit(
@@ -42,8 +44,32 @@ class BusinessProfileBloc extends Bloc<BusinessProfileEvent, BusinessProfileStat
             ),
           );
         },
-        localDb: (data, meta) {
+        localDb: (data, meta) async {
           appLog.d('Profile bloc save local ${data?.toMap()}');
+          final getCurrentUserResult = await serviceLocator<GetIDAndTokenUserUseCase>()();
+          if (getCurrentUserResult.isNotNull) {
+            final AppUserEntity cacheAppUserEntity = getCurrentUserResult!.copyWith(
+              businessProfile: event.businessProfileEntity,
+            );
+            if (data != null) {
+              final editUserResult = await serviceLocator<EditAppUserUseCase>()(
+                id: getCurrentUserResult.userID,
+                input: cacheAppUserEntity,
+              );
+              editUserResult.when(
+                remote: (data, meta) {
+                  appLog.d('Update current user with business profile save remote ${data?.toMap()}');
+                },
+                localDb: (data, meta) {
+                  appLog.d('Update current user with business profile save local ${data?.toMap()}');
+                },
+                error: (dataSourceFailure, reason, error, networkException, stackTrace, exception, extra) {
+                  appLog.d('Update current user with business profile exception $error');
+                },
+              );
+            }
+          }
+
           emit(
             SaveBusinessProfileState(
               businessProfileEntity: data ?? event.businessProfileEntity,

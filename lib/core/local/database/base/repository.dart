@@ -126,6 +126,13 @@ abstract class GetCurrentUserTokenByID<EntityType> extends BaseRepositoryOperati
   );
 }
 
+abstract class GetCurrentUser<EntityType> extends BaseRepositoryOperation<EntityType> {
+  /// Returns the object without the given a unique id
+  ///
+  /// Will return a Failure if no corresponding entity for is found.
+  Future<Either<RepositoryBaseFailure, EntityType?>> getCurrentUser({EntityType? entity});
+}
+
 abstract class DeleteAll<EntityType> extends BaseRepositoryOperation<EntityType> {
   /// Completely remove the entity instance from repository
   Future<Either<RepositoryBaseFailure, bool>> deleteAll();

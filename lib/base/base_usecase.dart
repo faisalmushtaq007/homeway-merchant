@@ -112,6 +112,10 @@ abstract class UseCaseIO<Input, T> {
   Future<T> call(Input input);
 }
 
+abstract class UseCaseOptionalIO<Input, T> {
+  Future<T?> call({Input? input});
+}
+
 abstract class UseCaseByID<Input1, Input2, T> {
   Future<T> call({required int id, Input1? input});
 }

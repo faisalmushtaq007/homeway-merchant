@@ -144,4 +144,40 @@ class UserLocalDbRepository<User extends AppUserEntity> implements BaseUserLocal
     // TODO(prasant): implement updateByIdAndEntity
     throw UnimplementedError();
   }
+
+  @override
+  Future<Either<RepositoryBaseFailure, AppUserEntity?>> getCurrentUser({AppUserEntity? entity}) async {
+    final result = await tryCatch<AppUserEntity?>(() async {
+      final db = await _db;
+      return await db.transaction(
+        (txn) async {
+          final record = await _user.findFirst(
+            txn,
+            finder: Finder(
+              filter: Filter.or([
+                Filter.equals('hasCurrentUser', true),
+                Filter.equals(
+                  'phoneNumber',
+                  entity?.phoneNumber ?? '',
+                ),
+                Filter.equals(
+                  'access_token',
+                  entity?.access_token ?? '',
+                ),
+                Filter.equals(
+                  'uid',
+                  entity?.uid ?? '',
+                ),
+              ]),
+            ),
+          );
+          if (record != null) {
+            return AppUserEntity.fromMap(record.value);
+          }
+          return null;
+        },
+      );
+    });
+    return result;
+  }
 }

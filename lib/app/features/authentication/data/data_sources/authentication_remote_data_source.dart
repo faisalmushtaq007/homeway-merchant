@@ -128,4 +128,10 @@ class AuthenticationRemoteDataSource extends AuthenticationDataSource {
     // TODO: implement saveAppUser
     throw UnimplementedError();
   }
+
+  @override
+  Future<ApiResultState<AppUserEntity?>> getCurrentAppUser({AppUserEntity? entity}) {
+    // TODO: implement getCurrentAppUser
+    throw UnimplementedError();
+  }
 }

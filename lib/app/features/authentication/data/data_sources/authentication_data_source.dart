@@ -31,4 +31,6 @@ abstract class AuthenticationDataSource {
   });
 
   Future<ApiResultState<List<AppUserEntity>>> getAllAppUser();
+
+  Future<ApiResultState<AppUserEntity?>> getCurrentAppUser({AppUserEntity? entity});
 }

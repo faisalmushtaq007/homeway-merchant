@@ -32,6 +32,9 @@ part 'package:homemakers_merchant/app/features/authentication/domain/usecases/de
 part 'package:homemakers_merchant/app/features/authentication/domain/usecases/delete_all_appuser_usecase.dart';
 part 'package:homemakers_merchant/app/features/authentication/domain/usecases/edit_appuser_usecase.dart';
 part 'package:homemakers_merchant/app/features/authentication/domain/usecases/get_appuser_usecase.dart';
+part 'package:homemakers_merchant/app/features/authentication/domain/usecases/get_current_appuser_usecase.dart';
+part 'package:homemakers_merchant/app/features/authentication/domain/usecases/get_id_and_token_usecase.dart';
+part 'package:homemakers_merchant/app/features/authentication/domain/usecases/get_or_save_new_current_appuser_usecase.dart';
 part 'package:homemakers_merchant/app/features/authentication/domain/usecases/get_all_appuser_usecase.dart';
 part 'package:homemakers_merchant/app/features/authentication/domain/usecases/save_appuser_usecase.dart';
 // Entities

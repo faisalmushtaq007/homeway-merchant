@@ -9,7 +9,8 @@ abstract class BaseUserLocalDbRepository<T extends AppUserEntity>
         AddOrUpdateUser<T>,
         DeleteByIdAndEntity<T>,
         GetByIdAndEntity<T>,
-        UpdateByIdAndEntity<T> {}
+        UpdateByIdAndEntity<T>,
+        GetCurrentUser<T> {}
 
 abstract class BaseUserBusinessProfileEntityLocalDbRepository<T extends BusinessProfileEntity>
     implements

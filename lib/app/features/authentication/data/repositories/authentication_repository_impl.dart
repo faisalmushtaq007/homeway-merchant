@@ -399,4 +399,61 @@ class AuthenticationRepositoryImplement implements AuthenticationRepository {
       );
     }
   }
+
+  @override
+  Future<DataSourceState<AppUserEntity?>> getCurrentAppUser({AppUserEntity? entity}) async {
+    try {
+      final connectivity = serviceLocator<ConnectivityService>().getCurrentInternetStatus();
+      if (connectivity.$2 == InternetConnectivityState.internet) {
+        // Local DB
+        // Save to local
+        final Either<RepositoryBaseFailure, AppUserEntity?> result = await userLocalDbRepository.getCurrentUser(entity: entity);
+        // Return result
+        return result.fold((l) {
+          final RepositoryFailure failure = l as RepositoryFailure;
+          appLog.d('Get current appUser local error ${failure.message}');
+          return DataSourceState<AppUserEntity>.error(
+            reason: failure.message,
+            dataSourceFailure: DataSourceFailure.local,
+            stackTrace: failure.stacktrace,
+          );
+        }, (r) {
+          appLog.d('Get current appUser to local : ${r?.userID}');
+          return DataSourceState<AppUserEntity>.localDb(data: r);
+        });
+      } else {
+        // Remote
+        // Save to server
+        final ApiResultState<AppUserEntity?> result = await remoteDataSource.getCurrentAppUser(entity: entity);
+        // Return result
+        return result.when(
+          success: (data) {
+            appLog.d('Get current appUser to remote');
+            return DataSourceState<AppUserEntity>.remote(
+              data: data,
+            );
+          },
+          failure: (reason, error, exception, stackTrace) {
+            appLog.d('Get current appUser remote error $reason');
+            return DataSourceState<AppUserEntity>.error(
+              reason: reason,
+              dataSourceFailure: DataSourceFailure.remote,
+              stackTrace: stackTrace,
+              error: error,
+              networkException: exception,
+            );
+          },
+        );
+      }
+    } catch (e, s) {
+      appLog.d('Get current appUser exception $e');
+      return DataSourceState<AppUserEntity>.error(
+        reason: e.toString(),
+        dataSourceFailure: DataSourceFailure.local,
+        stackTrace: s,
+        error: e,
+        exception: e as Exception,
+      );
+    }
+  }
 }

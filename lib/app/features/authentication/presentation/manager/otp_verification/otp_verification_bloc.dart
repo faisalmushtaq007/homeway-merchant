@@ -6,6 +6,7 @@ import 'package:homemakers_merchant/app/features/authentication/index.dart';
 import 'package:homemakers_merchant/app/features/profile/index.dart';
 import 'package:homemakers_merchant/bootup/injection_container.dart';
 import 'package:homemakers_merchant/core/extensions/global_extensions/dart_extensions.dart';
+import 'package:homemakers_merchant/core/extensions/global_extensions/src/object.dart';
 import 'package:homemakers_merchant/shared/states/result_state.dart';
 import 'package:homemakers_merchant/utils/app_equatable/app_equatable.dart';
 import 'package:homemakers_merchant/utils/app_log.dart';
@@ -109,6 +110,7 @@ class OtpVerificationBloc extends Bloc<OtpVerificationEvent, OtpVerificationStat
 
   FutureOr<void> _verifyOtp(VerifyOtp event, Emitter<OtpVerificationState> emit) async {
     try {
+      VerifyOtpResponseModel verifyOtpResponseModel = VerifyOtpResponseModel();
       emit(
         VerifyOtpProcessingState(
           verifyOtpEntity: event.verifyOtpEntity,
@@ -132,6 +134,7 @@ class OtpVerificationBloc extends Bloc<OtpVerificationEvent, OtpVerificationStat
             return;
           },
           success: (data) {
+            verifyOtpResponseModel = data;
             emit(
               VerifyOtpState(
                 verifyOtpEntity: event.verifyOtpEntity,
@@ -153,25 +156,17 @@ class OtpVerificationBloc extends Bloc<OtpVerificationEvent, OtpVerificationStat
             return;
           },
         );
-        appLog.d('Otp bloc save local processing');
-        final result = await serviceLocator<SaveAppUserUseCase>()(
+        // Todo(prasant): Change this logic when we are verify the otp from remote
+        appLog.d('Wait for processing, uploading and fetching current user');
+        await serviceLocator<GetOrSaveNewCurrentAppUserUseCase>()(
           AppUserEntity(
             isoCode: event.verifyOtpEntity.isoCode,
             country_dial_code: event.verifyOtpEntity.country_dial_code,
             phoneNumber: event.verifyOtpEntity.login,
             hasCurrentUser: true,
+            uid: verifyOtpResponseModel.uid ?? '',
+            access_token: verifyOtpResponseModel.access_token ?? '',
           ),
-        );
-        result.when(
-          remote: (data, meta) {
-            appLog.d('Otp bloc save local ${data?.toMap()}');
-          },
-          localDb: (data, meta) {
-            appLog.d('Otp bloc save local ${data?.toMap()}');
-          },
-          error: (dataSourceFailure, reason, error, networkException, stackTrace, exception, extra) {
-            appLog.e('Otp bloc save local exception: $reason');
-          },
         );
       } else {
         emit(

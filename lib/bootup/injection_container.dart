@@ -351,6 +351,55 @@ void _setUpUseCases() {
     ),
   );
   // User
+  serviceLocator.registerLazySingleton<DeleteAppUserUseCase>(
+    () => DeleteAppUserUseCase(
+      authenticationRepository: serviceLocator(),
+    ),
+  );
+  serviceLocator.registerLazySingleton<EditAppUserUseCase>(
+    () => EditAppUserUseCase(
+      authenticationRepository: serviceLocator(),
+    ),
+  );
+  serviceLocator.registerLazySingleton<SaveAppUserUseCase>(
+    () => SaveAppUserUseCase(
+      authenticationRepository: serviceLocator(),
+    ),
+  );
+  serviceLocator.registerLazySingleton<GetAppUserUseCase>(
+    () => GetAppUserUseCase(
+      authenticationRepository: serviceLocator(),
+    ),
+  );
+  serviceLocator.registerLazySingleton<GetAllAppUserUseCase>(
+    () => GetAllAppUserUseCase(
+      authenticationRepository: serviceLocator(),
+    ),
+  );
+  serviceLocator.registerLazySingleton<DeleteAppUserUseCase>(
+    () => DeleteAppUserUseCase(
+      authenticationRepository: serviceLocator(),
+    ),
+  );
+  serviceLocator.registerLazySingleton<DeleteAllAppUserUseCase>(
+    () => DeleteAllAppUserUseCase(
+      authenticationRepository: serviceLocator(),
+    ),
+  );
+  serviceLocator.registerLazySingleton<GetIDAndTokenUserUseCase>(
+    () => GetIDAndTokenUserUseCase(
+      authenticationRepository: serviceLocator(),
+    ),
+  );
+  serviceLocator.registerLazySingleton<GetOrSaveNewCurrentAppUserUseCase>(
+    () => GetOrSaveNewCurrentAppUserUseCase(),
+  );
+  serviceLocator.registerLazySingleton<GetCurrentAppUserUseCase>(
+    () => GetCurrentAppUserUseCase(
+      authenticationRepository: serviceLocator(),
+    ),
+  );
+
   //Profile
   serviceLocator.registerLazySingleton<DeleteBusinessProfileUseCase>(
     () => DeleteBusinessProfileUseCase(
