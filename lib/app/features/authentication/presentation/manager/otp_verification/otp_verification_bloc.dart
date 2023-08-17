@@ -126,15 +126,27 @@ class OtpVerificationBloc extends Bloc<OtpVerificationEvent, OtpVerificationStat
             isProcessing: false,
           ),
         );
-        resultState.maybeWhen(
+        await resultState.maybeWhen(
           orElse: () {
             emit(
               VerifyOtpState(verifyOtpEntity: event.verifyOtpEntity, otpVerificationStatus: OtpVerificationStatus.verifying),
             );
             return;
           },
-          success: (data) {
+          success: (data) async {
             verifyOtpResponseModel = data;
+            // Todo(prasant): Change this logic when we are verify the otp from remote
+            appLog.d('Wait for processing, uploading and fetching current user');
+            await serviceLocator<GetOrSaveNewCurrentAppUserUseCase>()(
+              AppUserEntity(
+                isoCode: event.verifyOtpEntity.isoCode,
+                country_dial_code: event.verifyOtpEntity.country_dial_code,
+                phoneNumber: event.verifyOtpEntity.login,
+                hasCurrentUser: true,
+                uid: verifyOtpResponseModel.uid ?? '',
+                access_token: verifyOtpResponseModel.access_token ?? '',
+              ),
+            );
             emit(
               VerifyOtpState(
                 verifyOtpEntity: event.verifyOtpEntity,
@@ -143,7 +155,19 @@ class OtpVerificationBloc extends Bloc<OtpVerificationEvent, OtpVerificationStat
             );
             return;
           },
-          error: (reason, error, networkException, stackTrace) {
+          error: (reason, error, networkException, stackTrace) async {
+            // Todo(prasant): Change this logic when we are verify the otp from remote
+            appLog.d('Wait for processing, uploading and fetching current user');
+            await serviceLocator<GetOrSaveNewCurrentAppUserUseCase>()(
+              AppUserEntity(
+                isoCode: event.verifyOtpEntity.isoCode,
+                country_dial_code: event.verifyOtpEntity.country_dial_code,
+                phoneNumber: event.verifyOtpEntity.login,
+                hasCurrentUser: true,
+                uid: verifyOtpResponseModel.uid ?? '',
+                access_token: verifyOtpResponseModel.access_token ?? '',
+              ),
+            );
             emit(
               VerifyOtpFailedState(
                 verifyOtpEntity: event.verifyOtpEntity,
@@ -155,18 +179,6 @@ class OtpVerificationBloc extends Bloc<OtpVerificationEvent, OtpVerificationStat
             );
             return;
           },
-        );
-        // Todo(prasant): Change this logic when we are verify the otp from remote
-        appLog.d('Wait for processing, uploading and fetching current user');
-        await serviceLocator<GetOrSaveNewCurrentAppUserUseCase>()(
-          AppUserEntity(
-            isoCode: event.verifyOtpEntity.isoCode,
-            country_dial_code: event.verifyOtpEntity.country_dial_code,
-            phoneNumber: event.verifyOtpEntity.login,
-            hasCurrentUser: true,
-            uid: verifyOtpResponseModel.uid ?? '',
-            access_token: verifyOtpResponseModel.access_token ?? '',
-          ),
         );
       } else {
         emit(

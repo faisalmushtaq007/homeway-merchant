@@ -8,6 +8,7 @@ class NotificationLocalDbRepository<T extends NotificationEntity> implements Bas
     final result = await tryCatch<NotificationEntity>(() async {
       final int recordID = await _notification.add(await _db, entity.toJson());
       //final NotificationEntity recordNotificationEntity = entity.copyWith(storeID: recordID.toString());
+      await update(entity.copyWith(notificationID: recordID), UniqueId(recordID));
       final value = await _notification.record(recordID).get(await _db);
       if (value != null) {
         final storedNotificationEntity = NotificationEntity.fromJson(value);

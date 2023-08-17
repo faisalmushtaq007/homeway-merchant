@@ -48,10 +48,12 @@ class BusinessProfileBloc extends Bloc<BusinessProfileEvent, BusinessProfileStat
           appLog.d('Profile bloc save local ${data?.toMap()}');
           final getCurrentUserResult = await serviceLocator<GetIDAndTokenUserUseCase>()();
           if (getCurrentUserResult.isNotNull) {
-            final AppUserEntity cacheAppUserEntity = getCurrentUserResult!.copyWith(
-              businessProfile: event.businessProfileEntity,
-            );
+            appLog.d('getCurrentUserResult Profile bloc save remote ${getCurrentUserResult?.toMap()}');
+
             if (data != null) {
+              final AppUserEntity cacheAppUserEntity = getCurrentUserResult!.copyWith(
+                businessProfile: data,
+              );
               final editUserResult = await serviceLocator<EditAppUserUseCase>()(
                 id: getCurrentUserResult.userID,
                 input: cacheAppUserEntity,

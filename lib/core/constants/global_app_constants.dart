@@ -169,14 +169,17 @@ class GlobalApp {
   /// Use what you prefer, I just like this one on desktop better than the
   /// default one. The default Flutter one is too dense imo.
   static VisualDensity get visualDensity => FlexColorScheme.comfortablePlatformDensity;
-
-  static String baseUrl = 'http://207.154.192.209:8069';
-  static int port = 8069;
+  static int developmentPort = 8069;
+  static int productionPort = 8069;
+  static String developmentBaseUrl = 'http://15.184.169.237';
+  static String productionPortBaseUrl = 'http://15.184.169.237';
+  static String developmentUrl = '${GlobalApp.developmentBaseUrl}:${GlobalApp.developmentPort}';
+  static String productionUrl = '${GlobalApp.productionPortBaseUrl}:${GlobalApp.productionPort}';
 
   static const String userModelKey = 'userModelKey';
   static AppUserEntity defaultUserModel = serviceLocator<AppUserEntity>();
   static const String userAccessTokenKey = 'userAccessToken';
-  static String defaultUserAccessToken = serviceLocator<AppUserEntity>().token ?? '';
+  static String defaultUserAccessToken = serviceLocator<AppUserEntity>().access_token ?? '';
   static const String defaultMessageDuringLoading = 'Please wait while we are fetching';
   static const String defaultSomethingWentWrong = 'Something went wrong, please try again later';
   static const String defaultFailure = 'Failure';

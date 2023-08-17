@@ -9,6 +9,7 @@ class UserBusinessDocumentLocalDbRepository<T extends BusinessDocumentUploadedEn
     final result = await tryCatch<BusinessDocumentUploadedEntity>(() async {
       final int recordID = await _businessDocument.add(await _db, entity.toMap());
       //final BusinessDocumentUploadedEntity recordBusinessDocumentUploadedEntity = entity.copyWith(documentID: recordID.toString());
+      await update(entity.copyWith(documentID: recordID), UniqueId(recordID));
       final value = await _businessDocument.record(recordID).get(await _db);
       if (value != null) {
         final storedBusinessDocumentUploadedEntity = BusinessDocumentUploadedEntity.fromMap(value);

@@ -8,6 +8,7 @@ class UserPaymentBankLocalDbRepository<T extends PaymentBankEntity> implements B
     final result = await tryCatch<PaymentBankEntity>(() async {
       final int recordID = await _paymentBank.add(await _db, entity.toMap());
       //final PaymentBankEntity recordPaymentBankEntity = entity.copyWith(storeID: recordID.toString());
+      await update(entity.copyWith(paymentBankID: recordID), UniqueId(recordID));
       final value = await _paymentBank.record(recordID).get(await _db);
       if (value != null) {
         final storedPaymentBankEntity = PaymentBankEntity.fromMap(value);

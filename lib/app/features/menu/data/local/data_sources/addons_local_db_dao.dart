@@ -11,6 +11,7 @@ class AddonsLocalDbRepository<Extras extends Addons> implements BaseAddonsLocalD
     final result = await tryCatch<Addons>(() async {
       final int recordID = await _addons.add(await _db, entity.toMap());
       //final Addons recordAddons = entity.copyWith(storeID: recordID.toString());
+      await update(entity.copyWith(addonsID: recordID), UniqueId(recordID));
       final value = await _addons.record(recordID).get(await _db);
       if (value != null) {
         final addonsEntity = Addons.fromMap(value);

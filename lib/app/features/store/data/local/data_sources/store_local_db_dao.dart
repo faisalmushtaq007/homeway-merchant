@@ -10,6 +10,7 @@ class StoreLocalDbRepository<Store extends StoreEntity> implements BaseStoreLoca
     final result = await tryCatch<StoreEntity>(() async {
       final int recordID = await _store.add(await _db, entity.toMap());
       //final StoreEntity recordStoreEntity = entity.copyWith(storeID: recordID.toString());
+      await update(entity.copyWith(storeID: recordID), UniqueId(recordID));
       final value = await _store.record(recordID).get(await _db);
       if (value != null) {
         final storedStoreEntity = StoreEntity.fromMap(value);

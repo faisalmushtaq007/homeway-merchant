@@ -8,6 +8,7 @@ class AddressLocalDbRepository<T extends AddressModel> implements BaseAddressBan
     final result = await tryCatch<AddressModel>(() async {
       final int recordID = await _address.add(await _db, entity.toMap());
       //final AddressModel recordAddressModel = entity.copyWith(storeID: recordID.toString());
+      await update(entity.copyWith(addressID: recordID), UniqueId(recordID));
       final value = await _address.record(recordID).get(await _db);
       if (value != null) {
         final storedAddressModel = AddressModel.fromJson(value);

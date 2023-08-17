@@ -185,7 +185,7 @@ void _setUpService() {
       () => NetworkManager<BaseResponseErrorModel>(
         isEnableLogger: true,
         options: BaseOptions(
-          baseUrl: GlobalApp.baseUrl,
+          baseUrl: GlobalApp.developmentUrl,
         ),
         //This is optional.
         errorModel: BaseResponseErrorModel(),

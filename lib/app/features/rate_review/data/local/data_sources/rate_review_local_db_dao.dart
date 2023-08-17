@@ -8,6 +8,7 @@ class RateAndReviewLocalDbRepository<T extends RateAndReviewEntity> implements B
     final result = await tryCatch<RateAndReviewEntity>(() async {
       final int recordID = await rateAndReview.add(await _db, entity.toJson());
       //final RateAndReviewEntity recordRateAndReviewEntity = entity.copyWith(storeID: recordID.toString());
+      await update(entity.copyWith(ratingID: recordID), UniqueId(recordID));
       final value = await rateAndReview.record(recordID).get(await _db);
       if (value != null) {
         final storedRateAndReviewEntity = RateAndReviewEntity.fromJson(value);

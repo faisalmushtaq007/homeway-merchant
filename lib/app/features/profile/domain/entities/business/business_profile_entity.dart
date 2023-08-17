@@ -10,8 +10,8 @@ class BusinessProfileEntity {
     this.businessName = '',
     this.businessTypeEntity,
     this.businessDocumentUploadedEntity,
-    this.isoCode = '',
-    this.countryDialCode = '',
+    this.isoCode = 'SA',
+    this.countryDialCode = '+966',
   });
 
   factory BusinessProfileEntity.fromMap(Map<String, dynamic> map) {
@@ -26,8 +26,8 @@ class BusinessProfileEntity {
       businessDocumentUploadedEntity: map['businessDocumentUploadedEntity'] != null
           ? BusinessDocumentUploadedEntity.fromMap(map['businessDocumentUploadedEntity'])
           : BusinessDocumentUploadedEntity(),
-      isoCode: map['iso_code'] as String? ?? '',
-      countryDialCode: map['country_dial_code'] as String? ?? '',
+      isoCode: map['iso_code'] ?? 'SA' as String? ?? 'SA',
+      countryDialCode: map['country_dial_code'] ?? '+966' as String? ?? '+966',
     );
   }
 
@@ -52,8 +52,8 @@ class BusinessProfileEntity {
       'businessName': this.businessName,
       'businessTypeEntity': this.businessTypeEntity?.toMap(),
       'businessDocumentUploadedEntity': this.businessDocumentUploadedEntity?.toMap(),
-      'iso_code': this.isoCode,
-      'country_dial_code': this.countryDialCode,
+      'iso_code': this.isoCode ?? 'SA',
+      'country_dial_code': this.countryDialCode ?? '+966',
     };
   }
 

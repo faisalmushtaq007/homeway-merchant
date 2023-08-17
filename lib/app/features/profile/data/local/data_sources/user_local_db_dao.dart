@@ -11,6 +11,7 @@ class UserLocalDbRepository<User extends AppUserEntity> implements BaseUserLocal
     final result = await tryCatch<AppUserEntity>(() async {
       final int recordID = await _user.add(await _db, entity.toMap());
       //final AppUserEntity recordAppUserEntity = entity.copyWith(storeID: recordID.toString());
+      await update(entity.copyWith(userID: recordID), UniqueId(recordID));
       final value = await _user.record(recordID).get(await _db);
       if (value != null) {
         return AppUserEntity.fromMap(value).copyWith(userID: recordID);
@@ -166,12 +167,13 @@ class UserLocalDbRepository<User extends AppUserEntity> implements BaseUserLocal
                 ),
                 Filter.equals(
                   'uid',
-                  entity?.uid ?? '',
+                  entity?.uid ?? entity?.userID,
                 ),
               ]),
             ),
           );
           if (record != null) {
+            appLog.d('Current user:- ${record.value}');
             return AppUserEntity.fromMap(record.value);
           }
           return null;

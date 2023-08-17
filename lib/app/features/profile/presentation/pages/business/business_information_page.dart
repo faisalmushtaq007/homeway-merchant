@@ -88,11 +88,13 @@ class _BusinessInformationPageState extends State<BusinessInformationPage> with 
     controller = PhoneController(initialPhoneNumberValue);
     controller.value = initialPhoneNumberValue;
     if (mounted) {
-      context.read<BusinessProfileBloc>().add(GetBusinessProfile(
-            businessProfileID: widget.businessProfileEntity?.businessProfileID ?? -1,
-            businessProfileEntity: widget.businessProfileEntity,
-            index: widget.currentIndex,
-          ));
+      if (widget.hasEditBusinessProfile && widget.businessProfileEntity != null) {
+        context.read<BusinessProfileBloc>().add(GetBusinessProfile(
+              businessProfileID: widget.businessProfileEntity?.businessProfileID ?? -1,
+              businessProfileEntity: widget.businessProfileEntity,
+              index: widget.currentIndex,
+            ));
+      }
     }
   }
 
@@ -262,18 +264,15 @@ class _BusinessInformationPageState extends State<BusinessInformationPage> with 
                                       nsn: state.businessProfileEntity.businessPhoneNumber ?? '',
                                     );
                                     defaultCountry = isoCodeNameMap.values.byName(state.businessProfileEntity.isoCode ?? 'SA');
-                                    SchedulerBinding.instance.addPostFrameCallback((_) async {
-                                      await context.push(
-                                        Routes.CONFIRM_BUSINESS_TYPE_PAGE,
-                                        extra: {
-                                          'businessProfileEntity': state.businessProfileEntity,
-                                          'hasEditBusinessProfile': state.hasEditBusinessProfile,
-                                          'currentIndex': state.currentIndex,
-                                          'businessTypeEntity': state.businessProfileEntity.businessTypeEntity ?? BusinessTypeEntity(),
-                                        },
-                                      );
-                                      return;
-                                    });
+                                    context.push(
+                                      Routes.CONFIRM_BUSINESS_TYPE_PAGE,
+                                      extra: {
+                                        'businessProfileEntity': state.businessProfileEntity,
+                                        'hasEditBusinessProfile': state.hasEditBusinessProfile,
+                                        'currentIndex': state.currentIndex,
+                                        'businessTypeEntity': state.businessProfileEntity.businessTypeEntity ?? BusinessTypeEntity(),
+                                      },
+                                    );
                                   }
                                 case GetBusinessProfileState():
                                   {
@@ -746,8 +745,8 @@ class _BusinessInformationPageState extends State<BusinessInformationPage> with 
                                                     businessName: _businessNameController.value.text,
                                                     businessPhoneNumber: userEnteredPhoneNumber,
                                                     businessProfileID: widget.businessProfileEntity?.businessProfileID,
-                                                    countryDialCode: '',
-                                                    isoCode: '',
+                                                    countryDialCode: initialPhoneNumberValue.countryCode,
+                                                    isoCode: initialPhoneNumberValue.isoCode.name,
                                                   );
                                                 } else {
                                                   // New
@@ -760,8 +759,8 @@ class _BusinessInformationPageState extends State<BusinessInformationPage> with 
                                                     businessName: _businessNameController.value.text,
                                                     businessPhoneNumber: userEnteredPhoneNumber,
                                                     businessTypeEntity: BusinessTypeEntity(),
-                                                    countryDialCode: '',
-                                                    isoCode: '',
+                                                    countryDialCode: initialPhoneNumberValue.countryCode,
+                                                    isoCode: initialPhoneNumberValue.isoCode.name,
                                                   );
                                                 }
                                                 serviceLocator<AppUserEntity>().currentProfileStatus = CurrentProfileStatus.basicProfileSaved;

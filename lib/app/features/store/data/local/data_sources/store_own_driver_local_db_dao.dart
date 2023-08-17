@@ -12,6 +12,7 @@ class StoreOwnDeliveryPartnersLocalDbRepository<Driver extends StoreOwnDeliveryP
     final result = await tryCatch<StoreOwnDeliveryPartnersInfo>(() async {
       final int recordID = await _driver.add(await _db, entity.toMap());
       //final StoreOwnDeliveryPartnersInfo recordStoreOwnDeliveryPartnersInfo = entity.copyWith(driverID: recordID.toString());
+      await update(entity.copyWith(driverID: recordID), UniqueId(recordID));
       final value = await _driver.record(recordID).get(await _db);
       if (value != null) {
         final storedDriverEntity = StoreOwnDeliveryPartnersInfo.fromMap(value);
