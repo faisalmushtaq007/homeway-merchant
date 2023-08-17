@@ -28,7 +28,7 @@ class BusinessProfileBloc extends Bloc<BusinessProfileEvent, BusinessProfileStat
   FutureOr<void> _saveBusinessProfile(SaveBusinessProfile event, Emitter<BusinessProfileState> emit) async {
     try {
       DataSourceState<BusinessProfileEntity> result;
-      if (!event.hasEditBusinessProfile && event.currentIndex != -1) {
+      if (event.hasEditBusinessProfile || event.hasSaveBusinessType) {
         result = await serviceLocator<EditBusinessProfileUseCase>()(id: event.businessProfileEntity.businessProfileID, input: event.businessProfileEntity);
       } else {
         result = await serviceLocator<SaveBusinessProfileUseCase>()(event.businessProfileEntity);
@@ -40,7 +40,8 @@ class BusinessProfileBloc extends Bloc<BusinessProfileEvent, BusinessProfileStat
             SaveBusinessProfileState(
               businessProfileEntity: data ?? event.businessProfileEntity,
               hasEditBusinessProfile: event.hasEditBusinessProfile,
-              businessProfileStatus: BusinessProfileStatus.saveBusinessType,
+              businessProfileStatus: BusinessProfileStatus.saveBusinessProfile,
+              hasSaveBusinessType: event.hasSaveBusinessType,
             ),
           );
         },
@@ -71,12 +72,12 @@ class BusinessProfileBloc extends Bloc<BusinessProfileEvent, BusinessProfileStat
               );
             }
           }
-
           emit(
             SaveBusinessProfileState(
               businessProfileEntity: data ?? event.businessProfileEntity,
               hasEditBusinessProfile: event.hasEditBusinessProfile,
-              businessProfileStatus: BusinessProfileStatus.saveBusinessType,
+              businessProfileStatus: BusinessProfileStatus.saveBusinessProfile,
+              hasSaveBusinessType: event.hasSaveBusinessType,
             ),
           );
         },
@@ -87,7 +88,7 @@ class BusinessProfileBloc extends Bloc<BusinessProfileEvent, BusinessProfileStat
               message: reason,
               //exception: e as Exception,
               stackTrace: stackTrace,
-              businessProfileStatus: BusinessProfileStatus.saveBusinessType,
+              businessProfileStatus: BusinessProfileStatus.saveBusinessProfile,
             ),
           );
         },
@@ -100,7 +101,7 @@ class BusinessProfileBloc extends Bloc<BusinessProfileEvent, BusinessProfileStat
           message: 'Something went wrong during saving your store details, please try again',
           //exception: e as Exception,
           stackTrace: s,
-          businessProfileStatus: BusinessProfileStatus.saveBusinessType,
+          businessProfileStatus: BusinessProfileStatus.saveBusinessProfile,
         ),
       );
     }

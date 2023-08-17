@@ -27,7 +27,7 @@ class AddressBloc extends Bloc<AddressEvent, AddressState> {
   FutureOr<void> _saveAddress(SaveAddress event, Emitter<AddressState> emit) async {
     try {
       DataSourceState<AddressModel> result;
-      if (!event.hasNewAddress && event.currentIndex != -1) {
+      if (!event.hasNewAddress) {
         result = await serviceLocator<EditAddressUseCase>()(id: event.addressEntity.addressID, input: event.addressEntity);
       } else {
         result = await serviceLocator<SaveAddressUseCase>()(event.addressEntity);

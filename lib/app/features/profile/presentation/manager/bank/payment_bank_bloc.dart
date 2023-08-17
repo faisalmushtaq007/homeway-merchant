@@ -22,7 +22,7 @@ class PaymentBankBloc extends Bloc<PaymentBankEvent, PaymentBankState> {
   FutureOr<void> _savePaymentBank(SavePaymentBank event, Emitter<PaymentBankState> emit) async {
     try {
       DataSourceState<PaymentBankEntity> result;
-      if (!event.hasEditPaymentBank && event.currentIndex != -1) {
+      if (event.hasEditPaymentBank) {
         result = await serviceLocator<EditPaymentBankUseCase>()(id: event.paymentBankEntity.paymentBankID, input: event.paymentBankEntity);
       } else {
         result = await serviceLocator<SavePaymentBankUseCase>()(event.paymentBankEntity);

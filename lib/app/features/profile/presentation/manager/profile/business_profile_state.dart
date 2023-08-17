@@ -18,18 +18,26 @@ class SaveBusinessProfileState extends BusinessProfileState {
     this.hasEditBusinessProfile = false,
     this.currentIndex = -1,
     this.businessProfileStatus = BusinessProfileStatus.saveBusinessProfile,
+    this.hasSaveBusinessType = false,
   });
 
   final BusinessProfileEntity businessProfileEntity;
   final bool hasEditBusinessProfile;
   final int currentIndex;
   final BusinessProfileStatus businessProfileStatus;
+  final bool hasSaveBusinessType;
 
   @override
   bool get cacheHash => true;
 
   @override
-  List<Object?> get hashParameters => [businessProfileEntity, hasEditBusinessProfile, currentIndex, businessProfileStatus];
+  List<Object?> get hashParameters => [
+        businessProfileEntity,
+        hasEditBusinessProfile,
+        currentIndex,
+        businessProfileStatus,
+        hasSaveBusinessType,
+      ];
 }
 
 class GetBusinessProfileState extends BusinessProfileState {

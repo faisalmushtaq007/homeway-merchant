@@ -66,6 +66,8 @@ class BusinessProfileEntity {
     String? businessName,
     String? countryDialCode,
     String? isoCode,
+    BusinessTypeEntity? businessTypeEntity,
+    BusinessDocumentUploadedEntity? businessDocumentUploadedEntity,
   }) {
     return BusinessProfileEntity(
       businessProfileID: businessProfileID ?? this.businessProfileID,
@@ -76,6 +78,8 @@ class BusinessProfileEntity {
       businessName: businessName ?? this.businessName,
       countryDialCode: countryDialCode ?? this.countryDialCode,
       isoCode: isoCode ?? this.isoCode,
+      businessTypeEntity: businessTypeEntity ?? this.businessTypeEntity,
+      businessDocumentUploadedEntity: businessDocumentUploadedEntity ?? this.businessDocumentUploadedEntity,
     );
   }
 }

@@ -83,10 +83,12 @@ class VerifyOtpState extends OtpVerificationState {
   VerifyOtpState({
     required this.verifyOtpEntity,
     required this.otpVerificationStatus,
+    this.appUserEntity,
   });
 
   final VerifyOtpEntity verifyOtpEntity;
   final OtpVerificationStatus otpVerificationStatus;
+  final AppUserEntity? appUserEntity;
 
   @override
   bool get cacheHash => false;
@@ -95,6 +97,7 @@ class VerifyOtpState extends OtpVerificationState {
   List<Object?> get hashParameters => [
         verifyOtpEntity,
         otpVerificationStatus,
+        appUserEntity,
       ];
 }
 
@@ -127,6 +130,7 @@ class VerifyOtpFailedState extends OtpVerificationState {
     this.message = '',
     this.stackTrace,
     this.exception,
+    this.appUserEntity,
   });
 
   final VerifyOtpEntity verifyOtpEntity;
@@ -134,6 +138,7 @@ class VerifyOtpFailedState extends OtpVerificationState {
   final String message;
   final StackTrace? stackTrace;
   final Object? exception;
+  final AppUserEntity? appUserEntity;
 
   @override
   bool get cacheHash => false;
@@ -145,6 +150,7 @@ class VerifyOtpFailedState extends OtpVerificationState {
         message,
         stackTrace,
         exception,
+        appUserEntity,
       ];
 }
 

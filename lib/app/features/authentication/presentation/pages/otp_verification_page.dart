@@ -76,12 +76,12 @@ class _OTPVerificationPageState extends State<OTPVerificationPage> {
 
   @override
   void dispose() {
-    scrollController.dispose();
     // Cancel the countdown timer
     countdownTimer.cancel();
     otpController.dispose();
     otpFocusNode.dispose();
     otpVerificationButtonController.dispose();
+    scrollController.dispose();
     super.dispose();
   }
 
@@ -261,6 +261,13 @@ class _OTPVerificationPageState extends State<OTPVerificationPage> {
                       {
                         context.go(
                           Routes.CREATE_BUSINESS_PROFILE_PAGE,
+                          extra: {
+                            'businessProfileEntity': BusinessProfileEntity(
+                              businessPhoneNumber: otpVerificationState.appUserEntity?.phoneNumber,
+                              countryDialCode: otpVerificationState.appUserEntity?.country_dial_code ?? '+966',
+                              isoCode: otpVerificationState.appUserEntity?.isoCode ?? 'SA',
+                            ),
+                          },
                         );
                         break;
                       }
@@ -273,6 +280,13 @@ class _OTPVerificationPageState extends State<OTPVerificationPage> {
                         // Todo(prasant): temp purpose
                         context.go(
                           Routes.CREATE_BUSINESS_PROFILE_PAGE,
+                          extra: {
+                            'businessProfileEntity': BusinessProfileEntity(
+                              businessPhoneNumber: otpVerificationState.appUserEntity?.phoneNumber,
+                              countryDialCode: otpVerificationState.appUserEntity?.country_dial_code ?? '+966',
+                              isoCode: otpVerificationState.appUserEntity?.isoCode ?? 'SA',
+                            ),
+                          },
                         );
                         break;
                       }

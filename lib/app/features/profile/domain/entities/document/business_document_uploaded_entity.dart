@@ -97,7 +97,7 @@ class BusinessDocumentUploadedEntity with AppEquatable {
   Map<String, dynamic> toMap() {
     return {
       'documentID': this.documentID,
-      'documentType': this.documentType,
+      'documentType': this.documentType.name,
       'documentIDNumber': this.documentIDNumber,
       'documentFrontAssets': this.documentFrontAssets?.toMap(),
       'documentBackAssets': this.documentBackAssets?.toMap(),

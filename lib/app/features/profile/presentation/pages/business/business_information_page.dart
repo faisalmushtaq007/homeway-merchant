@@ -81,14 +81,16 @@ class _BusinessInformationPageState extends State<BusinessInformationPage> with 
     hasEditBusinessProfile = widget.hasEditBusinessProfile;
     currentIndex = widget.currentIndex;
     businessTypeEntity = widget.businessTypeEntity;
+    defaultCountry = isoCodeNameMap.values.byName(businessProfileEntity?.isoCode ?? 'SA');
     initialPhoneNumberValue = PhoneNumber(
-      isoCode: isoCodeNameMap.values.byName('SA'),
-      nsn: '',
+      isoCode: isoCodeNameMap.values.byName(businessProfileEntity?.isoCode ?? 'SA'),
+      nsn: businessProfileEntity?.businessPhoneNumber ?? '',
     );
     controller = PhoneController(initialPhoneNumberValue);
     controller.value = initialPhoneNumberValue;
+    appLog.d('user phone number ${controller.value?.nsn}, ${controller.value?.isoCode}, ${widget.businessProfileEntity?.businessPhoneNumber}');
     if (mounted) {
-      if (widget.hasEditBusinessProfile && widget.businessProfileEntity != null) {
+      if (widget.hasEditBusinessProfile) {
         context.read<BusinessProfileBloc>().add(GetBusinessProfile(
               businessProfileID: widget.businessProfileEntity?.businessProfileID ?? -1,
               businessProfileEntity: widget.businessProfileEntity,

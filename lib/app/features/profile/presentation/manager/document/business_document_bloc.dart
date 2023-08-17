@@ -492,7 +492,7 @@ class BusinessDocumentBloc extends Bloc<BusinessDocumentEvent, BusinessDocumentS
   Future<void> _saveBusinessDocument(SaveBusinessDocument event, Emitter<BusinessDocumentState> emit) async {
     try {
       DataSourceState<BusinessDocumentUploadedEntity> result;
-      if (!event.hasEditBusinessDocument && event.currentIndex != -1) {
+      if (event.hasEditBusinessDocument) {
         result = await serviceLocator<EditDocumentUseCase>()(id: event.businessDocumentUploadedEntity.documentID, input: event.businessDocumentUploadedEntity);
       } else {
         result = await serviceLocator<SaveDocumentUseCase>()(event.businessDocumentUploadedEntity);

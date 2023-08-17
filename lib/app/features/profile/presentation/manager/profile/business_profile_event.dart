@@ -32,15 +32,26 @@ class GetBusinessType extends BusinessProfileEvent {
 }
 
 class SaveBusinessProfile extends BusinessProfileEvent {
-  SaveBusinessProfile({required this.businessProfileEntity, this.hasEditBusinessProfile = false, this.currentIndex = -1});
+  SaveBusinessProfile({
+    required this.businessProfileEntity,
+    this.hasEditBusinessProfile = false,
+    this.currentIndex = -1,
+    this.hasSaveBusinessType = false,
+  });
   final BusinessProfileEntity businessProfileEntity;
   final bool hasEditBusinessProfile;
   final int currentIndex;
+  final bool hasSaveBusinessType;
   @override
   bool get cacheHash => true;
 
   @override
-  List<Object?> get hashParameters => [businessProfileEntity, hasEditBusinessProfile, currentIndex];
+  List<Object?> get hashParameters => [
+        businessProfileEntity,
+        hasEditBusinessProfile,
+        currentIndex,
+        hasSaveBusinessType,
+      ];
 }
 
 class DeleteBusinessProfile extends BusinessProfileEvent {
