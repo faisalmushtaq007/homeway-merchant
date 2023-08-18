@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
+import 'package:equatable/equatable.dart';
 import 'package:homemakers_merchant/app/features/authentication/common/otp_verification_enum.dart';
 import 'package:homemakers_merchant/app/features/authentication/index.dart';
 import 'package:homemakers_merchant/app/features/profile/index.dart';
@@ -141,18 +142,23 @@ class OtpVerificationBloc extends Bloc<OtpVerificationEvent, OtpVerificationStat
               AppUserEntity(
                 isoCode: event.verifyOtpEntity.isoCode,
                 country_dial_code: event.verifyOtpEntity.country_dial_code,
-                phoneNumber: event.verifyOtpEntity.login,
+                phoneNumber: event.verifyOtpEntity.phoneNumberWithFormat,
                 hasCurrentUser: true,
                 uid: verifyOtpResponseModel.uid ?? '',
                 access_token: verifyOtpResponseModel.access_token ?? '',
                 currentUserStage: 0,
+                phoneNumberWithoutDialCode: event.verifyOtpEntity.phoneNumberWithoutFormat,
               ),
             );
+            await Future.delayed(const Duration(milliseconds: 500), () {});
             serviceLocator<UserModelStorageController>().setUserModel(saveUserEntity);
             emit(
-              VerifyOtpState(verifyOtpEntity: event.verifyOtpEntity, otpVerificationStatus: OtpVerificationStatus.otpVerified, appUserEntity: saveUserEntity),
+              VerifyOtpState(
+                verifyOtpEntity: event.verifyOtpEntity,
+                otpVerificationStatus: OtpVerificationStatus.otpVerified,
+                appUserEntity: saveUserEntity.copyWith(),
+              ),
             );
-            return;
           },
           error: (reason, error, networkException, stackTrace) async {
             // Todo(prasant): Change this logic when we are verify the otp from remote
@@ -161,13 +167,16 @@ class OtpVerificationBloc extends Bloc<OtpVerificationEvent, OtpVerificationStat
               AppUserEntity(
                 isoCode: event.verifyOtpEntity.isoCode,
                 country_dial_code: event.verifyOtpEntity.country_dial_code,
-                phoneNumber: event.verifyOtpEntity.login,
+                phoneNumber: event.verifyOtpEntity.phoneNumberWithFormat,
                 hasCurrentUser: true,
                 uid: verifyOtpResponseModel.uid ?? '',
                 access_token: verifyOtpResponseModel.access_token ?? '',
                 currentUserStage: 0,
+                phoneNumberWithoutDialCode: event.verifyOtpEntity.phoneNumberWithoutFormat,
               ),
             );
+            appLog.e('VerifyOtpFailedState ${saveUserEntity.phoneNumberWithoutDialCode ?? ''}, ${saveUserEntity.phoneNumber}');
+            await Future.delayed(const Duration(milliseconds: 500), () {});
             serviceLocator<UserModelStorageController>().setUserModel(saveUserEntity);
             emit(
               VerifyOtpFailedState(
@@ -176,10 +185,9 @@ class OtpVerificationBloc extends Bloc<OtpVerificationEvent, OtpVerificationStat
                 stackTrace: stackTrace,
                 exception: error,
                 message: reason,
-                appUserEntity: saveUserEntity,
+                appUserEntity: saveUserEntity.copyWith(),
               ),
             );
-            return;
           },
         );
       } else {

@@ -150,7 +150,7 @@ class StoreEntity with AppEquatable {
       menuEntities: menuEntities ?? this.menuEntities,
       hasNewStore: hasNewStore ?? this.hasNewStore,
       ratingAndReviewEntity: ratingAndReviewEntity ?? this.ratingAndReviewEntity,
-      storePhoneNumber: storePhoneNumber ?? storePhoneNumber,
+      storePhoneNumber: storePhoneNumber ?? this.storePhoneNumber,
       countryDialCode: countryDialCode ?? this.countryDialCode,
       isoCode: isoCode ?? this.isoCode,
       phoneNumberWithoutDialCode: phoneNumberWithoutDialCode ?? this.phoneNumberWithoutDialCode,

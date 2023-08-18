@@ -28,11 +28,18 @@ import 'package:homemakers_merchant/utils/app_log.dart';
 import 'package:pinput/pinput.dart';
 
 class OTPVerificationPage extends StatefulWidget {
-  const OTPVerificationPage({required this.phoneNumber, super.key, this.countryDialCode = '+966', required this.phoneNumberWithoutFormat});
+  const OTPVerificationPage({
+    required this.phoneNumber,
+    super.key,
+    this.countryDialCode = '+966',
+    required this.phoneNumberWithoutFormat,
+    this.isoCode = 'SA',
+  });
 
   final String phoneNumber;
   final String countryDialCode;
   final String phoneNumberWithoutFormat;
+  final String isoCode;
 
   @override
   _OTPVerificationPageState createState() => _OTPVerificationPageState();
@@ -66,6 +73,9 @@ class _OTPVerificationPageState extends State<OTPVerificationPage> {
               user_type: 'merchant',
               userName: widget.phoneNumberWithoutFormat,
               country_dial_code: widget.countryDialCode,
+              isoCode: widget.isoCode,
+              phoneNumberWithFormat: widget.phoneNumber,
+              phoneNumberWithoutFormat: widget.phoneNumberWithoutFormat,
             ),
             otpVerificationStatus: OtpVerificationStatus.otpSent,
           ),
@@ -122,6 +132,9 @@ class _OTPVerificationPageState extends State<OTPVerificationPage> {
               user_type: 'merchant',
               userName: widget.phoneNumberWithoutFormat,
               country_dial_code: widget.countryDialCode,
+              isoCode: widget.isoCode,
+              phoneNumberWithFormat: widget.phoneNumber,
+              phoneNumberWithoutFormat: widget.phoneNumberWithoutFormat,
             ),
             otpVerificationStatus: OtpVerificationStatus.otpReSent,
           ),
@@ -256,46 +269,40 @@ class _OTPVerificationPageState extends State<OTPVerificationPage> {
               ),
               child: BlocListener<OtpVerificationBloc, OtpVerificationState>(
                 listener: (context, otpVerificationState) {
-                  switch (otpVerificationState) {
-                    case VerifyOtpState():
-                      {
-                        context.go(
-                          Routes.CREATE_BUSINESS_PROFILE_PAGE,
-                          extra: {
-                            'businessProfileEntity': BusinessProfileEntity(
-                              businessPhoneNumber: otpVerificationState.appUserEntity?.phoneNumber,
-                              countryDialCode: otpVerificationState.appUserEntity?.country_dial_code ?? '+966',
-                              isoCode: otpVerificationState.appUserEntity?.isoCode ?? 'SA',
-                            ),
-                          },
-                        );
-                        break;
-                      }
-                    case SendOtpState():
-                      {
-                        break;
-                      }
-                    case VerifyOtpFailedState():
-                      {
-                        // Todo(prasant): temp purpose
-                        context.go(
-                          Routes.CREATE_BUSINESS_PROFILE_PAGE,
-                          extra: {
-                            'businessProfileEntity': BusinessProfileEntity(
-                              businessPhoneNumber: otpVerificationState.appUserEntity?.phoneNumber,
-                              countryDialCode: otpVerificationState.appUserEntity?.country_dial_code ?? '+966',
-                              isoCode: otpVerificationState.appUserEntity?.isoCode ?? 'SA',
-                            ),
-                          },
-                        );
-                        break;
-                      }
-                    case SendOtpFailedState():
-                      {
-                        break;
-                      }
-                    case _:
-                      appLog.d('Default case: otp bloc listener page');
+                  if (otpVerificationState is VerifyOtpState) {
+                    appLog.e(
+                        'VerifyOtpState ${otpVerificationState.appUserEntity?.phoneNumberWithoutDialCode ?? ''}, ${otpVerificationState.appUserEntity?.phoneNumber}');
+                    context.pushReplacement(
+                      Routes.CREATE_BUSINESS_PROFILE_PAGE,
+                      extra: {
+                        'businessProfileEntity': BusinessProfileEntity(
+                          businessPhoneNumber: otpVerificationState.appUserEntity?.phoneNumber,
+                          countryDialCode: otpVerificationState.appUserEntity?.country_dial_code ?? '+966',
+                          isoCode: otpVerificationState.appUserEntity?.isoCode ?? 'SA',
+                          phoneNumberWithoutDialCode: otpVerificationState.appUserEntity?.phoneNumberWithoutDialCode ?? '',
+                        ),
+                      },
+                    );
+                    return;
+                  } else if (otpVerificationState is VerifyOtpFailedState) {
+                    // Todo(prasant): temp purpose
+                    appLog.e('VerifyOtpFailedState ${otpVerificationState.appUserEntity?.toMap() ?? ''}, ${otpVerificationState.appUserEntity?.phoneNumber}');
+                    context.pushReplacement(
+                      Routes.CREATE_BUSINESS_PROFILE_PAGE,
+                      extra: {
+                        'businessProfileEntity': BusinessProfileEntity(
+                          businessPhoneNumber: otpVerificationState.appUserEntity?.phoneNumber,
+                          countryDialCode: otpVerificationState.appUserEntity?.country_dial_code ?? '+966',
+                          isoCode: otpVerificationState.appUserEntity?.isoCode ?? 'SA',
+                          phoneNumberWithoutDialCode: otpVerificationState.appUserEntity?.phoneNumberWithoutDialCode ?? '',
+                        ),
+                      },
+                    );
+                    return;
+                  } else if (otpVerificationState is SendOtpFailedState) {
+                  } else if (otpVerificationState is SendOtpState) {
+                  } else {
+                    appLog.d('Default case: otp bloc listener page');
                   }
                 },
                 child: BlocBuilder<OtpVerificationBloc, OtpVerificationState>(
@@ -315,14 +322,7 @@ class _OTPVerificationPageState extends State<OTPVerificationPage> {
                         {
                           break;
                         }
-                      case VerifyOtpFailedState():
-                        {
-                          break;
-                        }
-                      case SendOtpFailedState():
-                        {
-                          break;
-                        }
+
                       case VerifyOtpProcessingState():
                         {
                           break;
@@ -462,8 +462,8 @@ class _OTPVerificationPageState extends State<OTPVerificationPage> {
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
                                 Expanded(
-                                  child: AsyncElevatedBtn(
-                                    asyncBtnStatesController: otpVerificationButtonController,
+                                  child: ElevatedButton(
+                                    //asyncBtnStatesController: otpVerificationButtonController,
                                     onPressed: () async {
                                       if (verifyOTPFormKey.currentState!.validate()) {
                                         appLog.d('OTP Validate');
@@ -483,8 +483,8 @@ class _OTPVerificationPageState extends State<OTPVerificationPage> {
                                                 VerifyOtp(
                                                   verifyOtpEntity: VerifyOtpEntity(
                                                     user_type: 'merchant',
-                                                    login: widget.phoneNumber,
-                                                    country_dial_code: '',
+                                                    login: widget.phoneNumberWithoutFormat,
+                                                    country_dial_code: widget.countryDialCode,
                                                     otp: int.parse(
                                                       otpController.value.text.trim(),
                                                     ),
@@ -493,6 +493,9 @@ class _OTPVerificationPageState extends State<OTPVerificationPage> {
                                                     password: int.parse(
                                                       otpController.value.text.trim(),
                                                     ),
+                                                    isoCode: widget.isoCode,
+                                                    phoneNumberWithFormat: widget.phoneNumber,
+                                                    phoneNumberWithoutFormat: widget.phoneNumberWithoutFormat,
                                                   ),
                                                   otpVerificationStatus: OtpVerificationStatus.otpSent,
                                                 ),

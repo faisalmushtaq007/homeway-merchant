@@ -39,6 +39,7 @@ class BusinessProfileBloc extends Bloc<BusinessProfileEvent, BusinessProfileStat
           if (data != null) {
             await updateUserProfile(data, event.hasSaveBusinessType ? 2 : 1);
           }
+          await Future.delayed(const Duration(milliseconds: 500), () {});
           emit(
             SaveBusinessProfileState(
               businessProfileEntity: data ?? event.businessProfileEntity,
@@ -53,6 +54,7 @@ class BusinessProfileBloc extends Bloc<BusinessProfileEvent, BusinessProfileStat
           if (data != null) {
             await updateUserProfile(data, event.hasSaveBusinessType ? 2 : 1);
           }
+          await Future.delayed(const Duration(milliseconds: 500), () {});
           emit(
             SaveBusinessProfileState(
               businessProfileEntity: data ?? event.businessProfileEntity,
@@ -74,7 +76,6 @@ class BusinessProfileBloc extends Bloc<BusinessProfileEvent, BusinessProfileStat
           );
         },
       );
-      return;
     } catch (e, s) {
       appLog.e('Profile bloc save exception $e');
       emit(

@@ -83,16 +83,20 @@ class _PrimaryDashboardDrawerController extends State<PrimaryDashboardDrawer> {
             drawerID: 04,
             drawerName: 'Notification',
             leading: const Icon(Icons.notifications),
-            onPressed: () {
-              return Navigator.of(context).pop();
+            onPressed: () async {
+              Navigator.of(context).pop();
+              await context.push(Routes.NOTIFICATIONS);
+              return;
             },
           ),
           DrawerEntity(
             drawerID: 05,
             drawerName: 'Rate & Review',
             leading: const Icon(Icons.rate_review),
-            onPressed: () {
-              return Navigator.of(context).pop();
+            onPressed: () async {
+              Navigator.of(context).pop();
+              await context.push(Routes.RATE_AND_REVIEW_PAGE);
+              return;
             },
           ),
         ],
@@ -146,16 +150,20 @@ class _PrimaryDashboardDrawerController extends State<PrimaryDashboardDrawer> {
         drawerID: 2,
         drawerName: 'Stores',
         leading: const Icon(Icons.store),
-        onPressed: () {
-          return Navigator.of(context).pop();
+        onPressed: () async {
+          Navigator.of(context).pop();
+          await context.push(Routes.ALL_STORES_PAGE);
+          return;
         },
       ),
       DrawerEntity(
         drawerID: 3,
         drawerName: 'Menu',
         leading: const Icon(Icons.restaurant_menu),
-        onPressed: () {
-          return Navigator.of(context).pop();
+        onPressed: () async {
+          Navigator.of(context).pop();
+          await context.push(Routes.ALL_MENU_PAGE);
+          return;
         },
       ),
       DrawerEntity(
@@ -163,8 +171,10 @@ class _PrimaryDashboardDrawerController extends State<PrimaryDashboardDrawer> {
         drawerName: 'Drivers',
         leading: const Icon(Icons.payment),
         controller: ExpansionTileController(),
-        onPressed: () {
-          return Navigator.of(context).pop();
+        onPressed: () async {
+          Navigator.of(context).pop();
+          await context.push(Routes.ALL_DRIVER_PAGE);
+          return;
         },
       ),
       DrawerEntity(
@@ -235,8 +245,10 @@ class _PrimaryDashboardDrawerController extends State<PrimaryDashboardDrawer> {
             drawerID: 80,
             drawerName: 'FAQ',
             leading: const Icon(Icons.help),
-            onPressed: () {
-              return Navigator.of(context).pop();
+            onPressed: () async {
+              Navigator.of(context).pop();
+              await context.push(Routes.FAQ_PAGE);
+              return;
             },
           ),
           DrawerEntity(

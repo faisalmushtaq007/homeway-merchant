@@ -139,11 +139,11 @@ class BusinessDocumentAssetsEntity with AppEquatable {
       assetExtension: map['assetExtension'] as String,
       assetMoreInfo: map['assetMoreInfo'] as Map<String, dynamic>,
       assetBase64Code: map['assetBase64Code'] as String,
-      assetsUploadStatus: map['assetsUploadStatus'] as DocumentUploadStatus,
+      assetsUploadStatus: DocumentUploadStatus.values.byName(map['assetsUploadStatus']),
       assetIdNumber: map['assetIdNumber'] as String,
       hasAssetsFrontSide: map['hasAssetsFrontSide'] as bool,
-      backSideAssetsInfo: map['backSideAssetsInfo'] as BusinessDocumentAssetsEntity,
-      textEditingController: map['textEditingController'] as TextEditingController,
+      //backSideAssetsInfo: map['backSideAssetsInfo'] as BusinessDocumentAssetsEntity,
+      //textEditingController: map['textEditingController'] as TextEditingController,
     );
   }
 
@@ -207,8 +207,8 @@ class BusinessDocumentAssetsEntity with AppEquatable {
       assetsUploadStatus: assetsUploadStatus ?? this.assetsUploadStatus,
       assetIdNumber: assetIdNumber ?? this.assetIdNumber,
       hasAssetsFrontSide: hasAssetsFrontSide ?? this.hasAssetsFrontSide,
-      backSideAssetsInfo: backSideAssetsInfo ?? this.backSideAssetsInfo,
-      textEditingController: textEditingController ?? this.textEditingController,
+      //backSideAssetsInfo: backSideAssetsInfo ?? this.backSideAssetsInfo,
+      //textEditingController: textEditingController ?? this.textEditingController,
     );
   }
 
@@ -221,11 +221,11 @@ class BusinessDocumentAssetsEntity with AppEquatable {
       'assetExtension': this.assetExtension,
       'assetMoreInfo': this.assetMoreInfo,
       'assetBase64Code': this.assetBase64Code,
-      'assetsUploadStatus': this.assetsUploadStatus,
+      'assetsUploadStatus': this.assetsUploadStatus.name,
       'assetIdNumber': this.assetIdNumber,
       'hasAssetsFrontSide': this.hasAssetsFrontSide,
-      'backSideAssetsInfo': this.backSideAssetsInfo,
-      'textEditingController': this.textEditingController,
+      //'backSideAssetsInfo': this.backSideAssetsInfo,
+      //'textEditingController': this.textEditingController,
     };
   }
 }

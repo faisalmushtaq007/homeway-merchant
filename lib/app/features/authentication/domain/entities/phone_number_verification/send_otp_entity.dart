@@ -6,6 +6,8 @@ class SendOtpEntity extends INetworkModel<SendOtpEntity> {
     required this.user_type,
     required this.userName,
     this.isoCode = 'SA',
+    this.phoneNumberWithoutFormat = '',
+    this.phoneNumberWithFormat = '',
   });
 
   factory SendOtpEntity.fromJson(Map<String, dynamic> json) => SendOtpEntity(
@@ -13,12 +15,16 @@ class SendOtpEntity extends INetworkModel<SendOtpEntity> {
         user_type: json['user_type'] ?? '' as String,
         userName: json['username'] ?? '' as String,
         isoCode: json['isoCode'] ?? 'SA' as String,
+        phoneNumberWithoutFormat: json['phoneNumberWithoutFormat'] ?? '' as String,
+        phoneNumberWithFormat: json['phoneNumberWithFormat'] ?? '' as String,
       );
 
   String userName;
   String country_dial_code;
   String user_type;
   String isoCode;
+  String phoneNumberWithFormat;
+  String phoneNumberWithoutFormat;
 
   @override
   SendOtpEntity fromJson(Map<String, dynamic> json) {
@@ -30,6 +36,8 @@ class SendOtpEntity extends INetworkModel<SendOtpEntity> {
         'country_dial_code': country_dial_code,
         'user_type': user_type,
         'isoCode': isoCode,
+        //'phoneNumberWithoutFormat': phoneNumberWithoutFormat,
+        //'phoneNumberWithFormat': phoneNumberWithFormat,
       };
 
   @override

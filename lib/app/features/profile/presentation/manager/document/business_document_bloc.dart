@@ -499,9 +499,12 @@ class BusinessDocumentBloc extends Bloc<BusinessDocumentEvent, BusinessDocumentS
       } else {
         result = await serviceLocator<SaveDocumentUseCase>()(event.businessDocumentUploadedEntity);
       }
-      result.when(
-        remote: (data, meta) {
+      await result.when(
+        remote: (data, meta) async {
           appLog.d('Business Document bloc save remote ${data?.toMap()}');
+          if (data != null) {
+            //await updateUserProfile(data);
+          }
           emit(
             SaveBusinessDocumentState(
               businessDocumentUploadedEntity: data ?? event.businessDocumentUploadedEntity,
@@ -509,8 +512,11 @@ class BusinessDocumentBloc extends Bloc<BusinessDocumentEvent, BusinessDocumentS
             ),
           );
         },
-        localDb: (data, meta) {
+        localDb: (data, meta) async {
           appLog.d('Business Document bloc save local ${data?.toMap()}');
+          if (data != null) {
+            //await updateUserProfile(data);
+          }
           emit(
             SaveBusinessDocumentState(
               businessDocumentUploadedEntity: data ?? event.businessDocumentUploadedEntity,

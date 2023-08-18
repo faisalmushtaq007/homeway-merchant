@@ -9,6 +9,8 @@ class VerifyOtpEntity extends INetworkModel<VerifyOtpEntity> {
     required this.db,
     required this.password,
     this.isoCode = 'SA',
+    this.phoneNumberWithoutFormat = '',
+    this.phoneNumberWithFormat = '',
   });
 
   factory VerifyOtpEntity.fromJson(Map<String, dynamic> json) => VerifyOtpEntity(
@@ -19,6 +21,8 @@ class VerifyOtpEntity extends INetworkModel<VerifyOtpEntity> {
         password: json['password'] ?? '' as int,
         db: json['db'] ?? '' as String,
         isoCode: json['isoCode'] as String,
+        phoneNumberWithoutFormat: json['phoneNumberWithoutFormat'] ?? '' as String,
+        phoneNumberWithFormat: json['phoneNumberWithFormat'] ?? '' as String,
       );
 
   String login;
@@ -28,6 +32,8 @@ class VerifyOtpEntity extends INetworkModel<VerifyOtpEntity> {
   String db;
   String user_type;
   String isoCode;
+  String phoneNumberWithFormat;
+  String phoneNumberWithoutFormat;
 
   @override
   VerifyOtpEntity fromJson(Map<String, dynamic> json) {
@@ -42,6 +48,8 @@ class VerifyOtpEntity extends INetworkModel<VerifyOtpEntity> {
         'db': db,
         'user_type': user_type,
         'isoCode': isoCode,
+        //'phoneNumberWithoutFormat': phoneNumberWithoutFormat,
+        //'phoneNumberWithFormat': phoneNumberWithFormat,
       };
 
   @override

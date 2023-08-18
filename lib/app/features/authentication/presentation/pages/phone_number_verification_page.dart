@@ -189,6 +189,7 @@ class _PhoneNumberVerificationPageState extends State<PhoneNumberVerificationPag
                     'mobileNumber': userEnteredPhoneNumber,
                     'countryDialCode': countryDialCode,
                     'phoneNumberWithoutFormat': phoneNumbers.nsn,
+                    'isoCode': isoCode.name,
                   },
                 ).whenComplete(() {});
               },

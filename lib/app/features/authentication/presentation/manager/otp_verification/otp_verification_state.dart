@@ -1,15 +1,15 @@
 part of 'otp_verification_bloc.dart';
 
-abstract class OtpVerificationState with AppEquatable {}
+@immutable
+abstract class OtpVerificationState extends Equatable {}
 
+@immutable
 class OtpVerificationInitial extends OtpVerificationState {
   @override
-  bool get cacheHash => false;
-
-  @override
-  List<Object?> get hashParameters => [];
+  List<Object?> get props => [];
 }
 
+@immutable
 class SendOtpState extends OtpVerificationState {
   SendOtpState({
     required this.sendOtpEntity,
@@ -20,15 +20,13 @@ class SendOtpState extends OtpVerificationState {
   final OtpVerificationStatus otpVerificationStatus;
 
   @override
-  bool get cacheHash => false;
-
-  @override
-  List<Object?> get hashParameters => [
+  List<Object?> get props => [
         sendOtpEntity,
         otpVerificationStatus,
       ];
 }
 
+@immutable
 class SendOtpProcessingState extends OtpVerificationState {
   SendOtpProcessingState({
     required this.sendOtpEntity,
@@ -41,16 +39,14 @@ class SendOtpProcessingState extends OtpVerificationState {
   final bool isProcessing;
 
   @override
-  bool get cacheHash => false;
-
-  @override
-  List<Object?> get hashParameters => [
+  List<Object?> get props => [
         sendOtpEntity,
         otpVerificationStatus,
         isProcessing,
       ];
 }
 
+@immutable
 class SendOtpFailedState extends OtpVerificationState {
   SendOtpFailedState({
     required this.sendOtpEntity,
@@ -67,10 +63,7 @@ class SendOtpFailedState extends OtpVerificationState {
   final Object? exception;
 
   @override
-  bool get cacheHash => false;
-
-  @override
-  List<Object?> get hashParameters => [
+  List<Object?> get props => [
         sendOtpEntity,
         otpVerificationStatus,
         message,
@@ -79,6 +72,7 @@ class SendOtpFailedState extends OtpVerificationState {
       ];
 }
 
+@immutable
 class VerifyOtpState extends OtpVerificationState {
   VerifyOtpState({
     required this.verifyOtpEntity,
@@ -91,16 +85,14 @@ class VerifyOtpState extends OtpVerificationState {
   final AppUserEntity? appUserEntity;
 
   @override
-  bool get cacheHash => false;
-
-  @override
-  List<Object?> get hashParameters => [
+  List<Object?> get props => [
         verifyOtpEntity,
         otpVerificationStatus,
         appUserEntity,
       ];
 }
 
+@immutable
 class VerifyOtpProcessingState extends OtpVerificationState {
   VerifyOtpProcessingState({
     required this.verifyOtpEntity,
@@ -113,16 +105,14 @@ class VerifyOtpProcessingState extends OtpVerificationState {
   final bool isProcessing;
 
   @override
-  bool get cacheHash => false;
-
-  @override
-  List<Object?> get hashParameters => [
+  List<Object?> get props => [
         verifyOtpEntity,
         otpVerificationStatus,
         isProcessing,
       ];
 }
 
+@immutable
 class VerifyOtpFailedState extends OtpVerificationState {
   VerifyOtpFailedState({
     required this.verifyOtpEntity,
@@ -141,10 +131,7 @@ class VerifyOtpFailedState extends OtpVerificationState {
   final AppUserEntity? appUserEntity;
 
   @override
-  bool get cacheHash => false;
-
-  @override
-  List<Object?> get hashParameters => [
+  List<Object?> get props => [
         verifyOtpEntity,
         otpVerificationStatus,
         message,
@@ -154,6 +141,7 @@ class VerifyOtpFailedState extends OtpVerificationState {
       ];
 }
 
+@immutable
 class OtpTimerState extends OtpVerificationState {
   OtpTimerState({
     required this.otpTimerStatus,
@@ -163,19 +151,17 @@ class OtpTimerState extends OtpVerificationState {
 
   final OtpTimerStatus otpTimerStatus;
   final OtpVerificationStatus otpVerificationStatus;
-  int minute;
+  final int minute;
 
   @override
-  bool get cacheHash => false;
-
-  @override
-  List<Object?> get hashParameters => [
+  List<Object?> get props => [
         otpVerificationStatus,
         otpTimerStatus,
         minute,
       ];
 }
 
+@immutable
 class GetUserProfileState extends OtpVerificationState {
   GetUserProfileState({
     this.userToken = '',
@@ -186,15 +172,13 @@ class GetUserProfileState extends OtpVerificationState {
   final AppUserEntity? appUserEntity;
 
   @override
-  bool get cacheHash => true;
-
-  @override
-  List<Object?> get hashParameters => [
+  List<Object?> get props => [
         userToken,
         appUserEntity,
       ];
 }
 
+@immutable
 class NavigateToApplicationPage extends OtpVerificationState {
   NavigateToApplicationPage({
     this.appUserEntity,
@@ -203,8 +187,6 @@ class NavigateToApplicationPage extends OtpVerificationState {
   final int currentStatus;
   final AppUserEntity? appUserEntity;
   @override
-  bool get cacheHash => true;
-
   @override
-  List<Object?> get hashParameters => [];
+  List<Object?> get props => [];
 }

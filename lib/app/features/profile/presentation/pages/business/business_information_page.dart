@@ -40,16 +40,17 @@ class _BusinessInformationPageState extends State<BusinessInformationPage> with 
   BusinessTypeEntity? businessTypeEntity;
   final isoCodeNameMap = IsoCode.values.asNameMap();
   IsoCode defaultCountry = IsoCode.SA;
-  PhoneNumber initialPhoneNumberValue = PhoneNumber(
+  late PhoneNumber initialPhoneNumberValue; /*= PhoneNumber(
     isoCode: IsoCode.values.asNameMap().values.byName('SA'),
     nsn: '',
-  );
-  PhoneController controller = PhoneController(
+  );*/
+  late PhoneController
+      controller; /*= PhoneController(
     PhoneNumber(
       isoCode: IsoCode.values.asNameMap().values.byName('SA'),
       nsn: '',
     ),
-  );
+  );*/
   int businessProfileID = -1;
   ValueNotifier<PhoneNumberVerification> valueNotifierPhoneNumberVerification = ValueNotifier<PhoneNumberVerification>(
     PhoneNumberVerification.none,
@@ -81,14 +82,14 @@ class _BusinessInformationPageState extends State<BusinessInformationPage> with 
     hasEditBusinessProfile = widget.hasEditBusinessProfile;
     currentIndex = widget.currentIndex;
     businessTypeEntity = widget.businessTypeEntity;
-    defaultCountry = isoCodeNameMap.values.byName(businessProfileEntity?.isoCode ?? 'SA');
+    defaultCountry = IsoCode.values.byName(businessProfileEntity?.isoCode ?? 'SA');
     initialPhoneNumberValue = PhoneNumber(
-      isoCode: isoCodeNameMap.values.byName(businessProfileEntity?.isoCode ?? 'SA'),
-      nsn: businessProfileEntity?.businessPhoneNumber ?? '',
+      isoCode: IsoCode.values.byName(businessProfileEntity?.isoCode ?? 'SA'),
+      nsn: businessProfileEntity?.phoneNumberWithoutDialCode ?? '',
     );
     controller = PhoneController(initialPhoneNumberValue);
     controller.value = initialPhoneNumberValue;
-    appLog.d('user phone number ${controller.value?.nsn}, ${controller.value?.isoCode}, ${widget.businessProfileEntity?.businessPhoneNumber}');
+    appLog.d('user phone number ${controller.value?.nsn}, ${controller.value?.isoCode}, ${widget.businessProfileEntity?.phoneNumberWithoutDialCode}');
     if (mounted) {
       if (widget.hasEditBusinessProfile) {
         context.read<BusinessProfileBloc>().add(GetBusinessProfile(
@@ -258,14 +259,14 @@ class _BusinessInformationPageState extends State<BusinessInformationPage> with 
                                     userEnteredPhoneNumber = state.businessProfileEntity.businessPhoneNumber ?? '';
                                     hasEditBusinessProfile = state.hasEditBusinessProfile;
                                     initialPhoneNumberValue = PhoneNumber(
-                                      isoCode: isoCodeNameMap.values.byName(state.businessProfileEntity.isoCode ?? 'SA'),
+                                      isoCode: IsoCode.values.byName(state.businessProfileEntity.isoCode ?? 'SA'),
                                       nsn: state.businessProfileEntity.businessPhoneNumber ?? '',
                                     );
                                     controller.value = PhoneNumber(
-                                      isoCode: isoCodeNameMap.values.byName(state.businessProfileEntity.isoCode ?? 'SA'),
+                                      isoCode: IsoCode.values.byName(state.businessProfileEntity.isoCode ?? 'SA'),
                                       nsn: state.businessProfileEntity.businessPhoneNumber ?? '',
                                     );
-                                    defaultCountry = isoCodeNameMap.values.byName(state.businessProfileEntity.isoCode ?? 'SA');
+                                    defaultCountry = IsoCode.values.byName(state.businessProfileEntity.isoCode ?? 'SA');
                                     context.push(
                                       Routes.CONFIRM_BUSINESS_TYPE_PAGE,
                                       extra: {
@@ -281,7 +282,7 @@ class _BusinessInformationPageState extends State<BusinessInformationPage> with 
                                     businessProfileEntity = state.businessProfileEntity;
                                     businessProfileID = state.businessProfileID;
                                     initialPhoneNumberValue = PhoneNumber(
-                                      isoCode: isoCodeNameMap.values.byName('SA'),
+                                      isoCode: IsoCode.values.byName('SA'),
                                       nsn: businessProfileEntity?.businessPhoneNumber ?? '',
                                     );
                                     _usernameController.text = businessProfileEntity?.userName ?? '';
@@ -290,14 +291,14 @@ class _BusinessInformationPageState extends State<BusinessInformationPage> with 
                                     _businessNameController.text = businessProfileEntity?.businessName ?? '';
                                     userEnteredPhoneNumber = businessProfileEntity?.businessPhoneNumber ?? '';
                                     initialPhoneNumberValue = PhoneNumber(
-                                      isoCode: isoCodeNameMap.values.byName(state.businessProfileEntity?.isoCode ?? 'SA'),
+                                      isoCode: IsoCode.values.byName(state.businessProfileEntity?.isoCode ?? 'SA'),
                                       nsn: state.businessProfileEntity?.businessPhoneNumber ?? '',
                                     );
                                     controller.value = PhoneNumber(
-                                      isoCode: isoCodeNameMap.values.byName(state.businessProfileEntity?.isoCode ?? 'SA'),
+                                      isoCode: IsoCode.values.byName(state.businessProfileEntity?.isoCode ?? 'SA'),
                                       nsn: state.businessProfileEntity?.businessPhoneNumber ?? '',
                                     );
-                                    defaultCountry = isoCodeNameMap.values.byName(state.businessProfileEntity?.isoCode ?? 'SA');
+                                    defaultCountry = IsoCode.values.byName(state.businessProfileEntity?.isoCode ?? 'SA');
                                   }
                                 case _:
                                   {}

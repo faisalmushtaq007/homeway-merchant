@@ -158,6 +158,10 @@ class UserLocalDbRepository<User extends AppUserEntity> implements BaseUserLocal
               filter: Filter.or([
                 Filter.equals('hasCurrentUser', true),
                 Filter.equals(
+                  'phoneNumberWithoutDialCode',
+                  entity?.phoneNumberWithoutDialCode ?? '',
+                ),
+                Filter.equals(
                   'phoneNumber',
                   entity?.phoneNumber ?? '',
                 ),

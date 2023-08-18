@@ -35,6 +35,7 @@ class PaymentBankBloc extends Bloc<PaymentBankEvent, PaymentBankState> {
           if (data.isNotNull) {
             await updateUserProfile(data!);
           }
+          await Future.delayed(const Duration(milliseconds: 500), () {});
           emit(
             SavePaymentBankState(
               paymentBankEntity: data ?? event.paymentBankEntity,
@@ -47,6 +48,7 @@ class PaymentBankBloc extends Bloc<PaymentBankEvent, PaymentBankState> {
           if (data.isNotNull) {
             await updateUserProfile(data!);
           }
+          await Future.delayed(const Duration(milliseconds: 500), () {});
           emit(
             SavePaymentBankState(
               paymentBankEntity: data ?? event.paymentBankEntity,

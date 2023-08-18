@@ -27,7 +27,7 @@ class BusinessProfileEntity with AppEquatable {
       businessDocumentUploadedEntity: map['businessDocumentUploadedEntity'] != null
           ? BusinessDocumentUploadedEntity.fromMap(map['businessDocumentUploadedEntity'])
           : BusinessDocumentUploadedEntity(),
-      isoCode: map['iso_code'] ?? 'SA' as String,
+      isoCode: map['isoCode'] ?? 'SA' as String,
       countryDialCode: map['country_dial_code'] ?? '+966' as String,
       phoneNumberWithoutDialCode: map['phoneNumberWithoutDialCode'] ?? '+966' as String,
     );
@@ -56,7 +56,7 @@ class BusinessProfileEntity with AppEquatable {
       'businessTypeEntity': (businessTypeEntity.isNotNull) ? this.businessTypeEntity?.toMap() : BusinessTypeEntity().toMap(),
       'businessDocumentUploadedEntity':
           (businessDocumentUploadedEntity.isNotNull) ? this.businessDocumentUploadedEntity?.toMap() : BusinessDocumentUploadedEntity().toMap(),
-      'iso_code': this.isoCode ?? 'SA',
+      'isoCode': this.isoCode ?? 'SA',
       'country_dial_code': this.countryDialCode ?? '+966',
       'phoneNumberWithoutDialCode': this.phoneNumberWithoutDialCode ?? '',
     };

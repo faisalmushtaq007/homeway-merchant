@@ -23,6 +23,7 @@ import 'package:homemakers_merchant/app/features/profile/index.dart';
 import 'package:homemakers_merchant/app/features/rate_review/index.dart';
 import 'package:homemakers_merchant/app/features/store/index.dart';
 import 'package:homemakers_merchant/bootup/injection_container.dart';
+import 'package:homemakers_merchant/utils/app_log.dart';
 
 part 'app_routes.dart';
 
@@ -33,7 +34,7 @@ class AppRouter {
 
   AppRouter._();
 
-  static const String INITIAL = Routes.AUTH_PHONE_NUMBER_VERIFICATION;
+  static const String INITIAL = Routes.PRIMARY_DASHBOARD_PAGE;
 
   static final GoRouter _router = GoRouter(
     debugLogDiagnostics: true,
@@ -64,6 +65,7 @@ class AppRouter {
             phoneNumber: args?['mobileNumber'] as String,
             countryDialCode: args?['countryDialCode'] ?? '' as String,
             phoneNumberWithoutFormat: args?['phoneNumberWithoutFormat'] as String,
+            isoCode: args?['isoCode'] as String,
           );
         },
       ),
@@ -384,7 +386,7 @@ class AppRouter {
         builder: (context, state) => const FaqPage(),
       ),
     ],
-    redirect: (context, state) {
+    /*redirect: (context, state) {
       bool hasCurrentUserLoggedIn = userModelController.userModel.hasCurrentUser;
       if (hasCurrentUserLoggedIn) {
         final int index = userModelController.userModel.currentUserStage + 1;
@@ -417,7 +419,7 @@ class AppRouter {
       } else {
         return state.matchedLocation;
       }
-    },
+    },*/
     refreshListenable: serviceLocator<UserModelStorageController>(),
   );
 
