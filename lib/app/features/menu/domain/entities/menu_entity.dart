@@ -148,13 +148,13 @@ class MenuEntity with AppEquatable {
       'timeOfPeriodWise': this.timeOfPeriodWise.map((e) => e.toMap()).toList(),
       'metaInfoOfMenu': this.metaInfoOfMenu,
       'nutrients': this.nutrients.map((e) => e.toMap()).toList(),
-      'menuTiming': this.menuTiming?.toMap(),
-      'tasteType': this.tasteType?.toMap(),
-      'stock': this.stock?.toMap(),
-      'customPortion': this.customPortion?.toMap(),
+      'menuTiming': this.menuTiming?.toMap() ?? Timing().toMap(),
+      'tasteType': this.tasteType?.toMap() ?? TasteType().toMap(),
+      'stock': this.stock?.toMap() ?? Stock().toMap(),
+      'customPortion': this.customPortion?.toMap() ?? CustomPortion().toMap(),
       'menuMinPreparationTime': this.menuMinPreparationTime,
       'menuMaxPreparationTime': this.menuMaxPreparationTime,
-      'ratingAndReviewEntity': this.ratingAndReviewEntity?.toMap(),
+      'ratingAndReviewEntity': this.ratingAndReviewEntity?.toMap() ?? RatingAndReviewEntity().toMap(),
     };
   }
 
@@ -932,7 +932,7 @@ class Addons with AppEquatable {
       'discountedPrice': this.discountedPrice,
       'hasSelected': this.hasSelected,
       'unit': this.unit,
-      'addonsImage': this.addonsImage?.toMap(),
+      'addonsImage': this.addonsImage?.toMap() ?? MenuImage().toMap(),
       'currency': this.currency,
       'description': this.description,
       'hasOwnAddons': this.hasOwnAddons,

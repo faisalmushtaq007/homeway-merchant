@@ -1,7 +1,7 @@
 part of 'package:homemakers_merchant/app/features/profile/index.dart';
 
-class BusinessProfileEntity {
-  const BusinessProfileEntity({
+class BusinessProfileEntity with AppEquatable {
+  BusinessProfileEntity({
     this.userName = '',
     this.businessProfileID = -1,
     this.businessPhoneNumber = '',
@@ -12,13 +12,14 @@ class BusinessProfileEntity {
     this.businessDocumentUploadedEntity,
     this.isoCode = 'SA',
     this.countryDialCode = '+966',
+    this.phoneNumberWithoutDialCode = '',
   });
 
   factory BusinessProfileEntity.fromMap(Map<String, dynamic> map) {
     return BusinessProfileEntity(
       businessProfileID: map['businessProfileID'] as int,
-      userName: map['userName'] as String,
-      businessPhoneNumber: map['businessPhoneNumber'] as String,
+      userName: map['userName'] ?? '' as String,
+      businessPhoneNumber: map['businessPhoneNumber'] ?? '' as String,
       businessAddress: (map['businessAddress'] != null) ? AddressModel.fromJson(map['businessAddress']) : AddressModel(),
       businessEmailAddress: map['businessEmailAddress'] as String,
       businessName: map['businessName'] as String,
@@ -26,8 +27,9 @@ class BusinessProfileEntity {
       businessDocumentUploadedEntity: map['businessDocumentUploadedEntity'] != null
           ? BusinessDocumentUploadedEntity.fromMap(map['businessDocumentUploadedEntity'])
           : BusinessDocumentUploadedEntity(),
-      isoCode: map['iso_code'] ?? 'SA' as String? ?? 'SA',
-      countryDialCode: map['country_dial_code'] ?? '+966' as String? ?? '+966',
+      isoCode: map['iso_code'] ?? 'SA' as String,
+      countryDialCode: map['country_dial_code'] ?? '+966' as String,
+      phoneNumberWithoutDialCode: map['phoneNumberWithoutDialCode'] ?? '+966' as String,
     );
   }
 
@@ -37,23 +39,26 @@ class BusinessProfileEntity {
   final AddressModel? businessAddress;
   final String? businessEmailAddress;
   final String? businessName;
-  final String? countryDialCode;
-  final String? isoCode;
+  final String countryDialCode;
+  final String isoCode;
   final BusinessTypeEntity? businessTypeEntity;
   final BusinessDocumentUploadedEntity? businessDocumentUploadedEntity;
+  final String phoneNumberWithoutDialCode;
 
   Map<String, dynamic> toMap() {
     return {
       'businessProfileID': this.businessProfileID,
       'userName': this.userName,
       'businessPhoneNumber': this.businessPhoneNumber,
-      'businessAddress': this.businessAddress?.toMap(),
+      'businessAddress': (businessAddress.isNotNull) ? this.businessAddress?.toMap() : AddressModel().toMap(),
       'businessEmailAddress': this.businessEmailAddress,
       'businessName': this.businessName,
-      'businessTypeEntity': this.businessTypeEntity?.toMap(),
-      'businessDocumentUploadedEntity': this.businessDocumentUploadedEntity?.toMap(),
+      'businessTypeEntity': (businessTypeEntity.isNotNull) ? this.businessTypeEntity?.toMap() : BusinessTypeEntity().toMap(),
+      'businessDocumentUploadedEntity':
+          (businessDocumentUploadedEntity.isNotNull) ? this.businessDocumentUploadedEntity?.toMap() : BusinessDocumentUploadedEntity().toMap(),
       'iso_code': this.isoCode ?? 'SA',
       'country_dial_code': this.countryDialCode ?? '+966',
+      'phoneNumberWithoutDialCode': this.phoneNumberWithoutDialCode ?? '',
     };
   }
 
@@ -68,6 +73,7 @@ class BusinessProfileEntity {
     String? isoCode,
     BusinessTypeEntity? businessTypeEntity,
     BusinessDocumentUploadedEntity? businessDocumentUploadedEntity,
+    String? phoneNumberWithoutDialCode,
   }) {
     return BusinessProfileEntity(
       businessProfileID: businessProfileID ?? this.businessProfileID,
@@ -80,6 +86,26 @@ class BusinessProfileEntity {
       isoCode: isoCode ?? this.isoCode,
       businessTypeEntity: businessTypeEntity ?? this.businessTypeEntity,
       businessDocumentUploadedEntity: businessDocumentUploadedEntity ?? this.businessDocumentUploadedEntity,
+      phoneNumberWithoutDialCode: phoneNumberWithoutDialCode ?? this.phoneNumberWithoutDialCode,
     );
   }
+
+  @override
+  bool get cacheHash => true;
+
+  @override
+  // TODO: implement hashParameters
+  List<Object?> get hashParameters => [
+        userName,
+        businessProfileID,
+        businessPhoneNumber,
+        businessAddress,
+        businessEmailAddress,
+        businessName,
+        businessTypeEntity,
+        businessDocumentUploadedEntity,
+        isoCode,
+        countryDialCode,
+        phoneNumberWithoutDialCode,
+      ];
 }

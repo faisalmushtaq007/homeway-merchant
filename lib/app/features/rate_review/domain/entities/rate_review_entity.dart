@@ -52,7 +52,7 @@ class RateAndReviewEntity {
         'click_action': clickAction,
         'type': type,
         'priority': priority,
-        'body': body.toJson(),
+        'body': (body.isNotNull) ? body.toJson() : RateAndReviewBody().toJson(),
         'timestamp': timestamp,
         'user_image': userImage,
         'userID': userID,
@@ -125,7 +125,7 @@ class RateAndReviewBody {
         'message': message,
         'reviewDescription': reviewDescription,
         'rating': rating,
-        'order_details': ratingOrderDetails?.toJson() ?? const <String, dynamic>{},
+        'order_details': (ratingOrderDetails.isNotNull) ? ratingOrderDetails?.toJson() : RatingOrderDetails().toJson(),
       };
 
   RateAndReviewBody copyWith({

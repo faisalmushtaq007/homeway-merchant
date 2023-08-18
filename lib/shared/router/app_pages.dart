@@ -22,16 +22,18 @@ import 'package:homemakers_merchant/app/features/onboarding/presentation/pages/s
 import 'package:homemakers_merchant/app/features/profile/index.dart';
 import 'package:homemakers_merchant/app/features/rate_review/index.dart';
 import 'package:homemakers_merchant/app/features/store/index.dart';
+import 'package:homemakers_merchant/bootup/injection_container.dart';
 
 part 'app_routes.dart';
 
 class AppRouter {
   static final rootNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'root');
   static final shellNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'shell');
+  static final userModelController = serviceLocator<UserModelStorageController>();
 
   AppRouter._();
 
-  static const String INITIAL = Routes.CREATE_BUSINESS_PROFILE_PAGE;
+  static const String INITIAL = Routes.AUTH_PHONE_NUMBER_VERIFICATION;
 
   static final GoRouter _router = GoRouter(
     debugLogDiagnostics: true,
@@ -382,6 +384,41 @@ class AppRouter {
         builder: (context, state) => const FaqPage(),
       ),
     ],
+    redirect: (context, state) {
+      bool hasCurrentUserLoggedIn = userModelController.userModel.hasCurrentUser;
+      if (hasCurrentUserLoggedIn) {
+        final int index = userModelController.userModel.currentUserStage + 1;
+        switch (index) {
+          case 1:
+            {
+              return Routes.CREATE_BUSINESS_PROFILE_PAGE;
+            }
+          case 2:
+            {
+              return Routes.CONFIRM_BUSINESS_TYPE_PAGE;
+            }
+          case 3:
+            {
+              return Routes.BANK_INFORMATION_PAGE;
+            }
+          case 4:
+            {
+              return Routes.DOCUMENT_LIST_PAGE;
+            }
+          case 5:
+            {
+              return Routes.PRIMARY_DASHBOARD_PAGE;
+            }
+          case _:
+            {
+              return state.matchedLocation;
+            }
+        }
+      } else {
+        return state.matchedLocation;
+      }
+    },
+    refreshListenable: serviceLocator<UserModelStorageController>(),
   );
 
   static GoRouter get router => _router;

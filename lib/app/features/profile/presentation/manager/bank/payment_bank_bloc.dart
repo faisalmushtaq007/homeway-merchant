@@ -1,8 +1,10 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
+import 'package:homemakers_merchant/app/features/authentication/index.dart';
 import 'package:homemakers_merchant/app/features/profile/index.dart';
 import 'package:homemakers_merchant/bootup/injection_container.dart';
+import 'package:homemakers_merchant/core/extensions/global_extensions/src/object.dart';
 import 'package:homemakers_merchant/shared/states/data_source_state.dart';
 import 'package:homemakers_merchant/utils/app_equatable/app_equatable.dart';
 import 'package:homemakers_merchant/utils/app_log.dart';
@@ -27,9 +29,12 @@ class PaymentBankBloc extends Bloc<PaymentBankEvent, PaymentBankState> {
       } else {
         result = await serviceLocator<SavePaymentBankUseCase>()(event.paymentBankEntity);
       }
-      result.when(
-        remote: (data, meta) {
+      await result.when(
+        remote: (data, meta) async {
           appLog.d('Payment Bank bloc save remote ${data?.toMap()}');
+          if (data.isNotNull) {
+            await updateUserProfile(data!);
+          }
           emit(
             SavePaymentBankState(
               paymentBankEntity: data ?? event.paymentBankEntity,
@@ -37,8 +42,11 @@ class PaymentBankBloc extends Bloc<PaymentBankEvent, PaymentBankState> {
             ),
           );
         },
-        localDb: (data, meta) {
+        localDb: (data, meta) async {
           appLog.d('Payment Bank bloc save local ${data?.toMap()}');
+          if (data.isNotNull) {
+            await updateUserProfile(data!);
+          }
           emit(
             SavePaymentBankState(
               paymentBankEntity: data ?? event.paymentBankEntity,
@@ -70,6 +78,39 @@ class PaymentBankBloc extends Bloc<PaymentBankEvent, PaymentBankState> {
         ),
       );
     }
+  }
+
+  Future<void> updateUserProfile(PaymentBankEntity data) async {
+    final getCurrentUserResult = await serviceLocator<GetIDAndTokenUserUseCase>()();
+    if (getCurrentUserResult.isNotNull) {
+      appLog.d('getCurrentUserResult Profile bloc save remote ${getCurrentUserResult?.toMap()}');
+      final AppUserEntity cacheAppUserEntity = getCurrentUserResult!.copyWith(
+        paymentBankEntity: data,
+        hasMultiplePaymentBanks: false,
+        paymentBankEntities: <PaymentBankEntity>[],
+        currentUserStage: 2,
+      );
+      final editUserResult = await serviceLocator<EditAppUserUseCase>()(
+        id: getCurrentUserResult.userID,
+        input: cacheAppUserEntity,
+      );
+      editUserResult.when(
+        remote: (data, meta) {
+          appLog.d('Update current user with business profile save remote ${data?.toMap()}');
+        },
+        localDb: (data, meta) {
+          appLog.d('Update current user with business profile save local ${data?.toMap()}');
+          if (data != null) {
+            serviceLocator<UserModelStorageController>().setUserModel(data);
+          }
+        },
+        error: (dataSourceFailure, reason, error, networkException, stackTrace, exception, extra) {
+          appLog.d('Update current user with business profile exception $error');
+        },
+      );
+      return;
+    }
+    return;
   }
 
   FutureOr<void> _getPaymentBank(GetPaymentBank event, Emitter<PaymentBankState> emit) async {

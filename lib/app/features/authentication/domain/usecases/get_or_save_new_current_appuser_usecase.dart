@@ -38,6 +38,12 @@ class GetOrSaveNewCurrentAppUserUseCase extends UseCaseIO<AppUserEntity, AppUser
                   country_dial_code: data.country_dial_code,
                   isoCode: data.isoCode,
                   user_type: data.user_type,
+                  access_token: data.access_token,
+                  currentUserStage: data.currentUserStage,
+                  uid: data.uid,
+                  paymentBankEntity: data.paymentBankEntity,
+                  hasMultiplePaymentBanks: data.hasMultiplePaymentBanks,
+                  paymentBankEntities: data.paymentBankEntities,
                 );
                 appUserEntity = data;
               }
@@ -83,6 +89,12 @@ class GetOrSaveNewCurrentAppUserUseCase extends UseCaseIO<AppUserEntity, AppUser
                   country_dial_code: data.country_dial_code,
                   isoCode: data.isoCode,
                   user_type: data.user_type,
+                  access_token: data.access_token,
+                  currentUserStage: data.currentUserStage,
+                  uid: data.uid,
+                  paymentBankEntity: data.paymentBankEntity,
+                  hasMultiplePaymentBanks: data.hasMultiplePaymentBanks,
+                  paymentBankEntities: data.paymentBankEntities,
                 );
                 appUserEntity = data;
               }

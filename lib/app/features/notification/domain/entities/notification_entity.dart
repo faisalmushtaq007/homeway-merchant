@@ -43,7 +43,7 @@ class NotificationEntity {
         'click_action': clickAction,
         'type': type,
         'priority': priority,
-        'body': body.toJson(),
+        'body': (body.isNotNull) ? body.toJson() : NotificationBody().toJson(),
         'timestamp': timestamp,
       };
 

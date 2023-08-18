@@ -137,7 +137,7 @@ class OtpVerificationBloc extends Bloc<OtpVerificationEvent, OtpVerificationStat
             verifyOtpResponseModel = data;
             // Todo(prasant): Change this logic when we are verify the otp from remote
             appLog.d('Wait for processing, uploading and fetching current user');
-            await serviceLocator<GetOrSaveNewCurrentAppUserUseCase>()(
+            final saveUserEntity = await serviceLocator<GetOrSaveNewCurrentAppUserUseCase>()(
               AppUserEntity(
                 isoCode: event.verifyOtpEntity.isoCode,
                 country_dial_code: event.verifyOtpEntity.country_dial_code,
@@ -145,20 +145,19 @@ class OtpVerificationBloc extends Bloc<OtpVerificationEvent, OtpVerificationStat
                 hasCurrentUser: true,
                 uid: verifyOtpResponseModel.uid ?? '',
                 access_token: verifyOtpResponseModel.access_token ?? '',
+                currentUserStage: 0,
               ),
             );
+            serviceLocator<UserModelStorageController>().setUserModel(saveUserEntity);
             emit(
-              VerifyOtpState(
-                verifyOtpEntity: event.verifyOtpEntity,
-                otpVerificationStatus: OtpVerificationStatus.otpVerified,
-              ),
+              VerifyOtpState(verifyOtpEntity: event.verifyOtpEntity, otpVerificationStatus: OtpVerificationStatus.otpVerified, appUserEntity: saveUserEntity),
             );
             return;
           },
           error: (reason, error, networkException, stackTrace) async {
             // Todo(prasant): Change this logic when we are verify the otp from remote
             appLog.d('Wait for processing, uploading and fetching current user');
-            await serviceLocator<GetOrSaveNewCurrentAppUserUseCase>()(
+            final saveUserEntity = await serviceLocator<GetOrSaveNewCurrentAppUserUseCase>()(
               AppUserEntity(
                 isoCode: event.verifyOtpEntity.isoCode,
                 country_dial_code: event.verifyOtpEntity.country_dial_code,
@@ -166,8 +165,10 @@ class OtpVerificationBloc extends Bloc<OtpVerificationEvent, OtpVerificationStat
                 hasCurrentUser: true,
                 uid: verifyOtpResponseModel.uid ?? '',
                 access_token: verifyOtpResponseModel.access_token ?? '',
+                currentUserStage: 0,
               ),
             );
+            serviceLocator<UserModelStorageController>().setUserModel(saveUserEntity);
             emit(
               VerifyOtpFailedState(
                 verifyOtpEntity: event.verifyOtpEntity,
@@ -175,6 +176,7 @@ class OtpVerificationBloc extends Bloc<OtpVerificationEvent, OtpVerificationStat
                 stackTrace: stackTrace,
                 exception: error,
                 message: reason,
+                appUserEntity: saveUserEntity,
               ),
             );
             return;

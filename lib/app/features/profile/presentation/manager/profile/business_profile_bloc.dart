@@ -34,8 +34,11 @@ class BusinessProfileBloc extends Bloc<BusinessProfileEvent, BusinessProfileStat
         result = await serviceLocator<SaveBusinessProfileUseCase>()(event.businessProfileEntity);
       }
       await result.when(
-        remote: (data, meta) {
+        remote: (data, meta) async {
           appLog.d('Profile bloc save remote ${data?.toMap()}');
+          if (data != null) {
+            await updateUserProfile(data, event.hasSaveBusinessType ? 2 : 1);
+          }
           emit(
             SaveBusinessProfileState(
               businessProfileEntity: data ?? event.businessProfileEntity,
@@ -47,30 +50,8 @@ class BusinessProfileBloc extends Bloc<BusinessProfileEvent, BusinessProfileStat
         },
         localDb: (data, meta) async {
           appLog.d('Profile bloc save local ${data?.toMap()}');
-          final getCurrentUserResult = await serviceLocator<GetIDAndTokenUserUseCase>()();
-          if (getCurrentUserResult.isNotNull) {
-            appLog.d('getCurrentUserResult Profile bloc save remote ${getCurrentUserResult?.toMap()}');
-
-            if (data != null) {
-              final AppUserEntity cacheAppUserEntity = getCurrentUserResult!.copyWith(
-                businessProfile: data,
-              );
-              final editUserResult = await serviceLocator<EditAppUserUseCase>()(
-                id: getCurrentUserResult.userID,
-                input: cacheAppUserEntity,
-              );
-              editUserResult.when(
-                remote: (data, meta) {
-                  appLog.d('Update current user with business profile save remote ${data?.toMap()}');
-                },
-                localDb: (data, meta) {
-                  appLog.d('Update current user with business profile save local ${data?.toMap()}');
-                },
-                error: (dataSourceFailure, reason, error, networkException, stackTrace, exception, extra) {
-                  appLog.d('Update current user with business profile exception $error');
-                },
-              );
-            }
+          if (data != null) {
+            await updateUserProfile(data, event.hasSaveBusinessType ? 2 : 1);
           }
           emit(
             SaveBusinessProfileState(
@@ -105,6 +86,37 @@ class BusinessProfileBloc extends Bloc<BusinessProfileEvent, BusinessProfileStat
         ),
       );
     }
+  }
+
+  Future<void> updateUserProfile(BusinessProfileEntity data, int stage) async {
+    final getCurrentUserResult = await serviceLocator<GetIDAndTokenUserUseCase>()();
+    if (getCurrentUserResult.isNotNull) {
+      appLog.d('getCurrentUserResult Profile bloc save remote ${getCurrentUserResult?.toMap()}');
+      final AppUserEntity cacheAppUserEntity = getCurrentUserResult!.copyWith(
+        businessProfile: data,
+        currentUserStage: stage,
+      );
+      final editUserResult = await serviceLocator<EditAppUserUseCase>()(
+        id: getCurrentUserResult.userID,
+        input: cacheAppUserEntity,
+      );
+      editUserResult.when(
+        remote: (data, meta) {
+          appLog.d('Update current user with business profile save remote ${data?.toMap()}');
+        },
+        localDb: (data, meta) {
+          appLog.d('Update current user with business profile save local ${data?.toMap()}');
+          if (data != null) {
+            serviceLocator<UserModelStorageController>().setUserModel(data);
+          }
+        },
+        error: (dataSourceFailure, reason, error, networkException, stackTrace, exception, extra) {
+          appLog.d('Update current user with business profile exception $error');
+        },
+      );
+      return;
+    }
+    return;
   }
 
   FutureOr<void> _saveBusinessType(SaveBusinessType event, Emitter<BusinessProfileState> emit) async {

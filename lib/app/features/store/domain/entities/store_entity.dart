@@ -20,6 +20,10 @@ class StoreEntity with AppEquatable {
     this.menuEntities = const [],
     this.hasNewStore = true,
     this.ratingAndReviewEntity,
+    this.storePhoneNumber = '',
+    this.isoCode = 'SA',
+    this.countryDialCode = '+966',
+    this.phoneNumberWithoutDialCode = '',
   });
 
   factory StoreEntity.fromMap(Map<String, dynamic> map) {
@@ -44,6 +48,10 @@ class StoreEntity with AppEquatable {
       menuEntities: map['menuEntities'].map((e) => MenuEntity.fromMap(e)).toList().cast<MenuEntity>(),
       hasNewStore: map['hasNewStore'] as bool,
       ratingAndReviewEntity: (map['ratingAndReviewEntity'] != null) ? RatingAndReviewEntity.fromMap(map['ratingAndReviewEntity']) : RatingAndReviewEntity(),
+      isoCode: map['iso_code'] ?? 'SA' as String,
+      countryDialCode: map['country_dial_code'] ?? '+966' as String,
+      phoneNumberWithoutDialCode: map['phoneNumberWithoutDialCode'] ?? '+966' as String,
+      storePhoneNumber: map['storePhoneNumber'] as String,
     );
   }
 
@@ -65,6 +73,10 @@ class StoreEntity with AppEquatable {
   List<MenuEntity> menuEntities;
   bool hasNewStore;
   RatingAndReviewEntity? ratingAndReviewEntity;
+  final String storePhoneNumber;
+  final String countryDialCode;
+  final String isoCode;
+  final String phoneNumberWithoutDialCode;
 
   @override
   bool get cacheHash => true;
@@ -89,6 +101,10 @@ class StoreEntity with AppEquatable {
         menuEntities,
         hasNewStore,
         ratingAndReviewEntity,
+        storePhoneNumber,
+        countryDialCode,
+        isoCode,
+        phoneNumberWithoutDialCode,
       ];
 
   StoreEntity copyWith({
@@ -110,6 +126,10 @@ class StoreEntity with AppEquatable {
     List<MenuEntity>? menuEntities,
     bool? hasNewStore,
     RatingAndReviewEntity? ratingAndReviewEntity,
+    String? countryDialCode,
+    String? isoCode,
+    String? storePhoneNumber,
+    String? phoneNumberWithoutDialCode,
   }) {
     return StoreEntity(
       storeName: storeName ?? this.storeName,
@@ -130,13 +150,17 @@ class StoreEntity with AppEquatable {
       menuEntities: menuEntities ?? this.menuEntities,
       hasNewStore: hasNewStore ?? this.hasNewStore,
       ratingAndReviewEntity: ratingAndReviewEntity ?? this.ratingAndReviewEntity,
+      storePhoneNumber: storePhoneNumber ?? storePhoneNumber,
+      countryDialCode: countryDialCode ?? this.countryDialCode,
+      isoCode: isoCode ?? this.isoCode,
+      phoneNumberWithoutDialCode: phoneNumberWithoutDialCode ?? this.phoneNumberWithoutDialCode,
     );
   }
 
   Map<String, dynamic> toMap() {
     return {
       'storeName': this.storeName,
-      'storeAddress': this.storeAddress?.toMap(),
+      'storeAddress': this.storeAddress?.toMap() ?? AddressModel().toJson(),
       'storeImagePath': this.storeImagePath,
       'storeImageMetaData': this.storeImageMetaData,
       'storeAvailableFoodTypes': this.storeAvailableFoodTypes.map((e) => e.toMap()).toList(),
@@ -152,6 +176,11 @@ class StoreEntity with AppEquatable {
       'storeID': this.storeID,
       'menuEntities': this.menuEntities.map((e) => e.toMap()).toList(),
       'hasNewStore': this.hasNewStore,
+      'ratingAndReviewEntity': (ratingAndReviewEntity.isNotNull) ? this.ratingAndReviewEntity?.toMap() : RatingAndReviewEntity().toMap(),
+      'iso_code': this.isoCode ?? 'SA',
+      'country_dial_code': this.countryDialCode ?? '+966',
+      'phoneNumberWithoutDialCode': this.phoneNumberWithoutDialCode ?? '',
+      'storePhoneNumber': storePhoneNumber,
     };
   }
 }
@@ -356,10 +385,10 @@ class StoreOwnDeliveryPartnersInfo with AppEquatable {
       'driverName': this.driverName,
       'driverMobileNumber': this.driverMobileNumber,
       'drivingLicenseNumber': this.drivingLicenseNumber,
-      'vehicleInfo': this.vehicleInfo?.toMap(),
+      'vehicleInfo': this.vehicleInfo?.toMap() ?? VehicleInfo().toMap(),
       'driverID': this.driverID,
       'hasOnline': this.hasOnline,
-      'ratingAndReviewEntity': this.ratingAndReviewEntity?.toMap(),
+      'ratingAndReviewEntity': this.ratingAndReviewEntity?.toMap() ?? RatingAndReviewEntity().toMap(),
       'hasDriverImage': this.hasDriverImage,
       'imageEntity': this.imageEntity?.toMap(),
     };

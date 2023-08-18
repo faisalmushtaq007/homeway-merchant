@@ -57,6 +57,7 @@ import 'package:homemakers_merchant/core/constants/global_app_constants.dart';
 import 'package:homemakers_merchant/core/extensions/app_extension.dart';
 import 'package:homemakers_merchant/core/extensions/app_extension.dart';
 import 'package:homemakers_merchant/core/extensions/global_extensions/dart_extensions.dart';
+import 'package:homemakers_merchant/core/extensions/global_extensions/src/object.dart';
 import 'package:homemakers_merchant/core/local/database/app_database.dart';
 import 'package:homemakers_merchant/core/local/database/base/identifiable.dart';
 import 'package:homemakers_merchant/core/local/database/base/repository.dart';
