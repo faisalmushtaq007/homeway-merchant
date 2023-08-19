@@ -389,6 +389,8 @@ class AppRouter {
           return BindDriverWithStoreGreetingPage(
             storeOwnDeliveryPartnersEntities: args?['allDriver'] ?? <StoreOwnDeliveryPartnersInfo>[] as List<StoreOwnDeliveryPartnersInfo>,
             storeEntities: args?['allStore'] ?? <MenuEntity>[] as List<StoreEntity>,
+            message: args?['message'] ?? '',
+            isRemoved: args?['isRemoved'] ?? false,
           );
         },
       ),

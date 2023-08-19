@@ -79,6 +79,14 @@ enum BindingStage {
   bindingMenuWithStore,
   bindingDriverWithUser,
   bindingDriverWithStore,
+  unbindingStoreWithUser,
+  unbindingWithUser,
+  unbindingAddonsWithUser,
+  unbindingAddonsWithMenu,
+  unbindingMenuWithUser,
+  unbindingMenuWithStore,
+  unbindingDriverWithUser,
+  unbindingDriverWithStore,
   ;
 
   @override

@@ -195,11 +195,6 @@ class StoreOwnDriverBindingWithStoreLocalDbRepository<T extends StoreOwnDelivery
           }
         }
       }
-
-      appLog.d('First Bloc');
-      destination.forEach((element) {
-        appLog.d(element.toMap());
-      });
       List<StoreOwnDeliveryPartnersInfo> toAdd = [];
       for (var currentStoreStore in getAllCurrentStore) {
         for (var selectedStore in destination) {
@@ -210,10 +205,6 @@ class StoreOwnDriverBindingWithStoreLocalDbRepository<T extends StoreOwnDelivery
           }
         }
       }
-      appLog.d('Second Bloc');
-      getAllCurrentStore.forEach((element) {
-        appLog.d(element.toMap());
-      });
 
       final result = await tryCatch<List<StoreEntity>>(() async {
         return await db.transaction((txn) async {
@@ -249,8 +240,59 @@ class StoreOwnDriverBindingWithStoreLocalDbRepository<T extends StoreOwnDelivery
 
   @override
   Future<Either<RepositoryBaseFailure, List<StoreEntity>>> unbinding(List<StoreOwnDeliveryPartnersInfo> source, List<StoreEntity> destination) async {
-    // TODO(prasant): implement unbinding
-    throw UnimplementedError();
+    final db = await _db;
+    final stores = await storeLocalDbRepository.getAll();
+    if (stores.isRight()) {
+      var getAllCurrentStore = stores.right.toList();
+      Function unOrdDeepEq = const DeepCollectionEquality.unordered().equals;
+      List<StoreOwnDeliveryPartnersInfo> toSelectedAdd = [];
+      List<StoreOwnDeliveryPartnersInfo> listOfDestinationDriver = [];
+      for (var selectedDestinationStore in destination.toSet().toList()) {
+        listOfDestinationDriver.addAll(selectedDestinationStore.storeOwnDeliveryPartnersInfo.toSet().toList());
+        listOfDestinationDriver.removeWhere((element) => source.contains(element));
+        selectedDestinationStore.storeOwnDeliveryPartnersInfo = listOfDestinationDriver;
+      }
+      List<StoreOwnDeliveryPartnersInfo> toAdd = [];
+      for (var currentStoreStore in getAllCurrentStore) {
+        for (var selectedStore in destination) {
+          if (selectedStore.storeID == currentStoreStore.storeID) {
+            currentStoreStore.storeOwnDeliveryPartnersInfo = selectedStore.storeOwnDeliveryPartnersInfo;
+          } else {
+            continue;
+          }
+        }
+      }
+
+      final result = await tryCatch<List<StoreEntity>>(() async {
+        return await db.transaction((txn) async {
+          // !Wrong the following code will deadlock
+          // Don't use the db object in the transaction
+          // await record.put(db, {'name': 'fish'});
+          // correct, txn in used
+          // Modify the store result
+          // Delete all
+          await _store.delete(txn);
+          // Add all
+          await _store.addAll(txn, getAllCurrentStore.map((e) => e.toMap()).toList());
+
+          final snapshots = await _store.find(txn);
+          if (snapshots.isEmptyOrNull) {
+            return <StoreEntity>[];
+          } else {
+            return snapshots
+                .map(
+                  (snapshot) => StoreEntity.fromMap(snapshot.value).copyWith(
+                    storeID: snapshot.key,
+                  ),
+                )
+                .toList();
+          }
+        });
+      });
+      return result;
+    } else {
+      return Left(stores.left);
+    }
   }
 }
 

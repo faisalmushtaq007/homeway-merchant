@@ -5,9 +5,13 @@ class BindDriverWithStoreGreetingPage extends StatefulWidget {
     super.key,
     this.storeEntities = const [],
     this.storeOwnDeliveryPartnersEntities = const [],
+    this.message = '',
+    this.isRemoved = false,
   });
   final List<StoreOwnDeliveryPartnersInfo> storeOwnDeliveryPartnersEntities;
   final List<StoreEntity> storeEntities;
+  final String message;
+  final bool isRemoved;
   @override
   _BindDriverWithStoreGreetingPageController createState() => _BindDriverWithStoreGreetingPageController();
 }
@@ -124,7 +128,7 @@ class _BindDriverWithStoreGreetingPageView extends WidgetView<BindDriverWithStor
                             child: Wrap(
                               children: [
                                 Text(
-                                  '${widget.storeOwnDeliveryPartnersEntities.length} Driver are successfully listed with ${widget.storeEntities.length} stores',
+                                  '${widget.storeOwnDeliveryPartnersEntities.length} Drivers are successfully ${widget.isRemoved ? 'removed' : 'listed'} ${widget.isRemoved ? 'from' : 'with'} ${widget.storeEntities.length} stores',
                                   textDirection: serviceLocator<LanguageController>().targetTextDirection,
                                   textAlign: TextAlign.center,
                                   style: context.titleLarge!.copyWith(

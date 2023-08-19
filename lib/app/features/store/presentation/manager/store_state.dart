@@ -531,6 +531,40 @@ class BindDriverWithStoresState extends StoreState {
       ];
 }
 
+class UnBindDriverWithStoresState extends StoreState {
+  UnBindDriverWithStoresState({
+    this.listOfStoreOwnDeliveryPartners = const [],
+    this.listOfSelectedStoreOwnDeliveryPartners = const [],
+    this.storeEntities = const [],
+    this.storeStateStatus = StoreStateStage.none,
+    this.message = '',
+    this.bindDriverToStoreStage = BindingStage.none,
+    this.listOfSelectedStoreEntities = const [],
+  });
+
+  final List<StoreOwnDeliveryPartnersInfo> listOfStoreOwnDeliveryPartners;
+  final List<StoreOwnDeliveryPartnersInfo> listOfSelectedStoreOwnDeliveryPartners;
+  final List<StoreEntity> storeEntities;
+  final List<StoreEntity> listOfSelectedStoreEntities;
+  final StoreStateStage storeStateStatus;
+  final String message;
+  final BindingStage bindDriverToStoreStage;
+
+  @override
+  bool get cacheHash => true;
+
+  @override
+  List<Object?> get hashParameters => [
+        listOfStoreOwnDeliveryPartners,
+        listOfSelectedStoreOwnDeliveryPartners,
+        storeEntities,
+        storeStateStatus,
+        message,
+        bindDriverToStoreStage,
+        listOfSelectedStoreEntities,
+      ];
+}
+
 class BindProcessingState extends StoreState {
   BindProcessingState({
     required this.isProcessing,

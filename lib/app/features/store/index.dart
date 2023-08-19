@@ -28,6 +28,7 @@ import 'package:homemakers_merchant/app/features/permission/presentation/bloc/pe
 import 'package:homemakers_merchant/app/features/permission/presentation/bloc/permission_bloc.dart';
 import 'package:homemakers_merchant/app/features/profile/index.dart';
 import 'package:homemakers_merchant/app/features/store/common/store_enum.dart';
+import 'package:homemakers_merchant/app/features/store/common/store_enum.dart';
 import 'package:homemakers_merchant/app/features/store/index.dart';
 import 'package:homemakers_merchant/app/features/store/presentation/manager/store_bloc.dart';
 import 'package:homemakers_merchant/app/features/store/presentation/manager/store_bloc.dart';
@@ -131,6 +132,7 @@ part 'package:homemakers_merchant/app/features/store/domain/entities/store_entit
 // Repository
 part 'package:homemakers_merchant/app/features/store/domain/repositories/store_repository.dart';
 part 'package:homemakers_merchant/app/features/store/domain/usecases/bind_driver_with_store_usecase.dart';
+part 'package:homemakers_merchant/app/features/store/domain/usecases/unbind_driver_with_store_usecase.dart';
 part 'package:homemakers_merchant/app/features/store/domain/usecases/bind_driver_with_user_usecase.dart';
 part 'package:homemakers_merchant/app/features/store/domain/usecases/bind_store_with_user_usecase.dart';
 part 'package:homemakers_merchant/app/features/store/domain/usecases/delete_all_driver_usecase.dart';

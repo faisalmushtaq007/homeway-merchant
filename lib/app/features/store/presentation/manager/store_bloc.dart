@@ -68,6 +68,10 @@ class StoreBloc extends Bloc<StoreEvent, StoreState> {
       _bindDriverWithStores,
       transformer: sequential(),
     );
+    on<UnBindDriverWithStores>(
+      _unBindDriverWithStores,
+      transformer: sequential(),
+    );
     on<BindDriverWithUser>(
       _bindDriverWithUser,
       transformer: sequential(),
@@ -909,5 +913,68 @@ class StoreBloc extends Bloc<StoreEvent, StoreState> {
         selectItemUseCase: event.selectItemUseCase,
       ),
     );
+  }
+
+  FutureOr<void> _unBindDriverWithStores(UnBindDriverWithStores event, Emitter<StoreState> emit) async {
+    try {
+      final DataSourceState<List<StoreEntity>> result = await serviceLocator<UnBindDriverWithStoreUseCase>()(
+        destination: event.listOfSelectedStoreEntities,
+        source: event.listOfSelectedStoreOwnDeliveryPartners,
+      );
+      result.when(
+        remote: (data, meta) {
+          appLog.d('Binding Driver with Store remote ${data?.length}');
+          emit(
+            UnBindDriverWithStoresState(
+              bindDriverToStoreStage: event.bindDriverToStoreStage,
+              listOfSelectedStoreEntities: event.listOfSelectedStoreEntities,
+              listOfSelectedStoreOwnDeliveryPartners: event.listOfSelectedStoreOwnDeliveryPartners,
+              listOfStoreOwnDeliveryPartners: event.listOfStoreOwnDeliveryPartners,
+              message: event.message,
+              storeEntities: data ?? event.storeEntities,
+              storeStateStatus: StoreStateStage.bindDriverWithStores,
+            ),
+          );
+        },
+        localDb: (data, meta) {
+          appLog.d('Binding Driver with Store local ${data?.length}');
+          data?.forEach((element) {
+            appLog.d(element.toMap());
+          });
+          emit(
+            UnBindDriverWithStoresState(
+              bindDriverToStoreStage: event.bindDriverToStoreStage,
+              listOfSelectedStoreEntities: event.listOfSelectedStoreEntities,
+              listOfSelectedStoreOwnDeliveryPartners: event.listOfSelectedStoreOwnDeliveryPartners,
+              listOfStoreOwnDeliveryPartners: event.listOfStoreOwnDeliveryPartners,
+              message: event.message,
+              storeEntities: data ?? event.storeEntities,
+              storeStateStatus: StoreStateStage.bindDriverWithStores,
+            ),
+          );
+        },
+        error: (dataSourceFailure, reason, error, networkException, stackTrace, exception, extra) {
+          appLog.d('Binding Driver with Store error $reason');
+          emit(
+            BindExceptionState(
+              message: reason,
+              //exception: e as Exception,
+              stackTrace: stackTrace,
+              bindDriverToStoreStage: BindingStage.bindingDriverWithStore,
+            ),
+          );
+        },
+      );
+    } catch (e, s) {
+      appLog.e('Binding Driver with Store exception $e');
+      emit(
+        BindExceptionState(
+          message: 'Something went wrong during getting your all drivers, please try again',
+          //exception: e as Exception,
+          stackTrace: s,
+          bindDriverToStoreStage: BindingStage.bindingDriverWithStore,
+        ),
+      );
+    }
   }
 }

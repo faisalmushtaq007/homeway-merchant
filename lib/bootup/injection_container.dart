@@ -278,6 +278,11 @@ void _setUpUseCases() {
       storeRepository: serviceLocator(),
     ),
   );
+  serviceLocator.registerLazySingleton<UnBindDriverWithStoreUseCase>(
+    () => UnBindDriverWithStoreUseCase(
+      storeRepository: serviceLocator(),
+    ),
+  );
   //Menu
   serviceLocator.registerLazySingleton<SaveMenuUseCase>(
     () => SaveMenuUseCase(

@@ -98,7 +98,6 @@ class _BindDriverWithStoreController extends State<BindDriverWithStore> {
           switch (state) {
             case BindDriverWithStoresState():
               {
-                appLog.d('message');
                 if (state.bindDriverToStoreStage == BindingStage.bindingDriverWithStore) {
                   listOfAllSelectedStores = [];
                   listOfAllSelectedStores.clear();
@@ -107,6 +106,23 @@ class _BindDriverWithStoreController extends State<BindDriverWithStore> {
                     extra: {
                       'allDriver': state.listOfSelectedStoreOwnDeliveryPartners.toList(),
                       'allStore': state.listOfSelectedStoreEntities.toList(),
+                    },
+                  );
+                }
+                return;
+              }
+            case UnBindDriverWithStoresState():
+              {
+                if (state.bindDriverToStoreStage == BindingStage.unbindingDriverWithStore) {
+                  listOfAllSelectedStores = [];
+                  listOfAllSelectedStores.clear();
+                  context.go(
+                    Routes.BIND_DRIVER_WITH_STORE_GREETING_PAGE,
+                    extra: {
+                      'allDriver': state.listOfSelectedStoreOwnDeliveryPartners.toList(),
+                      'allStore': state.listOfSelectedStoreEntities.toList(),
+                      'message': '',
+                      'isRemoved': true,
                     },
                   );
                 }
@@ -412,6 +428,39 @@ class _BindDriverWithStoreView extends WidgetView<BindDriverWithStore, _BindDriv
                               onPressed: () {
                                 //context.push(Routes.SAVE_MENU_PAGE);
                                 context.read<StoreBloc>().add(
+                                      UnBindDriverWithStores(
+                                        listOfStoreOwnDeliveryPartners: state.listOfAllStoreOwnDeliveryPartners.toList(),
+                                        listOfSelectedStoreOwnDeliveryPartners: state.listOfAllSelectedStoreOwnDeliveryPartners.toList(),
+                                        listOfSelectedStoreEntities: state.listOfAllSelectedStores.toList(),
+                                        storeEntities: state.listOfAllStores.toList(),
+                                        bindDriverToStoreStage: BindingStage.unbindingDriverWithStore,
+                                      ),
+                                    );
+                                return;
+                              },
+                              style: ElevatedButton.styleFrom(
+                                side: const BorderSide(
+                                  color: Color.fromRGBO(165, 166, 168, 1),
+                                ),
+                                backgroundColor: Colors.white,
+                              ),
+                              child: Text(
+                                'Remove',
+                                style: const TextStyle(color: Color.fromRGBO(42, 45, 50, 1)),
+                                textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                              ).translate(),
+                            ),
+                          ),
+                          const AnimatedGap(
+                            24,
+                            duration: Duration(milliseconds: 100),
+                          ),
+                          Expanded(
+                            flex: 2,
+                            child: ElevatedButton(
+                              onPressed: () {
+                                //context.push(Routes.SAVE_MENU_PAGE);
+                                context.read<StoreBloc>().add(
                                       BindDriverWithStores(
                                         listOfStoreOwnDeliveryPartners: state.listOfAllStoreOwnDeliveryPartners.toList(),
                                         listOfSelectedStoreOwnDeliveryPartners: state.listOfAllSelectedStoreOwnDeliveryPartners.toList(),
@@ -428,7 +477,7 @@ class _BindDriverWithStoreView extends WidgetView<BindDriverWithStore, _BindDriv
                               child: Text(
                                 'Save',
                                 textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                              ),
+                              ).translate(),
                             ),
                           ),
                         ],
