@@ -737,7 +737,12 @@ class _SaveStorePageState extends State<SaveStorePage> {
                                                   ).translate(),
                                                   onPressed: () async {
                                                     final List<StoreOwnDeliveryPartnersInfo>? returnSelectedDriver =
-                                                        await context.push<List<StoreOwnDeliveryPartnersInfo>>(Routes.ALL_DRIVER_PAGE);
+                                                        await context.push<List<StoreOwnDeliveryPartnersInfo>>(
+                                                      Routes.ALL_DRIVER_PAGE,
+                                                      extra: {
+                                                        'selectItemUseCase': SelectItemUseCase.selectAndReturn,
+                                                      },
+                                                    );
                                                     if (returnSelectedDriver.isNotNullOrEmpty) {
                                                       setState(() {
                                                         _selectedStoreOwnDrivers = List<StoreOwnDeliveryPartnersInfo>.from(returnSelectedDriver!.toList());

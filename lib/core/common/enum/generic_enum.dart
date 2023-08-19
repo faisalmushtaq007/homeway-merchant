@@ -31,3 +31,11 @@ enum AppOptions<T extends Object> {
   const AppOptions({required this.value});
   final T value;
 }
+
+enum SelectItemUseCase {
+  bindingWithOther,
+  onlySelect,
+  selectAndReturn,
+  selectAndNext,
+  none,
+}

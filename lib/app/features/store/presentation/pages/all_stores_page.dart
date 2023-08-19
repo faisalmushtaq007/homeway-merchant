@@ -1,7 +1,11 @@
 part of 'package:homemakers_merchant/app/features/store/index.dart';
 
 class AllStoresPage extends StatefulWidget {
-  const AllStoresPage({super.key});
+  const AllStoresPage({
+    super.key,
+    this.selectItemUseCase = SelectItemUseCase.none,
+  });
+  final SelectItemUseCase selectItemUseCase;
 
   @override
   State<AllStoresPage> createState() => _AllStoresPageState();

@@ -705,3 +705,21 @@ class BindStoreWithUserState extends StoreState {
         appUserEntity,
       ];
 }
+
+class ReturnToStorePageState extends StoreState {
+  ReturnToStorePageState({
+    this.message = '',
+    this.listOfStoreOwnDeliveryPartners = const <StoreOwnDeliveryPartnersInfo>[],
+  });
+  final String message;
+  final List<StoreOwnDeliveryPartnersInfo> listOfStoreOwnDeliveryPartners;
+
+  @override
+  bool get cacheHash => true;
+
+  @override
+  List<Object?> get hashParameters => [
+        listOfStoreOwnDeliveryPartners,
+        message,
+      ];
+}

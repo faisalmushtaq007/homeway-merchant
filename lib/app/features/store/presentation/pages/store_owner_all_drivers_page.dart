@@ -1,7 +1,13 @@
 part of 'package:homemakers_merchant/app/features/store/index.dart';
 
 class StoreOwnerAllDrivers extends StatefulWidget {
-  const StoreOwnerAllDrivers({super.key});
+  const StoreOwnerAllDrivers({
+    super.key,
+    this.selectItemUseCase = SelectItemUseCase.none,
+  });
+
+  final SelectItemUseCase selectItemUseCase;
+
   @override
   _StoreOwnerAllDriversController createState() => _StoreOwnerAllDriversController();
 }
@@ -69,51 +75,83 @@ class _StoreOwnerAllDriversController extends State<StoreOwnerAllDrivers> {
   }
 
   @override
-  Widget build(BuildContext context) => BlocBuilder<StoreBloc, StoreState>(
+  Widget build(BuildContext context) => BlocListener<StoreBloc, StoreState>(
         key: const Key('all-driver-page-bloc-builder-widget'),
-        bloc: context.watch<StoreBloc>(),
-        builder: (context, state) {
-          switch (state) {
-            case GetAllDriverState():
+        bloc: context.read<StoreBloc>(),
+        listener: (context, storeState) async {
+          switch (storeState) {
+            case BindDriverWithStoresState():
               {
-                listOfAllDrivers = List<StoreOwnDeliveryPartnersInfo>.from(state.storeOwnDeliveryPartnerEntities.toList());
-                widgetState = WidgetState<StoreOwnDeliveryPartnersInfo>.allData(
-                  context: context,
+                final result = await context.push(
+                  Routes.BIND_DRIVER_WITH_STORE_PAGE,
+                  extra: {
+                    'selectItemUseCase': SelectItemUseCase.bindingWithOther,
+                    'allDriver': listOfAllDrivers.toList(),
+                    'selectedDriver': listOfAllSelectedDrivers.toList(),
+                  },
                 );
-              }
-            case DriverEmptyState():
-              {
-                if (state.driverStateStage == DriverStateStage.getAllDriver) {
-                  listOfAllDrivers = [];
-                  listOfAllDrivers.clear();
-                  widgetState = WidgetState<StoreOwnDeliveryPartnersInfo>.empty(
-                    context: context,
-                    message: state.message,
-                  );
+                await Future.delayed(const Duration(milliseconds: 300), () {});
+                if (!mounted) {
+                  return;
                 }
+                context.read<MenuBloc>().add(GetAllMenu());
               }
-            case DriverLoadingState():
+            case ReturnToStorePageState():
               {
-                if (state.driverStateStage == DriverStateStage.getAllDriver) {
-                  widgetState = WidgetState<StoreOwnDeliveryPartnersInfo>.loading(
-                    context: context,
-                    isLoading: state.isLoading,
-                    message: state.message,
-                  );
-                }
-              }
-            case DriverExceptionState():
-              {
-                if (state.driverStateStage == DriverStateStage.getAllDriver) {
-                  widgetState = WidgetState<StoreOwnDeliveryPartnersInfo>.error(
-                      context: context, stackTrace: state.stackTrace, reason: state.message, error: state.exception);
+                if (context.canPop()) {
+                  context.pop(storeState.listOfStoreOwnDeliveryPartners.toList());
                 }
               }
             case _:
-              appLog.d('Default case: all driver page');
+              appLog.d('Default case: BlocListener all driver page');
           }
-          return _StoreOwnerAllDriversView(this);
         },
+        child: BlocBuilder<StoreBloc, StoreState>(
+          key: const Key('all-driver-page-bloc-builder-widget'),
+          bloc: context.watch<StoreBloc>(),
+          builder: (context, state) {
+            switch (state) {
+              case GetAllDriverState():
+                {
+                  listOfAllDrivers = List<StoreOwnDeliveryPartnersInfo>.from(state.storeOwnDeliveryPartnerEntities.toList());
+                  widgetState = WidgetState<StoreOwnDeliveryPartnersInfo>.allData(
+                    context: context,
+                  );
+                }
+              case DriverEmptyState():
+                {
+                  if (state.driverStateStage == DriverStateStage.getAllDriver) {
+                    listOfAllDrivers = [];
+                    listOfAllDrivers.clear();
+                    widgetState = WidgetState<StoreOwnDeliveryPartnersInfo>.empty(
+                      context: context,
+                      message: state.message,
+                    );
+                  }
+                }
+              case DriverLoadingState():
+                {
+                  if (state.driverStateStage == DriverStateStage.getAllDriver) {
+                    widgetState = WidgetState<StoreOwnDeliveryPartnersInfo>.loading(
+                      context: context,
+                      isLoading: state.isLoading,
+                      message: state.message,
+                    );
+                  }
+                }
+              case DriverExceptionState():
+                {
+                  if (state.driverStateStage == DriverStateStage.getAllDriver) {
+                    widgetState = WidgetState<StoreOwnDeliveryPartnersInfo>.error(
+                        context: context, stackTrace: state.stackTrace, reason: state.message, error: state.exception);
+                  }
+                }
+              case _:
+                appLog.d('Default case: BlocBuilder all driver page');
+            }
+            return _StoreOwnerAllDriversView(this);
+          },
+        ),
       );
 }
 
@@ -163,23 +201,49 @@ class _StoreOwnerAllDriversView extends WidgetView<StoreOwnerAllDrivers, _StoreO
                   if (state.listOfAllSelectedDrivers.isEmpty) {
                     return;
                   } else {
-                    final result = await context.push(
-                      Routes.BIND_MENU_WITH_STORE_PAGE,
-                      extra: {
-                        'allMenu': state.listOfAllDrivers.toList(),
-                        'selectedMenus': state.listOfAllSelectedDrivers.toList(),
-                      },
-                    );
-                    await Future.delayed(const Duration(milliseconds: 300), () {});
-                    if (!state.mounted) {
-                      return;
+                    switch (widget.selectItemUseCase) {
+                      /*case SelectItemUseCase.bindingWithOther:
+                        {
+                          context.read<StoreBloc>().add(
+                                BindDriverWithStores(
+                                  listOfStoreOwnDeliveryPartners: state.listOfAllSelectedDrivers.toList(),
+                                ),
+                              );
+                          return;
+                        }*/
+                      case SelectItemUseCase.selectAndReturn:
+                        {
+                          context.read<StoreBloc>().add(
+                                ReturnToStorePage(
+                                  listOfStoreOwnDeliveryPartners: state.listOfAllSelectedDrivers.toList(),
+                                ),
+                              );
+                          return;
+                        }
+                      case _:
+                        {
+                          context.read<StoreBloc>().add(
+                                BindDriverWithStores(
+                                  listOfStoreOwnDeliveryPartners: state.listOfAllSelectedDrivers.toList(),
+                                ),
+                              );
+                          return;
+                        }
+                        ;
                     }
-                    context.read<StoreBloc>().add(GetAllDriver());
                   }
                 },
-                child: const Icon(
-                  Icons.store,
-                ),
+                child: switch (widget.selectItemUseCase) {
+                  /*SelectItemUseCase.bindingWithOther => const Icon(
+                      Icons.store,
+                    ),*/
+                  SelectItemUseCase.selectAndReturn => const Icon(
+                      Icons.check,
+                    ),
+                  _ => const Icon(
+                      Icons.store,
+                    ),
+                },
               ),
             ),
           ),

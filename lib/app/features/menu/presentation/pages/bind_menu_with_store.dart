@@ -5,10 +5,12 @@ class BindMenuWithStore extends StatefulWidget {
     super.key,
     this.listOfAllMenus = const [],
     this.listOfAllSelectedMenus = const [],
+    this.selectItemUseCase = SelectItemUseCase.none,
   });
 
   final List<MenuEntity> listOfAllMenus;
   final List<MenuEntity> listOfAllSelectedMenus;
+  final SelectItemUseCase selectItemUseCase;
 
   @override
   _BindMenuWithStoreController createState() => _BindMenuWithStoreController();

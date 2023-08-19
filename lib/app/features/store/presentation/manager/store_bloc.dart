@@ -75,6 +75,10 @@ class StoreBloc extends Bloc<StoreEvent, StoreState> {
       _bindStoreWithUser,
       transformer: sequential(),
     );
+    on<ReturnToStorePage>(
+      _returnToStorePage,
+      transformer: sequential(),
+    );
   }
 
   FutureOr<void> _saveStore(SaveStore event, Emitter<StoreState> emit) async {
@@ -927,5 +931,14 @@ class StoreBloc extends Bloc<StoreEvent, StoreState> {
         ),
       );
     }
+  }
+
+  FutureOr<void> _returnToStorePage(ReturnToStorePage event, Emitter<StoreState> emit) async {
+    emit(
+      ReturnToStorePageState(
+        message: '${event.listOfStoreOwnDeliveryPartners.length} is selected by you',
+        listOfStoreOwnDeliveryPartners: event.listOfStoreOwnDeliveryPartners.toList(),
+      ),
+    );
   }
 }

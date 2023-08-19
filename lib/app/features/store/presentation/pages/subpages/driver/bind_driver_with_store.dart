@@ -5,10 +5,12 @@ class BindDriverWithStore extends StatefulWidget {
     super.key,
     this.listOfAllStoreOwnDeliveryPartners = const [],
     this.listOfAllSelectedStoreOwnDeliveryPartners = const [],
+    this.selectItemUseCase = SelectItemUseCase.none,
   });
 
   final List<StoreOwnDeliveryPartnersInfo> listOfAllStoreOwnDeliveryPartners;
   final List<StoreOwnDeliveryPartnersInfo> listOfAllSelectedStoreOwnDeliveryPartners;
+  final SelectItemUseCase selectItemUseCase;
 
   @override
   _BindDriverWithStoreController createState() => _BindDriverWithStoreController();

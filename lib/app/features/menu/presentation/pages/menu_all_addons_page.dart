@@ -1,7 +1,8 @@
 part of 'package:homemakers_merchant/app/features/menu/index.dart';
 
 class MenuAllAddonsPage extends StatefulWidget {
-  const MenuAllAddonsPage({super.key});
+  const MenuAllAddonsPage({super.key, this.selectItemUseCase = SelectItemUseCase.none});
+  final SelectItemUseCase selectItemUseCase;
 
   @override
   _MenuAllAddonsPageController createState() => _MenuAllAddonsPageController();

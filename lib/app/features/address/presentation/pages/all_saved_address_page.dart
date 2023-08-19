@@ -1,7 +1,11 @@
 part of 'package:homemakers_merchant/app/features/address/index.dart';
 
 class AllSavedAddressPage extends StatefulWidget {
-  const AllSavedAddressPage({super.key});
+  const AllSavedAddressPage({
+    super.key,
+    this.selectItemUseCase = SelectItemUseCase.none,
+  });
+  final SelectItemUseCase selectItemUseCase;
 
   @override
   _AllSavedAddressPageController createState() => _AllSavedAddressPageController();

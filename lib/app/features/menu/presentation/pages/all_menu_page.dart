@@ -1,7 +1,8 @@
 part of 'package:homemakers_merchant/app/features/menu/index.dart';
 
 class AllMenuPage extends StatefulWidget {
-  const AllMenuPage({super.key});
+  const AllMenuPage({super.key, this.selectItemUseCase = SelectItemUseCase.none});
+  final SelectItemUseCase selectItemUseCase;
 
   @override
   _AllMenuPageController createState() => _AllMenuPageController();

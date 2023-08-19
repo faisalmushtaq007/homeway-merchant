@@ -23,6 +23,7 @@ import 'package:homemakers_merchant/app/features/profile/index.dart';
 import 'package:homemakers_merchant/app/features/rate_review/index.dart';
 import 'package:homemakers_merchant/app/features/store/index.dart';
 import 'package:homemakers_merchant/bootup/injection_container.dart';
+import 'package:homemakers_merchant/core/common/enum/generic_enum.dart';
 import 'package:homemakers_merchant/utils/app_log.dart';
 
 part 'app_routes.dart';
@@ -159,7 +160,12 @@ class AppRouter {
       ),
       GoRoute(
         path: Routes.ALL_STORES_PAGE,
-        builder: (context, state) => const AllStoresPage(),
+        builder: (context, state) {
+          final Map<String, dynamic>? args = state.extra as Map<String, dynamic>?;
+          return AllStoresPage(
+            selectItemUseCase: args?['selectItemUseCase'] ?? SelectItemUseCase.none,
+          );
+        },
       ),
       GoRoute(
         path: Routes.NEW_STORE_GREETING_PAGE,
@@ -196,7 +202,12 @@ class AppRouter {
       ),
       GoRoute(
         path: Routes.ALL_MENU_PAGE,
-        builder: (context, state) => const AllMenuPage(),
+        builder: (context, state) {
+          final Map<String, dynamic>? args = state.extra as Map<String, dynamic>?;
+          return AllMenuPage(
+            selectItemUseCase: args?['selectItemUseCase'] ?? SelectItemUseCase.none,
+          );
+        },
       ),
       GoRoute(
         path: Routes.SAVE_MENU_PAGE,
@@ -239,7 +250,12 @@ class AppRouter {
       ),
       GoRoute(
         path: Routes.ALL_ADDONS_PAGE,
-        builder: (context, state) => const MenuAllAddonsPage(),
+        builder: (context, state) {
+          final Map<String, dynamic>? args = state.extra as Map<String, dynamic>?;
+          return MenuAllAddonsPage(
+            selectItemUseCase: args?['selectItemUseCase'] ?? SelectItemUseCase.none,
+          );
+        },
       ),
       GoRoute(
         path: Routes.SAVE_ADDONS_PAGE,
@@ -264,6 +280,7 @@ class AppRouter {
           return BindMenuWithStore(
             listOfAllMenus: args?['allMenu'] ?? <MenuEntity>[] as List<MenuEntity>,
             listOfAllSelectedMenus: args?['selectedMenus'] ?? <MenuEntity>[] as List<MenuEntity>,
+            selectItemUseCase: args?['selectItemUseCase'] ?? SelectItemUseCase.none,
           );
         },
       ),
@@ -326,7 +343,12 @@ class AppRouter {
       // New Driver Greetings
       GoRoute(
         path: Routes.ALL_DRIVER_PAGE,
-        builder: (context, state) => const StoreOwnerAllDrivers(),
+        builder: (context, state) {
+          final Map<String, dynamic>? args = state.extra as Map<String, dynamic>?;
+          return StoreOwnerAllDrivers(
+            selectItemUseCase: args?['selectItemUseCase'] ?? SelectItemUseCase.none,
+          );
+        },
       ),
       GoRoute(
         path: Routes.SAVE_DRIVER_PAGE,
@@ -354,6 +376,7 @@ class AppRouter {
         builder: (context, state) {
           final Map<String, dynamic>? args = state.extra as Map<String, dynamic>?;
           return BindDriverWithStore(
+            selectItemUseCase: args?['selectItemUseCase'] ?? SelectItemUseCase.none,
             listOfAllStoreOwnDeliveryPartners: args?['allDriver'] ?? <StoreOwnDeliveryPartnersInfo>[] as List<StoreOwnDeliveryPartnersInfo>,
             listOfAllSelectedStoreOwnDeliveryPartners: args?['selectedDriver'] ?? <StoreOwnDeliveryPartnersInfo>[] as List<StoreOwnDeliveryPartnersInfo>,
           );
@@ -371,7 +394,12 @@ class AppRouter {
       ),
       GoRoute(
         path: Routes.ALL_SAVED_ADDRESS_LIST,
-        builder: (context, state) => const AllSavedAddressPage(),
+        builder: (context, state) {
+          final Map<String, dynamic>? args = state.extra as Map<String, dynamic>?;
+          return AllSavedAddressPage(
+            selectItemUseCase: args?['selectItemUseCase'] ?? SelectItemUseCase.none,
+          );
+        },
       ),
       GoRoute(
         path: Routes.NOTIFICATIONS,
