@@ -369,74 +369,74 @@ class MenuBloc extends Bloc<MenuEvent, MenuState> {
   }
 
   FutureOr<void> _getAllMenus(GetAllMenu event, Emitter<MenuState> emit) async {
-    try {
-      emit(
-        GetAllMenuState(
-          menuEntities: [],
-          message: 'Please wait while we are fetching your menu',
-          menuStateStatus: MenuStateStatus.loading,
-        ),
-      );
-      final DataSourceState<List<MenuEntity>> result = await serviceLocator<GetAllMenuUseCase>()();
-      result.when(
-        remote: (data, meta) {
-          appLog.d('Menu bloc get all remote');
-          if (data == null || data.isEmpty) {
-            emit(
-              GetEmptyMenuState(
-                menuEntities: [],
-                message: 'Your menu is empty',
-                menuStateStatus: MenuStateStatus.empty,
-              ),
-            );
-          } else {
-            emit(
-              GetAllMenuState(
-                menuEntities: data.toList(),
-                menuStateStatus: MenuStateStatus.success,
-              ),
-            );
-          }
-        },
-        localDb: (data, meta) {
-          appLog.d('Menu bloc get all local');
-          if (data == null || data.isEmpty) {
-            emit(
-              GetEmptyMenuState(
-                menuEntities: [],
-                message: 'Your menu is empty',
-                menuStateStatus: MenuStateStatus.empty,
-              ),
-            );
-          } else {
-            emit(
-              GetAllMenuState(
-                menuEntities: data.toList(),
-                menuStateStatus: MenuStateStatus.success,
-              ),
-            );
-          }
-        },
-        error: (dataSourceFailure, reason, error, networkException, stackTrace, exception, extra) {
-          appLog.d('Store bloc get all error $reason');
+    /*try {*/
+    emit(
+      GetAllMenuState(
+        menuEntities: [],
+        message: 'Please wait while we are fetching your menu',
+        menuStateStatus: MenuStateStatus.loading,
+      ),
+    );
+    final DataSourceState<List<MenuEntity>> result = await serviceLocator<GetAllMenuUseCase>()();
+    result.when(
+      remote: (data, meta) {
+        appLog.d('Menu bloc get all remote');
+        if (data == null || data.isEmpty) {
           emit(
-            MenuExceptionState(
-              message: reason,
-              //exception: e as Exception,
-              stackTrace: stackTrace,
-              menuStateStatus: MenuStateStatus.getAll,
+            GetEmptyMenuState(
+              menuEntities: [],
+              message: 'Your menu is empty',
+              menuStateStatus: MenuStateStatus.empty,
             ),
           );
+        } else {
           emit(
             GetAllMenuState(
-              menuEntities: [],
-              message: 'Something went wrong, please try again',
-              menuStateStatus: MenuStateStatus.exception,
+              menuEntities: data.toList(),
+              menuStateStatus: MenuStateStatus.success,
             ),
           );
-        },
-      );
-    } catch (e, s) {
+        }
+      },
+      localDb: (data, meta) {
+        appLog.d('Menu bloc get all local');
+        if (data == null || data.isEmpty) {
+          emit(
+            GetEmptyMenuState(
+              menuEntities: [],
+              message: 'Your menu is empty',
+              menuStateStatus: MenuStateStatus.empty,
+            ),
+          );
+        } else {
+          emit(
+            GetAllMenuState(
+              menuEntities: data.toList(),
+              menuStateStatus: MenuStateStatus.success,
+            ),
+          );
+        }
+      },
+      error: (dataSourceFailure, reason, error, networkException, stackTrace, exception, extra) {
+        appLog.d('Store bloc get all error $reason');
+        emit(
+          MenuExceptionState(
+            message: reason,
+            //exception: e as Exception,
+            stackTrace: stackTrace,
+            menuStateStatus: MenuStateStatus.getAll,
+          ),
+        );
+        emit(
+          GetAllMenuState(
+            menuEntities: [],
+            message: 'Something went wrong, please try again',
+            menuStateStatus: MenuStateStatus.exception,
+          ),
+        );
+      },
+    );
+    /*} catch (e, s) {
       appLog.e('Menu bloc get all exception $e');
       emit(
         MenuExceptionState(
@@ -453,7 +453,7 @@ class MenuBloc extends Bloc<MenuEvent, MenuState> {
           menuStateStatus: MenuStateStatus.exception,
         ),
       );
-    }
+    }*/
   }
 
   FutureOr<void> _saveMenu(SaveMenu event, Emitter<MenuState> emit) async {

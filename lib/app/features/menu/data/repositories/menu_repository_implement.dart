@@ -198,50 +198,50 @@ class MenuRepositoryImplement implements MenuRepository {
 
   @override
   Future<DataSourceState<List<MenuEntity>>> getAllMenu() async {
-    try {
-      var connectivity = serviceLocator<ConnectivityService>().getCurrentInternetStatus();
-      if (connectivity.$2 == InternetConnectivityState.internet) {
-        // Local DB
-        // Save to local
-        final Either<RepositoryBaseFailure, List<MenuEntity>> result = await menuLocalDataSource.getAll();
-        // Return result
-        return result.fold((l) {
-          final RepositoryFailure failure = l as RepositoryFailure;
-          appLog.d('Get all menu local error ${failure.message}');
-          return DataSourceState<List<MenuEntity>>.error(
-            reason: failure.message,
-            dataSourceFailure: DataSourceFailure.local,
-            stackTrace: failure.stacktrace,
-          );
-        }, (r) {
-          appLog.d('Get all menu local : ${r.length}');
-          return DataSourceState<List<MenuEntity>>.localDb(data: r);
-        });
-      } else {
-        // Remote
-        // Save to server
-        final ApiResultState<List<MenuEntity>> result = await remoteDataSource.getAllMenu();
-        // Return result
-        return result.when(
-          success: (data) {
-            appLog.d('Get all menu from remote');
-            return DataSourceState<List<MenuEntity>>.remote(
-              data: data.toList(),
-            );
-          },
-          failure: (reason, error, exception, stackTrace) {
-            appLog.d('Get all menu remote error $reason');
-            return DataSourceState<List<MenuEntity>>.error(
-              reason: reason,
-              dataSourceFailure: DataSourceFailure.remote,
-              stackTrace: stackTrace,
-              error: error,
-              networkException: exception,
-            );
-          },
+    /*try {*/
+    var connectivity = serviceLocator<ConnectivityService>().getCurrentInternetStatus();
+    if (connectivity.$2 == InternetConnectivityState.internet) {
+      // Local DB
+      // Save to local
+      final Either<RepositoryBaseFailure, List<MenuEntity>> result = await menuLocalDataSource.getAll();
+      // Return result
+      return result.fold((l) {
+        final RepositoryFailure failure = l as RepositoryFailure;
+        appLog.d('Get all menu local error ${failure.message}');
+        return DataSourceState<List<MenuEntity>>.error(
+          reason: failure.message,
+          dataSourceFailure: DataSourceFailure.local,
+          stackTrace: failure.stacktrace,
         );
-      }
-    } catch (e, s) {
+      }, (r) {
+        appLog.d('Get all menu local : ${r.length}');
+        return DataSourceState<List<MenuEntity>>.localDb(data: r);
+      });
+    } else {
+      // Remote
+      // Save to server
+      final ApiResultState<List<MenuEntity>> result = await remoteDataSource.getAllMenu();
+      // Return result
+      return result.when(
+        success: (data) {
+          appLog.d('Get all menu from remote');
+          return DataSourceState<List<MenuEntity>>.remote(
+            data: data.toList(),
+          );
+        },
+        failure: (reason, error, exception, stackTrace) {
+          appLog.d('Get all menu remote error $reason');
+          return DataSourceState<List<MenuEntity>>.error(
+            reason: reason,
+            dataSourceFailure: DataSourceFailure.remote,
+            stackTrace: stackTrace,
+            error: error,
+            networkException: exception,
+          );
+        },
+      );
+    }
+    /*} catch (e, s) {
       appLog.e('Get all menu exception $e');
       return DataSourceState<List<MenuEntity>>.error(
         reason: e.toString(),
@@ -250,7 +250,7 @@ class MenuRepositoryImplement implements MenuRepository {
         error: e,
         exception: e as Exception,
       );
-    }
+    }*/
   }
 
   @override

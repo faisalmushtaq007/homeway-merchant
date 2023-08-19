@@ -1230,9 +1230,9 @@ class Stock with AppEquatable {
 
   factory Stock.fromMap(Map<String, dynamic> map) {
     return Stock(
-      stockID: map['timingID'] as String,
-      minStockQuantity: map['minPreparingTime'] as int,
-      maxStockQuantity: map['maxPreparingTime'] as int,
+      stockID: map['stockID'] as String,
+      minStockQuantity: map['minStockQuantity'] as int,
+      maxStockQuantity: map['maxStockQuantity'] as int,
     );
   }
 
