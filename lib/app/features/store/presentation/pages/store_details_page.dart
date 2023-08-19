@@ -443,7 +443,7 @@ class _StoreDetailsPageView extends WidgetView<StoreDetailsPage, _StoreDetailsPa
                                   ),
                                 ),
                                 const AnimatedGap(12, duration: Duration(milliseconds: 200)),
-                                StoreExpandedCardWidget<StoreAvailableFoodTypes, StoreAvailableFoodPreparationType>(
+                                /*StoreExpandedCardWidget<StoreAvailableFoodTypes, StoreAvailableFoodPreparationType>(
                                   key: const Key('store-details-menu-type-widget'),
                                   expandableCardInfo: ExpandableCardInfo<StoreAvailableFoodTypes, StoreAvailableFoodPreparationType>(
                                     id: 1,
@@ -465,7 +465,7 @@ class _StoreDetailsPageView extends WidgetView<StoreDetailsPage, _StoreDetailsPa
                                     storeEntity: state.storeEntity,
                                   ),
                                 ),
-                                const AnimatedGap(12, duration: Duration(milliseconds: 200)),
+                                const AnimatedGap(12, duration: Duration(milliseconds: 200)),*/
                                 StoreExpandedCardWidget<StoreOwnDeliveryPartnersInfo, StoreOwnDeliveryPartnersInfo>(
                                   key: const Key('store-details-delivery-widget'),
                                   expandableCardInfo: ExpandableCardInfo<StoreOwnDeliveryPartnersInfo, StoreOwnDeliveryPartnersInfo>(
