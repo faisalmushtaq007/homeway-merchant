@@ -91,7 +91,7 @@ class StoreLocalDbRepository<Store extends StoreEntity> implements BaseStoreLoca
             .map((snapshot) => StoreEntity.fromMap(snapshot.value).copyWith(
                   storeID: snapshot.key,
                 ))
-            .toList(growable: false);
+            .toList();
       }
     });
     return result;

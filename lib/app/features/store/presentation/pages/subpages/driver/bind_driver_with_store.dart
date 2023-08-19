@@ -98,7 +98,8 @@ class _BindDriverWithStoreController extends State<BindDriverWithStore> {
           switch (state) {
             case BindDriverWithStoresState():
               {
-                if (state.bindDriverToStoreStage == BindingStage.attached) {
+                appLog.d('message');
+                if (state.bindDriverToStoreStage == BindingStage.bindingDriverWithStore) {
                   listOfAllSelectedStores = [];
                   listOfAllSelectedStores.clear();
                   context.go(
@@ -416,6 +417,7 @@ class _BindDriverWithStoreView extends WidgetView<BindDriverWithStore, _BindDriv
                                         listOfSelectedStoreOwnDeliveryPartners: state.listOfAllSelectedStoreOwnDeliveryPartners.toList(),
                                         listOfSelectedStoreEntities: state.listOfAllSelectedStores.toList(),
                                         storeEntities: state.listOfAllStores.toList(),
+                                        bindDriverToStoreStage: BindingStage.bindingDriverWithStore,
                                       ),
                                     );
                                 return;

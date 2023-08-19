@@ -605,7 +605,7 @@ class _SaveStorePageState extends State<SaveStorePage> {
                                       ],
                                     ),
                                     const Divider(),
-                                    Text(
+                                    /*Text(
                                       'Food types',
                                       style: context.titleLarge!.copyWith(
                                         fontWeight: FontWeight.w600,
@@ -656,7 +656,7 @@ class _SaveStorePageState extends State<SaveStorePage> {
                                       initialSelectedFoodPreparationTypesList: [],
                                       onSaved: (newValue) {},
                                     ),
-                                    const Divider(),
+                                    const Divider(),*/
                                     Column(
                                       mainAxisSize: MainAxisSize.min,
                                       crossAxisAlignment: CrossAxisAlignment.stretch,

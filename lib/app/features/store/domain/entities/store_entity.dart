@@ -390,7 +390,7 @@ class StoreOwnDeliveryPartnersInfo with AppEquatable {
       'hasOnline': this.hasOnline,
       'ratingAndReviewEntity': this.ratingAndReviewEntity?.toMap() ?? RatingAndReviewEntity().toMap(),
       'hasDriverImage': this.hasDriverImage,
-      'imageEntity': this.imageEntity?.toMap(),
+      'imageEntity': (imageEntity != null) ? this.imageEntity?.toMap() : ImageEntity().toMap(),
     };
   }
 

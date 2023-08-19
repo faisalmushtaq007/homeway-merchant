@@ -196,50 +196,50 @@ class StoreRepositoryImplement implements StoreRepository {
 
   @override
   Future<DataSourceState<List<StoreEntity>>> getAllStore() async {
-    try {
-      var connectivity = serviceLocator<ConnectivityService>().getCurrentInternetStatus();
-      if (connectivity.$2 == InternetConnectivityState.internet) {
-        // Local DB
-        // Save to local
-        final Either<RepositoryBaseFailure, List<StoreEntity>> result = await storeLocalDataSource.getAll();
-        // Return result
-        return result.fold((l) {
-          final RepositoryFailure failure = l as RepositoryFailure;
-          appLog.d('Get all store local error ${failure.message}');
-          return DataSourceState<List<StoreEntity>>.error(
-            reason: failure.message,
-            dataSourceFailure: DataSourceFailure.local,
-            stackTrace: failure.stacktrace,
-          );
-        }, (r) {
-          appLog.d('Get all store local : ${r.length}');
-          return DataSourceState<List<StoreEntity>>.localDb(data: r);
-        });
-      } else {
-        // Remote
-        // Save to server
-        final ApiResultState<List<StoreEntity>> result = await remoteDataSource.getAllStore();
-        // Return result
-        return result.when(
-          success: (data) {
-            appLog.d('Get all store from remote');
-            return DataSourceState<List<StoreEntity>>.remote(
-              data: data.toList(),
-            );
-          },
-          failure: (reason, error, exception, stackTrace) {
-            appLog.d('Get all store remote error $reason');
-            return DataSourceState<List<StoreEntity>>.error(
-              reason: reason,
-              dataSourceFailure: DataSourceFailure.remote,
-              stackTrace: stackTrace,
-              error: error,
-              networkException: exception,
-            );
-          },
+    /*try {*/
+    var connectivity = serviceLocator<ConnectivityService>().getCurrentInternetStatus();
+    if (connectivity.$2 == InternetConnectivityState.internet) {
+      // Local DB
+      // Save to local
+      final Either<RepositoryBaseFailure, List<StoreEntity>> result = await storeLocalDataSource.getAll();
+      // Return result
+      return result.fold((l) {
+        final RepositoryFailure failure = l as RepositoryFailure;
+        appLog.d('Get all store local error ${failure.message}');
+        return DataSourceState<List<StoreEntity>>.error(
+          reason: failure.message,
+          dataSourceFailure: DataSourceFailure.local,
+          stackTrace: failure.stacktrace,
         );
-      }
-    } catch (e, s) {
+      }, (r) {
+        appLog.d('Get all store local : ${r.length}');
+        return DataSourceState<List<StoreEntity>>.localDb(data: r);
+      });
+    } else {
+      // Remote
+      // Save to server
+      final ApiResultState<List<StoreEntity>> result = await remoteDataSource.getAllStore();
+      // Return result
+      return result.when(
+        success: (data) {
+          appLog.d('Get all store from remote');
+          return DataSourceState<List<StoreEntity>>.remote(
+            data: data.toList(),
+          );
+        },
+        failure: (reason, error, exception, stackTrace) {
+          appLog.d('Get all store remote error $reason');
+          return DataSourceState<List<StoreEntity>>.error(
+            reason: reason,
+            dataSourceFailure: DataSourceFailure.remote,
+            stackTrace: stackTrace,
+            error: error,
+            networkException: exception,
+          );
+        },
+      );
+    }
+    /*} catch (e, s) {
       appLog.e('Get all store exception $e');
       return DataSourceState<List<StoreEntity>>.error(
         reason: e.toString(),
@@ -248,7 +248,7 @@ class StoreRepositoryImplement implements StoreRepository {
         error: e,
         exception: e as Exception,
       );
-    }
+    }*/
   }
 
   @override
@@ -372,53 +372,53 @@ class StoreRepositoryImplement implements StoreRepository {
   @override
   Future<DataSourceState<List<StoreEntity>>> bindDriverWithStores(
       {required List<StoreOwnDeliveryPartnersInfo> source, required List<StoreEntity> destination}) async {
-    try {
-      var connectivity = serviceLocator<ConnectivityService>().getCurrentInternetStatus();
-      if (connectivity.$2 == InternetConnectivityState.internet) {
-        // Local DB
-        // Save to local
-        final Either<RepositoryBaseFailure, List<StoreEntity>> result = await storeOwnDriverBindingWithStoreLocalDataSource.binding(source, destination);
-        // Return result
-        return result.fold((l) {
-          final RepositoryFailure failure = l as RepositoryFailure;
-          appLog.d('Binding driver with store local error ${failure.message}');
-          return DataSourceState<List<StoreEntity>>.error(
-            reason: failure.message,
-            dataSourceFailure: DataSourceFailure.local,
-            stackTrace: failure.stacktrace,
+    /*try {*/
+    var connectivity = serviceLocator<ConnectivityService>().getCurrentInternetStatus();
+    if (connectivity.$2 == InternetConnectivityState.internet) {
+      // Local DB
+      // Save to local
+      final Either<RepositoryBaseFailure, List<StoreEntity>> result = await storeOwnDriverBindingWithStoreLocalDataSource.binding(source, destination);
+      // Return result
+      return result.fold((l) {
+        final RepositoryFailure failure = l as RepositoryFailure;
+        appLog.d('Binding driver with store local error ${failure.message}');
+        return DataSourceState<List<StoreEntity>>.error(
+          reason: failure.message,
+          dataSourceFailure: DataSourceFailure.local,
+          stackTrace: failure.stacktrace,
+        );
+      }, (r) {
+        appLog.d('Binding driver with store local :');
+        return DataSourceState<List<StoreEntity>>.localDb(data: r);
+      });
+    } else {
+      // Remote
+      // Save to server
+      final ApiResultState<List<StoreEntity>> result = await remoteDataSource.bindDriverWithStores(
+        source: source,
+        destination: destination,
+      );
+      // Return result
+      return result.when(
+        success: (data) {
+          appLog.d('Binding driver with store to remote');
+          return DataSourceState<List<StoreEntity>>.remote(
+            data: data,
           );
-        }, (r) {
-          appLog.d('Binding driver with store local :');
-          return DataSourceState<List<StoreEntity>>.localDb(data: r);
-        });
-      } else {
-        // Remote
-        // Save to server
-        final ApiResultState<List<StoreEntity>> result = await remoteDataSource.bindDriverWithStores(
-          source: source,
-          destination: destination,
-        );
-        // Return result
-        return result.when(
-          success: (data) {
-            appLog.d('Binding driver with store to remote');
-            return DataSourceState<List<StoreEntity>>.remote(
-              data: data,
-            );
-          },
-          failure: (reason, error, exception, stackTrace) {
-            appLog.d('Binding driver with store remote error $reason');
-            return DataSourceState<List<StoreEntity>>.error(
-              reason: reason,
-              dataSourceFailure: DataSourceFailure.remote,
-              stackTrace: stackTrace,
-              error: error,
-              networkException: exception,
-            );
-          },
-        );
-      }
-    } catch (e, s) {
+        },
+        failure: (reason, error, exception, stackTrace) {
+          appLog.d('Binding driver with store remote error $reason');
+          return DataSourceState<List<StoreEntity>>.error(
+            reason: reason,
+            dataSourceFailure: DataSourceFailure.remote,
+            stackTrace: stackTrace,
+            error: error,
+            networkException: exception,
+          );
+        },
+      );
+    }
+    /*} catch (e, s) {
       appLog.e('Binding driver with store exception $e');
       return DataSourceState<List<StoreEntity>>.error(
         reason: e.toString(),
@@ -427,7 +427,7 @@ class StoreRepositoryImplement implements StoreRepository {
         error: e,
         exception: e as Exception,
       );
-    }
+    }*/
   }
 
   @override

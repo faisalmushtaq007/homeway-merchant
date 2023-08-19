@@ -81,10 +81,12 @@ class StoreOwnDeliveryPartnersLocalDbRepository<Driver extends StoreOwnDeliveryP
         return <StoreOwnDeliveryPartnersInfo>[];
       } else {
         return snapshots
-            .map((snapshot) => StoreOwnDeliveryPartnersInfo.fromMap(snapshot.value).copyWith(
-                  driverID: snapshot.key,
-                ))
-            .toList(growable: false);
+            .map(
+              (snapshot) => StoreOwnDeliveryPartnersInfo.fromMap(snapshot.value).copyWith(
+                driverID: snapshot.key,
+              ),
+            )
+            .toList();
       }
     });
     return result;
@@ -125,8 +127,12 @@ class StoreOwnDeliveryPartnersLocalDbRepository<Driver extends StoreOwnDeliveryP
   }
 
   @override
-  Future<Either<RepositoryBaseFailure, StoreOwnDeliveryPartnersInfo>> upsert(
-      {UniqueId? id, String? token, required StoreOwnDeliveryPartnersInfo entity, bool checkIfUserLoggedIn = false}) async {
+  Future<Either<RepositoryBaseFailure, StoreOwnDeliveryPartnersInfo>> upsert({
+    UniqueId? id,
+    String? token,
+    required StoreOwnDeliveryPartnersInfo entity,
+    bool checkIfUserLoggedIn = false,
+  }) async {
     final result = await tryCatch<StoreOwnDeliveryPartnersInfo>(() async {
       final int key = entity.driverID;
       final value = await _driver.record(key).get(await _db);
@@ -176,47 +182,63 @@ class StoreOwnDriverBindingWithStoreLocalDbRepository<T extends StoreOwnDelivery
     final db = await _db;
     final stores = await storeLocalDbRepository.getAll();
     if (stores.isRight()) {
-      var cacheCurrentStore = stores.right.toList();
+      var getAllCurrentStore = stores.right.toList();
+      Function unOrdDeepEq = const DeepCollectionEquality.unordered().equals;
+      List<StoreOwnDeliveryPartnersInfo> toSelectedAdd = [];
+      for (var selectedDestinationStore in destination.toSet().toList()) {
+        for (var selectedDriver in source.toSet().toList()) {
+          final bool equalityStatus = unOrdDeepEq(selectedDestinationStore.storeOwnDeliveryPartnersInfo.toSet().toList(), source.toSet().toList());
+          if (equalityStatus) {
+            continue;
+          } else {
+            selectedDestinationStore.storeOwnDeliveryPartnersInfo.addAll(source);
+          }
+        }
+      }
+
+      appLog.d('First Bloc');
+      destination.forEach((element) {
+        appLog.d(element.toMap());
+      });
+      List<StoreOwnDeliveryPartnersInfo> toAdd = [];
+      for (var currentStoreStore in getAllCurrentStore) {
+        for (var selectedStore in destination) {
+          if (selectedStore.storeID == currentStoreStore.storeID) {
+            currentStoreStore.storeOwnDeliveryPartnersInfo = selectedStore.storeOwnDeliveryPartnersInfo;
+          } else {
+            continue;
+          }
+        }
+      }
+      appLog.d('Second Bloc');
+      getAllCurrentStore.forEach((element) {
+        appLog.d(element.toMap());
+      });
+
       final result = await tryCatch<List<StoreEntity>>(() async {
-        await db.transaction((txn) async {
+        return await db.transaction((txn) async {
           // !Wrong the following code will deadlock
           // Don't use the db object in the transaction
           // await record.put(db, {'name': 'fish'});
           // correct, txn in used
           // Modify the store result
-          if (!cacheCurrentStore.isNotNullOrEmpty) {
-            cacheCurrentStore.asMap().forEach((parentStoreKey, parentStoreValue) {
-              destination.asMap().forEach((destinationStoreKey, destinationStoreValue) async {
-                if (parentStoreValue.storeID == destinationStoreValue.storeID) {
-                  // Match
-                  final record = _store.record(destinationStoreValue.storeID);
-                  final value = await record.get(txn);
-                  var currentTempMenu = cloneMap(value!);
-                  parentStoreValue.menuEntities.asMap().forEach((key, value) async {
-                    source.asMap().forEach((driverKey, driverValue) async {
-                      // Check if the record exists before adding or updating it.
-                      // Look of existing record
-                      final finder = Finder(filter: Filter.equals('stores.@.drivers', driverValue.driverID));
-                      var existing = await _store.query(finder: finder).getSnapshot(txn);
-                      if (existing == null) {
-                        // code not found, add
-                        final data = currentTempMenu['drivers']! as List<StoreOwnDeliveryPartnersInfo>..add(driverValue);
-                        final result = await record.update(txn, {'drivers': data.toList()});
-                      } else {
-                        // Update existing
-                        await existing.ref.update(txn, driverValue.toMap());
-                      }
-                    });
-                  });
-                } else {
-                  // Not Match
-                }
-              });
-            });
+          // Delete all
+          await _store.delete(txn);
+          // Add all
+          await _store.addAll(txn, getAllCurrentStore.map((e) => e.toMap()).toList());
+
+          final snapshots = await _store.find(txn);
+          if (snapshots.isEmptyOrNull) {
+            return <StoreEntity>[];
           } else {
-            // Null or empty
+            return snapshots
+                .map(
+                  (snapshot) => StoreEntity.fromMap(snapshot.value).copyWith(
+                    storeID: snapshot.key,
+                  ),
+                )
+                .toList();
           }
-          return storeLocalDbRepository.getAll();
         });
       });
       return result;

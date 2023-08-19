@@ -377,8 +377,8 @@ class AppRouter {
           final Map<String, dynamic>? args = state.extra as Map<String, dynamic>?;
           return BindDriverWithStore(
             selectItemUseCase: args?['selectItemUseCase'] ?? SelectItemUseCase.none,
-            listOfAllStoreOwnDeliveryPartners: args?['allDriver'] ?? <StoreOwnDeliveryPartnersInfo>[] as List<StoreOwnDeliveryPartnersInfo>,
-            listOfAllSelectedStoreOwnDeliveryPartners: args?['selectedDriver'] ?? <StoreOwnDeliveryPartnersInfo>[] as List<StoreOwnDeliveryPartnersInfo>,
+            listOfAllStoreOwnDeliveryPartners: args?['allDriver'] ?? <StoreOwnDeliveryPartnersInfo>[],
+            listOfAllSelectedStoreOwnDeliveryPartners: args?['selectedDriver'] ?? <StoreOwnDeliveryPartnersInfo>[],
           );
         },
       ),

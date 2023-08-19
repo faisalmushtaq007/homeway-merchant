@@ -723,3 +723,28 @@ class ReturnToStorePageState extends StoreState {
         message,
       ];
 }
+
+class SelectDriversForStoresState extends StoreState {
+  SelectDriversForStoresState(
+      {this.listOfStoreOwnDeliveryPartners = const [],
+      this.listOfSelectedStoreOwnDeliveryPartners = const [],
+      this.message = '',
+      this.selectItemUseCase = SelectItemUseCase.bindingWithOther});
+
+  final List<StoreOwnDeliveryPartnersInfo> listOfStoreOwnDeliveryPartners;
+  final List<StoreOwnDeliveryPartnersInfo> listOfSelectedStoreOwnDeliveryPartners;
+
+  final String message;
+  final SelectItemUseCase selectItemUseCase;
+
+  @override
+  bool get cacheHash => true;
+
+  @override
+  List<Object?> get hashParameters => [
+        listOfStoreOwnDeliveryPartners,
+        listOfSelectedStoreOwnDeliveryPartners,
+        selectItemUseCase,
+        message,
+      ];
+}

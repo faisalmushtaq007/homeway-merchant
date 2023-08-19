@@ -77,7 +77,7 @@ class UserLocalDbRepository<User extends AppUserEntity> implements BaseUserLocal
           .map((snapshot) => AppUserEntity.fromMap(snapshot.value).copyWith(
                 userID: snapshot.key,
               ))
-          .toList(growable: false);
+          .toList();
     });
     return result;
   }

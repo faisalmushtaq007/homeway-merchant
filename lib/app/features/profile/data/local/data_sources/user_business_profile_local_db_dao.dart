@@ -94,7 +94,7 @@ class UserBusinessProfileLocalDbRepository<T extends BusinessProfileEntity> impl
                 businessProfileID: snapshot.key,
               ),
             )
-            .toList(growable: false);
+            .toList();
       }
     });
     return result;

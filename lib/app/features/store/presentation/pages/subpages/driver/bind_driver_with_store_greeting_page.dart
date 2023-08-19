@@ -124,7 +124,7 @@ class _BindDriverWithStoreGreetingPageView extends WidgetView<BindDriverWithStor
                             child: Wrap(
                               children: [
                                 Text(
-                                  '${widget.storeOwnDeliveryPartnersEntities.length} Menu are successfully listed with ${widget.storeEntities.length} stores',
+                                  '${widget.storeOwnDeliveryPartnersEntities.length} Driver are successfully listed with ${widget.storeEntities.length} stores',
                                   textDirection: serviceLocator<LanguageController>().targetTextDirection,
                                   textAlign: TextAlign.center,
                                   style: context.titleLarge!.copyWith(

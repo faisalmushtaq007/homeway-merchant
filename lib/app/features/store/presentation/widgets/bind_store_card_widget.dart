@@ -185,7 +185,7 @@ class _BindStoreCardWidgetState extends State<BindStoreCardWidget> {
         // alignment of image
         //alignment: Alignment.center,
         // indicates where image will be loaded from, types are [network, asset,file]
-        imageType: ImageType.network,
+        imageType: findImageType(widget.storeEntity.storeImagePath),
         // indicates what shape you would like to be with image [rectangle, oval,circle or none]
         imageShape: ImageShape.rectangle,
         // image default box fit
@@ -209,6 +209,12 @@ class _BindStoreCardWidgetState extends State<BindStoreCardWidget> {
         // loader builder widget, default as icon if null
         loaderBuilder: const CircularProgressIndicator(),
         matchTextDirection: true,
+        placeholderText: widget.storeEntity.storeName,
+        placeholderTextStyle: context.labelLarge!.copyWith(
+          color: Colors.white,
+          fontSize: 16,
+        ),
+        placeholderBackgroundColor: context.colorScheme.primary.withOpacity(0.5),
       ),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadiusDirectional.circular(10),

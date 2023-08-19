@@ -93,7 +93,7 @@ class AddressLocalDbRepository<T extends AddressModel> implements BaseAddressBan
                 addressID: snapshot.key,
               ),
             )
-            .toList(growable: false);
+            .toList();
       }
     });
     return result;

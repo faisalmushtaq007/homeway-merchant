@@ -7,6 +7,7 @@ import 'package:homemakers_merchant/app/features/profile/index.dart';
 import 'package:homemakers_merchant/app/features/store/common/store_enum.dart';
 import 'package:homemakers_merchant/app/features/store/index.dart';
 import 'package:homemakers_merchant/bootup/injection_container.dart';
+import 'package:homemakers_merchant/core/common/enum/generic_enum.dart';
 import 'package:homemakers_merchant/core/extensions/global_extensions/dart_extensions.dart';
 import 'package:homemakers_merchant/shared/states/data_source_state.dart';
 import 'package:homemakers_merchant/utils/app_equatable/app_equatable.dart';
@@ -77,6 +78,10 @@ class StoreBloc extends Bloc<StoreEvent, StoreState> {
     );
     on<ReturnToStorePage>(
       _returnToStorePage,
+      transformer: sequential(),
+    );
+    on<SelectDriversForStores>(
+      _selectDriversForStores,
       transformer: sequential(),
     );
   }
@@ -662,6 +667,9 @@ class StoreBloc extends Bloc<StoreEvent, StoreState> {
         },
         localDb: (data, meta) {
           appLog.d('Binding Driver with Store local ${data?.length}');
+          data?.forEach((element) {
+            appLog.d(element.toMap());
+          });
           emit(
             BindDriverWithStoresState(
               bindDriverToStoreStage: event.bindDriverToStoreStage,
@@ -697,56 +705,6 @@ class StoreBloc extends Bloc<StoreEvent, StoreState> {
         ),
       );
     }
-
-    /*try {
-      emit(
-        BindLoadingState(
-          message: 'Processing please wait...',
-          bindDriverToStoreStage: BindingStage.attaching,
-          isLoading: true,
-        ),
-      );
-      List<StoreEntity> storeEntities = event.storeEntities;
-      List<StoreEntity> selectedStoreEntities = event.listOfSelectedStoreEntities;
-      List<StoreOwnDeliveryPartnersInfo> storeOwnDeliveryPartnersEntities = event.listOfStoreOwnDeliveryPartners;
-      List<StoreOwnDeliveryPartnersInfo> selectedStoreOwnDeliveryPartners = event.listOfSelectedStoreOwnDeliveryPartners;
-      // Update the object
-      selectedStoreEntities.asMap().forEach((key, value) {
-        value.storeOwnDeliveryPartnersInfo = selectedStoreOwnDeliveryPartners.toList();
-      });
-      storeEntities.asMap().forEach((parentIndex, parentStore) {
-        selectedStoreEntities.asMap().forEach((childIndex, childStore) {
-          if (childStore == parentStore) {
-            serviceLocator<AppUserEntity>().stores[parentIndex].storeOwnDeliveryPartnersInfo = selectedStoreOwnDeliveryPartners.toList();
-          }
-        });
-      });
-      // Search store and update it with selected stores date
-      //serviceLocator<AppUserEntity>().stores;
-      Future.delayed(const Duration(milliseconds: 500), () {});
-      emit(
-        BindDriverWithStoresState(
-          listOfStoreOwnDeliveryPartners: event.listOfStoreOwnDeliveryPartners.toList(),
-          listOfSelectedStoreOwnDeliveryPartners: event.listOfSelectedStoreOwnDeliveryPartners.toList(),
-          storeEntities: serviceLocator<AppUserEntity>().stores.toList(),
-          message: '',
-          bindDriverToStoreStage: BindingStage.attached,
-          listOfSelectedStoreEntities: selectedStoreEntities,
-        ),
-      );
-    } catch (e) {
-      appLog.d('Listener: BindMenuWithStoresState ${e.toString()}');
-      emit(
-        BindDriverWithStoresState(
-          listOfStoreOwnDeliveryPartners: event.listOfStoreOwnDeliveryPartners.toList(),
-          listOfSelectedStoreOwnDeliveryPartners: event.listOfSelectedStoreOwnDeliveryPartners.toList(),
-          storeEntities: event.storeEntities.toList(),
-          message: 'Something went wrong, please try again',
-          bindDriverToStoreStage: BindingStage.exception,
-          listOfSelectedStoreEntities: event.listOfSelectedStoreEntities,
-        ),
-      );
-    }*/
   }
 
   FutureOr<void> _bindDriverWithUser(BindDriverWithUser event, Emitter<StoreState> emit) async {
@@ -936,8 +894,19 @@ class StoreBloc extends Bloc<StoreEvent, StoreState> {
   FutureOr<void> _returnToStorePage(ReturnToStorePage event, Emitter<StoreState> emit) async {
     emit(
       ReturnToStorePageState(
-        message: '${event.listOfStoreOwnDeliveryPartners.length} is selected by you',
+        message: 'Driver ${event.listOfStoreOwnDeliveryPartners.length} is selected by you',
         listOfStoreOwnDeliveryPartners: event.listOfStoreOwnDeliveryPartners.toList(),
+      ),
+    );
+  }
+
+  FutureOr<void> _selectDriversForStores(SelectDriversForStores event, Emitter<StoreState> emit) async {
+    emit(
+      SelectDriversForStoresState(
+        message: 'Driver ${event.listOfStoreOwnDeliveryPartners.length} is selected for store',
+        listOfStoreOwnDeliveryPartners: event.listOfStoreOwnDeliveryPartners.toList(),
+        listOfSelectedStoreOwnDeliveryPartners: event.listOfSelectedStoreOwnDeliveryPartners.toList(),
+        selectItemUseCase: event.selectItemUseCase,
       ),
     );
   }

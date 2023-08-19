@@ -80,7 +80,7 @@ class _StoreOwnerAllDriversController extends State<StoreOwnerAllDrivers> {
         bloc: context.read<StoreBloc>(),
         listener: (context, storeState) async {
           switch (storeState) {
-            case BindDriverWithStoresState():
+            case SelectDriversForStoresState():
               {
                 final result = await context.push(
                   Routes.BIND_DRIVER_WITH_STORE_PAGE,
@@ -223,8 +223,10 @@ class _StoreOwnerAllDriversView extends WidgetView<StoreOwnerAllDrivers, _StoreO
                       case _:
                         {
                           context.read<StoreBloc>().add(
-                                BindDriverWithStores(
-                                  listOfStoreOwnDeliveryPartners: state.listOfAllSelectedDrivers.toList(),
+                                SelectDriversForStores(
+                                  listOfStoreOwnDeliveryPartners: state.listOfAllDrivers.toList(),
+                                  listOfSelectedStoreOwnDeliveryPartners: state.listOfAllSelectedDrivers.toList(),
+                                  selectItemUseCase: widget.selectItemUseCase,
                                 ),
                               );
                           return;

@@ -83,7 +83,7 @@ class AddonsLocalDbRepository<Extras extends Addons> implements BaseAddonsLocalD
             .map((snapshot) => Addons.fromMap(snapshot.value).copyWith(
                   addonsID: snapshot.key,
                 ))
-            .toList(growable: false);
+            .toList();
       }
     });
     return result;

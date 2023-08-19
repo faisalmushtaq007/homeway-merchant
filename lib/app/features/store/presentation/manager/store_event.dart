@@ -298,3 +298,28 @@ class ReturnToStorePage extends StoreEvent {
         message,
       ];
 }
+
+class SelectDriversForStores extends StoreEvent {
+  SelectDriversForStores(
+      {this.listOfStoreOwnDeliveryPartners = const [],
+      this.listOfSelectedStoreOwnDeliveryPartners = const [],
+      this.message = '',
+      this.selectItemUseCase = SelectItemUseCase.bindingWithOther});
+
+  final List<StoreOwnDeliveryPartnersInfo> listOfStoreOwnDeliveryPartners;
+  final List<StoreOwnDeliveryPartnersInfo> listOfSelectedStoreOwnDeliveryPartners;
+
+  final String message;
+  final SelectItemUseCase selectItemUseCase;
+
+  @override
+  bool get cacheHash => true;
+
+  @override
+  List<Object?> get hashParameters => [
+        listOfStoreOwnDeliveryPartners,
+        listOfSelectedStoreOwnDeliveryPartners,
+        selectItemUseCase,
+        message,
+      ];
+}

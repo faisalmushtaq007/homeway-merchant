@@ -93,7 +93,7 @@ class UserPaymentBankLocalDbRepository<T extends PaymentBankEntity> implements B
                 paymentBankID: snapshot.key,
               ),
             )
-            .toList(growable: false);
+            .toList();
       }
     });
     return result;

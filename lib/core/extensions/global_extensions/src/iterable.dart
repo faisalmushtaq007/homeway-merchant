@@ -1405,7 +1405,7 @@ extension IterableIntersect<E> on Iterable<E> {
   ///
   /// The returned collection preserves the element iteration order of the
   /// this collection.
-  Iterable<E> intersect(Iterable<E> other) sync* {
+  Iterable<E> intersects(Iterable<E> other) sync* {
     final second = HashSet<E>.from(other);
     final output = HashSet<E>();
     for (final current in this) {

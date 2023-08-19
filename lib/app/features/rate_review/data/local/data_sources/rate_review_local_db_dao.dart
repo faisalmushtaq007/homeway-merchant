@@ -93,7 +93,7 @@ class RateAndReviewLocalDbRepository<T extends RateAndReviewEntity> implements B
                 ratingID: snapshot.key,
               ),
             )
-            .toList(growable: false);
+            .toList();
       }
     });
     return result;

@@ -15,7 +15,7 @@ class ImageEntity with AppEquatable {
     return ImageEntity(
       imageType: ImageType.values.byName(map['imageType']),
       imagePath: map['imagePath'] as String,
-      icon: map['icon'] as Icon,
+      //icon: map['icon'] as Icon,
       hasIcon: map['hasIcon'] as bool,
       metaData: map['metaData'] as Map<String, dynamic>,
     );
@@ -49,9 +49,9 @@ class ImageEntity with AppEquatable {
 
   Map<String, dynamic> toMap() {
     return {
-      'imageType': this.imageType,
+      'imageType': this.imageType.name,
       'imagePath': this.imagePath,
-      'icon': this.icon,
+      //'icon': this.icon,
       'hasIcon': this.hasIcon,
       'metaData': this.metaData,
     };

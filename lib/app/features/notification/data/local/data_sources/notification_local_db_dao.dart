@@ -93,7 +93,7 @@ class NotificationLocalDbRepository<T extends NotificationEntity> implements Bas
                 notificationID: snapshot.key,
               ),
             )
-            .toList(growable: false);
+            .toList();
       }
     });
     return result;

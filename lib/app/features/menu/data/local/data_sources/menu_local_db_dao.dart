@@ -91,7 +91,6 @@ class MenuLocalDbRepository<Menu extends MenuEntity> implements BaseMenuLocalDbR
     });
     return result;*/
     final snapshots = await _menu.find(await _db);
-    appLog.d("Menu: ${snapshots[0].value}");
     if (snapshots.isEmptyOrNull) {
       return Right(<MenuEntity>[]);
     } else {
@@ -101,7 +100,7 @@ class MenuLocalDbRepository<Menu extends MenuEntity> implements BaseMenuLocalDbR
               menuId: snapshot.key,
             ),
           )
-          .toList(growable: false));
+          .toList());
     }
   }
 
