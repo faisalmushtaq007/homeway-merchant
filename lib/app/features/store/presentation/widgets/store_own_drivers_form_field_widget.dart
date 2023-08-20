@@ -146,8 +146,21 @@ class _StoreOwnDriverWidgetState extends State<StoreOwnDriverWidget> {
 
   List<Widget> _buildChoiceList() {
     List<Widget> choices = [];
-
-    for (var item in widget.availableDriverList) {
+    return List<Widget>.generate(widget.availableDriverList.length, (int index) {
+      return Chip(
+        label: Text(
+          widget.availableDriverList[index].driverName,
+          textDirection: serviceLocator<LanguageController>().targetTextDirection,
+        ),
+        onDeleted: () {
+          setState(() {
+            widget.availableDriverList.removeAt(index);
+            widget.onSelectionChanged?.call(widget.availableDriverList);
+          });
+        },
+      );
+    });
+/*    for (var item in widget.availableDriverList) {
       choices.add(ChoiceChip(
         label: Text(
           item.driverName,
@@ -176,7 +189,7 @@ class _StoreOwnDriverWidgetState extends State<StoreOwnDriverWidget> {
       ));
     }
 
-    return choices;
+    return choices;*/
   }
 
   @override
