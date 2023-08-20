@@ -282,6 +282,7 @@ class _MenuAllAddonsPageView extends WidgetView<MenuAllAddonsPage, _MenuAllAddon
                                               SherlockCompletion(where: 'by', elements: state._menuAvailableAddons.map((e) => e.toMap()).toList()),
                                           sherlockCompletionMinResults: 1,
                                           onSearch: (input, sherlock) {
+                                            print('Searching...${input}');
                                             /*setState(() {
                                                                   state._results = sherlock.search(input: input);
                                                                 });*/
@@ -305,7 +306,12 @@ class _MenuAllAddonsPageView extends WidgetView<MenuAllAddonsPage, _MenuAllAddon
                                           ),
                                           padding: const EdgeInsetsDirectional.symmetric(horizontal: 16.0),
                                           constraints: const BoxConstraints(minWidth: 360.0, maxWidth: 800.0, minHeight: 48.0),
-                                          viewConstraints: const BoxConstraints(minWidth: 360.0, minHeight: 240.0),
+                                          viewConstraints: BoxConstraints(
+                                            minWidth: 360 - (margins * 5),
+                                            minHeight: 150.0,
+                                            maxHeight: context.height / 2 -
+                                                (context.mediaQueryViewInsets.bottom + margins + media.padding.top + kToolbarHeight + media.padding.bottom),
+                                          ),
                                           viewShape: RoundedRectangleBorder(
                                             borderRadius: BorderRadiusDirectional.circular(12),
                                           ),
