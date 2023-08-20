@@ -207,11 +207,11 @@ class GetAllAddons extends MenuEvent {
   GetAllAddons({
     this.pageKey = 1,
     this.pageSize = 10,
-    this.searchItem = '',
+    this.searchItem,
   });
   final int pageKey;
   final int pageSize;
-  final String searchItem;
+  final String? searchItem;
 
   @override
   bool get cacheHash => true;

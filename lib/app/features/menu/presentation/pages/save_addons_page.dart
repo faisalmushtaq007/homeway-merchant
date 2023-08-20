@@ -7,12 +7,18 @@ class SaveAddonsPage extends StatefulWidget {
     this.haveOwnAddons = true,
     this.addons,
     this.currentIndex = -1,
+    this.pageKey = 1,
+    this.pageSize = 10,
+    this.searchItem,
   });
 
   final bool haveNewAddons;
   final bool haveOwnAddons;
   final Addons? addons;
   final int currentIndex;
+  final int pageKey;
+  final int pageSize;
+  final String? searchItem;
 
   @override
   _SaveAddonsPageController createState() => _SaveAddonsPageController();

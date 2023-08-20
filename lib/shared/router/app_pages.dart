@@ -266,6 +266,9 @@ class AppRouter {
             haveNewAddons: args?['haveNewAddons'] ?? true as bool,
             haveOwnAddons: args?['haveOwnAddons'] ?? true as bool,
             currentIndex: args?['currentIndex'] ?? -1 as int,
+            pageKey: args?['pageKey'] ?? 1,
+            pageSize: args?['pageSize'] ?? 10,
+            searchItem: args?['searchItem'] ?? '',
           );
         },
       ),

@@ -2,6 +2,7 @@ part of 'package:homemakers_merchant/app/features/menu/index.dart';
 
 class MenuAllAddonsPage extends StatefulWidget {
   const MenuAllAddonsPage({super.key, this.selectItemUseCase = SelectItemUseCase.none});
+
   final SelectItemUseCase selectItemUseCase;
 
   @override
@@ -18,29 +19,65 @@ class _MenuAllAddonsPageController extends State<MenuAllAddonsPage> {
   late final ScrollController innerScrollController;
   ResultState<Addons> resultState = const ResultState<Addons>.empty();
   WidgetState<Addons> widgetState = const WidgetState<Addons>.none();
+
+  // Pagination
+  int pageSize = 10;
+  int pageKey = 1;
+  String? searchText = '';
   final PagingController<int, Addons> _pagingController = PagingController(firstPageKey: 1);
 
   @override
   void initState() {
+    SchedulerBinding.instance.addPostFrameCallback((_) {});
     super.initState();
     scrollController = ScrollController();
     listViewBuilderScrollController = ScrollController();
     innerScrollController = ScrollController();
     _menuAvailableAddons = [];
     _selectedAddons = [];
+    _pagingController.addPageRequestListener((pageKey) {
+      this.pageKey = pageKey;
+    });
+    _fetchPage(pageKey);
+    _pagingController.addStatusListener((status) {
+      if (status == PagingStatus.subsequentPageError) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: const Text(
+              'Something went wrong while fetching a new page.',
+            ),
+            action: SnackBarAction(
+              label: 'Retry',
+              onPressed: () => _pagingController.retryLastFailedRequest(),
+            ),
+          ),
+        );
+      }
+    });
+
     //initMenuAddons();
-    context.read<MenuBloc>().add(GetAllAddons());
+  }
+
+  Future<void> _fetchPage(pageKey, {int pageSize = 10, String? searchItem}) async {
+    context.read<MenuBloc>().add(
+          GetAllAddons(
+            pageKey: pageKey,
+            pageSize: pageSize,
+            searchItem: searchItem,
+          ),
+        );
+
+    return;
   }
 
   @override
-  void setState(VoidCallback fn) {
-    if (mounted) {
-      super.setState(fn);
-    }
+  void didChangeDependencies() {
+    super.didChangeDependencies();
   }
 
   @override
   void dispose() {
+    _pagingController.dispose();
     scrollController.dispose();
     innerScrollController.dispose();
     listViewBuilderScrollController.dispose();
@@ -56,29 +93,43 @@ class _MenuAllAddonsPageController extends State<MenuAllAddonsPage> {
   @override
   Widget build(BuildContext context) => BlocListener<MenuBloc, MenuState>(
         key: const Key('get-all-addons-bloclistener-widget'),
-        bloc: context.watch<MenuBloc>(),
+        bloc: context.read<MenuBloc>(),
         listener: (context, menuState) {
           if (menuState is PopToMenuPageState) {
             if (context.canPop()) {
               Navigator.of(context).pop(menuState.addonsEntity.toList());
             }
+          } else if (menuState is GetAllAddonsState) {
+            //_menuAvailableAddons = List<Addons>.from(addonsState.addonsEntities.toList());
+            try {
+              final isLastPage = menuState.addonsEntities.toList().length < pageSize;
+              if (isLastPage) {
+                _pagingController.appendLastPage(menuState.addonsEntities.toList());
+              } else {
+                final nextPageKey = pageKey + 1;
+                _pagingController.appendPage(menuState.addonsEntities.toList(), nextPageKey);
+              }
+              widgetState = WidgetState<Addons>.allData(
+                context: context,
+                data: _pagingController.value.itemList ?? [],
+              );
+              _menuAvailableAddons = _pagingController.value.itemList ?? [];
+            } catch (error) {
+              _pagingController.error = error;
+              widgetState = WidgetState<Addons>.error(
+                context: context,
+                reason: _pagingController.error,
+              );
+            }
           }
         },
         child: BlocBuilder<MenuBloc, MenuState>(
           key: const Key('get-all-addons-blocbuilder-widget'),
-          bloc: context.watch<MenuBloc>(),
+          bloc: context.read<MenuBloc>(),
           builder: (context, addonsState) {
             switch (addonsState) {
-              case GetAllAddonsState():
-                {
-                  _menuAvailableAddons = List<Addons>.from(addonsState.addonsEntities.toList());
-                  widgetState = WidgetState<Addons>.allData(
-                    context: context,
-                  );
-                }
               case GetEmptyAddonsState():
                 {
-                  print(addonsState.message);
                   _menuAvailableAddons = [];
                   _menuAvailableAddons.clear();
                   widgetState = WidgetState<Addons>.empty(
@@ -105,6 +156,14 @@ class _MenuAllAddonsPageController extends State<MenuAllAddonsPage> {
               case SelectAddonsState():
                 {
                   _selectedAddons = List<Addons>.from(addonsState.selectedAddonsEntities.toList());
+                }
+              case AddonsExceptionState():
+                {
+                  _pagingController.error = addonsState.message;
+                  widgetState = WidgetState<Addons>.error(
+                    context: context,
+                    reason: _pagingController.error,
+                  );
                 }
               case _:
                 print('default');
@@ -239,7 +298,7 @@ class _MenuAllAddonsPageView extends WidgetView<MenuAllAddonsPage, _MenuAllAddon
                                                   ),
                                                   const Spacer(),
                                                   const Icon(Icons.check),
-                                                  const Icon(Icons.close)
+                                                  const Icon(Icons.close),
                                                 ],
                                               ),
                                             ),
@@ -275,7 +334,7 @@ class _MenuAllAddonsPageView extends WidgetView<MenuAllAddonsPage, _MenuAllAddon
                                             color: context.primaryColor,
                                           ),
                                         ),
-                                      )
+                                      ),
                                     ],
                                   ),
                                 ),
@@ -325,24 +384,36 @@ class _MenuAllAddonsPageView extends WidgetView<MenuAllAddonsPage, _MenuAllAddon
                               slivers: [
                                 state.widgetState.maybeWhen(
                                   empty: (context, child, message, data) => SliverToBoxAdapter(
-                                    child: Center(
-                                      key: const Key('get-all-addons-empty-widget'),
-                                      child: Text(
-                                        'No addons available or added by you',
-                                        style: context.labelLarge,
-                                        textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                                      ).translate(),
+                                    child: Column(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      crossAxisAlignment: CrossAxisAlignment.center,
+                                      children: [
+                                        Center(
+                                          key: const Key('get-all-addons-empty-widget'),
+                                          child: Text(
+                                            'No addons available or added by you',
+                                            style: context.labelLarge,
+                                            textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                          ).translate(),
+                                        ),
+                                      ],
                                     ),
                                   ),
                                   loading: (context, child, message, isLoading) {
                                     return SliverToBoxAdapter(
-                                      child: const Center(
-                                        key: Key('get-all-addons-center-widget'),
-                                        child: SizedBox(
-                                          width: 48,
-                                          height: 48,
-                                          child: CircularProgressIndicator(),
-                                        ),
+                                      child: Column(
+                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        crossAxisAlignment: CrossAxisAlignment.center,
+                                        children: [
+                                          const Center(
+                                            key: Key('get-all-addons-center-widget'),
+                                            child: SizedBox(
+                                              width: 48,
+                                              height: 48,
+                                              child: CircularProgressIndicator(),
+                                            ),
+                                          ),
+                                        ],
                                       ),
                                     );
                                   },
@@ -351,38 +422,47 @@ class _MenuAllAddonsPageView extends WidgetView<MenuAllAddonsPage, _MenuAllAddon
                                       pagingController: state._pagingController,
                                       builderDelegate: PagedChildBuilderDelegate<Addons>(
                                           animateTransitions: true,
-                                          itemBuilder: (context, notificationResult, index) => AddonsCard(
-                                                key: ValueKey(index),
-                                                addonsEntity: state._menuAvailableAddons[index],
-                                                onChangedAddons: (value) {
-                                                  //state._selectedAddons = List<StoreAvailableFoodPreparationType>.from(value);
-                                                  context.read<MenuBloc>().add(
-                                                        SelectAddons(
-                                                          index: index,
-                                                          addonsID: state._menuAvailableAddons[index].addonsID,
-                                                          addonsEntity: state._menuAvailableAddons[index],
-                                                          addonsEntities: state._menuAvailableAddons.toList(),
-                                                          selectedAddonsEntities: state._selectedAddons.toList(),
-                                                        ),
-                                                      );
-                                                },
-                                                selectedAllAddons: state._selectedAddons.toList(),
-                                              )),
+                                          itemBuilder: (context, notificationResult, index) {
+                                            print('Index ${index}');
+                                            return AddonsCard(
+                                              key: ValueKey(index),
+                                              addonsEntity: notificationResult,
+                                              onChangedAddons: (value) {
+                                                //state._selectedAddons = List<StoreAvailableFoodPreparationType>.from(value);
+                                                context.read<MenuBloc>().add(
+                                                      SelectAddons(
+                                                        index: index,
+                                                        addonsID: notificationResult.addonsID,
+                                                        addonsEntity: notificationResult,
+                                                        addonsEntities: state._menuAvailableAddons.toList(),
+                                                        selectedAddonsEntities: state._selectedAddons.toList(),
+                                                      ),
+                                                    );
+                                              },
+                                              selectedAllAddons: state._selectedAddons.toList(),
+                                            );
+                                          }),
                                     );
                                   },
                                   none: () {
                                     return SliverToBoxAdapter(
-                                      child: Center(
-                                        child: Text(
-                                          'No addons available or added by you',
-                                          style: context.labelLarge,
-                                          textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                                        ).translate(),
+                                      child: Column(
+                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        crossAxisAlignment: CrossAxisAlignment.center,
+                                        children: [
+                                          Center(
+                                            child: Text(
+                                              'No addons available or added by you',
+                                              style: context.labelLarge,
+                                              textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                            ).translate(),
+                                          ),
+                                        ],
                                       ),
                                     );
                                   },
                                   orElse: () {
-                                    return SliverToBoxAdapter(child: const SizedBox());
+                                    return const SliverToBoxAdapter(child: SizedBox());
                                   },
                                 ),
                               ],
@@ -400,12 +480,15 @@ class _MenuAllAddonsPageView extends WidgetView<MenuAllAddonsPage, _MenuAllAddon
                                         'haveNewAddons': true,
                                         'haveOwnAddons': true,
                                         'currentIndex': -1,
+                                        'pageKey': state.pageKey,
+                                        'pageSize': state.pageSize,
+                                        'searchItem': state.searchText,
                                       },
                                     );
                                     if (!state.mounted) {
                                       return;
                                     }
-                                    context.read<MenuBloc>().add(GetAllAddons());
+                                    //await state._fetchPage(state.pageKey,pageSize:state.pageSize,searchItem: state.searchText, );
                                     return;
                                   },
                                   child: Text(
@@ -418,116 +501,6 @@ class _MenuAllAddonsPageView extends WidgetView<MenuAllAddonsPage, _MenuAllAddon
                           ),
                         ],
                       ),
-                    ),
-                  );
-                  return Container(
-                    constraints: BoxConstraints(
-                      minWidth: double.infinity,
-                      minHeight: media.size.height,
-                    ),
-                    child: Stack(
-                      children: [
-                        ScrollableColumn(
-                          controller: state.scrollController,
-                          mainAxisSize: MainAxisSize.min,
-                          mainAxisAlignment: state._menuAvailableAddons.isEmpty ? MainAxisAlignment.center : MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                          flexible: true,
-                          physics: const ClampingScrollPhysics(),
-                          children: [
-                            Flexible(
-                              flex: 1,
-                              child: state.widgetState.maybeWhen(
-                                empty: (context, child, message, data) => Center(
-                                  key: const Key('get-all-addons-empty-widget'),
-                                  child: Text(
-                                    'No addons available or added',
-                                    style: context.labelLarge,
-                                    textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                                  ).translate(),
-                                ),
-                                loading: (context, child, message, isLoading) {
-                                  return const Center(
-                                    key: Key('get-all-store-center-widget'),
-                                    child: SizedBox(
-                                      width: 48,
-                                      height: 48,
-                                      child: CircularProgressIndicator(),
-                                    ),
-                                  );
-                                },
-                                allData: (context, child, message, data) {
-                                  return ListView.builder(
-                                    shrinkWrap: true,
-                                    key: const Key('get-all-addons-listviewbuilder-widget'),
-                                    controller: state.listViewBuilderScrollController,
-                                    itemCount: state._menuAvailableAddons.length,
-                                    itemBuilder: (context, index) {
-                                      return AddonsCard(
-                                        key: ValueKey(index),
-                                        addonsEntity: state._menuAvailableAddons[index],
-                                        onChangedAddons: (value) {
-                                          //state._selectedAddons = List<StoreAvailableFoodPreparationType>.from(value);
-                                          context.read<MenuBloc>().add(
-                                                SelectAddons(
-                                                  index: index,
-                                                  addonsID: state._menuAvailableAddons[index].addonsID,
-                                                  addonsEntity: state._menuAvailableAddons[index],
-                                                  addonsEntities: state._menuAvailableAddons.toList(),
-                                                  selectedAddonsEntities: state._selectedAddons.toList(),
-                                                ),
-                                              );
-                                        },
-                                        selectedAllAddons: state._selectedAddons.toList(),
-                                      );
-                                    },
-                                  );
-                                },
-                                none: () {
-                                  return Center(
-                                    child: Text(
-                                      'No addons available or added',
-                                      style: context.labelLarge,
-                                      textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                                    ).translate(),
-                                  );
-                                },
-                                orElse: () {
-                                  return const SizedBox();
-                                },
-                              ),
-                            ),
-                          ],
-                        ),
-                        PositionedDirectional(
-                          bottom: 0,
-                          start: 0,
-                          end: 0,
-                          child: ElevatedButton(
-                            onPressed: () async {
-                              final navigateToSaveAddonsPage = await context.push(
-                                Routes.SAVE_ADDONS_PAGE,
-                                extra: {
-                                  'addons': null,
-                                  'haveNewAddons': true,
-                                  'haveOwnAddons': true,
-                                  'currentIndex': -1,
-                                },
-                              );
-                              if (!state.mounted) {
-                                return;
-                              }
-                              context.read<MenuBloc>().add(GetAllAddons());
-                              return;
-                            },
-                            child: Text(
-                              'Add Addons',
-                              textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                            ).translate(),
-                          ),
-                        )
-                      ],
                     ),
                   );
                 },

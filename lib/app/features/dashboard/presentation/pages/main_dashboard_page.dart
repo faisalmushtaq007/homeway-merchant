@@ -33,7 +33,7 @@ class _MainDashboardPageState extends State<MainDashboardPage> {
     final MediaQueryData media = MediaQuery.of(context);
     final double margins = GlobalApp.responsiveInsets(media.size.width);
     final double topPadding = margins; //media.padding.top + kToolbarHeight + margins; //margins * 1.5;
-    final double bottomPadding = media.padding.bottom + margins;
+    final double bottomPadding = margins; // media.padding.bottom + margins;
     final double width = media.size.width;
     final ThemeData theme = Theme.of(context);
 
@@ -44,19 +44,9 @@ class _MainDashboardPageState extends State<MainDashboardPage> {
         opacity: 0.60,
         noAppBar: true,
       ),
-      child: PlatformScaffold(
-        material: (context, platform) {
-          return MaterialScaffoldData(
-            resizeToAvoidBottomInset: false,
-          );
-        },
-        cupertino: (context, platform) {
-          return CupertinoPageScaffoldData(
-            resizeToAvoidBottomInset: false,
-          );
-        },
-        appBar: PlatformAppBar(
-          trailingActions: const [
+      child: Scaffold(
+        appBar: AppBar(
+          actions: const [
             Padding(
               padding: EdgeInsetsDirectional.symmetric(horizontal: 14),
               child: LanguageSelectionWidget(),
@@ -72,7 +62,7 @@ class _MainDashboardPageState extends State<MainDashboardPage> {
               controller: scrollController,
               constraints: BoxConstraints(
                 minWidth: double.infinity,
-                minHeight: media.size.height,
+                minHeight: media.size.height - (media.padding.top + kToolbarHeight + media.padding.bottom),
               ),
               padding: EdgeInsetsDirectional.only(
                 top: topPadding,
