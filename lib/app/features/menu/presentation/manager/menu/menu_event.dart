@@ -84,13 +84,17 @@ class GetByIDMenu extends MenuEvent {
 }
 
 class GetAllMenu extends MenuEvent {
-  GetAllMenu();
+  GetAllMenu({this.pageKey = 1, this.pageSize = 20, this.searchItem = ''});
+
+  final int pageKey;
+  final int pageSize;
+  final String searchItem;
 
   @override
   bool get cacheHash => true;
 
   @override
-  List<Object?> get hashParameters => [];
+  List<Object?> get hashParameters => [pageKey, pageSize, searchItem];
 }
 
 class SelectAllMenu extends MenuEvent {
@@ -200,13 +204,20 @@ class GetByIDAddons extends MenuEvent {
 }
 
 class GetAllAddons extends MenuEvent {
-  GetAllAddons();
+  GetAllAddons({
+    this.pageKey = 1,
+    this.pageSize = 10,
+    this.searchItem = '',
+  });
+  final int pageKey;
+  final int pageSize;
+  final String searchItem;
 
   @override
   bool get cacheHash => true;
 
   @override
-  List<Object?> get hashParameters => [];
+  List<Object?> get hashParameters => [pageKey, pageSize, searchItem];
 }
 
 class SelectAddons extends MenuEvent {

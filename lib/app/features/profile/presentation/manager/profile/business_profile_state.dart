@@ -187,18 +187,31 @@ class GetAllBusinessProfileState extends BusinessProfileState {
     this.businessProfileEntity,
     this.businessProfileEntities = const [],
     this.businessProfileStatus = BusinessProfileStatus.getAllBusinessProfile,
+    this.searchItem = '',
+    this.pageSize = 10,
+    this.pageKey = 1,
   });
 
   final BusinessProfileEntity? businessProfileEntity;
   final int businessProfileID;
   final List<BusinessProfileEntity> businessProfileEntities;
   final BusinessProfileStatus businessProfileStatus;
+  final int pageKey;
+  final int pageSize;
+  final String searchItem;
 
   @override
   bool get cacheHash => true;
 
   @override
-  List<Object?> get hashParameters => [businessProfileEntity, businessProfileID, businessProfileStatus];
+  List<Object?> get hashParameters => [
+        businessProfileEntity,
+        businessProfileID,
+        businessProfileStatus,
+        pageKey,
+        pageSize,
+        searchItem,
+      ];
 }
 
 class BusinessProfileEmptyState extends BusinessProfileState {

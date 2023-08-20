@@ -75,13 +75,26 @@ class GetAllPaymentBank extends PaymentBankEvent {
     this.paymentBankID = -1,
     this.paymentBankEntity,
     this.paymentBankEntities = const [],
+    this.searchItem = '',
+    this.pageSize = 10,
+    this.pageKey = 1,
   });
   final PaymentBankEntity? paymentBankEntity;
   final int paymentBankID;
   final List<PaymentBankEntity> paymentBankEntities;
+
+  final int pageKey;
+  final int pageSize;
+  final String searchItem;
   @override
   bool get cacheHash => true;
 
   @override
-  List<Object?> get hashParameters => [paymentBankEntity, paymentBankID];
+  List<Object?> get hashParameters => [
+        paymentBankEntity,
+        paymentBankID,
+        pageKey,
+        pageSize,
+        searchItem,
+      ];
 }

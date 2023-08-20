@@ -84,13 +84,20 @@ class GetAddressByID extends AddressEvent {
 }
 
 class GetAllAddress extends AddressEvent {
-  GetAllAddress();
+  GetAllAddress({
+    this.searchItem = '',
+    this.pageSize = 10,
+    this.pageKey = 1,
+  });
+  final int pageKey;
+  final int pageSize;
+  final String searchItem;
 
   @override
   bool get cacheHash => true;
 
   @override
-  List<Object?> get hashParameters => [];
+  List<Object?> get hashParameters => [pageKey, pageSize, searchItem];
 }
 
 class SelectAllAddress extends AddressEvent {

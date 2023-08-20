@@ -179,17 +179,24 @@ class GetAllMenuState extends MenuState {
     this.menuEntities = const [],
     this.menuStateStatus = MenuStateStatus.none,
     this.message = '',
+    this.searchItem = '',
+    this.pageSize = 10,
+    this.pageKey = 1,
   });
 
   final MenuStateStatus menuStateStatus;
   final List<MenuEntity> menuEntities;
   final String message;
 
+  final int pageKey;
+  final int pageSize;
+  final String searchItem;
+
   @override
   bool get cacheHash => true;
 
   @override
-  List<Object?> get hashParameters => [menuEntities, menuStateStatus];
+  List<Object?> get hashParameters => [menuEntities, menuStateStatus, pageKey, pageSize, searchItem];
 }
 
 class GetEmptyMenuState extends MenuState {
@@ -410,9 +417,17 @@ class DeleteAllAddonsState extends MenuState {
 }
 
 class GetAllAddonsState extends MenuState {
-  GetAllAddonsState({this.addonsEntities = const []});
+  GetAllAddonsState({
+    this.addonsEntities = const [],
+    this.searchItem = '',
+    this.pageSize = 10,
+    this.pageKey = 1,
+  });
 
   final List<Addons> addonsEntities;
+  final int pageKey;
+  final int pageSize;
+  final String searchItem;
 
   @override
   bool get cacheHash => true;
@@ -420,6 +435,9 @@ class GetAllAddonsState extends MenuState {
   @override
   List<Object?> get hashParameters => [
         addonsEntities,
+        pageKey,
+        pageSize,
+        searchItem,
       ];
 }
 

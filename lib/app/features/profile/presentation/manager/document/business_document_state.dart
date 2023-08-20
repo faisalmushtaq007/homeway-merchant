@@ -311,6 +311,9 @@ class BusinessDocumentState with _$BusinessDocumentState {
   factory BusinessDocumentState.getAllBusinessDocumentState({
     @Default([]) List<BusinessDocumentUploadedEntity> allBusinessDocuments,
     @Default(BusinessDocumentStatus.getAllBusinessDocument) BusinessDocumentStatus businessDocumentStatus,
+    @Default(1) int pageKey,
+    @Default(10) int pageSize,
+    @Default('') String searchItem,
   }) = GetAllBusinessDocumentState;
 
   factory BusinessDocumentState.deleteBusinessDocumentState({

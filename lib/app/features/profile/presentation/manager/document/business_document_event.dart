@@ -196,6 +196,9 @@ class BusinessDocumentEvent with _$BusinessDocumentEvent {
   factory BusinessDocumentEvent.getAllBusinessDocument({
     @Default([]) List<BusinessDocumentUploadedEntity> allBusinessDocuments,
     @Default(BusinessDocumentStatus.none) BusinessDocumentStatus businessDocumentStatus,
+    @Default(1) int pageKey,
+    @Default(10) int pageSize,
+    @Default('') String searchItem,
   }) = GetAllBusinessDocument;
 
   factory BusinessDocumentEvent.deleteBusinessDocument({

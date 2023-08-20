@@ -62,13 +62,23 @@ class DeleteAllStore extends StoreEvent {
 }
 
 class GetAllStore extends StoreEvent {
-  GetAllStore();
-
+  GetAllStore({
+    this.searchItem = '',
+    this.pageSize = 10,
+    this.pageKey = 1,
+  });
+  final int pageKey;
+  final int pageSize;
+  final String searchItem;
   @override
   bool get cacheHash => true;
 
   @override
-  List<Object?> get hashParameters => [];
+  List<Object?> get hashParameters => [
+        pageKey,
+        pageSize,
+        searchItem,
+      ];
 }
 
 class GetStore extends StoreEvent {
@@ -157,13 +167,21 @@ class DeleteAllDriver extends StoreEvent {
 }
 
 class GetAllDriver extends StoreEvent {
-  GetAllDriver();
+  GetAllDriver({
+    this.searchItem = '',
+    this.pageSize = 10,
+    this.pageKey = 1,
+  });
+
+  final int pageKey;
+  final int pageSize;
+  final String searchItem;
 
   @override
   bool get cacheHash => true;
 
   @override
-  List<Object?> get hashParameters => [];
+  List<Object?> get hashParameters => [pageKey, pageSize, searchItem];
 }
 
 class GetDriver extends StoreEvent {

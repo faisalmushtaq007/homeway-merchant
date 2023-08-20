@@ -694,7 +694,13 @@ class _SaveStorePageState extends State<SaveStorePage> {
                                               });
                                             },
                                             value: _hasStoreOwnDeliveryService,
-                                            title: const Text('I have my own delivery service').translate(),
+                                            title: Text(
+                                              'I have my own delivery service',
+                                              style: context.bodyMedium!.copyWith(
+                                                fontWeight: FontWeight.w600,
+                                              ),
+                                              textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                            ).translate(),
                                             isThreeLine: false,
                                             dense: true,
                                             controlAffinity: ListTileControlAffinity.leading,
@@ -704,52 +710,66 @@ class _SaveStorePageState extends State<SaveStorePage> {
                                             firstChild: const SizedBox.shrink(),
                                             secondChild: Column(
                                               children: [
-                                                StoreOwnDriverFormField(
-                                                  key: const Key('store-own-driver-formfield'),
-                                                  onSelectionChanged: (List<StoreOwnDeliveryPartnersInfo> selectedStoreOwnDrivers) {
-                                                    _selectedStoreOwnDrivers = List<StoreOwnDeliveryPartnersInfo>.from(selectedStoreOwnDrivers);
-                                                    setState(() {});
-                                                  },
-                                                  availableDriverList: _selectedStoreOwnDrivers.toList(),
-                                                  initialSelectedAvailableDriverList: [],
+                                                Padding(
+                                                  padding: EdgeInsetsDirectional.symmetric(horizontal: margins * 2.5),
+                                                  child: StoreOwnDriverFormField(
+                                                    key: const Key('store-own-driver-formfield'),
+                                                    onSelectionChanged: (List<StoreOwnDeliveryPartnersInfo> selectedStoreOwnDrivers) {
+                                                      _selectedStoreOwnDrivers = List<StoreOwnDeliveryPartnersInfo>.from(selectedStoreOwnDrivers);
+                                                      setState(() {});
+                                                    },
+                                                    availableDriverList: _selectedStoreOwnDrivers.toList(),
+                                                    initialSelectedAvailableDriverList: [],
+                                                  ),
                                                 ),
-                                                const AnimatedGap(12, duration: Duration(milliseconds: 500)),
-                                                ElevatedButton.icon(
-                                                  style: ElevatedButton.styleFrom(
-                                                    //visualDensity: VisualDensity(vertical: -1, horizontal: 0),
-                                                    shape: const RoundedRectangleBorder(
-                                                      borderRadius: BorderRadius.all(
-                                                        Radius.circular(10),
+                                                const AnimatedGap(4, duration: Duration(milliseconds: 500)),
+                                                Padding(
+                                                  padding: EdgeInsetsDirectional.symmetric(horizontal: margins * 2.5),
+                                                  child: Row(
+                                                    children: [
+                                                      Expanded(
+                                                        child: ElevatedButton.icon(
+                                                          style: ElevatedButton.styleFrom(
+                                                            //visualDensity: VisualDensity(vertical: -1, horizontal: 0),
+                                                            shape: const RoundedRectangleBorder(
+                                                              borderRadius: BorderRadius.all(
+                                                                Radius.circular(10),
+                                                              ),
+                                                            ),
+                                                            backgroundColor: const Color.fromRGBO(238, 238, 238, 1.0),
+                                                          ),
+                                                          icon: const Icon(
+                                                            Icons.add,
+                                                            color: Color.fromRGBO(42, 45, 48, 1.0),
+                                                          ),
+                                                          label: Text(
+                                                            'Add Driver',
+                                                            style: const TextStyle(
+                                                              color: Color.fromRGBO(42, 45, 50, 1.0),
+                                                            ),
+                                                            textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                                          ).translate(),
+                                                          onPressed: () async {
+                                                            final List<StoreOwnDeliveryPartnersInfo>? returnSelectedDriver =
+                                                                await context.push<List<StoreOwnDeliveryPartnersInfo>>(
+                                                              Routes.ALL_DRIVER_PAGE,
+                                                              extra: {
+                                                                'selectItemUseCase': SelectItemUseCase.selectAndReturn,
+                                                              },
+                                                            );
+                                                            if (returnSelectedDriver.isNotNullOrEmpty) {
+                                                              setState(() {
+                                                                _selectedStoreOwnDrivers =
+                                                                    List<StoreOwnDeliveryPartnersInfo>.from(returnSelectedDriver!.toList());
+                                                              });
+                                                            }
+                                                          },
+                                                        ),
                                                       ),
-                                                    ),
-                                                    backgroundColor: const Color.fromRGBO(238, 238, 238, 1.0),
+                                                    ],
                                                   ),
-                                                  icon: const Icon(
-                                                    Icons.add,
-                                                    color: Color.fromRGBO(42, 45, 48, 1.0),
-                                                  ),
-                                                  label: Text(
-                                                    'Add Driver',
-                                                    style: const TextStyle(
-                                                      color: Color.fromRGBO(42, 45, 50, 1.0),
-                                                    ),
-                                                    textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                                                  ).translate(),
-                                                  onPressed: () async {
-                                                    final List<StoreOwnDeliveryPartnersInfo>? returnSelectedDriver =
-                                                        await context.push<List<StoreOwnDeliveryPartnersInfo>>(
-                                                      Routes.ALL_DRIVER_PAGE,
-                                                      extra: {
-                                                        'selectItemUseCase': SelectItemUseCase.selectAndReturn,
-                                                      },
-                                                    );
-                                                    if (returnSelectedDriver.isNotNullOrEmpty) {
-                                                      setState(() {
-                                                        _selectedStoreOwnDrivers = List<StoreOwnDeliveryPartnersInfo>.from(returnSelectedDriver!.toList());
-                                                      });
-                                                    }
-                                                  },
-                                                )
+                                                ),
+                                                const AnimatedGap(8, duration: Duration(milliseconds: 500)),
                                               ],
                                             ),
                                             crossFadeState: (_hasStoreOwnDeliveryService == true) ? CrossFadeState.showSecond : CrossFadeState.showFirst,

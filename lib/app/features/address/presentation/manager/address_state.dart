@@ -98,19 +98,22 @@ class GetAllAddressState extends AddressState {
   GetAllAddressState({
     this.addressEntities = const [],
     this.addressStatus = AddressStatus.none,
+    this.searchItem = '',
+    this.pageSize = 10,
+    this.pageKey = 1,
   });
 
   final List<AddressModel> addressEntities;
   final AddressStatus addressStatus;
+  final int pageKey;
+  final int pageSize;
+  final String searchItem;
+
+  @override
+  List<Object?> get hashParameters => [addressEntities, addressStatus, pageKey, pageSize, searchItem];
 
   @override
   bool get cacheHash => true;
-
-  @override
-  List<Object?> get hashParameters => [
-        addressEntities,
-        addressStatus,
-      ];
 }
 
 class SelectAllAddressState extends AddressState {

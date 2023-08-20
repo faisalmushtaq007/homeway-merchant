@@ -157,18 +157,31 @@ class GetAllPaymentBankState extends PaymentBankState {
     this.paymentBankEntity,
     this.paymentBankEntities = const [],
     this.paymentBankStatus = PaymentBankStatus.getAllPaymentBank,
+    this.searchItem = '',
+    this.pageSize = 10,
+    this.pageKey = 1,
   });
 
   final PaymentBankEntity? paymentBankEntity;
   final int paymentBankID;
   final List<PaymentBankEntity> paymentBankEntities;
   final PaymentBankStatus paymentBankStatus;
+  final int pageKey;
+  final int pageSize;
+  final String searchItem;
 
   @override
   bool get cacheHash => true;
 
   @override
-  List<Object?> get hashParameters => [paymentBankEntity, paymentBankID, paymentBankStatus];
+  List<Object?> get hashParameters => [
+        paymentBankEntity,
+        paymentBankID,
+        paymentBankStatus,
+        pageKey,
+        pageSize,
+        searchItem,
+      ];
 }
 
 class PaymentBankEmptyState extends PaymentBankState {

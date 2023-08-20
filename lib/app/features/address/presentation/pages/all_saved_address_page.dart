@@ -194,7 +194,7 @@ class _AllSavedAddressPageView extends WidgetView<AllSavedAddressPage, _AllSaved
                                     children: [
                                       Expanded(
                                         child: SherlockSearchBar(
-                                          isFullScreen: true,
+                                          //isFullScreen: true,
                                           sherlock: Sherlock(elements: state.addressEntities.map((e) => e.toMap()).toList()),
                                           sherlockCompletion: SherlockCompletion(where: 'by', elements: state.addressEntities.map((e) => e.toMap()).toList()),
                                           sherlockCompletionMinResults: 1,
@@ -220,6 +220,17 @@ class _AllSavedAddressPageView extends WidgetView<AllSavedAddressPage, _AllSaved
                                               ),
                                             ),
                                           ),
+                                          padding: const EdgeInsetsDirectional.symmetric(horizontal: 16.0),
+                                          constraints: const BoxConstraints(minWidth: 360.0, maxWidth: 800.0, minHeight: 48.0),
+                                          viewConstraints: const BoxConstraints(minWidth: 360.0, minHeight: 240.0),
+                                          viewShape: RoundedRectangleBorder(
+                                            borderRadius: BorderRadiusDirectional.circular(12),
+                                          ),
+                                          isFullScreen: false,
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius: BorderRadiusDirectional.circular(12),
+                                          ),
+                                          elevation: 1,
                                         ),
                                       ),
                                       const AnimatedGap(12, duration: Duration(milliseconds: 500)),

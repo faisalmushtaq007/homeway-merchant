@@ -106,14 +106,30 @@ class DeleteAllBusinessProfile extends BusinessProfileEvent {
 }
 
 class GetAllBusinessProfile extends BusinessProfileEvent {
-  GetAllBusinessProfile({this.businessProfileID = -1, this.businessProfileEntity});
+  GetAllBusinessProfile({
+    this.businessProfileID = -1,
+    this.businessProfileEntity,
+    this.searchItem = '',
+    this.pageSize = 10,
+    this.pageKey = 1,
+  });
   final BusinessProfileEntity? businessProfileEntity;
   final int businessProfileID;
+
+  final int pageKey;
+  final int pageSize;
+  final String searchItem;
   @override
   bool get cacheHash => true;
 
   @override
-  List<Object?> get hashParameters => [businessProfileEntity, businessProfileID];
+  List<Object?> get hashParameters => [
+        businessProfileEntity,
+        businessProfileID,
+        pageKey,
+        pageSize,
+        searchItem,
+      ];
 }
 
 class NavigateToAddressPage extends BusinessProfileEvent {
