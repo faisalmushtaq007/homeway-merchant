@@ -101,7 +101,7 @@ class _BindDriverWithStoreController extends State<BindDriverWithStore> {
                 if (state.bindDriverToStoreStage == BindingStage.bindingDriverWithStore) {
                   listOfAllSelectedStores = [];
                   listOfAllSelectedStores.clear();
-                  context.go(
+                  context.pushReplacement(
                     Routes.BIND_DRIVER_WITH_STORE_GREETING_PAGE,
                     extra: {
                       'allDriver': state.listOfSelectedStoreOwnDeliveryPartners.toList(),
@@ -116,7 +116,7 @@ class _BindDriverWithStoreController extends State<BindDriverWithStore> {
                 if (state.bindDriverToStoreStage == BindingStage.unbindingDriverWithStore) {
                   listOfAllSelectedStores = [];
                   listOfAllSelectedStores.clear();
-                  context.go(
+                  context.pushReplacement(
                     Routes.BIND_DRIVER_WITH_STORE_GREETING_PAGE,
                     extra: {
                       'allDriver': state.listOfSelectedStoreOwnDeliveryPartners.toList(),

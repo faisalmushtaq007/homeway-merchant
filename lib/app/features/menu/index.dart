@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:collection/collection.dart';
 import 'package:cross_file/cross_file.dart';
 import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/material.dart';
@@ -90,6 +91,7 @@ part 'package:homemakers_merchant/app/features/menu/domain/entities/menu_entity.
 // Repository
 part 'package:homemakers_merchant/app/features/menu/domain/repositories/menu_repository.dart';
 part 'package:homemakers_merchant/app/features/menu/domain/usecases/bind_addons_with_menu_usecase.dart';
+part 'package:homemakers_merchant/app/features/menu/domain/usecases/unbind_menu_with_store_usecase.dart';
 part 'package:homemakers_merchant/app/features/menu/domain/usecases/bind_menu_with_store_usecase.dart';
 part 'package:homemakers_merchant/app/features/menu/domain/usecases/bind_addons_with_user_usecase.dart';
 part 'package:homemakers_merchant/app/features/menu/domain/usecases/bind_menu_with_user_usecase.dart';

@@ -442,8 +442,8 @@ class _StoreDetailsPageView extends WidgetView<StoreDetailsPage, _StoreDetailsPa
                                     storeEntity: state.storeEntity,
                                   ),
                                 ),
-                                const AnimatedGap(12, duration: Duration(milliseconds: 200)),
-                                /*StoreExpandedCardWidget<StoreAvailableFoodTypes, StoreAvailableFoodPreparationType>(
+                                /*const AnimatedGap(12, duration: Duration(milliseconds: 200)),
+                                StoreExpandedCardWidget<StoreAvailableFoodTypes, StoreAvailableFoodPreparationType>(
                                   key: const Key('store-details-menu-type-widget'),
                                   expandableCardInfo: ExpandableCardInfo<StoreAvailableFoodTypes, StoreAvailableFoodPreparationType>(
                                     id: 1,
@@ -453,7 +453,7 @@ class _StoreDetailsPageView extends WidgetView<StoreDetailsPage, _StoreDetailsPa
                                     subTitle: 'Store menu and cooking types',
                                     storeEntity: state.storeEntity,
                                   ),
-                                ),
+                                ),*/
                                 const AnimatedGap(12, duration: Duration(milliseconds: 200)),
                                 StoreExpandedCardWidget<MenuEntity, MenuEntity>(
                                   key: const Key('store-details-menu-widget'),
@@ -465,7 +465,7 @@ class _StoreDetailsPageView extends WidgetView<StoreDetailsPage, _StoreDetailsPa
                                     storeEntity: state.storeEntity,
                                   ),
                                 ),
-                                const AnimatedGap(12, duration: Duration(milliseconds: 200)),*/
+                                const AnimatedGap(12, duration: Duration(milliseconds: 200)),
                                 StoreExpandedCardWidget<StoreOwnDeliveryPartnersInfo, StoreOwnDeliveryPartnersInfo>(
                                   key: const Key('store-details-delivery-widget'),
                                   expandableCardInfo: ExpandableCardInfo<StoreOwnDeliveryPartnersInfo, StoreOwnDeliveryPartnersInfo>(

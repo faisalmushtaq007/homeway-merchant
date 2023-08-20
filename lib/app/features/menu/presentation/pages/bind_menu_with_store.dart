@@ -98,18 +98,43 @@ class _BindMenuWithStoreController extends State<BindMenuWithStore> {
           switch (state) {
             case BindMenuWithStoresState():
               {
-                if (state.bindMenuToStoreStage == BindMenuToStoreStage.attached) {
-                  listOfAllSelectedStores = [];
-                  listOfAllSelectedStores.clear();
-                  context.push(
-                    Routes.BIND_MENU_WITH_STORE_GREETING_PAGE,
-                    extra: {
-                      'allMenu': state.menuEntities.toList(),
-                      'allStore': state.storeEntities.toList(),
-                    },
-                  ).whenComplete(() {
-                    context.read<MenuBloc>().add(FetchAllStores());
-                  });
+                switch (state.bindMenuToStoreStage) {
+                  case BindMenuToStoreStage.attached:
+                    {
+                      listOfAllSelectedStores = [];
+                      listOfAllSelectedStores.clear();
+                      context.pushReplacement(
+                        Routes.BIND_MENU_WITH_STORE_GREETING_PAGE,
+                        extra: {
+                          'allMenu': state.menuEntities.toList(),
+                          'allStore': state.storeEntities.toList(),
+                        },
+                      );
+                    }
+                  case _:
+                    {}
+                }
+                return;
+              }
+            case UnBindMenuWithStoresState():
+              {
+                switch (state.bindMenuToStoreStage) {
+                  case BindMenuToStoreStage.remove:
+                    {
+                      listOfAllSelectedStores = [];
+                      listOfAllSelectedStores.clear();
+                      context.pushReplacement(
+                        Routes.BIND_MENU_WITH_STORE_GREETING_PAGE,
+                        extra: {
+                          'allMenu': state.menuEntities.toList(),
+                          'allStore': state.storeEntities.toList(),
+                          'message': '',
+                          'isRemoved': true,
+                        },
+                      );
+                    }
+                  case _:
+                    {}
                 }
                 return;
               }
@@ -346,6 +371,37 @@ class _BindMenuWithStoreView extends WidgetView<BindMenuWithStore, _BindMenuWith
                         textDirection: serviceLocator<LanguageController>().targetTextDirection,
                         children: [
                           Expanded(
+                            child: ElevatedButton(
+                              onPressed: () {
+                                context.read<MenuBloc>().add(
+                                      UnBindMenuWithStores(
+                                        menuEntities: state.listOfAllMenus.toList(),
+                                        listOfSelectedMenuEntities: state.listOfAllSelectedMenus.toList(),
+                                        listOfSelectedStoreEntities: state.listOfAllSelectedStores.toList(),
+                                        storeEntities: state.listOfAllStores.toList(),
+                                      ),
+                                    );
+                                return;
+                              },
+                              style: ElevatedButton.styleFrom(
+                                side: const BorderSide(
+                                  color: Color.fromRGBO(165, 166, 168, 1),
+                                ),
+                                backgroundColor: Colors.white,
+                              ),
+                              child: Text(
+                                'Remove',
+                                style: const TextStyle(color: Color.fromRGBO(42, 45, 50, 1)),
+                                textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                              ).translate(),
+                            ),
+                          ),
+                          const AnimatedGap(
+                            24,
+                            duration: Duration(milliseconds: 100),
+                          ),
+                          Expanded(
+                            flex: 2,
                             child: ElevatedButton(
                               onPressed: () {
                                 //context.push(Routes.SAVE_MENU_PAGE);

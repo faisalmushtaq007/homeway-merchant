@@ -291,6 +291,8 @@ class AppRouter {
           return BindMenuWithStoreGreetingPage(
             menuEntities: args?['allMenu'] ?? <MenuEntity>[] as List<MenuEntity>,
             storeEntities: args?['allStore'] ?? <MenuEntity>[] as List<StoreEntity>,
+            message: args?['message'] ?? '',
+            isRemoved: args?['isRemoved'] ?? false,
           );
         },
       ),

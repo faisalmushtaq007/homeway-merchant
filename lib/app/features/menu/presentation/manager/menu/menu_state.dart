@@ -702,6 +702,40 @@ class BindMenuWithStoresState extends MenuState {
       ];
 }
 
+class UnBindMenuWithStoresState extends MenuState {
+  UnBindMenuWithStoresState({
+    this.menuEntities = const [],
+    this.listOfSelectedMenuEntities = const [],
+    this.storeEntities = const [],
+    this.menuStateStatus = MenuStateStatus.none,
+    this.message = '',
+    this.bindMenuToStoreStage = BindMenuToStoreStage.none,
+    this.listOfSelectedStoreEntities = const [],
+  });
+
+  final List<MenuEntity> menuEntities;
+  final List<MenuEntity> listOfSelectedMenuEntities;
+  final List<StoreEntity> storeEntities;
+  final List<StoreEntity> listOfSelectedStoreEntities;
+  final MenuStateStatus menuStateStatus;
+  final String message;
+  final BindMenuToStoreStage bindMenuToStoreStage;
+
+  @override
+  bool get cacheHash => true;
+
+  @override
+  List<Object?> get hashParameters => [
+        menuEntities,
+        listOfSelectedMenuEntities,
+        storeEntities,
+        menuStateStatus,
+        message,
+        bindMenuToStoreStage,
+        listOfSelectedStoreEntities,
+      ];
+}
+
 class BindMenuWithUserState extends MenuState {
   BindMenuWithUserState({
     required this.appUserEntity,

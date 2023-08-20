@@ -94,6 +94,10 @@ class MenuBloc extends Bloc<MenuEvent, MenuState> {
       _bindMenuWithStores,
       transformer: sequential(),
     );
+    on<UnBindMenuWithStores>(
+      _unbindMenuWithStores,
+      transformer: sequential(),
+    );
     on<BindMenuWithUser>(
       _bindMenuWithUser,
       transformer: sequential(),
@@ -770,44 +774,139 @@ class MenuBloc extends Bloc<MenuEvent, MenuState> {
           bindMenuToStoreStage: BindMenuToStoreStage.attaching,
         ),
       );
-      List<StoreEntity> storeEntities = event.storeEntities;
-      List<StoreEntity> selectedStoreEntities = event.listOfSelectedStoreEntities;
-      List<MenuEntity> menuEntities = event.menuEntities;
-      List<MenuEntity> selectedMenuEntities = event.listOfSelectedMenuEntities;
-      // Update the object
-      selectedStoreEntities.asMap().forEach((key, value) {
-        value.menuEntities = selectedMenuEntities.toList();
-      });
-      storeEntities.asMap().forEach((parentIndex, parentStore) {
-        selectedStoreEntities.asMap().forEach((childIndex, childStore) {
-          if (childStore == parentStore) {
-            serviceLocator<AppUserEntity>().stores[parentIndex].menuEntities = selectedMenuEntities.toList();
-          }
-        });
-      });
-      // Search store and update it with selected stores date
-      //serviceLocator<AppUserEntity>().stores;
-      Future.delayed(const Duration(milliseconds: 500), () {});
-      emit(
-        BindMenuWithStoresState(
-          menuEntities: event.menuEntities.toList(),
-          menuStateStatus: MenuStateStatus.success,
-          listOfSelectedMenuEntities: event.listOfSelectedMenuEntities.toList(),
-          storeEntities: serviceLocator<AppUserEntity>().stores.toList(),
-          message: '',
-          bindMenuToStoreStage: BindMenuToStoreStage.attached,
-          listOfSelectedStoreEntities: selectedStoreEntities,
-        ),
+      final DataSourceState<List<StoreEntity>> result = await serviceLocator<BindMenuWithStoreUseCase>()(
+        destination: event.listOfSelectedStoreEntities,
+        source: event.listOfSelectedMenuEntities,
       );
-    } catch (e) {
-      appLog.d('Listener: BindMenuWithStoresState ${e.toString()}');
+      result.when(
+        remote: (data, meta) {
+          appLog.d('Binding menu with Store remote ${data?.length}');
+          emit(
+            BindMenuWithStoresState(
+              menuEntities: event.menuEntities.toList(),
+              menuStateStatus: MenuStateStatus.success,
+              listOfSelectedMenuEntities: event.listOfSelectedMenuEntities.toList(),
+              storeEntities: data ?? event.storeEntities,
+              message: event.message,
+              bindMenuToStoreStage: BindMenuToStoreStage.attached,
+              listOfSelectedStoreEntities: event.listOfSelectedStoreEntities,
+            ),
+          );
+        },
+        localDb: (data, meta) {
+          appLog.d('Binding menu with Store local ${data?.length}');
+          emit(
+            BindMenuWithStoresState(
+              menuEntities: event.menuEntities.toList(),
+              menuStateStatus: MenuStateStatus.success,
+              listOfSelectedMenuEntities: event.listOfSelectedMenuEntities.toList(),
+              storeEntities: data ?? event.storeEntities,
+              message: event.message,
+              bindMenuToStoreStage: BindMenuToStoreStage.attached,
+              listOfSelectedStoreEntities: event.listOfSelectedStoreEntities,
+            ),
+          );
+        },
+        error: (dataSourceFailure, reason, error, networkException, stackTrace, exception, extra) {
+          appLog.d('Binding menu with Store error $reason');
+          emit(
+            BindMenuWithStoresState(
+              menuEntities: event.menuEntities.toList(),
+              menuStateStatus: MenuStateStatus.exception,
+              listOfSelectedMenuEntities: event.listOfSelectedMenuEntities.toList(),
+              storeEntities: event.storeEntities.toList(),
+              message: reason,
+              bindMenuToStoreStage: BindMenuToStoreStage.failed,
+              listOfSelectedStoreEntities: event.listOfSelectedStoreEntities,
+            ),
+          );
+        },
+      );
+    } catch (e, s) {
+      appLog.e('Binding menu with Store exception $e');
       emit(
         BindMenuWithStoresState(
           menuEntities: event.menuEntities.toList(),
           menuStateStatus: MenuStateStatus.exception,
           listOfSelectedMenuEntities: event.listOfSelectedMenuEntities.toList(),
           storeEntities: event.storeEntities.toList(),
-          message: 'Something went wrong, please try again',
+          message: 'Something went wrong during binding menu with store, please try again',
+          bindMenuToStoreStage: BindMenuToStoreStage.exception,
+          listOfSelectedStoreEntities: event.listOfSelectedStoreEntities,
+        ),
+      );
+    }
+  }
+
+  FutureOr<void> _unbindMenuWithStores(UnBindMenuWithStores event, Emitter<MenuState> emit) async {
+    try {
+      emit(
+        UnBindMenuWithStoresState(
+          menuEntities: event.menuEntities.toList(),
+          menuStateStatus: MenuStateStatus.exception,
+          listOfSelectedMenuEntities: event.listOfSelectedMenuEntities.toList(),
+          storeEntities: event.storeEntities.toList(),
+          message: 'Processing please wait...',
+          bindMenuToStoreStage: BindMenuToStoreStage.attaching,
+        ),
+      );
+      final DataSourceState<List<StoreEntity>> result = await serviceLocator<UnBindMenuWithStoreUseCase>()(
+        destination: event.listOfSelectedStoreEntities,
+        source: event.listOfSelectedMenuEntities,
+      );
+      result.when(
+        remote: (data, meta) {
+          appLog.d('UnBinding menu with Store remote ${data?.length}');
+          emit(
+            UnBindMenuWithStoresState(
+              menuEntities: event.menuEntities.toList(),
+              menuStateStatus: MenuStateStatus.success,
+              listOfSelectedMenuEntities: event.listOfSelectedMenuEntities.toList(),
+              storeEntities: data ?? event.storeEntities.toList(),
+              message: event.message,
+              bindMenuToStoreStage: BindMenuToStoreStage.remove,
+              listOfSelectedStoreEntities: event.listOfSelectedStoreEntities.toList(),
+            ),
+          );
+        },
+        localDb: (data, meta) {
+          appLog.d('UnBinding menu with Store local ${data?.length}');
+          emit(
+            UnBindMenuWithStoresState(
+              menuEntities: event.menuEntities.toList(),
+              menuStateStatus: MenuStateStatus.success,
+              listOfSelectedMenuEntities: event.listOfSelectedMenuEntities.toList(),
+              storeEntities: data ?? event.storeEntities.toList(),
+              message: event.message,
+              bindMenuToStoreStage: BindMenuToStoreStage.remove,
+              listOfSelectedStoreEntities: event.listOfSelectedStoreEntities.toList(),
+            ),
+          );
+        },
+        error: (dataSourceFailure, reason, error, networkException, stackTrace, exception, extra) {
+          appLog.d('UnBinding menu with Store error $reason');
+          emit(
+            UnBindMenuWithStoresState(
+              menuEntities: event.menuEntities.toList(),
+              menuStateStatus: MenuStateStatus.exception,
+              listOfSelectedMenuEntities: event.listOfSelectedMenuEntities.toList(),
+              storeEntities: event.storeEntities.toList(),
+              message: reason,
+              bindMenuToStoreStage: BindMenuToStoreStage.failed,
+              listOfSelectedStoreEntities: event.listOfSelectedStoreEntities,
+            ),
+          );
+        },
+      );
+    } catch (e, s) {
+      appLog.d('UnBinding menu with Store exception $e');
+      emit(
+        UnBindMenuWithStoresState(
+          menuEntities: event.menuEntities.toList(),
+          menuStateStatus: MenuStateStatus.exception,
+          listOfSelectedMenuEntities: event.listOfSelectedMenuEntities.toList(),
+          storeEntities: event.storeEntities.toList(),
+          message: 'Something went wrong during unbinding your menu with store, please try again',
           bindMenuToStoreStage: BindMenuToStoreStage.exception,
           listOfSelectedStoreEntities: event.listOfSelectedStoreEntities,
         ),

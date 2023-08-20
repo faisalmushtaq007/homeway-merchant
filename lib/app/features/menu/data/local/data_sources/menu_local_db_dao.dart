@@ -185,47 +185,54 @@ class MenuBindingWithStoreLocalDbDbRepository<T extends MenuEntity, R extends St
     final db = await _db;
     final stores = await storeLocalDbRepository.getAll();
     if (stores.isRight()) {
-      var cacheCurrentStore = stores.right.toList();
+      var getAllCurrentStore = stores.right.toList();
+      Function unOrdDeepEq = const DeepCollectionEquality.unordered().equals;
+      List<MenuEntity> toSelectedAdd = [];
+      for (var selectedDestinationStore in destination.toSet().toList()) {
+        for (var selectedMenu in source.toSet().toList()) {
+          final bool equalityStatus = unOrdDeepEq(selectedDestinationStore.menuEntities.toSet().toList(), source.toSet().toList());
+          if (equalityStatus) {
+            continue;
+          } else {
+            selectedDestinationStore.menuEntities.addAll(source);
+          }
+        }
+      }
+      List<MenuEntity> toAdd = [];
+      for (var currentStoreStore in getAllCurrentStore) {
+        for (var selectedStore in destination) {
+          if (selectedStore.storeID == currentStoreStore.storeID) {
+            currentStoreStore.menuEntities = selectedStore.menuEntities;
+          } else {
+            continue;
+          }
+        }
+      }
+
       final result = await tryCatch<List<StoreEntity>>(() async {
-        await db.transaction((txn) async {
+        return await db.transaction((txn) async {
           // !Wrong the following code will deadlock
           // Don't use the db object in the transaction
           // await record.put(db, {'name': 'fish'});
           // correct, txn in used
           // Modify the store result
-          if (!cacheCurrentStore.isNotNullOrEmpty) {
-            cacheCurrentStore.asMap().forEach((parentStoreKey, parentStoreValue) {
-              destination.asMap().forEach((destinationStoreKey, destinationStoreValue) async {
-                if (parentStoreValue.storeID == destinationStoreValue.storeID) {
-                  // Match
-                  final record = _store.record(destinationStoreValue.storeID);
-                  final value = await record.get(txn);
-                  var currentTempMenu = cloneMap(value!);
-                  parentStoreValue.menuEntities.asMap().forEach((key, value) async {
-                    source.asMap().forEach((menuKey, menuValue) async {
-                      // Check if the record exists before adding or updating it.
-                      // Look of existing record
-                      var finder = Finder(filter: Filter.equals('stores.@.menus', menuValue.menuId));
-                      var existing = await _store.query(finder: finder).getSnapshot(txn);
-                      if (existing == null) {
-                        // code not found, add
-                        final data = currentTempMenu['menus']! as List<MenuEntity>..add(menuValue);
-                        final result = await record.update(txn, {'menus': data.toList()});
-                      } else {
-                        // Update existing
-                        await existing.ref.update(txn, menuValue.toMap());
-                      }
-                    });
-                  });
-                } else {
-                  // Not Match
-                }
-              });
-            });
+          // Delete all
+          await _store.delete(txn);
+          // Add all
+          await _store.addAll(txn, getAllCurrentStore.map((e) => e.toMap()).toList());
+
+          final snapshots = await _store.find(txn);
+          if (snapshots.isEmptyOrNull) {
+            return <StoreEntity>[];
           } else {
-            // Null or empty
+            return snapshots
+                .map(
+                  (snapshot) => StoreEntity.fromMap(snapshot.value).copyWith(
+                    storeID: snapshot.key,
+                  ),
+                )
+                .toList();
           }
-          return storeLocalDbRepository.getAll();
         });
       });
       return result;
@@ -236,8 +243,59 @@ class MenuBindingWithStoreLocalDbDbRepository<T extends MenuEntity, R extends St
 
   @override
   Future<Either<RepositoryBaseFailure, List<StoreEntity>>> unbinding(List<MenuEntity> source, List<StoreEntity> destination) async {
-    // TODO(prasant): implement unbinding
-    throw UnimplementedError();
+    final db = await _db;
+    final stores = await storeLocalDbRepository.getAll();
+    if (stores.isRight()) {
+      var getAllCurrentStore = stores.right.toList();
+      Function unOrdDeepEq = const DeepCollectionEquality.unordered().equals;
+      List<MenuEntity> toSelectedAdd = [];
+      List<MenuEntity> listOfDestinationMenu = [];
+      for (var selectedDestinationStore in destination.toSet().toList()) {
+        listOfDestinationMenu.addAll(selectedDestinationStore.menuEntities.toSet().toList());
+        listOfDestinationMenu.removeWhere((element) => source.contains(element));
+        selectedDestinationStore.menuEntities = listOfDestinationMenu;
+      }
+      List<MenuEntity> toAdd = [];
+      for (var currentStoreStore in getAllCurrentStore) {
+        for (var selectedStore in destination) {
+          if (selectedStore.storeID == currentStoreStore.storeID) {
+            currentStoreStore.menuEntities = selectedStore.menuEntities;
+          } else {
+            continue;
+          }
+        }
+      }
+
+      final result = await tryCatch<List<StoreEntity>>(() async {
+        return await db.transaction((txn) async {
+          // !Wrong the following code will deadlock
+          // Don't use the db object in the transaction
+          // await record.put(db, {'name': 'fish'});
+          // correct, txn in used
+          // Modify the store result
+          // Delete all
+          await _store.delete(txn);
+          // Add all
+          await _store.addAll(txn, getAllCurrentStore.map((e) => e.toMap()).toList());
+
+          final snapshots = await _store.find(txn);
+          if (snapshots.isEmptyOrNull) {
+            return <StoreEntity>[];
+          } else {
+            return snapshots
+                .map(
+                  (snapshot) => StoreEntity.fromMap(snapshot.value).copyWith(
+                    storeID: snapshot.key,
+                  ),
+                )
+                .toList();
+          }
+        });
+      });
+      return result;
+    } else {
+      return Left(stores.left);
+    }
   }
 }
 

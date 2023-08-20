@@ -5,9 +5,13 @@ class BindMenuWithStoreGreetingPage extends StatefulWidget {
     super.key,
     this.storeEntities = const [],
     this.menuEntities = const [],
+    this.message = '',
+    this.isRemoved = false,
   });
   final List<MenuEntity> menuEntities;
   final List<StoreEntity> storeEntities;
+  final String message;
+  final bool isRemoved;
   @override
   _BindMenuWithStoreGreetingPageController createState() => _BindMenuWithStoreGreetingPageController();
 }
@@ -124,7 +128,7 @@ class _BindMenuWithStoreGreetingPageView extends WidgetView<BindMenuWithStoreGre
                             child: Wrap(
                               children: [
                                 Text(
-                                  '${widget.menuEntities.length} Menu are successfully listed with ${widget.storeEntities.length} stores',
+                                  '${widget.menuEntities.length} Menus are successfully ${widget.isRemoved ? 'removed' : 'listed'} ${widget.isRemoved ? 'from' : 'with'} ${widget.storeEntities.length} stores',
                                   textDirection: serviceLocator<LanguageController>().targetTextDirection,
                                   textAlign: TextAlign.center,
                                   style: context.titleLarge!.copyWith(

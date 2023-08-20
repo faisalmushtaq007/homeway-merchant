@@ -671,9 +671,6 @@ class StoreBloc extends Bloc<StoreEvent, StoreState> {
         },
         localDb: (data, meta) {
           appLog.d('Binding Driver with Store local ${data?.length}');
-          data?.forEach((element) {
-            appLog.d(element.toMap());
-          });
           emit(
             BindDriverWithStoresState(
               bindDriverToStoreStage: event.bindDriverToStoreStage,
@@ -923,7 +920,7 @@ class StoreBloc extends Bloc<StoreEvent, StoreState> {
       );
       result.when(
         remote: (data, meta) {
-          appLog.d('Binding Driver with Store remote ${data?.length}');
+          appLog.d('UnBinding Driver with Store remote ${data?.length}');
           emit(
             UnBindDriverWithStoresState(
               bindDriverToStoreStage: event.bindDriverToStoreStage,
@@ -937,10 +934,7 @@ class StoreBloc extends Bloc<StoreEvent, StoreState> {
           );
         },
         localDb: (data, meta) {
-          appLog.d('Binding Driver with Store local ${data?.length}');
-          data?.forEach((element) {
-            appLog.d(element.toMap());
-          });
+          appLog.d('UnBinding Driver with Store local ${data?.length}');
           emit(
             UnBindDriverWithStoresState(
               bindDriverToStoreStage: event.bindDriverToStoreStage,
@@ -954,7 +948,7 @@ class StoreBloc extends Bloc<StoreEvent, StoreState> {
           );
         },
         error: (dataSourceFailure, reason, error, networkException, stackTrace, exception, extra) {
-          appLog.d('Binding Driver with Store error $reason');
+          appLog.d('UnBinding Driver with Store error $reason');
           emit(
             BindExceptionState(
               message: reason,
@@ -966,7 +960,7 @@ class StoreBloc extends Bloc<StoreEvent, StoreState> {
         },
       );
     } catch (e, s) {
-      appLog.e('Binding Driver with Store exception $e');
+      appLog.e('UnBinding Driver with Store exception $e');
       emit(
         BindExceptionState(
           message: 'Something went wrong during getting your all drivers, please try again',

@@ -355,6 +355,12 @@ void _setUpUseCases() {
       menuRepository: serviceLocator(),
     ),
   );
+  serviceLocator.registerLazySingleton<UnBindMenuWithStoreUseCase>(
+    () => UnBindMenuWithStoreUseCase(
+      menuRepository: serviceLocator(),
+    ),
+  );
+
   // User
   serviceLocator.registerLazySingleton<DeleteAppUserUseCase>(
     () => DeleteAppUserUseCase(
