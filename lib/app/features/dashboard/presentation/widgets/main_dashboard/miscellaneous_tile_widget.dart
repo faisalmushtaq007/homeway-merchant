@@ -18,49 +18,72 @@ class MiscellaneousTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return AspectRatio(
-      aspectRatio: 1,
-      child: Card(
-        color: Colors.white,
-        child: Padding(
-          padding: const EdgeInsetsDirectional.symmetric(horizontal: 8.0, vertical: 12),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  miscellaneousTileInfo.icon,
-                ],
-              ),
-              const AnimatedGap(4, duration: Duration(milliseconds: 100)),
-              Wrap(
-                children: [
-                  Text(
-                    miscellaneousTileInfo.title,
-                    style: context.titleMedium!.copyWith(),
-                  ),
-                ],
-              ),
-              const AnimatedGap(4, duration: Duration(milliseconds: 100)),
-              Wrap(
-                children: [
-                  Text(
-                    miscellaneousTileInfo.subTitle,
-                    style: context.bodySmall!.copyWith(),
-                  ),
-                ],
-              ),
-              const AnimatedGap(6, duration: Duration(milliseconds: 100)),
-              Flexible(
-                child: miscellaneousTileInfo.child,
-              ),
-              const AnimatedGap(4, duration: Duration(milliseconds: 100)),
-            ],
-          ),
+    return Card(
+      color: Colors.white,
+      child: Padding(
+        padding: const EdgeInsetsDirectional.symmetric(horizontal: 12.0, vertical: 8),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                miscellaneousTileInfo.icon,
+              ],
+            ),
+            const AnimatedGap(4, duration: Duration(milliseconds: 100)),
+            Wrap(
+              children: [
+                Text(
+                  miscellaneousTileInfo.title,
+                  style: context.titleMedium!.copyWith(fontWeight: FontWeight.w600, fontSize: 18),
+                ),
+              ],
+            ),
+            const AnimatedGap(4, duration: Duration(milliseconds: 100)),
+            Wrap(
+              children: [
+                Text(
+                  miscellaneousTileInfo.subTitle,
+                  style: context.labelMedium!.copyWith(),
+                ),
+              ],
+            ),
+            const AnimatedGap(12, duration: Duration(milliseconds: 100)),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Wrap(
+                  children: [
+                    Text(
+                      miscellaneousTileInfo.value.toString(),
+                      style: context.labelLarge!.copyWith(
+                        fontWeight: FontWeight.w600,
+                        fontSize: 18,
+                        color: const Color.fromRGBO(255, 90, 39, 1),
+                      ),
+                    ).translate(),
+                  ],
+                ),
+                const AnimatedGap(6, duration: Duration(milliseconds: 100)),
+                Wrap(
+                  children: [
+                    Text(
+                      miscellaneousTileInfo.message,
+                      style: context.labelMedium!.copyWith(
+                        fontWeight: FontWeight.w600,
+                        //color: Color.fromRGBO(255, 125, 113, 1),
+                      ),
+                    ).translate(),
+                  ],
+                ),
+              ],
+            ),
+            const AnimatedGap(4, duration: Duration(milliseconds: 100)),
+          ],
         ),
       ),
     );

@@ -5,7 +5,8 @@ class MiscellaneousTileInfo {
     required this.icon,
     required this.title,
     required this.subTitle,
-    required this.child,
+    required this.value,
+    required this.message,
   });
 
   factory MiscellaneousTileInfo.fromMap(Map<String, dynamic> map) {
@@ -13,14 +14,16 @@ class MiscellaneousTileInfo {
       icon: map['icon'] as Widget,
       title: map['title'] as String,
       subTitle: map['subTitle'] as String,
-      child: map['children'] as Widget,
+      value: map['value'] as int,
+      message: map['message'] as String,
     );
   }
 
   final Widget icon;
   final String title;
   final String subTitle;
-  final Widget child;
+  final int value;
+  final String message;
 
   @override
   bool operator ==(Object other) =>
@@ -30,27 +33,30 @@ class MiscellaneousTileInfo {
           icon == other.icon &&
           title == other.title &&
           subTitle == other.subTitle &&
-          child == other.child);
+          value == other.value &&
+          message == other.message);
 
   @override
-  int get hashCode => icon.hashCode ^ title.hashCode ^ subTitle.hashCode ^ child.hashCode;
+  int get hashCode => icon.hashCode ^ title.hashCode ^ subTitle.hashCode ^ value.hashCode ^ message.hashCode;
 
   @override
   String toString() {
-    return 'MiscellaneousInfo{ icon: $icon, title: $title, subTitle: $subTitle, children: $child,}';
+    return 'MiscellaneousTileInfo{ icon: $icon, title: $title, subTitle: $subTitle, value: $value, message: $message,}';
   }
 
   MiscellaneousTileInfo copyWith({
     Widget? icon,
     String? title,
     String? subTitle,
-    Widget? child,
+    int? value,
+    String? message,
   }) {
     return MiscellaneousTileInfo(
       icon: icon ?? this.icon,
       title: title ?? this.title,
       subTitle: subTitle ?? this.subTitle,
-      child: child ?? this.child,
+      value: value ?? this.value,
+      message: message ?? this.message,
     );
   }
 
@@ -59,7 +65,8 @@ class MiscellaneousTileInfo {
       'icon': this.icon,
       'title': this.title,
       'subTitle': this.subTitle,
-      'children': this.child,
+      'value': this.value,
+      'message': this.message,
     };
   }
 }
@@ -92,103 +99,51 @@ class _MiscellaneousWidgetController extends State<MiscellaneousWidget> {
   void didChangeDependencies() {
     super.didChangeDependencies();
     listOfMiscellaneousTileInfo = <MiscellaneousTileInfo>[
-      const MiscellaneousTileInfo(
-        icon: Icon(Icons.account_balance),
-        title: 'Payments',
-        subTitle: 'Add or Edit Bank Account',
-        child: ListTile(
-          dense: true,
-          visualDensity: VisualDensity(horizontal: -4, vertical: -4),
-          contentPadding: EdgeInsetsDirectional.zero,
-          horizontalTitleGap: 0,
-          title: Text('Bank Of Saudi Arabia'),
-          subtitle: Text('50XXXXXXXXXXX589'),
-          trailing: CircleAvatar(
-              radius: 12,
-              backgroundColor: Color.fromRGBO(215, 243, 227, 1),
-              child: Icon(
-                Icons.check,
-                size: 13,
-                color: Color.fromRGBO(69, 201, 125, 1),
-              )),
+      MiscellaneousTileInfo(
+        icon: Icon(
+          Icons.account_balance,
+          size: 28,
+          color: context.primaryColor,
         ),
+        title: 'Payments',
+        subTitle: 'Add or Edit Bank',
+        message: 'Bank Listed',
+        value: 1,
       ),
       MiscellaneousTileInfo(
-        icon: Icon(Icons.storefront),
+        icon: Icon(
+          Icons.storefront,
+          size: 28,
+          color: context.primaryColor,
+        ),
         title: 'Store',
         subTitle: 'Add or Edit Stores',
-        child: Wrap(
-          crossAxisAlignment: WrapCrossAlignment.center,
-          children: [
-            Text(
-              '3',
-              style: context.labelMedium!.copyWith(
-                fontWeight: FontWeight.w600,
-                color: const Color.fromRGBO(255, 90, 39, 1),
-              ),
-              textDirection: serviceLocator<LanguageController>().targetTextDirection,
-            ).translate(),
-            Text(
-              'Live Store Listed',
-              style: context.labelSmall!.copyWith(
-                fontWeight: FontWeight.w600,
-                //color: Color.fromRGBO(255, 125, 113, 1),
-              ),
-              textDirection: serviceLocator<LanguageController>().targetTextDirection,
-            ).translate(),
-          ],
-        ),
+        message: 'Live Store',
+        value: 3,
       ),
       MiscellaneousTileInfo(
-        icon: Icon(Icons.restaurant_menu),
-        title: 'Food Menus',
-        subTitle: 'Add or Edit Food Menus',
-        child: Wrap(
-          crossAxisAlignment: WrapCrossAlignment.center,
-          children: [
-            Text(
-              '253',
-              style: context.labelMedium!.copyWith(
-                fontWeight: FontWeight.w600,
-                color: const Color.fromRGBO(255, 90, 39, 1),
-              ),
-            ).translate(),
-            Text(
-              'Food Menu Listed',
-              style: context.labelSmall!.copyWith(
-                fontWeight: FontWeight.w600,
-                //color: Color.fromRGBO(255, 125, 113, 1),
-              ),
-            ).translate(),
-          ],
+        icon: Icon(
+          Icons.restaurant_menu,
+          size: 28,
+          color: context.primaryColor,
         ),
+        title: 'Food Menus',
+        subTitle: 'Add or Edit Menus',
+        message: 'Menus',
+        value: 253,
       ),
       MiscellaneousTileInfo(
         icon: SizedBox.square(
-          child: SvgPicture.asset('assets/svg/online_driver.svg', semanticsLabel: 'Driver icon'),
-          dimension: 24,
+          child: SvgPicture.asset(
+            'assets/svg/online_driver.svg',
+            semanticsLabel: 'Driver icon',
+          ),
+          dimension: 28,
         ),
         title: 'My Drivers',
         subTitle: 'Add or Edit Drivers',
-        child: Wrap(
-          crossAxisAlignment: WrapCrossAlignment.center,
-          children: [
-            Text(
-              '26',
-              style: context.labelMedium!.copyWith(
-                fontWeight: FontWeight.w600,
-                color: const Color.fromRGBO(255, 90, 39, 1),
-              ),
-            ),
-            Text(
-              'Drivers with you',
-              style: context.labelSmall!.copyWith(
-                fontWeight: FontWeight.w600,
-                //color: Color.fromRGBO(255, 125, 113, 1),
-              ),
-            ),
-          ],
-        ),
+        message: 'Drivers',
+        value: 26,
       ),
     ];
   }
@@ -202,32 +157,30 @@ class _MiscellaneousWidgetView extends WidgetView<MiscellaneousWidget, _Miscella
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      child: SizedBox(
-        height: context.height / 2.55,
-        child: GridView.custom(
-          physics: NeverScrollableScrollPhysics(),
-          gridDelegate: SliverQuiltedGridDelegate(
-            crossAxisCount: 2,
-            mainAxisSpacing: 4,
-            crossAxisSpacing: 4,
-            repeatPattern: QuiltedGridRepeatPattern.inverted,
-            pattern: [
-              QuiltedGridTile(1, 1),
-              QuiltedGridTile(1, 1),
-              QuiltedGridTile(1, 1),
-              QuiltedGridTile(1, 1),
-            ],
-          ),
-          childrenDelegate: SliverChildBuilderDelegate(
-            childCount: state.listOfMiscellaneousTileInfo.length,
-            (context, index) {
-              return MiscellaneousTile(
-                index: index,
-                miscellaneousTileInfo: state.listOfMiscellaneousTileInfo[index],
-              );
-            },
-          ),
+    return SizedBox(
+      height: context.height / 2.5,
+      child: GridView.custom(
+        physics: NeverScrollableScrollPhysics(),
+        gridDelegate: SliverQuiltedGridDelegate(
+          crossAxisCount: 2,
+          mainAxisSpacing: 4,
+          crossAxisSpacing: 4,
+          repeatPattern: QuiltedGridRepeatPattern.inverted,
+          pattern: [
+            QuiltedGridTile(1, 1),
+            QuiltedGridTile(1, 1),
+            QuiltedGridTile(1, 1),
+            QuiltedGridTile(1, 1),
+          ],
+        ),
+        childrenDelegate: SliverChildBuilderDelegate(
+          childCount: state.listOfMiscellaneousTileInfo.length,
+          (context, index) {
+            return MiscellaneousTile(
+              index: index,
+              miscellaneousTileInfo: state.listOfMiscellaneousTileInfo[index],
+            );
+          },
         ),
       ),
     );

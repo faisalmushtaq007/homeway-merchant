@@ -75,7 +75,7 @@ class _MainDashboardView extends WidgetView<MainDashboardPage, _MainDashboardCon
                 ),
                 padding: EdgeInsetsDirectional.only(
                   top: topPadding,
-                  bottom: bottomPadding,
+                  //bottom: bottomPadding,
                   start: margins * 2.5,
                   end: margins * 2.5,
                 ),
