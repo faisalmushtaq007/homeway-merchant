@@ -2,6 +2,8 @@ import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:homemakers_merchant/app/features/dashboard/domain/entities/primary_dashboard_entity.dart';
@@ -40,7 +42,7 @@ part 'package:homemakers_merchant/app/features/dashboard/presentation/widgets/ma
 part 'package:homemakers_merchant/app/features/dashboard/presentation/widgets/main_dashboard/wallet_info_widget.dart';
 part 'package:homemakers_merchant/app/features/dashboard/presentation/widgets/primary_dashboard_drawer.dart';
 part 'package:homemakers_merchant/app/features/dashboard/presentation/widgets/primary_dashboard_menu_card.dart';
-part 'package:homemakers_merchant/app/features/dashboard/presentation/widgets/main_dashboard/miscellaneous_card_widget.dart';
+part 'package:homemakers_merchant/app/features/dashboard/presentation/widgets/main_dashboard/miscellaneous_tile_widget.dart';
 part 'package:homemakers_merchant/app/features/dashboard/presentation/widgets/main_dashboard/miscellaneous_widget.dart';
 part 'package:homemakers_merchant/app/features/dashboard/presentation/widgets/main_dashboard/all_orders_widget.dart';
 part 'package:homemakers_merchant/app/features/dashboard/presentation/widgets/main_dashboard/recents_orders_widget.dart';

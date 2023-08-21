@@ -106,6 +106,17 @@ class _MainDashboardView extends WidgetView<MainDashboardPage, _MainDashboardCon
                           AllOrderWidget(
                             key: const Key('dashboard-all-orders-widget'),
                           ),
+                          const AnimatedGap(
+                            16,
+                            duration: Duration(milliseconds: 100),
+                          ),
+                          MiscellaneousWidget(
+                            key: const Key('miscellaneous-widget'),
+                          ),
+                          const AnimatedGap(
+                            16,
+                            duration: Duration(milliseconds: 100),
+                          ),
                         ],
                       ),
                     ),
