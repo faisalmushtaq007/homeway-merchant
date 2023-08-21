@@ -7,10 +7,13 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:homemakers_merchant/app/features/dashboard/domain/entities/primary_dashboard_entity.dart';
+import 'package:homemakers_merchant/app/features/menu/index.dart';
+import 'package:homemakers_merchant/app/features/order/index.dart';
 import 'package:homemakers_merchant/app/features/payment/presentation/manager/wallet/wallet_bloc.dart';
 import 'package:homemakers_merchant/app/features/permission/presentation/bloc/permission_bloc.dart';
 import 'package:homemakers_merchant/app/features/profile/index.dart';
 import 'package:homemakers_merchant/app/features/profile/presentation/manager/profile/business_profile_bloc.dart';
+import 'package:homemakers_merchant/app/features/store/index.dart';
 import 'package:homemakers_merchant/app/features/store/presentation/widgets/store_order_card_widget.dart';
 import 'package:homemakers_merchant/base/widget_view.dart';
 import 'package:homemakers_merchant/bootup/injection_container.dart';
@@ -31,6 +34,9 @@ import 'package:homemakers_merchant/shared/widgets/universal/conditional_renderi
 import 'package:homemakers_merchant/shared/widgets/universal/constrained_scrollable_views/constrained_scrollable_views.dart';
 import 'package:homemakers_merchant/shared/widgets/universal/double_tap_exit/double_tap_to_exit.dart';
 import 'package:homemakers_merchant/shared/widgets/universal/image_loader/image_helper.dart';
+import 'package:homemakers_merchant/shared/widgets/universal/infinity_scroll_pagination/infinite_scroll_pagination.dart';
+import 'package:homemakers_merchant/shared/widgets/universal/infinity_scroll_pagination/src/widgets/layouts/paged_sliver_list.dart';
+import 'package:homemakers_merchant/utils/app_log.dart';
 import 'package:homemakers_merchant/utils/image_type.dart';
 import 'package:lottie/lottie.dart';
 
@@ -40,6 +46,7 @@ part 'package:homemakers_merchant/app/features/dashboard/presentation/pages/welc
 // Widgets
 part 'package:homemakers_merchant/app/features/dashboard/presentation/widgets/main_dashboard/user_profile_widget.dart';
 part 'package:homemakers_merchant/app/features/dashboard/presentation/widgets/main_dashboard/wallet_info_widget.dart';
+part 'package:homemakers_merchant/app/features/dashboard/presentation/widgets/main_dashboard/rate_and_review_widget.dart';
 part 'package:homemakers_merchant/app/features/dashboard/presentation/widgets/primary_dashboard_drawer.dart';
 part 'package:homemakers_merchant/app/features/dashboard/presentation/widgets/primary_dashboard_menu_card.dart';
 part 'package:homemakers_merchant/app/features/dashboard/presentation/widgets/main_dashboard/miscellaneous_tile_widget.dart';

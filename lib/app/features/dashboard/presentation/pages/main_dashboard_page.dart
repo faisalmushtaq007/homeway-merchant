@@ -104,7 +104,14 @@ class _MainDashboardView extends WidgetView<MainDashboardPage, _MainDashboardCon
                             duration: Duration(milliseconds: 100),
                           ),
                           AllOrderWidget(
-                            key: const Key('dashboard-all-orders-widget'),
+                            key: const Key('dashboard-all-orders-info-widget'),
+                          ),
+                          const AnimatedGap(
+                            16,
+                            duration: Duration(milliseconds: 100),
+                          ),
+                          DashboardRecentOrders(
+                            key: const Key('dashboard-recent-orders-widget'),
                           ),
                           const AnimatedGap(
                             16,
@@ -112,6 +119,13 @@ class _MainDashboardView extends WidgetView<MainDashboardPage, _MainDashboardCon
                           ),
                           MiscellaneousWidget(
                             key: const Key('miscellaneous-widget'),
+                          ),
+                          const AnimatedGap(
+                            16,
+                            duration: Duration(milliseconds: 100),
+                          ),
+                          DashboardRateAndReviewWidget(
+                            key: const Key('dashboard-rate-review-info-widget'),
                           ),
                           const AnimatedGap(
                             16,
