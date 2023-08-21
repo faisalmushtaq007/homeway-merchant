@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 
 const ColorScheme flexSchemeLight = ColorScheme(
   brightness: Brightness.light,
-  primary: Color(0xffe65100),
+  primary: Color(0xffe65100), //230, 81, 0
   onPrimary: Color(0xffffffff),
   primaryContainer: Color(0xffffcc80),
   onPrimaryContainer: Color(0xff14110b),

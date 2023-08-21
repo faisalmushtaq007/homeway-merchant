@@ -7,6 +7,7 @@ import 'package:homemakers_merchant/app/features/authentication/presentation/man
 import 'package:homemakers_merchant/app/features/authentication/presentation/manager/phone_number_verification_bloc.dart';
 import 'package:homemakers_merchant/app/features/menu/index.dart';
 import 'package:homemakers_merchant/app/features/notification/index.dart';
+import 'package:homemakers_merchant/app/features/payment/presentation/manager/wallet/wallet_bloc.dart';
 import 'package:homemakers_merchant/app/features/permission/presentation/bloc/permission_bloc.dart';
 import 'package:homemakers_merchant/app/features/profile/index.dart';
 import 'package:homemakers_merchant/app/features/profile/presentation/manager/bank/payment_bank_bloc.dart';
@@ -860,4 +861,6 @@ void _setUpStateManagement() {
   serviceLocator.registerFactory<StoreBloc>(() => StoreBloc());
   // Address Bloc
   serviceLocator.registerFactory<AddressBloc>(() => AddressBloc());
+  //WalletBloc
+  serviceLocator.registerFactory<WalletBloc>(() => WalletBloc());
 }

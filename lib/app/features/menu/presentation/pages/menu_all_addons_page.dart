@@ -282,7 +282,6 @@ class _MenuAllAddonsPageView extends WidgetView<MenuAllAddonsPage, _MenuAllAddon
                                               SherlockCompletion(where: 'by', elements: state._menuAvailableAddons.map((e) => e.toMap()).toList()),
                                           sherlockCompletionMinResults: 1,
                                           onSearch: (input, sherlock) {
-                                            print('Searching...${input}');
                                             /*setState(() {
                                                                   state._results = sherlock.search(input: input);
                                                                 });*/
