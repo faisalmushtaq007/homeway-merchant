@@ -85,10 +85,27 @@ class _MainDashboardView extends WidgetView<MainDashboardPage, _MainDashboardCon
                     SliverList(
                       delegate: SliverChildListDelegate(
                         [
+                          const AnimatedGap(
+                            12,
+                            duration: Duration(milliseconds: 100),
+                          ),
                           UserProfileWidget(
                             key: const Key('dashboard-user-profile-widget'),
                           ),
-                          DashboardWalletInfoWidget(),
+                          const AnimatedGap(
+                            16,
+                            duration: Duration(milliseconds: 100),
+                          ),
+                          DashboardWalletInfoWidget(
+                            key: const Key('dashboard-wallet-info-widget'),
+                          ),
+                          const AnimatedGap(
+                            16,
+                            duration: Duration(milliseconds: 100),
+                          ),
+                          AllOrderWidget(
+                            key: const Key('dashboard-all-orders-widget'),
+                          ),
                         ],
                       ),
                     ),
