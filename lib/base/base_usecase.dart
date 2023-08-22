@@ -112,6 +112,18 @@ abstract class UseCaseIO<Input, T> {
   Future<T> call(Input input);
 }
 
+abstract class UseCaseIOPattern<Input, T> {
+  Future<T> call((Input input,) record);
+}
+
+abstract class QueryAllUseCaseIORecord<PageKey, PageSize, SearchTerm, T> {
+  Future<T> call((PageKey pageKey, PageSize pageSize, SearchTerm? searchText) record);
+}
+
+abstract class OrderQueryAllUseCaseIORecord<Type, PageKey, PageSize, SearchTerm, T> {
+  Future<T> call((PageKey pageKey, PageSize pageSize, SearchTerm? searchText, Type orderType) record);
+}
+
 abstract class UseCaseOptionalIO<Input, T> {
   Future<T?> call({Input? input});
 }

@@ -48,114 +48,98 @@ class _DashboardRecentOrdersController extends State<DashboardRecentOrders> {
         OrderEntity(
           orderID: 1,
           orderDateTime: DateTime.now(),
-          businessProfileEntity: BusinessProfileEntity(
+          userInfo: UserInfo(
             userName: 'Sonu',
+            deliveryAddress: DeliveryAddress(),
           ),
-          appUserEntity: AppUserEntity(
-            userID: 11,
-          ),
-          storeEntity: StoreEntity(
+          store: Store(
             storeID: 12,
             storeName: 'Arabic Kitchen',
-          ),
-          menuEntity: MenuEntity(
-            menuId: 21,
-            menuName: 'Veg Rice',
-            menuImages: [
-              MenuImage(
-                imageId: '1',
-                assetPath:
-                    'https://img.freepik.com/premium-photo/dum-handi-chicken-biryani-is-prepared-earthen-clay-pot-called-haandi-popular-indian-non-vegetarian-food_466689-52225.jpg',
-              ),
-            ],
+            location: AddressLocation(),
+            menu: Menu(
+              quantity: 1,
+              menuID: 21,
+              menuName: 'Vegetable Rice Briyani',
+              menuImage:
+                  'https://img.freepik.com/premium-photo/dum-handi-chicken-biryani-is-prepared-earthen-clay-pot-called-haandi-popular-indian-non-vegetarian-food_466689-52225.jpg',
+            ),
           ),
           orderStatus: OrderStatus.newOrder,
           orderType: OrderType.recent,
-          quantity: 1,
+          driver: Driver(),
+          payment: Payment(),
         ),
         OrderEntity(
           orderID: 2,
           orderDateTime: DateTime.now(),
-          businessProfileEntity: BusinessProfileEntity(
+          userInfo: UserInfo(
             userName: 'Sonu',
+            deliveryAddress: DeliveryAddress(),
           ),
-          appUserEntity: AppUserEntity(
-            userID: 11,
-          ),
-          storeEntity: StoreEntity(
+          store: Store(
             storeID: 12,
             storeName: 'Arabic Kitchen',
+            location: AddressLocation(),
+            menu: Menu(
+              quantity: 1,
+              menuID: 21,
+              menuName: 'Vegetable Rice Briyani',
+              menuImage:
+                  'https://img.freepik.com/premium-photo/dum-handi-chicken-biryani-is-prepared-earthen-clay-pot-called-haandi-popular-indian-non-vegetarian-food_466689-52225.jpg',
+            ),
           ),
-          menuEntity: MenuEntity(
-            menuId: 21,
-            menuName: 'Veg Rice',
-            menuImages: [
-              MenuImage(
-                imageId: '1',
-                assetPath:
-                    'https://img.freepik.com/premium-photo/dum-handi-chicken-biryani-is-prepared-earthen-clay-pot-called-haandi-popular-indian-non-vegetarian-food_466689-52225.jpg',
-              ),
-            ],
-          ),
-          orderStatus: OrderStatus.preparing,
+          orderStatus: OrderStatus.newOrder,
           orderType: OrderType.recent,
-          quantity: 1,
+          driver: Driver(),
+          payment: Payment(),
         ),
         OrderEntity(
           orderID: 3,
           orderDateTime: DateTime.now(),
-          businessProfileEntity: BusinessProfileEntity(
+          userInfo: UserInfo(
             userName: 'Sonu',
+            deliveryAddress: DeliveryAddress(),
           ),
-          appUserEntity: AppUserEntity(
-            userID: 11,
-          ),
-          storeEntity: StoreEntity(
+          store: Store(
             storeID: 12,
             storeName: 'Arabic Kitchen',
+            location: AddressLocation(),
+            menu: Menu(
+              quantity: 1,
+              menuID: 21,
+              menuName: 'Vegetable Rice Briyani',
+              menuImage:
+                  'https://img.freepik.com/premium-photo/dum-handi-chicken-biryani-is-prepared-earthen-clay-pot-called-haandi-popular-indian-non-vegetarian-food_466689-52225.jpg',
+            ),
           ),
-          menuEntity: MenuEntity(
-            menuId: 21,
-            menuName: 'Veg Rice',
-            menuImages: [
-              MenuImage(
-                imageId: '1',
-                assetPath:
-                    'https://img.freepik.com/premium-photo/dum-handi-chicken-biryani-is-prepared-earthen-clay-pot-called-haandi-popular-indian-non-vegetarian-food_466689-52225.jpg',
-              ),
-            ],
-          ),
-          orderStatus: OrderStatus.delivered,
+          orderStatus: OrderStatus.newOrder,
           orderType: OrderType.recent,
-          quantity: 1,
+          driver: Driver(),
+          payment: Payment(),
         ),
         OrderEntity(
           orderID: 4,
           orderDateTime: DateTime.now(),
-          businessProfileEntity: BusinessProfileEntity(
+          userInfo: UserInfo(
             userName: 'Sonu',
+            deliveryAddress: DeliveryAddress(),
           ),
-          appUserEntity: AppUserEntity(
-            userID: 11,
-          ),
-          storeEntity: StoreEntity(
+          store: Store(
             storeID: 12,
             storeName: 'Arabic Kitchen',
+            location: AddressLocation(),
+            menu: Menu(
+              quantity: 1,
+              menuID: 21,
+              menuName: 'Vegetable Rice Briyani',
+              menuImage:
+                  'https://img.freepik.com/premium-photo/dum-handi-chicken-biryani-is-prepared-earthen-clay-pot-called-haandi-popular-indian-non-vegetarian-food_466689-52225.jpg',
+            ),
           ),
-          menuEntity: MenuEntity(
-            menuId: 21,
-            menuName: 'Veg Rice',
-            menuImages: [
-              MenuImage(
-                imageId: '1',
-                assetPath:
-                    'https://img.freepik.com/premium-photo/dum-handi-chicken-biryani-is-prepared-earthen-clay-pot-called-haandi-popular-indian-non-vegetarian-food_466689-52225.jpg',
-              ),
-            ],
-          ),
-          orderStatus: OrderStatus.cancel,
+          orderStatus: OrderStatus.newOrder,
           orderType: OrderType.recent,
-          quantity: 1,
+          driver: Driver(),
+          payment: Payment(),
         ),
       ];
 
@@ -241,7 +225,7 @@ class RecentOrderTileWidget extends StatelessWidget {
                 clipBehavior: Clip.none,
                 children: [
                   ImageHelper(
-                    image: entity.menuEntity.menuImages[0].assetPath,
+                    image: entity.store.menu[0].menuImage,
                     //'https://img.freepik.com/premium-photo/dum-handi-chicken-biryani-is-prepared-earthen-clay-pot-called-haandi-popular-indian-non-vegetarian-food_466689-52225.jpg',
                     // image scale
                     scale: 1.0,
@@ -252,7 +236,7 @@ class RecentOrderTileWidget extends StatelessWidget {
                     // alignment of image
                     //alignment: Alignment.center,
                     // indicates where image will be loaded from, types are [network, asset,file]
-                    imageType: findImageType(entity.menuEntity.menuImages[0].assetPath),
+                    imageType: findImageType(entity.store.menu[0].menuImage),
                     // indicates what shape you would like to be with image [rectangle, oval,circle or none]
                     imageShape: ImageShape.rectangle,
                     // image default box fit
@@ -276,7 +260,7 @@ class RecentOrderTileWidget extends StatelessWidget {
                     // loader builder widget, default as icon if null
                     loaderBuilder: const CircularProgressIndicator(),
                     matchTextDirection: true,
-                    placeholderText: entity.menuEntity.menuName,
+                    placeholderText: entity.store.menu[0].menuName,
                     placeholderTextStyle: context.labelLarge!.copyWith(
                       color: Colors.white,
                       fontSize: 14,
@@ -307,7 +291,7 @@ class RecentOrderTileWidget extends StatelessWidget {
                           Wrap(
                             children: [
                               Text(
-                                entity.menuEntity.menuName,
+                                entity.store.menu[0].menuName,
                                 style: context.labelLarge!.copyWith(
                                   fontWeight: FontWeight.bold,
                                   overflow: TextOverflow.ellipsis,
@@ -319,7 +303,7 @@ class RecentOrderTileWidget extends StatelessWidget {
                           ),
                           const AnimatedGap(4, duration: Duration(milliseconds: 100)),
                           Text(
-                            'Qty: ${entity.quantity.toString()}',
+                            'Qty: ${entity.store.menu[0].quantity.toString()}',
                             style: context.labelMedium!.copyWith(
                               fontWeight: FontWeight.bold,
                               overflow: TextOverflow.ellipsis,

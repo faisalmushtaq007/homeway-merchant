@@ -1,6 +1,7 @@
 part of 'package:homemakers_merchant/app/features/address/index.dart';
 
 class AddressRemoteDataSource implements AddressDataSource {
+  final client = serviceLocator<INetworkManager<BaseResponseErrorModel>>();
   @override
   Future<ApiResultState<bool>> deleteAddress({required int addressID, AddressModel? addressEntity, AppUserEntity? appUserEntity}) {
     // TODO: implement deleteAddress
