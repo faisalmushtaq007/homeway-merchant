@@ -21,7 +21,7 @@ class OrderRepositoryImplement implements OrderRepository {
         // Return result
         return result.fold((l) {
           final RepositoryFailure failure = l as RepositoryFailure;
-          appLog.d('Delete all profile local error ${failure.message}');
+          appLog.d('Delete all order local error ${failure.message}');
           return DataSourceState<bool>.error(
             reason: failure.message,
             dataSourceFailure: DataSourceFailure.local,
@@ -374,6 +374,72 @@ class OrderRepositoryImplement implements OrderRepository {
     } catch (e, s) {
       appLog.d('Save order exception $e');
       return DataSourceState<OrderEntity>.error(
+        reason: e.toString(),
+        dataSourceFailure: DataSourceFailure.local,
+        stackTrace: s,
+        error: e,
+        exception: e as Exception,
+      );
+    }
+  }
+
+  @override
+  Future<DataSourceState<List<OrderEntity>>> saveAllOrder({
+    required List<OrderEntity> orderEntities,
+    bool hasUpdateAll = false,
+  }) async {
+    try {
+      final connectivity = serviceLocator<ConnectivityService>().getCurrentInternetStatus();
+      if (connectivity.$2 == InternetConnectivityState.internet) {
+        // Local DB
+        // Save to local
+        final Either<RepositoryBaseFailure, List<OrderEntity>> result = await orderLocalDataSource.saveAll(
+          entities: orderEntities,
+          hasUpdateAll: hasUpdateAll,
+        );
+        // Return result
+        return result.fold((l) {
+          final RepositoryFailure failure = l as RepositoryFailure;
+          appLog.d('Save all order local error ${failure.message}');
+          return DataSourceState<List<OrderEntity>>.error(
+            reason: failure.message,
+            dataSourceFailure: DataSourceFailure.local,
+            stackTrace: failure.stacktrace,
+          );
+        }, (r) {
+          appLog.d('Save all order to local : ${r?.length},');
+          return DataSourceState<List<OrderEntity>>.localDb(data: r);
+        });
+      } else {
+        // Remote
+        // Save to server
+        final ApiResultState<List<OrderEntity>> result = await remoteDataSource.saveAllOrder(
+          orderEntities: orderEntities,
+          hasUpdateAll: hasUpdateAll,
+        );
+        // Return result
+        return result.when(
+          success: (data) {
+            appLog.d('Save all order to remote');
+            return DataSourceState<List<OrderEntity>>.remote(
+              data: data,
+            );
+          },
+          failure: (reason, error, exception, stackTrace) {
+            appLog.d('Save all order remote error $reason');
+            return DataSourceState<List<OrderEntity>>.error(
+              reason: reason,
+              dataSourceFailure: DataSourceFailure.remote,
+              stackTrace: stackTrace,
+              error: error,
+              networkException: exception,
+            );
+          },
+        );
+      }
+    } catch (e, s) {
+      appLog.d('Save all order exception $e');
+      return DataSourceState<List<OrderEntity>>.error(
         reason: e.toString(),
         dataSourceFailure: DataSourceFailure.local,
         stackTrace: s,

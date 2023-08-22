@@ -34,4 +34,9 @@ abstract interface class OrderRepository {
     String? searchText,
     OrderType orderType = OrderType.none,
   });
+
+  Future<DataSourceState<List<OrderEntity>>> saveAllOrder({
+    required List<OrderEntity> orderEntities,
+    bool hasUpdateAll = false,
+  });
 }

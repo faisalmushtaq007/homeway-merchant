@@ -1,7 +1,7 @@
 part of 'package:homemakers_merchant/app/features/order/index.dart';
 
-class DeleteAllAddressUseCase extends UseCaseOptionalIO<OrderType, DataSourceState<bool>> {
-  DeleteAllAddressUseCase({
+class DeleteAllOrderUseCase extends UseCaseOptionalIO<OrderType, DataSourceState<bool>> {
+  DeleteAllOrderUseCase({
     required this.orderRepository,
   });
   final OrderRepository orderRepository;

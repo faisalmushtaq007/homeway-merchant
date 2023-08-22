@@ -28,6 +28,8 @@ part 'package:homemakers_merchant/app/features/order/domain/use_cases/save_order
 part 'package:homemakers_merchant/app/features/order/domain/use_cases/edit_order_usecase.dart';
 part 'package:homemakers_merchant/app/features/order/domain/use_cases/delete_order_usecase.dart';
 part 'package:homemakers_merchant/app/features/order/domain/use_cases/delete_all_order_usecase.dart';
+part 'package:homemakers_merchant/app/features/order/domain/use_cases/save_all_order_usecase.dart';
+part 'package:homemakers_merchant/app/features/order/domain/use_cases/edit_all_order_usecase.dart';
 part 'package:homemakers_merchant/app/features/order/domain/repositories/order_repository.dart';
 // Data
 part 'package:homemakers_merchant/app/features/order/data/remote/data_sources/order_data_source.dart';

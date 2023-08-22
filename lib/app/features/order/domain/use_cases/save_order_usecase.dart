@@ -1,7 +1,7 @@
 part of 'package:homemakers_merchant/app/features/order/index.dart';
 
-class SaveAddressUseCase extends UseCaseIO<OrderEntity, DataSourceState<OrderEntity>> {
-  SaveAddressUseCase({
+class SaveOrderUseCase extends UseCaseIO<OrderEntity, DataSourceState<OrderEntity>> {
+  SaveOrderUseCase({
     required this.orderRepository,
   });
   final OrderRepository orderRepository;

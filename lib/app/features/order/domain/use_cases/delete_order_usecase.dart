@@ -1,7 +1,7 @@
 part of 'package:homemakers_merchant/app/features/order/index.dart';
 
-class DeleteAddressUseCase extends UseCaseByID<OrderEntity, int, DataSourceState<bool>> {
-  DeleteAddressUseCase({
+class DeleteOrderUseCase extends UseCaseByID<OrderEntity, int, DataSourceState<bool>> {
+  DeleteOrderUseCase({
     required this.oderRepository,
   });
   final OrderRepository oderRepository;

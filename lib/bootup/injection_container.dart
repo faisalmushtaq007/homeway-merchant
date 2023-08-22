@@ -7,6 +7,7 @@ import 'package:homemakers_merchant/app/features/authentication/presentation/man
 import 'package:homemakers_merchant/app/features/authentication/presentation/manager/phone_number_verification_bloc.dart';
 import 'package:homemakers_merchant/app/features/menu/index.dart';
 import 'package:homemakers_merchant/app/features/notification/index.dart';
+import 'package:homemakers_merchant/app/features/order/index.dart';
 import 'package:homemakers_merchant/app/features/payment/presentation/manager/wallet/wallet_bloc.dart';
 import 'package:homemakers_merchant/app/features/permission/presentation/bloc/permission_bloc.dart';
 import 'package:homemakers_merchant/app/features/profile/index.dart';
@@ -624,6 +625,47 @@ void _setUpUseCases() {
       userRateAndReviewRepository: serviceLocator(),
     ),
   );
+  // Order
+  serviceLocator.registerLazySingleton<SaveOrderUseCase>(
+    () => SaveOrderUseCase(
+      orderRepository: serviceLocator(),
+    ),
+  );
+  serviceLocator.registerLazySingleton<EditOrderUseCase>(
+    () => EditOrderUseCase(
+      orderRepository: serviceLocator(),
+    ),
+  );
+  serviceLocator.registerLazySingleton<GetOrderUseCase>(
+    () => GetOrderUseCase(
+      orderRepository: serviceLocator(),
+    ),
+  );
+  serviceLocator.registerLazySingleton<GetAllOrderUseCase>(
+    () => GetAllOrderUseCase(
+      orderRepository: serviceLocator(),
+    ),
+  );
+  serviceLocator.registerLazySingleton<DeleteOrderUseCase>(
+    () => DeleteOrderUseCase(
+      oderRepository: serviceLocator(),
+    ),
+  );
+  serviceLocator.registerLazySingleton<DeleteAllOrderUseCase>(
+    () => DeleteAllOrderUseCase(
+      orderRepository: serviceLocator(),
+    ),
+  );
+  serviceLocator.registerLazySingleton<SaveAllOrderUseCase>(
+    () => SaveAllOrderUseCase(
+      orderRepository: serviceLocator(),
+    ),
+  );
+  serviceLocator.registerLazySingleton<EditAllOrderUseCase>(
+    () => EditAllOrderUseCase(
+      orderRepository: serviceLocator(),
+    ),
+  );
 }
 
 void _setUpRepository() {
@@ -830,6 +872,19 @@ void _setUpRepository() {
     RateAndReviewRepositoryImplement(
       remoteDataSource: serviceLocator(),
       notificationLocalDataSource: serviceLocator(),
+    ),
+  );
+
+  // Order
+  // Notification
+  serviceLocator.registerSingleton<OrderLocalDbRepository<OrderEntity>>(OrderLocalDbRepository<OrderEntity>());
+  // remote
+  serviceLocator.registerSingleton<OrderDataSource>(OrderRemoteDataSource());
+  //repository UserPaymentBankRepository
+  serviceLocator.registerSingleton<OrderRepository>(
+    OrderRepositoryImplement(
+      remoteDataSource: serviceLocator(),
+      orderLocalDataSource: serviceLocator(),
     ),
   );
 }

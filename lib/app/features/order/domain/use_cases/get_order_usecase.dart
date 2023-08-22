@@ -1,7 +1,7 @@
 part of 'package:homemakers_merchant/app/features/order/index.dart';
 
-class GetAddressUseCase extends UseCaseByID<OrderEntity, int, DataSourceState<OrderEntity>> {
-  GetAddressUseCase({
+class GetOrderUseCase extends UseCaseByID<OrderEntity, int, DataSourceState<OrderEntity>> {
+  GetOrderUseCase({
     required this.orderRepository,
   });
 

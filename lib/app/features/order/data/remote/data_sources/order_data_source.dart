@@ -23,4 +23,9 @@ abstract interface class OrderDataSource {
   });
 
   Future<ApiResultState<List<OrderEntity>>> getAllOrder();
+
+  Future<ApiResultState<List<OrderEntity>>> saveAllOrder({
+    required List<OrderEntity> orderEntities,
+    bool hasUpdateAll = false,
+  });
 }

@@ -41,4 +41,10 @@ class OrderRemoteDataSource implements OrderDataSource {
     // TODO: implement saveOrder
     throw UnimplementedError();
   }
+
+  @override
+  Future<ApiResultState<List<OrderEntity>>> saveAllOrder({required List<OrderEntity> orderEntities, bool hasUpdateAll = false}) {
+    // TODO: implement saveAllOrder
+    throw UnimplementedError();
+  }
 }
