@@ -646,6 +646,36 @@ void _setUpUseCases() {
       orderRepository: serviceLocator(),
     ),
   );
+  serviceLocator.registerLazySingleton<GetAllOnProcessOrderUseCase>(
+    () => GetAllOnProcessOrderUseCase(
+      orderRepository: serviceLocator(),
+    ),
+  );
+  serviceLocator.registerLazySingleton<GetAllNewOrderUseCase>(
+    () => GetAllNewOrderUseCase(
+      orderRepository: serviceLocator(),
+    ),
+  );
+  serviceLocator.registerLazySingleton<GetAllRecentOrderUseCase>(
+    () => GetAllRecentOrderUseCase(
+      orderRepository: serviceLocator(),
+    ),
+  );
+  serviceLocator.registerLazySingleton<GetAllDeliverOrderUseCase>(
+    () => GetAllDeliverOrderUseCase(
+      orderRepository: serviceLocator(),
+    ),
+  );
+  serviceLocator.registerLazySingleton<GetAllScheduleOrderUseCase>(
+    () => GetAllScheduleOrderUseCase(
+      orderRepository: serviceLocator(),
+    ),
+  );
+  serviceLocator.registerLazySingleton<GetAllCancelOrderUseCase>(
+    () => GetAllCancelOrderUseCase(
+      orderRepository: serviceLocator(),
+    ),
+  );
   serviceLocator.registerLazySingleton<DeleteOrderUseCase>(
     () => DeleteOrderUseCase(
       oderRepository: serviceLocator(),

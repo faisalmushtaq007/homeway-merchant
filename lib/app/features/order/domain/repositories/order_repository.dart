@@ -35,6 +35,62 @@ abstract interface class OrderRepository {
     OrderType orderType = OrderType.none,
   });
 
+  Future<DataSourceState<List<OrderEntity>>> getAllNewOrder({
+    int pageKey = 1,
+    int pageSize = 10,
+    String? searchText,
+    OrderType orderType = OrderType.newOrder,
+    String? filter,
+    String? sorting,
+  });
+
+  Future<DataSourceState<List<OrderEntity>>> getAllRecentOrder({
+    int pageKey = 1,
+    int pageSize = 10,
+    String? searchText,
+    OrderType orderType = OrderType.recent,
+    String? filter,
+    String? sorting,
+  });
+
+  Future<DataSourceState<List<OrderEntity>>> getAllCancelOrder({
+    int pageKey = 1,
+    int pageSize = 10,
+    String? searchText,
+    OrderType orderType = OrderType.cancel,
+    String? filter,
+    String? sorting,
+  });
+
+  Future<DataSourceState<List<OrderEntity>>> getAllDeliverOrder({
+    int pageKey = 1,
+    int pageSize = 10,
+    String? searchText,
+    OrderType orderType = OrderType.deliver,
+    String? filter,
+    String? sorting,
+  });
+
+  Future<DataSourceState<List<OrderEntity>>> getAllOnProcessOrder({
+    int pageKey = 1,
+    int pageSize = 10,
+    String? searchText,
+    OrderType orderType = OrderType.onProcess,
+    String? filter,
+    String? sorting,
+  });
+
+  Future<DataSourceState<List<OrderEntity>>> getAllOnScheduleOrder({
+    int pageKey = 1,
+    int pageSize = 10,
+    String? searchText,
+    OrderType orderType = OrderType.onProcess,
+    String? filter,
+    String? sorting,
+    Timestamp? startTimeStamp,
+    Timestamp? endTimeStamp,
+  });
+
   Future<DataSourceState<List<OrderEntity>>> saveAllOrder({
     required List<OrderEntity> orderEntities,
     bool hasUpdateAll = false,

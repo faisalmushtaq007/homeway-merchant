@@ -24,6 +24,12 @@ part 'package:homemakers_merchant/app/features/order/domain/entities/order_entit
 part 'package:homemakers_merchant/app/features/order/data/common/order_status_enum.dart';
 part 'package:homemakers_merchant/app/features/order/domain/use_cases/get_order_usecase.dart';
 part 'package:homemakers_merchant/app/features/order/domain/use_cases/get_all_order_usecase.dart';
+part 'package:homemakers_merchant/app/features/order/domain/use_cases/get_all_new_order_usecase.dart';
+part 'package:homemakers_merchant/app/features/order/domain/use_cases/get_all_cancel_order_usecase.dart';
+part 'package:homemakers_merchant/app/features/order/domain/use_cases/get_all_schedule_order_usecase.dart';
+part 'package:homemakers_merchant/app/features/order/domain/use_cases/get_all_deliver_order_usecase.dart';
+part 'package:homemakers_merchant/app/features/order/domain/use_cases/get_all_onprocess_order_usecase.dart';
+part 'package:homemakers_merchant/app/features/order/domain/use_cases/get_all_recent_order_usecase.dart';
 part 'package:homemakers_merchant/app/features/order/domain/use_cases/save_order_usecase.dart';
 part 'package:homemakers_merchant/app/features/order/domain/use_cases/edit_order_usecase.dart';
 part 'package:homemakers_merchant/app/features/order/domain/use_cases/delete_order_usecase.dart';

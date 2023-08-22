@@ -1,0 +1,14 @@
+part of 'package:homemakers_merchant/app/features/order/index.dart';
+
+class GetAllDeliverOrderUseCase extends OrderQueryAllUseCaseIORecord<OrderType, int, int, String?, DataSourceState<List<OrderEntity>>> {
+  GetAllDeliverOrderUseCase({
+    required this.orderRepository,
+  });
+  final OrderRepository orderRepository;
+
+  @override
+  Future<DataSourceState<List<OrderEntity>>> call((int pageKey, int pageSize, String? searchText, OrderType orderType) record) {
+    // TODO: implement call
+    throw UnimplementedError();
+  }
+}

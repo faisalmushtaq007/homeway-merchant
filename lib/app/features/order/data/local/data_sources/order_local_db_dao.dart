@@ -2,7 +2,9 @@ part of 'package:homemakers_merchant/app/features/order/index.dart';
 
 class OrderLocalDbRepository<T extends OrderEntity> implements BaseOrderLocalDbRepository<OrderEntity> {
   Future<Database> get _db async => AppDatabase.instance.database;
+
   StoreRef<int, Map<String, dynamic>> get _order => AppDatabase.instance.notification;
+
   @override
   Future<Either<RepositoryBaseFailure, OrderEntity>> add(OrderEntity entity) async {
     final result = await tryCatch<OrderEntity>(() async {
@@ -175,5 +177,97 @@ class OrderLocalDbRepository<T extends OrderEntity> implements BaseOrderLocalDbR
       });
     });
     return result;
+  }
+
+  @override
+  Future<Either<RepositoryBaseFailure, List<OrderEntity>>> getAllCancelOrder({
+    int pageKey = 1,
+    int pageSize = 10,
+    String? searchText,
+    OrderType orderType = OrderType.cancel,
+    String? filter,
+    String? sorting,
+  }) async {
+    // TODO: implement getAllCancelOrder
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<Either<RepositoryBaseFailure, List<OrderEntity>>> getAllDeliveryOrder({
+    int pageKey = 1,
+    int pageSize = 10,
+    String? searchText,
+    OrderType orderType = OrderType.deliver,
+    String? filter,
+    String? sorting,
+  }) async {
+    // TODO: implement getAllDeliveryOrder
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<Either<RepositoryBaseFailure, List<OrderEntity>>> getAllNewOrder({
+    int pageKey = 1,
+    int pageSize = 10,
+    String? searchText,
+    OrderType orderType = OrderType.newOrder,
+    String? filter,
+    String? sorting,
+  }) async {
+    // TODO: implement getAllNewOrder
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<Either<RepositoryBaseFailure, List<OrderEntity>>> getAllOnProcessOrder({
+    int pageKey = 1,
+    int pageSize = 10,
+    String? searchText,
+    OrderType orderType = OrderType.onProcess,
+    String? filter,
+    String? sorting,
+  }) async {
+    // TODO: implement getAllOnProcessOrder
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<Either<RepositoryBaseFailure, List<OrderEntity>>> getAllOrder({
+    int pageKey = 1,
+    int pageSize = 10,
+    String? searchText,
+    OrderType orderType = OrderType.recent,
+    String? filter,
+    String? sorting,
+  }) async {
+    // TODO: implement getAllOrder
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<Either<RepositoryBaseFailure, List<OrderEntity>>> getAllRecentOrder({
+    int pageKey = 1,
+    int pageSize = 10,
+    String? searchText,
+    OrderType orderType = OrderType.recent,
+    String? filter,
+    String? sorting,
+  }) async {
+    // TODO: implement getAllRecentOrder
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<Either<RepositoryBaseFailure, List<OrderEntity>>> getAllScheduleOrder(
+      {int pageKey = 1,
+      int pageSize = 10,
+      String? searchText,
+      OrderType orderType = OrderType.schedule,
+      String? filter,
+      String? sorting,
+      Timestamp? startTimeStamp,
+      Timestamp? endTimeStamp}) async {
+    // TODO: implement getAllScheduleOrder
+    throw UnimplementedError();
   }
 }

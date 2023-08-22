@@ -201,6 +201,8 @@ class OrderRepositoryImplement implements OrderRepository {
     int pageSize = 10,
     String? searchText,
     OrderType orderType = OrderType.none,
+    String? filter,
+    String? sorting,
   }) async {
     try {
       final connectivity = serviceLocator<ConnectivityService>().getCurrentInternetStatus();
@@ -447,5 +449,55 @@ class OrderRepositoryImplement implements OrderRepository {
         exception: e as Exception,
       );
     }
+  }
+
+  @override
+  Future<DataSourceState<List<OrderEntity>>> getAllCancelOrder(
+      {int pageKey = 1, int pageSize = 10, String? searchText, OrderType orderType = OrderType.cancel, String? filter, String? sorting}) {
+    // TODO: implement getAllCancelOrder
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<DataSourceState<List<OrderEntity>>> getAllDeliverOrder(
+      {int pageKey = 1, int pageSize = 10, String? searchText, OrderType orderType = OrderType.deliver, String? filter, String? sorting}) {
+    // TODO: implement getAllDeliverOrder
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<DataSourceState<List<OrderEntity>>> getAllNewOrder(
+      {int pageKey = 1, int pageSize = 10, String? searchText, OrderType orderType = OrderType.newOrder, String? filter, String? sorting}) {
+    // TODO: implement getAllNewOrder
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<DataSourceState<List<OrderEntity>>> getAllOnProcessOrder(
+      {int pageKey = 1, int pageSize = 10, String? searchText, OrderType orderType = OrderType.onProcess, String? filter, String? sorting}) {
+    // TODO: implement getAllOnProcessOrder
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<DataSourceState<List<OrderEntity>>> getAllOnScheduleOrder({
+    int pageKey = 1,
+    int pageSize = 10,
+    String? searchText,
+    OrderType orderType = OrderType.onProcess,
+    String? filter,
+    String? sorting,
+    Timestamp? startTimeStamp,
+    Timestamp? endTimeStamp,
+  }) {
+    // TODO: implement getAllOnScheduleOrder
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<DataSourceState<List<OrderEntity>>> getAllRecentOrder(
+      {int pageKey = 1, int pageSize = 10, String? searchText, OrderType orderType = OrderType.recent, String? filter, String? sorting}) {
+    // TODO: implement getAllRecentOrder
+    throw UnimplementedError();
   }
 }
