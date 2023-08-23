@@ -63,6 +63,12 @@ class DashboardRateAndReviewWidget extends StatelessWidget {
           ),
         ],
       ),
+      onTap: () async {
+        final result = await context.push(
+          Routes.RATE_AND_REVIEW_PAGE,
+        );
+        return;
+      },
     );
   }
 }

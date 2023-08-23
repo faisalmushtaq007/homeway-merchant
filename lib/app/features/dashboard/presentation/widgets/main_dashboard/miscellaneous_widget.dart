@@ -7,6 +7,7 @@ class MiscellaneousTileInfo {
     required this.subTitle,
     required this.value,
     required this.message,
+    this.onPressed,
   });
 
   factory MiscellaneousTileInfo.fromMap(Map<String, dynamic> map) {
@@ -24,6 +25,7 @@ class MiscellaneousTileInfo {
   final String subTitle;
   final int value;
   final String message;
+  final VoidCallback? onPressed;
 
   @override
   bool operator ==(Object other) =>
@@ -120,6 +122,13 @@ class _MiscellaneousWidgetController extends State<MiscellaneousWidget> {
         subTitle: 'Add or Edit Stores',
         message: 'Live Store',
         value: 3,
+        onPressed: () async {
+          final result = await context.push(
+            Routes.ALL_STORES_PAGE,
+            extra: {'selectItemUseCase': SelectItemUseCase.none},
+          );
+          return;
+        },
       ),
       MiscellaneousTileInfo(
         icon: Icon(
@@ -131,6 +140,13 @@ class _MiscellaneousWidgetController extends State<MiscellaneousWidget> {
         subTitle: 'Add or Edit Menus',
         message: 'Menus',
         value: 253,
+        onPressed: () async {
+          final result = await context.push(
+            Routes.ALL_MENU_PAGE,
+            extra: {'selectItemUseCase': SelectItemUseCase.none},
+          );
+          return;
+        },
       ),
       MiscellaneousTileInfo(
         icon: SizedBox.square(
@@ -144,6 +160,13 @@ class _MiscellaneousWidgetController extends State<MiscellaneousWidget> {
         subTitle: 'Add or Edit Drivers',
         message: 'Drivers',
         value: 26,
+        onPressed: () async {
+          final result = await context.push(
+            Routes.ALL_DRIVER_PAGE,
+            extra: {'selectItemUseCase': SelectItemUseCase.none},
+          );
+          return;
+        },
       ),
     ];
   }

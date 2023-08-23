@@ -40,6 +40,8 @@ class MiscellaneousTile extends StatelessWidget {
                 Text(
                   miscellaneousTileInfo.title,
                   style: context.titleMedium!.copyWith(fontWeight: FontWeight.w600, fontSize: 18),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
                 ),
               ],
             ),
@@ -49,6 +51,8 @@ class MiscellaneousTile extends StatelessWidget {
                 Text(
                   miscellaneousTileInfo.subTitle,
                   style: context.labelMedium!.copyWith(),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
                 ),
               ],
             ),
@@ -68,7 +72,7 @@ class MiscellaneousTile extends StatelessWidget {
                     ).translate(),
                   ],
                 ),
-                const AnimatedGap(6, duration: Duration(milliseconds: 100)),
+                const AnimatedGap(4, duration: Duration(milliseconds: 100)),
                 Wrap(
                   children: [
                     Text(
@@ -77,6 +81,8 @@ class MiscellaneousTile extends StatelessWidget {
                         fontWeight: FontWeight.w600,
                         //color: Color.fromRGBO(255, 125, 113, 1),
                       ),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
                     ).translate(),
                   ],
                 ),

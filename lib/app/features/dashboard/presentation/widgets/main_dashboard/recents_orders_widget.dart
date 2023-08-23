@@ -180,22 +180,57 @@ class _DashboardRecentOrdersView extends WidgetView<DashboardRecentOrders, _Dash
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: context.width / 1.8,
-      child: PagedPageView<int, OrderEntity>(
-        scrollDirection: Axis.horizontal,
-        pagingController: state._pagingController,
-        pageController: state.pageController,
-        pageSnapping: false,
-        padEnds: false,
-        builderDelegate: PagedChildBuilderDelegate<OrderEntity>(
-          animateTransitions: true,
-          itemBuilder: (context, item, index) => RecentOrderTileWidget(
-            entity: item,
-            index: index,
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.start,
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Wrap(
+              children: [
+                Text(
+                  'Recent Orders',
+                  style: context.titleMedium!.copyWith(fontWeight: FontWeight.w600, fontSize: 18),
+                ),
+              ],
+            ),
+            /*Spacer(),
+            Wrap(
+              children: [
+                InkWell(
+                  onTap: () {},
+                  child: Text(
+                    'View All',
+                    style: context.titleMedium!.copyWith(color: context.colorScheme.primary),
+                  ),
+                ),
+              ],
+            ),*/
+          ],
+        ),
+        const AnimatedGap(4, duration: Duration(milliseconds: 100)),
+        SizedBox(
+          height: context.width / 1.8,
+          child: PagedPageView<int, OrderEntity>(
+            scrollDirection: Axis.horizontal,
+            pagingController: state._pagingController,
+            pageController: state.pageController,
+            pageSnapping: false,
+            padEnds: false,
+            builderDelegate: PagedChildBuilderDelegate<OrderEntity>(
+              animateTransitions: true,
+              itemBuilder: (context, item, index) => RecentOrderTileWidget(
+                entity: item,
+                index: index,
+              ),
+            ),
           ),
         ),
-      ),
+      ],
     );
   }
 }
@@ -214,7 +249,7 @@ class RecentOrderTileWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       key: ValueKey(index),
-      //margin: const EdgeInsetsDirectional.only(bottom: 16, end: 8, top: 0),
+      margin: const EdgeInsetsDirectional.only(bottom: 4, end: 8, start: 0),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadiusDirectional.circular(6),
       ),
@@ -339,13 +374,13 @@ class RecentOrderTileWidget extends StatelessWidget {
                       top: -20,
                       child: Center(
                         child: Chip(
-                          labelPadding: const EdgeInsetsDirectional.all(1),
+                          labelPadding: const EdgeInsetsDirectional.all(3),
                           label: Text(
-                            'Cooked',
+                            'Cooking',
                             style: context.labelSmall!.copyWith(
-                              color: const Color.fromRGBO(42, 45, 50, 1),
-                              fontWeight: FontWeight.w600,
-                              fontSize: 16,
+                              //color: const Color.fromRGBO(42, 45, 50, 1),
+                              fontWeight: FontWeight.w500,
+                              fontSize: 14,
                             ),
                           ),
                           backgroundColor: const Color.fromRGBO(69, 201, 125, 1),
