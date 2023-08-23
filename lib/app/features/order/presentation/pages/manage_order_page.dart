@@ -2,6 +2,7 @@ part of 'package:homemakers_merchant/app/features/order/index.dart';
 
 class ManageOrderPage extends StatefulWidget {
   const ManageOrderPage({super.key});
+
   @override
   _ManageOrderPageController createState() => _ManageOrderPageController();
 }
@@ -216,53 +217,53 @@ class _ManageOrderPageView extends WidgetView<ManageOrderPage, _ManageOrderPageC
               child: Directionality(
                 textDirection: serviceLocator<LanguageController>().targetTextDirection,
                 child: PageBody(
-                    controller: state.scrollController,
-                    constraints: BoxConstraints(
-                      minWidth: 1000,
-                      minHeight: media.size.height - (media.padding.top + kToolbarHeight + media.padding.bottom),
-                    ),
-                    padding: EdgeInsetsDirectional.only(
-                      top: topPadding,
-                      //bottom: bottomPadding,
-                      start: margins * 2.5,
-                      end: margins * 2.5,
-                    ),
-                    child: CustomScrollView(
-                      controller: state.customScrollViewScrollController,
-                      slivers: [
-                        SliverList(
-                          delegate: SliverChildListDelegate(
-                            [
-                              const AnimatedGap(
-                                12,
-                                duration: Duration(milliseconds: 100),
-                              ),
-                              ManageOrderHeadlineWidget(
-                                key: const Key('manage-order-headline-widget'),
-                              ),
-                              const AnimatedGap(
-                                16,
-                                duration: Duration(milliseconds: 100),
-                              ),
-                              OrderTypeWidget(
-                                key: const Key('manage-order-type-widget'),
-                              ),
-                              const AnimatedGap(
-                                16,
-                                duration: Duration(milliseconds: 100),
-                              ),
-                              AllOrderPages(
-                                key: const Key('manage-order-all-orders-widget'),
-                              ),
-                              const AnimatedGap(
-                                16,
-                                duration: Duration(milliseconds: 100),
-                              ),
-                            ],
-                          ),
+                  controller: state.scrollController,
+                  constraints: BoxConstraints(
+                    minWidth: 1000,
+                    minHeight: media.size.height - (media.padding.top + kToolbarHeight + media.padding.bottom),
+                  ),
+                  padding: EdgeInsetsDirectional.only(
+                    top: topPadding,
+                    //bottom: bottomPadding,
+                    start: margins * 2.5,
+                    end: margins * 2.5,
+                  ),
+                  child: CustomScrollView(
+                    controller: state.customScrollViewScrollController,
+                    slivers: [
+                      SliverList(
+                        delegate: SliverChildListDelegate(
+                          [
+                            const AnimatedGap(
+                              12,
+                              duration: Duration(milliseconds: 100),
+                            ),
+                            ManageOrderHeadlineWidget(
+                              key: const Key('manage-order-headline-widget'),
+                            ),
+                            const AnimatedGap(
+                              16,
+                              duration: Duration(milliseconds: 100),
+                            ),
+                            OrderTypeWidget(
+                              key: const Key('manage-order-type-widget'),
+                            ),
+                            const AnimatedGap(
+                              16,
+                              duration: Duration(milliseconds: 100),
+                            ),
+                          ],
                         ),
-                      ],
-                    )),
+                      ),
+                      SliverFillRemaining(
+                        hasScrollBody: true,
+                        child: AllOrderPages(
+                          key: const Key('manage-order-all-orders-widget'),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
               ),
             ),
           ),
