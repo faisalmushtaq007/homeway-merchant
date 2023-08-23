@@ -96,7 +96,11 @@ class _AllOrderWidgetView extends WidgetView<AllOrderWidget, _AllOrderWidgetCont
                   ),
                 ),
                 Spacer(),
-                Text(
+                AllStoreDialogWidget(
+                  onChanged: (List<StoreEntity> stores) {},
+                  key: const Key('all-order-select-store-widget'),
+                ),
+                /*Text(
                   'All Stores',
                   style: context.labelMedium!.copyWith(
                     color: Color.fromRGBO(127, 129, 132, 1),
@@ -106,7 +110,7 @@ class _AllOrderWidgetView extends WidgetView<AllOrderWidget, _AllOrderWidgetCont
                 const Icon(
                   Icons.arrow_drop_up,
                   color: Color.fromRGBO(127, 129, 132, 1),
-                )
+                )*/
               ],
             ),
             Divider(
