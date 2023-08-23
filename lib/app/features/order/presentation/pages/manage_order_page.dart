@@ -15,6 +15,7 @@ class _ManageOrderPageController extends State<ManageOrderPage> {
     super.initState();
     scrollController = ScrollController();
     customScrollViewScrollController = ScrollController();
+    saveAll();
   }
 
   @override
@@ -250,29 +251,8 @@ class _ManageOrderPageView extends WidgetView<ManageOrderPage, _ManageOrderPageC
                                 16,
                                 duration: Duration(milliseconds: 100),
                               ),
-                              AllOrderWidget(
-                                key: const Key('dashboard-all-orders-info-widget'),
-                              ),
-                              const AnimatedGap(
-                                16,
-                                duration: Duration(milliseconds: 100),
-                              ),
-                              DashboardRecentOrders(
-                                key: const Key('dashboard-recent-orders-widget'),
-                              ),
-                              const AnimatedGap(
-                                16,
-                                duration: Duration(milliseconds: 100),
-                              ),
-                              MiscellaneousWidget(
-                                key: const Key('miscellaneous-widget'),
-                              ),
-                              const AnimatedGap(
-                                16,
-                                duration: Duration(milliseconds: 100),
-                              ),
-                              DashboardRateAndReviewWidget(
-                                key: const Key('dashboard-rate-review-info-widget'),
+                              AllOrderPages(
+                                key: const Key('manage-order-all-orders-widget'),
                               ),
                               const AnimatedGap(
                                 16,

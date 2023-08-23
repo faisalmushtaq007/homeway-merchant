@@ -152,8 +152,13 @@ class _AllOrderPagesView extends WidgetView<AllOrderPages, _AllOrderPagesControl
           pagingController: state._pagingController,
           builderDelegate: PagedChildBuilderDelegate<OrderEntity>(
               animateTransitions: true,
-              itemBuilder: (context, notificationResult, index) {
-                return Offstage();
+              itemBuilder: (context, orderResult, index) {
+                return Card(
+                  child: ListTile(
+                    title: Text('${orderResult.store.menu[0].menuName}'),
+                    subtitle: Text('${orderResult.store.storeName}'),
+                  ),
+                );
               }),
         ),
       ],
