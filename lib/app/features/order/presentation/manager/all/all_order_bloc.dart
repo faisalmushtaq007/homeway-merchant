@@ -22,7 +22,7 @@ class AllOrderBloc extends Bloc<AllOrderEvent, AllOrderState> {
     try {
       emit(const GetAllLoadingOrderState(isLoading: true, message: 'Please wait while we are fetching all orders...'));
       final DataSourceState<List<OrderEntity>> result = await serviceLocator<GetAllOrderUseCase>()(
-        (event.pageKey, event.pageSize, event.searchText, event.orderType),
+        (event.pageKey, event.pageSize, event.searchText, event.orderType, event.filter, event.sorting, event.startTimeStamp, event.endTimeStamp),
       );
       result.when(
         remote: (data, meta) {

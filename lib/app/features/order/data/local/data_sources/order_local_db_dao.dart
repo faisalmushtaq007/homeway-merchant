@@ -264,9 +264,9 @@ class OrderLocalDbRepository<T extends OrderEntity> implements BaseOrderLocalDbR
           offset: pageKey,
         );
         if (searchText.isNotNull || filter.isNotNull || sorting.isNotNull) {
-          var regExp = RegExp(searchText, caseSensitive: false);
-          var filterRegExp = RegExp(filter, caseSensitive: false);
-          var sortingRegExp = RegExp(sorting, caseSensitive: false);
+          var regExp = RegExp(searchText ?? '', caseSensitive: false);
+          var filterRegExp = RegExp(filter ?? '', caseSensitive: false);
+          var sortingRegExp = RegExp(sorting ?? '', caseSensitive: false);
           finder = Finder(
             sortOrders: [
               SortOrder('orderDateTime'),
@@ -293,9 +293,9 @@ class OrderLocalDbRepository<T extends OrderEntity> implements BaseOrderLocalDbR
             ]),
           );
         } else if (searchText.isNotNull || filter.isNotNull || sorting.isNotNull && (startTimeStamp.isNotNull || endTimeStamp.isNotNull)) {
-          var regExp = RegExp(searchText, caseSensitive: false);
-          var filterRegExp = RegExp(filter, caseSensitive: false);
-          var sortingRegExp = RegExp(sorting, caseSensitive: false);
+          var regExp = RegExp(searchText ?? '', caseSensitive: false);
+          var filterRegExp = RegExp(filter ?? '', caseSensitive: false);
+          var sortingRegExp = RegExp(sorting ?? '', caseSensitive: false);
           finder = Finder(
             sortOrders: [
               SortOrder('orderDateTime'),
