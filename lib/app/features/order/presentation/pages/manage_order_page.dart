@@ -1,16 +1,12 @@
-part of 'package:homemakers_merchant/app/features/dashboard/index.dart';
+part of 'package:homemakers_merchant/app/features/order/index.dart';
 
-class MainDashboardPage extends StatefulWidget {
-  const MainDashboardPage({
-    super.key,
-    this.isMainDrawerPage = true,
-  });
-  final bool isMainDrawerPage;
+class ManageOrderPage extends StatefulWidget {
+  const ManageOrderPage({super.key});
   @override
-  _MainDashboardController createState() => _MainDashboardController();
+  _ManageOrderPageController createState() => _ManageOrderPageController();
 }
 
-class _MainDashboardController extends State<MainDashboardPage> {
+class _ManageOrderPageController extends State<ManageOrderPage> {
   late final ScrollController scrollController;
   late final ScrollController customScrollViewScrollController;
 
@@ -34,21 +30,18 @@ class _MainDashboardController extends State<MainDashboardPage> {
   }
 
   @override
-  Widget build(BuildContext context) => _MainDashboardView(this);
+  Widget build(BuildContext context) => _ManageOrderPageView(this);
 }
 
-class _MainDashboardView extends WidgetView<MainDashboardPage, _MainDashboardController> {
-  const _MainDashboardView(super.state);
+class _ManageOrderPageView extends WidgetView<ManageOrderPage, _ManageOrderPageController> {
+  const _ManageOrderPageView(super.state);
 
   @override
   Widget build(BuildContext context) {
     final MediaQueryData media = MediaQuery.of(context);
     final double margins = GlobalApp.responsiveInsets(media.size.width);
     final double topPadding = margins; //media.padding.top + kToolbarHeight + margins; //margins * 1.5;
-    final double bottomPadding = margins; // media.padding.bottom + margins;
-    final double width = media.size.width;
-    final ThemeData theme = Theme.of(context);
-
+    final double bottomPadding = margins;
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: FlexColorScheme.themedSystemNavigationBar(
         context,
@@ -91,10 +84,12 @@ class _MainDashboardView extends WidgetView<MainDashboardPage, _MainDashboardCon
             ),
             drawer: const PrimaryDashboardDrawer(
               key: const Key('main-dashboard-drawer'),
+              isMainDrawerPage: false,
             ),
             body: SlideInLeft(
               key: const Key('main-dashboard-page-slideinleft-widget'),
-              from: context.width - 10,
+              from: context.width / 2 - 60,
+              duration: Duration(milliseconds: 500),
               child: Directionality(
                 textDirection: serviceLocator<LanguageController>().targetTextDirection,
                 child: PageBody(
@@ -119,15 +114,15 @@ class _MainDashboardView extends WidgetView<MainDashboardPage, _MainDashboardCon
                                 12,
                                 duration: Duration(milliseconds: 100),
                               ),
-                              UserProfileWidget(
-                                key: const Key('dashboard-user-profile-widget'),
+                              ManageOrderHeadlineWidget(
+                                key: const Key('manage-order-headline-widget'),
                               ),
                               const AnimatedGap(
                                 16,
                                 duration: Duration(milliseconds: 100),
                               ),
-                              DashboardWalletInfoWidget(
-                                key: const Key('dashboard-wallet-info-widget'),
+                              OrderTypeWidget(
+                                key: const Key('manage-order-type-widget'),
                               ),
                               const AnimatedGap(
                                 16,

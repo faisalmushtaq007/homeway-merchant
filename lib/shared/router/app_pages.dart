@@ -17,6 +17,7 @@ import 'package:homemakers_merchant/app/features/menu/index.dart';
 import 'package:homemakers_merchant/app/features/notification/index.dart';
 import 'package:homemakers_merchant/app/features/onboarding/presentation/pages/onboarding_page.dart';
 import 'package:homemakers_merchant/app/features/onboarding/presentation/pages/splash_page.dart';
+import 'package:homemakers_merchant/app/features/order/index.dart';
 import 'package:homemakers_merchant/app/features/profile/index.dart';
 import 'package:homemakers_merchant/app/features/rate_review/index.dart';
 import 'package:homemakers_merchant/app/features/store/index.dart';
@@ -33,7 +34,7 @@ class AppRouter {
 
   AppRouter._();
 
-  static const String INITIAL = Routes.MAIN_DASHBOARD_PAGE;
+  static const String INITIAL = Routes.MANAGE_ORDER_PAGE;
 
   static final GoRouter _router = GoRouter(
     debugLogDiagnostics: true,
@@ -143,7 +144,12 @@ class AppRouter {
       ),
       GoRoute(
         path: Routes.MAIN_DASHBOARD_PAGE,
-        builder: (context, state) => const MainDashboardPage(),
+        builder: (context, state) {
+          final Map<String, dynamic>? args = state.extra as Map<String, dynamic>?;
+          return MainDashboardPage(
+            isMainDrawerPage: args?['isMainDrawerPage'] ?? true,
+          );
+        },
       ),
       GoRoute(
         path: Routes.SAVE_STORE_PAGE,
@@ -417,6 +423,10 @@ class AppRouter {
       GoRoute(
         path: Routes.FAQ_PAGE,
         builder: (context, state) => const FaqPage(),
+      ),
+      GoRoute(
+        path: Routes.MANAGE_ORDER_PAGE,
+        builder: (context, state) => const ManageOrderPage(),
       ),
     ],
     /*redirect: (context, state) {

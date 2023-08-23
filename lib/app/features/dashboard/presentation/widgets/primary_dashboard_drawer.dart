@@ -1,7 +1,11 @@
 part of 'package:homemakers_merchant/app/features/dashboard/index.dart';
 
 class PrimaryDashboardDrawer extends StatefulWidget {
-  const PrimaryDashboardDrawer({super.key});
+  const PrimaryDashboardDrawer({
+    super.key,
+    this.isMainDrawerPage = true,
+  });
+  final bool isMainDrawerPage;
 
   @override
   _PrimaryDashboardDrawerController createState() => _PrimaryDashboardDrawerController();
@@ -264,6 +268,20 @@ class _PrimaryDashboardDrawerController extends State<PrimaryDashboardDrawer> {
         },
       ),
     ];
+    if (!widget.isMainDrawerPage) {
+      drawerEntities.insert(
+        0,
+        DrawerEntity(
+          drawerID: 10,
+          drawerName: 'Dashboard',
+          leading: const Icon(Icons.dashboard),
+          onPressed: () async {
+            final result = await context.push(Routes.MAIN_DASHBOARD_PAGE);
+            return;
+          },
+        ),
+      );
+    }
   }
 
   @override

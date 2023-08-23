@@ -39,3 +39,30 @@ enum SelectItemUseCase {
   selectAndNext,
   none,
 }
+
+enum OrderStateStatus {
+  none,
+  save,
+  delete,
+  get,
+  navigate,
+  exception,
+  failed,
+  loading,
+  processing,
+  empty,
+  deleteAll,
+  getAll,
+  getAllNew,
+  getAllRecent,
+  getAllCancel,
+  getAllSchedule,
+  getAllDeliver,
+  getAllProcessing,
+  ;
+
+  @override
+  String toString() {
+    return name;
+  }
+}

@@ -35,6 +35,7 @@ enum OrderStatus {
 
 enum OrderType {
   none,
+  all,
   recent,
   current,
   newOrder,

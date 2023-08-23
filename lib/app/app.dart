@@ -11,6 +11,8 @@ import 'package:homemakers_merchant/app/features/authentication/presentation/man
 import 'package:homemakers_merchant/app/features/authentication/presentation/pages/login_page.dart';
 import 'package:homemakers_merchant/app/features/menu/index.dart';
 import 'package:homemakers_merchant/app/features/onboarding/presentation/pages/splash_page.dart';
+import 'package:homemakers_merchant/app/features/order/presentation/manager/all/all_order_bloc.dart';
+import 'package:homemakers_merchant/app/features/order/presentation/manager/recents/recent_order_bloc.dart';
 import 'package:homemakers_merchant/app/features/payment/presentation/manager/wallet/wallet_bloc.dart';
 import 'package:homemakers_merchant/app/features/permission/presentation/bloc/permission_bloc.dart';
 
@@ -121,6 +123,14 @@ class _AppState extends State<App> with GetItStateMixin {
         ),
         BlocProvider<WalletBloc>(
           key: const Key('wallet_bloc_provider'),
+          create: (context) => serviceLocator(),
+        ),
+        BlocProvider<AllOrderBloc>(
+          key: const Key('all_order__bloc_provider'),
+          create: (context) => serviceLocator(),
+        ),
+        BlocProvider<RecentOrderBloc>(
+          key: const Key('recent_order_bloc_provider'),
           create: (context) => serviceLocator(),
         ),
       ],
