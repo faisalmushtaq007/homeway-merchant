@@ -24,6 +24,9 @@ class StoreEntity with AppEquatable {
     this.isoCode = 'SA',
     this.countryDialCode = '+966',
     this.phoneNumberWithoutDialCode = '',
+    this.orders = const [],
+    this.hasStoreOpened = true,
+    this.hasReadyToPickupOrder = true,
   });
 
   factory StoreEntity.fromMap(Map<String, dynamic> map) {
@@ -52,6 +55,9 @@ class StoreEntity with AppEquatable {
       countryDialCode: map['country_dial_code'] ?? '+966' as String,
       phoneNumberWithoutDialCode: map['phoneNumberWithoutDialCode'] ?? '+966' as String,
       storePhoneNumber: map['storePhoneNumber'] as String,
+      orders: map['orders'].map((e) => OrderEntity.fromMap(e)).toList().cast<OrderEntity>(),
+      hasStoreOpened: map['hasStoreOpened'] ?? true,
+      hasReadyToPickupOrder: map['hasReadyToPickupOrder'] ?? true,
     );
   }
 
@@ -77,6 +83,9 @@ class StoreEntity with AppEquatable {
   final String countryDialCode;
   final String isoCode;
   final String phoneNumberWithoutDialCode;
+  final List<OrderEntity> orders;
+  final bool hasStoreOpened;
+  final bool hasReadyToPickupOrder;
 
   @override
   bool get cacheHash => true;
@@ -105,6 +114,9 @@ class StoreEntity with AppEquatable {
         countryDialCode,
         isoCode,
         phoneNumberWithoutDialCode,
+        orders,
+        hasReadyToPickupOrder,
+        hasStoreOpened,
       ];
 
   StoreEntity copyWith({
@@ -130,6 +142,9 @@ class StoreEntity with AppEquatable {
     String? isoCode,
     String? storePhoneNumber,
     String? phoneNumberWithoutDialCode,
+    List<OrderEntity>? orders,
+    bool? hasStoreOpened,
+    bool? hasReadyToPickupOrder,
   }) {
     return StoreEntity(
       storeName: storeName ?? this.storeName,
@@ -154,6 +169,9 @@ class StoreEntity with AppEquatable {
       countryDialCode: countryDialCode ?? this.countryDialCode,
       isoCode: isoCode ?? this.isoCode,
       phoneNumberWithoutDialCode: phoneNumberWithoutDialCode ?? this.phoneNumberWithoutDialCode,
+      orders: orders ?? this.orders,
+      hasStoreOpened: hasStoreOpened ?? this.hasStoreOpened,
+      hasReadyToPickupOrder: hasReadyToPickupOrder ?? this.hasReadyToPickupOrder,
     );
   }
 
@@ -181,6 +199,9 @@ class StoreEntity with AppEquatable {
       'country_dial_code': this.countryDialCode ?? '+966',
       'phoneNumberWithoutDialCode': this.phoneNumberWithoutDialCode ?? '',
       'storePhoneNumber': storePhoneNumber,
+      'orders': this.orders.map((e) => e.toMap()).toList(),
+      'hasStoreOpened': hasStoreOpened,
+      'hasReadyToPickupOrder': hasReadyToPickupOrder,
     };
   }
 }

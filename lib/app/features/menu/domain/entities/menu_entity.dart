@@ -29,6 +29,8 @@ class MenuEntity with AppEquatable {
     this.menuMaxPreparationTime = '',
     this.menuMinPreparationTime = '',
     this.ratingAndReviewEntity,
+    this.hasMenuAvailable = true,
+    this.hasReadyToPickupOrder = true,
   });
 
   factory MenuEntity.fromMap(Map<String, dynamic> map) {
@@ -61,6 +63,8 @@ class MenuEntity with AppEquatable {
       menuMinPreparationTime: map['menuMinPreparationTime'] as String,
       menuMaxPreparationTime: map['menuMaxPreparationTime'] as String,
       ratingAndReviewEntity: (map['ratingAndReviewEntity'] != null) ? RatingAndReviewEntity.fromMap(map['ratingAndReviewEntity']) : RatingAndReviewEntity(),
+      hasMenuAvailable: map['hasMenuAvailable'] ?? true,
+      hasReadyToPickupOrder: map['hasReadyToPickupOrder'] ?? true,
     );
   }
 
@@ -91,6 +95,8 @@ class MenuEntity with AppEquatable {
   String menuMinPreparationTime;
   String menuMaxPreparationTime;
   RatingAndReviewEntity? ratingAndReviewEntity = RatingAndReviewEntity();
+  final bool hasMenuAvailable;
+  final bool hasReadyToPickupOrder;
 
   @override
   bool get cacheHash => true;
@@ -124,6 +130,8 @@ class MenuEntity with AppEquatable {
         menuMinPreparationTime,
         menuMaxPreparationTime,
         ratingAndReviewEntity,
+        hasMenuAvailable,
+        hasReadyToPickupOrder,
       ];
 
   Map<String, dynamic> toMap() {
@@ -155,6 +163,8 @@ class MenuEntity with AppEquatable {
       'menuMinPreparationTime': this.menuMinPreparationTime,
       'menuMaxPreparationTime': this.menuMaxPreparationTime,
       'ratingAndReviewEntity': this.ratingAndReviewEntity?.toMap() ?? RatingAndReviewEntity().toMap(),
+      'hasMenuAvailable': this.hasMenuAvailable,
+      'hasReadyToPickupOrder': this.hasReadyToPickupOrder,
     };
   }
 
@@ -186,6 +196,8 @@ class MenuEntity with AppEquatable {
     String? menuMinPreparationTime,
     String? menuMaxPreparationTime,
     RatingAndReviewEntity? ratingAndReviewEntity,
+    bool? hasMenuAvailable,
+    bool? hasReadyToPickupOrder,
   }) {
     return MenuEntity(
       menuId: menuId ?? this.menuId,
@@ -215,6 +227,8 @@ class MenuEntity with AppEquatable {
       menuMaxPreparationTime: menuMaxPreparationTime ?? this.menuMaxPreparationTime,
       menuMinPreparationTime: menuMinPreparationTime ?? this.menuMinPreparationTime,
       ratingAndReviewEntity: ratingAndReviewEntity ?? this.ratingAndReviewEntity,
+      hasMenuAvailable: hasMenuAvailable ?? this.hasMenuAvailable,
+      hasReadyToPickupOrder: hasReadyToPickupOrder ?? this.hasReadyToPickupOrder,
     );
   }
 }

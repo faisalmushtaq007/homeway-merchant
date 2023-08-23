@@ -22,6 +22,128 @@ class _ManageOrderPageController extends State<ManageOrderPage> {
     super.didChangeDependencies();
   }
 
+  Future<void> saveAll() async {
+    final result = await serviceLocator<SaveAllOrderUseCase>()(
+      <OrderEntity>[
+        OrderEntity(
+          orderID: 1,
+          orderDateTime: DateTime.now().addOrRemoveMinutes(15),
+          userInfo: UserInfo(
+            userName: 'Sonu',
+            deliveryAddress: DeliveryAddress(),
+          ),
+          store: Store(
+            storeID: 1,
+            storeName: 'Good Cafe',
+            location: AddressLocation(),
+            menu: [
+              Menu(
+                quantity: 1,
+                menuID: 21,
+                menuName: 'Vegetable Rice Briyani',
+                menuImage:
+                    'https://img.freepik.com/premium-photo/dum-handi-chicken-biryani-is-prepared-earthen-clay-pot-called-haandi-popular-indian-non-vegetarian-food_466689-52225.jpg',
+              ),
+            ],
+          ),
+          orderStatus: OrderStatus.newOrder.index,
+          orderType: OrderType.recent.index,
+          driver: Driver(),
+          payment: Payment(),
+        ),
+        OrderEntity(
+          orderID: 2,
+          orderDateTime: DateTime.now().addOrRemoveMinutes(25),
+          userInfo: UserInfo(
+            userName: 'Sonu',
+            deliveryAddress: DeliveryAddress(),
+          ),
+          store: Store(
+            storeID: 1,
+            storeName: 'Good Cafe',
+            location: AddressLocation(),
+            menu: [
+              Menu(
+                quantity: 1,
+                menuID: 21,
+                menuName: 'Vegetable Rice Briyani',
+                menuImage:
+                    'https://img.freepik.com/premium-photo/dum-handi-chicken-biryani-is-prepared-earthen-clay-pot-called-haandi-popular-indian-non-vegetarian-food_466689-52225.jpg',
+              ),
+            ],
+          ),
+          orderStatus: OrderStatus.newOrder.index,
+          orderType: OrderType.recent.index,
+          driver: Driver(),
+          payment: Payment(),
+        ),
+        OrderEntity(
+          orderID: 3,
+          orderDateTime: DateTime.now().addOrRemoveDay(2),
+          userInfo: UserInfo(
+            userName: 'Sonu',
+            deliveryAddress: DeliveryAddress(),
+          ),
+          store: Store(
+            storeID: 1,
+            storeName: 'Good Cafe',
+            location: AddressLocation(),
+            menu: [
+              Menu(
+                quantity: 1,
+                menuID: 21,
+                menuName: 'Vegetable Rice Briyani',
+                menuImage:
+                    'https://img.freepik.com/premium-photo/dum-handi-chicken-biryani-is-prepared-earthen-clay-pot-called-haandi-popular-indian-non-vegetarian-food_466689-52225.jpg',
+              ),
+            ],
+          ),
+          orderStatus: OrderStatus.newOrder.index,
+          orderType: OrderType.recent.index,
+          driver: Driver(),
+          payment: Payment(),
+        ),
+        OrderEntity(
+          orderID: 4,
+          orderDateTime: DateTime.now().addOrRemoveDay(1),
+          userInfo: UserInfo(
+            userName: 'Sonu',
+            deliveryAddress: DeliveryAddress(),
+          ),
+          store: Store(
+            storeID: 1,
+            storeName: 'Good Cafe',
+            location: AddressLocation(),
+            menu: [
+              Menu(
+                quantity: 1,
+                menuID: 21,
+                menuName: 'Vegetable Rice Briyani',
+                menuImage:
+                    'https://img.freepik.com/premium-photo/dum-handi-chicken-biryani-is-prepared-earthen-clay-pot-called-haandi-popular-indian-non-vegetarian-food_466689-52225.jpg',
+              ),
+            ],
+          ),
+          orderStatus: OrderStatus.newOrder.index,
+          orderType: OrderType.recent.index,
+          driver: Driver(),
+          payment: Payment(),
+        ),
+      ],
+    );
+    result.when(
+      remote: (data, meta) {
+        appLog.d('Saved notification to remote ${data?.length}');
+      },
+      localDb: (data, meta) {
+        appLog.d('Saved notification to local ${data?.length}');
+      },
+      error: (dataSourceFailure, reason, error, networkException, stackTrace, exception, extra) {
+        appLog.d('Saved notification to local $reason');
+      },
+    );
+  }
+
   @override
   void dispose() {
     scrollController.dispose();

@@ -203,13 +203,24 @@ class OrderRepositoryImplement implements OrderRepository {
     OrderType orderType = OrderType.none,
     String? filter,
     String? sorting,
+    Timestamp? startTimeStamp,
+    Timestamp? endTimeStamp,
   }) async {
     try {
       final connectivity = serviceLocator<ConnectivityService>().getCurrentInternetStatus();
       if (connectivity.$2 == InternetConnectivityState.internet) {
         // Local DB
         // Save to local
-        final Either<RepositoryBaseFailure, List<OrderEntity>> result = await orderLocalDataSource.getAll();
+        final Either<RepositoryBaseFailure, List<OrderEntity>> result = await orderLocalDataSource.getAllOrder(
+          filter: filter,
+          sorting: sorting,
+          searchText: searchText,
+          pageSize: pageSize,
+          pageKey: pageKey,
+          orderType: orderType,
+          endTimeStamp: endTimeStamp,
+          startTimeStamp: startTimeStamp,
+        );
         // Return result
         return result.fold((l) {
           final RepositoryFailure failure = l as RepositoryFailure;
@@ -452,29 +463,61 @@ class OrderRepositoryImplement implements OrderRepository {
   }
 
   @override
-  Future<DataSourceState<List<OrderEntity>>> getAllCancelOrder(
-      {int pageKey = 1, int pageSize = 10, String? searchText, OrderType orderType = OrderType.cancel, String? filter, String? sorting}) {
+  Future<DataSourceState<List<OrderEntity>>> getAllCancelOrder({
+    int pageKey = 1,
+    int pageSize = 10,
+    String? searchText,
+    OrderType orderType = OrderType.cancel,
+    String? filter,
+    String? sorting,
+    Timestamp? startTimeStamp,
+    Timestamp? endTimeStamp,
+  }) {
     // TODO: implement getAllCancelOrder
     throw UnimplementedError();
   }
 
   @override
-  Future<DataSourceState<List<OrderEntity>>> getAllDeliverOrder(
-      {int pageKey = 1, int pageSize = 10, String? searchText, OrderType orderType = OrderType.deliver, String? filter, String? sorting}) {
+  Future<DataSourceState<List<OrderEntity>>> getAllDeliverOrder({
+    int pageKey = 1,
+    int pageSize = 10,
+    String? searchText,
+    OrderType orderType = OrderType.deliver,
+    String? filter,
+    String? sorting,
+    Timestamp? startTimeStamp,
+    Timestamp? endTimeStamp,
+  }) {
     // TODO: implement getAllDeliverOrder
     throw UnimplementedError();
   }
 
   @override
-  Future<DataSourceState<List<OrderEntity>>> getAllNewOrder(
-      {int pageKey = 1, int pageSize = 10, String? searchText, OrderType orderType = OrderType.newOrder, String? filter, String? sorting}) {
+  Future<DataSourceState<List<OrderEntity>>> getAllNewOrder({
+    int pageKey = 1,
+    int pageSize = 10,
+    String? searchText,
+    OrderType orderType = OrderType.newOrder,
+    String? filter,
+    String? sorting,
+    Timestamp? startTimeStamp,
+    Timestamp? endTimeStamp,
+  }) {
     // TODO: implement getAllNewOrder
     throw UnimplementedError();
   }
 
   @override
-  Future<DataSourceState<List<OrderEntity>>> getAllOnProcessOrder(
-      {int pageKey = 1, int pageSize = 10, String? searchText, OrderType orderType = OrderType.onProcess, String? filter, String? sorting}) {
+  Future<DataSourceState<List<OrderEntity>>> getAllOnProcessOrder({
+    int pageKey = 1,
+    int pageSize = 10,
+    String? searchText,
+    OrderType orderType = OrderType.onProcess,
+    String? filter,
+    String? sorting,
+    Timestamp? startTimeStamp,
+    Timestamp? endTimeStamp,
+  }) {
     // TODO: implement getAllOnProcessOrder
     throw UnimplementedError();
   }
@@ -495,8 +538,16 @@ class OrderRepositoryImplement implements OrderRepository {
   }
 
   @override
-  Future<DataSourceState<List<OrderEntity>>> getAllRecentOrder(
-      {int pageKey = 1, int pageSize = 10, String? searchText, OrderType orderType = OrderType.recent, String? filter, String? sorting}) {
+  Future<DataSourceState<List<OrderEntity>>> getAllRecentOrder({
+    int pageKey = 1,
+    int pageSize = 10,
+    String? searchText,
+    OrderType orderType = OrderType.recent,
+    String? filter,
+    String? sorting,
+    Timestamp? startTimeStamp,
+    Timestamp? endTimeStamp,
+  }) {
     // TODO: implement getAllRecentOrder
     throw UnimplementedError();
   }

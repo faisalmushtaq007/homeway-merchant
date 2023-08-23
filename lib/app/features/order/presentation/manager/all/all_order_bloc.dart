@@ -15,10 +15,10 @@ part 'all_order_state.dart';
 
 class AllOrderBloc extends Bloc<AllOrderEvent, AllOrderState> {
   AllOrderBloc() : super(AllOrderInitial()) {
-    on<GetAllOrder>(getAllOrder);
+    on<GetAllOrders>(getAllOrder);
   }
 
-  FutureOr<void> getAllOrder(GetAllOrder event, Emitter<AllOrderState> emit) async {
+  FutureOr<void> getAllOrder(GetAllOrders event, Emitter<AllOrderState> emit) async {
     try {
       emit(const GetAllLoadingOrderState(isLoading: true, message: 'Please wait while we are fetching all orders...'));
       final DataSourceState<List<OrderEntity>> result = await serviceLocator<GetAllOrderUseCase>()(

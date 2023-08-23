@@ -29,6 +29,8 @@ abstract interface class OrderDataSource {
     int pageSize = 10,
     String? searchText,
     OrderType orderType = OrderType.none,
+    Timestamp? startTimeStamp,
+    Timestamp? endTimeStamp,
   });
 
   Future<ApiResultState<List<OrderEntity>>> saveAllOrder({
@@ -43,6 +45,8 @@ abstract interface class OrderDataSource {
     OrderType orderType = OrderType.newOrder,
     String? filter,
     String? sorting,
+    Timestamp? startTimeStamp,
+    Timestamp? endTimeStamp,
   });
 
   Future<ApiResultState<List<OrderEntity>>> getAllRecentOrder({
@@ -52,6 +56,8 @@ abstract interface class OrderDataSource {
     OrderType orderType = OrderType.recent,
     String? filter,
     String? sorting,
+    Timestamp? startTimeStamp,
+    Timestamp? endTimeStamp,
   });
 
   Future<ApiResultState<List<OrderEntity>>> getAllCancelOrder({
@@ -61,6 +67,8 @@ abstract interface class OrderDataSource {
     OrderType orderType = OrderType.cancel,
     String? filter,
     String? sorting,
+    Timestamp? startTimeStamp,
+    Timestamp? endTimeStamp,
   });
 
   Future<ApiResultState<List<OrderEntity>>> getAllDeliverOrder({
@@ -70,6 +78,8 @@ abstract interface class OrderDataSource {
     OrderType orderType = OrderType.deliver,
     String? filter,
     String? sorting,
+    Timestamp? startTimeStamp,
+    Timestamp? endTimeStamp,
   });
 
   Future<ApiResultState<List<OrderEntity>>> getAllOnProcessOrder({
@@ -79,6 +89,8 @@ abstract interface class OrderDataSource {
     OrderType orderType = OrderType.onProcess,
     String? filter,
     String? sorting,
+    Timestamp? startTimeStamp,
+    Timestamp? endTimeStamp,
   });
 
   Future<ApiResultState<List<OrderEntity>>> getAllOnScheduleOrder({

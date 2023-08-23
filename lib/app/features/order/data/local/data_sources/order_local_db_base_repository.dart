@@ -30,6 +30,8 @@ abstract class GetAllOrder<EntityType> extends BaseRepositoryOperation<EntityTyp
     OrderType orderType = OrderType.recent,
     String? filter,
     String? sorting,
+    Timestamp? startTimeStamp,
+    Timestamp? endTimeStamp,
   });
 }
 
@@ -44,6 +46,8 @@ abstract class GetAllRecentOrder<EntityType> extends BaseRepositoryOperation<Ent
     OrderType orderType = OrderType.recent,
     String? filter,
     String? sorting,
+    Timestamp? startTimeStamp,
+    Timestamp? endTimeStamp,
   });
 }
 
@@ -58,6 +62,8 @@ abstract class GetAllOnProcessOrder<EntityType> extends BaseRepositoryOperation<
     OrderType orderType = OrderType.onProcess,
     String? filter,
     String? sorting,
+    Timestamp? startTimeStamp,
+    Timestamp? endTimeStamp,
   });
 }
 
@@ -72,6 +78,8 @@ abstract class GetAllNewOrder<EntityType> extends BaseRepositoryOperation<Entity
     OrderType orderType = OrderType.newOrder,
     String? filter,
     String? sorting,
+    Timestamp? startTimeStamp,
+    Timestamp? endTimeStamp,
   });
 }
 
@@ -86,6 +94,8 @@ abstract class GetAllCancelOrder<EntityType> extends BaseRepositoryOperation<Ent
     OrderType orderType = OrderType.cancel,
     String? filter,
     String? sorting,
+    Timestamp? startTimeStamp,
+    Timestamp? endTimeStamp,
   });
 }
 
@@ -100,6 +110,8 @@ abstract class GetAllDeliveryOrder<EntityType> extends BaseRepositoryOperation<E
     OrderType orderType = OrderType.deliver,
     String? filter,
     String? sorting,
+    Timestamp? startTimeStamp,
+    Timestamp? endTimeStamp,
   });
 }
 

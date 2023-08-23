@@ -187,6 +187,8 @@ class OrderLocalDbRepository<T extends OrderEntity> implements BaseOrderLocalDbR
     OrderType orderType = OrderType.cancel,
     String? filter,
     String? sorting,
+    Timestamp? startTimeStamp,
+    Timestamp? endTimeStamp,
   }) async {
     // TODO: implement getAllCancelOrder
     throw UnimplementedError();
@@ -200,6 +202,8 @@ class OrderLocalDbRepository<T extends OrderEntity> implements BaseOrderLocalDbR
     OrderType orderType = OrderType.deliver,
     String? filter,
     String? sorting,
+    Timestamp? startTimeStamp,
+    Timestamp? endTimeStamp,
   }) async {
     // TODO: implement getAllDeliveryOrder
     throw UnimplementedError();
@@ -213,6 +217,8 @@ class OrderLocalDbRepository<T extends OrderEntity> implements BaseOrderLocalDbR
     OrderType orderType = OrderType.newOrder,
     String? filter,
     String? sorting,
+    Timestamp? startTimeStamp,
+    Timestamp? endTimeStamp,
   }) async {
     // TODO: implement getAllNewOrder
     throw UnimplementedError();
@@ -226,6 +232,8 @@ class OrderLocalDbRepository<T extends OrderEntity> implements BaseOrderLocalDbR
     OrderType orderType = OrderType.onProcess,
     String? filter,
     String? sorting,
+    Timestamp? startTimeStamp,
+    Timestamp? endTimeStamp,
   }) async {
     // TODO: implement getAllOnProcessOrder
     throw UnimplementedError();
@@ -236,12 +244,105 @@ class OrderLocalDbRepository<T extends OrderEntity> implements BaseOrderLocalDbR
     int pageKey = 1,
     int pageSize = 10,
     String? searchText,
-    OrderType orderType = OrderType.recent,
+    OrderType orderType = OrderType.all,
     String? filter,
     String? sorting,
+    Timestamp? startTimeStamp,
+    Timestamp? endTimeStamp,
   }) async {
-    // TODO: implement getAllOrder
-    throw UnimplementedError();
+    final result = await tryCatch<List<OrderEntity>>(() async {
+      final db = await _db;
+
+      var orderTypeRegExp = RegExp(orderType.name, caseSensitive: false);
+      return await db.transaction((transaction) async {
+        // Finder object can also sort data.
+        Finder finder = Finder(
+          sortOrders: [
+            SortOrder('orderDateTime'),
+          ],
+          limit: pageSize,
+          offset: pageKey,
+        );
+        if (searchText.isNotNull || filter.isNotNull || sorting.isNotNull) {
+          var regExp = RegExp(searchText, caseSensitive: false);
+          var filterRegExp = RegExp(filter, caseSensitive: false);
+          var sortingRegExp = RegExp(sorting, caseSensitive: false);
+          finder = Finder(
+            sortOrders: [
+              SortOrder('orderDateTime'),
+            ],
+            limit: pageSize,
+            offset: pageKey,
+            filter: Filter.or([
+              Filter.matchesRegExp(
+                'store.storeName',
+                regExp,
+              ),
+              Filter.matchesRegExp(
+                'store.storeName.menu.@.menuName',
+                regExp,
+              ),
+              Filter.matchesRegExp(
+                'store.storeName',
+                filterRegExp,
+              ),
+              Filter.matchesRegExp(
+                'store.storeName.menu.@.menuName',
+                filterRegExp,
+              ),
+            ]),
+          );
+        } else if (searchText.isNotNull || filter.isNotNull || sorting.isNotNull && (startTimeStamp.isNotNull || endTimeStamp.isNotNull)) {
+          var regExp = RegExp(searchText, caseSensitive: false);
+          var filterRegExp = RegExp(filter, caseSensitive: false);
+          var sortingRegExp = RegExp(sorting, caseSensitive: false);
+          finder = Finder(
+            sortOrders: [
+              SortOrder('orderDateTime'),
+            ],
+            limit: pageSize,
+            offset: pageKey,
+            filter: Filter.and(
+              [
+                Filter.or([
+                  Filter.matchesRegExp(
+                    'store.storeName',
+                    regExp,
+                  ),
+                  Filter.matchesRegExp(
+                    'store.storeName.menu.@.menuName',
+                    regExp,
+                  ),
+                  Filter.matchesRegExp(
+                    'store.storeName',
+                    filterRegExp,
+                  ),
+                  Filter.matchesRegExp(
+                    'store.storeName.menu.@.menuName',
+                    filterRegExp,
+                  ),
+                ]),
+                Filter.greaterThanOrEquals('orderDateTime', startTimeStamp),
+                Filter.lessThan('orderDateTime', endTimeStamp),
+              ],
+            ),
+          );
+        }
+        final recordSnapshots = await _order.find(
+          await _db,
+          finder: finder,
+        );
+        // Making a List<OrderEntity> out of List<RecordSnapshot>
+        return recordSnapshots.map((snapshot) {
+          final orders = OrderEntity.fromMap(snapshot.value).copyWith(
+            // An ID is a key of a record from the database.
+            orderID: snapshot.key,
+          );
+          return orders;
+        }).toList();
+      });
+    });
+    return result;
   }
 
   @override
@@ -252,6 +353,8 @@ class OrderLocalDbRepository<T extends OrderEntity> implements BaseOrderLocalDbR
     OrderType orderType = OrderType.recent,
     String? filter,
     String? sorting,
+    Timestamp? startTimeStamp,
+    Timestamp? endTimeStamp,
   }) async {
     // TODO: implement getAllRecentOrder
     throw UnimplementedError();

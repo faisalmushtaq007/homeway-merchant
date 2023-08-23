@@ -44,7 +44,7 @@ class _MenuAllAddonsPageController extends State<MenuAllAddonsPage> {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: const Text(
-              'Something went wrong while fetching a new page.',
+              'Something went wrong while fetching all addons.',
             ),
             action: SnackBarAction(
               label: 'Retry',
@@ -428,7 +428,6 @@ class _MenuAllAddonsPageView extends WidgetView<MenuAllAddonsPage, _MenuAllAddon
                                       builderDelegate: PagedChildBuilderDelegate<Addons>(
                                           animateTransitions: true,
                                           itemBuilder: (context, notificationResult, index) {
-                                            print('Index ${index}');
                                             return AddonsCard(
                                               key: ValueKey(index),
                                               addonsEntity: notificationResult,

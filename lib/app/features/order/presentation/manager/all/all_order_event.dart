@@ -4,8 +4,8 @@ abstract class AllOrderEvent extends Equatable {
   const AllOrderEvent();
 }
 
-class GetAllOrder extends AllOrderEvent {
-  const GetAllOrder({
+class GetAllOrders extends AllOrderEvent {
+  const GetAllOrders({
     this.orderType = OrderType.none,
     this.pageKey = 1,
     this.searchText,
