@@ -145,21 +145,41 @@ class _AllOrderPagesView extends WidgetView<AllOrderPages, _AllOrderPagesControl
 
   @override
   Widget build(BuildContext context) {
-    return CustomScrollView(
-      controller: state.listViewBuilderScrollController,
-      slivers: [
-        PagedSliverList(
-          pagingController: state._pagingController,
-          builderDelegate: PagedChildBuilderDelegate<OrderEntity>(
-              animateTransitions: true,
-              itemBuilder: (context, orderResult, index) {
-                return Card(
-                  child: ListTile(
-                    title: Text('${orderResult.store.menu[0].menuName}'),
-                    subtitle: Text('${orderResult.store.storeName}'),
-                  ),
-                );
-              }),
+    return Stack(
+      alignment: Alignment.bottomRight,
+      children: [
+        CustomScrollView(
+          controller: state.listViewBuilderScrollController,
+          slivers: [
+            PagedSliverList(
+              pagingController: state._pagingController,
+              builderDelegate: PagedChildBuilderDelegate<OrderEntity>(
+                  animateTransitions: true,
+                  itemBuilder: (context, orderResult, index) {
+                    return OrderCardWidget(
+                      key: ValueKey(index),
+                      index: index,
+                      orderEntity: orderResult,
+                    );
+                  }),
+            ),
+          ],
+        ),
+        AnimatedOpacity(
+          opacity: state._pagingController.value.itemList.isNotNullOrEmpty ? 1.0 : 0.0,
+          duration: const Duration(milliseconds: 500),
+          child: AnimatedPadding(
+            padding: EdgeInsetsDirectional.only(bottom: 32, end: 8),
+            duration: const Duration(milliseconds: 500),
+            child: FloatingActionButton(
+              backgroundColor: context.colorScheme.background,
+              onPressed: () {},
+              child: Icon(
+                Icons.filter_alt_outlined,
+                color: context.colorScheme.primary,
+              ),
+            ),
+          ),
         ),
       ],
     );

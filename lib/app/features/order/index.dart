@@ -19,6 +19,7 @@ import 'package:homemakers_merchant/core/service/connectivity_bloc/src/connectiv
 import 'package:homemakers_merchant/shared/states/api_result_state.dart';
 import 'package:homemakers_merchant/shared/states/data_source_state.dart';
 import 'package:homemakers_merchant/shared/states/widget_state.dart';
+import 'package:homemakers_merchant/shared/widgets/universal/wrap_text/wrap_text.dart';
 import 'package:homemakers_merchant/utils/app_log.dart';
 import 'package:homemakers_merchant/utils/functional/functional.dart';
 import 'package:sembast/sembast.dart';
@@ -106,3 +107,4 @@ part 'package:homemakers_merchant/app/features/order/presentation/pages/schedule
 // Widgets
 part 'package:homemakers_merchant/app/features/order/presentation/widgets/manage_order_headline_widget.dart';
 part 'package:homemakers_merchant/app/features/order/presentation/widgets/order_types_widget.dart';
+part 'package:homemakers_merchant/app/features/order/presentation/widgets/order_card_widget.dart';

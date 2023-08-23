@@ -29,7 +29,7 @@ import 'package:wrap_text/wrap_text.dart';
 ```
 ## Usage
 
-Instance MagicText widget:
+Instance WrapText widget:
 ```dart
 //Instance a WrapText widget and save in a constant.
 const WrapText magicText = WrapText(
