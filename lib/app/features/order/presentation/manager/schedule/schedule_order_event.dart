@@ -1,11 +1,11 @@
-part of 'on_process_order_bloc.dart';
+part of 'schedule_order_bloc.dart';
 
-abstract class OnProcessOrderEvent extends Equatable {
-  const OnProcessOrderEvent();
+abstract class ScheduleOrderEvent extends Equatable {
+  const ScheduleOrderEvent();
 }
 
-class GetAllOnProcessOrder extends OnProcessOrderEvent {
-  const GetAllOnProcessOrder({
+class GetAllScheduleOrder extends ScheduleOrderEvent {
+  const GetAllScheduleOrder({
     this.orderType = OrderType.none,
     this.pageKey = 1,
     this.searchText,

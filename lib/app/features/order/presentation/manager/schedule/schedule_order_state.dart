@@ -1,16 +1,16 @@
-part of 'all_order_bloc.dart';
+part of 'schedule_order_bloc.dart';
 
-abstract class AllOrderState extends Equatable {
-  const AllOrderState();
+abstract class ScheduleOrderState extends Equatable {
+  const ScheduleOrderState();
 }
 
-class AllOrderInitial extends AllOrderState {
+class ScheduleOrderInitial extends ScheduleOrderState {
   @override
   List<Object> get props => [];
 }
 
-class GetAllOrderState extends AllOrderState {
-  const GetAllOrderState({
+class GetAllScheduleOrderState extends ScheduleOrderState {
+  const GetAllScheduleOrderState({
     this.orderType = OrderType.none,
     this.pageKey = 1,
     this.searchText,
@@ -19,7 +19,7 @@ class GetAllOrderState extends AllOrderState {
     this.filter,
     this.sorting,
     this.startTimeStamp,
-    this.orderStateStatus = OrderStateStatus.getAll,
+    this.orderStateStatus = OrderStateStatus.getAllSchedule,
     this.orderEntities = const [],
   });
 
@@ -49,8 +49,8 @@ class GetAllOrderState extends AllOrderState {
       ];
 }
 
-class GetAllLoadingOrderState extends AllOrderState {
-  const GetAllLoadingOrderState({
+class GetAllScheduleLoadingOrderState extends ScheduleOrderState {
+  const GetAllScheduleLoadingOrderState({
     required this.isLoading,
     required this.message,
   });
@@ -65,8 +65,8 @@ class GetAllLoadingOrderState extends AllOrderState {
       ];
 }
 
-class GetAllProcessingOrderState extends AllOrderState {
-  const GetAllProcessingOrderState({
+class GetAllScheduleProcessingOrderState extends ScheduleOrderState {
+  const GetAllScheduleProcessingOrderState({
     required this.isProcessing,
     required this.message,
   });
@@ -81,8 +81,8 @@ class GetAllProcessingOrderState extends AllOrderState {
       ];
 }
 
-class GetAllFailedOrderState extends AllOrderState {
-  const GetAllFailedOrderState({
+class GetAllScheduleFailedOrderState extends ScheduleOrderState {
+  const GetAllScheduleFailedOrderState({
     required this.message,
   });
 
@@ -94,12 +94,12 @@ class GetAllFailedOrderState extends AllOrderState {
       ];
 }
 
-class GetAllExceptionOrderState extends AllOrderState {
-  const GetAllExceptionOrderState({
+class GetAllScheduleExceptionOrderState extends ScheduleOrderState {
+  const GetAllScheduleExceptionOrderState({
     required this.message,
     this.stackTrace,
     this.exception,
-    this.orderStateStatus = OrderStateStatus.getAll,
+    this.orderStateStatus = OrderStateStatus.getAllSchedule,
   });
 
   final OrderStateStatus orderStateStatus;
@@ -116,11 +116,11 @@ class GetAllExceptionOrderState extends AllOrderState {
       ];
 }
 
-class GetAllEmptyOrderState extends AllOrderState {
-  const GetAllEmptyOrderState({
+class GetAllScheduleEmptyOrderState extends ScheduleOrderState {
+  const GetAllScheduleEmptyOrderState({
     this.orderEntities = const [],
     this.message = '',
-    this.orderStateStatus = OrderStateStatus.getAll,
+    this.orderStateStatus = OrderStateStatus.empty,
   });
 
   final List<OrderEntity> orderEntities;

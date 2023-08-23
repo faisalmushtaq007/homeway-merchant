@@ -19,7 +19,7 @@ class GetAllCancelOrderState extends CancelOrderState {
     this.filter,
     this.sorting,
     this.startTimeStamp,
-    this.orderStateStatus = OrderStateStatus.getAll,
+    this.orderStateStatus = OrderStateStatus.getAllCancel,
     this.orderEntities = const [],
   });
 
@@ -36,17 +36,17 @@ class GetAllCancelOrderState extends CancelOrderState {
 
   @override
   List<Object?> get props => [
-    orderType,
-    pageKey,
-    searchText,
-    pageSize,
-    endTimeStamp,
-    filter,
-    sorting,
-    startTimeStamp,
-    orderStateStatus,
-    orderEntities,
-  ];
+        orderType,
+        pageKey,
+        searchText,
+        pageSize,
+        endTimeStamp,
+        filter,
+        sorting,
+        startTimeStamp,
+        orderStateStatus,
+        orderEntities,
+      ];
 }
 
 class GetAllCancelLoadingOrderState extends CancelOrderState {
@@ -60,9 +60,9 @@ class GetAllCancelLoadingOrderState extends CancelOrderState {
 
   @override
   List<Object?> get props => [
-    isLoading,
-    message,
-  ];
+        isLoading,
+        message,
+      ];
 }
 
 class GetAllCancelProcessingOrderState extends CancelOrderState {
@@ -76,9 +76,9 @@ class GetAllCancelProcessingOrderState extends CancelOrderState {
 
   @override
   List<Object?> get props => [
-    isProcessing,
-    message,
-  ];
+        isProcessing,
+        message,
+      ];
 }
 
 class GetAllCancelFailedOrderState extends CancelOrderState {
@@ -90,8 +90,8 @@ class GetAllCancelFailedOrderState extends CancelOrderState {
 
   @override
   List<Object?> get props => [
-    message,
-  ];
+        message,
+      ];
 }
 
 class GetAllCancelExceptionOrderState extends CancelOrderState {
@@ -99,7 +99,7 @@ class GetAllCancelExceptionOrderState extends CancelOrderState {
     required this.message,
     this.stackTrace,
     this.exception,
-    this.orderStateStatus = OrderStateStatus.getAll,
+    this.orderStateStatus = OrderStateStatus.getAllCancel,
   });
 
   final OrderStateStatus orderStateStatus;
@@ -109,9 +109,28 @@ class GetAllCancelExceptionOrderState extends CancelOrderState {
 
   @override
   List<Object?> get props => [
-    message,
-    stackTrace,
-    exception,
-    orderStateStatus,
-  ];
+        message,
+        stackTrace,
+        exception,
+        orderStateStatus,
+      ];
+}
+
+class GetAllCancelEmptyOrderState extends CancelOrderState {
+  const GetAllCancelEmptyOrderState({
+    this.orderEntities = const [],
+    this.message = '',
+    this.orderStateStatus = OrderStateStatus.empty,
+  });
+
+  final List<OrderEntity> orderEntities;
+  final String message;
+  final OrderStateStatus orderStateStatus;
+
+  @override
+  List<Object?> get props => [
+        orderEntities,
+        message,
+        orderStateStatus,
+      ];
 }
