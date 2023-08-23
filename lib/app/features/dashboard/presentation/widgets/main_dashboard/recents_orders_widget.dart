@@ -56,16 +56,18 @@ class _DashboardRecentOrdersController extends State<DashboardRecentOrders> {
             storeID: 12,
             storeName: 'Arabic Kitchen',
             location: AddressLocation(),
-            menu: Menu(
-              quantity: 1,
-              menuID: 21,
-              menuName: 'Vegetable Rice Briyani',
-              menuImage:
-                  'https://img.freepik.com/premium-photo/dum-handi-chicken-biryani-is-prepared-earthen-clay-pot-called-haandi-popular-indian-non-vegetarian-food_466689-52225.jpg',
-            ),
+            menu: [
+              Menu(
+                quantity: 1,
+                menuID: 21,
+                menuName: 'Vegetable Rice Briyani',
+                menuImage:
+                    'https://img.freepik.com/premium-photo/dum-handi-chicken-biryani-is-prepared-earthen-clay-pot-called-haandi-popular-indian-non-vegetarian-food_466689-52225.jpg',
+              ),
+            ],
           ),
-          orderStatus: OrderStatus.newOrder,
-          orderType: OrderType.recent,
+          orderStatus: OrderStatus.newOrder.index,
+          orderType: OrderType.recent.index,
           driver: Driver(),
           payment: Payment(),
         ),
@@ -80,16 +82,18 @@ class _DashboardRecentOrdersController extends State<DashboardRecentOrders> {
             storeID: 12,
             storeName: 'Arabic Kitchen',
             location: AddressLocation(),
-            menu: Menu(
-              quantity: 1,
-              menuID: 21,
-              menuName: 'Vegetable Rice Briyani',
-              menuImage:
-                  'https://img.freepik.com/premium-photo/dum-handi-chicken-biryani-is-prepared-earthen-clay-pot-called-haandi-popular-indian-non-vegetarian-food_466689-52225.jpg',
-            ),
+            menu: [
+              Menu(
+                quantity: 1,
+                menuID: 21,
+                menuName: 'Vegetable Rice Briyani',
+                menuImage:
+                    'https://img.freepik.com/premium-photo/dum-handi-chicken-biryani-is-prepared-earthen-clay-pot-called-haandi-popular-indian-non-vegetarian-food_466689-52225.jpg',
+              ),
+            ],
           ),
-          orderStatus: OrderStatus.newOrder,
-          orderType: OrderType.recent,
+          orderStatus: OrderStatus.newOrder.index,
+          orderType: OrderType.recent.index,
           driver: Driver(),
           payment: Payment(),
         ),
@@ -104,16 +108,18 @@ class _DashboardRecentOrdersController extends State<DashboardRecentOrders> {
             storeID: 12,
             storeName: 'Arabic Kitchen',
             location: AddressLocation(),
-            menu: Menu(
-              quantity: 1,
-              menuID: 21,
-              menuName: 'Vegetable Rice Briyani',
-              menuImage:
-                  'https://img.freepik.com/premium-photo/dum-handi-chicken-biryani-is-prepared-earthen-clay-pot-called-haandi-popular-indian-non-vegetarian-food_466689-52225.jpg',
-            ),
+            menu: [
+              Menu(
+                quantity: 1,
+                menuID: 21,
+                menuName: 'Vegetable Rice Briyani',
+                menuImage:
+                    'https://img.freepik.com/premium-photo/dum-handi-chicken-biryani-is-prepared-earthen-clay-pot-called-haandi-popular-indian-non-vegetarian-food_466689-52225.jpg',
+              ),
+            ],
           ),
-          orderStatus: OrderStatus.newOrder,
-          orderType: OrderType.recent,
+          orderStatus: OrderStatus.newOrder.index,
+          orderType: OrderType.recent.index,
           driver: Driver(),
           payment: Payment(),
         ),
@@ -128,16 +134,18 @@ class _DashboardRecentOrdersController extends State<DashboardRecentOrders> {
             storeID: 12,
             storeName: 'Arabic Kitchen',
             location: AddressLocation(),
-            menu: Menu(
-              quantity: 1,
-              menuID: 21,
-              menuName: 'Vegetable Rice Briyani',
-              menuImage:
-                  'https://img.freepik.com/premium-photo/dum-handi-chicken-biryani-is-prepared-earthen-clay-pot-called-haandi-popular-indian-non-vegetarian-food_466689-52225.jpg',
-            ),
+            menu: [
+              Menu(
+                quantity: 1,
+                menuID: 21,
+                menuName: 'Vegetable Rice Briyani',
+                menuImage:
+                    'https://img.freepik.com/premium-photo/dum-handi-chicken-biryani-is-prepared-earthen-clay-pot-called-haandi-popular-indian-non-vegetarian-food_466689-52225.jpg',
+              ),
+            ],
           ),
-          orderStatus: OrderStatus.newOrder,
-          orderType: OrderType.recent,
+          orderStatus: OrderStatus.newOrder.index,
+          orderType: OrderType.recent.index,
           driver: Driver(),
           payment: Payment(),
         ),

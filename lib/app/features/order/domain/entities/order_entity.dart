@@ -2,7 +2,7 @@ part of 'package:homemakers_merchant/app/features/order/index.dart';
 
 class OrderEntity extends INetworkModel<OrderEntity> with AppEquatable {
   OrderEntity({
-    this.orderDateTime = '',
+    this.orderDateTime,
     this.orderType = 0,
     required this.userInfo,
     this.hasDriverAssigned = false,
@@ -12,7 +12,7 @@ class OrderEntity extends INetworkModel<OrderEntity> with AppEquatable {
     required this.payment,
     required this.store,
     this.hasDriverReached = false,
-    this.orderDeliveryDateTime = '',
+    this.orderDeliveryDateTime,
   });
 
   factory OrderEntity.fromMap(Map<String, dynamic> json) => OrderEntity(
@@ -37,7 +37,7 @@ class OrderEntity extends INetworkModel<OrderEntity> with AppEquatable {
             : DateTime.now(),
       );
 
-  final DateTime orderDateTime;
+  DateTime? orderDateTime = DateTime.now();
   final int orderType;
   final UserInfo userInfo;
   final bool hasDriverAssigned;
@@ -47,7 +47,7 @@ class OrderEntity extends INetworkModel<OrderEntity> with AppEquatable {
   final Payment payment;
   final Store store;
   final bool hasDriverReached;
-  final DateTime orderDeliveryDateTime;
+  DateTime? orderDeliveryDateTime = DateTime.now();
 
   Map<String, dynamic> toMap() => {
         'orderDateTime': Timestamp.fromDateTime(this.orderDateTime ?? DateTime.now().toUtc()),
@@ -64,7 +64,7 @@ class OrderEntity extends INetworkModel<OrderEntity> with AppEquatable {
       };
 
   OrderEntity copyWith({
-    String? orderDateTime,
+    DateTime? orderDateTime,
     int? orderType,
     UserInfo? userInfo,
     bool? hasDriverAssigned,
@@ -74,7 +74,7 @@ class OrderEntity extends INetworkModel<OrderEntity> with AppEquatable {
     Payment? payment,
     Store? store,
     bool? hasDriverReached,
-    String? orderDeliveryDateTime,
+    DateTime? orderDeliveryDateTime,
   }) {
     return OrderEntity(
       orderDateTime: orderDateTime ?? this.orderDateTime,
@@ -139,11 +139,11 @@ class Driver {
         completeAddress: json['completeAddress'] ?? '',
       );
 
-  final String driverID;
-  final int lng;
+  final int driverID;
+  final double lng;
   final String contactNumber;
   final String driverName;
-  final int lat;
+  final double lat;
   final String completeAddress;
 
   Map<String, dynamic> toJson() => {
@@ -174,8 +174,8 @@ class Payment {
       );
 
   final String mode;
-  final int amount;
-  final String paymentID;
+  final double amount;
+  final int paymentID;
   final String currency;
   final String paymentDateTime;
 
@@ -227,8 +227,8 @@ class AddressLocation {
         lat: json['lat'],
       );
 
-  final int lng;
-  final int lat;
+  final double lng;
+  final double lat;
 
   Map<String, dynamic> toJson() => {
         'lng': lng,
@@ -312,7 +312,7 @@ class Addon {
       );
 
   final String addonsImage;
-  final int qunatity;
+  final double qunatity;
   final String addonsName;
   final int addonsId;
 
@@ -345,12 +345,12 @@ class UserInfo {
         completeAddress: json['completeAddress'] ?? '',
       );
 
-  final int lng;
+  final double lng;
   final DeliveryAddress deliveryAddress;
   final String contactNumber;
   final String userName;
   final int userId;
-  final int lat;
+  final double lat;
   final String completeAddress;
 
   Map<String, dynamic> toJson() => {
@@ -381,9 +381,9 @@ class DeliveryAddress {
         contactPerson: json['contactPerson'] ?? '',
       );
 
-  final int lng;
+  final double lng;
   final String contactNumber;
-  final int lat;
+  final double lat;
   final String completeAddress;
   final String contactPerson;
 

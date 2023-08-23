@@ -281,7 +281,7 @@ class OrderRepositoryImplement implements OrderRepository {
             stackTrace: failure.stacktrace,
           );
         }, (r) {
-          appLog.d('Get order to local : ${r?.orderID}, ${r?.orderDateTime.toUtc().toString()}');
+          appLog.d('Get order to local : ${r?.orderID}, ${r?.orderDateTime?.toUtc().toString()}');
           return DataSourceState<OrderEntity>.localDb(data: r);
         });
       } else {
@@ -344,7 +344,7 @@ class OrderRepositoryImplement implements OrderRepository {
             stackTrace: failure.stacktrace,
           );
         }, (r) {
-          appLog.d('Save order to local : ${r.orderID}, ${r.orderDateTime.toUtc().toString()}');
+          appLog.d('Save order to local : ${r.orderID}, ${r.orderDateTime?.toUtc().toString()}');
           return DataSourceState<OrderEntity>.localDb(data: r);
         });
       } else {
