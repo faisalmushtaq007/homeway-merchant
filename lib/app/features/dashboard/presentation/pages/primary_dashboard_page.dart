@@ -118,7 +118,9 @@ class _PrimaryDashboardPageState extends State<PrimaryDashboardPage> {
                 ),
               ],
             ),
-            drawer: const PrimaryDashboardDrawer(),
+            drawer: const PrimaryDashboardDrawer(
+              key: const Key('primary-dashboard-drawer'),
+            ),
             body: SlideInLeft(
               key: const Key('primary-dashboard-page-slideinleft-widget'),
               delay: const Duration(milliseconds: 500),
