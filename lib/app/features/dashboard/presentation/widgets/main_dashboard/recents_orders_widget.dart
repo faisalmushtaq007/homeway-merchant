@@ -48,6 +48,7 @@ class _DashboardRecentOrdersController extends State<DashboardRecentOrders> {
         OrderEntity(
           orderID: 1,
           orderDateTime: DateTime.now(),
+          orderDeliveryDateTime: DateTime.now().add(Duration(minutes: 15)),
           userInfo: UserInfo(
             userName: 'Sonu',
             deliveryAddress: DeliveryAddress(),
@@ -73,7 +74,8 @@ class _DashboardRecentOrdersController extends State<DashboardRecentOrders> {
         ),
         OrderEntity(
           orderID: 2,
-          orderDateTime: DateTime.now(),
+          orderDateTime: DateTime.now().subtract(Duration(minutes: 30)),
+          orderDeliveryDateTime: DateTime.now().add(Duration(minutes: 5)),
           userInfo: UserInfo(
             userName: 'Sonu',
             deliveryAddress: DeliveryAddress(),
@@ -99,7 +101,8 @@ class _DashboardRecentOrdersController extends State<DashboardRecentOrders> {
         ),
         OrderEntity(
           orderID: 3,
-          orderDateTime: DateTime.now(),
+          orderDateTime: DateTime.now().subtract(Duration(minutes: 20)),
+          orderDeliveryDateTime: DateTime.now().add(Duration(minutes: 15)),
           userInfo: UserInfo(
             userName: 'Sonu',
             deliveryAddress: DeliveryAddress(),
@@ -126,6 +129,7 @@ class _DashboardRecentOrdersController extends State<DashboardRecentOrders> {
         OrderEntity(
           orderID: 4,
           orderDateTime: DateTime.now(),
+          orderDeliveryDateTime: DateTime.now().add(Duration(minutes: 15)),
           userInfo: UserInfo(
             userName: 'Sonu',
             deliveryAddress: DeliveryAddress(),

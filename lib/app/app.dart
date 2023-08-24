@@ -11,6 +11,7 @@ import 'package:homemakers_merchant/app/features/authentication/presentation/man
 import 'package:homemakers_merchant/app/features/authentication/presentation/pages/login_page.dart';
 import 'package:homemakers_merchant/app/features/menu/index.dart';
 import 'package:homemakers_merchant/app/features/onboarding/presentation/pages/splash_page.dart';
+import 'package:homemakers_merchant/app/features/order/index.dart';
 import 'package:homemakers_merchant/app/features/order/presentation/manager/all/all_order_bloc.dart';
 import 'package:homemakers_merchant/app/features/order/presentation/manager/cancel/cancel_order_bloc.dart';
 import 'package:homemakers_merchant/app/features/order/presentation/manager/deliver/deliver_order_bloc.dart';
@@ -75,12 +76,14 @@ class _AppState extends State<App> with GetItStateMixin {
     final LanguageController initLanguageController = get<LanguageController>();
     final ThemeController initThemeController = get<ThemeController>();
     final WrapAndMoreController initWrapAndMoreController = get<WrapAndMoreController>();
+    final ManageOrderController initManageOrderController = get<ManageOrderController>();
 
     final permissionController = watchOnly((PermissionController controller) => controller);
     final userModelStorageController = watchOnly((UserModelStorageController controller) => controller);
     final languageController = watchOnly((LanguageController controller) => controller);
     final themeController = watchOnly((ThemeController controller) => controller);
     final wrapAndMoreController = watchOnly((WrapAndMoreController controller) => controller);
+    final manageOrderController = watchOnly((ManageOrderController controller) => controller);
 
     return MultiBlocProvider(
       providers: [
@@ -168,6 +171,7 @@ class _AppState extends State<App> with GetItStateMixin {
           userModelStorageController,
           languageController,
           wrapAndMoreController,
+          manageOrderController,
         ],
         builder: (BuildContext context, Widget? child) {
           final materialLightTheme = flexThemeLight(themeController);
@@ -250,8 +254,6 @@ class _AppState extends State<App> with GetItStateMixin {
                         locale: languageController.targetAppLanguage.value,
                         supportedLocales: AppLocalizations.supportedLocales,
                         builder: (context, child) {
-                          // Init ColorUtil Class
-                          final ColorUtil colorUtil = ColorUtil(context);
                           return Directionality(
                             textDirection: serviceLocator<LanguageController>().targetTextDirection,
                             child: ResponsiveBreakpoints.builder(

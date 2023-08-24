@@ -105,6 +105,11 @@ void _setUpModel() {
 Future<void> _setUpAppSetting() async {
   // Wrap and More Controller
   serviceLocator.registerSingleton<WrapAndMoreController>(WrapAndMoreController());
+  // Manager Order Controller
+  serviceLocator.registerSingleton<ManageOrderController>(
+    ManageOrderController(),
+  );
+  await serviceLocator<ManageOrderController>().loadAll();
   serviceLocator.registerSingleton<ThemeService>(ThemeServiceHive('app_color_scheme_box'));
   //final ThemeService themeService = ThemeServicePrefs();
   //final ThemeService themeService = ThemeServiceHive('app_color_scheme_box');

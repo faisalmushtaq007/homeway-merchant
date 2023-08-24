@@ -223,4 +223,13 @@ extension FlexStringExtensions on String {
   String get dotTail {
     return split('.').last;
   }
+
+  // Return true if the color is light, meaning it needs dark text for contrast.
+  static bool isLight(final Color color) => ThemeData.estimateBrightnessForColor(color) == Brightness.light;
+
+  // Return true if the color is dark, meaning it needs light text for contrast.
+  static bool isDark(final Color color) => ThemeData.estimateBrightnessForColor(color) == Brightness.dark;
+
+  // On color used when a theme color property does not have a theme onColor.
+  Color onColor(final Color color, final Color background) => isLight(Color.alphaBlend(color, background)) ? Colors.black : Colors.white;
 }

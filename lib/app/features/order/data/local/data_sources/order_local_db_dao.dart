@@ -257,49 +257,20 @@ class OrderLocalDbRepository<T extends OrderEntity> implements BaseOrderLocalDbR
       return await db.transaction((transaction) async {
         // Finder object can also sort data.
         Finder finder = Finder(
-          sortOrders: [
+          /* sortOrders: [
             SortOrder('orderDateTime'),
-          ],
+          ],*/
           limit: pageSize,
           offset: pageKey,
         );
-        if (searchText.isNotNull || filter.isNotNull || sorting.isNotNull) {
+        if (searchText.isNotNull || filter.isNotNull || sorting.isNotNull && (startTimeStamp.isNotNull || endTimeStamp.isNotNull)) {
           var regExp = RegExp(searchText ?? '', caseSensitive: false);
           var filterRegExp = RegExp(filter ?? '', caseSensitive: false);
           var sortingRegExp = RegExp(sorting ?? '', caseSensitive: false);
           finder = Finder(
-            sortOrders: [
+            /* sortOrders: [
               SortOrder('orderDateTime'),
-            ],
-            limit: pageSize,
-            offset: pageKey,
-            filter: Filter.or([
-              Filter.matchesRegExp(
-                'store.storeName',
-                regExp,
-              ),
-              Filter.matchesRegExp(
-                'store.storeName.menu.@.menuName',
-                regExp,
-              ),
-              Filter.matchesRegExp(
-                'store.storeName',
-                filterRegExp,
-              ),
-              Filter.matchesRegExp(
-                'store.storeName.menu.@.menuName',
-                filterRegExp,
-              ),
-            ]),
-          );
-        } else if (searchText.isNotNull || filter.isNotNull || sorting.isNotNull && (startTimeStamp.isNotNull || endTimeStamp.isNotNull)) {
-          var regExp = RegExp(searchText ?? '', caseSensitive: false);
-          var filterRegExp = RegExp(filter ?? '', caseSensitive: false);
-          var sortingRegExp = RegExp(sorting ?? '', caseSensitive: false);
-          finder = Finder(
-            sortOrders: [
-              SortOrder('orderDateTime'),
-            ],
+            ],*/
             limit: pageSize,
             offset: pageKey,
             filter: Filter.and(
@@ -326,6 +297,40 @@ class OrderLocalDbRepository<T extends OrderEntity> implements BaseOrderLocalDbR
                 Filter.lessThan('orderDateTime', endTimeStamp),
               ],
             ),
+          );
+        } else if (searchText.isNotNull || filter.isNotNull || sorting.isNotNull) {
+          var regExp = RegExp(searchText ?? '', caseSensitive: false);
+          var filterRegExp = RegExp(filter ?? '', caseSensitive: false);
+          var sortingRegExp = RegExp(sorting ?? '', caseSensitive: false);
+          finder = Finder(
+            /*sortOrders: [
+              SortOrder('orderDateTime'),
+            ],*/
+            limit: pageSize,
+            offset: pageKey,
+            filter: Filter.or([
+              Filter.matchesRegExp(
+                'store.storeName',
+                regExp,
+              ),
+              Filter.matchesRegExp(
+                'store.storeName.menu.@.menuName',
+                regExp,
+              ),
+              Filter.matchesRegExp(
+                'store.storeName',
+                filterRegExp,
+              ),
+              Filter.matchesRegExp(
+                'store.storeName.menu.@.menuName',
+                filterRegExp,
+              ),
+            ]),
+          );
+        } else {
+          Finder finder = Finder(
+            limit: pageSize,
+            offset: pageKey,
           );
         }
         final recordSnapshots = await _order.find(

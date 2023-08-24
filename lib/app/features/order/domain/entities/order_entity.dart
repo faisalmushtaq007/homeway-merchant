@@ -2,7 +2,7 @@ part of 'package:homemakers_merchant/app/features/order/index.dart';
 
 class OrderEntity extends INetworkModel<OrderEntity> with AppEquatable {
   OrderEntity({
-    this.orderDateTime,
+    required this.orderDateTime,
     this.orderType = 0,
     required this.userInfo,
     this.hasDriverAssigned = false,
@@ -12,7 +12,7 @@ class OrderEntity extends INetworkModel<OrderEntity> with AppEquatable {
     required this.payment,
     required this.store,
     this.hasDriverReached = false,
-    this.orderDeliveryDateTime,
+    required this.orderDeliveryDateTime,
   });
 
   factory OrderEntity.fromMap(Map<String, dynamic> json) => OrderEntity(
@@ -37,7 +37,7 @@ class OrderEntity extends INetworkModel<OrderEntity> with AppEquatable {
             : DateTime.now(),
       );
 
-  DateTime? orderDateTime = DateTime.now();
+  final DateTime orderDateTime;
   final int orderType;
   final UserInfo userInfo;
   final bool hasDriverAssigned;
@@ -47,10 +47,10 @@ class OrderEntity extends INetworkModel<OrderEntity> with AppEquatable {
   final Payment payment;
   final Store store;
   final bool hasDriverReached;
-  DateTime? orderDeliveryDateTime = DateTime.now();
+  final DateTime orderDeliveryDateTime;
 
   Map<String, dynamic> toMap() => {
-        'orderDateTime': Timestamp.fromDateTime(this.orderDateTime ?? DateTime.now().toUtc()),
+        'orderDateTime': Timestamp.fromDateTime(this.orderDateTime),
         'orderType': orderType,
         'userInfo': userInfo.toJson(),
         'hasDriverAssigned': hasDriverAssigned,
@@ -60,7 +60,7 @@ class OrderEntity extends INetworkModel<OrderEntity> with AppEquatable {
         'payment': payment.toJson(),
         'store': store.toJson(),
         'hasDriverReached': hasDriverReached,
-        'orderDeliveryDateTime': Timestamp.fromDateTime(this.orderDeliveryDateTime ?? DateTime.now().toUtc()),
+        'orderDeliveryDateTime': Timestamp.fromDateTime(this.orderDeliveryDateTime),
       };
 
   OrderEntity copyWith({

@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:homemakers_merchant/core/extensions/global_extensions/src/object.dart';
 
 /// Converts an ABGR color format to ARGB by swapping R and B values.
 int abgrToArgb(int argbColor) {
@@ -114,36 +115,4 @@ Color getRandomColor() {
     random.nextInt(256),
     random.nextInt(256),
   );
-}
-
-class ColorUtil {
-  factory ColorUtil(BuildContext context) {
-    _colorUtil.context = context;
-    _colorUtil.theme = Theme.of(context);
-    _colorUtil.useMaterial3 = _colorUtil.theme.useMaterial3;
-    _colorUtil.scheme = _colorUtil.theme.colorScheme;
-    _colorUtil.isLight = _colorUtil.theme.brightness == Brightness.light;
-    return _colorUtil;
-  }
-
-  ColorUtil._internal();
-
-  late final BuildContext context;
-  late final ThemeData theme;
-  late final bool useMaterial3;
-  late final ColorScheme scheme;
-  late final bool isLight;
-
-  Color getBackgroundColor(Color color) {
-    return Color.alphaBlend(scheme.surfaceTint.withAlpha(isLight ? 10 : 16), color);
-  }
-
-  static Color onTextColor(Color bgColor) => ThemeData.estimateBrightnessForColor(bgColor) == Brightness.light ? Colors.black : Colors.white;
-
-  bool _isLight(final Color color) => ThemeData.estimateBrightnessForColor(color) == Brightness.light;
-
-  Color getOnColor(final Color color, final Color bg) => _isLight(Color.alphaBlend(color, bg)) ? Colors.black : Colors.white;
-
-  static final ColorUtil _colorUtil = ColorUtil._internal();
-  static ColorUtil get instance => _colorUtil;
 }

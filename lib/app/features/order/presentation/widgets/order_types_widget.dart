@@ -1,7 +1,11 @@
 part of 'package:homemakers_merchant/app/features/order/index.dart';
 
 class OrderTypeWidget extends StatefulWidget {
-  const OrderTypeWidget({super.key});
+  const OrderTypeWidget({
+    required this.onChanged,
+    super.key,
+  });
+  final ValueChanged<int> onChanged;
 
   @override
   _OrderTypeWidgetController createState() => _OrderTypeWidgetController();
@@ -71,6 +75,7 @@ class _OrderTypeWidgetController extends State<OrderTypeWidget> {
     });
     listOfOrderTypeInfo[index].copyWith(hasSelected: true);
     selectedOrderTypeInfo = listOfOrderTypeInfo[index];
+    widget.onChanged(index);
     setState(() {});
   }
 
