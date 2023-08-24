@@ -12,7 +12,12 @@ import 'package:homemakers_merchant/app/features/authentication/presentation/pag
 import 'package:homemakers_merchant/app/features/menu/index.dart';
 import 'package:homemakers_merchant/app/features/onboarding/presentation/pages/splash_page.dart';
 import 'package:homemakers_merchant/app/features/order/presentation/manager/all/all_order_bloc.dart';
+import 'package:homemakers_merchant/app/features/order/presentation/manager/cancel/cancel_order_bloc.dart';
+import 'package:homemakers_merchant/app/features/order/presentation/manager/deliver/deliver_order_bloc.dart';
+import 'package:homemakers_merchant/app/features/order/presentation/manager/new/new_order_bloc.dart';
+import 'package:homemakers_merchant/app/features/order/presentation/manager/onprocess/on_process_order_bloc.dart';
 import 'package:homemakers_merchant/app/features/order/presentation/manager/recents/recent_order_bloc.dart';
+import 'package:homemakers_merchant/app/features/order/presentation/manager/schedule/schedule_order_bloc.dart';
 import 'package:homemakers_merchant/app/features/payment/presentation/manager/wallet/wallet_bloc.dart';
 import 'package:homemakers_merchant/app/features/permission/presentation/bloc/permission_bloc.dart';
 
@@ -44,6 +49,8 @@ import 'package:homemakers_merchant/theme/flex_theme_dark.dart';
 import 'package:homemakers_merchant/theme/flex_theme_light.dart';
 import 'package:homemakers_merchant/theme/theme_code.dart';
 import 'package:homemakers_merchant/theme/theme_controller.dart';
+import 'package:homemakers_merchant/utils/color/color_utils.dart';
+import 'package:homemakers_merchant/utils/common/color_utils.dart';
 import 'package:homemakers_merchant/utils/multi/multi_listenable_buillder.dart';
 import 'package:phone_form_field/phone_form_field.dart';
 import 'package:responsive_framework/responsive_framework.dart';
@@ -131,6 +138,26 @@ class _AppState extends State<App> with GetItStateMixin {
         ),
         BlocProvider<RecentOrderBloc>(
           key: const Key('recent_order_bloc_provider'),
+          create: (context) => serviceLocator(),
+        ),
+        BlocProvider<CancelOrderBloc>(
+          key: const Key('cance_order_bloc_provider'),
+          create: (context) => serviceLocator(),
+        ),
+        BlocProvider<DeliverOrderBloc>(
+          key: const Key('deliver_order_bloc_provider'),
+          create: (context) => serviceLocator(),
+        ),
+        BlocProvider<NewOrderBloc>(
+          key: const Key('new_order_bloc_provider'),
+          create: (context) => serviceLocator(),
+        ),
+        BlocProvider<ScheduleOrderBloc>(
+          key: const Key('schedule_order_bloc_provider'),
+          create: (context) => serviceLocator(),
+        ),
+        BlocProvider<OnProcessOrderBloc>(
+          key: const Key('onprocess_order_bloc_provider'),
           create: (context) => serviceLocator(),
         ),
       ],
@@ -222,79 +249,83 @@ class _AppState extends State<App> with GetItStateMixin {
                         ],
                         locale: languageController.targetAppLanguage.value,
                         supportedLocales: AppLocalizations.supportedLocales,
-                        builder: (context, child) => Directionality(
-                          textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                          child: ResponsiveBreakpoints.builder(
-                            child: OneContext().builder(context, child),
-                            breakpoints: [
-                              const Breakpoint(
-                                start: 0,
-                                end: 149,
-                                name: 'XSMALLWATCH',
-                              ),
-                              const Breakpoint(
-                                start: 150,
-                                end: 320,
-                                name: 'WATCH',
-                              ),
-                              const Breakpoint(
-                                start: 321,
-                                end: 399,
-                                name: 'MEDIUMMOBILE',
-                              ),
-                              const Breakpoint(
-                                start: 400,
-                                end: 480,
-                                name: 'LARGEMOBILE',
-                              ),
-                              const Breakpoint(
-                                start: 481,
-                                end: 600,
-                                name: 'XSMALLTABLET',
-                              ),
-                              const Breakpoint(
-                                start: 601,
-                                end: 719,
-                                name: 'MEDIUMTABLET',
-                              ),
-                              const Breakpoint(
-                                start: 720,
-                                end: 839,
-                                name: 'LARGETABLET',
-                              ),
-                              const Breakpoint(
-                                start: 840,
-                                end: 959,
-                                name: 'XLARGETABLET',
-                              ),
-                              const Breakpoint(
-                                start: 960,
-                                end: 1023,
-                                name: 'NORMALDESKTOP',
-                              ),
-                              const Breakpoint(
-                                start: 1024,
-                                end: 1279,
-                                name: 'MEDIUMDESKTOP',
-                              ),
-                              const Breakpoint(
-                                start: 1440,
-                                end: 1599,
-                                name: 'LARGEDESKTOP',
-                              ),
-                              const Breakpoint(
-                                start: 1600,
-                                end: 1920,
-                                name: 'XLARGEDESKTOP',
-                              ),
-                              const Breakpoint(
-                                start: 1921,
-                                end: double.infinity,
-                                name: '4K',
-                              ),
-                            ],
-                          ),
-                        ),
+                        builder: (context, child) {
+                          // Init ColorUtil Class
+                          final ColorUtil colorUtil = ColorUtil(context);
+                          return Directionality(
+                            textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                            child: ResponsiveBreakpoints.builder(
+                              child: OneContext().builder(context, child),
+                              breakpoints: [
+                                const Breakpoint(
+                                  start: 0,
+                                  end: 149,
+                                  name: 'XSMALLWATCH',
+                                ),
+                                const Breakpoint(
+                                  start: 150,
+                                  end: 320,
+                                  name: 'WATCH',
+                                ),
+                                const Breakpoint(
+                                  start: 321,
+                                  end: 399,
+                                  name: 'MEDIUMMOBILE',
+                                ),
+                                const Breakpoint(
+                                  start: 400,
+                                  end: 480,
+                                  name: 'LARGEMOBILE',
+                                ),
+                                const Breakpoint(
+                                  start: 481,
+                                  end: 600,
+                                  name: 'XSMALLTABLET',
+                                ),
+                                const Breakpoint(
+                                  start: 601,
+                                  end: 719,
+                                  name: 'MEDIUMTABLET',
+                                ),
+                                const Breakpoint(
+                                  start: 720,
+                                  end: 839,
+                                  name: 'LARGETABLET',
+                                ),
+                                const Breakpoint(
+                                  start: 840,
+                                  end: 959,
+                                  name: 'XLARGETABLET',
+                                ),
+                                const Breakpoint(
+                                  start: 960,
+                                  end: 1023,
+                                  name: 'NORMALDESKTOP',
+                                ),
+                                const Breakpoint(
+                                  start: 1024,
+                                  end: 1279,
+                                  name: 'MEDIUMDESKTOP',
+                                ),
+                                const Breakpoint(
+                                  start: 1440,
+                                  end: 1599,
+                                  name: 'LARGEDESKTOP',
+                                ),
+                                const Breakpoint(
+                                  start: 1600,
+                                  end: 1920,
+                                  name: 'XLARGEDESKTOP',
+                                ),
+                                const Breakpoint(
+                                  start: 1921,
+                                  end: double.infinity,
+                                  name: '4K',
+                                ),
+                              ],
+                            ),
+                          );
+                        },
                         routerConfig: AppRouter.router,
                         //routeInformationParser: AppPages.router.routeInformationParser,
                         //routerDelegate: AppPages.router.routerDelegate,

@@ -1,10 +1,10 @@
-part of 'deliver_bloc.dart';
+part of 'deliver_order_bloc.dart';
 
-abstract class DeliverEvent extends Equatable {
-  const DeliverEvent();
+abstract class DeliverOrderEvent extends Equatable {
+  const DeliverOrderEvent();
 }
 
-class GetAllDeliverOrder extends DeliverEvent {
+class GetAllDeliverOrder extends DeliverOrderEvent {
   const GetAllDeliverOrder({
     this.orderType = OrderType.none,
     this.pageKey = 1,

@@ -9,7 +9,12 @@ import 'package:homemakers_merchant/app/features/menu/index.dart';
 import 'package:homemakers_merchant/app/features/notification/index.dart';
 import 'package:homemakers_merchant/app/features/order/index.dart';
 import 'package:homemakers_merchant/app/features/order/presentation/manager/all/all_order_bloc.dart';
+import 'package:homemakers_merchant/app/features/order/presentation/manager/cancel/cancel_order_bloc.dart';
+import 'package:homemakers_merchant/app/features/order/presentation/manager/deliver/deliver_order_bloc.dart';
+import 'package:homemakers_merchant/app/features/order/presentation/manager/new/new_order_bloc.dart';
+import 'package:homemakers_merchant/app/features/order/presentation/manager/onprocess/on_process_order_bloc.dart';
 import 'package:homemakers_merchant/app/features/order/presentation/manager/recents/recent_order_bloc.dart';
+import 'package:homemakers_merchant/app/features/order/presentation/manager/schedule/schedule_order_bloc.dart';
 import 'package:homemakers_merchant/app/features/payment/presentation/manager/wallet/wallet_bloc.dart';
 import 'package:homemakers_merchant/app/features/permission/presentation/bloc/permission_bloc.dart';
 import 'package:homemakers_merchant/app/features/profile/index.dart';
@@ -952,4 +957,9 @@ void _setUpStateManagement() {
   serviceLocator.registerFactory<WalletBloc>(() => WalletBloc());
   serviceLocator.registerFactory<AllOrderBloc>(() => AllOrderBloc());
   serviceLocator.registerFactory<RecentOrderBloc>(() => RecentOrderBloc());
+  serviceLocator.registerFactory<CancelOrderBloc>(() => CancelOrderBloc());
+  serviceLocator.registerFactory<NewOrderBloc>(() => NewOrderBloc());
+  serviceLocator.registerFactory<DeliverOrderBloc>(() => DeliverOrderBloc());
+  serviceLocator.registerFactory<ScheduleOrderBloc>(() => ScheduleOrderBloc());
+  serviceLocator.registerFactory<OnProcessOrderBloc>(() => OnProcessOrderBloc());
 }

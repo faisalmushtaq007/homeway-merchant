@@ -1,15 +1,15 @@
-part of 'deliver_bloc.dart';
+part of 'deliver_order_bloc.dart';
 
-abstract class DeliverState extends Equatable {
-  const DeliverState();
+abstract class DeliverOrderState extends Equatable {
+  const DeliverOrderState();
 }
 
-class DeliverInitial extends DeliverState {
+class DeliverInitial extends DeliverOrderState {
   @override
   List<Object> get props => [];
 }
 
-class GetAllDeliverOrderState extends DeliverState {
+class GetAllDeliverOrderState extends DeliverOrderState {
   const GetAllDeliverOrderState({
     this.orderType = OrderType.none,
     this.pageKey = 1,
@@ -49,7 +49,7 @@ class GetAllDeliverOrderState extends DeliverState {
       ];
 }
 
-class GetAllDeliverLoadingOrderState extends DeliverState {
+class GetAllDeliverLoadingOrderState extends DeliverOrderState {
   const GetAllDeliverLoadingOrderState({
     required this.isLoading,
     required this.message,
@@ -65,7 +65,7 @@ class GetAllDeliverLoadingOrderState extends DeliverState {
       ];
 }
 
-class GetAllDeliverProcessingOrderState extends DeliverState {
+class GetAllDeliverProcessingOrderState extends DeliverOrderState {
   const GetAllDeliverProcessingOrderState({
     required this.isProcessing,
     required this.message,
@@ -81,7 +81,7 @@ class GetAllDeliverProcessingOrderState extends DeliverState {
       ];
 }
 
-class GetAllDeliverFailedOrderState extends DeliverState {
+class GetAllDeliverFailedOrderState extends DeliverOrderState {
   const GetAllDeliverFailedOrderState({
     required this.message,
   });
@@ -94,7 +94,7 @@ class GetAllDeliverFailedOrderState extends DeliverState {
       ];
 }
 
-class GetAllDeliverExceptionOrderState extends DeliverState {
+class GetAllDeliverExceptionOrderState extends DeliverOrderState {
   const GetAllDeliverExceptionOrderState({
     required this.message,
     this.stackTrace,
@@ -116,7 +116,7 @@ class GetAllDeliverExceptionOrderState extends DeliverState {
       ];
 }
 
-class GetAllDeliverEmptyOrderState extends DeliverState {
+class GetAllDeliverEmptyOrderState extends DeliverOrderState {
   const GetAllDeliverEmptyOrderState({
     this.orderEntities = const [],
     this.message = '',
