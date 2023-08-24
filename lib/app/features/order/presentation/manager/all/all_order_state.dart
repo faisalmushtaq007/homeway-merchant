@@ -121,16 +121,40 @@ class GetAllEmptyOrderState extends AllOrderState {
     this.orderEntities = const [],
     this.message = '',
     this.orderStateStatus = OrderStateStatus.getAll,
+    this.orderType = OrderType.none,
+    this.pageKey = 1,
+    this.searchText,
+    this.pageSize = 10,
+    this.endTimeStamp,
+    this.filter,
+    this.sorting,
+    this.startTimeStamp,
   });
 
   final List<OrderEntity> orderEntities;
   final String message;
   final OrderStateStatus orderStateStatus;
+  final int pageKey;
+  final int pageSize;
+  final String? searchText;
+  final OrderType orderType;
+  final String? filter;
+  final String? sorting;
+  final Timestamp? startTimeStamp;
+  final Timestamp? endTimeStamp;
 
   @override
   List<Object?> get props => [
         orderEntities,
         message,
         orderStateStatus,
+        orderType,
+        pageKey,
+        searchText,
+        pageSize,
+        endTimeStamp,
+        filter,
+        sorting,
+        startTimeStamp,
       ];
 }

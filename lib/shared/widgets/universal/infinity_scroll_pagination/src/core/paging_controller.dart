@@ -106,6 +106,18 @@ class PagingController<PageKeyType, ItemType> extends ValueNotifier<PagingState<
     );
   }
 
+  /// Prepends [newItems] to the previously loaded ones and replaces
+  /// the next page's key.
+  void prependPage(List<ItemType> newItems, PageKeyType? nextPageKey) {
+    final previousItems = value.itemList ?? [];
+    final itemList = newItems + previousItems;
+    value = PagingState<PageKeyType, ItemType>(
+      itemList: itemList,
+      error: null,
+      nextPageKey: nextPageKey,
+    );
+  }
+
   /// Appends [newItems] to the previously loaded ones and sets the next page
   /// key to `null`.
   void appendLastPage(List<ItemType> newItems) => appendPage(newItems, null);

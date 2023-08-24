@@ -12,21 +12,22 @@ class OrderCardWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print('Order Card ${orderEntity.orderDateTime} ${orderEntity.orderDateTime.format('D, M j, H:i')}');
+    print('Order Card Deliver ${orderEntity.orderDeliveryDateTime} ${orderEntity.orderDeliveryDateTime.format('D, M j, H:i')}');
     return Card(
-      margin: EdgeInsetsDirectional.only(start: 0, end: 0, bottom: 16),
+      margin: const EdgeInsetsDirectional.only(bottom: 16),
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         mainAxisSize: MainAxisSize.min,
         textDirection: serviceLocator<LanguageController>().targetTextDirection,
         children: [
           Flexible(
             child: Container(
-              padding: EdgeInsetsDirectional.only(
+              padding: const EdgeInsetsDirectional.only(
                 start: 12,
                 end: 12,
               ),
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 //color: context.colorScheme.secondaryContainer,
                 color: Color.fromRGBO(238, 238, 238, 1),
                 borderRadius: BorderRadiusDirectional.only(
@@ -35,14 +36,11 @@ class OrderCardWidget extends StatelessWidget {
                 ),
               ),
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisSize: MainAxisSize.min,
                 textDirection: serviceLocator<LanguageController>().targetTextDirection,
                 children: [
                   Expanded(
                     child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       mainAxisSize: MainAxisSize.min,
                       textDirection: serviceLocator<LanguageController>().targetTextDirection,
@@ -64,8 +62,6 @@ class OrderCardWidget extends StatelessWidget {
                         ),
                         const AnimatedGap(3, duration: Duration(milliseconds: 100)),
                         Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.center,
                           mainAxisSize: MainAxisSize.min,
                           textDirection: serviceLocator<LanguageController>().targetTextDirection,
                           children: [
@@ -78,7 +74,7 @@ class OrderCardWidget extends StatelessWidget {
                             Directionality(
                               textDirection: serviceLocator<LanguageController>().targetTextDirection,
                               child: WrapText(
-                                '${orderEntity.orderDateTime?.format('D, M j, H:i') ?? ''}',
+                                orderEntity.orderDateTime.format('D, M j, H:i') ?? '',
                                 breakWordCharacter: '-',
                                 smartSizeMode: false,
                                 asyncMode: true,
@@ -89,7 +85,7 @@ class OrderCardWidget extends StatelessWidget {
                                 overflow: TextOverflow.ellipsis,
                               ),
                             ),
-                            Spacer(),
+                            const Spacer(),
                           ],
                         ),
                         const AnimatedGap(8, duration: Duration(milliseconds: 100)),
@@ -98,7 +94,6 @@ class OrderCardWidget extends StatelessWidget {
                   ),
                   Column(
                     mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisSize: MainAxisSize.min,
                     textDirection: serviceLocator<LanguageController>().targetTextDirection,
                     children: [
@@ -126,8 +121,6 @@ class OrderCardWidget extends StatelessWidget {
           Flexible(
             flex: 3,
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisSize: MainAxisSize.min,
               textDirection: serviceLocator<LanguageController>().targetTextDirection,
               children: [
@@ -135,11 +128,8 @@ class OrderCardWidget extends StatelessWidget {
                   child: AspectRatio(
                     aspectRatio: 1 / 0.8,
                     child: Card(
-                      margin: EdgeInsetsDirectional.only(
+                      margin: const EdgeInsetsDirectional.only(
                         start: 12,
-                        top: 0,
-                        bottom: 0,
-                        end: 0,
                       ),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadiusDirectional.circular(10),
@@ -148,7 +138,6 @@ class OrderCardWidget extends StatelessWidget {
                         image: (orderEntity.store.menu[0].menuImage.isEmptyOrNull)
                             ? 'assets/svg/sorry-image-not-available.svg'
                             : orderEntity.store.menu[0].menuImage,
-                        scale: 1.0,
                         filterQuality: FilterQuality.high,
                         borderRadius: BorderRadiusDirectional.circular(10),
                         imageType: findImageType(orderEntity.store.menu[0].menuImage),
@@ -177,7 +166,6 @@ class OrderCardWidget extends StatelessWidget {
                     child: Padding(
                       padding: const EdgeInsetsDirectional.only(start: 4, end: 4, top: 4, bottom: 4),
                       child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         mainAxisSize: MainAxisSize.min,
                         textDirection: serviceLocator<LanguageController>().targetTextDirection,
@@ -230,8 +218,6 @@ class OrderCardWidget extends StatelessWidget {
                             ),
                           ),
                           Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.center,
                             mainAxisSize: MainAxisSize.min,
                             textDirection: serviceLocator<LanguageController>().targetTextDirection,
                             children: [
@@ -255,16 +241,16 @@ class OrderCardWidget extends StatelessWidget {
                                 ),
                               ),
                               const AnimatedGap(4, duration: Duration(milliseconds: 100)),
-                              Spacer(),
+                              const Spacer(),
                               ClipRRect(
                                 borderRadius: BorderRadiusDirectional.circular(24),
                                 child: Container(
                                   padding: const EdgeInsetsDirectional.symmetric(horizontal: 8, vertical: 4),
                                   decoration: BoxDecoration(
-                                    color: Color.fromRGBO(251, 219, 11, 1),
+                                    color: const Color.fromRGBO(251, 219, 11, 1),
                                     borderRadius: BorderRadiusDirectional.circular(24),
                                     border: Border.all(
-                                      color: Color.fromRGBO(243, 188, 88, 1),
+                                      color: const Color.fromRGBO(243, 188, 88, 1),
                                     ),
                                   ),
                                   child: Directionality(
@@ -288,8 +274,6 @@ class OrderCardWidget extends StatelessWidget {
                             ],
                           ),
                           Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.center,
                             mainAxisSize: MainAxisSize.min,
                             textDirection: serviceLocator<LanguageController>().targetTextDirection,
                             children: [

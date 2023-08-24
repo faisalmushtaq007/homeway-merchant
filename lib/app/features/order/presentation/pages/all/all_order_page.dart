@@ -12,12 +12,12 @@ class _AllOrderPagesController extends State<AllOrderPages> {
   WidgetState<OrderEntity> widgetState = const WidgetState<OrderEntity>.none();
 
   // Pagination
-  int pageSize = 10;
-  int pageKey = 1;
+  int pageSize = 20;
+  int pageKey = 0;
   String? searchText;
   String? sorting;
   String? filtering;
-  final PagingController<int, OrderEntity> _pagingController = PagingController(firstPageKey: 1);
+  final PagingController<int, OrderEntity> _pagingController = PagingController(firstPageKey: 0);
   List<OrderEntity> _allAvailableOrders = [];
 
   @override
@@ -27,10 +27,29 @@ class _AllOrderPagesController extends State<AllOrderPages> {
     listViewBuilderScrollController = ScrollController();
     _allAvailableOrders = [];
     _allAvailableOrders.clear();
+  }
+
+  Future<void> _fetchPage(pageKey, {int pageSize = 20, String? searchItem, String? filter, String? sort}) async {
+    context.read<AllOrderBloc>().add(GetAllOrders(
+          pageKey: pageKey,
+          orderType: OrderType.all,
+          pageSize: pageSize,
+          searchText: searchItem,
+          filter: filtering ?? filter,
+          sorting: sorting ?? sort,
+        ));
+
+    return;
+  }
+
+  @override
+  void didChangeDependencies() {
+    _pagingController.nextPageKey = 0;
     _pagingController.addPageRequestListener((pageKey) {
       this.pageKey = pageKey;
+      _fetchPage(pageKey);
     });
-    _fetchPage(pageKey);
+
     _pagingController.addStatusListener((status) {
       if (status == PagingStatus.subsequentPageError) {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -46,23 +65,6 @@ class _AllOrderPagesController extends State<AllOrderPages> {
         );
       }
     });
-  }
-
-  Future<void> _fetchPage(pageKey, {int pageSize = 10, String? searchItem, String? filter, String? sort}) async {
-    context.read<AllOrderBloc>().add(GetAllOrders(
-          pageKey: pageKey,
-          orderType: OrderType.all,
-          pageSize: pageSize,
-          searchText: searchItem,
-          filter: filtering ?? filter,
-          sorting: sorting ?? sort,
-        ));
-
-    return;
-  }
-
-  @override
-  void didChangeDependencies() {
     super.didChangeDependencies();
   }
 
@@ -84,11 +86,11 @@ class _AllOrderPagesController extends State<AllOrderPages> {
             case GetAllOrderState():
               {
                 try {
-                  final isLastPage = allOrderState.orderEntities.toList().length < pageSize;
+                  final isLastPage = allOrderState.orderEntities.length < pageSize;
                   if (isLastPage) {
                     _pagingController.appendLastPage(allOrderState.orderEntities.toList());
                   } else {
-                    final nextPageKey = pageKey + 1;
+                    final nextPageKey = allOrderState.pageKey + allOrderState.orderEntities.length;
                     _pagingController.appendPage(allOrderState.orderEntities.toList(), nextPageKey);
                   }
                   widgetState = WidgetState<OrderEntity>.allData(

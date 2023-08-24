@@ -66,7 +66,7 @@ class _OrderDetailPageView extends WidgetView<OrderDetailPage, _OrderDetailPageC
                     backgroundColor: context.colorScheme.secondary,
                     isLabelVisible: true,
                     largeSize: 16,
-                    textStyle: TextStyle(fontSize: 14),
+                    textStyle: const TextStyle(fontSize: 14),
                     textColor: Colors.yellow,
                     label: Text(
                       '10',
@@ -76,7 +76,7 @@ class _OrderDetailPageView extends WidgetView<OrderDetailPage, _OrderDetailPageC
                     child: Icon(Icons.notifications, color: context.colorScheme.primary),
                   ),
                 ),
-                Padding(
+                const Padding(
                   padding: EdgeInsetsDirectional.only(end: 8),
                   child: LanguageSelectionWidget(),
                 ),
@@ -89,7 +89,7 @@ class _OrderDetailPageView extends WidgetView<OrderDetailPage, _OrderDetailPageC
             body: SlideInLeft(
               key: const Key('main-dashboard-page-slideinleft-widget'),
               from: context.width / 2 - 60,
-              duration: Duration(milliseconds: 500),
+              duration: const Duration(milliseconds: 500),
               child: Directionality(
                 textDirection: serviceLocator<LanguageController>().targetTextDirection,
                 child: PageBody(
@@ -114,16 +114,16 @@ class _OrderDetailPageView extends WidgetView<OrderDetailPage, _OrderDetailPageC
                               12,
                               duration: Duration(milliseconds: 100),
                             ),
-                            ManageOrderHeadlineWidget(
-                              key: const Key('manage-order-headline-widget'),
+                            const ManageOrderHeadlineWidget(
+                              key: Key('manage-order-headline-widget'),
                             ),
                           ],
                         ),
                       ),
-                      SliverFillRemaining(
+                      const SliverFillRemaining(
                         hasScrollBody: true,
                         child: AllOrderPages(
-                          key: const Key('manage-order-all-orders-widget'),
+                          key: Key('manage-order-all-orders-widget'),
                         ),
                       ),
                     ],

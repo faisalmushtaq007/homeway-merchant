@@ -13,16 +13,17 @@ class _ManageOrderPageController extends State<ManageOrderPage> {
 
   @override
   void initState() {
-    saveAll();
     super.initState();
     scrollController = ScrollController();
     customScrollViewScrollController = ScrollController();
+
     // set default index of order is zero
     onChangeOrderType(0);
   }
 
   @override
   void didChangeDependencies() {
+    saveAll();
     super.didChangeDependencies();
   }
 
@@ -38,7 +39,7 @@ class _ManageOrderPageController extends State<ManageOrderPage> {
         ),
         store: Store(
           storeID: 1,
-          storeName: 'Good Cafe',
+          storeName: 'Life Cafe',
           location: AddressLocation(),
           menu: [
             Menu(
@@ -53,24 +54,28 @@ class _ManageOrderPageController extends State<ManageOrderPage> {
         orderStatus: OrderStatus.newOrder.index,
         orderType: OrderType.newOrder.index,
         driver: Driver(),
-        payment: Payment(),
+        payment: Payment(
+          mode: 'COD',
+          amount: 30,
+          paymentID: 222,
+        ),
       ),
       OrderEntity(
         orderID: 2,
         orderDateTime: DateTime.now().subtract(const Duration(minutes: 5)),
         orderDeliveryDateTime: DateTime.now().add(const Duration(minutes: 15)),
         userInfo: UserInfo(
-          userName: 'Sonu',
+          userName: 'Mr Ahmed',
           deliveryAddress: DeliveryAddress(),
         ),
         store: Store(
-          storeID: 1,
+          storeID: 2,
           storeName: 'Good Cafe',
           location: AddressLocation(),
           menu: [
             Menu(
-              quantity: 1,
-              menuID: 21,
+              quantity: 2,
+              menuID: 13,
               menuName: 'Vegetable Rice Briyani',
               menuImage:
                   'https://img.freepik.com/premium-photo/dum-handi-chicken-biryani-is-prepared-earthen-clay-pot-called-haandi-popular-indian-non-vegetarian-food_466689-52225.jpg',
@@ -80,24 +85,28 @@ class _ManageOrderPageController extends State<ManageOrderPage> {
         orderStatus: OrderStatus.preparing.index,
         orderType: OrderType.onProcess.index,
         driver: Driver(),
-        payment: Payment(),
+        payment: Payment(
+          mode: 'COD',
+          amount: 10,
+          paymentID: 101,
+        ),
       ),
       OrderEntity(
         orderID: 3,
         orderDateTime: DateTime.now().subtract(const Duration(days: 1, hours: 12, minutes: 30)),
         orderDeliveryDateTime: DateTime.now().subtract(const Duration(days: 1, hours: 12, minutes: 45)),
         userInfo: UserInfo(
-          userName: 'Sonu',
+          userName: 'Nilu',
           deliveryAddress: DeliveryAddress(),
         ),
         store: Store(
-          storeID: 1,
+          storeID: 3,
           storeName: 'Indian Cafe',
           location: AddressLocation(),
           menu: [
             Menu(
               quantity: 1,
-              menuID: 21,
+              menuID: 2,
               menuName: 'Paneer Butter Masala',
               menuImage:
                   'https://img.freepik.com/premium-photo/traditional-indian-butter-chicken-murg-makhanwala-which-is-creamy-main-course-curry-recipe_466689-49661.jpg',
@@ -107,24 +116,28 @@ class _ManageOrderPageController extends State<ManageOrderPage> {
         orderStatus: OrderStatus.delivered.index,
         orderType: OrderType.deliver.index,
         driver: Driver(),
-        payment: Payment(),
+        payment: Payment(
+          mode: 'PAID',
+          amount: 22,
+          paymentID: 11,
+        ),
       ),
       OrderEntity(
         orderID: 4,
         orderDateTime: DateTime.now().subtract(const Duration(minutes: 30)),
         orderDeliveryDateTime: DateTime.now().subtract(const Duration(minutes: 45)),
         userInfo: UserInfo(
-          userName: 'Sonu',
+          userName: 'Shivam',
           deliveryAddress: DeliveryAddress(),
         ),
         store: Store(
-          storeID: 1,
+          storeID: 4,
           storeName: 'American Food Plaza',
           location: AddressLocation(),
           menu: [
             Menu(
               quantity: 1,
-              menuID: 21,
+              menuID: 25,
               menuName: 'Burger',
               menuImage:
                   'https://img.freepik.com/free-photo/front-view-yummy-meat-cheeseburger-with-french-fries-dark-background-dinner-burgers-snack-fast-food-sandwich-salad-dish-toast_140725-159215.jpg?',
@@ -134,10 +147,46 @@ class _ManageOrderPageController extends State<ManageOrderPage> {
         orderStatus: OrderStatus.cancelByUser.index,
         orderType: OrderType.cancel.index,
         driver: Driver(),
-        payment: Payment(),
+        payment: Payment(
+          mode: 'CANCEL',
+          amount: 10,
+          paymentID: 61,
+        ),
+      ),
+      OrderEntity(
+        orderID: 8,
+        orderDateTime: DateTime.now().subtract(const Duration(minutes: 30)),
+        orderDeliveryDateTime: DateTime.now().subtract(const Duration(minutes: 45)),
+        userInfo: UserInfo(
+          userName: 'Ashutosh',
+          deliveryAddress: DeliveryAddress(),
+        ),
+        store: Store(
+          storeID: 4,
+          storeName: 'American Food Plaza',
+          location: AddressLocation(),
+          menu: [
+            Menu(
+              quantity: 1,
+              menuID: 21,
+              menuName: 'Cheese Pizza',
+              menuImage: 'https://img.freepik.com/free-photo/crispy-mixed-pizza-with-olives-sausage_140725-3095.jpg',
+            ),
+          ],
+        ),
+        orderStatus: OrderStatus.newOrder.index,
+        orderType: OrderType.newOrder.index,
+        driver: Driver(),
+        payment: Payment(
+          mode: 'PAID',
+          amount: 15,
+          paymentID: 177,
+        ),
       ),
     ];
-    final result = await serviceLocator<SaveAllOrderUseCase>()(data);
+    print('Datetime ${DateTime.now().subtract(const Duration(minutes: 30))}');
+    print('Datetime ${DateTime.now().subtract(const Duration(minutes: 45))}');
+    final result = await serviceLocator<SaveAllOrderUseCase>()(data.toList());
     result.when(
       remote: (data, meta) {
         appLog.d('Saved all orders to remote ${data?.length}');

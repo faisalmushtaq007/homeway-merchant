@@ -29,15 +29,31 @@ class AllOrderBloc extends Bloc<AllOrderEvent, AllOrderState> {
           appLog.d('Get all order bloc get all remote');
           if (data == null || data.isEmpty) {
             emit(
-              const GetAllEmptyOrderState(
+              GetAllEmptyOrderState(
                 message: 'All order is empty',
                 orderEntities: [],
+                endTimeStamp: event.endTimeStamp,
+                startTimeStamp: event.startTimeStamp,
+                orderType: event.orderType,
+                pageKey: event.pageKey,
+                pageSize: event.pageSize,
+                searchText: event.searchText,
+                sorting: event.sorting,
+                filter: event.filter,
               ),
             );
           } else {
             emit(
               GetAllOrderState(
                 orderEntities: data.toList(),
+                endTimeStamp: event.endTimeStamp,
+                startTimeStamp: event.startTimeStamp,
+                orderType: event.orderType,
+                pageKey: event.pageKey,
+                pageSize: event.pageSize,
+                searchText: event.searchText,
+                sorting: event.sorting,
+                filter: event.filter,
               ),
             );
           }
@@ -46,15 +62,31 @@ class AllOrderBloc extends Bloc<AllOrderEvent, AllOrderState> {
           appLog.d('Get all order bloc get all local');
           if (data == null || data.isEmpty) {
             emit(
-              const GetAllEmptyOrderState(
+              GetAllEmptyOrderState(
                 message: 'All order is empty',
                 orderEntities: [],
+                endTimeStamp: event.endTimeStamp,
+                startTimeStamp: event.startTimeStamp,
+                orderType: event.orderType,
+                pageKey: event.pageKey,
+                pageSize: event.pageSize,
+                searchText: event.searchText,
+                sorting: event.sorting,
+                filter: event.filter,
               ),
             );
           } else {
             emit(
               GetAllOrderState(
                 orderEntities: data.toList(),
+                endTimeStamp: event.endTimeStamp,
+                startTimeStamp: event.startTimeStamp,
+                orderType: event.orderType,
+                pageKey: event.pageKey,
+                pageSize: event.pageSize,
+                searchText: event.searchText,
+                sorting: event.sorting,
+                filter: event.filter,
               ),
             );
           }

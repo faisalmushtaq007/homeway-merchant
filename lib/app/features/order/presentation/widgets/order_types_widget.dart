@@ -76,7 +76,7 @@ class _OrderTypeWidgetController extends State<OrderTypeWidget> {
     listOfOrderTypeInfo[index].copyWith(hasSelected: true);
     selectedOrderTypeInfo = listOfOrderTypeInfo[index];
     widget.onChanged(index);
-    setState(() {});
+    //setState(() {});
   }
 
   @override
