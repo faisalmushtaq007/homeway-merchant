@@ -16,14 +16,13 @@ class _ManageOrderPageController extends State<ManageOrderPage> {
     super.initState();
     scrollController = ScrollController();
     customScrollViewScrollController = ScrollController();
-
+    //saveAll();
     // set default index of order is zero
     onChangeOrderType(0);
   }
 
   @override
   void didChangeDependencies() {
-    saveAll();
     super.didChangeDependencies();
   }
 
@@ -155,8 +154,8 @@ class _ManageOrderPageController extends State<ManageOrderPage> {
       ),
       OrderEntity(
         orderID: 8,
-        orderDateTime: DateTime.now().subtract(const Duration(minutes: 30)),
-        orderDeliveryDateTime: DateTime.now().subtract(const Duration(minutes: 45)),
+        orderDateTime: DateTime.now().subtract(const Duration(hours: 1)),
+        orderDeliveryDateTime: DateTime.now().subtract(const Duration(hours: 1, minutes: 15)),
         userInfo: UserInfo(
           userName: 'Ashutosh',
           deliveryAddress: DeliveryAddress(),
@@ -184,8 +183,6 @@ class _ManageOrderPageController extends State<ManageOrderPage> {
         ),
       ),
     ];
-    print('Datetime ${DateTime.now().subtract(const Duration(minutes: 30))}');
-    print('Datetime ${DateTime.now().subtract(const Duration(minutes: 45))}');
     final result = await serviceLocator<SaveAllOrderUseCase>()(data.toList());
     result.when(
       remote: (data, meta) {
@@ -209,7 +206,6 @@ class _ManageOrderPageController extends State<ManageOrderPage> {
 
   void onChangeOrderType(int index) {
     serviceLocator<ManageOrderController>().setCurrentOrderIndex(index);
-    print('Index value ${serviceLocator<ManageOrderController>()}');
   }
 
   @override
@@ -305,10 +301,7 @@ class _ManageOrderPageView extends WidgetView<ManageOrderPage, _ManageOrderPageC
                             ),
                             OrderTypeWidget(
                               key: const Key('manage-order-type-widget'),
-                              onChanged: (int value) {
-                                print("Index Value ${value}");
-                                state.onChangeOrderType(value);
-                              },
+                              onChanged: state.onChangeOrderType,
                             ),
                             const AnimatedGap(
                               16,

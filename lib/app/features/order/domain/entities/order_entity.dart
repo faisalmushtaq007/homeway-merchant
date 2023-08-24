@@ -15,31 +15,20 @@ class OrderEntity extends INetworkModel<OrderEntity> with AppEquatable {
     required this.orderDeliveryDateTime,
   });
 
-  factory OrderEntity.fromMap(Map<String, dynamic> json) {
-    print('Runtime type Order date time ${json['orderDateTime'].runtimeType}, ${json['orderDateTime']}');
-    print('Runtime type Delivery date time ${json['orderDeliveryDateTime'].runtimeType}, ${json['orderDeliveryDateTime']}');
-    return OrderEntity(
-      orderDateTime: (json['orderDateTime'] != null &&
-              (!(json['orderDateTime'].runtimeType is DateTime)) &&
-              (json['orderDateTime'].runtimeType is Timestamp || json['orderDateTime'].runtimeType is String))
-          ? Timestamp.parse(json['orderDateTime'].toString()).toDateTime()
-          : DateTime.now(),
-      orderType: json['orderType'] ?? 0,
-      userInfo: (json['userInfo'] != null) ? UserInfo.fromJson(json['userInfo']) : UserInfo(deliveryAddress: DeliveryAddress()),
-      hasDriverAssigned: json['hasDriverAssigned'] ?? false,
-      driver: (json['driver'] != null) ? Driver.fromJson(json['driver']) : Driver(),
-      orderID: json['orderID'] ?? -1,
-      orderStatus: json['orderStatus'] ?? 0,
-      payment: (json['payment'] != null) ? Payment.fromJson(json['payment']) : Payment(),
-      store: (json['store'] != null) ? Store.fromJson(json['store']) : Store(location: AddressLocation()),
-      hasDriverReached: json['hasDriverReached'] ?? false,
-      orderDeliveryDateTime: (json['orderDeliveryDateTime'] != null &&
-              (!(json['orderDeliveryDateTime'].runtimeType is DateTime)) &&
-              (json['orderDeliveryDateTime'].runtimeType is Timestamp || json['orderDeliveryDateTime'].runtimeType is String))
-          ? Timestamp.parse(json['orderDeliveryDateTime'].toString()).toDateTime()
-          : DateTime.now(),
-    );
-  }
+  factory OrderEntity.fromMap(Map<String, dynamic> json) => OrderEntity(
+        orderDateTime: (json['orderDateTime'] != null) ? Timestamp.fromMillisecondsSinceEpoch(json['orderDateTime']).toDateTime() : DateTime.now(),
+        orderType: json['orderType'] ?? 0,
+        userInfo: (json['userInfo'] != null) ? UserInfo.fromJson(json['userInfo']) : UserInfo(deliveryAddress: DeliveryAddress()),
+        hasDriverAssigned: json['hasDriverAssigned'] ?? false,
+        driver: (json['driver'] != null) ? Driver.fromJson(json['driver']) : Driver(),
+        orderID: json['orderID'] ?? -1,
+        orderStatus: json['orderStatus'] ?? 0,
+        payment: (json['payment'] != null) ? Payment.fromJson(json['payment']) : Payment(),
+        store: (json['store'] != null) ? Store.fromJson(json['store']) : Store(location: AddressLocation()),
+        hasDriverReached: json['hasDriverReached'] ?? false,
+        orderDeliveryDateTime:
+            (json['orderDeliveryDateTime'] != null) ? Timestamp.fromMillisecondsSinceEpoch(json['orderDeliveryDateTime']).toDateTime() : DateTime.now(),
+      );
 
   final DateTime orderDateTime;
   final int orderType;
@@ -54,7 +43,7 @@ class OrderEntity extends INetworkModel<OrderEntity> with AppEquatable {
   final DateTime orderDeliveryDateTime;
 
   Map<String, dynamic> toMap() => {
-        'orderDateTime': Timestamp.fromDateTime(orderDateTime),
+        'orderDateTime': Timestamp.fromDateTime(orderDateTime).millisecondsSinceEpoch,
         'orderType': orderType,
         'userInfo': userInfo.toJson(),
         'hasDriverAssigned': hasDriverAssigned,
@@ -64,7 +53,7 @@ class OrderEntity extends INetworkModel<OrderEntity> with AppEquatable {
         'payment': payment.toJson(),
         'store': store.toJson(),
         'hasDriverReached': hasDriverReached,
-        'orderDeliveryDateTime': Timestamp.fromDateTime(orderDeliveryDateTime),
+        'orderDeliveryDateTime': Timestamp.fromDateTime(orderDeliveryDateTime).millisecondsSinceEpoch,
       };
 
   OrderEntity copyWith({

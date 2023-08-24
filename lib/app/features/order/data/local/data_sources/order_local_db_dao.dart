@@ -304,6 +304,7 @@ class OrderLocalDbRepository<T extends OrderEntity> implements BaseOrderLocalDbR
           limit: pageSize,
           offset: pageKey,
         );
+        // If
         if (searchText.isNotNull || filter.isNotNull || sorting.isNotNull && (startTimeStamp.isNotNull || endTimeStamp.isNotNull)) {
           var regExp = RegExp(searchText ?? '', caseSensitive: false);
           var filterRegExp = RegExp(filter ?? '', caseSensitive: false);
@@ -339,7 +340,9 @@ class OrderLocalDbRepository<T extends OrderEntity> implements BaseOrderLocalDbR
               ],
             ),
           );
-        } else if (searchText.isNotNull || filter.isNotNull || sorting.isNotNull) {
+        }
+        // Else If
+        else if (searchText.isNotNull || filter.isNotNull || sorting.isNotNull) {
           var regExp = RegExp(searchText ?? '', caseSensitive: false);
           var filterRegExp = RegExp(filter ?? '', caseSensitive: false);
           var sortingRegExp = RegExp(sorting ?? '', caseSensitive: false);
@@ -368,8 +371,10 @@ class OrderLocalDbRepository<T extends OrderEntity> implements BaseOrderLocalDbR
               ),
             ]),
           );
-        } else {
-          Finder finder = Finder(
+        }
+        // Else
+        else {
+          finder = Finder(
             limit: pageSize,
             offset: pageKey,
           );

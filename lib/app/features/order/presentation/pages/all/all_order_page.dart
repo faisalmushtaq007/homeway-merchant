@@ -27,23 +27,6 @@ class _AllOrderPagesController extends State<AllOrderPages> {
     listViewBuilderScrollController = ScrollController();
     _allAvailableOrders = [];
     _allAvailableOrders.clear();
-  }
-
-  Future<void> _fetchPage(pageKey, {int pageSize = 20, String? searchItem, String? filter, String? sort}) async {
-    context.read<AllOrderBloc>().add(GetAllOrders(
-          pageKey: pageKey,
-          orderType: OrderType.all,
-          pageSize: pageSize,
-          searchText: searchItem,
-          filter: filtering ?? filter,
-          sorting: sorting ?? sort,
-        ));
-
-    return;
-  }
-
-  @override
-  void didChangeDependencies() {
     _pagingController.nextPageKey = 0;
     _pagingController.addPageRequestListener((pageKey) {
       this.pageKey = pageKey;
@@ -65,6 +48,23 @@ class _AllOrderPagesController extends State<AllOrderPages> {
         );
       }
     });
+  }
+
+  Future<void> _fetchPage(pageKey, {int pageSize = 20, String? searchItem, String? filter, String? sort}) async {
+    context.read<AllOrderBloc>().add(GetAllOrders(
+          pageKey: pageKey,
+          orderType: OrderType.all,
+          pageSize: pageSize,
+          searchText: searchItem,
+          filter: filtering ?? filter,
+          sorting: sorting ?? sort,
+        ));
+
+    return;
+  }
+
+  @override
+  void didChangeDependencies() {
     super.didChangeDependencies();
   }
 

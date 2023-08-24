@@ -27,7 +27,7 @@ import 'package:flutter/material.dart';
 /// HEX code string of a Color value, meaning it starts with 0x and alpha value
 /// before the RGB Hex values. The plain [hex] extension returns a typical
 /// API formatted hex color string starting with # and no alpha value.
-extension FlexColorExtensions on Color {
+extension FlexColorExtensionsEnch on Color {
   /// Brightens the color with the given integer percentage amount.
   /// Defaults to 10%.
   Color brighten([final int amount = 10]) {
@@ -70,11 +70,11 @@ extension FlexColorExtensions on Color {
   /// Use the function to get black/white color typically used for text and
   /// icons when they are placed on a surface/background using `color` as its
   /// background color.
-  Color get onColor => ThemeData.estimateBrightnessForColor(this) == Brightness.light ? Colors.black : Colors.white;
+  Color get onColors => ThemeData.estimateBrightnessForColor(this) == Brightness.light ? Colors.black : Colors.white;
 
   bool _isLight(final Color color) => ThemeData.estimateBrightnessForColor(color) == Brightness.light;
 
-  Color getOnColor(final Color color, final Color bg) => _isLight(Color.alphaBlend(color, bg)) ? Colors.black : Colors.white;
+  Color getOnColorBy(final Color color, final Color bg) => _isLight(Color.alphaBlend(color, bg)) ? Colors.black : Colors.white;
 
   /// Returns true if the color's brightness is [Brightness.light], else false.
   bool get isLight => ThemeData.estimateBrightnessForColor(this) == Brightness.light;

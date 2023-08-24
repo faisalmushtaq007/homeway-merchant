@@ -3,7 +3,7 @@ part of 'package:homemakers_merchant/app/features/order/index.dart';
 enum OrderStatus {
   none(),
   newOrder(
-    title: 'New',
+    title: 'Latest',
     borderColor: Color.fromRGBO(255, 90, 39, 1),
   ),
   ongoing(
@@ -11,7 +11,7 @@ enum OrderStatus {
     backgroundColor: Color.fromRGBO(255, 90, 39, 1),
   ),
   onProcessing(
-    title: 'Processing',
+    title: 'On Process',
     backgroundColor: Color.fromRGBO(255, 90, 39, 1),
   ),
   schedule(
@@ -19,21 +19,21 @@ enum OrderStatus {
     backgroundColor: Color.fromRGBO(255, 156, 125, 1),
   ),
   cancelByUser(
-    title: 'Cancel By User',
+    title: 'Cancel',
     backgroundColor: Color.fromRGBO(165, 166, 168, 1),
   ),
   delivered(
-    title: 'Delivered',
+    title: 'Deliver',
     backgroundColor: Color.fromRGBO(69, 201, 125, 1),
     borderColor: Color.fromRGBO(69, 201, 125, 1),
   ),
   onTheWay(),
   cancelBySystem(
-    title: 'Cancel By System',
+    title: 'Cancel',
     backgroundColor: Color.fromRGBO(165, 166, 168, 1),
   ),
   cancelByYou(
-    title: 'Cancel By You',
+    title: 'Cancel',
     backgroundColor: Color.fromRGBO(165, 166, 168, 1),
   ),
   onTime(),
@@ -42,15 +42,15 @@ enum OrderStatus {
     backgroundColor: Color.fromRGBO(255, 39, 19, 1),
   ),
   partialDelay(
-    title: 'Partial Delay',
+    title: 'Delay',
     backgroundColor: Color.fromRGBO(255, 39, 19, 1),
   ),
   moderateDelay(
-    title: 'Moderate Delay',
+    title: 'Delay',
     backgroundColor: Color.fromRGBO(255, 39, 19, 1),
   ),
   tooMuchDelay(
-    title: 'Too Much Delay',
+    title: 'Delay',
     backgroundColor: Color.fromRGBO(255, 39, 19, 1),
   ),
   paymentNotReceived(),
@@ -62,7 +62,7 @@ enum OrderStatus {
     borderColor: Color.fromRGBO(69, 201, 125, 1),
   ),
   orderReceivedByCustomer(
-    title: 'Received By Customer',
+    title: 'Received',
     backgroundColor: Color.fromRGBO(215, 243, 227, 1),
   ),
   readyToPickup(
@@ -75,7 +75,7 @@ enum OrderStatus {
     borderColor: Color.fromRGBO(69, 201, 125, 1),
   ),
   preparing(
-    title: 'Preparing',
+    title: 'Process',
     backgroundColor: Color.fromRGBO(255, 90, 39, 1),
   ),
   cancel(

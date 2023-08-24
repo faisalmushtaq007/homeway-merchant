@@ -1,6 +1,6 @@
 part of 'package:homemakers_merchant/app/features/order/index.dart';
 
-class OrderCardWidget extends StatelessWidget {
+class OrderCardWidget extends StatefulWidget {
   const OrderCardWidget({
     super.key,
     required this.index,
@@ -11,9 +11,119 @@ class OrderCardWidget extends StatelessWidget {
   final OrderEntity orderEntity;
 
   @override
+  _OrderCardWidgetController createState() => _OrderCardWidgetController();
+}
+
+class _OrderCardWidgetController extends State<OrderCardWidget> {
+  Widget bottomWidget(int index) {
+    return switch (OrderStatus.values.byName(OrderStatus.values[index].toString())) {
+      OrderStatus.newOrder => Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Expanded(
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.white,
+                  side: const BorderSide(
+                    color: Color.fromRGBO(255, 255, 255, 1),
+                  ),
+                  shape: const RoundedRectangleBorder(
+                    borderRadius: BorderRadiusDirectional.only(
+                      bottomStart: Radius.circular(10),
+                    ),
+                  ),
+                ),
+                onPressed: () {},
+                child: Text(
+                  'Cancel',
+                  style: const TextStyle(color: Color.fromRGBO(42, 45, 50, 1)),
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: 1,
+                  textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                ).translate(),
+              ),
+            ),
+            Expanded(
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: context.colorScheme.primary,
+                  shape: const RoundedRectangleBorder(
+                    borderRadius: BorderRadiusDirectional.only(
+                      bottomEnd: Radius.circular(10),
+                    ),
+                  ),
+                ),
+                onPressed: () {},
+                child: Text(
+                  'Accept',
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: 1,
+                  textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                ).translate(),
+              ),
+            ),
+          ],
+        ),
+      OrderStatus.onProcessing || OrderStatus.preparing => Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Expanded(
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.white,
+                  side: const BorderSide(
+                    color: Color.fromRGBO(255, 255, 255, 1),
+                  ),
+                  shape: const RoundedRectangleBorder(
+                    borderRadius: BorderRadiusDirectional.only(
+                      bottomStart: Radius.circular(10),
+                    ),
+                  ),
+                ),
+                onPressed: () {},
+                child: Text(
+                  'Delay',
+                  style: const TextStyle(color: Color.fromRGBO(42, 45, 50, 1)),
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: 1,
+                  textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                ).translate(),
+              ),
+            ),
+            Expanded(
+              child: ElevatedButton(
+                onPressed: () {},
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: context.colorScheme.primary,
+                  shape: const RoundedRectangleBorder(
+                    borderRadius: BorderRadiusDirectional.only(
+                      bottomEnd: Radius.circular(10),
+                    ),
+                  ),
+                ),
+                child: Text(
+                  'Move to Ready',
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: 1,
+                  textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                ).translate(),
+              ),
+            ),
+          ],
+        ),
+      _ => const Offstage(),
+    };
+  }
+
+  @override
+  Widget build(BuildContext context) => _OrderCardWidgetView(this);
+}
+
+class _OrderCardWidgetView extends WidgetView<OrderCardWidget, _OrderCardWidgetController> {
+  const _OrderCardWidgetView(super.state);
+
+  @override
   Widget build(BuildContext context) {
-    print('Order Card ${orderEntity.orderDateTime} ${orderEntity.orderDateTime.format('D, M j, H:i')}');
-    print('Order Card Deliver ${orderEntity.orderDeliveryDateTime} ${orderEntity.orderDeliveryDateTime.format('D, M j, H:i')}');
     return Card(
       margin: const EdgeInsetsDirectional.only(bottom: 16),
       child: Column(
@@ -49,7 +159,7 @@ class OrderCardWidget extends StatelessWidget {
                         Directionality(
                           textDirection: serviceLocator<LanguageController>().targetTextDirection,
                           child: WrapText(
-                            'Order ID: HMW-${orderEntity.orderID} ',
+                            'Order ID: HMW-${widget.orderEntity.orderID} ',
                             breakWordCharacter: '-',
                             smartSizeMode: false,
                             asyncMode: true,
@@ -74,7 +184,7 @@ class OrderCardWidget extends StatelessWidget {
                             Directionality(
                               textDirection: serviceLocator<LanguageController>().targetTextDirection,
                               child: WrapText(
-                                orderEntity.orderDateTime.format('D, M j, H:i') ?? '',
+                                widget.orderEntity.orderDateTime.format('D, M j, h:i A') ?? '',
                                 breakWordCharacter: '-',
                                 smartSizeMode: false,
                                 asyncMode: true,
@@ -125,38 +235,74 @@ class OrderCardWidget extends StatelessWidget {
               textDirection: serviceLocator<LanguageController>().targetTextDirection,
               children: [
                 Expanded(
-                  child: AspectRatio(
-                    aspectRatio: 1 / 0.8,
-                    child: Card(
-                      margin: const EdgeInsetsDirectional.only(
-                        start: 12,
-                      ),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadiusDirectional.circular(10),
-                      ),
-                      child: ImageHelper(
-                        image: (orderEntity.store.menu[0].menuImage.isEmptyOrNull)
-                            ? 'assets/svg/sorry-image-not-available.svg'
-                            : orderEntity.store.menu[0].menuImage,
-                        filterQuality: FilterQuality.high,
-                        borderRadius: BorderRadiusDirectional.circular(10),
-                        imageType: findImageType(orderEntity.store.menu[0].menuImage),
-                        imageShape: ImageShape.rectangle,
-                        boxFit: BoxFit.cover,
-                        defaultErrorBuilderColor: Colors.blueGrey,
-                        errorBuilder: const Icon(
-                          Icons.image_not_supported,
-                          size: 10000,
+                  child: Stack(
+                    alignment: AlignmentDirectional.bottomCenter,
+                    clipBehavior: Clip.none,
+                    children: [
+                      AspectRatio(
+                        aspectRatio: 1 / 0.8,
+                        child: Card(
+                          margin: const EdgeInsetsDirectional.only(
+                            start: 12,
+                          ),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadiusDirectional.circular(10),
+                          ),
+                          child: ImageHelper(
+                            image: (widget.orderEntity.store.menu[0].menuImage.isEmptyOrNull)
+                                ? 'assets/svg/sorry-image-not-available.svg'
+                                : widget.orderEntity.store.menu[0].menuImage,
+                            filterQuality: FilterQuality.high,
+                            borderRadius: BorderRadiusDirectional.circular(10),
+                            imageType: findImageType(widget.orderEntity.store.menu[0].menuImage),
+                            imageShape: ImageShape.rectangle,
+                            boxFit: BoxFit.cover,
+                            defaultErrorBuilderColor: Colors.blueGrey,
+                            errorBuilder: const Icon(
+                              Icons.image_not_supported,
+                              size: 10000,
+                            ),
+                            loaderBuilder: const CircularProgressIndicator(),
+                            matchTextDirection: true,
+                            placeholderText: widget.orderEntity.store.menu[0].menuName,
+                            placeholderTextStyle: context.labelLarge!.copyWith(
+                              color: Colors.white,
+                              fontSize: 16,
+                            ),
+                          ),
                         ),
-                        loaderBuilder: const CircularProgressIndicator(),
-                        matchTextDirection: true,
-                        placeholderText: orderEntity.store.menu[0].menuName,
-                        placeholderTextStyle: context.labelLarge!.copyWith(
-                          color: Colors.white,
-                          fontSize: 16,
+                      ),
+                      AnimatedPositioned(
+                        duration: const Duration(milliseconds: 300),
+                        bottom: -12,
+                        left: leftPositionValue(widget.orderEntity.orderStatus),
+                        child: Chip(
+                          labelPadding: const EdgeInsetsDirectional.all(1),
+                          labelStyle: TextStyle(
+                            color: (OrderStatus.values.byName(OrderStatus.values[widget.orderEntity.orderStatus].toString()) == OrderStatus.newOrder)
+                                ? OrderStatus.values[widget.orderEntity.orderStatus].borderColor
+                                : const Color.fromRGBO(42, 45, 50, 1).getOnColorBy(
+                                    const Color.fromRGBO(42, 45, 50, 1),
+                                    OrderStatus.values[widget.orderEntity.orderStatus].backgroundColor,
+                                  ),
+                          ),
+                          label: Text(
+                            OrderStatus.values[widget.orderEntity.orderStatus].title,
+                          ),
+                          backgroundColor: OrderStatus.values[widget.orderEntity.orderStatus].backgroundColor,
+                          elevation: 0.0,
+                          visualDensity: const VisualDensity(horizontal: -4, vertical: -4),
+                          materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                          padding: const EdgeInsetsDirectional.all(8),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadiusDirectional.circular(20),
+                            side: BorderSide(
+                              color: OrderStatus.values[widget.orderEntity.orderStatus].borderColor,
+                            ),
+                          ),
                         ),
                       ),
-                    ),
+                    ],
                   ),
                 ),
                 Expanded(
@@ -174,7 +320,7 @@ class OrderCardWidget extends StatelessWidget {
                           Directionality(
                             textDirection: serviceLocator<LanguageController>().targetTextDirection,
                             child: WrapText(
-                              orderEntity.store.menu[0].menuName,
+                              widget.orderEntity.store.menu[0].menuName,
                               breakWordCharacter: '-',
                               smartSizeMode: false,
                               asyncMode: true,
@@ -204,7 +350,7 @@ class OrderCardWidget extends StatelessWidget {
                           Directionality(
                             textDirection: serviceLocator<LanguageController>().targetTextDirection,
                             child: WrapText(
-                              orderEntity.store.storeName,
+                              widget.orderEntity.store.storeName,
                               breakWordCharacter: '-',
                               smartSizeMode: false,
                               asyncMode: true,
@@ -217,30 +363,43 @@ class OrderCardWidget extends StatelessWidget {
                               overflow: TextOverflow.ellipsis,
                             ),
                           ),
+
                           Row(
                             mainAxisSize: MainAxisSize.min,
                             textDirection: serviceLocator<LanguageController>().targetTextDirection,
                             children: [
-                              Icon(
-                                Icons.timelapse,
-                                size: 14,
-                                color: context.colorScheme.primary,
-                              ),
                               Directionality(
                                 textDirection: serviceLocator<LanguageController>().targetTextDirection,
                                 child: WrapText(
-                                  ' ${orderEntity.orderDeliveryDateTime?.format('D, M j, H:i') ?? ''}',
+                                  'Quantity: ${widget.orderEntity.store.menu[0].quantity}',
                                   breakWordCharacter: '-',
                                   smartSizeMode: false,
                                   asyncMode: true,
                                   minFontSize: 12,
-                                  maxFontSize: 14,
-                                  textStyle: context.bodySmall!.copyWith(color: context.colorScheme.primary),
+                                  maxFontSize: 13,
+                                  textStyle: context.bodySmall!.copyWith(),
                                   maxLines: 1,
                                   overflow: TextOverflow.ellipsis,
                                 ),
                               ),
-                              const AnimatedGap(4, duration: Duration(milliseconds: 100)),
+                              const AnimatedGap(8, duration: Duration(milliseconds: 100)),
+                              //Spacer(),
+                              Directionality(
+                                textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                child: WrapText(
+                                  '${widget.orderEntity.payment.amount} ${widget.orderEntity.payment.currency}',
+                                  breakWordCharacter: '-',
+                                  smartSizeMode: false,
+                                  asyncMode: true,
+                                  minFontSize: 12,
+                                  maxFontSize: 13,
+                                  textStyle: context.bodySmall!.copyWith(
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ),
                               const Spacer(),
                               ClipRRect(
                                 borderRadius: BorderRadiusDirectional.circular(24),
@@ -256,12 +415,12 @@ class OrderCardWidget extends StatelessWidget {
                                   child: Directionality(
                                     textDirection: serviceLocator<LanguageController>().targetTextDirection,
                                     child: WrapText(
-                                      'COD',
+                                      'PAID',
                                       breakWordCharacter: '-',
                                       smartSizeMode: false,
                                       asyncMode: true,
                                       minFontSize: 12,
-                                      maxFontSize: 14,
+                                      maxFontSize: 13,
                                       textStyle: context.bodySmall!.copyWith(
                                         fontWeight: FontWeight.w600,
                                       ),
@@ -277,38 +436,26 @@ class OrderCardWidget extends StatelessWidget {
                             mainAxisSize: MainAxisSize.min,
                             textDirection: serviceLocator<LanguageController>().targetTextDirection,
                             children: [
+                              Icon(
+                                Icons.timelapse,
+                                size: 14,
+                                color: context.colorScheme.primary,
+                              ),
                               Directionality(
                                 textDirection: serviceLocator<LanguageController>().targetTextDirection,
                                 child: WrapText(
-                                  'Quantity: ${orderEntity.store.menu[0].quantity}',
+                                  ' ${widget.orderEntity.orderDeliveryDateTime?.format('D, M j, h:i A') ?? ''}',
                                   breakWordCharacter: '-',
                                   smartSizeMode: false,
                                   asyncMode: true,
                                   minFontSize: 12,
-                                  maxFontSize: 14,
-                                  textStyle: context.bodySmall!.copyWith(),
+                                  maxFontSize: 13,
+                                  textStyle: context.bodySmall!.copyWith(color: context.colorScheme.primary),
                                   maxLines: 1,
                                   overflow: TextOverflow.ellipsis,
                                 ),
                               ),
-                              const AnimatedGap(8, duration: Duration(milliseconds: 100)),
-                              //Spacer(),
-                              Directionality(
-                                textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                                child: WrapText(
-                                  '${orderEntity.payment.amount} ${orderEntity.payment.currency}',
-                                  breakWordCharacter: '-',
-                                  smartSizeMode: false,
-                                  asyncMode: true,
-                                  minFontSize: 12,
-                                  maxFontSize: 14,
-                                  textStyle: context.bodySmall!.copyWith(
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                                  maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                              ),
+                              //const AnimatedGap(4, duration: Duration(milliseconds: 100)),
                             ],
                           ),
                           //const AnimatedGap(6, duration: Duration(milliseconds: 100)),
@@ -320,9 +467,89 @@ class OrderCardWidget extends StatelessWidget {
               ],
             ),
           ),
-          const AnimatedGap(8, duration: Duration(milliseconds: 100)),
+          const AnimatedGap(12, duration: Duration(milliseconds: 100)),
+          const Divider(
+            thickness: 0.75,
+          ),
+          Padding(
+            padding: const EdgeInsetsDirectional.only(
+              start: 12,
+              end: 12,
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisSize: MainAxisSize.min,
+              textDirection: serviceLocator<LanguageController>().targetTextDirection,
+              children: [
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    mainAxisSize: MainAxisSize.min,
+                    textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                    children: [
+                      Directionality(
+                        textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                        child: WrapText(
+                          widget.orderEntity.userInfo.userName,
+                          breakWordCharacter: '-',
+                          smartSizeMode: false,
+                          asyncMode: true,
+                          minFontSize: 14,
+                          maxFontSize: 16,
+                          textStyle: context.labelMedium!.copyWith(fontWeight: FontWeight.w600),
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                      const AnimatedGap(4, duration: Duration(milliseconds: 100)),
+                      Directionality(
+                        textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                        child: WrapText(
+                          'Mohammed Ali Al-Ahmed, 8228 Imam Ali Road, Riyadh 12345-6789, Kingdom Of Saudi Arabia',
+                          breakWordCharacter: '-',
+                          smartSizeMode: false,
+                          asyncMode: true,
+                          minFontSize: 13,
+                          maxFontSize: 15,
+                          textStyle: context.labelMedium!.copyWith(fontWeight: FontWeight.w500),
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Directionality(
+                  textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                  child: WrapText(
+                    '3 Km',
+                    breakWordCharacter: '-',
+                    smartSizeMode: false,
+                    asyncMode: true,
+                    minFontSize: 12,
+                    maxFontSize: 14,
+                    textStyle: context.labelMedium!.copyWith(fontWeight: FontWeight.w600),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          const AnimatedGap(4, duration: Duration(milliseconds: 100)),
+          state.bottomWidget(widget.orderEntity.orderStatus),
         ],
       ),
     );
+  }
+
+  double leftPositionValue(int index) {
+    return switch (OrderStatus.values.byName(OrderStatus.values[index].toString())) {
+      OrderStatus.newOrder => 31.0,
+      OrderStatus.delivered => 29.0,
+      OrderStatus.cancel => 29.0,
+      _ => 26.0,
+    };
   }
 }

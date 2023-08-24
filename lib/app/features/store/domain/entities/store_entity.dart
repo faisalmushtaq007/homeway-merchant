@@ -79,13 +79,13 @@ class StoreEntity with AppEquatable {
   List<MenuEntity> menuEntities;
   bool hasNewStore;
   RatingAndReviewEntity? ratingAndReviewEntity;
-  final String storePhoneNumber;
-  final String countryDialCode;
-  final String isoCode;
-  final String phoneNumberWithoutDialCode;
-  final List<OrderEntity> orders;
-  final bool hasStoreOpened;
-  final bool hasReadyToPickupOrder;
+  String storePhoneNumber;
+  String countryDialCode;
+  String isoCode;
+  String phoneNumberWithoutDialCode;
+  List<OrderEntity> orders;
+  bool hasStoreOpened;
+  bool hasReadyToPickupOrder;
 
   @override
   bool get cacheHash => true;
@@ -507,16 +507,8 @@ class StoreWorkingDayAndTime with AppEquatable {
       shortName: map['shortName'] as String,
       id: map['id'] as int,
       hasSelected: map['hasSelected'] as bool,
-      openingTime: (map['openingTime'] != null &&
-              (!(map['openingTime'].runtimeType is DateTime)) &&
-              (map['openingTime'].runtimeType is Timestamp || map['openingTime'].runtimeType is String))
-          ? Timestamp.parse(map['openingTime'].toString()).toDateTime()
-          : DateTime.now(),
-      closingTime: (map['closingTime'] != null &&
-              (!(map['closingTime'].runtimeType is DateTime)) &&
-              (map['closingTime'].runtimeType is Timestamp || map['closingTime'].runtimeType is String))
-          ? Timestamp.parse(map['closingTime'].toString()).toDateTime()
-          : DateTime.now(),
+      openingTime: (map['openingTime'] != null) ? Timestamp.fromMillisecondsSinceEpoch(map['openingTime']).toDateTime() : DateTime.now(),
+      closingTime: (map['closingTime'] != null) ? Timestamp.fromMillisecondsSinceEpoch(map['closingTime']).toDateTime() : DateTime.now(),
     );
   }
 
@@ -545,8 +537,8 @@ class StoreWorkingDayAndTime with AppEquatable {
       'title': this.day,
       'id': this.id,
       'hasSelected': this.hasSelected,
-      'closingTime': Timestamp.fromDateTime(this.closingTime ?? DateTime.now().toUtc()),
-      'openingTime': Timestamp.fromDateTime(this.openingTime ?? DateTime.now().toUtc()),
+      'closingTime': Timestamp.fromDateTime(this.closingTime ?? DateTime.now()).millisecondsSinceEpoch,
+      'openingTime': Timestamp.fromDateTime(this.openingTime ?? DateTime.now()).millisecondsSinceEpoch,
       'shortName': this.shortName,
     };
   }
