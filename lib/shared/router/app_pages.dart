@@ -34,7 +34,7 @@ class AppRouter {
 
   AppRouter._();
 
-  static const String INITIAL = Routes.MANAGE_ORDER_PAGE;
+  static const String INITIAL = Routes.ORDER_DETAILS;
 
   static final GoRouter _router = GoRouter(
     debugLogDiagnostics: true,
@@ -439,7 +439,7 @@ class AppRouter {
         builder: (context, state) {
           final Map<String, dynamic>? args = state.extra as Map<String, dynamic>?;
           return OrderDetailPage(
-            orderEntity: args?['orderEntity'] as OrderEntity,
+            orderEntity: args?['orderEntity'] as OrderEntity?,
             orderID: args?['orderID'] ?? -1,
           );
         },

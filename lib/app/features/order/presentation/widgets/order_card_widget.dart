@@ -202,7 +202,7 @@ class _OrderCardWidgetView extends WidgetView<OrderCardWidget, _OrderCardWidgetC
                                 Directionality(
                                   textDirection: serviceLocator<LanguageController>().targetTextDirection,
                                   child: WrapText(
-                                    widget.orderEntity.orderDateTime.format('D, M j, h:i A') ?? '',
+                                    dateTimeFormatToString(widget.orderEntity.orderDateTime) ?? '',
                                     breakWordCharacter: '-',
                                     smartSizeMode: false,
                                     asyncMode: true,
@@ -464,7 +464,7 @@ class _OrderCardWidgetView extends WidgetView<OrderCardWidget, _OrderCardWidgetC
                                   Directionality(
                                     textDirection: serviceLocator<LanguageController>().targetTextDirection,
                                     child: WrapText(
-                                      ' ${widget.orderEntity.orderDeliveryDateTime?.format('D, M j, h:i A') ?? ''}',
+                                      ' ${dateTimeFormatToString(widget.orderEntity.orderDeliveryDateTime) ?? ''}',
                                       breakWordCharacter: '-',
                                       smartSizeMode: false,
                                       asyncMode: true,
@@ -580,5 +580,10 @@ class _OrderCardWidgetView extends WidgetView<OrderCardWidget, _OrderCardWidgetC
       OrderStatus.cancel || OrderStatus.cancelByUser || OrderStatus.cancelBySystem || OrderStatus.cancelByYou => 31.0,
       _ => 24.0,
     };
+  }
+
+  String dateTimeFormatToString(DateTime dateTime) {
+    //dt
+    return dateTime.toMoment().format('MMMM, DD YYYY, hh:mm A').toString();
   }
 }
