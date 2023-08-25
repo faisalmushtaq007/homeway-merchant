@@ -1,7 +1,9 @@
 part of 'package:homemakers_merchant/app/features/order/index.dart';
 
 class ManageOrderPage extends StatefulWidget {
-  const ManageOrderPage({super.key});
+  const ManageOrderPage({super.key, this.storeEntity, this.storeID = -1});
+  final StoreEntity? storeEntity;
+  final int storeID;
 
   @override
   _ManageOrderPageController createState() => _ManageOrderPageController();
@@ -277,6 +279,7 @@ class _ManageOrderPageView extends WidgetView<ManageOrderPage, _ManageOrderPageC
           child: Scaffold(
             appBar: AppBar(
               title: const Text('Manage Orders'),
+              centerTitle: false,
               actions: [
                 IconButton(
                   onPressed: () async {
@@ -306,11 +309,11 @@ class _ManageOrderPageView extends WidgetView<ManageOrderPage, _ManageOrderPageC
               ],
             ),
             drawer: const PrimaryDashboardDrawer(
-              key: const Key('main-dashboard-drawer'),
+              key: const Key('manage-order-main-dashboard-drawer'),
               isMainDrawerPage: false,
             ),
             body: SlideInLeft(
-              key: const Key('main-dashboard-page-slideinleft-widget'),
+              key: const Key('manage-order-slideinleft-widget'),
               from: context.width / 2 - 60,
               duration: const Duration(milliseconds: 500),
               child: Directionality(
@@ -356,6 +359,8 @@ class _ManageOrderPageView extends WidgetView<ManageOrderPage, _ManageOrderPageC
                         ),
                       ),
                       SliverFillRemaining(
+                        fillOverscroll: true,
+                        hasScrollBody: true,
                         child: switch (serviceLocator<ManageOrderController>().currentOrderIndex) {
                           0 => const AllOrderPages(
                               key: Key('manage-order-all-orders-widget'),

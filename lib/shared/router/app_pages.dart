@@ -426,7 +426,23 @@ class AppRouter {
       ),
       GoRoute(
         path: Routes.MANAGE_ORDER_PAGE,
-        builder: (context, state) => const ManageOrderPage(),
+        builder: (context, state) {
+          final Map<String, dynamic>? args = state.extra as Map<String, dynamic>?;
+          return ManageOrderPage(
+            storeEntity: args?['storeEntity'] as StoreEntity?,
+            storeID: args?['storeID'] ?? -1,
+          );
+        },
+      ),
+      GoRoute(
+        path: Routes.ORDER_DETAILS,
+        builder: (context, state) {
+          final Map<String, dynamic>? args = state.extra as Map<String, dynamic>?;
+          return OrderDetailPage(
+            orderEntity: args?['orderEntity'] as OrderEntity,
+            orderID: args?['orderID'] ?? -1,
+          );
+        },
       ),
     ],
     /*redirect: (context, state) {

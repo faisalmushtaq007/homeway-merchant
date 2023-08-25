@@ -1,7 +1,13 @@
 part of 'package:homemakers_merchant/app/features/order/index.dart';
 
 class OrderDetailPage extends StatefulWidget {
-  const OrderDetailPage({super.key});
+  const OrderDetailPage({
+    super.key,
+    required this.orderEntity,
+    required this.orderID,
+  });
+  final OrderEntity orderEntity;
+  final int orderID;
   @override
   _OrderDetailPageController createState() => _OrderDetailPageController();
 }
@@ -54,6 +60,8 @@ class _OrderDetailPageView extends WidgetView<OrderDetailPage, _OrderDetailPageC
         child: DoubleTapToExit(
           child: Scaffold(
             appBar: AppBar(
+              title: Text('OrderID: HMW-${widget.orderID}'),
+              centerTitle: false,
               actions: [
                 IconButton(
                   onPressed: () {

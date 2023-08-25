@@ -138,300 +138,276 @@ class _OrderCardWidgetView extends WidgetView<OrderCardWidget, _OrderCardWidgetC
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      margin: const EdgeInsetsDirectional.only(bottom: 16),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        mainAxisSize: MainAxisSize.min,
-        textDirection: serviceLocator<LanguageController>().targetTextDirection,
-        children: [
-          Flexible(
-            child: Container(
-              padding: const EdgeInsetsDirectional.only(
-                start: 12,
-                end: 12,
-              ),
-              decoration: const BoxDecoration(
-                //color: context.colorScheme.secondaryContainer,
-                color: Color.fromRGBO(238, 238, 238, 1),
-                borderRadius: BorderRadiusDirectional.only(
-                  topStart: Radius.circular(10),
-                  topEnd: Radius.circular(10),
-                ),
-              ),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                children: [
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      mainAxisSize: MainAxisSize.min,
-                      textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                      children: [
-                        const AnimatedGap(8, duration: Duration(milliseconds: 100)),
-                        Directionality(
-                          textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                          child: WrapText(
-                            'Order ID: HMW-${widget.orderEntity.orderID} ',
-                            breakWordCharacter: '-',
-                            smartSizeMode: false,
-                            asyncMode: true,
-                            minFontSize: 12,
-                            maxFontSize: 14,
-                            textStyle: context.bodySmall!.copyWith(fontWeight: FontWeight.w600),
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                        ),
-                        const AnimatedGap(3, duration: Duration(milliseconds: 100)),
-                        Row(
+    return AbsorbPointer(
+      absorbing: false,
+      child: InkWell(
+        onTap: () {},
+        child: Card(
+          margin: const EdgeInsetsDirectional.only(bottom: 16),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            mainAxisSize: MainAxisSize.min,
+            textDirection: serviceLocator<LanguageController>().targetTextDirection,
+            children: [
+              Flexible(
+                child: Container(
+                  padding: const EdgeInsetsDirectional.only(
+                    start: 12,
+                    end: 12,
+                  ),
+                  decoration: const BoxDecoration(
+                    //color: context.colorScheme.secondaryContainer,
+                    color: Color.fromRGBO(238, 238, 238, 1),
+                    borderRadius: BorderRadiusDirectional.only(
+                      topStart: Radius.circular(10),
+                      topEnd: Radius.circular(10),
+                    ),
+                  ),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                    children: [
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
                           mainAxisSize: MainAxisSize.min,
                           textDirection: serviceLocator<LanguageController>().targetTextDirection,
                           children: [
-                            Icon(
-                              Icons.access_time,
-                              size: 14,
-                              color: Colors.white.onColor,
-                            ),
-                            const AnimatedGap(3, duration: Duration(milliseconds: 100)),
+                            const AnimatedGap(8, duration: Duration(milliseconds: 100)),
                             Directionality(
                               textDirection: serviceLocator<LanguageController>().targetTextDirection,
                               child: WrapText(
-                                widget.orderEntity.orderDateTime.format('D, M j, h:i A') ?? '',
+                                'Order ID: HMW-${widget.orderEntity.orderID} ',
                                 breakWordCharacter: '-',
                                 smartSizeMode: false,
                                 asyncMode: true,
                                 minFontSize: 12,
                                 maxFontSize: 14,
-                                textStyle: context.labelSmall!.copyWith(fontWeight: FontWeight.w500),
+                                textStyle: context.bodySmall!.copyWith(fontWeight: FontWeight.w600),
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
                               ),
                             ),
-                            const Spacer(),
+                            const AnimatedGap(3, duration: Duration(milliseconds: 100)),
+                            Row(
+                              mainAxisSize: MainAxisSize.min,
+                              textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                              children: [
+                                Icon(
+                                  Icons.access_time,
+                                  size: 14,
+                                  color: Colors.white.onColor,
+                                ),
+                                const AnimatedGap(3, duration: Duration(milliseconds: 100)),
+                                Directionality(
+                                  textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                  child: WrapText(
+                                    widget.orderEntity.orderDateTime.format('D, M j, h:i A') ?? '',
+                                    breakWordCharacter: '-',
+                                    smartSizeMode: false,
+                                    asyncMode: true,
+                                    minFontSize: 12,
+                                    maxFontSize: 14,
+                                    textStyle: context.labelSmall!.copyWith(fontWeight: FontWeight.w500),
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                ),
+                                const Spacer(),
+                              ],
+                            ),
+                            const AnimatedGap(8, duration: Duration(milliseconds: 100)),
                           ],
                         ),
-                        const AnimatedGap(8, duration: Duration(milliseconds: 100)),
-                      ],
-                    ),
-                  ),
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    mainAxisSize: MainAxisSize.min,
-                    textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                    children: [
-                      Directionality(
-                        textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                        child: WrapText(
-                          'Instant',
-                          breakWordCharacter: '-',
-                          smartSizeMode: false,
-                          asyncMode: true,
-                          minFontSize: 13,
-                          maxFontSize: 14,
-                          textStyle: context.labelSmall!.copyWith(color: context.colorScheme.primary, fontWeight: FontWeight.w600),
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                        ),
                       ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-          ),
-          const AnimatedGap(4, duration: Duration(milliseconds: 100)),
-          Flexible(
-            flex: 3,
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              textDirection: serviceLocator<LanguageController>().targetTextDirection,
-              children: [
-                Expanded(
-                  child: Stack(
-                    alignment: AlignmentDirectional.bottomCenter,
-                    clipBehavior: Clip.none,
-                    children: [
-                      AspectRatio(
-                        aspectRatio: 1 / 0.8,
-                        child: Card(
-                          margin: const EdgeInsetsDirectional.only(
-                            start: 12,
-                          ),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadiusDirectional.circular(10),
-                          ),
-                          child: ImageHelper(
-                            image: (widget.orderEntity.store.menu[0].menuImage.isEmptyOrNull)
-                                ? 'assets/svg/sorry-image-not-available.svg'
-                                : widget.orderEntity.store.menu[0].menuImage,
-                            filterQuality: FilterQuality.high,
-                            borderRadius: BorderRadiusDirectional.circular(10),
-                            imageType: findImageType(widget.orderEntity.store.menu[0].menuImage),
-                            imageShape: ImageShape.rectangle,
-                            boxFit: BoxFit.cover,
-                            defaultErrorBuilderColor: Colors.blueGrey,
-                            errorBuilder: const Icon(
-                              Icons.image_not_supported,
-                              size: 10000,
-                            ),
-                            loaderBuilder: const CircularProgressIndicator(),
-                            matchTextDirection: true,
-                            placeholderText: widget.orderEntity.store.menu[0].menuName,
-                            placeholderTextStyle: context.labelLarge!.copyWith(
-                              color: Colors.white,
-                              fontSize: 16,
-                            ),
-                          ),
-                        ),
-                      ),
-                      AnimatedPositioned(
-                        duration: const Duration(milliseconds: 300),
-                        bottom: -12,
-                        left: leftPositionValue(widget.orderEntity.orderStatus),
-                        child: Chip(
-                          labelPadding: const EdgeInsetsDirectional.all(1),
-                          labelStyle: TextStyle(
-                            fontSize: 13,
-                            color: (OrderStatus.values.byName(OrderStatus.values[widget.orderEntity.orderStatus].toString()) == OrderStatus.newOrder ||
-                                    OrderStatus.values.byName(OrderStatus.values[widget.orderEntity.orderStatus].toString()) == OrderStatus.readyToPickup)
-                                ? OrderStatus.values[widget.orderEntity.orderStatus].borderColor
-                                : const Color.fromRGBO(42, 45, 50, 1).getOnColorBy(
-                                    const Color.fromRGBO(42, 45, 50, 1),
-                                    OrderStatus.values[widget.orderEntity.orderStatus].backgroundColor,
-                                  ),
-                          ),
-                          label: Text(
-                            OrderStatus.values[widget.orderEntity.orderStatus].title,
-                          ),
-                          backgroundColor: OrderStatus.values[widget.orderEntity.orderStatus].backgroundColor,
-                          elevation: 0.0,
-                          visualDensity: const VisualDensity(horizontal: -4, vertical: -4),
-                          materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                          padding: const EdgeInsetsDirectional.all(6),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadiusDirectional.circular(20),
-                            side: BorderSide(
-                              color: OrderStatus.values[widget.orderEntity.orderStatus].borderColor,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                Expanded(
-                  flex: 2,
-                  child: Card(
-                    elevation: 0,
-                    child: Padding(
-                      padding: const EdgeInsetsDirectional.only(start: 4, end: 4, top: 4, bottom: 4),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
                         mainAxisSize: MainAxisSize.min,
                         textDirection: serviceLocator<LanguageController>().targetTextDirection,
                         children: [
-                          //const AnimatedGap(6, duration: Duration(milliseconds: 100)),
                           Directionality(
                             textDirection: serviceLocator<LanguageController>().targetTextDirection,
                             child: WrapText(
-                              widget.orderEntity.store.menu[0].menuName,
+                              'Instant',
                               breakWordCharacter: '-',
                               smartSizeMode: false,
                               asyncMode: true,
-                              minFontSize: 14,
-                              maxFontSize: 16,
-                              textStyle: context.labelMedium!.copyWith(fontWeight: FontWeight.w600),
-                              maxLines: 2,
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                          ),
-                          const AnimatedGap(2, duration: Duration(milliseconds: 100)),
-                          /*Directionality(
-                            textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                            child: WrapText(
-                              'OrderID: HMW-${orderEntity.orderID}',
-                              breakWordCharacter: '-',
-                              smartSizeMode: false,
-                              asyncMode: true,
-                              minFontSize: 11,
-                              maxFontSize: 12,
-                              textStyle: context.labelSmall!.copyWith(fontWeight: FontWeight.w500),
+                              minFontSize: 13,
+                              maxFontSize: 14,
+                              textStyle: context.labelSmall!.copyWith(color: context.colorScheme.primary, fontWeight: FontWeight.w600),
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
                             ),
                           ),
-                          const AnimatedGap(2, duration: Duration(milliseconds: 100)),*/
-                          Directionality(
-                            textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                            child: WrapText(
-                              widget.orderEntity.store.storeName,
-                              breakWordCharacter: '-',
-                              smartSizeMode: false,
-                              asyncMode: true,
-                              minFontSize: 14,
-                              maxFontSize: 16,
-                              textStyle: context.bodySmall!.copyWith(
-                                fontWeight: FontWeight.w500,
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              const AnimatedGap(4, duration: Duration(milliseconds: 100)),
+              Flexible(
+                flex: 3,
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                  children: [
+                    Expanded(
+                      child: Stack(
+                        alignment: AlignmentDirectional.bottomCenter,
+                        clipBehavior: Clip.none,
+                        children: [
+                          AspectRatio(
+                            aspectRatio: 1 / 0.8,
+                            child: Card(
+                              margin: const EdgeInsetsDirectional.only(
+                                start: 12,
                               ),
-                              maxLines: 2,
-                              overflow: TextOverflow.ellipsis,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadiusDirectional.circular(10),
+                              ),
+                              child: ImageHelper(
+                                image: (widget.orderEntity.store.menu[0].menuImage.isEmptyOrNull)
+                                    ? 'assets/svg/sorry-image-not-available.svg'
+                                    : widget.orderEntity.store.menu[0].menuImage,
+                                filterQuality: FilterQuality.high,
+                                borderRadius: BorderRadiusDirectional.circular(10),
+                                imageType: findImageType(widget.orderEntity.store.menu[0].menuImage),
+                                imageShape: ImageShape.rectangle,
+                                boxFit: BoxFit.cover,
+                                defaultErrorBuilderColor: Colors.blueGrey,
+                                errorBuilder: const Icon(
+                                  Icons.image_not_supported,
+                                  size: 10000,
+                                ),
+                                loaderBuilder: const CircularProgressIndicator(),
+                                matchTextDirection: true,
+                                placeholderText: widget.orderEntity.store.menu[0].menuName,
+                                placeholderTextStyle: context.labelLarge!.copyWith(
+                                  color: Colors.white,
+                                  fontSize: 16,
+                                ),
+                              ),
                             ),
                           ),
-
-                          Row(
+                          AnimatedPositioned(
+                            duration: const Duration(milliseconds: 300),
+                            bottom: -12,
+                            left: leftPositionValue(widget.orderEntity.orderStatus),
+                            child: Chip(
+                              labelPadding: const EdgeInsetsDirectional.all(1),
+                              labelStyle: TextStyle(
+                                fontSize: 13,
+                                color: (OrderStatus.values.byName(OrderStatus.values[widget.orderEntity.orderStatus].toString()) == OrderStatus.newOrder ||
+                                        OrderStatus.values.byName(OrderStatus.values[widget.orderEntity.orderStatus].toString()) == OrderStatus.readyToPickup)
+                                    ? OrderStatus.values[widget.orderEntity.orderStatus].borderColor
+                                    : const Color.fromRGBO(42, 45, 50, 1).getOnColorBy(
+                                        const Color.fromRGBO(42, 45, 50, 1),
+                                        OrderStatus.values[widget.orderEntity.orderStatus].backgroundColor,
+                                      ),
+                              ),
+                              label: Text(
+                                OrderStatus.values[widget.orderEntity.orderStatus].title,
+                              ),
+                              backgroundColor: OrderStatus.values[widget.orderEntity.orderStatus].backgroundColor,
+                              elevation: 0.0,
+                              visualDensity: const VisualDensity(horizontal: -4, vertical: -4),
+                              materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                              padding: const EdgeInsetsDirectional.all(6),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadiusDirectional.circular(20),
+                                side: BorderSide(
+                                  color: OrderStatus.values[widget.orderEntity.orderStatus].borderColor,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Expanded(
+                      flex: 2,
+                      child: Card(
+                        elevation: 0,
+                        child: Padding(
+                          padding: const EdgeInsetsDirectional.only(start: 4, end: 4, top: 4, bottom: 4),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
                             mainAxisSize: MainAxisSize.min,
                             textDirection: serviceLocator<LanguageController>().targetTextDirection,
                             children: [
+                              //const AnimatedGap(6, duration: Duration(milliseconds: 100)),
                               Directionality(
                                 textDirection: serviceLocator<LanguageController>().targetTextDirection,
                                 child: WrapText(
-                                  'Quantity: ${widget.orderEntity.store.menu[0].quantity}',
+                                  widget.orderEntity.store.menu[0].menuName,
                                   breakWordCharacter: '-',
                                   smartSizeMode: false,
                                   asyncMode: true,
-                                  minFontSize: 12,
-                                  maxFontSize: 13,
-                                  textStyle: context.bodySmall!.copyWith(),
+                                  minFontSize: 14,
+                                  maxFontSize: 16,
+                                  textStyle: context.labelMedium!.copyWith(fontWeight: FontWeight.w600),
+                                  maxLines: 2,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ),
+                              const AnimatedGap(2, duration: Duration(milliseconds: 100)),
+                              /*Directionality(
+                                textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                child: WrapText(
+                                  'OrderID: HMW-${orderEntity.orderID}',
+                                  breakWordCharacter: '-',
+                                  smartSizeMode: false,
+                                  asyncMode: true,
+                                  minFontSize: 11,
+                                  maxFontSize: 12,
+                                  textStyle: context.labelSmall!.copyWith(fontWeight: FontWeight.w500),
                                   maxLines: 1,
                                   overflow: TextOverflow.ellipsis,
                                 ),
                               ),
-                              const AnimatedGap(8, duration: Duration(milliseconds: 100)),
-                              //Spacer(),
+                              const AnimatedGap(2, duration: Duration(milliseconds: 100)),*/
                               Directionality(
                                 textDirection: serviceLocator<LanguageController>().targetTextDirection,
                                 child: WrapText(
-                                  '${widget.orderEntity.payment.amount} ${widget.orderEntity.payment.currency}',
+                                  widget.orderEntity.store.storeName,
                                   breakWordCharacter: '-',
                                   smartSizeMode: false,
                                   asyncMode: true,
-                                  minFontSize: 12,
-                                  maxFontSize: 13,
+                                  minFontSize: 14,
+                                  maxFontSize: 16,
                                   textStyle: context.bodySmall!.copyWith(
-                                    fontWeight: FontWeight.w600,
+                                    fontWeight: FontWeight.w500,
                                   ),
-                                  maxLines: 1,
+                                  maxLines: 2,
                                   overflow: TextOverflow.ellipsis,
                                 ),
                               ),
-                              const Spacer(),
-                              ClipRRect(
-                                borderRadius: BorderRadiusDirectional.circular(24),
-                                child: Container(
-                                  padding: const EdgeInsetsDirectional.symmetric(horizontal: 8, vertical: 4),
-                                  decoration: BoxDecoration(
-                                    color: const Color.fromRGBO(251, 219, 11, 1),
-                                    borderRadius: BorderRadiusDirectional.circular(24),
-                                    border: Border.all(
-                                      color: const Color.fromRGBO(243, 188, 88, 1),
-                                    ),
-                                  ),
-                                  child: Directionality(
+
+                              Row(
+                                mainAxisSize: MainAxisSize.min,
+                                textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                children: [
+                                  Directionality(
                                     textDirection: serviceLocator<LanguageController>().targetTextDirection,
                                     child: WrapText(
-                                      'PAID',
+                                      'Quantity: ${widget.orderEntity.store.menu[0].quantity}',
+                                      breakWordCharacter: '-',
+                                      smartSizeMode: false,
+                                      asyncMode: true,
+                                      minFontSize: 12,
+                                      maxFontSize: 13,
+                                      textStyle: context.bodySmall!.copyWith(),
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                  ),
+                                  const AnimatedGap(8, duration: Duration(milliseconds: 100)),
+                                  //Spacer(),
+                                  Directionality(
+                                    textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                    child: WrapText(
+                                      '${widget.orderEntity.payment.amount} ${widget.orderEntity.payment.currency}',
                                       breakWordCharacter: '-',
                                       smartSizeMode: false,
                                       asyncMode: true,
@@ -444,122 +420,152 @@ class _OrderCardWidgetView extends WidgetView<OrderCardWidget, _OrderCardWidgetC
                                       overflow: TextOverflow.ellipsis,
                                     ),
                                   ),
-                                ),
+                                  const Spacer(),
+                                  ClipRRect(
+                                    borderRadius: BorderRadiusDirectional.circular(24),
+                                    child: Container(
+                                      padding: const EdgeInsetsDirectional.symmetric(horizontal: 8, vertical: 4),
+                                      decoration: BoxDecoration(
+                                        color: const Color.fromRGBO(251, 219, 11, 1),
+                                        borderRadius: BorderRadiusDirectional.circular(24),
+                                        border: Border.all(
+                                          color: const Color.fromRGBO(243, 188, 88, 1),
+                                        ),
+                                      ),
+                                      child: Directionality(
+                                        textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                        child: WrapText(
+                                          'PAID',
+                                          breakWordCharacter: '-',
+                                          smartSizeMode: false,
+                                          asyncMode: true,
+                                          minFontSize: 12,
+                                          maxFontSize: 13,
+                                          textStyle: context.bodySmall!.copyWith(
+                                            fontWeight: FontWeight.w600,
+                                          ),
+                                          maxLines: 1,
+                                          overflow: TextOverflow.ellipsis,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
                               ),
-                            ],
-                          ),
-                          Row(
-                            mainAxisSize: MainAxisSize.min,
-                            textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                            children: [
-                              Icon(
-                                Icons.timelapse,
-                                size: 14,
-                                color: context.colorScheme.primary,
-                              ),
-                              Directionality(
+                              Row(
+                                mainAxisSize: MainAxisSize.min,
                                 textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                                child: WrapText(
-                                  ' ${widget.orderEntity.orderDeliveryDateTime?.format('D, M j, h:i A') ?? ''}',
-                                  breakWordCharacter: '-',
-                                  smartSizeMode: false,
-                                  asyncMode: true,
-                                  minFontSize: 12,
-                                  maxFontSize: 13,
-                                  textStyle: context.bodySmall!.copyWith(color: context.colorScheme.primary),
-                                  maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,
-                                ),
+                                children: [
+                                  Icon(
+                                    Icons.timelapse,
+                                    size: 14,
+                                    color: context.colorScheme.primary,
+                                  ),
+                                  Directionality(
+                                    textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                    child: WrapText(
+                                      ' ${widget.orderEntity.orderDeliveryDateTime?.format('D, M j, h:i A') ?? ''}',
+                                      breakWordCharacter: '-',
+                                      smartSizeMode: false,
+                                      asyncMode: true,
+                                      minFontSize: 12,
+                                      maxFontSize: 13,
+                                      textStyle: context.bodySmall!.copyWith(color: context.colorScheme.primary),
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                  ),
+                                  //const AnimatedGap(4, duration: Duration(milliseconds: 100)),
+                                ],
                               ),
-                              //const AnimatedGap(4, duration: Duration(milliseconds: 100)),
+                              //const AnimatedGap(6, duration: Duration(milliseconds: 100)),
                             ],
                           ),
-                          //const AnimatedGap(6, duration: Duration(milliseconds: 100)),
-                        ],
+                        ),
                       ),
                     ),
+                  ],
+                ),
+              ),
+              const AnimatedGap(12, duration: Duration(milliseconds: 100)),
+              const Divider(
+                thickness: 0.75,
+              ),
+              Flexible(
+                child: Container(
+                  padding: const EdgeInsetsDirectional.only(
+                    start: 12,
+                    end: 12,
+                  ),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                    children: [
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          mainAxisSize: MainAxisSize.min,
+                          textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                          children: [
+                            Directionality(
+                              textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                              child: WrapText(
+                                widget.orderEntity.userInfo.userName,
+                                breakWordCharacter: '-',
+                                smartSizeMode: false,
+                                asyncMode: true,
+                                minFontSize: 14,
+                                maxFontSize: 16,
+                                textStyle: context.labelMedium!.copyWith(fontWeight: FontWeight.w600),
+                                maxLines: 2,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ),
+                            const AnimatedGap(4, duration: Duration(milliseconds: 100)),
+                            Directionality(
+                              textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                              child: WrapText(
+                                'Mohammed Ali Al-Ahmed, 8228 Imam Ali Road, Riyadh 12345-6789, Kingdom Of Saudi Arabia',
+                                breakWordCharacter: '-',
+                                smartSizeMode: false,
+                                asyncMode: true,
+                                minFontSize: 13,
+                                maxFontSize: 15,
+                                textStyle: context.labelMedium!.copyWith(fontWeight: FontWeight.w500),
+                                maxLines: 2,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Directionality(
+                        textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                        child: WrapText(
+                          '3 Km',
+                          breakWordCharacter: '-',
+                          smartSizeMode: false,
+                          asyncMode: true,
+                          minFontSize: 12,
+                          maxFontSize: 14,
+                          textStyle: context.labelMedium!.copyWith(fontWeight: FontWeight.w600),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
-              ],
-            ),
-          ),
-          const AnimatedGap(12, duration: Duration(milliseconds: 100)),
-          const Divider(
-            thickness: 0.75,
-          ),
-          Flexible(
-            child: Container(
-              padding: const EdgeInsetsDirectional.only(
-                start: 12,
-                end: 12,
               ),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                children: [
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      mainAxisSize: MainAxisSize.min,
-                      textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                      children: [
-                        Directionality(
-                          textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                          child: WrapText(
-                            widget.orderEntity.userInfo.userName,
-                            breakWordCharacter: '-',
-                            smartSizeMode: false,
-                            asyncMode: true,
-                            minFontSize: 14,
-                            maxFontSize: 16,
-                            textStyle: context.labelMedium!.copyWith(fontWeight: FontWeight.w600),
-                            maxLines: 2,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                        ),
-                        const AnimatedGap(4, duration: Duration(milliseconds: 100)),
-                        Directionality(
-                          textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                          child: WrapText(
-                            'Mohammed Ali Al-Ahmed, 8228 Imam Ali Road, Riyadh 12345-6789, Kingdom Of Saudi Arabia',
-                            breakWordCharacter: '-',
-                            smartSizeMode: false,
-                            asyncMode: true,
-                            minFontSize: 13,
-                            maxFontSize: 15,
-                            textStyle: context.labelMedium!.copyWith(fontWeight: FontWeight.w500),
-                            maxLines: 2,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Directionality(
-                    textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                    child: WrapText(
-                      '3 Km',
-                      breakWordCharacter: '-',
-                      smartSizeMode: false,
-                      asyncMode: true,
-                      minFontSize: 12,
-                      maxFontSize: 14,
-                      textStyle: context.labelMedium!.copyWith(fontWeight: FontWeight.w600),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  ),
-                ],
+              const AnimatedGap(8, duration: Duration(milliseconds: 100)),
+              Flexible(
+                child: Container(
+                  child: state.bottomWidget(widget.orderEntity.orderStatus),
+                ),
               ),
-            ),
+            ],
           ),
-          const AnimatedGap(8, duration: Duration(milliseconds: 100)),
-          Flexible(
-            child: Container(
-              child: state.bottomWidget(widget.orderEntity.orderStatus),
-            ),
-          ),
-        ],
+        ),
       ),
     );
   }
