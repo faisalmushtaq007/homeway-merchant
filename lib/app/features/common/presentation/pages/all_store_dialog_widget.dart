@@ -11,6 +11,9 @@ class AllStoreDialogWidget extends StatefulWidget {
     this.widgetTrailingIcon,
     this.widgetTextStyle,
     this.hasSeperateWidget = true,
+    this.decoration,
+    this.icon,
+    this.padding = EdgeInsetsDirectional.zero,
   });
 
   final ValueChanged<List<StoreEntity>> onChanged;
@@ -21,6 +24,9 @@ class AllStoreDialogWidget extends StatefulWidget {
   final TextStyle? widgetTextStyle;
   final Icon? widgetTrailingIcon;
   final bool hasSeperateWidget;
+  final Decoration? decoration;
+  final IconData? icon;
+  final EdgeInsetsGeometry padding;
 
   @override
   _AllStoreDialogWidgetController createState() => _AllStoreDialogWidgetController();
@@ -109,36 +115,60 @@ class _AllStoreDialogWidgetView extends WidgetView<AllStoreDialogWidget, _AllSto
     BuildContext context, [
     List<StoreEntity>? stores = const [],
   ]) {
-    return InkWell(
-      child: Row(
-        children: [
-          Text(
-            state.storeName,
-            style: widget.widgetTextStyle ??
-                context.labelMedium!.copyWith(
-                  color: Color.fromRGBO(127, 129, 132, 1),
-                  fontWeight: FontWeight.w600,
+    return Directionality(
+      textDirection: serviceLocator<LanguageController>().targetTextDirection,
+      child: InkWell(
+        child: DecoratedBox(
+          decoration: widget.decoration ?? const BoxDecoration(),
+          child: Padding(
+            padding: widget.padding,
+            child: Row(
+              textDirection: serviceLocator<LanguageController>().targetTextDirection,
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Flexible(
+                  child: Text(
+                    state.storeName,
+                    style: widget.widgetTextStyle ??
+                        context.labelMedium!.copyWith(
+                          color: Color.fromRGBO(127, 129, 132, 1),
+                          fontWeight: FontWeight.w600,
+                        ),
+                    textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    softWrap: true,
+                  ).translate(),
                 ),
+                Icon(
+                  widget.icon ?? Icons.arrow_drop_up,
+                  color: const Color.fromRGBO(127, 129, 132, 1),
+                ),
+              ],
+            ),
           ),
-          const Icon(
-            Icons.arrow_drop_up,
-            color: Color.fromRGBO(127, 129, 132, 1),
-          ),
-        ],
-      ),
-      onTap: () async {
-        if (stores.isNotNullOrEmpty) {
-          final StoreEntity? storeEntity = await selectYourStore(context, stores!);
-          if (storeEntity != null) {
-            widget.onChanged([storeEntity]);
-            state.updateCurrentStoreName(storeEntity);
-            return;
-          }
-        } else {
+        ),
+        onTap: () async {
+          await onPressed(stores: stores, context: context);
           return;
-        }
-      },
+        },
+      ),
     );
+  }
+
+  Future<void> onPressed({required BuildContext context, List<StoreEntity>? stores = const []}) async {
+    if (stores.isNotNullOrEmpty) {
+      final StoreEntity? storeEntity = await selectYourStore(context, stores!);
+      if (storeEntity != null) {
+        widget.onChanged([storeEntity]);
+        state.updateCurrentStoreName(storeEntity);
+        return;
+      }
+    } else {
+      return;
+    }
   }
 
   Future<StoreEntity?> selectYourStore(BuildContext context, List<StoreEntity> stores) async {
@@ -170,7 +200,7 @@ class _AllStoreDialogWidgetView extends WidgetView<AllStoreDialogWidget, _AllSto
               child: ListView.builder(
                 padding: EdgeInsetsDirectional.zero,
                 itemCount: stores.length,
-                itemBuilder: (context, index) => _allFoodCategory(context, index, setState, stores[index]),
+                itemBuilder: (context, index) => _allStoresCard(context, index, setState, stores[index]),
                 shrinkWrap: true,
               ),
             );
@@ -184,7 +214,7 @@ class _AllStoreDialogWidgetView extends WidgetView<AllStoreDialogWidget, _AllSto
     return storeEntity;
   }
 
-  Widget _allFoodCategory(BuildContext context, int index, StateSetter innerSetState, StoreEntity storeEntity) {
+  Widget _allStoresCard(BuildContext context, int index, StateSetter innerSetState, StoreEntity storeEntity) {
     return DecoratedBox(
       decoration: BoxDecoration(
         border: Border(

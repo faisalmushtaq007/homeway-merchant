@@ -276,6 +276,7 @@ class _ManageOrderPageView extends WidgetView<ManageOrderPage, _ManageOrderPageC
         child: DoubleTapToExit(
           child: Scaffold(
             appBar: AppBar(
+              title: const Text('Manage Orders'),
               actions: [
                 IconButton(
                   onPressed: () async {
@@ -332,7 +333,7 @@ class _ManageOrderPageView extends WidgetView<ManageOrderPage, _ManageOrderPageC
                       SliverList(
                         delegate: SliverChildListDelegate(
                           [
-                            const AnimatedGap(
+                            /*const AnimatedGap(
                               12,
                               duration: Duration(milliseconds: 100),
                             ),
@@ -340,15 +341,15 @@ class _ManageOrderPageView extends WidgetView<ManageOrderPage, _ManageOrderPageC
                               key: Key('manage-order-headline-widget'),
                             ),
                             const AnimatedGap(
-                              16,
+                              12,
                               duration: Duration(milliseconds: 100),
-                            ),
+                            ),*/
                             OrderTypeWidget(
                               key: const Key('manage-order-type-widget'),
                               onChanged: state.onChangeOrderType,
                             ),
                             const AnimatedGap(
-                              16,
+                              8,
                               duration: Duration(milliseconds: 100),
                             ),
                           ],
