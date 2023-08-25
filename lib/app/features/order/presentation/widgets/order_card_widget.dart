@@ -116,6 +116,10 @@ class _OrderCardWidgetController extends State<OrderCardWidget> {
           ],
         ),
       OrderStatus.readyToPickup || OrderStatus.onTheWay => Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.start,
+          textDirection: serviceLocator<LanguageController>().targetTextDirection,
+          mainAxisSize: MainAxisSize.min,
           children: [
             Expanded(
               child: DriverAssignCardWidget(
