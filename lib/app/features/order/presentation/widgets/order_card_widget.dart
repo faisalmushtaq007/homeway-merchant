@@ -32,6 +32,7 @@ class _OrderCardWidgetController extends State<OrderCardWidget> {
                       bottomStart: Radius.circular(10),
                     ),
                   ),
+                  tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                 ),
                 onPressed: () {},
                 child: Text(
@@ -52,6 +53,7 @@ class _OrderCardWidgetController extends State<OrderCardWidget> {
                       bottomEnd: Radius.circular(10),
                     ),
                   ),
+                  tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                 ),
                 onPressed: () {},
                 child: Text(
@@ -79,6 +81,7 @@ class _OrderCardWidgetController extends State<OrderCardWidget> {
                       bottomStart: Radius.circular(10),
                     ),
                   ),
+                  tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                 ),
                 onPressed: () {},
                 child: Text(
@@ -100,6 +103,7 @@ class _OrderCardWidgetController extends State<OrderCardWidget> {
                       bottomEnd: Radius.circular(10),
                     ),
                   ),
+                  tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                 ),
                 child: Text(
                   'Move to Ready',
@@ -107,6 +111,16 @@ class _OrderCardWidgetController extends State<OrderCardWidget> {
                   maxLines: 1,
                   textDirection: serviceLocator<LanguageController>().targetTextDirection,
                 ).translate(),
+              ),
+            ),
+          ],
+        ),
+      OrderStatus.readyToPickup || OrderStatus.onTheWay => Row(
+          children: [
+            Expanded(
+              child: DriverAssignCardWidget(
+                orderEntity: widget.orderEntity,
+                index: widget.index,
               ),
             ),
           ],
@@ -279,7 +293,9 @@ class _OrderCardWidgetView extends WidgetView<OrderCardWidget, _OrderCardWidgetC
                         child: Chip(
                           labelPadding: const EdgeInsetsDirectional.all(1),
                           labelStyle: TextStyle(
-                            color: (OrderStatus.values.byName(OrderStatus.values[widget.orderEntity.orderStatus].toString()) == OrderStatus.newOrder)
+                            fontSize: 13,
+                            color: (OrderStatus.values.byName(OrderStatus.values[widget.orderEntity.orderStatus].toString()) == OrderStatus.newOrder ||
+                                    OrderStatus.values.byName(OrderStatus.values[widget.orderEntity.orderStatus].toString()) == OrderStatus.readyToPickup)
                                 ? OrderStatus.values[widget.orderEntity.orderStatus].borderColor
                                 : const Color.fromRGBO(42, 45, 50, 1).getOnColorBy(
                                     const Color.fromRGBO(42, 45, 50, 1),
@@ -293,7 +309,7 @@ class _OrderCardWidgetView extends WidgetView<OrderCardWidget, _OrderCardWidgetC
                           elevation: 0.0,
                           visualDensity: const VisualDensity(horizontal: -4, vertical: -4),
                           materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                          padding: const EdgeInsetsDirectional.all(8),
+                          padding: const EdgeInsetsDirectional.all(6),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadiusDirectional.circular(20),
                             side: BorderSide(
@@ -471,74 +487,78 @@ class _OrderCardWidgetView extends WidgetView<OrderCardWidget, _OrderCardWidgetC
           const Divider(
             thickness: 0.75,
           ),
-          Padding(
-            padding: const EdgeInsetsDirectional.only(
-              start: 12,
-              end: 12,
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisSize: MainAxisSize.min,
-              textDirection: serviceLocator<LanguageController>().targetTextDirection,
-              children: [
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    mainAxisSize: MainAxisSize.min,
+          Flexible(
+            child: Container(
+              padding: const EdgeInsetsDirectional.only(
+                start: 12,
+                end: 12,
+              ),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                children: [
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      mainAxisSize: MainAxisSize.min,
+                      textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                      children: [
+                        Directionality(
+                          textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                          child: WrapText(
+                            widget.orderEntity.userInfo.userName,
+                            breakWordCharacter: '-',
+                            smartSizeMode: false,
+                            asyncMode: true,
+                            minFontSize: 14,
+                            maxFontSize: 16,
+                            textStyle: context.labelMedium!.copyWith(fontWeight: FontWeight.w600),
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
+                        const AnimatedGap(4, duration: Duration(milliseconds: 100)),
+                        Directionality(
+                          textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                          child: WrapText(
+                            'Mohammed Ali Al-Ahmed, 8228 Imam Ali Road, Riyadh 12345-6789, Kingdom Of Saudi Arabia',
+                            breakWordCharacter: '-',
+                            smartSizeMode: false,
+                            asyncMode: true,
+                            minFontSize: 13,
+                            maxFontSize: 15,
+                            textStyle: context.labelMedium!.copyWith(fontWeight: FontWeight.w500),
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Directionality(
                     textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                    children: [
-                      Directionality(
-                        textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                        child: WrapText(
-                          widget.orderEntity.userInfo.userName,
-                          breakWordCharacter: '-',
-                          smartSizeMode: false,
-                          asyncMode: true,
-                          minFontSize: 14,
-                          maxFontSize: 16,
-                          textStyle: context.labelMedium!.copyWith(fontWeight: FontWeight.w600),
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                      ),
-                      const AnimatedGap(4, duration: Duration(milliseconds: 100)),
-                      Directionality(
-                        textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                        child: WrapText(
-                          'Mohammed Ali Al-Ahmed, 8228 Imam Ali Road, Riyadh 12345-6789, Kingdom Of Saudi Arabia',
-                          breakWordCharacter: '-',
-                          smartSizeMode: false,
-                          asyncMode: true,
-                          minFontSize: 13,
-                          maxFontSize: 15,
-                          textStyle: context.labelMedium!.copyWith(fontWeight: FontWeight.w500),
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                      ),
-                    ],
+                    child: WrapText(
+                      '3 Km',
+                      breakWordCharacter: '-',
+                      smartSizeMode: false,
+                      asyncMode: true,
+                      minFontSize: 12,
+                      maxFontSize: 14,
+                      textStyle: context.labelMedium!.copyWith(fontWeight: FontWeight.w600),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
                   ),
-                ),
-                Directionality(
-                  textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                  child: WrapText(
-                    '3 Km',
-                    breakWordCharacter: '-',
-                    smartSizeMode: false,
-                    asyncMode: true,
-                    minFontSize: 12,
-                    maxFontSize: 14,
-                    textStyle: context.labelMedium!.copyWith(fontWeight: FontWeight.w600),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
-          const AnimatedGap(4, duration: Duration(milliseconds: 100)),
-          state.bottomWidget(widget.orderEntity.orderStatus),
+          const AnimatedGap(8, duration: Duration(milliseconds: 100)),
+          Flexible(
+            child: Container(
+              child: state.bottomWidget(widget.orderEntity.orderStatus),
+            ),
+          ),
         ],
       ),
     );
@@ -546,10 +566,13 @@ class _OrderCardWidgetView extends WidgetView<OrderCardWidget, _OrderCardWidgetC
 
   double leftPositionValue(int index) {
     return switch (OrderStatus.values.byName(OrderStatus.values[index].toString())) {
-      OrderStatus.newOrder => 31.0,
-      OrderStatus.delivered => 29.0,
-      OrderStatus.cancel => 29.0,
-      _ => 26.0,
+      OrderStatus.newOrder => 22.0,
+      OrderStatus.delivered => 26.0,
+      OrderStatus.preparing => 22.0,
+      OrderStatus.onTheWay => 20.0,
+      OrderStatus.readyToPickup => 31.0,
+      OrderStatus.cancel || OrderStatus.cancelByUser || OrderStatus.cancelBySystem || OrderStatus.cancelByYou => 31.0,
+      _ => 24.0,
     };
   }
 }

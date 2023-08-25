@@ -3,6 +3,7 @@ import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:homemakers_merchant/app/features/dashboard/index.dart';
 import 'package:homemakers_merchant/app/features/order/presentation/manager/all/all_order_bloc.dart';
@@ -83,3 +84,4 @@ part 'package:homemakers_merchant/app/features/order/presentation/pages/schedule
 part 'package:homemakers_merchant/app/features/order/presentation/widgets/manage_order_headline_widget.dart';
 part 'package:homemakers_merchant/app/features/order/presentation/widgets/order_card_widget.dart';
 part 'package:homemakers_merchant/app/features/order/presentation/widgets/order_types_widget.dart';
+part 'package:homemakers_merchant/app/features/order/presentation/widgets/deliver/driver_assign_card_widget.dart';

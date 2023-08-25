@@ -191,7 +191,7 @@ class OrderLocalDbRepository<T extends OrderEntity> implements BaseOrderLocalDbR
               // The record current key
               var key = snapshot.key;
               // Remove from deletion list
-              //keysToDelete.remove(key);
+              keysToDelete.remove(key);
               // Don't update if no change
               if (const DeepCollectionEquality().equals(snapshot.value, order)) {
                 // no changes
@@ -206,7 +206,7 @@ class OrderLocalDbRepository<T extends OrderEntity> implements BaseOrderLocalDbR
             }
           }
           // Delete the one not present any more
-          //await _order.records(keysToDelete).delete(transaction);
+          await _order.records(keysToDelete).delete(transaction);
         });
 
         final result = await getAllOrder();

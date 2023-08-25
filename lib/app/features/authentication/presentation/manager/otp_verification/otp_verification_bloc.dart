@@ -38,7 +38,7 @@ class OtpVerificationBloc extends Bloc<OtpVerificationEvent, OtpVerificationStat
           otpVerificationStatus: OtpVerificationStatus.processing,
         ),
       );
-      if (!event.sendOtpEntity.userName.isEmptyOrNull) {
+      if (!event.sendOtpEntity.mobile.isEmptyOrNull) {
         final ResultState<SendOtpResponseModel> resultState = await sendOtpUseCase(event.sendOtpEntity);
         emit(
           SendOtpProcessingState(
@@ -118,7 +118,7 @@ class OtpVerificationBloc extends Bloc<OtpVerificationEvent, OtpVerificationStat
           otpVerificationStatus: OtpVerificationStatus.processing,
         ),
       );
-      if (!event.verifyOtpEntity.login.isEmptyOrNull && event.verifyOtpEntity.otp != null) {
+      if (!event.verifyOtpEntity.mobile.isEmptyOrNull && event.verifyOtpEntity.otp != null) {
         final ResultState<VerifyOtpResponseModel> resultState = await verifyOtpUseCase(event.verifyOtpEntity);
         emit(
           VerifyOtpProcessingState(

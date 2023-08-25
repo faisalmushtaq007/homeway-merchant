@@ -3,7 +3,7 @@ part of 'package:homemakers_merchant/app/features/order/index.dart';
 enum OrderStatus {
   none(),
   newOrder(
-    title: 'Latest',
+    title: 'New Order',
     borderColor: Color.fromRGBO(255, 90, 39, 1),
   ),
   ongoing(
@@ -23,11 +23,15 @@ enum OrderStatus {
     backgroundColor: Color.fromRGBO(165, 166, 168, 1),
   ),
   delivered(
-    title: 'Deliver',
+    title: 'Delivered',
     backgroundColor: Color.fromRGBO(69, 201, 125, 1),
     borderColor: Color.fromRGBO(69, 201, 125, 1),
   ),
-  onTheWay(),
+  onTheWay(
+    title: 'On the way',
+    backgroundColor: Color.fromRGBO(69, 201, 125, 1),
+    borderColor: Color.fromRGBO(69, 201, 125, 1),
+  ),
   cancelBySystem(
     title: 'Cancel',
     backgroundColor: Color.fromRGBO(165, 166, 168, 1),
@@ -75,7 +79,7 @@ enum OrderStatus {
     borderColor: Color.fromRGBO(69, 201, 125, 1),
   ),
   preparing(
-    title: 'Process',
+    title: 'Processing',
     backgroundColor: Color.fromRGBO(255, 90, 39, 1),
   ),
   cancel(

@@ -71,7 +71,7 @@ class _OTPVerificationPageState extends State<OTPVerificationPage> {
           SendOtp(
             sendOtpEntity: SendOtpEntity(
               user_type: 'merchant',
-              userName: widget.phoneNumberWithoutFormat,
+              mobile: widget.phoneNumberWithoutFormat,
               country_dial_code: widget.countryDialCode,
               isoCode: widget.isoCode,
               phoneNumberWithFormat: widget.phoneNumber,
@@ -130,7 +130,7 @@ class _OTPVerificationPageState extends State<OTPVerificationPage> {
           SendOtp(
             sendOtpEntity: SendOtpEntity(
               user_type: 'merchant',
-              userName: widget.phoneNumberWithoutFormat,
+              mobile: widget.phoneNumberWithoutFormat,
               country_dial_code: widget.countryDialCode,
               isoCode: widget.isoCode,
               phoneNumberWithFormat: widget.phoneNumber,
@@ -483,7 +483,7 @@ class _OTPVerificationPageState extends State<OTPVerificationPage> {
                                                 VerifyOtp(
                                                   verifyOtpEntity: VerifyOtpEntity(
                                                     user_type: 'merchant',
-                                                    login: widget.phoneNumberWithoutFormat,
+                                                    mobile: widget.phoneNumberWithoutFormat,
                                                     country_dial_code: widget.countryDialCode,
                                                     otp: int.parse(
                                                       otpController.value.text.trim(),
