@@ -76,8 +76,8 @@ class _AddressFormPageController extends State<AddressFormPage> {
   int indexOfSaveAddress = -1;
   String? valueOfSavedAddress;
   String? addressTypeValidation;
-  double latitude = 0.0;
-  double longitude = 0.0;
+  double latitude = 0;
+  double longitude = 0;
 
   @override
   void initState() {
@@ -140,8 +140,8 @@ class _AddressFormPageController extends State<AddressFormPage> {
       initialPhoneNumberValue = phoneNumbers!;
     }
     userEnteredPhoneNumber = '+${phoneNumbers?.countryCode} ${phoneNumbers?.getFormattedNsn().trim()}';
-    String countryDialCode = '+${phoneNumbers?.countryCode ?? '+966'}';
-    String country = phoneNumbers?.isoCode.name ?? 'SA';
+    final String countryDialCode = '+${phoneNumbers?.countryCode ?? '+966'}';
+    final String country = phoneNumbers?.isoCode.name ?? 'SA';
     final result = getValidator(isAllowEmpty: false);
     phoneValidation = result?.call(initialPhoneNumberValue);
 

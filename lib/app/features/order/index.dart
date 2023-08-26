@@ -91,3 +91,5 @@ part 'package:homemakers_merchant/app/features/order/presentation/widgets/manage
 part 'package:homemakers_merchant/app/features/order/presentation/widgets/order_card_widget.dart';
 part 'package:homemakers_merchant/app/features/order/presentation/widgets/order_types_widget.dart';
 part 'package:homemakers_merchant/app/features/order/presentation/widgets/deliver/driver_assign_card_widget.dart';
+part 'package:homemakers_merchant/app/features/order/presentation/widgets/order_details/order_delivery_info_widget.dart';
+part 'package:homemakers_merchant/app/features/order/presentation/widgets/order_details/order_timeline_card_widget.dart';

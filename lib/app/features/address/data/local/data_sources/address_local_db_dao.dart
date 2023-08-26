@@ -64,7 +64,7 @@ class AddressLocalDbRepository<T extends AddressModel> implements BaseAddressBan
     final result = await tryCatch<bool>(() async {
       final value = await _address.record(uniqueId.value).get(await _db);
       if (value != null) {
-        int counter = await _address.delete(
+        await _address.delete(
           await _db,
         );
         return true;
@@ -146,8 +146,12 @@ class AddressLocalDbRepository<T extends AddressModel> implements BaseAddressBan
   }
 
   @override
-  Future<Either<RepositoryBaseFailure, AddressModel>> upsert(
-      {UniqueId? id, String? token, required AddressModel entity, bool checkIfUserLoggedIn = false}) async {
+  Future<Either<RepositoryBaseFailure, AddressModel>> upsert({
+    required AddressModel entity,
+    UniqueId? id,
+    String? token,
+    bool checkIfUserLoggedIn = false,
+  }) async {
     final result = await tryCatch<AddressModel>(() async {
       final int key = entity.addressID;
       final value = await _address.record(key).get(await _db);
