@@ -116,7 +116,7 @@ class OrderDeliveryInfoWidget extends StatelessWidget {
                     ),
                   ],
                 ),
-                const AnimatedGap(
+                /*const AnimatedGap(
                   12,
                   duration: Duration(milliseconds: 100),
                 ),
@@ -175,7 +175,7 @@ class OrderDeliveryInfoWidget extends StatelessWidget {
                       ),
                     ),
                   ],
-                ),
+                ),*/
                 const AnimatedGap(
                   12,
                   duration: Duration(milliseconds: 100),

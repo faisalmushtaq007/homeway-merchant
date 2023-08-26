@@ -30,22 +30,86 @@ class _OrderDetailPageController extends State<OrderDetailPage> {
       storeID: 1,
       storeName: 'Life Cafe',
       location: AddressLocation(),
+      orderMenuName: 'Chicken Biryani',
+      orderMenuImage:
+          'https://img.freepik.com/premium-photo/fish-biriyani-south-indian-style-fish-biriyani-arranged-traditionally-brass-vessel_527904-1690.jpg',
       menu: [
         Menu(
           quantity: 1,
           menuID: 21,
+          price: 10,
           menuName: 'Chicken Biryani',
           menuImage: 'https://img.freepik.com/premium-photo/fish-biriyani-south-indian-style-fish-biriyani-arranged-traditionally-brass-vessel_527904-1690.jpg',
+          addons: [],
+          tasteType: 'Spicy',
+          tasteLevel: 'Medium',
+          numberOfServingPerson: 2,
+          unit: '2',
+          orderPortion: const OrderPortion(
+            portionSize: 1,
+            portionUnit: 'Bowl',
+          ),
+        ),
+        Menu(
+          quantity: 1,
+          menuID: 16,
+          price: 10,
+          menuName: 'Veg Briyani',
+          menuImage:
+              'https://img.freepik.com/premium-photo/indian-vegetable-pulav-biryani-made-using-basmati-rice-served-terracotta-bowl-selective-focus_466689-55615.jpg',
+          addons: [
+            Addon(
+              addonsName: 'Salad',
+              orderPortion: const OrderPortion(
+                portionSize: 1,
+                portionUnit: 'Plate',
+              ),
+              quantity: 1,
+              addonsId: 12,
+              price: 2,
+              addonsImage:
+                  'https://img.freepik.com/free-photo/fresh-vegetables-colorful-sliced-such-as-cucumbers-red-tomatoes-onion-wooden-rustic-surface_140725-14178.jpg',
+            ),
+            Addon(
+              addonsName: 'Sweets',
+              orderPortion: const OrderPortion(
+                portionSize: 4,
+                portionUnit: 'Pcs',
+              ),
+              addonsId: 4,
+              quantity: 1,
+              price: 2,
+              addonsImage: 'https://img.freepik.com/premium-photo/gulab-jamun-indian-dessert-topped-with-pistachio_136354-1769.jpg',
+            ),
+          ],
+          tasteType: 'Pungent',
+          tasteLevel: 'Medium',
+          numberOfServingPerson: 2,
+          unit: '1',
+          orderPortion: const OrderPortion(
+            portionSize: 1,
+            portionUnit: 'Bowl',
+          ),
         ),
       ],
     ),
     orderStatus: OrderStatus.newOrder.index,
     orderType: OrderType.newOrder.index,
-    driver: Driver(),
+    driver: Driver(
+      driverID: 1,
+      driverName: 'Mr. Abdul Wahab',
+      contactNumber: '+966 559781276',
+      lat: 23.86,
+      lng: 45.27,
+      completeAddress: '12 King Fahd Rd, Al Islamiah, Jeddah, Jeddah,57513,Saudi Arabia',
+    ),
     payment: Payment(
       mode: 'COD',
       amount: 30,
       paymentID: 222,
+      deliveryAmount: 2,
+      paymentDateTime: DateTime.now().subtract(const Duration(minutes: 15)),
+      serviceAmount: 1,
     ),
   );
 
@@ -59,6 +123,7 @@ class _OrderDetailPageController extends State<OrderDetailPage> {
     scrollController = ScrollController();
     customScrollViewScrollController = ScrollController();
     activeLocale = serviceLocator<LanguageController>().targetAppLanguage.value.toString();
+    debugPrint('active locale ${activeLocale}');
   }
 
   @override
@@ -102,7 +167,7 @@ class _OrderDetailPageView extends WidgetView<OrderDetailPage, _OrderDetailPageC
         child: DoubleTapToExit(
           child: Scaffold(
             appBar: AppBar(
-              title: Text('Order Details'),
+              title: const Text('Order Details'),
               centerTitle: false,
               actions: [
                 IconButton(
@@ -155,6 +220,7 @@ class _OrderDetailPageView extends WidgetView<OrderDetailPage, _OrderDetailPageC
                   ),
                   child: CustomScrollView(
                     controller: state.customScrollViewScrollController,
+                    shrinkWrap: true,
                     slivers: [
                       SliverList(
                         delegate: SliverChildListDelegate(
@@ -221,7 +287,7 @@ class _OrderDetailPageView extends WidgetView<OrderDetailPage, _OrderDetailPageC
                                 ),
                               ),
                               horizontalTitleGap: 0,
-                              visualDensity: VisualDensity(horizontal: -4),
+                              visualDensity: const VisualDensity(horizontal: -4),
                               minLeadingWidth: 0,
                               contentPadding: EdgeInsetsDirectional.zero,
                             ),
@@ -229,27 +295,7 @@ class _OrderDetailPageView extends WidgetView<OrderDetailPage, _OrderDetailPageC
                               6,
                               duration: Duration(milliseconds: 100),
                             ),*/
-                            Directionality(
-                              textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                              child: WrapText(
-                                '${state.orderEntity.store.menu[0].menuName} ',
-                                breakWordCharacter: '-',
-                                smartSizeMode: false,
-                                asyncMode: true,
-                                minFontSize: 14,
-                                maxFontSize: 16,
-                                textStyle: context.titleMedium!.copyWith(
-                                  fontWeight: FontWeight.w600,
-                                  //color: context.colorScheme.primary,
-                                ),
-                                maxLines: 2,
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                            ),
-                            const AnimatedGap(
-                              12,
-                              duration: Duration(milliseconds: 100),
-                            ),
+
                             OrderTimeLineCardWidget(
                               key: const Key('order-details-timeline-card-widget'),
                               orderEntity: state.orderEntity,
@@ -259,7 +305,64 @@ class _OrderDetailPageView extends WidgetView<OrderDetailPage, _OrderDetailPageC
                               12,
                               duration: Duration(milliseconds: 100),
                             ),
+                            Directionality(
+                              textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                              child: WrapText(
+                                '${state.orderEntity.store.menu[0].menuName} ',
+                                breakWordCharacter: '-',
+                                smartSizeMode: false,
+                                asyncMode: true,
+                                minFontSize: 14,
+                                maxFontSize: 15,
+                                textStyle: context.titleMedium!.copyWith(
+                                  fontWeight: FontWeight.w600,
+                                  //color: context.colorScheme.primary,
+                                ),
+                                maxLines: 3,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ),
+                            const AnimatedGap(
+                              6,
+                              duration: Duration(milliseconds: 100),
+                            ),
+                            Wrap(
+                              //direction: Axis.vertical,
+                              textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                              children: [
+                                OrderMenuDetailsWidget(
+                                  key: const Key('order-details-menu-details-widget'),
+                                  orderEntity: state.orderEntity,
+                                ),
+                              ],
+                            ),
+                            const AnimatedGap(
+                              12,
+                              duration: Duration(milliseconds: 100),
+                            ),
                             OrderDeliveryInfoWidget(key: const Key('order-details-customer-info-widget'), orderEntity: state.orderEntity),
+                            const AnimatedGap(
+                              12,
+                              duration: Duration(milliseconds: 100),
+                            ),
+                            Text(
+                              'Assigned Delivery Executive',
+                              style: context.bodyMedium!.copyWith(
+                                fontWeight: FontWeight.w600,
+                              ),
+                              textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                              overflow: TextOverflow.ellipsis,
+                              softWrap: true,
+                              maxLines: 1,
+                            ),
+                            const AnimatedGap(
+                              6,
+                              duration: Duration(milliseconds: 100),
+                            ),
+                            AssignDriverWidget(
+                              key: const Key('order-details-assign-driver-widget'),
+                              orderEntity: state.orderEntity,
+                            ),
                             const AnimatedGap(
                               12,
                               duration: Duration(milliseconds: 100),

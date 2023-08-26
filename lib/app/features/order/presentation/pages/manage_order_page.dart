@@ -49,6 +49,15 @@ class _ManageOrderPageController extends State<ManageOrderPage> {
               menuName: 'Chicken Biryani',
               menuImage:
                   'https://img.freepik.com/premium-photo/fish-biriyani-south-indian-style-fish-biriyani-arranged-traditionally-brass-vessel_527904-1690.jpg',
+              addons: [],
+              tasteType: 'Spicy',
+              tasteLevel: 'Medium',
+              numberOfServingPerson: 2,
+              unit: '1',
+              orderPortion: const OrderPortion(
+                portionSize: 1,
+                portionUnit: 'Bowl',
+              ),
             ),
           ],
         ),
@@ -59,6 +68,9 @@ class _ManageOrderPageController extends State<ManageOrderPage> {
           mode: 'COD',
           amount: 30,
           paymentID: 222,
+          paymentDateTime: DateTime.now().subtract(const Duration(minutes: 15)),
+          deliveryAmount: 2,
+          serviceAmount: 2,
         ),
       ),
       OrderEntity(
@@ -80,6 +92,26 @@ class _ManageOrderPageController extends State<ManageOrderPage> {
               menuName: 'Vegetable Rice Briyani',
               menuImage:
                   'https://img.freepik.com/premium-photo/dum-handi-chicken-biryani-is-prepared-earthen-clay-pot-called-haandi-popular-indian-non-vegetarian-food_466689-52225.jpg',
+              addons: [
+                Addon(
+                  addonsName: 'Sweets',
+                  orderPortion: const OrderPortion(
+                    portionSize: 1,
+                    portionUnit: 'Medium',
+                  ),
+                  addonsId: 4,
+                  price: 2,
+                  addonsImage: 'https://img.freepik.com/premium-photo/gulab-jamun-indian-dessert-topped-with-pistachio_136354-1769.jpg',
+                ),
+              ],
+              tasteType: 'Pungent',
+              tasteLevel: 'Medium',
+              numberOfServingPerson: 2,
+              unit: '1',
+              orderPortion: const OrderPortion(
+                portionSize: 1,
+                portionUnit: 'Bowl',
+              ),
             ),
           ],
         ),
@@ -90,6 +122,9 @@ class _ManageOrderPageController extends State<ManageOrderPage> {
           mode: 'COD',
           amount: 10,
           paymentID: 101,
+          paymentDateTime: DateTime.now().subtract(const Duration(minutes: 5)),
+          deliveryAmount: 2,
+          serviceAmount: 2,
         ),
       ),
       OrderEntity(
@@ -112,6 +147,45 @@ class _ManageOrderPageController extends State<ManageOrderPage> {
               menuImage:
                   'https://img.freepik.com/premium-photo/traditional-indian-butter-chicken-murg-makhanwala-which-is-creamy-main-course-curry-recipe_466689-49661.jpg',
             ),
+            Menu(
+              quantity: 1,
+              menuID: 16,
+              price: 10,
+              menuName: 'Veg Briyani',
+              menuImage:
+                  'https://img.freepik.com/premium-photo/indian-vegetable-pulav-biryani-made-using-basmati-rice-served-terracotta-bowl-selective-focus_466689-55615.jpg',
+              addons: [
+                Addon(
+                  addonsName: 'Salad',
+                  orderPortion: const OrderPortion(
+                    portionSize: 1,
+                    portionUnit: 'Plate',
+                  ),
+                  addonsId: 12,
+                  price: 2,
+                  addonsImage:
+                      'https://img.freepik.com/free-photo/fresh-vegetables-colorful-sliced-such-as-cucumbers-red-tomatoes-onion-wooden-rustic-surface_140725-14178.jpg',
+                ),
+                Addon(
+                  addonsName: 'Sweets',
+                  orderPortion: const OrderPortion(
+                    portionSize: 1,
+                    portionUnit: 'Medium',
+                  ),
+                  addonsId: 4,
+                  price: 2,
+                  addonsImage: 'https://img.freepik.com/premium-photo/gulab-jamun-indian-dessert-topped-with-pistachio_136354-1769.jpg',
+                ),
+              ],
+              tasteType: 'Pungent',
+              tasteLevel: 'Medium',
+              numberOfServingPerson: 2,
+              unit: '1',
+              orderPortion: const OrderPortion(
+                portionSize: 1,
+                portionUnit: 'Bowl',
+              ),
+            ),
           ],
         ),
         orderStatus: OrderStatus.delivered.index,
@@ -121,6 +195,9 @@ class _ManageOrderPageController extends State<ManageOrderPage> {
           mode: 'PAID',
           amount: 22,
           paymentID: 11,
+          paymentDateTime: DateTime.now().subtract(const Duration(days: 1, hours: 12, minutes: 30)),
+          deliveryAmount: 2,
+          serviceAmount: 2,
         ),
       ),
       OrderEntity(
@@ -142,6 +219,37 @@ class _ManageOrderPageController extends State<ManageOrderPage> {
               menuName: 'Burger',
               menuImage:
                   'https://img.freepik.com/free-photo/front-view-yummy-meat-cheeseburger-with-french-fries-dark-background-dinner-burgers-snack-fast-food-sandwich-salad-dish-toast_140725-159215.jpg?',
+              addons: [
+                Addon(
+                  addonsName: 'Salad',
+                  orderPortion: const OrderPortion(
+                    portionSize: 1,
+                    portionUnit: 'Plate',
+                  ),
+                  addonsId: 12,
+                  price: 2,
+                  addonsImage:
+                      'https://img.freepik.com/free-photo/fresh-vegetables-colorful-sliced-such-as-cucumbers-red-tomatoes-onion-wooden-rustic-surface_140725-14178.jpg',
+                ),
+                Addon(
+                  addonsName: 'Sweets',
+                  orderPortion: const OrderPortion(
+                    portionSize: 1,
+                    portionUnit: 'Medium',
+                  ),
+                  addonsId: 4,
+                  price: 2,
+                  addonsImage: 'https://img.freepik.com/premium-photo/gulab-jamun-indian-dessert-topped-with-pistachio_136354-1769.jpg',
+                ),
+              ],
+              tasteType: 'Pungent',
+              tasteLevel: 'Medium',
+              numberOfServingPerson: 2,
+              unit: '1',
+              orderPortion: const OrderPortion(
+                portionSize: 1,
+                portionUnit: 'Bowl',
+              ),
             ),
           ],
         ),
@@ -152,6 +260,9 @@ class _ManageOrderPageController extends State<ManageOrderPage> {
           mode: 'CANCEL',
           amount: 10,
           paymentID: 61,
+          paymentDateTime: DateTime.now().subtract(const Duration(minutes: 30)),
+          deliveryAmount: 2,
+          serviceAmount: 2,
         ),
       ),
       OrderEntity(
@@ -172,6 +283,37 @@ class _ManageOrderPageController extends State<ManageOrderPage> {
               menuID: 21,
               menuName: 'Cheese Pizza',
               menuImage: 'https://img.freepik.com/free-photo/crispy-mixed-pizza-with-olives-sausage_140725-3095.jpg',
+              addons: [
+                Addon(
+                  addonsName: 'Salad',
+                  orderPortion: const OrderPortion(
+                    portionSize: 1,
+                    portionUnit: 'Plate',
+                  ),
+                  addonsId: 12,
+                  price: 2,
+                  addonsImage:
+                      'https://img.freepik.com/free-photo/fresh-vegetables-colorful-sliced-such-as-cucumbers-red-tomatoes-onion-wooden-rustic-surface_140725-14178.jpg',
+                ),
+                Addon(
+                  addonsName: 'Sweets',
+                  orderPortion: const OrderPortion(
+                    portionSize: 1,
+                    portionUnit: 'Medium',
+                  ),
+                  addonsId: 4,
+                  price: 2,
+                  addonsImage: 'https://img.freepik.com/premium-photo/gulab-jamun-indian-dessert-topped-with-pistachio_136354-1769.jpg',
+                ),
+              ],
+              tasteType: 'Pungent',
+              tasteLevel: 'Medium',
+              numberOfServingPerson: 2,
+              unit: '1',
+              orderPortion: const OrderPortion(
+                portionSize: 1,
+                portionUnit: 'Bowl',
+              ),
             ),
           ],
         ),
@@ -189,12 +331,15 @@ class _ManageOrderPageController extends State<ManageOrderPage> {
           mode: 'PAID',
           amount: 15,
           paymentID: 897,
+          paymentDateTime: DateTime.now().subtract(const Duration(hours: 1)),
+          deliveryAmount: 2,
+          serviceAmount: 2,
         ),
       ),
       OrderEntity(
-        orderID: 8,
-        orderDateTime: DateTime.now().subtract(const Duration(hours: 1)),
-        orderDeliveryDateTime: DateTime.now().subtract(const Duration(hours: 1, minutes: 15)),
+        orderID: 9,
+        orderDateTime: DateTime.now().subtract(const Duration(hours: 2)),
+        orderDeliveryDateTime: DateTime.now().subtract(const Duration(hours: 2, minutes: 30)),
         userInfo: UserInfo(
           userName: 'Ashutosh',
           deliveryAddress: DeliveryAddress(),
@@ -209,6 +354,37 @@ class _ManageOrderPageController extends State<ManageOrderPage> {
               menuID: 21,
               menuName: 'Cheese Pizza',
               menuImage: 'https://img.freepik.com/free-photo/crispy-mixed-pizza-with-olives-sausage_140725-3095.jpg',
+              addons: [
+                Addon(
+                  addonsName: 'Salad',
+                  orderPortion: const OrderPortion(
+                    portionSize: 1,
+                    portionUnit: 'Plate',
+                  ),
+                  addonsId: 12,
+                  price: 2,
+                  addonsImage:
+                      'https://img.freepik.com/free-photo/fresh-vegetables-colorful-sliced-such-as-cucumbers-red-tomatoes-onion-wooden-rustic-surface_140725-14178.jpg',
+                ),
+                Addon(
+                  addonsName: 'Sweets',
+                  orderPortion: const OrderPortion(
+                    portionSize: 1,
+                    portionUnit: 'Medium',
+                  ),
+                  addonsId: 4,
+                  price: 2,
+                  addonsImage: 'https://img.freepik.com/premium-photo/gulab-jamun-indian-dessert-topped-with-pistachio_136354-1769.jpg',
+                ),
+              ],
+              tasteType: 'Pungent',
+              tasteLevel: 'Medium',
+              numberOfServingPerson: 2,
+              unit: '1',
+              orderPortion: const OrderPortion(
+                portionSize: 1,
+                portionUnit: 'Bowl',
+              ),
             ),
           ],
         ),
@@ -226,6 +402,9 @@ class _ManageOrderPageController extends State<ManageOrderPage> {
           mode: 'COD',
           amount: 23.0,
           paymentID: 347,
+          paymentDateTime: DateTime.now().subtract(const Duration(hours: 2)),
+          deliveryAmount: 2,
+          serviceAmount: 2,
         ),
       ),
     ];

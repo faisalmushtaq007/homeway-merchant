@@ -70,7 +70,9 @@ class _DashboardRecentOrdersController extends State<DashboardRecentOrders> {
           orderStatus: OrderStatus.newOrder.index,
           orderType: OrderType.recent.index,
           driver: Driver(),
-          payment: Payment(),
+          payment: Payment(
+            paymentDateTime: DateTime.now(),
+          ),
         ),
         OrderEntity(
           orderID: 2,
@@ -97,7 +99,9 @@ class _DashboardRecentOrdersController extends State<DashboardRecentOrders> {
           orderStatus: OrderStatus.newOrder.index,
           orderType: OrderType.recent.index,
           driver: Driver(),
-          payment: Payment(),
+          payment: Payment(
+            paymentDateTime: DateTime.now().subtract(Duration(minutes: 15)),
+          ),
         ),
         OrderEntity(
           orderID: 3,
@@ -124,7 +128,9 @@ class _DashboardRecentOrdersController extends State<DashboardRecentOrders> {
           orderStatus: OrderStatus.newOrder.index,
           orderType: OrderType.recent.index,
           driver: Driver(),
-          payment: Payment(),
+          payment: Payment(
+            paymentDateTime: DateTime.now().add(Duration(hours: 1, minutes: 15)),
+          ),
         ),
         OrderEntity(
           orderID: 4,
@@ -151,7 +157,9 @@ class _DashboardRecentOrdersController extends State<DashboardRecentOrders> {
           orderStatus: OrderStatus.newOrder.index,
           orderType: OrderType.recent.index,
           driver: Driver(),
-          payment: Payment(),
+          payment: Payment(
+            paymentDateTime: DateTime.now().subtract(Duration(minutes: 45)),
+          ),
         ),
       ];
 

@@ -66,7 +66,7 @@ class _DriverAssignCardWidgetView extends WidgetView<DriverAssignCardWidget, _Dr
                     width: context.width / 10,
                     loaderBuilder: const CircularProgressIndicator(),
                     matchTextDirection: true,
-                    placeholderText: widget.orderEntity.store.menu[0].menuName,
+                    placeholderText: widget.orderEntity.driver.driverName,
                     placeholderTextStyle: context.labelLarge!.copyWith(
                       color: Colors.white,
                       fontSize: 16,

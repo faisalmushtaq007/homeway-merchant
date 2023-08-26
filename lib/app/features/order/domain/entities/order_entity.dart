@@ -3,16 +3,16 @@ part of 'package:homemakers_merchant/app/features/order/index.dart';
 class OrderEntity extends INetworkModel<OrderEntity> with AppEquatable {
   OrderEntity({
     required this.orderDateTime,
-    this.orderType = 0,
     required this.userInfo,
-    this.hasDriverAssigned = false,
     required this.driver,
-    this.orderID = -1,
-    this.orderStatus = 0,
     required this.payment,
     required this.store,
-    this.hasDriverReached = false,
     required this.orderDeliveryDateTime,
+    this.orderType = 0,
+    this.hasDriverAssigned = false,
+    this.orderID = -1,
+    this.orderStatus = 0,
+    this.hasDriverReached = false,
   });
 
   factory OrderEntity.fromMap(Map<String, dynamic> json) => OrderEntity(
@@ -23,7 +23,7 @@ class OrderEntity extends INetworkModel<OrderEntity> with AppEquatable {
         driver: (json['driver'] != null) ? Driver.fromJson(json['driver']) : Driver(),
         orderID: json['orderID'] ?? -1,
         orderStatus: json['orderStatus'] ?? 0,
-        payment: (json['payment'] != null) ? Payment.fromJson(json['payment']) : Payment(),
+        payment: Payment.fromJson(json['payment']),
         store: (json['store'] != null) ? Store.fromJson(json['store']) : Store(location: AddressLocation()),
         hasDriverReached: json['hasDriverReached'] ?? false,
         orderDeliveryDateTime:
@@ -155,50 +155,72 @@ class Payment {
     this.amount = 0.0,
     this.paymentID = -1,
     this.currency = 'SAR',
-    this.paymentDateTime = '',
+    required this.paymentDateTime,
+    this.deliveryAmount = 0.0,
+    this.discountAmount = 0.0,
+    this.serviceAmount = 0.0,
+    this.tax = 0.0,
   });
 
   factory Payment.fromJson(Map<String, dynamic> json) => Payment(
-        mode: json['mode'],
-        amount: json['amount'],
-        paymentID: json['paymentID'],
-        currency: json['currency'],
-        paymentDateTime: json['paymentDateTime'],
+        mode: json['mode'] ?? 'COD',
+        amount: json['amount'] ?? 0.0,
+        paymentID: json['paymentID'] ?? -1,
+        currency: json['currency'] ?? 'SAR',
+        paymentDateTime: (json['paymentDateTime'] != null) ? Timestamp.fromMillisecondsSinceEpoch(json['paymentDateTime']).toDateTime() : DateTime.now(),
+        deliveryAmount: json['deliveryAmount'] ?? 0.0,
+        discountAmount: json['discountAmount'],
+        serviceAmount: json['serviceAmount'] ?? 0.0,
+        tax: json['tax'] ?? 0.0,
       );
 
   final String mode;
   final double amount;
   final int paymentID;
   final String currency;
-  final String paymentDateTime;
+  final DateTime paymentDateTime;
+  final double deliveryAmount;
+  final double discountAmount;
+  final double serviceAmount;
+  final double tax;
 
   Map<String, dynamic> toJson() => {
         'mode': mode,
         'amount': amount,
         'paymentID': paymentID,
         'currency': currency,
-        'paymentDateTime': paymentDateTime,
+        'deliveryAmount': deliveryAmount,
+        'discountAmount': discountAmount,
+        'serviceAmount': serviceAmount,
+        'tax': tax,
+        'paymentDateTime': Timestamp.fromDateTime(paymentDateTime).millisecondsSinceEpoch,
       };
 }
 
 class Store {
   Store({
-    this.storeName = '',
     required this.location,
+    this.storeName = '',
     this.storeID = -1,
     this.menu = const [],
+    this.orderMenuName = '',
+    this.orderMenuImage = '',
   });
 
   factory Store.fromJson(Map<String, dynamic> json) => Store(
         storeName: json['storeName'] ?? '',
         location: (json['location'] != null) ? AddressLocation.fromJson(json['location']) : AddressLocation(),
         storeID: json['storeID'] ?? -1,
+        orderMenuName: json['orderMenuName'] ?? '',
+        orderMenuImage: json['orderMenuImage'] ?? '',
         menu: (json['menu'] != null) ? List<Menu>.from(json['menu'].map((x) => Menu.fromJson(x))) : const <Menu>[],
       );
 
   final String storeName;
   final AddressLocation location;
   final int storeID;
+  final String orderMenuName;
+  final String orderMenuImage;
   final List<Menu> menu;
 
   Map<String, dynamic> toJson() => {
@@ -206,6 +228,8 @@ class Store {
         'location': location.toJson(),
         'storeID': storeID,
         'menu': List<dynamic>.from(menu.map((x) => x.toJson())),
+        'orderMenuImage': orderMenuImage,
+        'orderMenuName': orderMenuName,
       };
 }
 
@@ -243,6 +267,10 @@ class Menu {
     this.tasteType = '',
     this.menuCategory = '',
     this.menuSubCategory = '',
+    this.orderPortion,
+    this.price = 0.0,
+    this.discountPrice = 0.0,
+    this.currency = 'SAR',
   });
 
   factory Menu.fromJson(Map<String, dynamic> json) => Menu(
@@ -258,6 +286,10 @@ class Menu {
         tasteType: json['tasteType'] ?? '',
         menuCategory: json['menuCategory'] ?? '',
         menuSubCategory: json['menuSubCategory'] ?? '',
+        orderPortion: json['orderPortion'] != null ? OrderPortion.fromJson(json['orderPortion']) : const OrderPortion(),
+        price: json['price'] ?? 0.0,
+        discountPrice: json['discountPrice'] ?? 0.0,
+        currency: json['currency'] ?? 'SAR',
       );
 
   final int quantity;
@@ -272,6 +304,10 @@ class Menu {
   final String tasteType;
   final String menuCategory;
   final String menuSubCategory;
+  final OrderPortion? orderPortion;
+  final double price;
+  final double discountPrice;
+  final String currency;
 
   Map<String, dynamic> toJson() => {
         'quantity': quantity,
@@ -286,41 +322,85 @@ class Menu {
         'tasteType': tasteType,
         'menuCategory': menuCategory,
         'menuSubCategory': menuSubCategory,
+        'orderPortion': orderPortion?.toJson() ?? <String, dynamic>{},
+        'price': price,
+        'discountPrice': discountPrice,
+        'currency': currency,
       };
+}
+
+class OrderPortion {
+  const OrderPortion({
+    this.portionSize = 0,
+    this.portionUnit = '',
+  });
+
+  factory OrderPortion.fromJson(Map<String, dynamic> map) {
+    return OrderPortion(
+      portionSize: map['portionSize'] as double,
+      portionUnit: map['portionUnit'] as String,
+    );
+  }
+
+  final double portionSize;
+  final String portionUnit;
+
+  Map<String, dynamic> toJson() {
+    return {
+      'portionSize': this.portionSize,
+      'portionUnit': this.portionUnit,
+    };
+  }
 }
 
 class Addon {
   Addon({
     this.addonsImage = '',
-    this.qunatity = 1.0,
+    this.quantity = 1.0,
     this.addonsName = '',
     this.addonsId = -1,
+    this.orderPortion,
+    this.price = 0.0,
+    this.discountPrice = 0.0,
+    this.currency = 'SAR',
   });
 
   factory Addon.fromJson(Map<String, dynamic> json) => Addon(
         addonsImage: json['addonsImage'] ?? '',
-        qunatity: json['qunatity'] ?? 1.0,
+        quantity: json['quantity'] ?? 1.0,
         addonsName: json['addonsName'] ?? '',
         addonsId: json['addonsID'] ?? -1,
+        orderPortion: json['orderPortion'] != null ? OrderPortion.fromJson(json['orderPortion']) : OrderPortion(),
+        price: json['price'] ?? 0.0,
+        discountPrice: json['discountPrice'] ?? 0.0,
+        currency: json['currency'] ?? 'SAR',
       );
 
   final String addonsImage;
-  final double qunatity;
+  final double quantity;
   final String addonsName;
   final int addonsId;
+  final OrderPortion? orderPortion;
+  final double price;
+  final double discountPrice;
+  final String currency;
 
   Map<String, dynamic> toJson() => {
         'addonsImage': addonsImage,
-        'qunatity': qunatity,
+        'quantity': quantity,
         'addonsName': addonsName,
         'addonsID': addonsId,
+        'orderPortion': orderPortion?.toJson() ?? <String, dynamic>{},
+        'price': price,
+        'discountPrice': discountPrice,
+        'currency': currency,
       };
 }
 
 class UserInfo {
   UserInfo({
-    this.lng = 0.0,
     required this.deliveryAddress,
+    this.lng = 0.0,
     this.contactNumber = '',
     this.userName = '',
     this.userId = -1,
