@@ -11,7 +11,15 @@ class AssignDriverWidget extends StatelessWidget {
       key: ValueKey(orderEntity.driver.driverID),
       margin: EdgeInsetsDirectional.only(bottom: 8),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        mainAxisAlignment: MainAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
+        textDirection: serviceLocator<LanguageController>().targetTextDirection,
         children: [
+          const AnimatedGap(
+            8,
+            duration: Duration(milliseconds: 100),
+          ),
           ListTile(
             contentPadding: EdgeInsetsDirectional.symmetric(horizontal: 8),
             horizontalTitleGap: 8,
@@ -54,6 +62,7 @@ class AssignDriverWidget extends StatelessWidget {
                 mainAxisSize: MainAxisSize.min,
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.center,
+                textDirection: serviceLocator<LanguageController>().targetTextDirection,
                 children: [
                   IconButton(
                       icon: Icon(
@@ -77,47 +86,103 @@ class AssignDriverWidget extends StatelessWidget {
               ),
             ),
           ),
-          Row(
-            children: [
-              Text(
-                'On the way',
-                style: context.bodyMedium!.copyWith(
-                  fontWeight: FontWeight.w600,
+          Divider(),
+          Padding(
+            padding: EdgeInsetsDirectional.only(start: 12, end: 12),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              textDirection: serviceLocator<LanguageController>().targetTextDirection,
+              children: [
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                  children: [
+                    Icon(
+                      Icons.delivery_dining,
+                      color: context.colorScheme.primary,
+                      textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                      size: 28,
+                    ),
+                  ],
                 ),
-                textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                overflow: TextOverflow.ellipsis,
-                softWrap: true,
-                maxLines: 1,
-              ),
-              const AnimatedGap(
-                6,
-                duration: Duration(milliseconds: 100),
-              ),
-              Text(
-                '4 KM',
-                style: context.bodyMedium!.copyWith(
-                  fontWeight: FontWeight.w600,
+                const AnimatedGap(
+                  6,
+                  duration: Duration(milliseconds: 100),
                 ),
-                textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                overflow: TextOverflow.ellipsis,
-                softWrap: true,
-                maxLines: 1,
-              ),
-              const AnimatedGap(
-                6,
-                duration: Duration(milliseconds: 100),
-              ),
-              Text(
-                '15 Min',
-                style: context.bodyMedium!.copyWith(
-                  fontWeight: FontWeight.w600,
+                Container(
+                  height: 40,
+                  width: 1,
+                  color: Color.fromRGBO(165, 166, 168, 0.5),
                 ),
-                textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                overflow: TextOverflow.ellipsis,
-                softWrap: true,
-                maxLines: 1,
-              ),
-            ],
+                const AnimatedGap(
+                  6,
+                  duration: Duration(milliseconds: 100),
+                ),
+                Flexible(
+                  flex: 2,
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                    children: [
+                      Row(
+                        mainAxisSize: MainAxisSize.min,
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                        children: [
+                          Text(
+                            'On the way',
+                            style: context.bodyMedium!.copyWith(
+                              fontWeight: FontWeight.w500,
+                            ),
+                            textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                            overflow: TextOverflow.ellipsis,
+                            softWrap: true,
+                            maxLines: 1,
+                          ),
+                          const AnimatedGap(
+                            6,
+                            duration: Duration(milliseconds: 100),
+                          ),
+                          Text(
+                            '15 Min',
+                            style: context.bodyMedium!.copyWith(
+                              fontWeight: FontWeight.w600,
+                            ),
+                            textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                            overflow: TextOverflow.ellipsis,
+                            softWrap: true,
+                            maxLines: 1,
+                          ),
+                        ],
+                      ),
+                      Wrap(
+                        children: [
+                          Text(
+                            'Building & Construction Exhibition, Riyadh, 300414, Saudi Arabia',
+                            style: context.bodyMedium!.copyWith(
+                              fontWeight: FontWeight.w500,
+                            ),
+                            textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                            overflow: TextOverflow.ellipsis,
+                            softWrap: true,
+                            maxLines: 2,
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+          const AnimatedGap(
+            12,
+            duration: Duration(milliseconds: 100),
           ),
         ],
       ),

@@ -367,6 +367,10 @@ class _OrderDetailPageView extends WidgetView<OrderDetailPage, _OrderDetailPageC
                               12,
                               duration: Duration(milliseconds: 100),
                             ),
+                            OrderPaymentSummary(
+                              key: const Key('order-details-payment-summary-widget'),
+                              orderEntity: state.orderEntity,
+                            ),
                           ],
                         ),
                       ),

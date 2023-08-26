@@ -39,6 +39,7 @@ import 'package:homemakers_merchant/shared/widgets/universal/group_list_view/flu
 import 'package:homemakers_merchant/shared/widgets/universal/image_loader/image_helper.dart';
 import 'package:homemakers_merchant/shared/widgets/universal/infinity_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:homemakers_merchant/shared/widgets/universal/nil/src/nil.dart';
+import 'package:homemakers_merchant/shared/widgets/universal/row_item/row_item.dart';
 import 'package:homemakers_merchant/shared/widgets/universal/wrap_text/wrap_text.dart';
 import 'package:homemakers_merchant/theme/flex_extensions.dart';
 import 'package:homemakers_merchant/utils/app_equatable/app_equatable.dart';
@@ -97,3 +98,4 @@ part 'package:homemakers_merchant/app/features/order/presentation/widgets/order_
 part 'package:homemakers_merchant/app/features/order/presentation/widgets/order_details/order_timeline_card_widget.dart';
 part 'package:homemakers_merchant/app/features/order/presentation/widgets/order_details/order_menu_details_widget.dart';
 part 'package:homemakers_merchant/app/features/order/presentation/widgets/order_details/order_assign_driver_widget.dart';
+part 'package:homemakers_merchant/app/features/order/presentation/widgets/order_details/order_payment_summary_widget.dart';
