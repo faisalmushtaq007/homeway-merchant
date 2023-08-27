@@ -124,3 +124,58 @@ enum OrderType {
     return name;
   }
 }
+
+enum TrackingTitle {
+  DRIVER_ASSIGNED(),
+  ORDER_ACCEPT(),
+  ORDER_ARRIVED(),
+  ORDER_CANCEL_BY_SYSTEM(),
+  ORDER_CANCEL_BY_USER(),
+  ORDER_CANCEL_BY_YOU(),
+  ORDER_DELAY(),
+  ORDER_DELIVERY_ON_THE_WAY(),
+  ORDER_ONPROCESSING(),
+  ORDER_PICKUP_BY_DRIVER(),
+  ORDER_REACHED_TO_DESTINATION(),
+  ORDER_READY(),
+  ORDER_RECEIVED_BY_USER(),
+  PAYMENT_DECLINE(),
+  PAYMENT_RECEIVED(),
+  SCHEDULE_ORDER(),
+  ;
+
+  const TrackingTitle({this.title = '',this.groupTitle='',});
+  final String title;
+  final String groupTitle;
+}
+
+final tackingTitleValues = EnumValues({
+  "'driver_assigned'": TrackingTitle.DRIVER_ASSIGNED,
+  "'order_accept'": TrackingTitle.ORDER_ACCEPT,
+  "'order_arrived'": TrackingTitle.ORDER_ARRIVED,
+  "'order_cancel_by_system'": TrackingTitle.ORDER_CANCEL_BY_SYSTEM,
+  "'order_cancel_by_user'": TrackingTitle.ORDER_CANCEL_BY_USER,
+  "'order_cancel_by_you'": TrackingTitle.ORDER_CANCEL_BY_YOU,
+  "'order_delay'": TrackingTitle.ORDER_DELAY,
+  "'order_delivery_on_the_way'": TrackingTitle.ORDER_DELIVERY_ON_THE_WAY,
+  "'order_onprocessing'": TrackingTitle.ORDER_ONPROCESSING,
+  "'order_pickup_by_driver'": TrackingTitle.ORDER_PICKUP_BY_DRIVER,
+  "'order_reached_to_destination'": TrackingTitle.ORDER_REACHED_TO_DESTINATION,
+  "'order_ready'": TrackingTitle.ORDER_READY,
+  "'order_received_by_user'": TrackingTitle.ORDER_RECEIVED_BY_USER,
+  "'payment_decline'": TrackingTitle.PAYMENT_DECLINE,
+  "'payment_received'": TrackingTitle.PAYMENT_RECEIVED,
+  "'schedule_order'": TrackingTitle.SCHEDULE_ORDER
+});
+
+class EnumValues<T> {
+  Map<String, T> map;
+  late Map<T, String> reverseMap;
+
+  EnumValues(this.map);
+
+  Map<T, String> get reverse {
+    reverseMap = map.map((k, v) => MapEntry(v, k));
+    return reverseMap;
+  }
+}

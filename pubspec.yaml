@@ -236,6 +236,7 @@ flutter:
   uses-material-design: true
   generate: true
   assets:
+    - assets/
     - assets/image/
 #    - assets/image/0.5x/
 #    - assets/image/0.75x/

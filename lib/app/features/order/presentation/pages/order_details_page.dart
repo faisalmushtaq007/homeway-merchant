@@ -97,14 +97,15 @@ class _OrderDetailPageController extends State<OrderDetailPage> {
     orderStatus: OrderStatus.newOrder.index,
     orderType: OrderType.newOrder.index,
     driver: DeliveryDriver(
-        driverID: 1,
-        driverName: 'Mr. Abdul Wahab',
-        driverContactNumber: '+966 559781276',
-        driverAddress: AddressBean(
-          latitude: 23.86,
-          longitude: 45.27,
-          displayAddressName: '12 King Fahd Rd, Al Islamiah, Jeddah, Jeddah,57513,Saudi Arabia',
-        )),
+      driverID: 1,
+      driverName: 'Mr. Abdul Wahab',
+      driverContactNumber: '+966 559781276',
+      driverAddress: AddressBean(
+        latitude: 23.86,
+        longitude: 45.27,
+        displayAddressName: '12 King Fahd Rd, Al Islamiah, Jeddah, Jeddah,57513,Saudi Arabia',
+      ),
+    ),
     payment: Payment(
       mode: 'COD',
       amount: 30,
@@ -113,6 +114,7 @@ class _OrderDetailPageController extends State<OrderDetailPage> {
       paymentDateTime: DateTime.now().subtract(const Duration(minutes: 15)),
       serviceAmount: 1,
     ),
+    trackingInfo: [],
   );
 
   String activeLocale = 'en_US';
@@ -127,6 +129,15 @@ class _OrderDetailPageController extends State<OrderDetailPage> {
     activeLocale = serviceLocator<LanguageController>().targetAppLanguage.value.toString();
     debugPrint('active locale ${activeLocale}');
     subTotal = 0.0;
+    readAndWriteTracking();
+  }
+
+  Future<void> readAndWriteTracking() async {
+    final data = await readTrackingData();
+    orderEntity.copyWith(
+      trackingInfo: data,
+    );
+    setState(() {});
   }
 
   @override

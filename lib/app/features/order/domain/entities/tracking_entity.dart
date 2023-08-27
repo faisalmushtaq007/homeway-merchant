@@ -35,7 +35,7 @@ class Tracking {
     this.trackingId,
     this.trackingNumber,
     this.eventHistory,
-    this.tackingTitle,
+    this.trackingTitle,
     this.status,
   });
 
@@ -43,19 +43,23 @@ class Tracking {
       : trackingId = json['tracking_id'] as String?,
         trackingNumber = json['tracking_number'] as String?,
         eventHistory = (json['event_history'] as List?)?.map((dynamic e) => EventHistory.fromJson(e as Map<String, dynamic>)).toList(),
-        tackingTitle = json['tacking_title'] as String?,
+        //tackingTitle = json['tacking_title'] as String?,
+        //trackingTitle=tackingTitleValues.map[json['tracking_title']] as TrackingTitle?,
+        trackingTitle = (json['tracking_title'] != null) ? TrackingTitle.values.byName(json['tracking_title']) : TrackingTitle.ORDER_ARRIVED,
         status = json['status'] as String?;
   final String? trackingId;
   final String? trackingNumber;
   final List<EventHistory>? eventHistory;
-  final String? tackingTitle;
+  final TrackingTitle? trackingTitle;
   final String? status;
 
   Map<String, dynamic> toJson() => {
         'tracking_id': trackingId,
         'tracking_number': trackingNumber,
         'event_history': eventHistory?.map((e) => e.toJson()).toList(),
-        'tacking_title': tackingTitle,
+        //'tacking_title': tackingTitle,
+        //'tracking_title': tackingTitleValues.reverse[trackingTitle],
+        'tracking_title': trackingTitle?.name ?? TrackingTitle.ORDER_ARRIVED.name,
         'status': status,
       };
 }
@@ -71,13 +75,13 @@ class EventHistory {
   });
 
   EventHistory.fromJson(Map<String, dynamic> json)
-      : eventCode = json['event_code'] as String?,
+      : eventCode = (json['event_code'] != null) ? TrackingTitle.values.byName(json['event_code']) : TrackingTitle.ORDER_ARRIVED,
         eventTime = json['event_time'] as int?,
         status = json['status'] as int?,
         eventMessage = json['event_message'] as String?,
         eventLocation = (json['event_location'] as Map<String, dynamic>?) != null ? AddressBean.fromJson(json['event_location'] as Map<String, dynamic>) : null,
         eventSummary = json['event_summary'] as String?;
-  final String? eventCode;
+  final TrackingTitle? eventCode;
   final int? eventTime;
   final int? status;
   final String? eventMessage;
@@ -85,7 +89,7 @@ class EventHistory {
   final String? eventSummary;
 
   Map<String, dynamic> toJson() => {
-        'event_code': eventCode,
+        'event_code': eventCode?.name ?? TrackingTitle.ORDER_ARRIVED.name,
         'event_time': eventTime,
         'status': status,
         'event_message': eventMessage,

@@ -13,6 +13,7 @@ class OrderEntity extends INetworkModel<OrderEntity> with AppEquatable {
     this.orderID = -1,
     this.orderStatus = 0,
     this.hasDriverReached = false,
+    this.trackingInfo = const [],
   });
 
   factory OrderEntity.fromMap(Map<String, dynamic> json) => OrderEntity(
@@ -28,6 +29,8 @@ class OrderEntity extends INetworkModel<OrderEntity> with AppEquatable {
         hasDriverReached: json['hasDriverReached'] ?? false,
         orderDeliveryDateTime:
             (json['orderDeliveryDateTime'] != null) ? Timestamp.fromMillisecondsSinceEpoch(json['orderDeliveryDateTime']).toDateTime() : DateTime.now(),
+        trackingInfo:
+            (json['trackingInfo'] != null) ? List<TrackingInfo>.from(json['trackingInfo'].map((x) => TrackingInfo.fromJson(x))) : const <TrackingInfo>[],
       );
 
   final DateTime orderDateTime;
@@ -41,6 +44,7 @@ class OrderEntity extends INetworkModel<OrderEntity> with AppEquatable {
   final Store store;
   final bool hasDriverReached;
   final DateTime orderDeliveryDateTime;
+  final List<TrackingInfo> trackingInfo;
 
   Map<String, dynamic> toMap() => {
         'orderDateTime': Timestamp.fromDateTime(orderDateTime).millisecondsSinceEpoch,
@@ -54,6 +58,7 @@ class OrderEntity extends INetworkModel<OrderEntity> with AppEquatable {
         'store': store.toJson(),
         'hasDriverReached': hasDriverReached,
         'orderDeliveryDateTime': Timestamp.fromDateTime(orderDeliveryDateTime).millisecondsSinceEpoch,
+        'trackingInfo': List<dynamic>.from(trackingInfo.map((x) => x.toJson())),
       };
 
   OrderEntity copyWith({
@@ -68,6 +73,7 @@ class OrderEntity extends INetworkModel<OrderEntity> with AppEquatable {
     Store? store,
     bool? hasDriverReached,
     DateTime? orderDeliveryDateTime,
+    List<TrackingInfo>? trackingInfo,
   }) {
     return OrderEntity(
       orderDateTime: orderDateTime ?? this.orderDateTime,
@@ -81,6 +87,7 @@ class OrderEntity extends INetworkModel<OrderEntity> with AppEquatable {
       store: store ?? this.store,
       hasDriverReached: hasDriverReached ?? this.hasDriverReached,
       orderDeliveryDateTime: orderDeliveryDateTime ?? this.orderDeliveryDateTime,
+      trackingInfo: trackingInfo ?? this.trackingInfo,
     );
   }
 
