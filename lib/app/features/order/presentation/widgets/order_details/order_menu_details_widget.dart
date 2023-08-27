@@ -1,9 +1,27 @@
 part of 'package:homemakers_merchant/app/features/order/index.dart';
 
-class OrderMenuDetailsWidget extends StatelessWidget {
-  const OrderMenuDetailsWidget({required this.orderEntity, super.key});
+class OrderMenuDetailsWidget extends StatefulWidget {
+  const OrderMenuDetailsWidget({required this.orderEntity, required this.subTotalOnChange, super.key});
 
   final OrderEntity orderEntity;
+  final ValueChanged<double> subTotalOnChange;
+
+  @override
+  State<OrderMenuDetailsWidget> createState() => _OrderMenuDetailsWidgetState();
+}
+
+class _OrderMenuDetailsWidgetState extends State<OrderMenuDetailsWidget> {
+  double subTotal = 0;
+  @override
+  void initState() {
+    super.initState();
+    subTotal = 0.0;
+  }
+
+  void calculateSubTotal(double amount) {
+    subTotal += amount;
+    widget.subTotalOnChange(subTotal);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -13,17 +31,18 @@ class OrderMenuDetailsWidget extends StatelessWidget {
         physics: const NeverScrollableScrollPhysics(),
         slivers: [
           GroupSliverListView(
-            sectionCount: orderEntity.store.menu.length,
+            sectionCount: widget.orderEntity.store.menu.length,
             itemInSectionCount: (int section) {
-              return orderEntity.store.menu[section].addons.length;
+              return widget.orderEntity.store.menu[section].addons.length;
             },
             headerForSectionBuilder: (int section) {
-              final Menu menu = orderEntity.store.menu[section];
+              final Menu menu = widget.orderEntity.store.menu[section];
+              calculateSubTotal(menu.price);
               return Card(
-                margin: EdgeInsetsDirectional.only(bottom: 8),
+                margin: const EdgeInsetsDirectional.only(bottom: 8),
                 key: ValueKey(section),
                 child: ListTile(
-                  contentPadding: EdgeInsetsDirectional.symmetric(horizontal: 8),
+                  contentPadding: const EdgeInsetsDirectional.symmetric(horizontal: 8),
                   horizontalTitleGap: 8,
                   leading: AspectRatio(
                     aspectRatio: 1 / 0.9,
@@ -120,9 +139,9 @@ class OrderMenuDetailsWidget extends StatelessWidget {
                             mainAxisSize: MainAxisSize.min,
                             children: [
                               Text(
-                                'Portion',
+                                'Portion:',
                                 style: context.labelMedium!.copyWith(
-                                  fontWeight: FontWeight.w600,
+                                  fontWeight: FontWeight.w500,
                                   fontSize: 14,
                                 ),
                                 textDirection: serviceLocator<LanguageController>().targetTextDirection,
@@ -130,11 +149,11 @@ class OrderMenuDetailsWidget extends StatelessWidget {
                                 softWrap: true,
                                 maxLines: 1,
                               ),
-                              const AnimatedGap(8, duration: Duration(milliseconds: 100)),
+                              const AnimatedGap(2, duration: Duration(milliseconds: 100)),
                               Text(
                                 menu.orderPortion?.portionSize.toString() ?? '',
                                 style: context.labelMedium!.copyWith(
-                                  fontWeight: FontWeight.w600,
+                                  fontWeight: FontWeight.w500,
                                   fontSize: 14,
                                 ),
                                 textDirection: serviceLocator<LanguageController>().targetTextDirection,
@@ -146,7 +165,7 @@ class OrderMenuDetailsWidget extends StatelessWidget {
                               Text(
                                 menu.orderPortion?.portionUnit.toString() ?? '',
                                 style: context.labelMedium!.copyWith(
-                                  fontWeight: FontWeight.w600,
+                                  fontWeight: FontWeight.w500,
                                   fontSize: 14,
                                 ),
                                 textDirection: serviceLocator<LanguageController>().targetTextDirection,
@@ -205,7 +224,7 @@ class OrderMenuDetailsWidget extends StatelessWidget {
                           textDirection: serviceLocator<LanguageController>().targetTextDirection,
                           children: [
                             Text(
-                              '${menu.price} SAR',
+                              '${menu.price} ${menu.currency}',
                               style: context.bodyMedium!.copyWith(
                                 fontWeight: FontWeight.w600,
                               ),
@@ -223,13 +242,14 @@ class OrderMenuDetailsWidget extends StatelessWidget {
               );
             },
             itemInSectionBuilder: (BuildContext context, IndexPath indexPath) {
-              final Addon addon = orderEntity.store.menu[indexPath.section].addons[indexPath.index];
+              final Addon addon = widget.orderEntity.store.menu[indexPath.section].addons[indexPath.index];
+              calculateSubTotal(addon.price);
               return Card(
                 key: ValueKey(indexPath.index),
-                margin: EdgeInsetsDirectional.only(bottom: 8),
+                margin: const EdgeInsetsDirectional.only(bottom: 8),
                 child: ListTile(
                   horizontalTitleGap: 8,
-                  contentPadding: EdgeInsetsDirectional.symmetric(horizontal: 8),
+                  contentPadding: const EdgeInsetsDirectional.symmetric(horizontal: 8),
                   leading: AspectRatio(
                     aspectRatio: 1 / 0.9,
                     child: Card(
@@ -282,9 +302,9 @@ class OrderMenuDetailsWidget extends StatelessWidget {
                             mainAxisSize: MainAxisSize.min,
                             children: [
                               Text(
-                                'Portion',
+                                'Portion:',
                                 style: context.labelMedium!.copyWith(
-                                  fontWeight: FontWeight.w600,
+                                  fontWeight: FontWeight.w500,
                                   fontSize: 14,
                                 ),
                                 textDirection: serviceLocator<LanguageController>().targetTextDirection,
@@ -292,11 +312,11 @@ class OrderMenuDetailsWidget extends StatelessWidget {
                                 softWrap: true,
                                 maxLines: 1,
                               ),
-                              const AnimatedGap(8, duration: Duration(milliseconds: 100)),
+                              const AnimatedGap(2, duration: Duration(milliseconds: 100)),
                               Text(
                                 addon.orderPortion?.portionSize.toString() ?? '',
                                 style: context.labelMedium!.copyWith(
-                                  fontWeight: FontWeight.w600,
+                                  fontWeight: FontWeight.w500,
                                   fontSize: 14,
                                 ),
                                 textDirection: serviceLocator<LanguageController>().targetTextDirection,
@@ -308,7 +328,7 @@ class OrderMenuDetailsWidget extends StatelessWidget {
                               Text(
                                 addon.orderPortion?.portionUnit.toString() ?? '',
                                 style: context.labelMedium!.copyWith(
-                                  fontWeight: FontWeight.w600,
+                                  fontWeight: FontWeight.w500,
                                   fontSize: 14,
                                 ),
                                 textDirection: serviceLocator<LanguageController>().targetTextDirection,
@@ -367,7 +387,7 @@ class OrderMenuDetailsWidget extends StatelessWidget {
                           textDirection: serviceLocator<LanguageController>().targetTextDirection,
                           children: [
                             Text(
-                              '${addon.price} SAR',
+                              '${addon.price} ${addon.currency}',
                               style: context.bodyMedium!.copyWith(
                                 fontWeight: FontWeight.w600,
                               ),

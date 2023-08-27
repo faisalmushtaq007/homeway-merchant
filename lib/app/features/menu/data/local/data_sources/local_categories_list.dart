@@ -91,7 +91,7 @@ final localTasteType = [
   TasteType(
     tasteTypeId: '5',
     hasSelected: false,
-    title: 'Pungent',
+    title: 'Spicy',
     hasTasteLevel: false,
     tasteLevel: [],
   ),
@@ -105,7 +105,14 @@ final localTasteType = [
   TasteType(
     tasteTypeId: '7',
     hasSelected: false,
-    title: 'Savor',
+    title: 'Savory',
+    hasTasteLevel: false,
+    tasteLevel: [],
+  ),
+  TasteType(
+    tasteTypeId: '8',
+    hasSelected: false,
+    title: 'Sweet & Sour',
     hasTasteLevel: false,
     tasteLevel: [],
   ),

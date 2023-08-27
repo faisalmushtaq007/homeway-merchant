@@ -20,7 +20,7 @@ class OrderEntity extends INetworkModel<OrderEntity> with AppEquatable {
         orderType: json['orderType'] ?? 0,
         userInfo: (json['userInfo'] != null) ? UserInfo.fromJson(json['userInfo']) : UserInfo(deliveryAddress: DeliveryAddress()),
         hasDriverAssigned: json['hasDriverAssigned'] ?? false,
-        driver: (json['driver'] != null) ? Driver.fromJson(json['driver']) : Driver(),
+        driver: (json['driver'] != null) ? DeliveryDriver.fromJson(json['driver']) : DeliveryDriver(),
         orderID: json['orderID'] ?? -1,
         orderStatus: json['orderStatus'] ?? 0,
         payment: Payment.fromJson(json['payment']),
@@ -34,7 +34,7 @@ class OrderEntity extends INetworkModel<OrderEntity> with AppEquatable {
   final int orderType;
   final UserInfo userInfo;
   final bool hasDriverAssigned;
-  final Driver driver;
+  final DeliveryDriver driver;
   final int orderID;
   final int orderStatus;
   final Payment payment;
@@ -61,7 +61,7 @@ class OrderEntity extends INetworkModel<OrderEntity> with AppEquatable {
     int? orderType,
     UserInfo? userInfo,
     bool? hasDriverAssigned,
-    Driver? driver,
+    DeliveryDriver? driver,
     int? orderID,
     int? orderStatus,
     Payment? payment,
@@ -111,42 +111,6 @@ class OrderEntity extends INetworkModel<OrderEntity> with AppEquatable {
         hasDriverReached,
         orderDeliveryDateTime,
       ];
-}
-
-class Driver {
-  Driver({
-    this.driverID = -1,
-    this.lng = 0.0,
-    this.contactNumber = '',
-    this.driverName = '',
-    this.lat = 0.0,
-    this.completeAddress = '',
-  });
-
-  factory Driver.fromJson(Map<String, dynamic> json) => Driver(
-        driverID: json['driverID'] ?? -1,
-        lng: json['lng'] ?? 0.0,
-        contactNumber: json['contactNumber'] ?? '',
-        driverName: json['driverName'] ?? '',
-        lat: json['lat'] ?? 0.0,
-        completeAddress: json['completeAddress'] ?? '',
-      );
-
-  final int driverID;
-  final double lng;
-  final String contactNumber;
-  final String driverName;
-  final double lat;
-  final String completeAddress;
-
-  Map<String, dynamic> toJson() => {
-        'driverID': driverID,
-        'lng': lng,
-        'contactNumber': contactNumber,
-        'driverName': driverName,
-        'lat': lat,
-        'completeAddress': completeAddress,
-      };
 }
 
 class Payment {
@@ -255,9 +219,9 @@ class AddressLocation {
 
 class Menu {
   Menu({
-    this.quantity = 0,
+    this.quantity = 1,
     this.unit = '',
-    this.numberOfServingPerson = 0,
+    this.numberOfServingPerson = 1,
     this.addons = const [],
     this.instruction = '',
     this.menuID = -1,
@@ -274,7 +238,7 @@ class Menu {
   });
 
   factory Menu.fromJson(Map<String, dynamic> json) => Menu(
-        quantity: json['quantity'] ?? 0,
+        quantity: json['quantity'] ?? 1,
         unit: json['unit'] ?? '',
         numberOfServingPerson: json['numberOfServingPerson'] ?? 0,
         addons: (json['addons'] != null) ? List<Addon>.from(json['addons'].map((x) => Addon.fromJson(x))) : const <Addon>[],
@@ -347,8 +311,8 @@ class OrderPortion {
 
   Map<String, dynamic> toJson() {
     return {
-      'portionSize': this.portionSize,
-      'portionUnit': this.portionUnit,
+      'portionSize': portionSize,
+      'portionUnit': portionUnit,
     };
   }
 }
@@ -356,7 +320,7 @@ class OrderPortion {
 class Addon {
   Addon({
     this.addonsImage = '',
-    this.quantity = 1.0,
+    this.quantity = 1,
     this.addonsName = '',
     this.addonsId = -1,
     this.orderPortion,
@@ -367,7 +331,7 @@ class Addon {
 
   factory Addon.fromJson(Map<String, dynamic> json) => Addon(
         addonsImage: json['addonsImage'] ?? '',
-        quantity: json['quantity'] ?? 1.0,
+        quantity: json['quantity'] ?? 1,
         addonsName: json['addonsName'] ?? '',
         addonsId: json['addonsID'] ?? -1,
         orderPortion: json['orderPortion'] != null ? OrderPortion.fromJson(json['orderPortion']) : OrderPortion(),

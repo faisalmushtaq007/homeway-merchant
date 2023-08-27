@@ -76,7 +76,7 @@ class _DriverAssignCardWidgetView extends WidgetView<DriverAssignCardWidget, _Dr
                 title: Directionality(
                   textDirection: serviceLocator<LanguageController>().targetTextDirection,
                   child: WrapText(
-                    widget.orderEntity.driver.driverName,
+                    widget.orderEntity.driver.driverName ?? '',
                     breakWordCharacter: '-',
                     smartSizeMode: false,
                     asyncMode: true,
@@ -90,7 +90,7 @@ class _DriverAssignCardWidgetView extends WidgetView<DriverAssignCardWidget, _Dr
                 subtitle: Directionality(
                   textDirection: serviceLocator<LanguageController>().targetTextDirection,
                   child: WrapText(
-                    widget.orderEntity.driver.contactNumber,
+                    widget.orderEntity.driver.driverContactNumber ?? '',
                     breakWordCharacter: '-',
                     smartSizeMode: false,
                     asyncMode: true,

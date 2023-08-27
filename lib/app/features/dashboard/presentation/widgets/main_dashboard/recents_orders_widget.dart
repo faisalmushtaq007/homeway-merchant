@@ -69,7 +69,7 @@ class _DashboardRecentOrdersController extends State<DashboardRecentOrders> {
           ),
           orderStatus: OrderStatus.newOrder.index,
           orderType: OrderType.recent.index,
-          driver: Driver(),
+          driver: DeliveryDriver(),
           payment: Payment(
             paymentDateTime: DateTime.now(),
           ),
@@ -98,7 +98,7 @@ class _DashboardRecentOrdersController extends State<DashboardRecentOrders> {
           ),
           orderStatus: OrderStatus.newOrder.index,
           orderType: OrderType.recent.index,
-          driver: Driver(),
+          driver: DeliveryDriver(),
           payment: Payment(
             paymentDateTime: DateTime.now().subtract(Duration(minutes: 15)),
           ),
@@ -127,7 +127,7 @@ class _DashboardRecentOrdersController extends State<DashboardRecentOrders> {
           ),
           orderStatus: OrderStatus.newOrder.index,
           orderType: OrderType.recent.index,
-          driver: Driver(),
+          driver: DeliveryDriver(),
           payment: Payment(
             paymentDateTime: DateTime.now().add(Duration(hours: 1, minutes: 15)),
           ),
@@ -156,7 +156,7 @@ class _DashboardRecentOrdersController extends State<DashboardRecentOrders> {
           ),
           orderStatus: OrderStatus.newOrder.index,
           orderType: OrderType.recent.index,
-          driver: Driver(),
+          driver: DeliveryDriver(),
           payment: Payment(
             paymentDateTime: DateTime.now().subtract(Duration(minutes: 45)),
           ),

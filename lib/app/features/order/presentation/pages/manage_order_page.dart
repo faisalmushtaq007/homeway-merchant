@@ -63,7 +63,7 @@ class _ManageOrderPageController extends State<ManageOrderPage> {
         ),
         orderStatus: OrderStatus.newOrder.index,
         orderType: OrderType.newOrder.index,
-        driver: Driver(),
+        driver: DeliveryDriver(),
         payment: Payment(
           mode: 'COD',
           amount: 30,
@@ -117,7 +117,7 @@ class _ManageOrderPageController extends State<ManageOrderPage> {
         ),
         orderStatus: OrderStatus.preparing.index,
         orderType: OrderType.onProcess.index,
-        driver: Driver(),
+        driver: DeliveryDriver(),
         payment: Payment(
           mode: 'COD',
           amount: 10,
@@ -190,7 +190,7 @@ class _ManageOrderPageController extends State<ManageOrderPage> {
         ),
         orderStatus: OrderStatus.delivered.index,
         orderType: OrderType.deliver.index,
-        driver: Driver(),
+        driver: DeliveryDriver(),
         payment: Payment(
           mode: 'PAID',
           amount: 22,
@@ -255,7 +255,7 @@ class _ManageOrderPageController extends State<ManageOrderPage> {
         ),
         orderStatus: OrderStatus.cancelByUser.index,
         orderType: OrderType.cancel.index,
-        driver: Driver(),
+        driver: DeliveryDriver(),
         payment: Payment(
           mode: 'CANCEL',
           amount: 10,
@@ -319,13 +319,15 @@ class _ManageOrderPageController extends State<ManageOrderPage> {
         ),
         orderStatus: OrderStatus.onTheWay.index,
         orderType: OrderType.deliver.index,
-        driver: Driver(
+        driver: DeliveryDriver(
           driverID: 1,
           driverName: 'Mr. Abdul Wahab',
-          contactNumber: '+966 559781276',
-          lat: 23.86,
-          lng: 45.27,
-          completeAddress: '12 King Fahd Rd, Al Islamiah, Jeddah, Jeddah,57513,Saudi Arabia',
+          driverContactNumber: '+966 559781276',
+          driverAddress: AddressBean(
+            latitude: 23.86,
+            longitude: 45.27,
+            displayAddressName: '12 King Fahd Rd, Al Islamiah, Jeddah, Jeddah,57513,Saudi Arabia',
+          ),
         ),
         payment: Payment(
           mode: 'PAID',
@@ -390,13 +392,15 @@ class _ManageOrderPageController extends State<ManageOrderPage> {
         ),
         orderStatus: OrderStatus.readyToPickup.index,
         orderType: OrderType.onProcess.index,
-        driver: Driver(
+        driver: DeliveryDriver(
           driverID: 1,
           driverName: 'Mr. Sakib Ahmed',
-          contactNumber: '+966 556789456',
-          lat: 23.56,
-          lng: 45.67,
-          completeAddress: '11 Sayed Al Shouhada, Al Masani, Al Munawwarah,Buraydah,42313,Saudi Arabia',
+          driverContactNumber: '+966 556789456',
+          driverAddress: AddressBean(
+            latitude: 23.56,
+            longitude: 45.67,
+            displayAddressName: '11 Sayed Al Shouhada, Al Masani, Al Munawwarah,Buraydah,42313,Saudi Arabia',
+          ),
         ),
         payment: Payment(
           mode: 'COD',

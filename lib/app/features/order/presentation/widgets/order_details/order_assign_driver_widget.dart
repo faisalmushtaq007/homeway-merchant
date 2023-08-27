@@ -9,19 +9,21 @@ class AssignDriverWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       key: ValueKey(orderEntity.driver.driverID),
-      margin: EdgeInsetsDirectional.only(bottom: 8),
+      margin: const EdgeInsetsDirectional.only(bottom: 8),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
-        mainAxisAlignment: MainAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
         textDirection: serviceLocator<LanguageController>().targetTextDirection,
         children: [
           const AnimatedGap(
-            8,
+            4,
             duration: Duration(milliseconds: 100),
           ),
           ListTile(
-            contentPadding: EdgeInsetsDirectional.symmetric(horizontal: 8),
+            contentPadding: const EdgeInsetsDirectional.symmetric(
+              horizontal: 8,
+            ),
+            visualDensity: VisualDensity(vertical: -4),
             horizontalTitleGap: 8,
             leading: CircleAvatar(
               backgroundColor: Colors.transparent,
@@ -48,8 +50,8 @@ class AssignDriverWidget extends StatelessWidget {
               ),
             ),
             title: Text(
-              orderEntity.driver.driverName,
-              style: context.bodyMedium!.copyWith(
+              orderEntity.driver.driverName ?? '',
+              style: context.titleMedium!.copyWith(
                 fontWeight: FontWeight.w600,
               ),
               textDirection: serviceLocator<LanguageController>().targetTextDirection,
@@ -57,53 +59,72 @@ class AssignDriverWidget extends StatelessWidget {
               softWrap: true,
               maxLines: 3,
             ),
+            subtitle: Text(
+              orderEntity.driver.driverID.toString() ?? '',
+              style: context.labelMedium!.copyWith(
+                fontWeight: FontWeight.w600,
+              ),
+              textDirection: serviceLocator<LanguageController>().targetTextDirection,
+              overflow: TextOverflow.ellipsis,
+              softWrap: true,
+              maxLines: 1,
+            ),
             trailing: SizedBox(
               child: Row(
                 mainAxisSize: MainAxisSize.min,
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.center,
                 textDirection: serviceLocator<LanguageController>().targetTextDirection,
                 children: [
                   IconButton(
-                      icon: Icon(
-                        Icons.chat,
-                        color: context.colorScheme.primary,
-                      ),
-                      onPressed: () {},
-                      style: IconButton.styleFrom(
-                        shape: CircleBorder(),
-                      )),
+                    icon: Icon(
+                      Icons.chat,
+                      color: context.colorScheme.primary,
+                    ),
+                    onPressed: () {},
+                    style: IconButton.styleFrom(
+                      shape: const CircleBorder(),
+                    ),
+                  ),
                   IconButton(
-                      icon: Icon(
-                        Icons.phone_in_talk,
-                        color: context.colorScheme.primary,
-                      ),
-                      onPressed: () {},
-                      style: IconButton.styleFrom(
-                        shape: CircleBorder(),
-                      )),
+                    icon: Icon(
+                      Icons.phone_in_talk,
+                      color: context.colorScheme.primary,
+                    ),
+                    onPressed: () {},
+                    style: IconButton.styleFrom(
+                      shape: const CircleBorder(),
+                    ),
+                  ),
                 ],
               ),
             ),
           ),
-          Divider(),
+          const Divider(),
           Padding(
-            padding: EdgeInsetsDirectional.only(start: 12, end: 12),
+            padding: const EdgeInsetsDirectional.only(start: 12, end: 12),
             child: Row(
               mainAxisSize: MainAxisSize.min,
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.center,
               textDirection: serviceLocator<LanguageController>().targetTextDirection,
               children: [
                 Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
                   textDirection: serviceLocator<LanguageController>().targetTextDirection,
                   children: [
-                    Icon(
-                      Icons.delivery_dining,
-                      color: context.colorScheme.primary,
-                      textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                      size: 28,
+                    CircleAvatar(
+                      backgroundColor: context.colorScheme.primaryContainer,
+                      radius: 16,
+                      child: ImageHelper(
+                        image: 'assets/svg/on_the_way.svg',
+                        filterQuality: FilterQuality.high,
+                        borderRadius: BorderRadiusDirectional.circular(16),
+                        imageType: findImageType('assets/svg/on_the_way.svg'),
+                        imageShape: ImageShape.rectangle,
+                        boxFit: BoxFit.cover,
+                        defaultErrorBuilderColor: Colors.blueGrey,
+                        errorBuilder: const Icon(
+                          Icons.image_not_supported,
+                          size: 10000,
+                        ),
+                        loaderBuilder: const CircularProgressIndicator(),
+                      ),
                     ),
                   ],
                 ),
@@ -114,7 +135,7 @@ class AssignDriverWidget extends StatelessWidget {
                 Container(
                   height: 40,
                   width: 1,
-                  color: Color.fromRGBO(165, 166, 168, 0.5),
+                  color: const Color.fromRGBO(165, 166, 168, 0.5),
                 ),
                 const AnimatedGap(
                   6,
@@ -124,14 +145,11 @@ class AssignDriverWidget extends StatelessWidget {
                   flex: 2,
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
-                    mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     textDirection: serviceLocator<LanguageController>().targetTextDirection,
                     children: [
                       Row(
                         mainAxisSize: MainAxisSize.min,
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.center,
                         textDirection: serviceLocator<LanguageController>().targetTextDirection,
                         children: [
                           Text(
@@ -160,11 +178,12 @@ class AssignDriverWidget extends StatelessWidget {
                           ),
                         ],
                       ),
+                      const AnimatedGap(1, duration: Duration(milliseconds: 100)),
                       Wrap(
                         children: [
                           Text(
                             'Building & Construction Exhibition, Riyadh, 300414, Saudi Arabia',
-                            style: context.bodyMedium!.copyWith(
+                            style: context.labelMedium!.copyWith(
                               fontWeight: FontWeight.w500,
                             ),
                             textDirection: serviceLocator<LanguageController>().targetTextDirection,

@@ -17,6 +17,7 @@ class OrderDetailPage extends StatefulWidget {
 class _OrderDetailPageController extends State<OrderDetailPage> {
   late final ScrollController scrollController;
   late final ScrollController customScrollViewScrollController;
+  double subTotal = 0;
   OrderEntity orderEntity = OrderEntity(
     orderID: 1,
     orderDateTime: DateTime.now().subtract(const Duration(minutes: 15)),
@@ -59,25 +60,25 @@ class _OrderDetailPageController extends State<OrderDetailPage> {
               'https://img.freepik.com/premium-photo/indian-vegetable-pulav-biryani-made-using-basmati-rice-served-terracotta-bowl-selective-focus_466689-55615.jpg',
           addons: [
             Addon(
+              quantity: 1,
               addonsName: 'Salad',
               orderPortion: const OrderPortion(
                 portionSize: 1,
                 portionUnit: 'Plate',
               ),
-              quantity: 1,
               addonsId: 12,
               price: 2,
               addonsImage:
                   'https://img.freepik.com/free-photo/fresh-vegetables-colorful-sliced-such-as-cucumbers-red-tomatoes-onion-wooden-rustic-surface_140725-14178.jpg',
             ),
             Addon(
+              quantity: 1,
               addonsName: 'Sweets',
               orderPortion: const OrderPortion(
                 portionSize: 4,
                 portionUnit: 'Pcs',
               ),
               addonsId: 4,
-              quantity: 1,
               price: 2,
               addonsImage: 'https://img.freepik.com/premium-photo/gulab-jamun-indian-dessert-topped-with-pistachio_136354-1769.jpg',
             ),
@@ -95,14 +96,15 @@ class _OrderDetailPageController extends State<OrderDetailPage> {
     ),
     orderStatus: OrderStatus.newOrder.index,
     orderType: OrderType.newOrder.index,
-    driver: Driver(
-      driverID: 1,
-      driverName: 'Mr. Abdul Wahab',
-      contactNumber: '+966 559781276',
-      lat: 23.86,
-      lng: 45.27,
-      completeAddress: '12 King Fahd Rd, Al Islamiah, Jeddah, Jeddah,57513,Saudi Arabia',
-    ),
+    driver: DeliveryDriver(
+        driverID: 1,
+        driverName: 'Mr. Abdul Wahab',
+        driverContactNumber: '+966 559781276',
+        driverAddress: AddressBean(
+          latitude: 23.86,
+          longitude: 45.27,
+          displayAddressName: '12 King Fahd Rd, Al Islamiah, Jeddah, Jeddah,57513,Saudi Arabia',
+        )),
     payment: Payment(
       mode: 'COD',
       amount: 30,
@@ -124,6 +126,7 @@ class _OrderDetailPageController extends State<OrderDetailPage> {
     customScrollViewScrollController = ScrollController();
     activeLocale = serviceLocator<LanguageController>().targetAppLanguage.value.toString();
     debugPrint('active locale ${activeLocale}');
+    subTotal = 0.0;
   }
 
   @override
@@ -136,6 +139,99 @@ class _OrderDetailPageController extends State<OrderDetailPage> {
     scrollController.dispose();
     customScrollViewScrollController.dispose();
     super.dispose();
+  }
+
+  void calculateSubTotal(double amount) {
+    subTotal += amount;
+    setState(() {});
+  }
+
+  Widget bottomWidget(int index) {
+    return switch (OrderStatus.values.byName(OrderStatus.values[index].toString())) {
+      OrderStatus.newOrder => Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Expanded(
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.white,
+                  side: const BorderSide(
+                    color: Color.fromRGBO(255, 255, 255, 1),
+                  ),
+                ),
+                onPressed: () {},
+                child: Text(
+                  'Cancel',
+                  style: const TextStyle(color: Color.fromRGBO(42, 45, 50, 1)),
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: 1,
+                  textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                ).translate(),
+              ),
+            ),
+            const AnimatedGap(
+              8,
+              duration: Duration(milliseconds: 100),
+            ),
+            Expanded(
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: context.colorScheme.primary,
+                ),
+                onPressed: () {},
+                child: Text(
+                  'Accept',
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: 1,
+                  textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                ).translate(),
+              ),
+            ),
+          ],
+        ),
+      OrderStatus.onProcessing || OrderStatus.preparing => Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Expanded(
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.white,
+                  side: const BorderSide(
+                    color: Color.fromRGBO(255, 255, 255, 1),
+                  ),
+                ),
+                onPressed: () {},
+                child: Text(
+                  'Delay',
+                  style: const TextStyle(color: Color.fromRGBO(42, 45, 50, 1)),
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: 1,
+                  textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                ).translate(),
+              ),
+            ),
+            const AnimatedGap(
+              8,
+              duration: Duration(milliseconds: 100),
+            ),
+            Expanded(
+              child: ElevatedButton(
+                onPressed: () {},
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: context.colorScheme.primary,
+                ),
+                child: Text(
+                  'Move to Ready',
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: 1,
+                  textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                ).translate(),
+              ),
+            ),
+          ],
+        ),
+      _ => const Offstage(),
+    };
   }
 
   @override
@@ -213,7 +309,7 @@ class _OrderDetailPageView extends WidgetView<OrderDetailPage, _OrderDetailPageC
                     minHeight: media.size.height - (media.padding.top + kToolbarHeight + media.padding.bottom),
                   ),
                   padding: EdgeInsetsDirectional.only(
-                    top: topPadding,
+                    //top: topPadding,
                     //bottom: bottomPadding,
                     start: margins * 2.5,
                     end: margins * 2.5,
@@ -229,7 +325,7 @@ class _OrderDetailPageView extends WidgetView<OrderDetailPage, _OrderDetailPageC
                               title: Directionality(
                                 textDirection: serviceLocator<LanguageController>().targetTextDirection,
                                 child: WrapText(
-                                  '${state.orderEntity.store.storeName} ',
+                                  state.orderEntity.store.storeName,
                                   breakWordCharacter: '-',
                                   smartSizeMode: false,
                                   asyncMode: true,
@@ -246,7 +342,7 @@ class _OrderDetailPageView extends WidgetView<OrderDetailPage, _OrderDetailPageC
                               subtitle: Directionality(
                                 textDirection: serviceLocator<LanguageController>().targetTextDirection,
                                 child: WrapText(
-                                  'Order ID: HMW-${state.orderEntity.orderID} ',
+                                  'Order ID: HMW-${state.orderEntity.orderID}',
                                   breakWordCharacter: '-',
                                   smartSizeMode: false,
                                   asyncMode: true,
@@ -271,7 +367,7 @@ class _OrderDetailPageView extends WidgetView<OrderDetailPage, _OrderDetailPageC
                                   child: Directionality(
                                     textDirection: serviceLocator<LanguageController>().targetTextDirection,
                                     child: WrapText(
-                                      'PAID',
+                                      state.orderEntity.payment.mode,
                                       breakWordCharacter: '-',
                                       smartSizeMode: false,
                                       asyncMode: true,
@@ -307,19 +403,20 @@ class _OrderDetailPageView extends WidgetView<OrderDetailPage, _OrderDetailPageC
                             ),
                             Directionality(
                               textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                              child: WrapText(
-                                '${state.orderEntity.store.menu[0].menuName} ',
-                                breakWordCharacter: '-',
-                                smartSizeMode: false,
-                                asyncMode: true,
-                                minFontSize: 14,
-                                maxFontSize: 15,
-                                textStyle: context.titleMedium!.copyWith(
-                                  fontWeight: FontWeight.w600,
-                                  //color: context.colorScheme.primary,
-                                ),
-                                maxLines: 3,
-                                overflow: TextOverflow.ellipsis,
+                              child: Wrap(
+                                textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                children: [
+                                  Text(
+                                    'Ordered Menu',
+                                    style: context.bodyLarge!.copyWith(
+                                      fontWeight: FontWeight.w600,
+                                      //color: context.colorScheme.primary,
+                                    ),
+                                    maxLines: 3,
+                                    softWrap: true,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                ],
                               ),
                             ),
                             const AnimatedGap(
@@ -333,6 +430,7 @@ class _OrderDetailPageView extends WidgetView<OrderDetailPage, _OrderDetailPageC
                                 OrderMenuDetailsWidget(
                                   key: const Key('order-details-menu-details-widget'),
                                   orderEntity: state.orderEntity,
+                                  subTotalOnChange: (value) {},
                                 ),
                               ],
                             ),
@@ -367,10 +465,29 @@ class _OrderDetailPageView extends WidgetView<OrderDetailPage, _OrderDetailPageC
                               12,
                               duration: Duration(milliseconds: 100),
                             ),
+                            Text(
+                              'Payment Summary',
+                              style: context.bodyMedium!.copyWith(
+                                fontWeight: FontWeight.w600,
+                              ),
+                              textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                              overflow: TextOverflow.ellipsis,
+                              softWrap: true,
+                              maxLines: 1,
+                            ),
+                            const AnimatedGap(
+                              6,
+                              duration: Duration(milliseconds: 100),
+                            ),
                             OrderPaymentSummary(
                               key: const Key('order-details-payment-summary-widget'),
                               orderEntity: state.orderEntity,
                             ),
+                            const AnimatedGap(
+                              12,
+                              duration: Duration(milliseconds: 100),
+                            ),
+                            state.bottomWidget(state.orderEntity.orderStatus),
                           ],
                         ),
                       ),

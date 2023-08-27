@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
+import 'package:homemakers_merchant/app/features/address/index.dart';
 import 'package:homemakers_merchant/app/features/common/index.dart';
 import 'package:homemakers_merchant/app/features/dashboard/index.dart';
 import 'package:homemakers_merchant/app/features/order/presentation/manager/all/all_order_bloc.dart';
@@ -63,6 +64,7 @@ part 'package:homemakers_merchant/app/features/order/data/remote/data_sources/or
 part 'package:homemakers_merchant/app/features/order/data/remote/data_sources/order_remote_data_source.dart';
 part 'package:homemakers_merchant/app/features/order/data/repositories/order_repository_implement.dart';
 part 'package:homemakers_merchant/app/features/order/domain/entities/order_entity.dart';
+part 'package:homemakers_merchant/app/features/order/domain/entities/tracking_entity.dart';
 part 'package:homemakers_merchant/app/features/order/domain/repositories/order_repository.dart';
 part 'package:homemakers_merchant/app/features/order/domain/use_cases/delete_all_order_usecase.dart';
 part 'package:homemakers_merchant/app/features/order/domain/use_cases/delete_order_usecase.dart';
