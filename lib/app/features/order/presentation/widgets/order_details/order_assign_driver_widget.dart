@@ -60,7 +60,7 @@ class AssignDriverWidget extends StatelessWidget {
               maxLines: 3,
             ),
             subtitle: Text(
-              orderEntity.driver.driverID.toString() ?? '',
+              'Driver ID: HMW-${orderEntity.driver.driverID.toString() ?? ''}',
               style: context.labelMedium!.copyWith(
                 fontWeight: FontWeight.w600,
               ),

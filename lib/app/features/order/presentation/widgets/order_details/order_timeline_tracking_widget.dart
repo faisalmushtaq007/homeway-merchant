@@ -47,8 +47,8 @@ class _OrderTimelineTrackingWidgetView extends WidgetView<OrderTimelineTrackingW
       margin: const EdgeInsetsDirectional.only(bottom: 8),
       child: Padding(
         padding: const EdgeInsetsDirectional.only(
-          start: 12,
-          end: 12,
+          start: 6,
+          end: 6,
           top: 8,
           bottom: 8,
         ),
@@ -59,6 +59,13 @@ class _OrderTimelineTrackingWidgetView extends WidgetView<OrderTimelineTrackingW
             slivers: [
               SliverToBoxAdapter(
                 child: FixedTimeline.tileBuilder(
+                  theme: TimelineThemeData(
+                    color: context.colorScheme.primary,
+                    indicatorTheme: IndicatorThemeData(
+                      color: context.colorScheme.primaryContainer,
+                    ),
+                    connectorTheme: ConnectorThemeData(),
+                  ),
                   builder: TimelineTileBuilder.fromStyle(
                     contentsAlign: ContentsAlign.alternating,
                     contentsBuilder: (context, index) {
@@ -76,7 +83,7 @@ class _OrderTimelineTrackingWidgetView extends WidgetView<OrderTimelineTrackingW
                                   state.trackingInfo[0].tracking!.eventHistory![index].eventCode?.groupTitle ?? '',
                                   textDirection: serviceLocator<LanguageController>().targetTextDirection,
                                   style: context.bodyMedium!.copyWith(
-                                    fontWeight: FontWeight.w500,
+                                    fontWeight: FontWeight.w600,
                                   ),
                                   softWrap: true,
                                   overflow: TextOverflow.ellipsis,

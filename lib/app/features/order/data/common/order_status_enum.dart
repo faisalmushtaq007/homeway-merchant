@@ -142,6 +142,7 @@ enum TrackingTitle {
   PAYMENT_DECLINE(groupTitle: 'Payment decline'),
   PAYMENT_RECEIVED(groupTitle: 'Payment received'),
   SCHEDULE_ORDER(groupTitle: 'Schedule Order'),
+  ORDER_DELIVERED(groupTitle: 'Order Delivered'),
   ;
 
   const TrackingTitle({
@@ -168,7 +169,8 @@ final tackingTitleValues = EnumValues({
   'order_received_by_user': TrackingTitle.ORDER_RECEIVED_BY_USER,
   'payment_decline': TrackingTitle.PAYMENT_DECLINE,
   'payment_received': TrackingTitle.PAYMENT_RECEIVED,
-  'schedule_order': TrackingTitle.SCHEDULE_ORDER
+  'schedule_order': TrackingTitle.SCHEDULE_ORDER,
+  'order_delivered': TrackingTitle.ORDER_DELIVERED,
 });
 
 class EnumValues<T> {

@@ -119,6 +119,7 @@ class _OrderDetailPageController extends State<OrderDetailPage> {
 
   String activeLocale = 'en_US';
   final Map<String, moment.MomentLocalization> locales = moment.MomentLocalizations.locales.map((key, value) => MapEntry(key, value()));
+  final TextEditingController cancelReason = TextEditingController();
 
   @override
   void initState() {
@@ -148,10 +149,98 @@ class _OrderDetailPageController extends State<OrderDetailPage> {
     setState(() {});
   }
 
+  Future<bool?> confirmCancelOrder(BuildContext context, OrderEntity orderEntity) async {
+    final bool? status = await showConfirmationDialog<bool>(
+      context: context,
+      barrierDismissible: true,
+      curve: Curves.fastOutSlowIn,
+      duration: const Duration(milliseconds: 700),
+      builder: (BuildContext context) {
+        return StatefulBuilder(
+          builder: (context, setState) {
+            return ResponsiveDialog(
+              context: context,
+              hideButtons: false,
+              maxLongSide: context.height / 1.90,
+              maxShortSide: context.width,
+              key: const Key('order-details-cancel-confirmation-dialog'),
+              title: 'Confirm Order Cancel?',
+              confirmText: 'Cancel Order',
+              cancelText: 'Keep Order',
+              okPressed: () async {
+                debugPrint('Dialog confirmed');
+                Navigator.of(context).pop(true);
+              },
+              cancelPressed: () {
+                debugPrint('Dialog cancelled');
+                Navigator.of(context).pop(false);
+              },
+              child: SingleChildScrollView(
+                child: Column(
+                  textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    Wrap(
+                      children: [
+                        RichText(
+                          text: TextSpan(
+                            text: '',
+                            style: context.labelMedium,
+                            children: <TextSpan>[
+                              TextSpan(
+                                text:
+                                    'We would sorry to cancel your order go. Cancelling this order will cause it not to another orders but if you cancel the order your loving customer will be feel sad.\n',
+                                style: context.labelMedium,
+                              ),
+                              TextSpan(
+                                text: '\nAre you sure you want to cancel this order. The action can not be undone.\n',
+                                style: context.labelMedium,
+                              ),
+                              TextSpan(
+                                text: '\nWe are always here to help. For any question, please visit our ',
+                                style: context.labelMedium,
+                              ),
+                              TextSpan(
+                                  text: 'Help Center',
+                                  style: context.labelMedium!.copyWith(
+                                    decoration: TextDecoration.underline,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                  recognizer: TapGestureRecognizer()..onTap = () async {}),
+                              TextSpan(
+                                text: ' for more information.\n',
+                                style: context.labelMedium,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                    TextField(
+                      controller: cancelReason,
+                      maxLines: 3,
+                      decoration: InputDecoration(hintText: 'Share the reason for canceling this order'),
+                    ),
+                    //textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                  ],
+                ),
+              ),
+            );
+          },
+        );
+      },
+    );
+    if (status != null) {
+      return status;
+    }
+    return false;
+  }
+
   Widget bottomWidget(int index) {
     return switch (OrderStatus.values.byName(OrderStatus.values[index].toString())) {
       OrderStatus.newOrder => Row(
           crossAxisAlignment: CrossAxisAlignment.center,
+          textDirection: serviceLocator<LanguageController>().targetTextDirection,
           children: [
             Expanded(
               child: ElevatedButton(
@@ -161,7 +250,9 @@ class _OrderDetailPageController extends State<OrderDetailPage> {
                     color: Color.fromRGBO(255, 255, 255, 1),
                   ),
                 ),
-                onPressed: () {},
+                onPressed: () async {
+                  final result = await confirmCancelOrder(context, orderEntity);
+                },
                 child: Text(
                   'Cancel',
                   style: const TextStyle(color: Color.fromRGBO(42, 45, 50, 1)),
@@ -192,6 +283,7 @@ class _OrderDetailPageController extends State<OrderDetailPage> {
           ],
         ),
       OrderStatus.onProcessing || OrderStatus.preparing => Row(
+          textDirection: serviceLocator<LanguageController>().targetTextDirection,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Expanded(
@@ -267,6 +359,7 @@ class _OrderDetailPageView extends WidgetView<OrderDetailPage, _OrderDetailPageC
             appBar: AppBar(
               title: const Text('Order Details'),
               centerTitle: false,
+              titleSpacing: 0,
               actions: [
                 IconButton(
                   onPressed: () {
@@ -285,7 +378,22 @@ class _OrderDetailPageView extends WidgetView<OrderDetailPage, _OrderDetailPageC
                       style: context.labelSmall!.copyWith(color: context.colorScheme.onPrimary),
                       //Color.fromRGBO(251, 219, 11, 1)
                     ),
-                    child: Icon(Icons.notifications, color: context.colorScheme.primary),
+                    child: Icon(
+                      Icons.notifications,
+                      color: context.colorScheme.primary,
+                      textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                    ),
+                  ),
+                ),
+                Directionality(
+                  textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                  child: IconButton(
+                    onPressed: () {},
+                    icon: Icon(
+                      Icons.help,
+                      color: context.colorScheme.primary,
+                      textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                    ),
                   ),
                 ),
                 const Padding(

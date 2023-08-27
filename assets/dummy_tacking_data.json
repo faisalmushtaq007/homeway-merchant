@@ -142,6 +142,26 @@
             "longitude": -4.198621713084002
           },
           "event_summary": "Non magna proident incididunt aute exercitation pariatur eiusmod dolore sint qui culpa sit. Enim aliquip do tempor id irure elit ex dolore adipisicing ad aliquip cupidatat aliquip. Cillum occaecat aliqua pariatur in eiusmod aute et eu minim ad nulla eu in."
+        },
+        {
+          "event_code": "order_delivered",
+          "event_time": 1667403985565,
+          "status": 20,
+          "event_message": "Sit culpa anim laborum amet do culpa adipisicing.",
+          "event_location": {
+            "flatnumber": 301,
+            "floor": 11,
+            "landmark": "Langworth Cliffs",
+            "area": "3043 Leffler Divide",
+            "street": "Jacobi Fall",
+            "city": "Daoukro",
+            "district": "Jacqueville",
+            "state": "Sanford Crest",
+            "country": "Cote d'Ivoire",
+            "latitude": 7.3254105230414375,
+            "longitude": -4.198621713084002
+          },
+          "event_summary": "Non magna proident incididunt aute exercitation pariatur eiusmod dolore sint qui culpa sit. Enim aliquip do tempor id irure elit ex dolore adipisicing ad aliquip cupidatat aliquip. Cillum occaecat aliqua pariatur in eiusmod aute et eu minim ad nulla eu in."
         }
       ],
       "tracking_title": "order_arrived",

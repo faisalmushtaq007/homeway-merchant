@@ -185,7 +185,7 @@ class _AllStoreDialogWidgetView extends WidgetView<AllStoreDialogWidget, _AllSto
               hideButtons: true,
               maxLongSide: context.height / 2.25,
               maxShortSide: context.width,
-              key: const Key('store-confirmation-dialog'),
+              key: const Key('select-store-confirmation-dialog'),
               title: 'Select your store',
               confirmText: 'Confirm',
               cancelText: 'Cancel',
