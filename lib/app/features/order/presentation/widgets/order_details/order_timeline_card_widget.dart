@@ -15,8 +15,8 @@ class OrderTimeLineCardWidget extends StatelessWidget {
         padding: const EdgeInsetsDirectional.only(
           start: 12,
           end: 12,
-          top: 12,
-          bottom: 12,
+          top: 8,
+          bottom: 8,
         ),
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -41,38 +41,31 @@ class OrderTimeLineCardWidget extends StatelessWidget {
                       children: [
                         Directionality(
                           textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                          child: WrapText(
+                          child: Text(
                             'Received At',
-                            breakWordCharacter: '-',
-                            smartSizeMode: false,
-                            asyncMode: true,
-                            minFontSize: 12,
-                            maxFontSize: 14,
-                            textStyle: context.labelMedium!.copyWith(fontWeight: FontWeight.w500),
+                            style: context.bodyMedium!.copyWith(fontWeight: FontWeight.w500),
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
-                          ),
+                            textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                            softWrap: true,
+                          ).translate(),
                         ),
                         Directionality(
                           textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                          child: WrapText(
+                          child: Text(
                             '${now.subtract(now.difference(orderEntity.orderDateTime)).calendar()}',
-                            breakWordCharacter: '-',
-                            smartSizeMode: false,
-                            asyncMode: true,
-                            minFontSize: 12,
-                            maxFontSize: 14,
-                            textStyle: context.bodySmall!.copyWith(fontWeight: FontWeight.w600),
+                            style: context.labelMedium!.copyWith(fontWeight: FontWeight.w600),
+                            textDirection: serviceLocator<LanguageController>().targetTextDirection,
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
-                          ),
+                          ).translate(),
                         ),
                       ],
                     ),
                   ),
                   Expanded(
                     child: Container(
-                      height: 60,
+                      height: 50,
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -80,21 +73,25 @@ class OrderTimeLineCardWidget extends StatelessWidget {
                         textDirection: serviceLocator<LanguageController>().targetTextDirection,
                         children: [
                           Container(
-                            height: 15,
+                            height: 10,
                             width: 1,
                             color: Color.fromRGBO(165, 166, 168, 0.5),
                           ),
                           CircleAvatar(
-                            radius: 14,
+                            radius: 12,
                             backgroundColor: Colors.white,
-                            child: Icon(
-                              Icons.arrow_forward,
-                              color: context.colorScheme.primary,
-                              size: 16,
+                            child: Directionality(
+                              textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                              child: Icon(
+                                Icons.arrow_forward,
+                                color: context.colorScheme.primary,
+                                size: 14,
+                                textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                              ),
                             ),
                           ),
                           Container(
-                            height: 15,
+                            height: 10,
                             width: 1,
                             color: Color.fromRGBO(165, 166, 168, 0.5),
                           ),
@@ -112,38 +109,32 @@ class OrderTimeLineCardWidget extends StatelessWidget {
                       children: [
                         Directionality(
                           textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                          child: WrapText(
+                          child: Text(
                             'Delivered By',
-                            breakWordCharacter: '-',
-                            smartSizeMode: false,
-                            asyncMode: true,
-                            minFontSize: 12,
-                            maxFontSize: 14,
-                            textStyle: context.labelMedium!.copyWith(
+                            style: context.bodyMedium!.copyWith(
                               fontWeight: FontWeight.w500,
                               color: context.colorScheme.primary,
                             ),
+                            textDirection: serviceLocator<LanguageController>().targetTextDirection,
                             maxLines: 1,
+                            softWrap: true,
                             overflow: TextOverflow.ellipsis,
-                          ),
+                          ).translate(),
                         ),
                         Directionality(
                           textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                          child: WrapText(
-                            '${now.subtract(now.difference(orderEntity.orderDeliveryDateTime)).calendar()}',
-                            breakWordCharacter: '-',
-                            smartSizeMode: false,
-                            asyncMode: true,
-                            minFontSize: 12,
-                            maxFontSize: 14,
-                            textStyle: context.bodySmall!.copyWith(
+                          child: Text(
+                            now.subtract(now.difference(orderEntity.orderDeliveryDateTime)).calendar(),
+                            style: context.labelMedium!.copyWith(
                               fontWeight: FontWeight.w600,
                               color: context.colorScheme.primary,
                             ),
                             maxLines: 1,
+                            textDirection: serviceLocator<LanguageController>().targetTextDirection,
                             overflow: TextOverflow.ellipsis,
                             textAlign: TextAlign.end,
-                          ),
+                            softWrap: true,
+                          ).translate(),
                         ),
                       ],
                     ),

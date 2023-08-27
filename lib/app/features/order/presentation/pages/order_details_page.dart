@@ -129,15 +129,6 @@ class _OrderDetailPageController extends State<OrderDetailPage> {
     activeLocale = serviceLocator<LanguageController>().targetAppLanguage.value.toString();
     debugPrint('active locale ${activeLocale}');
     subTotal = 0.0;
-    readAndWriteTracking();
-  }
-
-  Future<void> readAndWriteTracking() async {
-    final data = await readTrackingData();
-    orderEntity.copyWith(
-      trackingInfo: data,
-    );
-    setState(() {});
   }
 
   @override
@@ -407,6 +398,19 @@ class _OrderDetailPageView extends WidgetView<OrderDetailPage, _OrderDetailPageC
                               key: const Key('order-details-timeline-card-widget'),
                               orderEntity: state.orderEntity,
                               activeLocale: state.activeLocale,
+                            ),
+                            const AnimatedGap(
+                              12,
+                              duration: Duration(milliseconds: 100),
+                            ),
+                            Wrap(
+                              children: [
+                                OrderTimelineTrackingWidget(
+                                  key: const Key('order-details-timeline--tracking-card-widget'),
+                                  orderEntity: state.orderEntity,
+                                  activeLocale: state.activeLocale,
+                                ),
+                              ],
                             ),
                             const AnimatedGap(
                               12,

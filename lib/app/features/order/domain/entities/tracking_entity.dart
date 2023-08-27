@@ -45,7 +45,7 @@ class Tracking {
         eventHistory = (json['event_history'] as List?)?.map((dynamic e) => EventHistory.fromJson(e as Map<String, dynamic>)).toList(),
         //tackingTitle = json['tacking_title'] as String?,
         //trackingTitle=tackingTitleValues.map[json['tracking_title']] as TrackingTitle?,
-        trackingTitle = (json['tracking_title'] != null) ? TrackingTitle.values.byName(json['tracking_title']) : TrackingTitle.ORDER_ARRIVED,
+        trackingTitle = (json['tracking_title'] != null) ? tackingTitleValues.map[json["tracking_title"]] : TrackingTitle.ORDER_ARRIVED,
         status = json['status'] as String?;
   final String? trackingId;
   final String? trackingNumber;
@@ -59,7 +59,7 @@ class Tracking {
         'event_history': eventHistory?.map((e) => e.toJson()).toList(),
         //'tacking_title': tackingTitle,
         //'tracking_title': tackingTitleValues.reverse[trackingTitle],
-        'tracking_title': trackingTitle?.name ?? TrackingTitle.ORDER_ARRIVED.name,
+        'tracking_title': tackingTitleValues.reverse[trackingTitle] ?? TrackingTitle.ORDER_ARRIVED.name,
         'status': status,
       };
 }
@@ -75,7 +75,7 @@ class EventHistory {
   });
 
   EventHistory.fromJson(Map<String, dynamic> json)
-      : eventCode = (json['event_code'] != null) ? TrackingTitle.values.byName(json['event_code']) : TrackingTitle.ORDER_ARRIVED,
+      : eventCode = (json['event_code'] != null) ? tackingTitleValues.map[json["event_code"]] : TrackingTitle.ORDER_ARRIVED,
         eventTime = json['event_time'] as int?,
         status = json['status'] as int?,
         eventMessage = json['event_message'] as String?,
@@ -89,7 +89,7 @@ class EventHistory {
   final String? eventSummary;
 
   Map<String, dynamic> toJson() => {
-        'event_code': eventCode?.name ?? TrackingTitle.ORDER_ARRIVED.name,
+        'event_code': tackingTitleValues.reverse[eventCode] ?? TrackingTitle.ORDER_ARRIVED.name,
         'event_time': eventTime,
         'status': status,
         'event_message': eventMessage,
