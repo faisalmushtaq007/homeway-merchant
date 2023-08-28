@@ -2,6 +2,7 @@ part of 'package:homemakers_merchant/app/features/menu/index.dart';
 
 class MainCategoryPage extends StatefulWidget {
   const MainCategoryPage({super.key});
+
   @override
   _MainCategoryPageController createState() => _MainCategoryPageController();
 }
@@ -16,6 +17,7 @@ class _MainCategoryPageController extends State<MainCategoryPage> with SingleTic
       AnimationController(duration: const Duration(milliseconds: 1000), reverseDuration: const Duration(milliseconds: 1250), value: 0, vsync: this);
   late final _railAnimation = RailAnimation(parent: _controller);
   int selectedIndex = 0;
+  List<NavigationRailDestination> navigationDestinations = [];
 
   @override
   void initState() {
@@ -24,12 +26,48 @@ class _MainCategoryPageController extends State<MainCategoryPage> with SingleTic
     innerScrollController = ScrollController();
     listOfCategories = [];
     listOfCategories.clear();
-    initLoadCategoryList();
+    navigationDestinations = [];
+    navigationDestinations.clear();
+    listOfCategories = List<Category>.from(localListOfCategories.toList());
+    //initLoadCategoryList(context);
   }
 
-  Future<void> initLoadCategoryList() async {
-    listOfCategories = List<Category>.from(localListOfCategories.toList());
-    setState(() {});
+  Future<void> initLoadCategoryList(BuildContext context) async {
+    for (Category category in listOfCategories) {
+      navigationDestinations.add(
+        NavigationRailDestination(
+          icon: SvgPicture.asset(
+            'assets/svg/category.svg',
+            colorFilter: ColorFilter.mode(context.colorScheme.primary, BlendMode.srcIn),
+            semanticsLabel: category.title,
+            height: 24,
+            width: 24,
+          ),
+          label: Center(
+            child: Wrap(
+              children: [
+                Text(
+                  category.title,
+                  textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                  textAlign: TextAlign.center,
+                  maxLines: 3,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ],
+            ),
+          ),
+        ),
+      );
+    }
+    //setState(() {});
+  }
+
+  @override
+  void didChangeDependencies() {
+    if (listOfCategories.isNotNullOrEmpty && navigationDestinations.isNullOrEmpty) {
+      initLoadCategoryList(context);
+    }
+    super.didChangeDependencies();
   }
 
   @override
@@ -110,34 +148,60 @@ class _MainCategoryPageView extends WidgetView<MainCategoryPage, _MainCategoryPa
                 child: PageBody(
                   controller: state.scrollController,
                   constraints: BoxConstraints(
-                    minWidth: 1000,
-                    minHeight: media.size.height - (media.padding.top + kToolbarHeight + media.padding.bottom),
-                  ),
+                      minWidth: 1000, minHeight: media.size.height * 1.5 //media.size.height - (media.padding.top + kToolbarHeight + media.padding.bottom),
+                      ),
                   padding: EdgeInsetsDirectional.only(
                     top: topPadding,
                     //bottom: bottomPadding,
                     start: margins * 2.5,
                     end: margins * 2.5,
                   ),
-                  child: CustomScrollView(
-                    controller: state.innerScrollController,
-                    slivers: [
-                      SliverFillRemaining(
-                        child: ListDetailTransition(
-                          animation: state._railAnimation,
-                          one: CategoryListView(
-                            allCategories: state.listOfCategories.toList(),
-                            selectedIndex: state.selectedIndex,
-                            onSelected: (index) {
-                              state.onSelected(index);
-                            },
-                          ),
-                          two: SubCategoryListView(
-                            data: state.listOfCategories[state.selectedIndex].subCategory.toList(),
+                  child: SizedBox(
+                    height: media.size.height * 1.5,
+                    child: CustomScrollView(
+                      controller: state.innerScrollController,
+                      shrinkWrap: true,
+                      slivers: [
+                        SliverFillRemaining(
+                          child: Row(
+                            textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                            children: [
+                              Expanded(
+                                child: LayoutBuilder(
+                                  builder: (context, constraint) {
+                                    return SingleChildScrollView(
+                                      child: ConstrainedBox(
+                                        constraints: BoxConstraints(minHeight: constraint.maxHeight),
+                                        child: IntrinsicHeight(
+                                          child: SizedBox(
+                                            width: 80,
+                                            child: NavigationRail(
+                                              labelType: NavigationRailLabelType.all,
+                                              selectedIndex: state.selectedIndex,
+                                              destinations: state.navigationDestinations.toList(),
+                                              onDestinationSelected: (int index) {
+                                                state.onSelected(index);
+                                              },
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                ),
+                              ),
+                              SizedBox(child: VerticalDivider()),
+                              Expanded(
+                                flex: 2,
+                                child: SubCategoryPage(
+                                  selectedCategory: state.listOfCategories[state.selectedIndex],
+                                ),
+                              ),
+                            ],
                           ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
               ),
