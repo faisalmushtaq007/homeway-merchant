@@ -77,9 +77,10 @@ class _SubCategoryPageView extends WidgetView<SubCategoryPage, _SubCategoryPageC
           pagingController: state._pagingController,
           builderDelegate: PagedChildBuilderDelegate<Category>(
             itemBuilder: (context, item, index) => Wrap(
+              textDirection: serviceLocator<LanguageController>().targetTextDirection,
               children: [
                 ChoiceChip(
-                  label: Text('${item.title}'),
+                  label: Text(item.title),
                   selected: state.selectedSubCategoryValue == index,
                   onSelected: (bool selected) {
                     state.selectSubCategory(selected ? index : null);
