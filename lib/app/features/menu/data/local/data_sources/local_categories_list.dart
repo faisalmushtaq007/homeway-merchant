@@ -3,53 +3,217 @@ part of 'package:homemakers_merchant/app/features/menu/index.dart';
 final localListOfCategories = [
   Category(
     categoryId: '0',
-    title: 'Veg',
+    title: 'Classic',
     hasSelected: false,
+    subCategory: [
+      Category(
+        categoryId: '1001',
+        title: 'Hummus – Chickpeas Dip With Olive Oil',
+        hasSelected: false,
+        subCategory: [],
+      ),
+      Category(
+        categoryId: '101',
+        title: 'Asida/ Aseeda',
+        hasSelected: false,
+        subCategory: [],
+      ),
+    ],
   ),
   Category(
     categoryId: '1',
-    title: 'Arabic food',
+    title: 'Traditional',
     hasSelected: false,
+    subCategory: [
+      Category(
+        categoryId: '101',
+        title: 'Tharid',
+        hasSelected: false,
+        subCategory: [],
+      ),
+      Category(
+        categoryId: '102',
+        title: 'Harees',
+        hasSelected: false,
+        subCategory: [],
+      ),
+      Category(
+        categoryId: '103',
+        title: 'Kabsa',
+        hasSelected: false,
+        subCategory: [],
+      ),
+    ],
   ),
   Category(
     categoryId: '2',
     title: 'Chinese food',
     hasSelected: false,
+    subCategory: [],
   ),
   Category(
     categoryId: '3',
     title: 'Fast food',
     hasSelected: false,
+    subCategory: [],
   ),
   Category(
     categoryId: '4',
     title: 'Bread',
     hasSelected: false,
+    subCategory: [],
   ),
   Category(
     categoryId: '5',
-    title: 'Main course',
+    title: 'House Special',
     hasSelected: false,
+    subCategory: [
+      Category(
+        categoryId: '51',
+        title: 'Shami House',
+        hasSelected: false,
+        subCategory: [],
+      ),
+      Category(
+        categoryId: '52',
+        title: 'Egyptian House',
+        hasSelected: false,
+        subCategory: [],
+      ),
+      Category(
+        categoryId: '53',
+        title: 'Saudi House',
+        hasSelected: false,
+        subCategory: [],
+      ),
+      Category(
+        categoryId: '54',
+        title: 'Asian House',
+        hasSelected: false,
+        subCategory: [],
+      ),
+      Category(
+        categoryId: '55',
+        title: 'Italian House',
+        hasSelected: false,
+        subCategory: [],
+      ),
+    ],
   ),
   Category(
     categoryId: '6',
     title: 'Beverage',
     hasSelected: false,
+    subCategory: [],
   ),
   Category(
     categoryId: '7',
     title: 'Desert',
     hasSelected: false,
+    subCategory: [],
+    //Qahwa – Arabic Coffee
   ),
   Category(
     categoryId: '8',
     title: 'Prawns',
     hasSelected: false,
+    subCategory: [],
   ),
   Category(
     categoryId: '9',
     title: 'Fish',
     hasSelected: false,
+    subCategory: [],
+  ),
+  Category(
+    categoryId: '10',
+    title: 'Veg',
+    hasSelected: false,
+    subCategory: [],
+  ),
+  Category(
+    categoryId: '11',
+    title: 'Arabic food',
+    hasSelected: false,
+    subCategory: [
+      Category(
+        categoryId: '110',
+        title: 'Majboos/ Kabsa',
+        hasSelected: false,
+        subCategory: [],
+      ),
+      Category(
+        categoryId: '111',
+        title: 'Gursan',
+        hasSelected: false,
+        subCategory: [],
+      ),
+    ],
+  ),
+  Category(
+    categoryId: '12',
+    title: 'Main Course',
+    hasSelected: false,
+    subCategory: [
+      Category(
+        categoryId: '121',
+        title: 'Lunch',
+        hasSelected: false,
+        subCategory: [],
+      ),
+      Category(
+        categoryId: '122',
+        title: 'Dinner',
+        hasSelected: false,
+        subCategory: [],
+      ),
+    ],
+  ),
+  Category(
+    categoryId: '13',
+    title: 'Beverage',
+    hasSelected: false,
+    subCategory: [],
+  ),
+  Category(
+    categoryId: '14',
+    title: 'Desert',
+    hasSelected: false,
+    subCategory: [],
+  ),
+  Category(
+    categoryId: '15',
+    title: 'Indonesian Food',
+    hasSelected: false,
+    subCategory: [],
+  ),
+  Category(
+    categoryId: '16',
+    title: 'Korean Food',
+    hasSelected: false,
+    subCategory: [],
+  ),
+  Category(
+    categoryId: '17',
+    title: 'Sweets',
+    hasSelected: false,
+    subCategory: [],
+  ),
+  Category(
+    categoryId: '18',
+    title: 'Bakery',
+    hasSelected: false,
+    subCategory: [
+      Category(
+        categoryId: '181',
+        title: 'Martabak – Pancakes',
+        hasSelected: false,
+        subCategory: [
+          //Martabak – Saudi Arabian Pancakes
+        ],
+      ),
+      //Ka’ak – Bread Rings
+    ],
   ),
 ];
 final localTasteType = [

@@ -1171,16 +1171,19 @@ class Timing with AppEquatable {
 }
 
 class Category with AppEquatable {
-  Category({
-    this.categoryId = '0',
-    this.title = '',
-    this.hasSelected = false,
-    this.subCategory = const [],
-  });
+  Category(
+      {this.categoryId = '0',
+      this.title = '',
+      this.hasSelected = false,
+      this.subCategory = const [],
+      this.categoryImage = '',
+      this.metaInfo = const <String, dynamic>{}});
 
   factory Category.fromMap(Map<String, dynamic> map) {
     return Category(
       categoryId: map['categoryId'] as String,
+      categoryImage: map['categoryImage'] as String,
+      metaInfo: map['metaInfo'] as Map<String, dynamic>,
       title: map['title'] as String,
       hasSelected: map['hasSelected'] as bool,
       subCategory: map['subCategory'].map((e) => Category.fromMap(e)).toList().cast<Category>(),
@@ -1191,6 +1194,8 @@ class Category with AppEquatable {
   String title;
   bool hasSelected;
   List<Category> subCategory;
+  String categoryImage;
+  Map<String, dynamic> metaInfo;
 
   @override
   bool get cacheHash => true;
@@ -1201,6 +1206,8 @@ class Category with AppEquatable {
         title,
         hasSelected,
         subCategory,
+        categoryImage,
+        metaInfo,
       ];
 
   Map<String, dynamic> toMap() {
@@ -1209,6 +1216,8 @@ class Category with AppEquatable {
       'title': this.title,
       'hasSelected': this.hasSelected,
       'subCategory': this.subCategory.map((e) => e.toMap()).toList(),
+      'categoryImage': this.categoryImage,
+      'metaInfo': this.metaInfo,
     };
   }
 

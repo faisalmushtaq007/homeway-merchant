@@ -708,6 +708,12 @@ void _setUpUseCases() {
       orderRepository: serviceLocator(),
     ),
   );
+  // Category
+  serviceLocator.registerLazySingleton<GetAllCategoryUseCase>(
+    () => GetAllCategoryUseCase(
+      menuRepository: serviceLocator(),
+    ),
+  );
 }
 
 void _setUpRepository() {
@@ -718,6 +724,8 @@ void _setUpRepository() {
   );
   serviceLocator.registerSingleton<StoreLocalDbRepository<StoreEntity>>(StoreLocalDbRepository<StoreEntity>());
   serviceLocator.registerSingleton<MenuLocalDbRepository<MenuEntity>>(MenuLocalDbRepository<MenuEntity>());
+  // Category
+  serviceLocator.registerSingleton<CategoryLocalDbRepository<Category>>(CategoryLocalDbRepository<Category>());
   serviceLocator.registerSingleton<AuthenticationDataSource>(AuthenticationRemoteDataSource());
   serviceLocator.registerSingleton<AuthenticationRepository>(
     AuthenticationRepositoryImplement(remoteDataSource: serviceLocator(), userLocalDbRepository: serviceLocator()),
@@ -779,6 +787,7 @@ void _setUpRepository() {
     ),
   );
   // Menu
+
   serviceLocator.registerSingleton<MenuDataSource>(MenuRemoteDataSource());
   serviceLocator.registerSingleton<MenuRepository>(
     MenuRepositoryImplement(
@@ -789,6 +798,7 @@ void _setUpRepository() {
       menuBindingWithCurrentUserLocalDataSource: serviceLocator(),
       addonsBindingWithMenuLocalDataSource: serviceLocator(),
       addonsBindingWithCurrentUserLocalDataSource: serviceLocator(),
+      categoryLocalDbRepository: serviceLocator(),
     ),
   );
   // User
@@ -822,7 +832,7 @@ void _setUpRepository() {
       businessDocumentLocalDataSource: serviceLocator(),
     ),
   );
-  serviceLocator.registerSingleton<MenuRepository>(
+  /*serviceLocator.registerSingleton<MenuRepository>(
     MenuRepositoryImplement(
       remoteDataSource: serviceLocator(),
       menuLocalDataSource: serviceLocator(),
@@ -831,8 +841,9 @@ void _setUpRepository() {
       addonsBindingWithMenuLocalDataSource: serviceLocator(),
       menuBindingWithCurrentUserLocalDataSource: serviceLocator(),
       menuBindingWithStoreLocalDataSource: serviceLocator(),
+      categoryLocalDbRepository: serviceLocator(),
     ),
-  );
+  );*/
   // repository
   serviceLocator.registerSingleton<AddressLocalDbRepository<AddressModel>>(AddressLocalDbRepository<AddressModel>());
   // remote

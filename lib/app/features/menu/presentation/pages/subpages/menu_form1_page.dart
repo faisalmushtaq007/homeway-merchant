@@ -21,6 +21,8 @@ class _MenuForm1PageState extends State<MenuForm1Page> with AutomaticKeepAliveCl
   void initState() {
     super.initState();
     scrollController = ScrollController();
+    listOfCategories = [];
+    listOfCategories.clear();
     listOfCategories = List<Category>.from(localListOfCategories.toList());
     menuForm1FocusList = [
       FocusNode(),

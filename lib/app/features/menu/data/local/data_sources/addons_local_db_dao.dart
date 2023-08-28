@@ -151,6 +151,147 @@ class AddonsLocalDbRepository<Extras extends Addons> implements BaseAddonsLocalD
     // TODO(prasant): implement updateByIdAndEntity
     throw UnimplementedError();
   }
+
+  Future<Map<String, RecordSnapshot<int, Map<String, Object?>>>> getCategoryByIds(DatabaseClient db, List<int> ids) async {
+    var snapshots = await _addons.find(db, finder: Finder(filter: Filter.or(ids.map((e) => Filter.equals('addonsID', e)).toList())));
+    return <String, RecordSnapshot<int, Map<String, Object?>>>{for (var snapshot in snapshots) snapshot.value['addonsID']!.toString(): snapshot};
+  }
+
+  @override
+  Future<Either<RepositoryBaseFailure, List<Addons>>> saveAll({required List<Addons> entities, bool hasUpdateAll = false}) async {
+    final result = await tryCatch<List<Addons>>(() async {
+      final db = await _db;
+
+      final result = await getAll();
+      return result.fold((l) {
+        return <Addons>[];
+      }, (r) async {
+        final allOrderList = r.toList();
+        final newList = entities.toList();
+        var convertOrderToMapObject = newList.map((e) => e.toMap()).toList();
+        final bool equalityStatus = unOrdDeepEq(allOrderList.toSet().toList(), newList.toSet().toList());
+
+        await db.transaction((transaction) async {
+          var addonsIds = convertOrderToMapObject.map((map) => map['addonsID'] as int).toList();
+          var map = await getCategoryByIds(db, addonsIds);
+          // Watch for deleted item
+          var keysToDelete = (await _addons.findKeys(transaction)).toList();
+          for (var order in convertOrderToMapObject) {
+            var snapshot = map[order['addonsID'] as int];
+            if (snapshot != null) {
+              // The record current key
+              var key = snapshot.key;
+              // Remove from deletion list
+              keysToDelete.remove(key);
+              // Don't update if no change
+              if (const DeepCollectionEquality().equals(snapshot.value, order)) {
+                // no changes
+                continue;
+              } else {
+                // Update product
+                await _addons.record(key).put(transaction, order);
+              }
+            } else {
+              // Add missing product
+              await _addons.add(transaction, order);
+            }
+          }
+          // Delete the one not present any more
+          await _addons.records(keysToDelete).delete(transaction);
+        });
+
+        final result = await getAll();
+        if (result.isRight()) {
+          return result.right.toList();
+        } else {
+          return <Category>[];
+        }
+      });
+    });
+    return result;
+  }
+
+  @override
+  Future<Either<RepositoryBaseFailure, List<Addons>>> getAllWithPagination({
+    int pageKey = 1,
+    int pageSize = 10,
+    String? searchText,
+    Map<String, dynamic> extras = const <String, dynamic>{},
+    String? filter,
+    String? sorting,
+    Timestamp? startTimeStamp,
+    Timestamp? endTimeStamp,
+  }) async {
+    final result = await tryCatch<List<Addons>>(() async {
+      final db = await _db;
+      return await db.transaction((transaction) async {
+        // Finder object can also sort data.
+        Finder finder = Finder(
+          limit: pageSize,
+          offset: pageKey,
+        );
+        // If
+        if (searchText.isNotNull || filter.isNotNull || sorting.isNotNull && (startTimeStamp.isNotNull || endTimeStamp.isNotNull)) {
+          var regExp = RegExp(searchText ?? '', caseSensitive: false);
+          var filterRegExp = RegExp(filter ?? '', caseSensitive: false);
+          var sortingRegExp = RegExp(sorting ?? '', caseSensitive: false);
+          finder = Finder(
+            limit: pageSize,
+            offset: pageKey,
+            filter: Filter.and(
+              [
+                Filter.or([
+                  Filter.matchesRegExp(
+                    'addons.title',
+                    regExp,
+                  ),
+                ]),
+              ],
+            ),
+          );
+        }
+        // Else If
+        else if (searchText.isNotNull || filter.isNotNull || sorting.isNotNull) {
+          var regExp = RegExp(searchText ?? '', caseSensitive: false);
+          var filterRegExp = RegExp(filter ?? '', caseSensitive: false);
+          var sortingRegExp = RegExp(sorting ?? '', caseSensitive: false);
+          finder = Finder(
+            /*sortOrders: [
+          SortOrder('orderDateTime'),
+        ],*/
+            limit: pageSize,
+            offset: pageKey,
+            filter: Filter.or([
+              Filter.matchesRegExp(
+                'addons.title',
+                regExp,
+              ),
+            ]),
+          );
+        }
+        // Else
+        else {
+          finder = Finder(
+            limit: pageSize,
+            offset: pageKey,
+          );
+        }
+        final recordSnapshots = await _addons.find(
+          await _db,
+          finder: finder,
+        );
+        // Making a List<Category> out of List<RecordSnapshot>
+        return recordSnapshots.map((snapshot) {
+          final orders = Addons.fromMap(snapshot.value).copyWith(
+            // An ID is a key of a record from the database.
+            addonsID: snapshot.key,
+          );
+          return orders;
+        }).toList();
+      });
+    });
+    return result;
+  }
 }
 
 class AddonsBindingWithMenuLocalDbDbRepository<T extends Addons, R extends MenuEntity> implements Binding<List<Addons>, List<MenuEntity>> {

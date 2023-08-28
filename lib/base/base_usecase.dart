@@ -134,6 +134,20 @@ abstract class OrderQueryAllUseCaseIORecord<Type, PageKey, PageSize, SearchTerm,
       ) record);
 }
 
+abstract class CategoryQueryAllUseCaseIORecord<MainCategory, SubCategory, PageKey, PageSize, SearchTerm, Filtering, Sorting, StartTime, EndTime, T> {
+  Future<T> call({
+    PageKey pageKey,
+    PageSize pageSize,
+    SearchTerm? searchText,
+    MainCategory? category,
+    SubCategory? subCategory,
+    Filtering filtering,
+    Sorting sorting,
+    StartTime? startTime,
+    EndTime? endTime,
+  });
+}
+
 abstract class UseCaseOptionalIO<Input, T> {
   Future<T?> call({Input? input});
 }

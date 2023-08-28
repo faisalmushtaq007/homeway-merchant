@@ -25,7 +25,15 @@ class MenuRemoteDataSource implements MenuDataSource {
   }
 
   @override
-  Future<ApiResultState<List<MenuEntity>>> getAllMenu() {
+  Future<ApiResultState<List<MenuEntity>>> getAllMenu({
+    int pageKey = 0,
+    int pageSize = 10,
+    String? searchText,
+    String? filtering,
+    String? sorting,
+    Timestamp? startTime,
+    Timestamp? endTime,
+  }) {
     // TODO(prasant): implement getAllMenu
     throw UnimplementedError();
   }
@@ -79,7 +87,15 @@ class MenuRemoteDataSource implements MenuDataSource {
   }
 
   @override
-  Future<ApiResultState<List<Addons>>> getAllAddons() {
+  Future<ApiResultState<List<Addons>>> getAllAddons({
+    int pageKey = 0,
+    int pageSize = 10,
+    String? searchText,
+    String? filtering,
+    String? sorting,
+    Timestamp? startTime,
+    Timestamp? endTime,
+  }) {
     // TODO(prasant): implement getAllAddons
     throw UnimplementedError();
   }
@@ -123,6 +139,40 @@ class MenuRemoteDataSource implements MenuDataSource {
   @override
   Future<ApiResultState<AppUserEntity>> unBindMenuWithUser({required List<MenuEntity> source, required AppUserEntity destination}) {
     // TODO: implement unBindMenuWithUser
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<ApiResultState<List<Category>>> getAllCategory({
+    int pageKey = 0,
+    int pageSize = 10,
+    String? searchText,
+    Category? category,
+    Category? subCategory,
+    String? filtering,
+    String? sorting,
+    Timestamp? startTime,
+    Timestamp? endTime,
+  }) {
+    // TODO: implement getAllCategory
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<ApiResultState<List<Addons>>> saveAllAddons({required List<Addons> addonsEntities, bool hasUpdateAll = false}) {
+    // TODO: implement saveAllAddons
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<ApiResultState<List<Category>>> saveAllCategory({required List<Category> categories, bool hasUpdateAll = false}) {
+    // TODO: implement saveAllCategory
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<ApiResultState<List<MenuEntity>>> saveAllMenu({required List<MenuEntity> menuEntities, bool hasUpdateAll = false}) {
+    // TODO: implement saveAllMenu
     throw UnimplementedError();
   }
 }

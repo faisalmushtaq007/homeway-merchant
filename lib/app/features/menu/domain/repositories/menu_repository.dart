@@ -22,7 +22,15 @@ abstract interface class MenuRepository {
     MenuEntity? menuEntity,
   });
 
-  Future<DataSourceState<List<MenuEntity>>> getAllMenu();
+  Future<DataSourceState<List<MenuEntity>>> getAllMenu({
+    int pageKey = 0,
+    int pageSize = 10,
+    String? searchText,
+    String? filtering,
+    String? sorting,
+    Timestamp? startTime,
+    Timestamp? endTime,
+  });
   // Addons
   Future<DataSourceState<Addons>> saveAddons({
     required Addons addons,
@@ -45,7 +53,15 @@ abstract interface class MenuRepository {
     Addons? addons,
   });
 
-  Future<DataSourceState<List<Addons>>> getAllAddons();
+  Future<DataSourceState<List<Addons>>> getAllAddons({
+    int pageKey = 0,
+    int pageSize = 10,
+    String? searchText,
+    String? filtering,
+    String? sorting,
+    Timestamp? startTime,
+    Timestamp? endTime,
+  });
 
   Future<DataSourceState<List<MenuEntity>>> bindAddonsWithMenu({required List<Addons> source, required List<MenuEntity> destination});
 
@@ -68,5 +84,30 @@ abstract interface class MenuRepository {
   Future<DataSourceState<AppUserEntity>> unBindMenuWithUser({
     required List<MenuEntity> source,
     required AppUserEntity destination,
+  });
+
+  Future<DataSourceState<List<Category>>> getAllCategory({
+    int pageKey = 0,
+    int pageSize = 10,
+    String? searchText,
+    Category? category,
+    Category? subCategory,
+    String? filtering,
+    String? sorting,
+    Timestamp? startTime,
+    Timestamp? endTime,
+  });
+
+  Future<DataSourceState<List<Category>>> saveAllCategory({
+    required List<Category> categories,
+    bool hasUpdateAll = false,
+  });
+  Future<DataSourceState<List<MenuEntity>>> saveAllMenu({
+    required List<MenuEntity> menuEntities,
+    bool hasUpdateAll = false,
+  });
+  Future<DataSourceState<List<Addons>>> saveAllAddons({
+    required List<Addons> addonsEntities,
+    bool hasUpdateAll = false,
   });
 }

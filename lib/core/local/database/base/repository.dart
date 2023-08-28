@@ -1,5 +1,6 @@
 import 'package:homemakers_merchant/core/local/database/base/repository_function.dart';
 import 'package:homemakers_merchant/utils/functional/functional.dart';
+import 'package:sembast/timestamp.dart';
 import 'repository_operation.dart';
 import 'repository.dart';
 import './repository_failure.dart';
@@ -217,4 +218,20 @@ abstract class UpdateAll<EntityType> implements BaseRepositoryUpdateAllOperation
 abstract class Binding<T, R> {
   Future<Either<RepositoryBaseFailure, R>> binding(T source, R destination);
   Future<Either<RepositoryBaseFailure, R>> unbinding(T source, R destination);
+}
+
+abstract class GetAllWithPagination<EntityType> extends BaseRepositoryOperation<EntityType> {
+  /// Returns a list of all entities in repository
+  ///
+  /// Will return empty array if no entities found.
+  Future<Either<RepositoryBaseFailure, List<EntityType>>> getAllWithPagination({
+    int pageKey = 1,
+    int pageSize = 10,
+    String? searchText,
+    Map<String, dynamic> extras = const <String, dynamic>{},
+    String? filter,
+    String? sorting,
+    Timestamp? startTimeStamp,
+    Timestamp? endTimeStamp,
+  });
 }

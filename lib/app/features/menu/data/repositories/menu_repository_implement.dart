@@ -9,6 +9,7 @@ class MenuRepositoryImplement implements MenuRepository {
     required this.addonsBindingWithCurrentUserLocalDataSource,
     required this.menuBindingWithStoreLocalDataSource,
     required this.menuBindingWithCurrentUserLocalDataSource,
+    required this.categoryLocalDbRepository,
   });
 
   final MenuDataSource remoteDataSource;
@@ -18,6 +19,7 @@ class MenuRepositoryImplement implements MenuRepository {
   final AddonsBindingWithCurrentUserLocalDbDbRepository<Addons, AppUserEntity> addonsBindingWithCurrentUserLocalDataSource;
   final MenuBindingWithStoreLocalDbDbRepository<MenuEntity, StoreEntity> menuBindingWithStoreLocalDataSource;
   final MenuBindingWithCurrentUserLocalDbDbRepository<MenuEntity, AppUserEntity> menuBindingWithCurrentUserLocalDataSource;
+  final CategoryLocalDbRepository categoryLocalDbRepository;
 
   @override
   Future<DataSourceState<bool>> deleteAllMenu() async {
@@ -197,7 +199,15 @@ class MenuRepositoryImplement implements MenuRepository {
   }
 
   @override
-  Future<DataSourceState<List<MenuEntity>>> getAllMenu() async {
+  Future<DataSourceState<List<MenuEntity>>> getAllMenu({
+    int pageKey = 0,
+    int pageSize = 10,
+    String? searchText,
+    String? filtering,
+    String? sorting,
+    Timestamp? startTime,
+    Timestamp? endTime,
+  }) async {
     /*try {*/
     var connectivity = serviceLocator<ConnectivityService>().getCurrentInternetStatus();
     if (connectivity.$2 == InternetConnectivityState.internet) {
@@ -728,7 +738,15 @@ class MenuRepositoryImplement implements MenuRepository {
   }
 
   @override
-  Future<DataSourceState<List<Addons>>> getAllAddons() async {
+  Future<DataSourceState<List<Addons>>> getAllAddons({
+    int pageKey = 0,
+    int pageSize = 10,
+    String? searchText,
+    String? filtering,
+    String? sorting,
+    Timestamp? startTime,
+    Timestamp? endTime,
+  }) async {
     try {
       var connectivity = serviceLocator<ConnectivityService>().getCurrentInternetStatus();
       if (connectivity.$2 == InternetConnectivityState.internet) {
@@ -983,5 +1001,283 @@ class MenuRepositoryImplement implements MenuRepository {
   Future<DataSourceState<AppUserEntity>> unBindMenuWithUser({required List<MenuEntity> source, required AppUserEntity destination}) {
     // TODO: implement unBindMenuWithUser
     throw UnimplementedError();
+  }
+
+  @override
+  Future<DataSourceState<List<Category>>> getAllCategory({
+    int pageKey = 0,
+    int pageSize = 10,
+    String? searchText,
+    Category? category,
+    Category? subCategory,
+    String? filtering,
+    String? sorting,
+    Timestamp? startTime,
+    Timestamp? endTime,
+  }) async {
+    try {
+      final connectivity = serviceLocator<ConnectivityService>().getCurrentInternetStatus();
+      if (connectivity.$2 == InternetConnectivityState.internet) {
+        // Local DB
+        // Save to local
+        final Either<RepositoryBaseFailure, List<Category>> result = await categoryLocalDbRepository.getAllWithPagination(
+          filter: filtering,
+          sorting: sorting,
+          searchText: searchText,
+          pageSize: pageSize,
+          pageKey: pageKey,
+          extras: {
+            'category': category,
+            'subCategory': subCategory,
+          },
+          endTimeStamp: endTime,
+          startTimeStamp: startTime,
+        );
+        // Return result
+        return result.fold((l) {
+          final RepositoryFailure failure = l as RepositoryFailure;
+          appLog.d('Get all category local error ${failure.message}');
+          return DataSourceState<List<Category>>.error(
+            reason: failure.message,
+            dataSourceFailure: DataSourceFailure.local,
+            stackTrace: failure.stacktrace,
+          );
+        }, (r) {
+          appLog.d('Get all category local : ${r.length}');
+          return DataSourceState<List<Category>>.localDb(data: r);
+        });
+      } else {
+        // Remote
+        // Save to server
+        final ApiResultState<List<Category>> result = await remoteDataSource.getAllCategory(
+          filtering: filtering,
+          sorting: sorting,
+          searchText: searchText,
+          pageSize: pageSize,
+          pageKey: pageKey,
+          category: category,
+          subCategory: subCategory,
+          endTime: endTime,
+          startTime: startTime,
+        );
+        // Return result
+        return result.when(
+          success: (data) {
+            appLog.d('Get all category from remote');
+            return DataSourceState<List<Category>>.remote(
+              data: data.toList(),
+            );
+          },
+          failure: (reason, error, exception, stackTrace) {
+            appLog.d('Get all category remote error $reason');
+            return DataSourceState<List<Category>>.error(
+              reason: reason,
+              dataSourceFailure: DataSourceFailure.remote,
+              stackTrace: stackTrace,
+              error: error,
+              networkException: exception,
+            );
+          },
+        );
+      }
+    } catch (e, s) {
+      appLog.e('Get all category exception $e');
+      return DataSourceState<List<Category>>.error(
+        reason: e.toString(),
+        dataSourceFailure: DataSourceFailure.local,
+        stackTrace: s,
+        error: e,
+        exception: e as Exception,
+      );
+    }
+  }
+
+  @override
+  Future<DataSourceState<List<Addons>>> saveAllAddons({required List<Addons> addonsEntities, bool hasUpdateAll = false}) async {
+    try {
+      final connectivity = serviceLocator<ConnectivityService>().getCurrentInternetStatus();
+      if (connectivity.$2 == InternetConnectivityState.internet) {
+        // Local DB
+        // Save to local
+        final Either<RepositoryBaseFailure, List<Addons>> result = await addonsLocalDataSource.saveAll(
+          entities: addonsEntities,
+          hasUpdateAll: hasUpdateAll,
+        );
+        // Return result
+        return result.fold((l) {
+          final RepositoryFailure failure = l as RepositoryFailure;
+          appLog.d('Save all Addons local error ${failure.message}');
+          return DataSourceState<List<Addons>>.error(
+            reason: failure.message,
+            dataSourceFailure: DataSourceFailure.local,
+            stackTrace: failure.stacktrace,
+          );
+        }, (r) {
+          appLog.d('Save all Addons to local : ${r?.length},');
+          return DataSourceState<List<Addons>>.localDb(data: r);
+        });
+      } else {
+        // Remote
+        // Save to server
+        final ApiResultState<List<Addons>> result = await remoteDataSource.saveAllAddons(
+          addonsEntities: addonsEntities,
+          hasUpdateAll: hasUpdateAll,
+        );
+        // Return result
+        return result.when(
+          success: (data) {
+            appLog.d('Save all Addons to remote');
+            return DataSourceState<List<Addons>>.remote(
+              data: data,
+            );
+          },
+          failure: (reason, error, exception, stackTrace) {
+            appLog.d('Save all Addons remote error $reason');
+            return DataSourceState<List<Addons>>.error(
+              reason: reason,
+              dataSourceFailure: DataSourceFailure.remote,
+              stackTrace: stackTrace,
+              error: error,
+              networkException: exception,
+            );
+          },
+        );
+      }
+    } catch (e, s) {
+      appLog.d('Save all Addons exception $e');
+      return DataSourceState<List<Addons>>.error(
+        reason: e.toString(),
+        dataSourceFailure: DataSourceFailure.local,
+        stackTrace: s,
+        error: e,
+        exception: e as Exception,
+      );
+    }
+  }
+
+  @override
+  Future<DataSourceState<List<Category>>> saveAllCategory({required List<Category> categories, bool hasUpdateAll = false}) async {
+    try {
+      final connectivity = serviceLocator<ConnectivityService>().getCurrentInternetStatus();
+      if (connectivity.$2 == InternetConnectivityState.internet) {
+        // Local DB
+        // Save to local
+        final Either<RepositoryBaseFailure, List<Category>> result = await categoryLocalDbRepository.saveAll(
+          entities: categories,
+          hasUpdateAll: hasUpdateAll,
+        );
+        // Return result
+        return result.fold((l) {
+          final RepositoryFailure failure = l as RepositoryFailure;
+          appLog.d('Save all Category local error ${failure.message}');
+          return DataSourceState<List<Category>>.error(
+            reason: failure.message,
+            dataSourceFailure: DataSourceFailure.local,
+            stackTrace: failure.stacktrace,
+          );
+        }, (r) {
+          appLog.d('Save all Category to local : ${r?.length},');
+          return DataSourceState<List<Category>>.localDb(data: r);
+        });
+      } else {
+        // Remote
+        // Save to server
+        final ApiResultState<List<Category>> result = await remoteDataSource.saveAllCategory(
+          categories: categories,
+          hasUpdateAll: hasUpdateAll,
+        );
+        // Return result
+        return result.when(
+          success: (data) {
+            appLog.d('Save all Category to remote');
+            return DataSourceState<List<Category>>.remote(
+              data: data,
+            );
+          },
+          failure: (reason, error, exception, stackTrace) {
+            appLog.d('Save all Category remote error $reason');
+            return DataSourceState<List<Category>>.error(
+              reason: reason,
+              dataSourceFailure: DataSourceFailure.remote,
+              stackTrace: stackTrace,
+              error: error,
+              networkException: exception,
+            );
+          },
+        );
+      }
+    } catch (e, s) {
+      appLog.d('Save all Category exception $e');
+      return DataSourceState<List<Category>>.error(
+        reason: e.toString(),
+        dataSourceFailure: DataSourceFailure.local,
+        stackTrace: s,
+        error: e,
+        exception: e as Exception,
+      );
+    }
+  }
+
+  @override
+  Future<DataSourceState<List<MenuEntity>>> saveAllMenu({required List<MenuEntity> menuEntities, bool hasUpdateAll = false}) async {
+    try {
+      final connectivity = serviceLocator<ConnectivityService>().getCurrentInternetStatus();
+      if (connectivity.$2 == InternetConnectivityState.internet) {
+        // Local DB
+        // Save to local
+        final Either<RepositoryBaseFailure, List<MenuEntity>> result = await menuLocalDataSource.saveAll(
+          entities: menuEntities,
+          hasUpdateAll: hasUpdateAll,
+        );
+        // Return result
+        return result.fold((l) {
+          final RepositoryFailure failure = l as RepositoryFailure;
+          appLog.d('Save all MenuEntity local error ${failure.message}');
+          return DataSourceState<List<MenuEntity>>.error(
+            reason: failure.message,
+            dataSourceFailure: DataSourceFailure.local,
+            stackTrace: failure.stacktrace,
+          );
+        }, (r) {
+          appLog.d('Save all MenuEntity to local : ${r?.length},');
+          return DataSourceState<List<MenuEntity>>.localDb(data: r);
+        });
+      } else {
+        // Remote
+        // Save to server
+        final ApiResultState<List<MenuEntity>> result = await remoteDataSource.saveAllMenu(
+          menuEntities: menuEntities,
+          hasUpdateAll: hasUpdateAll,
+        );
+        // Return result
+        return result.when(
+          success: (data) {
+            appLog.d('Save all MenuEntity to remote');
+            return DataSourceState<List<MenuEntity>>.remote(
+              data: data,
+            );
+          },
+          failure: (reason, error, exception, stackTrace) {
+            appLog.d('Save all MenuEntity remote error $reason');
+            return DataSourceState<List<MenuEntity>>.error(
+              reason: reason,
+              dataSourceFailure: DataSourceFailure.remote,
+              stackTrace: stackTrace,
+              error: error,
+              networkException: exception,
+            );
+          },
+        );
+      }
+    } catch (e, s) {
+      appLog.d('Save all MenuEntity exception $e');
+      return DataSourceState<List<MenuEntity>>.error(
+        reason: e.toString(),
+        dataSourceFailure: DataSourceFailure.local,
+        stackTrace: s,
+        error: e,
+        exception: e as Exception,
+      );
+    }
   }
 }

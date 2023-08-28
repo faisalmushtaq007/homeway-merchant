@@ -29,6 +29,7 @@ import 'package:homemakers_merchant/core/common/enum/generic_enum.dart';
 import 'package:homemakers_merchant/core/constants/global_app_constants.dart';
 import 'package:homemakers_merchant/core/extensions/app_extension.dart';
 import 'package:homemakers_merchant/core/extensions/global_extensions/dart_extensions.dart';
+import 'package:homemakers_merchant/core/extensions/global_extensions/src/object.dart';
 import 'package:homemakers_merchant/core/local/database/app_database.dart';
 import 'package:homemakers_merchant/core/local/database/base/identifiable.dart';
 import 'package:homemakers_merchant/core/local/database/base/repository.dart';
@@ -57,6 +58,7 @@ import 'package:homemakers_merchant/shared/widgets/universal/step_progress/step_
 import 'package:homemakers_merchant/shared/widgets/universal/wrap_text/wrap_text.dart';
 import 'package:homemakers_merchant/utils/app_equatable/app_equatable.dart';
 import 'package:homemakers_merchant/utils/app_log.dart';
+import 'package:homemakers_merchant/utils/collections_utils.dart';
 import 'package:homemakers_merchant/utils/fieldFocusChange.dart';
 import 'package:homemakers_merchant/utils/functional/either/either.dart';
 import 'package:homemakers_merchant/utils/image_type.dart';
@@ -143,3 +145,9 @@ part 'package:homemakers_merchant/app/features/menu/presentation/widgets/multi_s
 part 'package:homemakers_merchant/app/features/menu/presentation/widgets/set_addons_price_widget.dart';
 part 'package:homemakers_merchant/app/features/menu/presentation/widgets/set_menu_price_widget.dart';
 part 'package:homemakers_merchant/app/features/menu/presentation/widgets/store_card_widget.dart';
+// Category
+part 'package:homemakers_merchant/app/features/menu/presentation/pages/main_category_page.dart';
+part 'package:homemakers_merchant/app/features/menu/presentation/pages/category_page.dart';
+part 'package:homemakers_merchant/app/features/menu/presentation/pages/sub_category_page.dart';
+part 'package:homemakers_merchant/app/features/menu/domain/usecases/get_all_category_usecase.dart';
+part 'package:homemakers_merchant/app/features/menu/data/local/data_sources/category_local_db_dao.dart';
