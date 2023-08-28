@@ -80,9 +80,8 @@ class _MainCategoryPageController extends State<MainCategoryPage> with SingleTic
   }
 
   void onSelected(int index) {
-    setState(() {
-      selectedIndex = index;
-    });
+    selectedIndex = index;
+    setState(() {});
   }
 
   @override
@@ -164,6 +163,7 @@ class _MainCategoryPageView extends WidgetView<MainCategoryPage, _MainCategoryPa
                       slivers: [
                         SliverFillRemaining(
                           child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
                             textDirection: serviceLocator<LanguageController>().targetTextDirection,
                             children: [
                               Expanded(
@@ -180,7 +180,7 @@ class _MainCategoryPageView extends WidgetView<MainCategoryPage, _MainCategoryPa
                                               selectedIndex: state.selectedIndex,
                                               destinations: state.navigationDestinations.toList(),
                                               onDestinationSelected: (int index) {
-                                                state.onSelected(index);
+                                                return state.onSelected(index);
                                               },
                                             ),
                                           ),
@@ -190,10 +190,11 @@ class _MainCategoryPageView extends WidgetView<MainCategoryPage, _MainCategoryPa
                                   },
                                 ),
                               ),
-                              SizedBox(child: VerticalDivider()),
+                              VerticalDivider(),
                               Expanded(
                                 flex: 2,
                                 child: SubCategoryPage(
+                                  key: ValueKey(state.selectedIndex),
                                   selectedCategory: state.listOfCategories[state.selectedIndex],
                                 ),
                               ),

@@ -77,7 +77,6 @@ class _SubCategoryPageView extends WidgetView<SubCategoryPage, _SubCategoryPageC
           pagingController: state._pagingController,
           builderDelegate: PagedChildBuilderDelegate<Category>(
             itemBuilder: (context, item, index) => Wrap(
-              spacing: 5.0,
               children: [
                 ChoiceChip(
                   label: Text('${item.title}'),
