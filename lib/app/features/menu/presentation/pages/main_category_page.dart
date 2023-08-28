@@ -6,12 +6,16 @@ class MainCategoryPage extends StatefulWidget {
   _MainCategoryPageController createState() => _MainCategoryPageController();
 }
 
-class _MainCategoryPageController extends State<MainCategoryPage> {
+class _MainCategoryPageController extends State<MainCategoryPage> with SingleTickerProviderStateMixin {
   Category? selectedCategory;
   Category? selectedSubCategory;
   List<Category> listOfCategories = [];
   late final ScrollController scrollController;
   late final ScrollController innerScrollController;
+  late final _controller =
+      AnimationController(duration: const Duration(milliseconds: 1000), reverseDuration: const Duration(milliseconds: 1250), value: 0, vsync: this);
+  late final _railAnimation = RailAnimation(parent: _controller);
+  int selectedIndex = 0;
 
   @override
   void initState() {
@@ -20,9 +24,13 @@ class _MainCategoryPageController extends State<MainCategoryPage> {
     innerScrollController = ScrollController();
     listOfCategories = [];
     listOfCategories.clear();
+    initLoadCategoryList();
   }
 
-  Future<void> initLoadCategoryList() async {}
+  Future<void> initLoadCategoryList() async {
+    listOfCategories = List<Category>.from(localListOfCategories.toList());
+    setState(() {});
+  }
 
   @override
   void dispose() {
@@ -31,6 +39,12 @@ class _MainCategoryPageController extends State<MainCategoryPage> {
     innerScrollController.dispose();
     scrollController.dispose();
     super.dispose();
+  }
+
+  void onSelected(int index) {
+    setState(() {
+      selectedIndex = index;
+    });
   }
 
   @override
@@ -109,12 +123,18 @@ class _MainCategoryPageView extends WidgetView<MainCategoryPage, _MainCategoryPa
                     controller: state.innerScrollController,
                     slivers: [
                       SliverFillRemaining(
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                          mainAxisSize: MainAxisSize.min,
-                          children: [],
+                        child: ListDetailTransition(
+                          animation: state._railAnimation,
+                          one: CategoryListView(
+                            allCategories: state.listOfCategories.toList(),
+                            selectedIndex: state.selectedIndex,
+                            onSelected: (index) {
+                              state.onSelected(index);
+                            },
+                          ),
+                          two: SubCategoryListView(
+                            data: state.listOfCategories[state.selectedIndex].subCategory.toList(),
+                          ),
                         ),
                       ),
                     ],
@@ -127,4 +147,12 @@ class _MainCategoryPageView extends WidgetView<MainCategoryPage, _MainCategoryPa
       ),
     );
   }
+}
+
+class RailAnimation extends CurvedAnimation {
+  RailAnimation({required super.parent})
+      : super(
+          curve: const Interval(0 / 5, 4 / 5),
+          reverseCurve: const Interval(3 / 5, 1),
+        );
 }

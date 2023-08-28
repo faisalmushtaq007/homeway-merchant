@@ -34,7 +34,7 @@ class AppRouter {
 
   AppRouter._();
 
-  static const String INITIAL = Routes.ORDER_DETAILS;
+  static const String INITIAL = Routes.MAIN_CATEGORY_PAGE;
 
   static final GoRouter _router = GoRouter(
     debugLogDiagnostics: true,
@@ -443,6 +443,10 @@ class AppRouter {
             orderID: args?['orderID'] ?? -1,
           );
         },
+      ),
+      GoRoute(
+        path: Routes.MAIN_CATEGORY_PAGE,
+        builder: (context, state) => const MainCategoryPage(),
       ),
     ],
     /*redirect: (context, state) {

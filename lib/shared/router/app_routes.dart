@@ -84,6 +84,7 @@ abstract class Routes {
   static const String RATE_AND_REVIEW_PAGE = _Paths.RATE_AND_REVIEW_PAGE;
   static const String FAQ_PAGE = _Paths.FAQ_PAGE;
   static const String MANAGE_ORDER_PAGE = _Paths.MANAGE_ORDER_PAGE;
+  static const String MAIN_CATEGORY_PAGE = _Paths.MAIN_CATEGORY_PAGE;
 }
 
 abstract class _Paths {
@@ -167,4 +168,5 @@ abstract class _Paths {
   static const String RATE_AND_REVIEW_PAGE = '/rate-review';
   static const String FAQ_PAGE = '/faq';
   static const String MANAGE_ORDER_PAGE = '/manage-order';
+  static const String MAIN_CATEGORY_PAGE = '/main-category';
 }
