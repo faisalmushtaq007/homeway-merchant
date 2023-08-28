@@ -16,6 +16,9 @@ class _SubCategoryPageView extends WidgetView<SubCategoryPage, _SubCategoryPageC
 
   @override
   Widget build(BuildContext context) {
-    return Container();
+    final MediaQueryData media = MediaQuery.of(context);
+    final double margins = GlobalApp.responsiveInsets(media.size.width);
+    final double topPadding = margins;
+    return Directionality(textDirection: serviceLocator<LanguageController>().targetTextDirection, child: Offstage());
   }
 }
