@@ -308,7 +308,10 @@ class _AddressFormPageController extends State<AddressFormPage> {
         listener: (context, addressState) {
           switch (addressState) {
             case SaveAddressState():
-              {}
+              {
+                appLog.d('SaveAddressState ${addressState.addressEntity.toMap()}');
+                Navigator.popUntil(context, ModalRoute.withName(Routes.ALL_SAVED_ADDRESS_LIST));
+              }
             case GetAddressByIDState():
               {
                 final addressEntity = addressState.addressEntity;
@@ -513,6 +516,7 @@ class _AddressFormPageView extends WidgetView<AddressFormPage, _AddressFormPageC
                                           hintText: 'Required',
                                           helperText: 'Your selected location is being shown here from the map',
                                           isDense: true,
+                                          hintMaxLines: 2,
                                         ),
                                         validator: (value) {
                                           return const ValidatorGroup<String>([

@@ -43,10 +43,13 @@ import 'package:homemakers_merchant/shared/widgets/app/app_text_field_widget.dar
 import 'package:homemakers_merchant/shared/widgets/app/page_body.dart';
 import 'package:homemakers_merchant/shared/widgets/universal/animate_do/animate_do.dart';
 import 'package:homemakers_merchant/shared/widgets/universal/animated_gap/gap.dart';
+import 'package:homemakers_merchant/shared/widgets/universal/color_extract/color_extract.dart';
 import 'package:homemakers_merchant/shared/widgets/universal/constrained_scrollable_views/constrained_scrollable_views.dart';
 import 'package:homemakers_merchant/shared/widgets/universal/image_loader/image_helper.dart';
 import 'package:homemakers_merchant/shared/widgets/universal/map/google_map_place/google_map_place.dart';
 import 'package:homemakers_merchant/shared/widgets/universal/phone_number_text_field/phonenumber_form_field_widget.dart';
+import 'package:homemakers_merchant/shared/widgets/universal/wrap_text/wrap_text.dart';
+import 'package:homemakers_merchant/theme/flex_extensions.dart';
 import 'package:homemakers_merchant/utils/app_log.dart';
 import 'package:homemakers_merchant/utils/functional/functional.dart';
 import 'package:homemakers_merchant/utils/image_type.dart';

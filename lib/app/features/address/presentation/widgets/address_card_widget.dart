@@ -25,6 +25,14 @@ class _AddressCardWidgetController extends State<AddressCardWidget> {
 
   Widget _buildPopupMenuButton(int currentIndex, AddressModel addressEntity) {
     return PopupMenuButton(
+      child: Container(
+        height: 36,
+        width: 48,
+        alignment: Alignment.centerRight,
+        child: Icon(
+          Icons.more_vert,
+        ),
+      ),
       onSelected: (value) {
         _onStoreSelected(value as int);
       },
@@ -174,16 +182,12 @@ class _AddressCardWidgetController extends State<AddressCardWidget> {
         children: [
           Icon(
             iconData,
-            color: const Color.fromRGBO(165, 166, 168, 1),
           ),
           const AnimatedGap(8, duration: Duration(milliseconds: 500)),
           Expanded(
             child: Text(
               title,
-              style: context.labelLarge!.copyWith(
-                color: Color.fromRGBO(42, 45, 50, 1),
-                fontSize: 16,
-              ),
+              style: context.labelLarge!.copyWith(),
               textDirection: serviceLocator<LanguageController>().targetTextDirection,
             ),
           ),
@@ -230,119 +234,62 @@ class _AddressCardWidgetView extends WidgetView<AddressCardWidget, _AddressCardW
     listOfAddressElements.removeWhere((element) => element.isEmpty);
     final sb = StringBuffer();
     sb.writeAll(listOfAddressElements, ', ');
-    return ListTile(
-      leading: ImageHelper(
-        image: widget.addressEntity.address?.area ?? 'assets/svg/home_address.svg',
-        // image scale
-        scale: 1.0,
-        // Quality levels for image sampling in [ImageFilter] and [Shader] objects that sample
-        filterQuality: FilterQuality.high,
-        // border radius only work with [ImageShape.rounded]
-        borderRadius: BorderRadiusDirectional.circular(30),
-        // alignment of image
-        //alignment: Alignment.center,
-        // indicates where image will be loaded from, types are [network, asset,file]
-        imageType: findImageType(widget.addressEntity.address?.area),
-        // indicates what shape you would like to be with image [rectangle, oval,circle or none]
-        imageShape: ImageShape.rectangle,
-        // image default box fit
-        boxFit: BoxFit.fill,
-        width: context.width / 8,
-        height: context.width / 8,
-        // imagePath: 'assets/images/image.png',
-        // default loader color, default value is null
-        //defaultLoaderColor: Colors.red,
-        // default error builder color, default value is null
-        defaultErrorBuilderColor: Colors.blueGrey,
-        // the color you want to change image with
-        //color: Colors.blue,
-        // blend mode with image only
-        //blendMode: BlendMode.srcIn,
-        // error builder widget, default as icon if null
-        errorBuilder: const Icon(
-          Icons.image_not_supported,
-          size: 10000,
+    return Directionality(
+      textDirection: serviceLocator<LanguageController>().targetTextDirection,
+      child: Card(
+        margin: EdgeInsetsDirectional.only(
+          bottom: 8,
         ),
-        // loader builder widget, default as icon if null
-        loaderBuilder: const CircularProgressIndicator(),
-        matchTextDirection: true,
-        placeholderText: widget.addressEntity.address?.area,
-        placeholderTextStyle: context.labelLarge!.copyWith(
-          color: Colors.white,
-          fontSize: 16,
-        ),
-        placeholderBackgroundColor: context.colorScheme.primary.withOpacity(0.5),
-      ),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadiusDirectional.circular(10),
-        //side: BorderSide(color: Color.fromRGBO(127, 129, 132, 1)),
-      ),
-      title: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Wrap(
+        child: Padding(
+          padding: const EdgeInsetsDirectional.symmetric(horizontal: 16, vertical: 12),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            textDirection: serviceLocator<LanguageController>().targetTextDirection,
             children: [
-              Text(
-                'Name: ${widget.addressEntity.fullName ?? 'N/A'}',
-                style: context.titleMedium!.copyWith(color: const Color.fromRGBO(31, 31, 31, 1)),
-                textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                maxLines: 2,
-                softWrap: true,
-                overflow: TextOverflow.ellipsis,
+              Expanded(
+                flex: 3,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                  children: [
+                    Wrap(
+                      children: [
+                        Text(
+                          saveAddressAs,
+                          textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                          maxLines: 1,
+                          softWrap: true,
+                          overflow: TextOverflow.ellipsis,
+                          style: context.titleMedium!.copyWith(),
+                        ),
+                      ],
+                    ),
+                    const AnimatedGap(6, duration: Duration(milliseconds: 100)),
+                    Wrap(
+                      children: [
+                        Text(
+                          sb.toString(),
+                          textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                          maxLines: 6,
+                          softWrap: true,
+                          overflow: TextOverflow.ellipsis,
+                          style: context.labelMedium!.copyWith(),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
               ),
+              Expanded(
+                child: state._buildPopupMenuButton(
+                  widget.currentIndex,
+                  widget.addressEntity,
+                ),
+              )
             ],
           ),
-          Wrap(
-            children: [
-              Text(
-                'Phone: ${widget.addressEntity.phoneNumber ?? 'N?A'}',
-                style: context.titleSmall!.copyWith(
-                  fontWeight: FontWeight.w400,
-                  overflow: TextOverflow.ellipsis,
-                ),
-                softWrap: true,
-                overflow: TextOverflow.ellipsis,
-                maxLines: 2,
-              ),
-            ],
-          ),
-        ],
+        ),
       ),
-      subtitle: Wrap(
-        children: [
-          RichText(
-            text: TextSpan(
-              children: [
-                TextSpan(
-                  text: sb.toString(),
-                  style: context.displaySmall!.copyWith(
-                    fontWeight: FontWeight.w400,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                ),
-              ],
-            ),
-            maxLines: 3,
-            overflow: TextOverflow.ellipsis,
-            softWrap: true,
-          ),
-        ],
-      ),
-      dense: true,
-      minLeadingWidth: 20,
-      onTap: () async {
-        //final navigateToStoreDetailPage=await context.push(Routes.ALL_STORES_PAGE);
-        if (context.canPop()) {
-          return context.pop((widget.addressEntity));
-        }
-      },
-      trailing: state._buildPopupMenuButton(
-        widget.currentIndex,
-        widget.addressEntity,
-      ),
-      selectedColor: const Color.fromRGBO(215, 243, 227, 1),
-      selectedTileColor: const Color.fromRGBO(215, 243, 227, 1),
-      tileColor: Colors.white,
     );
   }
 }
