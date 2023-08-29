@@ -1,7 +1,9 @@
 part of 'package:homemakers_merchant/app/features/menu/index.dart';
 
 class MainCategoryPage extends StatefulWidget {
-  const MainCategoryPage({super.key});
+  const MainCategoryPage({
+    super.key,
+  });
 
   @override
   _MainCategoryPageController createState() => _MainCategoryPageController();
@@ -82,6 +84,15 @@ class _MainCategoryPageController extends State<MainCategoryPage> with SingleTic
   void onSelected(int index) {
     selectedIndex = index;
     setState(() {});
+  }
+
+  void selectedSubCategoryFunction(Category mainCategory, Category? subCategory) {
+    selectedCategory = mainCategory;
+    selectedSubCategory = subCategory;
+    setState(() {});
+    if (context.canPop()) {
+      return context.pop((mainCategory, subCategory));
+    }
   }
 
   @override
@@ -196,6 +207,7 @@ class _MainCategoryPageView extends WidgetView<MainCategoryPage, _MainCategoryPa
                                 child: SubCategoryPage(
                                   key: ValueKey(state.selectedIndex),
                                   selectedCategory: state.listOfCategories[state.selectedIndex],
+                                  onChangedCategory: state.selectedSubCategoryFunction,
                                 ),
                               ),
                             ],

@@ -34,7 +34,7 @@ class AppRouter {
 
   AppRouter._();
 
-  static const String INITIAL = Routes.MAIN_CATEGORY_PAGE;
+  static const String INITIAL = Routes.SAVE_MENU_PAGE;
 
   static final GoRouter _router = GoRouter(
     debugLogDiagnostics: true,
@@ -446,7 +446,10 @@ class AppRouter {
       ),
       GoRoute(
         path: Routes.MAIN_CATEGORY_PAGE,
-        builder: (context, state) => const MainCategoryPage(),
+        builder: (context, state) {
+          final Map<String, dynamic>? args = state.extra as Map<String, dynamic>?;
+          return MainCategoryPage();
+        },
       ),
     ],
     /*redirect: (context, state) {

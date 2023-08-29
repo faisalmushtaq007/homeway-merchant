@@ -1,9 +1,10 @@
 part of 'package:homemakers_merchant/app/features/menu/index.dart';
 
 class SubCategoryPage extends StatefulWidget {
-  const SubCategoryPage({required this.selectedCategory, super.key});
+  const SubCategoryPage({required this.selectedCategory, required this.onChangedCategory, super.key});
 
   final Category selectedCategory;
+  final ValueChangedCategoryAndSubCategory<Category, Category> onChangedCategory;
 
   @override
   _SubCategoryPageController createState() => _SubCategoryPageController();
@@ -44,8 +45,9 @@ class _SubCategoryPageController extends State<SubCategoryPage> {
     }
   }
 
-  void selectSubCategory(int? index) {
+  void selectSubCategory(int? index, Category? selectedCategory) {
     selectedSubCategoryValue = index;
+    widget.onChangedCategory(widget.selectedCategory, selectedCategory);
     setState(() {});
   }
 
@@ -81,9 +83,10 @@ class _SubCategoryPageView extends WidgetView<SubCategoryPage, _SubCategoryPageC
               children: [
                 ChoiceChip(
                   label: Text(item.title),
+                  avatar: (state.selectedSubCategoryValue == index) ? Icon(Icons.check) : null,
                   selected: state.selectedSubCategoryValue == index,
                   onSelected: (bool selected) {
-                    state.selectSubCategory(selected ? index : null);
+                    state.selectSubCategory(selected ? index : null, selected ? item : null);
                   },
                 ),
               ],

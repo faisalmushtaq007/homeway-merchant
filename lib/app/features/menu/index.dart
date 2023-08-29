@@ -11,6 +11,7 @@ import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
+
 import 'package:homemakers_merchant/app/features/menu/index.dart';
 import 'package:homemakers_merchant/app/features/menu/presentation/manager/menu/menu_bloc.dart';
 import 'package:homemakers_merchant/app/features/menu/presentation/widgets/category_list_view.dart';
@@ -91,6 +92,7 @@ export 'package:homemakers_merchant/app/features/menu/presentation/manager/menu/
 
 part 'package:homemakers_merchant/app/features/menu/common/assets_upload_status.dart';
 part 'package:homemakers_merchant/app/features/menu/common/menu_entity_enum.dart';
+part 'package:homemakers_merchant/app/features/menu/common/menu_typedef.dart';
 part 'package:homemakers_merchant/app/features/menu/data/local/data_sources/addons_local_db_dao.dart';
 part 'package:homemakers_merchant/app/features/menu/data/local/data_sources/local_categories_list.dart';
 part 'package:homemakers_merchant/app/features/menu/data/local/data_sources/menu_local_db_base_repository.dart';

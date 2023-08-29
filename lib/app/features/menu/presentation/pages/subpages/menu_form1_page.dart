@@ -12,8 +12,9 @@ class _MenuForm1PageState extends State<MenuForm1Page> with AutomaticKeepAliveCl
   final TextEditingController menuNameTextEditingController = TextEditingController();
   final TextEditingController menuDescriptionTextEditingController = TextEditingController();
   final TextEditingController menuCategoryTextEditingController = TextEditingController();
+  final TextEditingController menuSubCategoryTextEditingController = TextEditingController();
   Category? selectedCategory;
-
+  Category? selectedSubCategory;
   List<Category> listOfCategories = [];
   List<FocusNode> menuForm1FocusList = [];
 
@@ -25,6 +26,7 @@ class _MenuForm1PageState extends State<MenuForm1Page> with AutomaticKeepAliveCl
     listOfCategories.clear();
     listOfCategories = List<Category>.from(localListOfCategories.toList());
     menuForm1FocusList = [
+      FocusNode(),
       FocusNode(),
       FocusNode(),
       FocusNode(),
@@ -112,6 +114,29 @@ class _MenuForm1PageState extends State<MenuForm1Page> with AutomaticKeepAliveCl
     return;
   }
 
+  void updateCategoryAndSubCategory(Category mainCategory, Category? subCategory) {
+    setState(() {
+      menuCategoryTextEditingController.text = mainCategory.title ?? '';
+      selectedCategory = mainCategory;
+      if (subCategory.isNotNull) {
+        selectedSubCategory = subCategory;
+        menuSubCategoryTextEditingController.text = subCategory?.title ?? '';
+      }
+      final copyCategory = mainCategory.copyWith(subCategory: subCategory.isNotNull ? <Category>[subCategory!] : <Category>[]);
+      serviceLocator<MenuEntity>().menuCategories = [
+        copyCategory,
+      ];
+      context.read<MenuBloc>().add(
+            PushMenuEntityData(
+              menuEntity: serviceLocator<MenuEntity>(),
+              menuFormStage: MenuFormStage.form1,
+              menuEntityStatus: MenuEntityStatus.push,
+            ),
+          );
+    });
+    return;
+  }
+
   @override
   Widget build(BuildContext context) {
     super.build(context);
@@ -145,7 +170,21 @@ class _MenuForm1PageState extends State<MenuForm1Page> with AutomaticKeepAliveCl
                   isDense: true,
                   suffixIcon: IconButton(
                     onPressed: () async {
-                      await selectMenuCategory(context);
+                      //await selectMenuCategory(context);
+                      final result = await Navigator.push(
+                        context,
+                        MaterialPageRoute<(Category, Category?)>(
+                          builder: (_) => const MainCategoryPage(),
+                          fullscreenDialog: true,
+                        ),
+                      );
+                      if (result != null) {
+                        final Category mainCategory = result.$1;
+                        final Category? subCategory = result.$2;
+                        selectedCategory = mainCategory;
+                        selectedSubCategory = subCategory;
+                        updateCategoryAndSubCategory(mainCategory, subCategory);
+                      }
                       return;
                     },
                     icon: const Icon(
@@ -160,7 +199,128 @@ class _MenuForm1PageState extends State<MenuForm1Page> with AutomaticKeepAliveCl
                   return null;
                 },
                 onTap: () async {
-                  await selectMenuCategory(context);
+                  //await selectMenuCategory(context);
+                  final result = await Navigator.push(
+                    context,
+                    MaterialPageRoute<(Category, Category?)>(
+                      builder: (_) => const MainCategoryPage(),
+                      fullscreenDialog: true,
+                    ),
+                  );
+                  if (result != null) {
+                    final Category mainCategory = result.$1;
+                    final Category? subCategory = result.$2;
+                    selectedCategory = mainCategory;
+                    selectedSubCategory = subCategory;
+                    updateCategoryAndSubCategory(mainCategory, subCategory);
+                  }
+                  return;
+                },
+                onChanged: (value) {
+                  serviceLocator<MenuEntity>().menuCategories = [
+                    Category(
+                      title: value,
+                    )
+                  ];
+                  context.read<MenuBloc>().add(
+                        PushMenuEntityData(
+                          menuEntity: serviceLocator<MenuEntity>(),
+                          menuFormStage: MenuFormStage.form1,
+                          menuEntityStatus: MenuEntityStatus.push,
+                        ),
+                      );
+                },
+                onSaved: (newValue) {
+                  serviceLocator<MenuEntity>().menuCategories = [
+                    Category(
+                      title: menuCategoryTextEditingController.value.text.trim(),
+                    )
+                  ];
+                  context.read<MenuBloc>().add(
+                        PushMenuEntityData(
+                          menuEntity: serviceLocator<MenuEntity>(),
+                          menuFormStage: MenuFormStage.form1,
+                          menuEntityStatus: MenuEntityStatus.push,
+                        ),
+                      );
+                },
+                onEditingComplete: () {
+                  serviceLocator<MenuEntity>().menuCategories = [
+                    Category(
+                      title: menuCategoryTextEditingController.value.text.trim(),
+                    )
+                  ];
+                  context.read<MenuBloc>().add(
+                        PushMenuEntityData(
+                          menuEntity: serviceLocator<MenuEntity>(),
+                          menuFormStage: MenuFormStage.form1,
+                          menuEntityStatus: MenuEntityStatus.push,
+                        ),
+                      );
+                },
+              ),
+              const AnimatedGap(12, duration: Duration(milliseconds: 500)),
+              AppTextFieldWidget(
+                controller: menuCategoryTextEditingController,
+                readOnly: true,
+                textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                focusNode: menuForm1FocusList[0],
+                textInputAction: TextInputAction.next,
+                onFieldSubmitted: (_) => fieldFocusChange(context, menuForm1FocusList[0], menuForm1FocusList[1]),
+                keyboardType: TextInputType.text,
+                decoration: InputDecoration(
+                  labelText: 'Menu sub-category',
+                  hintText: 'Select your menu sub-category',
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  isDense: true,
+                  suffixIcon: IconButton(
+                    onPressed: () async {
+                      //await selectMenuCategory(context);
+                      final result = await Navigator.push(
+                        context,
+                        MaterialPageRoute<(Category, Category?)>(
+                          builder: (_) => const MainCategoryPage(),
+                          fullscreenDialog: true,
+                        ),
+                      );
+                      if (result != null) {
+                        final Category mainCategory = result.$1;
+                        final Category? subCategory = result.$2;
+                        selectedCategory = mainCategory;
+                        selectedSubCategory = subCategory;
+                        updateCategoryAndSubCategory(mainCategory, subCategory);
+                      }
+                      return;
+                    },
+                    icon: const Icon(
+                      Icons.arrow_drop_down,
+                    ),
+                  ),
+                ),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Select menu category';
+                  }
+                  return null;
+                },
+                onTap: () async {
+                  //await selectMenuCategory(context);
+                  final result = await Navigator.push(
+                    context,
+                    MaterialPageRoute<(Category, Category?)>(
+                      builder: (_) => const MainCategoryPage(),
+                      fullscreenDialog: true,
+                    ),
+                  );
+                  if (result != null) {
+                    final Category mainCategory = result.$1;
+                    final Category? subCategory = result.$2;
+                    selectedCategory = mainCategory;
+                    selectedSubCategory = subCategory;
+                    updateCategoryAndSubCategory(mainCategory, subCategory);
+                  }
                   return;
                 },
                 onChanged: (value) {
