@@ -470,14 +470,14 @@ class _SaveStorePageState extends State<SaveStorePage> {
                                     Directionality(
                                       textDirection: serviceLocator<LanguageController>().targetTextDirection,
                                       child: PhoneNumberFieldWidget(
-                                        key: const Key('driver-phone-number-widget'),
+                                        key: const Key('save-store-phone-number-widget'),
                                         isCountryChipPersistent: false,
                                         outlineBorder: true,
                                         shouldFormat: true,
                                         useRtl: false,
                                         withLabel: true,
                                         decoration: InputDecoration(
-                                          labelText: 'Driver mobile number',
+                                          labelText: 'Store contact number',
                                           //hintText: 'Enter driver number',
                                           alignLabelWithHint: true,
                                           errorText: phoneValidation,
