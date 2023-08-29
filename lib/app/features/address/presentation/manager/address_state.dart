@@ -4,7 +4,7 @@ abstract class AddressState with AppEquatable {}
 
 class AddressInitial extends AddressState {
   @override
-  bool get cacheHash => false;
+  bool get cacheHash => true;
 
   @override
   List<Object?> get hashParameters => [];
@@ -324,7 +324,7 @@ class GetAllAddressPaginationState extends AddressState {
       ];
 
   @override
-  bool get cacheHash => false;
+  bool get cacheHash => true;
 }
 
 class GetAllLoadingAddressPaginationState extends AddressState {
@@ -342,7 +342,7 @@ class GetAllLoadingAddressPaginationState extends AddressState {
         message,
       ];
   @override
-  bool get cacheHash => false;
+  bool get cacheHash => true;
 }
 
 class GetAllProcessingAddressPaginationState extends AddressState {
@@ -360,7 +360,7 @@ class GetAllProcessingAddressPaginationState extends AddressState {
         message,
       ];
   @override
-  bool get cacheHash => false;
+  bool get cacheHash => true;
 }
 
 class GetAllFailedAddressPaginationState extends AddressState {
@@ -375,7 +375,7 @@ class GetAllFailedAddressPaginationState extends AddressState {
         message,
       ];
   @override
-  bool get cacheHash => false;
+  bool get cacheHash => true;
 }
 
 class GetAllExceptionAddressPaginationState extends AddressState {
@@ -399,7 +399,7 @@ class GetAllExceptionAddressPaginationState extends AddressState {
         addressStatus,
       ];
   @override
-  bool get cacheHash => false;
+  bool get cacheHash => true;
 }
 
 class GetAllEmptyAddressPaginationState extends AddressState {
@@ -440,5 +440,5 @@ class GetAllEmptyAddressPaginationState extends AddressState {
         startTimeStamp,
       ];
   @override
-  bool get cacheHash => false;
+  bool get cacheHash => true;
 }

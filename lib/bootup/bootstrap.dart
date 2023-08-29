@@ -30,6 +30,7 @@ import 'dart:developer' as dev;
 import 'package:app_runner/app_runner.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:homemakers_merchant/utils/app_log.dart';
 
 void log(
   Object? message, {
@@ -70,12 +71,12 @@ class AppBlocObserver extends BlocObserver {
   @override
   void onChange(BlocBase<dynamic> bloc, Change<dynamic> change) {
     super.onChange(bloc, change);
-    if (bloc is Cubit) log('onChange(${bloc.runtimeType}, $change)');
+    if (bloc is Cubit) appLog.i('onChange(${bloc.runtimeType}, $change)');
   }
 
   @override
   void onError(BlocBase<dynamic> bloc, Object error, StackTrace stackTrace) {
-    log('onError(${bloc.runtimeType}, $error, $stackTrace)');
+    appLog.e('onError(${bloc.runtimeType}, $error, $stackTrace)');
     super.onError(bloc, error, stackTrace);
   }
 
@@ -85,19 +86,18 @@ class AppBlocObserver extends BlocObserver {
     Transition<dynamic, dynamic> transition,
   ) {
     super.onTransition(bloc, transition);
-    log('onTransition(${bloc.runtimeType}, $transition)');
+    appLog.i('onTransition(${bloc.runtimeType}, $transition)');
   }
 }
 
 Future<void> bootstrap(FutureOr<dynamic> Function() builder) async {
   FlutterError.onError = (details) {
-    log(details.exceptionAsString(), stackTrace: details.stack);
+    appLog.e(details.exceptionAsString(), stackTrace: details.stack);
   };
 
   Bloc.observer = const AppBlocObserver();
   await Zone.current.fork().run(() async {
-    final WidgetsBinding widgetsBinding =
-        WidgetsFlutterBinding.ensureInitialized();
+    final WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
     GestureBinding.instance.resamplingEnabled = true;
     final ui.RootIsolateToken rootIsolateToken = ui.RootIsolateToken.instance!;
     BackgroundIsolateBinaryMessenger.ensureInitialized(rootIsolateToken);

@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
+import 'package:bloc_concurrency/bloc_concurrency.dart';
 import 'package:homemakers_merchant/app/features/address/index.dart';
 import 'package:homemakers_merchant/bootup/injection_container.dart';
 import 'package:homemakers_merchant/shared/states/data_source_state.dart';
@@ -14,16 +15,46 @@ part 'address_state.dart';
 
 class AddressBloc extends Bloc<AddressEvent, AddressState> {
   AddressBloc() : super(AddressInitial()) {
-    on<SaveAddress>(_saveAddress);
-    on<GetAddressByID>(_getAddress);
-    on<RemoveAddressByID>(_deleteAddress);
-    on<GetAllAddress>(_getAllAddress);
-    on<RemoveAllAddress>(_deleteAllAddress);
-    on<SelectAllAddress>(_selectAllAddress);
-    on<SelectDefaultAddress>(_selectDefaultAddress);
-    on<ConfirmationOnDefaultAddress>(_confirmationOnDefaultAddress);
-    on<SelectCurrentAddress>(_selectCurrentAddress);
-    on<GetAllAddressPagination>(_getAllAddressPagination);
+    on<SaveAddress>(
+      _saveAddress,
+      transformer: concurrent(),
+    );
+    on<GetAddressByID>(
+      _getAddress,
+      transformer: concurrent(),
+    );
+    on<RemoveAddressByID>(
+      _deleteAddress,
+      transformer: concurrent(),
+    );
+    on<GetAllAddress>(
+      _getAllAddress,
+      transformer: concurrent(),
+    );
+    on<RemoveAllAddress>(
+      _deleteAllAddress,
+      transformer: concurrent(),
+    );
+    on<SelectAllAddress>(
+      _selectAllAddress,
+      transformer: concurrent(),
+    );
+    on<SelectDefaultAddress>(
+      _selectDefaultAddress,
+      transformer: concurrent(),
+    );
+    on<ConfirmationOnDefaultAddress>(
+      _confirmationOnDefaultAddress,
+      transformer: concurrent(),
+    );
+    on<SelectCurrentAddress>(
+      _selectCurrentAddress,
+      transformer: concurrent(),
+    );
+    on<GetAllAddressPagination>(
+      _getAllAddressPagination,
+      transformer: concurrent(),
+    );
     //on<SaveAllAddress>(_saveAllAddress);
   }
 
@@ -375,7 +406,7 @@ class AddressBloc extends Bloc<AddressEvent, AddressState> {
             );
           } else {
             emit(
-              GetAllEmptyAddressPaginationState(
+              GetAllAddressPaginationState(
                 addressEntities: data.toList(),
                 endTimeStamp: event.endTimeStamp,
                 startTimeStamp: event.startTimeStamp,

@@ -302,14 +302,14 @@ class Menu {
 
 class OrderPortion {
   const OrderPortion({
-    this.portionSize = 0,
+    this.portionSize = 0.0,
     this.portionUnit = '',
   });
 
   factory OrderPortion.fromJson(Map<String, dynamic> map) {
     return OrderPortion(
-      portionSize: map['portionSize'] as double,
-      portionUnit: map['portionUnit'] as String,
+      portionSize: map['portionSize'] ?? 0.0 as double,
+      portionUnit: map['portionUnit'] ?? '' as String,
     );
   }
 

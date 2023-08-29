@@ -23,54 +23,53 @@ class _AllSavedAddressPageController extends State<AllSavedAddressPage> {
   String? searchText;
   String? sorting;
   String? filtering;
-  final PagingController<int, AddressModel> _pagingController = PagingController(firstPageKey: 0);
+  PagingController<int, AddressModel> _addressPagingController = PagingController(firstPageKey: 0);
 
   @override
   void initState() {
     super.initState();
+
     scrollController = ScrollController();
     innerScrollController = ScrollController();
     addressEntities = [];
     addressEntities.clear();
-    context.read<PermissionBloc>().add(const RequestLocationPermissionEvent());
-    if (mounted) {
-      widgetState = WidgetState<AddressModel>.loading(
-        context: context,
-      );
-      _pagingController.nextPageKey = 0;
-      _pagingController.addPageRequestListener((pageKey) {
-        this.pageKey = pageKey;
-        _fetchPage(pageKey);
-      });
-
-      _pagingController.addStatusListener((status) {
-        if (status == PagingStatus.subsequentPageError) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: const Text(
-                'Something went wrong while fetching a all orders.',
-              ),
-              action: SnackBarAction(
-                label: 'Retry',
-                onPressed: () => _pagingController.retryLastFailedRequest(),
-              ),
+    _addressPagingController.nextPageKey = 0;
+    _addressPagingController.addPageRequestListener((pageKey) {
+      appLog.i('addPageRequestListener ${pageKey}');
+      this.pageKey = pageKey;
+      _fetchAllAddressFucntion(pageKey);
+      return;
+    });
+    _addressPagingController.addStatusListener((status) {
+      if (status == PagingStatus.subsequentPageError) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: const Text(
+              'Something went wrong while fetching a all orders.',
             ),
-          );
-        }
-      });
-      //context.read<AddressBloc>().add(GetAllAddress());
-    }
+            action: SnackBarAction(
+              label: 'Retry',
+              onPressed: () => _addressPagingController.retryLastFailedRequest(),
+            ),
+          ),
+        );
+      }
+    });
+    //context.read<PermissionBloc>().add(const RequestLocationPermissionEvent());
+    //context.read<AddressBloc>().add(GetAllAddress());
   }
 
-  Future<void> _fetchPage(pageKey, {int pageSize = 20, String? searchItem, String? filter, String? sort}) async {
-    context.read<AddressBloc>().add(GetAllAddressPagination(
-          pageKey: pageKey,
-          pageSize: pageSize,
-          searchText: searchItem,
-          filter: filtering ?? filter,
-          sorting: sorting ?? sort,
-        ));
-
+  Future<void> _fetchAllAddressFucntion(int pageKey, {int pageSize = 20, String? searchItem, String? filter, String? sort}) async {
+    appLog.i('Fetch ');
+    if (mounted) {
+      context.read<AddressBloc>().add(GetAllAddressPagination(
+            pageKey: pageKey,
+            pageSize: pageSize,
+            searchText: searchItem,
+            filter: filtering ?? filter,
+            sorting: sorting ?? sort,
+          ));
+    }
     return;
   }
 
@@ -80,16 +79,61 @@ class _AllSavedAddressPageController extends State<AllSavedAddressPage> {
     innerScrollController.dispose();
     addressEntities = [];
     addressEntities.clear();
+    _addressPagingController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) => BlocListener<AddressBloc, AddressState>(
-        key: const Key('all-address-bloc-listerner'),
+        key: const Key('all-address-bloc-listener'),
         bloc: context.read<AddressBloc>(),
-        listenWhen: (previous, current) => previous != current,
+        //listenWhen: (previous, current) => previous != current,
         listener: (context, state) {
           switch (state) {
+            /*case GetAllAddressPaginationState():
+              {
+                try {
+                  final isLastPage = state.addressEntities.length < pageSize;
+                  if (isLastPage) {
+                    _pagingController.appendLastPage(state.addressEntities.toList());
+                  } else {
+                    final nextPageKey = state.pageKey + state.addressEntities.length;
+                    _pagingController.appendPage(state.addressEntities.toList(), nextPageKey);
+                  }
+                  widgetState = WidgetState<AddressModel>.allData(
+                    context: context,
+                    data: _pagingController.value.itemList ?? [],
+                  );
+                  addressEntities = _pagingController.value.itemList ?? [];
+                } catch (error) {
+                  _pagingController.error = error;
+                  widgetState = WidgetState<AddressModel>.error(
+                    context: context,
+                    reason: _pagingController.error,
+                  );
+                }
+              }
+            case GetAllEmptyAddressPaginationState():
+              {
+                widgetState = WidgetState<AddressModel>.empty(
+                  context: context,
+                  message: state.message,
+                );
+              }*/
+            case GetAllExceptionAddressPaginationState():
+              {
+                widgetState = WidgetState<AddressModel>.error(
+                  context: context,
+                  reason: state.message,
+                );
+              }
+            case GetAllFailedAddressPaginationState():
+              {
+                widgetState = WidgetState<AddressModel>.error(
+                  context: context,
+                  reason: state.message,
+                );
+              }
             case AddressExceptionState():
               {
                 widgetState = WidgetState<AddressModel>.error(
@@ -111,12 +155,13 @@ class _AllSavedAddressPageController extends State<AllSavedAddressPage> {
         child: BlocBuilder<AddressBloc, AddressState>(
           key: const Key('all-address-bloc-builder'),
           bloc: context.read<AddressBloc>(),
-          buildWhen: (previous, current) => previous != current,
+          //buildWhen: (previous, current) => previous != current,
           builder: (context, state) {
+            appLog.i('Current Address state ${state.toString()}');
             switch (state) {
               case GetAllAddressState():
                 {
-                  addressEntities = List<AddressModel>.from(state.addressEntities.toList());
+                  //addressEntities = List<AddressModel>.from(state.addressEntities.toList());
                   widgetState = WidgetState<AddressModel>.allData(
                     context: context,
                   );
@@ -129,10 +174,46 @@ class _AllSavedAddressPageController extends State<AllSavedAddressPage> {
                 }
               case AddressEmptyState():
                 {
-                  addressEntities = List<AddressModel>.from(state.addressEntities.toList());
+                  //addressEntities = List<AddressModel>.from(state.addressEntities.toList());
                   widgetState = WidgetState<AddressModel>.empty(
                     context: context,
                     message: state.message,
+                  );
+                }
+              case GetAllAddressPaginationState():
+                {
+                  try {
+                    final isLastPage = state.addressEntities.length < pageSize;
+                    if (isLastPage) {
+                      _addressPagingController.appendLastPage(state.addressEntities.toList());
+                    } else {
+                      final nextPageKey = state.pageKey + state.addressEntities.length;
+                      _addressPagingController.appendPage(state.addressEntities.toList(), nextPageKey);
+                    }
+                    widgetState = WidgetState<AddressModel>.allData(
+                      context: context,
+                      data: _addressPagingController.value.itemList ?? [],
+                    );
+                    addressEntities = _addressPagingController.value.itemList ?? [];
+                  } catch (error) {
+                    _addressPagingController.error = error;
+                    widgetState = WidgetState<AddressModel>.error(
+                      context: context,
+                      reason: _addressPagingController.error,
+                    );
+                  }
+                }
+              case GetAllEmptyAddressPaginationState():
+                {
+                  widgetState = WidgetState<AddressModel>.empty(
+                    context: context,
+                    message: state.message,
+                  );
+                }
+              case GetAllLoadingAddressPaginationState():
+                {
+                  widgetState = WidgetState<AddressModel>.loading(
+                    context: context,
                   );
                 }
               case AddressExceptionState():
@@ -355,6 +436,17 @@ class _AllSavedAddressPageView extends WidgetView<AllSavedAddressPage, _AllSaved
                                 );
                               },
                               allData: (context, child, message, data) {
+                                return PagedListView<int, AddressModel>(
+                                  pagingController: state._addressPagingController,
+                                  builderDelegate: PagedChildBuilderDelegate<AddressModel>(
+                                    itemBuilder: (context, item, index) => AddressCardWidget(
+                                      key: ValueKey(index),
+                                      addressEntity: state.addressEntities[index],
+                                      listOfAllAddressEntities: state.addressEntities.toList(),
+                                      currentIndex: index,
+                                    ),
+                                  ),
+                                );
                                 return ListView.separated(
                                   itemBuilder: (context, index) {
                                     return AddressCardWidget(

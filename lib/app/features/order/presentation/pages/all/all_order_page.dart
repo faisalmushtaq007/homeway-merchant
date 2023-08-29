@@ -50,7 +50,7 @@ class _AllOrderPagesController extends State<AllOrderPages> {
     });
   }
 
-  Future<void> _fetchPage(pageKey, {int pageSize = 20, String? searchItem, String? filter, String? sort}) async {
+  Future<void> _fetchPage(int pageKey, {int pageSize = 20, String? searchItem, String? filter, String? sort}) async {
     context.read<AllOrderBloc>().add(GetAllOrders(
           pageKey: pageKey,
           orderType: OrderType.all,

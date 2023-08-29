@@ -1148,7 +1148,7 @@ class MenuBloc extends Bloc<MenuEvent, MenuState> {
             );
           } else {
             emit(
-              GetAllEmptyAddonsPaginationState(
+              GetAllAddonsPaginationState(
                 addonsEntities: data.toList(),
                 endTimeStamp: event.endTimeStamp,
                 startTimeStamp: event.startTimeStamp,
@@ -1246,7 +1246,7 @@ class MenuBloc extends Bloc<MenuEvent, MenuState> {
             );
           } else {
             emit(
-              GetAllEmptyMenuPaginationState(
+              GetAllMenuPaginationState(
                 menuEntities: data.toList(),
                 endTimeStamp: event.endTimeStamp,
                 startTimeStamp: event.startTimeStamp,

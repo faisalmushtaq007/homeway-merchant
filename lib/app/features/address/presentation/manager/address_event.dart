@@ -183,7 +183,7 @@ class GetAllAddressPagination extends AddressEvent {
   final Timestamp? endTimeStamp;
 
   @override
-  bool get cacheHash => false;
+  bool get cacheHash => true;
 
   @override
   List<Object?> get hashParameters => [
