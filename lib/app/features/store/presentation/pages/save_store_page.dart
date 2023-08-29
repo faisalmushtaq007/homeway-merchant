@@ -50,6 +50,9 @@ class _SaveStorePageState extends State<SaveStorePage> {
   Widget? suffixIcon;
   String userEnteredPhoneNumber = '';
   PhoneNumber? phoneNumber;
+  final isoCodeNameMap = IsoCode.values.asNameMap();
+  IsoCode defaultCountry = IsoCode.SA;
+  late PhoneNumber initialPhoneNumberValue;
   late PhoneController phoneNumberController;
   PhoneNumberVerification phoneNumberVerification = PhoneNumberVerification.none;
   ValueNotifier<PhoneNumberVerification> valueNotifierPhoneNumberVerification = ValueNotifier<PhoneNumberVerification>(
@@ -103,16 +106,15 @@ class _SaveStorePageState extends State<SaveStorePage> {
     listBanners.clear();
     _selectedStoreOwnDrivers = [];
     _selectedStoreOwnDrivers.clear();
-    phoneNumber = PhoneNumber(
+    defaultCountry = IsoCode.values.byName('SA');
+    initialPhoneNumberValue = PhoneNumber(
       isoCode: IsoCode.values.asNameMap().values.byName('SA'),
       nsn: '',
     );
     phoneNumberController = PhoneController(
-      PhoneNumber(
-        isoCode: IsoCode.values.asNameMap().values.byName('SA'),
-        nsn: '',
-      ),
+      initialPhoneNumberValue,
     );
+    phoneNumberController.value = initialPhoneNumberValue;
     initializeStoreAcceptedPaymentModes();
     initializeStoreAvailableFoodPreparationType();
     initializeStoreWorkingDays();
@@ -266,7 +268,8 @@ class _SaveStorePageState extends State<SaveStorePage> {
             ],
           ),
           body: BlocListener<StoreBloc, StoreState>(
-            bloc: context.watch<StoreBloc>(),
+            bloc: context.read<StoreBloc>(),
+            listenWhen: (previous, current) => previous != current,
             key: const Key('save_store-page-bloc-listener-widget'),
             listener: (context, state) {
               if (state is SaveStoreState) {
@@ -275,6 +278,18 @@ class _SaveStorePageState extends State<SaveStorePage> {
                   extra: state.storeEntity,
                 );
                 return;
+              } else if (state is GetStoreState) {
+                final cacheStore = state.storeEntity;
+                userEnteredPhoneNumber = cacheStore?.phoneNumberWithoutDialCode ?? cacheStore?.storePhoneNumber ?? '';
+                initialPhoneNumberValue = PhoneNumber(
+                  isoCode: IsoCode.values.byName(cacheStore?.isoCode ?? 'SA'),
+                  nsn: userEnteredPhoneNumber,
+                );
+                phoneNumberController = PhoneController(
+                  initialPhoneNumberValue,
+                );
+                phoneNumberController.value = initialPhoneNumberValue;
+                defaultCountry = IsoCode.values.byName(cacheStore?.isoCode ?? 'SA');
               }
             },
             child: PageBody(
@@ -556,7 +571,14 @@ class _SaveStorePageState extends State<SaveStorePage> {
                                                 child: Row(
                                                   children: [
                                                     IconButton(
-                                                      onPressed: () {},
+                                                      onPressed: () async {
+                                                        final result = await context.push(
+                                                          Routes.ALL_SAVED_ADDRESS_LIST,
+                                                          extra: {
+                                                            'selectItemUseCase': SelectItemUseCase.onlySelect,
+                                                          },
+                                                        );
+                                                      },
                                                       icon: const Icon(
                                                         Icons.my_location,
                                                       ),
@@ -993,6 +1015,9 @@ class _SaveStorePageState extends State<SaveStorePage> {
 
                                           final storeInfo = StoreEntity(
                                             storeName: _storeNameController.value.text,
+                                            storePhoneNumber: userEnteredPhoneNumber,
+                                            countryDialCode: initialPhoneNumberValue.countryCode,
+                                            isoCode: initialPhoneNumberValue.isoCode.name,
                                             storeAddress: AddressModel(
                                               address: AddressBean(
                                                 area: _storeAddressController.value.text,
@@ -1027,8 +1052,8 @@ class _SaveStorePageState extends State<SaveStorePage> {
                                             );
                                           } else {
                                             storeEntity = storeInfo.copyWith(
-                                              storeID: ((DateTime.now().millisecondsSinceEpoch - DateTime.now().millisecond) / 100).toInt(),
-                                            );
+                                                //storeID: ((DateTime.now().millisecondsSinceEpoch - DateTime.now().millisecond) / 100).toInt(),
+                                                );
                                           }
                                           if (!mounted) {
                                             return;

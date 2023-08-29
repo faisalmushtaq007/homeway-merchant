@@ -144,7 +144,7 @@ class AppTextFieldWidget extends StatelessWidget {
         strutStyle: strutStyle,
         textAlign: textAlign,
         textAlignVertical: textAlignVertical,
-        textDirection: textDirection,
+        textDirection: textDirection ?? serviceLocator<LanguageController>().targetTextDirection,
         textCapitalization: textCapitalization,
         autofocus: autofocus,
         toolbarOptions: toolbarOptions,

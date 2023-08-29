@@ -296,7 +296,12 @@ class _AddressPageController extends State<PickupLocationFromMapPage> {
       'locationData': locationAddressData,
       'latitude': defaultLatLng.latitude,
       'longitude': defaultLatLng.longitude,
-      'addressModel': addressModel,
+      'addressModel': addressModel?.copyWith(
+        address: AddressBean(
+          latitude: defaultLatLng.latitude,
+          longitude: defaultLatLng.longitude,
+        ),
+      ),
       'allAddress': widget.allAddress.toList(),
       'currentIndex': widget.hasNewAddress,
       'hasNewAddress': widget.hasNewAddress,
@@ -639,7 +644,12 @@ class _AddressPageView extends WidgetView<PickupLocationFromMapPage, _AddressPag
                               'locationData': state.locationAddressData,
                               'latitude': state.defaultLatLng.latitude,
                               'longitude': state.defaultLatLng.longitude,
-                              'addressModel': state.addressModel,
+                              'addressModel': state.addressModel?.copyWith(
+                                address: AddressBean(
+                                  latitude: state.defaultLatLng.latitude,
+                                  longitude: state.defaultLatLng.longitude,
+                                ),
+                              ),
                               'allAddress': widget.allAddress.toList(),
                               'currentIndex': widget.currentIndex,
                               'hasNewAddress': widget.hasNewAddress,

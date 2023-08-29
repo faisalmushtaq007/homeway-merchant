@@ -73,6 +73,7 @@ class _AddressFormPageController extends State<AddressFormPage> {
   List<bool> isToggleButtonSelected = [false, false, false, false, false];
   List<String> valueOfToggleButtonSelected = ['Home', 'Office', 'Friend', 'Business', 'Other'];
   late final GBData locationAddressData;
+  AddressModel? addressModel;
   int indexOfSaveAddress = -1;
   String? valueOfSavedAddress;
   String? addressTypeValidation;
@@ -100,7 +101,10 @@ class _AddressFormPageController extends State<AddressFormPage> {
     if (widget.locationData.isNotNull) {
       locationAddressData = widget.locationData!;
     }
-    if (widget.addressModel.isNotNull) {}
+    if (widget.addressModel.isNotNull) {
+      addressModel = widget.addressModel;
+    }
+    setAddressEntityData(addressModel, locationAddressData: locationAddressData);
   }
 
   @override
@@ -229,30 +233,103 @@ class _AddressFormPageController extends State<AddressFormPage> {
     ]).validate(value);
   }
 
+  void setAddressEntityData(AddressModel? sharedAddressModel, {GBData? locationAddressData}) {
+    if (sharedAddressModel.isNotNull && sharedAddressModel!.address != null) {
+      areaTextFieldController.text = sharedAddressModel!.address?.area ?? '';
+      mapAddressTextFieldController.text = sharedAddressModel!.address?.displayAddressName ?? '';
+      districtAddressTextFieldController.text = sharedAddressModel!.address?.district ?? '';
+      zipCodeTextFieldController.text = sharedAddressModel!.address?.postalCode.toString() ?? '';
+      cityTextFieldController.text = sharedAddressModel!.address?.city ?? '';
+      stateTextFieldController.text = sharedAddressModel!.address?.state ?? '';
+      countryTextFieldController.text = sharedAddressModel!.address?.country ?? '';
+      fullNameTextFieldController.text = sharedAddressModel!.fullName ?? '';
+      if (sharedAddressModel!.phoneNumber != null) {
+        mobileNumberTextFieldController.text = sharedAddressModel!.phoneNumber.toString();
+      }
+      buildingTextFieldController.text = sharedAddressModel!.address?.apartment ?? '';
+      landmarkTextFieldController.text = sharedAddressModel!.address?.landmark ?? '';
+      checkBoxValue = sharedAddressModel!.address?.isDefault ?? false;
+      //isToggleButtonSelected
+      if (sharedAddressModel!.address?.indexOfSavedAddressAs != null) {
+        int? index = sharedAddressModel!.address?.indexOfSavedAddressAs!;
+        isToggleButtonSelected[index!] = true;
+        indexOfSaveAddress = index;
+        valueOfSavedAddress = valueOfToggleButtonSelected[index];
+      }
+      // Phone number information
+      mobileNumberTextFieldController.clear();
+      mobileNumberTextFieldController.text = sharedAddressModel!.phoneNumber ?? '';
+      initialPhoneNumberValue = PhoneNumber(
+        isoCode: isoCodeNameMap.values.byName(sharedAddressModel!.isoCode ?? 'SA'),
+        nsn: sharedAddressModel!.phoneNumber ?? '',
+      );
+      controller.value = PhoneNumber(
+        isoCode: isoCodeNameMap.values.byName(sharedAddressModel!.isoCode ?? 'SA'),
+        nsn: sharedAddressModel!.phoneNumber ?? '',
+      );
+      defaultCountry = isoCodeNameMap.values.byName(sharedAddressModel!.isoCode ?? 'SA');
+      //phoneValidation = controller.phoneKey.currentState?.errorText;
+    }
+    if (locationAddressData.isNotNull && locationAddressData!.address.isNotNull) {
+      if (areaTextFieldController.text.isEmpty) {
+        areaTextFieldController.text = locationAddressData.address?.village ?? locationAddressData.address?.city ?? locationAddressData.address?.county ?? '';
+      }
+      if (mapAddressTextFieldController.text.isEmpty) {
+        mapAddressTextFieldController.text = locationAddressData.displayName ?? '';
+      }
+      if (districtAddressTextFieldController.text.isEmpty) {
+        districtAddressTextFieldController.text = locationAddressData.address?.cityDistrict ?? locationAddressData.address?.stateDistrict ?? '';
+      }
+      if (zipCodeTextFieldController.text.isEmpty) {
+        zipCodeTextFieldController.text = locationAddressData.address?.postcode ?? '';
+      }
+      if (cityTextFieldController.text.isEmpty) {
+        cityTextFieldController.text = locationAddressData.address?.city ??
+            locationAddressData.address?.town ??
+            locationAddressData.address?.suburb ??
+            locationAddressData.address?.municipality ??
+            locationAddressData.address?.cityDistrict ??
+            locationAddressData.address?.stateDistrict ??
+            '';
+      }
+      if (stateTextFieldController.text.isEmpty) {
+        stateTextFieldController.text = locationAddressData.address?.state ?? '';
+      }
+      if (countryTextFieldController.text.isEmpty) {
+        countryTextFieldController.text = locationAddressData.address?.country ?? '';
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) => BlocListener<AddressBloc, AddressState>(
         key: const Key('address-form-bloc-listener'),
         bloc: context.watch<AddressBloc>(),
-        listener: (context, state) {
-          switch (state) {
+        listener: (context, addressState) {
+          switch (addressState) {
             case SaveAddressState():
               {}
             case GetAddressByIDState():
-              {}
+              {
+                final addressEntity = addressState.addressEntity;
+                if (addressEntity.isNotNull) {
+                  setAddressEntityData(addressEntity);
+                }
+              }
             case AddressProcessingState():
               {
-                if (state.addressStatus == AddressStatus.saveAddress) {
-                } else if (state.addressStatus == AddressStatus.getAddress) {}
+                if (addressState.addressStatus == AddressStatus.saveAddress) {
+                } else if (addressState.addressStatus == AddressStatus.getAddress) {}
               }
             case AddressExceptionState():
               {
-                if (state.addressStatus == AddressStatus.saveAddress) {
-                } else if (state.addressStatus == AddressStatus.getAddress) {}
+                if (addressState.addressStatus == AddressStatus.saveAddress) {
+                } else if (addressState.addressStatus == AddressStatus.getAddress) {}
               }
             case AddressFailedState():
               {
-                if (state.addressStatus == AddressStatus.saveAddress) {
-                } else if (state.addressStatus == AddressStatus.getAddress) {}
+                if (addressState.addressStatus == AddressStatus.saveAddress) {
+                } else if (addressState.addressStatus == AddressStatus.getAddress) {}
               }
             case _:
               appLog.d('Default case: address form page');
@@ -334,12 +411,15 @@ class _AddressFormPageView extends WidgetView<AddressFormPage, _AddressFormPageC
                                     Align(
                                       alignment: AlignmentDirectional.topStart,
                                       child: Text(
-                                        'Enter address details',
+                                        'Address Details',
                                         style: context.titleLarge,
+                                        textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                        maxLines: 1,
+                                        overflow: TextOverflow.ellipsis,
                                       ).translate(),
                                     ),
                                     const AnimatedGap(6, duration: Duration(milliseconds: 500)),
-                                    AddressFormMakerWidget(
+                                    /*AddressFormMakerWidget(
                                       key: const Key('address-user-mobile-number'),
                                       title: 'Mobile number',
                                       child: PhoneNumberFieldWidget(
@@ -385,7 +465,7 @@ class _AddressFormPageView extends WidgetView<AddressFormPage, _AddressFormPageC
                                           ]).validate(value);
                                         },
                                       ),
-                                    ),
+                                    ),*/
                                     AddressFormMakerWidget(
                                       key: const Key('address-user-flat-building'),
                                       title: 'Flat, House no., Building, Company, Apartment',
@@ -396,6 +476,7 @@ class _AddressFormPageView extends WidgetView<AddressFormPage, _AddressFormPageC
                                           hintText: 'Optional',
                                           isDense: true,
                                         ),
+                                        textDirection: serviceLocator<LanguageController>().targetTextDirection,
                                       ),
                                     ),
                                     AddressFormMakerWidget(
@@ -593,11 +674,66 @@ class _AddressFormPageView extends WidgetView<AddressFormPage, _AddressFormPageC
                                             // View Address
                                             return;
                                           } else {
+                                            /*  'locationData': locationAddressData,
+                                        'latitude': defaultLatLng.latitude,
+                                        'longitude': defaultLatLng.longitude,
+                                        'addressModel': addressModel,*/
+                                            final addressInfo = AddressModel(
+                                              isDefault: state.checkBoxValue,
+                                              address: AddressBean(
+                                                city: state.cityTextFieldController.value.text.trim(),
+                                                state: state.stateTextFieldController.value.text.trim(),
+                                                country: state.countryTextFieldController.value.text.trim(),
+                                                savedAddressAs: state.valueOfSavedAddress,
+                                                indexOfSavedAddressAs: state.indexOfSaveAddress,
+                                                addressType: state.locationAddressData.addresstype,
+                                                apartment: state.buildingTextFieldController.value.text,
+                                                area: state.areaTextFieldController.value.text,
+                                                category: state.locationAddressData.category,
+                                                cityCode: -1,
+                                                cityDistrict: state.locationAddressData.address?.cityDistrict,
+                                                countryCode: -1,
+                                                county: state.locationAddressData.address?.county,
+                                                district: state.districtAddressTextFieldController.value.text.trim(),
+                                                //isDefault: checkBoxValue,
+                                                landmark: state.landmarkTextFieldController.value.text.trim(),
+                                                latitude: state.latitude,
+                                                longitude: state.longitude,
+                                                municipality: state.locationAddressData.address?.municipality,
+                                                osmId: state.locationAddressData.id,
+                                                osmType: state.locationAddressData.osmType,
+                                                pickupAddress: state.locationAddressData.displayName,
+                                                placeId: state.locationAddressData.placeId,
+                                                placeRank: state.locationAddressData.placeRank,
+                                                postalCode: int.parse(state.zipCodeTextFieldController.value.text.trim()),
+                                                road: state.locationAddressData.address?.road,
+                                                stateCode: -1,
+                                                stateDistrict: state.locationAddressData.address?.stateDistrict,
+                                                suburb: state.locationAddressData.address?.suburb,
+                                                town: state.locationAddressData.address?.town,
+                                                type: state.locationAddressData.type,
+                                                village: state.locationAddressData.address?.village,
+                                                displayAddressName: state.mapAddressTextFieldController.value.text.trim(),
+                                              ),
+                                            );
+                                            AddressModel addressModel;
                                             if (!widget.hasNewAddress && widget.addressModel.isNotNull) {
                                               // Edit Address
+                                              addressModel = addressInfo.copyWith(
+                                                addressID: widget.addressModel?.addressID,
+                                              );
                                             } else {
                                               // New Address
+                                              addressModel = addressInfo.copyWith();
                                             }
+                                            if (!state.mounted) {
+                                              return;
+                                            }
+                                            context.read<AddressBloc>().add(SaveAddress(
+                                                  addressEntity: addressModel,
+                                                  hasNewAddress: widget.hasNewAddress,
+                                                ));
+                                            return;
                                           }
                                           return;
                                         }

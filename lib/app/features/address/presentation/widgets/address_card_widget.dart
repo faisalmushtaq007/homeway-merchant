@@ -79,16 +79,12 @@ class _AddressCardWidgetController extends State<AddressCardWidget> {
         switch (_popupStoreItemIndex) {
           case 0:
             {
-              final navigateToStoreDetailsPage = await context.push(
-                Routes.ADDRESS_FORM_PAGE,
+              final mapAddressDetails = await context.push(
+                Routes.PICKUP_LOCATION_FROM_MAP_PAGE,
                 extra: {
                   'addressModel': widget.addressEntity,
                   'currentIndex': widget.currentIndex,
                   'hasNewAddress': false,
-                  'hasViewAddress': true,
-                  'latitude': addressEntity.address?.latitude ?? 0.0,
-                  'locationData': addressEntity,
-                  'longitude': addressEntity.address?.longitude ?? 0.0,
                   'allAddress': widget.listOfAllAddressEntities.toList(),
                 },
               );
@@ -98,7 +94,21 @@ class _AddressCardWidgetController extends State<AddressCardWidget> {
               context.read<AddressBloc>().add(GetAllAddress());
             }
           case 1:
-            {}
+            {
+              final mapAddressDetails = await context.push(
+                Routes.PICKUP_LOCATION_FROM_MAP_PAGE,
+                extra: {
+                  'addressModel': widget.addressEntity,
+                  'currentIndex': widget.currentIndex,
+                  'hasNewAddress': false,
+                  'allAddress': widget.listOfAllAddressEntities.toList(),
+                },
+              );
+              if (!mounted) {
+                return;
+              }
+              context.read<AddressBloc>().add(GetAllAddress());
+            }
           case 2:
             {}
           case 3:
@@ -322,6 +332,9 @@ class _AddressCardWidgetView extends WidgetView<AddressCardWidget, _AddressCardW
       minLeadingWidth: 20,
       onTap: () async {
         //final navigateToStoreDetailPage=await context.push(Routes.ALL_STORES_PAGE);
+        if (context.canPop()) {
+          return context.pop((widget.addressEntity));
+        }
       },
       trailing: state._buildPopupMenuButton(
         widget.currentIndex,
