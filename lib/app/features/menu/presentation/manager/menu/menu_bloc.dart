@@ -11,6 +11,7 @@ import 'package:homemakers_merchant/bootup/injection_container.dart';
 import 'package:homemakers_merchant/shared/states/data_source_state.dart';
 import 'package:homemakers_merchant/utils/app_equatable/app_equatable.dart';
 import 'package:homemakers_merchant/utils/app_log.dart';
+import 'package:sembast/timestamp.dart';
 
 part 'menu_event.dart';
 
@@ -108,6 +109,14 @@ class MenuBloc extends Bloc<MenuEvent, MenuState> {
     );
     on<BindAddonsWithUser>(
       _bindAddonsWithUser,
+      transformer: sequential(),
+    );
+    on<GetAllAddonsPagination>(
+      _getAllAddonsPagination,
+      transformer: sequential(),
+    );
+    on<GetAllMenuPagination>(
+      _getAllMenuPagination,
       transformer: sequential(),
     );
   }
@@ -1076,4 +1085,200 @@ class MenuBloc extends Bloc<MenuEvent, MenuState> {
   FutureOr<void> _bindAddonsWithMenu(BindAddonsWithMenu event, Emitter<MenuState> emit) async {}
 
   FutureOr<void> _bindAddonsWithUser(BindAddonsWithUser event, Emitter<MenuState> emit) async {}
+
+  FutureOr<void> _getAllAddonsPagination(GetAllAddonsPagination event, Emitter<MenuState> emit) async {
+    try {
+      emit(GetAllLoadingAddonsPaginationState(isLoading: true, message: 'Please wait while we are fetching all addons...'));
+      final DataSourceState<List<Addons>> result = await serviceLocator<GetAllAddonsPaginationUseCase>()(
+        pageKey: event.pageKey,
+        pageSize: event.pageSize,
+        searchText: event.searchText,
+        filtering: event.filter,
+        sorting: event.sorting,
+        startTime: event.startTimeStamp,
+        endTime: event.endTimeStamp,
+      );
+      result.when(
+        remote: (data, meta) {
+          appLog.d('Get all addons bloc get all remote');
+          if (data == null || data.isEmpty) {
+            emit(
+              GetAllEmptyAddonsPaginationState(
+                message: 'All addons is empty',
+                addonsEntities: [],
+                endTimeStamp: event.endTimeStamp,
+                startTimeStamp: event.startTimeStamp,
+                pageKey: event.pageKey,
+                pageSize: event.pageSize,
+                searchText: event.searchText,
+                sorting: event.sorting,
+                filter: event.filter,
+              ),
+            );
+          } else {
+            emit(
+              GetAllAddonsPaginationState(
+                addonsEntities: data.toList(),
+                endTimeStamp: event.endTimeStamp,
+                startTimeStamp: event.startTimeStamp,
+                pageKey: event.pageKey,
+                pageSize: event.pageSize,
+                searchText: event.searchText,
+                sorting: event.sorting,
+                filter: event.filter,
+              ),
+            );
+          }
+        },
+        localDb: (data, meta) {
+          appLog.d('Get all addons bloc get all local');
+          if (data == null || data.isEmpty) {
+            emit(
+              GetAllEmptyAddonsPaginationState(
+                message: 'All addons is empty',
+                addonsEntities: [],
+                endTimeStamp: event.endTimeStamp,
+                startTimeStamp: event.startTimeStamp,
+                pageKey: event.pageKey,
+                pageSize: event.pageSize,
+                searchText: event.searchText,
+                sorting: event.sorting,
+                filter: event.filter,
+              ),
+            );
+          } else {
+            emit(
+              GetAllEmptyAddonsPaginationState(
+                addonsEntities: data.toList(),
+                endTimeStamp: event.endTimeStamp,
+                startTimeStamp: event.startTimeStamp,
+                pageKey: event.pageKey,
+                pageSize: event.pageSize,
+                searchText: event.searchText,
+                sorting: event.sorting,
+                filter: event.filter,
+              ),
+            );
+          }
+        },
+        error: (dataSourceFailure, reason, error, networkException, stackTrace, exception, extra) {
+          appLog.d('Get all addons bloc get all error $reason');
+          emit(
+            GetAllExceptionAddonsPaginationState(
+              message: reason,
+              //exception: e as Exception,
+              stackTrace: stackTrace,
+            ),
+          );
+        },
+      );
+    } catch (e, s) {
+      appLog.e('Get all addons bloc get all $e');
+      emit(
+        GetAllExceptionAddonsPaginationState(
+          message: 'Something went wrong during getting all addons, please try again',
+          //exception: e as Exception,
+          stackTrace: s,
+        ),
+      );
+    }
+  }
+
+  FutureOr<void> _getAllMenuPagination(GetAllMenuPagination event, Emitter<MenuState> emit) async {
+    try {
+      emit(GetAllLoadingMenuPaginationState(isLoading: true, message: 'Please wait while we are fetching all address...'));
+      final DataSourceState<List<MenuEntity>> result = await serviceLocator<GetAllMenuPaginationUseCase>()(
+        pageKey: event.pageKey,
+        pageSize: event.pageSize,
+        searchText: event.searchText,
+        filtering: event.filter,
+        sorting: event.sorting,
+        startTime: event.startTimeStamp,
+        endTime: event.endTimeStamp,
+      );
+      result.when(
+        remote: (data, meta) {
+          appLog.d('Get all menu bloc get all remote');
+          if (data == null || data.isEmpty) {
+            emit(
+              GetAllEmptyMenuPaginationState(
+                message: 'All menu is empty',
+                menuEntities: [],
+                endTimeStamp: event.endTimeStamp,
+                startTimeStamp: event.startTimeStamp,
+                pageKey: event.pageKey,
+                pageSize: event.pageSize,
+                searchText: event.searchText,
+                sorting: event.sorting,
+                filter: event.filter,
+              ),
+            );
+          } else {
+            emit(
+              GetAllMenuPaginationState(
+                menuEntities: data.toList(),
+                endTimeStamp: event.endTimeStamp,
+                startTimeStamp: event.startTimeStamp,
+                pageKey: event.pageKey,
+                pageSize: event.pageSize,
+                searchText: event.searchText,
+                sorting: event.sorting,
+                filter: event.filter,
+              ),
+            );
+          }
+        },
+        localDb: (data, meta) {
+          appLog.d('Get all menu bloc get all local');
+          if (data == null || data.isEmpty) {
+            emit(
+              GetAllEmptyMenuPaginationState(
+                message: 'All menu is empty',
+                menuEntities: [],
+                endTimeStamp: event.endTimeStamp,
+                startTimeStamp: event.startTimeStamp,
+                pageKey: event.pageKey,
+                pageSize: event.pageSize,
+                searchText: event.searchText,
+                sorting: event.sorting,
+                filter: event.filter,
+              ),
+            );
+          } else {
+            emit(
+              GetAllEmptyMenuPaginationState(
+                menuEntities: data.toList(),
+                endTimeStamp: event.endTimeStamp,
+                startTimeStamp: event.startTimeStamp,
+                pageKey: event.pageKey,
+                pageSize: event.pageSize,
+                searchText: event.searchText,
+                sorting: event.sorting,
+                filter: event.filter,
+              ),
+            );
+          }
+        },
+        error: (dataSourceFailure, reason, error, networkException, stackTrace, exception, extra) {
+          appLog.d('Get all menu bloc get all error $reason');
+          emit(
+            GetAllExceptionMenuPaginationState(
+              message: reason,
+              //exception: e as Exception,
+              stackTrace: stackTrace,
+            ),
+          );
+        },
+      );
+    } catch (e, s) {
+      appLog.e('Get all menu bloc get all $e');
+      emit(
+        GetAllExceptionMenuPaginationState(
+          message: 'Something went wrong during getting all menu, please try again',
+          //exception: e as Exception,
+          stackTrace: s,
+        ),
+      );
+    }
+  }
 }

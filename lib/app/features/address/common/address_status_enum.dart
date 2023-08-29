@@ -18,6 +18,7 @@ enum AddressStatus {
   selectDefaultAddress,
   selectCurrentAddress,
   confirmationOnDefaultAddress,
+  getAllAddressPagination,
   ;
 
   @override

@@ -5,8 +5,10 @@ class AddressRepositoryImplement implements UserAddressRepository {
     required this.remoteDataSource,
     required this.addressLocalDataSource,
   });
+
   final AddressDataSource remoteDataSource;
   final AddressLocalDbRepository<AddressModel> addressLocalDataSource;
+
   @override
   Future<DataSourceState<bool>> deleteAllAddress({AppUserEntity? appUserEntity}) async {
     try {
@@ -362,6 +364,151 @@ class AddressRepositoryImplement implements UserAddressRepository {
     } catch (e, s) {
       appLog.d('Save address exception $e');
       return DataSourceState<AddressModel>.error(
+        reason: e.toString(),
+        dataSourceFailure: DataSourceFailure.local,
+        stackTrace: s,
+        error: e,
+        exception: e as Exception,
+      );
+    }
+  }
+
+  @override
+  Future<DataSourceState<List<AddressModel>>> getAllAddressPagination({
+    int pageKey = 0,
+    int pageSize = 10,
+    String? searchText,
+    AddressModel? addressEntity,
+    String? filtering,
+    String? sorting,
+    Timestamp? startTime,
+    Timestamp? endTime,
+  }) async {
+    try {
+      final connectivity = serviceLocator<ConnectivityService>().getCurrentInternetStatus();
+      if (connectivity.$2 == InternetConnectivityState.internet) {
+        // Local DB
+        // Save to local
+        final Either<RepositoryBaseFailure, List<AddressModel>> result = await addressLocalDataSource.getAllWithPagination(
+          filter: filtering,
+          sorting: sorting,
+          searchText: searchText,
+          pageSize: pageSize,
+          pageKey: pageKey,
+          endTimeStamp: endTime,
+          startTimeStamp: startTime,
+        );
+        // Return result
+        return result.fold((l) {
+          final RepositoryFailure failure = l as RepositoryFailure;
+          appLog.d('Get all address local error ${failure.message}');
+          return DataSourceState<List<AddressModel>>.error(
+            reason: failure.message,
+            dataSourceFailure: DataSourceFailure.local,
+            stackTrace: failure.stacktrace,
+          );
+        }, (r) {
+          appLog.d('Get all address local : ${r.length}');
+          return DataSourceState<List<AddressModel>>.localDb(data: r);
+        });
+      } else {
+        // Remote
+        // Save to server
+        final ApiResultState<List<AddressModel>> result = await remoteDataSource.getAllAddressPagination(
+          filtering: filtering,
+          sorting: sorting,
+          searchText: searchText,
+          pageSize: pageSize,
+          pageKey: pageKey,
+          endTime: endTime,
+          startTime: startTime,
+        );
+        // Return result
+        return result.when(
+          success: (data) {
+            appLog.d('Get all address from remote');
+            return DataSourceState<List<AddressModel>>.remote(
+              data: data.toList(),
+            );
+          },
+          failure: (reason, error, exception, stackTrace) {
+            appLog.d('Get all address remote error $reason');
+            return DataSourceState<List<AddressModel>>.error(
+              reason: reason,
+              dataSourceFailure: DataSourceFailure.remote,
+              stackTrace: stackTrace,
+              error: error,
+              networkException: exception,
+            );
+          },
+        );
+      }
+    } catch (e, s) {
+      appLog.e('Get all address exception $e');
+      return DataSourceState<List<AddressModel>>.error(
+        reason: e.toString(),
+        dataSourceFailure: DataSourceFailure.local,
+        stackTrace: s,
+        error: e,
+        exception: e as Exception,
+      );
+    }
+  }
+
+  @override
+  Future<DataSourceState<List<AddressModel>>> saveAllAddress({required List<AddressModel> addressEntities, bool hasUpdateAll = false}) async {
+    try {
+      final connectivity = serviceLocator<ConnectivityService>().getCurrentInternetStatus();
+      if (connectivity.$2 == InternetConnectivityState.internet) {
+        // Local DB
+        // Save to local
+        final Either<RepositoryBaseFailure, List<AddressModel>> result = await addressLocalDataSource.saveAll(
+          entities: addressEntities,
+          hasUpdateAll: hasUpdateAll,
+        );
+        // Return result
+        return result.fold((l) {
+          final RepositoryFailure failure = l as RepositoryFailure;
+          appLog.d('Save all address local error ${failure.message}');
+          return DataSourceState<List<AddressModel>>.error(
+            reason: failure.message,
+            dataSourceFailure: DataSourceFailure.local,
+            stackTrace: failure.stacktrace,
+          );
+        }, (r) {
+          appLog.d('Save all address to local : ${r?.length},');
+          return DataSourceState<List<AddressModel>>.localDb(data: r);
+        });
+      } else {
+        // Remote
+        // Save to server
+        final ApiResultState<List<AddressModel>> result = await remoteDataSource.saveAllAddress(
+          addressEntities: addressEntities,
+          hasUpdateAll: hasUpdateAll,
+        );
+        // Return result
+        return result.when(
+          success: (data) {
+            appLog.d('Save all address to remote');
+            return DataSourceState<List<AddressModel>>.remote(
+              data: data,
+            );
+          },
+          failure: (reason, error, exception, stackTrace) {
+            appLog.d('Save all address remote error $reason');
+            return DataSourceState<List<AddressModel>>.error(
+              reason: reason,
+              dataSourceFailure: DataSourceFailure.remote,
+              stackTrace: stackTrace,
+              error: error,
+              networkException: exception,
+            );
+          },
+        );
+      }
+    } catch (e, s) {
+      appLog.d('Save all address exception $e');
+      return DataSourceState<List<AddressModel>>.error(
         reason: e.toString(),
         dataSourceFailure: DataSourceFailure.local,
         stackTrace: s,

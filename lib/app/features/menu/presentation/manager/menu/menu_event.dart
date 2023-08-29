@@ -528,3 +528,71 @@ class BindAddonsWithUser extends MenuEvent {
         bindAddonsToUserStage,
       ];
 }
+
+class GetAllAddonsPagination extends MenuEvent {
+  GetAllAddonsPagination({
+    this.pageKey = 1,
+    this.searchText,
+    this.pageSize = 10,
+    this.endTimeStamp,
+    this.filter,
+    this.sorting,
+    this.startTimeStamp,
+  });
+
+  final int pageKey;
+  final int pageSize;
+  final String? searchText;
+  final String? filter;
+  final String? sorting;
+  final Timestamp? startTimeStamp;
+  final Timestamp? endTimeStamp;
+
+  @override
+  bool get cacheHash => false;
+
+  @override
+  List<Object?> get hashParameters => [
+        pageKey,
+        searchText,
+        pageSize,
+        endTimeStamp,
+        filter,
+        sorting,
+        startTimeStamp,
+      ];
+}
+
+class GetAllMenuPagination extends MenuEvent {
+  GetAllMenuPagination({
+    this.pageKey = 1,
+    this.searchText,
+    this.pageSize = 10,
+    this.endTimeStamp,
+    this.filter,
+    this.sorting,
+    this.startTimeStamp,
+  });
+
+  final int pageKey;
+  final int pageSize;
+  final String? searchText;
+  final String? filter;
+  final String? sorting;
+  final Timestamp? startTimeStamp;
+  final Timestamp? endTimeStamp;
+
+  @override
+  bool get cacheHash => false;
+
+  @override
+  List<Object?> get hashParameters => [
+        pageKey,
+        searchText,
+        pageSize,
+        endTimeStamp,
+        filter,
+        sorting,
+        startTimeStamp,
+      ];
+}

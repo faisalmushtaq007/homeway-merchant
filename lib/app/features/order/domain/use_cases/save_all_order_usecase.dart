@@ -7,7 +7,7 @@ class SaveAllOrderUseCase extends UseCaseIO<List<OrderEntity>, DataSourceState<L
   final OrderRepository orderRepository;
   @override
   Future<DataSourceState<List<OrderEntity>>> call(List<OrderEntity> input) async {
-    return orderRepository.saveAllOrder(
+    return await orderRepository.saveAllOrder(
       orderEntities: input,
       hasUpdateAll: false,
     );

@@ -103,4 +103,25 @@ abstract interface class MenuDataSource {
     required List<Addons> addonsEntities,
     bool hasUpdateAll = false,
   });
+
+  Future<ApiResultState<List<Addons>>> getAllAddonsPagination({
+    int pageKey = 0,
+    int pageSize = 10,
+    String? searchText,
+    Addons? addonsEntity,
+    String? filtering,
+    String? sorting,
+    Timestamp? startTime,
+    Timestamp? endTime,
+  });
+  Future<ApiResultState<List<MenuEntity>>> getAllMenuPagination({
+    int pageKey = 0,
+    int pageSize = 10,
+    String? searchText,
+    MenuEntity? menuEntity,
+    String? filtering,
+    String? sorting,
+    Timestamp? startTime,
+    Timestamp? endTime,
+  });
 }

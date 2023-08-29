@@ -37,4 +37,24 @@ class AddressRemoteDataSource implements AddressDataSource {
     // TODO: implement saveAddress
     throw UnimplementedError();
   }
+
+  @override
+  Future<ApiResultState<List<AddressModel>>> getAllAddressPagination(
+      {int pageKey = 0,
+      int pageSize = 10,
+      String? searchText,
+      AddressModel? addressEntity,
+      String? filtering,
+      String? sorting,
+      Timestamp? startTime,
+      Timestamp? endTime}) {
+    // TODO: implement getAllAddressPagination
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<ApiResultState<List<AddressModel>>> saveAllAddress({required List<AddressModel> addressEntities, bool hasUpdateAll = false}) {
+    // TODO: implement saveAllCategory
+    throw UnimplementedError();
+  }
 }

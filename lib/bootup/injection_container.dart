@@ -318,6 +318,16 @@ void _setUpUseCases() {
       menuRepository: serviceLocator(),
     ),
   );
+  serviceLocator.registerLazySingleton<GetAllMenuPaginationUseCase>(
+    () => GetAllMenuPaginationUseCase(
+      menuRepository: serviceLocator(),
+    ),
+  );
+  serviceLocator.registerLazySingleton<SaveAllMenuUseCase>(
+    () => SaveAllMenuUseCase(
+      menuRepository: serviceLocator(),
+    ),
+  );
   serviceLocator.registerLazySingleton<DeleteMenuUseCase>(
     () => DeleteMenuUseCase(
       menuRepository: serviceLocator(),
@@ -346,6 +356,16 @@ void _setUpUseCases() {
   );
   serviceLocator.registerLazySingleton<GetAllAddonsUseCase>(
     () => GetAllAddonsUseCase(
+      menuRepository: serviceLocator(),
+    ),
+  );
+  serviceLocator.registerLazySingleton<GetAllAddonsPaginationUseCase>(
+    () => GetAllAddonsPaginationUseCase(
+      menuRepository: serviceLocator(),
+    ),
+  );
+  serviceLocator.registerLazySingleton<SaveAllAddonsUseCase>(
+    () => SaveAllAddonsUseCase(
       menuRepository: serviceLocator(),
     ),
   );
@@ -542,6 +562,16 @@ void _setUpUseCases() {
   );
   serviceLocator.registerLazySingleton<GetAllAddressUseCase>(
     () => GetAllAddressUseCase(
+      userAddressRepository: serviceLocator(),
+    ),
+  );
+  serviceLocator.registerLazySingleton<GetAllAddressPaginationUseCase>(
+    () => GetAllAddressPaginationUseCase(
+      userAddressRepository: serviceLocator(),
+    ),
+  );
+  serviceLocator.registerLazySingleton<SaveAllAddressUseCase>(
+    () => SaveAllAddressUseCase(
       userAddressRepository: serviceLocator(),
     ),
   );

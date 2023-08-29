@@ -11,7 +11,7 @@ class GetAllCategoryUseCase
   @override
   Future<DataSourceState<List<Category>>> call({
     int pageKey = 0,
-    int pageSize = 10,
+    int pageSize = 20,
     String? searchText,
     Category? category,
     Category? subCategory,
@@ -19,7 +19,7 @@ class GetAllCategoryUseCase
     String? sorting,
     Timestamp? startTime,
     Timestamp? endTime,
-  }) {
-    return menuRepository.getAllCategory();
+  }) async {
+    return await menuRepository.getAllCategory();
   }
 }

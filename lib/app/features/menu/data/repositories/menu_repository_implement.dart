@@ -1280,4 +1280,169 @@ class MenuRepositoryImplement implements MenuRepository {
       );
     }
   }
+
+  @override
+  Future<DataSourceState<List<Addons>>> getAllAddonsPagination({
+    int pageKey = 0,
+    int pageSize = 10,
+    String? searchText,
+    Addons? addonsEntity,
+    String? filtering,
+    String? sorting,
+    Timestamp? startTime,
+    Timestamp? endTime,
+  }) async {
+    try {
+      final connectivity = serviceLocator<ConnectivityService>().getCurrentInternetStatus();
+      if (connectivity.$2 == InternetConnectivityState.internet) {
+        // Local DB
+        // Save to local
+        final Either<RepositoryBaseFailure, List<Addons>> result = await addonsLocalDataSource.getAllWithPagination(
+          filter: filtering,
+          sorting: sorting,
+          searchText: searchText,
+          pageSize: pageSize,
+          pageKey: pageKey,
+          endTimeStamp: endTime,
+          startTimeStamp: startTime,
+        );
+        // Return result
+        return result.fold((l) {
+          final RepositoryFailure failure = l as RepositoryFailure;
+          appLog.d('Get all addons local error ${failure.message}');
+          return DataSourceState<List<Addons>>.error(
+            reason: failure.message,
+            dataSourceFailure: DataSourceFailure.local,
+            stackTrace: failure.stacktrace,
+          );
+        }, (r) {
+          appLog.d('Get all addons local : ${r.length}');
+          return DataSourceState<List<Addons>>.localDb(data: r);
+        });
+      } else {
+        // Remote
+        // Save to server
+        final ApiResultState<List<Addons>> result = await remoteDataSource.getAllAddonsPagination(
+          filtering: filtering,
+          sorting: sorting,
+          searchText: searchText,
+          pageSize: pageSize,
+          pageKey: pageKey,
+          addonsEntity: addonsEntity,
+          endTime: endTime,
+          startTime: startTime,
+        );
+        // Return result
+        return result.when(
+          success: (data) {
+            appLog.d('Get all addons from remote');
+            return DataSourceState<List<Addons>>.remote(
+              data: data.toList(),
+            );
+          },
+          failure: (reason, error, exception, stackTrace) {
+            appLog.d('Get all addons remote error $reason');
+            return DataSourceState<List<Addons>>.error(
+              reason: reason,
+              dataSourceFailure: DataSourceFailure.remote,
+              stackTrace: stackTrace,
+              error: error,
+              networkException: exception,
+            );
+          },
+        );
+      }
+    } catch (e, s) {
+      appLog.e('Get all addons exception $e');
+      return DataSourceState<List<Addons>>.error(
+        reason: e.toString(),
+        dataSourceFailure: DataSourceFailure.local,
+        stackTrace: s,
+        error: e,
+        exception: e as Exception,
+      );
+    }
+  }
+
+  @override
+  Future<DataSourceState<List<MenuEntity>>> getAllMenuPagination({
+    int pageKey = 0,
+    int pageSize = 10,
+    String? searchText,
+    MenuEntity? menuEntity,
+    String? filtering,
+    String? sorting,
+    Timestamp? startTime,
+    Timestamp? endTime,
+  }) async {
+    try {
+      final connectivity = serviceLocator<ConnectivityService>().getCurrentInternetStatus();
+      if (connectivity.$2 == InternetConnectivityState.internet) {
+        // Local DB
+        // Save to local
+        final Either<RepositoryBaseFailure, List<MenuEntity>> result = await menuLocalDataSource.getAllWithPagination(
+          filter: filtering,
+          sorting: sorting,
+          searchText: searchText,
+          pageSize: pageSize,
+          pageKey: pageKey,
+          endTimeStamp: endTime,
+          startTimeStamp: startTime,
+        );
+        // Return result
+        return result.fold((l) {
+          final RepositoryFailure failure = l as RepositoryFailure;
+          appLog.d('Get all menu local error ${failure.message}');
+          return DataSourceState<List<MenuEntity>>.error(
+            reason: failure.message,
+            dataSourceFailure: DataSourceFailure.local,
+            stackTrace: failure.stacktrace,
+          );
+        }, (r) {
+          appLog.d('Get all menu local : ${r.length}');
+          return DataSourceState<List<MenuEntity>>.localDb(data: r);
+        });
+      } else {
+        // Remote
+        // Save to server
+        final ApiResultState<List<MenuEntity>> result = await remoteDataSource.getAllMenuPagination(
+          filtering: filtering,
+          sorting: sorting,
+          searchText: searchText,
+          pageSize: pageSize,
+          pageKey: pageKey,
+          endTime: endTime,
+          startTime: startTime,
+        );
+        // Return result
+        return result.when(
+          success: (data) {
+            appLog.d('Get all menu from remote');
+            return DataSourceState<List<MenuEntity>>.remote(
+              data: data.toList(),
+            );
+          },
+          failure: (reason, error, exception, stackTrace) {
+            appLog.d('Get all menu remote error $reason');
+            return DataSourceState<List<MenuEntity>>.error(
+              reason: reason,
+              dataSourceFailure: DataSourceFailure.remote,
+              stackTrace: stackTrace,
+              error: error,
+              networkException: exception,
+            );
+          },
+        );
+      }
+    } catch (e, s) {
+      appLog.e('Get all menu exception $e');
+      return DataSourceState<List<MenuEntity>>.error(
+        reason: e.toString(),
+        dataSourceFailure: DataSourceFailure.local,
+        stackTrace: s,
+        error: e,
+        exception: e as Exception,
+      );
+    }
+  }
 }

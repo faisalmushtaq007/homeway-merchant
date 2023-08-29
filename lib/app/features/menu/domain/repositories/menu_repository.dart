@@ -97,6 +97,26 @@ abstract interface class MenuRepository {
     Timestamp? startTime,
     Timestamp? endTime,
   });
+  Future<DataSourceState<List<Addons>>> getAllAddonsPagination({
+    int pageKey = 0,
+    int pageSize = 10,
+    String? searchText,
+    Addons? addonsEntity,
+    String? filtering,
+    String? sorting,
+    Timestamp? startTime,
+    Timestamp? endTime,
+  });
+  Future<DataSourceState<List<MenuEntity>>> getAllMenuPagination({
+    int pageKey = 0,
+    int pageSize = 10,
+    String? searchText,
+    MenuEntity? menuEntity,
+    String? filtering,
+    String? sorting,
+    Timestamp? startTime,
+    Timestamp? endTime,
+  });
 
   Future<DataSourceState<List<Category>>> saveAllCategory({
     required List<Category> categories,

@@ -158,3 +158,8 @@ part 'package:homemakers_merchant/app/features/menu/presentation/pages/category_
 part 'package:homemakers_merchant/app/features/menu/presentation/pages/sub_category_page.dart';
 part 'package:homemakers_merchant/app/features/menu/domain/usecases/get_all_category_usecase.dart';
 part 'package:homemakers_merchant/app/features/menu/data/local/data_sources/category_local_db_dao.dart';
+//Save And Get All UseCase
+part 'package:homemakers_merchant/app/features/menu/domain/usecases/get_all_menu_pagination_usecase.dart';
+part 'package:homemakers_merchant/app/features/menu/domain/usecases/save_all_menus_usecase.dart';
+part 'package:homemakers_merchant/app/features/menu/domain/usecases/get_all_addons_pagination_usecase.dart';
+part 'package:homemakers_merchant/app/features/menu/domain/usecases/save_all_addons_usecase.dart';

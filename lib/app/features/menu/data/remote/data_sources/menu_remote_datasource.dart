@@ -175,4 +175,32 @@ class MenuRemoteDataSource implements MenuDataSource {
     // TODO: implement saveAllMenu
     throw UnimplementedError();
   }
+
+  @override
+  Future<ApiResultState<List<Addons>>> getAllAddonsPagination(
+      {int pageKey = 0,
+      int pageSize = 10,
+      String? searchText,
+      Addons? addonsEntity,
+      String? filtering,
+      String? sorting,
+      Timestamp? startTime,
+      Timestamp? endTime}) {
+    // TODO: implement getAllAddonsPagination
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<ApiResultState<List<MenuEntity>>> getAllMenuPagination(
+      {int pageKey = 0,
+      int pageSize = 10,
+      String? searchText,
+      MenuEntity? menuEntity,
+      String? filtering,
+      String? sorting,
+      Timestamp? startTime,
+      Timestamp? endTime}) {
+    // TODO: implement getAllMenuPagination
+    throw UnimplementedError();
+  }
 }

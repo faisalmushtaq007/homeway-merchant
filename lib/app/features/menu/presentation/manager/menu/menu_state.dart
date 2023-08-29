@@ -849,3 +849,329 @@ class BindAddonsWithUserState extends MenuState {
         appUserEntity,
       ];
 }
+
+// Get All Menu Pagination State
+class GetAllMenuPaginationState extends MenuState {
+  GetAllMenuPaginationState({
+    this.pageKey = 1,
+    this.searchText,
+    this.pageSize = 10,
+    this.endTimeStamp,
+    this.filter,
+    this.sorting,
+    this.startTimeStamp,
+    this.menuSelectionUseCase = MenuSelectionUseCase.getAllMenuPagination,
+    this.menuEntities = const [],
+  });
+
+  final int pageKey;
+  final int pageSize;
+  final String? searchText;
+  final String? filter;
+  final String? sorting;
+  final Timestamp? startTimeStamp;
+  final Timestamp? endTimeStamp;
+  final MenuSelectionUseCase menuSelectionUseCase;
+  final List<MenuEntity> menuEntities;
+
+  @override
+  List<Object?> get hashParameters => [
+        menuSelectionUseCase,
+        pageKey,
+        searchText,
+        pageSize,
+        endTimeStamp,
+        filter,
+        sorting,
+        startTimeStamp,
+        menuEntities,
+      ];
+
+  @override
+  bool get cacheHash => false;
+}
+
+class GetAllLoadingMenuPaginationState extends MenuState {
+  GetAllLoadingMenuPaginationState({
+    required this.isLoading,
+    required this.message,
+  });
+
+  final bool isLoading;
+  final String message;
+
+  @override
+  List<Object?> get hashParameters => [
+        isLoading,
+        message,
+      ];
+
+  @override
+  bool get cacheHash => false;
+}
+
+class GetAllProcessingMenuPaginationState extends MenuState {
+  GetAllProcessingMenuPaginationState({
+    required this.isProcessing,
+    required this.message,
+  });
+
+  final bool isProcessing;
+  final String message;
+
+  @override
+  List<Object?> get hashParameters => [
+        isProcessing,
+        message,
+      ];
+
+  @override
+  bool get cacheHash => false;
+}
+
+class GetAllFailedMenuPaginationState extends MenuState {
+  GetAllFailedMenuPaginationState({
+    required this.message,
+  });
+
+  final String message;
+
+  @override
+  List<Object?> get hashParameters => [
+        message,
+      ];
+
+  @override
+  bool get cacheHash => false;
+}
+
+class GetAllExceptionMenuPaginationState extends MenuState {
+  GetAllExceptionMenuPaginationState({
+    required this.message,
+    this.stackTrace,
+    this.exception,
+    this.menuSelectionUseCase = MenuSelectionUseCase.getAllMenuPagination,
+  });
+
+  final MenuSelectionUseCase menuSelectionUseCase;
+  final String message;
+  final StackTrace? stackTrace;
+  final Exception? exception;
+
+  @override
+  List<Object?> get hashParameters => [
+        message,
+        stackTrace,
+        exception,
+        menuSelectionUseCase,
+      ];
+
+  @override
+  bool get cacheHash => false;
+}
+
+class GetAllEmptyMenuPaginationState extends MenuState {
+  GetAllEmptyMenuPaginationState({
+    this.menuEntities = const [],
+    this.message = '',
+    this.menuSelectionUseCase = MenuSelectionUseCase.getAllMenuPagination,
+    this.pageKey = 1,
+    this.searchText,
+    this.pageSize = 10,
+    this.endTimeStamp,
+    this.filter,
+    this.sorting,
+    this.startTimeStamp,
+  });
+
+  final List<MenuEntity> menuEntities;
+  final String message;
+  final MenuSelectionUseCase menuSelectionUseCase;
+  final int pageKey;
+  final int pageSize;
+  final String? searchText;
+  final String? filter;
+  final String? sorting;
+  final Timestamp? startTimeStamp;
+  final Timestamp? endTimeStamp;
+
+  @override
+  List<Object?> get hashParameters => [
+        message,
+        menuEntities,
+        pageKey,
+        searchText,
+        pageSize,
+        endTimeStamp,
+        filter,
+        sorting,
+        startTimeStamp,
+        menuSelectionUseCase,
+      ];
+
+  @override
+  bool get cacheHash => false;
+}
+
+// Get All Addons Pagination
+class GetAllAddonsPaginationState extends MenuState {
+  GetAllAddonsPaginationState({
+    this.pageKey = 1,
+    this.searchText,
+    this.pageSize = 10,
+    this.endTimeStamp,
+    this.filter,
+    this.sorting,
+    this.startTimeStamp,
+    this.addonsSelectionUseCase = AddonsSelectionUseCase.getAllAddonsPagination,
+    this.addonsEntities = const [],
+  });
+
+  final int pageKey;
+  final int pageSize;
+  final String? searchText;
+  final String? filter;
+  final String? sorting;
+  final Timestamp? startTimeStamp;
+  final Timestamp? endTimeStamp;
+  final AddonsSelectionUseCase addonsSelectionUseCase;
+  final List<Addons> addonsEntities;
+
+  @override
+  List<Object?> get hashParameters => [
+        addonsSelectionUseCase,
+        pageKey,
+        searchText,
+        pageSize,
+        endTimeStamp,
+        filter,
+        sorting,
+        startTimeStamp,
+        addonsEntities,
+      ];
+
+  @override
+  bool get cacheHash => false;
+}
+
+class GetAllLoadingAddonsPaginationState extends MenuState {
+  GetAllLoadingAddonsPaginationState({
+    required this.isLoading,
+    required this.message,
+  });
+
+  final bool isLoading;
+  final String message;
+
+  @override
+  List<Object?> get hashParameters => [
+        isLoading,
+        message,
+      ];
+
+  @override
+  bool get cacheHash => false;
+}
+
+class GetAllProcessingAddonsPaginationState extends MenuState {
+  GetAllProcessingAddonsPaginationState({
+    required this.isProcessing,
+    required this.message,
+  });
+
+  final bool isProcessing;
+  final String message;
+
+  @override
+  List<Object?> get hashParameters => [
+        isProcessing,
+        message,
+      ];
+
+  @override
+  bool get cacheHash => false;
+}
+
+class GetAllFailedAddonsPaginationState extends MenuState {
+  GetAllFailedAddonsPaginationState({
+    required this.message,
+  });
+
+  final String message;
+
+  @override
+  List<Object?> get hashParameters => [
+        message,
+      ];
+
+  @override
+  bool get cacheHash => false;
+}
+
+class GetAllExceptionAddonsPaginationState extends MenuState {
+  GetAllExceptionAddonsPaginationState({
+    required this.message,
+    this.stackTrace,
+    this.exception,
+    this.addonsSelectionUseCase = AddonsSelectionUseCase.getAllAddonsPagination,
+  });
+
+  final AddonsSelectionUseCase addonsSelectionUseCase;
+  final String message;
+  final StackTrace? stackTrace;
+  final Exception? exception;
+
+  @override
+  List<Object?> get hashParameters => [
+        message,
+        stackTrace,
+        exception,
+        addonsSelectionUseCase,
+      ];
+
+  @override
+  bool get cacheHash => false;
+}
+
+class GetAllEmptyAddonsPaginationState extends MenuState {
+  GetAllEmptyAddonsPaginationState({
+    this.addonsEntities = const [],
+    this.message = '',
+    this.addonsSelectionUseCase = AddonsSelectionUseCase.getAllAddonsPagination,
+    this.pageKey = 1,
+    this.searchText,
+    this.pageSize = 10,
+    this.endTimeStamp,
+    this.filter,
+    this.sorting,
+    this.startTimeStamp,
+  });
+
+  final List<Addons> addonsEntities;
+  final String message;
+  final AddonsSelectionUseCase addonsSelectionUseCase;
+  final int pageKey;
+  final int pageSize;
+  final String? searchText;
+  final String? filter;
+  final String? sorting;
+  final Timestamp? startTimeStamp;
+  final Timestamp? endTimeStamp;
+
+  @override
+  List<Object?> get hashParameters => [
+        message,
+        addonsEntities,
+        pageKey,
+        searchText,
+        pageSize,
+        endTimeStamp,
+        filter,
+        sorting,
+        startTimeStamp,
+        addonsSelectionUseCase,
+      ];
+
+  @override
+  bool get cacheHash => false;
+}

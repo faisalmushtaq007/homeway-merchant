@@ -148,6 +148,32 @@ abstract class CategoryQueryAllUseCaseIORecord<MainCategory, SubCategory, PageKe
   });
 }
 
+abstract class AddressQueryAllUseCaseIORecord<AddressModel, PageKey, PageSize, SearchTerm, Filtering, Sorting, StartTime, EndTime, T> {
+  Future<T> call({
+    PageKey pageKey,
+    PageSize pageSize,
+    SearchTerm? searchText,
+    AddressModel? addressEntity,
+    Filtering filtering,
+    Sorting sorting,
+    StartTime? startTime,
+    EndTime? endTime,
+  });
+}
+
+abstract class PaginationQueryAllUseCaseIORecord<Model, PageKey, PageSize, SearchTerm, Filtering, Sorting, StartTime, EndTime, T> {
+  Future<T> call({
+    PageKey pageKey,
+    PageSize pageSize,
+    SearchTerm? searchText,
+    Model? entity,
+    Filtering filtering,
+    Sorting sorting,
+    StartTime? startTime,
+    EndTime? endTime,
+  });
+}
+
 abstract class UseCaseOptionalIO<Input, T> {
   Future<T?> call({Input? input});
 }

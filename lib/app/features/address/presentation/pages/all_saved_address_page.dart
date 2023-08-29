@@ -18,6 +18,12 @@ class _AllSavedAddressPageController extends State<AllSavedAddressPage> {
   WidgetState<AddressModel> widgetState = const WidgetState<AddressModel>.none();
   List<AddressModel> addressEntities = [];
   Future<List<sl.Result>> _results = Future.value([]);
+  int pageSize = 20;
+  int pageKey = 0;
+  String? searchText;
+  String? sorting;
+  String? filtering;
+  final PagingController<int, AddressModel> _pagingController = PagingController(firstPageKey: 0);
 
   @override
   void initState() {
@@ -31,8 +37,41 @@ class _AllSavedAddressPageController extends State<AllSavedAddressPage> {
       widgetState = WidgetState<AddressModel>.loading(
         context: context,
       );
-      context.read<AddressBloc>().add(GetAllAddress());
+      _pagingController.nextPageKey = 0;
+      _pagingController.addPageRequestListener((pageKey) {
+        this.pageKey = pageKey;
+        _fetchPage(pageKey);
+      });
+
+      _pagingController.addStatusListener((status) {
+        if (status == PagingStatus.subsequentPageError) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: const Text(
+                'Something went wrong while fetching a all orders.',
+              ),
+              action: SnackBarAction(
+                label: 'Retry',
+                onPressed: () => _pagingController.retryLastFailedRequest(),
+              ),
+            ),
+          );
+        }
+      });
+      //context.read<AddressBloc>().add(GetAllAddress());
     }
+  }
+
+  Future<void> _fetchPage(pageKey, {int pageSize = 20, String? searchItem, String? filter, String? sort}) async {
+    context.read<AddressBloc>().add(GetAllAddressPagination(
+          pageKey: pageKey,
+          pageSize: pageSize,
+          searchText: searchItem,
+          filter: filtering ?? filter,
+          sorting: sorting ?? sort,
+        ));
+
+    return;
   }
 
   @override

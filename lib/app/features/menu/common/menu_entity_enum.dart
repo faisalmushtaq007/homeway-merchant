@@ -53,6 +53,8 @@ enum MenuSelectionUseCase {
   empty,
   bindingWithStore,
   bindingWithUser,
+  getAllMenuPagination,
+  saveAllMenu,
   ;
 
   @override
@@ -84,6 +86,8 @@ enum AddonsSelectionUseCase {
   emptyForAddons,
   bindingWithMenu,
   bindingWithUser,
+  getAllAddonsPagination,
+  saveAllAddons,
   ;
 
   @override
@@ -112,6 +116,8 @@ enum MenuStateStatus {
   getByID,
   getAll,
   edit,
+  getAllMenuPagination,
+  saveAllMenu,
   ;
 
   @override

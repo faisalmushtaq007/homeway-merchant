@@ -9,4 +9,6 @@ abstract class BaseAddressBankLocalDbRepository<T extends AddressModel>
         AddOrUpdateUser<T>,
         DeleteByIdAndEntity<T>,
         GetByIdAndEntity<T>,
-        UpdateByIdAndEntity<T> {}
+        UpdateByIdAndEntity<T>,
+        GetAllWithPagination<T>,
+        SaveAll<T> {}

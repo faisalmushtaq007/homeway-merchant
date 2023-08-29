@@ -285,3 +285,160 @@ class AddressEmptyState extends AddressState {
         addressStatus,
       ];
 }
+
+// Get All Address state
+class GetAllAddressPaginationState extends AddressState {
+  GetAllAddressPaginationState({
+    this.pageKey = 1,
+    this.searchText,
+    this.pageSize = 10,
+    this.endTimeStamp,
+    this.filter,
+    this.sorting,
+    this.startTimeStamp,
+    this.addressStatus = AddressStatus.getAllAddressPagination,
+    this.addressEntities = const [],
+  });
+
+  final int pageKey;
+  final int pageSize;
+  final String? searchText;
+  final String? filter;
+  final String? sorting;
+  final Timestamp? startTimeStamp;
+  final Timestamp? endTimeStamp;
+  final AddressStatus addressStatus;
+  final List<AddressModel> addressEntities;
+
+  @override
+  List<Object?> get hashParameters => [
+        addressStatus,
+        pageKey,
+        searchText,
+        pageSize,
+        endTimeStamp,
+        filter,
+        sorting,
+        startTimeStamp,
+        addressEntities,
+      ];
+
+  @override
+  bool get cacheHash => false;
+}
+
+class GetAllLoadingAddressPaginationState extends AddressState {
+  GetAllLoadingAddressPaginationState({
+    required this.isLoading,
+    required this.message,
+  });
+
+  final bool isLoading;
+  final String message;
+
+  @override
+  List<Object?> get hashParameters => [
+        isLoading,
+        message,
+      ];
+  @override
+  bool get cacheHash => false;
+}
+
+class GetAllProcessingAddressPaginationState extends AddressState {
+  GetAllProcessingAddressPaginationState({
+    required this.isProcessing,
+    required this.message,
+  });
+
+  final bool isProcessing;
+  final String message;
+
+  @override
+  List<Object?> get hashParameters => [
+        isProcessing,
+        message,
+      ];
+  @override
+  bool get cacheHash => false;
+}
+
+class GetAllFailedAddressPaginationState extends AddressState {
+  GetAllFailedAddressPaginationState({
+    required this.message,
+  });
+
+  final String message;
+
+  @override
+  List<Object?> get hashParameters => [
+        message,
+      ];
+  @override
+  bool get cacheHash => false;
+}
+
+class GetAllExceptionAddressPaginationState extends AddressState {
+  GetAllExceptionAddressPaginationState({
+    required this.message,
+    this.stackTrace,
+    this.exception,
+    this.addressStatus = AddressStatus.getAllAddressPagination,
+  });
+
+  final AddressStatus addressStatus;
+  final String message;
+  final StackTrace? stackTrace;
+  final Exception? exception;
+
+  @override
+  List<Object?> get hashParameters => [
+        message,
+        stackTrace,
+        exception,
+        addressStatus,
+      ];
+  @override
+  bool get cacheHash => false;
+}
+
+class GetAllEmptyAddressPaginationState extends AddressState {
+  GetAllEmptyAddressPaginationState({
+    this.addressEntities = const [],
+    this.message = '',
+    this.addressStatus = AddressStatus.getAllAddressPagination,
+    this.pageKey = 1,
+    this.searchText,
+    this.pageSize = 10,
+    this.endTimeStamp,
+    this.filter,
+    this.sorting,
+    this.startTimeStamp,
+  });
+
+  final List<AddressModel> addressEntities;
+  final String message;
+  final AddressStatus addressStatus;
+  final int pageKey;
+  final int pageSize;
+  final String? searchText;
+  final String? filter;
+  final String? sorting;
+  final Timestamp? startTimeStamp;
+  final Timestamp? endTimeStamp;
+
+  @override
+  List<Object?> get hashParameters => [
+        message,
+        addressEntities,
+        pageKey,
+        searchText,
+        pageSize,
+        endTimeStamp,
+        filter,
+        sorting,
+        startTimeStamp,
+      ];
+  @override
+  bool get cacheHash => false;
+}

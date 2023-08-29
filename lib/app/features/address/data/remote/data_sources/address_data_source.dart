@@ -31,4 +31,19 @@ abstract interface class AddressDataSource {
   Future<ApiResultState<List<AddressModel>>> getAllAddress({
     AppUserEntity? appUserEntity,
   });
+
+  Future<ApiResultState<List<AddressModel>>> getAllAddressPagination({
+    int pageKey = 0,
+    int pageSize = 10,
+    String? searchText,
+    AddressModel? addressEntity,
+    String? filtering,
+    String? sorting,
+    Timestamp? startTime,
+    Timestamp? endTime,
+  });
+  Future<ApiResultState<List<AddressModel>>> saveAllAddress({
+    required List<AddressModel> addressEntities,
+    bool hasUpdateAll = false,
+  });
 }

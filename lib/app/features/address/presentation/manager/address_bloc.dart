@@ -6,6 +6,7 @@ import 'package:homemakers_merchant/bootup/injection_container.dart';
 import 'package:homemakers_merchant/shared/states/data_source_state.dart';
 import 'package:homemakers_merchant/utils/app_equatable/app_equatable.dart';
 import 'package:homemakers_merchant/utils/app_log.dart';
+import 'package:sembast/timestamp.dart';
 
 part 'address_event.dart';
 
@@ -22,6 +23,8 @@ class AddressBloc extends Bloc<AddressEvent, AddressState> {
     on<SelectDefaultAddress>(_selectDefaultAddress);
     on<ConfirmationOnDefaultAddress>(_confirmationOnDefaultAddress);
     on<SelectCurrentAddress>(_selectCurrentAddress);
+    on<GetAllAddressPagination>(_getAllAddressPagination);
+    //on<SaveAllAddress>(_saveAllAddress);
   }
 
   FutureOr<void> _saveAddress(SaveAddress event, Emitter<AddressState> emit) async {
@@ -309,4 +312,102 @@ class AddressBloc extends Bloc<AddressEvent, AddressState> {
   FutureOr<void> _confirmationOnDefaultAddress(ConfirmationOnDefaultAddress event, Emitter<AddressState> emit) {}
 
   FutureOr<void> _selectCurrentAddress(SelectCurrentAddress event, Emitter<AddressState> emit) {}
+
+  FutureOr<void> _getAllAddressPagination(GetAllAddressPagination event, Emitter<AddressState> emit) async {
+    try {
+      emit(GetAllLoadingAddressPaginationState(isLoading: true, message: 'Please wait while we are fetching all address...'));
+      final DataSourceState<List<AddressModel>> result = await serviceLocator<GetAllAddressPaginationUseCase>()(
+        pageKey: event.pageKey,
+        pageSize: event.pageSize,
+        searchText: event.searchText,
+        filtering: event.filter,
+        sorting: event.sorting,
+        startTime: event.startTimeStamp,
+        endTime: event.endTimeStamp,
+      );
+      result.when(
+        remote: (data, meta) {
+          appLog.d('Get all address bloc get all remote');
+          if (data == null || data.isEmpty) {
+            emit(
+              GetAllEmptyAddressPaginationState(
+                message: 'All address is empty',
+                addressEntities: [],
+                endTimeStamp: event.endTimeStamp,
+                startTimeStamp: event.startTimeStamp,
+                pageKey: event.pageKey,
+                pageSize: event.pageSize,
+                searchText: event.searchText,
+                sorting: event.sorting,
+                filter: event.filter,
+              ),
+            );
+          } else {
+            emit(
+              GetAllAddressPaginationState(
+                addressEntities: data.toList(),
+                endTimeStamp: event.endTimeStamp,
+                startTimeStamp: event.startTimeStamp,
+                pageKey: event.pageKey,
+                pageSize: event.pageSize,
+                searchText: event.searchText,
+                sorting: event.sorting,
+                filter: event.filter,
+              ),
+            );
+          }
+        },
+        localDb: (data, meta) {
+          appLog.d('Get all order bloc get all local');
+          if (data == null || data.isEmpty) {
+            emit(
+              GetAllEmptyAddressPaginationState(
+                message: 'All address is empty',
+                addressEntities: [],
+                endTimeStamp: event.endTimeStamp,
+                startTimeStamp: event.startTimeStamp,
+                pageKey: event.pageKey,
+                pageSize: event.pageSize,
+                searchText: event.searchText,
+                sorting: event.sorting,
+                filter: event.filter,
+              ),
+            );
+          } else {
+            emit(
+              GetAllEmptyAddressPaginationState(
+                addressEntities: data.toList(),
+                endTimeStamp: event.endTimeStamp,
+                startTimeStamp: event.startTimeStamp,
+                pageKey: event.pageKey,
+                pageSize: event.pageSize,
+                searchText: event.searchText,
+                sorting: event.sorting,
+                filter: event.filter,
+              ),
+            );
+          }
+        },
+        error: (dataSourceFailure, reason, error, networkException, stackTrace, exception, extra) {
+          appLog.d('Get all address bloc get all error $reason');
+          emit(
+            GetAllExceptionAddressPaginationState(
+              message: reason,
+              //exception: e as Exception,
+              stackTrace: stackTrace,
+            ),
+          );
+        },
+      );
+    } catch (e, s) {
+      appLog.e('Get all address bloc get all $e');
+      emit(
+        GetAllExceptionAddressPaginationState(
+          message: 'Something went wrong during getting all address, please try again',
+          //exception: e as Exception,
+          stackTrace: s,
+        ),
+      );
+    }
+  }
 }
