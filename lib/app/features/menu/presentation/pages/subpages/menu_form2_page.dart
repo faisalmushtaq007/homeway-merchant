@@ -159,7 +159,7 @@ class _MenuForm2PageState extends State<MenuForm2Page> with AutomaticKeepAliveCl
             crossAxisAlignment: CrossAxisAlignment.stretch,
             textDirection: serviceLocator<LanguageController>().targetTextDirection,
             children: [
-              Column(
+              /*Column(
                 textDirection: serviceLocator<LanguageController>().targetTextDirection,
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -227,7 +227,7 @@ class _MenuForm2PageState extends State<MenuForm2Page> with AutomaticKeepAliveCl
                       );
                 },
               ),
-              const AnimatedGap(12, duration: Duration(milliseconds: 500)),
+              const AnimatedGap(12, duration: Duration(milliseconds: 500)),*/
               Column(
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.stretch,

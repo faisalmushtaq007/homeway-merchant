@@ -45,6 +45,18 @@ class _SaveStorePageState extends State<SaveStorePage> {
   TextEditingController _storeOwnerDriverLicenseController = TextEditingController();
   List<StoreOwnDeliveryPartnersInfo> _selectedStoreOwnDrivers = [];
 
+  // Store phone number
+  String? phoneValidation;
+  Widget? suffixIcon;
+  String userEnteredPhoneNumber = '';
+  PhoneNumber? phoneNumber;
+  late PhoneController phoneNumberController;
+  PhoneNumberVerification phoneNumberVerification = PhoneNumberVerification.none;
+  ValueNotifier<PhoneNumberVerification> valueNotifierPhoneNumberVerification = ValueNotifier<PhoneNumberVerification>(
+    PhoneNumberVerification.none,
+  );
+  TextEditingController _storePhoneNumberController = TextEditingController();
+
   final deliveryTimeMuskeyFormatter = MuskeyFormatter(
     masks: ['### min'],
     wildcards: {'#': RegExp('[0-9]'), '@': RegExp('[s|S]'), '%': RegExp('[a|A]')},
@@ -66,7 +78,7 @@ class _SaveStorePageState extends State<SaveStorePage> {
     FocusNode(),
     FocusNode(),
     FocusNode(),
-    FocusNode()
+    FocusNode(),
   ];
   List<BannerModel> listBanners = [];
 
@@ -91,6 +103,16 @@ class _SaveStorePageState extends State<SaveStorePage> {
     listBanners.clear();
     _selectedStoreOwnDrivers = [];
     _selectedStoreOwnDrivers.clear();
+    phoneNumber = PhoneNumber(
+      isoCode: IsoCode.values.asNameMap().values.byName('SA'),
+      nsn: '',
+    );
+    phoneNumberController = PhoneController(
+      PhoneNumber(
+        isoCode: IsoCode.values.asNameMap().values.byName('SA'),
+        nsn: '',
+      ),
+    );
     initializeStoreAcceptedPaymentModes();
     initializeStoreAvailableFoodPreparationType();
     initializeStoreWorkingDays();
@@ -103,6 +125,7 @@ class _SaveStorePageState extends State<SaveStorePage> {
   void dispose() {
     _storeAddressController.dispose();
     _storeNameController.dispose();
+    _storePhoneNumberController.dispose();
     _storeMaxDeliveryTimeController.dispose();
     if (_storeOpeningTimeController == null) {
       _storeOpeningTimeController.dispose();
@@ -170,6 +193,46 @@ class _SaveStorePageState extends State<SaveStorePage> {
 
   initializeStoreAvailableDrivers() {}
 
+  void onPhoneNumberChanged(
+    PhoneNumber? phoneNumbers,
+  ) {
+    phoneNumber = phoneNumbers;
+    userEnteredPhoneNumber = '+${phoneNumbers?.countryCode} ${phoneNumbers?.getFormattedNsn().trim()}';
+    String countryDialCode = '+${phoneNumbers?.countryCode ?? '+966'}';
+    String country = phoneNumbers?.isoCode.name ?? 'SA';
+    _storePhoneNumberController.text = userEnteredPhoneNumber;
+    //setState(() {});
+  }
+
+  void phoneNumberValidationChanged(
+    String? value,
+    PhoneNumber? phoneNumbers,
+    PhoneController phoneNumberControllers,
+  ) {
+    phoneValidation = value;
+    phoneNumber = phoneNumbers;
+    phoneNumberController = phoneNumberControllers;
+    if (phoneValidation != null && phoneValidation!.isNotEmpty) {
+      phoneNumberVerification = PhoneNumberVerification.invalid;
+      valueNotifierPhoneNumberVerification.value = PhoneNumberVerification.invalid;
+    } else {
+      if (phoneValidation == null && phoneNumberControllers.value != null && phoneNumberControllers.value!.getFormattedNsn().trim().isNotEmpty) {
+        phoneNumberVerification = PhoneNumberVerification.valid;
+        valueNotifierPhoneNumberVerification.value = PhoneNumberVerification.valid;
+      } else {
+        phoneNumberVerification = PhoneNumberVerification.none;
+        valueNotifierPhoneNumberVerification.value = PhoneNumberVerification.none;
+      }
+    }
+    //setState(() {});
+  }
+
+  void onPhoneNumberSaved(PhoneNumber? value) {}
+
+  String? phoneNumberValidator(PhoneNumber? phoneNumber) {
+    //
+  }
+
   @override
   Widget build(BuildContext context) {
     final MediaQueryData media = MediaQuery.of(context);
@@ -192,7 +255,7 @@ class _SaveStorePageState extends State<SaveStorePage> {
           appBar: AppBar(
             automaticallyImplyLeading: true,
             title: Text(
-              'Add store',
+              'Store',
               textDirection: serviceLocator<LanguageController>().targetTextDirection,
             ),
             actions: const [
@@ -402,6 +465,41 @@ class _SaveStorePageState extends State<SaveStorePage> {
                                           ),
                                         ),
                                       ],
+                                    ),
+                                    const AnimatedGap(12, duration: Duration(milliseconds: 500)),
+                                    Directionality(
+                                      textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                      child: PhoneNumberFieldWidget(
+                                        key: const Key('driver-phone-number-widget'),
+                                        isCountryChipPersistent: false,
+                                        outlineBorder: true,
+                                        shouldFormat: true,
+                                        useRtl: false,
+                                        withLabel: true,
+                                        decoration: InputDecoration(
+                                          labelText: 'Driver mobile number',
+                                          //hintText: 'Enter driver number',
+                                          alignLabelWithHint: true,
+                                          errorText: phoneValidation,
+                                          /*suffixIcon: PhoneNumberValidateWidget(
+                                                  phoneNumberVerification: value,
+                                                ),*/
+                                          isDense: true,
+                                        ),
+                                        isAllowEmpty: false,
+                                        autofocus: false,
+                                        style: context.bodyLarge,
+                                        showFlagInInput: false,
+                                        countryCodeStyle: context.bodyLarge,
+                                        //validator: state.phoneNumberValidator,
+                                        //suffixIcon: PhoneNumberValidateWidget(phoneNumberVerification: value),
+                                        onPhoneNumberChanged: onPhoneNumberChanged,
+                                        phoneNumberValidator: phoneNumberValidator,
+                                        onPhoneNumberSaved: onPhoneNumberSaved,
+                                        phoneNumberValidationChanged: phoneNumberValidationChanged,
+                                        haveStateManagement: false,
+                                        keyboardType: const TextInputType.numberWithOptions(),
+                                      ),
                                     ),
                                     const AnimatedGap(12, duration: Duration(milliseconds: 500)),
                                     MultiStreamBuilder(
