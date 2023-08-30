@@ -122,6 +122,7 @@ class _AllTranscationsWidgetView extends WidgetView<AllTranscationsWidget, _AllT
                 animateTransitions: true,
                 itemBuilder: (context, item, index) => Card(
                   key: ValueKey(index),
+                  color: Colors.white,
                   margin: EdgeInsetsDirectional.only(bottom: 8),
                   child: Padding(
                     padding: EdgeInsetsDirectional.zero,

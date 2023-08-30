@@ -153,18 +153,23 @@ class _WalletDashboardPageView extends WidgetView<WalletDashboardPage, _WalletDa
                                     overflow: TextOverflow.ellipsis,
                                   ).translate(),
                                 ),
-                                Text(
-                                  'View All',
-                                  style: context.labelMedium!.copyWith(
-                                    fontWeight: FontWeight.w500,
-                                    color: context.colorScheme.secondary,
-                                    fontSize: 17,
-                                  ),
-                                  textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                                  maxLines: 1,
-                                  softWrap: true,
-                                  overflow: TextOverflow.ellipsis,
-                                ).translate(),
+                                InkWell(
+                                  onTap: () async {
+                                    await context.push(Routes.ALL_TRANSCATIONS_PAGE);
+                                  },
+                                  child: Text(
+                                    'View All',
+                                    style: context.labelMedium!.copyWith(
+                                      fontWeight: FontWeight.w500,
+                                      color: context.colorScheme.secondary,
+                                      fontSize: 17,
+                                    ),
+                                    textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                    maxLines: 1,
+                                    softWrap: true,
+                                    overflow: TextOverflow.ellipsis,
+                                  ).translate(),
+                                ),
                               ],
                             ),
                             const AnimatedGap(

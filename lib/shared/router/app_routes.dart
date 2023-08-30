@@ -86,6 +86,7 @@ abstract class Routes {
   static const String MANAGE_ORDER_PAGE = _Paths.MANAGE_ORDER_PAGE;
   static const String MAIN_CATEGORY_PAGE = _Paths.MAIN_CATEGORY_PAGE;
   static const String WALLET_DASHBOARD_PAGE = _Paths.WALLET_DASHBOARD_PAGE;
+  static const String ALL_TRANSCATIONS_PAGE = _Paths.ALL_TRANSCATIONS_PAGE;
 }
 
 abstract class _Paths {
@@ -171,4 +172,5 @@ abstract class _Paths {
   static const String MANAGE_ORDER_PAGE = '/manage-order';
   static const String MAIN_CATEGORY_PAGE = '/main-category';
   static const String WALLET_DASHBOARD_PAGE = '/wallet-dashboard';
+  static const String ALL_TRANSCATIONS_PAGE = '/all-transcations';
 }

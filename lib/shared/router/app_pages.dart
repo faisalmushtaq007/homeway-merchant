@@ -459,6 +459,13 @@ class AppRouter {
           return WalletDashboardPage();
         },
       ),
+      GoRoute(
+        path: Routes.ALL_TRANSCATIONS_PAGE,
+        builder: (context, state) {
+          final Map<String, dynamic>? args = state.extra as Map<String, dynamic>?;
+          return TransactionsPage();
+        },
+      ),
     ],
     /*redirect: (context, state) {
       bool hasCurrentUserLoggedIn = userModelController.userModel.hasCurrentUser;

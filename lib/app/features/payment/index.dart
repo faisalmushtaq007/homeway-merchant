@@ -40,10 +40,11 @@ part 'package:homemakers_merchant/app/features/payment/data/common/dummy_transca
 part 'package:homemakers_merchant/app/features/payment/data/common/conversion.dart';
 part 'package:homemakers_merchant/app/features/payment/domain/entities/transcation_entity.dart';
 part 'package:homemakers_merchant/app/features/payment/presentation/pages/wallet/wallet_dashboard_page.dart';
-part 'package:homemakers_merchant/app/features/payment/presentation/widgets/transcation/all_transcation_widget.dart';
-part 'package:homemakers_merchant/app/features/payment/presentation/widgets/transcation/income_transcation_widget.dart';
-part 'package:homemakers_merchant/app/features/payment/presentation/widgets/transcation/transcation_search_input_sliver.dart';
-part 'package:homemakers_merchant/app/features/payment/presentation/widgets/transcation/withdrawal_transcation_widget.dart';
+part 'package:homemakers_merchant/app/features/payment/presentation/pages/wallet/transcations_page.dart';
+part 'package:homemakers_merchant/app/features/payment/presentation/widgets/transcation/all_transaction_widget.dart';
+part 'package:homemakers_merchant/app/features/payment/presentation/widgets/transcation/income_transaction_widget.dart';
+part 'package:homemakers_merchant/app/features/payment/presentation/widgets/transcation/transaction_search_input_sliver.dart';
+part 'package:homemakers_merchant/app/features/payment/presentation/widgets/transcation/withdrawal_transaction_widget.dart';
 part 'package:homemakers_merchant/app/features/payment/presentation/widgets/wallet/wallet_account_summary_widget.dart';
 part 'package:homemakers_merchant/app/features/payment/presentation/widgets/wallet/wallet_menu_widget.dart';
 part 'package:homemakers_merchant/app/features/payment/presentation/widgets/wallet/wallet_user_info_widget.dart';
