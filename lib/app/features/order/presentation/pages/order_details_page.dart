@@ -128,7 +128,6 @@ class _OrderDetailPageController extends State<OrderDetailPage> {
     scrollController = ScrollController();
     customScrollViewScrollController = ScrollController();
     activeLocale = serviceLocator<LanguageController>().targetAppLanguage.value.toString();
-    debugPrint('active locale ${activeLocale}');
     subTotal = 0.0;
   }
 

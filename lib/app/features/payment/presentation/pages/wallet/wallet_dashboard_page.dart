@@ -103,11 +103,12 @@ class _WalletDashboardPageView extends WidgetView<WalletDashboardPage, _WalletDa
                   ),
                   child: CustomScrollView(
                     controller: state.customScrollViewScrollController,
+                    shrinkWrap: true,
                     slivers: [
                       SliverList(
                         delegate: SliverChildListDelegate(
                           [
-                            WalletUserInfoWidget(
+                            /*WalletUserInfoWidget(
                               key: const Key('wallet-dashboard-user-info'),
                             ),
                             const AnimatedGap(
@@ -117,37 +118,69 @@ class _WalletDashboardPageView extends WidgetView<WalletDashboardPage, _WalletDa
                             Text(
                               'Account Overview',
                               style: context.headlineSmall!.copyWith(
-                                fontWeight: FontWeight.w500,
-                                fontSize: 17,
+                                fontWeight: FontWeight.w600,
+                                fontSize: 19,
                               ),
                               textDirection: serviceLocator<LanguageController>().targetTextDirection,
                               maxLines: 1,
                               softWrap: true,
                               overflow: TextOverflow.ellipsis,
                             ).translate(),
+                             */
                             const AnimatedGap(6, duration: Duration(milliseconds: 200)),
                             WalletAccountSummaryWidget(
                               key: const Key('wallet-dashboard-account-summary-widget'),
                             ),
-                            const AnimatedGap(12, duration: Duration(milliseconds: 200)),
-                            Text(
-                              'Activity',
-                              style: context.headlineSmall!.copyWith(
-                                fontWeight: FontWeight.w500,
-                                fontSize: 17,
-                              ),
-                              textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                              maxLines: 1,
-                              softWrap: true,
-                              overflow: TextOverflow.ellipsis,
-                            ).translate(),
+                            const AnimatedGap(16, duration: Duration(milliseconds: 200)),
+                            WalletMenuWidget(
+                              key: const Key('wallet-dashboard-menus-widget'),
+                            ),
+                            const AnimatedGap(16, duration: Duration(milliseconds: 200)),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Expanded(
+                                  flex: 2,
+                                  child: Text(
+                                    'Recents',
+                                    style: context.labelMedium!.copyWith(
+                                      fontWeight: FontWeight.w500,
+                                      fontSize: 19,
+                                    ),
+                                    textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                    maxLines: 1,
+                                    softWrap: true,
+                                    overflow: TextOverflow.ellipsis,
+                                  ).translate(),
+                                ),
+                                Text(
+                                  'View All',
+                                  style: context.labelMedium!.copyWith(
+                                    fontWeight: FontWeight.w500,
+                                    color: context.colorScheme.secondary,
+                                    fontSize: 17,
+                                  ),
+                                  textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                  maxLines: 1,
+                                  softWrap: true,
+                                  overflow: TextOverflow.ellipsis,
+                                ).translate(),
+                              ],
+                            ),
+                            const AnimatedGap(
+                              6,
+                              duration: Duration(milliseconds: 100),
+                            ),
                           ],
                         ),
                       ),
                       SliverFillRemaining(
                         fillOverscroll: true,
                         hasScrollBody: true,
-                        child: Offstage(),
+                        child: AllTranscationsWidget(
+                          key: const Key('waller-dashboard-all-transcation-widget'),
+                          hasShownInWalletDashboard: true,
+                        ),
                       ),
                     ],
                   ),

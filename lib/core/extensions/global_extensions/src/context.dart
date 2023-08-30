@@ -17,8 +17,7 @@ extension FancyContext on BuildContext {
   Locale get locale => Localizations.localeOf(this);
 
   /// Shortcut for `MaterialLocalizations.of(context)`.
-  MaterialLocalizations get materialLocalizations =>
-      MaterialLocalizations.of(this);
+  MaterialLocalizations get materialLocalizations => MaterialLocalizations.of(this);
 
   /// Shortcut for `MediaQuery.of(context)`.
   MediaQueryData get mediaQuery => MediaQuery.of(this);
@@ -39,8 +38,7 @@ extension FancyContext on BuildContext {
   ScaffoldMessengerState get scaffoldMessenger => ScaffoldMessenger.of(this);
 
   /// Shortcut for `ScaffoldMessenger.maybeOf(context)`.
-  ScaffoldMessengerState? get scaffoldMessengerOrNull =>
-      ScaffoldMessenger.maybeOf(this);
+  ScaffoldMessengerState? get scaffoldMessengerOrNull => ScaffoldMessenger.maybeOf(this);
 
   ScaffoldFeatureController<SnackBar, SnackBarClosedReason> showSimpleSnackBar(
     String content, {
@@ -53,10 +51,10 @@ extension FancyContext on BuildContext {
       scaffoldMessenger.showSnackBar(snackBar);
 
   /// Shortcut for `Theme.of(context)`.
-  ThemeData get theme => Theme.of(this);
+  //ThemeData get theme => Theme.of(this);
 
   /// Shortcut for `Theme.of(context).textTheme`.
-  TextTheme get textTheme => theme.textTheme;
+  //TextTheme get textTheme => theme.textTheme;
 }
 
 extension FancyScaffoldMessenger on ScaffoldMessengerState {

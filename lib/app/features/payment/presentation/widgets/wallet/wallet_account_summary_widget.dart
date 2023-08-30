@@ -23,9 +23,7 @@ class _WalletAccountSummaryWidgetView extends WidgetView<WalletAccountSummaryWid
       ),
       margin: EdgeInsetsDirectional.zero,
       child: DecoratedBox(
-        decoration: MatrixDecoration(
-          radius: Radius.circular(10),
-        ),
+        decoration: MatrixDecoration(radius: Radius.circular(10), backgroundColor: '#ffc300'.toColor),
         child: Padding(
           padding: const EdgeInsetsDirectional.only(top: 12, bottom: 12, start: 12, end: 12),
           child: Column(
@@ -40,11 +38,16 @@ class _WalletAccountSummaryWidgetView extends WidgetView<WalletAccountSummaryWid
                   Icon(
                     Icons.account_balance_wallet,
                     size: 20,
+                    color: '#004e89'.toColor,
                   ),
                   const AnimatedGap(6, duration: Duration(milliseconds: 200)),
                   Text(
                     'Total Balance',
-                    style: context.headlineSmall!.copyWith(fontSize: 17, fontWeight: FontWeight.w600),
+                    style: context.headlineSmall!.copyWith(
+                      fontSize: 19,
+                      fontWeight: FontWeight.w600,
+                      color: '#004e89'.toColor,
+                    ),
                     maxLines: 1,
                     softWrap: true,
                     overflow: TextOverflow.ellipsis,
@@ -80,13 +83,18 @@ class _WalletAccountSummaryWidgetView extends WidgetView<WalletAccountSummaryWid
                           children: [
                             Icon(
                               Icons.arrow_upward,
-                              size: 20,
+                              size: 22,
+                              color: '#38b000'.toColor,
                             ),
                             const AnimatedGap(6, duration: Duration(milliseconds: 200)),
                             Text(
                               'Income',
                               textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                              style: context.headlineSmall!.copyWith(fontSize: 17, fontWeight: FontWeight.w600),
+                              style: context.headlineSmall!.copyWith(
+                                fontSize: 19,
+                                fontWeight: FontWeight.w600,
+                                color: '#38b000'.toColor,
+                              ),
                               maxLines: 1,
                               softWrap: true,
                               overflow: TextOverflow.ellipsis,
@@ -130,13 +138,18 @@ class _WalletAccountSummaryWidgetView extends WidgetView<WalletAccountSummaryWid
                             children: [
                               Icon(
                                 Icons.arrow_downward,
-                                size: 20,
+                                size: 22,
+                                color: '#f95738'.toColor,
                               ),
                               const AnimatedGap(6, duration: Duration(milliseconds: 200)),
                               Text(
-                                'WithDrawl',
+                                'Withdrawal',
                                 textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                                style: context.headlineSmall!.copyWith(fontSize: 17, fontWeight: FontWeight.w600),
+                                style: context.headlineSmall!.copyWith(
+                                  fontSize: 19,
+                                  fontWeight: FontWeight.w600,
+                                  color: '#f95738'.toColor,
+                                ),
                                 maxLines: 1,
                                 softWrap: true,
                                 overflow: TextOverflow.ellipsis,
@@ -147,7 +160,11 @@ class _WalletAccountSummaryWidgetView extends WidgetView<WalletAccountSummaryWid
                           Text(
                             '${200} SAR',
                             textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                            style: context.headlineSmall!.copyWith(fontSize: 17, fontWeight: FontWeight.w500),
+                            style: context.headlineSmall!.copyWith(
+                              fontSize: 17,
+                              fontWeight: FontWeight.w500,
+                              //color: '#f95738'.toColor,
+                            ),
                             maxLines: 1,
                             softWrap: true,
                             overflow: TextOverflow.ellipsis,
