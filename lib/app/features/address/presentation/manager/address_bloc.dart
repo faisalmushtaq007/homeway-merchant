@@ -1,11 +1,10 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
-import 'package:bloc_concurrency/bloc_concurrency.dart';
+import 'package:equatable/equatable.dart';
 import 'package:homemakers_merchant/app/features/address/index.dart';
 import 'package:homemakers_merchant/bootup/injection_container.dart';
 import 'package:homemakers_merchant/shared/states/data_source_state.dart';
-import 'package:homemakers_merchant/utils/app_equatable/app_equatable.dart';
 import 'package:homemakers_merchant/utils/app_log.dart';
 import 'package:sembast/timestamp.dart';
 
@@ -17,43 +16,33 @@ class AddressBloc extends Bloc<AddressEvent, AddressState> {
   AddressBloc() : super(AddressInitial()) {
     on<SaveAddress>(
       _saveAddress,
-      transformer: concurrent(),
     );
     on<GetAddressByID>(
       _getAddress,
-      transformer: concurrent(),
     );
     on<RemoveAddressByID>(
       _deleteAddress,
-      transformer: concurrent(),
+    );
+    on<GetAllAddressPaginationEvent>(
+      _getAllAddressPagination,
     );
     on<GetAllAddress>(
       _getAllAddress,
-      transformer: concurrent(),
     );
     on<RemoveAllAddress>(
       _deleteAllAddress,
-      transformer: concurrent(),
     );
     on<SelectAllAddress>(
       _selectAllAddress,
-      transformer: concurrent(),
     );
     on<SelectDefaultAddress>(
       _selectDefaultAddress,
-      transformer: concurrent(),
     );
     on<ConfirmationOnDefaultAddress>(
       _confirmationOnDefaultAddress,
-      transformer: concurrent(),
     );
     on<SelectCurrentAddress>(
       _selectCurrentAddress,
-      transformer: concurrent(),
-    );
-    on<GetAllAddressPagination>(
-      _getAllAddressPagination,
-      transformer: concurrent(),
     );
     //on<SaveAllAddress>(_saveAllAddress);
   }
@@ -336,17 +325,10 @@ class AddressBloc extends Bloc<AddressEvent, AddressState> {
     }
   }
 
-  FutureOr<void> _selectAllAddress(SelectAllAddress event, Emitter<AddressState> emit) {}
-
-  FutureOr<void> _selectDefaultAddress(SelectDefaultAddress event, Emitter<AddressState> emit) {}
-
-  FutureOr<void> _confirmationOnDefaultAddress(ConfirmationOnDefaultAddress event, Emitter<AddressState> emit) {}
-
-  FutureOr<void> _selectCurrentAddress(SelectCurrentAddress event, Emitter<AddressState> emit) {}
-
-  FutureOr<void> _getAllAddressPagination(GetAllAddressPagination event, Emitter<AddressState> emit) async {
+  FutureOr<void> _getAllAddressPagination(GetAllAddressPaginationEvent event, Emitter<AddressState> emit) async {
+    appLog.i('Get all address bloc get all fetching');
     try {
-      emit(GetAllLoadingAddressPaginationState(isLoading: true, message: 'Please wait while we are fetching all address...'));
+      emit(const GetAllLoadingAddressPaginationState(isLoading: true, message: 'Please wait while we are fetching all address...'));
       final DataSourceState<List<AddressModel>> result = await serviceLocator<GetAllAddressPaginationUseCase>()(
         pageKey: event.pageKey,
         pageSize: event.pageSize,
@@ -441,4 +423,12 @@ class AddressBloc extends Bloc<AddressEvent, AddressState> {
       );
     }
   }
+
+  FutureOr<void> _selectAllAddress(SelectAllAddress event, Emitter<AddressState> emit) {}
+
+  FutureOr<void> _selectDefaultAddress(SelectDefaultAddress event, Emitter<AddressState> emit) {}
+
+  FutureOr<void> _confirmationOnDefaultAddress(ConfirmationOnDefaultAddress event, Emitter<AddressState> emit) {}
+
+  FutureOr<void> _selectCurrentAddress(SelectCurrentAddress event, Emitter<AddressState> emit) {}
 }

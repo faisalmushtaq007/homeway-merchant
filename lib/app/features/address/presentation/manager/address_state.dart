@@ -1,27 +1,26 @@
 part of 'address_bloc.dart';
 
-abstract class AddressState with AppEquatable {}
+abstract class AddressState extends Equatable {
+  const AddressState();
+}
 
 class AddressInitial extends AddressState {
   @override
   bool get cacheHash => true;
 
   @override
-  List<Object?> get hashParameters => [];
+  List<Object?> get props => [];
 }
 
 class SaveAddressState extends AddressState {
-  SaveAddressState({required this.addressEntity, required this.hasNewAddress, this.currentIndex = -1});
+  const SaveAddressState({required this.addressEntity, required this.hasNewAddress, this.currentIndex = -1});
 
   final AddressModel addressEntity;
   final bool hasNewAddress;
   final int currentIndex;
 
   @override
-  bool get cacheHash => true;
-
-  @override
-  List<Object?> get hashParameters => [
+  List<Object?> get props => [
         addressEntity,
         hasNewAddress,
         currentIndex,
@@ -29,7 +28,7 @@ class SaveAddressState extends AddressState {
 }
 
 class RemoveAddressByIDState extends AddressState {
-  RemoveAddressByIDState({
+  const RemoveAddressByIDState({
     this.addressEntity,
     this.index = -1,
     this.addressID = -1,
@@ -44,14 +43,11 @@ class RemoveAddressByIDState extends AddressState {
   final bool hasRemove;
 
   @override
-  bool get cacheHash => true;
-
-  @override
-  List<Object?> get hashParameters => [addressEntity, index, addressEntities, addressID, hasRemove];
+  List<Object?> get props => [addressEntity, index, addressEntities, addressID, hasRemove];
 }
 
 class RemoveAllAddressState extends AddressState {
-  RemoveAllAddressState({
+  const RemoveAllAddressState({
     this.addressEntities = const [],
     this.hasRemoveAll = false,
   });
@@ -60,14 +56,11 @@ class RemoveAllAddressState extends AddressState {
   final bool hasRemoveAll;
 
   @override
-  bool get cacheHash => true;
-
-  @override
-  List<Object?> get hashParameters => [addressEntities, hasRemoveAll];
+  List<Object?> get props => [addressEntities, hasRemoveAll];
 }
 
 class GetAddressByIDState extends AddressState {
-  GetAddressByIDState({
+  const GetAddressByIDState({
     this.addressEntity,
     this.index = -1,
     this.addressEntities = const [],
@@ -82,10 +75,7 @@ class GetAddressByIDState extends AddressState {
   final AddressStatus addressStatus;
 
   @override
-  bool get cacheHash => true;
-
-  @override
-  List<Object?> get hashParameters => [
+  List<Object?> get props => [
         addressEntity,
         index,
         addressEntities,
@@ -95,7 +85,7 @@ class GetAddressByIDState extends AddressState {
 }
 
 class GetAllAddressState extends AddressState {
-  GetAllAddressState({
+  const GetAllAddressState({
     this.addressEntities = const [],
     this.addressStatus = AddressStatus.none,
     this.searchItem = '',
@@ -110,26 +100,20 @@ class GetAllAddressState extends AddressState {
   final String searchItem;
 
   @override
-  List<Object?> get hashParameters => [addressEntities, addressStatus, pageKey, pageSize, searchItem];
-
-  @override
-  bool get cacheHash => true;
+  List<Object?> get props => [addressEntities, addressStatus, pageKey, pageSize, searchItem];
 }
 
 class SelectAllAddressState extends AddressState {
-  SelectAllAddressState({this.addressEntities = const []});
+  const SelectAllAddressState({this.addressEntities = const []});
 
   final List<AddressModel> addressEntities;
 
   @override
-  bool get cacheHash => true;
-
-  @override
-  List<Object?> get hashParameters => [addressEntities];
+  List<Object?> get props => [addressEntities];
 }
 
 class SelectDefaultAddressState extends AddressState {
-  SelectDefaultAddressState({
+  const SelectDefaultAddressState({
     this.addressEntity,
     this.index = -1,
     this.addressEntities = const [],
@@ -142,10 +126,7 @@ class SelectDefaultAddressState extends AddressState {
   final int addressID;
 
   @override
-  bool get cacheHash => true;
-
-  @override
-  List<Object?> get hashParameters => [
+  List<Object?> get props => [
         addressEntity,
         index,
         addressEntities,
@@ -154,35 +135,29 @@ class SelectDefaultAddressState extends AddressState {
 }
 
 class ConfirmationOnDefaultAddressState extends AddressState {
-  ConfirmationOnDefaultAddressState({
+  const ConfirmationOnDefaultAddressState({
     this.addressEntity,
   });
 
   final AddressModel? addressEntity;
 
   @override
-  bool get cacheHash => true;
-
-  @override
-  List<Object?> get hashParameters => [addressEntity];
+  List<Object?> get props => [addressEntity];
 }
 
 class SelectCurrentAddressState extends AddressState {
-  SelectCurrentAddressState({
+  const SelectCurrentAddressState({
     this.addressEntity,
   });
 
   final AddressModel? addressEntity;
 
   @override
-  bool get cacheHash => true;
-
-  @override
-  List<Object?> get hashParameters => [addressEntity];
+  List<Object?> get props => [addressEntity];
 }
 
 class AddressLoadingState extends AddressState {
-  AddressLoadingState({
+  const AddressLoadingState({
     required this.message,
     this.isLoading = true,
     this.addressStatus = AddressStatus.none,
@@ -193,10 +168,7 @@ class AddressLoadingState extends AddressState {
   final AddressStatus addressStatus;
 
   @override
-  bool get cacheHash => true;
-
-  @override
-  List<Object?> get hashParameters => [
+  List<Object?> get props => [
         isLoading,
         message,
         addressStatus,
@@ -204,7 +176,7 @@ class AddressLoadingState extends AddressState {
 }
 
 class AddressProcessingState extends AddressState {
-  AddressProcessingState({
+  const AddressProcessingState({
     required this.message,
     this.isProcessing = true,
     this.addressStatus = AddressStatus.none,
@@ -215,10 +187,7 @@ class AddressProcessingState extends AddressState {
   final AddressStatus addressStatus;
 
   @override
-  bool get cacheHash => true;
-
-  @override
-  List<Object?> get hashParameters => [
+  List<Object?> get props => [
         isProcessing,
         message,
         addressStatus,
@@ -226,7 +195,7 @@ class AddressProcessingState extends AddressState {
 }
 
 class AddressFailedState extends AddressState {
-  AddressFailedState({
+  const AddressFailedState({
     required this.message,
     this.addressStatus = AddressStatus.none,
   });
@@ -235,17 +204,14 @@ class AddressFailedState extends AddressState {
   final AddressStatus addressStatus;
 
   @override
-  bool get cacheHash => true;
-
-  @override
-  List<Object?> get hashParameters => [
+  List<Object?> get props => [
         message,
         addressStatus,
       ];
 }
 
 class AddressExceptionState extends AddressState {
-  AddressExceptionState({
+  const AddressExceptionState({
     required this.message,
     this.stackTrace,
     this.exception,
@@ -258,14 +224,11 @@ class AddressExceptionState extends AddressState {
   final AddressStatus addressStatus;
 
   @override
-  bool get cacheHash => true;
-
-  @override
-  List<Object?> get hashParameters => [message, stackTrace, exception, addressStatus];
+  List<Object?> get props => [message, stackTrace, exception, addressStatus];
 }
 
 class AddressEmptyState extends AddressState {
-  AddressEmptyState({
+  const AddressEmptyState({
     this.addressEntities = const [],
     this.message = '',
     this.addressStatus = AddressStatus.none,
@@ -276,10 +239,7 @@ class AddressEmptyState extends AddressState {
   final AddressStatus addressStatus;
 
   @override
-  bool get cacheHash => true;
-
-  @override
-  List<Object?> get hashParameters => [
+  List<Object?> get props => [
         addressEntities,
         message,
         addressStatus,
@@ -288,7 +248,7 @@ class AddressEmptyState extends AddressState {
 
 // Get All Address state
 class GetAllAddressPaginationState extends AddressState {
-  GetAllAddressPaginationState({
+  const GetAllAddressPaginationState({
     this.pageKey = 1,
     this.searchText,
     this.pageSize = 10,
@@ -311,7 +271,7 @@ class GetAllAddressPaginationState extends AddressState {
   final List<AddressModel> addressEntities;
 
   @override
-  List<Object?> get hashParameters => [
+  List<Object?> get props => [
         addressStatus,
         pageKey,
         searchText,
@@ -322,13 +282,10 @@ class GetAllAddressPaginationState extends AddressState {
         startTimeStamp,
         addressEntities,
       ];
-
-  @override
-  bool get cacheHash => true;
 }
 
 class GetAllLoadingAddressPaginationState extends AddressState {
-  GetAllLoadingAddressPaginationState({
+  const GetAllLoadingAddressPaginationState({
     required this.isLoading,
     required this.message,
   });
@@ -337,16 +294,14 @@ class GetAllLoadingAddressPaginationState extends AddressState {
   final String message;
 
   @override
-  List<Object?> get hashParameters => [
+  List<Object?> get props => [
         isLoading,
         message,
       ];
-  @override
-  bool get cacheHash => true;
 }
 
 class GetAllProcessingAddressPaginationState extends AddressState {
-  GetAllProcessingAddressPaginationState({
+  const GetAllProcessingAddressPaginationState({
     required this.isProcessing,
     required this.message,
   });
@@ -355,31 +310,27 @@ class GetAllProcessingAddressPaginationState extends AddressState {
   final String message;
 
   @override
-  List<Object?> get hashParameters => [
+  List<Object?> get props => [
         isProcessing,
         message,
       ];
-  @override
-  bool get cacheHash => true;
 }
 
 class GetAllFailedAddressPaginationState extends AddressState {
-  GetAllFailedAddressPaginationState({
+  const GetAllFailedAddressPaginationState({
     required this.message,
   });
 
   final String message;
 
   @override
-  List<Object?> get hashParameters => [
+  List<Object?> get props => [
         message,
       ];
-  @override
-  bool get cacheHash => true;
 }
 
 class GetAllExceptionAddressPaginationState extends AddressState {
-  GetAllExceptionAddressPaginationState({
+  const GetAllExceptionAddressPaginationState({
     required this.message,
     this.stackTrace,
     this.exception,
@@ -392,18 +343,16 @@ class GetAllExceptionAddressPaginationState extends AddressState {
   final Exception? exception;
 
   @override
-  List<Object?> get hashParameters => [
+  List<Object?> get props => [
         message,
         stackTrace,
         exception,
         addressStatus,
       ];
-  @override
-  bool get cacheHash => true;
 }
 
 class GetAllEmptyAddressPaginationState extends AddressState {
-  GetAllEmptyAddressPaginationState({
+  const GetAllEmptyAddressPaginationState({
     this.addressEntities = const [],
     this.message = '',
     this.addressStatus = AddressStatus.getAllAddressPagination,
@@ -428,7 +377,7 @@ class GetAllEmptyAddressPaginationState extends AddressState {
   final Timestamp? endTimeStamp;
 
   @override
-  List<Object?> get hashParameters => [
+  List<Object?> get props => [
         message,
         addressEntities,
         pageKey,
@@ -439,6 +388,4 @@ class GetAllEmptyAddressPaginationState extends AddressState {
         sorting,
         startTimeStamp,
       ];
-  @override
-  bool get cacheHash => true;
 }

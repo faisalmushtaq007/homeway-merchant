@@ -1,19 +1,18 @@
 part of 'address_bloc.dart';
 
-abstract class AddressEvent with AppEquatable {}
+abstract class AddressEvent extends Equatable {
+  const AddressEvent();
+}
 
 class SaveAddress extends AddressEvent {
-  SaveAddress({required this.addressEntity, required this.hasNewAddress, this.currentIndex = -1});
+  const SaveAddress({required this.addressEntity, required this.hasNewAddress, this.currentIndex = -1});
 
   final AddressModel addressEntity;
   final bool hasNewAddress;
   final int currentIndex;
 
   @override
-  bool get cacheHash => true;
-
-  @override
-  List<Object?> get hashParameters => [
+  List<Object?> get props => [
         addressEntity,
         hasNewAddress,
         currentIndex,
@@ -21,7 +20,7 @@ class SaveAddress extends AddressEvent {
 }
 
 class RemoveAddressByID extends AddressEvent {
-  RemoveAddressByID({
+  const RemoveAddressByID({
     this.addressEntity,
     this.index = -1,
     this.addressID = -1,
@@ -36,14 +35,11 @@ class RemoveAddressByID extends AddressEvent {
   final bool hasRemove;
 
   @override
-  bool get cacheHash => true;
-
-  @override
-  List<Object?> get hashParameters => [addressEntity, index, addressEntities, addressID, hasRemove];
+  List<Object?> get props => [addressEntity, index, addressEntities, addressID, hasRemove];
 }
 
 class RemoveAllAddress extends AddressEvent {
-  RemoveAllAddress({
+  const RemoveAllAddress({
     this.addressEntities = const [],
     this.hasRemoveAll = true,
   });
@@ -52,14 +48,11 @@ class RemoveAllAddress extends AddressEvent {
   final bool hasRemoveAll;
 
   @override
-  bool get cacheHash => true;
-
-  @override
-  List<Object?> get hashParameters => [addressEntities, hasRemoveAll];
+  List<Object?> get props => [addressEntities, hasRemoveAll];
 }
 
 class GetAddressByID extends AddressEvent {
-  GetAddressByID({
+  const GetAddressByID({
     this.addressEntity,
     this.index = -1,
     this.addressEntities = const [],
@@ -72,10 +65,7 @@ class GetAddressByID extends AddressEvent {
   final int addressID;
 
   @override
-  bool get cacheHash => true;
-
-  @override
-  List<Object?> get hashParameters => [
+  List<Object?> get props => [
         addressEntity,
         index,
         addressEntities,
@@ -84,38 +74,35 @@ class GetAddressByID extends AddressEvent {
 }
 
 class GetAllAddress extends AddressEvent {
-  GetAllAddress({
+  const GetAllAddress({
     this.searchItem = '',
     this.pageSize = 10,
     this.pageKey = 1,
   });
+
   final int pageKey;
   final int pageSize;
   final String searchItem;
 
   @override
-  bool get cacheHash => true;
-
-  @override
-  List<Object?> get hashParameters => [pageKey, pageSize, searchItem];
+  List<Object?> get props => [pageKey, pageSize, searchItem];
 }
 
 class SelectAllAddress extends AddressEvent {
-  SelectAllAddress({
+  const SelectAllAddress({
     this.addressEntities = const [],
     this.selectedAddressEntities = const [],
   });
+
   final List<AddressModel> addressEntities;
   final List<AddressModel> selectedAddressEntities;
-  @override
-  bool get cacheHash => true;
 
   @override
-  List<Object?> get hashParameters => [addressEntities, selectedAddressEntities];
+  List<Object?> get props => [addressEntities, selectedAddressEntities];
 }
 
 class SelectDefaultAddress extends AddressEvent {
-  SelectDefaultAddress({
+  const SelectDefaultAddress({
     this.addressEntity,
     this.index = -1,
     this.addressEntities = const [],
@@ -128,10 +115,7 @@ class SelectDefaultAddress extends AddressEvent {
   final int addressID;
 
   @override
-  bool get cacheHash => true;
-
-  @override
-  List<Object?> get hashParameters => [
+  List<Object?> get props => [
         addressEntity,
         index,
         addressEntities,
@@ -140,31 +124,29 @@ class SelectDefaultAddress extends AddressEvent {
 }
 
 class ConfirmationOnDefaultAddress extends AddressEvent {
-  ConfirmationOnDefaultAddress({
+  const ConfirmationOnDefaultAddress({
     this.addressEntity,
   });
+
   final AddressModel? addressEntity;
-  @override
-  bool get cacheHash => true;
 
   @override
-  List<Object?> get hashParameters => [addressEntity];
+  List<Object?> get props => [addressEntity];
 }
 
 class SelectCurrentAddress extends AddressEvent {
-  SelectCurrentAddress({
+  const SelectCurrentAddress({
     this.addressEntity,
   });
+
   final AddressModel? addressEntity;
-  @override
-  bool get cacheHash => true;
 
   @override
-  List<Object?> get hashParameters => [addressEntity];
+  List<Object?> get props => [addressEntity];
 }
 
-class GetAllAddressPagination extends AddressEvent {
-  GetAllAddressPagination({
+class GetAllAddressPaginationEvent extends AddressEvent {
+  const GetAllAddressPaginationEvent({
     this.pageKey = 1,
     this.searchText,
     this.pageSize = 10,
@@ -183,10 +165,7 @@ class GetAllAddressPagination extends AddressEvent {
   final Timestamp? endTimeStamp;
 
   @override
-  bool get cacheHash => true;
-
-  @override
-  List<Object?> get hashParameters => [
+  List<Object?> get props => [
         pageKey,
         searchText,
         pageSize,

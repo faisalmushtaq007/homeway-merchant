@@ -310,7 +310,12 @@ class _AddressFormPageController extends State<AddressFormPage> {
             case SaveAddressState():
               {
                 appLog.d('SaveAddressState ${addressState.addressEntity.toMap()}');
-                Navigator.popUntil(context, ModalRoute.withName(Routes.ALL_SAVED_ADDRESS_LIST));
+                if (context.canPop()) {
+                  context.pop();
+                  context.pop();
+                  context.pop();
+                  context.push(Routes.ALL_SAVED_ADDRESS_LIST);
+                }
               }
             case GetAddressByIDState():
               {

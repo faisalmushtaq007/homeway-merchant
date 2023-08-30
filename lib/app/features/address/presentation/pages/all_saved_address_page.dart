@@ -14,31 +14,30 @@ class AllSavedAddressPage extends StatefulWidget {
 class _AllSavedAddressPageController extends State<AllSavedAddressPage> {
   late final ScrollController scrollController;
   late final ScrollController innerScrollController;
-  final addressFormPageFormKey = GlobalKey<FormState>();
-  WidgetState<AddressModel> widgetState = const WidgetState<AddressModel>.none();
   List<AddressModel> addressEntities = [];
-  Future<List<sl.Result>> _results = Future.value([]);
-  int pageSize = 20;
+  WidgetState<AddressModel> widgetState = WidgetState<AddressModel>.none();
+  int pageSize = 10;
   int pageKey = 0;
   String? searchText;
   String? sorting;
   String? filtering;
-  PagingController<int, AddressModel> _addressPagingController = PagingController(firstPageKey: 0);
+  final PagingController<int, AddressModel> _addressPagingController = PagingController(firstPageKey: 0);
+  final addressFormPageFormKey = GlobalKey<FormState>();
+  bool _isInit = false;
 
   @override
   void initState() {
     super.initState();
-
     scrollController = ScrollController();
     innerScrollController = ScrollController();
     addressEntities = [];
     addressEntities.clear();
+    //context.read<PermissionBloc>().add(RequestLocationPermissionEvent());
+    widgetState = WidgetState<AddressModel>.loading(context: context);
     _addressPagingController.nextPageKey = 0;
     _addressPagingController.addPageRequestListener((pageKey) {
-      appLog.i('addPageRequestListener ${pageKey}');
       this.pageKey = pageKey;
-      _fetchAllAddressFucntion(pageKey);
-      return;
+      _fetchAllAddressFunction(pageKey);
     });
     _addressPagingController.addStatusListener((status) {
       if (status == PagingStatus.subsequentPageError) {
@@ -55,61 +54,66 @@ class _AllSavedAddressPageController extends State<AllSavedAddressPage> {
         );
       }
     });
-    //context.read<PermissionBloc>().add(const RequestLocationPermissionEvent());
+    //_fetchAllAddressFunction(pageKey);
+
+    //
     //context.read<AddressBloc>().add(GetAllAddress());
   }
 
-  Future<void> _fetchAllAddressFucntion(int pageKey, {int pageSize = 20, String? searchItem, String? filter, String? sort}) async {
+  Future<void> _fetchAllAddressFunction(int pageKey, {int pageSize = 10, String? searchItem, String? filter, String? sort}) async {
     appLog.i('Fetch ');
-    if (mounted) {
-      context.read<AddressBloc>().add(GetAllAddressPagination(
-            pageKey: pageKey,
-            pageSize: pageSize,
-            searchText: searchItem,
-            filter: filtering ?? filter,
-            sorting: sorting ?? sort,
-          ));
-    }
-    return;
+    context.read<AddressBloc>().add(GetAllAddressPaginationEvent(
+          pageKey: pageKey,
+          pageSize: pageSize,
+          searchText: searchItem,
+          filter: filtering ?? filter,
+          sorting: sorting ?? sort,
+        ));
+    //return;
   }
 
   @override
   void dispose() {
+    _addressPagingController.dispose();
     scrollController.dispose();
     innerScrollController.dispose();
     addressEntities = [];
     addressEntities.clear();
-    _addressPagingController.dispose();
     super.dispose();
   }
 
   @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+  }
+
+  @override
   Widget build(BuildContext context) => BlocListener<AddressBloc, AddressState>(
-        key: const Key('all-address-bloc-listener'),
+        key: Key('all-address-bloc-listener'),
         bloc: context.read<AddressBloc>(),
         //listenWhen: (previous, current) => previous != current,
-        listener: (context, state) {
-          switch (state) {
-            /*case GetAllAddressPaginationState():
+        listener: (context, addressListenerState) {
+          switch (addressListenerState) {
+            case GetAllAddressPaginationState():
               {
                 try {
-                  final isLastPage = state.addressEntities.length < pageSize;
+                  final isLastPage = addressListenerState.addressEntities.length < pageSize;
                   if (isLastPage) {
-                    _pagingController.appendLastPage(state.addressEntities.toList());
+                    _addressPagingController.appendLastPage(addressListenerState.addressEntities.toList());
                   } else {
-                    final nextPageKey = state.pageKey + state.addressEntities.length;
-                    _pagingController.appendPage(state.addressEntities.toList(), nextPageKey);
+                    final nextPageKey = addressListenerState.pageKey + addressListenerState.addressEntities.length;
+                    _addressPagingController.appendPage(addressListenerState.addressEntities.toList(), nextPageKey);
                   }
                   widgetState = WidgetState<AddressModel>.allData(
                     context: context,
-                    data: _pagingController.value.itemList ?? [],
+                    data: _addressPagingController.value.itemList ?? [],
                   );
-                  addressEntities = _pagingController.value.itemList ?? [];
+                  addressEntities = _addressPagingController.value.itemList ?? [];
                 } catch (error) {
-                  _pagingController.error = error;
+                  _addressPagingController.error = error;
                   widgetState = WidgetState<AddressModel>.error(
                     context: context,
-                    reason: _pagingController.error,
+                    reason: _addressPagingController.error,
                   );
                 }
               }
@@ -117,125 +121,42 @@ class _AllSavedAddressPageController extends State<AllSavedAddressPage> {
               {
                 widgetState = WidgetState<AddressModel>.empty(
                   context: context,
-                  message: state.message,
+                  message: addressListenerState.message,
                 );
-              }*/
+              }
             case GetAllExceptionAddressPaginationState():
               {
                 widgetState = WidgetState<AddressModel>.error(
                   context: context,
-                  reason: state.message,
+                  reason: addressListenerState.message,
                 );
               }
             case GetAllFailedAddressPaginationState():
               {
                 widgetState = WidgetState<AddressModel>.error(
                   context: context,
-                  reason: state.message,
+                  reason: addressListenerState.message,
                 );
               }
             case AddressExceptionState():
               {
                 widgetState = WidgetState<AddressModel>.error(
                   context: context,
-                  reason: state.message,
+                  reason: addressListenerState.message,
                 );
               }
             case AddressFailedState():
               {
                 widgetState = WidgetState<AddressModel>.error(
                   context: context,
-                  reason: state.message,
+                  reason: addressListenerState.message,
                 );
               }
             case _:
               appLog.d('Default case: all address page bloc listener');
           }
         },
-        child: BlocBuilder<AddressBloc, AddressState>(
-          key: const Key('all-address-bloc-builder'),
-          bloc: context.read<AddressBloc>(),
-          //buildWhen: (previous, current) => previous != current,
-          builder: (context, state) {
-            appLog.i('Current Address state ${state.toString()}');
-            switch (state) {
-              case GetAllAddressState():
-                {
-                  //addressEntities = List<AddressModel>.from(state.addressEntities.toList());
-                  widgetState = WidgetState<AddressModel>.allData(
-                    context: context,
-                  );
-                }
-              case AddressLoadingState():
-                {
-                  widgetState = WidgetState<AddressModel>.loading(
-                    context: context,
-                  );
-                }
-              case AddressEmptyState():
-                {
-                  //addressEntities = List<AddressModel>.from(state.addressEntities.toList());
-                  widgetState = WidgetState<AddressModel>.empty(
-                    context: context,
-                    message: state.message,
-                  );
-                }
-              case GetAllAddressPaginationState():
-                {
-                  try {
-                    final isLastPage = state.addressEntities.length < pageSize;
-                    if (isLastPage) {
-                      _addressPagingController.appendLastPage(state.addressEntities.toList());
-                    } else {
-                      final nextPageKey = state.pageKey + state.addressEntities.length;
-                      _addressPagingController.appendPage(state.addressEntities.toList(), nextPageKey);
-                    }
-                    widgetState = WidgetState<AddressModel>.allData(
-                      context: context,
-                      data: _addressPagingController.value.itemList ?? [],
-                    );
-                    addressEntities = _addressPagingController.value.itemList ?? [];
-                  } catch (error) {
-                    _addressPagingController.error = error;
-                    widgetState = WidgetState<AddressModel>.error(
-                      context: context,
-                      reason: _addressPagingController.error,
-                    );
-                  }
-                }
-              case GetAllEmptyAddressPaginationState():
-                {
-                  widgetState = WidgetState<AddressModel>.empty(
-                    context: context,
-                    message: state.message,
-                  );
-                }
-              case GetAllLoadingAddressPaginationState():
-                {
-                  widgetState = WidgetState<AddressModel>.loading(
-                    context: context,
-                  );
-                }
-              case AddressExceptionState():
-                {
-                  widgetState = WidgetState<AddressModel>.error(
-                    context: context,
-                    reason: state.message,
-                  );
-                }
-              case AddressFailedState():
-                {
-                  widgetState = WidgetState<AddressModel>.error(
-                    context: context,
-                    reason: state.message,
-                  );
-                }
-              case _:
-                appLog.d('Default case: all address page');
-            }
-            return _AllSavedAddressPageView(this);
-          },
-        ),
+        child: _AllSavedAddressPageView(this),
       );
 }
 
@@ -259,6 +180,7 @@ class _AllSavedAddressPageView extends WidgetView<AllSavedAddressPage, _AllSaved
       ),
       child: Scaffold(
         appBar: AppBar(
+          title: const Text('All Address'),
           actions: const [
             Padding(
               padding: EdgeInsetsDirectional.symmetric(horizontal: 14),
@@ -295,7 +217,6 @@ class _AllSavedAddressPageView extends WidgetView<AllSavedAddressPage, _AllSaved
                       ),
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
-                        mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         textDirection: serviceLocator<LanguageController>().targetTextDirection,
                         children: [
@@ -436,16 +357,21 @@ class _AllSavedAddressPageView extends WidgetView<AllSavedAddressPage, _AllSaved
                                 );
                               },
                               allData: (context, child, message, data) {
-                                return PagedListView<int, AddressModel>(
-                                  pagingController: state._addressPagingController,
-                                  builderDelegate: PagedChildBuilderDelegate<AddressModel>(
-                                    itemBuilder: (context, item, index) => AddressCardWidget(
-                                      key: ValueKey(index),
-                                      addressEntity: state.addressEntities[index],
-                                      listOfAllAddressEntities: state.addressEntities.toList(),
-                                      currentIndex: index,
+                                return CustomScrollView(
+                                  slivers: [
+                                    PagedSliverList<int, AddressModel>(
+                                      pagingController: state._addressPagingController,
+                                      builderDelegate: PagedChildBuilderDelegate<AddressModel>(
+                                        animateTransitions: true,
+                                        itemBuilder: (context, item, index) => AddressCardWidget(
+                                          key: ValueKey(index),
+                                          addressEntity: state.addressEntities[index],
+                                          listOfAllAddressEntities: state.addressEntities.toList(),
+                                          currentIndex: index,
+                                        ),
+                                      ),
                                     ),
-                                  ),
+                                  ],
                                 );
                                 return ListView.separated(
                                   itemBuilder: (context, index) {
@@ -491,10 +417,7 @@ class _AllSavedAddressPageView extends WidgetView<AllSavedAddressPage, _AllSaved
                                         'currentIndex': -1,
                                       },
                                     );
-                                    if (!state.mounted) {
-                                      return;
-                                    }
-                                    context.read<AddressBloc>().add(GetAllAddress());
+                                    //context.read<AddressBloc>().add(GetAllAddress());
                                     return;
                                   },
                                   child: Text(
