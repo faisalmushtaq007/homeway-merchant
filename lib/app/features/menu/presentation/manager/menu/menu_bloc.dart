@@ -324,10 +324,10 @@ class MenuBloc extends Bloc<MenuEvent, MenuState> {
       //await Future.delayed(const Duration(milliseconds: 500), () {});
       debugPrint('MenuBloc ${DateTime.now().hour}:${DateTime.now().minute}--> ${cacheMenuEntity.toMap()}');
       debugPrint('=======>');*/
-      debugPrint('MenuBloc ${DateTime.now().hour}:${DateTime.now().minute}--> ${event.menuEntity.toMap()}');
+      appLog.i('PushMenuEntityData ${DateTime.now().hour}:${DateTime.now().minute}--> ${event.menuEntity.toMap()}');
       emit(
         PushMenuEntityDataState(
-          menuEntity: serviceLocator<MenuEntity>(),
+          menuEntity: event.menuEntity ?? serviceLocator<MenuEntity>(),
           message: 'Success',
           hasNewMenu: event.hasNewMenu,
           menuEntityStatus: event.menuEntityStatus,
@@ -339,7 +339,7 @@ class MenuBloc extends Bloc<MenuEvent, MenuState> {
     } catch (e) {
       emit(
         PushMenuEntityDataState(
-          menuEntity: serviceLocator<MenuEntity>(),
+          menuEntity: event.menuEntity ?? serviceLocator<MenuEntity>(),
           message: 'Something went wrong, ${e.toString()}',
           hasNewMenu: event.hasNewMenu,
           menuEntityStatus: event.menuEntityStatus,
@@ -422,6 +422,9 @@ class MenuBloc extends Bloc<MenuEvent, MenuState> {
             ),
           );
         } else {
+          data.toList().forEach((element) {
+            appLog.d('Menu ${element.toMap()}');
+          });
           emit(
             GetAllMenuState(
               menuEntities: data.toList(),

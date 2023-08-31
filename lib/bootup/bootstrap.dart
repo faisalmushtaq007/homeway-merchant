@@ -108,6 +108,7 @@ Future<void> bootstrap(FutureOr<dynamic> Function() builder) async {
     // Keep native splash screen up until app is finished bootstrapping
     FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
     // AppStartConfig
+    serviceLocator.allowReassignment = true;
     await AppStartConfig.shared.startApp();
     await builder();
     //final ThemeService themeService = ThemeServicePrefs();

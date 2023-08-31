@@ -39,7 +39,15 @@ class _MenuForm5PageState extends State<MenuForm5Page> with AutomaticKeepAliveCl
       'https://img.freepik.com/free-photo/top-view-tasty-pakistani-dish_23-2148825124.jpg?size=626&ext=jpg',
       'https://img.freepik.com/premium-photo/dum-handi-chicken-biryani-is-prepared-earthen-clay-pot-called-haandi-popular-indian-non-vegetarian-food_466689-52345.jpg?size=626&ext=jpg',
       'https://img.freepik.com/free-photo/gourmet-chicken-biryani-with-steamed-basmati-rice-generated-by-ai_188544-13480.jpg?size=626&ext=jpg',
-      'https://img.freepik.com/premium-photo/indian-vegetable-pulav-biryani-made-using-basmati-rice-served-terracotta-bowl-selective-focus_466689-55615.jpg?size=626&ext=jpg'
+      'https://img.freepik.com/premium-photo/indian-vegetable-pulav-biryani-made-using-basmati-rice-served-terracotta-bowl-selective-focus_466689-55615.jpg?size=626&ext=jpg',
+      'https://img.freepik.com/free-photo/front-view-sweet-pancakes-tower-arrangement_23-2148654085.jpg',
+      'https://img.freepik.com/free-photo/chocolate-cake-with-whipped-cream-fruits_140725-2715.jpg',
+      'https://img.freepik.com/free-photo/dessert-fruitcake_144627-10454.jpg',
+      'https://img.freepik.com/free-photo/lime-cocktail-mint-side-view_140725-11289.jpg',
+      'https://img.freepik.com/free-photo/grilled-sandwich-with-bacon-fried-egg-tomato-lettuce-served-wooden-cutting-board_1150-42571.jpg',
+      'https://img.freepik.com/free-photo/big-sandwich-hamburger-burger-with-beef-red-onion-tomato-fried-bacon_2829-5398.jpg',
+      'https://img.freepik.com/free-photo/cup-coffee-with-heart-drawn-foam_1286-70.jpg',
+      'https://img.freepik.com/free-photo/greek-salad-with-cucumber-tomato-sweet-pepper-lettuce-green-onion-feta-cheese-olives-with-olive-oil-healthy-food_2829-19692.jpg',
     ];
   }
 
@@ -52,6 +60,7 @@ class _MenuForm5PageState extends State<MenuForm5Page> with AutomaticKeepAliveCl
 
   @override
   bool get wantKeepAlive => true;
+
   @override
   void dispose() {
     scrollController.dispose();

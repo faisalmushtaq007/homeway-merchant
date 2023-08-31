@@ -60,7 +60,7 @@ class _AllSavedAddressPageController extends State<AllSavedAddressPage> {
     //context.read<AddressBloc>().add(GetAllAddress());
   }
 
-  Future<void> _fetchAllAddressFunction(int pageKey, {int pageSize = 10, String? searchItem, String? filter, String? sort}) async {
+  void _fetchAllAddressFunction(int pageKey, {int pageSize = 10, String? searchItem, String? filter, String? sort}) {
     appLog.i('Fetch ');
     context.read<AddressBloc>().add(GetAllAddressPaginationEvent(
           pageKey: pageKey,

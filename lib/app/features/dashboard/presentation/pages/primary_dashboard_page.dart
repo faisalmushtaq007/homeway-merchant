@@ -169,14 +169,14 @@ class _PrimaryDashboardPageState extends State<PrimaryDashboardPage> {
                             ],
                           ),
                           const AnimatedGap(
-                            15,
+                            12,
                             duration: Duration(milliseconds: 500),
                           ),
                           Wrap(
                             alignment: WrapAlignment.center,
                             children: [
                               Text(
-                                "${serviceLocator<AppUserEntity>().businessProfile?.userName ?? 'Thomas Shelby'}",
+                                "${serviceLocator<AppUserEntity>().businessProfile!.userName!.isEmptyOrNull ? 'Thomas Shelby' : serviceLocator<AppUserEntity>().businessProfile?.userName ?? ''}",
                                 style: TextStyle(fontWeight: FontWeight.w900, fontSize: 18),
                                 textDirection: serviceLocator<LanguageController>().targetTextDirection,
                               ).translate(),
@@ -186,11 +186,12 @@ class _PrimaryDashboardPageState extends State<PrimaryDashboardPage> {
                             alignment: WrapAlignment.center,
                             textDirection: serviceLocator<LanguageController>().targetTextDirection,
                             children: [
-                              Text("${serviceLocator<AppUserEntity>().businessProfile?.businessEmailAddress ?? 'thomashomeservice@gmail.com'}").translate(),
+                              Text("${serviceLocator<AppUserEntity>().businessProfile!.businessEmailAddress!.isEmptyOrNull ? 'thomashomeservice@gmail.com' : serviceLocator<AppUserEntity>().businessProfile?.businessEmailAddress ?? ''}")
+                                  .translate(),
                             ],
                           ),
                           const AnimatedGap(
-                            15,
+                            16,
                             duration: Duration(milliseconds: 500),
                           ),
                           Wrap(

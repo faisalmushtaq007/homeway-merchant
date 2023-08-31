@@ -116,6 +116,8 @@ class _MenuForm1PageState extends State<MenuForm1Page> with AutomaticKeepAliveCl
 
   void updateCategoryAndSubCategory(Category mainCategory, Category? subCategory) {
     setState(() {
+      menuCategoryTextEditingController.text = '';
+      menuSubCategoryTextEditingController.text = '';
       menuCategoryTextEditingController.text = mainCategory.title ?? '';
       selectedCategory = mainCategory;
       if (subCategory.isNotNull) {
@@ -123,12 +125,23 @@ class _MenuForm1PageState extends State<MenuForm1Page> with AutomaticKeepAliveCl
         menuSubCategoryTextEditingController.text = subCategory?.title ?? '';
       }
       final copyCategory = mainCategory.copyWith(subCategory: subCategory.isNotNull ? <Category>[subCategory!] : <Category>[]);
-      serviceLocator<MenuEntity>().menuCategories = [
-        copyCategory,
-      ];
+      final cacheMenuEntity = serviceLocator<MenuEntity>().copyWith(
+        menuCategories: [copyCategory],
+      );
+      cacheMenuEntity.menuCategories.forEach((element) {
+        appLog.d('Menu ${element.title}');
+        if (element.subCategory.isNotNullOrEmpty) {
+          element.subCategory.forEach((subElement) {
+            appLog.d('Sub Menu ${subElement.title}');
+          });
+        }
+      });
+
       context.read<MenuBloc>().add(
             PushMenuEntityData(
-              menuEntity: serviceLocator<MenuEntity>(),
+              menuEntity: serviceLocator<MenuEntity>().copyWith(
+                menuCategories: [copyCategory],
+              ),
               menuFormStage: MenuFormStage.form1,
               menuEntityStatus: MenuEntityStatus.push,
             ),

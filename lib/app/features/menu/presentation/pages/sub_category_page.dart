@@ -15,7 +15,7 @@ class _SubCategoryPageController extends State<SubCategoryPage> {
   List<Category> listOfSubCategories = [];
   static const _pageSize = 20;
   final PagingController<int, Category> _pagingController = PagingController(firstPageKey: 0);
-  int? selectedSubCategoryValue = 0;
+  int? selectedSubCategoryValue;
 
   @override
   void initState() {

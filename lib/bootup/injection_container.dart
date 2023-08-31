@@ -49,6 +49,7 @@ import 'package:network_manager/network_manager.dart';
 GetIt serviceLocator = GetIt.instance;
 
 Future<void> setupGetIt() async {
+  serviceLocator.allowReassignment = true;
   await AppDatabase.instance.database;
   _setupGetIt();
   _setUpModel();
@@ -62,7 +63,9 @@ Future<void> setupGetIt() async {
 
 void _setupGetIt() {
   serviceLocator.allowReassignment = true;
-  serviceLocator.registerSingleton<AppKey>(AppKey());
+  serviceLocator.registerSingleton<AppKey>(
+    AppKey(),
+  );
 }
 
 void _setUpModel() {
