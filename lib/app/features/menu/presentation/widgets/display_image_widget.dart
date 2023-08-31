@@ -51,43 +51,46 @@ class DisplayImage extends StatelessWidget {
   Widget buildImage(Color color, bool hasIconImage, BuildContext context) {
     final image = imagePath.contains('https://') ? NetworkImage(imagePath) : AssetImage(imagePath);
     appLog.d('Build Image ${hasIconImage}');
-    return GestureDetector(
-      onTap: () async {
-        appLog.d('Displace image click');
-        return onPressed();
-      },
-      child: CircleAvatar(
-        radius: 36,
-        backgroundColor: Colors.white,
+    return AbsorbPointer(
+      absorbing: false,
+      child: GestureDetector(
+        onTap: () async {
+          appLog.d('Displace image click');
+          return onPressed();
+        },
         child: CircleAvatar(
-          backgroundColor: const Color.fromRGBO(238, 238, 238, 1),
-          //backgroundImage: hasIconImage ? null : image as ImageProvider,
-          child: (!hasIconImage)
-              ? ImageHelper(
-                  image: imagePath,
-                  filterQuality: FilterQuality.high,
-                  borderRadius: BorderRadiusDirectional.circular(20),
-                  imageType: findImageType(imagePath),
-                  imageShape: ImageShape.rectangle,
-                  boxFit: BoxFit.cover,
-                  defaultErrorBuilderColor: Colors.blueGrey,
-                  errorBuilder: const Icon(
-                    Icons.image_not_supported,
-                    size: 10000,
-                  ),
-                  height: context.width / 6,
-                  width: context.width / 6,
-                  loaderBuilder: const CircularProgressIndicator(),
-                  matchTextDirection: true,
-                )
-              : hasCustomIcon
-                  ? customIcon
-                  : Icon(
-                      textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                      Icons.restaurant_menu,
-                      size: 24.0,
+          radius: 36,
+          backgroundColor: Colors.white,
+          child: CircleAvatar(
+            backgroundColor: const Color.fromRGBO(238, 238, 238, 1),
+            //backgroundImage: hasIconImage ? null : image as ImageProvider,
+            child: (!hasIconImage)
+                ? ImageHelper(
+                    image: imagePath,
+                    filterQuality: FilterQuality.high,
+                    borderRadius: BorderRadiusDirectional.circular(20),
+                    imageType: findImageType(imagePath),
+                    imageShape: ImageShape.rectangle,
+                    boxFit: BoxFit.cover,
+                    defaultErrorBuilderColor: Colors.blueGrey,
+                    errorBuilder: const Icon(
+                      Icons.image_not_supported,
+                      size: 10000,
                     ),
-          radius: 32,
+                    height: context.width / 6,
+                    width: context.width / 6,
+                    loaderBuilder: const CircularProgressIndicator(),
+                    matchTextDirection: true,
+                  )
+                : hasCustomIcon
+                    ? customIcon
+                    : Icon(
+                        textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                        Icons.restaurant_menu,
+                        size: 24.0,
+                      ),
+            radius: 32,
+          ),
         ),
       ),
     );

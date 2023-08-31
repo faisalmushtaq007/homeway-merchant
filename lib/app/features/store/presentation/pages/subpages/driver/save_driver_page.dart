@@ -292,47 +292,42 @@ class _SaveDriverPageView extends WidgetView<SaveDriverPage, _SaveDriverPageCont
                             mainAxisAlignment: MainAxisAlignment.start,
                             crossAxisAlignment: CrossAxisAlignment.stretch,
                             children: [
-                              GestureDetector(
-                                child: SizedBox(
-                                  height: 26,
-                                  child: Stack(
-                                    alignment: AlignmentDirectional.topCenter,
-                                    clipBehavior: Clip.none,
-                                    children: [
-                                      AnimatedPositioned(
-                                        duration: const Duration(milliseconds: 300),
-                                        top: -54,
-                                        child: DisplayImage(
-                                          imagePath: state.userImagePath,
-                                          onPressed: () async {
-                                            appLog.d('Click on upload image 2');
-                                            final result = await UploadImageUtils().selectImagePicker(context);
-                                            if (result.imagePath.isNotEmpty) {
-                                              appLog.d('Click on upload image 2 image pah ${result.imagePath}');
-                                              state.updateUserProfileImage(result.imagePath);
-                                            } else {
-                                              appLog.d('Click on upload image 2 else image pah ${result.imagePath}');
-                                            }
-                                          },
-                                          hasIconImage: state.userImagePath.isEmpty ? true : false,
-                                          hasEditButton: state.userImagePath.isNotEmpty ? true : false,
-                                          hasCustomIcon: state.userImagePath.isEmpty ? true : false,
-                                          customIcon: Icon(Icons.camera_alt),
+                              AbsorbPointer(
+                                absorbing: false,
+                                child: GestureDetector(
+                                  child: SizedBox(
+                                    height: 26,
+                                    child: Stack(
+                                      alignment: AlignmentDirectional.topCenter,
+                                      clipBehavior: Clip.none,
+                                      children: [
+                                        AnimatedPositioned(
+                                          duration: const Duration(milliseconds: 300),
+                                          top: -54,
+                                          child: DisplayImage(
+                                            imagePath: state.userImagePath,
+                                            onPressed: () async {
+                                              final result = await UploadImageUtils().selectImagePicker(context);
+                                              if (result.imagePath.isNotEmpty) {
+                                                state.updateUserProfileImage(result.imagePath);
+                                              } else {}
+                                            },
+                                            hasIconImage: state.userImagePath.isEmpty ? true : false,
+                                            hasEditButton: false,
+                                            hasCustomIcon: state.userImagePath.isEmpty ? true : false,
+                                            customIcon: Icon(Icons.camera_alt),
+                                          ),
                                         ),
-                                      ),
-                                    ],
+                                      ],
+                                    ),
                                   ),
+                                  onTap: () async {
+                                    final result = await UploadImageUtils().selectImagePicker(context);
+                                    if (result.imagePath.isNotEmpty) {
+                                      state.updateUserProfileImage(result.imagePath);
+                                    } else {}
+                                  },
                                 ),
-                                onTap: () async {
-                                  appLog.d('Click on upload image 2');
-                                  final result = await UploadImageUtils().selectImagePicker(context);
-                                  if (result.imagePath.isNotEmpty) {
-                                    appLog.d('Click on upload image 2 image pah ${result.imagePath}');
-                                    state.updateUserProfileImage(result.imagePath);
-                                  } else {
-                                    appLog.d('Click on upload image 2 else image pah ${result.imagePath}');
-                                  }
-                                },
                               ),
                               Wrap(
                                 alignment: WrapAlignment.center,
