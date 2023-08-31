@@ -46,6 +46,16 @@ class _PrimaryDashboardDrawerController extends State<PrimaryDashboardDrawer> {
             },
           ),
           DrawerEntity(
+            drawerID: 07,
+            drawerName: 'Saved Address',
+            leading: const Icon(Icons.person),
+            onPressed: () async {
+              Navigator.of(context).pop();
+              await context.push(Routes.ALL_SAVED_ADDRESS_LIST);
+              return;
+            },
+          ),
+          DrawerEntity(
             drawerID: 02,
             drawerName: 'Theme',
             leading: const Icon(Icons.dark_mode),
@@ -174,8 +184,10 @@ class _PrimaryDashboardDrawerController extends State<PrimaryDashboardDrawer> {
             drawerID: 50,
             drawerName: 'My Wallet',
             leading: const Icon(Icons.account_balance_wallet),
-            onPressed: () {
-              return Navigator.of(context).pop();
+            onPressed: () async {
+              Navigator.of(context).pop();
+              final result = await context.push(Routes.WALLET_DASHBOARD_PAGE);
+              return;
             },
           ),
           DrawerEntity(

@@ -116,105 +116,103 @@ class _MainCategoryPageView extends WidgetView<MainCategoryPage, _MainCategoryPa
       ),
       child: Directionality(
         textDirection: serviceLocator<LanguageController>().targetTextDirection,
-        child: DoubleTapToExit(
-          child: Scaffold(
-            appBar: AppBar(
-              title: const Text('All Category'),
-              centerTitle: false,
-              actions: [
-                IconButton(
-                  onPressed: () async {
-                    final notification = await context.push(Routes.NOTIFICATIONS);
-                    return;
-                  },
-                  icon: Badge(
-                    alignment: AlignmentDirectional.topEnd,
-                    //padding: EdgeInsets.all(4),
-                    backgroundColor: context.colorScheme.secondary,
-                    isLabelVisible: true,
-                    largeSize: 16,
-                    textStyle: const TextStyle(fontSize: 14),
-                    textColor: Colors.yellow,
-                    label: Text(
-                      '10',
-                      style: context.labelSmall!.copyWith(color: context.colorScheme.onPrimary),
-                      //Color.fromRGBO(251, 219, 11, 1)
+        child: Scaffold(
+          appBar: AppBar(
+            title: const Text('All Category'),
+            centerTitle: false,
+            actions: [
+              IconButton(
+                onPressed: () async {
+                  final notification = await context.push(Routes.NOTIFICATIONS);
+                  return;
+                },
+                icon: Badge(
+                  alignment: AlignmentDirectional.topEnd,
+                  //padding: EdgeInsets.all(4),
+                  backgroundColor: context.colorScheme.secondary,
+                  isLabelVisible: true,
+                  largeSize: 16,
+                  textStyle: const TextStyle(fontSize: 14),
+                  textColor: Colors.yellow,
+                  label: Text(
+                    '10',
+                    style: context.labelSmall!.copyWith(color: context.colorScheme.onPrimary),
+                    //Color.fromRGBO(251, 219, 11, 1)
+                  ),
+                  child: Icon(Icons.notifications, color: context.colorScheme.primary),
+                ),
+              ),
+              const Padding(
+                padding: EdgeInsetsDirectional.only(end: 8),
+                child: LanguageSelectionWidget(),
+              ),
+            ],
+          ),
+          body: SlideInLeft(
+            key: const Key('main-category-slideinleft-widget'),
+            from: context.width / 2 - 60,
+            duration: const Duration(milliseconds: 500),
+            child: Directionality(
+              textDirection: serviceLocator<LanguageController>().targetTextDirection,
+              child: PageBody(
+                controller: state.scrollController,
+                constraints: BoxConstraints(
+                    minWidth: 1000, minHeight: media.size.height * 1.5 //media.size.height - (media.padding.top + kToolbarHeight + media.padding.bottom),
                     ),
-                    child: Icon(Icons.notifications, color: context.colorScheme.primary),
-                  ),
+                padding: EdgeInsetsDirectional.only(
+                  top: topPadding,
+                  //bottom: bottomPadding,
+                  start: margins * 2.5,
+                  end: margins * 2.5,
                 ),
-                const Padding(
-                  padding: EdgeInsetsDirectional.only(end: 8),
-                  child: LanguageSelectionWidget(),
-                ),
-              ],
-            ),
-            body: SlideInLeft(
-              key: const Key('main-category-slideinleft-widget'),
-              from: context.width / 2 - 60,
-              duration: const Duration(milliseconds: 500),
-              child: Directionality(
-                textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                child: PageBody(
-                  controller: state.scrollController,
-                  constraints: BoxConstraints(
-                      minWidth: 1000, minHeight: media.size.height * 1.5 //media.size.height - (media.padding.top + kToolbarHeight + media.padding.bottom),
-                      ),
-                  padding: EdgeInsetsDirectional.only(
-                    top: topPadding,
-                    //bottom: bottomPadding,
-                    start: margins * 2.5,
-                    end: margins * 2.5,
-                  ),
-                  child: SizedBox(
-                    height: media.size.height * 1.5,
-                    child: CustomScrollView(
-                      controller: state.innerScrollController,
-                      shrinkWrap: true,
-                      slivers: [
-                        SliverFillRemaining(
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                            children: [
-                              Expanded(
-                                child: LayoutBuilder(
-                                  builder: (context, constraint) {
-                                    return SingleChildScrollView(
-                                      child: ConstrainedBox(
-                                        constraints: BoxConstraints(minHeight: constraint.maxHeight),
-                                        child: IntrinsicHeight(
-                                          child: SizedBox(
-                                            width: 80,
-                                            child: NavigationRail(
-                                              labelType: NavigationRailLabelType.all,
-                                              selectedIndex: state.selectedIndex,
-                                              destinations: state.navigationDestinations.toList(),
-                                              onDestinationSelected: (int index) {
-                                                return state.onSelected(index);
-                                              },
-                                            ),
+                child: SizedBox(
+                  height: media.size.height * 1.5,
+                  child: CustomScrollView(
+                    controller: state.innerScrollController,
+                    shrinkWrap: true,
+                    slivers: [
+                      SliverFillRemaining(
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                          children: [
+                            Expanded(
+                              child: LayoutBuilder(
+                                builder: (context, constraint) {
+                                  return SingleChildScrollView(
+                                    child: ConstrainedBox(
+                                      constraints: BoxConstraints(minHeight: constraint.maxHeight),
+                                      child: IntrinsicHeight(
+                                        child: SizedBox(
+                                          width: 80,
+                                          child: NavigationRail(
+                                            labelType: NavigationRailLabelType.all,
+                                            selectedIndex: state.selectedIndex,
+                                            destinations: state.navigationDestinations.toList(),
+                                            onDestinationSelected: (int index) {
+                                              return state.onSelected(index);
+                                            },
                                           ),
                                         ),
                                       ),
-                                    );
-                                  },
-                                ),
+                                    ),
+                                  );
+                                },
                               ),
-                              VerticalDivider(),
-                              Expanded(
-                                flex: 2,
-                                child: SubCategoryPage(
-                                  key: ValueKey(state.selectedIndex),
-                                  selectedCategory: state.listOfCategories[state.selectedIndex],
-                                  onChangedCategory: state.selectedSubCategoryFunction,
-                                ),
+                            ),
+                            VerticalDivider(),
+                            Expanded(
+                              flex: 2,
+                              child: SubCategoryPage(
+                                key: ValueKey(state.selectedIndex),
+                                selectedCategory: state.listOfCategories[state.selectedIndex],
+                                onChangedCategory: state.selectedSubCategoryFunction,
                               ),
-                            ],
-                          ),
+                            ),
+                          ],
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                 ),
               ),

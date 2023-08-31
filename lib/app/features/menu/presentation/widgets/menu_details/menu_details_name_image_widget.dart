@@ -82,6 +82,9 @@ class MenuDetailsNameImageWidget extends StatelessWidget {
                           menuEntity.menuName,
                           textDirection: serviceLocator<LanguageController>().targetTextDirection,
                           style: context.titleMedium!.copyWith(fontWeight: FontWeight.w600),
+                          maxLines: 3,
+                          softWrap: true,
+                          overflow: TextOverflow.ellipsis,
                         ),
                       ],
                     ),
@@ -101,14 +104,14 @@ class MenuDetailsNameImageWidget extends StatelessWidget {
                           avatar: const SingleStarRating(
                             rating: 4.2,
                             starColor: Color.fromRGBO(42, 45, 50, 1),
-                            starSize: 16,
+                            starSize: 14,
                           ),
                           label: Text(
                             '4.2',
                             style: context.labelSmall!.copyWith(
                               color: const Color.fromRGBO(42, 45, 50, 1),
                               fontWeight: FontWeight.w600,
-                              fontSize: 14,
+                              fontSize: 13,
                             ),
                             textDirection: serviceLocator<LanguageController>().targetTextDirection,
                           ),
@@ -129,12 +132,15 @@ class MenuDetailsNameImageWidget extends StatelessWidget {
                           labelPadding: const EdgeInsetsDirectional.all(2),
                           label: Text(
                             menuEntity.menuCategories[0].title,
-                            style: context.labelSmall!.copyWith(
+                            style: context.bodySmall!.copyWith(
                               color: Colors.white,
                               fontWeight: FontWeight.w600,
-                              fontSize: 14,
+                              fontSize: 13,
                             ),
                             textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                            maxLines: 1,
+                            softWrap: true,
+                            overflow: TextOverflow.ellipsis,
                           ),
                           backgroundColor: context.colorScheme.primary,
                           elevation: 0.0,

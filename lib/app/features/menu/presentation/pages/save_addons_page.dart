@@ -51,6 +51,7 @@ class _SaveAddonsPageController extends State<SaveAddonsPage> {
   List<MenuPortion> _selectedMenuPortions = [];
   String currency = 'SAR';
   String unit = '';
+  String addonsImagePath = '';
 
   @override
   void initState() {
@@ -110,6 +111,11 @@ class _SaveAddonsPageController extends State<SaveAddonsPage> {
 
   void _nextButtonOnPressed() {
     return;
+  }
+
+  void updateAddonsProfileImage(String addonsImage) {
+    addonsImagePath = addonsImage;
+    setState(() {});
   }
 
   @override
@@ -235,24 +241,42 @@ class _SaveAddonsPageView extends WidgetView<SaveAddonsPage, _SaveAddonsPageCont
                             mainAxisAlignment: MainAxisAlignment.start,
                             crossAxisAlignment: CrossAxisAlignment.stretch,
                             children: [
-                              SizedBox(
-                                height: 26,
-                                child: Stack(
-                                  alignment: AlignmentDirectional.topCenter,
-                                  clipBehavior: Clip.none,
-                                  children: [
-                                    AnimatedPositioned(
-                                      duration: const Duration(milliseconds: 300),
-                                      top: -54,
-                                      child: DisplayImage(
-                                        imagePath: '',
-                                        onPressed: () {},
-                                        hasIconImage: true,
-                                        hasEditButton: false,
-                                      ),
+                              AbsorbPointer(
+                                child: GestureDetector(
+                                  child: SizedBox(
+                                    height: 26,
+                                    child: Stack(
+                                      alignment: AlignmentDirectional.topCenter,
+                                      clipBehavior: Clip.none,
+                                      children: [
+                                        AnimatedPositioned(
+                                          duration: const Duration(milliseconds: 300),
+                                          top: -54,
+                                          child: DisplayImage(
+                                            imagePath: state.addonsImagePath,
+                                            onPressed: () async {
+                                              final result = await UploadImageUtils().selectImagePicker(context);
+                                              if (result.imagePath.isNotEmpty) {
+                                                state.updateAddonsProfileImage(result.imagePath);
+                                              } else {}
+                                            },
+                                            hasIconImage: state.addonsImagePath.isEmpty ? true : false,
+                                            hasEditButton: false,
+                                            hasCustomIcon: state.addonsImagePath.isEmpty ? true : false,
+                                            customIcon: Icon(Icons.camera_alt),
+                                          ),
+                                        ),
+                                      ],
                                     ),
-                                  ],
+                                  ),
+                                  onTap: () async {
+                                    final result = await UploadImageUtils().selectImagePicker(context);
+                                    if (result.imagePath.isNotEmpty) {
+                                      state.updateAddonsProfileImage(result.imagePath);
+                                    } else {}
+                                  },
                                 ),
+                                absorbing: false,
                               ),
                               Wrap(
                                 alignment: WrapAlignment.center,
@@ -330,7 +354,7 @@ class _SaveAddonsPageView extends WidgetView<SaveAddonsPage, _SaveAddonsPageCont
                                         crossAxisAlignment: CrossAxisAlignment.stretch,
                                         children: [
                                           Text(
-                                            'Portion size of addons',
+                                            'Portion the size of addons',
                                             style: context.titleLarge!.copyWith(
                                               fontWeight: FontWeight.w600,
                                               fontSize: 20,
@@ -372,7 +396,7 @@ class _SaveAddonsPageView extends WidgetView<SaveAddonsPage, _SaveAddonsPageCont
                                                   decimal: true,
                                                 ),
                                                 decoration: InputDecoration(
-                                                  labelText: 'Addons Quantity',
+                                                  labelText: 'Quantity',
                                                   hintText: 'Enter addons quantity',
                                                   border: OutlineInputBorder(
                                                     borderRadius: BorderRadius.circular(10),
@@ -398,7 +422,7 @@ class _SaveAddonsPageView extends WidgetView<SaveAddonsPage, _SaveAddonsPageCont
                                                 onFieldSubmitted: (_) => fieldFocusChange(context, state.focusList[3], state.focusList[4]),
                                                 keyboardType: TextInputType.name,
                                                 decoration: InputDecoration(
-                                                  labelText: 'Addons Units',
+                                                  labelText: 'Units',
                                                   hintText: 'Enter addons units',
                                                   border: OutlineInputBorder(
                                                     borderRadius: BorderRadius.circular(10),
@@ -467,7 +491,10 @@ class _SaveAddonsPageView extends WidgetView<SaveAddonsPage, _SaveAddonsPageCont
                                     discountedPrice: 0.0,
                                     unit: state.addonsUnitTextEditingController.value.text.trim(),
                                     currency: state.currency,
-                                    addonsImage: MenuImage(),
+                                    addonsImage: MenuImage(
+                                      assetPath: state.addonsImagePath,
+                                    ),
+                                    hasOwnAddons: state.addonsImagePath.isNotEmpty ? true : false,
                                   );
                                   context.read<MenuBloc>().add(
                                         SaveAddons(
@@ -482,8 +509,10 @@ class _SaveAddonsPageView extends WidgetView<SaveAddonsPage, _SaveAddonsPageCont
                                     finalPrice: double.parse(state.addonsPriceTextEditingController.value.text.trim()),
                                     unit: state.addonsUnitTextEditingController.value.text.trim(),
                                     currency: state.currency,
-                                    hasOwnAddons: true,
-                                    addonsImage: MenuImage(),
+                                    addonsImage: MenuImage(
+                                      assetPath: state.addonsImagePath,
+                                    ),
+                                    hasOwnAddons: state.addonsImagePath.isNotEmpty ? true : false,
                                   );
                                   context.read<MenuBloc>().add(
                                         SaveAddons(

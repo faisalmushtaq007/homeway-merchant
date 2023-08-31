@@ -569,6 +569,8 @@ class _SaveDriverPageView extends WidgetView<SaveDriverPage, _SaveDriverPageCont
                                       vehicleType: state.listOfSelectedVehicleTypeInfo[0].vehicleType,
                                       vehicleNumber: state.listOfSelectedVehicleTypeInfo[0].vehicleNumber,
                                     ),
+                                    hasDriverImage: state.userImagePath.isNotEmpty ? true : false,
+                                    imageEntity: ImageEntity(imagePath: state.userImagePath),
                                   );
                                 }
                                 // New driver
@@ -582,6 +584,8 @@ class _SaveDriverPageView extends WidgetView<SaveDriverPage, _SaveDriverPageCont
                                       vehicleType: state.listOfSelectedVehicleTypeInfo[0].vehicleType,
                                       vehicleNumber: state.listOfSelectedVehicleTypeInfo[0].vehicleNumber,
                                     ),
+                                    hasDriverImage: state.userImagePath.isNotEmpty ? true : false,
+                                    imageEntity: ImageEntity(imagePath: state.userImagePath),
                                   );
                                 }
                                 // Execute save action

@@ -31,6 +31,7 @@ class _MenuComponentWidgetState extends State<MenuComponentWidget> {
   String menuMaxPreparationTime = '';
   List<MenuComponent> menuComponents = [];
   List<Addons> listOfAddons = [];
+  List<Category> selectedCategory = [];
 
   @override
   void initState() {
@@ -56,6 +57,7 @@ class _MenuComponentWidgetState extends State<MenuComponentWidget> {
     menuPortions = [];
     menuMinPreparationTime = '';
     menuMaxPreparationTime = '';
+    selectedCategory = [];
     // Initialize
     menuAvailableFoodTypes = List.from(widget.menuEntity.storeAvailableFoodTypes.toList());
     menuAvailableFoodPreparationType = List.from(widget.menuEntity.storeAvailableFoodPreparationType.toList());
@@ -73,6 +75,7 @@ class _MenuComponentWidgetState extends State<MenuComponentWidget> {
     timeOfPeriodWise = List.from(widget.menuEntity.timeOfPeriodWise.toList());
     ingredients = List.from(widget.menuEntity.ingredients.toList());
     nutrients = List.from(widget.menuEntity.nutrients.toList());
+    selectedCategory = List.from(widget.menuEntity.menuCategories.toList());
   }
 
   @override
@@ -297,8 +300,23 @@ class _MenuComponentWidgetState extends State<MenuComponentWidget> {
 
   Widget _menuFoodType(BuildContext context) {
     List<String> menuTypes = [];
-    menuAvailableFoodTypes.asMap().forEach((key, value) {
+    /*menuAvailableFoodTypes.asMap().forEach((key, value) {
       menuTypes.add(value.title);
+    });
+    menuAvailableFoodPreparationType.asMap().forEach((key, value) {
+      menuTypes.add(value.title);
+    });*/
+    //selectedCategory
+    selectedCategory.asMap().forEach((key, value) {
+      menuTypes.add(value.title);
+      appLog.d('subCategory 0 ${value.subCategory.length}');
+      if (value.subCategory.isNotNullOrEmpty) {
+        appLog.d('subCategory');
+        value.subCategory.asMap().forEach((key, subCategoryValue) {
+          appLog.d('subCategory 1 ${subCategoryValue.title}');
+          menuTypes.add(subCategoryValue.title);
+        });
+      }
     });
     menuAvailableFoodPreparationType.asMap().forEach((key, value) {
       menuTypes.add(value.title);
