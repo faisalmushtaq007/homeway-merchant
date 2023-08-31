@@ -87,6 +87,8 @@ abstract class Routes {
   static const String MAIN_CATEGORY_PAGE = _Paths.MAIN_CATEGORY_PAGE;
   static const String WALLET_DASHBOARD_PAGE = _Paths.WALLET_DASHBOARD_PAGE;
   static const String ALL_TRANSCATIONS_PAGE = _Paths.ALL_TRANSCATIONS_PAGE;
+  static const String WITHDRAWAL_PAGE = _Paths.WITHDRAWAL_PAGE;
+  static const String WITHDRAWAL_FORM_PAGE = _Paths.WITHDRAWAL_FORM_PAGE;
 }
 
 abstract class _Paths {
@@ -173,4 +175,6 @@ abstract class _Paths {
   static const String MAIN_CATEGORY_PAGE = '/main-category';
   static const String WALLET_DASHBOARD_PAGE = '/wallet-dashboard';
   static const String ALL_TRANSCATIONS_PAGE = '/all-transcations';
+  static const String WITHDRAWAL_PAGE = '/withdrawal';
+  static const String WITHDRAWAL_FORM_PAGE = '/withdrawal-form-page';
 }

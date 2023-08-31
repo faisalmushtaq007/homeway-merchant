@@ -45,7 +45,7 @@ class _TranscationSearchInputSliverState extends State<TranscationSearchInputSli
           crossFadeState: (widget.isEnabled) ? CrossFadeState.showFirst : CrossFadeState.showSecond,
           duration: const Duration(milliseconds: 200),
           firstChild: Container(
-            height: 56,
+            height: 60,
             padding: const EdgeInsetsDirectional.symmetric(
               horizontal: 0,
               vertical: 4,

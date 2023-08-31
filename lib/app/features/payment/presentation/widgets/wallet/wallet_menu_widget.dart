@@ -19,11 +19,21 @@ class _WalletMenuWidgetController extends State<WalletMenuWidget> {
         color: Colors.blue,
         title: 'Withdrawal',
         icon: FontAwesomeIcons.paperPlane,
+        onPressed: () async {
+          final getResult = await context.push(
+            Routes.WITHDRAWAL_PAGE,
+          );
+        },
       ),
       WalletMenuInfo(
         color: Colors.red,
         title: 'Activities',
         icon: FontAwesomeIcons.chartSimple,
+        onPressed: () async {
+          final getResult = await context.push(
+            Routes.ALL_TRANSCATIONS_PAGE,
+          );
+        },
       ),
       WalletMenuInfo(
         color: Colors.cyan,
@@ -63,15 +73,15 @@ class _WalletMenuWidgetView extends WidgetView<WalletMenuWidget, _WalletMenuWidg
         minWidth: constraints.maxWidth,
       ),
       flexible: false,
-      children: state.walletMenus
-          .map(
-            (e) => _menuItem(
-              color: e.color,
-              title: e.title,
-              icon: e.icon,
-            ),
-          )
-          .toList(),
+      children: List.generate(
+        state.walletMenus.length,
+        (index) => _menuItem(
+          color: state.walletMenus[index].color,
+          title: state.walletMenus[index].title,
+          icon: state.walletMenus[index].icon,
+          onPressed: state.walletMenus[index].onPressed,
+        ),
+      ),
     );
   }
 
@@ -79,23 +89,27 @@ class _WalletMenuWidgetView extends WidgetView<WalletMenuWidget, _WalletMenuWidg
     Color color = Colors.red,
     String title = '',
     IconData icon = FontAwesomeIcons.wallet,
+    VoidCallback? onPressed,
   }) {
     return Expanded(
       key: ValueKey(title),
       child: Column(
         textDirection: serviceLocator<LanguageController>().targetTextDirection,
         children: [
-          Card(
-            elevation: 0,
-            color: Colors.transparent,
-            margin: EdgeInsetsDirectional.zero,
-            child: WaveContainer(
-              color: color.withOpacity(0.3),
-              padding: EdgeInsetsDirectional.all(16),
-              child: Icon(
-                icon,
-                color: color,
-                size: 32,
+          InkWell(
+            onTap: onPressed,
+            child: Card(
+              elevation: 0,
+              color: Colors.transparent,
+              margin: EdgeInsetsDirectional.zero,
+              child: WaveContainer(
+                color: color.withOpacity(0.3),
+                padding: EdgeInsetsDirectional.all(16),
+                child: Icon(
+                  icon,
+                  color: color,
+                  size: 32,
+                ),
               ),
             ),
           ),
@@ -123,21 +137,25 @@ class WalletMenuInfo {
     required this.color,
     required this.title,
     required this.icon,
+    this.onPressed,
   });
 
   Color color;
   String title;
   IconData icon;
+  VoidCallback? onPressed;
 
   WalletMenuInfo copyWith({
     Color? color,
     String? title,
     IconData? icon,
+    VoidCallback? onPressed,
   }) {
     return WalletMenuInfo(
       color: color ?? this.color,
       title: title ?? this.title,
       icon: icon ?? this.icon,
+      onPressed: onPressed ?? this.onPressed,
     );
   }
 }

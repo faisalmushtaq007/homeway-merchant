@@ -56,7 +56,7 @@ class _TransactionsPageController extends State<TransactionsPage> {
 
 class _TransactionsPageView extends WidgetView<TransactionsPage, _TransactionsPageController> {
   const _TransactionsPageView(super.state);
-
+  @override
   Widget build(BuildContext context) {
     final MediaQueryData media = MediaQuery.of(context);
     final double margins = GlobalApp.responsiveInsets(media.size.width);
@@ -70,170 +70,134 @@ class _TransactionsPageView extends WidgetView<TransactionsPage, _TransactionsPa
       ),
       child: Directionality(
         textDirection: serviceLocator<LanguageController>().targetTextDirection,
-        child: DoubleTapToExit(
-          child: Scaffold(
-            appBar: AppBar(
-              title: const Text('Transaction'),
-              centerTitle: false,
-              titleSpacing: 0,
-              actions: [
-                IconButton(
-                  onPressed: () async {
-                    final notification = await context.push(Routes.NOTIFICATIONS);
-                    return;
-                  },
-                  icon: Badge(
-                    alignment: AlignmentDirectional.topEnd,
-                    //padding: EdgeInsets.all(4),
-                    backgroundColor: context.colorScheme.secondary,
-                    isLabelVisible: true,
-                    largeSize: 16,
-                    textStyle: const TextStyle(fontSize: 14),
-                    textColor: Colors.yellow,
-                    label: Text(
-                      '10',
-                      style: context.labelSmall!.copyWith(color: context.colorScheme.onPrimary),
-                      //Color.fromRGBO(251, 219, 11, 1)
-                    ),
-                    child: Icon(Icons.notifications, color: context.colorScheme.primary),
+        child: Scaffold(
+          appBar: AppBar(
+            title: const Text('Transaction'),
+            centerTitle: false,
+            titleSpacing: 0,
+            actions: [
+              IconButton(
+                onPressed: () async {
+                  final notification = await context.push(Routes.NOTIFICATIONS);
+                  return;
+                },
+                icon: Badge(
+                  alignment: AlignmentDirectional.topEnd,
+                  //padding: EdgeInsets.all(4),
+                  backgroundColor: context.colorScheme.secondary,
+                  isLabelVisible: true,
+                  largeSize: 16,
+                  textStyle: const TextStyle(fontSize: 14),
+                  textColor: Colors.yellow,
+                  label: Text(
+                    '10',
+                    style: context.labelSmall!.copyWith(color: context.colorScheme.onPrimary),
+                    //Color.fromRGBO(251, 219, 11, 1)
                   ),
+                  child: Icon(Icons.notifications, color: context.colorScheme.primary),
                 ),
-                const Padding(
-                  padding: EdgeInsetsDirectional.only(end: 8),
-                  child: LanguageSelectionWidget(),
+              ),
+              const Padding(
+                padding: EdgeInsetsDirectional.only(end: 8),
+                child: LanguageSelectionWidget(),
+              ),
+            ],
+          ),
+          /*drawer: const PrimaryDashboardDrawer(
+            key: const Key('transaction-page-drawer'),
+            isMainDrawerPage: false,
+          ),*/
+          body: FadeInDown(
+            key: const Key('transaction-page-slideinleft-widget'),
+            from: context.width / 2 - 60,
+            duration: const Duration(milliseconds: 500),
+            child: Directionality(
+              textDirection: serviceLocator<LanguageController>().targetTextDirection,
+              child: PageBody(
+                controller: state.scrollController,
+                constraints: BoxConstraints(
+                  minWidth: 1000,
+                  minHeight: media.size.height - (media.padding.top + kToolbarHeight + media.padding.bottom),
                 ),
-              ],
-            ),
-            drawer: const PrimaryDashboardDrawer(
-              key: const Key('transaction-page-drawer'),
-              isMainDrawerPage: false,
-            ),
-            body: FadeInDown(
-              key: const Key('transaction-page-slideinleft-widget'),
-              from: context.width / 2 - 60,
-              duration: const Duration(milliseconds: 500),
-              child: Directionality(
-                textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                child: PageBody(
-                  controller: state.scrollController,
-                  constraints: BoxConstraints(
-                    minWidth: 1000,
-                    minHeight: media.size.height - (media.padding.top + kToolbarHeight + media.padding.bottom),
-                  ),
-                  padding: EdgeInsetsDirectional.only(
-                    top: topPadding,
-                    //bottom: bottomPadding,
-                    start: margins * 2.5,
-                    end: margins * 2.5,
-                  ),
-                  child: CustomScrollView(
-                    controller: state.customScrollViewScrollController,
-                    shrinkWrap: true,
-                    slivers: [
-                      SliverList(
-                        delegate: SliverChildListDelegate(
-                          [
-                            const AnimatedGap(6, duration: Duration(milliseconds: 200)),
-                            ClipRRect(
-                              borderRadius: BorderRadius.circular(10),
-                              child: Container(
-                                height: 65,
-                                width: context.width,
-                                color: Colors.grey.shade200,
-                                child: ScrollableRow(
-                                  controller: state.scrollController,
-                                  padding: EdgeInsetsDirectional.zero,
-                                  mainAxisSize: MainAxisSize.min,
-                                  textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                                  physics: const BouncingScrollPhysics(),
-                                  constraintsBuilder: (constraints) => BoxConstraints(
-                                    minWidth: constraints.maxWidth,
-                                  ),
-                                  flexible: false,
-                                  children: List.generate(
-                                      state.transactionTypes.length,
-                                      (index) => StatefulBuilder(
-                                            builder: (context, setState) {
-                                              return Padding(
-                                                padding: const EdgeInsetsDirectional.only(start: 8, end: 8.0),
-                                                child: ElevatedButton(
-                                                  style: ElevatedButton.styleFrom(
-                                                    shape: RoundedRectangleBorder(
-                                                      borderRadius: BorderRadiusDirectional.circular(10),
-                                                    ),
-                                                    minimumSize: Size(74, 42),
-                                                    maximumSize: Size(104, 42),
-                                                    //fixedSize: Size(104, 42),
-                                                    backgroundColor: (state.currentIndex == index) ? '#2C73D2'.toColor : '#D4E5ED'.toColor,
-                                                    //disabledBackgroundColor: '#B0A8B9'.toColor,
-                                                  ),
-                                                  onPressed: () {
-                                                    state.updateCurrentIndex(index);
-                                                  },
-                                                  child: Text(
-                                                    state.transactionTypes[index].typeName,
-                                                    maxLines: 1,
-                                                    overflow: TextOverflow.ellipsis,
-                                                    softWrap: true,
-                                                    textAlign: TextAlign.center,
-                                                    style: context.bodyMedium!.copyWith(color: state.currentIndex == index ? Colors.white : Colors.black),
-                                                  ),
-                                                ),
-                                              );
-                                              return GestureDetector(
+                padding: EdgeInsetsDirectional.only(
+                  top: topPadding,
+                  //bottom: bottomPadding,
+                  start: margins * 2.5,
+                  end: margins * 2.5,
+                ),
+                child: CustomScrollView(
+                  controller: state.customScrollViewScrollController,
+                  shrinkWrap: true,
+                  slivers: [
+                    SliverList(
+                      delegate: SliverChildListDelegate(
+                        [
+                          const AnimatedGap(6, duration: Duration(milliseconds: 200)),
+                          ClipRRect(
+                            borderRadius: BorderRadius.circular(10),
+                            child: Container(
+                              height: 65,
+                              width: context.width,
+                              color: Colors.grey.shade200,
+                              child: ScrollableRow(
+                                controller: state.scrollController,
+                                padding: EdgeInsetsDirectional.zero,
+                                mainAxisSize: MainAxisSize.min,
+                                textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                physics: const BouncingScrollPhysics(),
+                                constraintsBuilder: (constraints) => BoxConstraints(
+                                  minWidth: constraints.maxWidth,
+                                ),
+                                flexible: false,
+                                children: List.generate(
+                                    state.transactionTypes.length,
+                                    (index) => StatefulBuilder(
+                                          builder: (context, setState) {
+                                            return Padding(
+                                              padding: const EdgeInsetsDirectional.only(start: 8, end: 8.0),
+                                              child: ElevatedButton(
                                                 key: ValueKey(index),
-                                                onTap: () {
+                                                style: ElevatedButton.styleFrom(
+                                                  shape: RoundedRectangleBorder(
+                                                    borderRadius: BorderRadiusDirectional.circular(10),
+                                                  ),
+                                                  minimumSize: Size(74, 42),
+                                                  maximumSize: Size(104, 42),
+                                                  //fixedSize: Size(104, 42),
+                                                  backgroundColor: (state.currentIndex == index) ? '#2C73D2'.toColor : '#D4E5ED'.toColor,
+                                                  //disabledBackgroundColor: '#B0A8B9'.toColor,
+                                                ),
+                                                onPressed: () {
                                                   state.updateCurrentIndex(index);
                                                 },
-                                                child: Container(
-                                                  margin: EdgeInsets.all(10),
-                                                  width: 64,
-                                                  height: 42,
-                                                  decoration: BoxDecoration(
-                                                    gradient: LinearGradient(
-                                                      begin: Alignment.topCenter,
-                                                      end: Alignment.bottomCenter,
-                                                      colors: (index == state.currentIndex)
-                                                          ? [
-                                                              Color(0xff7F9BFA),
-                                                              Color(0xff4665D1),
-                                                            ]
-                                                          : [
-                                                              Colors.white,
-                                                              Color(0xff466500),
-                                                            ],
-                                                    ),
-                                                    borderRadius: BorderRadius.circular(
-                                                      10.0,
-                                                    ),
-                                                  ),
-                                                  child: Center(
-                                                    child: Text(
-                                                      state.transactionTypes[index].typeName,
-                                                      style: context.labelSmall!.copyWith(color: state.currentIndex == index ? Colors.white : Colors.black),
-                                                    ),
-                                                  ),
+                                                child: Text(
+                                                  state.transactionTypes[index].typeName,
+                                                  maxLines: 1,
+                                                  overflow: TextOverflow.ellipsis,
+                                                  softWrap: true,
+                                                  textAlign: TextAlign.center,
+                                                  style: context.bodyMedium!.copyWith(color: state.currentIndex == index ? Colors.white : Colors.black),
                                                 ),
-                                              );
-                                            },
-                                          )),
-                                ),
+                                              ),
+                                            );
+                                          },
+                                        )),
                               ),
                             ),
-                            const AnimatedGap(12, duration: Duration(milliseconds: 200)),
-                          ],
-                        ),
+                          ),
+                          const AnimatedGap(12, duration: Duration(milliseconds: 200)),
+                        ],
                       ),
-                      SliverFillRemaining(
-                        fillOverscroll: true,
-                        hasScrollBody: true,
-                        child: PageStorage(
-                          bucket: state._transactionBucket,
-                          child: state.transactionWidgets[state.currentIndex],
-                        ),
+                    ),
+                    SliverFillRemaining(
+                      fillOverscroll: true,
+                      hasScrollBody: true,
+                      child: PageStorage(
+                        bucket: state._transactionBucket,
+                        child: state.transactionWidgets[state.currentIndex],
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ),
             ),

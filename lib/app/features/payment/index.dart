@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:flex_color_scheme/flex_color_scheme.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -31,6 +32,7 @@ import 'package:homemakers_merchant/shared/widgets/universal/double_tap_exit/dou
 import 'package:homemakers_merchant/shared/widgets/universal/image_loader/image_helper.dart';
 import 'package:homemakers_merchant/shared/widgets/universal/infinity_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:homemakers_merchant/shared/widgets/universal/nil/src/nil.dart';
+import 'package:homemakers_merchant/shared/widgets/universal/row_item/row_item.dart';
 import 'package:homemakers_merchant/utils/app_log.dart';
 import 'package:homemakers_merchant/utils/image_type.dart';
 import 'package:rxdart/rxdart.dart';
@@ -41,6 +43,8 @@ part 'package:homemakers_merchant/app/features/payment/data/common/conversion.da
 part 'package:homemakers_merchant/app/features/payment/domain/entities/transcation_entity.dart';
 part 'package:homemakers_merchant/app/features/payment/presentation/pages/wallet/wallet_dashboard_page.dart';
 part 'package:homemakers_merchant/app/features/payment/presentation/pages/wallet/transcations_page.dart';
+part 'package:homemakers_merchant/app/features/payment/presentation/pages/wallet/withdrawal_page.dart';
+part 'package:homemakers_merchant/app/features/payment/presentation/pages/wallet/withdrawal_form_page.dart';
 part 'package:homemakers_merchant/app/features/payment/presentation/widgets/transcation/all_transaction_widget.dart';
 part 'package:homemakers_merchant/app/features/payment/presentation/widgets/transcation/income_transaction_widget.dart';
 part 'package:homemakers_merchant/app/features/payment/presentation/widgets/transcation/transaction_search_input_sliver.dart';
@@ -48,3 +52,4 @@ part 'package:homemakers_merchant/app/features/payment/presentation/widgets/tran
 part 'package:homemakers_merchant/app/features/payment/presentation/widgets/wallet/wallet_account_summary_widget.dart';
 part 'package:homemakers_merchant/app/features/payment/presentation/widgets/wallet/wallet_menu_widget.dart';
 part 'package:homemakers_merchant/app/features/payment/presentation/widgets/wallet/wallet_user_info_widget.dart';
+part 'package:homemakers_merchant/app/features/payment/presentation/widgets/wallet/withdrawal_save_info_widget.dart';

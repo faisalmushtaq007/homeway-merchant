@@ -466,6 +466,20 @@ class AppRouter {
           return TransactionsPage();
         },
       ),
+      GoRoute(
+        path: Routes.WITHDRAWAL_PAGE,
+        builder: (context, state) {
+          final Map<String, dynamic>? args = state.extra as Map<String, dynamic>?;
+          return WithdrawalPage();
+        },
+      ),
+      GoRoute(
+        path: Routes.WITHDRAWAL_FORM_PAGE,
+        builder: (context, state) {
+          final Map<String, dynamic>? args = state.extra as Map<String, dynamic>?;
+          return WithdrawalFormPage();
+        },
+      ),
     ],
     /*redirect: (context, state) {
       bool hasCurrentUserLoggedIn = userModelController.userModel.hasCurrentUser;
