@@ -446,6 +446,7 @@ class VehicleInfo with AppEquatable {
     this.vehicleID = '',
     this.vehicleType = '',
     this.vehicleNumber = '',
+    this.vehicleIconPath = '',
   });
 
   factory VehicleInfo.fromMap(Map<String, dynamic> map) {
@@ -453,12 +454,14 @@ class VehicleInfo with AppEquatable {
       vehicleID: map['vehicleID'] as String,
       vehicleType: map['vehicleType'] as String,
       vehicleNumber: map['vehicleNumber'] as String,
+      vehicleIconPath: map['vehicleIconPath'] as String,
     );
   }
 
   String vehicleID;
   String vehicleType;
   String vehicleNumber;
+  String vehicleIconPath;
 
   @override
   bool get cacheHash => true;
@@ -468,6 +471,7 @@ class VehicleInfo with AppEquatable {
         vehicleID,
         vehicleType,
         vehicleNumber,
+        vehicleIconPath,
       ];
 
   Map<String, dynamic> toMap() {
@@ -475,6 +479,7 @@ class VehicleInfo with AppEquatable {
       'vehicleID': this.vehicleID,
       'vehicleType': this.vehicleType,
       'vehicleNumber': this.vehicleNumber,
+      'vehicleIconPath': this.vehicleIconPath,
     };
   }
 
@@ -482,11 +487,13 @@ class VehicleInfo with AppEquatable {
     String? vehicleID,
     String? vehicleType,
     String? vehicleNumber,
+    String? vehicleIconPath,
   }) {
     return VehicleInfo(
       vehicleID: vehicleID ?? this.vehicleID,
       vehicleType: vehicleType ?? this.vehicleType,
       vehicleNumber: vehicleNumber ?? this.vehicleNumber,
+      vehicleIconPath: vehicleIconPath ?? this.vehicleIconPath,
     );
   }
 }

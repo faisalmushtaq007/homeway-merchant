@@ -149,6 +149,21 @@ class _StoreOwnPartnerVehicleTypeState extends State<StoreOwnPartnerVehicleType>
 
     for (var item in widget.availableVehicleInfoList) {
       choices.add(ChoiceChip(
+        avatar: ImageHelper(
+          image: item.vehicleIconPath,
+          filterQuality: FilterQuality.high,
+          borderRadius: BorderRadiusDirectional.circular(4),
+          imageType: findImageType(item.vehicleIconPath),
+          imageShape: ImageShape.rectangle,
+          boxFit: BoxFit.cover,
+          defaultErrorBuilderColor: Colors.blueGrey,
+          errorBuilder: const Icon(
+            Icons.image_not_supported,
+            size: 10000,
+          ),
+          loaderBuilder: const CircularProgressIndicator(),
+          matchTextDirection: true,
+        ),
         label: Text(
           item.vehicleType,
           textDirection: serviceLocator<LanguageController>().targetTextDirection,

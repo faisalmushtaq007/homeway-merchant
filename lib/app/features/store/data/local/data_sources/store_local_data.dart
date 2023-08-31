@@ -47,7 +47,23 @@ final localStoreWorkingDays = [
 final localMenuPreparationTimings = [];
 
 final localDriverVehicleType = [
-  VehicleInfo(vehicleID: '0', vehicleType: '2-Wheeler'),
-  VehicleInfo(vehicleID: '1', vehicleType: '3-Wheeler'),
-  VehicleInfo(vehicleID: '2', vehicleType: '4-Wheeler'),
+  VehicleInfo(
+    vehicleID: '0',
+    vehicleType: 'Bike/Scooty',
+    vehicleIconPath: 'assets/svg/food_motorbike.svg',
+  ),
+  //VehicleInfo(vehicleID: '1', vehicleType: '3-Wheeler'),
+
+  VehicleInfo(
+    vehicleID: '2',
+    vehicleType: 'Commercial',
+    vehicleIconPath: 'assets/svg/food_truck.svg',
+  ),
+  VehicleInfo(
+    vehicleID: '3',
+    vehicleType: 'Car',
+    vehicleIconPath: 'assets/svg/food_car.svg',
+  ),
 ];
+
+final driverDeliveryType = ['General', 'Exclusive'];

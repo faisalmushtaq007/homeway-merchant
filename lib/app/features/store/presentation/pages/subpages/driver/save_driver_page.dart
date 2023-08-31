@@ -32,6 +32,7 @@ class _SaveDriverPageController extends State<SaveDriverPage> {
   final TextEditingController driverContactNumberTextEditingController = TextEditingController();
   final TextEditingController drivingLicenseNumberTextEditingController = TextEditingController();
   final TextEditingController driverVehicleNumberTextEditingController = TextEditingController();
+  final TextEditingController driverDeliveryTypeNumberTextEditingController = TextEditingController();
   final TextEditingController addonsUnitTextEditingController = TextEditingController();
   List<StoreOwnDeliveryPartnersInfo> listOfStoreOwnDeliveryPartners = [];
   List<StoreOwnDeliveryPartnersInfo> listOfSelectedStoreOwnDeliveryPartner = [];
@@ -90,6 +91,7 @@ class _SaveDriverPageController extends State<SaveDriverPage> {
     driverContactNumberTextEditingController.dispose();
     driverVehicleNumberTextEditingController.dispose();
     addonsUnitTextEditingController.dispose();
+    driverDeliveryTypeNumberTextEditingController.dispose();
     listOfStoreOwnDeliveryPartners = [];
     listOfSelectedStoreOwnDeliveryPartner = [];
     listOfVehicleTypeInfo = [];
@@ -150,6 +152,13 @@ class _SaveDriverPageController extends State<SaveDriverPage> {
 
   String? phoneNumberValidator(PhoneNumber? phoneNumber) {
     //
+  }
+
+  void updateDriverDeliveryType(String deliveryType) {
+    setState(() {
+      driverDeliveryTypeNumberTextEditingController.text = deliveryType;
+    });
+    return;
   }
 
   @override
@@ -467,6 +476,48 @@ class _SaveDriverPageView extends WidgetView<SaveDriverPage, _SaveDriverPageCont
                                           return null;
                                         },
                                       ),
+                                      const AnimatedGap(12, duration: Duration(milliseconds: 500)),
+                                      AppTextFieldWidget(
+                                        controller: state.driverDeliveryTypeNumberTextEditingController,
+                                        readOnly: true,
+                                        textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                        textInputAction: TextInputAction.next,
+                                        keyboardType: TextInputType.text,
+                                        decoration: InputDecoration(
+                                          labelText: 'Delivery Mode',
+                                          hintText: 'Select your delivery mode',
+                                          border: OutlineInputBorder(
+                                            borderRadius: BorderRadius.circular(10),
+                                          ),
+                                          isDense: true,
+                                          suffixIcon: IconButton(
+                                            onPressed: () async {
+                                              final result = await selectDeliveryCategory(context);
+
+                                              if (result != null) {
+                                                state.updateDriverDeliveryType(result);
+                                              }
+                                              return;
+                                            },
+                                            icon: const Icon(
+                                              Icons.arrow_drop_down,
+                                            ),
+                                          ),
+                                        ),
+                                        validator: (value) {
+                                          if (value == null || value.isEmpty) {
+                                            return 'Select your delivery mode';
+                                          }
+                                          return null;
+                                        },
+                                        onTap: () async {
+                                          final result = await selectDeliveryCategory(context);
+                                          if (result != null) {
+                                            state.updateDriverDeliveryType(result);
+                                          }
+                                          return;
+                                        },
+                                      ),
                                     ],
                                   ),
                                 ),
@@ -538,6 +589,71 @@ class _SaveDriverPageView extends WidgetView<SaveDriverPage, _SaveDriverPageCont
             ),
           ),
         ),
+      ),
+    );
+  }
+
+  Future<String?> selectDeliveryCategory(BuildContext context) async {
+    final String? category = await showConfirmationDialog<String>(
+      context: context,
+      barrierDismissible: true,
+      curve: Curves.fastOutSlowIn,
+      duration: const Duration(milliseconds: 700),
+      builder: (BuildContext context) {
+        return StatefulBuilder(
+          builder: (context, setState) {
+            return ResponsiveDialog(
+              context: context,
+              hideButtons: true,
+              maxLongSide: context.height / 2.25,
+              maxShortSide: context.width,
+              key: const Key('delivery-confirm-dialog'),
+              title: 'Menu Category',
+              confirmText: 'Confirm',
+              cancelText: 'Cancel',
+              okPressed: () async {
+                debugPrint('Dialog confirmed');
+                Navigator.of(context).pop();
+              },
+              cancelPressed: () {
+                debugPrint('Dialog cancelled');
+                Navigator.of(context).pop();
+              },
+              child: ListView.builder(
+                padding: EdgeInsetsDirectional.zero,
+                itemCount: driverDeliveryType.length,
+                itemBuilder: (context, index) => _allDriverDeliveryTypes(context, index, setState),
+                shrinkWrap: true,
+              ),
+            );
+          },
+        );
+      },
+    );
+    return category;
+  }
+
+  Widget _allDriverDeliveryTypes(BuildContext context, int index, StateSetter innerSetState) {
+    return DecoratedBox(
+      decoration: BoxDecoration(
+        border: Border(
+            top: (index == 0) ? BorderSide(color: Theme.of(context).dividerColor) : BorderSide.none, bottom: BorderSide(color: Theme.of(context).dividerColor)),
+      ),
+      child: ListTile(
+        dense: true,
+        minVerticalPadding: 0,
+        minLeadingWidth: 0,
+        horizontalTitleGap: 0,
+        visualDensity: const VisualDensity(vertical: -1, horizontal: 0),
+        title: Text(
+          driverDeliveryType[index],
+          textDirection: serviceLocator<LanguageController>().targetTextDirection,
+        ),
+        onTap: () {
+          innerSetState(() {});
+          Navigator.of(context).pop(driverDeliveryType[index]);
+          return;
+        },
       ),
     );
   }
