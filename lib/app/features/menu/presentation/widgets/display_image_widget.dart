@@ -4,6 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:homemakers_merchant/bootup/injection_container.dart';
 import 'package:homemakers_merchant/config/translation/language_controller.dart';
 import 'package:homemakers_merchant/core/extensions/app_extension.dart';
+import 'package:homemakers_merchant/shared/widgets/universal/image_loader/image_helper.dart';
+import 'package:homemakers_merchant/utils/app_log.dart';
+import 'package:homemakers_merchant/utils/image_type.dart';
 
 class DisplayImage extends StatelessWidget {
   final String imagePath;
@@ -47,23 +50,45 @@ class DisplayImage extends StatelessWidget {
   // Builds Profile Image
   Widget buildImage(Color color, bool hasIconImage, BuildContext context) {
     final image = imagePath.contains('https://') ? NetworkImage(imagePath) : AssetImage(imagePath);
-
-    return CircleAvatar(
-      radius: 36,
-      backgroundColor: Colors.white,
+    appLog.d('Build Image ${hasIconImage}');
+    return GestureDetector(
+      onTap: () async {
+        appLog.d('Displace image click');
+        return onPressed();
+      },
       child: CircleAvatar(
-        backgroundColor: const Color.fromRGBO(238, 238, 238, 1),
-        backgroundImage: hasIconImage ? null : image as ImageProvider,
-        child: hasIconImage
-            ? hasCustomIcon
-                ? customIcon
-                : Icon(
-                    textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                    Icons.restaurant_menu,
-                    size: 24.0,
-                  )
-            : null,
-        radius: 32,
+        radius: 36,
+        backgroundColor: Colors.white,
+        child: CircleAvatar(
+          backgroundColor: const Color.fromRGBO(238, 238, 238, 1),
+          //backgroundImage: hasIconImage ? null : image as ImageProvider,
+          child: (!hasIconImage)
+              ? ImageHelper(
+                  image: imagePath,
+                  filterQuality: FilterQuality.high,
+                  borderRadius: BorderRadiusDirectional.circular(20),
+                  imageType: findImageType(imagePath),
+                  imageShape: ImageShape.rectangle,
+                  boxFit: BoxFit.cover,
+                  defaultErrorBuilderColor: Colors.blueGrey,
+                  errorBuilder: const Icon(
+                    Icons.image_not_supported,
+                    size: 10000,
+                  ),
+                  height: context.width / 6,
+                  width: context.width / 6,
+                  loaderBuilder: const CircularProgressIndicator(),
+                  matchTextDirection: true,
+                )
+              : hasCustomIcon
+                  ? customIcon
+                  : Icon(
+                      textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                      Icons.restaurant_menu,
+                      size: 24.0,
+                    ),
+          radius: 32,
+        ),
       ),
     );
   }

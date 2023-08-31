@@ -163,7 +163,9 @@ class _MenuForm5PageState extends State<MenuForm5Page> with AutomaticKeepAliveCl
                       ),
                     )
                   : GestureDetector(
-                      onTap: () {},
+                      onTap: () {
+                        // Upload nenu image
+                      },
                       child: Center(
                         child: Container(
                           width: 150,

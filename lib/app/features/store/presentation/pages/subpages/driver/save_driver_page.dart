@@ -27,6 +27,7 @@ class _SaveDriverPageController extends State<SaveDriverPage> {
     FocusNode(),
     FocusNode(),
     FocusNode(),
+    FocusNode(),
   ];
   final TextEditingController driverNameTextEditingController = TextEditingController();
   final TextEditingController driverContactNumberTextEditingController = TextEditingController();
@@ -49,6 +50,7 @@ class _SaveDriverPageController extends State<SaveDriverPage> {
   ValueNotifier<PhoneNumberVerification> valueNotifierPhoneNumberVerification = ValueNotifier<PhoneNumberVerification>(
     PhoneNumberVerification.none,
   );
+  String userImagePath = '';
 
   @override
   void initState() {
@@ -159,6 +161,11 @@ class _SaveDriverPageController extends State<SaveDriverPage> {
       driverDeliveryTypeNumberTextEditingController.text = deliveryType;
     });
     return;
+  }
+
+  void updateUserProfileImage(String profileImage) {
+    userImagePath = profileImage;
+    setState(() {});
   }
 
   @override
@@ -285,26 +292,47 @@ class _SaveDriverPageView extends WidgetView<SaveDriverPage, _SaveDriverPageCont
                             mainAxisAlignment: MainAxisAlignment.start,
                             crossAxisAlignment: CrossAxisAlignment.stretch,
                             children: [
-                              SizedBox(
-                                height: 26,
-                                child: Stack(
-                                  alignment: AlignmentDirectional.topCenter,
-                                  clipBehavior: Clip.none,
-                                  children: [
-                                    AnimatedPositioned(
-                                      duration: const Duration(milliseconds: 300),
-                                      top: -54,
-                                      child: DisplayImage(
-                                        imagePath: '',
-                                        onPressed: () {},
-                                        hasIconImage: true,
-                                        hasEditButton: false,
-                                        hasCustomIcon: true,
-                                        customIcon: Icon(Icons.person),
+                              GestureDetector(
+                                child: SizedBox(
+                                  height: 26,
+                                  child: Stack(
+                                    alignment: AlignmentDirectional.topCenter,
+                                    clipBehavior: Clip.none,
+                                    children: [
+                                      AnimatedPositioned(
+                                        duration: const Duration(milliseconds: 300),
+                                        top: -54,
+                                        child: DisplayImage(
+                                          imagePath: state.userImagePath,
+                                          onPressed: () async {
+                                            appLog.d('Click on upload image 2');
+                                            final result = await UploadImageUtils().selectImagePicker(context);
+                                            if (result.imagePath.isNotEmpty) {
+                                              appLog.d('Click on upload image 2 image pah ${result.imagePath}');
+                                              state.updateUserProfileImage(result.imagePath);
+                                            } else {
+                                              appLog.d('Click on upload image 2 else image pah ${result.imagePath}');
+                                            }
+                                          },
+                                          hasIconImage: state.userImagePath.isEmpty ? true : false,
+                                          hasEditButton: state.userImagePath.isNotEmpty ? true : false,
+                                          hasCustomIcon: state.userImagePath.isEmpty ? true : false,
+                                          customIcon: Icon(Icons.camera_alt),
+                                        ),
                                       ),
-                                    ),
-                                  ],
+                                    ],
+                                  ),
                                 ),
+                                onTap: () async {
+                                  appLog.d('Click on upload image 2');
+                                  final result = await UploadImageUtils().selectImagePicker(context);
+                                  if (result.imagePath.isNotEmpty) {
+                                    appLog.d('Click on upload image 2 image pah ${result.imagePath}');
+                                    state.updateUserProfileImage(result.imagePath);
+                                  } else {
+                                    appLog.d('Click on upload image 2 else image pah ${result.imagePath}');
+                                  }
+                                },
                               ),
                               Wrap(
                                 alignment: WrapAlignment.center,
@@ -608,7 +636,7 @@ class _SaveDriverPageView extends WidgetView<SaveDriverPage, _SaveDriverPageCont
               maxLongSide: context.height / 2.25,
               maxShortSide: context.width,
               key: const Key('delivery-confirm-dialog'),
-              title: 'Menu Category',
+              title: 'Delivery Category',
               confirmText: 'Confirm',
               cancelText: 'Cancel',
               okPressed: () async {
