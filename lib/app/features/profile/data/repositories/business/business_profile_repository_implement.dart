@@ -433,4 +433,22 @@ class BusinessProfileRepositoryImplement implements UserBusinessProfileRepositor
     // TODO(prasant): implement saveBusinessType
     throw UnimplementedError();
   }
+
+  @override
+  Future<AppUserEntity?> getCurrentUserBusinessProfileFromLocalDB({
+    Map<String, dynamic> metaInfo = const {},
+    String byID = '',
+    String byToken = '',
+  }) {
+    // TODO: implement getCurrentUserBusinessProfileFromLocalDB
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<String> getCurrentUserTokenFromLocalDB({
+    Map<String, dynamic> metaInfo = const {},
+  }) {
+    // TODO: implement getCurrentUserTokenFromLocalDB
+    throw UnimplementedError();
+  }
 }

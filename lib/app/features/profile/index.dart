@@ -5,6 +5,7 @@ import 'dart:ui' as ui;
 import 'dart:ui';
 
 import 'package:animator/animator.dart';
+import 'package:collection/collection.dart';
 import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -66,6 +67,7 @@ import 'package:homemakers_merchant/shared/widgets/universal/phone_number_text_f
 import 'package:homemakers_merchant/utils/app_data_dir/app_data_dir.dart';
 import 'package:homemakers_merchant/utils/app_equatable/src/app_equatable.dart';
 import 'package:homemakers_merchant/utils/app_log.dart';
+import 'package:homemakers_merchant/utils/collections_utils.dart';
 import 'package:homemakers_merchant/utils/functional/either/either.dart';
 import 'package:homemakers_merchant/utils/input_formatters/muskey.dart';
 import 'package:image_picker/image_picker.dart';
@@ -111,6 +113,8 @@ part 'package:homemakers_merchant/app/features/profile/domain/use_cases/profile/
 part 'package:homemakers_merchant/app/features/profile/domain/use_cases/profile/edit_business_profile_usecase.dart';
 part 'package:homemakers_merchant/app/features/profile/domain/use_cases/profile/delete_business_profile_usecase.dart';
 part 'package:homemakers_merchant/app/features/profile/domain/use_cases/profile/delete_all_business_profile_usecase.dart';
+part 'package:homemakers_merchant/app/features/profile/domain/use_cases/profile/get_current_user_profile_fromlocaldb_usecase.dart';
+part 'package:homemakers_merchant/app/features/profile/domain/use_cases/profile/get_current_user_token_fromlocaldb_usecase.dart';
 // payment bank usecase
 part 'package:homemakers_merchant/app/features/profile/domain/use_cases/payment_bank/get_payment_bank_usecase.dart';
 part 'package:homemakers_merchant/app/features/profile/domain/use_cases/payment_bank/get_all_payment_bank_usecase.dart';

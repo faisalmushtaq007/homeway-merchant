@@ -1,7 +1,7 @@
 part of 'package:homemakers_merchant/app/features/profile/index.dart';
 
-class GetUserProfileUseCase extends UseCase<DataSourceState<AppUserEntity>> {
-  GetUserProfileUseCase({
+class GetCurrentUserProfileFromLocalDBUseCase extends UseCase<DataSourceState<AppUserEntity>> {
+  GetCurrentUserProfileFromLocalDBUseCase({
     required this.userBusinessProfileRepository,
   });
   final UserBusinessProfileRepository userBusinessProfileRepository;

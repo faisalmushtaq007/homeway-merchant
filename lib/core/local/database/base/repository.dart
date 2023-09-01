@@ -110,6 +110,7 @@ abstract class Repository<EntityType>
   late String? currentUserToken;
   late int? currentUserId;
   bool authStatus = false;
+
   Future<Either<RepositoryBaseFailure, void>> clear();
 }
 
@@ -131,7 +132,12 @@ abstract class GetCurrentUser<EntityType> extends BaseRepositoryOperation<Entity
   /// Returns the object without the given a unique id
   ///
   /// Will return a Failure if no corresponding entity for is found.
-  Future<Either<RepositoryBaseFailure, EntityType?>> getCurrentUser({EntityType? entity});
+  Future<Either<RepositoryBaseFailure, EntityType?>> getCurrentUser({
+    EntityType? entity,
+    Map<String, dynamic> metaInfo = const {},
+    String byID = '',
+    String byToken = '',
+  });
 }
 
 abstract class DeleteAll<EntityType> extends BaseRepositoryOperation<EntityType> {
@@ -184,12 +190,14 @@ abstract class AddOrUpdateUser<EntityType> extends BaseRepositoryOperation<Entit
 // Binding
 abstract class BaseRepositoryBindOperation<T, R> {
   BindingSourceToDestinationFunc<T, R> binding(List<T> source, List<R> destination);
+
   BindingSourceToDestinationFunc<T, R> unbinding(List<T> source, List<R> destination);
 }
 
 abstract class BindSourceToDestination<T, R> implements BaseRepositoryBindOperation<T, R> {
   @override
   BindingSourceToDestinationFunc<T, R> binding(List<T> source, List<R> destination);
+
   @override
   BindingSourceToDestinationFunc<T, R> unbinding(List<T> source, List<R> destination);
 }
@@ -217,6 +225,7 @@ abstract class UpdateAll<EntityType> implements BaseRepositoryUpdateAllOperation
 // Binding & Unbinding
 abstract class Binding<T, R> {
   Future<Either<RepositoryBaseFailure, R>> binding(T source, R destination);
+
   Future<Either<RepositoryBaseFailure, R>> unbinding(T source, R destination);
 }
 

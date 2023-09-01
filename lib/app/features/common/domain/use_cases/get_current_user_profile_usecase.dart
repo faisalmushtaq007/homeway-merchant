@@ -8,6 +8,6 @@ class GetCurrentUserProfile extends UseCase<AppUserEntity?> {
 
   @override
   Future<AppUserEntity?> call() async {
-    return await commonRepository.getCurrentUserProfile();
+    return await commonRepository.getCurrentUserProfileFromLocalDb();
   }
 }

@@ -3,6 +3,7 @@ part of 'package:homemakers_merchant/app/features/store/index.dart';
 class StoreLocalDbRepository<Store extends StoreEntity> implements BaseStoreLocalDbRepository<StoreEntity> {
   // Completer is used for transforming synchronous code into asynchronous code.
   Future<Database> get _db async => AppDatabase.instance.database;
+
   StoreRef<int, Map<String, dynamic>> get _store => AppDatabase.instance.store;
 
   @override
@@ -160,6 +161,243 @@ class StoreLocalDbRepository<Store extends StoreEntity> implements BaseStoreLoca
     // TODO(prasant): implement updateByIdAndEntity
     throw UnimplementedError();
   }
+
+  Future<Map<String, RecordSnapshot<int, Map<String, Object?>>>> getStoreByIds(DatabaseClient db, List<int> ids) async {
+    var snapshots = await _store.find(db, finder: Finder(filter: Filter.or(ids.map((e) => Filter.equals('storeID', e)).toList())));
+    return <String, RecordSnapshot<int, Map<String, Object?>>>{for (var snapshot in snapshots) snapshot.value['storeID']!.toString(): snapshot};
+  }
+
+  @override
+  Future<Either<RepositoryBaseFailure, List<StoreEntity>>> getAllWithPagination({
+    int pageKey = 1,
+    int pageSize = 10,
+    String? searchText,
+    Map<String, dynamic> extras = const <String, dynamic>{},
+    String? filter,
+    String? sorting,
+    Timestamp? startTimeStamp,
+    Timestamp? endTimeStamp,
+  }) async {
+    final result = await tryCatch<List<StoreEntity>>(() async {
+      final db = await _db;
+      return await db.transaction((transaction) async {
+        // Finder object can also sort data.
+        Finder finder = Finder(
+          limit: pageSize,
+          offset: pageKey,
+        );
+        // If
+        if (searchText.isNotNull || filter.isNotNull || sorting.isNotNull && (startTimeStamp.isNotNull || endTimeStamp.isNotNull)) {
+          var regExp = RegExp(searchText ?? '', caseSensitive: false);
+          var filterRegExp = RegExp(filter ?? '', caseSensitive: false);
+          var sortingRegExp = RegExp(sorting ?? '', caseSensitive: false);
+          finder = Finder(
+            limit: pageSize,
+            offset: pageKey,
+            filter: Filter.and(
+              [
+                Filter.or([
+                  Filter.matchesRegExp(
+                    'storeName',
+                    regExp,
+                  ),
+                  Filter.matchesRegExp(
+                    'menuEntities.@.menuName',
+                    regExp,
+                  ),
+                  Filter.matchesRegExp(
+                    'storeAvailableFoodTypes.@.title',
+                    regExp,
+                  ),
+                  Filter.matchesRegExp(
+                    'storeAvailableFoodPreparationType.@.title',
+                    regExp,
+                  ),
+                  Filter.matchesRegExp(
+                    'addons.@.title',
+                    regExp,
+                  ),
+                  // Filter
+                  Filter.matchesRegExp(
+                    'hasStoreOwnDeliveryPartners',
+                    filterRegExp,
+                  ),
+                  Filter.matchesRegExp(
+                    'hasNewStore',
+                    filterRegExp,
+                  ),
+                  Filter.matchesRegExp(
+                    'hasStoreOpened',
+                    filterRegExp,
+                  ),
+                  Filter.matchesRegExp(
+                    'hasReadyToPickupOrder',
+                    filterRegExp,
+                  ),
+                  Filter.matchesRegExp(
+                    'hasMenuAvailable',
+                    filterRegExp,
+                  ),
+                  Filter.matchesRegExp(
+                    'hasReadyToPickupOrder',
+                    filterRegExp,
+                  ),
+                  Filter.matchesRegExp(
+                    'addons.@.title',
+                    filterRegExp,
+                  ),
+                  Filter.greaterThanOrEquals('storeOpeningTime', startTimeStamp ?? 0),
+                  Filter.lessThanOrEquals('storeClosingTime', endTimeStamp ?? 0),
+                ]),
+              ],
+            ),
+          );
+        }
+        // Else If
+        else if (searchText.isNotNull || filter.isNotNull || sorting.isNotNull) {
+          var regExp = RegExp(searchText ?? '', caseSensitive: false);
+          var filterRegExp = RegExp(filter ?? '', caseSensitive: false);
+          var sortingRegExp = RegExp(sorting ?? '', caseSensitive: false);
+          finder = Finder(
+            limit: pageSize,
+            offset: pageKey,
+            filter: Filter.and(
+              [
+                Filter.or([
+                  Filter.matchesRegExp(
+                    'storeName',
+                    regExp,
+                  ),
+                  Filter.matchesRegExp(
+                    'menuEntities.@.menuName',
+                    regExp,
+                  ),
+                  Filter.matchesRegExp(
+                    'storeAvailableFoodTypes.@.title',
+                    regExp,
+                  ),
+                  Filter.matchesRegExp(
+                    'storeAvailableFoodPreparationType.@.title',
+                    regExp,
+                  ),
+                  Filter.matchesRegExp(
+                    'addons.@.title',
+                    regExp,
+                  ),
+                  // Filter
+                  Filter.matchesRegExp(
+                    'hasStoreOwnDeliveryPartners',
+                    filterRegExp,
+                  ),
+                  Filter.matchesRegExp(
+                    'hasNewStore',
+                    filterRegExp,
+                  ),
+                  Filter.matchesRegExp(
+                    'hasStoreOpened',
+                    filterRegExp,
+                  ),
+                  Filter.matchesRegExp(
+                    'hasReadyToPickupOrder',
+                    filterRegExp,
+                  ),
+                  Filter.matchesRegExp(
+                    'hasMenuAvailable',
+                    filterRegExp,
+                  ),
+                  Filter.matchesRegExp(
+                    'hasReadyToPickupOrder',
+                    filterRegExp,
+                  ),
+                  Filter.matchesRegExp(
+                    'addons.@.title',
+                    filterRegExp,
+                  ),
+                ]),
+              ],
+            ),
+          );
+        }
+        // Else
+        else {
+          finder = Finder(
+            limit: pageSize,
+            offset: pageKey,
+          );
+        }
+        final recordSnapshots = await _store.find(
+          await _db,
+          finder: finder,
+        );
+        // Making a List<Category> out of List<RecordSnapshot>
+        return recordSnapshots.map((snapshot) {
+          final orders = StoreEntity.fromMap(snapshot.value).copyWith(
+            // An ID is a key of a record from the database.
+            storeID: snapshot.key,
+          );
+          return orders;
+        }).toList();
+      });
+    });
+    return result;
+  }
+
+  @override
+  Future<Either<RepositoryBaseFailure, List<StoreEntity>>> saveAll({
+    required List<StoreEntity> entities,
+    bool hasUpdateAll = false,
+  }) async {
+    final result = await tryCatch<List<StoreEntity>>(() async {
+      final db = await _db;
+
+      final result = await getAll();
+      return result.fold((l) {
+        return <StoreEntity>[];
+      }, (r) async {
+        final allOrderList = r.toList();
+        final newList = entities.toList();
+        var convertOrderToMapObject = newList.map((e) => e.toMap()).toList();
+        final bool equalityStatus = unOrdDeepEq(allOrderList.toSet().toList(), newList.toSet().toList());
+
+        await db.transaction((transaction) async {
+          var storeIDs = convertOrderToMapObject.map((map) => map['storeID'] as int).toList();
+          var map = await getStoreByIds(db, storeIDs);
+          // Watch for deleted item
+          var keysToDelete = (await _store.findKeys(transaction)).toList();
+          for (var order in convertOrderToMapObject) {
+            var snapshot = map[order['storeID'] as int];
+            if (snapshot != null) {
+              // The record current key
+              var key = snapshot.key;
+              // Remove from deletion list
+              keysToDelete.remove(key);
+              // Don't update if no change
+              if (const DeepCollectionEquality().equals(snapshot.value, order)) {
+                // no changes
+                continue;
+              } else {
+                // Update product
+                await _store.record(key).put(transaction, order);
+              }
+            } else {
+              // Add missing product
+              await _store.add(transaction, order);
+            }
+          }
+          // Delete the one not present any more
+          await _store.records(keysToDelete).delete(transaction);
+        });
+
+        final result = await getAll();
+        if (result.isRight()) {
+          return result.right.toList();
+        } else {
+          return <StoreEntity>[];
+        }
+      });
+    });
+    return result;
+  }
 }
 
 class StoreBindingWithUserLocalDbRepository<T extends StoreEntity, R extends AppUserEntity> implements Binding<List<StoreEntity>, AppUserEntity> {
@@ -167,8 +405,11 @@ class StoreBindingWithUserLocalDbRepository<T extends StoreEntity, R extends App
     required this.storeLocalDbRepository,
     required this.userLocalDbRepository,
   });
+
   Future<Database> get _db async => AppDatabase.instance.database;
+
   StoreRef<int, Map<String, dynamic>> get _user => AppDatabase.instance.user;
+
   StoreRef<int, Map<String, dynamic>> get _store => AppDatabase.instance.store;
 
   final StoreLocalDbRepository<T> storeLocalDbRepository;

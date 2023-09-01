@@ -21,7 +21,10 @@ abstract class BaseUserBusinessProfileEntityLocalDbRepository<T extends Business
         AddOrUpdateUser<T>,
         DeleteByIdAndEntity<T>,
         GetByIdAndEntity<T>,
-        UpdateByIdAndEntity<T> {}
+        UpdateByIdAndEntity<T>,
+        SaveAll<T>,
+        GetAll<T>,
+        GetAllWithPagination<T> {}
 
 abstract class BaseUserBusinessDocumentEntityLocalDbRepository<T extends BusinessDocumentUploadedEntity>
     implements
@@ -32,7 +35,10 @@ abstract class BaseUserBusinessDocumentEntityLocalDbRepository<T extends Busines
         AddOrUpdateUser<T>,
         DeleteByIdAndEntity<T>,
         GetByIdAndEntity<T>,
-        UpdateByIdAndEntity<T> {}
+        UpdateByIdAndEntity<T>,
+        SaveAll<T>,
+        GetAll<T>,
+        GetAllWithPagination<T> {}
 
 abstract class BaseUserPaymentBankLocalDbRepository<T extends PaymentBankEntity>
     implements
@@ -43,4 +49,7 @@ abstract class BaseUserPaymentBankLocalDbRepository<T extends PaymentBankEntity>
         AddOrUpdateUser<T>,
         DeleteByIdAndEntity<T>,
         GetByIdAndEntity<T>,
-        UpdateByIdAndEntity<T> {}
+        UpdateByIdAndEntity<T>,
+        SaveAll<T>,
+        GetAll<T>,
+        GetAllWithPagination<T> {}

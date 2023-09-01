@@ -2,7 +2,9 @@ part of 'package:homemakers_merchant/app/features/profile/index.dart';
 
 class UserBusinessProfileLocalDbRepository<T extends BusinessProfileEntity> implements BaseUserBusinessProfileEntityLocalDbRepository<BusinessProfileEntity> {
   Future<Database> get _db async => AppDatabase.instance.database;
+
   StoreRef<int, Map<String, dynamic>> get _businessProfile => AppDatabase.instance.businessProfile;
+
   @override
   Future<Either<RepositoryBaseFailure, BusinessProfileEntity>> add(BusinessProfileEntity entity) async {
     final result = await tryCatch<BusinessProfileEntity>(() async {
@@ -154,6 +156,195 @@ class UserBusinessProfileLocalDbRepository<T extends BusinessProfileEntity> impl
       final value = await _businessProfile.record(key).get(await _db);
       final result = await _businessProfile.record(key).put(await _db, entity.toMap(), merge: (value != null) || false);
       return BusinessProfileEntity.fromMap(result);
+    });
+    return result;
+  }
+
+  Future<Map<String, RecordSnapshot<int, Map<String, Object?>>>> getBusinessProfileEntityByIds(DatabaseClient db, List<int> ids) async {
+    var snapshots = await _businessProfile.find(db, finder: Finder(filter: Filter.or(ids.map((e) => Filter.equals('businessProfileID', e)).toList())));
+    return <String, RecordSnapshot<int, Map<String, Object?>>>{for (var snapshot in snapshots) snapshot.value['businessProfileID']!.toString(): snapshot};
+  }
+
+  @override
+  Future<Either<RepositoryBaseFailure, List<BusinessProfileEntity>>> getAllWithPagination({
+    int pageKey = 1,
+    int pageSize = 10,
+    String? searchText,
+    Map<String, dynamic> extras = const <String, dynamic>{},
+    String? filter,
+    String? sorting,
+    Timestamp? startTimeStamp,
+    Timestamp? endTimeStamp,
+  }) async {
+    final result = await tryCatch<List<BusinessProfileEntity>>(() async {
+      final db = await _db;
+      return await db.transaction((transaction) async {
+        // Finder object can also sort data.
+        Finder finder = Finder(
+          limit: pageSize,
+          offset: pageKey,
+        );
+        // If
+        if (searchText.isNotNull || filter.isNotNull || sorting.isNotNull && (startTimeStamp.isNotNull || endTimeStamp.isNotNull)) {
+          var regExp = RegExp(searchText ?? '', caseSensitive: false);
+          var filterRegExp = RegExp(filter ?? '', caseSensitive: false);
+          var sortingRegExp = RegExp(sorting ?? '', caseSensitive: false);
+          finder = Finder(
+            limit: pageSize,
+            offset: pageKey,
+            filter: Filter.and(
+              [
+                Filter.or([
+                  Filter.matchesRegExp(
+                    'userName',
+                    regExp,
+                    anyInList: true,
+                  ),
+                  Filter.matchesRegExp(
+                    'businessPhoneNumber',
+                    regExp,
+                    anyInList: true,
+                  ),
+                  Filter.matchesRegExp(
+                    'businessEmailAddress',
+                    regExp,
+                    anyInList: true,
+                  ),
+                  Filter.matchesRegExp(
+                    'businessName',
+                    regExp,
+                    anyInList: true,
+                  ),
+                  // Filter
+                  Filter.matchesRegExp(
+                    'businessTypeEntity.businessTypeName',
+                    filterRegExp,
+                    anyInList: true,
+                  ),
+                ]),
+              ],
+            ),
+          );
+        }
+        // Else If
+        else if (searchText.isNotNull || filter.isNotNull || sorting.isNotNull) {
+          var regExp = RegExp(searchText ?? '', caseSensitive: false);
+          var filterRegExp = RegExp(filter ?? '', caseSensitive: false);
+          var sortingRegExp = RegExp(sorting ?? '', caseSensitive: false);
+          finder = Finder(
+            limit: pageSize,
+            offset: pageKey,
+            filter: Filter.and(
+              [
+                Filter.or([
+                  Filter.matchesRegExp(
+                    'userName',
+                    regExp,
+                    anyInList: true,
+                  ),
+                  Filter.matchesRegExp(
+                    'businessPhoneNumber',
+                    regExp,
+                    anyInList: true,
+                  ),
+                  Filter.matchesRegExp(
+                    'businessEmailAddress',
+                    regExp,
+                    anyInList: true,
+                  ),
+                  Filter.matchesRegExp(
+                    'businessName',
+                    regExp,
+                    anyInList: true,
+                  ),
+                  // Filter
+                  Filter.matchesRegExp(
+                    'businessTypeEntity.businessTypeName',
+                    filterRegExp,
+                    anyInList: true,
+                  ),
+                ]),
+              ],
+            ),
+          );
+        }
+        // Else
+        else {
+          finder = Finder(
+            limit: pageSize,
+            offset: pageKey,
+          );
+        }
+        final recordSnapshots = await _businessProfile.find(
+          await _db,
+          finder: finder,
+        );
+        // Making a List<BusinessProfileEntity> out of List<RecordSnapshot>
+        return recordSnapshots.map((snapshot) {
+          final orders = BusinessProfileEntity.fromMap(snapshot.value).copyWith(
+            // An ID is a key of a record from the database.
+            businessProfileID: snapshot.key,
+          );
+          return orders;
+        }).toList();
+      });
+    });
+    return result;
+  }
+
+  @override
+  Future<Either<RepositoryBaseFailure, List<BusinessProfileEntity>>> saveAll({
+    required List<BusinessProfileEntity> entities,
+    bool hasUpdateAll = false,
+  }) async {
+    final result = await tryCatch<List<BusinessProfileEntity>>(() async {
+      final db = await _db;
+
+      final result = await getAll();
+      return result.fold((l) {
+        return <BusinessProfileEntity>[];
+      }, (r) async {
+        final allOrderList = r.toList();
+        final newList = entities.toList();
+        var convertOrderToMapObject = newList.map((e) => e.toMap()).toList();
+        final bool equalityStatus = unOrdDeepEq(allOrderList.toSet().toList(), newList.toSet().toList());
+
+        await db.transaction((transaction) async {
+          var businessProfileIDs = convertOrderToMapObject.map((map) => map['businessProfileID'] as int).toList();
+          var map = await getBusinessProfileEntityByIds(db, businessProfileIDs);
+          // Watch for deleted item
+          var keysToDelete = (await _businessProfile.findKeys(transaction)).toList();
+          for (var order in convertOrderToMapObject) {
+            var snapshot = map[order['businessProfileID'] as int];
+            if (snapshot != null) {
+              // The record current key
+              var key = snapshot.key;
+              // Remove from deletion list
+              keysToDelete.remove(key);
+              // Don't update if no change
+              if (const DeepCollectionEquality().equals(snapshot.value, order)) {
+                // no changes
+                continue;
+              } else {
+                // Update product
+                await _businessProfile.record(key).put(transaction, order);
+              }
+            } else {
+              // Add missing product
+              await _businessProfile.add(transaction, order);
+            }
+          }
+          // Delete the one not present any more
+          await _businessProfile.records(keysToDelete).delete(transaction);
+        });
+
+        final result = await getAll();
+        if (result.isRight()) {
+          return result.right.toList();
+        } else {
+          return <BusinessProfileEntity>[];
+        }
+      });
     });
     return result;
   }

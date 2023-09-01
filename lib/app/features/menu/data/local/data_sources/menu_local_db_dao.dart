@@ -259,56 +259,71 @@ class MenuLocalDbRepository<Menu extends MenuEntity> implements BaseMenuLocalDbR
                   Filter.matchesRegExp(
                     'menuName',
                     regExp,
+                    anyInList: true,
                   ),
                   Filter.matchesRegExp(
                     'menuCategories.@.title',
                     regExp,
+                    anyInList: true,
                   ),
                   Filter.matchesRegExp(
                     'ingredients.@.title',
                     regExp,
+                    anyInList: true,
                   ),
                   Filter.matchesRegExp(
                     'storeAvailableFoodTypes.@.title',
                     regExp,
+                    anyInList: true,
                   ),
                   Filter.matchesRegExp(
                     'storeAvailableFoodPreparationType.@.title',
                     regExp,
+                    anyInList: true,
                   ),
                   Filter.matchesRegExp(
                     'addons.@.title',
                     regExp,
+                    anyInList: true,
                   ),
                   // Filter
                   Filter.matchesRegExp(
                     'menuName',
                     filterRegExp,
+                    anyInList: true,
                   ),
                   Filter.matchesRegExp(
                     'menuCategories.@.title',
                     filterRegExp,
+                    anyInList: true,
                   ),
                   Filter.matchesRegExp(
                     'ingredients.@.title',
                     filterRegExp,
+                    anyInList: true,
                   ),
                   Filter.matchesRegExp(
                     'storeAvailableFoodTypes.@.title',
                     filterRegExp,
+                    anyInList: true,
                   ),
                   Filter.matchesRegExp(
                     'hasMenuAvailable',
                     filterRegExp,
+                    anyInList: true,
                   ),
                   Filter.matchesRegExp(
                     'hasReadyToPickupOrder',
                     filterRegExp,
+                    anyInList: true,
                   ),
                   Filter.matchesRegExp(
                     'addons.@.title',
                     filterRegExp,
+                    anyInList: true,
                   ),
+                  Filter.greaterThanOrEquals('menuAvailableFromTime', startTimeStamp ?? 0),
+                  Filter.lessThanOrEquals('menuAvailableToTime', endTimeStamp ?? 0),
                 ]),
               ],
             ),
@@ -320,29 +335,80 @@ class MenuLocalDbRepository<Menu extends MenuEntity> implements BaseMenuLocalDbR
           var filterRegExp = RegExp(filter ?? '', caseSensitive: false);
           var sortingRegExp = RegExp(sorting ?? '', caseSensitive: false);
           finder = Finder(
-            /*sortOrders: [
-          SortOrder('orderDateTime'),
-        ],*/
             limit: pageSize,
             offset: pageKey,
-            filter: Filter.or([
-              Filter.matchesRegExp(
-                'category.title',
-                regExp,
-              ),
-              Filter.matchesRegExp(
-                'category.title.subCategory.@.title',
-                regExp,
-              ),
-              Filter.matchesRegExp(
-                'category.title',
-                filterRegExp,
-              ),
-              Filter.matchesRegExp(
-                'category.title.subCategory.@.title',
-                filterRegExp,
-              ),
-            ]),
+            filter: Filter.and(
+              [
+                Filter.or([
+                  Filter.matchesRegExp(
+                    'menuName',
+                    regExp,
+                    anyInList: true,
+                  ),
+                  Filter.matchesRegExp(
+                    'menuCategories.@.title',
+                    regExp,
+                    anyInList: true,
+                  ),
+                  Filter.matchesRegExp(
+                    'ingredients.@.title',
+                    regExp,
+                    anyInList: true,
+                  ),
+                  Filter.matchesRegExp(
+                    'storeAvailableFoodTypes.@.title',
+                    regExp,
+                    anyInList: true,
+                  ),
+                  Filter.matchesRegExp(
+                    'storeAvailableFoodPreparationType.@.title',
+                    regExp,
+                    anyInList: true,
+                  ),
+                  Filter.matchesRegExp(
+                    'addons.@.title',
+                    regExp,
+                    anyInList: true,
+                  ),
+                  // Filter
+                  Filter.matchesRegExp(
+                    'menuName',
+                    filterRegExp,
+                    anyInList: true,
+                  ),
+                  Filter.matchesRegExp(
+                    'menuCategories.@.title',
+                    filterRegExp,
+                    anyInList: true,
+                  ),
+                  Filter.matchesRegExp(
+                    'ingredients.@.title',
+                    filterRegExp,
+                    anyInList: true,
+                  ),
+                  Filter.matchesRegExp(
+                    'storeAvailableFoodTypes.@.title',
+                    filterRegExp,
+                    anyInList: true,
+                  ),
+                  Filter.matchesRegExp(
+                    'hasMenuAvailable',
+                    filterRegExp,
+                    anyInList: true,
+                  ),
+                  Filter.matchesRegExp(
+                    'hasReadyToPickupOrder',
+                    filterRegExp,
+                    anyInList: true,
+                  ),
+                  Filter.matchesRegExp(
+                    'addons.@.title',
+                    filterRegExp,
+                    anyInList: true,
+                  ),
+                ]),
+              ],
+            ),
           );
         }
         // Else

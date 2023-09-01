@@ -69,4 +69,14 @@ abstract interface class UserBusinessProfileRepository {
     AppUserEntity? appUserEntity,
     BusinessProfileEntity? businessProfileEntity,
   });
+
+  Future<AppUserEntity?> getCurrentUserBusinessProfileFromLocalDB({
+    Map<String, dynamic> metaInfo = const {},
+    String byID = '',
+    String byToken = '',
+  });
+
+  Future<String> getCurrentUserTokenFromLocalDB({
+    Map<String, dynamic> metaInfo = const {},
+  });
 }

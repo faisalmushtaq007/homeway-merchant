@@ -9,7 +9,10 @@ abstract interface class BaseStoreLocalDbRepository<T extends StoreEntity>
         DeleteByIdAndEntity<T>,
         GetByIdAndEntity<T>,
         UpdateByIdAndEntity<T>,
-        AddOrUpdateUser<T> {}
+        AddOrUpdateUser<T>,
+        SaveAll<T>,
+        GetAll<T>,
+        GetAllWithPagination<T> {}
 
 abstract interface class BaseStoreOwnDriverLocalDbRepository<T extends StoreOwnDeliveryPartnersInfo>
     implements
@@ -20,6 +23,9 @@ abstract interface class BaseStoreOwnDriverLocalDbRepository<T extends StoreOwnD
         DeleteByIdAndEntity<T>,
         GetByIdAndEntity<T>,
         UpdateByIdAndEntity<T>,
-        AddOrUpdateUser<T> {}
+        AddOrUpdateUser<T>,
+        SaveAll<T>,
+        GetAll<T>,
+        GetAllWithPagination<T> {}
 
 abstract interface class BaseStoreBindingWithUser<T extends StoreEntity, R extends AppUserEntity> implements Binding<T, R> {}

@@ -147,11 +147,20 @@ class UserLocalDbRepository<User extends AppUserEntity> implements BaseUserLocal
   }
 
   @override
-  Future<Either<RepositoryBaseFailure, AppUserEntity?>> getCurrentUser({AppUserEntity? entity}) async {
+  Future<Either<RepositoryBaseFailure, AppUserEntity?>> getCurrentUser({
+    AppUserEntity? entity,
+    Map<String, dynamic> metaInfo = const {},
+    String byID = '',
+    String byToken = '',
+  }) async {
     final result = await tryCatch<AppUserEntity?>(() async {
       final db = await _db;
       return await db.transaction(
         (txn) async {
+          var regExpByID = RegExp(byID ?? '', caseSensitive: false);
+          var regExpByToken = RegExp(byToken ?? '', caseSensitive: false);
+          var regExpByPhoneNumberWithoutDialCode = RegExp(entity?.phoneNumberWithoutDialCode ?? '', caseSensitive: false);
+          var regExpByPhoneNumber = RegExp(entity?.phoneNumber ?? '', caseSensitive: false);
           final record = await _user.findFirst(
             txn,
             finder: Finder(
@@ -159,15 +168,23 @@ class UserLocalDbRepository<User extends AppUserEntity> implements BaseUserLocal
                 Filter.equals('hasCurrentUser', true),
                 Filter.equals(
                   'phoneNumberWithoutDialCode',
-                  entity?.phoneNumberWithoutDialCode ?? '',
+                  regExpByPhoneNumberWithoutDialCode,
                 ),
                 Filter.equals(
                   'phoneNumber',
-                  entity?.phoneNumber ?? '',
+                  regExpByPhoneNumber,
+                ),
+                Filter.equals(
+                  'access_token',
+                  regExpByToken,
                 ),
                 Filter.equals(
                   'access_token',
                   entity?.access_token ?? '',
+                ),
+                Filter.equals(
+                  'uid',
+                  regExpByID,
                 ),
                 Filter.equals(
                   'uid',

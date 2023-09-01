@@ -105,6 +105,7 @@ import 'package:homemakers_merchant/shared/widgets/universal/rating/custom_ratin
 import 'package:homemakers_merchant/utils/app_equatable/app_equatable.dart';
 import 'package:homemakers_merchant/utils/app_log.dart';
 import 'package:homemakers_merchant/utils/app_log.dart';
+import 'package:homemakers_merchant/utils/collections_utils.dart';
 import 'package:homemakers_merchant/utils/fieldFocusChange.dart';
 import 'package:homemakers_merchant/utils/functional/either/either.dart';
 import 'package:homemakers_merchant/utils/image_type.dart';
