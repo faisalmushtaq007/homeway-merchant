@@ -53,7 +53,7 @@ class StoreEntity with AppEquatable {
       ratingAndReviewEntity: (map['ratingAndReviewEntity'] != null) ? RatingAndReviewEntity.fromMap(map['ratingAndReviewEntity']) : RatingAndReviewEntity(),
       isoCode: map['iso_code'] ?? 'SA' as String,
       countryDialCode: map['country_dial_code'] ?? '+966' as String,
-      phoneNumberWithoutDialCode: map['phoneNumberWithoutDialCode'] ?? '+966' as String,
+      phoneNumberWithoutDialCode: map['phoneNumberWithoutDialCode'] ?? '' as String,
       storePhoneNumber: map['storePhoneNumber'] as String,
       orders: map['orders'].map((e) => OrderEntity.fromMap(e)).toList().cast<OrderEntity>(),
       hasStoreOpened: map['hasStoreOpened'] ?? true,

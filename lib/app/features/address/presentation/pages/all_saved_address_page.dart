@@ -33,12 +33,13 @@ class _AllSavedAddressPageController extends State<AllSavedAddressPage> {
     addressEntities = [];
     addressEntities.clear();
     //context.read<PermissionBloc>().add(RequestLocationPermissionEvent());
-    widgetState = WidgetState<AddressModel>.loading(context: context);
+    //widgetState = WidgetState<AddressModel>.loading(context: context);
     _addressPagingController.nextPageKey = 0;
     _addressPagingController.addPageRequestListener((pageKey) {
       this.pageKey = pageKey;
       _fetchAllAddressFunction(pageKey);
     });
+
     _addressPagingController.addStatusListener((status) {
       if (status == PagingStatus.subsequentPageError) {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -57,7 +58,7 @@ class _AllSavedAddressPageController extends State<AllSavedAddressPage> {
     //_fetchAllAddressFunction(pageKey);
 
     //
-    //context.read<AddressBloc>().add(GetAllAddress());
+    context.read<AddressBloc>().add(GetAllAddress());
   }
 
   void _fetchAllAddressFunction(int pageKey, {int pageSize = 10, String? searchItem, String? filter, String? sort}) {
@@ -151,6 +152,21 @@ class _AllSavedAddressPageController extends State<AllSavedAddressPage> {
                   context: context,
                   reason: addressListenerState.message,
                 );
+              }
+            case AddressEmptyState():
+              {
+                widgetState = WidgetState<AddressModel>.empty(
+                  context: context,
+                );
+                addressEntities = [];
+              }
+            case GetAllAddressState():
+              {
+                widgetState = WidgetState<AddressModel>.allData(
+                  context: context,
+                  data: _addressPagingController.value.itemList ?? [],
+                );
+                addressEntities = addressListenerState.addressEntities.toList();
               }
             case _:
               appLog.d('Default case: all address page bloc listener');
@@ -357,7 +373,7 @@ class _AllSavedAddressPageView extends WidgetView<AllSavedAddressPage, _AllSaved
                                 );
                               },
                               allData: (context, child, message, data) {
-                                return CustomScrollView(
+                                /*return CustomScrollView(
                                   slivers: [
                                     PagedSliverList<int, AddressModel>(
                                       pagingController: state._addressPagingController,
@@ -372,7 +388,7 @@ class _AllSavedAddressPageView extends WidgetView<AllSavedAddressPage, _AllSaved
                                       ),
                                     ),
                                   ],
-                                );
+                                );*/
                                 return ListView.separated(
                                   itemBuilder: (context, index) {
                                     return AddressCardWidget(

@@ -280,7 +280,7 @@ class _WithdrawalPageView extends WidgetView<WithdrawalPage, _WithdrawalPageCont
               return;
             },
             min: 10,
-            max: 2000,
+            max: 5000,
           ),
           const AnimatedGap(12, duration: Duration(milliseconds: 200)),
           Row(
@@ -290,6 +290,7 @@ class _WithdrawalPageView extends WidgetView<WithdrawalPage, _WithdrawalPageCont
                 child: Text(amount),
                 onPressed: () {
                   state.updateWithdrawalAmount(int.parse(amount));
+                  //state.updateWithdrawalAmount((state.withdrawalAmount + int.parse(amount)));
                   return;
                 },
               );
