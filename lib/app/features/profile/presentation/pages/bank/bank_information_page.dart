@@ -70,7 +70,6 @@ class _BankInformationPageState extends State<BankInformationPage> with SingleTi
 
   @override
   void dispose() {
-    scrollController.dispose();
     _bankNameControllerFocusNode.dispose();
     _accountHolderNameControllerFocusNode.dispose();
     _accountNumberControllerFocusNode.dispose();
@@ -81,6 +80,7 @@ class _BankInformationPageState extends State<BankInformationPage> with SingleTi
     _accountNumberController.dispose();
     _confirmAccountNumberController.dispose();
     _accountHolderNameController.dispose();
+    scrollController.dispose();
     super.dispose();
   }
 
