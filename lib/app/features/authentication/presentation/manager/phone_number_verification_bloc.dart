@@ -70,6 +70,7 @@ class PhoneNumberVerificationBloc extends Bloc<PhoneNumberVerificationEvent, Pho
         userEnteredPhoneNumber: event.userEnteredPhoneNumber,
         country: event.country,
         phoneNumber: event.phoneNumber,
+        isoCode: event.isoCode,
       ),
     );
   }

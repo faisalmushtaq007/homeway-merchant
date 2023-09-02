@@ -19,7 +19,7 @@ class VerifyOtpEntity extends INetworkModel<VerifyOtpEntity> {
         country_dial_code: json['country_dial_code'] ?? '' as String,
         otp: json['otp'] ?? -1 as int,
         password: json['password'] ?? '' as int,
-        db: json['db'] ?? '' as String,
+        db: json['db'] ?? 'odoo16home' as String,
         isoCode: json['isoCode'] as String,
         phoneNumberWithoutFormat: json['phoneNumberWithoutFormat'] ?? '' as String,
         phoneNumberWithFormat: json['phoneNumberWithFormat'] ?? '' as String,

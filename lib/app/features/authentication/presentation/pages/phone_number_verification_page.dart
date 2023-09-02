@@ -1,23 +1,17 @@
-import 'dart:convert';
-
 import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_libphonenumber/flutter_libphonenumber.dart';
-import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:homemakers_merchant/app/features/authentication/presentation/manager/phone_number_verification_bloc.dart';
 import 'package:homemakers_merchant/app/features/authentication/presentation/widgets/terms_and_condition_privacy_policy_widget.dart';
 import 'package:homemakers_merchant/bootup/injection_container.dart';
-import 'package:homemakers_merchant/config/translation/extension/string_extension.dart';
 import 'package:homemakers_merchant/config/translation/extension/text_extension.dart';
 import 'package:homemakers_merchant/config/translation/language_controller.dart';
 import 'package:homemakers_merchant/config/translation/widgets/language_selection_widget.dart';
 import 'package:homemakers_merchant/core/constants/global_app_constants.dart';
 import 'package:homemakers_merchant/core/extensions/app_extension.dart';
-import 'package:homemakers_merchant/gen/assets.gen.dart';
 import 'package:homemakers_merchant/shared/router/app_pages.dart';
 import 'package:homemakers_merchant/shared/widgets/app/app_logo.dart';
 import 'package:homemakers_merchant/shared/widgets/app/page_body.dart';
@@ -25,10 +19,7 @@ import 'package:homemakers_merchant/shared/widgets/universal/animate_do/animate_
 import 'package:homemakers_merchant/shared/widgets/universal/animated_gap/src/widgets/animated_gap.dart';
 import 'package:homemakers_merchant/shared/widgets/universal/async_button/async_button.dart';
 import 'package:homemakers_merchant/shared/widgets/universal/constrained_scrollable_views/constrained_scrollable_views.dart';
-import 'package:homemakers_merchant/shared/widgets/universal/nil/src/nil.dart';
-import 'package:homemakers_merchant/shared/widgets/universal/phone_number_text_field/phone_form_field_bloc.dart';
 import 'package:homemakers_merchant/shared/widgets/universal/phone_number_text_field/phonenumber_form_field_widget.dart';
-import 'package:homemakers_merchant/utils/app_log.dart';
 import 'package:phone_form_field/phone_form_field.dart';
 
 class PhoneNumberVerificationPage extends StatefulWidget {
@@ -179,17 +170,17 @@ class _PhoneNumberVerificationPageState extends State<PhoneNumberVerificationPag
                 countryDialCode,
                 country,
                 phoneController,
-                phoneNumbers,
-                asyncBtnState,
+                phoneNumber,
                 isoCode,
+                asyncBtnState,
               ) {
                 context.push(
                   Routes.AUTH_OTP_VERIFICATION,
                   extra: {
                     'mobileNumber': userEnteredPhoneNumber,
                     'countryDialCode': countryDialCode,
-                    'phoneNumberWithoutFormat': phoneNumbers.nsn,
-                    'isoCode': isoCode.name,
+                    'phoneNumberWithoutFormat': phoneNumber.nsn,
+                    'isoCode': isoCode,
                   },
                 ).whenComplete(() {});
               },
@@ -394,11 +385,13 @@ class _PhoneNumberVerificationPageState extends State<PhoneNumberVerificationPag
       requestOTPFormKey.currentState?.save();
       context.read<PhoneNumberVerificationBloc>().add(
             VerifyPhoneNumber(
-                phoneNumber: phoneNumber!,
-                countryDialCode: phoneController.value?.countryCode ?? '+966',
-                country: phoneController.value?.isoCode.name ?? 'SA',
-                phoneController: phoneController,
-                userEnteredPhoneNumber: userEnteredPhoneNumber),
+              phoneNumber: phoneNumber!,
+              countryDialCode: phoneController.value?.countryCode ?? '+966',
+              country: phoneController.value?.isoCode.name ?? 'SA',
+              phoneController: phoneController,
+              userEnteredPhoneNumber: userEnteredPhoneNumber,
+              isoCode: phoneController.value?.isoCode.name ?? 'SA',
+            ),
           );
       return;
     }

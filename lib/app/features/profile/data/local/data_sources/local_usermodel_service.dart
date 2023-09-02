@@ -8,6 +8,7 @@ class LocalUserModelService implements IStorageService {
 
   @override
   Future<void> init() async {
+    registerHiveAdapters();
     final String appDataDir = await getAppDataDir();
     log('LocalUserModel Hive using storage path: $appDataDir and file name: $boxName');
     // Init the Hive box box giving it the platform usable folder.
@@ -17,6 +18,10 @@ class LocalUserModelService implements IStorageService {
     await Hive.openBox<dynamic>(boxName);
     // Assign the box to our instance.
     _hiveBox = Hive.box<dynamic>(boxName);
+  }
+
+  void registerHiveAdapters() {
+    Hive.registerAdapter(LocalUserModelAdapter());
   }
 
   @override
@@ -85,5 +90,21 @@ class LocalUserModelService implements IStorageService {
       log('LocalUserModel Store key .......... : $key');
       log('LocalUserModel Save value ......... : $value');
     }
+  }
+}
+
+class LocalUserModelAdapter extends TypeAdapter<AppUserEntity> {
+  @override
+  AppUserEntity read(BinaryReader reader) {
+    var data = reader.read();
+    return data as AppUserEntity;
+  }
+
+  @override
+  int get typeId => 221;
+
+  @override
+  void write(BinaryWriter writer, AppUserEntity obj) {
+    writer.write(obj);
   }
 }

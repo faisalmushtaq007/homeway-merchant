@@ -23,13 +23,14 @@ class _BusinessInformationPageState extends State<BusinessInformationPage> with 
   late final ScrollController innerScrollController;
   late AnimationController _animationController;
   late Animation<double> _animation;
-  static final _createBusinessProfileFormKey = GlobalKey<FormState>();
-  static late final TextEditingController _usernameController;
-  static late final TextEditingController _businessNameController;
-  static late final TextEditingController _emailController;
-  static late final TextEditingController _phoneController;
-  static late final TextEditingController _addressController;
+  final _createBusinessProfileFormKey = GlobalKey<FormState>();
+  late final TextEditingController _usernameController;
+  late final TextEditingController _businessNameController;
+  late final TextEditingController _emailController;
+  late final TextEditingController _phoneController;
+  late final TextEditingController _addressController;
   String _selectedGender = 'Male';
+
   // Local PhoneController variables
   String? phoneValidation;
   String userEnteredPhoneNumber = '';
@@ -40,17 +41,8 @@ class _BusinessInformationPageState extends State<BusinessInformationPage> with 
   BusinessTypeEntity? businessTypeEntity;
   final isoCodeNameMap = IsoCode.values.asNameMap();
   IsoCode defaultCountry = IsoCode.SA;
-  late PhoneNumber initialPhoneNumberValue; /*= PhoneNumber(
-    isoCode: IsoCode.values.asNameMap().values.byName('SA'),
-    nsn: '',
-  );*/
-  late PhoneController
-      controller; /*= PhoneController(
-    PhoneNumber(
-      isoCode: IsoCode.values.asNameMap().values.byName('SA'),
-      nsn: '',
-    ),
-  );*/
+  late PhoneNumber initialPhoneNumberValue;
+  late PhoneController controller;
   int businessProfileID = -1;
   ValueNotifier<PhoneNumberVerification> valueNotifierPhoneNumberVerification = ValueNotifier<PhoneNumberVerification>(
     PhoneNumberVerification.none,
@@ -69,7 +61,7 @@ class _BusinessInformationPageState extends State<BusinessInformationPage> with 
     _addressController = TextEditingController();
     _animationController = AnimationController(
       vsync: this,
-      duration: Duration(seconds: 2),
+      duration: const Duration(seconds: 2),
     );
     _animation = Tween<double>(begin: -1, end: 0).animate(
       CurvedAnimation(
@@ -89,7 +81,6 @@ class _BusinessInformationPageState extends State<BusinessInformationPage> with 
     );
     controller = PhoneController(initialPhoneNumberValue);
     controller.value = initialPhoneNumberValue;
-    appLog.d('user phone number ${controller.value?.nsn}, ${controller.value?.isoCode}, ${widget.businessProfileEntity?.phoneNumberWithoutDialCode}');
     if (mounted) {
       if (widget.hasEditBusinessProfile) {
         context.read<BusinessProfileBloc>().add(GetBusinessProfile(
@@ -103,14 +94,14 @@ class _BusinessInformationPageState extends State<BusinessInformationPage> with 
 
   @override
   void dispose() {
-    scrollController.dispose();
-    innerScrollController.dispose();
     _animationController.dispose();
     _usernameController.dispose();
     _businessNameController.dispose();
     _emailController.dispose();
     _phoneController.dispose();
     _addressController.dispose();
+    innerScrollController.dispose();
+    scrollController.dispose();
     super.dispose();
   }
 
@@ -135,7 +126,6 @@ class _BusinessInformationPageState extends State<BusinessInformationPage> with 
         valueNotifierPhoneNumberVerification.value = PhoneNumberVerification.none;
       }
     }
-    //setState(() {});
   }
 
   void phoneNumberValidationChanged(
@@ -161,7 +151,6 @@ class _BusinessInformationPageState extends State<BusinessInformationPage> with 
         valueNotifierPhoneNumberVerification.value = PhoneNumberVerification.none;
       }
     }
-    //setState(() {});
   }
 
   PhoneNumberInputValidator? getValidator({bool isAllowEmpty = false}) {
@@ -610,11 +599,11 @@ class _BusinessInformationPageState extends State<BusinessInformationPage> with 
                                             isDense: true,
                                             suffixIcon: Container(
                                               width: kMinInteractiveDimension * 1.05,
-                                              constraints: BoxConstraints(
+                                              constraints: const BoxConstraints(
                                                 minWidth: kMinInteractiveDimension * 1.05,
                                                 minHeight: kMinInteractiveDimension * 2,
                                               ),
-                                              decoration: BoxDecoration(
+                                              decoration: const BoxDecoration(
                                                 border: BorderDirectional(
                                                   start: BorderSide(
                                                     width: 1.0,
@@ -631,7 +620,7 @@ class _BusinessInformationPageState extends State<BusinessInformationPage> with 
                                                 children: [
                                                   IconButton(
                                                     onPressed: () {},
-                                                    icon: Icon(
+                                                    icon: const Icon(
                                                       Icons.my_location,
                                                     ),
                                                   ),
@@ -720,77 +709,88 @@ class _BusinessInformationPageState extends State<BusinessInformationPage> with 
                                     );
                                   },
                               ),*/
-                                  AnimatedGap(
-                                    context.height / 3.15 - bottomPadding,
-                                    duration: const Duration(
+                                  const AnimatedGap(
+                                    16,
+                                    duration: Duration(
                                       milliseconds: 300,
-                                    ),
-                                  ),
-                                  Align(
-                                    alignment: AlignmentDirectional.bottomCenter,
-                                    child: Row(
-                                      children: [
-                                        Expanded(
-                                          child: ElevatedButton(
-                                            onPressed: () async {
-                                              if (_createBusinessProfileFormKey.currentState!.validate()) {
-                                                _createBusinessProfileFormKey.currentState!.save();
-                                                //await Future.delayed(const Duration(milliseconds: 500), () {});
-                                                BusinessProfileEntity businessProfileEntity;
-                                                if (widget.hasEditBusinessProfile && widget.businessProfileEntity.isNotNull) {
-                                                  // Edit
-                                                  businessProfileEntity = widget.businessProfileEntity!.copyWith(
-                                                    userName: _usernameController.value.text,
-                                                    businessAddress: AddressModel(
-                                                      address: AddressBean(area: _addressController.value.text),
-                                                    ),
-                                                    businessEmailAddress: _emailController.value.text,
-                                                    businessName: _businessNameController.value.text,
-                                                    businessPhoneNumber: userEnteredPhoneNumber,
-                                                    businessProfileID: widget.businessProfileEntity?.businessProfileID,
-                                                    countryDialCode: initialPhoneNumberValue.countryCode,
-                                                    isoCode: initialPhoneNumberValue.isoCode.name,
-                                                  );
-                                                } else {
-                                                  // New
-                                                  businessProfileEntity = BusinessProfileEntity(
-                                                    userName: _usernameController.value.text,
-                                                    businessAddress: AddressModel(
-                                                      address: AddressBean(area: _addressController.value.text),
-                                                    ),
-                                                    businessEmailAddress: _emailController.value.text,
-                                                    businessName: _businessNameController.value.text,
-                                                    businessPhoneNumber: userEnteredPhoneNumber,
-                                                    businessTypeEntity: BusinessTypeEntity(),
-                                                    countryDialCode: initialPhoneNumberValue.countryCode,
-                                                    isoCode: initialPhoneNumberValue.isoCode.name,
-                                                  );
-                                                }
-                                                serviceLocator<AppUserEntity>().currentProfileStatus = CurrentProfileStatus.basicProfileSaved;
-                                                serviceLocator<AppUserEntity>().businessProfile = businessProfileEntity;
-                                                if (!mounted) {
-                                                  return;
-                                                }
-                                                context.read<BusinessProfileBloc>().add(
-                                                      SaveBusinessProfile(
-                                                        businessProfileEntity: businessProfileEntity,
-                                                        hasEditBusinessProfile: widget.hasEditBusinessProfile,
-                                                        currentIndex: widget.currentIndex,
-                                                      ),
-                                                    );
-                                              }
-                                            },
-                                            child: Text(
-                                              'Next',
-                                              textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                                            ).translate(),
-                                          ),
-                                        ),
-                                      ],
                                     ),
                                   ),
                                 ],
                               ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    SliverFillRemaining(
+                      hasScrollBody: false,
+                      child: Column(
+                        textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          const Spacer(),
+                          Align(
+                            alignment: AlignmentDirectional.bottomCenter,
+                            child: Row(
+                              children: [
+                                Expanded(
+                                  child: ElevatedButton(
+                                    key: const Key('save-business-profile-button-widget'),
+                                    onPressed: () async {
+                                      if (_createBusinessProfileFormKey.currentState!.validate()) {
+                                        _createBusinessProfileFormKey.currentState!.save();
+                                        //await Future.delayed(const Duration(milliseconds: 500), () {});
+                                        BusinessProfileEntity businessProfileEntity;
+                                        if (widget.hasEditBusinessProfile && widget.businessProfileEntity.isNotNull) {
+                                          // Edit
+                                          businessProfileEntity = widget.businessProfileEntity!.copyWith(
+                                            userName: _usernameController.value.text,
+                                            businessAddress: AddressModel(
+                                              address: AddressBean(area: _addressController.value.text),
+                                            ),
+                                            businessEmailAddress: _emailController.value.text,
+                                            businessName: _businessNameController.value.text,
+                                            businessPhoneNumber: userEnteredPhoneNumber,
+                                            businessProfileID: widget.businessProfileEntity?.businessProfileID,
+                                            countryDialCode: initialPhoneNumberValue.countryCode,
+                                            isoCode: initialPhoneNumberValue.isoCode.name,
+                                          );
+                                        } else {
+                                          // New
+                                          businessProfileEntity = BusinessProfileEntity(
+                                            userName: _usernameController.value.text,
+                                            businessAddress: AddressModel(
+                                              address: AddressBean(area: _addressController.value.text),
+                                            ),
+                                            businessEmailAddress: _emailController.value.text,
+                                            businessName: _businessNameController.value.text,
+                                            businessPhoneNumber: userEnteredPhoneNumber,
+                                            businessTypeEntity: BusinessTypeEntity(),
+                                            countryDialCode: initialPhoneNumberValue.countryCode,
+                                            isoCode: initialPhoneNumberValue.isoCode.name,
+                                          );
+                                        }
+                                        serviceLocator<AppUserEntity>().currentProfileStatus = CurrentProfileStatus.basicProfileSaved;
+                                        serviceLocator<AppUserEntity>().businessProfile = businessProfileEntity;
+                                        if (!mounted) {
+                                          return;
+                                        }
+                                        context.read<BusinessProfileBloc>().add(
+                                              SaveBusinessProfile(
+                                                businessProfileEntity: businessProfileEntity,
+                                                hasEditBusinessProfile: widget.hasEditBusinessProfile,
+                                                currentIndex: widget.currentIndex,
+                                              ),
+                                            );
+                                      }
+                                    },
+                                    child: Text(
+                                      'Save & Next',
+                                      textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                    ).translate(),
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
                         ],

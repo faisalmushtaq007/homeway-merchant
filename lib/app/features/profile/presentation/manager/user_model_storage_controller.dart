@@ -63,6 +63,7 @@ class UserModelStorageController with ChangeNotifier {
     _accessToken = value;
     // Update the token value
     serviceLocator<AppUserEntity>().token = value;
+    serviceLocator<AppUserEntity>().access_token = value;
     // Inform all listeners a change has occurred, if notify flag is true.
     if (notify) notifyListeners();
     // Persist the change to whatever storage is used with the ThemeService.

@@ -153,14 +153,14 @@ class UserLocalDbRepository<User extends AppUserEntity> implements BaseUserLocal
     String byID = '',
     String byToken = '',
   }) async {
-    final result = await tryCatch<AppUserEntity?>(() async {
+    final result = await tryCatch<AppUserEntity>(() async {
       final db = await _db;
-      return await db.transaction(
+      final result = await db.transaction<AppUserEntity?>(
         (txn) async {
           var regExpByID = RegExp(byID ?? '', caseSensitive: false);
-          var regExpByToken = RegExp(byToken ?? '', caseSensitive: false);
-          var regExpByPhoneNumberWithoutDialCode = RegExp(entity?.phoneNumberWithoutDialCode ?? '', caseSensitive: false);
-          var regExpByPhoneNumber = RegExp(entity?.phoneNumber ?? '', caseSensitive: false);
+          //var regExpByToken = RegExp(byToken ?? '', caseSensitive: false);
+          //var regExpByPhoneNumberWithoutDialCode = RegExp(entity?.phoneNumberWithoutDialCode ?? '', caseSensitive: false);
+          //var regExpByPhoneNumber = RegExp(entity?.phoneNumber ?? '', caseSensitive: false);
           final record = await _user.findFirst(
             txn,
             finder: Finder(
@@ -168,15 +168,15 @@ class UserLocalDbRepository<User extends AppUserEntity> implements BaseUserLocal
                 Filter.equals('hasCurrentUser', true),
                 Filter.equals(
                   'phoneNumberWithoutDialCode',
-                  regExpByPhoneNumberWithoutDialCode,
+                  entity?.phoneNumberWithoutDialCode ?? '',
                 ),
                 Filter.equals(
                   'phoneNumber',
-                  regExpByPhoneNumber,
+                  entity?.phoneNumber ?? '',
                 ),
                 Filter.equals(
                   'access_token',
-                  regExpByToken,
+                  byToken,
                 ),
                 Filter.equals(
                   'access_token',
@@ -184,7 +184,7 @@ class UserLocalDbRepository<User extends AppUserEntity> implements BaseUserLocal
                 ),
                 Filter.equals(
                   'uid',
-                  regExpByID,
+                  byID,
                 ),
                 Filter.equals(
                   'uid',
@@ -200,6 +200,7 @@ class UserLocalDbRepository<User extends AppUserEntity> implements BaseUserLocal
           return null;
         },
       );
+      return result;
     });
     return result;
   }

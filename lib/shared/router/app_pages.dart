@@ -35,7 +35,7 @@ class AppRouter {
 
   AppRouter._();
 
-  static const String INITIAL = Routes.LOGIN;
+  static const String INITIAL = Routes.AUTH_PHONE_NUMBER_VERIFICATION;
 
   static final GoRouter _router = GoRouter(
     debugLogDiagnostics: true,
@@ -50,10 +50,7 @@ class AppRouter {
         path: Routes.INITIAL,
         builder: (context, state) => const OnBoardingPage(),
       ),
-      GoRoute(
-        path: Routes.LOGIN,
-        builder: (context, state) => const LoginPage(),
-      ),
+
       GoRoute(
         path: Routes.AUTH_PHONE_NUMBER_VERIFICATION,
         builder: (context, state) => const PhoneNumberVerificationPage(),

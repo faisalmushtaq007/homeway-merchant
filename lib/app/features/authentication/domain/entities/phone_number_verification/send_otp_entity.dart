@@ -2,9 +2,9 @@ part of 'package:homemakers_merchant/app/features/authentication/index.dart';
 
 class SendOtpEntity extends INetworkModel<SendOtpEntity> {
   SendOtpEntity({
-    this.country_dial_code = '+966',
-    required this.user_type,
     required this.mobile,
+    this.country_dial_code = '+966',
+    this.user_type = 'merchant',
     this.isoCode = 'SA',
     this.phoneNumberWithoutFormat = '',
     this.phoneNumberWithFormat = '',
@@ -13,7 +13,7 @@ class SendOtpEntity extends INetworkModel<SendOtpEntity> {
 
   factory SendOtpEntity.fromJson(Map<String, dynamic> json) => SendOtpEntity(
         country_dial_code: json['country_dial_code'] ?? '+966' as String,
-        user_type: json['user_type'] ?? '' as String,
+        user_type: json['user_type'] ?? 'merchant' as String,
         mobile: json['mobile'] ?? '' as String,
         isoCode: json['isoCode'] ?? 'SA' as String,
         phoneNumberWithoutFormat: json['phoneNumberWithoutFormat'] ?? '' as String,
