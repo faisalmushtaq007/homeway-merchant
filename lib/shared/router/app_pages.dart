@@ -35,7 +35,7 @@ class AppRouter {
 
   AppRouter._();
 
-  static const String INITIAL = Routes.AUTH_PHONE_NUMBER_VERIFICATION;
+  static const String INITIAL = Routes.DOCUMENT_LIST_PAGE;
 
   static final GoRouter _router = GoRouter(
     debugLogDiagnostics: true,

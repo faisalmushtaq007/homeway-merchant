@@ -17,7 +17,7 @@ class BankInformationPage extends StatefulWidget {
 
 class _BankInformationPageState extends State<BankInformationPage> with SingleTickerProviderStateMixin {
   late final ScrollController scrollController;
-
+  late final ScrollController innerScrollController;
   late AnimationController _animationController;
   late Animation<double> _animation;
 
@@ -49,6 +49,7 @@ class _BankInformationPageState extends State<BankInformationPage> with SingleTi
   void initState() {
     super.initState();
     scrollController = ScrollController();
+    innerScrollController = ScrollController();
     _bankNameControllerFocusNode = FocusNode();
     _accountHolderNameControllerFocusNode = FocusNode();
     _accountNumberControllerFocusNode = FocusNode();
@@ -80,6 +81,7 @@ class _BankInformationPageState extends State<BankInformationPage> with SingleTi
     _accountNumberController.dispose();
     _confirmAccountNumberController.dispose();
     _accountHolderNameController.dispose();
+    innerScrollController.dispose();
     scrollController.dispose();
     super.dispose();
   }

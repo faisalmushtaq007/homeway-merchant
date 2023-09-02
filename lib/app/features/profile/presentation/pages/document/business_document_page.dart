@@ -68,14 +68,14 @@ class _BusinessDocumentPageState extends State<BusinessDocumentPage> with Single
 
   @override
   void dispose() {
-    scrollController.dispose();
-    innerListScrollController.dispose();
     _animationController.dispose();
     textEditingControllers[0].dispose();
     textEditingControllers[1].dispose();
     textEditingControllers[2].dispose();
     textEditingControllers.clear();
     textEditingControllers = [];
+    innerListScrollController.dispose();
+    scrollController.dispose();
     super.dispose();
   }
 
