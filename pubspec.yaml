@@ -18,7 +18,7 @@ dependencies:
       ref: master
   app_links: ^3.4.3
   app_runner: ^2.2.0+1
-  app_settings: ^4.2.0
+  app_settings: ^5.0.0
   async: ^2.11.0
   back_button_interceptor: ^6.0.2
   bloc: ^8.1.2
@@ -26,7 +26,7 @@ dependencies:
   cached_network_image: ^3.2.3
   cloud_firestore: ^4.8.3
   collection: ^1.17.1
-  connectivity_plus: ^4.0.1
+  connectivity_plus: ^4.0.2
   cross_file: ^0.3.3+4
   crypto: ^3.0.3
   cupertino_icons: ^1.0.5
@@ -127,7 +127,9 @@ dependencies:
     git:
       url: 'https://github.com/prasant10050/phone_form_field.git'
       ref: dev
-  phone_number: ^2.0.1
+#  phone_number:
+#    git:
+#      url: 'https://github.com/flutter-form-builder-ecosystem/phone_number.git'
   photo_view: ^0.14.0
   pinput:
     git:

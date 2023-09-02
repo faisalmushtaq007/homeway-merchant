@@ -330,7 +330,6 @@ class _UploadDocumentPageState extends State<UploadDocumentPage> {
                   controller: controller,
                   editorConfig: editorConfig,
                   onTailorResult: (image, byteData, size) {
-                    print('Result of clipping');
                     if (pickedXSourceFile != null || pickedSourceFile != null) {
                       _showScreenShotOfCropImageDialog(
                         context: context,

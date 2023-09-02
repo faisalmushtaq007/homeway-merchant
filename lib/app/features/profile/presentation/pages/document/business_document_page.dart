@@ -48,7 +48,7 @@ class _BusinessDocumentPageState extends State<BusinessDocumentPage> with Single
       0,
       BusinessDocumentUploadedEntity(
         documentType: DocumentType.tradeLicence,
-        hasTextFieldEnable: false,
+        hasTextFieldEnable: true,
         businessDocumentAssetsEntity: [],
       ),
     );
@@ -220,6 +220,18 @@ class _BusinessDocumentPageState extends State<BusinessDocumentPage> with Single
                                           crossAxisAlignment: CrossAxisAlignment.stretch,
                                           mainAxisSize: MainAxisSize.min,
                                           children: [
+                                            Wrap(
+                                              textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                              children: [
+                                                Text(
+                                                  allBusinessDocuments[index].documentType.documentTypeName,
+                                                  textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                                  overflow: TextOverflow.ellipsis,
+                                                  softWrap: true,
+                                                  maxLines: 2,
+                                                )
+                                              ],
+                                            ),
                                             AnimatedCrossFade(
                                               crossFadeState:
                                                   (allBusinessDocuments[index].hasTextFieldEnable) ? CrossFadeState.showFirst : CrossFadeState.showSecond,
@@ -299,6 +311,10 @@ class _BusinessDocumentPageState extends State<BusinessDocumentPage> with Single
                                                           1.0,
                                                         ),
                                                       ),
+                                                      textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                                      overflow: TextOverflow.ellipsis,
+                                                      softWrap: true,
+                                                      maxLines: 2,
                                                     ).translate(),
                                                     trailing: SizedBox(
                                                       height: 26,

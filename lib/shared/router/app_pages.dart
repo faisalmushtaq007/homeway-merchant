@@ -35,7 +35,7 @@ class AppRouter {
 
   AppRouter._();
 
-  static const String INITIAL = Routes.DOCUMENT_LIST_PAGE;
+  static const String INITIAL = Routes.NEW_DOCUMENT_LIST_PAGE;
 
   static final GoRouter _router = GoRouter(
     debugLogDiagnostics: true,
@@ -95,6 +95,18 @@ class AppRouter {
         builder: (context, state) {
           final Map<String, dynamic>? args = state.extra as Map<String, dynamic>?;
           return BusinessDocumentPage(
+            businessDocumentUploadedEntities:
+                args?['businessDocumentUploadedEntities'] ?? <BusinessDocumentUploadedEntity>[] as List<BusinessDocumentUploadedEntity>,
+            hasEditBusinessDocument: args?['hasEditBusinessDocument'] ?? false as bool,
+            currentIndex: args?['currentIndex'] ?? -1 as int,
+          );
+        },
+      ),
+      GoRoute(
+        path: Routes.NEW_DOCUMENT_LIST_PAGE,
+        builder: (context, state) {
+          final Map<String, dynamic>? args = state.extra as Map<String, dynamic>?;
+          return NewBusinessDocumentPage(
             businessDocumentUploadedEntities:
                 args?['businessDocumentUploadedEntities'] ?? <BusinessDocumentUploadedEntity>[] as List<BusinessDocumentUploadedEntity>,
             hasEditBusinessDocument: args?['hasEditBusinessDocument'] ?? false as bool,
