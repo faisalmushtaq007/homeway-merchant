@@ -12,17 +12,21 @@ class NewBusinessDocumentComponentWidget extends StatefulWidget {
     this.businessDocumentUploadedEntity,
     this.enableTextField = false,
     this.documentType = DocumentType.other,
+    this.customCloseButton,
+    required this.selectedImageMetaData,
   });
 
   final int currentIndex;
-  final List<BusinessDocumentUploadedEntity> businessDocumentUploadedEntities;
+  final List<NewBusinessDocumentEntity> businessDocumentUploadedEntities;
   final bool hasEditBusinessDocument;
-  final BusinessDocumentUploadedEntity? businessDocumentUploadedEntity;
+  final NewBusinessDocumentEntity? businessDocumentUploadedEntity;
   final bool enableTextField;
   final DocumentType documentType;
   final Widget documentPlaceHolderWidget;
   final String documentPlaceHolderImage;
   final bool animate;
+  final Widget? customCloseButton;
+  final void Function(Map<String, dynamic> metaData, CaptureImageEntity captureImageEntity) selectedImageMetaData;
 
   @override
   _NewBusinessDocumentComponentWidgetController createState() => _NewBusinessDocumentComponentWidgetController();
@@ -93,27 +97,37 @@ class _NewBusinessDocumentComponentWidgetController extends State<NewBusinessDoc
       final fileReadAsString = base64Encode(fileReadAsBytes);
       final xFileReadAsString = base64Encode(xFileReadAsBytes);
       final uuid = const Uuid().v4();
+      final String mimeType = xCroppedDocumentFile.mimeType ?? xFile.mimeType ?? 'image/png';
+      final Map<String, dynamic> metaData = {
+        'documentID': uuid,
+        'originalFilePath': filePath,
+        'croppedFilePath': croppedFilePath,
+        'fileExtension': fileExtension,
+        'fileNameWithExtension': fileNameWithExtension,
+        'originalFile': file,
+        'xOriginalFile': xFile,
+        'xCroppedFile': xCroppedDocumentFile,
+        'croppedFile': croppedDocumentFile,
+        'networkUrl': assetNetworkUrl,
+        'fileReadAsBytes': fileReadAsBytes,
+        'xFileReadAsBytes': xFileReadAsBytes,
+        'fileReadAsString': fileReadAsString,
+        'xFileReadAsString': xFileReadAsString,
+        'documentType': widget.documentType.name,
+        'blob': (xFileReadAsBytes.isNotNullOrEmpty) ? Blob(xFileReadAsBytes) : Blob(fileReadAsBytes),
+        'base64': (xFileReadAsString.isNotEmpty) ? xFileReadAsString : fileReadAsString,
+        'mimeType': mimeType,
+      };
+      final CaptureImageEntity captureImageEntity = CaptureImageEntity.fromMap(metaData);
       listBanners.insert(
         0,
         BannerModel(
           imagePath: croppedFilePath,
           id: uuid,
-          metaData: {
-            'id': uuid,
-            'filePath': filePath,
-            'croppedFilePath': croppedFilePath,
-            'fileExtension': fileExtension,
-            'fileNameWithExtension': fileNameWithExtension,
-            //'file': file,
-            //'xFile': xFile,
-            'assetNetworkUrl': assetNetworkUrl,
-            'fileReadAsBytes': fileReadAsBytes,
-            'xFileReadAsBytes': xFileReadAsBytes,
-            'fileReadAsString': fileReadAsString,
-            'xFileReadAsString': xFileReadAsString,
-          },
+          metaData: metaData,
         ),
       );
+      widget.selectedImageMetaData(metaData, captureImageEntity);
       setState(() {});
     }
   }
@@ -133,7 +147,7 @@ class _NewBusinessDocumentComponentWidgetView extends WidgetView<NewBusinessDocu
           BannerCarousel(
             banners: state.listBanners.toList(),
             customizedIndicators: const IndicatorModel.animation(width: 20, height: 5, spaceBetween: 2, widthAnimation: 50),
-            height: context.width / 3.5,
+            height: context.width / 3.25,
             activeColor: Colors.amberAccent,
             disableColor: Colors.white,
             animation: true,
@@ -142,6 +156,38 @@ class _NewBusinessDocumentComponentWidgetView extends WidgetView<NewBusinessDocu
             onTap: (id) => print(id),
             //width: 250,
             indicatorBottom: false,
+          ),
+          GestureDetector(
+            onTap: () {
+              state.selectDocumentPicker(documentType: widget.documentType);
+            },
+            child: Align(
+              alignment: Alignment.topRight,
+              child: widget.customCloseButton ??
+                  DecoratedBox(
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: Colors.white70,
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.2),
+                          spreadRadius: 2,
+                          offset: const Offset(0, 2),
+                          blurRadius: 2,
+                        )
+                      ],
+                    ),
+                    child: Padding(
+                      padding: EdgeInsetsDirectional.all(6),
+                      child: Icon(
+                        Icons.edit,
+                        color: context.colorScheme.primary,
+                        size: 18,
+                        textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                      ),
+                    ),
+                  ),
+            ),
           ),
         ],
       ),

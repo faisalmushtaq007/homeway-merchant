@@ -68,6 +68,7 @@ class ResponsiveDialog extends StatefulWidget implements ICommonDialogProperties
     this.confirmText,
     this.cancelText,
     this.cancelButtonVisible = true,
+    this.buttonAroundPadding,
   })  : title = title ?? "Title Here",
         child = child ?? Text("Content Here"),
         maxLongSide = maxLongSide ?? 600,
@@ -97,6 +98,7 @@ class ResponsiveDialog extends StatefulWidget implements ICommonDialogProperties
   @override
   final String? cancelText;
   final bool cancelButtonVisible;
+  final EdgeInsetsGeometry? buttonAroundPadding;
 
   // Events
   final VoidCallback? cancelPressed;
@@ -119,7 +121,7 @@ class _ResponsiveDialogState extends State<ResponsiveDialog> {
       padding: const EdgeInsetsDirectional.only(
         top: 20,
         start: 12,
-        end: 4,
+        end: 12,
         bottom: 20,
       ),
       child: Column(
@@ -137,7 +139,7 @@ class _ResponsiveDialogState extends State<ResponsiveDialog> {
     );
   }
 
-  Widget actionBar(BuildContext context, EdgeInsetsGeometry? padding) {
+  Widget actionBar(BuildContext context, Size dialogSize, EdgeInsetsGeometry? padding) {
     if (widget.hideButtons) return Container();
 
     var localizations = MaterialLocalizations.of(context);
@@ -147,29 +149,38 @@ class _ResponsiveDialogState extends State<ResponsiveDialog> {
       padding: padding,
       child: ButtonBar(
         mainAxisSize: MainAxisSize.min,
-        alignment: MainAxisAlignment.spaceBetween,
+        alignment: MainAxisAlignment.center,
+        overflowButtonSpacing: 8,
         children: <Widget>[
           if (widget.cancelButtonVisible)
-            ElevatedButton(
-              key: const Key('confirm-dialog-negative-button'),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Color.fromRGBO(238, 238, 238, 1),
-                textStyle: context.labelLarge,
-              ),
-              child: Text(
-                textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                widget.cancelText ?? localizations.cancelButtonLabel,
-                style: context.labelLarge!.copyWith(
-                  color: Color.fromRGBO(127, 129, 132, 1.0),
+            Padding(
+              padding: const EdgeInsetsDirectional.only(end: 8),
+              child: ElevatedButton(
+                key: const Key('confirm-dialog-negative-button'),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Color.fromRGBO(238, 238, 238, 1),
+                  textStyle: context.labelLarge,
+                  minimumSize: Size(dialogSize.width / 3.75, 36),
                 ),
+                child: Text(
+                  textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                  widget.cancelText ?? localizations.cancelButtonLabel,
+                  style: context.labelLarge!.copyWith(
+                    color: Color.fromRGBO(127, 129, 132, 1.0),
+                  ),
+                ),
+                onPressed: () => (widget.cancelPressed == null) ? Navigator.of(context).pop() : widget.cancelPressed!(),
               ),
-              onPressed: () => (widget.cancelPressed == null) ? Navigator.of(context).pop() : widget.cancelPressed!(),
             )
           else
             const SizedBox.shrink(),
           ElevatedButton(
             key: const Key('confirm-dialog-positive-button'),
-            style: ElevatedButton.styleFrom(backgroundColor: Color.fromRGBO(69, 201, 125, 1), textStyle: context.labelLarge, minimumSize: const Size(120, 36)),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Color.fromRGBO(69, 201, 125, 1),
+              textStyle: context.labelLarge,
+              minimumSize: (!widget.cancelButtonVisible) ? Size(dialogSize.width, 36) : Size(dialogSize.width / 2.85, 36),
+            ),
             child: Text(
               textDirection: serviceLocator<LanguageController>().targetTextDirection,
               widget.confirmText ?? localizations.okButtonLabel,
@@ -204,10 +215,10 @@ class _ResponsiveDialogState extends State<ResponsiveDialog> {
     return Dialog(
       backgroundColor: _backgroundColor,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadiusDirectional.circular(16),
+        borderRadius: BorderRadiusDirectional.circular(10),
       ),
       child: Directionality(
-        key: const Key('confirm-dialog-directionality'),
+        //key: const Key('confirm-dialog-directionality'),
         textDirection: serviceLocator<LanguageController>().targetTextDirection,
         child: AnimatedContainer(
           width: dialogSize.width,
@@ -225,18 +236,21 @@ class _ResponsiveDialogState extends State<ResponsiveDialog> {
               //header(context, orientation),
               Padding(
                 padding: const EdgeInsetsDirectional.only(
-                  top: 20,
-                  start: 20,
-                  end: 20,
-                  bottom: 16,
+                  top: 12,
+                  start: 12,
+                  end: 12,
+                  bottom: 8,
                 ),
-                child: Row(
+                child: Wrap(
                   textDirection: serviceLocator<LanguageController>().targetTextDirection,
                   children: [
                     Text(
                       textDirection: serviceLocator<LanguageController>().targetTextDirection,
                       widget.title!,
                       style: context.titleLarge!.copyWith(fontWeight: FontWeight.bold),
+                      overflow: TextOverflow.ellipsis,
+                      softWrap: true,
+                      maxLines: 2,
                     ),
                   ],
                 ),
@@ -245,17 +259,20 @@ class _ResponsiveDialogState extends State<ResponsiveDialog> {
                 child: Container(
                   alignment: Alignment.topLeft,
                   padding: const EdgeInsetsDirectional.symmetric(
-                    horizontal: 20,
+                    horizontal: 8,
                   ),
                   child: widget.child,
                 ),
               ),
               actionBar(
                 context,
-                const EdgeInsetsDirectional.symmetric(
-                  horizontal: 14,
-                ),
+                dialogSize,
+                widget.buttonAroundPadding ??
+                    const EdgeInsetsDirectional.symmetric(
+                      horizontal: 8,
+                    ),
               ),
+              //const AnimatedGap(4, duration: Duration(milliseconds: 200)),
             ],
           ),
           /*child: OrientationBuilder(

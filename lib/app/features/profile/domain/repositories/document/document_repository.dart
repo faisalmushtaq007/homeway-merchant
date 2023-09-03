@@ -1,15 +1,15 @@
 part of 'package:homemakers_merchant/app/features/profile/index.dart';
 
 abstract interface class UserBusinessDocumentRepository {
-  Future<DataSourceState<BusinessDocumentUploadedEntity>> saveBusinessDocument({
+  Future<DataSourceState<NewBusinessDocumentEntity>> saveBusinessDocument({
     AppUserEntity? appUserEntity,
-    required BusinessDocumentUploadedEntity businessDocumentUploadedEntity,
+    required NewBusinessDocumentEntity businessDocumentUploadedEntity,
   });
 
-  Future<DataSourceState<BusinessDocumentUploadedEntity>> editBusinessDocument({
+  Future<DataSourceState<NewBusinessDocumentEntity>> editBusinessDocument({
     AppUserEntity? appUserEntity,
     int? appUserID,
-    required BusinessDocumentUploadedEntity businessDocumentUploadedEntity,
+    required NewBusinessDocumentEntity businessDocumentUploadedEntity,
     required int documentID,
   });
 
@@ -17,21 +17,21 @@ abstract interface class UserBusinessDocumentRepository {
     required int documentID,
     int? appUserID,
     AppUserEntity? appUserEntity,
-    BusinessDocumentUploadedEntity? businessDocumentUploadedEntity,
+    NewBusinessDocumentEntity? businessDocumentUploadedEntity,
   });
 
   Future<DataSourceState<bool>> deleteAllBusinessDocument({
     AppUserEntity? appUserEntity,
   });
 
-  Future<DataSourceState<BusinessDocumentUploadedEntity>> getBusinessDocument({
+  Future<DataSourceState<NewBusinessDocumentEntity>> getBusinessDocument({
     int? appUserID,
     required int documentID,
     AppUserEntity? appUserEntity,
-    BusinessDocumentUploadedEntity? businessDocumentUploadedEntity,
+    NewBusinessDocumentEntity? businessDocumentUploadedEntity,
   });
 
-  Future<DataSourceState<List<BusinessDocumentUploadedEntity>>> getAllBusinessDocument({
+  Future<DataSourceState<List<NewBusinessDocumentEntity>>> getAllBusinessDocument({
     AppUserEntity? appUserEntity,
   });
 }

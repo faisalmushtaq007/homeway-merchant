@@ -36,32 +36,33 @@ class _UploadDocumentPageState extends State<UploadDocumentPage> {
 
   var controller = ImageEditorController();
   final editorConfig = DataEditorConfig(
-      // Edit area background color
-      // Configure the padding of the editing area
-      cropRectPadding: const EdgeInsets.all(20.0),
-      // Configure the length of the four corners of the viewfinder
-      cornerLength: 30,
-      // Configure the width of the four corners of the viewfinder
-      cornerWidth: 4,
-      // Configure the color of the four corners of the viewfinder
-      cornerColor: Colors.blue,
-      // Configure the click response area of the four corners of the viewfinder
-      cornerHitTestSize: const Size(40, 40),
-      // Configure the color of the four sides of the viewfinder
-      lineColor: Colors.white,
-      // Configure the color of the four sides of the viewfinder
-      lineWidth: 2,
-      // Configure the width of the four sides of the viewfinder frame
-      lineHitTestWidth: 40,
-      // Configure the length of each unit of the nine-square dotted line in the viewfinder
-      dottedLength: 2,
-      // Configure the color of the dotted line of the nine-square grid in the viewfinder
-      dottedColor: Colors.white,
-      // Configure the color of the outer portion of the viewfinder
-      editorMaskColorHandler: (context, isTouching) {
-        return isTouching ? Colors.black.withOpacity(0.3) : Colors.black.withOpacity(0.7);
-        // return Colors.black;
-      });
+    // Edit area background color
+    // Configure the padding of the editing area
+    cropRectPadding: const EdgeInsets.all(20.0),
+    // Configure the length of the four corners of the viewfinder
+    cornerLength: 30,
+    // Configure the width of the four corners of the viewfinder
+    cornerWidth: 4,
+    // Configure the color of the four corners of the viewfinder
+    cornerColor: Colors.blue,
+    // Configure the click response area of the four corners of the viewfinder
+    cornerHitTestSize: const Size(40, 40),
+    // Configure the color of the four sides of the viewfinder
+    lineColor: Colors.white,
+    // Configure the color of the four sides of the viewfinder
+    lineWidth: 2,
+    // Configure the width of the four sides of the viewfinder frame
+    lineHitTestWidth: 40,
+    // Configure the length of each unit of the nine-square dotted line in the viewfinder
+    dottedLength: 2,
+    // Configure the color of the dotted line of the nine-square grid in the viewfinder
+    dottedColor: Colors.white,
+    // Configure the color of the outer portion of the viewfinder
+    editorMaskColorHandler: (context, isTouching) {
+      return isTouching ? Colors.black.withOpacity(0.3) : Colors.black.withOpacity(0.7);
+      // return Colors.black;
+    },
+  );
 
   @override
   void initState() {
@@ -161,37 +162,51 @@ class _UploadDocumentPageState extends State<UploadDocumentPage> {
                           builder: (context) {
                             return SafeArea(
                               top: false,
-                              child: Builder(builder: (BuildContext context) {
-                                return Theme(
-                                  data: theme,
-                                  child: Dialog(
-                                    // The background color
-                                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
+                              child: Builder(
+                                builder: (BuildContext context) {
+                                  return Theme(
+                                    data: theme,
+                                    child: Dialog(
+                                      // The background color
+                                      shape: RoundedRectangleBorder(borderRadius: BorderRadiusDirectional.circular(6)),
 
-                                    child: Padding(
-                                      padding: EdgeInsets.symmetric(vertical: 10),
-                                      child: Column(
-                                        mainAxisSize: MainAxisSize.min,
-                                        children: [
-                                          // The loading indicator
-                                          CircularProgressIndicator(),
-                                          SizedBox(
-                                            height: 15,
-                                          ),
-                                          // Some text
-                                          Text(
-                                            'Please wait while we are processing...',
-                                            style: context.labelMedium!.copyWith(
-                                              fontWeight: FontWeight.w500,
+                                      child: Padding(
+                                        padding: const EdgeInsets.symmetric(vertical: 8),
+                                        child: Column(
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: [
+                                            // The loading indicator
+                                            const CircularProgressIndicator(),
+                                            const AnimatedGap(
+                                              8,
+                                              duration: Duration(milliseconds: 200),
                                             ),
-                                            textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                                          ),
-                                        ],
+                                            // Some text
+                                            Wrap(
+                                              children: [
+                                                Text(
+                                                  'Please wait while we are processing...',
+                                                  style: context.labelMedium!.copyWith(
+                                                    fontWeight: FontWeight.w500,
+                                                  ),
+                                                  textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                                  softWrap: true,
+                                                  overflow: TextOverflow.ellipsis,
+                                                  maxLines: 2,
+                                                ),
+                                              ],
+                                            ),
+                                            const AnimatedGap(
+                                              4,
+                                              duration: Duration(milliseconds: 200),
+                                            ),
+                                          ],
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                );
-                              }),
+                                  );
+                                },
+                              ),
                             );
                           },
                         );
@@ -334,6 +349,8 @@ class _UploadDocumentPageState extends State<UploadDocumentPage> {
                       _showScreenShotOfCropImageDialog(
                         context: context,
                         byteData: byteData,
+                        image: image,
+                        size: size,
                       );
 
                       return;
@@ -647,7 +664,7 @@ class _UploadDocumentPageState extends State<UploadDocumentPage> {
                     separatorBuilder: (context, index) {
                       return const SizedBox(height: 16);
                     },
-                  )
+                  ),
                 ],
               ),
             );
@@ -657,12 +674,12 @@ class _UploadDocumentPageState extends State<UploadDocumentPage> {
     );
   }
 
-  void _showScreenShotOfCropImageDialog({required BuildContext context, required ByteData byteData, Image? image, Size? size}) {
+  void _showScreenShotOfCropImageDialog({required BuildContext context, required ByteData byteData, ui.Image? image, Size? size}) {
     showConfirmationDialog(
       context: context,
       barrierDismissible: true,
       curve: Curves.fastOutSlowIn,
-      duration: Duration(seconds: 1),
+      duration: const Duration(seconds: 1),
       builder: (BuildContext context) {
         return ResponsiveDialog(
           context: context,
@@ -720,7 +737,52 @@ class _UploadDocumentPageState extends State<UploadDocumentPage> {
                   //height: context.height,
                   //color: Colors.white,
                   //alignment: Alignment.center,
-                  child: Image.memory(byteData.buffer.asUint8List()),
+                  child: Image.memory(
+                    byteData.buffer.asUint8List(),
+                    fit: BoxFit.contain,
+                    filterQuality: FilterQuality.high,
+                    matchTextDirection: true,
+                    errorBuilder: (context, error, stackTrace) {
+                      return Center(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisSize: MainAxisSize.min,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                          children: [
+                            ImageHelper(
+                              image: 'assets/svg/unknown.svg',
+                              filterQuality: FilterQuality.high,
+                              borderRadius: BorderRadiusDirectional.circular(10),
+                              imageType: findImageType('assets/svg/unknown.svg'),
+                              imageShape: ImageShape.rectangle,
+                              boxFit: BoxFit.cover,
+                              height: context.width / 5,
+                              width: context.width / 5,
+                              defaultErrorBuilderColor: Colors.blueGrey,
+                              errorBuilder: const Icon(
+                                Icons.image_not_supported,
+                                size: 10000,
+                              ),
+                              loaderBuilder: const CircularProgressIndicator(),
+                            ),
+                            const AnimatedGap(6, duration: Duration(milliseconds: 200)),
+                            Wrap(
+                              children: [
+                                Text(
+                                  'Something went wrong, please select another asset',
+                                  textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                  overflow: TextOverflow.ellipsis,
+                                  maxLines: 2,
+                                  softWrap: true,
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      );
+                    },
+                  ),
                 ),
               ),
               const AnimatedGap(12, duration: Duration(milliseconds: 400)),
@@ -737,11 +799,13 @@ class _UploadDocumentPageState extends State<UploadDocumentPage> {
                     ),
                   ],
                 ),
-                style: context.bodyMedium,
+                style: context.labelMedium,
                 softWrap: true,
                 textAlign: TextAlign.center,
+                //overflow: TextOverflow.ellipsis,
                 textDirection: serviceLocator<LanguageController>().targetTextDirection,
               ),
+              const AnimatedGap(4, duration: Duration(milliseconds: 200)),
             ],
           ),
         );

@@ -31,7 +31,7 @@ class ProfileRemoteDataSource implements ProfileDataSource {
     required int documentID,
     int? appUserID,
     AppUserEntity? appUserEntity,
-    BusinessDocumentUploadedEntity? businessDocumentUploadedEntity,
+    NewBusinessDocumentEntity? businessDocumentUploadedEntity,
   }) {
     // TODO(prasant): implement deleteBusinessDocument
     throw UnimplementedError();
@@ -65,9 +65,9 @@ class ProfileRemoteDataSource implements ProfileDataSource {
   }
 
   @override
-  Future<ApiResultState<BusinessDocumentUploadedEntity>> editBusinessDocument({
+  Future<ApiResultState<NewBusinessDocumentEntity>> editBusinessDocument({
     required int documentID,
-    required BusinessDocumentUploadedEntity businessDocumentUploadedEntity,
+    required NewBusinessDocumentEntity businessDocumentUploadedEntity,
     AppUserEntity? appUserEntity,
     int? appUserID,
   }) {
@@ -107,7 +107,7 @@ class ProfileRemoteDataSource implements ProfileDataSource {
   }
 
   @override
-  Future<ApiResultState<List<BusinessDocumentUploadedEntity>>> getAllBusinessDocument({AppUserEntity? appUserEntity}) {
+  Future<ApiResultState<List<NewBusinessDocumentEntity>>> getAllBusinessDocument({AppUserEntity? appUserEntity}) {
     // TODO(prasant): implement getAllBusinessDocument
     throw UnimplementedError();
   }
@@ -134,11 +134,11 @@ class ProfileRemoteDataSource implements ProfileDataSource {
   }
 
   @override
-  Future<ApiResultState<BusinessDocumentUploadedEntity>> getBusinessDocument({
+  Future<ApiResultState<NewBusinessDocumentEntity>> getBusinessDocument({
     required int documentID,
     int? appUserID,
     AppUserEntity? appUserEntity,
-    BusinessDocumentUploadedEntity? businessDocumentUploadedEntity,
+    NewBusinessDocumentEntity? businessDocumentUploadedEntity,
   }) {
     // TODO(prasant): implement getBusinessDocument
     throw UnimplementedError();
@@ -172,8 +172,8 @@ class ProfileRemoteDataSource implements ProfileDataSource {
   }
 
   @override
-  Future<ApiResultState<BusinessDocumentUploadedEntity>> saveBusinessDocument({
-    required BusinessDocumentUploadedEntity businessDocumentUploadedEntity,
+  Future<ApiResultState<NewBusinessDocumentEntity>> saveBusinessDocument({
+    required NewBusinessDocumentEntity businessDocumentUploadedEntity,
     AppUserEntity? appUserEntity,
   }) {
     // TODO(prasant): implement saveBusinessDocument

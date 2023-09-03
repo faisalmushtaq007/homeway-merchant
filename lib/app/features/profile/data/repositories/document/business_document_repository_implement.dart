@@ -7,7 +7,7 @@ class BusinessDocumentRepositoryImplement implements UserBusinessDocumentReposit
   });
 
   final ProfileDataSource remoteDataSource;
-  final UserBusinessDocumentLocalDbRepository<BusinessDocumentUploadedEntity> businessDocumentLocalDataSource;
+  final UserBusinessDocumentLocalDbRepository<NewBusinessDocumentEntity> businessDocumentLocalDataSource;
 
   @override
   Future<DataSourceState<bool>> deleteAllBusinessDocument({AppUserEntity? appUserEntity}) async {
@@ -71,7 +71,7 @@ class BusinessDocumentRepositoryImplement implements UserBusinessDocumentReposit
     required int documentID,
     int? appUserID,
     AppUserEntity? appUserEntity,
-    BusinessDocumentUploadedEntity? businessDocumentUploadedEntity,
+    NewBusinessDocumentEntity? businessDocumentUploadedEntity,
   }) async {
     try {
       final connectivity = serviceLocator<ConnectivityService>().getCurrentInternetStatus();
@@ -134,8 +134,8 @@ class BusinessDocumentRepositoryImplement implements UserBusinessDocumentReposit
   }
 
   @override
-  Future<DataSourceState<BusinessDocumentUploadedEntity>> editBusinessDocument({
-    required BusinessDocumentUploadedEntity businessDocumentUploadedEntity,
+  Future<DataSourceState<NewBusinessDocumentEntity>> editBusinessDocument({
+    required NewBusinessDocumentEntity businessDocumentUploadedEntity,
     required int documentID,
     AppUserEntity? appUserEntity,
     int? appUserID,
@@ -145,25 +145,25 @@ class BusinessDocumentRepositoryImplement implements UserBusinessDocumentReposit
       if (connectivity.$2 == InternetConnectivityState.internet) {
         // Local DB
         // Save to local
-        final Either<RepositoryBaseFailure, BusinessDocumentUploadedEntity> result =
+        final Either<RepositoryBaseFailure, NewBusinessDocumentEntity> result =
             await businessDocumentLocalDataSource.update(businessDocumentUploadedEntity, UniqueId(documentID));
         // Return result
         return result.fold((l) {
           final RepositoryFailure failure = l as RepositoryFailure;
           appLog.d('Edit document local error ${failure.message}');
-          return DataSourceState<BusinessDocumentUploadedEntity>.error(
+          return DataSourceState<NewBusinessDocumentEntity>.error(
             reason: failure.message,
             dataSourceFailure: DataSourceFailure.local,
             stackTrace: failure.stacktrace,
           );
         }, (r) {
-          appLog.d('Edit document local : ${r.documentID}, ${r.documentIDNumber}');
-          return DataSourceState<BusinessDocumentUploadedEntity>.localDb(data: r);
+          appLog.d('Edit document local : ${r.documentID}, ${r.documentIdNumber}');
+          return DataSourceState<NewBusinessDocumentEntity>.localDb(data: r);
         });
       } else {
         // Remote
         // Save to server
-        final ApiResultState<BusinessDocumentUploadedEntity> result = await remoteDataSource.editBusinessDocument(
+        final ApiResultState<NewBusinessDocumentEntity> result = await remoteDataSource.editBusinessDocument(
           documentID: documentID,
           businessDocumentUploadedEntity: businessDocumentUploadedEntity,
           appUserEntity: appUserEntity,
@@ -173,13 +173,13 @@ class BusinessDocumentRepositoryImplement implements UserBusinessDocumentReposit
         return result.when(
           success: (data) {
             appLog.d('Edit document to remote');
-            return DataSourceState<BusinessDocumentUploadedEntity>.remote(
+            return DataSourceState<NewBusinessDocumentEntity>.remote(
               data: data,
             );
           },
           failure: (reason, error, exception, stackTrace) {
             appLog.d('Edit document remote error $reason');
-            return DataSourceState<BusinessDocumentUploadedEntity>.error(
+            return DataSourceState<NewBusinessDocumentEntity>.error(
               reason: reason,
               dataSourceFailure: DataSourceFailure.remote,
               stackTrace: stackTrace,
@@ -191,7 +191,7 @@ class BusinessDocumentRepositoryImplement implements UserBusinessDocumentReposit
       }
     } catch (e, s) {
       appLog.e('Edit document exception $e');
-      return DataSourceState<BusinessDocumentUploadedEntity>.error(
+      return DataSourceState<NewBusinessDocumentEntity>.error(
         reason: e.toString(),
         dataSourceFailure: DataSourceFailure.local,
         stackTrace: s,
@@ -202,41 +202,41 @@ class BusinessDocumentRepositoryImplement implements UserBusinessDocumentReposit
   }
 
   @override
-  Future<DataSourceState<List<BusinessDocumentUploadedEntity>>> getAllBusinessDocument({AppUserEntity? appUserEntity}) async {
+  Future<DataSourceState<List<NewBusinessDocumentEntity>>> getAllBusinessDocument({AppUserEntity? appUserEntity}) async {
     try {
       final connectivity = serviceLocator<ConnectivityService>().getCurrentInternetStatus();
       if (connectivity.$2 == InternetConnectivityState.internet) {
         // Local DB
         // Save to local
-        final Either<RepositoryBaseFailure, List<BusinessDocumentUploadedEntity>> result = await businessDocumentLocalDataSource.getAll();
+        final Either<RepositoryBaseFailure, List<NewBusinessDocumentEntity>> result = await businessDocumentLocalDataSource.getAll();
         // Return result
         return result.fold((l) {
           final RepositoryFailure failure = l as RepositoryFailure;
           appLog.d('Get all document local error ${failure.message}');
-          return DataSourceState<List<BusinessDocumentUploadedEntity>>.error(
+          return DataSourceState<List<NewBusinessDocumentEntity>>.error(
             reason: failure.message,
             dataSourceFailure: DataSourceFailure.local,
             stackTrace: failure.stacktrace,
           );
         }, (r) {
           appLog.d('Get all document local : ${r.length}');
-          return DataSourceState<List<BusinessDocumentUploadedEntity>>.localDb(data: r);
+          return DataSourceState<List<NewBusinessDocumentEntity>>.localDb(data: r);
         });
       } else {
         // Remote
         // Save to server
-        final ApiResultState<List<BusinessDocumentUploadedEntity>> result = await remoteDataSource.getAllBusinessDocument();
+        final ApiResultState<List<NewBusinessDocumentEntity>> result = await remoteDataSource.getAllBusinessDocument();
         // Return result
         return result.when(
           success: (data) {
             appLog.d('Get all document from remote');
-            return DataSourceState<List<BusinessDocumentUploadedEntity>>.remote(
+            return DataSourceState<List<NewBusinessDocumentEntity>>.remote(
               data: data.toList(),
             );
           },
           failure: (reason, error, exception, stackTrace) {
             appLog.d('Get all document remote error $reason');
-            return DataSourceState<List<BusinessDocumentUploadedEntity>>.error(
+            return DataSourceState<List<NewBusinessDocumentEntity>>.error(
               reason: reason,
               dataSourceFailure: DataSourceFailure.remote,
               stackTrace: stackTrace,
@@ -248,7 +248,7 @@ class BusinessDocumentRepositoryImplement implements UserBusinessDocumentReposit
       }
     } catch (e, s) {
       appLog.e('Get all document exception $e');
-      return DataSourceState<List<BusinessDocumentUploadedEntity>>.error(
+      return DataSourceState<List<NewBusinessDocumentEntity>>.error(
         reason: e.toString(),
         dataSourceFailure: DataSourceFailure.local,
         stackTrace: s,
@@ -259,35 +259,35 @@ class BusinessDocumentRepositoryImplement implements UserBusinessDocumentReposit
   }
 
   @override
-  Future<DataSourceState<BusinessDocumentUploadedEntity>> getBusinessDocument({
+  Future<DataSourceState<NewBusinessDocumentEntity>> getBusinessDocument({
     required int documentID,
     int? appUserID,
     AppUserEntity? appUserEntity,
-    BusinessDocumentUploadedEntity? businessDocumentUploadedEntity,
+    NewBusinessDocumentEntity? businessDocumentUploadedEntity,
   }) async {
     try {
       final connectivity = serviceLocator<ConnectivityService>().getCurrentInternetStatus();
       if (connectivity.$2 == InternetConnectivityState.internet) {
         // Local DB
         // Save to local
-        final Either<RepositoryBaseFailure, BusinessDocumentUploadedEntity?> result = await businessDocumentLocalDataSource.getById(UniqueId(documentID));
+        final Either<RepositoryBaseFailure, NewBusinessDocumentEntity?> result = await businessDocumentLocalDataSource.getById(UniqueId(documentID));
         // Return result
         return result.fold((l) {
           final RepositoryFailure failure = l as RepositoryFailure;
           appLog.d('Get document local error ${failure.message}');
-          return DataSourceState<BusinessDocumentUploadedEntity>.error(
+          return DataSourceState<NewBusinessDocumentEntity>.error(
             reason: failure.message,
             dataSourceFailure: DataSourceFailure.local,
             stackTrace: failure.stacktrace,
           );
         }, (r) {
-          appLog.d('Get document to local : ${r?.documentID}, ${r?.documentIDNumber}');
-          return DataSourceState<BusinessDocumentUploadedEntity>.localDb(data: r);
+          appLog.d('Get document to local : ${r?.documentID}, ${r?.documentIdNumber}');
+          return DataSourceState<NewBusinessDocumentEntity>.localDb(data: r);
         });
       } else {
         // Remote
         // Save to server
-        final ApiResultState<BusinessDocumentUploadedEntity> result = await remoteDataSource.getBusinessDocument(
+        final ApiResultState<NewBusinessDocumentEntity> result = await remoteDataSource.getBusinessDocument(
           documentID: documentID,
           businessDocumentUploadedEntity: businessDocumentUploadedEntity,
           appUserEntity: appUserEntity,
@@ -297,13 +297,13 @@ class BusinessDocumentRepositoryImplement implements UserBusinessDocumentReposit
         return result.when(
           success: (data) {
             appLog.d('Get document to remote');
-            return DataSourceState<BusinessDocumentUploadedEntity>.remote(
+            return DataSourceState<NewBusinessDocumentEntity>.remote(
               data: data,
             );
           },
           failure: (reason, error, exception, stackTrace) {
             appLog.d('Get document remote error $reason');
-            return DataSourceState<BusinessDocumentUploadedEntity>.error(
+            return DataSourceState<NewBusinessDocumentEntity>.error(
               reason: reason,
               dataSourceFailure: DataSourceFailure.remote,
               stackTrace: stackTrace,
@@ -315,7 +315,7 @@ class BusinessDocumentRepositoryImplement implements UserBusinessDocumentReposit
       }
     } catch (e, s) {
       appLog.d('Get document exception $e');
-      return DataSourceState<BusinessDocumentUploadedEntity>.error(
+      return DataSourceState<NewBusinessDocumentEntity>.error(
         reason: e.toString(),
         dataSourceFailure: DataSourceFailure.local,
         stackTrace: s,
@@ -326,8 +326,8 @@ class BusinessDocumentRepositoryImplement implements UserBusinessDocumentReposit
   }
 
   @override
-  Future<DataSourceState<BusinessDocumentUploadedEntity>> saveBusinessDocument({
-    required BusinessDocumentUploadedEntity businessDocumentUploadedEntity,
+  Future<DataSourceState<NewBusinessDocumentEntity>> saveBusinessDocument({
+    required NewBusinessDocumentEntity businessDocumentUploadedEntity,
     AppUserEntity? appUserEntity,
   }) async {
     try {
@@ -335,36 +335,36 @@ class BusinessDocumentRepositoryImplement implements UserBusinessDocumentReposit
       if (connectivity.$2 == InternetConnectivityState.internet) {
         // Local DB
         // Save to local
-        final Either<RepositoryBaseFailure, BusinessDocumentUploadedEntity> result = await businessDocumentLocalDataSource.add(businessDocumentUploadedEntity);
+        final Either<RepositoryBaseFailure, NewBusinessDocumentEntity> result = await businessDocumentLocalDataSource.add(businessDocumentUploadedEntity);
         // Return result
         return result.fold((l) {
           final RepositoryFailure failure = l as RepositoryFailure;
           appLog.d('Save document local error ${failure.message}');
-          return DataSourceState<BusinessDocumentUploadedEntity>.error(
+          return DataSourceState<NewBusinessDocumentEntity>.error(
             reason: failure.message,
             dataSourceFailure: DataSourceFailure.local,
             stackTrace: failure.stacktrace,
           );
         }, (r) {
-          appLog.d('Save document to local : ${r.documentID}, ${r.documentIDNumber}');
-          return DataSourceState<BusinessDocumentUploadedEntity>.localDb(data: r);
+          appLog.d('Save document to local : ${r.documentID}, ${r.documentIdNumber}');
+          return DataSourceState<NewBusinessDocumentEntity>.localDb(data: r);
         });
       } else {
         // Remote
         // Save to server
-        final ApiResultState<BusinessDocumentUploadedEntity> result =
+        final ApiResultState<NewBusinessDocumentEntity> result =
             await remoteDataSource.saveBusinessDocument(businessDocumentUploadedEntity: businessDocumentUploadedEntity);
         // Return result
         return result.when(
           success: (data) {
             appLog.d('Save document to remote');
-            return DataSourceState<BusinessDocumentUploadedEntity>.remote(
+            return DataSourceState<NewBusinessDocumentEntity>.remote(
               data: data,
             );
           },
           failure: (reason, error, exception, stackTrace) {
             appLog.d('Save document remote error $reason');
-            return DataSourceState<BusinessDocumentUploadedEntity>.error(
+            return DataSourceState<NewBusinessDocumentEntity>.error(
               reason: reason,
               dataSourceFailure: DataSourceFailure.remote,
               stackTrace: stackTrace,
@@ -376,7 +376,7 @@ class BusinessDocumentRepositoryImplement implements UserBusinessDocumentReposit
       }
     } catch (e, s) {
       appLog.d('Save document exception $e');
-      return DataSourceState<BusinessDocumentUploadedEntity>.error(
+      return DataSourceState<NewBusinessDocumentEntity>.error(
         reason: e.toString(),
         dataSourceFailure: DataSourceFailure.local,
         stackTrace: s,

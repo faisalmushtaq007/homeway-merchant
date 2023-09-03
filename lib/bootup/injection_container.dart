@@ -838,8 +838,8 @@ void _setUpRepository() {
   // local db
   serviceLocator.registerSingleton<UserLocalDbRepository<AppUserEntity>>(UserLocalDbRepository<AppUserEntity>());
   serviceLocator.registerSingleton<UserBusinessProfileLocalDbRepository<BusinessProfileEntity>>(UserBusinessProfileLocalDbRepository<BusinessProfileEntity>());
-  serviceLocator.registerSingleton<UserBusinessDocumentLocalDbRepository<BusinessDocumentUploadedEntity>>(
-    UserBusinessDocumentLocalDbRepository<BusinessDocumentUploadedEntity>(),
+  serviceLocator.registerSingleton<UserBusinessDocumentLocalDbRepository<NewBusinessDocumentEntity>>(
+    UserBusinessDocumentLocalDbRepository<NewBusinessDocumentEntity>(),
   );
   serviceLocator.registerSingleton<UserPaymentBankLocalDbRepository<PaymentBankEntity>>(UserPaymentBankLocalDbRepository<PaymentBankEntity>());
   // remote

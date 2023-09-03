@@ -26,7 +26,7 @@ abstract class BaseUserBusinessProfileEntityLocalDbRepository<T extends Business
         GetAll<T>,
         GetAllWithPagination<T> {}
 
-abstract class BaseUserBusinessDocumentEntityLocalDbRepository<T extends BusinessDocumentUploadedEntity>
+abstract class BaseUserBusinessDocumentEntityLocalDbRepository<T extends NewBusinessDocumentEntity>
     implements
         ReadOnlyRepository<T>,
         WriteOnlyRepository<T>,

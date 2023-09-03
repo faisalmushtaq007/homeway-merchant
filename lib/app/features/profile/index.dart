@@ -11,6 +11,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_animarker/helpers/extensions.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:flutter_svg/svg.dart';
@@ -19,6 +20,7 @@ import 'package:google_ml_kit/google_ml_kit.dart';
 import 'package:hive/hive.dart';
 import 'package:homemakers_merchant/app/features/address/index.dart';
 import 'package:homemakers_merchant/app/features/authentication/presentation/manager/phone_number_verification_bloc.dart';
+import 'package:homemakers_merchant/app/features/common/domain/entities/capture_image_entity.dart';
 import 'package:homemakers_merchant/app/features/menu/index.dart';
 import 'package:homemakers_merchant/app/features/payment/index.dart';
 import 'package:homemakers_merchant/app/features/permission/presentation/bloc/permission_bloc.dart';
@@ -83,6 +85,7 @@ import 'package:network_manager/network_manager.dart';
 import 'package:new_image_crop/data/data_editor_config.dart';
 import 'package:new_image_crop/ui/dialog/image_editor_component/image_editor_plane.dart';
 import 'package:phone_form_field/phone_form_field.dart';
+import 'package:sembast/blob.dart';
 import 'package:sembast/sembast.dart';
 import 'package:homemakers_merchant/app/features/profile/presentation/manager/profile/business_profile_bloc.dart';
 import 'package:homemakers_merchant/app/features/profile/presentation/manager/bank/payment_bank_bloc.dart';
@@ -90,6 +93,7 @@ import 'package:homemakers_merchant/app/features/profile/presentation/manager/do
 import 'package:sembast/timestamp.dart';
 import 'package:uuid/uuid.dart';
 import 'package:path/path.dart' as path;
+import 'dart:ui' as ui;
 //Data
 part 'package:homemakers_merchant/app/features/profile/data/local/data_sources/business_type_list_data.dart';
 part 'package:homemakers_merchant/app/features/profile/data/local/data_sources/local_usermodel_service.dart';
@@ -160,3 +164,4 @@ part 'package:homemakers_merchant/app/features/profile/common/document_status_en
 part 'package:homemakers_merchant/app/features/profile/common/profile_status_enum.dart';
 part 'package:homemakers_merchant/app/features/profile/common/document_type_enum.dart';
 part 'package:homemakers_merchant/app/features/profile/common/document_picker_source_enum.dart';
+part 'package:homemakers_merchant/app/features/profile/domain/entities/document/new_business_document_entity.dart';

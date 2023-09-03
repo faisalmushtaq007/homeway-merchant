@@ -492,7 +492,7 @@ class BusinessDocumentBloc extends Bloc<BusinessDocumentEvent, BusinessDocumentS
   Future<void> _assetsRemove(AssetsRemove value, Emitter<BusinessDocumentState> emit) async {}
 
   Future<void> _saveBusinessDocument(SaveBusinessDocument event, Emitter<BusinessDocumentState> emit) async {
-    try {
+    /*try {
       DataSourceState<BusinessDocumentUploadedEntity> result;
       if (event.hasEditBusinessDocument) {
         result = await serviceLocator<EditDocumentUseCase>()(id: event.businessDocumentUploadedEntity.documentID, input: event.businessDocumentUploadedEntity);
@@ -547,7 +547,7 @@ class BusinessDocumentBloc extends Bloc<BusinessDocumentEvent, BusinessDocumentS
           businessDocumentStatus: BusinessDocumentStatus.saveBusinessDocument,
         ),
       );
-    }
+    }*/
   }
 
   Future<void> updateUserProfile(PaymentBankEntity data) async {
@@ -628,7 +628,7 @@ class BusinessDocumentBloc extends Bloc<BusinessDocumentEvent, BusinessDocumentS
   }
 
   Future<void> _deleteBusinessDocument(DeleteBusinessDocument event, Emitter<BusinessDocumentState> emit) async {
-    try {
+    /*try {
       final DataSourceState<bool> result = await serviceLocator<DeleteDocumentUseCase>()(
         input: event.businessDocumentUploadedEntity,
         id: event.documentID,
@@ -680,11 +680,11 @@ class BusinessDocumentBloc extends Bloc<BusinessDocumentEvent, BusinessDocumentS
           businessDocumentStatus: BusinessDocumentStatus.deleteBusinessDocument,
         ),
       );
-    }
+    }*/
   }
 
   Future<void> _getAllBusinessDocument(GetAllBusinessDocument event, Emitter<BusinessDocumentState> emit) async {
-    try {
+    /*try {
       emit(BusinessDocumentLoadingState(message: 'Please wait while we are fetching your profile...'));
       final DataSourceState<List<BusinessDocumentUploadedEntity>> result = await serviceLocator<GetAllDocumentUseCase>()();
       result.when(
@@ -746,11 +746,11 @@ class BusinessDocumentBloc extends Bloc<BusinessDocumentEvent, BusinessDocumentS
           businessDocumentStatus: BusinessDocumentStatus.getAllBusinessDocument,
         ),
       );
-    }
+    }*/
   }
 
   Future<void> _getBusinessDocument(GetBusinessDocument event, Emitter<BusinessDocumentState> emit) async {
-    try {
+    /*try {
       final DataSourceState<BusinessDocumentUploadedEntity> result = await serviceLocator<GetDocumentUseCase>()(
         input: event.businessDocumentUploadedEntity,
         id: event.documentID,
@@ -798,6 +798,6 @@ class BusinessDocumentBloc extends Bloc<BusinessDocumentEvent, BusinessDocumentS
           businessDocumentStatus: BusinessDocumentStatus.getBusinessDocument,
         ),
       );
-    }
+    }*/
   }
 }

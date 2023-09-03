@@ -70,14 +70,14 @@ abstract interface class ProfileDataSource {
     BusinessProfileEntity? businessProfileEntity,
   });
 
-  Future<ApiResultState<BusinessDocumentUploadedEntity>> saveBusinessDocument({
-    required BusinessDocumentUploadedEntity businessDocumentUploadedEntity,
+  Future<ApiResultState<NewBusinessDocumentEntity>> saveBusinessDocument({
+    required NewBusinessDocumentEntity businessDocumentUploadedEntity,
     AppUserEntity? appUserEntity,
   });
 
-  Future<ApiResultState<BusinessDocumentUploadedEntity>> editBusinessDocument({
+  Future<ApiResultState<NewBusinessDocumentEntity>> editBusinessDocument({
     required int documentID,
-    required BusinessDocumentUploadedEntity businessDocumentUploadedEntity,
+    required NewBusinessDocumentEntity businessDocumentUploadedEntity,
     AppUserEntity? appUserEntity,
     int? appUserID,
   });
@@ -86,21 +86,21 @@ abstract interface class ProfileDataSource {
     required int documentID,
     int? appUserID,
     AppUserEntity? appUserEntity,
-    BusinessDocumentUploadedEntity? businessDocumentUploadedEntity,
+    NewBusinessDocumentEntity? businessDocumentUploadedEntity,
   });
 
   Future<ApiResultState<bool>> deleteAllBusinessDocument({
     AppUserEntity? appUserEntity,
   });
 
-  Future<ApiResultState<BusinessDocumentUploadedEntity>> getBusinessDocument({
+  Future<ApiResultState<NewBusinessDocumentEntity>> getBusinessDocument({
     required int documentID,
     int? appUserID,
     AppUserEntity? appUserEntity,
-    BusinessDocumentUploadedEntity? businessDocumentUploadedEntity,
+    NewBusinessDocumentEntity? businessDocumentUploadedEntity,
   });
 
-  Future<ApiResultState<List<BusinessDocumentUploadedEntity>>> getAllBusinessDocument({
+  Future<ApiResultState<List<NewBusinessDocumentEntity>>> getAllBusinessDocument({
     AppUserEntity? appUserEntity,
   });
 
