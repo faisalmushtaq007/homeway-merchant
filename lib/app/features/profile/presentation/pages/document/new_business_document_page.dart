@@ -113,7 +113,7 @@ class _NewBusinessDocumentPageController extends State<NewBusinessDocumentPage> 
       NewBusinessDocumentEntity(
         documentType: captureImageEntity.documentType,
         base64: captureImageEntity.base64Encode,
-        documentID: captureImageEntity.documentID,
+        captureDocumentID: captureImageEntity.captureDocumentID,
         mimeType: captureImageEntity.mimeType,
         networkAssetPath: captureImageEntity.networkUrl,
         documentIdNumber: textEditingControllers[0].value.text.trim(),
@@ -131,7 +131,7 @@ class _NewBusinessDocumentPageController extends State<NewBusinessDocumentPage> 
       NewBusinessDocumentEntity(
         documentType: captureImageEntity.documentType,
         base64: captureImageEntity.base64Encode,
-        documentID: captureImageEntity.documentID,
+        captureDocumentID: captureImageEntity.captureDocumentID,
         mimeType: captureImageEntity.mimeType,
         networkAssetPath: captureImageEntity.networkUrl,
         documentIdNumber: '',
@@ -311,6 +311,7 @@ class _NewBusinessDocumentPageView extends WidgetView<NewBusinessDocumentPage, _
                               documentPlaceHolderImage: 'assets/svg/id_card.svg',
                               animate: false,
                               currentIndex: 0,
+                              businessDocumentUploadedEntity: (widget.businessDocumentEntities.isNotNullOrEmpty) ? widget.businessDocumentEntities[0] : null,
                               selectedImageMetaData: (Map<String, dynamic> metaData, CaptureImageEntity captureImageEntity) {
                                 state.updateIdentityCard(metaData, captureImageEntity);
                                 return;
@@ -431,6 +432,9 @@ class _NewBusinessDocumentPageView extends WidgetView<NewBusinessDocumentPage, _
                               key: const Key('upload-document-trade-license-widget'),
                               documentPlaceHolderImage: 'assets/svg/certificate_1.svg',
                               currentIndex: 1,
+                              businessDocumentUploadedEntity: (widget.businessDocumentEntities.isNotNullOrEmpty && widget.businessDocumentEntities.length >= 2)
+                                  ? widget.businessDocumentEntities[1]
+                                  : null,
                               animate: false,
                               selectedImageMetaData: (Map<String, dynamic> metaData, CaptureImageEntity captureImageEntity) {
                                 state.updateTradeLicenseCard(metaData, captureImageEntity);

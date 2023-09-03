@@ -107,7 +107,7 @@ class AppRouter {
         builder: (context, state) {
           final Map<String, dynamic>? args = state.extra as Map<String, dynamic>?;
           return NewBusinessDocumentPage(
-            businessDocumentEntities: args?['businessDocumentUploadedEntities'] ?? <BusinessDocumentUploadedEntity>[] as List<BusinessDocumentUploadedEntity>,
+            businessDocumentEntities: args?['businessDocumentUploadedEntities'] ?? <NewBusinessDocumentEntity>[] as List<NewBusinessDocumentEntity>,
             hasEditBusinessDocument: args?['hasEditBusinessDocument'] ?? false as bool,
             currentIndex: args?['currentIndex'] ?? -1 as int,
           );

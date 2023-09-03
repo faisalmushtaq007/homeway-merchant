@@ -41,6 +41,7 @@ class _NewBusinessDocumentComponentWidgetController extends State<NewBusinessDoc
     vsync: this,
     duration: const Duration(milliseconds: 500),
   );
+  NewBusinessDocumentEntity? businessDocumentUploadedEntity;
 
   @override
   void initState() {
@@ -50,6 +51,17 @@ class _NewBusinessDocumentComponentWidgetController extends State<NewBusinessDoc
     listBanners = [];
     listBanners.clear();
     if (widget.animate) controller.repeat();
+    if (widget.businessDocumentUploadedEntity.isNotNull) {
+      businessDocumentUploadedEntity = widget.businessDocumentUploadedEntity;
+      /*listBanners.insert(
+        0,
+        BannerModel(
+          imagePath: croppedFilePath,
+          id: businessDocumentUploadedEntity?.captureDocumentID,
+          metaData: metaData,
+        ),
+      );*/
+    }
   }
 
   @override
@@ -80,7 +92,6 @@ class _NewBusinessDocumentComponentWidgetController extends State<NewBusinessDoc
     // Check is Result exists or not
     if (result != null && result.isNotEmpty) {
       // Extarct and store the value
-      appLog.d('Result');
       String filePath = result[0] as String;
       XFile? xCroppedDocumentFile = result[1] as XFile;
       File? croppedDocumentFile = result[2] as File;
@@ -89,7 +100,8 @@ class _NewBusinessDocumentComponentWidgetController extends State<NewBusinessDoc
       String? assetNetworkUrl = result[7] as String?;
       final int timeStamp = DateTime.now().millisecondsSinceEpoch;
       var tempName = 'homeway_document_image_$timeStamp';
-      var fileNameWithExtension = path.basenameWithoutExtension(xCroppedDocumentFile?.path ?? croppedDocumentFile?.path ?? tempName);
+      var fileNameWithExtension = path.basename(xCroppedDocumentFile?.path ?? croppedDocumentFile?.path ?? tempName);
+      var fileNameWithoutExtension = path.basenameWithoutExtension(xCroppedDocumentFile?.path ?? croppedDocumentFile?.path ?? tempName);
       String fileExtension = path.extension(xCroppedDocumentFile?.path ?? croppedDocumentFile?.path ?? '.png');
       String croppedFilePath = (xCroppedDocumentFile.path.isEmpty) ? xCroppedDocumentFile.path : croppedDocumentFile.path;
       final fileReadAsBytes = await file.readAsBytes();
@@ -99,11 +111,12 @@ class _NewBusinessDocumentComponentWidgetController extends State<NewBusinessDoc
       final uuid = const Uuid().v4();
       final String mimeType = xCroppedDocumentFile.mimeType ?? xFile.mimeType ?? 'image/png';
       final Map<String, dynamic> metaData = {
-        'documentID': uuid,
+        'captureDocumentID': uuid,
         'originalFilePath': filePath,
         'croppedFilePath': croppedFilePath,
         'fileExtension': fileExtension,
         'fileNameWithExtension': fileNameWithExtension,
+        'fileName': fileNameWithoutExtension,
         'originalFile': file,
         'xOriginalFile': xFile,
         'xCroppedFile': xCroppedDocumentFile,
@@ -119,6 +132,11 @@ class _NewBusinessDocumentComponentWidgetController extends State<NewBusinessDoc
         'mimeType': mimeType,
       };
       final CaptureImageEntity captureImageEntity = CaptureImageEntity.fromMap(metaData);
+      // Set Only single image, not list of images
+      // when select new image, it will replace the old selected image
+      listBanners = [];
+      listBanners.clear();
+      //
       listBanners.insert(
         0,
         BannerModel(
@@ -156,6 +174,7 @@ class _NewBusinessDocumentComponentWidgetView extends WidgetView<NewBusinessDocu
             onTap: (id) => print(id),
             //width: 250,
             indicatorBottom: false,
+            showIndicator: false,
           ),
           GestureDetector(
             onTap: () {

@@ -7,11 +7,11 @@ import 'package:sembast/blob.dart';
 
 class CaptureImageEntity {
   CaptureImageEntity({
-    required this.documentID,
-    required this.xOriginalFile,
-    required this.originalFile,
-    required this.xCroppedFile,
-    required this.croppedFile,
+    required this.captureDocumentID,
+    this.xOriginalFile,
+    this.originalFile,
+    this.xCroppedFile,
+    this.croppedFile,
     required this.originalFilePath,
     required this.croppedFilePath,
     required this.networkUrl,
@@ -30,14 +30,14 @@ class CaptureImageEntity {
 
   factory CaptureImageEntity.fromMap(Map<String, dynamic> map) {
     return CaptureImageEntity(
-      documentID: map['documentID'] as int,
-      xOriginalFile: map['xOriginalFile'] as XFile,
-      originalFile: map['originalFile'] as File,
-      xCroppedFile: map['xCroppedFile'] as XFile,
-      croppedFile: map['croppedFile'] as File,
+      captureDocumentID: map['captureDocumentID'] as String,
+      xOriginalFile: map['xOriginalFile'] as XFile?,
+      originalFile: map['originalFile'] as File?,
+      xCroppedFile: map['xCroppedFile'] as XFile?,
+      croppedFile: map['croppedFile'] as File?,
       originalFilePath: map['originalFilePath'] as String,
       croppedFilePath: map['croppedFilePath'] as String,
-      networkUrl: map['networkUrl'] as String,
+      networkUrl: map['networkUrl'] ?? '',
       fileName: map['fileName'] as String,
       fileNameWithExtension: map['fileNameWithExtension'] as String,
       fileExtension: map['fileExtension'] as String,
@@ -52,11 +52,11 @@ class CaptureImageEntity {
     );
   }
 
-  int documentID;
-  XFile xOriginalFile;
-  File originalFile;
-  XFile xCroppedFile;
-  File croppedFile;
+  String captureDocumentID;
+  XFile? xOriginalFile;
+  File? originalFile;
+  XFile? xCroppedFile;
+  File? croppedFile;
   String originalFilePath;
   String croppedFilePath;
   String networkUrl;
@@ -73,7 +73,6 @@ class CaptureImageEntity {
   String mimeType;
 
   CaptureImageEntity copyWith({
-    int? documentID,
     XFile? xOriginalFile,
     File? originalFile,
     XFile? xCroppedFile,
@@ -92,9 +91,9 @@ class CaptureImageEntity {
     Blob? blob,
     String? base64Encode,
     String? mimeType,
+    String? captureDocumentID,
   }) {
     return CaptureImageEntity(
-      documentID: documentID ?? this.documentID,
       xOriginalFile: xOriginalFile ?? this.xOriginalFile,
       originalFile: originalFile ?? this.originalFile,
       xCroppedFile: xCroppedFile ?? this.xCroppedFile,
@@ -113,12 +112,13 @@ class CaptureImageEntity {
       blob: blob ?? this.blob,
       base64Encode: base64Encode ?? this.base64Encode,
       mimeType: mimeType ?? this.mimeType,
+      captureDocumentID: captureDocumentID ?? this.captureDocumentID,
     );
   }
 
   Map<String, dynamic> toMap() {
     return {
-      'documentID': documentID,
+      'captureDocumentID': captureDocumentID,
       //'xOriginalFile': xOriginalFile,
       //'originalFile': originalFile,
       //'xCroppedFile': xCroppedFile,
