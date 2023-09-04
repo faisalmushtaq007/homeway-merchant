@@ -90,6 +90,7 @@ abstract class Routes {
   static const String WITHDRAWAL_PAGE = _Paths.WITHDRAWAL_PAGE;
   static const String WITHDRAWAL_FORM_PAGE = _Paths.WITHDRAWAL_FORM_PAGE;
   static const String NEW_DOCUMENT_LIST_PAGE = _Paths.NEW_DOCUMENT_LIST_PAGE;
+  static const String CHAT_PAGE = _Paths.CHAT_PAGE;
 }
 
 abstract class _Paths {
@@ -179,4 +180,5 @@ abstract class _Paths {
   static const String WITHDRAWAL_PAGE = '/withdrawal';
   static const String WITHDRAWAL_FORM_PAGE = '/withdrawal-form-page';
   static const String NEW_DOCUMENT_LIST_PAGE = '/new-document-upload';
+  static const String CHAT_PAGE = '/chat';
 }

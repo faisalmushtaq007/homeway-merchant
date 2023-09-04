@@ -11,6 +11,7 @@ import 'package:homemakers_merchant/app/features/authentication/presentation/pag
 import 'package:homemakers_merchant/app/features/authentication/presentation/pages/phone_number_verification_page.dart';
 import 'package:homemakers_merchant/app/features/authentication/presentation/pages/privacy_and_policy_view.dart';
 import 'package:homemakers_merchant/app/features/authentication/presentation/pages/terms_and_conditions_view.dart';
+import 'package:homemakers_merchant/app/features/chat/index.dart';
 import 'package:homemakers_merchant/app/features/dashboard/index.dart';
 import 'package:homemakers_merchant/app/features/faq/index.dart';
 import 'package:homemakers_merchant/app/features/menu/index.dart';
@@ -35,7 +36,7 @@ class AppRouter {
 
   AppRouter._();
 
-  static const String INITIAL = Routes.NEW_DOCUMENT_LIST_PAGE;
+  static const String INITIAL = Routes.CHAT_PAGE;
 
   static final GoRouter _router = GoRouter(
     debugLogDiagnostics: true,
@@ -486,6 +487,13 @@ class AppRouter {
         builder: (context, state) {
           final Map<String, dynamic>? args = state.extra as Map<String, dynamic>?;
           return WithdrawalFormPage();
+        },
+      ),
+      GoRoute(
+        path: Routes.CHAT_PAGE,
+        builder: (context, state) {
+          final Map<String, dynamic>? args = state.extra as Map<String, dynamic>?;
+          return RoomsPage();
         },
       ),
     ],

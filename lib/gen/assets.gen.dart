@@ -196,7 +196,36 @@ class $AssetsSvgGen {
   SvgGenImage get applogodark =>
       const SvgGenImage('assets/svg/applogodark.svg');
 
+  /// File path: assets/svg/category.svg
+  SvgGenImage get category => const SvgGenImage('assets/svg/category.svg');
+
+  /// File path: assets/svg/certificate.svg
+  SvgGenImage get certificate =>
+      const SvgGenImage('assets/svg/certificate.svg');
+
+  /// File path: assets/svg/certificate_1.svg
+  SvgGenImage get certificate1 =>
+      const SvgGenImage('assets/svg/certificate_1.svg');
+
+  /// File path: assets/svg/dashboard_stars.svg
+  SvgGenImage get dashboardStars =>
+      const SvgGenImage('assets/svg/dashboard_stars.svg');
+
+  /// File path: assets/svg/driver_found.svg
+  SvgGenImage get driverFound =>
+      const SvgGenImage('assets/svg/driver_found.svg');
+
   $AssetsSvgFlagsGen get flags => const $AssetsSvgFlagsGen();
+
+  /// File path: assets/svg/food_car.svg
+  SvgGenImage get foodCar => const SvgGenImage('assets/svg/food_car.svg');
+
+  /// File path: assets/svg/food_motorbike.svg
+  SvgGenImage get foodMotorbike =>
+      const SvgGenImage('assets/svg/food_motorbike.svg');
+
+  /// File path: assets/svg/food_truck.svg
+  SvgGenImage get foodTruck => const SvgGenImage('assets/svg/food_truck.svg');
 
   /// File path: assets/svg/home_address.svg
   SvgGenImage get homeAddress =>
@@ -206,6 +235,9 @@ class $AssetsSvgGen {
   SvgGenImage get homeChefType =>
       const SvgGenImage('assets/svg/home_chef_type.svg');
 
+  /// File path: assets/svg/id_card.svg
+  SvgGenImage get idCard => const SvgGenImage('assets/svg/id_card.svg');
+
   /// File path: assets/svg/mail.svg
   SvgGenImage get mail => const SvgGenImage('assets/svg/mail.svg');
 
@@ -213,9 +245,15 @@ class $AssetsSvgGen {
   SvgGenImage get offlineDriver =>
       const SvgGenImage('assets/svg/offline_driver.svg');
 
+  /// File path: assets/svg/on_the_way.svg
+  SvgGenImage get onTheWay => const SvgGenImage('assets/svg/on_the_way.svg');
+
   /// File path: assets/svg/online_driver.svg
   SvgGenImage get onlineDriver =>
       const SvgGenImage('assets/svg/online_driver.svg');
+
+  /// File path: assets/svg/rating_star.svg
+  SvgGenImage get ratingStar => const SvgGenImage('assets/svg/rating_star.svg');
 
   /// File path: assets/svg/receive.svg
   SvgGenImage get receive => const SvgGenImage('assets/svg/receive.svg');
@@ -223,6 +261,9 @@ class $AssetsSvgGen {
   /// File path: assets/svg/restaurant_type.svg
   SvgGenImage get restaurantType =>
       const SvgGenImage('assets/svg/restaurant_type.svg');
+
+  /// File path: assets/svg/selfie.svg
+  SvgGenImage get selfie => const SvgGenImage('assets/svg/selfie.svg');
 
   /// File path: assets/svg/sorry-image-not-available.svg
   SvgGenImage get sorryImageNotAvailable =>
@@ -232,19 +273,48 @@ class $AssetsSvgGen {
   SvgGenImage get splashbackground =>
       const SvgGenImage('assets/svg/splashbackground.svg');
 
+  /// File path: assets/svg/sub_category.svg
+  SvgGenImage get subCategory =>
+      const SvgGenImage('assets/svg/sub_category.svg');
+
+  /// File path: assets/svg/unknown.svg
+  SvgGenImage get unknown => const SvgGenImage('assets/svg/unknown.svg');
+
+  /// File path: assets/svg/user_avatar.svg
+  SvgGenImage get userAvatar => const SvgGenImage('assets/svg/user_avatar.svg');
+
+  /// File path: assets/svg/user_logo.svg
+  SvgGenImage get userLogo => const SvgGenImage('assets/svg/user_logo.svg');
+
   /// List of all assets
   List<SvgGenImage> get values => [
         applogo,
         applogodark,
+        category,
+        certificate,
+        certificate1,
+        dashboardStars,
+        driverFound,
+        foodCar,
+        foodMotorbike,
+        foodTruck,
         homeAddress,
         homeChefType,
+        idCard,
         mail,
         offlineDriver,
+        onTheWay,
         onlineDriver,
+        ratingStar,
         receive,
         restaurantType,
+        selfie,
         sorryImageNotAvailable,
-        splashbackground
+        splashbackground,
+        subCategory,
+        unknown,
+        userAvatar,
+        userLogo
       ];
 }
 
@@ -267,10 +337,16 @@ class $AssetsSvgFlagsGen {
 class Assets {
   Assets._();
 
+  static const String dummyTackingData = 'assets/dummy_tacking_data.json';
+  static const String dummyTranscationData =
+      'assets/dummy_transcation_data.json';
   static const $AssetsImageGen image = $AssetsImageGen();
   static const $AssetsLottieGen lottie = $AssetsLottieGen();
   static const $AssetsSvgGen svg = $AssetsSvgGen();
   static const $GoogleFontsGen googleFonts = $GoogleFontsGen();
+
+  /// List of all assets
+  List<String> get values => [dummyTackingData, dummyTranscationData];
 }
 
 class AssetGenImage {
