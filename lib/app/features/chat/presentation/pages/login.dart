@@ -1,41 +1,42 @@
-import 'package:cross_file/cross_file.dart';
+import 'dart:async';
+import 'dart:convert';
+
 import 'package:dart_jsonwebtoken/dart_jsonwebtoken.dart';
 import 'package:faker/faker.dart';
-import 'dart:io';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/services.dart' show rootBundle;
 import 'package:homemakers_merchant/app/features/chat/domain/entities/chat_types_entity.dart';
 import 'package:homemakers_merchant/app/features/chat/index.dart';
+import 'package:homemakers_merchant/bootup/injection_container.dart';
 import 'package:homemakers_merchant/core/extensions/global_extensions/src/object.dart';
+import 'package:homemakers_merchant/core/network/http/base_response_error_model.dart';
+import 'package:network_manager/network_manager.dart';
+import 'package:http/http.dart' as http;
 
 class LoginFirebaseUser {
   String token = '';
 
-  String generateToken() {
-    final jwt = JWT(
-      {
-        "id": "1234",
-        "alg": "rsa256",
-        "auth": "547533381",
-        "server": {
-          "id": "merchant-dev",
-          "loc": "euw-2",
+  Future<String> generateToken() async {
+    final jwt = JWT({
+      "id": "1234567890",
+      "auth": "547533381",
+      "iat": 1693835824,
+      "exp": 1694161618,
+      "uid": "1234567890",
+    },
+        header: {
+          "alg": "rsa256",
+          "typ": "JWT"
         },
-        "iss": "prasant10050@gmail.com",
-        "sub": "prasant10050@gmail.com",
-        "aud": "https://identitytoolkit.googleapis.com/google.identity.identitytoolkit.v1.IdentityToolkit",
-        "iat": 1693835824,
-        "exp": 1694161618,
-        "uid": "1234"
-      },
-      issuer: "prasant10050@gmail.com",
-      subject: "prasant10050@gmail.com",
-      audience: Audience(["https://identitytoolkit.googleapis.com/google.identity.identitytoolkit.v1.IdentityToolkit"]),
-    );
+        issuer: "prasant10050@gmail.com",
+        audience: Audience(["https://identitytoolkit.googleapis.com/google.identity.identitytoolkit.v1.IdentityToolkit"]),
+        subject: "prasant10050@gmail.com",
+        jwtId: "1234567890");
 
     // Sign it
-
-    final pem = File('secrets/rsa_private.pem').readAsStringSync();
-    final key = RSAPrivateKey(pem);
+    final privatePem = await rootBundle.loadString('assets/secrets/rsa_private.pem');
+    //final pem = File('secrets/rsa_private.pem').readAsStringSync();
+    final key = RSAPrivateKey(privatePem);
 
     token = jwt.sign(key, algorithm: JWTAlgorithm.RS256);
 
@@ -43,11 +44,14 @@ class LoginFirebaseUser {
     return token;
   }
 
-  void verifyToken(String token) {
+  Future<void> verifyToken(String token) async {
     try {
       // Verify a token
-      final pem = File('secrets/rsa_public.pem').readAsStringSync();
-      final key = RSAPublicKey(pem);
+
+      final publicPem = await rootBundle.loadString('assets/secrets/rsa_public.pem');
+      //final publicKey = RSAKeyParser().parse(publicPem) as RSAPublicKey;
+      //final pem = File('secrets/rsa_public.pem').readAsStringSync();
+      final key = RSAPublicKey(publicPem);
 
       final jwt = JWT.verify(token, key);
 
@@ -79,8 +83,13 @@ class LoginFirebaseUser {
     }
   }
 
-  Future<void> registerUser() async {
-    String token = await generateToken();
+  Future<void> registerUser(String uid) async {
+    final url = Uri.parse("http://192.168.0.105:3000/users/token?uid=${uid}");
+    http.Response response = await http.get(url);
+    print("response ${response.statusCode}, ${response.body}");
+    var data = jsonDecode(response.body) as Map<String, dynamic>;
+    String token = data['auth_token'];
+    print("token ${token}");
     final userCredential = await loginWithFirebaseCustomToken(token);
     if (userCredential.isNotNull) {
       final faker = Faker();

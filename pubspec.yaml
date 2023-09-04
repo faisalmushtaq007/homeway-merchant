@@ -243,9 +243,6 @@ flutter_launcher_icons:
     generate: true
     image_path: "assets/image/homeway_icon.png"
 
-false_secrets:
-  - secrets/
-
 flutter:
   uses-material-design: true
   generate: true

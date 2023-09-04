@@ -32,7 +32,7 @@ class _RoomsPageState extends State<RoomsPage> {
       setState(() {
         _error = true;
       });
-      await LoginFirebaseUser().registerUser();
+      await LoginFirebaseUser().registerUser('547533381');
       await initializeFlutterFire();
     }
   }
@@ -92,8 +92,9 @@ class _RoomsPageState extends State<RoomsPage> {
             icon: const Icon(Icons.add),
             onPressed: _user == null
                 ? null
-                : () {
-                    LoginFirebaseUser().registerUser();
+                : () async {
+                    LoginFirebaseUser().registerUser('547533382');
+                    //await initializeFlutterFire();
                   },
           ),
         ],
@@ -116,7 +117,7 @@ class _RoomsPageState extends State<RoomsPage> {
                   const Text('Not authenticated'),
                   TextButton(
                     onPressed: () async {
-                      await LoginFirebaseUser().registerUser();
+                      await LoginFirebaseUser().registerUser('547533381');
                       await initializeFlutterFire();
                     },
                     child: const Text('Login'),

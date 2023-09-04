@@ -44,6 +44,7 @@ import 'package:homemakers_merchant/shared/widgets/universal/wrap_and_more/src/w
 import 'package:homemakers_merchant/theme/theme_controller.dart';
 import 'package:homemakers_merchant/theme/theme_service.dart';
 import 'package:homemakers_merchant/theme/theme_service_hive.dart';
+import 'package:homemakers_merchant/utils/universal_platform/src/universal_platform.dart';
 import 'package:network_manager/network_manager.dart';
 
 GetIt serviceLocator = GetIt.instance;
@@ -214,7 +215,24 @@ void _setUpService() {
           serviceLocator<FreshTokenInterceptor<OAuth2Token>>(),
         ],
       ),
-    );
+    )
+    ..registerFactory<INetworkManager<BaseResponseErrorModel>>(
+        () => NetworkManager<BaseResponseErrorModel>(
+              isEnableLogger: true,
+              options: BaseOptions(
+                baseUrl: 'http://localhost:3000',
+              ),
+              //This is optional.
+              errorModel: BaseResponseErrorModel(),
+              /*errorModelFromData: (data) {
+
+        },*/
+              fileManager: LocalSembast(),
+              additionalInterceptors: [
+                serviceLocator<FreshTokenInterceptor<OAuth2Token>>(),
+              ],
+            ),
+        instanceName: 'localhost');
 }
 
 void _setUpUseCases() {
