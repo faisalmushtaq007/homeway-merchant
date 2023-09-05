@@ -59,49 +59,32 @@ class _ChatPageState extends State<ChatPage> {
   }
 
   void _handleFileSelection() async {
-    const XTypeGroup jpgsTypeGroup = XTypeGroup(
-      label: 'PDFs',
-      extensions: <String>['pdf', 'doc', 'docx', 'xlsx', 'ppt', 'txt', 'xls', 'pptx'],
+    final result = await FilePicker.platform.pickFiles(
+      type: FileType.any,
     );
-    const XTypeGroup pngTypeGroup = XTypeGroup(
-      label: 'PNGs',
-      extensions: <String>['png', 'jpg', 'jpeg'],
-    );
-    final XFile? xFile = await openFile(acceptedTypeGroups: <XTypeGroup>[
-      jpgsTypeGroup,
-      pngTypeGroup,
-    ]);
-    // #enddocregion MultiOpen
-    if (xFile.isNull) {
-      // Operation was canceled by the user.
-      return;
-    } else {
-      if (xFile.isNotNull && !xFile!.path.isEmptyOrNull) {
-        print('File Path ${xFile.path}');
-        _setAttachmentUploading(true);
-        var fileNameWithoutExtension = path.basenameWithoutExtension(xFile.path);
-        final name = fileNameWithoutExtension;
-        print('File name ${name}');
-        final filePath = xFile.path;
-        final file = File(filePath);
-        print('File Byte ${await xFile.length()}, ${await file.length()}, ${file.absolute.existsSync()}');
-        try {
-          final reference = FirebaseStorage.instance.ref(name);
-          await reference.putFile(file);
-          final uri = await reference.getDownloadURL();
-          final bytes = await xFile.readAsBytes();
-          final message = PartialFile(
-            mimeType: lookupMimeType(filePath),
-            name: name,
-            size: bytes.lengthInBytes,
-            uri: uri,
-          );
 
-          FirebaseChatCore.instance.sendMessage(message, widget.room.id);
-          _setAttachmentUploading(false);
-        } finally {
-          _setAttachmentUploading(false);
-        }
+    if (result != null && result.files.single.path != null) {
+      _setAttachmentUploading(true);
+      final name = result.files.single.name;
+      final filePath = result.files.single.path!;
+      final file = File(filePath);
+
+      try {
+        final reference = FirebaseStorage.instance.ref(name);
+        await reference.putFile(file);
+        final uri = await reference.getDownloadURL();
+
+        final message = types.PartialFile(
+          mimeType: lookupMimeType(filePath),
+          name: name,
+          size: result.files.single.size,
+          uri: uri,
+        );
+
+        FirebaseChatCore.instance.sendMessage(message, widget.room.id);
+        _setAttachmentUploading(false);
+      } finally {
+        _setAttachmentUploading(false);
       }
     }
   }
