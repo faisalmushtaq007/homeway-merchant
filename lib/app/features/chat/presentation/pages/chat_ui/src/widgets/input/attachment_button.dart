@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 
-import '../state/inherited_chat_theme.dart';
-import '../state/inherited_l10n.dart';
+import 'package:homemakers_merchant/app/features/chat/presentation/pages/chat_ui/src/widgets/state/inherited_chat_theme.dart';
+import 'package:homemakers_merchant/app/features/chat/presentation/pages/chat_ui/src/widgets/state/inherited_l10n.dart';
+import 'package:homemakers_merchant/core/extensions/app_extension.dart';
+import 'package:homemakers_merchant/shared/widgets/universal/image_loader/image_helper.dart';
+import 'package:homemakers_merchant/utils/image_type.dart';
 
 /// A class that represents attachment button widget.
 class AttachmentButton extends StatelessWidget {
@@ -49,16 +52,27 @@ class AttachmentButton extends StatelessWidget {
                   ),
                 )
               : InheritedChatTheme.of(context).theme.attachmentButtonIcon ??
-                  Image.asset(
-                    'assets/icon-attachment.png',
-                    color: InheritedChatTheme.of(context).theme.inputTextColor,
-                    package: 'flutter_chat_ui',
+                  ImageHelper(
+                    image: 'assets/image/icon-attachment.png',
+                    filterQuality: FilterQuality.high,
+                    borderRadius: BorderRadiusDirectional.circular(10),
+                    imageType: findImageType('assets/image/icon-attachment.png'),
+                    imageShape: ImageShape.rectangle,
+                    color: context.colorScheme.primary,
+                    boxFit: BoxFit.cover,
+                    defaultErrorBuilderColor: Colors.blueGrey,
+                    errorBuilder: const Icon(
+                      Icons.image_not_supported,
+                      size: 10000,
+                    ),
+                    height: 20,
+                    width: 20,
+                    loaderBuilder: const CircularProgressIndicator(),
                   ),
           onPressed: isLoading ? null : onPressed,
           padding: padding,
           splashRadius: 24,
-          tooltip:
-              InheritedL10n.of(context).l10n.attachmentButtonAccessibilityLabel,
+          tooltip: InheritedL10n.of(context).l10n.attachmentButtonAccessibilityLabel,
         ),
       );
 }

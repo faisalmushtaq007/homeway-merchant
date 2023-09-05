@@ -14,17 +14,17 @@ ImageType findImageType(String? assetsPath) {
         {
           return ImageType.file;
         }
-      case (final String path) when path.contains('.jpg') || path.contains('.png'):
-        {
-          return ImageType.file;
-        }
-      case (final String path) when path.contains('.svg') || assetsPath.contains('assets/svg/'):
+      case (final String path) when path.contains('.svg') || assetsPath.contains('assets/svg/') || assetsPath.startsWith('assets/svg/'):
         {
           return ImageType.svg;
         }
       case (final String path) when path.startsWith('assets/') || path.contains('assets/image'):
         {
           return ImageType.asset;
+        }
+      case (final String path) when path.contains('.jpg') || path.contains('.png'):
+        {
+          return ImageType.file;
         }
       case _:
         {

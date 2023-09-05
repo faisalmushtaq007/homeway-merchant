@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'dart:io';
 import 'package:collection/collection.dart';
-import 'package:google_ml_kit/google_ml_kit.dart';
 import 'package:google_mlkit_text_recognition/google_mlkit_text_recognition.dart';
 import 'package:bloc/bloc.dart';
 import 'package:bloc_concurrency/bloc_concurrency.dart';
@@ -202,10 +201,6 @@ class BusinessDocumentBloc extends Bloc<BusinessDocumentEvent, BusinessDocumentS
       _saveCropDocument,
       transformer: sequential(),
     );*/
-    final TextRecognizer textRecognizer = GoogleMlKit.vision.textRecognizer(); //TextRecognizer(script: TextRecognitionScript.latin);
-    bool canProcess = true;
-    bool isBusy = false;
-    CustomPaint? _customPaint;
   }
 
   final ImagePicker _picker = ImagePicker();
@@ -470,22 +465,6 @@ class BusinessDocumentBloc extends Bloc<BusinessDocumentEvent, BusinessDocumentS
         reason: '$e',
         stackTrace: s,
       ));
-    }
-  }
-
-  Future<void> processImage(InputImage inputImage) async {
-    final TextRecognizer _textRecognizer = GoogleMlKit.vision.textRecognizer();
-    String _text = '';
-    CustomPaint? _customPaint;
-    final recognizedText = await _textRecognizer.processImage(inputImage);
-    if (inputImage.metadata?.size != null && inputImage.metadata?.rotation != null) {
-      final painter = TextRecognizerPainter(recognizedText, inputImage.metadata!.size, inputImage.metadata!.rotation);
-      _customPaint = CustomPaint(painter: painter);
-    } else {
-      _text = 'Recognized text:\n\n${recognizedText.text}';
-      // TODO(prasant): set _customPaint to draw boundingRect on top of image
-      _customPaint = null;
-      appLog.d(_text);
     }
   }
 

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:homemakers_merchant/app/features/chat/domain/entities/chat_types_entity.dart' as types;
+import 'package:homemakers_merchant/bootup/injection_container.dart';
+import 'package:homemakers_merchant/config/translation/language_controller.dart';
 import '../../models/input_clear_mode.dart';
 import '../../models/send_button_visibility_mode.dart';
 import '../../util.dart';
@@ -117,9 +119,9 @@ class _InputState extends State<Input> {
         : EdgeInsets.zero;
     final textPadding = InheritedChatTheme.of(context).theme.inputPadding.copyWith(left: 0, right: 0).add(
           EdgeInsets.fromLTRB(
-            widget.onAttachmentPressed != null ? 0 : 24,
+            widget.onAttachmentPressed != null ? 0 : 16,
             0,
-            _sendButtonVisible ? 0 : 24,
+            _sendButtonVisible ? 0 : 16,
             0,
           ),
         );
@@ -135,7 +137,7 @@ class _InputState extends State<Input> {
             decoration: InheritedChatTheme.of(context).theme.inputContainerDecoration,
             padding: safeAreaInsets,
             child: Row(
-              textDirection: TextDirection.ltr,
+              textDirection: serviceLocator<LanguageController>().targetTextDirection,
               children: [
                 if (widget.onAttachmentPressed != null)
                   AttachmentButton(
@@ -154,11 +156,11 @@ class _InputState extends State<Input> {
                       controller: _textController,
                       cursorColor: InheritedChatTheme.of(context).theme.inputTextCursorColor,
                       decoration: InheritedChatTheme.of(context).theme.inputTextDecoration.copyWith(
-                            hintStyle: InheritedChatTheme.of(context).theme.inputTextStyle.copyWith(
-                                  color: InheritedChatTheme.of(context).theme.inputTextColor.withOpacity(0.5),
-                                ),
-                            hintText: InheritedL10n.of(context).l10n.inputPlaceholder,
-                          ),
+                          hintStyle: InheritedChatTheme.of(context).theme.inputTextStyle.copyWith(
+                                color: InheritedChatTheme.of(context).theme.inputTextColor.withOpacity(0.5),
+                              ),
+                          hintText: InheritedL10n.of(context).l10n.inputPlaceholder,
+                          contentPadding: const EdgeInsetsDirectional.symmetric(horizontal: 12, vertical: 8)),
                       focusNode: _inputFocusNode,
                       keyboardType: widget.options.keyboardType,
                       maxLines: 5,

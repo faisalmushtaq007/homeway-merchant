@@ -4,7 +4,8 @@ import 'dart:convert';
 import 'package:async/async.dart';
 import 'package:async/async.dart' show StreamGroup;
 import 'package:flutter_background_executor/flutter_background_executor.dart';
-import 'package:google_ml_kit/google_ml_kit.dart';
+import 'package:google_mlkit_language_id/google_mlkit_language_id.dart';
+import 'package:google_mlkit_translation/google_mlkit_translation.dart';
 import 'package:homemakers_merchant/config/translation/language.dart';
 import 'package:homemakers_merchant/config/translation/language_service.dart';
 import 'package:homemakers_merchant/config/translation/widgets/constants.dart';
@@ -15,11 +16,9 @@ import 'package:rxdart/rxdart.dart';
 
 mixin class EnglishLanguage {
   final backgroundEnglishLanguageExecutor = FlutterBackgroundExecutor();
-  StreamController<Language> englishLanguageStreamController =
-      StreamController<Language>.broadcast();
+  StreamController<Language> englishLanguageStreamController = StreamController<Language>.broadcast();
 
-  Stream<Language> get englishLanguageStream =>
-      englishLanguageStreamController.stream;
+  Stream<Language> get englishLanguageStream => englishLanguageStreamController.stream;
   bool hasEnglishLanguageDownload = false;
   late final Language englishLanguage;
 
@@ -34,8 +33,7 @@ mixin class EnglishLanguage {
       'com.homemakers.merchant.english_language_download.task',
     );
     if (isTaskRunning) {
-      final hasStopExecutingTask =
-          await backgroundEnglishLanguageExecutor.stopExecutingTask(
+      final hasStopExecutingTask = await backgroundEnglishLanguageExecutor.stopExecutingTask(
         'com.homemakers.merchant.english_language_download.task',
       );
       if (hasStopExecutingTask) {
@@ -48,8 +46,7 @@ mixin class EnglishLanguage {
 
   Future<void> startEnglishTranslateModelDownload() async {
     appLog.d('startEnglishTranslateModelDownload');
-    final result =
-        await backgroundEnglishLanguageExecutor.runImmediatelyBackgroundTask(
+    final result = await backgroundEnglishLanguageExecutor.runImmediatelyBackgroundTask(
       callback: immediatelyDownloadEnglishSourceModel,
       cancellable: true,
       withMessages: true,
@@ -65,8 +62,7 @@ mixin class EnglishLanguage {
     englishLanguageStreamController.add(newLanguage);
     backgroundEnglishLanguageExecutor.createConnector().messageStream.listen(
       (status) {
-        appLog.d(
-            'listenEnglishLanguageDownloadingStream listen status ${status}');
+        appLog.d('listenEnglishLanguageDownloadingStream listen status ${status}');
         if (status != null && jsonDecode(status.content) == true) {
           final Language newLanguage = englishLanguage.copyWith(
             languageDownloadStatus: LanguageDownloadStatus.downloaded,
@@ -108,11 +104,9 @@ mixin class EnglishLanguage {
 
 mixin class ArabicLanguage {
   final backgroundArabicLanguageExecutor = FlutterBackgroundExecutor();
-  StreamController<Language> arabicLanguageStreamController =
-      StreamController<Language>.broadcast();
+  StreamController<Language> arabicLanguageStreamController = StreamController<Language>.broadcast();
 
-  Stream<Language> get arabicLanguageStream =>
-      arabicLanguageStreamController.stream;
+  Stream<Language> get arabicLanguageStream => arabicLanguageStreamController.stream;
   bool hasArabicLanguageDownload = false;
   late final Language arabicLanguage;
 
@@ -127,8 +121,7 @@ mixin class ArabicLanguage {
       'com.homemakers.merchant.arabic_language_download.task',
     );
     if (isTaskRunning) {
-      final hasStopExecutingTask =
-          await backgroundArabicLanguageExecutor.stopExecutingTask(
+      final hasStopExecutingTask = await backgroundArabicLanguageExecutor.stopExecutingTask(
         'com.homemakers.merchant.arabic_language_download.task',
       );
       if (hasStopExecutingTask) {
@@ -141,8 +134,7 @@ mixin class ArabicLanguage {
 
   Future<void> startArabicTranslateModelDownload() async {
     appLog.d('startArabicTranslateModelDownload');
-    final result =
-        await backgroundArabicLanguageExecutor.runImmediatelyBackgroundTask(
+    final result = await backgroundArabicLanguageExecutor.runImmediatelyBackgroundTask(
       callback: immediatelyDownloadArabicSourceModel,
       cancellable: true,
       withMessages: true,
@@ -158,8 +150,7 @@ mixin class ArabicLanguage {
     arabicLanguageStreamController.add(newLanguage);
     backgroundArabicLanguageExecutor.createConnector().messageStream.listen(
       (status) {
-        appLog.d(
-            'listenArabicLanguageDownloadingStream listen status ${jsonDecode(status.content)}');
+        appLog.d('listenArabicLanguageDownloadingStream listen status ${jsonDecode(status.content)}');
         if (status != null && jsonDecode(status.content) == true) {
           final Language newLanguage = arabicLanguage.copyWith(
             languageDownloadStatus: LanguageDownloadStatus.downloaded,
@@ -211,31 +202,25 @@ class MultipleLanguageDownload with EnglishLanguage, ArabicLanguage {
 
   MultipleLanguageDownload._privateConstructor();
 
-  static final MultipleLanguageDownload _instance =
-      MultipleLanguageDownload._privateConstructor();
+  static final MultipleLanguageDownload _instance = MultipleLanguageDownload._privateConstructor();
 
   static MultipleLanguageDownload get instance => _instance;
   late final ILanguageService languageService;
   late final String boxName;
-  final OnDeviceTranslatorModelManager modelManager =
-      OnDeviceTranslatorModelManager();
+  final OnDeviceTranslatorModelManager modelManager = OnDeviceTranslatorModelManager();
   late OnDeviceTranslator onDeviceTranslator;
 
   List<Language> appLanguagesStatus = [];
   Map<TranslateLanguage, LanguageDownloadStatus> mapOfTranslateLanguage = {};
 
   // All languages
-  StreamController<Map<TranslateLanguage, Language>>
-      allLanguageSteamController =
-      StreamController<Map<TranslateLanguage, Language>>.broadcast();
+  StreamController<Map<TranslateLanguage, Language>> allLanguageSteamController = StreamController<Map<TranslateLanguage, Language>>.broadcast();
 
-  Stream<Map<TranslateLanguage, Language>> get allLanguageSteam =>
-      allLanguageSteamController.stream;
+  Stream<Map<TranslateLanguage, Language>> get allLanguageSteam => allLanguageSteamController.stream;
 
   // Init
   Future<void> init() async {
-    appLanguagesStatus =
-        List<Language>.from(GlobalApp.defaultLanguages.toList());
+    appLanguagesStatus = List<Language>.from(GlobalApp.defaultLanguages.toList());
     await loadLanguages();
     return;
   }
@@ -253,11 +238,9 @@ class MultipleLanguageDownload with EnglishLanguage, ArabicLanguage {
         // download english language
         await startEnglishTranslateModelDownload();
         // Listen english language
-        final Stream<Language> englishLanguage =
-            listenEnglishLanguageDownloadingStream();
+        final Stream<Language> englishLanguage = listenEnglishLanguageDownloadingStream();
         englishLanguage.listen((event) {
-          appLog.d(
-              'englishLanguage listen ${event.sourceLanguage}-${event.languageDownloadStatus}');
+          appLog.d('englishLanguage listen ${event.sourceLanguage}-${event.languageDownloadStatus}');
           allLanguageSteamController.add({TranslateLanguage.english: event});
           mapOfTranslateLanguage = {
             TranslateLanguage.english: event.languageDownloadStatus,
@@ -274,11 +257,9 @@ class MultipleLanguageDownload with EnglishLanguage, ArabicLanguage {
         // download arabic language
         await startArabicTranslateModelDownload();
         // Listen arabic language
-        final Stream<Language> arabicLanguage =
-            listenArabicLanguageDownloadingStream();
+        final Stream<Language> arabicLanguage = listenArabicLanguageDownloadingStream();
         arabicLanguage.listen((event) {
-          appLog.d(
-              'arabicLanguage listen ${event.sourceLanguage}-${event.languageDownloadStatus}');
+          appLog.d('arabicLanguage listen ${event.sourceLanguage}-${event.languageDownloadStatus}');
           allLanguageSteamController.add({TranslateLanguage.arabic: event});
           mapOfTranslateLanguage = {
             TranslateLanguage.arabic: event.languageDownloadStatus,
@@ -291,9 +272,7 @@ class MultipleLanguageDownload with EnglishLanguage, ArabicLanguage {
   Future<bool> hasLanguageModelDownloaded({
     required TranslateLanguage sourceLanguage,
   }) async {
-    final bool hasDownloaded = await MultipleLanguageDownload
-        .instance.modelManager
-        .isModelDownloaded(sourceLanguage.bcpCode);
+    final bool hasDownloaded = await MultipleLanguageDownload.instance.modelManager.isModelDownloaded(sourceLanguage.bcpCode);
 
     return hasDownloaded;
   }
@@ -307,9 +286,8 @@ class MultipleLanguageDownload with EnglishLanguage, ArabicLanguage {
 Future<void> immediatelyDownloadEnglishSourceModel(
   EngineConnector? connector,
 ) async {
-  final bool hasEnglishSourceModelDownloaded = await MultipleLanguageDownload
-      .instance.modelManager
-      .downloadModel(TranslateLanguage.english.bcpCode, isWifiRequired: false);
+  final bool hasEnglishSourceModelDownloaded =
+      await MultipleLanguageDownload.instance.modelManager.downloadModel(TranslateLanguage.english.bcpCode, isWifiRequired: false);
   //TranslateApi.instance.hasSourceModelDownloadedSuccess = hasSourceModelDownloaded;
   final result = await connector?.messageSender(
     to: Tasks.mainApplication,
@@ -324,9 +302,8 @@ Future<void> immediatelyDownloadEnglishSourceModel(
 Future<void> immediatelyDownloadArabicSourceModel(
   EngineConnector? connector,
 ) async {
-  final bool hasArabicSourceModelDownloaded = await MultipleLanguageDownload
-      .instance.modelManager
-      .downloadModel(TranslateLanguage.arabic.bcpCode, isWifiRequired: false);
+  final bool hasArabicSourceModelDownloaded =
+      await MultipleLanguageDownload.instance.modelManager.downloadModel(TranslateLanguage.arabic.bcpCode, isWifiRequired: false);
   //TranslateApi.instance.hasSourceModelDownloadedSuccess = hasSourceModelDownloaded;
   final result = await connector?.messageSender(
     to: Tasks.mainApplication,

@@ -16,7 +16,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
-import 'package:google_ml_kit/google_ml_kit.dart';
+/*import 'package:google_ml_kit/google_ml_kit.dart';*/
 import 'package:hive/hive.dart';
 import 'package:homemakers_merchant/app/features/address/index.dart';
 import 'package:homemakers_merchant/app/features/authentication/presentation/manager/phone_number_verification_bloc.dart';
@@ -155,8 +155,7 @@ part 'package:homemakers_merchant/app/features/profile/presentation/widgets/bank
 part 'package:homemakers_merchant/app/features/profile/presentation/widgets/bank/common_dialog_properties.dart';
 part 'package:homemakers_merchant/app/features/profile/presentation/widgets/bank/confirm_bank_information_dialog.dart';
 part 'package:homemakers_merchant/app/features/profile/presentation/widgets/document/new_business_document_component_widget.dart';
-part 'package:homemakers_merchant/app/features/profile/presentation/widgets/document/coordinates_translator.dart';
-part 'package:homemakers_merchant/app/features/profile/presentation/widgets/document/painters/text_detector_painter.dart';
+
 part 'package:homemakers_merchant/app/features/profile/presentation/widgets/document/uploaded_document_child_widget.dart';
 part 'package:homemakers_merchant/app/features/profile/presentation/widgets/document/uploaded_document_placeholder_widget.dart';
 

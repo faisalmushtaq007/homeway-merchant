@@ -2,12 +2,17 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:file_selector/file_selector.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:go_router/go_router.dart';
 import 'package:homemakers_merchant/app/features/chat/domain/entities/chat_types_entity.dart';
 import 'package:homemakers_merchant/app/features/chat/presentation/pages/chat_ui/chat_ui.dart';
 import 'package:homemakers_merchant/app/features/chat/presentation/pages/login.dart';
 import 'package:homemakers_merchant/app/features/onboarding/presentation/pages/splash_page.dart';
+import 'package:homemakers_merchant/core/extensions/app_extension.dart';
 import 'package:homemakers_merchant/core/extensions/global_extensions/dart_extensions.dart';
 import 'package:homemakers_merchant/core/extensions/global_extensions/src/object.dart';
+import 'package:homemakers_merchant/core/extensions/global_extensions/src/random.dart';
+import 'package:homemakers_merchant/shared/router/app_pages.dart';
+import 'package:homemakers_merchant/shared/widgets/universal/image_loader/image_helper.dart';
 import 'package:meta/meta.dart';
 import 'dart:io';
 import 'package:homemakers_merchant/app/features/chat/domain/entities/chat_types_entity.dart' as types;
@@ -27,6 +32,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'dart:ui';
 import 'package:path/path.dart' as path;
+import 'dart:math' as math;
+
+import '../../../utils/image_type.dart';
 
 part 'package:homemakers_merchant/app/features/chat/data/remote/data_sources/firebase_chat_core.dart';
 part 'package:homemakers_merchant/app/features/chat/data/remote/data_sources/firebase_chat_core_config.dart';

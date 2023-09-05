@@ -15,7 +15,6 @@ class _UploadDocumentPageState extends State<UploadDocumentPage> {
   int _currentImageIndex = 0;
   double _rotation = 0.0;
   double _zoom = 1.0;
-  final TextRecognizer _textRecognizer = GoogleMlKit.vision.textRecognizer(); //TextRecognizer(script: TextRecognitionScript.latin);
   bool _canProcess = true;
   bool _isBusy = false;
   CustomPaint? _customPaint;
@@ -74,7 +73,6 @@ class _UploadDocumentPageState extends State<UploadDocumentPage> {
   @override
   void dispose() async {
     _canProcess = false;
-    _textRecognizer.close();
     scrollController.dispose();
     super.dispose();
   }

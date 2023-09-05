@@ -4,6 +4,9 @@ import 'package:homemakers_merchant/app/features/chat/presentation/pages/chat_ui
 import 'package:homemakers_merchant/app/features/chat/presentation/pages/chat_ui/src/widgets/state/inherited_chat_theme.dart';
 import 'package:homemakers_merchant/app/features/chat/presentation/pages/chat_ui/src/widgets/state/inherited_l10n.dart';
 import 'package:homemakers_merchant/app/features/chat/presentation/pages/chat_ui/src/widgets/state/inherited_user.dart';
+import 'package:homemakers_merchant/core/extensions/app_extension.dart';
+import 'package:homemakers_merchant/shared/widgets/universal/image_loader/image_helper.dart';
+import 'package:homemakers_merchant/utils/image_type.dart';
 
 /// A class that represents file message widget.
 class FileMessage extends StatelessWidget {
@@ -54,10 +57,22 @@ class FileMessage extends StatelessWidget {
                     ),
                   InheritedChatTheme.of(context).theme.documentIcon != null
                       ? InheritedChatTheme.of(context).theme.documentIcon!
-                      : Image.asset(
-                          'assets/icon-document.png',
-                          color: color,
-                          package: 'flutter_chat_ui',
+                      : ImageHelper(
+                          image: 'assets/image/icon-document.png',
+                          filterQuality: FilterQuality.high,
+                          borderRadius: BorderRadiusDirectional.circular(10),
+                          imageType: findImageType('assets/image/icon-document.png'),
+                          imageShape: ImageShape.rectangle,
+                          color: context.colorScheme.primary,
+                          boxFit: BoxFit.cover,
+                          defaultErrorBuilderColor: Colors.blueGrey,
+                          errorBuilder: const Icon(
+                            Icons.image_not_supported,
+                            size: 10000,
+                          ),
+                          height: 42,
+                          width: 42,
+                          loaderBuilder: const CircularProgressIndicator(),
                         ),
                 ],
               ),

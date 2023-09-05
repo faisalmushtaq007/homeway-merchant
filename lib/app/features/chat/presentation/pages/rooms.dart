@@ -93,7 +93,7 @@ class _RoomsPageState extends State<RoomsPage> {
             onPressed: _user == null
                 ? null
                 : () async {
-                    LoginFirebaseUser().registerUser('547533382');
+                    await LoginFirebaseUser().registerUser('547533382', isCurrentUser: false);
                     //await initializeFlutterFire();
                   },
           ),

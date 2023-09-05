@@ -7,10 +7,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:homemakers_merchant/app/features/chat/domain/entities/chat_types_entity.dart';
 import 'package:homemakers_merchant/app/features/chat/index.dart';
-import 'package:homemakers_merchant/bootup/injection_container.dart';
 import 'package:homemakers_merchant/core/extensions/global_extensions/src/object.dart';
-import 'package:homemakers_merchant/core/network/http/base_response_error_model.dart';
-import 'package:network_manager/network_manager.dart';
 import 'package:http/http.dart' as http;
 
 class LoginFirebaseUser {
@@ -83,13 +80,14 @@ class LoginFirebaseUser {
     }
   }
 
-  Future<void> registerUser(String uid) async {
+  Future<void> registerUser(String uid, {bool isCurrentUser = true}) async {
     final url = Uri.parse("http://192.168.0.105:3000/users/token?uid=${uid}");
     http.Response response = await http.get(url);
     print("response ${response.statusCode}, ${response.body}");
     var data = jsonDecode(response.body) as Map<String, dynamic>;
     String token = data['auth_token'];
     print("token ${token}");
+
     final userCredential = await loginWithFirebaseCustomToken(token);
     if (userCredential.isNotNull) {
       final faker = Faker();

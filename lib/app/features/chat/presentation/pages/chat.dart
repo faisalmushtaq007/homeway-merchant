@@ -15,7 +15,7 @@ class ChatPage extends StatefulWidget {
 class _ChatPageState extends State<ChatPage> {
   bool _isAttachmentUploading = false;
 
-  void _handleAtachmentPressed() {
+  void _handleAttachmentPressed() {
     showModalBottomSheet<void>(
       context: context,
       builder: (BuildContext context) => SafeArea(
@@ -65,7 +65,7 @@ class _ChatPageState extends State<ChatPage> {
     );
     const XTypeGroup pngTypeGroup = XTypeGroup(
       label: 'PNGs',
-      extensions: <String>['png'],
+      extensions: <String>['png', 'jpg', 'jpeg'],
     );
     final XFile? xFile = await openFile(acceptedTypeGroups: <XTypeGroup>[
       jpgsTypeGroup,
@@ -77,12 +77,14 @@ class _ChatPageState extends State<ChatPage> {
       return;
     } else {
       if (xFile.isNotNull && !xFile!.path.isEmptyOrNull) {
+        print('File Path ${xFile.path}');
         _setAttachmentUploading(true);
-        var fileNameWithoutExtension = path.basenameWithoutExtension(xFile.path ?? '');
+        var fileNameWithoutExtension = path.basenameWithoutExtension(xFile.path);
         final name = fileNameWithoutExtension;
-        final filePath = xFile.path ?? '';
+        print('File name ${name}');
+        final filePath = xFile.path;
         final file = File(filePath);
-
+        print('File Byte ${await xFile.length()}, ${await file.length()}, ${file.absolute.existsSync()}');
         try {
           final reference = FirebaseStorage.instance.ref(name);
           await reference.putFile(file);
@@ -143,7 +145,7 @@ class _ChatPageState extends State<ChatPage> {
     }
   }
 
-  void _handleMessageTap(BuildContext _, types.Message message) async {
+  Future<void> _handleMessageTap(BuildContext _, types.Message message) async {
     if (message is types.FileMessage) {
       var localPath = message.uri;
 
@@ -215,7 +217,7 @@ class _ChatPageState extends State<ChatPage> {
             builder: (context, snapshot) => Chat(
               isAttachmentUploading: _isAttachmentUploading,
               messages: snapshot.data ?? [],
-              onAttachmentPressed: _handleAtachmentPressed,
+              onAttachmentPressed: _handleAttachmentPressed,
               onMessageTap: _handleMessageTap,
               onPreviewDataFetched: _handlePreviewDataFetched,
               onSendPressed: _handleSendPressed,
