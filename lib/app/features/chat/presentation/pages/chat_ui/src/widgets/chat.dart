@@ -84,7 +84,7 @@ class Chat extends StatefulWidget {
     this.scrollController,
     this.scrollPhysics,
     this.scrollToUnreadOptions = const ScrollToUnreadOptions(),
-    this.showUserAvatars = false,
+    this.showUserAvatars = true,
     this.showUserNames = false,
     this.systemMessageBuilder,
     this.textMessageBuilder,
