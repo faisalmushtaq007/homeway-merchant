@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:homemakers_merchant/app/features/chat/domain/entities/chat_types_entity.dart' as types;
-import 'package:homemakers_merchant/shared/widgets/universal/flutter_link_preview/flutter_link_previewer.dart' show LinkPreview, regexEmail, regexLink;
 import 'package:flutter_parsed_text/flutter_parsed_text.dart';
+import 'package:homemakers_merchant/app/features/chat/domain/entities/chat_types_entity.dart' as types;
+import 'package:homemakers_merchant/app/features/chat/presentation/pages/chat_ui/src/models/emoji_enlargement_behavior.dart';
+import 'package:homemakers_merchant/app/features/chat/presentation/pages/chat_ui/src/models/pattern_style.dart';
+import 'package:homemakers_merchant/app/features/chat/presentation/pages/chat_ui/src/util.dart';
+import 'package:homemakers_merchant/app/features/chat/presentation/pages/chat_ui/src/widgets/message/user_name.dart';
+import 'package:homemakers_merchant/app/features/chat/presentation/pages/chat_ui/src/widgets/state/inherited_chat_theme.dart';
+import 'package:homemakers_merchant/app/features/chat/presentation/pages/chat_ui/src/widgets/state/inherited_user.dart';
+import 'package:homemakers_merchant/bootup/injection_container.dart';
+import 'package:homemakers_merchant/config/translation/language_controller.dart';
+import 'package:homemakers_merchant/shared/widgets/universal/flutter_link_preview/flutter_link_previewer.dart' show LinkPreview, regexEmail, regexLink;
 import 'package:url_launcher/url_launcher.dart';
-
-import '../../models/emoji_enlargement_behavior.dart';
-import '../../models/pattern_style.dart';
-import '../../util.dart';
-import '../state/inherited_chat_theme.dart';
-import '../state/inherited_user.dart';
-import 'user_name.dart';
 
 /// A class that represents text message widget with optional link preview.
 class TextMessage extends StatelessWidget {
@@ -112,7 +113,14 @@ class TextMessage extends StatelessWidget {
       children: [
         if (showName) nameBuilder?.call(message.author) ?? UserName(author: message.author),
         if (enlargeEmojis)
-          if (options.isTextSelectable) SelectableText(message.text, style: emojiTextStyle) else Text(message.text, style: emojiTextStyle)
+          if (options.isTextSelectable)
+            SelectableText(message.text, style: emojiTextStyle)
+          else
+            Text(
+              message.text,
+              style: emojiTextStyle,
+              textDirection: serviceLocator<LanguageController>().targetTextDirection,
+            )
         else
           TextMessageText(
             bodyLinkTextStyle: bodyLinkTextStyle,

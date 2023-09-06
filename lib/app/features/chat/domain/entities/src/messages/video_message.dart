@@ -1,9 +1,9 @@
 import 'package:json_annotation/json_annotation.dart';
 import 'package:meta/meta.dart';
 
-import '../message.dart';
-import '../chat_user.dart' show ChatUser;
-import 'partial_video.dart';
+import 'package:homemakers_merchant/app/features/chat/domain/entities/src/message.dart';
+import 'package:homemakers_merchant/app/features/chat/domain/entities/src/chat_user.dart' show ChatUser;
+import 'package:homemakers_merchant/app/features/chat/domain/entities/src/messages/partial_video.dart';
 
 part 'video_message.g.dart';
 
@@ -29,6 +29,7 @@ abstract class VideoMessage extends Message {
     super.updatedAt,
     required this.uri,
     this.width,
+    this.read = '',
   }) : super(type: type ?? MessageType.video);
 
   const factory VideoMessage({
@@ -48,6 +49,7 @@ abstract class VideoMessage extends Message {
     int? updatedAt,
     required String uri,
     double? width,
+    String read,
   }) = _VideoMessage;
 
   /// Creates a video message from a map (decoded JSON).
@@ -64,6 +66,7 @@ abstract class VideoMessage extends Message {
     bool? showStatus,
     Status? status,
     int? updatedAt,
+    String? read,
   }) =>
       _VideoMessage(
         author: author,
@@ -82,6 +85,7 @@ abstract class VideoMessage extends Message {
         updatedAt: updatedAt,
         uri: partialVideo.uri,
         width: partialVideo.width,
+        read: partialVideo.read,
       );
 
   /// Video height in pixels.
@@ -98,6 +102,8 @@ abstract class VideoMessage extends Message {
 
   /// Video width in pixels.
   final double? width;
+
+  final String read;
 
   /// Equatable props.
   @override
@@ -117,6 +123,7 @@ abstract class VideoMessage extends Message {
         updatedAt,
         uri,
         width,
+        read,
       ];
 
   @override
@@ -136,6 +143,7 @@ abstract class VideoMessage extends Message {
     int? updatedAt,
     String? uri,
     double? width,
+    String? read,
   });
 
   /// Converts an video message to the map representation, encodable to JSON.
@@ -162,6 +170,7 @@ class _VideoMessage extends VideoMessage {
     super.updatedAt,
     required super.uri,
     super.width,
+    super.read,
   }) : super._();
 
   @override
@@ -181,6 +190,7 @@ class _VideoMessage extends VideoMessage {
     dynamic updatedAt = _Unset,
     String? uri,
     dynamic width = _Unset,
+    dynamic read = _Unset,
   }) =>
       _VideoMessage(
         author: author ?? this.author,
@@ -198,6 +208,7 @@ class _VideoMessage extends VideoMessage {
         updatedAt: updatedAt == _Unset ? this.updatedAt : updatedAt as int?,
         uri: uri ?? this.uri,
         width: width == _Unset ? this.width : width as double?,
+        read: read == _Unset ? this.read : read as String,
       );
 }
 

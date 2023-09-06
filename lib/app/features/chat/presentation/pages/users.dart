@@ -67,6 +67,7 @@ class _UsersPageState extends State<UsersPage> {
           : Text(
               name.isEmpty ? '' : name[0].toUpperCase(),
               style: const TextStyle(color: Colors.white),
+              textDirection: serviceLocator<LanguageController>().targetTextDirection,
             ),
     );
   }
@@ -95,7 +96,10 @@ class _UsersPageState extends State<UsersPage> {
     return Scaffold(
       appBar: AppBar(
         systemOverlayStyle: SystemUiOverlayStyle.light,
-        title: const Text('Users'),
+        title: Text(
+          'Users',
+          textDirection: serviceLocator<LanguageController>().targetTextDirection,
+        ),
         actions: [
           IconButton(
             icon: const Icon(Icons.add),
@@ -119,13 +123,19 @@ class _UsersPageState extends State<UsersPage> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Text('Not authenticated'),
+                  Text(
+                    'Not authenticated',
+                    textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                  ),
                   TextButton(
                     onPressed: () async {
-                      await LoginFirebaseUser().registerUser('547533381');
+                      await LoginFirebaseUser().registerUser('547538878');
                       await initializeFlutterFire();
                     },
-                    child: const Text('Login'),
+                    child: Text(
+                      'Login',
+                      textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                    ),
                   ),
                 ],
               ),
@@ -140,7 +150,10 @@ class _UsersPageState extends State<UsersPage> {
                     margin: const EdgeInsets.only(
                       bottom: 200,
                     ),
-                    child: const Text('No users'),
+                    child: Text(
+                      'No users',
+                      textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                    ),
                   );
                 }
 
@@ -155,7 +168,10 @@ class _UsersPageState extends State<UsersPage> {
                       child: ListTile(
                         key: ValueKey(index),
                         leading: _buildAvatar(context, user),
-                        title: Text(getUserName(user)),
+                        title: Text(
+                          getUserName(user),
+                          textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                        ),
                         onTap: () async {
                           await _handlePressed(user, context);
                           return;
@@ -175,7 +191,10 @@ class _UsersPageState extends State<UsersPage> {
                         child: Row(
                           children: [
                             _buildAvatar(context, user),
-                            Text(getUserName(user)),
+                            Text(
+                              getUserName(user),
+                              textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                            ),
                           ],
                         ),
                       ),

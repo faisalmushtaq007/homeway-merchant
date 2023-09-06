@@ -8,6 +8,8 @@ import 'package:homemakers_merchant/app/features/chat/domain/entities/chat_types
 import 'package:homemakers_merchant/app/features/chat/presentation/pages/chat_ui/chat_ui.dart';
 import 'package:homemakers_merchant/app/features/chat/presentation/pages/login.dart';
 import 'package:homemakers_merchant/app/features/onboarding/presentation/pages/splash_page.dart';
+import 'package:homemakers_merchant/bootup/injection_container.dart';
+import 'package:homemakers_merchant/config/translation/language_controller.dart';
 import 'package:homemakers_merchant/core/extensions/app_extension.dart';
 import 'package:homemakers_merchant/core/extensions/global_extensions/dart_extensions.dart';
 import 'package:homemakers_merchant/core/extensions/global_extensions/src/object.dart';

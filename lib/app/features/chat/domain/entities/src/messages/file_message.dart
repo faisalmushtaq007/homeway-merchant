@@ -1,9 +1,9 @@
 import 'package:json_annotation/json_annotation.dart';
 import 'package:meta/meta.dart';
 
-import '../message.dart';
-import '../chat_user.dart' show ChatUser;
-import 'partial_file.dart';
+import 'package:homemakers_merchant/app/features/chat/domain/entities/src/message.dart';
+import 'package:homemakers_merchant/app/features/chat/domain/entities/src/chat_user.dart' show ChatUser;
+import 'package:homemakers_merchant/app/features/chat/domain/entities/src/messages/partial_file.dart';
 
 part 'file_message.g.dart';
 
@@ -29,6 +29,7 @@ abstract class FileMessage extends Message {
     MessageType? type,
     super.updatedAt,
     required this.uri,
+    this.read = '',
   }) : super(type: type ?? MessageType.file);
 
   const factory FileMessage({
@@ -48,6 +49,7 @@ abstract class FileMessage extends Message {
     MessageType? type,
     int? updatedAt,
     required String uri,
+    String read,
   }) = _FileMessage;
 
   /// Creates a file message from a map (decoded JSON).
@@ -65,6 +67,7 @@ abstract class FileMessage extends Message {
     bool? showStatus,
     Status? status,
     int? updatedAt,
+    String? read,
   }) =>
       _FileMessage(
         author: author,
@@ -83,6 +86,7 @@ abstract class FileMessage extends Message {
         type: MessageType.file,
         updatedAt: updatedAt,
         uri: partialFile.uri,
+        read: read ?? '',
       );
 
   /// Specify whether the message content is currently being loaded.
@@ -99,6 +103,9 @@ abstract class FileMessage extends Message {
 
   /// The file source (either a remote URL or a local resource).
   final String uri;
+
+  /// Read
+  final String read;
 
   /// Equatable props.
   @override
@@ -118,6 +125,7 @@ abstract class FileMessage extends Message {
         status,
         updatedAt,
         uri,
+        read,
       ];
 
   @override
@@ -137,6 +145,7 @@ abstract class FileMessage extends Message {
     Status? status,
     int? updatedAt,
     String? uri,
+    String? read,
   });
 
   /// Converts a file message to the map representation, encodable to JSON.
@@ -163,6 +172,7 @@ class _FileMessage extends FileMessage {
     super.type,
     super.updatedAt,
     required super.uri,
+    super.read,
   }) : super._();
 
   @override
@@ -184,6 +194,7 @@ class _FileMessage extends FileMessage {
     dynamic updatedAt = _Unset,
     String? uri,
     dynamic width = _Unset,
+    dynamic read = _Unset,
   }) =>
       _FileMessage(
         author: author ?? this.author,
@@ -201,6 +212,7 @@ class _FileMessage extends FileMessage {
         status: status == _Unset ? this.status : status as Status?,
         updatedAt: updatedAt == _Unset ? this.updatedAt : updatedAt as int?,
         uri: uri ?? this.uri,
+        read: read == _Unset ? this.read : read as String,
       );
 }
 

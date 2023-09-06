@@ -2,7 +2,10 @@ import 'dart:async';
 import 'dart:developer';
 import 'dart:ui' as ui;
 import 'package:bloc/bloc.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
@@ -111,6 +114,19 @@ Future<void> bootstrap(FutureOr<dynamic> Function() builder) async {
     serviceLocator.allowReassignment = true;
     await AppStartConfig.shared.startApp();
     await builder();
+    if (kIsWeb) {
+      // [START auth_persistingAuthState]
+      await FirebaseAuth.instance.setPersistence(Persistence.NONE);
+      // [END auth_persistingAuthState]
+    }
+
+    if (!kReleaseMode) {
+      FirebaseAuth.instance.useAuthEmulator('localhost', 9099);
+      FirebaseFirestore.instance.useFirestoreEmulator('localhost', 8080);
+      //FirebaseDatabase.instance.useDatabaseEmulator('localhost', 9000);
+      FirebaseStorage.instance.useStorageEmulator('localhost', 9199);
+    }
+
     //final ThemeService themeService = ThemeServicePrefs();
     //final ThemeService themeService = ThemeServiceHive('app_color_scheme_box');
     // Initialize the theme service.

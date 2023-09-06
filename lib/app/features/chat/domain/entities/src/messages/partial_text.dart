@@ -20,11 +20,11 @@ class PartialText {
     this.previewData,
     this.repliedMessage,
     required this.text,
+    this.read = '',
   });
 
   /// Creates a partial text message from a map (decoded JSON).
-  factory PartialText.fromJson(Map<String, dynamic> json) =>
-      _$PartialTextFromJson(json);
+  factory PartialText.fromJson(Map<String, dynamic> json) => _$PartialTextFromJson(json);
 
   /// Additional custom metadata or attributes related to the message.
   final Map<String, dynamic>? metadata;
@@ -37,6 +37,8 @@ class PartialText {
 
   /// User's message.
   final String text;
+
+  final String read;
 
   /// Converts a partial text message to the map representation, encodable to JSON.
   Map<String, dynamic> toJson() => _$PartialTextToJson(this);

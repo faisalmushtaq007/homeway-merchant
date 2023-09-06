@@ -26,6 +26,7 @@ abstract class UnsupportedMessage extends Message {
     super.status,
     MessageType? type,
     super.updatedAt,
+    super.read,
   }) : super(type: type ?? MessageType.unsupported);
 
   const factory UnsupportedMessage({
@@ -40,6 +41,7 @@ abstract class UnsupportedMessage extends Message {
     Status? status,
     MessageType? type,
     int? updatedAt,
+    String read,
   }) = _UnsupportedMessage;
 
   /// Creates an unsupported message from a map (decoded JSON).
@@ -58,6 +60,7 @@ abstract class UnsupportedMessage extends Message {
         showStatus,
         status,
         updatedAt,
+        read,
       ];
 
   @override
@@ -72,6 +75,7 @@ abstract class UnsupportedMessage extends Message {
     bool? showStatus,
     Status? status,
     int? updatedAt,
+    String? read,
   });
 
   /// Converts an unsupported message to the map representation,
@@ -94,6 +98,7 @@ class _UnsupportedMessage extends UnsupportedMessage {
     super.status,
     super.type,
     super.updatedAt,
+    super.read,
   }) : super._();
 
   @override
@@ -108,6 +113,7 @@ class _UnsupportedMessage extends UnsupportedMessage {
     dynamic showStatus = _Unset,
     dynamic status = _Unset,
     dynamic updatedAt = _Unset,
+    dynamic read = _Unset,
   }) =>
       _UnsupportedMessage(
         author: author ?? this.author,
@@ -120,6 +126,7 @@ class _UnsupportedMessage extends UnsupportedMessage {
         showStatus: showStatus == _Unset ? this.showStatus : showStatus as bool?,
         status: status == _Unset ? this.status : status as Status?,
         updatedAt: updatedAt == _Unset ? this.updatedAt : updatedAt as int?,
+        read: read == _Unset ? this.read : read as String,
       );
 }
 

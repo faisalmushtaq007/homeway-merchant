@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
-import '../state/inherited_chat_theme.dart';
+import 'package:homemakers_merchant/app/features/chat/presentation/pages/chat_ui/src/widgets/state/inherited_chat_theme.dart';
+import 'package:homemakers_merchant/bootup/injection_container.dart';
+import 'package:homemakers_merchant/config/translation/language_controller.dart';
 
 /// A class that represents system message widget.
 class SystemMessage extends StatelessWidget {
@@ -18,8 +20,8 @@ class SystemMessage extends StatelessWidget {
         margin: InheritedChatTheme.of(context).theme.systemMessageTheme.margin,
         child: Text(
           message,
-          style:
-              InheritedChatTheme.of(context).theme.systemMessageTheme.textStyle,
+          style: InheritedChatTheme.of(context).theme.systemMessageTheme.textStyle,
+          textDirection: serviceLocator<LanguageController>().targetTextDirection,
         ),
       );
 }

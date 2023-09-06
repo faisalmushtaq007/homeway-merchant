@@ -231,7 +231,7 @@ class FirebaseChatCore {
       query = query.startAt(startAt);
     }
 
-    return query.snapshots().map(
+    return query.snapshots(includeMetadataChanges: true).map(
           (snapshot) => snapshot.docs.fold<List<types.Message>>(
             [],
             (previousValue, doc) {
@@ -258,7 +258,7 @@ class FirebaseChatCore {
 
     if (fu == null) return const Stream.empty();
 
-    return getFirebaseFirestore().collection(config.roomsCollectionName).doc(roomId).snapshots().asyncMap(
+    return getFirebaseFirestore().collection(config.roomsCollectionName).doc(roomId).snapshots(includeMetadataChanges: true).asyncMap(
           (doc) => processRoomDocument(
             doc,
             fu,
@@ -287,7 +287,7 @@ class FirebaseChatCore {
         ? getFirebaseFirestore().collection(config.roomsCollectionName).where('userIds', arrayContains: fu.uid).orderBy('updatedAt', descending: true)
         : getFirebaseFirestore().collection(config.roomsCollectionName).where('userIds', arrayContains: fu.uid);
 
-    return collection.snapshots().asyncMap(
+    return collection.snapshots(includeMetadataChanges: true).asyncMap(
           (query) => processRoomsQuery(
             fu,
             getFirebaseFirestore(),
@@ -391,7 +391,7 @@ class FirebaseChatCore {
   /// Returns a stream of all users from Firebase.
   Stream<List<types.ChatUser>> users() {
     if (firebaseUser == null) return const Stream.empty();
-    return getFirebaseFirestore().collection(config.usersCollectionName).snapshots().map(
+    return getFirebaseFirestore().collection(config.usersCollectionName).snapshots(includeMetadataChanges: true).map(
           (snapshot) => snapshot.docs.fold<List<types.ChatUser>>(
             [],
             (previousValue, doc) {
@@ -408,5 +408,58 @@ class FirebaseChatCore {
             },
           ),
         );
+  }
+
+  void accessDataOffline_configure() async {
+    // [START access_data_offline_configure_offline_persistence]
+    // Apple and Android
+    getFirebaseFirestore().settings = const Settings(persistenceEnabled: true);
+
+    // Web
+    await getFirebaseFirestore().enablePersistence(const PersistenceSettings(synchronizeTabs: true));
+    // [END access_data_offline_configure_offline_persistence]
+  }
+
+  void accessDataOffline_configureCache() {
+    // [START access_data_offline_configure_cache_size]
+    getFirebaseFirestore().settings = const Settings(
+      persistenceEnabled: true,
+      cacheSizeBytes: Settings.CACHE_SIZE_UNLIMITED,
+    );
+    // [END access_data_offline_configure_cache_size]
+  }
+
+  void accessDataOffline_listenToOfflineData(String collectionName) {
+    // [START access_data_offline_listen_to_offline_data]
+    getFirebaseFirestore()
+        .collection(collectionName)
+        //.where("state", isEqualTo: "CA")
+        .snapshots(includeMetadataChanges: true)
+        .listen((querySnapshot) {
+      for (var change in querySnapshot.docChanges) {
+        if (change.type == DocumentChangeType.added) {
+          final source = (querySnapshot.metadata.isFromCache) ? "local cache" : "server";
+
+          print("Data fetched from $source}");
+        }
+      }
+    });
+    // [END access_data_offline_listen_to_offline_data]
+  }
+
+  void accessDataOffline_disableNetwork() {
+    // [START access_data_offline_disable_network]
+    getFirebaseFirestore().disableNetwork().then((_) {
+      // Do offline things
+    });
+    // [END access_data_offline_disable_network]
+  }
+
+  void accessDataOffline_enableNetwork() {
+    // [START access_data_offline_enable_network]
+    getFirebaseFirestore().enableNetwork().then((_) {
+      // Back online
+    });
+    // [END access_data_offline_enable_network]
   }
 }

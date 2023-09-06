@@ -21,11 +21,11 @@ class PartialFile {
     this.repliedMessage,
     required this.size,
     required this.uri,
+    this.read = '',
   });
 
   /// Creates a partial file message from a map (decoded JSON).
-  factory PartialFile.fromJson(Map<String, dynamic> json) =>
-      _$PartialFileFromJson(json);
+  factory PartialFile.fromJson(Map<String, dynamic> json) => _$PartialFileFromJson(json);
 
   /// Additional custom metadata or attributes related to the message.
   final Map<String, dynamic>? metadata;
@@ -44,6 +44,8 @@ class PartialFile {
 
   /// The file source (either a remote URL or a local resource).
   final String uri;
+
+  final String read;
 
   /// Converts a partial file message to the map representation, encodable to JSON.
   Map<String, dynamic> toJson() => _$PartialFileToJson(this);

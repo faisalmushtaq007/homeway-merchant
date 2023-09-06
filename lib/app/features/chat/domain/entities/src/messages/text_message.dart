@@ -27,6 +27,7 @@ abstract class TextMessage extends Message {
     required this.text,
     MessageType? type,
     super.updatedAt,
+    this.read = '',
   }) : super(type: type ?? MessageType.text);
 
   const factory TextMessage({
@@ -43,6 +44,7 @@ abstract class TextMessage extends Message {
     required String text,
     MessageType? type,
     int? updatedAt,
+    String read,
   }) = _TextMessage;
 
   /// Creates a text message from a map (decoded JSON).
@@ -59,6 +61,7 @@ abstract class TextMessage extends Message {
     bool? showStatus,
     Status? status,
     int? updatedAt,
+    String? read,
   }) =>
       _TextMessage(
         author: author,
@@ -74,6 +77,7 @@ abstract class TextMessage extends Message {
         text: partialText.text,
         type: MessageType.text,
         updatedAt: updatedAt,
+        read: read ?? '',
       );
 
   /// See [PreviewData].
@@ -81,6 +85,8 @@ abstract class TextMessage extends Message {
 
   /// User's message.
   final String text;
+
+  final String read;
 
   /// Equatable props.
   @override
@@ -97,6 +103,7 @@ abstract class TextMessage extends Message {
         status,
         text,
         updatedAt,
+        read,
       ];
 
   @override
@@ -113,6 +120,7 @@ abstract class TextMessage extends Message {
     Status? status,
     String? text,
     int? updatedAt,
+    String? read,
   });
 
   /// Converts a text message to the map representation, encodable to JSON.
@@ -136,6 +144,7 @@ class _TextMessage extends TextMessage {
     required super.text,
     super.type,
     super.updatedAt,
+    super.read,
   }) : super._();
 
   @override
@@ -152,6 +161,7 @@ class _TextMessage extends TextMessage {
     dynamic status = _Unset,
     String? text,
     dynamic updatedAt = _Unset,
+    dynamic read = _Unset,
   }) =>
       _TextMessage(
         author: author ?? this.author,
@@ -166,6 +176,7 @@ class _TextMessage extends TextMessage {
         status: status == _Unset ? this.status : status as Status?,
         text: text ?? this.text,
         updatedAt: updatedAt == _Unset ? this.updatedAt : updatedAt as int?,
+        read: read == _Unset ? this.read : read as String,
       );
 }
 

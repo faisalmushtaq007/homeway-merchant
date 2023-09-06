@@ -30,6 +30,7 @@ abstract class AudioMessage extends Message {
     super.updatedAt,
     required this.uri,
     this.waveForm,
+    this.read = '',
   }) : super(type: type ?? MessageType.audio);
 
   const factory AudioMessage({
@@ -50,6 +51,7 @@ abstract class AudioMessage extends Message {
     int? updatedAt,
     required String uri,
     List<double>? waveForm,
+    String read,
   }) = _AudioMessage;
 
   /// Creates an audio message from a map (decoded JSON).
@@ -66,6 +68,7 @@ abstract class AudioMessage extends Message {
     bool? showStatus,
     Status? status,
     int? updatedAt,
+    String? read,
   }) =>
       _AudioMessage(
         author: author,
@@ -85,6 +88,7 @@ abstract class AudioMessage extends Message {
         updatedAt: updatedAt,
         uri: partialAudio.uri,
         waveForm: partialAudio.waveForm,
+        read: partialAudio.read,
       );
 
   /// The length of the audio.
@@ -105,6 +109,9 @@ abstract class AudioMessage extends Message {
   /// Wave form represented as a list of decibel levels.
   final List<double>? waveForm;
 
+  /// Read
+  final String read;
+
   /// Equatable props.
   @override
   List<Object?> get props => [
@@ -124,6 +131,7 @@ abstract class AudioMessage extends Message {
         updatedAt,
         uri,
         waveForm,
+        read,
       ];
 
   @override
@@ -144,6 +152,7 @@ abstract class AudioMessage extends Message {
     int? updatedAt,
     String? uri,
     List<double>? waveForm,
+    String? read,
   });
 
   /// Converts an audio message to the map representation, encodable to JSON.
@@ -171,6 +180,7 @@ class _AudioMessage extends AudioMessage {
     super.updatedAt,
     required super.uri,
     super.waveForm,
+    super.read,
   }) : super._();
 
   @override
@@ -191,6 +201,7 @@ class _AudioMessage extends AudioMessage {
     dynamic updatedAt = _Unset,
     String? uri,
     dynamic waveForm = _Unset,
+    dynamic read = _Unset,
   }) =>
       _AudioMessage(
         author: author ?? this.author,
@@ -209,6 +220,7 @@ class _AudioMessage extends AudioMessage {
         updatedAt: updatedAt == _Unset ? this.updatedAt : updatedAt as int?,
         uri: uri ?? this.uri,
         waveForm: waveForm == _Unset ? this.waveForm : waveForm as List<double>?,
+        read: read == _Unset ? this.read : read as String,
       );
 }
 

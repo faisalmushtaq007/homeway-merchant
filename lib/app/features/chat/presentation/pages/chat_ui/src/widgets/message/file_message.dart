@@ -7,6 +7,8 @@ import 'package:homemakers_merchant/app/features/chat/presentation/pages/chat_ui
 import 'package:homemakers_merchant/core/extensions/app_extension.dart';
 import 'package:homemakers_merchant/shared/widgets/universal/image_loader/image_helper.dart';
 import 'package:homemakers_merchant/utils/image_type.dart';
+import 'package:homemakers_merchant/bootup/injection_container.dart';
+import 'package:homemakers_merchant/config/translation/language_controller.dart';
 
 /// A class that represents file message widget.
 class FileMessage extends StatelessWidget {
@@ -91,6 +93,7 @@ class FileMessage extends StatelessWidget {
                           ? InheritedChatTheme.of(context).theme.sentMessageBodyTextStyle
                           : InheritedChatTheme.of(context).theme.receivedMessageBodyTextStyle,
                       textWidthBasis: TextWidthBasis.longestLine,
+                      textDirection: serviceLocator<LanguageController>().targetTextDirection,
                     ),
                     Container(
                       margin: const EdgeInsets.only(
@@ -101,6 +104,7 @@ class FileMessage extends StatelessWidget {
                         style: user.id == message.author.id
                             ? InheritedChatTheme.of(context).theme.sentMessageCaptionTextStyle
                             : InheritedChatTheme.of(context).theme.receivedMessageCaptionTextStyle,
+                        textDirection: serviceLocator<LanguageController>().targetTextDirection,
                       ),
                     ),
                   ],

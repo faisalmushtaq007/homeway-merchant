@@ -133,6 +133,41 @@ class $AssetsImageGen {
   AssetGenImage get icLauncher =>
       const AssetGenImage('assets/image/ic_launcher.png');
 
+  /// File path: assets/image/icon-arrow.png
+  AssetGenImage get iconArrow =>
+      const AssetGenImage('assets/image/icon-arrow.png');
+
+  /// File path: assets/image/icon-attachment.png
+  AssetGenImage get iconAttachment =>
+      const AssetGenImage('assets/image/icon-attachment.png');
+
+  /// File path: assets/image/icon-delivered.png
+  AssetGenImage get iconDelivered =>
+      const AssetGenImage('assets/image/icon-delivered.png');
+
+  /// File path: assets/image/icon-document.png
+  AssetGenImage get iconDocument =>
+      const AssetGenImage('assets/image/icon-document.png');
+
+  /// File path: assets/image/icon-error.png
+  AssetGenImage get iconError =>
+      const AssetGenImage('assets/image/icon-error.png');
+
+  /// File path: assets/image/icon-reply.png
+  AssetGenImage get iconReply =>
+      const AssetGenImage('assets/image/icon-reply.png');
+
+  /// File path: assets/image/icon-seen.png
+  AssetGenImage get iconSeen =>
+      const AssetGenImage('assets/image/icon-seen.png');
+
+  /// File path: assets/image/icon-send.png
+  AssetGenImage get iconSend =>
+      const AssetGenImage('assets/image/icon-send.png');
+
+  /// File path: assets/image/icon-x.png
+  AssetGenImage get iconX => const AssetGenImage('assets/image/icon-x.png');
+
   /// File path: assets/image/merchant_onboarding_01.png
   AssetGenImage get merchantOnboarding01 =>
       const AssetGenImage('assets/image/merchant_onboarding_01.png');
@@ -166,6 +201,15 @@ class $AssetsImageGen {
         homewayLogo,
         homewayLogoUpdate,
         icLauncher,
+        iconArrow,
+        iconAttachment,
+        iconDelivered,
+        iconDocument,
+        iconError,
+        iconReply,
+        iconSeen,
+        iconSend,
+        iconX,
         merchantOnboarding01,
         merchantOnboarding02,
         merchantOnboarding03,

@@ -22,6 +22,8 @@ abstract class ChatUser extends Equatable {
     this.metadata,
     this.role,
     this.updatedAt,
+    this.isOnline = false,
+    this.pushToken = '',
   });
 
   const factory ChatUser({
@@ -34,6 +36,8 @@ abstract class ChatUser extends Equatable {
     Map<String, dynamic>? metadata,
     Role? role,
     int? updatedAt,
+    bool isOnline,
+    String pushToken,
   }) = _ChatUser;
 
   /// Creates user from a map (decoded JSON).
@@ -66,6 +70,12 @@ abstract class ChatUser extends Equatable {
   /// Updated user timestamp, in ms.
   final int? updatedAt;
 
+  /// Last seen
+  final bool isOnline;
+
+  /// Token of Push Notification
+  final String pushToken;
+
   /// Equatable props.
   @override
   List<Object?> get props => [
@@ -78,19 +88,22 @@ abstract class ChatUser extends Equatable {
         metadata,
         role,
         updatedAt,
+        isOnline,
+        pushToken,
       ];
 
-  ChatUser copyWith({
-    int? createdAt,
-    String? firstName,
-    String? id,
-    String? imageUrl,
-    String? lastName,
-    int? lastSeen,
-    Map<String, dynamic>? metadata,
-    Role? role,
-    int? updatedAt,
-  });
+  ChatUser copyWith(
+      {int? createdAt,
+      String? firstName,
+      String? id,
+      String? imageUrl,
+      String? lastName,
+      int? lastSeen,
+      Map<String, dynamic>? metadata,
+      Role? role,
+      int? updatedAt,
+      bool? isOnline,
+      String pushToken});
 
   /// Converts user to the map representation, encodable to JSON.
   Map<String, dynamic> toJson() => _$ChatUserToJson(this);
@@ -108,6 +121,8 @@ class _ChatUser extends ChatUser {
     super.metadata,
     super.role,
     super.updatedAt,
+    super.isOnline,
+    super.pushToken,
   }) : super._();
 
   @override
@@ -121,6 +136,8 @@ class _ChatUser extends ChatUser {
     dynamic metadata = _Unset,
     dynamic role = _Unset,
     dynamic updatedAt = _Unset,
+    dynamic isOnline = _Unset,
+    dynamic pushToken = _Unset,
   }) =>
       _ChatUser(
         createdAt: createdAt == _Unset ? this.createdAt : createdAt as int?,
@@ -132,6 +149,8 @@ class _ChatUser extends ChatUser {
         metadata: metadata == _Unset ? this.metadata : metadata as Map<String, dynamic>?,
         role: role == _Unset ? this.role : role as Role?,
         updatedAt: updatedAt == _Unset ? this.updatedAt : updatedAt as int?,
+        isOnline: isOnline == _Unset ? this.isOnline : isOnline as bool,
+        pushToken: pushToken == _Unset ? this.pushToken : pushToken as String,
       );
 }
 

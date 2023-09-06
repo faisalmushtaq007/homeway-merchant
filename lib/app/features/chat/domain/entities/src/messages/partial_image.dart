@@ -22,11 +22,11 @@ class PartialImage {
     required this.size,
     required this.uri,
     this.width,
+    this.read = '',
   });
 
   /// Creates a partial image message from a map (decoded JSON).
-  factory PartialImage.fromJson(Map<String, dynamic> json) =>
-      _$PartialImageFromJson(json);
+  factory PartialImage.fromJson(Map<String, dynamic> json) => _$PartialImageFromJson(json);
 
   /// Image height in pixels.
   final double? height;
@@ -48,6 +48,8 @@ class PartialImage {
 
   /// Image width in pixels.
   final double? width;
+
+  final String read;
 
   /// Converts a partial image message to the map representation, encodable to JSON.
   Map<String, dynamic> toJson() => _$PartialImageToJson(this);

@@ -33,6 +33,7 @@ abstract class Message extends Equatable {
     this.status,
     required this.type,
     this.updatedAt,
+    this.read = '',
   });
 
   /// Creates a particular message from a map (decoded JSON).
@@ -96,6 +97,9 @@ abstract class Message extends Equatable {
   /// Updated message timestamp, in ms.
   final int? updatedAt;
 
+  /// Message read
+  final String read;
+
   /// Creates a copy of the message with an updated data.
   Message copyWith({
     ChatUser? author,
@@ -108,6 +112,7 @@ abstract class Message extends Equatable {
     bool? showStatus,
     Status? status,
     int? updatedAt,
+    String? read,
   });
 
   /// Converts a particular message to the map representation, serializable to JSON.

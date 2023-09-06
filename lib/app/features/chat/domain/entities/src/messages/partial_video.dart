@@ -22,11 +22,11 @@ class PartialVideo {
     required this.size,
     required this.uri,
     this.width,
+    this.read = '',
   });
 
   /// Creates a partial video message from a map (decoded JSON).
-  factory PartialVideo.fromJson(Map<String, dynamic> json) =>
-      _$PartialVideoFromJson(json);
+  factory PartialVideo.fromJson(Map<String, dynamic> json) => _$PartialVideoFromJson(json);
 
   /// Video height in pixels.
   final double? height;
@@ -48,6 +48,8 @@ class PartialVideo {
 
   /// Video width in pixels.
   final double? width;
+
+  final String read;
 
   /// Converts a partial video message to the map representation, encodable to JSON.
   Map<String, dynamic> toJson() => _$PartialVideoToJson(this);

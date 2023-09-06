@@ -69,6 +69,7 @@ class _RoomsPageState extends State<RoomsPage> {
             ? Text(
                 name.isEmpty ? '' : name[0].toUpperCase(),
                 style: const TextStyle(color: Colors.white),
+                textDirection: serviceLocator<LanguageController>().targetTextDirection,
               )
             : null,
       ),
@@ -103,7 +104,10 @@ class _RoomsPageState extends State<RoomsPage> {
           onPressed: _user == null ? null : logout,
         ),
         systemOverlayStyle: SystemUiOverlayStyle.light,
-        title: const Text('Rooms'),
+        title: Text(
+          'Rooms',
+          textDirection: serviceLocator<LanguageController>().targetTextDirection,
+        ),
       ),
       body: _user == null
           ? Container(
@@ -114,13 +118,19 @@ class _RoomsPageState extends State<RoomsPage> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Text('Not authenticated'),
+                  Text(
+                    'Not authenticated',
+                    textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                  ),
                   TextButton(
                     onPressed: () async {
                       await LoginFirebaseUser().registerUser('547533381');
                       await initializeFlutterFire();
                     },
-                    child: const Text('Login'),
+                    child: Text(
+                      'Login',
+                      textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                    ),
                   ),
                 ],
               ),
@@ -135,7 +145,10 @@ class _RoomsPageState extends State<RoomsPage> {
                     margin: const EdgeInsets.only(
                       bottom: 200,
                     ),
-                    child: const Text('No rooms'),
+                    child: Text(
+                      'No rooms',
+                      textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                    ),
                   );
                 }
 
@@ -162,7 +175,10 @@ class _RoomsPageState extends State<RoomsPage> {
                         child: Row(
                           children: [
                             _buildAvatar(room),
-                            Text(room.name ?? ''),
+                            Text(
+                              room.name ?? '',
+                              textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                            ),
                           ],
                         ),
                       ),

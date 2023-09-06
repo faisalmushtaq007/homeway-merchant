@@ -25,6 +25,7 @@ abstract class SystemMessage extends Message {
     required this.text,
     MessageType? type,
     super.updatedAt,
+    super.read,
   }) : super(type: type ?? MessageType.system);
 
   const factory SystemMessage({
@@ -40,6 +41,7 @@ abstract class SystemMessage extends Message {
     required String text,
     MessageType? type,
     int? updatedAt,
+    String read,
   }) = _SystemMessage;
 
   /// Creates a custom message from a map (decoded JSON).
@@ -47,6 +49,8 @@ abstract class SystemMessage extends Message {
 
   /// System message content (could be text or translation key).
   final String text;
+
+  //final String read;
 
   /// Equatable props.
   @override
@@ -62,6 +66,7 @@ abstract class SystemMessage extends Message {
         status,
         text,
         updatedAt,
+        read,
       ];
 
   @override
@@ -77,6 +82,7 @@ abstract class SystemMessage extends Message {
     Status? status,
     String? text,
     int? updatedAt,
+    String? read,
   });
 
   /// Converts a custom message to the map representation,
@@ -100,6 +106,7 @@ class _SystemMessage extends SystemMessage {
     required super.text,
     super.type,
     super.updatedAt,
+    super.read,
   }) : super._();
 
   @override
@@ -115,6 +122,7 @@ class _SystemMessage extends SystemMessage {
     dynamic status = _Unset,
     String? text,
     dynamic updatedAt = _Unset,
+    dynamic read = _Unset,
   }) =>
       _SystemMessage(
         author: author ?? this.author,
@@ -128,6 +136,7 @@ class _SystemMessage extends SystemMessage {
         status: status == _Unset ? this.status : status as Status?,
         text: text ?? this.text,
         updatedAt: updatedAt == _Unset ? this.updatedAt : updatedAt as int?,
+        read: read == _Unset ? this.read : read as String,
       );
 }
 

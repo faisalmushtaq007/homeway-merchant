@@ -17,17 +17,19 @@ class PartialCustom {
   const PartialCustom({
     this.metadata,
     this.repliedMessage,
+    this.read = '',
   });
 
   /// Creates a partial custom message from a map (decoded JSON).
-  factory PartialCustom.fromJson(Map<String, dynamic> json) =>
-      _$PartialCustomFromJson(json);
+  factory PartialCustom.fromJson(Map<String, dynamic> json) => _$PartialCustomFromJson(json);
 
   /// Additional custom metadata or attributes related to the message.
   final Map<String, dynamic>? metadata;
 
   /// Message that is being replied to with the current message.
   final Message? repliedMessage;
+
+  final String read;
 
   /// Converts a partial custom message to the map representation, encodable to JSON.
   Map<String, dynamic> toJson() => _$PartialCustomToJson(this);

@@ -22,11 +22,11 @@ class PartialAudio {
     required this.size,
     required this.uri,
     this.waveForm,
+    this.read = '',
   });
 
   /// Creates a partial audio message from a map (decoded JSON).
-  factory PartialAudio.fromJson(Map<String, dynamic> json) =>
-      _$PartialAudioFromJson(json);
+  factory PartialAudio.fromJson(Map<String, dynamic> json) => _$PartialAudioFromJson(json);
 
   /// The length of the audio.
   final Duration duration;
@@ -51,6 +51,8 @@ class PartialAudio {
 
   /// Wave form represented as a list of decibel levels.
   final List<double>? waveForm;
+
+  final String read;
 
   /// Converts a partial audio message to the map representation, encodable to JSON.
   Map<String, dynamic> toJson() => _$PartialAudioToJson(this);

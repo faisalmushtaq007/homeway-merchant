@@ -68,13 +68,20 @@ class _RegisterPageState extends State<RegisterPage> {
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              child: const Text('OK'),
+              child: Text(
+                'OK',
+                textDirection: serviceLocator<LanguageController>().targetTextDirection,
+              ),
             ),
           ],
           content: Text(
             e.toString(),
+            textDirection: serviceLocator<LanguageController>().targetTextDirection,
           ),
-          title: const Text('Error'),
+          title: Text(
+            'Error',
+            textDirection: serviceLocator<LanguageController>().targetTextDirection,
+          ),
         ),
       );
     }
@@ -92,7 +99,10 @@ class _RegisterPageState extends State<RegisterPage> {
   Widget build(BuildContext context) => Scaffold(
         appBar: AppBar(
           systemOverlayStyle: SystemUiOverlayStyle.light,
-          title: const Text('Register'),
+          title: Text(
+            'Register',
+            textDirection: serviceLocator<LanguageController>().targetTextDirection,
+          ),
         ),
         body: SingleChildScrollView(
           child: Container(
@@ -152,7 +162,10 @@ class _RegisterPageState extends State<RegisterPage> {
                 ),
                 TextButton(
                   onPressed: _registering ? null : _register,
-                  child: const Text('Register'),
+                  child: Text(
+                    'Register',
+                    textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                  ),
                 ),
               ],
             ),

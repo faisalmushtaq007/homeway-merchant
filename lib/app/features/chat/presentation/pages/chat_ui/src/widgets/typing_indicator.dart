@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:homemakers_merchant/app/features/chat/domain/entities/chat_types_entity.dart';
 import 'package:homemakers_merchant/app/features/chat/presentation/pages/chat_ui/chat_ui.dart';
+import 'package:homemakers_merchant/bootup/injection_container.dart';
+import 'package:homemakers_merchant/config/translation/language_controller.dart';
 
 import '../util.dart';
 import 'state/inherited_chat_theme.dart';
@@ -236,6 +238,7 @@ class TypingWidget extends StatelessWidget {
         child: Text(
           _multiUserTextBuilder(widget.options.typingUsers),
           style: InheritedChatTheme.of(context).theme.typingIndicatorTheme.multipleUserTextStyle,
+          textDirection: serviceLocator<LanguageController>().targetTextDirection,
         ),
       );
     } else if (mode == TypingIndicatorMode.avatar) {
@@ -260,6 +263,7 @@ class TypingWidget extends StatelessWidget {
           Text(
             _multiUserTextBuilder(widget.options.typingUsers),
             style: InheritedChatTheme.of(context).theme.typingIndicatorTheme.multipleUserTextStyle,
+            textDirection: serviceLocator<LanguageController>().targetTextDirection,
           ),
         ],
       );
@@ -318,6 +322,7 @@ class AvatarHandler extends StatelessWidget {
                   ),
                   textAlign: TextAlign.center,
                   textScaleFactor: 0.7,
+                  textDirection: serviceLocator<LanguageController>().targetTextDirection,
                 ),
               ),
             ),
@@ -357,6 +362,7 @@ class TypingAvatar extends StatelessWidget {
               initials,
               style: InheritedChatTheme.of(context).theme.userAvatarTextStyle,
               textScaleFactor: 0.7,
+              textDirection: serviceLocator<LanguageController>().targetTextDirection,
             )
           : null,
     );
@@ -391,7 +397,7 @@ class AnimatedCircles extends StatelessWidget {
 class TypingIndicatorOptions {
   const TypingIndicatorOptions({
     this.animationSpeed = const Duration(milliseconds: 500),
-    this.customTypingIndicator,
+    this.customTypingIndicator = const SizedBox.shrink(),
     this.typingMode = TypingIndicatorMode.name,
     this.typingUsers = const [],
   });

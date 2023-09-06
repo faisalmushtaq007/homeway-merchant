@@ -6,27 +6,29 @@ import 'package:photo_view/photo_view.dart' show PhotoViewComputedScale;
 import 'package:homemakers_merchant/app/features/chat/domain/entities/chat_types_entity.dart' as types;
 import 'package:scroll_to_index/scroll_to_index.dart';
 
-import '../chat_l10n.dart';
-import '../chat_theme.dart';
-import '../conditional/conditional.dart';
-import '../models/bubble_rtl_alignment.dart';
-import '../models/date_header.dart';
-import '../models/emoji_enlargement_behavior.dart';
-import '../models/message_spacer.dart';
-import '../models/preview_image.dart';
-import '../models/unread_header_data.dart';
-import '../util.dart';
-import 'chat_list.dart';
-import 'image_gallery.dart';
-import 'input/input.dart';
-import 'message/message.dart';
-import 'message/system_message.dart';
-import 'message/text_message.dart';
-import 'state/inherited_chat_theme.dart';
-import 'state/inherited_l10n.dart';
-import 'state/inherited_user.dart';
-import 'typing_indicator.dart';
-import 'unread_header.dart';
+import 'package:homemakers_merchant/app/features/chat/presentation/pages/chat_ui/src/chat_l10n.dart';
+import 'package:homemakers_merchant/app/features/chat/presentation/pages/chat_ui/src/chat_theme.dart';
+import 'package:homemakers_merchant/app/features/chat/presentation/pages/chat_ui/src/conditional/conditional.dart';
+import 'package:homemakers_merchant/app/features/chat/presentation/pages/chat_ui/src/models/bubble_rtl_alignment.dart';
+import 'package:homemakers_merchant/app/features/chat/presentation/pages/chat_ui/src/models/date_header.dart';
+import 'package:homemakers_merchant/app/features/chat/presentation/pages/chat_ui/src/models/emoji_enlargement_behavior.dart';
+import 'package:homemakers_merchant/app/features/chat/presentation/pages/chat_ui/src/models/message_spacer.dart';
+import 'package:homemakers_merchant/app/features/chat/presentation/pages/chat_ui/src/models/preview_image.dart';
+import 'package:homemakers_merchant/app/features/chat/presentation/pages/chat_ui/src/models/unread_header_data.dart';
+import 'package:homemakers_merchant/app/features/chat/presentation/pages/chat_ui/src/util.dart';
+import 'package:homemakers_merchant/app/features/chat/presentation/pages/chat_ui/src/widgets/chat_list.dart';
+import 'package:homemakers_merchant/app/features/chat/presentation/pages/chat_ui/src/widgets/image_gallery.dart';
+import 'package:homemakers_merchant/app/features/chat/presentation/pages/chat_ui/src/widgets/input/input.dart';
+import 'package:homemakers_merchant/app/features/chat/presentation/pages/chat_ui/src/widgets/message/message.dart';
+import 'package:homemakers_merchant/app/features/chat/presentation/pages/chat_ui/src/widgets/message/system_message.dart';
+import 'package:homemakers_merchant/app/features/chat/presentation/pages/chat_ui/src/widgets/message/text_message.dart';
+import 'package:homemakers_merchant/app/features/chat/presentation/pages/chat_ui/src/widgets/state/inherited_chat_theme.dart';
+import 'package:homemakers_merchant/app/features/chat/presentation/pages/chat_ui/src/widgets/state/inherited_l10n.dart';
+import 'package:homemakers_merchant/app/features/chat/presentation/pages/chat_ui/src/widgets/state/inherited_user.dart';
+import 'package:homemakers_merchant/app/features/chat/presentation/pages/chat_ui/src/widgets/typing_indicator.dart';
+import 'package:homemakers_merchant/app/features/chat/presentation/pages/chat_ui/src/widgets/unread_header.dart';
+import 'package:homemakers_merchant/bootup/injection_container.dart';
+import 'package:homemakers_merchant/config/translation/language_controller.dart';
 
 /// Entry widget, represents the complete chat. If you wrap it in [SafeArea] and
 /// it should be full screen, set [SafeArea]'s `bottom` to `false`.
@@ -85,7 +87,7 @@ class Chat extends StatefulWidget {
     this.scrollPhysics,
     this.scrollToUnreadOptions = const ScrollToUnreadOptions(),
     this.showUserAvatars = true,
-    this.showUserNames = false,
+    this.showUserNames = true,
     this.systemMessageBuilder,
     this.textMessageBuilder,
     this.textMessageOptions = const TextMessageOptions(),
@@ -366,6 +368,7 @@ class ChatState extends State<Chat> {
           widget.l10n.emptyChatPlaceholder,
           style: widget.theme.emptyChatPlaceholderTextStyle,
           textAlign: TextAlign.center,
+          textDirection: serviceLocator<LanguageController>().targetTextDirection,
         ),
       );
 
@@ -396,6 +399,7 @@ class ChatState extends State<Chat> {
             child: Text(
               object.text,
               style: widget.theme.dateDividerTextStyle,
+              textDirection: serviceLocator<LanguageController>().targetTextDirection,
             ),
           );
     } else if (object is MessageSpacer) {

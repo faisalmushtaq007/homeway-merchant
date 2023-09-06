@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:homemakers_merchant/app/features/chat/domain/entities/chat_types_entity.dart' as types;
 import 'package:homemakers_merchant/bootup/injection_container.dart';
 import 'package:homemakers_merchant/config/translation/language_controller.dart';
+import 'package:homemakers_merchant/shared/widgets/app/app_text_field_widget.dart';
 import '../../models/input_clear_mode.dart';
 import '../../models/send_button_visibility_mode.dart';
 import '../../util.dart';
@@ -148,7 +149,7 @@ class _InputState extends State<Input> {
                 Expanded(
                   child: Padding(
                     padding: textPadding,
-                    child: TextField(
+                    child: AppTextFieldWidget(
                       enabled: widget.options.enabled,
                       autocorrect: widget.options.autocorrect,
                       autofocus: widget.options.autofocus,

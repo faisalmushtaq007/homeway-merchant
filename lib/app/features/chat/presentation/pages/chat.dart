@@ -29,9 +29,12 @@ class _ChatPageState extends State<ChatPage> {
                   Navigator.pop(context);
                   _handleImageSelection();
                 },
-                child: const Align(
+                child: Align(
                   alignment: Alignment.centerLeft,
-                  child: Text('Photo'),
+                  child: Text(
+                    'Photo',
+                    textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                  ),
                 ),
               ),
               TextButton(
@@ -39,16 +42,22 @@ class _ChatPageState extends State<ChatPage> {
                   Navigator.pop(context);
                   _handleFileSelection();
                 },
-                child: const Align(
+                child: Align(
                   alignment: Alignment.centerLeft,
-                  child: Text('File'),
+                  child: Text(
+                    'File',
+                    textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                  ),
                 ),
               ),
               TextButton(
                 onPressed: () => Navigator.pop(context),
-                child: const Align(
+                child: Align(
                   alignment: Alignment.centerLeft,
-                  child: Text('Cancel'),
+                  child: Text(
+                    'Cancel',
+                    textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                  ),
                 ),
               ),
             ],
@@ -189,7 +198,10 @@ class _ChatPageState extends State<ChatPage> {
   Widget build(BuildContext context) => Scaffold(
         appBar: AppBar(
           systemOverlayStyle: SystemUiOverlayStyle.light,
-          title: const Text('Chat'),
+          title: Text(
+            'Chat',
+            textDirection: serviceLocator<LanguageController>().targetTextDirection,
+          ),
         ),
         body: StreamBuilder<Room>(
           initialData: widget.room,
@@ -206,6 +218,15 @@ class _ChatPageState extends State<ChatPage> {
               onSendPressed: _handleSendPressed,
               user: ChatUser(
                 id: FirebaseChatCore.instance.firebaseUser?.uid ?? '',
+              ),
+              showUserAvatars: true,
+              showUserNames: true,
+              typingIndicatorOptions: TypingIndicatorOptions(
+                typingUsers: [
+                  ChatUser(
+                    id: FirebaseChatCore.instance.firebaseUser?.uid ?? '',
+                  ),
+                ],
               ),
             ),
           ),

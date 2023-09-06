@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:homemakers_merchant/app/features/chat/domain/entities/chat_types_entity.dart' as types;
 
-import '../../conditional/conditional.dart';
-import '../../util.dart';
-import '../state/inherited_chat_theme.dart';
-import '../state/inherited_user.dart';
+import 'package:homemakers_merchant/app/features/chat/presentation/pages/chat_ui/src/conditional/conditional.dart';
+import 'package:homemakers_merchant/app/features/chat/presentation/pages/chat_ui/src/util.dart';
+import 'package:homemakers_merchant/app/features/chat/presentation/pages/chat_ui/src/widgets/state/inherited_chat_theme.dart';
+import 'package:homemakers_merchant/app/features/chat/presentation/pages/chat_ui/src/widgets/state/inherited_user.dart';
+import 'package:homemakers_merchant/bootup/injection_container.dart';
+import 'package:homemakers_merchant/config/translation/language_controller.dart';
 
 /// A class that represents image message widget. Supports different
 /// aspect ratios, renders blurred image as a background which is visible
@@ -146,6 +148,7 @@ class _ImageMessageState extends State<ImageMessage> {
                           ? InheritedChatTheme.of(context).theme.sentMessageBodyTextStyle
                           : InheritedChatTheme.of(context).theme.receivedMessageBodyTextStyle,
                       textWidthBasis: TextWidthBasis.longestLine,
+                      textDirection: serviceLocator<LanguageController>().targetTextDirection,
                     ),
                     Container(
                       margin: const EdgeInsets.only(
@@ -156,6 +159,7 @@ class _ImageMessageState extends State<ImageMessage> {
                         style: user.id == widget.message.author.id
                             ? InheritedChatTheme.of(context).theme.sentMessageCaptionTextStyle
                             : InheritedChatTheme.of(context).theme.receivedMessageCaptionTextStyle,
+                        textDirection: serviceLocator<LanguageController>().targetTextDirection,
                       ),
                     ),
                   ],

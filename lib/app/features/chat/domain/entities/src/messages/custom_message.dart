@@ -25,6 +25,7 @@ abstract class CustomMessage extends Message {
     super.status,
     MessageType? type,
     super.updatedAt,
+    super.read,
   }) : super(type: type ?? MessageType.custom);
 
   const factory CustomMessage({
@@ -39,6 +40,7 @@ abstract class CustomMessage extends Message {
     Status? status,
     MessageType? type,
     int? updatedAt,
+    String read,
   }) = _CustomMessage;
 
   /// Creates a custom message from a map (decoded JSON).
@@ -55,6 +57,7 @@ abstract class CustomMessage extends Message {
     bool? showStatus,
     Status? status,
     int? updatedAt,
+    String? read,
   }) =>
       _CustomMessage(
         author: author,
@@ -68,6 +71,7 @@ abstract class CustomMessage extends Message {
         status: status,
         type: MessageType.custom,
         updatedAt: updatedAt,
+        read: partialCustom.read,
       );
 
   /// Equatable props.
@@ -83,6 +87,7 @@ abstract class CustomMessage extends Message {
         showStatus,
         status,
         updatedAt,
+        read,
       ];
 
   @override
@@ -97,6 +102,7 @@ abstract class CustomMessage extends Message {
     bool? showStatus,
     Status? status,
     int? updatedAt,
+    String? read,
   });
 
   /// Converts a custom message to the map representation,
@@ -119,6 +125,7 @@ class _CustomMessage extends CustomMessage {
     super.status,
     super.type,
     super.updatedAt,
+    super.read,
   }) : super._();
 
   @override
@@ -133,6 +140,7 @@ class _CustomMessage extends CustomMessage {
     dynamic showStatus = _Unset,
     dynamic status = _Unset,
     dynamic updatedAt = _Unset,
+    dynamic read = _Unset,
   }) =>
       _CustomMessage(
         author: author ?? this.author,
@@ -145,6 +153,7 @@ class _CustomMessage extends CustomMessage {
         showStatus: showStatus == _Unset ? this.showStatus : showStatus as bool?,
         status: status == _Unset ? this.status : status as Status?,
         updatedAt: updatedAt == _Unset ? this.updatedAt : updatedAt as int?,
+        read: read == _Unset ? this.read : read as String,
       );
 }
 
