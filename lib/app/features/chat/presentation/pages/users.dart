@@ -129,7 +129,7 @@ class _UsersPageState extends State<UsersPage> {
                   ),
                   TextButton(
                     onPressed: () async {
-                      await LoginFirebaseUser().registerUser('547538878');
+                      await LoginFirebaseUser().registerUser('547538599');
                       await initializeFlutterFire();
                     },
                     child: Text(

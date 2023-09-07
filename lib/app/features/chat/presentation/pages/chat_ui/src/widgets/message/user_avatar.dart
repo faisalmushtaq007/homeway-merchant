@@ -41,7 +41,6 @@ class UserAvatar extends StatelessWidget {
     );
     final hasImage = author.imageUrl != null;
     final initials = getUserInitials(author);
-    print('Author ${author.imageUrl ?? 'No image'}');
     return Container(
       margin: bubbleRtlAlignment == BubbleRtlAlignment.left ? const EdgeInsetsDirectional.only(end: 8) : const EdgeInsets.only(right: 8),
       child: GestureDetector(

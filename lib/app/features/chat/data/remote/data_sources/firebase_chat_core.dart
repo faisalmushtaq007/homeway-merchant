@@ -182,6 +182,8 @@ class FirebaseChatCore {
       'metadata': user.metadata,
       'role': user.role?.toShortString(),
       'updatedAt': FieldValue.serverTimestamp(),
+      'isOnline': user.isOnline,
+      'pushToken': user.pushToken,
     });
   }
 
@@ -329,8 +331,13 @@ class FirebaseChatCore {
         id: '',
         partialText: partialMessage,
       );
+    } else if (partialMessage is types.PartialAudio) {
+      message = types.AudioMessage.fromPartial(
+        author: types.ChatUser(id: firebaseUser!.uid),
+        id: '',
+        partialAudio: partialMessage,
+      );
     }
-
     if (message != null) {
       final messageMap = message.toJson();
       messageMap.removeWhere((key, value) => key == 'author' || key == 'id');

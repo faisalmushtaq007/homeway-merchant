@@ -397,7 +397,7 @@ class AnimatedCircles extends StatelessWidget {
 class TypingIndicatorOptions {
   const TypingIndicatorOptions({
     this.animationSpeed = const Duration(milliseconds: 500),
-    this.customTypingIndicator = const SizedBox.shrink(),
+    this.customTypingIndicator,
     this.typingMode = TypingIndicatorMode.name,
     this.typingUsers = const [],
   });

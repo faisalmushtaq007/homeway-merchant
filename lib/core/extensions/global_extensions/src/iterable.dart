@@ -969,10 +969,10 @@ extension IterableLastWhile<E> on Iterable<E> {
   }
 }
 
-extension IterableFilter<E> on Iterable<E> {
+/*extension IterableFilter<E> on Iterable<E> {
   /// Returns all elements matching the given [predicate].
   Iterable<E> filter(bool Function(E element) predicate) => where(predicate);
-}
+}*/
 
 extension IterableFilterIndexed<E> on Iterable<E> {
   /// Returns all elements that satisfy the given [predicate].

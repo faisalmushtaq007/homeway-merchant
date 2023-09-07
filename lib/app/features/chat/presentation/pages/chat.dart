@@ -206,9 +206,9 @@ class _ChatPageState extends State<ChatPage> {
         body: StreamBuilder<Room>(
           initialData: widget.room,
           stream: FirebaseChatCore.instance.room(widget.room.id),
-          builder: (context, snapshot) => StreamBuilder<List<types.Message>>(
+          builder: (context, roomSnapshot) => StreamBuilder<List<types.Message>>(
             initialData: const [],
-            stream: FirebaseChatCore.instance.messages(snapshot.data!),
+            stream: FirebaseChatCore.instance.messages(roomSnapshot.data!),
             builder: (context, snapshot) => Chat(
               isAttachmentUploading: _isAttachmentUploading,
               messages: snapshot.data ?? [],
@@ -221,13 +221,13 @@ class _ChatPageState extends State<ChatPage> {
               ),
               showUserAvatars: true,
               showUserNames: true,
-              typingIndicatorOptions: TypingIndicatorOptions(
-                typingUsers: [
-                  ChatUser(
-                    id: FirebaseChatCore.instance.firebaseUser?.uid ?? '',
-                  ),
-                ],
-              ),
+              onMessageVisibilityChanged: (message, visible) {},
+              /*typingIndicatorOptions: TypingIndicatorOptions(
+                typingUsers: roomSnapshot.data?.users.where((user) {
+                      return user.id != FirebaseChatCore.instance.firebaseUser?.uid;
+                    }).toList() ??
+                    [],
+              ),*/
             ),
           ),
         ),

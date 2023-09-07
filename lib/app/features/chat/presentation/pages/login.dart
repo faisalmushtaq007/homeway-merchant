@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'package:dart_jsonwebtoken/dart_jsonwebtoken.dart';
 import 'package:faker/faker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:homemakers_merchant/app/features/chat/domain/entities/chat_types_entity.dart';
 import 'package:homemakers_merchant/app/features/chat/index.dart';
@@ -94,12 +95,25 @@ class LoginFirebaseUser {
       String _firstName = faker.person.firstName();
       String _lastName = faker.person.lastName();
       String _email = '${_firstName.toLowerCase()}.${_lastName.toLowerCase()}@${faker.internet.domainName()}';
+      // Get Token
+      final fcmToken = await FirebaseMessaging.instance.getToken();
+      //todo(Prasant): To be notified whenever the token is updated, subscribe to the onTokenRefresh stream:
+
+      /*FirebaseMessaging.instance.onTokenRefresh.listen((fcmToken) {
+        // TODO: If necessary send token to application server.
+
+        // Note: This callback is fired at each app startup and whenever a new
+        // token is generated.
+      }).onError((err) {
+        // Error getting token.
+      });*/
       await FirebaseChatCore.instance.createUserInFirestore(
         ChatUser(
           firstName: _firstName,
           id: userCredential?.user!.uid ?? '',
           imageUrl: 'https://i.pravatar.cc/300?u=$_email',
           lastName: _lastName,
+          pushToken: fcmToken ?? '',
         ),
       );
     } else {

@@ -29,7 +29,7 @@ abstract class Message extends Equatable {
     this.remoteId,
     this.repliedMessage,
     this.roomId,
-    this.showStatus,
+    this.showStatus = true,
     this.status,
     required this.type,
     this.updatedAt,
