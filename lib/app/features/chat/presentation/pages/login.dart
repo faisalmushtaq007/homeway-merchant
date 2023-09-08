@@ -82,7 +82,7 @@ class LoginFirebaseUser {
   }
 
   Future<void> registerUser(String uid, {bool isCurrentUser = true}) async {
-    final url = Uri.parse("http://192.168.0.105:3000/users/token?uid=${uid}");
+    final url = Uri.parse("http://192.168.0.113:3000/users/token?uid=${uid}");
     http.Response response = await http.get(url);
     print("response ${response.statusCode}, ${response.body}");
     var data = jsonDecode(response.body) as Map<String, dynamic>;
