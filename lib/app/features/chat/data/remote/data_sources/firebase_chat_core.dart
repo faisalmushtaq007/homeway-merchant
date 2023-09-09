@@ -417,7 +417,7 @@ class FirebaseChatCore {
         );
   }
 
-  void accessDataOffline_configure() async {
+  Future<void> accessDataOfflineConfigure() async {
     // [START access_data_offline_configure_offline_persistence]
     // Apple and Android
     getFirebaseFirestore().settings = const Settings(persistenceEnabled: true);
@@ -427,7 +427,7 @@ class FirebaseChatCore {
     // [END access_data_offline_configure_offline_persistence]
   }
 
-  void accessDataOffline_configureCache() {
+  void accessDataOfflineConfigureCache() {
     // [START access_data_offline_configure_cache_size]
     getFirebaseFirestore().settings = const Settings(
       persistenceEnabled: true,
@@ -468,5 +468,24 @@ class FirebaseChatCore {
       // Back online
     });
     // [END access_data_offline_enable_network]
+  }
+
+  /// Updates a user status in the Firestore.
+  Future<void> updateUserActiveStatus({bool status=true}) async {
+    if (firebaseUser == null) return;
+    Map<String,dynamic> statusJsonData={};
+    if(status){
+      statusJsonData={
+        'updatedAt': FieldValue.serverTimestamp(),
+        'isOnline': status,
+      };
+    }else{
+      statusJsonData={
+        'lastSeen': FieldValue.serverTimestamp(),
+        'updatedAt': FieldValue.serverTimestamp(),
+        'isOnline': status,
+      };
+    }
+    await getFirebaseFirestore().collection(config.usersCollectionName).doc(firebaseUser!.uid).update(statusJsonData);
   }
 }

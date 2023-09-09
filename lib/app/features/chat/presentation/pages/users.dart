@@ -11,11 +11,26 @@ class _UsersPageState extends State<UsersPage> {
   bool _error = false;
   bool _initialized = false;
   User? _user;
+  late final AppLifecycleListener _listener;
+  late AppLifecycleState? _state;
 
   @override
   void initState() {
     initializeFlutterFire();
     super.initState();
+    _state = SchedulerBinding.instance.lifecycleState;
+    _listener = AppLifecycleListener(
+      onShow: () => _handleTransition('show'),
+      onResume: () => _handleTransition('resume'),
+      onHide: () => _handleTransition('hide'),
+      onInactive: () => _handleTransition('inactive'),
+      onPause: () => _handleTransition('pause'),
+      onDetach: () => _handleTransition('detach'),
+      onRestart: () => _handleTransition('restart'),
+      // This fires for each state change. Callbacks above fire only for
+      // specific state transitions.
+      onStateChange: _handleStateChange,
+    );
   }
 
   Future<void> initializeFlutterFire() async {
@@ -34,6 +49,19 @@ class _UsersPageState extends State<UsersPage> {
       });
     }
   }
+  void _handleTransition(String name) {}
+
+  Future<void> _handleStateChange(AppLifecycleState state) async{
+    setState(() {
+      _state = state;
+    });
+    if(_state==AppLifecycleState.resumed){
+      return await FirebaseChatCore.instance.updateUserActiveStatus(status: true);
+    }else if(_state==AppLifecycleState.paused){
+      return await FirebaseChatCore.instance.updateUserActiveStatus(status: false);
+    }
+  }
+
 
   Widget _buildAvatar(BuildContext context, ChatUser user) {
     final color = getUserAvatarNameColor(user);
@@ -85,6 +113,12 @@ class _UsersPageState extends State<UsersPage> {
   }
 
   @override
+  void dispose() {
+    _listener.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     if (_error) {
       return Container();
@@ -129,7 +163,7 @@ class _UsersPageState extends State<UsersPage> {
                   ),
                   TextButton(
                     onPressed: () async {
-                      await LoginFirebaseUser().registerUser('547538599');
+                      await LoginFirebaseUser().registerUser('547533381');
                       await initializeFlutterFire();
                     },
                     child: Text(

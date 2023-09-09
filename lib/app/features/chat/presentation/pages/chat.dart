@@ -14,6 +14,46 @@ class ChatPage extends StatefulWidget {
 
 class _ChatPageState extends State<ChatPage> {
   bool _isAttachmentUploading = false;
+  late final AppLifecycleListener _listener;
+  late AppLifecycleState? _state;
+
+  @override
+  void initState() {
+    super.initState();
+    _state = SchedulerBinding.instance.lifecycleState;
+    _listener = AppLifecycleListener(
+      onShow: () => _handleTransition('show'),
+      onResume: () => _handleTransition('resume'),
+      onHide: () => _handleTransition('hide'),
+      onInactive: () => _handleTransition('inactive'),
+      onPause: () => _handleTransition('pause'),
+      onDetach: () => _handleTransition('detach'),
+      onRestart: () => _handleTransition('restart'),
+      // This fires for each state change. Callbacks above fire only for
+      // specific state transitions.
+      onStateChange: _handleStateChange,
+    );
+  }
+
+  void _handleTransition(String name) {}
+
+  Future<void> _handleStateChange(AppLifecycleState state) async{
+    setState(() {
+      _state = state;
+    });
+    if(_state==AppLifecycleState.resumed){
+      return await FirebaseChatCore.instance.updateUserActiveStatus(status: true);
+    }else if(_state==AppLifecycleState.paused){
+      return await FirebaseChatCore.instance.updateUserActiveStatus(status: false);
+    }
+  }
+
+  @override
+  void dispose() {
+    _listener.dispose();
+    super.dispose();
+  }
+
 
   void _handleAttachmentPressed() {
     showModalBottomSheet<void>(

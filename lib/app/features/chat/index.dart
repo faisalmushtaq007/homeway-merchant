@@ -3,6 +3,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:file_selector/file_selector.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:go_router/go_router.dart';
 import 'package:homemakers_merchant/app/features/chat/domain/entities/chat_types_entity.dart';
 import 'package:homemakers_merchant/app/features/chat/presentation/pages/chat_ui/chat_ui.dart';

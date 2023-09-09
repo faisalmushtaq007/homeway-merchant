@@ -14,6 +14,7 @@ import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:homemakers_merchant/app/app.dart';
+import 'package:homemakers_merchant/app/features/chat/index.dart';
 import 'package:homemakers_merchant/bootup/injection_container.dart';
 import 'package:homemakers_merchant/theme/theme_service.dart';
 import 'package:homemakers_merchant/theme/theme_service_hive.dart';
@@ -117,6 +118,7 @@ Future<void> bootstrap(FutureOr<dynamic> Function() builder) async {
     if (kIsWeb) {
       // [START auth_persistingAuthState]
       await FirebaseAuth.instance.setPersistence(Persistence.NONE);
+      await FirebaseChatCore.instance.accessDataOfflineConfigure();
       // [END auth_persistingAuthState]
     }
 
@@ -126,6 +128,7 @@ Future<void> bootstrap(FutureOr<dynamic> Function() builder) async {
       //FirebaseDatabase.instance.useDatabaseEmulator('localhost', 9000);
       //FirebaseStorage.instance.useStorageEmulator('localhost', 9199);
     }
+    FirebaseChatCore.instance.accessDataOfflineConfigureCache();
 
     //final ThemeService themeService = ThemeServicePrefs();
     //final ThemeService themeService = ThemeServiceHive('app_color_scheme_box');
