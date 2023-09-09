@@ -37,7 +37,7 @@ class AppRouter {
 
   AppRouter._();
 
-  static const String INITIAL = Routes.CHAT_USER_PAGE;
+  static const String INITIAL = Routes.ROOM_PAGE;
 
   static final GoRouter _router = GoRouter(
     debugLogDiagnostics: true,

@@ -149,31 +149,33 @@ class _UsersPageState extends State<UsersPage> {
         ],
       ),
       body: _user == null
-          ? Container(
-              alignment: Alignment.center,
-              margin: const EdgeInsets.only(
-                bottom: 200,
-              ),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    'Not authenticated',
-                    textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                  ),
-                  TextButton(
-                    onPressed: () async {
-                      await LoginFirebaseUser().registerUser('547533381');
-                      await initializeFlutterFire();
-                    },
-                    child: Text(
-                      'Login',
+          ? SingleChildScrollView(
+            child: Container(
+                alignment: Alignment.center,
+                margin: const EdgeInsets.only(
+                  bottom: 200,
+                ),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      'Not authenticated',
                       textDirection: serviceLocator<LanguageController>().targetTextDirection,
                     ),
-                  ),
-                ],
+                    TextButton(
+                      onPressed: () async {
+                        await LoginFirebaseUser().registerUser('547533381');
+                        await initializeFlutterFire();
+                      },
+                      child: Text(
+                        'Login',
+                        textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                      ),
+                    ),
+                  ],
+                ),
               ),
-            )
+          )
           : StreamBuilder<List<ChatUser>>(
               stream: FirebaseChatCore.instance.users(),
               initialData: const [],
@@ -191,49 +193,62 @@ class _UsersPageState extends State<UsersPage> {
                   );
                 }
 
-                return ListView.builder(
-                  itemCount: snapshot.data!.length,
-                  itemBuilder: (context, index) {
-                    final user = snapshot.data![index];
-                    return Card(
-                      margin: const EdgeInsetsDirectional.only(
-                        bottom: 8,
-                      ),
-                      child: ListTile(
-                        key: ValueKey(index),
-                        leading: _buildAvatar(context, user),
-                        title: Text(
-                          getUserName(user),
-                          textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                        ),
-                        onTap: () async {
-                          await _handlePressed(user, context);
-                          return;
+                return CustomScrollView(
+                  slivers: [
+                    AppSearchInputSliverWidget(
+                      key: const Key('chat-user-search-widget'),
+                      onChanged: (value) {
+
+                      },
+                    ),
+                    Flexible(
+                      flex: 3,
+                      child: ListView.builder(
+                        itemCount: snapshot.data!.length,
+                        itemBuilder: (context, index) {
+                          final user = snapshot.data![index];
+                          return Card(
+                            margin: const EdgeInsetsDirectional.only(
+                              bottom: 8,
+                            ),
+                            child: ListTile(
+                              key: ValueKey(index),
+                              leading: _buildAvatar(context, user),
+                              title: Text(
+                                getUserName(user),
+                                textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                              ),
+                              onTap: () async {
+                                await _handlePressed(user, context);
+                                return;
+                              },
+                            ),
+                          );
+                          return InkWell(
+                            onTap: () async {
+                              await _handlePressed(user, context);
+                              return;
+                            },
+                            child: Container(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 16,
+                                vertical: 8,
+                              ),
+                              child: Row(
+                                children: [
+                                  _buildAvatar(context, user),
+                                  Text(
+                                    getUserName(user),
+                                    textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                  ),
+                                ],
+                              ),
+                            ),
+                          );
                         },
                       ),
-                    );
-                    return InkWell(
-                      onTap: () async {
-                        await _handlePressed(user, context);
-                        return;
-                      },
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 16,
-                          vertical: 8,
-                        ),
-                        child: Row(
-                          children: [
-                            _buildAvatar(context, user),
-                            Text(
-                              getUserName(user),
-                              textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                            ),
-                          ],
-                        ),
-                      ),
-                    );
-                  },
+                    ),
+                  ],
                 );
               },
             ),

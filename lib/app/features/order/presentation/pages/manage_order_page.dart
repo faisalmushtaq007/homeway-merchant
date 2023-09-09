@@ -557,10 +557,10 @@ class _ManageOrderPageView extends WidgetView<ManageOrderPage, _ManageOrderPageC
                           3 => const AllOnProcessOrderPage(
                               key: Key('manage-order-onprocess-orders-widget'),
                             ),
-                          3 => const AllDeliverOrderPage(
+                          4 => const AllDeliverOrderPage(
                               key: Key('manage-order-deliver-orders-widget'),
                             ),
-                          3 => const AllCancelOrderPage(
+                          5 => const AllCancelOrderPage(
                               key: Key('manage-order-cancel-orders-widget'),
                             ),
                           _ => const AllNewOrderPage(

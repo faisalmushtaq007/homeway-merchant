@@ -47,37 +47,35 @@ class _AppSearchInputSliverWidgetView extends WidgetView<AppSearchInputSliverWid
   const _AppSearchInputSliverWidgetView(super.state);
 @override
   Widget build(BuildContext context) {
-    return SliverToBoxAdapter(
-      child: AnimatedCrossFade(
-        crossFadeState: (widget.isEnabled) ? CrossFadeState.showFirst : CrossFadeState.showSecond,
-        duration: const Duration(milliseconds: 200),
-        firstChild: Container(
-          height: 60,
-          padding: const EdgeInsetsDirectional.symmetric(
-            horizontal: 0,
-            vertical: 4,
-          ),
-          margin: const EdgeInsetsDirectional.only(
-            bottom: 8,
-          ),
-          child: Row(
-            children: [
-              Expanded(
-                child: TextField(
-                  decoration: const InputDecoration(
-                    prefixIcon: Icon(
-                      Icons.search,
-                    ),
-                    labelText: 'Search',
-                  ),
-                  onChanged: state._textChangeStreamController.add,
-                ),
-              ),
-            ],
-          ),
+    return AnimatedCrossFade(
+      crossFadeState: (widget.isEnabled) ? CrossFadeState.showFirst : CrossFadeState.showSecond,
+      duration: const Duration(milliseconds: 200),
+      firstChild: Container(
+        height: 60,
+        padding: const EdgeInsetsDirectional.symmetric(
+          horizontal: 0,
+          vertical: 4,
         ),
-        secondChild: nil,
+        margin: const EdgeInsetsDirectional.only(
+          bottom: 8,
+        ),
+        child: Row(
+          children: [
+            Expanded(
+              child: TextField(
+                decoration: const InputDecoration(
+                  prefixIcon: Icon(
+                    Icons.search,
+                  ),
+                  labelText: 'Search',
+                ),
+                onChanged: state._textChangeStreamController.add,
+              ),
+            ),
+          ],
+        ),
       ),
+      secondChild: nil,
     );
   }
 }
