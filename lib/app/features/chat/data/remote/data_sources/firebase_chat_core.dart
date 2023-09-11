@@ -353,7 +353,7 @@ class FirebaseChatCore {
 
   /// Updates a message in the Firestore. Accepts any message and a
   /// room ID. Message will probably be taken from the [messages] stream.
-  void updateMessage(types.Message message, String roomId) async {
+  Future<void> updateMessage(types.Message message, String roomId) async {
     if (firebaseUser == null) return;
     if (message.author.id != firebaseUser!.uid) return;
 
@@ -369,7 +369,7 @@ class FirebaseChatCore {
 
   /// Updates a room in the Firestore. Accepts any room.
   /// Room will probably be taken from the [rooms] stream.
-  void updateRoom(types.Room room) async {
+  Future<void> updateRoom(types.Room room) async {
     if (firebaseUser == null) return;
 
     final roomMap = room.toJson();

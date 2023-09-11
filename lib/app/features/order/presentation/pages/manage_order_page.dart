@@ -18,7 +18,7 @@ class _ManageOrderPageController extends State<ManageOrderPage> {
     super.initState();
     scrollController = ScrollController();
     customScrollViewScrollController = ScrollController();
-    //saveAll();
+    saveAll();
     // set default index of order is zero
     onChangeOrderType(0);
   }
@@ -58,6 +58,7 @@ class _ManageOrderPageController extends State<ManageOrderPage> {
                 portionSize: 1,
                 portionUnit: 'Bowl',
               ),
+              isInstantMenu: true,
             ),
           ],
         ),

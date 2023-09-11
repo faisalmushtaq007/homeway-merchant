@@ -66,8 +66,14 @@ class _AllTranscationsWidgetController extends State<AllTranscationsWidget> {
       if (isLastPage) {
         _pagingController.appendLastPage(newItems);
       } else {
-        final nextPageKey = pageKey + 1;
-        _pagingController.appendPage(newItems, nextPageKey);
+        if(widget.hasShownInWalletDashboard){
+          // No update in pageKey
+          final nextPageKey = pageKey;
+          _pagingController.appendPage(newItems, nextPageKey);
+        }else {
+          final nextPageKey = pageKey + 1;
+          _pagingController.appendPage(newItems, nextPageKey);
+        }
       }
     } catch (error) {
       _pagingController.error = error;

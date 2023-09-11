@@ -13,13 +13,29 @@ class _RoomsPageController extends State<RoomsPage> {
   User? _user;
   late final ScrollController scrollController;
   late final ScrollController customScrollViewScrollController;
+  late final AppLifecycleListener _listener;
+  late AppLifecycleState? _state;
 
   @override
   void initState() {
     initializeFlutterFire();
     scrollController = ScrollController();
     customScrollViewScrollController = ScrollController();
+
     super.initState();
+    _state = SchedulerBinding.instance.lifecycleState;
+    _listener = AppLifecycleListener(
+      onShow: () => _handleTransition('show'),
+      onResume: () => _handleTransition('resume'),
+      onHide: () => _handleTransition('hide'),
+      onInactive: () => _handleTransition('inactive'),
+      onPause: () => _handleTransition('pause'),
+      onDetach: () => _handleTransition('detach'),
+      onRestart: () => _handleTransition('restart'),
+      // This fires for each state change. Callbacks above fire only for
+      // specific state transitions.
+      onStateChange: _handleStateChange,
+    );
   }
 
   Future<void> initializeFlutterFire() async {
@@ -32,12 +48,48 @@ class _RoomsPageController extends State<RoomsPage> {
       setState(() {
         _initialized = true;
       });
+      final (ConnectivityPlusState?, InternetConnectivityState?) result =
+          serviceLocator<ConnectivityService>().getCurrentInternetStatus();
+      if (result.$2 == InternetConnectivityState.internet) {
+        await FirebaseChatCore.instance
+            .updateUserActiveStatus();
+        return;
+      } else {
+        await FirebaseChatCore.instance
+            .updateUserActiveStatus(status: false);
+        return;
+      }
     } catch (e) {
       setState(() {
         _error = true;
       });
-      await LoginFirebaseUser().registerUser('547533381');
+      await LoginFirebaseUser().registerUser('547538599');
       await initializeFlutterFire();
+    }
+  }
+
+  void _handleTransition(String name) {}
+
+  Future<void> _handleStateChange(AppLifecycleState state) async {
+    setState(() {
+      _state = state;
+    });
+    if (_state == AppLifecycleState.resumed) {
+      final (ConnectivityPlusState?, InternetConnectivityState?) result =
+          serviceLocator<ConnectivityService>().getCurrentInternetStatus();
+      if (result.$2 == InternetConnectivityState.internet) {
+        await FirebaseChatCore.instance
+            .updateUserActiveStatus();
+        return;
+      } else {
+        await FirebaseChatCore.instance
+            .updateUserActiveStatus(status: false);
+        return;
+      }
+    } else if (_state == AppLifecycleState.paused) {
+      await FirebaseChatCore.instance
+          .updateUserActiveStatus(status: false);
+      return;
     }
   }
 
@@ -47,13 +99,13 @@ class _RoomsPageController extends State<RoomsPage> {
 
   Widget _buildAvatar(Room room) {
     var color = Colors.transparent;
-
+    ChatUser user = ChatUser(id: '');
     if (room.type == RoomType.direct) {
       try {
         final otherUser = room.users.firstWhere(
           (u) => u.id != _user!.uid,
         );
-
+        user = otherUser;
         color = getUserAvatarNameColor(otherUser);
       } catch (e) {
         // Do nothing if other user is not found.
@@ -62,22 +114,21 @@ class _RoomsPageController extends State<RoomsPage> {
 
     final hasImage = room.imageUrl != null;
     final name = room.name ?? '';
-
-    return Container(
-      margin: const EdgeInsets.only(right: 16),
-      child: CircleAvatar(
-        backgroundColor: hasImage ? Colors.transparent : color,
-        backgroundImage: hasImage ? NetworkImage(room.imageUrl!) : null,
-        radius: 20,
-        child: !hasImage
-            ? Text(
-                name.isEmpty ? '' : name[0].toUpperCase(),
-                style: const TextStyle(color: Colors.white),
-                textDirection:
-                    serviceLocator<LanguageController>().targetTextDirection,
-              )
-            : null,
+    print('User Online ${user.isOnline}');
+    return AdvancedAvatar(
+      statusColor: user.isOnline ? Colors.green : null,
+      foregroundDecoration: BoxDecoration(
+        shape: BoxShape.circle,
+        border: Border.all(
+          color: user.isOnline
+              ? Colors.green.withOpacity(0.75)
+              : Colors.grey.withOpacity(0.75),
+          width: 2,
+        ),
       ),
+      imagePath: room.imageUrl!,
+      size: 48,
+      name: name.isEmpty ? '' : name[0].toUpperCase(),
     );
   }
 
@@ -86,6 +137,7 @@ class _RoomsPageController extends State<RoomsPage> {
 
   @override
   void dispose() {
+    _listener.dispose();
     scrollController.dispose();
     customScrollViewScrollController.dispose();
     super.dispose();
@@ -118,8 +170,10 @@ class _RoomsPageView extends WidgetView<RoomsPage, _RoomsPageController> {
                 onPressed: state._user == null
                     ? null
                     : () async {
-                        await LoginFirebaseUser()
-                            .registerUser('547533382', isCurrentUser: false);
+                        final math.Random random = math.Random();
+                        final number = random.nextIntOfDigits(4);
+                        await LoginFirebaseUser().registerUser('54753${number}',
+                            isCurrentUser: false);
                         //await initializeFlutterFire();
                       },
               ),
@@ -193,6 +247,7 @@ class _RoomsPageView extends WidgetView<RoomsPage, _RoomsPageController> {
                         stream: FirebaseChatCore.instance.rooms(),
                         initial: const [],
                         key: const Key('chat-user-rooms-stream-widget'),
+                        keepAlive: true,
                         waiting: (context) => Container(
                           alignment: Alignment.center,
                           child: const Column(
@@ -210,9 +265,7 @@ class _RoomsPageView extends WidgetView<RoomsPage, _RoomsPageController> {
                                 [
                                   AppSearchInputSliverWidget(
                                     key: const Key('chat-room-search-field'),
-                                    onChanged: (value) {
-
-                                    },
+                                    onChanged: (value) {},
                                   ),
                                   const AnimatedGap(
                                     8,
@@ -237,9 +290,9 @@ class _RoomsPageView extends WidgetView<RoomsPage, _RoomsPageController> {
                                       Center(
                                         child: Text(
                                           'No rooms',
-                                          textDirection:
-                                              serviceLocator<LanguageController>()
-                                                  .targetTextDirection,
+                                          textDirection: serviceLocator<
+                                                  LanguageController>()
+                                              .targetTextDirection,
                                         ),
                                       ),
                                     ],
@@ -249,33 +302,30 @@ class _RoomsPageView extends WidgetView<RoomsPage, _RoomsPageController> {
                                   itemCount: value!.length,
                                   itemBuilder: (context, index) {
                                     final room = value![index];
-
-                                    return GestureDetector(
-                                      onTap: () {
-                                        Navigator.of(context).push(
-                                          MaterialPageRoute(
-                                            builder: (context) => ChatPage(
-                                              room: room,
-                                            ),
-                                          ),
-                                        );
-                                      },
-                                      child: Container(
-                                        padding: const EdgeInsets.symmetric(
-                                          horizontal: 16,
+                                    return Card(
+                                      key: ValueKey(index),
+                                      child: ListTile(
+                                        contentPadding:
+                                            const EdgeInsets.symmetric(
+                                          horizontal: 12,
                                           vertical: 8,
                                         ),
-                                        child: Row(
-                                          children: [
-                                            state._buildAvatar(room),
-                                            Text(
-                                              room.name ?? '',
-                                              textDirection: serviceLocator<
-                                                      LanguageController>()
-                                                  .targetTextDirection,
-                                            ),
-                                          ],
+                                        onTap: () async {
+                                          final returnResult =
+                                              await context.push(
+                                            Routes.CHAT_PAGE,
+                                            extra: {'room': room},
+                                          );
+                                          return;
+                                        },
+                                        title: Text(
+                                          room.name ?? '',
+                                          textDirection: serviceLocator<
+                                                  LanguageController>()
+                                              .targetTextDirection,
                                         ),
+                                        subtitle:(room.lastMessages.isNotNull&&room.lastMessages?.last.type==types.MessageType.text)?Text('${room.lastMessages!.last as types.TextMessage..text}'): null,
+                                        leading: state._buildAvatar(room),
                                       ),
                                     );
                                   },

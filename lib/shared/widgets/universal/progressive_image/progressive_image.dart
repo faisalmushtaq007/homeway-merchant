@@ -348,7 +348,7 @@ class _ProgressiveImageState extends State<ProgressiveImage> {
   /// Whether the [placeholder] is displayed intact when the [thumbnail] is fading in.
   bool _placeholderDelay = true;
 
-  /// Whether the [thumbnail] is displayed intact when the target [image] is fading in.
+  /// Whether the [thumbnail] is displayed intact when the target [imageProvider] is fading in.
   bool _thumbnailDelay = true;
 
   @override

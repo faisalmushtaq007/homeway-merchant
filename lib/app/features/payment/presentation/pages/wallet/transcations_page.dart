@@ -22,19 +22,19 @@ class _TransactionsPageController extends State<TransactionsPage> {
     customScrollViewScrollController = ScrollController();
     transactionTypes = [
       TransactionTypeInfo(typeName: 'All', typeID: 0, hasSelected: false),
-      TransactionTypeInfo(typeName: 'Income', typeID: 0, hasSelected: false),
-      TransactionTypeInfo(typeName: 'Withdrawal', typeID: 0, hasSelected: false),
+     /* TransactionTypeInfo(typeName: 'Income', typeID: 0, hasSelected: false),
+      TransactionTypeInfo(typeName: 'Withdrawal', typeID: 0, hasSelected: false),*/
     ];
     transactionWidgets = [
       AllTranscationsWidget(
         key: PageStorageKey<String>('all-transaction-page'),
       ),
-      IncomeTransactionWidget(
+      /*IncomeTransactionWidget(
         key: PageStorageKey<String>('income-transaction-page'),
       ),
       WithdrawalTransactionWidget(
         key: PageStorageKey<String>('withdrawal-transaction-page'),
-      ),
+      ),*/
     ];
   }
 

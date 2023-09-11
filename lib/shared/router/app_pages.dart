@@ -37,7 +37,7 @@ class AppRouter {
 
   AppRouter._();
 
-  static const String INITIAL = Routes.ROOM_PAGE;
+  static const String INITIAL = Routes.SAVE_DRIVER_PAGE;
 
   static final GoRouter _router = GoRouter(
     debugLogDiagnostics: true,
@@ -473,7 +473,9 @@ class AppRouter {
         path: Routes.ALL_TRANSCATIONS_PAGE,
         builder: (context, state) {
           final Map<String, dynamic>? args = state.extra as Map<String, dynamic>?;
-          return TransactionsPage();
+          return TransactionsPage(
+
+          );
         },
       ),
       GoRoute(

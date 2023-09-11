@@ -15,7 +15,7 @@ class _WalletMenuWidgetController extends State<WalletMenuWidget> {
   void initState() {
     super.initState();
     walletMenus = [
-      WalletMenuInfo(
+      /*WalletMenuInfo(
         color: Colors.blue,
         title: 'Withdrawal',
         icon: FontAwesomeIcons.paperPlane,
@@ -24,7 +24,7 @@ class _WalletMenuWidgetController extends State<WalletMenuWidget> {
             Routes.WITHDRAWAL_PAGE,
           );
         },
-      ),
+      ),*/
       WalletMenuInfo(
         color: Colors.red,
         title: 'Activities',

@@ -51,7 +51,7 @@ class _AppSearchInputSliverWidgetView extends WidgetView<AppSearchInputSliverWid
       crossFadeState: (widget.isEnabled) ? CrossFadeState.showFirst : CrossFadeState.showSecond,
       duration: const Duration(milliseconds: 200),
       firstChild: Container(
-        height: 60,
+        height: 56,
         padding: const EdgeInsetsDirectional.symmetric(
           horizontal: 0,
           vertical: 4,

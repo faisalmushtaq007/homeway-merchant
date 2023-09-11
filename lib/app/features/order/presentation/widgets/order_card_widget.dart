@@ -15,7 +15,8 @@ class OrderCardWidget extends StatefulWidget {
 }
 
 class _OrderCardWidgetController extends State<OrderCardWidget> {
-  Widget bottomWidget(int index) {
+
+  Widget bottomWidget(int index,{required OrderEntity orderEntity}) {
     return switch (OrderStatus.values.byName(OrderStatus.values[index].toString())) {
       OrderStatus.newOrder => Row(
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -406,7 +407,7 @@ class _OrderCardWidgetView extends WidgetView<OrderCardWidget, _OrderCardWidgetC
                                       overflow: TextOverflow.ellipsis,
                                     ),
                                   ),
-                                  const AnimatedGap(8, duration: Duration(milliseconds: 100)),
+                                  const AnimatedGap(6, duration: Duration(milliseconds: 100)),
                                   //Spacer(),
                                   Directionality(
                                     textDirection: serviceLocator<LanguageController>().targetTextDirection,
@@ -564,7 +565,7 @@ class _OrderCardWidgetView extends WidgetView<OrderCardWidget, _OrderCardWidgetC
               const AnimatedGap(8, duration: Duration(milliseconds: 100)),
               Flexible(
                 child: Container(
-                  child: state.bottomWidget(widget.orderEntity.orderStatus),
+                  child: state.bottomWidget(widget.orderEntity.orderStatus,orderEntity: widget.orderEntity),
                 ),
               ),
             ],
@@ -588,6 +589,6 @@ class _OrderCardWidgetView extends WidgetView<OrderCardWidget, _OrderCardWidgetC
 
   String dateTimeFormatToString(DateTime dateTime) {
     //dt
-    return dateTime.toMoment().format('MMMM, DD YYYY, hh:mm A').toString();
+    return dateTime.toMoment().format('MMM, DD YYYY, hh:mm A').toString();
   }
 }

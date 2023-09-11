@@ -17,20 +17,34 @@ class OrderEntity extends INetworkModel<OrderEntity> with AppEquatable {
   });
 
   factory OrderEntity.fromMap(Map<String, dynamic> json) => OrderEntity(
-        orderDateTime: (json['orderDateTime'] != null) ? Timestamp.fromMillisecondsSinceEpoch(json['orderDateTime']).toDateTime() : DateTime.now(),
+        orderDateTime: (json['orderDateTime'] != null)
+            ? Timestamp.fromMillisecondsSinceEpoch(json['orderDateTime'])
+                .toDateTime()
+            : DateTime.now(),
         orderType: json['orderType'] ?? 0,
-        userInfo: (json['userInfo'] != null) ? UserInfo.fromJson(json['userInfo']) : UserInfo(deliveryAddress: DeliveryAddress()),
+        userInfo: (json['userInfo'] != null)
+            ? UserInfo.fromJson(json['userInfo'])
+            : UserInfo(deliveryAddress: DeliveryAddress()),
         hasDriverAssigned: json['hasDriverAssigned'] ?? false,
-        driver: (json['driver'] != null) ? DeliveryDriver.fromJson(json['driver']) : DeliveryDriver(),
+        driver: (json['driver'] != null)
+            ? DeliveryDriver.fromJson(json['driver'])
+            : DeliveryDriver(),
         orderID: json['orderID'] ?? -1,
         orderStatus: json['orderStatus'] ?? 0,
         payment: Payment.fromJson(json['payment']),
-        store: (json['store'] != null) ? Store.fromJson(json['store']) : Store(location: AddressLocation()),
+        store: (json['store'] != null)
+            ? Store.fromJson(json['store'])
+            : Store(location: AddressLocation()),
         hasDriverReached: json['hasDriverReached'] ?? false,
-        orderDeliveryDateTime:
-            (json['orderDeliveryDateTime'] != null) ? Timestamp.fromMillisecondsSinceEpoch(json['orderDeliveryDateTime']).toDateTime() : DateTime.now(),
-        trackingInfo:
-            (json['trackingInfo'] != null) ? List<TrackingInfo>.from(json['trackingInfo'].map((x) => TrackingInfo.fromJson(x))) : const <TrackingInfo>[],
+        orderDeliveryDateTime: (json['orderDeliveryDateTime'] != null)
+            ? Timestamp.fromMillisecondsSinceEpoch(
+                    json['orderDeliveryDateTime'])
+                .toDateTime()
+            : DateTime.now(),
+        trackingInfo: (json['trackingInfo'] != null)
+            ? List<TrackingInfo>.from(
+                json['trackingInfo'].map((x) => TrackingInfo.fromJson(x)))
+            : const <TrackingInfo>[],
       );
 
   final DateTime orderDateTime;
@@ -47,7 +61,8 @@ class OrderEntity extends INetworkModel<OrderEntity> with AppEquatable {
   final List<TrackingInfo> trackingInfo;
 
   Map<String, dynamic> toMap() => {
-        'orderDateTime': Timestamp.fromDateTime(orderDateTime).millisecondsSinceEpoch,
+        'orderDateTime':
+            Timestamp.fromDateTime(orderDateTime).millisecondsSinceEpoch,
         'orderType': orderType,
         'userInfo': userInfo.toJson(),
         'hasDriverAssigned': hasDriverAssigned,
@@ -57,7 +72,8 @@ class OrderEntity extends INetworkModel<OrderEntity> with AppEquatable {
         'payment': payment.toJson(),
         'store': store.toJson(),
         'hasDriverReached': hasDriverReached,
-        'orderDeliveryDateTime': Timestamp.fromDateTime(orderDeliveryDateTime).millisecondsSinceEpoch,
+        'orderDeliveryDateTime': Timestamp.fromDateTime(orderDeliveryDateTime)
+            .millisecondsSinceEpoch,
         'trackingInfo': List<dynamic>.from(trackingInfo.map((x) => x.toJson())),
       };
 
@@ -86,7 +102,8 @@ class OrderEntity extends INetworkModel<OrderEntity> with AppEquatable {
       payment: payment ?? this.payment,
       store: store ?? this.store,
       hasDriverReached: hasDriverReached ?? this.hasDriverReached,
-      orderDeliveryDateTime: orderDeliveryDateTime ?? this.orderDeliveryDateTime,
+      orderDeliveryDateTime:
+          orderDeliveryDateTime ?? this.orderDeliveryDateTime,
       trackingInfo: trackingInfo ?? this.trackingInfo,
     );
   }
@@ -138,7 +155,10 @@ class Payment {
         amount: json['amount'] ?? 0.0,
         paymentID: json['paymentID'] ?? -1,
         currency: json['currency'] ?? 'SAR',
-        paymentDateTime: (json['paymentDateTime'] != null) ? Timestamp.fromMillisecondsSinceEpoch(json['paymentDateTime']).toDateTime() : DateTime.now(),
+        paymentDateTime: (json['paymentDateTime'] != null)
+            ? Timestamp.fromMillisecondsSinceEpoch(json['paymentDateTime'])
+                .toDateTime()
+            : DateTime.now(),
         deliveryAmount: json['deliveryAmount'] ?? 0.0,
         discountAmount: json['discountAmount'],
         serviceAmount: json['serviceAmount'] ?? 0.0,
@@ -164,7 +184,8 @@ class Payment {
         'discountAmount': discountAmount,
         'serviceAmount': serviceAmount,
         'tax': tax,
-        'paymentDateTime': Timestamp.fromDateTime(paymentDateTime).millisecondsSinceEpoch,
+        'paymentDateTime':
+            Timestamp.fromDateTime(paymentDateTime).millisecondsSinceEpoch,
       };
 }
 
@@ -180,11 +201,15 @@ class Store {
 
   factory Store.fromJson(Map<String, dynamic> json) => Store(
         storeName: json['storeName'] ?? '',
-        location: (json['location'] != null) ? AddressLocation.fromJson(json['location']) : AddressLocation(),
+        location: (json['location'] != null)
+            ? AddressLocation.fromJson(json['location'])
+            : AddressLocation(),
         storeID: json['storeID'] ?? -1,
         orderMenuName: json['orderMenuName'] ?? '',
         orderMenuImage: json['orderMenuImage'] ?? '',
-        menu: (json['menu'] != null) ? List<Menu>.from(json['menu'].map((x) => Menu.fromJson(x))) : const <Menu>[],
+        menu: (json['menu'] != null)
+            ? List<Menu>.from(json['menu'].map((x) => Menu.fromJson(x)))
+            : const <Menu>[],
       );
 
   final String storeName;
@@ -210,7 +235,8 @@ class AddressLocation {
     this.lat = 0.0,
   });
 
-  factory AddressLocation.fromJson(Map<String, dynamic> json) => AddressLocation(
+  factory AddressLocation.fromJson(Map<String, dynamic> json) =>
+      AddressLocation(
         lng: json['lng'],
         lat: json['lat'],
       );
@@ -242,13 +268,16 @@ class Menu {
     this.price = 0.0,
     this.discountPrice = 0.0,
     this.currency = 'SAR',
+    this.isInstantMenu = true,
   });
 
   factory Menu.fromJson(Map<String, dynamic> json) => Menu(
         quantity: json['quantity'] ?? 1,
         unit: json['unit'] ?? '',
         numberOfServingPerson: json['numberOfServingPerson'] ?? 0,
-        addons: (json['addons'] != null) ? List<Addon>.from(json['addons'].map((x) => Addon.fromJson(x))) : const <Addon>[],
+        addons: (json['addons'] != null)
+            ? List<Addon>.from(json['addons'].map((x) => Addon.fromJson(x)))
+            : const <Addon>[],
         instruction: json['instruction'] ?? '',
         menuID: json['menuID'] ?? -1,
         menuName: json['menuName'] ?? '',
@@ -257,10 +286,13 @@ class Menu {
         tasteType: json['tasteType'] ?? '',
         menuCategory: json['menuCategory'] ?? '',
         menuSubCategory: json['menuSubCategory'] ?? '',
-        orderPortion: json['orderPortion'] != null ? OrderPortion.fromJson(json['orderPortion']) : const OrderPortion(),
+        orderPortion: json['orderPortion'] != null
+            ? OrderPortion.fromJson(json['orderPortion'])
+            : const OrderPortion(),
         price: json['price'] ?? 0.0,
         discountPrice: json['discountPrice'] ?? 0.0,
         currency: json['currency'] ?? 'SAR',
+        isInstantMenu: json['isInstantMenu'] ?? true,
       );
 
   final int quantity;
@@ -279,6 +311,7 @@ class Menu {
   final double price;
   final double discountPrice;
   final String currency;
+  final bool isInstantMenu;
 
   Map<String, dynamic> toJson() => {
         'quantity': quantity,
@@ -297,6 +330,7 @@ class Menu {
         'price': price,
         'discountPrice': discountPrice,
         'currency': currency,
+        'isInstantMenu': isInstantMenu,
       };
 }
 
@@ -341,7 +375,9 @@ class Addon {
         quantity: json['quantity'] ?? 1,
         addonsName: json['addonsName'] ?? '',
         addonsId: json['addonsID'] ?? -1,
-        orderPortion: json['orderPortion'] != null ? OrderPortion.fromJson(json['orderPortion']) : OrderPortion(),
+        orderPortion: json['orderPortion'] != null
+            ? OrderPortion.fromJson(json['orderPortion'])
+            : OrderPortion(),
         price: json['price'] ?? 0.0,
         discountPrice: json['discountPrice'] ?? 0.0,
         currency: json['currency'] ?? 'SAR',
@@ -381,7 +417,9 @@ class UserInfo {
 
   factory UserInfo.fromJson(Map<String, dynamic> json) => UserInfo(
         lng: json['lng'] ?? 0.0,
-        deliveryAddress: json['deliveryAddress'] != null ? DeliveryAddress.fromJson(json['deliveryAddress']) : DeliveryAddress(),
+        deliveryAddress: json['deliveryAddress'] != null
+            ? DeliveryAddress.fromJson(json['deliveryAddress'])
+            : DeliveryAddress(),
         contactNumber: json['contactNumber'] ?? '',
         userName: json['userName'] ?? '',
         userId: json['userID'] ?? -1,
@@ -417,7 +455,8 @@ class DeliveryAddress {
     this.completeAddress = '',
   });
 
-  factory DeliveryAddress.fromJson(Map<String, dynamic> json) => DeliveryAddress(
+  factory DeliveryAddress.fromJson(Map<String, dynamic> json) =>
+      DeliveryAddress(
         lng: json['lng'] ?? 0.0,
         contactNumber: json['contactNumber'] ?? '',
         lat: json['lat'] ?? 0.00,

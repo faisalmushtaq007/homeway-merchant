@@ -117,6 +117,7 @@ enum OrderType {
   schedule,
   deliver,
   cancel,
+  instant,
   ;
 
   @override
