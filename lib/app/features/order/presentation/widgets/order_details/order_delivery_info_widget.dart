@@ -2,6 +2,7 @@ part of 'package:homemakers_merchant/app/features/order/index.dart';
 
 class OrderDeliveryInfoWidget extends StatelessWidget {
   const OrderDeliveryInfoWidget({required this.orderEntity, super.key});
+
   final OrderEntity orderEntity;
 
   @override
@@ -30,7 +31,8 @@ class OrderDeliveryInfoWidget extends StatelessWidget {
               ),
             ),
             child: Directionality(
-              textDirection: serviceLocator<LanguageController>().targetTextDirection,
+              textDirection:
+                  serviceLocator<LanguageController>().targetTextDirection,
               child: WrapText(
                 'Customer Details',
                 breakWordCharacter: '-',
@@ -58,18 +60,21 @@ class OrderDeliveryInfoWidget extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.stretch,
-              textDirection: serviceLocator<LanguageController>().targetTextDirection,
+              textDirection:
+                  serviceLocator<LanguageController>().targetTextDirection,
               children: [
                 Row(
                   mainAxisSize: MainAxisSize.min,
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.center,
-                  textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                  textDirection:
+                      serviceLocator<LanguageController>().targetTextDirection,
                   children: [
                     Expanded(
                       flex: 1,
                       child: Directionality(
-                        textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                        textDirection: serviceLocator<LanguageController>()
+                            .targetTextDirection,
                         child: WrapText(
                           'Name',
                           breakWordCharacter: '-',
@@ -95,7 +100,8 @@ class OrderDeliveryInfoWidget extends StatelessWidget {
                       child: Wrap(
                         children: [
                           Directionality(
-                            textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                            textDirection: serviceLocator<LanguageController>()
+                                .targetTextDirection,
                             child: WrapText(
                               '${orderEntity.userInfo.deliveryAddress.contactPerson}',
                               breakWordCharacter: '-',
@@ -184,12 +190,14 @@ class OrderDeliveryInfoWidget extends StatelessWidget {
                   mainAxisSize: MainAxisSize.min,
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.center,
-                  textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                  textDirection:
+                      serviceLocator<LanguageController>().targetTextDirection,
                   children: [
                     Expanded(
                       flex: 1,
                       child: Directionality(
-                        textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                        textDirection: serviceLocator<LanguageController>()
+                            .targetTextDirection,
                         child: WrapText(
                           'Address',
                           breakWordCharacter: '-',
@@ -215,7 +223,8 @@ class OrderDeliveryInfoWidget extends StatelessWidget {
                       child: Wrap(
                         children: [
                           Directionality(
-                            textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                            textDirection: serviceLocator<LanguageController>()
+                                .targetTextDirection,
                             child: WrapText(
                               '${orderEntity.userInfo.deliveryAddress.completeAddress}',
                               breakWordCharacter: '-',
@@ -244,12 +253,14 @@ class OrderDeliveryInfoWidget extends StatelessWidget {
                   mainAxisSize: MainAxisSize.min,
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.center,
-                  textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                  textDirection:
+                      serviceLocator<LanguageController>().targetTextDirection,
                   children: [
                     Expanded(
                       flex: 1,
                       child: Directionality(
-                        textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                        textDirection: serviceLocator<LanguageController>()
+                            .targetTextDirection,
                         child: WrapText(
                           'Distance',
                           breakWordCharacter: '-',
@@ -275,7 +286,8 @@ class OrderDeliveryInfoWidget extends StatelessWidget {
                       child: Wrap(
                         children: [
                           Directionality(
-                            textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                            textDirection: serviceLocator<LanguageController>()
+                                .targetTextDirection,
                             child: WrapText(
                               '6.5 Km from ${orderEntity.store.storeName}',
                               breakWordCharacter: '-',
@@ -309,7 +321,8 @@ class OrderDeliveryInfoWidget extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Directionality(
-                      textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                      textDirection: serviceLocator<LanguageController>()
+                          .targetTextDirection,
                       child: WrapText(
                         'Communication:',
                         breakWordCharacter: '-',
@@ -346,16 +359,17 @@ class OrderDeliveryInfoWidget extends StatelessWidget {
                           shape: CircleBorder(),
                           tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                         )),
-                    IconButton(
-                        icon: Icon(
-                          Icons.phone_in_talk,
-                          color: context.colorScheme.primary,
-                        ),
-                        onPressed: () {},
-                        style: IconButton.styleFrom(
-                          shape: CircleBorder(),
-                          tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                        )),
+                    /*IconButton(
+                      icon: Icon(
+                        Icons.phone_in_talk,
+                        color: context.colorScheme.primary,
+                      ),
+                      onPressed: () {},
+                      style: IconButton.styleFrom(
+                        shape: CircleBorder(),
+                        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                      ),
+                    ),*/
                   ],
                 ),
               ],

@@ -778,6 +778,7 @@ class _SaveDriverPageView
                                           isoCode:
                                               state.phoneNumber?.isoCode.name ??
                                                   'SA',
+                                          driverLicenseDocument: state.newBusinessDocumentEntity,
                                         );
                                       }
                                       // New driver
@@ -829,6 +830,7 @@ class _SaveDriverPageView
                                           isoCode:
                                               state.phoneNumber?.isoCode.name ??
                                                   'SA',
+                                              driverLicenseDocument: state.newBusinessDocumentEntity,
                                         );
                                       }
                                       // Execute save action

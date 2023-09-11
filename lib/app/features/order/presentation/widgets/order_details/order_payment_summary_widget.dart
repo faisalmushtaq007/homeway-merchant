@@ -46,7 +46,7 @@ class OrderPaymentSummary extends StatelessWidget {
               ),
             ),
             const Divider(thickness: 0.25),
-            Directionality(
+           /* Directionality(
               key: const Key('service-charge-key'),
               textDirection: serviceLocator<LanguageController>().targetTextDirection,
               child: RowItem.text(
@@ -56,7 +56,7 @@ class OrderPaymentSummary extends StatelessWidget {
                 descriptionStyle: context.bodyMedium!.copyWith(fontWeight: FontWeight.w500, overflow: TextOverflow.ellipsis),
               ),
             ),
-            const Divider(thickness: 0.25),
+            const Divider(thickness: 0.25),*/
             Directionality(
               key: const Key('tax-key'),
               textDirection: serviceLocator<LanguageController>().targetTextDirection,
