@@ -32,30 +32,56 @@ class StoreEntity with AppEquatable {
   factory StoreEntity.fromMap(Map<String, dynamic> map) {
     return StoreEntity(
       storeName: map['storeName'] as String,
-      storeAddress: (map['storeAddress'] != null) ? AddressModel.fromJson(map['storeAddress']) : AddressModel(),
+      storeAddress: (map['storeAddress'] != null)
+          ? AddressModel.fromJson(map['storeAddress'])
+          : AddressModel(),
       storeImagePath: map['storeImagePath'] as String,
       storeImageMetaData: map['storeImageMetaData'] as Map<String, dynamic>,
-      storeAvailableFoodTypes: map['storeAvailableFoodTypes'].map((e) => StoreAvailableFoodTypes.fromMap(e)).toList().cast<StoreAvailableFoodTypes>(),
+      storeAvailableFoodTypes: map['storeAvailableFoodTypes']
+          .map((e) => StoreAvailableFoodTypes.fromMap(e))
+          .toList()
+          .cast<StoreAvailableFoodTypes>(),
       storeAvailableFoodPreparationType:
-          map['storeAvailableFoodPreparationType'].map((e) => StoreAvailableFoodPreparationType.fromMap(e)).toList().cast<StoreAvailableFoodPreparationType>(),
+          map['storeAvailableFoodPreparationType']
+              .map((e) => StoreAvailableFoodPreparationType.fromMap(e))
+              .toList()
+              .cast<StoreAvailableFoodPreparationType>(),
       hasStoreOwnDeliveryPartners: map['hasStoreOwnDeliveryPartners'] as bool,
-      storeOwnDeliveryPartnersInfo:
-          map['storeOwnDeliveryPartnersInfo'].map((e) => StoreOwnDeliveryPartnersInfo.fromMap(e)).toList().cast<StoreOwnDeliveryPartnersInfo>(),
+      storeOwnDeliveryPartnersInfo: map['storeOwnDeliveryPartnersInfo']
+          .map((e) => StoreOwnDeliveryPartnersInfo.fromMap(e))
+          .toList()
+          .cast<StoreOwnDeliveryPartnersInfo>(),
       storeMaximumFoodDeliveryTime: map['storeMaximumFoodDeliveryTime'] as int,
-      storeMaximumFoodDeliveryRadius: map['storeMaximumFoodDeliveryRadius'] as int,
-      storeAcceptedPaymentModes: map['storeAcceptedPaymentModes'].map((e) => StoreAcceptedPaymentModes.fromMap(e)).toList().cast<StoreAcceptedPaymentModes>(),
-      storeWorkingDays: map['storeWorkingDays'].map((e) => StoreWorkingDayAndTime.fromMap(e)).toList().cast<StoreWorkingDayAndTime>(),
+      storeMaximumFoodDeliveryRadius:
+          map['storeMaximumFoodDeliveryRadius'] as int,
+      storeAcceptedPaymentModes: map['storeAcceptedPaymentModes']
+          .map((e) => StoreAcceptedPaymentModes.fromMap(e))
+          .toList()
+          .cast<StoreAcceptedPaymentModes>(),
+      storeWorkingDays: map['storeWorkingDays']
+          .map((e) => StoreWorkingDayAndTime.fromMap(e))
+          .toList()
+          .cast<StoreWorkingDayAndTime>(),
       storeOpeningTime: map['storeOpeningTime'] as String,
       storeClosingTime: map['storeClosingTime'] as String,
       storeID: map['storeID'] as int,
-      menuEntities: map['menuEntities'].map((e) => MenuEntity.fromMap(e)).toList().cast<MenuEntity>(),
+      menuEntities: map['menuEntities']
+          .map((e) => MenuEntity.fromMap(e))
+          .toList()
+          .cast<MenuEntity>(),
       hasNewStore: map['hasNewStore'] as bool,
-      ratingAndReviewEntity: (map['ratingAndReviewEntity'] != null) ? RatingAndReviewEntity.fromMap(map['ratingAndReviewEntity']) : RatingAndReviewEntity(),
+      ratingAndReviewEntity: (map['ratingAndReviewEntity'] != null)
+          ? RatingAndReviewEntity.fromMap(map['ratingAndReviewEntity'])
+          : RatingAndReviewEntity(),
       isoCode: map['iso_code'] ?? 'SA' as String,
       countryDialCode: map['country_dial_code'] ?? '+966' as String,
-      phoneNumberWithoutDialCode: map['phoneNumberWithoutDialCode'] ?? '' as String,
+      phoneNumberWithoutDialCode:
+          map['phoneNumberWithoutDialCode'] ?? '' as String,
       storePhoneNumber: map['storePhoneNumber'] as String,
-      orders: map['orders'].map((e) => OrderEntity.fromMap(e)).toList().cast<OrderEntity>(),
+      orders: map['orders']
+          .map((e) => OrderEntity.fromMap(e))
+          .toList()
+          .cast<OrderEntity>(),
       hasStoreOpened: map['hasStoreOpened'] ?? true,
       hasReadyToPickupOrder: map['hasReadyToPickupOrder'] ?? true,
     );
@@ -151,27 +177,37 @@ class StoreEntity with AppEquatable {
       storeAddress: storeAddress ?? this.storeAddress,
       storeImagePath: storeImagePath ?? this.storeImagePath,
       storeImageMetaData: storeImageMetaData ?? this.storeImageMetaData,
-      storeAvailableFoodTypes: storeAvailableFoodTypes ?? this.storeAvailableFoodTypes,
-      storeAvailableFoodPreparationType: storeAvailableFoodPreparationType ?? this.storeAvailableFoodPreparationType,
-      hasStoreOwnDeliveryPartners: hasStoreOwnDeliveryPartners ?? this.hasStoreOwnDeliveryPartners,
-      storeOwnDeliveryPartnersInfo: storeOwnDeliveryPartnersInfo ?? this.storeOwnDeliveryPartnersInfo,
-      storeMaximumFoodDeliveryTime: storeMaximumFoodDeliveryTime ?? this.storeMaximumFoodDeliveryTime,
-      storeMaximumFoodDeliveryRadius: storeMaximumFoodDeliveryRadius ?? this.storeMaximumFoodDeliveryRadius,
-      storeAcceptedPaymentModes: storeAcceptedPaymentModes ?? this.storeAcceptedPaymentModes,
+      storeAvailableFoodTypes:
+          storeAvailableFoodTypes ?? this.storeAvailableFoodTypes,
+      storeAvailableFoodPreparationType: storeAvailableFoodPreparationType ??
+          this.storeAvailableFoodPreparationType,
+      hasStoreOwnDeliveryPartners:
+          hasStoreOwnDeliveryPartners ?? this.hasStoreOwnDeliveryPartners,
+      storeOwnDeliveryPartnersInfo:
+          storeOwnDeliveryPartnersInfo ?? this.storeOwnDeliveryPartnersInfo,
+      storeMaximumFoodDeliveryTime:
+          storeMaximumFoodDeliveryTime ?? this.storeMaximumFoodDeliveryTime,
+      storeMaximumFoodDeliveryRadius:
+          storeMaximumFoodDeliveryRadius ?? this.storeMaximumFoodDeliveryRadius,
+      storeAcceptedPaymentModes:
+          storeAcceptedPaymentModes ?? this.storeAcceptedPaymentModes,
       storeWorkingDays: storeWorkingDays ?? this.storeWorkingDays,
       storeOpeningTime: storeOpeningTime ?? this.storeOpeningTime,
       storeClosingTime: storeClosingTime ?? this.storeClosingTime,
       storeID: storeID ?? this.storeID,
       menuEntities: menuEntities ?? this.menuEntities,
       hasNewStore: hasNewStore ?? this.hasNewStore,
-      ratingAndReviewEntity: ratingAndReviewEntity ?? this.ratingAndReviewEntity,
+      ratingAndReviewEntity:
+          ratingAndReviewEntity ?? this.ratingAndReviewEntity,
       storePhoneNumber: storePhoneNumber ?? this.storePhoneNumber,
       countryDialCode: countryDialCode ?? this.countryDialCode,
       isoCode: isoCode ?? this.isoCode,
-      phoneNumberWithoutDialCode: phoneNumberWithoutDialCode ?? this.phoneNumberWithoutDialCode,
+      phoneNumberWithoutDialCode:
+          phoneNumberWithoutDialCode ?? this.phoneNumberWithoutDialCode,
       orders: orders ?? this.orders,
       hasStoreOpened: hasStoreOpened ?? this.hasStoreOpened,
-      hasReadyToPickupOrder: hasReadyToPickupOrder ?? this.hasReadyToPickupOrder,
+      hasReadyToPickupOrder:
+          hasReadyToPickupOrder ?? this.hasReadyToPickupOrder,
     );
   }
 
@@ -181,20 +217,26 @@ class StoreEntity with AppEquatable {
       'storeAddress': this.storeAddress?.toMap() ?? AddressModel().toJson(),
       'storeImagePath': this.storeImagePath,
       'storeImageMetaData': this.storeImageMetaData,
-      'storeAvailableFoodTypes': this.storeAvailableFoodTypes.map((e) => e.toMap()).toList(),
-      'storeAvailableFoodPreparationType': this.storeAvailableFoodPreparationType.map((e) => e.toMap()).toList(),
+      'storeAvailableFoodTypes':
+          this.storeAvailableFoodTypes.map((e) => e.toMap()).toList(),
+      'storeAvailableFoodPreparationType':
+          this.storeAvailableFoodPreparationType.map((e) => e.toMap()).toList(),
       'hasStoreOwnDeliveryPartners': this.hasStoreOwnDeliveryPartners,
-      'storeOwnDeliveryPartnersInfo': this.storeOwnDeliveryPartnersInfo.map((e) => e.toMap()).toList(),
+      'storeOwnDeliveryPartnersInfo':
+          this.storeOwnDeliveryPartnersInfo.map((e) => e.toMap()).toList(),
       'storeMaximumFoodDeliveryTime': this.storeMaximumFoodDeliveryTime,
       'storeMaximumFoodDeliveryRadius': this.storeMaximumFoodDeliveryRadius,
-      'storeAcceptedPaymentModes': this.storeAcceptedPaymentModes.map((e) => e.toMap()).toList(),
+      'storeAcceptedPaymentModes':
+          this.storeAcceptedPaymentModes.map((e) => e.toMap()).toList(),
       'storeWorkingDays': this.storeWorkingDays.map((e) => e.toMap()).toList(),
       'storeOpeningTime': this.storeOpeningTime,
       'storeClosingTime': this.storeClosingTime,
       'storeID': this.storeID,
       'menuEntities': this.menuEntities.map((e) => e.toMap()).toList(),
       'hasNewStore': this.hasNewStore,
-      'ratingAndReviewEntity': (ratingAndReviewEntity.isNotNull) ? this.ratingAndReviewEntity?.toMap() : RatingAndReviewEntity().toMap(),
+      'ratingAndReviewEntity': (ratingAndReviewEntity.isNotNull)
+          ? this.ratingAndReviewEntity?.toMap()
+          : RatingAndReviewEntity().toMap(),
       'iso_code': this.isoCode ?? 'SA',
       'country_dial_code': this.countryDialCode ?? '+966',
       'phoneNumberWithoutDialCode': this.phoneNumberWithoutDialCode ?? '',
@@ -338,7 +380,11 @@ class StoreAcceptedPaymentModes with AppEquatable {
     };
   }
 
-  StoreAcceptedPaymentModes copyWith({String? titleOfStoreAvailableFoodTypes, int? storeAvailableFoodTypesID, Icon? icon, bool? hasSelected}) {
+  StoreAcceptedPaymentModes copyWith(
+      {String? titleOfStoreAvailableFoodTypes,
+      int? storeAvailableFoodTypesID,
+      Icon? icon,
+      bool? hasSelected}) {
     return StoreAcceptedPaymentModes(
       title: titleOfStoreAvailableFoodTypes ?? this.title,
       id: storeAvailableFoodTypesID ?? this.id,
@@ -359,6 +405,11 @@ class StoreOwnDeliveryPartnersInfo with AppEquatable {
     this.ratingAndReviewEntity,
     this.imageEntity,
     this.hasDriverImage = false,
+    this.deliveryMode = '',
+    this.isoCode = 'SA',
+    this.countryDialCode = '+966',
+    this.phoneNumberWithoutDialCode = '',
+    this.driverLicenseDocument,
   });
 
   factory StoreOwnDeliveryPartnersInfo.fromMap(Map<String, dynamic> map) {
@@ -367,11 +418,24 @@ class StoreOwnDeliveryPartnersInfo with AppEquatable {
       driverID: map['driverID'] as int,
       driverMobileNumber: map['driverMobileNumber'] as String,
       drivingLicenseNumber: map['drivingLicenseNumber'] as String,
-      vehicleInfo: (map['vehicleInfo'] != null) ? VehicleInfo.fromMap(map['vehicleInfo']) : VehicleInfo(),
+      vehicleInfo: (map['vehicleInfo'] != null)
+          ? VehicleInfo.fromMap(map['vehicleInfo'])
+          : VehicleInfo(),
       hasOnline: map['hasOnline'] as bool,
-      ratingAndReviewEntity: (map['ratingAndReviewEntity'] != null) ? RatingAndReviewEntity.fromMap(map['ratingAndReviewEntity']) : RatingAndReviewEntity(),
+      ratingAndReviewEntity: (map['ratingAndReviewEntity'] != null)
+          ? RatingAndReviewEntity.fromMap(map['ratingAndReviewEntity'])
+          : RatingAndReviewEntity(),
       hasDriverImage: map['hasDriverImage'] as bool,
-      imageEntity: (map['imageEntity'] != null) ? ImageEntity.fromMap(map['imageEntity']) : ImageEntity(),
+      imageEntity: (map['imageEntity'] != null)
+          ? ImageEntity.fromMap(map['imageEntity'])
+          : ImageEntity(),
+      deliveryMode: (map['deliveryMode'] != null) ? map['deliveryMode'] : '',
+      isoCode: map['isoCode'] ?? 'SA',
+      countryDialCode: map['country_dial_code'] ?? '+966',
+      phoneNumberWithoutDialCode: map['phoneNumberWithoutDialCode'] ?? '',
+      driverLicenseDocument: map['driverLicenseDocument'] != null
+          ? map['driverLicenseDocument']
+          : NewBusinessDocumentEntity(),
     );
   }
 
@@ -384,6 +448,11 @@ class StoreOwnDeliveryPartnersInfo with AppEquatable {
   RatingAndReviewEntity? ratingAndReviewEntity = RatingAndReviewEntity();
   ImageEntity? imageEntity = ImageEntity();
   bool hasDriverImage;
+  String deliveryMode;
+  String countryDialCode;
+  String isoCode;
+  String phoneNumberWithoutDialCode;
+  NewBusinessDocumentEntity? driverLicenseDocument;
 
   @override
   bool get cacheHash => true;
@@ -399,6 +468,11 @@ class StoreOwnDeliveryPartnersInfo with AppEquatable {
         ratingAndReviewEntity,
         hasDriverImage,
         imageEntity,
+        deliveryMode,
+        countryDialCode,
+        isoCode,
+        phoneNumberWithoutDialCode,
+        driverLicenseDocument,
       ];
 
   Map<String, dynamic> toMap() {
@@ -409,9 +483,19 @@ class StoreOwnDeliveryPartnersInfo with AppEquatable {
       'vehicleInfo': this.vehicleInfo?.toMap() ?? VehicleInfo().toMap(),
       'driverID': this.driverID,
       'hasOnline': this.hasOnline,
-      'ratingAndReviewEntity': this.ratingAndReviewEntity?.toMap() ?? RatingAndReviewEntity().toMap(),
+      'ratingAndReviewEntity': this.ratingAndReviewEntity?.toMap() ??
+          RatingAndReviewEntity().toMap(),
       'hasDriverImage': this.hasDriverImage,
-      'imageEntity': (imageEntity != null) ? this.imageEntity?.toMap() : ImageEntity().toMap(),
+      'imageEntity': (imageEntity != null)
+          ? this.imageEntity?.toMap()
+          : ImageEntity().toMap(),
+      'deliveryMode': deliveryMode,
+      'isoCode': isoCode ?? 'SA',
+      'country_dial_code': countryDialCode ?? '+966',
+      'phoneNumberWithoutDialCode': phoneNumberWithoutDialCode ?? '',
+      'driverLicenseDocument': (driverLicenseDocument != null)
+          ? this.driverLicenseDocument
+          : NewBusinessDocumentEntity(),
     };
   }
 
@@ -426,6 +510,11 @@ class StoreOwnDeliveryPartnersInfo with AppEquatable {
     ImageEntity? imageEntity,
     bool? hasDriverImage,
     int? id,
+    String? deliveryMode,
+    String? countryDialCode,
+    String? isoCode,
+    String? phoneNumberWithoutDialCode,
+    NewBusinessDocumentEntity? driverLicenseDocument,
   }) {
     return StoreOwnDeliveryPartnersInfo(
       driverName: driverName ?? this.driverName,
@@ -434,9 +523,17 @@ class StoreOwnDeliveryPartnersInfo with AppEquatable {
       vehicleInfo: vehicleInfo ?? this.vehicleInfo,
       driverID: driverID ?? this.driverID,
       hasOnline: hasOnline ?? this.hasOnline,
-      ratingAndReviewEntity: ratingAndReviewEntity ?? this.ratingAndReviewEntity,
+      ratingAndReviewEntity:
+          ratingAndReviewEntity ?? this.ratingAndReviewEntity,
       hasDriverImage: hasDriverImage ?? this.hasDriverImage,
       imageEntity: imageEntity ?? this.imageEntity,
+      deliveryMode: deliveryMode ?? this.deliveryMode,
+      countryDialCode: countryDialCode ?? this.countryDialCode,
+      isoCode: isoCode ?? this.isoCode,
+      phoneNumberWithoutDialCode:
+          phoneNumberWithoutDialCode ?? this.phoneNumberWithoutDialCode,
+      driverLicenseDocument:
+          driverLicenseDocument ?? this.driverLicenseDocument,
     );
   }
 }
@@ -514,8 +611,14 @@ class StoreWorkingDayAndTime with AppEquatable {
       shortName: map['shortName'] as String,
       id: map['id'] as int,
       hasSelected: map['hasSelected'] as bool,
-      openingTime: (map['openingTime'] != null) ? Timestamp.fromMillisecondsSinceEpoch(map['openingTime']).toDateTime() : DateTime.now(),
-      closingTime: (map['closingTime'] != null) ? Timestamp.fromMillisecondsSinceEpoch(map['closingTime']).toDateTime() : DateTime.now(),
+      openingTime: (map['openingTime'] != null)
+          ? Timestamp.fromMillisecondsSinceEpoch(map['openingTime'])
+              .toDateTime()
+          : DateTime.now(),
+      closingTime: (map['closingTime'] != null)
+          ? Timestamp.fromMillisecondsSinceEpoch(map['closingTime'])
+              .toDateTime()
+          : DateTime.now(),
     );
   }
 
@@ -544,8 +647,10 @@ class StoreWorkingDayAndTime with AppEquatable {
       'title': this.day,
       'id': this.id,
       'hasSelected': this.hasSelected,
-      'closingTime': Timestamp.fromDateTime(this.closingTime ?? DateTime.now()).millisecondsSinceEpoch,
-      'openingTime': Timestamp.fromDateTime(this.openingTime ?? DateTime.now()).millisecondsSinceEpoch,
+      'closingTime': Timestamp.fromDateTime(this.closingTime ?? DateTime.now())
+          .millisecondsSinceEpoch,
+      'openingTime': Timestamp.fromDateTime(this.openingTime ?? DateTime.now())
+          .millisecondsSinceEpoch,
       'shortName': this.shortName,
     };
   }

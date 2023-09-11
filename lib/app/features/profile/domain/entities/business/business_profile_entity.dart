@@ -30,7 +30,7 @@ class BusinessProfileEntity with AppEquatable {
             : BusinessDocumentUploadedEntity(),
         isoCode: map['isoCode'] ?? 'SA',
         countryDialCode: map['country_dial_code'] ?? '+966',
-        phoneNumberWithoutDialCode: map['phoneNumberWithoutDialCode'] ?? '+966',
+        phoneNumberWithoutDialCode: map['phoneNumberWithoutDialCode'] ?? '',
         newBusinessDocumentEntity:
             (map['businessDocumentEntity'] != null) ? NewBusinessDocumentEntity.fromMap(map['businessDocumentEntity']) : NewBusinessDocumentEntity());
   }

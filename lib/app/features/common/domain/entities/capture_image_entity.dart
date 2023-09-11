@@ -7,25 +7,25 @@ import 'package:sembast/blob.dart';
 
 class CaptureImageEntity {
   CaptureImageEntity({
-    required this.captureDocumentID,
+     this.captureDocumentID='',
     this.xOriginalFile,
     this.originalFile,
     this.xCroppedFile,
     this.croppedFile,
-    required this.originalFilePath,
-    required this.croppedFilePath,
-    required this.networkUrl,
-    required this.fileName,
-    required this.fileNameWithExtension,
-    required this.fileExtension,
-    required this.xFileReadAsBytes,
-    required this.fileReadAsBytes,
-    required this.fileReadAsString,
-    required this.xFileReadAsString,
-    required this.documentType,
-    required this.blob,
-    required this.base64Encode,
-    required this.mimeType,
+     this.originalFilePath='',
+     this.croppedFilePath='',
+     this.networkUrl='',
+     this.fileName='',
+     this.fileNameWithExtension='',
+     this.fileExtension='',
+     this.xFileReadAsBytes,
+     this.fileReadAsBytes,
+     this.fileReadAsString='',
+     this.xFileReadAsString='',
+     this.documentType=DocumentType.other,
+     this.blob,
+     this.base64Encode='',
+     this.mimeType='image/png',
   });
 
   factory CaptureImageEntity.fromMap(Map<String, dynamic> map) {
@@ -41,12 +41,12 @@ class CaptureImageEntity {
       fileName: map['fileName'] as String,
       fileNameWithExtension: map['fileNameWithExtension'] as String,
       fileExtension: map['fileExtension'] as String,
-      xFileReadAsBytes: map['xFileReadAsBytes'] as Uint8List,
-      fileReadAsBytes: map['fileReadAsBytes'] as Uint8List,
+      xFileReadAsBytes: map['xFileReadAsBytes']??Uint8List(0) as Uint8List,
+      fileReadAsBytes: map['fileReadAsBytes']??Uint8List(0) as Uint8List,
       fileReadAsString: map['fileReadAsString'] as String,
       xFileReadAsString: map['xFileReadAsString'] as String,
       documentType: DocumentType.values.byName(map['documentType']),
-      blob: map['blob'] as Blob,
+      blob: map['blob'] ??Blob(Uint8List(0)) as Blob,
       base64Encode: map['base64'] as String,
       mimeType: map['mimeType'] as String,
     );
@@ -63,12 +63,12 @@ class CaptureImageEntity {
   String fileName;
   String fileNameWithExtension;
   String fileExtension;
-  Uint8List xFileReadAsBytes;
-  Uint8List fileReadAsBytes;
+  Uint8List? xFileReadAsBytes;
+  Uint8List? fileReadAsBytes;
   String fileReadAsString;
   String xFileReadAsString;
   DocumentType documentType;
-  Blob blob;
+  Blob? blob;
   String base64Encode;
   String mimeType;
 
@@ -128,13 +128,13 @@ class CaptureImageEntity {
       'networkUrl': networkUrl,
       'fileName': fileName,
       'fileNameWithExtension': fileNameWithExtension,
-      'xFileReadAsBytes': xFileReadAsBytes,
-      'fileReadAsBytes': fileReadAsBytes,
+      'xFileReadAsBytes': xFileReadAsBytes??Uint8List(0),
+      'fileReadAsBytes': fileReadAsBytes??Uint8List(0),
       'fileReadAsString': fileReadAsString,
       'xFileReadAsString': xFileReadAsString,
       'fileExtension': fileExtension,
       'documentType': documentType.name,
-      'blob': blob,
+      'blob': blob??Blob(Uint8List(0)),
       'base64': base64Encode,
       'mimeType': mimeType,
     };

@@ -766,6 +766,7 @@ class _BusinessInformationPageState extends State<BusinessInformationPage> with 
                                               businessProfileID: widget.businessProfileEntity?.businessProfileID,
                                               countryDialCode: initialPhoneNumberValue.countryCode,
                                               isoCode: initialPhoneNumberValue.isoCode.name,
+                                              phoneNumberWithoutDialCode: initialPhoneNumberValue.nsn??''
                                             );
                                           } else {
                                             // New
@@ -780,6 +781,7 @@ class _BusinessInformationPageState extends State<BusinessInformationPage> with 
                                               businessTypeEntity: BusinessTypeEntity(),
                                               countryDialCode: initialPhoneNumberValue.countryCode,
                                               isoCode: initialPhoneNumberValue.isoCode.name,
+                                                phoneNumberWithoutDialCode: initialPhoneNumberValue.nsn??''
                                             );
                                           }
                                           serviceLocator<AppUserEntity>().currentProfileStatus = CurrentProfileStatus.basicProfileSaved;

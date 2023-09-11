@@ -21,6 +21,7 @@ import 'package:go_router/go_router.dart';
 import 'package:go_router/go_router.dart';
 import 'package:homemakers_merchant/app/features/address/index.dart';
 import 'package:homemakers_merchant/app/features/authentication/presentation/manager/phone_number_verification_bloc.dart';
+import 'package:homemakers_merchant/app/features/common/domain/entities/capture_image_entity.dart';
 import 'package:homemakers_merchant/app/features/common/presentation/widgets/upload_image_utils.dart';
 import 'package:homemakers_merchant/app/features/menu/index.dart';
 import 'package:homemakers_merchant/app/features/menu/presentation/widgets/display_image_widget.dart';
@@ -85,6 +86,7 @@ import 'package:homemakers_merchant/shared/widgets/app/app_text_field_widget.dar
 import 'package:homemakers_merchant/shared/widgets/app/page_body.dart';
 import 'package:homemakers_merchant/shared/widgets/app/page_body.dart';
 import 'package:homemakers_merchant/shared/widgets/app/page_body.dart';
+import 'package:homemakers_merchant/shared/widgets/universal/advanced_avatar/advanced_avatar.dart';
 import 'package:homemakers_merchant/shared/widgets/universal/animate_do/animate_do.dart';
 import 'package:homemakers_merchant/shared/widgets/universal/animate_do/animate_do.dart';
 import 'package:homemakers_merchant/shared/widgets/universal/animate_do/animate_do.dart';

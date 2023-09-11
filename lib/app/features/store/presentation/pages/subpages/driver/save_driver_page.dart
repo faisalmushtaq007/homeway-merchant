@@ -51,6 +51,9 @@ class _SaveDriverPageController extends State<SaveDriverPage> {
     PhoneNumberVerification.none,
   );
   String userImagePath = '';
+  final isoCodeNameMap = IsoCode.values.asNameMap();
+  IsoCode defaultCountry = IsoCode.SA;
+  NewBusinessDocumentEntity? newBusinessDocumentEntity;
 
   @override
   void initState() {
@@ -72,8 +75,9 @@ class _SaveDriverPageController extends State<SaveDriverPage> {
         nsn: '',
       ),
     );
+    defaultCountry = IsoCode.values.byName('SA');
     initVehicleTypeInfo();
-    //initStoreOwnDeliveryPartners();
+    initStoreOwnDeliveryPartners(widget.storeOwnDeliveryPartnersInfo);
   }
 
   @override
@@ -168,6 +172,43 @@ class _SaveDriverPageController extends State<SaveDriverPage> {
     setState(() {});
   }
 
+  void initStoreOwnDeliveryPartners(StoreOwnDeliveryPartnersInfo? storeOwnDeliveryPartnersInfo){
+    if(storeOwnDeliveryPartnersInfo.isNotNull){
+      drivingLicenseNumberTextEditingController.text=storeOwnDeliveryPartnersInfo?.drivingLicenseNumber??'';
+      driverNameTextEditingController.text=storeOwnDeliveryPartnersInfo?.driverName??'';
+      driverContactNumberTextEditingController.text=storeOwnDeliveryPartnersInfo?.driverMobileNumber??'';
+      driverVehicleNumberTextEditingController.text=storeOwnDeliveryPartnersInfo?.vehicleInfo?.vehicleNumber??'';
+      driverDeliveryTypeNumberTextEditingController.text=storeOwnDeliveryPartnersInfo?.deliveryMode??'';
+      if(storeOwnDeliveryPartnersInfo?.vehicleInfo!=null) {
+        listOfSelectedVehicleTypeInfo =
+        [storeOwnDeliveryPartnersInfo!.vehicleInfo!];
+      }
+      phoneNumber = PhoneNumber(
+        isoCode: IsoCode.values.byName(storeOwnDeliveryPartnersInfo?.isoCode ?? 'SA'),
+        nsn: storeOwnDeliveryPartnersInfo?.phoneNumberWithoutDialCode ?? '',
+      );
+      phoneNumberController = PhoneController(phoneNumber);
+      phoneNumberController.value = phoneNumber;
+      userEnteredPhoneNumber = storeOwnDeliveryPartnersInfo?.driverMobileNumber ?? '';
+      defaultCountry = IsoCode.values.byName(storeOwnDeliveryPartnersInfo?.isoCode ?? 'SA');
+    }
+  }
+
+  void uploadDrivingLicense(Map<String, dynamic> mapData, CaptureImageEntity captureImageEntity) {
+    newBusinessDocumentEntity=NewBusinessDocumentEntity(
+      documentType: captureImageEntity.documentType,
+      base64: captureImageEntity.base64Encode,
+      captureDocumentID: captureImageEntity.captureDocumentID,
+      mimeType: captureImageEntity.mimeType,
+      networkAssetPath: captureImageEntity.networkUrl,
+      documentIdNumber: drivingLicenseNumberTextEditingController.value.text.trim(),
+      localAssetPath: captureImageEntity.croppedFilePath.isEmptyOrNull ? captureImageEntity.originalFilePath : captureImageEntity.croppedFilePath,
+      fileExtension: captureImageEntity.fileExtension,
+      fileName: captureImageEntity.fileName,
+      fileNameWithExtension: captureImageEntity.fileNameWithExtension,
+    );
+  }
+
   @override
   Widget build(BuildContext context) => BlocListener<StoreBloc, StoreState>(
         key: const Key('save-driver-bloclistener-widget'),
@@ -248,371 +289,387 @@ class _SaveDriverPageView extends WidgetView<SaveDriverPage, _SaveDriverPageCont
                 minWidth: double.infinity,
                 minHeight: media.size.height,
               ),
-              child: CustomScrollView(
-                controller: state.innerScrollController,
-                physics: const ClampingScrollPhysics(),
-                slivers: [
-                  SliverList(
-                    delegate: SliverChildListDelegate(
-                      [
-                        
-                        const AnimatedGap(50, duration: Duration(milliseconds: 500)),
-                        AnimatedContainer(
-                          height: context.height * 0.7,
-                          margin: EdgeInsetsDirectional.only(
-                            start: margins * 1.5,
-                            end: margins * 1.5,
-                          ),
-                          padding: EdgeInsetsDirectional.only(
-                            start: margins * 2.25,
-                            end: margins * 2.25,
-                            top: margins * 2.25,
-                            //bottom: margins,
-                          ),
-                          duration: const Duration(
-                            milliseconds: 500,
-                          ),
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadiusDirectional.circular(10),
-                            boxShadow: const [
-                              BoxShadow(
-                                offset: Offset(0, 3),
-                                blurRadius: 12,
-                                color: Color.fromRGBO(
-                                  0,
-                                  0,
-                                  0,
-                                  0.16,
-                                ),
+              padding: EdgeInsetsDirectional.only(
+                top: topPadding,
+                //bottom: bottomPadding,
+                start: margins * 2.5,
+                end: margins * 2.5,
+              ),
+              child: Form(
+                key: _SaveDriverPageController.SaveDriverFormKey,
+                child: CustomScrollView(
+                  controller: state.innerScrollController,
+                  physics: const ClampingScrollPhysics(),
+                  slivers: [
+                    SliverList(
+                      delegate: SliverChildListDelegate(
+                        [
+
+                          GestureDetector(
+                            child: SizedBox(
+                              height: 56,
+                              child: DisplayImage(
+                                imagePath: state.userImagePath,
+                                onPressed: () async {
+                                  final result = await UploadImageUtils().selectImagePicker(context);
+                                  if (result.imagePath.isNotEmpty) {
+                                    state.updateUserProfileImage(result.imagePath);
+                                  } else {}
+                                },
+                                hasIconImage: state.userImagePath.isEmpty ? true : false,
+                                hasEditButton: false,
+                                hasCustomIcon: state.userImagePath.isEmpty ? true : false,
+                                customIcon: Icon(Icons.camera_alt),
                               ),
-                            ],
+                            ),
+                            onTap: () async {
+                              final result = await UploadImageUtils().selectImagePicker(context);
+                              if (result.imagePath.isNotEmpty) {
+                                state.updateUserProfileImage(result.imagePath);
+                              } else {}
+                            },
                           ),
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.stretch,
-                            children: [
-                              AbsorbPointer(
-                                absorbing: false,
-                                child: GestureDetector(
-                                  child: SizedBox(
-                                    height: 26,
-                                    child: Stack(
-                                      alignment: AlignmentDirectional.topCenter,
-                                      clipBehavior: Clip.none,
-                                      children: [
-                                        AnimatedPositioned(
-                                          duration: const Duration(milliseconds: 300),
-                                          top: -54,
-                                          child: DisplayImage(
-                                            imagePath: state.userImagePath,
-                                            onPressed: () async {
-                                              final result = await UploadImageUtils().selectImagePicker(context);
-                                              if (result.imagePath.isNotEmpty) {
-                                                state.updateUserProfileImage(result.imagePath);
-                                              } else {}
-                                            },
-                                            hasIconImage: state.userImagePath.isEmpty ? true : false,
-                                            hasEditButton: false,
-                                            hasCustomIcon: state.userImagePath.isEmpty ? true : false,
-                                            customIcon: Icon(Icons.camera_alt),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  onTap: () async {
-                                    final result = await UploadImageUtils().selectImagePicker(context);
-                                    if (result.imagePath.isNotEmpty) {
-                                      state.updateUserProfileImage(result.imagePath);
-                                    } else {}
-                                  },
-                                ),
+                          const AnimatedGap(12, duration: Duration(milliseconds: 500)),
+                          AppTextFieldWidget(
+                            controller: state.driverNameTextEditingController,
+                            textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                            //focusNode: state.focusList[0],
+                            textInputAction: TextInputAction.next,
+                            //onFieldSubmitted: (_) => fieldFocusChange(context, state.focusList[0], state.focusList[1]),
+                            keyboardType: TextInputType.name,
+                            decoration: InputDecoration(
+                              labelText: 'Driver name',
+                              hintText: 'Enter driver name',
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10),
                               ),
-                              Wrap(
-                                alignment: WrapAlignment.center,
-                                crossAxisAlignment: WrapCrossAlignment.center,
-                                children: [
-                                  AnimatedSwitcher(
-                                    duration: const Duration(
-                                      milliseconds: 500,
-                                    ),
-                                    child: Text(
-                                      '${((!widget.haveStoreOwnNewDeliveryPartnersInfo) && widget.storeOwnDeliveryPartnersInfo?.driverName != null) ? widget.storeOwnDeliveryPartnersInfo?.driverName : 'Add New Driver'}',
-                                      style: context.titleLarge!.copyWith(
-                                        color: context.primaryColor,
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 24,
+                              isDense: true,
+                            ),
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Enter driver name';
+                              }
+                              return null;
+                            },
+                          ),
+                          const AnimatedGap(12, duration: Duration(milliseconds: 500)),
+                          Directionality(
+                            textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                            child: PhoneNumberFieldWidget(
+                              key: const Key('driver-phone-number-widget'),
+                              isCountryChipPersistent: false,
+                              outlineBorder: true,
+                              shouldFormat: true,
+                              useRtl: false,
+                              withLabel: true,
+                              decoration: InputDecoration(
+                                labelText: 'Driver mobile number',
+                                //hintText: 'Enter driver number',
+                                alignLabelWithHint: true,
+                                errorText: state.phoneValidation,
+                                /*suffixIcon: PhoneNumberValidateWidget(
+                                                    phoneNumberVerification: value,
+                                                  ),*/
+                                isDense: true,
+                              ),
+                              isAllowEmpty: false,
+                              autofocus: false,
+                              style: context.bodyLarge,
+                              showFlagInInput: false,
+                              countryCodeStyle: context.bodyLarge,
+                              //validator: state.phoneNumberValidator,
+                              //suffixIcon: PhoneNumberValidateWidget(phoneNumberVerification: value),
+                              onPhoneNumberChanged: state.onPhoneNumberChanged,
+                              phoneNumberValidator: state.phoneNumberValidator,
+                              onPhoneNumberSaved: state.onPhoneNumberSaved,
+                              phoneNumberValidationChanged: state.phoneNumberValidationChanged,
+                              haveStateManagement: false,
+                              keyboardType: const TextInputType.numberWithOptions(),
+                            ),
+                          ),
+                          const AnimatedGap(12, duration: Duration(milliseconds: 500)),
+                          AppTextFieldWidget(
+                            controller: state.drivingLicenseNumberTextEditingController,
+                            textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                            //focusNode: state.focusList[2],
+                            textInputAction: TextInputAction.next,
+                            keyboardType: const TextInputType.numberWithOptions(),
+                            decoration: InputDecoration(
+                              labelText: 'Driving License Number',
+                              hintText: 'Enter driving license number',
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              isDense: true,
+                            ),
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Enter driving license number';
+                              }
+                              return null;
+                            },
+                          ),
+                          const AnimatedGap(12, duration: Duration(milliseconds: 500)),
+                          NewBusinessDocumentComponentWidget(
+                            key: const Key('upload-driver-license-widget'),
+                            documentPlaceHolderImage: 'assets/svg/id_card.svg',
+                            animate: false,
+                            currentIndex: 0,
+                            businessDocumentUploadedEntity: (widget.storeOwnDeliveryPartnersInfo.isNotNull && widget.storeOwnDeliveryPartnersInfo?.driverLicenseDocument!=null) ? widget.storeOwnDeliveryPartnersInfo?.driverLicenseDocument : null,
+                            selectedImageMetaData: (Map<String, dynamic> metaData, CaptureImageEntity captureImageEntity) {
+                              state.uploadDrivingLicense(metaData, captureImageEntity);
+                              return;
+                            },
+                            documentPlaceHolderWidget: Column(
+                              crossAxisAlignment: CrossAxisAlignment.stretch,
+                              mainAxisSize: MainAxisSize.min,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                              children: [
+                                Wrap(
+                                  textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                  children: [
+                                    Text(
+                                      'Upload License',
+                                      textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
+                                      softWrap: true,
+                                      style: context.labelLarge!.copyWith(
+                                        fontWeight: FontWeight.w500,
                                       ),
                                     ).translate(),
-                                  ),
-                                ],
-                              ),
-                              //const AnimatedGap(12, duration: Duration(milliseconds: 500)),
-                              Expanded(
-                                flex: 3,
-                                child: Form(
-                                  key: _SaveDriverPageController.SaveDriverFormKey,
-                                  child: ListView(
-                                    controller: state.listViewBuilderScrollController,
-                                    physics: const ClampingScrollPhysics(),
-                                    //shrinkWrap: true,
-                                    children: [
-                                      const AnimatedGap(12, duration: Duration(milliseconds: 500)),
-                                      AppTextFieldWidget(
-                                        controller: state.driverNameTextEditingController,
-                                        textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                                        //focusNode: state.focusList[0],
-                                        textInputAction: TextInputAction.next,
-                                        //onFieldSubmitted: (_) => fieldFocusChange(context, state.focusList[0], state.focusList[1]),
-                                        keyboardType: TextInputType.name,
-                                        decoration: InputDecoration(
-                                          labelText: 'Driver name',
-                                          hintText: 'Enter driver name',
-                                          border: OutlineInputBorder(
-                                            borderRadius: BorderRadius.circular(10),
-                                          ),
-                                          isDense: true,
-                                        ),
-                                        validator: (value) {
-                                          if (value == null || value.isEmpty) {
-                                            return 'Enter driver name';
-                                          }
-                                          return null;
-                                        },
-                                      ),
-                                      const AnimatedGap(12, duration: Duration(milliseconds: 500)),
-                                      Directionality(
-                                        textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                                        child: PhoneNumberFieldWidget(
-                                          key: const Key('driver-phone-number-widget'),
-                                          isCountryChipPersistent: false,
-                                          outlineBorder: true,
-                                          shouldFormat: true,
-                                          useRtl: false,
-                                          withLabel: true,
-                                          decoration: InputDecoration(
-                                            labelText: 'Driver mobile number',
-                                            //hintText: 'Enter driver number',
-                                            alignLabelWithHint: true,
-                                            errorText: state.phoneValidation,
-                                            /*suffixIcon: PhoneNumberValidateWidget(
-                                                  phoneNumberVerification: value,
-                                                ),*/
-                                            isDense: true,
-                                          ),
-                                          isAllowEmpty: false,
-                                          autofocus: false,
-                                          style: context.bodyLarge,
-                                          showFlagInInput: false,
-                                          countryCodeStyle: context.bodyLarge,
-                                          //validator: state.phoneNumberValidator,
-                                          //suffixIcon: PhoneNumberValidateWidget(phoneNumberVerification: value),
-                                          onPhoneNumberChanged: state.onPhoneNumberChanged,
-                                          phoneNumberValidator: state.phoneNumberValidator,
-                                          onPhoneNumberSaved: state.onPhoneNumberSaved,
-                                          phoneNumberValidationChanged: state.phoneNumberValidationChanged,
-                                          haveStateManagement: false,
-                                          keyboardType: const TextInputType.numberWithOptions(),
-                                        ),
-                                      ),
-                                      const AnimatedGap(12, duration: Duration(milliseconds: 500)),
-                                      AppTextFieldWidget(
-                                        controller: state.drivingLicenseNumberTextEditingController,
-                                        textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                                        //focusNode: state.focusList[2],
-                                        textInputAction: TextInputAction.next,
-                                        keyboardType: const TextInputType.numberWithOptions(),
-                                        decoration: InputDecoration(
-                                          labelText: 'Driving License Number',
-                                          hintText: 'Enter driving license number',
-                                          border: OutlineInputBorder(
-                                            borderRadius: BorderRadius.circular(10),
-                                          ),
-                                          isDense: true,
-                                        ),
-                                        validator: (value) {
-                                          if (value == null || value.isEmpty) {
-                                            return 'Enter driving license number';
-                                          }
-                                          return null;
-                                        },
-                                      ),
-                                      const AnimatedGap(12, duration: Duration(milliseconds: 500)),
-                                      Column(
-                                        mainAxisSize: MainAxisSize.min,
-                                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                                        children: [
-                                          Text(
-                                            'Vehicle Type',
-                                            style: context.titleLarge!.copyWith(
-                                              fontWeight: FontWeight.w600,
-                                              fontSize: 20,
-                                            ),
-                                            textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                                          ).translate(),
-                                          const AnimatedGap(4, duration: Duration(milliseconds: 500)),
-                                          Text(
-                                            'Select the vehicle type of your own driver',
-                                            style: context.labelMedium,
-                                            textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                                          ).translate(),
-                                        ],
-                                      ),
-                                      const AnimatedGap(6, duration: Duration(milliseconds: 500)),
-                                      StoreOwnPartnerVehicleTypeFormField(
-                                        key: const Key('store-own-partner-vehicle-type-formfield'),
-                                        onSelectionChanged: state.onSelectionChangedVehicleType,
-                                        availableVehicleInfoList: state.listOfVehicleTypeInfo.toList(),
-                                        initialVehicleInfoList: [],
-                                        onSaved: (newValue) {},
-                                        isSingleSelect: true,
-                                        validator: (value) {
-                                          if (value == null || value.length == 0) {
-                                            return "Select driver's vehicle type";
-                                          } else {
-                                            return null;
-                                          }
-                                        },
-                                      ),
-                                      const AnimatedGap(12, duration: Duration(milliseconds: 500)),
-                                      AppTextFieldWidget(
-                                        controller: state.driverVehicleNumberTextEditingController,
-                                        textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                                        //focusNode: state.focusList[2],
-                                        textInputAction: TextInputAction.done,
-                                        keyboardType: TextInputType.text,
-                                        decoration: InputDecoration(
-                                            labelText: 'Vehicle Number',
-                                            hintText: 'Enter driver vehicle number',
-                                            border: OutlineInputBorder(
-                                              borderRadius: BorderRadius.circular(10),
-                                            ),
-                                            isDense: true,
-                                            prefixIcon: const Icon(
-                                              Icons.drive_eta,
-                                            )),
-                                        validator: (value) {
-                                          if (value == null || value.isEmpty) {
-                                            return 'Enter driver vehicle number';
-                                          }
-                                          return null;
-                                        },
-                                      ),
-                                      const AnimatedGap(12, duration: Duration(milliseconds: 500)),
-                                      AppTextFieldWidget(
-                                        controller: state.driverDeliveryTypeNumberTextEditingController,
-                                        readOnly: true,
-                                        textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                                        textInputAction: TextInputAction.next,
-                                        keyboardType: TextInputType.text,
-                                        decoration: InputDecoration(
-                                          labelText: 'Delivery Mode',
-                                          hintText: 'Select your delivery mode',
-                                          border: OutlineInputBorder(
-                                            borderRadius: BorderRadius.circular(10),
-                                          ),
-                                          isDense: true,
-                                          suffixIcon: IconButton(
-                                            onPressed: () async {
-                                              final result = await selectDeliveryCategory(context);
-
-                                              if (result != null) {
-                                                state.updateDriverDeliveryType(result);
-                                              }
-                                              return;
-                                            },
-                                            icon: const Icon(
-                                              Icons.arrow_drop_down,
-                                            ),
-                                          ),
-                                        ),
-                                        validator: (value) {
-                                          if (value == null || value.isEmpty) {
-                                            return 'Select your delivery mode';
-                                          }
-                                          return null;
-                                        },
-                                        onTap: () async {
-                                          final result = await selectDeliveryCategory(context);
-                                          if (result != null) {
-                                            state.updateDriverDeliveryType(result);
-                                          }
-                                          return;
-                                        },
-                                      ),
-                                    ],
-                                  ),
+                                  ],
                                 ),
-                              ),
-                              const AnimatedGap(6, duration: Duration(milliseconds: 500)),
+                                const AnimatedGap(
+                                  8,
+                                  duration: Duration(milliseconds: 100),
+                                ),
+                                Wrap(
+                                  textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                  children: [
+                                    Text(
+                                      'We accept only',
+                                      textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
+                                      softWrap: true,
+                                      style: context.labelMedium!.copyWith(
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                    ).translate(),
+                                  ],
+                                ),
+                                const AnimatedGap(
+                                  2,
+                                  duration: Duration(milliseconds: 100),
+                                ),
+                                Wrap(
+                                  textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                  children: [
+                                    Text(
+                                      'Driving License',
+                                      textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
+                                      softWrap: true,
+                                      style: context.bodySmall!.copyWith(
+                                        fontWeight: FontWeight.w300,
+                                      ),
+                                    ).translate(),
+                                  ],
+                                ),
+                              ],
+                            ),
+                            documentType: DocumentType.nationalID,
+                          ),
+                          const AnimatedGap(12, duration: Duration(milliseconds: 500)),
+                          Column(
+                            mainAxisSize: MainAxisSize.min,
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                            children: [
+                              Text(
+                                'Vehicle Type',
+                                style: context.titleLarge!.copyWith(
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: 20,
+                                ),
+                                textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                              ).translate(),
+                              const AnimatedGap(4, duration: Duration(milliseconds: 500)),
+                              Text(
+                                'Select the vehicle type of your own driver',
+                                style: context.labelMedium,
+                                textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                              ).translate(),
                             ],
                           ),
-                        ),
-                        const AnimatedGap(12, duration: Duration(milliseconds: 500)),
-                        Padding(
-                          padding: EdgeInsetsDirectional.symmetric(horizontal: margins * 1.5),
-                          child: ElevatedButton(
-                            onPressed: () {
-                              // Form validate and save
-                              if (_SaveDriverPageController.SaveDriverFormKey.currentState!.validate()) {
-                                _SaveDriverPageController.SaveDriverFormKey.currentState!.save();
-                                StoreOwnDeliveryPartnersInfo storeOwnDeliveryPartnerEntity;
-                                // Existing driver
-                                if (widget.haveStoreOwnNewDeliveryPartnersInfo && widget.storeOwnDeliveryPartnersInfo != null) {
-                                  storeOwnDeliveryPartnerEntity = widget.storeOwnDeliveryPartnersInfo!.copyWith(
-                                    driverMobileNumber: state.userEnteredPhoneNumber,
-                                    drivingLicenseNumber: state.drivingLicenseNumberTextEditingController.value.text.trim(),
-                                    driverName: state.driverNameTextEditingController.value.text.trim(),
-                                    vehicleInfo: VehicleInfo(
-                                      vehicleID: state.listOfSelectedVehicleTypeInfo[0].vehicleID,
-                                      vehicleType: state.listOfSelectedVehicleTypeInfo[0].vehicleType,
-                                      vehicleNumber: state.listOfSelectedVehicleTypeInfo[0].vehicleNumber,
-                                    ),
-                                    hasDriverImage: state.userImagePath.isNotEmpty ? true : false,
-                                    imageEntity: ImageEntity(imagePath: state.userImagePath),
-                                  );
-                                }
-                                // New driver
-                                else {
-                                  storeOwnDeliveryPartnerEntity = StoreOwnDeliveryPartnersInfo(
-                                    driverMobileNumber: state.userEnteredPhoneNumber,
-                                    drivingLicenseNumber: state.drivingLicenseNumberTextEditingController.value.text.trim(),
-                                    driverName: state.driverNameTextEditingController.value.text.trim(),
-                                    vehicleInfo: VehicleInfo(
-                                      vehicleID: state.listOfSelectedVehicleTypeInfo[0].vehicleID,
-                                      vehicleType: state.listOfSelectedVehicleTypeInfo[0].vehicleType,
-                                      vehicleNumber: state.listOfSelectedVehicleTypeInfo[0].vehicleNumber,
-                                    ),
-                                    hasDriverImage: state.userImagePath.isNotEmpty ? true : false,
-                                    imageEntity: ImageEntity(imagePath: state.userImagePath),
-                                  );
-                                }
-                                // Execute save action
-                                context.read<StoreBloc>().add(
-                                      SaveDriver(
-                                        haveNewDriver: widget.haveStoreOwnNewDeliveryPartnersInfo,
-                                        storeOwnDeliveryPartnerEntity: storeOwnDeliveryPartnerEntity,
-                                      ),
-                                    );
-                                return;
+                          const AnimatedGap(6, duration: Duration(milliseconds: 500)),
+                          StoreOwnPartnerVehicleTypeFormField(
+                            key: const Key('store-own-partner-vehicle-type-formfield'),
+                            onSelectionChanged: state.onSelectionChangedVehicleType,
+                            availableVehicleInfoList: state.listOfVehicleTypeInfo.toList(),
+                            initialVehicleInfoList: [],
+                            onSaved: (newValue) {},
+                            isSingleSelect: true,
+                            validator: (value) {
+                              if (value == null || value.length == 0) {
+                                return "Select driver's vehicle type";
+                              } else {
+                                return null;
+                              }
+                            },
+                          ),
+                          const AnimatedGap(12, duration: Duration(milliseconds: 500)),
+                          AppTextFieldWidget(
+                            controller: state.driverVehicleNumberTextEditingController,
+                            textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                            //focusNode: state.focusList[2],
+                            textInputAction: TextInputAction.done,
+                            keyboardType: TextInputType.text,
+                            decoration: InputDecoration(
+                                labelText: 'Vehicle Number',
+                                hintText: 'Enter driver vehicle number',
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                isDense: true,
+                                prefixIcon: const Icon(
+                                  Icons.drive_eta,
+                                )),
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Enter driver vehicle number';
+                              }
+                              return null;
+                            },
+                          ),
+                          const AnimatedGap(12, duration: Duration(milliseconds: 500)),
+                          AppTextFieldWidget(
+                            controller: state.driverDeliveryTypeNumberTextEditingController,
+                            readOnly: true,
+                            textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                            textInputAction: TextInputAction.next,
+                            keyboardType: TextInputType.text,
+                            decoration: InputDecoration(
+                              labelText: 'Delivery Mode',
+                              hintText: 'Select your delivery mode',
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              isDense: true,
+                              suffixIcon: IconButton(
+                                onPressed: () async {
+                                  final result = await selectDeliveryCategory(context);
+
+                                  if (result != null) {
+                                    state.updateDriverDeliveryType(result);
+                                  }
+                                  return;
+                                },
+                                icon: const Icon(
+                                  Icons.arrow_drop_down,
+                                ),
+                              ),
+                            ),
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Select your delivery mode';
+                              }
+                              return null;
+                            },
+                            onTap: () async {
+                              final result = await selectDeliveryCategory(context);
+                              if (result != null) {
+                                state.updateDriverDeliveryType(result);
                               }
                               return;
                             },
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: const Color.fromRGBO(69, 201, 125, 1),
-                            ),
-                            child: Text(
-                              'Save Driver',
-                              textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                            ).translate(),
                           ),
-                        ),
-                      ],
+                          const AnimatedGap(12, duration: Duration(milliseconds: 500)),
+
+                        ],
+                      ),
                     ),
-                  ),
-                ],
+                    SliverFillRemaining(
+                      hasScrollBody: false,
+                      child: Column(
+                        children: [
+                          const Spacer(),
+                          Row(
+                            children: [
+                              Expanded(
+                                child: ElevatedButton(
+                                  onPressed: () {
+                                    // Form validate and save
+                                    if (_SaveDriverPageController.SaveDriverFormKey.currentState!.validate()) {
+                                      _SaveDriverPageController.SaveDriverFormKey.currentState!.save();
+                                      StoreOwnDeliveryPartnersInfo storeOwnDeliveryPartnerEntity;
+                                      // Existing driver
+                                      if (widget.haveStoreOwnNewDeliveryPartnersInfo && widget.storeOwnDeliveryPartnersInfo != null) {
+                                        storeOwnDeliveryPartnerEntity = widget.storeOwnDeliveryPartnersInfo!.copyWith(
+                                          driverMobileNumber: state.userEnteredPhoneNumber,
+                                          drivingLicenseNumber: state.drivingLicenseNumberTextEditingController.value.text.trim(),
+                                          driverName: state.driverNameTextEditingController.value.text.trim(),
+                                          vehicleInfo: VehicleInfo(
+                                            vehicleID: state.listOfSelectedVehicleTypeInfo[0].vehicleID,
+                                            vehicleType: state.listOfSelectedVehicleTypeInfo[0].vehicleType,
+                                            vehicleNumber: state.listOfSelectedVehicleTypeInfo[0].vehicleNumber,
+                                          ),
+                                          hasDriverImage: state.userImagePath.isNotEmpty ? true : false,
+                                          imageEntity: ImageEntity(imagePath: state.userImagePath),
+                                          deliveryMode: state.driverDeliveryTypeNumberTextEditingController.value.text.trim(),
+                                          phoneNumberWithoutDialCode: state.phoneNumber?.nsn??'',
+                                          countryDialCode: state.phoneNumber?.countryCode??'+966',
+                                          isoCode: state.phoneNumber?.isoCode.name??'SA',
+                                        );
+                                      }
+                                      // New driver
+                                      else {
+                                        storeOwnDeliveryPartnerEntity = StoreOwnDeliveryPartnersInfo(
+                                          driverMobileNumber: state.userEnteredPhoneNumber,
+                                          drivingLicenseNumber: state.drivingLicenseNumberTextEditingController.value.text.trim(),
+                                          driverName: state.driverNameTextEditingController.value.text.trim(),
+                                          vehicleInfo: VehicleInfo(
+                                            vehicleID: state.listOfSelectedVehicleTypeInfo[0].vehicleID,
+                                            vehicleType: state.listOfSelectedVehicleTypeInfo[0].vehicleType,
+                                            vehicleNumber: state.listOfSelectedVehicleTypeInfo[0].vehicleNumber,
+                                          ),
+                                          hasDriverImage: state.userImagePath.isNotEmpty ? true : false,
+                                          imageEntity: ImageEntity(imagePath: state.userImagePath),
+                                          deliveryMode: state.driverDeliveryTypeNumberTextEditingController.value.text.trim(),
+                                          phoneNumberWithoutDialCode: state.phoneNumber?.nsn??'',
+                                          countryDialCode: state.phoneNumber?.countryCode??'+966',
+                                          isoCode: state.phoneNumber?.isoCode.name??'SA',
+                                        );
+                                      }
+                                      // Execute save action
+                                      context.read<StoreBloc>().add(
+                                        SaveDriver(
+                                          haveNewDriver: widget.haveStoreOwnNewDeliveryPartnersInfo,
+                                          storeOwnDeliveryPartnerEntity: storeOwnDeliveryPartnerEntity,
+                                        ),
+                                      );
+                                      return;
+                                    }
+                                    return;
+                                  },
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: const Color.fromRGBO(69, 201, 125, 1),
+                                  ),
+                                  child: Text(
+                                    'Save Driver',
+                                    textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                  ).translate(),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
