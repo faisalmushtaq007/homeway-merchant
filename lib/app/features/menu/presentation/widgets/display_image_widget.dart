@@ -15,6 +15,11 @@ class DisplayImage extends StatelessWidget {
   final bool hasEditButton;
   final bool hasCustomIcon;
   final Icon? customIcon;
+  final double? end;
+  final double? top;
+  final double circularRadius;
+  final double borderRadius;
+  final double? bottom;
 
   // Constructor
   const DisplayImage({
@@ -25,6 +30,11 @@ class DisplayImage extends StatelessWidget {
     this.hasEditButton = true,
     this.customIcon,
     this.hasCustomIcon = false,
+    this.top,
+    this.end,
+    this.circularRadius=36,
+    this.borderRadius=20,
+    this.bottom,
   }) : super(key: key);
 
   @override
@@ -33,14 +43,16 @@ class DisplayImage extends StatelessWidget {
 
     return Center(
       child: Stack(
-        clipBehavior: Clip.antiAlias,
+        clipBehavior: Clip.none,
         children: [
-          buildImage(color, hasIconImage, context),
+          buildImage(
+              color, hasIconImage, context, circularRadius, borderRadius),
           if (hasEditButton)
             PositionedDirectional(
               child: buildEditIcon(color, context),
-              end: -4,
-              top: 10,
+              end: end??-4,
+              //top: top??10,
+                bottom:bottom,
             ),
         ],
       ),
@@ -48,18 +60,19 @@ class DisplayImage extends StatelessWidget {
   }
 
   // Builds Profile Image
-  Widget buildImage(Color color, bool hasIconImage, BuildContext context) {
-    final image = imagePath.contains('https://') ? NetworkImage(imagePath) : AssetImage(imagePath);
-    appLog.d('Build Image ${hasIconImage}');
+  Widget buildImage(Color color, bool hasIconImage, BuildContext context,
+      [double circularRadius = 36, double borderRadius = 20]) {
+    final image = imagePath.contains('https://')
+        ? NetworkImage(imagePath)
+        : AssetImage(imagePath);
     return AbsorbPointer(
       absorbing: false,
       child: GestureDetector(
         onTap: () async {
-          appLog.d('Displace image click');
           return onPressed();
         },
         child: CircleAvatar(
-          radius: 36,
+          radius: circularRadius,
           backgroundColor: Colors.white,
           child: CircleAvatar(
             backgroundColor: const Color.fromRGBO(238, 238, 238, 1),
@@ -68,7 +81,7 @@ class DisplayImage extends StatelessWidget {
                 ? ImageHelper(
                     image: imagePath,
                     filterQuality: FilterQuality.high,
-                    borderRadius: BorderRadiusDirectional.circular(20),
+                    borderRadius: BorderRadiusDirectional.circular(borderRadius),
                     imageType: findImageType(imagePath),
                     imageShape: ImageShape.rectangle,
                     boxFit: BoxFit.cover,
@@ -77,15 +90,16 @@ class DisplayImage extends StatelessWidget {
                       Icons.image_not_supported,
                       size: 10000,
                     ),
-                    height: context.width / 6,
-                    width: context.width / 6,
+                    height: context.width / 5,
+                    width: context.width / 5,
                     loaderBuilder: const CircularProgressIndicator(),
                     matchTextDirection: true,
                   )
                 : hasCustomIcon
                     ? customIcon
                     : Icon(
-                        textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                        textDirection: serviceLocator<LanguageController>()
+                            .targetTextDirection,
                         Icons.restaurant_menu,
                         size: 24.0,
                       ),
@@ -99,10 +113,15 @@ class DisplayImage extends StatelessWidget {
   // Builds Edit Icon on Profile Picture
   Widget buildEditIcon(Color color, BuildContext context) => buildCircle(
         all: 8,
-        child: Icon(
-          Icons.edit,
-          color: Colors.white,
-          size: 10,
+        child: InkWell(
+          onTap: () async {
+            return onPressed();
+          },
+          child: Icon(
+            Icons.edit,
+            color: Colors.white,
+            size: 10,
+          ),
         ),
         context: context,
       );

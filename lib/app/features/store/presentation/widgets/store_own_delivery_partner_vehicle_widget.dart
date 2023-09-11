@@ -197,6 +197,7 @@ class _StoreOwnPartnerVehicleTypeState extends State<StoreOwnPartnerVehicleType>
   @override
   void initState() {
     super.initState();
+    selectedChoices=widget.initialSelectedAvailableVehicleInfoList;
   }
 
   @override
