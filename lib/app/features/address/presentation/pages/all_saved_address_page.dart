@@ -88,9 +88,14 @@ class _AllSavedAddressPageController extends State<AllSavedAddressPage> {
     super.didChangeDependencies();
   }
 
+  void _refreshAddressList(){
+    _addressPagingController.nextPageKey = 0;
+    _fetchAllAddressFunction(0);
+  }
+
   @override
   Widget build(BuildContext context) => BlocListener<AddressBloc, AddressState>(
-        key: Key('all-address-bloc-listener'),
+        key: const Key('all-address-bloc-listener'),
         bloc: context.read<AddressBloc>(),
         //listenWhen: (previous, current) => previous != current,
         listener: (context, addressListenerState) {
@@ -103,6 +108,7 @@ class _AllSavedAddressPageController extends State<AllSavedAddressPage> {
                     _addressPagingController.appendLastPage(addressListenerState.addressEntities.toList());
                   } else {
                     final nextPageKey = addressListenerState.pageKey + addressListenerState.addressEntities.length;
+                    //final nextPageKey = addressListenerState.pageKey + 1;
                     _addressPagingController.appendPage(addressListenerState.addressEntities.toList(), nextPageKey);
                   }
                   widgetState = WidgetState<AddressModel>.allData(
@@ -434,6 +440,7 @@ class _AllSavedAddressPageView extends WidgetView<AllSavedAddressPage, _AllSaved
                                       },
                                     );
                                     //context.read<AddressBloc>().add(GetAllAddress());
+                                   state._refreshAddressList();
                                     return;
                                   },
                                   child: Text(
