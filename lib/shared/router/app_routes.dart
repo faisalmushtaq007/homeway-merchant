@@ -93,6 +93,7 @@ abstract class Routes {
   static const String ROOM_PAGE = _Paths.ROOM_PAGE;
   static const String CHAT_PAGE = _Paths.CHAT_PAGE;
   static const String CHAT_USER_PAGE = _Paths.CHAT_USER_PAGE;
+  static const String NEW_MAP_PAGE=_Paths.NEW_MAP_PAGE;
 }
 
 abstract class _Paths {
@@ -183,6 +184,7 @@ abstract class _Paths {
   static const String WITHDRAWAL_FORM_PAGE = '/withdrawal-form-page';
   static const String NEW_DOCUMENT_LIST_PAGE = '/new-document-upload';
   static const String ROOM_PAGE = '/chat-room';
-  static const String CHAT_PAGE = '/chat';
+  static const String CHAT_PAGE = '/chat-page';
   static const String CHAT_USER_PAGE = '/chat-user';
+  static const String NEW_MAP_PAGE='/map-page';
 }

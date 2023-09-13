@@ -8,6 +8,8 @@ import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_animarker/flutter_map_marker_animation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_map/flutter_map.dart' as mapBox;
+import 'package:latlong2/latlong.dart' as latlng2;
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:geocoder_buddy/geocoder_buddy.dart';
 import 'package:geocoding/geocoding.dart';
@@ -46,10 +48,12 @@ import 'package:homemakers_merchant/shared/widgets/universal/animate_do/animate_
 import 'package:homemakers_merchant/shared/widgets/universal/animated_gap/gap.dart';
 import 'package:homemakers_merchant/shared/widgets/universal/color_extract/color_extract.dart';
 import 'package:homemakers_merchant/shared/widgets/universal/constrained_scrollable_views/constrained_scrollable_views.dart';
+import 'package:homemakers_merchant/shared/widgets/universal/double_tap_exit/double_tap_to_exit.dart';
 import 'package:homemakers_merchant/shared/widgets/universal/image_loader/image_helper.dart';
 import 'package:homemakers_merchant/shared/widgets/universal/infinity_scroll_pagination/infinite_scroll_pagination.dart';
 
 import 'package:homemakers_merchant/shared/widgets/universal/map/google_map_place/google_map_place.dart';
+import 'package:homemakers_merchant/shared/widgets/universal/nil/src/nil.dart';
 import 'package:homemakers_merchant/shared/widgets/universal/phone_number_text_field/phonenumber_form_field_widget.dart';
 import 'package:homemakers_merchant/shared/widgets/universal/wrap_text/wrap_text.dart';
 import 'package:homemakers_merchant/theme/flex_extensions.dart';
@@ -69,9 +73,11 @@ import 'package:sherlock/completion.dart';
 import 'package:sherlock/result.dart' as sl;
 import 'package:sherlock/sherlock.dart';
 import 'package:sherlock/widget.dart';
+import 'package:sliver_tools/sliver_tools.dart';
 
 part 'package:homemakers_merchant/app/features/address/presentation/pages/address_form_page.dart';
 part 'package:homemakers_merchant/app/features/address/presentation/pages/all_saved_address_page.dart';
+part 'package:homemakers_merchant/app/features/address/presentation/pages/new_map_page.dart';
 // Presentation
 //part 'package:homemakers_merchant/app/features/address/presentation/manager/user_model_storage_controller.dart';
 part 'package:homemakers_merchant/app/features/address/presentation/pages/pickup_location_from_map.dart';
@@ -89,6 +95,7 @@ part 'package:homemakers_merchant/app/features/address/domain/use_cases/save_all
 part 'package:homemakers_merchant/app/features/address/domain/use_cases/get_all_address_pagination_usecase.dart';
 part 'package:homemakers_merchant/app/features/address/domain/repositories/address_repository.dart';
 part 'package:homemakers_merchant/app/features/address/domain/entities/address_model.dart';
+part 'package:homemakers_merchant/app/features/address/domain/entities/map_marker.dart';
 // Common
 part 'package:homemakers_merchant/app/features/address/common/address_status_enum.dart';
 // Data

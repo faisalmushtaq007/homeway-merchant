@@ -37,7 +37,7 @@ class AppRouter {
 
   AppRouter._();
 
-  static const String INITIAL = Routes.ALL_SAVED_ADDRESS_LIST;
+  static const String INITIAL = Routes.NEW_MAP_PAGE;
 
   static final GoRouter _router = GoRouter(
     debugLogDiagnostics: true,
@@ -515,6 +515,14 @@ class AppRouter {
           return UsersPage();
         },
       ),
+      GoRoute(
+        path: Routes.NEW_MAP_PAGE,
+        builder: (context, state) {
+          final Map<String, dynamic>? args = state.extra as Map<String, dynamic>?;
+          return NewMapPage();
+        },
+      ),
+
     ],
     /*redirect: (context, state) {
       bool hasCurrentUserLoggedIn = userModelController.userModel.hasCurrentUser;
