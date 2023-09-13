@@ -35,7 +35,7 @@ class _AllSavedAddressPageController extends State<AllSavedAddressPage> {
     //context.read<PermissionBloc>().add(RequestLocationPermissionEvent());
     //widgetState = WidgetState<AddressModel>.loading(context: context);
     _addressPagingController.nextPageKey = 0;
-    _addressPagingController.addPageRequestListener((pageKey) {
+    /*_addressPagingController.addPageRequestListener((pageKey) {
       this.pageKey = pageKey;
       _fetchAllAddressFunction(pageKey);
     });
@@ -54,10 +54,7 @@ class _AllSavedAddressPageController extends State<AllSavedAddressPage> {
           ),
         );
       }
-    });
-    //_fetchAllAddressFunction(pageKey);
-
-    //
+    });*/
     context.read<AddressBloc>().add(GetAllAddress());
   }
 
@@ -250,7 +247,7 @@ class _AllSavedAddressPageView extends WidgetView<AllSavedAddressPage, _AllSaved
                               textDirection: serviceLocator<LanguageController>().targetTextDirection,
                               children: [
                                 const AnimatedGap(6, duration: Duration(milliseconds: 500)),
-                                IntrinsicHeight(
+                                /*IntrinsicHeight(
                                   child: Row(
                                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                     textDirection: serviceLocator<LanguageController>().targetTextDirection,
@@ -262,9 +259,9 @@ class _AllSavedAddressPageView extends WidgetView<AllSavedAddressPage, _AllSaved
                                           sherlockCompletion: SherlockCompletion(where: 'by', elements: state.addressEntities.map((e) => e.toMap()).toList()),
                                           sherlockCompletionMinResults: 1,
                                           onSearch: (input, sherlock) {
-                                            /*setState(() {
+                                            *//*setState(() {
                                                         state._results = sherlock.search(input: input);
-                                                      });*/
+                                                      });*//*
                                           },
                                           completionsBuilder: (context, completions) => SherlockCompletionsBuilder(
                                             completions: completions,
@@ -318,7 +315,7 @@ class _AllSavedAddressPageView extends WidgetView<AllSavedAddressPage, _AllSaved
                                     ],
                                   ),
                                 ),
-                                const AnimatedGap(6, duration: Duration(milliseconds: 500)),
+                                const AnimatedGap(6, duration: Duration(milliseconds: 500)),*/
                                 ListTile(
                                   dense: true,
                                   title: IntrinsicHeight(
@@ -439,8 +436,11 @@ class _AllSavedAddressPageView extends WidgetView<AllSavedAddressPage, _AllSaved
                                         'currentIndex': -1,
                                       },
                                     );
-                                    //context.read<AddressBloc>().add(GetAllAddress());
-                                   state._refreshAddressList();
+                                    if(!state.mounted){
+                                      return;
+                                    }
+                                    context.read<AddressBloc>().add(const GetAllAddress());
+                                   //state._refreshAddressList();
                                     return;
                                   },
                                   child: Text(

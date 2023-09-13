@@ -37,7 +37,7 @@ class AppRouter {
 
   AppRouter._();
 
-  static const String INITIAL = Routes.NEW_MAP_PAGE;
+  static const String INITIAL = Routes.SAVE_STORE_PAGE;
 
   static final GoRouter _router = GoRouter(
     debugLogDiagnostics: true,

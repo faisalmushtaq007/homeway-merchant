@@ -45,6 +45,12 @@ class _SaveStorePageState extends State<SaveStorePage> {
   TextEditingController _storeOwnerDriverLicenseController = TextEditingController();
   List<StoreOwnDeliveryPartnersInfo> _selectedStoreOwnDrivers = [];
 
+  Category? selectedCategory;
+  Category? selectedSubCategory;
+  List<Category> listOfCategories = [];
+  final TextEditingController menuCategoryTextEditingController = TextEditingController();
+  final TextEditingController menuSubCategoryTextEditingController = TextEditingController();
+
   // Store phone number
   String? phoneValidation;
   Widget? suffixIcon;
@@ -82,6 +88,8 @@ class _SaveStorePageState extends State<SaveStorePage> {
     FocusNode(),
     FocusNode(),
     FocusNode(),
+    FocusNode(),
+    FocusNode(),
   ];
   List<BannerModel> listBanners = [];
 
@@ -106,6 +114,9 @@ class _SaveStorePageState extends State<SaveStorePage> {
     listBanners.clear();
     _selectedStoreOwnDrivers = [];
     _selectedStoreOwnDrivers.clear();
+    listOfCategories = [];
+    listOfCategories.clear();
+    listOfCategories = List<Category>.from(localListOfCategories.toList());
     defaultCountry = IsoCode.values.byName('SA');
     initialPhoneNumberValue = PhoneNumber(
       isoCode: IsoCode.values.asNameMap().values.byName('SA'),
@@ -129,6 +140,8 @@ class _SaveStorePageState extends State<SaveStorePage> {
     _storeNameController.dispose();
     _storePhoneNumberController.dispose();
     _storeMaxDeliveryTimeController.dispose();
+    menuCategoryTextEditingController.dispose();
+    menuSubCategoryTextEditingController.dispose();
     if (_storeOpeningTimeController == null) {
       _storeOpeningTimeController.dispose();
     } else {
@@ -150,6 +163,8 @@ class _SaveStorePageState extends State<SaveStorePage> {
     cross_file_images = [];
     _selectedStoreOwnDrivers = [];
     _selectedStoreOwnDrivers.clear();
+    listOfCategories = [];
+    listOfCategories.clear();
     focusList.asMap().forEach((key, value) => value.dispose());
     scrollController.dispose();
     innerScrollController.dispose();
@@ -233,6 +248,125 @@ class _SaveStorePageState extends State<SaveStorePage> {
 
   String? phoneNumberValidator(PhoneNumber? phoneNumber) {
     //
+  }
+
+  Future<void> selectMenuCategory(BuildContext context) async {
+    final Category? category = await showConfirmationDialog<Category>(
+      context: context,
+      barrierDismissible: true,
+      curve: Curves.fastOutSlowIn,
+      duration: const Duration(milliseconds: 700),
+      builder: (BuildContext context) {
+        return StatefulBuilder(
+          builder: (context, setState) {
+            return ResponsiveDialog(
+              context: context,
+              hideButtons: true,
+              maxLongSide: context.height / 2.25,
+              maxShortSide: context.width,
+              key: const Key('food-category-confirm-dialog'),
+              title: 'Menu Category',
+              confirmText: 'Confirm',
+              cancelText: 'Cancel',
+              okPressed: () async {
+                debugPrint('Dialog confirmed');
+                Navigator.of(context).pop();
+              },
+              cancelPressed: () {
+                debugPrint('Dialog cancelled');
+                Navigator.of(context).pop();
+              },
+              child: ListView.builder(
+                padding: EdgeInsetsDirectional.zero,
+                itemCount: listOfCategories.length,
+                itemBuilder: (context, index) => _allFoodCategory(context, index, setState),
+                shrinkWrap: true,
+              ),
+            );
+          },
+        );
+      },
+    );
+    if (category != null) {
+      setState(() {
+        menuCategoryTextEditingController.text = category?.title ?? '';
+        selectedCategory = category;
+        serviceLocator<MenuEntity>().menuCategories = [
+          Category(
+            title: menuCategoryTextEditingController.value.text.trim(),
+          )
+        ];
+        context.read<MenuBloc>().add(
+          PushMenuEntityData(
+            menuEntity: serviceLocator<MenuEntity>(),
+            menuFormStage: MenuFormStage.form1,
+            menuEntityStatus: MenuEntityStatus.push,
+          ),
+        );
+      });
+    }
+    return;
+  }
+
+  Widget _allFoodCategory(BuildContext context, int index, StateSetter innerSetState) {
+    return DecoratedBox(
+      decoration: BoxDecoration(
+        border: Border(
+            top: (index == 0) ? BorderSide(color: Theme.of(context).dividerColor) : BorderSide.none, bottom: BorderSide(color: Theme.of(context).dividerColor)),
+      ),
+      child: ListTile(
+        dense: true,
+        minVerticalPadding: 0,
+        minLeadingWidth: 0,
+        horizontalTitleGap: 0,
+        visualDensity: const VisualDensity(vertical: -1, horizontal: 0),
+        title: Text(
+          '${listOfCategories[index].title}',
+          textDirection: serviceLocator<LanguageController>().targetTextDirection,
+        ),
+        onTap: () {
+          innerSetState(() {});
+          Navigator.of(context).pop(listOfCategories[index]);
+          return;
+        },
+      ),
+    );
+  }
+
+  void updateCategoryAndSubCategory(Category mainCategory, Category? subCategory) {
+    setState(() {
+      menuCategoryTextEditingController.text = '';
+      menuSubCategoryTextEditingController.text = '';
+      menuCategoryTextEditingController.text = mainCategory.title ?? '';
+      selectedCategory = mainCategory;
+      if (subCategory.isNotNull) {
+        selectedSubCategory = subCategory;
+        menuSubCategoryTextEditingController.text = subCategory?.title ?? '';
+      }
+      final copyCategory = mainCategory.copyWith(subCategory: subCategory.isNotNull ? <Category>[subCategory!] : <Category>[]);
+      final cacheMenuEntity = serviceLocator<MenuEntity>().copyWith(
+        menuCategories: [copyCategory],
+      );
+      cacheMenuEntity.menuCategories.forEach((element) {
+        appLog.d('Menu ${element.title}');
+        if (element.subCategory.isNotNullOrEmpty) {
+          element.subCategory.forEach((subElement) {
+            appLog.d('Sub Menu ${subElement.title}');
+          });
+        }
+      });
+
+      context.read<MenuBloc>().add(
+        PushMenuEntityData(
+          menuEntity: serviceLocator<MenuEntity>().copyWith(
+            menuCategories: [copyCategory],
+          ),
+          menuFormStage: MenuFormStage.form1,
+          menuEntityStatus: MenuEntityStatus.push,
+        ),
+      );
+    });
+    return;
   }
 
   @override
@@ -347,9 +481,6 @@ class _SaveStorePageState extends State<SaveStorePage> {
                                         animation: true,
                                         margin: EdgeInsetsDirectional.zero,
                                         borderRadius: 10,
-                                        onTap: (id) => print(id),
-                                        //width: 250,
-                                        indicatorBottom: true,
                                       )
                                     else
                                       GestureDetector(
@@ -468,9 +599,9 @@ class _SaveStorePageState extends State<SaveStorePage> {
                                               ),
                                               isDense: true,
                                             ),
-                                            focusNode: focusList[0],
+                                            //focusNode: focusList[0],
                                             textInputAction: TextInputAction.next,
-                                            onFieldSubmitted: (_) => fieldFocusChange(context, focusList[0], focusList[1]),
+                                            //onFieldSubmitted: (_) => fieldFocusChange(context, focusList[0], focusList[1]),
                                             validator: (value) {
                                               if (value == null || value.isEmpty) {
                                                 return 'Enter store name';
@@ -480,6 +611,176 @@ class _SaveStorePageState extends State<SaveStorePage> {
                                           ),
                                         ),
                                       ],
+                                    ),
+                                    const AnimatedGap(12, duration: Duration(milliseconds: 500)),
+                                    AppTextFieldWidget(
+                                      controller: menuCategoryTextEditingController,
+                                      readOnly: true,
+                                      textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                      //focusNode: focusList[1],
+                                      textInputAction: TextInputAction.next,
+                                      //onFieldSubmitted: (_) => fieldFocusChange(context, focusList[1], focusList[2]),
+                                      keyboardType: TextInputType.text,
+                                      decoration: InputDecoration(
+                                        labelText: 'Store category',
+                                        hintText: 'Select your store category',
+                                        border: OutlineInputBorder(
+                                          borderRadius: BorderRadius.circular(10),
+                                        ),
+                                        isDense: true,
+                                        suffixIcon: IconButton(
+                                          onPressed: () async {
+                                            //await selectMenuCategory(context);
+                                            final result = await Navigator.push(
+                                              context,
+                                              MaterialPageRoute<(Category, Category?)>(
+                                                builder: (_) => const MainCategoryPage(),
+                                                fullscreenDialog: true,
+                                              ),
+                                            );
+                                            if (result != null) {
+                                              final Category mainCategory = result.$1;
+                                              final Category? subCategory = result.$2;
+                                              selectedCategory = mainCategory;
+                                              selectedSubCategory = subCategory;
+                                              updateCategoryAndSubCategory(mainCategory, subCategory);
+                                            }
+                                            return;
+                                          },
+                                          icon: const Icon(
+                                            Icons.arrow_drop_down,
+                                          ),
+                                        ),
+                                      ),
+                                      validator: (value) {
+                                        if (value == null || value.isEmpty) {
+                                          return 'Select store category';
+                                        }
+                                        return null;
+                                      },
+                                      onTap: () async {
+                                        //await selectMenuCategory(context);
+                                        final result = await Navigator.push(
+                                          context,
+                                          MaterialPageRoute<(Category, Category?)>(
+                                            builder: (_) => const MainCategoryPage(),
+                                            fullscreenDialog: true,
+                                          ),
+                                        );
+                                        if (result != null) {
+                                          final Category mainCategory = result.$1;
+                                          final Category? subCategory = result.$2;
+                                          selectedCategory = mainCategory;
+                                          selectedSubCategory = subCategory;
+                                          updateCategoryAndSubCategory(mainCategory, subCategory);
+                                        }
+                                        return;
+                                      },
+                                      onChanged: (value) {
+                                        serviceLocator<MenuEntity>().menuCategories = [
+                                          Category(
+                                            title: value,
+                                          )
+                                        ];
+                                        context.read<MenuBloc>().add(
+                                          PushMenuEntityData(
+                                            menuEntity: serviceLocator<MenuEntity>(),
+                                            menuFormStage: MenuFormStage.form1,
+                                            menuEntityStatus: MenuEntityStatus.push,
+                                          ),
+                                        );
+                                      },
+                                      onSaved: (newValue) {
+                                        serviceLocator<MenuEntity>().menuCategories = [
+                                          Category(
+                                            title: menuCategoryTextEditingController.value.text.trim(),
+                                          )
+                                        ];
+                                        context.read<MenuBloc>().add(
+                                          PushMenuEntityData(
+                                            menuEntity: serviceLocator<MenuEntity>(),
+                                            menuFormStage: MenuFormStage.form1,
+                                            menuEntityStatus: MenuEntityStatus.push,
+                                          ),
+                                        );
+                                      },
+                                      onEditingComplete: () {
+                                        serviceLocator<MenuEntity>().menuCategories = [
+                                          Category(
+                                            title: menuCategoryTextEditingController.value.text.trim(),
+                                          )
+                                        ];
+                                        context.read<MenuBloc>().add(
+                                          PushMenuEntityData(
+                                            menuEntity: serviceLocator<MenuEntity>(),
+                                            menuFormStage: MenuFormStage.form1,
+                                            menuEntityStatus: MenuEntityStatus.push,
+                                          ),
+                                        );
+                                      },
+                                    ),
+                                    const AnimatedGap(12, duration: Duration(milliseconds: 500)),
+                                    AppTextFieldWidget(
+                                      controller: menuSubCategoryTextEditingController,
+                                      readOnly: true,
+                                      textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                      textInputAction: TextInputAction.next,
+                                      keyboardType: TextInputType.text,
+                                      decoration: InputDecoration(
+                                        labelText: 'Store sub-category',
+                                        hintText: 'Select your store sub-category',
+                                        border: OutlineInputBorder(
+                                          borderRadius: BorderRadius.circular(10),
+                                        ),
+                                        isDense: true,
+                                        suffixIcon: IconButton(
+                                          onPressed: () async {
+                                            //await selectMenuCategory(context);
+                                            final result = await Navigator.push(
+                                              context,
+                                              MaterialPageRoute<(Category, Category?)>(
+                                                builder: (_) => const MainCategoryPage(),
+                                                fullscreenDialog: true,
+                                              ),
+                                            );
+                                            if (result != null) {
+                                              final Category mainCategory = result.$1;
+                                              final Category? subCategory = result.$2;
+                                              selectedCategory = mainCategory;
+                                              selectedSubCategory = subCategory;
+                                              updateCategoryAndSubCategory(mainCategory, subCategory);
+                                            }
+                                            return;
+                                          },
+                                          icon: const Icon(
+                                            Icons.arrow_drop_down,
+                                          ),
+                                        ),
+                                      ),
+                                      validator: (value) {
+                                        if (value == null || value.isEmpty) {
+                                          return 'Select store sub category';
+                                        }
+                                        return null;
+                                      },
+                                      onTap: () async {
+                                        //await selectMenuCategory(context);
+                                        final result = await Navigator.push(
+                                          context,
+                                          MaterialPageRoute<(Category, Category?)>(
+                                            builder: (_) => const MainCategoryPage(),
+                                            fullscreenDialog: true,
+                                          ),
+                                        );
+                                        if (result != null) {
+                                          final Category mainCategory = result.$1;
+                                          final Category? subCategory = result.$2;
+                                          selectedCategory = mainCategory;
+                                          selectedSubCategory = subCategory;
+                                          updateCategoryAndSubCategory(mainCategory, subCategory);
+                                        }
+                                        return;
+                                      },
                                     ),
                                     const AnimatedGap(12, duration: Duration(milliseconds: 500)),
                                     Directionality(
@@ -543,9 +844,9 @@ class _SaveStorePageState extends State<SaveStorePage> {
                                             controller: _storeAddressController,
                                             textDirection: serviceLocator<LanguageController>().targetTextDirection,
                                             maxLines: 3,
-                                            focusNode: focusList[1],
+                                            //focusNode: focusList[2],
                                             textInputAction: TextInputAction.next,
-                                            onFieldSubmitted: (_) => fieldFocusChange(context, focusList[1], focusList[2]),
+                                            //onFieldSubmitted: (_) => fieldFocusChange(context, focusList[2], focusList[3]),
                                             decoration: InputDecoration(
                                               labelText: snapshot[0],
                                               isDense: true,
@@ -916,9 +1217,9 @@ class _SaveStorePageState extends State<SaveStorePage> {
                                           child: StoreTextFieldWidget(
                                             controller: _storeMaxDeliveryTimeController,
                                             textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                                            focusNode: focusList[7],
+                                            //focusNode: focusList[7],
                                             textInputAction: TextInputAction.done,
-                                            onFieldSubmitted: (_) => fieldFocusChange(context, focusList[7], focusList[8]),
+                                            //onFieldSubmitted: (_) => fieldFocusChange(context, focusList[7], focusList[8]),
                                             decoration: InputDecoration(
                                               hintText: '00',
                                               isDense: true,
