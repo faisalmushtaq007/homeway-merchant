@@ -95,8 +95,8 @@ class MenuEntity with AppEquatable {
   String menuMinPreparationTime;
   String menuMaxPreparationTime;
   RatingAndReviewEntity? ratingAndReviewEntity = RatingAndReviewEntity();
-  final bool hasMenuAvailable;
-  final bool hasReadyToPickupOrder;
+  bool hasMenuAvailable;
+  bool hasReadyToPickupOrder;
 
   @override
   bool get cacheHash => true;

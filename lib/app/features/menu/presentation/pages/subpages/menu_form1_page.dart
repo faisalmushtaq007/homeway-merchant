@@ -79,6 +79,7 @@ class _MenuForm1PageState extends State<MenuForm1Page> with AutomaticKeepAliveCl
       if (subCategory!=null) {
         selectedSubCategory = subCategory;
         menuSubCategoryTextEditingController.text = subCategory.title ?? '';
+        selectedCategory?.subCategory=<Category>[subCategory];
       }
       final copyCategory = mainCategory.copyWith(subCategory: subCategory!=null ? <Category>[subCategory] : <Category>[]);
       serviceLocator<MenuEntity>().menuCategories=[copyCategory];
@@ -171,48 +172,6 @@ class _MenuForm1PageState extends State<MenuForm1Page> with AutomaticKeepAliveCl
                     updateCategoryAndSubCategory(mainCategory, subCategory);
                   }
                   return;
-                },
-                onChanged: (value) {
-                  serviceLocator<MenuEntity>().menuCategories = [
-                    Category(
-                      title: value,
-                    )
-                  ];
-                  context.read<MenuBloc>().add(
-                        PushMenuEntityData(
-                          menuEntity: serviceLocator<MenuEntity>(),
-                          menuFormStage: MenuFormStage.form1,
-                          menuEntityStatus: MenuEntityStatus.push,
-                        ),
-                      );
-                },
-                onSaved: (newValue) {
-                  serviceLocator<MenuEntity>().menuCategories = [
-                    Category(
-                      title: menuCategoryTextEditingController.value.text.trim(),
-                    )
-                  ];
-                  context.read<MenuBloc>().add(
-                        PushMenuEntityData(
-                          menuEntity: serviceLocator<MenuEntity>(),
-                          menuFormStage: MenuFormStage.form1,
-                          menuEntityStatus: MenuEntityStatus.push,
-                        ),
-                      );
-                },
-                onEditingComplete: () {
-                  serviceLocator<MenuEntity>().menuCategories = [
-                    Category(
-                      title: menuCategoryTextEditingController.value.text.trim(),
-                    )
-                  ];
-                  context.read<MenuBloc>().add(
-                        PushMenuEntityData(
-                          menuEntity: serviceLocator<MenuEntity>(),
-                          menuFormStage: MenuFormStage.form1,
-                          menuEntityStatus: MenuEntityStatus.push,
-                        ),
-                      );
                 },
               ),
               const AnimatedGap(12, duration: Duration(milliseconds: 500)),

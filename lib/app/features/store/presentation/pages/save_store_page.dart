@@ -612,46 +612,13 @@ class _SaveStorePageState extends State<SaveStorePage> {
                                         return;
                                       },
                                       onChanged: (value) {
-                                        serviceLocator<MenuEntity>().menuCategories = [
-                                          Category(
-                                            title: value,
-                                          )
-                                        ];
-                                        context.read<MenuBloc>().add(
-                                          PushMenuEntityData(
-                                            menuEntity: serviceLocator<MenuEntity>(),
-                                            menuFormStage: MenuFormStage.form1,
-                                            menuEntityStatus: MenuEntityStatus.push,
-                                          ),
-                                        );
+
                                       },
                                       onSaved: (newValue) {
-                                        serviceLocator<MenuEntity>().menuCategories = [
-                                          Category(
-                                            title: menuCategoryTextEditingController.value.text.trim(),
-                                          )
-                                        ];
-                                        context.read<MenuBloc>().add(
-                                          PushMenuEntityData(
-                                            menuEntity: serviceLocator<MenuEntity>(),
-                                            menuFormStage: MenuFormStage.form1,
-                                            menuEntityStatus: MenuEntityStatus.push,
-                                          ),
-                                        );
+
                                       },
                                       onEditingComplete: () {
-                                        serviceLocator<MenuEntity>().menuCategories = [
-                                          Category(
-                                            title: menuCategoryTextEditingController.value.text.trim(),
-                                          )
-                                        ];
-                                        context.read<MenuBloc>().add(
-                                          PushMenuEntityData(
-                                            menuEntity: serviceLocator<MenuEntity>(),
-                                            menuFormStage: MenuFormStage.form1,
-                                            menuEntityStatus: MenuEntityStatus.push,
-                                          ),
-                                        );
+
                                       },
                                     ),
                                     const AnimatedGap(12, duration: Duration(milliseconds: 500)),
