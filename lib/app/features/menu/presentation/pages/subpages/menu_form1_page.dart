@@ -69,63 +69,6 @@ class _MenuForm1PageState extends State<MenuForm1Page> with AutomaticKeepAliveCl
     super.dispose();
   }
 
-  Future<void> selectMenuCategory(BuildContext context) async {
-    final Category? category = await showConfirmationDialog<Category>(
-      context: context,
-      barrierDismissible: true,
-      curve: Curves.fastOutSlowIn,
-      duration: const Duration(milliseconds: 700),
-      builder: (BuildContext context) {
-        return StatefulBuilder(
-          builder: (context, setState) {
-            return ResponsiveDialog(
-              context: context,
-              hideButtons: true,
-              maxLongSide: context.height / 2.25,
-              maxShortSide: context.width,
-              key: const Key('food-category-confirm-dialog'),
-              title: 'Menu Category',
-              confirmText: 'Confirm',
-              cancelText: 'Cancel',
-              okPressed: () async {
-                debugPrint('Dialog confirmed');
-                Navigator.of(context).pop();
-              },
-              cancelPressed: () {
-                debugPrint('Dialog cancelled');
-                Navigator.of(context).pop();
-              },
-              child: ListView.builder(
-                padding: EdgeInsetsDirectional.zero,
-                itemCount: listOfCategories.length,
-                itemBuilder: (context, index) => _allFoodCategory(context, index, setState),
-                shrinkWrap: true,
-              ),
-            );
-          },
-        );
-      },
-    );
-    if (category != null) {
-      setState(() {
-        menuCategoryTextEditingController.text = category?.title ?? '';
-        selectedCategory = category;
-        serviceLocator<MenuEntity>().menuCategories = [
-          Category(
-            title: menuCategoryTextEditingController.value.text.trim(),
-          )
-        ];
-        context.read<MenuBloc>().add(
-              PushMenuEntityData(
-                menuEntity: serviceLocator<MenuEntity>(),
-                menuFormStage: MenuFormStage.form1,
-                menuEntityStatus: MenuEntityStatus.push,
-              ),
-            );
-      });
-    }
-    return;
-  }
 
   void updateCategoryAndSubCategory(Category mainCategory, Category? subCategory) {
     setState(() {
@@ -138,9 +81,6 @@ class _MenuForm1PageState extends State<MenuForm1Page> with AutomaticKeepAliveCl
         menuSubCategoryTextEditingController.text = subCategory.title ?? '';
       }
       final copyCategory = mainCategory.copyWith(subCategory: subCategory!=null ? <Category>[subCategory] : <Category>[]);
-      final cacheMenuEntity = serviceLocator<MenuEntity>().copyWith(
-        menuCategories: [copyCategory],
-      );
       serviceLocator<MenuEntity>().menuCategories=[copyCategory];
       context.read<MenuBloc>().add(
             PushMenuEntityData(

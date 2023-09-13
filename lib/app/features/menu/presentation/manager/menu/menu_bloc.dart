@@ -340,7 +340,7 @@ class MenuBloc extends Bloc<MenuEvent, MenuState> {
       emit(
         PushMenuEntityDataState(
           menuEntity: event.menuEntity ?? serviceLocator<MenuEntity>(),
-          message: 'Something went wrong, ${e.toString()}',
+          message: 'Something went wrong, $e',
           hasNewMenu: event.hasNewMenu,
           menuEntityStatus: event.menuEntityStatus,
           menuFormStage: event.menuFormStage,

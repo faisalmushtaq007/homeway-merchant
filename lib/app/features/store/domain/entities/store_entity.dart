@@ -27,6 +27,7 @@ class StoreEntity with AppEquatable {
     this.orders = const [],
     this.hasStoreOpened = true,
     this.hasReadyToPickupOrder = true,
+    this.storeCategories=const[],
   });
 
   factory StoreEntity.fromMap(Map<String, dynamic> map) {
@@ -84,6 +85,10 @@ class StoreEntity with AppEquatable {
           .cast<OrderEntity>(),
       hasStoreOpened: map['hasStoreOpened'] ?? true,
       hasReadyToPickupOrder: map['hasReadyToPickupOrder'] ?? true,
+      storeCategories: map['storeCategories']
+          .map((e) => Category.fromMap(e))
+          .toList()
+          .cast<Category>(),
     );
   }
 
@@ -112,6 +117,7 @@ class StoreEntity with AppEquatable {
   List<OrderEntity> orders;
   bool hasStoreOpened;
   bool hasReadyToPickupOrder;
+  List<Category> storeCategories;
 
   @override
   bool get cacheHash => true;
@@ -143,6 +149,7 @@ class StoreEntity with AppEquatable {
         orders,
         hasReadyToPickupOrder,
         hasStoreOpened,
+    storeCategories,
       ];
 
   StoreEntity copyWith({
@@ -171,6 +178,7 @@ class StoreEntity with AppEquatable {
     List<OrderEntity>? orders,
     bool? hasStoreOpened,
     bool? hasReadyToPickupOrder,
+    List<Category>? storeCategories,
   }) {
     return StoreEntity(
       storeName: storeName ?? this.storeName,
@@ -208,6 +216,7 @@ class StoreEntity with AppEquatable {
       hasStoreOpened: hasStoreOpened ?? this.hasStoreOpened,
       hasReadyToPickupOrder:
           hasReadyToPickupOrder ?? this.hasReadyToPickupOrder,
+        storeCategories:storeCategories??this.storeCategories,
     );
   }
 
@@ -244,6 +253,7 @@ class StoreEntity with AppEquatable {
       'orders': this.orders.map((e) => e.toMap()).toList(),
       'hasStoreOpened': hasStoreOpened,
       'hasReadyToPickupOrder': hasReadyToPickupOrder,
+      'storeCategories':storeCategories.map((e) => e.toMap()).toList(),
     };
   }
 }

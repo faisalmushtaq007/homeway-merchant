@@ -680,9 +680,9 @@ class _MenuForm3PageState extends State<MenuForm3Page> with AutomaticKeepAliveCl
         minVerticalPadding: 0,
         minLeadingWidth: 0,
         horizontalTitleGap: 0,
-        visualDensity: const VisualDensity(vertical: -1, horizontal: 0),
+        visualDensity: const VisualDensity(vertical: -1),
         title: Text(
-          '${_menuAvailablePreparationTimings[index]}',
+          _menuAvailablePreparationTimings[index],
           textDirection: serviceLocator<LanguageController>().targetTextDirection,
         ),
         onTap: () {

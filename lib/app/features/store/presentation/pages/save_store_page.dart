@@ -250,63 +250,6 @@ class _SaveStorePageState extends State<SaveStorePage> {
     //
   }
 
-  Future<void> selectMenuCategory(BuildContext context) async {
-    final Category? category = await showConfirmationDialog<Category>(
-      context: context,
-      barrierDismissible: true,
-      curve: Curves.fastOutSlowIn,
-      duration: const Duration(milliseconds: 700),
-      builder: (BuildContext context) {
-        return StatefulBuilder(
-          builder: (context, setState) {
-            return ResponsiveDialog(
-              context: context,
-              hideButtons: true,
-              maxLongSide: context.height / 2.25,
-              maxShortSide: context.width,
-              key: const Key('food-category-confirm-dialog'),
-              title: 'Menu Category',
-              confirmText: 'Confirm',
-              cancelText: 'Cancel',
-              okPressed: () async {
-                debugPrint('Dialog confirmed');
-                Navigator.of(context).pop();
-              },
-              cancelPressed: () {
-                debugPrint('Dialog cancelled');
-                Navigator.of(context).pop();
-              },
-              child: ListView.builder(
-                padding: EdgeInsetsDirectional.zero,
-                itemCount: listOfCategories.length,
-                itemBuilder: (context, index) => _allFoodCategory(context, index, setState),
-                shrinkWrap: true,
-              ),
-            );
-          },
-        );
-      },
-    );
-    if (category != null) {
-      setState(() {
-        menuCategoryTextEditingController.text = category?.title ?? '';
-        selectedCategory = category;
-        serviceLocator<MenuEntity>().menuCategories = [
-          Category(
-            title: menuCategoryTextEditingController.value.text.trim(),
-          )
-        ];
-        context.read<MenuBloc>().add(
-          PushMenuEntityData(
-            menuEntity: serviceLocator<MenuEntity>(),
-            menuFormStage: MenuFormStage.form1,
-            menuEntityStatus: MenuEntityStatus.push,
-          ),
-        );
-      });
-    }
-    return;
-  }
 
   Widget _allFoodCategory(BuildContext context, int index, StateSetter innerSetState) {
     return DecoratedBox(
@@ -347,14 +290,6 @@ class _SaveStorePageState extends State<SaveStorePage> {
       final cacheMenuEntity = serviceLocator<MenuEntity>().copyWith(
         menuCategories: [copyCategory],
       );
-      cacheMenuEntity.menuCategories.forEach((element) {
-        appLog.d('Menu ${element.title}');
-        if (element.subCategory.isNotNullOrEmpty) {
-          element.subCategory.forEach((subElement) {
-            appLog.d('Sub Menu ${subElement.title}');
-          });
-        }
-      });
 
       context.read<MenuBloc>().add(
         PushMenuEntityData(

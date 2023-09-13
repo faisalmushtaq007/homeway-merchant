@@ -181,12 +181,9 @@ class _SaveMenuPageController extends State<SaveMenuPage> with AutomaticKeepAliv
   }
 
   void onFormSubmitted() {
-    appLog.d('Save Menu Info ${serviceLocator<MenuEntity>().toMap()}');
     context.read<MenuBloc>().add(
           SaveMenu(
-            menuEntity: serviceLocator<MenuEntity>().copyWith(
-                //menuId: (DateTime.now().millisecondsSinceEpoch - DateTime.now().millisecond) ~/ 1000,
-                ),
+            menuEntity: serviceLocator<MenuEntity>(),
             hasNewMenu: widget.haveNewMenu,
           ),
         );
