@@ -31,51 +31,51 @@ class _MainCategoryPageController extends State<MainCategoryPage> with SingleTic
     navigationDestinations = [];
     navigationDestinations.clear();
     listOfCategories = List<Category>.from(localListOfCategories.toList());
-    //initLoadCategoryList(context);
+    initLoadCategoryList(localListOfCategories.toList());
   }
 
-  Future<void> initLoadCategoryList(BuildContext context) async {
-    for (Category category in listOfCategories) {
-      navigationDestinations.add(
-        NavigationRailDestination(
-          icon: SvgPicture.asset(
-            'assets/svg/category.svg',
-            colorFilter: ColorFilter.mode(context.colorScheme.primary, BlendMode.srcIn),
-            semanticsLabel: category.title,
-            height: 24,
-            width: 24,
-          ),
-          label: Center(
-            child: Wrap(
-              children: [
-                Text(
-                  category.title,
-                  textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                  textAlign: TextAlign.center,
-                  maxLines: 3,
-                  overflow: TextOverflow.ellipsis,
-                ),
-              ],
-            ),
+  void initLoadCategoryList(List<Category> listOfCategories)  {
+    listOfCategories.asMap().forEach((key, category) {
+      navigationDestinations.insert(key, NavigationRailDestination(
+        icon: SvgPicture.asset(
+          'assets/svg/category.svg',
+          colorFilter: const ColorFilter.mode(Color(0xffe65100), BlendMode.srcIn),
+          semanticsLabel: category.title,
+          height: 24,
+          width: 24,
+        ),
+        label: Center(
+          child: Wrap(
+            children: [
+              Text(
+                category.title,
+                textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                textAlign: TextAlign.center,
+                maxLines: 3,
+                overflow: TextOverflow.ellipsis,
+              ),
+            ],
           ),
         ),
-      );
-    }
+      ),);
+    });
     //setState(() {});
   }
 
   @override
   void didChangeDependencies() {
-    if (listOfCategories.isNotNullOrEmpty && navigationDestinations.isNullOrEmpty) {
-      initLoadCategoryList(context);
-    }
     super.didChangeDependencies();
   }
 
   @override
   void dispose() {
+    selectedIndex=-1;
+    selectedCategory=null;
+    selectedSubCategory=null;
     listOfCategories = [];
     listOfCategories.clear();
+    navigationDestinations = [];
+    navigationDestinations.clear();
     innerScrollController.dispose();
     scrollController.dispose();
     super.dispose();
@@ -186,6 +186,7 @@ class _MainCategoryPageView extends WidgetView<MainCategoryPage, _MainCategoryPa
                                         child: SizedBox(
                                           width: 80,
                                           child: NavigationRail(
+                                            key: const Key('category-navigationrail-widget'),
                                             labelType: NavigationRailLabelType.all,
                                             selectedIndex: state.selectedIndex,
                                             destinations: state.navigationDestinations.toList(),

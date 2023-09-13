@@ -1,6 +1,6 @@
 part of 'package:homemakers_merchant/app/features/store/index.dart';
 
-class StoreEntity with AppEquatable {
+class StoreEntity extends INetworkModel<StoreEntity> with AppEquatable {
   StoreEntity({
     this.storeName = '',
     this.storeAddress,
@@ -256,6 +256,14 @@ class StoreEntity with AppEquatable {
       'storeCategories':storeCategories.map((e) => e.toMap()).toList(),
     };
   }
+
+  @override
+  StoreEntity fromJson(Map<String, dynamic> json) {
+    return StoreEntity.fromMap(json);
+  }
+
+  @override
+  Map<String, dynamic>? toJson() =>toMap();
 }
 
 class StoreAvailableFoodTypes with AppEquatable {

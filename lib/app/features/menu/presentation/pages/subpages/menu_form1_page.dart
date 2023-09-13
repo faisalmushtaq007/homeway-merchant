@@ -111,6 +111,7 @@ class _MenuForm1PageState extends State<MenuForm1Page> with AutomaticKeepAliveCl
             textDirection: serviceLocator<LanguageController>().targetTextDirection,
             children: [
               AppTextFieldWidget(
+                key: const Key('menuCategory-textfield-widget'),
                 controller: menuCategoryTextEditingController,
                 readOnly: true,
                 textDirection: serviceLocator<LanguageController>().targetTextDirection,
@@ -128,13 +129,7 @@ class _MenuForm1PageState extends State<MenuForm1Page> with AutomaticKeepAliveCl
                   suffixIcon: IconButton(
                     onPressed: () async {
                       //await selectMenuCategory(context);
-                      final result = await Navigator.push(
-                        context,
-                        MaterialPageRoute<(Category, Category?)>(
-                          builder: (_) => const MainCategoryPage(),
-                          fullscreenDialog: true,
-                        ),
-                      );
+                      final result = await context.push<(Category, Category?)>(Routes.MAIN_CATEGORY_PAGE);
                       if (result != null) {
                         final Category mainCategory = result.$1;
                         final Category? subCategory = result.$2;
@@ -157,13 +152,7 @@ class _MenuForm1PageState extends State<MenuForm1Page> with AutomaticKeepAliveCl
                 },
                 onTap: () async {
                   //await selectMenuCategory(context);
-                  final result = await Navigator.push(
-                    context,
-                    MaterialPageRoute<(Category, Category?)>(
-                      builder: (_) => const MainCategoryPage(),
-                      fullscreenDialog: true,
-                    ),
-                  );
+                  final result = await context.push<(Category, Category?)>(Routes.MAIN_CATEGORY_PAGE);
                   if (result != null) {
                     final Category mainCategory = result.$1;
                     final Category? subCategory = result.$2;
@@ -176,6 +165,7 @@ class _MenuForm1PageState extends State<MenuForm1Page> with AutomaticKeepAliveCl
               ),
               const AnimatedGap(12, duration: Duration(milliseconds: 500)),
               AppTextFieldWidget(
+                key: const Key('menuSubCategory-textfield-widget'),
                 controller: menuSubCategoryTextEditingController,
                 readOnly: true,
                 textDirection: serviceLocator<LanguageController>().targetTextDirection,
@@ -191,13 +181,7 @@ class _MenuForm1PageState extends State<MenuForm1Page> with AutomaticKeepAliveCl
                   suffixIcon: IconButton(
                     onPressed: () async {
                       //await selectMenuCategory(context);
-                      final result = await Navigator.push(
-                        context,
-                        MaterialPageRoute<(Category, Category?)>(
-                          builder: (_) => const MainCategoryPage(),
-                          fullscreenDialog: true,
-                        ),
-                      );
+                      final result = await context.push<(Category, Category?)>(Routes.MAIN_CATEGORY_PAGE);
                       if (result != null) {
                         final Category mainCategory = result.$1;
                         final Category? subCategory = result.$2;
@@ -220,13 +204,7 @@ class _MenuForm1PageState extends State<MenuForm1Page> with AutomaticKeepAliveCl
                 },
                 onTap: () async {
                   //await selectMenuCategory(context);
-                  final result = await Navigator.push(
-                    context,
-                    MaterialPageRoute<(Category, Category?)>(
-                      builder: (_) => const MainCategoryPage(),
-                      fullscreenDialog: true,
-                    ),
-                  );
+                  final result = await context.push<(Category, Category?)>(Routes.MAIN_CATEGORY_PAGE);
                   if (result != null) {
                     final Category mainCategory = result.$1;
                     final Category? subCategory = result.$2;

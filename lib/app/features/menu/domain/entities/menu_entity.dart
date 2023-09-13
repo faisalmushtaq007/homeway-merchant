@@ -1,6 +1,6 @@
 part of 'package:homemakers_merchant/app/features/menu/index.dart';
 
-class MenuEntity with AppEquatable {
+class MenuEntity extends INetworkModel<MenuEntity> with AppEquatable {
   MenuEntity({
     this.menuId = -1,
     this.menuImages = const [],
@@ -231,6 +231,14 @@ class MenuEntity with AppEquatable {
       hasReadyToPickupOrder: hasReadyToPickupOrder ?? this.hasReadyToPickupOrder,
     );
   }
+
+  @override
+  MenuEntity fromJson(Map<String, dynamic> json) {
+    return MenuEntity.fromMap(json);
+  }
+
+  @override
+  Map<String, dynamic>? toJson() =>toMap();
 }
 
 class MenuImage with AppEquatable {
@@ -1170,7 +1178,7 @@ class Timing with AppEquatable {
   }
 }
 
-class Category with AppEquatable {
+class Category extends INetworkModel<Category> with AppEquatable {
   Category(
       {this.categoryId = '0',
       this.title = '',
@@ -1198,7 +1206,7 @@ class Category with AppEquatable {
   Map<String, dynamic> metaInfo;
 
   @override
-  bool get cacheHash => true;
+  bool get cacheHash => false;
 
   @override
   List<Object?> get hashParameters => [
@@ -1234,6 +1242,14 @@ class Category with AppEquatable {
       subCategory: subCategory ?? this.subCategory,
     );
   }
+
+  @override
+  Category fromJson(Map<String, dynamic> json) {
+    return Category.fromMap(json);
+  }
+
+  @override
+  Map<String, dynamic>? toJson() =>toMap();
 }
 
 class Stock with AppEquatable {
