@@ -152,6 +152,12 @@ class _MultiSelectAddonsChipState extends State<MultiSelectMenuAddons> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    selectedChoices=List<Addons>.from(widget.initialSelectedAddonsList.toList());
+  }
+
+  @override
   void setState(VoidCallback fn) {
     if (mounted) {
       super.setState(fn);

@@ -180,6 +180,12 @@ class _MultiSelectStoreAvailableFoodPreparationTypesState extends State<MultiSel
   }
 
   @override
+  void initState() {
+    super.initState();
+    selectedChoices=List<StoreAvailableFoodPreparationType>.from(widget.initialSelectedAvailableFoodPreparationTypesList.toList());
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Wrap(
       spacing: 8,

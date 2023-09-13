@@ -180,6 +180,12 @@ class _MultiSelectTasteLevelChipState extends State<MultiSelectMenuTasteLevel> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    selectedChoices=List<TasteLevel>.from(widget.initialSelectedTasteLevelList.toList());
+  }
+
+  @override
   void setState(VoidCallback fn) {
     if (mounted) {
       super.setState(fn);

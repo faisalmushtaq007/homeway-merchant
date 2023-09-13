@@ -184,6 +184,12 @@ class _MultiSelectPortionsChipState extends State<MultiSelectMenuMenuPortion> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    selectedChoices=List<MenuPortion>.from(widget.initialSelectedMenuPortionList.toList());
+  }
+
+  @override
   void setState(VoidCallback fn) {
     if (mounted) {
       super.setState(fn);

@@ -1,8 +1,12 @@
 part of 'package:homemakers_merchant/app/features/menu/index.dart';
 
 class MenuForm2Page extends StatefulWidget {
-  const MenuForm2Page({super.key,this.haveNewMenu = true,
-    this.menuEntity,});
+  const MenuForm2Page({
+    super.key,
+    this.haveNewMenu = true,
+    this.menuEntity,
+  });
+
   final bool haveNewMenu;
   final MenuEntity? menuEntity;
 
@@ -10,37 +14,48 @@ class MenuForm2Page extends StatefulWidget {
   State<MenuForm2Page> createState() => _MenuForm2PageState();
 }
 
-class _MenuForm2PageState extends State<MenuForm2Page> with AutomaticKeepAliveClientMixin<MenuForm2Page> {
+class _MenuForm2PageState extends State<MenuForm2Page>
+    with AutomaticKeepAliveClientMixin<MenuForm2Page> {
   late final ScrollController scrollController;
 
   List<StoreAvailableFoodTypes> _menuAvailableFoodTypes = [];
-  List<StoreAvailableFoodPreparationType> _menuAvailableFoodCookingType = [];
-  List<StoreAvailableFoodPreparationType> _initialMenuAvailableFoodCookingType = [];
-  List<StoreWorkingDayAndTime> _menuAvailableDays = [];
-  List<TasteType> _menuTasteType = [];
-  List<TasteLevel> _menuTasteLevel = [];
-  List<MenuPortion> _menuPortions = [];
-  List<MenuPortion> _initialMenuPortions = [];
-  bool _hasCustomMenuPortionSize = false;
-  final TextEditingController _menuPortionNameController = TextEditingController();
-  final TextEditingController _menuPortionValueController = TextEditingController();
-  final TextEditingController _menuPortionSizeController = TextEditingController();
-  final TextEditingController _menuPortionUnitController = TextEditingController();
-
   List<StoreAvailableFoodTypes> _selectedFoodTypes = [];
   List<StoreAvailableFoodTypes> _initialSelectedFoodTypes = [];
+
+  List<StoreAvailableFoodPreparationType> _menuAvailableFoodCookingType = [];
   List<StoreAvailableFoodPreparationType> _selectedFoodPreparationType = [];
-  List<StoreAvailableFoodPreparationType> _initialSelectedFoodPreparationType = [];
+  List<StoreAvailableFoodPreparationType> _initialSelectedFoodPreparationType =
+      [];
+
+  List<TasteType> _menuTasteType = [];
+  List<TasteType> _initialSelectedTasteType = [];
+  List<TasteType> _selectedTasteType = [];
+
+  List<TasteLevel> _selectedTasteLevel = [];
+  List<TasteLevel> _menuTasteLevel = [];
+  List<TasteLevel> _initialSelectedTasteLevel = [];
+
+  List<MenuPortion> _menuPortions = [];
+  List<MenuPortion> _selectedMenuPortions = [];
+  List<MenuPortion> _initialSelectedMenuPortions = [];
+
+  bool _hasCustomMenuPortionSize = false;
+  final TextEditingController _menuPortionNameController =
+      TextEditingController();
+  final TextEditingController _menuPortionValueController =
+      TextEditingController();
+  final TextEditingController _menuPortionSizeController =
+      TextEditingController();
+  final TextEditingController _menuPortionUnitController =
+      TextEditingController();
+
+  List<StoreWorkingDayAndTime> _menuAvailableDays = [];
   List<StoreWorkingDayAndTime> _selectedWorkingDays = [];
   List<StoreWorkingDayAndTime> _initialSelectedWorkingDays = [];
-  List<TasteType> _selectedTasteType = [];
-  List<TasteLevel> _selectedTasteLevel = [];
-  List<MenuPortion> _selectedMenuPortions = [];
-  List<TasteType> _initialSelectedTasteType = [];
-  List<TasteLevel> _initialSelectedTasteLevel = [];
-  List<MenuPortion> _initialSelectedMenuPortions = [];
+
   List<FocusNode> menuForm2FocusList = [];
   bool _haveAddonsWithCurrentMenu = false;
+
   List<Addons> _selectedAddons = [];
   List<Addons> _initialSelectedAddons = [];
   List<Addons> _allAddons = [];
@@ -80,12 +95,67 @@ class _MenuForm2PageState extends State<MenuForm2Page> with AutomaticKeepAliveCl
     _selectedAddons.clear();
     _allAddons.clear();
     selectedAddonsWidgets.clear();
+
+    //Initial Data
+    _initialSelectedFoodPreparationType = [];
     initializeMenuAvailableFoodCookingType();
     initializeMenuAvailableDays();
     initializeMenuAvailableFoodTypes();
     initializeMenuTasteType();
     initializeMenuTasteLevel();
     initMenuPortions();
+    initData();
+  }
+
+  void initData() {
+    if (!widget.haveNewMenu && widget.menuEntity.isNotNull) {
+      // Init data of Menu Preparation type
+      _initialSelectedFoodPreparationType =
+          List<StoreAvailableFoodPreparationType>.from(
+              widget.menuEntity!.storeAvailableFoodPreparationType.toList(),);
+      _selectedFoodPreparationType=List<StoreAvailableFoodPreparationType>.from(
+        widget.menuEntity!.storeAvailableFoodPreparationType.toList(),);
+
+      // Init data of Menu Taste type and its level
+      if (widget.menuEntity!.tasteType.isNotNull) {
+        // Menu Taste type
+        _initialSelectedTasteType =
+            List<TasteType>.from(
+          [widget.menuEntity!.tasteType!.title ?? ''],
+        );
+        // Menu Taste level
+        _initialSelectedTasteLevel =
+            List<TasteLevel>.from(
+          widget.menuEntity!.tasteType!.tasteLevel.toList(),
+        );
+        _initialSelectedTasteType=List<TasteType>.from(
+          [widget.menuEntity!.tasteType!.title ?? ''],
+        );
+        _initialSelectedTasteLevel=List<TasteLevel>.from(
+          widget.menuEntity!.tasteType!.tasteLevel.toList(),
+        );
+      }
+
+      // Init data of Menu portion
+      _initialSelectedMenuPortions =
+          List<MenuPortion>.from(
+              widget.menuEntity!.menuPortions.toList(),);
+      _selectedMenuPortions=List<MenuPortion>.from(
+        widget.menuEntity!.menuPortions.toList(),);
+
+      // Init date of Custom Portion
+      if(widget.menuEntity!.hasCustomPortion==true && widget.menuEntity!.customPortion.isNotNull){
+        _hasCustomMenuPortionSize=true;
+        _menuPortionNameController.text =widget.menuEntity!.customPortion!.title??'';
+        _menuPortionValueController.text =widget.menuEntity!.customPortion!.quantity.toString()??'';
+        _menuPortionSizeController.text = widget.menuEntity!.customPortion!.maxServingPerson.toString()??'';
+        _menuPortionUnitController.text = widget.menuEntity!.customPortion!.unit??'';
+      }
+      
+      // Init data of selected addons
+      _initialSelectedAddons=List<Addons>.from(widget.menuEntity!.addons);
+      _selectedAddons=List<Addons>.from(widget.menuEntity!.addons);
+    }
   }
 
   @override
@@ -132,15 +202,19 @@ class _MenuForm2PageState extends State<MenuForm2Page> with AutomaticKeepAliveCl
   bool get wantKeepAlive => true;
 
   void initializeMenuAvailableFoodCookingType() {
-    _menuAvailableFoodCookingType = List<StoreAvailableFoodPreparationType>.from(localStoreAvailableFoodPreparationType.toList());
+    _menuAvailableFoodCookingType =
+        List<StoreAvailableFoodPreparationType>.from(
+            localStoreAvailableFoodPreparationType.toList());
   }
 
   void initializeMenuAvailableFoodTypes() {
-    _menuAvailableFoodTypes = List<StoreAvailableFoodTypes>.from(localStoreAvailableFoodTypes.toList());
+    _menuAvailableFoodTypes = List<StoreAvailableFoodTypes>.from(
+        localStoreAvailableFoodTypes.toList());
   }
 
   void initializeMenuAvailableDays() {
-    _menuAvailableDays = List<StoreWorkingDayAndTime>.from(localStoreWorkingDays.toList());
+    _menuAvailableDays =
+        List<StoreWorkingDayAndTime>.from(localStoreWorkingDays.toList());
   }
 
   void initializeMenuTasteType() {
@@ -164,12 +238,15 @@ class _MenuForm2PageState extends State<MenuForm2Page> with AutomaticKeepAliveCl
         key: const Key('menu-form2-page-bloc-builder-widget'),
         bloc: context.watch<MenuBloc>(),
         builder: (context, state) {
-          if (state is PushMenuEntityDataState && state.menuFormStage is MenuForm2Page) {}
-          if (state is PullMenuEntityDataState && state.menuFormStage is MenuForm2Page) {}
+          if (state is PushMenuEntityDataState &&
+              state.menuFormStage is MenuForm2Page) {}
+          if (state is PullMenuEntityDataState &&
+              state.menuFormStage is MenuForm2Page) {}
           return Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.stretch,
-            textDirection: serviceLocator<LanguageController>().targetTextDirection,
+            textDirection:
+                serviceLocator<LanguageController>().targetTextDirection,
             children: [
               /*Column(
                 textDirection: serviceLocator<LanguageController>().targetTextDirection,
@@ -243,10 +320,12 @@ class _MenuForm2PageState extends State<MenuForm2Page> with AutomaticKeepAliveCl
               Column(
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.stretch,
-                textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                textDirection:
+                    serviceLocator<LanguageController>().targetTextDirection,
                 children: [
                   Wrap(
-                    textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                    textDirection: serviceLocator<LanguageController>()
+                        .targetTextDirection,
                     children: [
                       Text(
                         'Food preparation method',
@@ -254,18 +333,21 @@ class _MenuForm2PageState extends State<MenuForm2Page> with AutomaticKeepAliveCl
                           fontWeight: FontWeight.w600,
                           fontSize: 20,
                         ),
-                        textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                        textDirection: serviceLocator<LanguageController>()
+                            .targetTextDirection,
                       ).translate(),
                     ],
                   ),
                   const AnimatedGap(4, duration: Duration(milliseconds: 500)),
                   Wrap(
-                    textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                    textDirection: serviceLocator<LanguageController>()
+                        .targetTextDirection,
                     children: [
                       Text(
                         'Choose the cooking methods of your menu',
                         style: context.labelMedium,
-                        textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                        textDirection: serviceLocator<LanguageController>()
+                            .targetTextDirection,
                       ).translate(),
                     ],
                   ),
@@ -273,13 +355,21 @@ class _MenuForm2PageState extends State<MenuForm2Page> with AutomaticKeepAliveCl
               ),
               const AnimatedGap(6, duration: Duration(milliseconds: 500)),
               MultiSelectAvailableFoodPreparationTypesFormField(
-                key: const Key('store-menu-multiSelectAvailableFoodPreparationTypes-formfield'),
-                onSelectionChanged: (List<StoreAvailableFoodPreparationType> selectedPreparationTypes) {
-                  _selectedFoodPreparationType = List<StoreAvailableFoodPreparationType>.from(selectedPreparationTypes);
+                key: const Key(
+                    'store-menu-multiSelectAvailableFoodPreparationTypes-formfield'),
+                onSelectionChanged: (List<StoreAvailableFoodPreparationType>
+                    selectedPreparationTypes) {
+                  _selectedFoodPreparationType =
+                      List<StoreAvailableFoodPreparationType>.from(
+                          selectedPreparationTypes);
                   setState(() {});
-                  var cacheMenuPreparationType =
-                      List<MenuPreparationType>.from(_selectedFoodPreparationType.map((e) => MenuPreparationType.fromMap(e.toMap())).toList());
-                  serviceLocator<MenuEntity>().storeAvailableFoodPreparationType = cacheMenuPreparationType.toList();
+                  var cacheMenuPreparationType = List<MenuPreparationType>.from(
+                      _selectedFoodPreparationType
+                          .map((e) => MenuPreparationType.fromMap(e.toMap()))
+                          .toList());
+                  serviceLocator<MenuEntity>()
+                          .storeAvailableFoodPreparationType =
+                      cacheMenuPreparationType.toList();
                   context.read<MenuBloc>().add(
                         PushMenuEntityData(
                           menuEntity: serviceLocator<MenuEntity>(),
@@ -288,7 +378,8 @@ class _MenuForm2PageState extends State<MenuForm2Page> with AutomaticKeepAliveCl
                         ),
                       );
                 },
-                availableFoodPreparationTypesList: _menuAvailableFoodCookingType.toList(),
+                availableFoodPreparationTypesList:
+                    _menuAvailableFoodCookingType.toList(),
                 validator: (value) {
                   if (value == null || value.length == 0) {
                     return 'Select one or more food preparation type';
@@ -296,11 +387,18 @@ class _MenuForm2PageState extends State<MenuForm2Page> with AutomaticKeepAliveCl
                     return null;
                   }
                 },
-                initialSelectedFoodPreparationTypesList: [],
+                isSingleSelect: true,
+                maxSelection: 1,
+                initialSelectedFoodPreparationTypesList:
+                    _initialSelectedFoodPreparationType,
                 onSaved: (newValue) {
-                  var cacheMenuPreparationType =
-                      List<MenuPreparationType>.from(_selectedFoodPreparationType.map((e) => MenuPreparationType.fromMap(e.toMap())).toList());
-                  serviceLocator<MenuEntity>().storeAvailableFoodPreparationType = cacheMenuPreparationType.toList();
+                  var cacheMenuPreparationType = List<MenuPreparationType>.from(
+                      _selectedFoodPreparationType
+                          .map((e) => MenuPreparationType.fromMap(e.toMap()))
+                          .toList());
+                  serviceLocator<MenuEntity>()
+                          .storeAvailableFoodPreparationType =
+                      cacheMenuPreparationType.toList();
                   context.read<MenuBloc>().add(
                         PushMenuEntityData(
                           menuEntity: serviceLocator<MenuEntity>(),
@@ -314,10 +412,12 @@ class _MenuForm2PageState extends State<MenuForm2Page> with AutomaticKeepAliveCl
               Column(
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.stretch,
-                textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                textDirection:
+                    serviceLocator<LanguageController>().targetTextDirection,
                 children: [
                   Wrap(
-                    textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                    textDirection: serviceLocator<LanguageController>()
+                        .targetTextDirection,
                     children: [
                       Text(
                         'Taste type',
@@ -325,18 +425,21 @@ class _MenuForm2PageState extends State<MenuForm2Page> with AutomaticKeepAliveCl
                           fontWeight: FontWeight.w600,
                           fontSize: 20,
                         ),
-                        textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                        textDirection: serviceLocator<LanguageController>()
+                            .targetTextDirection,
                       ).translate(),
                     ],
                   ),
                   const AnimatedGap(4, duration: Duration(milliseconds: 500)),
                   Wrap(
-                    textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                    textDirection: serviceLocator<LanguageController>()
+                        .targetTextDirection,
                     children: [
                       Text(
                         'Select the food taste type of your menu',
                         style: context.labelMedium,
-                        textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                        textDirection: serviceLocator<LanguageController>()
+                            .targetTextDirection,
                       ).translate(),
                     ],
                   ),
@@ -366,7 +469,7 @@ class _MenuForm2PageState extends State<MenuForm2Page> with AutomaticKeepAliveCl
                     return null;
                   }
                 },
-                initialSelectedTasteTypeList: [],
+                initialSelectedTasteTypeList: _initialSelectedTasteType,
                 maxSelection: 1,
                 isSingleSelect: true,
                 onMaxSelected: (List<TasteType> selectedTasteTypes) {
@@ -389,10 +492,12 @@ class _MenuForm2PageState extends State<MenuForm2Page> with AutomaticKeepAliveCl
               Column(
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.stretch,
-                textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                textDirection:
+                    serviceLocator<LanguageController>().targetTextDirection,
                 children: [
                   Wrap(
-                    textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                    textDirection: serviceLocator<LanguageController>()
+                        .targetTextDirection,
                     children: [
                       Text(
                         'Taste level',
@@ -400,18 +505,21 @@ class _MenuForm2PageState extends State<MenuForm2Page> with AutomaticKeepAliveCl
                           fontWeight: FontWeight.w600,
                           fontSize: 20,
                         ),
-                        textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                        textDirection: serviceLocator<LanguageController>()
+                            .targetTextDirection,
                       ).translate(),
                     ],
                   ),
                   const AnimatedGap(4, duration: Duration(milliseconds: 500)),
                   Wrap(
-                    textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                    textDirection: serviceLocator<LanguageController>()
+                        .targetTextDirection,
                     children: [
                       Text(
                         'Select the taste level of your menu',
                         style: context.labelMedium,
-                        textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                        textDirection: serviceLocator<LanguageController>()
+                            .targetTextDirection,
                       ).translate(),
                     ],
                   ),
@@ -419,11 +527,14 @@ class _MenuForm2PageState extends State<MenuForm2Page> with AutomaticKeepAliveCl
               ),
               const AnimatedGap(6, duration: Duration(milliseconds: 500)),
               MultiSelectTasteLevelFormField(
-                key: const Key('store-menu-multiSelectAvailableTasteLevel-formfield'),
+                key: const Key(
+                    'store-menu-multiSelectAvailableTasteLevel-formfield'),
                 onSelectionChanged: (List<TasteLevel> selectedTasteLevel) {
-                  _selectedTasteLevel = List<TasteLevel>.from(selectedTasteLevel);
+                  _selectedTasteLevel =
+                      List<TasteLevel>.from(selectedTasteLevel);
                   setState(() {});
-                  serviceLocator<MenuEntity>().tasteType?.tasteLevel = List<TasteLevel>.from(_selectedTasteLevel.toList());
+                  serviceLocator<MenuEntity>().tasteType?.tasteLevel =
+                      List<TasteLevel>.from(_selectedTasteLevel.toList());
                   context.read<MenuBloc>().add(
                         PushMenuEntityData(
                           menuEntity: serviceLocator<MenuEntity>(),
@@ -440,9 +551,12 @@ class _MenuForm2PageState extends State<MenuForm2Page> with AutomaticKeepAliveCl
                     return null;
                   }
                 },
-                initialSelectedTasteLevelList: [],
+                maxSelection: 1,
+                isSingleSelect: true,
+                initialSelectedTasteLevelList: _initialSelectedTasteLevel,
                 onSaved: (newValue) {
-                  serviceLocator<MenuEntity>().tasteType?.tasteLevel = List<TasteLevel>.from(_selectedTasteLevel.toList());
+                  serviceLocator<MenuEntity>().tasteType?.tasteLevel =
+                      List<TasteLevel>.from(_selectedTasteLevel.toList());
                   context.read<MenuBloc>().add(
                         PushMenuEntityData(
                           menuEntity: serviceLocator<MenuEntity>(),
@@ -456,10 +570,12 @@ class _MenuForm2PageState extends State<MenuForm2Page> with AutomaticKeepAliveCl
               Column(
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.stretch,
-                textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                textDirection:
+                    serviceLocator<LanguageController>().targetTextDirection,
                 children: [
                   Wrap(
-                    textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                    textDirection: serviceLocator<LanguageController>()
+                        .targetTextDirection,
                     children: [
                       Text(
                         'Portion size of menu',
@@ -467,18 +583,21 @@ class _MenuForm2PageState extends State<MenuForm2Page> with AutomaticKeepAliveCl
                           fontWeight: FontWeight.w600,
                           fontSize: 20,
                         ),
-                        textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                        textDirection: serviceLocator<LanguageController>()
+                            .targetTextDirection,
                       ).translate(),
                     ],
                   ),
                   const AnimatedGap(4, duration: Duration(milliseconds: 500)),
                   Wrap(
-                    textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                    textDirection: serviceLocator<LanguageController>()
+                        .targetTextDirection,
                     children: [
                       Text(
                         'Select the menu serving size or quantity availability',
                         style: context.labelMedium,
-                        textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                        textDirection: serviceLocator<LanguageController>()
+                            .targetTextDirection,
                       ).translate(),
                     ],
                   ),
@@ -486,12 +605,15 @@ class _MenuForm2PageState extends State<MenuForm2Page> with AutomaticKeepAliveCl
               ),
               const AnimatedGap(6, duration: Duration(milliseconds: 500)),
               MultiSelectMenuPortionFormField(
-                key: const Key('store-menu-multiSelectAvailableMenuPortions-formfield'),
+                key: const Key(
+                    'store-menu-multiSelectAvailableMenuPortions-formfield'),
                 onSelectionChanged: (List<MenuPortion> selectedMenuPortions) {
-                  _selectedMenuPortions = List<MenuPortion>.from(selectedMenuPortions);
+                  _selectedMenuPortions =
+                      List<MenuPortion>.from(selectedMenuPortions);
                   setState(() {});
                   if (!_hasCustomMenuPortionSize) {
-                    serviceLocator<MenuEntity>().menuPortions = List<MenuPortion>.from(_selectedMenuPortions.toList());
+                    serviceLocator<MenuEntity>().menuPortions =
+                        List<MenuPortion>.from(_selectedMenuPortions.toList());
                     serviceLocator<MenuEntity>().hasCustomPortion = false;
                     context.read<MenuBloc>().add(
                           PushMenuEntityData(
@@ -513,10 +635,11 @@ class _MenuForm2PageState extends State<MenuForm2Page> with AutomaticKeepAliveCl
                   }
                   return null;
                 },
-                initialSelectedMenuPortionList: [],
+                initialSelectedMenuPortionList: _initialSelectedMenuPortions,
                 onSaved: (newValue) {
                   if (!_hasCustomMenuPortionSize) {
-                    serviceLocator<MenuEntity>().menuPortions = List<MenuPortion>.from(_selectedMenuPortions.toList());
+                    serviceLocator<MenuEntity>().menuPortions =
+                        List<MenuPortion>.from(_selectedMenuPortions.toList());
                     serviceLocator<MenuEntity>().hasCustomPortion = false;
                     context.read<MenuBloc>().add(
                           PushMenuEntityData(
@@ -529,7 +652,8 @@ class _MenuForm2PageState extends State<MenuForm2Page> with AutomaticKeepAliveCl
                 },
               ),
               Card(
-                margin: const EdgeInsetsDirectional.only(start: 0, end: 0, top: 4, bottom: 4),
+                margin: const EdgeInsetsDirectional.only(
+                    start: 0, end: 0, top: 4, bottom: 4),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadiusDirectional.circular(10),
                 ),
@@ -537,7 +661,8 @@ class _MenuForm2PageState extends State<MenuForm2Page> with AutomaticKeepAliveCl
                   mainAxisSize: MainAxisSize.min,
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.stretch,
-                  textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                  textDirection:
+                      serviceLocator<LanguageController>().targetTextDirection,
                   children: [
                     SwitchListTile(
                       onChanged: (value) {
@@ -550,43 +675,57 @@ class _MenuForm2PageState extends State<MenuForm2Page> with AutomaticKeepAliveCl
                       value: _hasCustomMenuPortionSize,
                       title: Text(
                         'Select your own portion size',
-                        style: context.titleMedium!.copyWith(fontWeight: FontWeight.w500),
-                        textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                        style: context.titleMedium!
+                            .copyWith(fontWeight: FontWeight.w500),
+                        textDirection: serviceLocator<LanguageController>()
+                            .targetTextDirection,
                       ).translate(),
                       isThreeLine: false,
                       dense: true,
                       controlAffinity: ListTileControlAffinity.leading,
-                      visualDensity: const VisualDensity(horizontal: -4, vertical: 0),
+                      visualDensity:
+                          const VisualDensity(horizontal: -4, vertical: 0),
                     ),
                     AnimatedCrossFade(
                       firstChild: const SizedBox.shrink(),
                       secondChild: Padding(
-                        padding: const EdgeInsetsDirectional.fromSTEB(8, 2, 8, 12),
+                        padding:
+                            const EdgeInsetsDirectional.fromSTEB(8, 2, 8, 12),
                         child: Column(
                           mainAxisSize: MainAxisSize.min,
                           crossAxisAlignment: CrossAxisAlignment.stretch,
-                          textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                          textDirection: serviceLocator<LanguageController>()
+                              .targetTextDirection,
                           children: [
-                            const AnimatedGap(8, duration: Duration(milliseconds: 500)),
+                            const AnimatedGap(8,
+                                duration: Duration(milliseconds: 500)),
                             IntrinsicHeight(
                               child: Row(
                                 mainAxisSize: MainAxisSize.min,
                                 crossAxisAlignment: CrossAxisAlignment.center,
-                                textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                textDirection:
+                                    serviceLocator<LanguageController>()
+                                        .targetTextDirection,
                                 children: [
                                   Expanded(
                                     child: StoreTextFieldWidget(
                                       controller: _menuPortionNameController,
-                                      textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                      textDirection:
+                                          serviceLocator<LanguageController>()
+                                              .targetTextDirection,
                                       focusNode: menuForm2FocusList[0],
-                                      onFieldSubmitted: (_) => fieldFocusChange(context, menuForm2FocusList[0], menuForm2FocusList[1]),
+                                      onFieldSubmitted: (_) => fieldFocusChange(
+                                          context,
+                                          menuForm2FocusList[0],
+                                          menuForm2FocusList[1]),
                                       textInputAction: TextInputAction.next,
                                       keyboardType: TextInputType.text,
                                       decoration: InputDecoration(
                                         labelText: 'Your Portion name',
                                         hintText: 'Enter your portion name',
                                         border: OutlineInputBorder(
-                                          borderRadius: BorderRadius.circular(10),
+                                          borderRadius:
+                                              BorderRadius.circular(10),
                                         ),
                                         isDense: true,
                                       ),
@@ -602,26 +741,41 @@ class _MenuForm2PageState extends State<MenuForm2Page> with AutomaticKeepAliveCl
                                       },
                                       onChanged: (value) {
                                         if (_hasCustomMenuPortionSize) {
-                                          serviceLocator<MenuEntity>().customPortion?.title = value;
-                                          serviceLocator<MenuEntity>().hasCustomPortion = true;
+                                          serviceLocator<MenuEntity>()
+                                              .customPortion
+                                              ?.title = value;
+                                          serviceLocator<MenuEntity>()
+                                              .hasCustomPortion = true;
                                           context.read<MenuBloc>().add(
                                                 PushMenuEntityData(
-                                                  menuEntity: serviceLocator<MenuEntity>(),
-                                                  menuFormStage: MenuFormStage.form2,
-                                                  menuEntityStatus: MenuEntityStatus.push,
+                                                  menuEntity: serviceLocator<
+                                                      MenuEntity>(),
+                                                  menuFormStage:
+                                                      MenuFormStage.form2,
+                                                  menuEntityStatus:
+                                                      MenuEntityStatus.push,
                                                 ),
                                               );
                                         }
                                       },
                                       onSaved: (newValue) {
                                         if (_hasCustomMenuPortionSize) {
-                                          serviceLocator<MenuEntity>().customPortion?.title = _menuPortionNameController.value.text.trim();
-                                          serviceLocator<MenuEntity>().hasCustomPortion = true;
+                                          serviceLocator<MenuEntity>()
+                                                  .customPortion
+                                                  ?.title =
+                                              _menuPortionNameController
+                                                  .value.text
+                                                  .trim();
+                                          serviceLocator<MenuEntity>()
+                                              .hasCustomPortion = true;
                                           context.read<MenuBloc>().add(
                                                 PushMenuEntityData(
-                                                  menuEntity: serviceLocator<MenuEntity>(),
-                                                  menuFormStage: MenuFormStage.form2,
-                                                  menuEntityStatus: MenuEntityStatus.push,
+                                                  menuEntity: serviceLocator<
+                                                      MenuEntity>(),
+                                                  menuFormStage:
+                                                      MenuFormStage.form2,
+                                                  menuEntityStatus:
+                                                      MenuEntityStatus.push,
                                                 ),
                                               );
                                         }
@@ -632,27 +786,37 @@ class _MenuForm2PageState extends State<MenuForm2Page> with AutomaticKeepAliveCl
                                 ],
                               ),
                             ),
-                            const AnimatedGap(12, duration: Duration(milliseconds: 500)),
+                            const AnimatedGap(12,
+                                duration: Duration(milliseconds: 500)),
                             IntrinsicHeight(
                               child: Row(
                                 mainAxisSize: MainAxisSize.min,
                                 crossAxisAlignment: CrossAxisAlignment.center,
-                                textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                textDirection:
+                                    serviceLocator<LanguageController>()
+                                        .targetTextDirection,
                                 children: [
                                   Expanded(
                                     flex: 2,
                                     child: StoreTextFieldWidget(
                                       controller: _menuPortionValueController,
-                                      textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                      textDirection:
+                                          serviceLocator<LanguageController>()
+                                              .targetTextDirection,
                                       focusNode: menuForm2FocusList[1],
                                       textInputAction: TextInputAction.next,
-                                      onFieldSubmitted: (_) => fieldFocusChange(context, menuForm2FocusList[1], menuForm2FocusList[2]),
-                                      keyboardType: const TextInputType.numberWithOptions(),
+                                      onFieldSubmitted: (_) => fieldFocusChange(
+                                          context,
+                                          menuForm2FocusList[1],
+                                          menuForm2FocusList[2]),
+                                      keyboardType: const TextInputType
+                                          .numberWithOptions(),
                                       decoration: InputDecoration(
                                         labelText: 'Size or Portion value',
                                         hintText: 'Enter size or portion value',
                                         border: OutlineInputBorder(
-                                          borderRadius: BorderRadius.circular(10),
+                                          borderRadius:
+                                              BorderRadius.circular(10),
                                         ),
                                         isDense: true,
                                       ),
@@ -668,48 +832,72 @@ class _MenuForm2PageState extends State<MenuForm2Page> with AutomaticKeepAliveCl
                                       },
                                       onChanged: (value) {
                                         if (_hasCustomMenuPortionSize) {
-                                          serviceLocator<MenuEntity>().customPortion?.quantity = double.tryParse(value) ?? 0.0;
-                                          serviceLocator<MenuEntity>().hasCustomPortion = true;
+                                          serviceLocator<MenuEntity>()
+                                                  .customPortion
+                                                  ?.quantity =
+                                              double.tryParse(value) ?? 0.0;
+                                          serviceLocator<MenuEntity>()
+                                              .hasCustomPortion = true;
                                           context.read<MenuBloc>().add(
                                                 PushMenuEntityData(
-                                                  menuEntity: serviceLocator<MenuEntity>(),
-                                                  menuFormStage: MenuFormStage.form2,
-                                                  menuEntityStatus: MenuEntityStatus.push,
+                                                  menuEntity: serviceLocator<
+                                                      MenuEntity>(),
+                                                  menuFormStage:
+                                                      MenuFormStage.form2,
+                                                  menuEntityStatus:
+                                                      MenuEntityStatus.push,
                                                 ),
                                               );
                                         }
                                       },
                                       onSaved: (newValue) {
                                         if (_hasCustomMenuPortionSize) {
-                                          serviceLocator<MenuEntity>().customPortion?.quantity =
-                                              double.tryParse(_menuPortionValueController.value.text.trim()) ?? 0.0;
-                                          serviceLocator<MenuEntity>().hasCustomPortion = true;
+                                          serviceLocator<MenuEntity>()
+                                              .customPortion
+                                              ?.quantity = double.tryParse(
+                                                  _menuPortionValueController
+                                                      .value.text
+                                                      .trim()) ??
+                                              0.0;
+                                          serviceLocator<MenuEntity>()
+                                              .hasCustomPortion = true;
                                           context.read<MenuBloc>().add(
                                                 PushMenuEntityData(
-                                                  menuEntity: serviceLocator<MenuEntity>(),
-                                                  menuFormStage: MenuFormStage.form2,
-                                                  menuEntityStatus: MenuEntityStatus.push,
+                                                  menuEntity: serviceLocator<
+                                                      MenuEntity>(),
+                                                  menuFormStage:
+                                                      MenuFormStage.form2,
+                                                  menuEntityStatus:
+                                                      MenuEntityStatus.push,
                                                 ),
                                               );
                                         }
                                       },
                                     ),
                                   ),
-                                  const AnimatedGap(18, duration: Duration(milliseconds: 500)),
+                                  const AnimatedGap(18,
+                                      duration: Duration(milliseconds: 500)),
                                   Expanded(
                                     child: StoreTextFieldWidget(
                                       controller: _menuPortionUnitController,
-                                      textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                      textDirection:
+                                          serviceLocator<LanguageController>()
+                                              .targetTextDirection,
                                       focusNode: menuForm2FocusList[2],
                                       textInputAction: TextInputAction.next,
-                                      onFieldSubmitted: (_) => fieldFocusChange(context, menuForm2FocusList[2], menuForm2FocusList[3]),
+                                      onFieldSubmitted: (_) => fieldFocusChange(
+                                          context,
+                                          menuForm2FocusList[2],
+                                          menuForm2FocusList[3]),
                                       keyboardType: TextInputType.text,
-                                      textCapitalization: TextCapitalization.words,
+                                      textCapitalization:
+                                          TextCapitalization.words,
                                       decoration: InputDecoration(
                                         labelText: 'Unit',
                                         hintText: 'Enter unit of menu',
                                         border: OutlineInputBorder(
-                                          borderRadius: BorderRadius.circular(10),
+                                          borderRadius:
+                                              BorderRadius.circular(10),
                                         ),
                                         isDense: true,
                                       ),
@@ -725,26 +913,41 @@ class _MenuForm2PageState extends State<MenuForm2Page> with AutomaticKeepAliveCl
                                       },
                                       onChanged: (value) {
                                         if (_hasCustomMenuPortionSize) {
-                                          serviceLocator<MenuEntity>().customPortion?.unit = value;
-                                          serviceLocator<MenuEntity>().hasCustomPortion = true;
+                                          serviceLocator<MenuEntity>()
+                                              .customPortion
+                                              ?.unit = value;
+                                          serviceLocator<MenuEntity>()
+                                              .hasCustomPortion = true;
                                           context.read<MenuBloc>().add(
                                                 PushMenuEntityData(
-                                                  menuEntity: serviceLocator<MenuEntity>(),
-                                                  menuFormStage: MenuFormStage.form2,
-                                                  menuEntityStatus: MenuEntityStatus.push,
+                                                  menuEntity: serviceLocator<
+                                                      MenuEntity>(),
+                                                  menuFormStage:
+                                                      MenuFormStage.form2,
+                                                  menuEntityStatus:
+                                                      MenuEntityStatus.push,
                                                 ),
                                               );
                                         }
                                       },
                                       onSaved: (newValue) {
                                         if (_hasCustomMenuPortionSize) {
-                                          serviceLocator<MenuEntity>().customPortion?.unit = _menuPortionUnitController.value.text.trim();
-                                          serviceLocator<MenuEntity>().hasCustomPortion = true;
+                                          serviceLocator<MenuEntity>()
+                                                  .customPortion
+                                                  ?.unit =
+                                              _menuPortionUnitController
+                                                  .value.text
+                                                  .trim();
+                                          serviceLocator<MenuEntity>()
+                                              .hasCustomPortion = true;
                                           context.read<MenuBloc>().add(
                                                 PushMenuEntityData(
-                                                  menuEntity: serviceLocator<MenuEntity>(),
-                                                  menuFormStage: MenuFormStage.form2,
-                                                  menuEntityStatus: MenuEntityStatus.push,
+                                                  menuEntity: serviceLocator<
+                                                      MenuEntity>(),
+                                                  menuFormStage:
+                                                      MenuFormStage.form2,
+                                                  menuEntityStatus:
+                                                      MenuEntityStatus.push,
                                                 ),
                                               );
                                         }
@@ -754,25 +957,33 @@ class _MenuForm2PageState extends State<MenuForm2Page> with AutomaticKeepAliveCl
                                 ],
                               ),
                             ),
-                            const AnimatedGap(12, duration: Duration(milliseconds: 500)),
+                            const AnimatedGap(12,
+                                duration: Duration(milliseconds: 500)),
                             IntrinsicHeight(
                               child: Row(
                                 mainAxisSize: MainAxisSize.min,
                                 crossAxisAlignment: CrossAxisAlignment.center,
-                                textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                textDirection:
+                                    serviceLocator<LanguageController>()
+                                        .targetTextDirection,
                                 children: [
                                   Expanded(
                                     child: StoreTextFieldWidget(
                                       controller: _menuPortionSizeController,
-                                      textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                      textDirection:
+                                          serviceLocator<LanguageController>()
+                                              .targetTextDirection,
                                       focusNode: menuForm2FocusList[3],
                                       textInputAction: TextInputAction.done,
-                                      keyboardType: const TextInputType.numberWithOptions(),
+                                      keyboardType: const TextInputType
+                                          .numberWithOptions(),
                                       decoration: InputDecoration(
                                         labelText: 'Maximum Serving Persons',
-                                        hintText: 'Enter maximum serving persons',
+                                        hintText:
+                                            'Enter maximum serving persons',
                                         border: OutlineInputBorder(
-                                          borderRadius: BorderRadius.circular(10),
+                                          borderRadius:
+                                              BorderRadius.circular(10),
                                         ),
                                         isDense: true,
                                       ),
@@ -788,27 +999,43 @@ class _MenuForm2PageState extends State<MenuForm2Page> with AutomaticKeepAliveCl
                                       },
                                       onChanged: (value) {
                                         if (_hasCustomMenuPortionSize) {
-                                          serviceLocator<MenuEntity>().customPortion?.maxServingPerson = int.tryParse(value) ?? 0;
-                                          serviceLocator<MenuEntity>().hasCustomPortion = true;
+                                          serviceLocator<MenuEntity>()
+                                                  .customPortion
+                                                  ?.maxServingPerson =
+                                              int.tryParse(value) ?? 0;
+                                          serviceLocator<MenuEntity>()
+                                              .hasCustomPortion = true;
                                           context.read<MenuBloc>().add(
                                                 PushMenuEntityData(
-                                                  menuEntity: serviceLocator<MenuEntity>(),
-                                                  menuFormStage: MenuFormStage.form2,
-                                                  menuEntityStatus: MenuEntityStatus.push,
+                                                  menuEntity: serviceLocator<
+                                                      MenuEntity>(),
+                                                  menuFormStage:
+                                                      MenuFormStage.form2,
+                                                  menuEntityStatus:
+                                                      MenuEntityStatus.push,
                                                 ),
                                               );
                                         }
                                       },
                                       onSaved: (newValue) {
                                         if (_hasCustomMenuPortionSize) {
-                                          serviceLocator<MenuEntity>().customPortion?.maxServingPerson =
-                                              int.tryParse(_menuPortionSizeController.value.text.trim()) ?? 0;
-                                          serviceLocator<MenuEntity>().hasCustomPortion = true;
+                                          serviceLocator<MenuEntity>()
+                                              .customPortion
+                                              ?.maxServingPerson = int.tryParse(
+                                                  _menuPortionSizeController
+                                                      .value.text
+                                                      .trim()) ??
+                                              0;
+                                          serviceLocator<MenuEntity>()
+                                              .hasCustomPortion = true;
                                           context.read<MenuBloc>().add(
                                                 PushMenuEntityData(
-                                                  menuEntity: serviceLocator<MenuEntity>(),
-                                                  menuFormStage: MenuFormStage.form2,
-                                                  menuEntityStatus: MenuEntityStatus.push,
+                                                  menuEntity: serviceLocator<
+                                                      MenuEntity>(),
+                                                  menuFormStage:
+                                                      MenuFormStage.form2,
+                                                  menuEntityStatus:
+                                                      MenuEntityStatus.push,
                                                 ),
                                               );
                                         }
@@ -822,7 +1049,9 @@ class _MenuForm2PageState extends State<MenuForm2Page> with AutomaticKeepAliveCl
                           ],
                         ),
                       ),
-                      crossFadeState: (_hasCustomMenuPortionSize == true) ? CrossFadeState.showSecond : CrossFadeState.showFirst,
+                      crossFadeState: (_hasCustomMenuPortionSize == true)
+                          ? CrossFadeState.showSecond
+                          : CrossFadeState.showFirst,
                       duration: const Duration(milliseconds: 500),
                     ),
                   ],
@@ -832,10 +1061,12 @@ class _MenuForm2PageState extends State<MenuForm2Page> with AutomaticKeepAliveCl
               Column(
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.stretch,
-                textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                textDirection:
+                    serviceLocator<LanguageController>().targetTextDirection,
                 children: [
                   Wrap(
-                    textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                    textDirection: serviceLocator<LanguageController>()
+                        .targetTextDirection,
                     children: [
                       Text(
                         'Extras',
@@ -843,31 +1074,38 @@ class _MenuForm2PageState extends State<MenuForm2Page> with AutomaticKeepAliveCl
                           fontWeight: FontWeight.w600,
                           fontSize: 20,
                         ),
-                        textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                        textDirection: serviceLocator<LanguageController>()
+                            .targetTextDirection,
                       ).translate(),
                     ],
                   ),
                   const AnimatedGap(2, duration: Duration(milliseconds: 500)),
                   Wrap(
-                    textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                    textDirection: serviceLocator<LanguageController>()
+                        .targetTextDirection,
                     children: [
                       Text(
                         'Add customization options add to your menu item',
                         style: context.labelMedium,
-                        textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                        textDirection: serviceLocator<LanguageController>()
+                            .targetTextDirection,
                       ).translate(),
                     ],
                   ),
                   const AnimatedGap(8, duration: Duration(milliseconds: 500)),
                   AnimatedCrossFade(
                     duration: const Duration(milliseconds: 500),
-                    crossFadeState: (_selectedAddons.isNotEmpty) ? CrossFadeState.showFirst : CrossFadeState.showSecond,
+                    crossFadeState: (_selectedAddons.isNotEmpty)
+                        ? CrossFadeState.showFirst
+                        : CrossFadeState.showSecond,
                     firstChild: MultiSelectAddonsFormField(
-                      key: const Key('store-menu-multiSelectAvailableMenuAddons-formfield'),
+                      key: const Key(
+                          'store-menu-multiSelectAvailableMenuAddons-formfield'),
                       onSelectionChanged: (List<Addons> selectedAddons) {
                         _selectedAddons = List<Addons>.from(selectedAddons);
                         setState(() {});
-                        serviceLocator<MenuEntity>().addons = _selectedAddons.toList();
+                        serviceLocator<MenuEntity>().addons =
+                            _selectedAddons.toList();
                         context.read<MenuBloc>().add(
                               PushMenuEntityData(
                                 menuEntity: serviceLocator<MenuEntity>(),
@@ -884,9 +1122,10 @@ class _MenuForm2PageState extends State<MenuForm2Page> with AutomaticKeepAliveCl
                       return null;
                     }
                   },*/
-                      initialSelectedAddonsList: [],
+                      initialSelectedAddonsList: _initialSelectedAddons,
                       onSaved: (newValue) {
-                        serviceLocator<MenuEntity>().addons = _selectedAddons.toList();
+                        serviceLocator<MenuEntity>().addons =
+                            _selectedAddons.toList();
                         context.read<MenuBloc>().add(
                               PushMenuEntityData(
                                 menuEntity: serviceLocator<MenuEntity>(),
@@ -918,10 +1157,12 @@ class _MenuForm2PageState extends State<MenuForm2Page> with AutomaticKeepAliveCl
                       style: const TextStyle(
                         color: Color.fromRGBO(42, 45, 50, 1.0),
                       ),
-                      textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                      textDirection: serviceLocator<LanguageController>()
+                          .targetTextDirection,
                     ).translate(),
                     onPressed: () async {
-                      final List<Addons>? addons = await context.push<List<Addons>>(Routes.ALL_ADDONS_PAGE);
+                      final List<Addons>? addons = await context
+                          .push<List<Addons>>(Routes.ALL_ADDONS_PAGE);
                       if (addons != null && addons.isNotEmpty) {
                         setState(() {
                           _selectedAddons = List<Addons>.from(addons.toList());
@@ -946,12 +1187,15 @@ class _MenuForm2PageState extends State<MenuForm2Page> with AutomaticKeepAliveCl
         InputChip(
           label: Text(
             '${item.title} ${item.unit}',
-            textDirection: serviceLocator<LanguageController>().targetTextDirection,
+            textDirection:
+                serviceLocator<LanguageController>().targetTextDirection,
           ),
           selected: _selectedAddons.contains(item),
           onSelected: (selected) {
             setState(() {
-              _selectedAddons.contains(item) ? _selectedAddons.remove(item) : _selectedAddons.add(item);
+              _selectedAddons.contains(item)
+                  ? _selectedAddons.remove(item)
+                  : _selectedAddons.add(item);
             });
           },
         ),

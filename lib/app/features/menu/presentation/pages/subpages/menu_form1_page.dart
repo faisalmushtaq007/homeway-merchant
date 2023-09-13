@@ -38,6 +38,16 @@ class _MenuForm1PageState extends State<MenuForm1Page> with AutomaticKeepAliveCl
       FocusNode(),
       FocusNode(),
     ];
+    initData();
+  }
+
+  void initData(){
+    if(!widget.haveNewMenu && widget.menuEntity.isNotNull) {
+      menuNameTextEditingController.text =widget.menuEntity?.menuName??'';
+      menuDescriptionTextEditingController.text =widget.menuEntity?.menuDescription??'';
+      menuCategoryTextEditingController.text =widget.menuEntity?.menuCategories.first.title??'';
+      menuSubCategoryTextEditingController.text =widget.menuEntity?.menuCategories.first.subCategory.first.title??'';
+    }
   }
 
   @override
