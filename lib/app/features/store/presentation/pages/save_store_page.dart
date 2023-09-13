@@ -282,24 +282,12 @@ class _SaveStorePageState extends State<SaveStorePage> {
       menuSubCategoryTextEditingController.text = '';
       menuCategoryTextEditingController.text = mainCategory.title ?? '';
       selectedCategory = mainCategory;
-      if (subCategory.isNotNull) {
+      if (subCategory!=null) {
         selectedSubCategory = subCategory;
         menuSubCategoryTextEditingController.text = subCategory?.title ?? '';
+        selectedCategory?.subCategory=<Category>[subCategory];
       }
-      final copyCategory = mainCategory.copyWith(subCategory: subCategory.isNotNull ? <Category>[subCategory!] : <Category>[]);
-      final cacheMenuEntity = serviceLocator<MenuEntity>().copyWith(
-        menuCategories: [copyCategory],
-      );
-
-      context.read<MenuBloc>().add(
-        PushMenuEntityData(
-          menuEntity: serviceLocator<MenuEntity>().copyWith(
-            menuCategories: [copyCategory],
-          ),
-          menuFormStage: MenuFormStage.form1,
-          menuEntityStatus: MenuEntityStatus.push,
-        ),
-      );
+      final copyCategory = mainCategory.copyWith(subCategory: subCategory!=null ? <Category>[subCategory!] : <Category>[]);
     });
     return;
   }
@@ -610,15 +598,6 @@ class _SaveStorePageState extends State<SaveStorePage> {
                                           updateCategoryAndSubCategory(mainCategory, subCategory);
                                         }
                                         return;
-                                      },
-                                      onChanged: (value) {
-
-                                      },
-                                      onSaved: (newValue) {
-
-                                      },
-                                      onEditingComplete: () {
-
                                       },
                                     ),
                                     const AnimatedGap(12, duration: Duration(milliseconds: 500)),
@@ -1247,6 +1226,8 @@ class _SaveStorePageState extends State<SaveStorePage> {
                                                 : [],
                                             storeWorkingDays: _selectedWorkingDays.toList(),
                                             hasNewStore: widget.haveNewStore,
+                                            storeCategories: selectedCategory!=null?[selectedCategory!]:[],
+                                            phoneNumberWithoutDialCode: initialPhoneNumberValue.nsn,
                                           );
                                           StoreEntity storeEntity;
                                           if (!widget.haveNewStore && widget.storeEntity != null && widget.currentIndex != -1) {
