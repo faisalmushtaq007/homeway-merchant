@@ -324,7 +324,7 @@ class MenuBloc extends Bloc<MenuEvent, MenuState> {
       //await Future.delayed(const Duration(milliseconds: 500), () {});
       debugPrint('MenuBloc ${DateTime.now().hour}:${DateTime.now().minute}--> ${cacheMenuEntity.toMap()}');
       debugPrint('=======>');*/
-      appLog.i('PushMenuEntityData ${DateTime.now().hour}:${DateTime.now().minute}--> ${event.menuEntity.toMap()}');
+      appLog.d('PushMenuEntityData ${DateTime.now().hour}:${DateTime.now().minute}--> ${event.menuEntity.toMap()}');
       emit(
         PushMenuEntityDataState(
           menuEntity: event.menuEntity ?? serviceLocator<MenuEntity>(),

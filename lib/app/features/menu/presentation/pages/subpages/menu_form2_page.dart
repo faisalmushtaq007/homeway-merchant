@@ -151,7 +151,7 @@ class _MenuForm2PageState extends State<MenuForm2Page>
         _menuPortionSizeController.text = widget.menuEntity!.customPortion!.maxServingPerson.toString()??'';
         _menuPortionUnitController.text = widget.menuEntity!.customPortion!.unit??'';
       }
-      
+
       // Init data of selected addons
       _initialSelectedAddons=List<Addons>.from(widget.menuEntity!.addons);
       _selectedAddons=List<Addons>.from(widget.menuEntity!.addons);

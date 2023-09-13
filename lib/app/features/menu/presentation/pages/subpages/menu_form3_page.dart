@@ -15,6 +15,7 @@ class _MenuForm3PageState extends State<MenuForm3Page> with AutomaticKeepAliveCl
 
   List<StoreWorkingDayAndTime> _menuAvailableDays = [];
   List<StoreWorkingDayAndTime> _selectedWorkingDays = [];
+  List<StoreWorkingDayAndTime> _initSelectedWorkingDays = [];
   final TextEditingController _menuOpeningTimeController = TextEditingController();
   final TextEditingController _menuClosingTimeController = TextEditingController();
   late final MaskTextInputFormatter maximumDeliveryTimeFormatter;
@@ -47,9 +48,32 @@ class _MenuForm3PageState extends State<MenuForm3Page> with AutomaticKeepAliveCl
     _menuAvailableDays = [];
     _selectedWorkingDays = [];
     _menuAvailablePreparationTimings = [];
+    _initSelectedWorkingDays = [];
     maximumDeliveryTimeFormatter = MaskTextInputFormatter(mask: '##', filter: {'#': RegExp(r'[0-9]')}, type: MaskAutoCompletionType.lazy);
     initializeMenuWorkingDays();
     initializeMenuAvailableTimings();
+    initData();
+  }
+
+  void initData(){
+    if(!widget.haveNewMenu && widget.menuEntity.isNotNull){
+      // Init data of days
+      //var cacheMenuAvailableDayAndTime = List<MenuAvailableDayAndTime>.from(widget.menuEntity!.menuAvailableInDays.toList().map((e) => MenuAvailableDayAndTime.fromMap(e.toMap())).toList());
+      _initSelectedWorkingDays = List<StoreWorkingDayAndTime>.from(widget.menuEntity!.menuAvailableInDays.toList());
+      _selectedWorkingDays=List<StoreWorkingDayAndTime>.from(widget.menuEntity!.menuAvailableInDays.toList());
+
+      // Init data of working time
+      _menuOpeningTimeController.text=widget.menuEntity!.menuAvailableFromTime;
+      _menuClosingTimeController.text=widget.menuEntity!.menuAvailableToTime;
+
+      // Init data of menu preparation time
+      _menuMaxPreparationTimeController.text=widget.menuEntity!.menuMaxPreparationTime;
+      _menuMinPreparationTimeController.text=widget.menuEntity!.menuMinPreparationTime;
+
+      // Init data of stocks
+      _menuMinStockQuantityController.text=widget.menuEntity!.minStockAvailable.toString();
+      _menuMaxStockQuantityController.text=widget.menuEntity!.maxStockAvailable.toString();
+    }
   }
 
   @override
@@ -147,7 +171,6 @@ class _MenuForm3PageState extends State<MenuForm3Page> with AutomaticKeepAliveCl
               MultiSelectAvailableWorkingDaysFormField(
                 onSelectionChanged: (List<StoreWorkingDayAndTime> selectedWorkingDays) {
                   _selectedWorkingDays = List<StoreWorkingDayAndTime>.from(selectedWorkingDays);
-                  appLog.d('Winner ${_selectedWorkingDays.length}');
                   var cacheMenuAvailableDayAndTime =
                       List<MenuAvailableDayAndTime>.from(_selectedWorkingDays.map((e) => MenuAvailableDayAndTime.fromMap(e.toMap())).toList());
                   serviceLocator<MenuEntity>().menuAvailableInDays = cacheMenuAvailableDayAndTime.toList();

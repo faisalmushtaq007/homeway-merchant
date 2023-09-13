@@ -133,28 +133,18 @@ class _MenuForm1PageState extends State<MenuForm1Page> with AutomaticKeepAliveCl
       menuSubCategoryTextEditingController.text = '';
       menuCategoryTextEditingController.text = mainCategory.title ?? '';
       selectedCategory = mainCategory;
-      if (subCategory.isNotNull) {
+      if (subCategory!=null) {
         selectedSubCategory = subCategory;
-        menuSubCategoryTextEditingController.text = subCategory?.title ?? '';
+        menuSubCategoryTextEditingController.text = subCategory.title ?? '';
       }
-      final copyCategory = mainCategory.copyWith(subCategory: subCategory.isNotNull ? <Category>[subCategory!] : <Category>[]);
+      final copyCategory = mainCategory.copyWith(subCategory: subCategory!=null ? <Category>[subCategory] : <Category>[]);
       final cacheMenuEntity = serviceLocator<MenuEntity>().copyWith(
         menuCategories: [copyCategory],
       );
-      cacheMenuEntity.menuCategories.forEach((element) {
-        appLog.d('Menu ${element.title}');
-        if (element.subCategory.isNotNullOrEmpty) {
-          element.subCategory.forEach((subElement) {
-            appLog.d('Sub Menu ${subElement.title}');
-          });
-        }
-      });
-
+      serviceLocator<MenuEntity>().menuCategories=[copyCategory];
       context.read<MenuBloc>().add(
             PushMenuEntityData(
-              menuEntity: serviceLocator<MenuEntity>().copyWith(
-                menuCategories: [copyCategory],
-              ),
+              menuEntity: serviceLocator<MenuEntity>(),
               menuFormStage: MenuFormStage.form1,
               menuEntityStatus: MenuEntityStatus.push,
             ),
@@ -409,16 +399,6 @@ class _MenuForm1PageState extends State<MenuForm1Page> with AutomaticKeepAliveCl
                         ),
                       );
                 },
-                onEditingComplete: () {
-                  serviceLocator<MenuEntity>().menuDescription = menuDescriptionTextEditingController.value.text.trim();
-                  context.read<MenuBloc>().add(
-                        PushMenuEntityData(
-                          menuEntity: serviceLocator<MenuEntity>(),
-                          menuFormStage: MenuFormStage.form1,
-                          menuEntityStatus: MenuEntityStatus.push,
-                        ),
-                      );
-                },
                 maxLines: 5,
                 decoration: InputDecoration(
                   labelText: 'Menu description',
@@ -435,12 +415,10 @@ class _MenuForm1PageState extends State<MenuForm1Page> with AutomaticKeepAliveCl
                   return null;
                 },
                 onSaved: (newValue) {
-                  final cacheMenuEntity = serviceLocator<MenuEntity>().copyWith(
-                    menuDescription: menuDescriptionTextEditingController.value.text.trim(),
-                  );
+                  serviceLocator<MenuEntity>().menuDescription= menuDescriptionTextEditingController.value.text.trim();
                   context.read<MenuBloc>().add(
                         PushMenuEntityData(
-                          menuEntity: cacheMenuEntity,
+                          menuEntity: serviceLocator<MenuEntity>(),
                           menuFormStage: MenuFormStage.form1,
                           menuEntityStatus: MenuEntityStatus.push,
                         ),
