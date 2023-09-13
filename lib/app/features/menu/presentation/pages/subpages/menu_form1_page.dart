@@ -1,7 +1,10 @@
 part of 'package:homemakers_merchant/app/features/menu/index.dart';
 
 class MenuForm1Page extends StatefulWidget {
-  const MenuForm1Page({super.key});
+  const MenuForm1Page({super.key,this.haveNewMenu = true,
+    this.menuEntity,});
+  final bool haveNewMenu;
+  final MenuEntity? menuEntity;
 
   @override
   State<MenuForm1Page> createState() => _MenuForm1PageState();
@@ -351,6 +354,7 @@ class _MenuForm1PageState extends State<MenuForm1Page> with AutomaticKeepAliveCl
                   ),
                   isDense: true,
                 ),
+                maxLines: 2,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Enter menu name';

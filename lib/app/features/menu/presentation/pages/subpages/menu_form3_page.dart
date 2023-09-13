@@ -1,7 +1,10 @@
 part of 'package:homemakers_merchant/app/features/menu/index.dart';
 
 class MenuForm3Page extends StatefulWidget {
-  const MenuForm3Page({super.key});
+  const MenuForm3Page({super.key,this.haveNewMenu = true,
+    this.menuEntity,});
+  final bool haveNewMenu;
+  final MenuEntity? menuEntity;
 
   @override
   State<MenuForm3Page> createState() => _MenuForm3PageState();
@@ -17,7 +20,7 @@ class _MenuForm3PageState extends State<MenuForm3Page> with AutomaticKeepAliveCl
   late final MaskTextInputFormatter maximumDeliveryTimeFormatter;
   final TextEditingController _menuMinPreparationTimeController = TextEditingController();
   final TextEditingController _menuMaxPreparationTimeController = TextEditingController();
-  final TextEditingController _menuMinStockQuantityController = TextEditingController();
+  final TextEditingController _menuMinStockQuantityController = TextEditingController(text: '1');
   final TextEditingController _menuMaxStockQuantityController = TextEditingController();
 
   //List<Timing> _menuAvailablePreparationTimings = [];

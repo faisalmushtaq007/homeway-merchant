@@ -1,7 +1,10 @@
 part of 'package:homemakers_merchant/app/features/menu/index.dart';
 
 class MenuForm2Page extends StatefulWidget {
-  const MenuForm2Page({super.key});
+  const MenuForm2Page({super.key,this.haveNewMenu = true,
+    this.menuEntity,});
+  final bool haveNewMenu;
+  final MenuEntity? menuEntity;
 
   @override
   State<MenuForm2Page> createState() => _MenuForm2PageState();
@@ -12,10 +15,12 @@ class _MenuForm2PageState extends State<MenuForm2Page> with AutomaticKeepAliveCl
 
   List<StoreAvailableFoodTypes> _menuAvailableFoodTypes = [];
   List<StoreAvailableFoodPreparationType> _menuAvailableFoodCookingType = [];
+  List<StoreAvailableFoodPreparationType> _initialMenuAvailableFoodCookingType = [];
   List<StoreWorkingDayAndTime> _menuAvailableDays = [];
   List<TasteType> _menuTasteType = [];
   List<TasteLevel> _menuTasteLevel = [];
   List<MenuPortion> _menuPortions = [];
+  List<MenuPortion> _initialMenuPortions = [];
   bool _hasCustomMenuPortionSize = false;
   final TextEditingController _menuPortionNameController = TextEditingController();
   final TextEditingController _menuPortionValueController = TextEditingController();
@@ -23,14 +28,21 @@ class _MenuForm2PageState extends State<MenuForm2Page> with AutomaticKeepAliveCl
   final TextEditingController _menuPortionUnitController = TextEditingController();
 
   List<StoreAvailableFoodTypes> _selectedFoodTypes = [];
+  List<StoreAvailableFoodTypes> _initialSelectedFoodTypes = [];
   List<StoreAvailableFoodPreparationType> _selectedFoodPreparationType = [];
+  List<StoreAvailableFoodPreparationType> _initialSelectedFoodPreparationType = [];
   List<StoreWorkingDayAndTime> _selectedWorkingDays = [];
+  List<StoreWorkingDayAndTime> _initialSelectedWorkingDays = [];
   List<TasteType> _selectedTasteType = [];
   List<TasteLevel> _selectedTasteLevel = [];
   List<MenuPortion> _selectedMenuPortions = [];
+  List<TasteType> _initialSelectedTasteType = [];
+  List<TasteLevel> _initialSelectedTasteLevel = [];
+  List<MenuPortion> _initialSelectedMenuPortions = [];
   List<FocusNode> menuForm2FocusList = [];
   bool _haveAddonsWithCurrentMenu = false;
   List<Addons> _selectedAddons = [];
+  List<Addons> _initialSelectedAddons = [];
   List<Addons> _allAddons = [];
   List<Widget> selectedAddonsWidgets = [];
 

@@ -61,7 +61,7 @@ class _SaveMenuPageController extends State<SaveMenuPage> with AutomaticKeepAliv
           key: formKeys[0],
           child: PageStorage(
             bucket: pageStorageBucketMenuForm1,
-            child: const MenuForm1Page(),
+            child: MenuForm1Page(haveNewMenu: widget.haveNewMenu,menuEntity: widget.menuEntity,),
           ),
         ),
         formKey: formKeys[0],
@@ -71,7 +71,7 @@ class _SaveMenuPageController extends State<SaveMenuPage> with AutomaticKeepAliv
           key: formKeys[1],
           child: PageStorage(
             bucket: pageStorageBucketMenuForm2,
-            child: const MenuForm2Page(),
+            child: MenuForm2Page(haveNewMenu: widget.haveNewMenu,menuEntity: widget.menuEntity,),
           ),
         ),
         formKey: formKeys[1],
@@ -81,7 +81,7 @@ class _SaveMenuPageController extends State<SaveMenuPage> with AutomaticKeepAliv
           key: formKeys[2],
           child: PageStorage(
             bucket: pageStorageBucketMenuForm3,
-            child: const MenuForm3Page(),
+            child:  MenuForm3Page(haveNewMenu: widget.haveNewMenu,menuEntity: widget.menuEntity,),
           ),
         ),
         formKey: formKeys[2],
@@ -91,7 +91,7 @@ class _SaveMenuPageController extends State<SaveMenuPage> with AutomaticKeepAliv
           key: formKeys[3],
           child: PageStorage(
             bucket: pageStorageBucketMenuForm4,
-            child: const MenuForm4Page(),
+            child:  MenuForm4Page(haveNewMenu: widget.haveNewMenu,menuEntity: widget.menuEntity,),
           ),
         ),
         formKey: formKeys[3],
@@ -101,7 +101,7 @@ class _SaveMenuPageController extends State<SaveMenuPage> with AutomaticKeepAliv
           key: formKeys[4],
           child: PageStorage(
             bucket: pageStorageBucketMenuForm5,
-            child: const MenuForm5Page(),
+            child:  MenuForm5Page(haveNewMenu: widget.haveNewMenu,menuEntity: widget.menuEntity,),
           ),
         ),
         formKey: formKeys[4],
@@ -310,7 +310,7 @@ class _SaveMenuPageView extends WidgetView<SaveMenuPage, _SaveMenuPageController
                               milliseconds: 500,
                             ),
                             decoration: BoxDecoration(
-                              color: Colors.white,
+                              color: context.colorScheme.background,
                               borderRadius: BorderRadiusDirectional.circular(10),
                               boxShadow: const [
                                 BoxShadow(
@@ -358,7 +358,7 @@ class _SaveMenuPageView extends WidgetView<SaveMenuPage, _SaveMenuPageController
                                         physics: const ClampingScrollPhysics(),
                                         child: Column(
                                           children: [
-                                            Wrap(
+                                           /* Wrap(
                                               alignment: WrapAlignment.center,
                                               crossAxisAlignment: WrapCrossAlignment.center,
                                               children: [
@@ -377,8 +377,8 @@ class _SaveMenuPageView extends WidgetView<SaveMenuPage, _SaveMenuPageController
                                                   ).translate(),
                                                 ),
                                               ],
-                                            ),
-                                            const AnimatedGap(6, duration: Duration(milliseconds: 500)),
+                                            ),*/
+                                            const AnimatedGap(18, duration: Duration(milliseconds: 500)),
                                             state.pages[index].body,
                                           ],
                                         ),

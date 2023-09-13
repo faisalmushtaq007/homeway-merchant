@@ -1,7 +1,10 @@
 part of 'package:homemakers_merchant/app/features/menu/index.dart';
 
 class MenuForm4Page extends StatefulWidget {
-  const MenuForm4Page({super.key});
+  const MenuForm4Page({super.key,this.haveNewMenu = true,
+    this.menuEntity,});
+  final bool haveNewMenu;
+  final MenuEntity? menuEntity;
 
   @override
   State<MenuForm4Page> createState() => _MenuForm4PageState();
