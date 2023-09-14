@@ -145,8 +145,8 @@ class SelectCurrentAddress extends AddressEvent {
   List<Object?> get props => [addressEntity];
 }
 
-class GetAllAddressPaginationEvent extends AddressEvent {
-  const GetAllAddressPaginationEvent({
+class GetAllAddressPagination extends AddressEvent {
+  const GetAllAddressPagination({
     this.pageKey = 1,
     this.searchText,
     this.pageSize = 10,

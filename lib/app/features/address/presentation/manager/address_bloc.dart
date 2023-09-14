@@ -23,9 +23,6 @@ class AddressBloc extends Bloc<AddressEvent, AddressState> {
     on<RemoveAddressByID>(
       _deleteAddress,
     );
-    on<GetAllAddressPaginationEvent>(
-      _getAllAddressPagination,
-    );
     on<GetAllAddress>(
       _getAllAddress,
     );
@@ -43,6 +40,9 @@ class AddressBloc extends Bloc<AddressEvent, AddressState> {
     );
     on<SelectCurrentAddress>(
       _selectCurrentAddress,
+    );
+    on<GetAllAddressPagination>(
+      _getAllAddressPagination,
     );
     //on<SaveAllAddress>(_saveAllAddress);
   }
@@ -323,7 +323,7 @@ class AddressBloc extends Bloc<AddressEvent, AddressState> {
     }
   }
 
-  FutureOr<void> _getAllAddressPagination(GetAllAddressPaginationEvent event, Emitter<AddressState> emit) async {
+  FutureOr<void> _getAllAddressPagination(GetAllAddressPagination event, Emitter<AddressState> emit) async {
     appLog.i('Get all address bloc get all fetching');
     try {
       emit(const GetAllLoadingAddressPaginationState(isLoading: true, message: 'Please wait while we are fetching all address...'));
