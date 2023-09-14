@@ -5,23 +5,27 @@ class AllSavedAddressPage extends StatefulWidget {
     super.key,
     this.selectItemUseCase = SelectItemUseCase.none,
   });
+
   final SelectItemUseCase selectItemUseCase;
 
   @override
-  _AllSavedAddressPageController createState() => _AllSavedAddressPageController();
+  _AllSavedAddressPageController createState() =>
+      _AllSavedAddressPageController();
 }
 
 class _AllSavedAddressPageController extends State<AllSavedAddressPage> {
   late final ScrollController scrollController;
   late final ScrollController innerScrollController;
   List<AddressModel> addressEntities = [];
-  WidgetState<AddressModel> widgetState = WidgetState<AddressModel>.none();
+  WidgetState<AddressModel> widgetState =
+      const WidgetState<AddressModel>.none();
   int pageSize = 10;
   int pageKey = 0;
   String? searchText;
   String? sorting;
   String? filtering;
-  final PagingController<int, AddressModel> _addressPagingController = PagingController(firstPageKey: 0);
+  final PagingController<int, AddressModel> _addressPagingController =
+      PagingController(firstPageKey: 0);
   final addressFormPageFormKey = GlobalKey<FormState>();
   bool _isInit = false;
 
@@ -33,7 +37,7 @@ class _AllSavedAddressPageController extends State<AllSavedAddressPage> {
     addressEntities = [];
     addressEntities.clear();
     //context.read<PermissionBloc>().add(RequestLocationPermissionEvent());
-    //widgetState = WidgetState<AddressModel>.loading(context: context);
+    widgetState = WidgetState<AddressModel>.loading(context: context);
     _addressPagingController.nextPageKey = 0;
     /*_addressPagingController.addPageRequestListener((pageKey) {
       this.pageKey = pageKey;
@@ -55,18 +59,24 @@ class _AllSavedAddressPageController extends State<AllSavedAddressPage> {
         );
       }
     });*/
-    context.read<AddressBloc>().add(GetAllAddress());
+    if (!mounted) {
+      return;
+    }
+    context.read<AddressBloc>().add(const GetAllAddress());
   }
 
-  void _fetchAllAddressFunction(int pageKey, {int pageSize = 10, String? searchItem, String? filter, String? sort}) {
+  void _fetchAllAddressFunction(int pageKey,
+      {int pageSize = 10, String? searchItem, String? filter, String? sort}) {
     appLog.i('Fetch ');
-    context.read<AddressBloc>().add(GetAllAddressPaginationEvent(
-          pageKey: pageKey,
-          pageSize: pageSize,
-          searchText: searchItem,
-          filter: filtering ?? filter,
-          sorting: sorting ?? sort,
-        ));
+    context.read<AddressBloc>().add(
+          GetAllAddressPaginationEvent(
+            pageKey: pageKey,
+            pageSize: pageSize,
+            searchText: searchItem,
+            filter: filtering ?? filter,
+            sorting: sorting ?? sort,
+          ),
+        );
     //return;
   }
 
@@ -85,7 +95,7 @@ class _AllSavedAddressPageController extends State<AllSavedAddressPage> {
     super.didChangeDependencies();
   }
 
-  void _refreshAddressList(){
+  void _refreshAddressList() {
     _addressPagingController.nextPageKey = 0;
     _fetchAllAddressFunction(0);
   }
@@ -96,97 +106,112 @@ class _AllSavedAddressPageController extends State<AllSavedAddressPage> {
         bloc: context.read<AddressBloc>(),
         //listenWhen: (previous, current) => previous != current,
         listener: (context, addressListenerState) {
-          switch (addressListenerState) {
-            case GetAllAddressPaginationState():
-              {
-                try {
-                  final isLastPage = addressListenerState.addressEntities.length < pageSize;
-                  if (isLastPage) {
-                    _addressPagingController.appendLastPage(addressListenerState.addressEntities.toList());
-                  } else {
-                    final nextPageKey = addressListenerState.pageKey + addressListenerState.addressEntities.length;
-                    //final nextPageKey = addressListenerState.pageKey + 1;
-                    _addressPagingController.appendPage(addressListenerState.addressEntities.toList(), nextPageKey);
+
+        },
+        child: BlocBuilder<AddressBloc, AddressState>(
+          key: const Key('all-address-bloc-builder'),
+          bloc: context.read<AddressBloc>(),
+          builder: (context, addressState) {
+            switch (addressState) {
+              case GetAllAddressPaginationState():
+                {
+                  try {
+                    final isLastPage =
+                        addressState.addressEntities.length < pageSize;
+                    if (isLastPage) {
+                      _addressPagingController.appendLastPage(
+                          addressState.addressEntities.toList());
+                    } else {
+                      final nextPageKey = addressState.pageKey +
+                          addressState.addressEntities.length;
+                      //final nextPageKey = addressState.pageKey + 1;
+                      _addressPagingController.appendPage(
+                          addressState.addressEntities.toList(),
+                          nextPageKey);
+                    }
+                    widgetState = WidgetState<AddressModel>.allData(
+                      context: context,
+                      data: _addressPagingController.value.itemList ?? [],
+                    );
+                    addressEntities =
+                        _addressPagingController.value.itemList ?? [];
+                  } catch (error) {
+                    _addressPagingController.error = error;
+                    widgetState = WidgetState<AddressModel>.error(
+                      context: context,
+                      reason: _addressPagingController.error,
+                    );
                   }
+                }
+              case GetAllEmptyAddressPaginationState():
+                {
+                  widgetState = WidgetState<AddressModel>.empty(
+                    context: context,
+                    message: addressState.message,
+                  );
+                }
+              case GetAllExceptionAddressPaginationState():
+                {
+                  widgetState = WidgetState<AddressModel>.error(
+                    context: context,
+                    reason: addressState.message,
+                  );
+                }
+              case GetAllFailedAddressPaginationState():
+                {
+                  widgetState = WidgetState<AddressModel>.error(
+                    context: context,
+                    reason: addressState.message,
+                  );
+                }
+              case AddressExceptionState():
+                {
+                  widgetState = WidgetState<AddressModel>.error(
+                    context: context,
+                    reason: addressState.message,
+                  );
+                }
+              case AddressFailedState():
+                {
+                  widgetState = WidgetState<AddressModel>.error(
+                    context: context,
+                    reason: addressState.message,
+                  );
+                }
+              case AddressEmptyState():
+                {
+                  widgetState = WidgetState<AddressModel>.empty(
+                    context: context,
+                  );
+                  addressEntities = [];
+                }
+              case GetAllAddressState():
+                {
                   widgetState = WidgetState<AddressModel>.allData(
                     context: context,
                     data: _addressPagingController.value.itemList ?? [],
                   );
-                  addressEntities = _addressPagingController.value.itemList ?? [];
-                } catch (error) {
-                  _addressPagingController.error = error;
-                  widgetState = WidgetState<AddressModel>.error(
-                    context: context,
-                    reason: _addressPagingController.error,
-                  );
+                  addressEntities = addressState.addressEntities.toList();
                 }
-              }
-            case GetAllEmptyAddressPaginationState():
-              {
-                widgetState = WidgetState<AddressModel>.empty(
-                  context: context,
-                  message: addressListenerState.message,
-                );
-              }
-            case GetAllExceptionAddressPaginationState():
-              {
-                widgetState = WidgetState<AddressModel>.error(
-                  context: context,
-                  reason: addressListenerState.message,
-                );
-              }
-            case GetAllFailedAddressPaginationState():
-              {
-                widgetState = WidgetState<AddressModel>.error(
-                  context: context,
-                  reason: addressListenerState.message,
-                );
-              }
-            case AddressExceptionState():
-              {
-                widgetState = WidgetState<AddressModel>.error(
-                  context: context,
-                  reason: addressListenerState.message,
-                );
-              }
-            case AddressFailedState():
-              {
-                widgetState = WidgetState<AddressModel>.error(
-                  context: context,
-                  reason: addressListenerState.message,
-                );
-              }
-            case AddressEmptyState():
-              {
-                widgetState = WidgetState<AddressModel>.empty(
-                  context: context,
-                );
-                addressEntities = [];
-              }
-            case GetAllAddressState():
-              {
-                widgetState = WidgetState<AddressModel>.allData(
-                  context: context,
-                  data: _addressPagingController.value.itemList ?? [],
-                );
-                addressEntities = addressListenerState.addressEntities.toList();
-              }
-            case _:
-              appLog.d('Default case: all address page bloc listener');
-          }
-        },
-        child: _AllSavedAddressPageView(this),
+              case _:
+                appLog.d('Default case: all address page bloc listener');
+            }
+            return _AllSavedAddressPageView(this);
+          },
+        ),
       );
 }
 
-class _AllSavedAddressPageView extends WidgetView<AllSavedAddressPage, _AllSavedAddressPageController> {
+class _AllSavedAddressPageView
+    extends WidgetView<AllSavedAddressPage, _AllSavedAddressPageController> {
   const _AllSavedAddressPageView(super.state);
 
   @override
   Widget build(BuildContext context) {
     final MediaQueryData media = MediaQuery.of(context);
     final double margins = GlobalApp.responsiveInsets(media.size.width);
-    final double topPadding = margins; //media.padding.top + kToolbarHeight + margins; //margins * 1.5;
+    final double topPadding =
+        margins; //media.padding.top + kToolbarHeight + margins; //margins * 1.5;
     final double bottomPadding = media.padding.bottom + margins;
     final double width = media.size.width;
     final ThemeData theme = Theme.of(context);
@@ -208,7 +233,8 @@ class _AllSavedAddressPageView extends WidgetView<AllSavedAddressPage, _AllSaved
           ],
         ),
         body: Directionality(
-          textDirection: serviceLocator<LanguageController>().targetTextDirection,
+          textDirection:
+              serviceLocator<LanguageController>().targetTextDirection,
           child: SlideInLeft(
             key: const Key('all-saved-address-page-slideleft-widget'),
             delay: const Duration(milliseconds: 500),
@@ -226,7 +252,10 @@ class _AllSavedAddressPageView extends WidgetView<AllSavedAddressPage, _AllSaved
                     child: Container(
                       constraints: BoxConstraints(
                         minWidth: double.infinity,
-                        maxHeight: media.size.height - (media.padding.top + kToolbarHeight + media.padding.bottom),
+                        maxHeight: media.size.height -
+                            (media.padding.top +
+                                kToolbarHeight +
+                                media.padding.bottom),
                       ),
                       padding: EdgeInsetsDirectional.only(
                         top: topPadding,
@@ -237,16 +266,20 @@ class _AllSavedAddressPageView extends WidgetView<AllSavedAddressPage, _AllSaved
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
                         crossAxisAlignment: CrossAxisAlignment.stretch,
-                        textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                        textDirection: serviceLocator<LanguageController>()
+                            .targetTextDirection,
                         children: [
                           AnimatedCrossFade(
                             firstChild: Column(
                               mainAxisSize: MainAxisSize.min,
                               mainAxisAlignment: MainAxisAlignment.start,
                               crossAxisAlignment: CrossAxisAlignment.stretch,
-                              textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                              textDirection:
+                                  serviceLocator<LanguageController>()
+                                      .targetTextDirection,
                               children: [
-                                const AnimatedGap(6, duration: Duration(milliseconds: 500)),
+                                const AnimatedGap(6,
+                                    duration: Duration(milliseconds: 500)),
                                 /*IntrinsicHeight(
                                   child: Row(
                                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -259,9 +292,9 @@ class _AllSavedAddressPageView extends WidgetView<AllSavedAddressPage, _AllSaved
                                           sherlockCompletion: SherlockCompletion(where: 'by', elements: state.addressEntities.map((e) => e.toMap()).toList()),
                                           sherlockCompletionMinResults: 1,
                                           onSearch: (input, sherlock) {
-                                            *//*setState(() {
+                                            */ /*setState(() {
                                                         state._results = sherlock.search(input: input);
-                                                      });*//*
+                                                      });*/ /*
                                           },
                                           completionsBuilder: (context, completions) => SherlockCompletionsBuilder(
                                             completions: completions,
@@ -320,40 +353,63 @@ class _AllSavedAddressPageView extends WidgetView<AllSavedAddressPage, _AllSaved
                                   dense: true,
                                   title: IntrinsicHeight(
                                     child: Row(
-                                      textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                      textDirection:
+                                          serviceLocator<LanguageController>()
+                                              .targetTextDirection,
                                       children: [
                                         Text(
                                           'Your Address',
-                                          style: context.labelLarge!.copyWith(fontWeight: FontWeight.w500, fontSize: 18),
-                                          textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                          style: context.labelLarge!.copyWith(
+                                              fontWeight: FontWeight.w500,
+                                              fontSize: 18),
+                                          textDirection: serviceLocator<
+                                                  LanguageController>()
+                                              .targetTextDirection,
                                         ),
-                                        const AnimatedGap(3, duration: Duration(milliseconds: 500)),
+                                        const AnimatedGap(3,
+                                            duration:
+                                                Duration(milliseconds: 500)),
                                         Card(
                                           shape: RoundedRectangleBorder(
-                                            borderRadius: BorderRadiusDirectional.circular(20),
+                                            borderRadius:
+                                                BorderRadiusDirectional
+                                                    .circular(20),
                                           ),
                                           child: Padding(
-                                            padding: const EdgeInsetsDirectional.only(start: 12.0, end: 12, top: 4, bottom: 4),
+                                            padding: const EdgeInsetsDirectional
+                                                .only(
+                                                start: 12.0,
+                                                end: 12,
+                                                top: 4,
+                                                bottom: 4),
                                             child: Text(
                                               '${state.addressEntities.length}',
-                                              textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                              textDirection: serviceLocator<
+                                                      LanguageController>()
+                                                  .targetTextDirection,
                                             ),
                                           ),
                                         ),
                                       ],
                                     ),
                                   ),
-                                  visualDensity: VisualDensity(horizontal: -4, vertical: -4),
+                                  visualDensity: VisualDensity(
+                                      horizontal: -4, vertical: -4),
                                   horizontalTitleGap: 0,
                                   minLeadingWidth: 0,
-                                  contentPadding: EdgeInsetsDirectional.symmetric(horizontal: 2),
+                                  contentPadding:
+                                      EdgeInsetsDirectional.symmetric(
+                                          horizontal: 2),
                                 ),
-                                const AnimatedGap(6, duration: Duration(milliseconds: 500)),
+                                const AnimatedGap(6,
+                                    duration: Duration(milliseconds: 500)),
                               ],
                             ),
                             secondChild: const Offstage(),
                             duration: const Duration(milliseconds: 500),
-                            crossFadeState: (state.addressEntities.isNotEmpty) ? CrossFadeState.showFirst : CrossFadeState.showSecond,
+                            crossFadeState: (state.addressEntities.isNotEmpty)
+                                ? CrossFadeState.showFirst
+                                : CrossFadeState.showSecond,
                           ),
                           Expanded(
                             child: state.widgetState.maybeWhen(
@@ -362,7 +418,9 @@ class _AllSavedAddressPageView extends WidgetView<AllSavedAddressPage, _AllSaved
                                 child: Text(
                                   'No address available or added by you',
                                   style: context.labelLarge,
-                                  textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                  textDirection:
+                                      serviceLocator<LanguageController>()
+                                          .targetTextDirection,
                                 ).translate(),
                               ),
                               loading: (context, child, message, isLoading) {
@@ -396,15 +454,20 @@ class _AllSavedAddressPageView extends WidgetView<AllSavedAddressPage, _AllSaved
                                   itemBuilder: (context, index) {
                                     return AddressCardWidget(
                                       key: ValueKey(index),
-                                      addressEntity: state.addressEntities[index],
-                                      listOfAllAddressEntities: state.addressEntities.toList(),
+                                      addressEntity:
+                                          state.addressEntities[index],
+                                      listOfAllAddressEntities:
+                                          state.addressEntities.toList(),
                                       currentIndex: index,
                                     );
                                   },
                                   shrinkWrap: true,
                                   itemCount: state.addressEntities.length,
                                   separatorBuilder: (context, index) {
-                                    return const Divider(thickness: 0.25, color: Color.fromRGBO(127, 129, 132, 1));
+                                    return const Divider(
+                                        thickness: 0.25,
+                                        color:
+                                            Color.fromRGBO(127, 129, 132, 1));
                                   },
                                 );
                               },
@@ -413,7 +476,9 @@ class _AllSavedAddressPageView extends WidgetView<AllSavedAddressPage, _AllSaved
                                   child: Text(
                                     'No address available or added by you',
                                     style: context.labelLarge,
-                                    textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                    textDirection:
+                                        serviceLocator<LanguageController>()
+                                            .targetTextDirection,
                                   ).translate(),
                                 );
                               },
@@ -427,25 +492,31 @@ class _AllSavedAddressPageView extends WidgetView<AllSavedAddressPage, _AllSaved
                               Expanded(
                                 child: ElevatedButton(
                                   onPressed: () async {
-                                    final navigateToSaveStorePage = await context.push(
+                                    final navigateToSaveStorePage =
+                                        await context.push(
                                       Routes.PICKUP_LOCATION_FROM_MAP_PAGE,
                                       extra: {
                                         'addressEntity': null,
-                                        'addressEntities': state.addressEntities.toList(),
+                                        'addressEntities':
+                                            state.addressEntities.toList(),
                                         'haveNewAddress': true,
                                         'currentIndex': -1,
                                       },
                                     );
-                                    if(!state.mounted){
+                                    if (!state.mounted) {
                                       return;
                                     }
-                                    context.read<AddressBloc>().add(const GetAllAddress());
-                                   //state._refreshAddressList();
+                                    context
+                                        .read<AddressBloc>()
+                                        .add(const GetAllAddress());
+                                    //state._refreshAddressList();
                                     return;
                                   },
                                   child: Text(
                                     'Add New Address',
-                                    textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                    textDirection:
+                                        serviceLocator<LanguageController>()
+                                            .targetTextDirection,
                                   ).translate(),
                                 ),
                               ),

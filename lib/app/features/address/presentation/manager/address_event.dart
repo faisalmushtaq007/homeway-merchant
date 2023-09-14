@@ -77,7 +77,7 @@ class GetAllAddress extends AddressEvent {
   const GetAllAddress({
     this.searchItem = '',
     this.pageSize = 10,
-    this.pageKey = 1,
+    this.pageKey = 0,
   });
 
   final int pageKey;

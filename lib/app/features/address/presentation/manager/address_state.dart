@@ -90,7 +90,7 @@ class GetAllAddressState extends AddressState {
     this.addressStatus = AddressStatus.none,
     this.searchItem = '',
     this.pageSize = 10,
-    this.pageKey = 1,
+    this.pageKey = 0,
   });
 
   final List<AddressModel> addressEntities;

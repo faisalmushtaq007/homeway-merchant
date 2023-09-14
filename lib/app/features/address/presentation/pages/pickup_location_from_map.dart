@@ -59,14 +59,6 @@ class _AddressPageController extends State<PickupLocationFromMapPage> {
       zoom: zoomLevel,
     );
     // Check Permission and Get Current Location
-
-    setMarker(defaultLatLng);
-    fetchAddressDetails(defaultLatLng);
-  }
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
     _initData().then((value) async {
       controller = await mapcontroller.future;
       await controller.animateCamera(CameraUpdate.newLatLngZoom(value, zoomLevel));
@@ -80,6 +72,14 @@ class _AddressPageController extends State<PickupLocationFromMapPage> {
       await fetchAddressDetails(value);
       return;
     });
+    setMarker(defaultLatLng);
+    fetchAddressDetails(defaultLatLng);
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
   }
 
   @override

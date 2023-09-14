@@ -313,9 +313,9 @@ class _AddressFormPageController extends State<AddressFormPage> {
                 if (context.canPop()) {
                   context.pop();
                   context.pop();
-                  context.pop();
                   //context.pop();
-                  context.pushReplacement(Routes.ALL_SAVED_ADDRESS_LIST);
+                  //context.pop();
+                  //context.pushReplacement(Routes.ALL_SAVED_ADDRESS_LIST);
                 }
               }
             case GetAddressByIDState():

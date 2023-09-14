@@ -212,7 +212,7 @@ class AddressBloc extends Bloc<AddressEvent, AddressState> {
 
   FutureOr<void> _getAllAddress(GetAllAddress event, Emitter<AddressState> emit) async {
     try {
-      emit(AddressLoadingState(
+      emit(const AddressLoadingState(
         message: 'Please wait while we are fetching your profile...',
       ));
       final DataSourceState<List<AddressModel>> result = await serviceLocator<GetAllAddressUseCase>()();
@@ -221,9 +221,8 @@ class AddressBloc extends Bloc<AddressEvent, AddressState> {
           appLog.d('Address bloc get all remote');
           if (data == null || data.isEmpty) {
             emit(
-              AddressEmptyState(
+              const AddressEmptyState(
                 message: 'Address is empty',
-                addressEntities: [],
                 addressStatus: AddressStatus.getAllAddress,
               ),
             );
@@ -239,9 +238,8 @@ class AddressBloc extends Bloc<AddressEvent, AddressState> {
           appLog.d('Address bloc get all local');
           if (data == null || data.isEmpty) {
             emit(
-              AddressEmptyState(
+              const AddressEmptyState(
                 message: 'Address is empty',
-                addressEntities: [],
                 addressStatus: AddressStatus.getAllAddress,
               ),
             );
