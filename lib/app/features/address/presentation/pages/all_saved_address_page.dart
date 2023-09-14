@@ -19,7 +19,7 @@ class _AllSavedAddressPageController extends State<AllSavedAddressPage> {
 
   WidgetState<AddressModel> widgetState =
       const WidgetState<AddressModel>.none();
-  int pageSize = 5;
+  int pageSize = 10;
   int pageKey = 0;
   String? searchText;
   String? sorting;
@@ -42,7 +42,7 @@ class _AllSavedAddressPageController extends State<AllSavedAddressPage> {
   }
 
   Future<void> _fetchPage(int pageKey,
-      {int pageSize = 5, String? searchItem, String? filter, String? sort}) async{
+      {int pageSize = 10, String? searchItem, String? filter, String? sort}) async{
     /*if (pageKey == 0) {
       _pagingController.itemList = [];
     }*/
@@ -87,15 +87,11 @@ class _AllSavedAddressPageController extends State<AllSavedAddressPage> {
   void _refreshAddressList() {
     //_pagingController.refresh();
     _pagingController.nextPageKey = 0;
-    _fetchPage(0);
+    _fetchPage(0,pageSize: 10);
     _pagingController.addPageRequestListener((pageKey)  {
       this.pageKey = pageKey;
       appLog.d('Page key addPageRequestListener ${pageKey}');
       _fetchPage(pageKey);
-    });
-    _pagingController.addListener(() {
-      appLog.d('Page key addListener ${pageKey}');
-      //_fetchPage(0);
     });
 
     _pagingController.addStatusListener((status) {
@@ -403,7 +399,7 @@ class _AllSavedAddressPageView
                                                 top: 4,
                                                 bottom: 4),
                                             child: Text(
-                                              '${state.addressEntities.length}',
+                                              '${state._pagingController.value.itemList?.length}',
                                               textDirection: serviceLocator<
                                                       LanguageController>()
                                                   .targetTextDirection,
@@ -530,6 +526,7 @@ class _AllSavedAddressPageView
                                     }
                                     //context.read<AddressBloc>().add(const GetAllAddress());
                                     //state._refreshAddressList();
+                                    state._pagingController.refresh();
                                     return;
                                   },
                                   child: Text(
