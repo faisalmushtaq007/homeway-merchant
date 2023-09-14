@@ -1,10 +1,11 @@
 part of 'package:homemakers_merchant/app/features/menu/index.dart';
 
 class SubCategoryPage extends StatefulWidget {
-  const SubCategoryPage({required this.selectedCategory, required this.onChangedCategory, super.key});
+  const SubCategoryPage({required this.selectedCategory, required this.onChangedCategory, this.parentSubCategories=const[],super.key});
 
   final Category selectedCategory;
   final ValueChangedCategoryAndSubCategory<Category, Category> onChangedCategory;
+  final List<Category> parentSubCategories;
 
   @override
   _SubCategoryPageController createState() => _SubCategoryPageController();
@@ -15,7 +16,7 @@ class _SubCategoryPageController extends State<SubCategoryPage> {
   List<Category> listOfSubCategories = [];
   static const _pageSize = 20;
   final PagingController<int, Category> _pagingController = PagingController(firstPageKey: 0);
-  int? selectedSubCategoryValue;
+  int? selectedSubCategoryIndex;
 
   @override
   void initState() {
@@ -23,16 +24,14 @@ class _SubCategoryPageController extends State<SubCategoryPage> {
     innerScrollController = ScrollController();
     listOfSubCategories = [];
     listOfSubCategories.clear();
-    _pagingController.addPageRequestListener((pageKey) {
-      _fetchPage(pageKey);
-    });
+    _pagingController.addPageRequestListener(_fetchPage);
 
     //initLoadCategoryList(context);
   }
 
   Future<void> _fetchPage(int pageKey) async {
     try {
-      listOfSubCategories = List<Category>.from(widget.selectedCategory.subCategory.toList());
+      listOfSubCategories = List<Category>.from(widget.parentSubCategories.toList());
       final isLastPage = listOfSubCategories.length < _pageSize;
       if (isLastPage) {
         _pagingController.appendLastPage(listOfSubCategories);
@@ -46,9 +45,10 @@ class _SubCategoryPageController extends State<SubCategoryPage> {
   }
 
   void selectSubCategory(int? index, Category? selectedCategory) {
-    selectedSubCategoryValue = index;
-    widget.onChangedCategory(widget.selectedCategory, selectedCategory);
+    selectedSubCategoryIndex = index;
+    //
     setState(() {});
+    widget.onChangedCategory(widget.selectedCategory, selectedCategory);
   }
 
   @override
@@ -82,9 +82,10 @@ class _SubCategoryPageView extends WidgetView<SubCategoryPage, _SubCategoryPageC
               textDirection: serviceLocator<LanguageController>().targetTextDirection,
               children: [
                 ChoiceChip(
-                  label: Text(item.title),
-                  avatar: (state.selectedSubCategoryValue == index) ? Icon(Icons.check) : null,
-                  selected: state.selectedSubCategoryValue == index,
+                  key: ValueKey(item.categoryId),
+                  label: Text(item.title,textDirection: serviceLocator<LanguageController>().targetTextDirection,),
+                  avatar: (state.selectedSubCategoryIndex == index) ? Icon(Icons.check,textDirection: serviceLocator<LanguageController>().targetTextDirection,) : null,
+                  selected: state.selectedSubCategoryIndex == index,
                   onSelected: (bool selected) {
                     state.selectSubCategory(selected ? index : null, selected ? item : null);
                   },

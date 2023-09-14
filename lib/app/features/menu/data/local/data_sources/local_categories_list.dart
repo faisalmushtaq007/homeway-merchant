@@ -1,6 +1,6 @@
 part of 'package:homemakers_merchant/app/features/menu/index.dart';
 
-final localListOfCategories = [
+final localListOfCategories =<Category>[
   Category(
     categoryId: '0',
     title: 'Classic',

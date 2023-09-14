@@ -285,9 +285,9 @@ class _SaveStorePageState extends State<SaveStorePage> {
       if (subCategory!=null) {
         selectedSubCategory = subCategory;
         menuSubCategoryTextEditingController.text = subCategory?.title ?? '';
-        selectedCategory?.subCategory=<Category>[subCategory];
+        final copyCategory=selectedCategory?.copyWith(subCategory: List<Category>.from([subCategory]));
+        selectedCategory=copyCategory;
       }
-      final copyCategory = mainCategory.copyWith(subCategory: subCategory!=null ? <Category>[subCategory!] : <Category>[]);
     });
     return;
   }
@@ -386,78 +386,66 @@ class _SaveStorePageState extends State<SaveStorePage> {
                                   textDirection: serviceLocator<LanguageController>().targetTextDirection,
                                   children: [
                                     const AnimatedGap(6, duration: Duration(milliseconds: 500)),
-                                    Align(
+                                    /*Align(
                                       alignment: AlignmentDirectional.topStart,
                                       child: Text(
                                         'Enter store details',
                                         style: context.titleLarge,
                                       ),
                                     ),
-                                    const AnimatedGap(12, duration: Duration(milliseconds: 500)),
+                                    const AnimatedGap(12, duration: Duration(milliseconds: 500)),*/
                                     if (listBanners.isNotEmpty)
-                                      BannerCarousel(
-                                        banners: listBanners.toList(),
-                                        customizedIndicators: const IndicatorModel.animation(width: 20, height: 5, spaceBetween: 2, widthAnimation: 50),
-                                        height: 150,
-                                        activeColor: Colors.amberAccent,
-                                        disableColor: Colors.white,
-                                        animation: true,
-                                        margin: EdgeInsetsDirectional.zero,
-                                        borderRadius: 10,
+                                      Stack(
+                                        children: [
+                                          BannerCarousel(
+                                            banners: listBanners.toList(),
+                                            customizedIndicators: const IndicatorModel.animation(width: 20, height: 5, spaceBetween: 2, widthAnimation: 50),
+                                            height: 150,
+                                            activeColor: Colors.amberAccent,
+                                            disableColor: Colors.white,
+                                            animation: true,
+                                            margin: EdgeInsetsDirectional.zero,
+                                            borderRadius: 10,
+                                            showIndicator: false,
+                                          ),
+                                          GestureDetector(
+                                            onTap: () async{
+                                              return await uploadStoreImage(context);
+                                            },
+                                            child: Align(
+                                              alignment: Alignment.topRight,
+                                              child:
+                                                  DecoratedBox(
+                                                    decoration: BoxDecoration(
+                                                      shape: BoxShape.circle,
+                                                      color: Colors.white70,
+                                                      boxShadow: [
+                                                        BoxShadow(
+                                                          color: Colors.black.withOpacity(0.2),
+                                                          spreadRadius: 2,
+                                                          offset: const Offset(0, 2),
+                                                          blurRadius: 2,
+                                                        )
+                                                      ],
+                                                    ),
+                                                    child: Padding(
+                                                      padding: EdgeInsetsDirectional.all(6),
+                                                      child: Icon(
+                                                        Icons.edit,
+                                                        color: context.colorScheme.primary,
+                                                        size: 18,
+                                                        textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                                      ),
+                                                    ),
+                                                  ),
+                                            ),
+                                          ),
+                                        ],
                                       )
                                     else
                                       GestureDetector(
                                         onTap: () async {
-                                          // Navigate to document picker page
-                                          final List<dynamic>? result = await context.push<List<dynamic>>(
-                                            Routes.UPLOAD_DOCUMENT_PAGE,
-                                            extra: jsonEncode(
-                                              {
-                                                'documentType': DocumentType.other.name,
-                                              },
-                                            ),
-                                          );
-                                          // Check is Result exists or not
-                                          if (result != null && result.isNotEmpty) {
-                                            // Extarct and store the value
-                                            String filePath = result[0] as String;
-                                            XFile? xCroppedDocumentFile = result[1] as XFile;
-                                            File? croppedDocumentFile = result[2] as File;
-                                            XFile? xFile = result[5] as XFile;
-                                            File? file = result[6] as File;
-                                            String? assetNetworkUrl = result[7] as String?;
-                                            final int timeStamp = DateTime.now().millisecondsSinceEpoch;
-                                            var tempName = 'homeway_store_image_$timeStamp';
-                                            var fileNameWithExtension =
-                                                path.basenameWithoutExtension(xCroppedDocumentFile?.path ?? croppedDocumentFile?.path ?? tempName);
-                                            String fileExtension = path.extension(xCroppedDocumentFile?.path ?? croppedDocumentFile?.path ?? '.png');
-                                            String croppedFilePath = (xCroppedDocumentFile.path.isEmpty) ? xCroppedDocumentFile.path : croppedDocumentFile.path;
-                                            final fileReadAsBytes = await file.readAsBytes();
-                                            final xFileReadAsBytes = await xFile.readAsBytes();
-                                            final fileReadAsString = base64Encode(fileReadAsBytes);
-                                            final xFileReadAsString = base64Encode(xFileReadAsBytes);
-                                            listBanners.insert(
-                                                0,
-                                                BannerModel(
-                                                  imagePath: croppedFilePath,
-                                                  id: const Uuid().v4(),
-                                                  metaData: {
-                                                    'id': const Uuid().v4(),
-                                                    'filePath': filePath,
-                                                    'croppedFilePath': croppedFilePath,
-                                                    'fileExtension': fileExtension,
-                                                    'fileNameWithExtension': fileNameWithExtension,
-                                                    //'file': file,
-                                                    //'xFile': xFile,
-                                                    'assetNetworkUrl': assetNetworkUrl,
-                                                    'fileReadAsBytes': fileReadAsBytes,
-                                                    'xFileReadAsBytes': xFileReadAsBytes,
-                                                    'fileReadAsString': fileReadAsString,
-                                                    'xFileReadAsString': xFileReadAsString,
-                                                  },
-                                                ));
-                                            setState(() {});
-                                          }
+                                          return await uploadStoreImage(context);
                                         },
                                         child: Container(
                                           width: double.infinity,
@@ -553,22 +541,11 @@ class _SaveStorePageState extends State<SaveStorePage> {
                                         isDense: true,
                                         suffixIcon: IconButton(
                                           onPressed: () async {
-                                            //await selectMenuCategory(context);
-                                            final result = await Navigator.push(
-                                              context,
-                                              MaterialPageRoute<(Category, Category?)>(
-                                                builder: (_) => const MainCategoryPage(),
-                                                fullscreenDialog: true,
-                                              ),
-                                            );
-                                            if (result != null) {
-                                              final Category mainCategory = result.$1;
-                                              final Category? subCategory = result.$2;
-                                              selectedCategory = mainCategory;
-                                              selectedSubCategory = subCategory;
-                                              updateCategoryAndSubCategory(mainCategory, subCategory);
+                                            final result = await context.push<List<Category?>>(
+                                              Routes.MAIN_CATEGORY_PAGE,);
+                                            if (result != null && result[0]!=null && result[1]!=null) {
+                                              updateCategoryAndSubCategory(result[0]!, result[1]);
                                             }
-                                            return;
                                           },
                                           icon: const Icon(
                                             Icons.arrow_drop_down,
@@ -582,22 +559,11 @@ class _SaveStorePageState extends State<SaveStorePage> {
                                         return null;
                                       },
                                       onTap: () async {
-                                        //await selectMenuCategory(context);
-                                        final result = await Navigator.push(
-                                          context,
-                                          MaterialPageRoute<(Category, Category?)>(
-                                            builder: (_) => const MainCategoryPage(),
-                                            fullscreenDialog: true,
-                                          ),
-                                        );
-                                        if (result != null) {
-                                          final Category mainCategory = result.$1;
-                                          final Category? subCategory = result.$2;
-                                          selectedCategory = mainCategory;
-                                          selectedSubCategory = subCategory;
-                                          updateCategoryAndSubCategory(mainCategory, subCategory);
+                                        final result = await context.push<List<Category?>>(
+                                          Routes.MAIN_CATEGORY_PAGE,);
+                                        if (result != null && result[0]!=null && result[1]!=null) {
+                                          updateCategoryAndSubCategory(result[0]!, result[1]);
                                         }
-                                        return;
                                       },
                                     ),
                                     const AnimatedGap(12, duration: Duration(milliseconds: 500)),
@@ -616,22 +582,11 @@ class _SaveStorePageState extends State<SaveStorePage> {
                                         isDense: true,
                                         suffixIcon: IconButton(
                                           onPressed: () async {
-                                            //await selectMenuCategory(context);
-                                            final result = await Navigator.push(
-                                              context,
-                                              MaterialPageRoute<(Category, Category?)>(
-                                                builder: (_) => const MainCategoryPage(),
-                                                fullscreenDialog: true,
-                                              ),
-                                            );
-                                            if (result != null) {
-                                              final Category mainCategory = result.$1;
-                                              final Category? subCategory = result.$2;
-                                              selectedCategory = mainCategory;
-                                              selectedSubCategory = subCategory;
-                                              updateCategoryAndSubCategory(mainCategory, subCategory);
+                                            final result = await context.push<List<Category?>>(
+                                              Routes.MAIN_CATEGORY_PAGE,);
+                                            if (result != null && result[0]!=null && result[1]!=null) {
+                                              updateCategoryAndSubCategory(result[0]!, result[1]);
                                             }
-                                            return;
                                           },
                                           icon: const Icon(
                                             Icons.arrow_drop_down,
@@ -645,22 +600,11 @@ class _SaveStorePageState extends State<SaveStorePage> {
                                         return null;
                                       },
                                       onTap: () async {
-                                        //await selectMenuCategory(context);
-                                        final result = await Navigator.push(
-                                          context,
-                                          MaterialPageRoute<(Category, Category?)>(
-                                            builder: (_) => const MainCategoryPage(),
-                                            fullscreenDialog: true,
-                                          ),
-                                        );
-                                        if (result != null) {
-                                          final Category mainCategory = result.$1;
-                                          final Category? subCategory = result.$2;
-                                          selectedCategory = mainCategory;
-                                          selectedSubCategory = subCategory;
-                                          updateCategoryAndSubCategory(mainCategory, subCategory);
+                                        final result = await context.push<List<Category?>>(
+                                          Routes.MAIN_CATEGORY_PAGE,);
+                                        if (result != null && result[0]!=null && result[1]!=null) {
+                                          updateCategoryAndSubCategory(result[0]!, result[1]);
                                         }
-                                        return;
                                       },
                                     ),
                                     const AnimatedGap(12, duration: Duration(milliseconds: 500)),
@@ -1274,5 +1218,61 @@ class _SaveStorePageState extends State<SaveStorePage> {
         ),
       ),
     );
+  }
+
+  Future<void> uploadStoreImage(BuildContext context) async {
+    {
+                                             // Navigate to document picker page
+                                             final List<dynamic>? result = await context.push<List<dynamic>>(
+                                               Routes.UPLOAD_DOCUMENT_PAGE,
+                                               extra: jsonEncode(
+                                                 {
+                                                   'documentType': DocumentType.other.name,
+                                                 },
+                                               ),
+                                             );
+                                             // Check is Result exists or not
+                                             if (result != null && result.isNotEmpty) {
+                                               // Extarct and store the value
+                                               String filePath = result[0] as String;
+                                               XFile? xCroppedDocumentFile = result[1] as XFile;
+                                               File? croppedDocumentFile = result[2] as File;
+                                               XFile? xFile = result[5] as XFile;
+                                               File? file = result[6] as File;
+                                               String? assetNetworkUrl = result[7] as String?;
+                                               final int timeStamp = DateTime.now().millisecondsSinceEpoch;
+                                               var tempName = 'homeway_store_image_$timeStamp';
+                                               var fileNameWithExtension =
+                                                   path.basenameWithoutExtension(xCroppedDocumentFile?.path ?? croppedDocumentFile?.path ?? tempName);
+                                               String fileExtension = path.extension(xCroppedDocumentFile?.path ?? croppedDocumentFile?.path ?? '.png');
+                                               String croppedFilePath = (xCroppedDocumentFile.path.isEmpty) ? xCroppedDocumentFile.path : croppedDocumentFile.path;
+                                               final fileReadAsBytes = await file.readAsBytes();
+                                               final xFileReadAsBytes = await xFile.readAsBytes();
+                                               final fileReadAsString = base64Encode(fileReadAsBytes);
+                                               final xFileReadAsString = base64Encode(xFileReadAsBytes);
+                                               listBanners.insert(
+                                                   0,
+                                                   BannerModel(
+                                                     imagePath: croppedFilePath,
+                                                     id: const Uuid().v4(),
+                                                     boxFit: BoxFit.contain,
+                                                     metaData: {
+                                                       'id': const Uuid().v4(),
+                                                       'filePath': filePath,
+                                                       'croppedFilePath': croppedFilePath,
+                                                       'fileExtension': fileExtension,
+                                                       'fileNameWithExtension': fileNameWithExtension,
+                                                       //'file': file,
+                                                       //'xFile': xFile,
+                                                       'assetNetworkUrl': assetNetworkUrl,
+                                                       'fileReadAsBytes': fileReadAsBytes,
+                                                       'xFileReadAsBytes': xFileReadAsBytes,
+                                                       'fileReadAsString': fileReadAsString,
+                                                       'xFileReadAsString': xFileReadAsString,
+                                                     },
+                                                   ));
+                                               setState(() {});
+                                             }
+                                           }
   }
 }

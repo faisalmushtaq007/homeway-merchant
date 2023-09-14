@@ -1,3 +1,4 @@
+import 'package:homemakers_merchant/core/extensions/app_extension.dart';
 import 'package:homemakers_merchant/shared/widgets/universal/banner_carousel/banner_carousel.dart';
 import 'package:flutter/material.dart';
 import 'package:homemakers_merchant/shared/widgets/universal/image_loader/image_helper.dart';
@@ -64,6 +65,7 @@ class BannerWidget extends StatelessWidget {
           filterQuality: FilterQuality.high,
           // border radius only work with [ImageShape.rounded]
           borderRadius: bannerWidgetBorderRadius ?? BorderRadiusDirectional.circular(borderRadius),
+          //boxBorder:Border.all(color: context.colorScheme.inverseSurface),
           // alignment of image
           //alignment: Alignment.center,
           // indicates where image will be loaded from, types are [network, asset,file]

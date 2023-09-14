@@ -199,7 +199,7 @@ class _BannerCarouselState extends State<BannerCarousel> {
   }
 
   @override
-  didUpdateWidget(BannerCarousel old) {
+  void didUpdateWidget(BannerCarousel old) {
     super.didUpdateWidget(old);
     if (widget.shouldTriggerChange != old.shouldTriggerChange) {
       streamSubscription.cancel();
@@ -250,12 +250,13 @@ class _BannerCarouselState extends State<BannerCarousel> {
     return Container(
       height: _totalHeigth,
       width: widget.width,
-      margin: widget.margin ?? EdgeInsets.symmetric(horizontal: 16.0),
+      //decoration: _boxDecoration,
+      margin: widget.margin ?? EdgeInsets.symmetric(horizontal: 12.0),
       child: Stack(
         children: [
           Container(
             decoration: _boxDecoration,
-            height: widget.height,
+            height:widget.showIndicator?widget.height: _totalHeigth,//,
             child: PageView(
               physics: widget.physics,
               controller: _controller,
@@ -284,6 +285,7 @@ class _BannerCarouselState extends State<BannerCarousel> {
   BoxDecoration get _boxDecoration => BoxDecoration(
         color: context.colorScheme.onPrimary,
         borderRadius: widget.outerBorderRadius ?? BorderRadiusDirectional.circular(10),
+        border: Border.all(color: context.colorScheme.inverseSurface),
         boxShadow: [
           BoxShadow(
             color: _shadowColor,

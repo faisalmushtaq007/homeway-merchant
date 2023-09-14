@@ -1,8 +1,12 @@
 part of 'package:homemakers_merchant/app/features/menu/index.dart';
 
 class MenuForm1Page extends StatefulWidget {
-  const MenuForm1Page({super.key,this.haveNewMenu = true,
-    this.menuEntity,});
+  const MenuForm1Page({
+    super.key,
+    this.haveNewMenu = true,
+    this.menuEntity,
+  });
+
   final bool haveNewMenu;
   final MenuEntity? menuEntity;
 
@@ -10,12 +14,17 @@ class MenuForm1Page extends StatefulWidget {
   State<MenuForm1Page> createState() => _MenuForm1PageState();
 }
 
-class _MenuForm1PageState extends State<MenuForm1Page> with AutomaticKeepAliveClientMixin<MenuForm1Page> {
+class _MenuForm1PageState extends State<MenuForm1Page>
+    with AutomaticKeepAliveClientMixin<MenuForm1Page> {
   late final ScrollController scrollController;
-  final TextEditingController menuNameTextEditingController = TextEditingController();
-  final TextEditingController menuDescriptionTextEditingController = TextEditingController();
-  final TextEditingController menuCategoryTextEditingController = TextEditingController();
-  final TextEditingController menuSubCategoryTextEditingController = TextEditingController();
+  final TextEditingController menuNameTextEditingController =
+      TextEditingController();
+  final TextEditingController menuDescriptionTextEditingController =
+      TextEditingController();
+  final TextEditingController menuCategoryTextEditingController =
+      TextEditingController();
+  final TextEditingController menuSubCategoryTextEditingController =
+      TextEditingController();
   Category? selectedCategory;
   Category? selectedSubCategory;
   List<Category> listOfCategories = [];
@@ -27,7 +36,7 @@ class _MenuForm1PageState extends State<MenuForm1Page> with AutomaticKeepAliveCl
     scrollController = ScrollController();
     listOfCategories = [];
     listOfCategories.clear();
-    listOfCategories = List<Category>.from(localListOfCategories.toList());
+    //listOfCategories = List<Category>.from(localListOfCategories.toList());
     menuForm1FocusList = [
       FocusNode(),
       FocusNode(),
@@ -41,12 +50,15 @@ class _MenuForm1PageState extends State<MenuForm1Page> with AutomaticKeepAliveCl
     initData();
   }
 
-  void initData(){
-    if(!widget.haveNewMenu && widget.menuEntity.isNotNull) {
-      menuNameTextEditingController.text =widget.menuEntity?.menuName??'';
-      menuDescriptionTextEditingController.text =widget.menuEntity?.menuDescription??'';
-      menuCategoryTextEditingController.text =widget.menuEntity?.menuCategories.first.title??'';
-      menuSubCategoryTextEditingController.text =widget.menuEntity?.menuCategories.first.subCategory.first.title??'';
+  void initData() {
+    if (!widget.haveNewMenu && widget.menuEntity.isNotNull) {
+      menuNameTextEditingController.text = widget.menuEntity?.menuName ?? '';
+      menuDescriptionTextEditingController.text =
+          widget.menuEntity?.menuDescription ?? '';
+      menuCategoryTextEditingController.text =
+          widget.menuEntity?.menuCategories.first.title ?? '';
+      menuSubCategoryTextEditingController.text =
+          widget.menuEntity?.menuCategories.first.subCategory.first.title ?? '';
     }
   }
 
@@ -69,28 +81,25 @@ class _MenuForm1PageState extends State<MenuForm1Page> with AutomaticKeepAliveCl
     super.dispose();
   }
 
-
-  void updateCategoryAndSubCategory(Category mainCategory, Category? subCategory) {
-    setState(() {
-      menuCategoryTextEditingController.text = '';
-      menuSubCategoryTextEditingController.text = '';
-      menuCategoryTextEditingController.text = mainCategory.title ?? '';
-      selectedCategory = mainCategory;
-      if (subCategory!=null) {
-        selectedSubCategory = subCategory;
-        menuSubCategoryTextEditingController.text = subCategory.title ?? '';
-        selectedCategory?.subCategory=<Category>[subCategory];
-      }
-      final copyCategory = mainCategory.copyWith(subCategory: subCategory!=null ? <Category>[subCategory] : <Category>[]);
-      serviceLocator<MenuEntity>().menuCategories=[copyCategory];
-      context.read<MenuBloc>().add(
-            PushMenuEntityData(
-              menuEntity: serviceLocator<MenuEntity>(),
-              menuFormStage: MenuFormStage.form1,
-              menuEntityStatus: MenuEntityStatus.push,
-            ),
-          );
-    });
+  void updateCategoryAndSubCategory(
+      Category mainCategory, Category? subCategory) {
+    menuCategoryTextEditingController.text = '';
+    menuSubCategoryTextEditingController.text = '';
+    menuCategoryTextEditingController.text = mainCategory.title ?? '';
+    selectedCategory = mainCategory;
+    if (subCategory != null) {
+      selectedSubCategory = subCategory;
+      menuSubCategoryTextEditingController.text = subCategory.title ?? '';
+      final copyCategory=selectedCategory?.copyWith(subCategory: List<Category>.from([subCategory]));
+      serviceLocator<MenuEntity>().menuCategories = [copyCategory!];
+    }
+    context.read<MenuBloc>().add(
+      PushMenuEntityData(
+        menuEntity: serviceLocator<MenuEntity>(),
+        menuFormStage: MenuFormStage.form1,
+        menuEntityStatus: MenuEntityStatus.push,
+      ),
+    );
     return;
   }
 
@@ -103,21 +112,26 @@ class _MenuForm1PageState extends State<MenuForm1Page> with AutomaticKeepAliveCl
         key: const Key('menu-form1-page-bloc-builder-widget'),
         bloc: context.watch<MenuBloc>(),
         builder: (context, state) {
-          if (state is PushMenuEntityDataState && state.menuFormStage is MenuForm1Page) {}
-          if (state is PullMenuEntityDataState && state.menuFormStage is MenuForm1Page) {}
+          if (state is PushMenuEntityDataState &&
+              state.menuFormStage is MenuForm1Page) {}
+          if (state is PullMenuEntityDataState &&
+              state.menuFormStage is MenuForm1Page) {}
           return Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.stretch,
-            textDirection: serviceLocator<LanguageController>().targetTextDirection,
+            textDirection:
+                serviceLocator<LanguageController>().targetTextDirection,
             children: [
               AppTextFieldWidget(
                 key: const Key('menuCategory-textfield-widget'),
                 controller: menuCategoryTextEditingController,
                 readOnly: true,
-                textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                textDirection:
+                    serviceLocator<LanguageController>().targetTextDirection,
                 focusNode: menuForm1FocusList[0],
                 textInputAction: TextInputAction.next,
-                onFieldSubmitted: (_) => fieldFocusChange(context, menuForm1FocusList[0], menuForm1FocusList[1]),
+                onFieldSubmitted: (_) => fieldFocusChange(
+                    context, menuForm1FocusList[0], menuForm1FocusList[1]),
                 keyboardType: TextInputType.text,
                 decoration: InputDecoration(
                   labelText: 'Menu category',
@@ -129,13 +143,10 @@ class _MenuForm1PageState extends State<MenuForm1Page> with AutomaticKeepAliveCl
                   suffixIcon: IconButton(
                     onPressed: () async {
                       //await selectMenuCategory(context);
-                      final result = await context.push<(Category, Category?)>(Routes.MAIN_CATEGORY_PAGE);
-                      if (result != null) {
-                        final Category mainCategory = result.$1;
-                        final Category? subCategory = result.$2;
-                        selectedCategory = mainCategory;
-                        selectedSubCategory = subCategory;
-                        updateCategoryAndSubCategory(mainCategory, subCategory);
+                      final result = await context.push<List<Category?>>(
+                          Routes.MAIN_CATEGORY_PAGE,);
+                      if (result != null && result[0]!=null && result[1]!=null) {
+                        updateCategoryAndSubCategory(result[0]!, result[1]);
                       }
                       return;
                     },
@@ -152,13 +163,10 @@ class _MenuForm1PageState extends State<MenuForm1Page> with AutomaticKeepAliveCl
                 },
                 onTap: () async {
                   //await selectMenuCategory(context);
-                  final result = await context.push<(Category, Category?)>(Routes.MAIN_CATEGORY_PAGE);
-                  if (result != null) {
-                    final Category mainCategory = result.$1;
-                    final Category? subCategory = result.$2;
-                    selectedCategory = mainCategory;
-                    selectedSubCategory = subCategory;
-                    updateCategoryAndSubCategory(mainCategory, subCategory);
+                  final result = await context
+                      .push<List<Category?>>(Routes.MAIN_CATEGORY_PAGE);
+                  if (result != null && result[0]!=null && result[1]!=null) {
+                    updateCategoryAndSubCategory(result[0]!, result[1]);
                   }
                   return;
                 },
@@ -168,7 +176,8 @@ class _MenuForm1PageState extends State<MenuForm1Page> with AutomaticKeepAliveCl
                 key: const Key('menuSubCategory-textfield-widget'),
                 controller: menuSubCategoryTextEditingController,
                 readOnly: true,
-                textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                textDirection:
+                    serviceLocator<LanguageController>().targetTextDirection,
                 textInputAction: TextInputAction.next,
                 keyboardType: TextInputType.text,
                 decoration: InputDecoration(
@@ -181,13 +190,10 @@ class _MenuForm1PageState extends State<MenuForm1Page> with AutomaticKeepAliveCl
                   suffixIcon: IconButton(
                     onPressed: () async {
                       //await selectMenuCategory(context);
-                      final result = await context.push<(Category, Category?)>(Routes.MAIN_CATEGORY_PAGE);
-                      if (result != null) {
-                        final Category mainCategory = result.$1;
-                        final Category? subCategory = result.$2;
-                        selectedCategory = mainCategory;
-                        selectedSubCategory = subCategory;
-                        updateCategoryAndSubCategory(mainCategory, subCategory);
+                      final result = await context
+                          .push<List<Category?>>(Routes.MAIN_CATEGORY_PAGE);
+                      if (result != null && result[0]!=null && result[1]!=null) {
+                        //updateCategoryAndSubCategory(result[0]!, result[1]);
                       }
                       return;
                     },
@@ -204,13 +210,10 @@ class _MenuForm1PageState extends State<MenuForm1Page> with AutomaticKeepAliveCl
                 },
                 onTap: () async {
                   //await selectMenuCategory(context);
-                  final result = await context.push<(Category, Category?)>(Routes.MAIN_CATEGORY_PAGE);
-                  if (result != null) {
-                    final Category mainCategory = result.$1;
-                    final Category? subCategory = result.$2;
-                    selectedCategory = mainCategory;
-                    selectedSubCategory = subCategory;
-                    updateCategoryAndSubCategory(mainCategory, subCategory);
+                  final result = await context
+                      .push<List<Category?>>(Routes.MAIN_CATEGORY_PAGE);
+                  if (result != null && result[0]!=null && result[1]!=null) {
+                    //updateCategoryAndSubCategory(result[0]!, result[1]);
                   }
                   return;
                 },
@@ -218,10 +221,12 @@ class _MenuForm1PageState extends State<MenuForm1Page> with AutomaticKeepAliveCl
               const AnimatedGap(12, duration: Duration(milliseconds: 500)),
               AppTextFieldWidget(
                 controller: menuNameTextEditingController,
-                textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                textDirection:
+                    serviceLocator<LanguageController>().targetTextDirection,
                 focusNode: menuForm1FocusList[1],
                 textInputAction: TextInputAction.next,
-                onFieldSubmitted: (_) => fieldFocusChange(context, menuForm1FocusList[1], menuForm1FocusList[2]),
+                onFieldSubmitted: (_) => fieldFocusChange(
+                    context, menuForm1FocusList[1], menuForm1FocusList[2]),
                 keyboardType: TextInputType.text,
                 decoration: InputDecoration(
                   labelText: 'Menu name',
@@ -249,7 +254,8 @@ class _MenuForm1PageState extends State<MenuForm1Page> with AutomaticKeepAliveCl
                       );
                 },
                 onSaved: (newValue) {
-                  serviceLocator<MenuEntity>().menuName = menuNameTextEditingController.value.text.trim();
+                  serviceLocator<MenuEntity>().menuName =
+                      menuNameTextEditingController.value.text.trim();
                   context.read<MenuBloc>().add(
                         PushMenuEntityData(
                           menuEntity: serviceLocator<MenuEntity>(),
@@ -262,7 +268,8 @@ class _MenuForm1PageState extends State<MenuForm1Page> with AutomaticKeepAliveCl
               const AnimatedGap(12, duration: Duration(milliseconds: 500)),
               AppTextFieldWidget(
                 controller: menuDescriptionTextEditingController,
-                textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                textDirection:
+                    serviceLocator<LanguageController>().targetTextDirection,
                 focusNode: menuForm1FocusList[2],
                 textInputAction: TextInputAction.done,
                 keyboardType: TextInputType.text,
@@ -279,7 +286,8 @@ class _MenuForm1PageState extends State<MenuForm1Page> with AutomaticKeepAliveCl
                 maxLines: 5,
                 decoration: InputDecoration(
                   labelText: 'Menu description',
-                  hintText: 'Enter either the description or about the ingredients of the menu.',
+                  hintText:
+                      'Enter either the description or about the ingredients of the menu.',
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(10),
                   ),
@@ -292,7 +300,8 @@ class _MenuForm1PageState extends State<MenuForm1Page> with AutomaticKeepAliveCl
                   return null;
                 },
                 onSaved: (newValue) {
-                  serviceLocator<MenuEntity>().menuDescription= menuDescriptionTextEditingController.value.text.trim();
+                  serviceLocator<MenuEntity>().menuDescription =
+                      menuDescriptionTextEditingController.value.text.trim();
                   context.read<MenuBloc>().add(
                         PushMenuEntityData(
                           menuEntity: serviceLocator<MenuEntity>(),
@@ -310,11 +319,15 @@ class _MenuForm1PageState extends State<MenuForm1Page> with AutomaticKeepAliveCl
     );
   }
 
-  Widget _allFoodCategory(BuildContext context, int index, StateSetter innerSetState) {
+  Widget _allFoodCategory(
+      BuildContext context, int index, StateSetter innerSetState) {
     return DecoratedBox(
       decoration: BoxDecoration(
         border: Border(
-            top: (index == 0) ? BorderSide(color: Theme.of(context).dividerColor) : BorderSide.none, bottom: BorderSide(color: Theme.of(context).dividerColor)),
+            top: (index == 0)
+                ? BorderSide(color: Theme.of(context).dividerColor)
+                : BorderSide.none,
+            bottom: BorderSide(color: Theme.of(context).dividerColor)),
       ),
       child: ListTile(
         dense: true,
@@ -324,7 +337,8 @@ class _MenuForm1PageState extends State<MenuForm1Page> with AutomaticKeepAliveCl
         visualDensity: const VisualDensity(vertical: -1, horizontal: 0),
         title: Text(
           '${listOfCategories[index].title}',
-          textDirection: serviceLocator<LanguageController>().targetTextDirection,
+          textDirection:
+              serviceLocator<LanguageController>().targetTextDirection,
         ),
         onTap: () {
           innerSetState(() {});
