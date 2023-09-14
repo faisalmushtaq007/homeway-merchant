@@ -698,12 +698,18 @@ class _SaveStorePageState extends State<SaveStorePage> {
                                                   children: [
                                                     IconButton(
                                                       onPressed: () async {
-                                                        final result = await context.push(
+                                                        final result = await context.push<(String,AddressModel)>(
                                                           Routes.ALL_SAVED_ADDRESS_LIST,
                                                           extra: {
                                                             'selectItemUseCase': SelectItemUseCase.onlySelect,
                                                           },
                                                         );
+                                                        if(result!=null){
+                                                          _storeAddressController.text=result.$1;
+                                                          setState(() {
+
+                                                          });
+                                                        }
                                                       },
                                                       icon: const Icon(
                                                         Icons.my_location,

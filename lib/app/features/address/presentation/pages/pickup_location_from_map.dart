@@ -29,7 +29,7 @@ class _AddressPageController extends State<PickupLocationFromMapPage> {
   late CameraPosition cameraPosition;
   String markedIdOfCurrentUser = "current_user_location_marker_id";
   double zoomLevel = 19.0;
-  late GoogleMapController controller;
+  GoogleMapController? controller;
 
   /// Overlay to display autocomplete suggestions
   OverlayEntry? overlayEntry;
@@ -61,8 +61,8 @@ class _AddressPageController extends State<PickupLocationFromMapPage> {
     // Check Permission and Get Current Location
     _initData().then((value) async {
       controller = await mapcontroller.future;
-      await controller.animateCamera(CameraUpdate.newLatLngZoom(value, zoomLevel));
-      await controller.animateCamera(
+      await controller?.animateCamera(CameraUpdate.newLatLngZoom(value, zoomLevel));
+      await controller?.animateCamera(
         CameraUpdate.newCameraPosition(CameraPosition(
           target: value,
           zoom: zoomLevel,
@@ -85,8 +85,8 @@ class _AddressPageController extends State<PickupLocationFromMapPage> {
   @override
   void dispose() {
     overlayEntry?.remove();
-    if(!mounted || mounted) {
-      controller.dispose();
+    if(!mounted) {
+      controller?.dispose();
       mapcontroller.complete(controller);
     }
     super.dispose();

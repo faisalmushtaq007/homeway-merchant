@@ -464,6 +464,7 @@ class _AllSavedAddressPageView
                                           addressEntity: state.addressEntities[index],
                                           listOfAllAddressEntities: state.addressEntities.toList(),
                                           currentIndex: index,
+                                          selectItemUseCase: widget.selectItemUseCase,
                                         ),
                                       ),
                                     ),

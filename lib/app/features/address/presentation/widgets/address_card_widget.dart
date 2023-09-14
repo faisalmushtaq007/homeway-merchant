@@ -5,12 +5,14 @@ class AddressCardWidget extends StatefulWidget {
     required this.addressEntity,
     required this.currentIndex,
     required this.listOfAllAddressEntities,
+    this.selectItemUseCase = SelectItemUseCase.none,
     super.key,
   });
 
   final AddressModel addressEntity;
   final int currentIndex;
   final List<AddressModel> listOfAllAddressEntities;
+  final SelectItemUseCase selectItemUseCase;
 
   @override
   _AddressCardWidgetController createState() => _AddressCardWidgetController();
@@ -236,57 +238,73 @@ class _AddressCardWidgetView extends WidgetView<AddressCardWidget, _AddressCardW
     sb.writeAll(listOfAddressElements, ', ');
     return Directionality(
       textDirection: serviceLocator<LanguageController>().targetTextDirection,
-      child: Card(
-        margin: EdgeInsetsDirectional.only(
-          bottom: 8,
-        ),
-        child: Padding(
-          padding: const EdgeInsetsDirectional.symmetric(horizontal: 16, vertical: 12),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            textDirection: serviceLocator<LanguageController>().targetTextDirection,
-            children: [
-              Expanded(
-                flex: 3,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                  children: [
-                    Wrap(
-                      children: [
-                        Text(
-                          saveAddressAs,
-                          textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                          maxLines: 1,
-                          softWrap: true,
-                          overflow: TextOverflow.ellipsis,
-                          style: context.titleMedium!.copyWith(),
-                        ),
-                      ],
-                    ),
-                    const AnimatedGap(6, duration: Duration(milliseconds: 100)),
-                    Wrap(
-                      children: [
-                        Text(
-                          sb.toString(),
-                          textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                          maxLines: 6,
-                          softWrap: true,
-                          overflow: TextOverflow.ellipsis,
-                          style: context.labelMedium!.copyWith(),
-                        ),
-                      ],
-                    ),
-                  ],
+      child: InkWell(
+        onTap: () {
+          switch(widget.selectItemUseCase){
+            case SelectItemUseCase.onlySelect || SelectItemUseCase.selectAndReturn:{
+              if(context.canPop()){
+                context.pop((sb.toString(),state.addressEntity));
+              }
+              break;
+            }
+            case _:{
+
+            }
+          }
+
+        },
+        child: Card(
+          margin: EdgeInsetsDirectional.only(
+            bottom: 8,
+          ),
+          child: Padding(
+            padding: const EdgeInsetsDirectional.symmetric(horizontal: 16, vertical: 12),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              textDirection: serviceLocator<LanguageController>().targetTextDirection,
+              children: [
+                Expanded(
+                  flex: 3,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                    children: [
+                      Wrap(
+                        children: [
+                          Text(
+                            saveAddressAs,
+                            textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                            maxLines: 1,
+                            softWrap: true,
+                            overflow: TextOverflow.ellipsis,
+                            style: context.titleMedium!.copyWith(),
+                          ),
+                        ],
+                      ),
+                      const AnimatedGap(6, duration: Duration(milliseconds: 100)),
+                      Wrap(
+                        children: [
+                          Text(
+                            sb.toString(),
+                            textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                            maxLines: 6,
+                            softWrap: true,
+                            overflow: TextOverflow.ellipsis,
+                            style: context.labelMedium!.copyWith(),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-              Expanded(
-                child: state._buildPopupMenuButton(
-                  widget.currentIndex,
-                  widget.addressEntity,
-                ),
-              )
-            ],
+                Expanded(
+                  child: state._buildPopupMenuButton(
+                    widget.currentIndex,
+                    widget.addressEntity,
+                  ),
+                )
+              ],
+            ),
           ),
         ),
       ),
