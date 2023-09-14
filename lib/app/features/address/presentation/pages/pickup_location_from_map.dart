@@ -85,8 +85,10 @@ class _AddressPageController extends State<PickupLocationFromMapPage> {
   @override
   void dispose() {
     overlayEntry?.remove();
-    controller.dispose();
-    mapcontroller.complete(controller);
+    if(!mounted || mounted) {
+      controller.dispose();
+      mapcontroller.complete(controller);
+    }
     super.dispose();
   }
 

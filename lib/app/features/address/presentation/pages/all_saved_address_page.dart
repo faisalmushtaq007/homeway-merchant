@@ -39,6 +39,7 @@ class _AllSavedAddressPageController extends State<AllSavedAddressPage> {
     scrollController = ScrollController();
     innerScrollController = ScrollController();
     //context.read<AddressBloc>().add(const GetAllAddress());
+    super.initState();
   }
 
   Future<void> _fetchPage(int pageKey,
@@ -87,7 +88,7 @@ class _AllSavedAddressPageController extends State<AllSavedAddressPage> {
   void _refreshAddressList() {
     //_pagingController.refresh();
     _pagingController.nextPageKey = 0;
-    _fetchPage(0,pageSize: 10);
+    _fetchPage(0);
     _pagingController.addPageRequestListener((pageKey)  {
       this.pageKey = pageKey;
       appLog.d('Page key addPageRequestListener ${pageKey}');
@@ -399,7 +400,7 @@ class _AllSavedAddressPageView
                                                 top: 4,
                                                 bottom: 4),
                                             child: Text(
-                                              '${state._pagingController.value.itemList?.length}',
+                                              '${state.addressEntities.length}',
                                               textDirection: serviceLocator<
                                                       LanguageController>()
                                                   .targetTextDirection,
@@ -525,8 +526,13 @@ class _AllSavedAddressPageView
                                       return;
                                     }
                                     //context.read<AddressBloc>().add(const GetAllAddress());
-                                    //state._refreshAddressList();
-                                    state._pagingController.refresh();
+                                    if(state._pagingController.value.itemList==null || state._pagingController.value.itemList.isEmptyOrNull){
+                                      appLog.d('state._pagingController.value.itemList null');
+                                      await state._fetchPage(0);
+                                    }else {
+                                      appLog.d('state._pagingController.value.itemList not null');
+                                      state._pagingController.refresh();
+                                    }
                                     return;
                                   },
                                   child: Text(
