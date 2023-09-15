@@ -171,7 +171,7 @@ class _NewBusinessDocumentComponentWidgetView extends WidgetView<NewBusinessDocu
           BannerCarousel(
             banners: state.listBanners.toList(),
             customizedIndicators: const IndicatorModel.animation(width: 20, height: 5, spaceBetween: 2, widthAnimation: 50),
-            height: context.width / 3.25,
+            height: context.width / 2.75,
             activeColor: Colors.amberAccent,
             disableColor: Colors.white,
             animation: true,

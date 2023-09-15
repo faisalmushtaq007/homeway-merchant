@@ -213,6 +213,7 @@ class _BusinessInformationPageState extends State<BusinessInformationPage> with 
         child: Scaffold(
           resizeToAvoidBottomInset: true,
           appBar: AppBar(
+            title: Text('Profile'),
             actions: const [
               Padding(
                 padding: EdgeInsetsDirectional.symmetric(horizontal: 14),
@@ -225,7 +226,7 @@ class _BusinessInformationPageState extends State<BusinessInformationPage> with 
             child: PageBody(
               controller: scrollController,
               constraints: BoxConstraints(
-                minWidth: double.infinity,
+                minWidth: 1000,
                 minHeight: media.size.height,
               ),
               child: SlideInLeft(
@@ -318,11 +319,18 @@ class _BusinessInformationPageState extends State<BusinessInformationPage> with 
                                   crossAxisAlignment: CrossAxisAlignment.stretch,
                                   textDirection: serviceLocator<LanguageController>().targetTextDirection,
                                   children: [
-                                    Text(
-                                      'Enter the business details',
-                                      style: context.titleLarge,
-                                      textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                                    ).translate(),
+                                    Wrap(
+                                      children: [
+                                        Text(
+                                          'Your Business Profile Details',
+                                          style: context.titleLarge,
+                                          textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                          overflow: TextOverflow.ellipsis,
+                                          maxLines: 3,
+                                          softWrap: true,
+                                        ).translate(),
+                                      ],
+                                    ),
                                     const AnimatedGap(
                                       16,
                                       duration: Duration(
@@ -336,7 +344,7 @@ class _BusinessInformationPageState extends State<BusinessInformationPage> with 
                                       buildWhen: (previousDataList, latestDataList) => previousDataList != latestDataList,
                                       streams: [
                                         Stream.fromFuture(
-                                          AppTranslator.instance.translate('Full name'),
+                                          AppTranslator.instance.translate('Your Full Name'),
                                         ),
                                         Stream.fromFuture(
                                           AppTranslator.instance.translate('Please enter a full name'),
@@ -347,7 +355,7 @@ class _BusinessInformationPageState extends State<BusinessInformationPage> with 
                                             ),
                                           ),*/
                                       ],
-                                      initialStreamValue: const ['Full name', 'Please enter a full name', ''],
+                                      initialStreamValue: const ['Your Full Name', 'Please enter a full name', ''],
                                       builder: (context, snapshot) {
                                         //final String translateString = snapshot[2] as String;
                                         return Directionality(

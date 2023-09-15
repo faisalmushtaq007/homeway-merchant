@@ -138,6 +138,7 @@ class _ConfirmBusinessTypePageView extends WidgetView<ConfirmBusinessTypePage, _
         textDirection: serviceLocator<LanguageController>().targetTextDirection,
         child: Scaffold(
           appBar: AppBar(
+            title: Text('Business Type'),
             actions: const [
               Padding(
                 padding: EdgeInsetsDirectional.symmetric(horizontal: 14),
@@ -151,7 +152,7 @@ class _ConfirmBusinessTypePageView extends WidgetView<ConfirmBusinessTypePage, _
             child: PageBody(
               controller: scrollController,
               constraints: BoxConstraints(
-                minWidth: double.infinity,
+                minWidth: 1000,
                 minHeight: media.size.height,
               ),
               padding: EdgeInsetsDirectional.only(
@@ -255,7 +256,7 @@ class _ConfirmBusinessTypePageView extends WidgetView<ConfirmBusinessTypePage, _
                                                       children: [
                                                         Text(
                                                           '${state._businessTypesList[index].businessTypeName}',
-                                                          style: context.titleMedium,
+                                                          style: context.titleMedium!.copyWith(color: '#090909'.toColor),
                                                           textDirection: serviceLocator<LanguageController>().targetTextDirection,
                                                         ).translate(),
                                                       ],

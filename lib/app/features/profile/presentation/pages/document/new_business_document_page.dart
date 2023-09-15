@@ -42,8 +42,8 @@ class _NewBusinessDocumentPageController extends State<NewBusinessDocumentPage> 
     identityTypes = const [
       IdentityType(
         identityTypeID: 0,
-        title: 'ID Card',
-        value: 'ID Card',
+        title: 'National ID / Iqama',
+        value: 'National ID / Iqama',
         documentType: DocumentType.nationalID,
       ),
       IdentityType(
@@ -104,7 +104,7 @@ class _NewBusinessDocumentPageController extends State<NewBusinessDocumentPage> 
 
   void updateSelectedIdentityType(IdentityType selectedIdentityType) {
     currentSelectedIdentityType = selectedIdentityType;
-    //setState(() {});
+    setState(() {});
   }
 
   void updateIdentityCard(Map<String, dynamic> mapData, CaptureImageEntity captureImageEntity) {
@@ -269,20 +269,28 @@ class _NewBusinessDocumentPageView extends WidgetView<NewBusinessDocumentPage, _
                               duration: const Duration(milliseconds: 200),
                               height: context.width * 0.09,
                               width: context.width,
-                              child: RadioGroup(
-                                items: state.identityTypes.toList(),
-                                scrollDirection: Axis.horizontal,
-                                onChanged: (value) {
-                                  state.updateSelectedIdentityType(value);
-                                },
-                                selectedItem: state.currentSelectedIdentityType,
-                                shrinkWrap: true,
-                                labelBuilder: (ctx, index) {
-                                  return Text(
-                                    state.identityTypes[index].title,
-                                    style: context.labelLarge,
-                                  );
-                                },
+                              child: OverflowBar(
+                                alignment: MainAxisAlignment.start,
+                                overflowAlignment: OverflowBarAlignment.center,
+                                textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                children: [
+                                  RadioGroup(
+                                    items: state.identityTypes.toList(),
+                                    scrollDirection: Axis.horizontal,
+                                    onChanged: (value) {
+                                      state.updateSelectedIdentityType(value);
+                                    },
+                                    selectedItem: state.currentSelectedIdentityType,
+                                    shrinkWrap: true,
+                                    labelBuilder: (ctx, index) {
+                                      return Text(
+                                        state.identityTypes[index].title,
+                                        style: context.labelLarge,
+                                        textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                      ).translate();
+                                    },
+                                  ),
+                                ],
                               ),
                             ),
                             const AnimatedGap(
@@ -368,7 +376,7 @@ class _NewBusinessDocumentPageView extends WidgetView<NewBusinessDocumentPage, _
                                     textDirection: serviceLocator<LanguageController>().targetTextDirection,
                                     children: [
                                       Text(
-                                        'ID Card, Passport',
+                                        'National ID/Iqama, Passport',
                                         textDirection: serviceLocator<LanguageController>().targetTextDirection,
                                         maxLines: 1,
                                         overflow: TextOverflow.ellipsis,
