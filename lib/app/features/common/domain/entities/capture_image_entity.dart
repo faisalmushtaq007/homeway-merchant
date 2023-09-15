@@ -52,6 +52,7 @@ class CaptureImageEntity {
       base64Encode: map['base64']??'' as String,
       mimeType: map['mimeType']??'' as String,
       height: map['height']??0.0 as double,
+        width:map['width']??0.0 as double,
     );
   }
 

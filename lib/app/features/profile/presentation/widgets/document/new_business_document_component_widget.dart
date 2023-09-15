@@ -113,6 +113,7 @@ class _NewBusinessDocumentComponentWidgetController extends State<NewBusinessDoc
       var decodedImage = await decodeImageFromList(xFileReadAsBytes??fileReadAsBytes);
       double height=decodedImage.height.toDouble();
       double width=decodedImage.width.toDouble();
+
       final Map<String, dynamic> metaData = {
         'captureDocumentID': uuid,
         'originalFilePath': filePath,

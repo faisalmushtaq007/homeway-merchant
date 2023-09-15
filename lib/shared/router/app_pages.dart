@@ -37,7 +37,7 @@ class AppRouter {
 
   AppRouter._();
 
-  static const String INITIAL = Routes.SPLASH;
+  static const String INITIAL = Routes.NEW_DOCUMENT_LIST_PAGE;
 
   static final GoRouter _router = GoRouter(
     debugLogDiagnostics: true,

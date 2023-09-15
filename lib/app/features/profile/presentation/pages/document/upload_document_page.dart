@@ -37,7 +37,7 @@ class _UploadDocumentPageState extends State<UploadDocumentPage> {
   final editorConfig = DataEditorConfig(
     // Edit area background color
     // Configure the padding of the editing area
-    cropRectPadding: const EdgeInsets.all(20.0),
+    cropRectPadding: const EdgeInsets.all(8.0),
     // Configure the length of the four corners of the viewfinder
     cornerLength: 30,
     // Configure the width of the four corners of the viewfinder
@@ -131,7 +131,7 @@ class _UploadDocumentPageState extends State<UploadDocumentPage> {
           child: PageBody(
             controller: scrollController,
             constraints: BoxConstraints(
-              minWidth: double.infinity,
+              minWidth: 1000,
               minHeight: media.size.height,
             ),
             child: BlocBuilder<PermissionBloc, PermissionState>(

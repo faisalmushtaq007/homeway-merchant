@@ -241,6 +241,8 @@ class _SaveDriverPageController extends State<SaveDriverPage> {
       fileExtension: captureImageEntity.fileExtension,
       fileName: captureImageEntity.fileName,
       fileNameWithExtension: captureImageEntity.fileNameWithExtension,
+      height: captureImageEntity.height,
+      width: captureImageEntity.width,
     );
   }
 

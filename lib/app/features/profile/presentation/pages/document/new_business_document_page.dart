@@ -561,7 +561,7 @@ class _NewBusinessDocumentPageView extends WidgetView<NewBusinessDocumentPage, _
                                 Expanded(
                                   flex: 2,
                                   child: ElevatedButton(
-                                    onPressed: (!state.allBusinessDocuments.first.documentIdNumber.isEmptyOrNull &&
+                                    onPressed: (state.textEditingControllers[0].value.text.trim().isNotEmpty &&
                                             (!state.allBusinessDocuments.first.localAssetPath.isEmptyOrNull ||
                                                 state.allBusinessDocuments.first.networkAssetPath.isEmptyOrNull))
                                         ? state.onUploadPressed

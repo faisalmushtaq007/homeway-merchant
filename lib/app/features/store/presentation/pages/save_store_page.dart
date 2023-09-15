@@ -1292,6 +1292,10 @@ class _SaveStorePageState extends State<SaveStorePage> {
         final xFileReadAsBytes = await xFile.readAsBytes();
         final fileReadAsString = base64Encode(fileReadAsBytes);
         final xFileReadAsString = base64Encode(xFileReadAsBytes);
+        final String mimeType = xCroppedDocumentFile.mimeType ?? xFile.mimeType ?? 'image/png';
+        var decodedImage = await decodeImageFromList(xFileReadAsBytes??fileReadAsBytes);
+        double height=decodedImage.height.toDouble();
+        double width=decodedImage.width.toDouble();
         listBanners.insert(
             0,
             BannerModel(
@@ -1311,6 +1315,10 @@ class _SaveStorePageState extends State<SaveStorePage> {
                 'xFileReadAsBytes': xFileReadAsBytes,
                 'fileReadAsString': fileReadAsString,
                 'xFileReadAsString': xFileReadAsString,
+                //'mimeType':'image',
+                'height':height,
+                'width':width,
+                'mimeType':mimeType,
               },
             ));
         setState(() {});
