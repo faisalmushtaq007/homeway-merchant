@@ -138,7 +138,7 @@ class _ConfirmBusinessTypePageView extends WidgetView<ConfirmBusinessTypePage, _
         textDirection: serviceLocator<LanguageController>().targetTextDirection,
         child: Scaffold(
           appBar: AppBar(
-            title: Text('Business Type'),
+            title: const Text('Business Type'),
             actions: const [
               Padding(
                 padding: EdgeInsetsDirectional.symmetric(horizontal: 14),
@@ -228,7 +228,7 @@ class _ConfirmBusinessTypePageView extends WidgetView<ConfirmBusinessTypePage, _
                                                           spreadRadius: 17,
                                                           blurStyle: BlurStyle.normal,
                                                           offset: Offset.fromDirection(0.0, 0.0),
-                                                          color: Color.fromRGBO(69, 201, 125, 1),
+                                                          color: const Color.fromRGBO(69, 201, 125, 1),
                                                         ),
                                                       ]
                                                     : null,
@@ -236,7 +236,7 @@ class _ConfirmBusinessTypePageView extends WidgetView<ConfirmBusinessTypePage, _
                                               ),
                                               child: Card(
                                                 key: ValueKey(index),
-                                                color: Color.fromRGBO(240, 237, 237, 1.0),
+                                                color: const Color.fromRGBO(240, 237, 237, 1.0),
                                                 shape: RoundedRectangleBorder(
                                                   borderRadius: BorderRadiusDirectional.circular(15),
                                                   /*side: BorderSide(
@@ -348,7 +348,7 @@ class _ConfirmBusinessTypePageView extends WidgetView<ConfirmBusinessTypePage, _
                                   onPressed: state.pickupBusinessTypeName.isNotEmpty ? state._nextButtonOnPressed : null,
                                   style: ElevatedButton.styleFrom(
                                     //minimumSize: Size(180, 40),
-                                    disabledBackgroundColor: Color.fromRGBO(255, 219, 208, 1),
+                                    disabledBackgroundColor: const Color.fromRGBO(255, 219, 208, 1),
                                     disabledForegroundColor: Colors.white,
                                   ),
                                   child: Text(

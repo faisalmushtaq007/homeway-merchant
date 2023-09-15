@@ -60,7 +60,7 @@ class _BankInformationPageState extends State<BankInformationPage> with SingleTi
     listOfBankInfoTiles = [];
     _animationController = AnimationController(
       vsync: this,
-      duration: Duration(seconds: 2),
+      duration: const Duration(seconds: 2),
     );
     _animation = Tween<double>(begin: -1, end: 0).animate(
       CurvedAnimation(
@@ -107,7 +107,7 @@ class _BankInformationPageState extends State<BankInformationPage> with SingleTi
       child: Scaffold(
         resizeToAvoidBottomInset: true,
         appBar: AppBar(
-          title: Text('Payment'),
+          title: const Text('Payment'),
           actions: const [
             Padding(
               padding: EdgeInsetsDirectional.symmetric(horizontal: 14),

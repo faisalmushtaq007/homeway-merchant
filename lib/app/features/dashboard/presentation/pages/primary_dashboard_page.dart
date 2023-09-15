@@ -9,18 +9,22 @@ class PrimaryDashboardPage extends StatefulWidget {
   final List<PrimaryDashboardEntity> primaryDashboardMenuEntities;
 
   @override
-  _PrimaryDashboardPageState createState() => _PrimaryDashboardPageState();
+  _PrimaryDashboardPageController createState() => _PrimaryDashboardPageController();
 }
 
-class _PrimaryDashboardPageState extends State<PrimaryDashboardPage> {
+class _PrimaryDashboardPageController extends State<PrimaryDashboardPage> {
   final ScrollController scrollController = ScrollController();
+  final ScrollController innerScrollController = ScrollController();
   List<PrimaryDashboardEntity> primaryDashboardMenuEntities = [];
+  AppUserEntity? appUserEntity;
 
   @override
   void initState() {
     super.initState();
+    context.read<PermissionBloc>().add(RequestLocationPermissionEvent());
+
     primaryDashboardMenuEntities.clear();
-    primaryDashboardMenuEntities.add(
+    /*primaryDashboardMenuEntities.add(
       PrimaryDashboardEntity(
         title: 'Upload Documents',
         titleID: 0,
@@ -45,7 +49,7 @@ class _PrimaryDashboardPageState extends State<PrimaryDashboardPage> {
         ),
         hasEntityStored: false,
       ),
-    );
+    );*/
     primaryDashboardMenuEntities.add(
       PrimaryDashboardEntity(
         title: 'My Stores',
@@ -88,7 +92,57 @@ class _PrimaryDashboardPageState extends State<PrimaryDashboardPage> {
         hasEntityStored: false,
       ),
     );
+    initData();
   }
+
+  Future<void> initData() async{
+    final cacheUserEntity=serviceLocator<AppUserEntity>();
+    AppUserEntity input=AppUserEntity(
+      hasCurrentUser: true,
+      isoCode: !cacheUserEntity.isoCode.isEmptyOrNull?cacheUserEntity.isoCode:cacheUserEntity.businessProfile?.isoCode??'',
+      country_dial_code: !cacheUserEntity.country_dial_code.isEmptyOrNull?cacheUserEntity.country_dial_code:cacheUserEntity.businessProfile?.countryDialCode??'',
+      phoneNumber: !cacheUserEntity.phoneNumber.isEmptyOrNull?cacheUserEntity.phoneNumber:cacheUserEntity.businessProfile?.businessPhoneNumber??'',
+      uid: cacheUserEntity.userID.toString(),
+      access_token: cacheUserEntity.access_token ?? '',
+      currentUserStage: 0,
+      phoneNumberWithoutDialCode: !cacheUserEntity.phoneNumberWithoutDialCode.isEmptyOrNull?cacheUserEntity.phoneNumberWithoutDialCode:cacheUserEntity.businessProfile?.phoneNumberWithoutDialCode??'',
+    );
+    final getCurrentUserResult = await serviceLocator<GetCurrentAppUserUseCase>()(
+      input: input,
+    );
+    getCurrentUserResult.when(remote: (data, meta) {
+      if(data.isNotNull){
+        appUserEntity=data!;
+      }
+    }, localDb: (data, meta) {
+      if(data.isNotNull){
+        appUserEntity=data!;
+      }
+    }, error: (dataSourceFailure, reason, error, networkException, stackTrace, exception, extra) {
+
+    },);
+    setState(() {
+
+    });
+  }
+
+  @override
+  void dispose() {
+    innerScrollController.dispose();
+    scrollController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) => BlocBuilder<BusinessProfileBloc, BusinessProfileState>(
+        builder: (context, state) {
+          return _PrimaryDashboardPageView(this);
+        },
+      );
+}
+
+class _PrimaryDashboardPageView extends WidgetView<PrimaryDashboardPage, _PrimaryDashboardPageController> {
+  const _PrimaryDashboardPageView(super.state);
 
   @override
   Widget build(BuildContext context) {
@@ -111,6 +165,8 @@ class _PrimaryDashboardPageState extends State<PrimaryDashboardPage> {
         child: DoubleTapToExit(
           child: Scaffold(
             appBar: AppBar(
+              title: const Text('Dashboard'),
+              titleSpacing: 4,
               actions: const [
                 Padding(
                   padding: EdgeInsetsDirectional.symmetric(horizontal: 14),
@@ -119,20 +175,20 @@ class _PrimaryDashboardPageState extends State<PrimaryDashboardPage> {
               ],
             ),
             drawer: const PrimaryDashboardDrawer(
-              key: const Key('primary-dashboard-drawer'),
+              key: const Key('primary-dashboard-drawer-menu'),
             ),
             body: SlideInLeft(
               key: const Key('primary-dashboard-page-slideinleft-widget'),
               delay: const Duration(milliseconds: 500),
               from: 200,
               child: PageBody(
-                controller: scrollController,
+                controller: state.scrollController,
                 constraints: BoxConstraints(
                   minWidth: double.infinity,
                   minHeight: context.height,
                 ),
                 padding: EdgeInsetsDirectional.only(
-                  //top: margins,
+                  top: topPadding,
                   //bottom: margins,
                   start: margins * 2.5,
                   end: margins * 2.5,
@@ -140,98 +196,98 @@ class _PrimaryDashboardPageState extends State<PrimaryDashboardPage> {
                 child: BlocBuilder<PermissionBloc, PermissionState>(
                   bloc: context.read<PermissionBloc>(),
                   buildWhen: (previous, current) => previous != current,
-                  builder: (context, state) {
+                  builder: (context, permissionState) {
                     return Container(
                       constraints: BoxConstraints(
-                        minWidth: double.infinity,
+                        minWidth: 1000,
                         minHeight: context.height,
                       ),
-                      child: ScrollableColumn(
-                        controller: scrollController,
-                        physics: const ClampingScrollPhysics(),
-                        textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                        mainAxisSize: MainAxisSize.min,
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        padding: EdgeInsetsDirectional.only(
-                          top: topPadding,
-                        ),
-                        children: [
-                          const Wrap(
-                            alignment: WrapAlignment.center,
-                            children: [
-                              CircleAvatar(
-                                maxRadius: 40,
-                                backgroundImage: AssetImage(
-                                  "assets/image/app_logo_light.jpg",
+                      child: CustomScrollView(
+                        controller: state.innerScrollController,
+                        //physics: const ClampingScrollPhysics(),
+                        slivers: [
+                          SliverList(
+                            delegate: SliverChildListDelegate(
+                              [
+                                Wrap(
+                                  textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                  alignment: WrapAlignment.center,
+                                  children: [
+                                    const CircleAvatar(
+                                      maxRadius: 40,
+                                      backgroundImage: AssetImage(
+                                        "assets/image/app_logo_light.jpg",
+                                      ),
+                                    ),
+                                  ],
                                 ),
-                              ),
-                            ],
-                          ),
-                          const AnimatedGap(
-                            12,
-                            duration: Duration(milliseconds: 500),
-                          ),
-                          Wrap(
-                            alignment: WrapAlignment.center,
-                            children: [
-                              Text(
-                                "${serviceLocator<AppUserEntity>().businessProfile!.userName!.isEmptyOrNull ? 'Thomas Shelby' : serviceLocator<AppUserEntity>().businessProfile?.userName ?? ''}",
-                                style: TextStyle(fontWeight: FontWeight.w900, fontSize: 18),
-                                textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                              ).translate(),
-                            ],
-                          ),
-                          Wrap(
-                            alignment: WrapAlignment.center,
-                            textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                            children: [
-                              Text("${serviceLocator<AppUserEntity>().businessProfile!.businessEmailAddress!.isEmptyOrNull ? 'thomashomeservice@gmail.com' : serviceLocator<AppUserEntity>().businessProfile?.businessEmailAddress ?? ''}")
-                                  .translate(),
-                            ],
-                          ),
-                          const AnimatedGap(
-                            16,
-                            duration: Duration(milliseconds: 500),
-                          ),
-                          Wrap(
-                            textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                            alignment: WrapAlignment.center,
-                            children: [
-                              DecoratedBox(
-                                decoration: BoxDecoration(color: Color.fromRGBO(252, 240, 218, 1)),
-                                child: Padding(
-                                  padding: const EdgeInsetsDirectional.only(top: 8, bottom: 8, start: 4, end: 4),
-                                  child: Text(
-                                    'Your business verification is under review process. Thank you so much for being our partner.',
-                                    textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                                    textAlign: TextAlign.center,
-                                    style: context.bodyMedium!.copyWith(color: Color.fromRGBO(207, 138, 10, 1)),
-                                  ).translate(),
+                                const AnimatedGap(
+                                  12,
+                                  duration: Duration(milliseconds: 500),
                                 ),
-                              ),
-                            ],
+                                Wrap(
+                                  alignment: WrapAlignment.center,
+                                  textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                  children: [
+                                    Text(
+                                      "${(state.appUserEntity.isNotNull && state.appUserEntity!.businessProfile.isNotNull && !state.appUserEntity!.businessProfile!.userName.isEmptyOrNull ) ? state.appUserEntity!.businessProfile!.userName : 'Hello User'}",
+                                      style: const TextStyle(fontWeight: FontWeight.w900, fontSize: 18),
+                                      textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                    ).translate(),
+                                  ],
+                                ),
+                                if((state.appUserEntity.isNotNull && state.appUserEntity!.businessProfile.isNotNull && !state.appUserEntity!.businessProfile!.businessEmailAddress.isEmptyOrNull ))
+                                  Wrap(
+                                  alignment: WrapAlignment.center,
+                                  textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                  children: [
+                                    Text("${state.appUserEntity?.businessProfile!.businessEmailAddress}")
+                                        .translate(),
+                                  ],
+                                ),
+                                const AnimatedGap(
+                                  16,
+                                  duration: Duration(milliseconds: 500),
+                                ),
+                                Wrap(
+                                  textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                  alignment: WrapAlignment.center,
+                                  children: [
+                                    DecoratedBox(
+                                      decoration: const BoxDecoration(color: Color.fromRGBO(252, 240, 218, 1)),
+                                      child: Padding(
+                                        padding: const EdgeInsetsDirectional.only(top: 8, bottom: 8, start: 4, end: 4),
+                                        child: Text(
+                                          'Your business verification is under review process. Thank you so much for being our partner.',
+                                          textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                          textAlign: TextAlign.center,
+                                          style: context.bodyMedium!
+                                              .copyWith(color: const Color.fromRGBO(207, 138, 10, 1)),
+                                        ).translate(),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                const AnimatedGap(
+                                  25,
+                                  duration: Duration(milliseconds: 500),
+                                ),
+                              ],
+
+                            ),
                           ),
-                          const AnimatedGap(
-                            25,
-                            duration: Duration(milliseconds: 500),
-                          ),
-                          Flexible(
+                          SliverFillRemaining(
                             child: ListView.builder(
                               shrinkWrap: true,
-                              physics: const ClampingScrollPhysics(),
-                              itemCount: primaryDashboardMenuEntities.length,
+                              //physics: const ClampingScrollPhysics(),
+                              itemCount: state.primaryDashboardMenuEntities.length,
                               itemBuilder: (context, index) {
                                 return PrimaryDashboardMenuCard(
                                   key: ValueKey(index),
-                                  primaryDashboardMenuEntity: primaryDashboardMenuEntities[index],
+                                  primaryDashboardMenuEntity: state.primaryDashboardMenuEntities[index],
                                 );
                               },
                             ),
-                          ),
-                          const AnimatedGap(
-                            10,
-                            duration: Duration(milliseconds: 500),
                           ),
                         ],
                       ),

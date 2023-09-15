@@ -213,7 +213,7 @@ class _BusinessInformationPageState extends State<BusinessInformationPage> with 
         child: Scaffold(
           resizeToAvoidBottomInset: true,
           appBar: AppBar(
-            title: Text('Profile'),
+            title: const Text('Profile'),
             actions: const [
               Padding(
                 padding: EdgeInsetsDirectional.symmetric(horizontal: 14),
