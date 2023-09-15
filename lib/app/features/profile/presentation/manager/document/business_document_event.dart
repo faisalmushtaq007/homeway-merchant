@@ -175,6 +175,8 @@ class BusinessDocumentEvent with _$BusinessDocumentEvent {
     @Default(false) bool isCropping,
     ImageEditorController? imageEditorController,
     Image? image,
+    @Default(0.0) double height,
+    @Default(0.0) double width,
   }) = SaveCropDocument;
 
   factory BusinessDocumentEvent.saveBusinessDocument({

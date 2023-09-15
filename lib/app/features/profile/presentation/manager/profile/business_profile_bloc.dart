@@ -26,7 +26,7 @@ class BusinessProfileBloc extends Bloc<BusinessProfileEvent, BusinessProfileStat
   }
 
   FutureOr<void> _saveBusinessProfile(SaveBusinessProfile event, Emitter<BusinessProfileState> emit) async {
-    try {
+    /*try {*/
       DataSourceState<BusinessProfileEntity> result;
       if (event.hasEditBusinessProfile || event.hasSaveBusinessType) {
         result = await serviceLocator<EditBusinessProfileUseCase>()(id: event.businessProfileEntity.businessProfileID, input: event.businessProfileEntity);
@@ -76,7 +76,7 @@ class BusinessProfileBloc extends Bloc<BusinessProfileEvent, BusinessProfileStat
           );
         },
       );
-    } catch (e, s) {
+/*    } catch (e, s) {
       appLog.e('Profile bloc save exception $e');
       emit(
         BusinessProfileExceptionState(
@@ -86,7 +86,7 @@ class BusinessProfileBloc extends Bloc<BusinessProfileEvent, BusinessProfileStat
           businessProfileStatus: BusinessProfileStatus.saveBusinessProfile,
         ),
       );
-    }
+    }*/
   }
 
   Future<void> updateUserProfile(BusinessProfileEntity data, int stage) async {

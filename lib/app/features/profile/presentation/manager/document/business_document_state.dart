@@ -156,6 +156,8 @@ class BusinessDocumentState with _$BusinessDocumentState {
     XFile? pickedFile,
     Uint8List? uint8list,
     @Default({}) Map<String, dynamic> metaData,
+    @Default(0.0) double height,
+    @Default(0.0) double width,
   }) = CaptureImageFromCameraSuccessState;
 
   factory BusinessDocumentState.captureImageFromCameraProcessingState({
@@ -177,6 +179,8 @@ class BusinessDocumentState with _$BusinessDocumentState {
     XFile? pickedFile,
     Uint8List? uint8list,
     @Default({}) Map<String, dynamic> metaData,
+    @Default(0.0) double height,
+    @Default(0.0) double width,
   }) = SelectImageFromGallerySuccessState;
 
   factory BusinessDocumentState.selectImageFromGalleryFailedState({
@@ -263,6 +267,8 @@ class BusinessDocumentState with _$BusinessDocumentState {
     ImageEditorController? imageEditorController,
     Image? image,
     String? assetNetworkUrl,
+    @Default(0.0) double height,
+    @Default(0.0) double width,
   }) = SaveCropDocumentSuccessState;
 
   factory BusinessDocumentState.saveCropDocumentProcessingState({
@@ -285,6 +291,8 @@ class BusinessDocumentState with _$BusinessDocumentState {
     @Default(false) bool isCropping,
     ImageEditorController? imageEditorController,
     Image? image,
+    @Default(0.0) double height,
+    @Default(0.0) double width,
   }) = SaveCropDocumentFailedState;
   factory BusinessDocumentState.saveCropDocumentErrorState({
     @Default(DocumentType.tradeLicence) DocumentType documentType,

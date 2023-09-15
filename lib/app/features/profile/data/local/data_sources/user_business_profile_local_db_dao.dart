@@ -7,7 +7,7 @@ class UserBusinessProfileLocalDbRepository<T extends BusinessProfileEntity> impl
 
   @override
   Future<Either<RepositoryBaseFailure, BusinessProfileEntity>> add(BusinessProfileEntity entity) async {
-    final result = await tryCatch<BusinessProfileEntity>(() async {
+    /*final result = await tryCatch<BusinessProfileEntity>(() async {
       final int recordID = await _businessProfile.add(await _db, entity.toMap());
       //final BusinessProfileEntity recordBusinessProfileEntity = entity.copyWith(businessProfileID: recordID.toString());
       await update(entity.copyWith(businessProfileID: recordID), UniqueId(recordID));
@@ -22,7 +22,21 @@ class UserBusinessProfileLocalDbRepository<T extends BusinessProfileEntity> impl
         return storeEntity;
       }
     });
-    return result;
+    return result;*/
+    appLog.d('Save ${entity.toMap()}');
+    final int recordID = await _businessProfile.add(await _db, entity.toMap());
+    //final BusinessProfileEntity recordBusinessProfileEntity = entity.copyWith(businessProfileID: recordID.toString());
+    await update(entity.copyWith(businessProfileID: recordID), UniqueId(recordID));
+    final value = await _businessProfile.record(recordID).get(await _db);
+    appLog.d('Save ${value ?? ''}');
+    if (value != null) {
+      final storedBusinessProfileEntity = BusinessProfileEntity.fromMap(value);
+      final storeEntity = storedBusinessProfileEntity.copyWith(businessProfileID: recordID);
+      return Right(storeEntity);
+    } else {
+      final storeEntity = entity.copyWith(businessProfileID: recordID);
+      return Right(storeEntity);
+    }
   }
 
   @override

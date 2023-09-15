@@ -30,6 +30,7 @@ class _BusinessInformationPageState extends State<BusinessInformationPage> with 
   late final TextEditingController _phoneController;
   late final TextEditingController _addressController;
   String _selectedGender = 'Male';
+  AddressModel? addressModel;
 
   // Local PhoneController variables
   String? phoneValidation;
@@ -52,6 +53,7 @@ class _BusinessInformationPageState extends State<BusinessInformationPage> with 
   @override
   void initState() {
     super.initState();
+    addressModel=null;
     scrollController = ScrollController();
     innerScrollController = ScrollController();
     _usernameController = TextEditingController();
@@ -97,6 +99,7 @@ class _BusinessInformationPageState extends State<BusinessInformationPage> with 
 
   @override
   void dispose() {
+    addressModel=null;
     _animationController.dispose();
     _usernameController.dispose();
     _businessNameController.dispose();
@@ -254,11 +257,12 @@ class _BusinessInformationPageState extends State<BusinessInformationPage> with 
                                   case SaveBusinessProfileState():
                                     {
                                       _usernameController.text = state.businessProfileEntity.userName ?? '';
-                                      _addressController.text = state.businessProfileEntity.businessAddress?.address?.area ?? '';
+                                      _addressController.text = state.businessProfileEntity.businessAddress?.address?.displayAddressName ?? '';
                                       _emailController.text = state.businessProfileEntity.businessEmailAddress ?? '';
                                       _businessNameController.text = state.businessProfileEntity.businessName ?? '';
-                                      userEnteredPhoneNumber = state.businessProfileEntity.businessPhoneNumber ?? '';
+                                      userEnteredPhoneNumber = state.businessProfileEntity.businessPhoneNumber ??'+${initialPhoneNumberValue.countryCode} ${initialPhoneNumberValue.getFormattedNsn().trim()}';
                                       hasEditBusinessProfile = state.hasEditBusinessProfile;
+                                      addressModel=state.businessProfileEntity.businessAddress;
                                       initialPhoneNumberValue = PhoneNumber(
                                         isoCode: IsoCode.values.byName(state.businessProfileEntity.isoCode ?? 'SA'),
                                         nsn: state.businessProfileEntity.businessPhoneNumber ?? '',
@@ -287,10 +291,11 @@ class _BusinessInformationPageState extends State<BusinessInformationPage> with 
                                         nsn: businessProfileEntity?.businessPhoneNumber ?? '',
                                       );
                                       _usernameController.text = businessProfileEntity?.userName ?? '';
-                                      _addressController.text = businessProfileEntity?.businessAddress?.address?.area ?? '';
+                                      _addressController.text = businessProfileEntity?.businessAddress?.address?.displayAddressName ?? '';
+                                      addressModel=businessProfileEntity?.businessAddress;
                                       _emailController.text = businessProfileEntity?.businessEmailAddress ?? '';
                                       _businessNameController.text = businessProfileEntity?.businessName ?? '';
-                                      userEnteredPhoneNumber = businessProfileEntity?.businessPhoneNumber ?? '';
+                                      userEnteredPhoneNumber = businessProfileEntity?.businessPhoneNumber ?? '+${initialPhoneNumberValue.countryCode} ${initialPhoneNumberValue.getFormattedNsn().trim()}';
                                       initialPhoneNumberValue = PhoneNumber(
                                         isoCode: IsoCode.values.byName(state.businessProfileEntity?.isoCode ?? 'SA'),
                                         nsn: state.businessProfileEntity?.businessPhoneNumber ?? '',
@@ -606,6 +611,7 @@ class _BusinessInformationPageState extends State<BusinessInformationPage> with 
                                             controller: _addressController,
                                             textDirection: serviceLocator<LanguageController>().targetTextDirection,
                                             maxLines: 3,
+                                            readOnly: true,
                                             decoration: InputDecoration(
                                               labelText: snapshot[0],
                                               isDense: true,
@@ -631,7 +637,21 @@ class _BusinessInformationPageState extends State<BusinessInformationPage> with 
                                                 child: Row(
                                                   children: [
                                                     IconButton(
-                                                      onPressed: () {},
+                                                      onPressed: () async{
+                                                        final result = await context.push<(String,AddressModel)>(
+                                                          Routes.ALL_SAVED_ADDRESS_LIST,
+                                                          extra: {
+                                                            'selectItemUseCase': SelectItemUseCase.onlySelect,
+                                                          },
+                                                        );
+                                                        if(result!=null){
+                                                          _addressController.text=result.$1;
+                                                          addressModel=result.$2;
+                                                          setState(() {
+
+                                                          });
+                                                        }
+                                                      },
                                                       icon: const Icon(
                                                         Icons.my_location,
                                                       ),
@@ -757,12 +777,13 @@ class _BusinessInformationPageState extends State<BusinessInformationPage> with 
                                             // Edit
                                             businessProfileEntity = widget.businessProfileEntity!.copyWith(
                                               userName: _usernameController.value.text,
-                                              businessAddress: AddressModel(
-                                                address: AddressBean(area: _addressController.value.text),
-                                              ),
+                                              /*businessAddress: AddressModel(
+                                                address: AddressBean(displayAddressName: _addressController.value.text),
+                                              ),*/
+                                                businessAddress: addressModel,
                                               businessEmailAddress: _emailController.value.text,
                                               businessName: _businessNameController.value.text,
-                                              businessPhoneNumber: userEnteredPhoneNumber,
+                                                businessPhoneNumber: '+${initialPhoneNumberValue.countryCode} ${initialPhoneNumberValue.getFormattedNsn().trim()}'??userEnteredPhoneNumber,
                                               businessProfileID: widget.businessProfileEntity?.businessProfileID,
                                               countryDialCode: initialPhoneNumberValue.countryCode,
                                               isoCode: initialPhoneNumberValue.isoCode.name,
@@ -772,16 +793,18 @@ class _BusinessInformationPageState extends State<BusinessInformationPage> with 
                                             // New
                                             businessProfileEntity = BusinessProfileEntity(
                                               userName: _usernameController.value.text,
-                                              businessAddress: AddressModel(
-                                                address: AddressBean(area: _addressController.value.text),
-                                              ),
+                                                businessAddress: addressModel,
+                                              /*businessAddress: AddressModel(
+                                                address: AddressBean(displayAddressName: _addressController.value.text),
+                                              ),*/
                                               businessEmailAddress: _emailController.value.text,
                                               businessName: _businessNameController.value.text,
-                                              businessPhoneNumber: userEnteredPhoneNumber,
+                                              businessPhoneNumber: '+${initialPhoneNumberValue.countryCode} ${initialPhoneNumberValue.getFormattedNsn().trim()}'??userEnteredPhoneNumber,
                                               businessTypeEntity: BusinessTypeEntity(),
                                               countryDialCode: initialPhoneNumberValue.countryCode,
                                               isoCode: initialPhoneNumberValue.isoCode.name,
-                                                phoneNumberWithoutDialCode: initialPhoneNumberValue.nsn??''
+                                                phoneNumberWithoutDialCode: initialPhoneNumberValue.nsn??'',
+
                                             );
                                           }
                                           serviceLocator<AppUserEntity>().currentProfileStatus = CurrentProfileStatus.basicProfileSaved;

@@ -77,6 +77,8 @@ class _SaveStorePageState extends State<SaveStorePage> {
     overflow: OverflowBehavior.forbidden(),
   );
   late final MaskTextInputFormatter maximumDeliveryTimeFormatter;
+  AddressModel? addressModel;
+
   List<FocusNode> focusList = [
     FocusNode(),
     FocusNode(),
@@ -96,6 +98,7 @@ class _SaveStorePageState extends State<SaveStorePage> {
   @override
   void initState() {
     super.initState();
+    addressModel = null;
     scrollController = ScrollController();
     innerScrollController = ScrollController();
     file_images = [];
@@ -131,11 +134,13 @@ class _SaveStorePageState extends State<SaveStorePage> {
     initializeStoreWorkingDays();
     initializeStoreAvailableFoodTypes();
     initializeStoreAvailableDrivers();
-    maximumDeliveryTimeFormatter = MaskTextInputFormatter(mask: "##", filter: {"#": RegExp(r'[0-9]')}, type: MaskAutoCompletionType.lazy);
+    maximumDeliveryTimeFormatter =
+        MaskTextInputFormatter(mask: "##", filter: {"#": RegExp(r'[0-9]')}, type: MaskAutoCompletionType.lazy);
   }
 
   @override
   void dispose() {
+    addressModel = null;
     _storeAddressController.dispose();
     _storeNameController.dispose();
     _storePhoneNumberController.dispose();
@@ -197,7 +202,8 @@ class _SaveStorePageState extends State<SaveStorePage> {
   }
 
   void initializeStoreAvailableFoodPreparationType() {
-    _storeAvailableFoodPreparationType = List<StoreAvailableFoodPreparationType>.from(localStoreAvailableFoodPreparationType.toList());
+    _storeAvailableFoodPreparationType =
+        List<StoreAvailableFoodPreparationType>.from(localStoreAvailableFoodPreparationType.toList());
   }
 
   void initializeStoreAvailableFoodTypes() {
@@ -233,7 +239,9 @@ class _SaveStorePageState extends State<SaveStorePage> {
       phoneNumberVerification = PhoneNumberVerification.invalid;
       valueNotifierPhoneNumberVerification.value = PhoneNumberVerification.invalid;
     } else {
-      if (phoneValidation == null && phoneNumberControllers.value != null && phoneNumberControllers.value!.getFormattedNsn().trim().isNotEmpty) {
+      if (phoneValidation == null &&
+          phoneNumberControllers.value != null &&
+          phoneNumberControllers.value!.getFormattedNsn().trim().isNotEmpty) {
         phoneNumberVerification = PhoneNumberVerification.valid;
         valueNotifierPhoneNumberVerification.value = PhoneNumberVerification.valid;
       } else {
@@ -250,12 +258,12 @@ class _SaveStorePageState extends State<SaveStorePage> {
     //
   }
 
-
   Widget _allFoodCategory(BuildContext context, int index, StateSetter innerSetState) {
     return DecoratedBox(
       decoration: BoxDecoration(
         border: Border(
-            top: (index == 0) ? BorderSide(color: Theme.of(context).dividerColor) : BorderSide.none, bottom: BorderSide(color: Theme.of(context).dividerColor)),
+            top: (index == 0) ? BorderSide(color: Theme.of(context).dividerColor) : BorderSide.none,
+            bottom: BorderSide(color: Theme.of(context).dividerColor)),
       ),
       child: ListTile(
         dense: true,
@@ -282,11 +290,11 @@ class _SaveStorePageState extends State<SaveStorePage> {
       menuSubCategoryTextEditingController.text = '';
       menuCategoryTextEditingController.text = mainCategory.title ?? '';
       selectedCategory = mainCategory;
-      if (subCategory!=null) {
+      if (subCategory != null) {
         selectedSubCategory = subCategory;
         menuSubCategoryTextEditingController.text = subCategory?.title ?? '';
-        final copyCategory=selectedCategory?.copyWith(subCategory: List<Category>.from([subCategory]));
-        selectedCategory=copyCategory;
+        final copyCategory = selectedCategory?.copyWith(subCategory: List<Category>.from([subCategory]));
+        selectedCategory = copyCategory;
       }
     });
     return;
@@ -399,7 +407,8 @@ class _SaveStorePageState extends State<SaveStorePage> {
                                         children: [
                                           BannerCarousel(
                                             banners: listBanners.toList(),
-                                            customizedIndicators: const IndicatorModel.animation(width: 20, height: 5, spaceBetween: 2, widthAnimation: 50),
+                                            customizedIndicators: const IndicatorModel.animation(
+                                                width: 20, height: 5, spaceBetween: 2, widthAnimation: 50),
                                             height: 150,
                                             activeColor: Colors.amberAccent,
                                             disableColor: Colors.white,
@@ -409,35 +418,35 @@ class _SaveStorePageState extends State<SaveStorePage> {
                                             showIndicator: false,
                                           ),
                                           GestureDetector(
-                                            onTap: () async{
+                                            onTap: () async {
                                               return await uploadStoreImage(context);
                                             },
                                             child: Align(
                                               alignment: Alignment.topRight,
-                                              child:
-                                                  DecoratedBox(
-                                                    decoration: BoxDecoration(
-                                                      shape: BoxShape.circle,
-                                                      color: Colors.white70,
-                                                      boxShadow: [
-                                                        BoxShadow(
-                                                          color: Colors.black.withOpacity(0.2),
-                                                          spreadRadius: 2,
-                                                          offset: const Offset(0, 2),
-                                                          blurRadius: 2,
-                                                        )
-                                                      ],
-                                                    ),
-                                                    child: Padding(
-                                                      padding: EdgeInsetsDirectional.all(6),
-                                                      child: Icon(
-                                                        Icons.edit,
-                                                        color: context.colorScheme.primary,
-                                                        size: 18,
-                                                        textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                                                      ),
-                                                    ),
+                                              child: DecoratedBox(
+                                                decoration: BoxDecoration(
+                                                  shape: BoxShape.circle,
+                                                  color: Colors.white70,
+                                                  boxShadow: [
+                                                    BoxShadow(
+                                                      color: Colors.black.withOpacity(0.2),
+                                                      spreadRadius: 2,
+                                                      offset: const Offset(0, 2),
+                                                      blurRadius: 2,
+                                                    )
+                                                  ],
+                                                ),
+                                                child: Padding(
+                                                  padding: EdgeInsetsDirectional.all(6),
+                                                  child: Icon(
+                                                    Icons.edit,
+                                                    color: context.colorScheme.primary,
+                                                    size: 18,
+                                                    textDirection:
+                                                        serviceLocator<LanguageController>().targetTextDirection,
                                                   ),
+                                                ),
+                                              ),
                                             ),
                                           ),
                                         ],
@@ -542,8 +551,9 @@ class _SaveStorePageState extends State<SaveStorePage> {
                                         suffixIcon: IconButton(
                                           onPressed: () async {
                                             final result = await context.push<List<Category?>>(
-                                              Routes.MAIN_CATEGORY_PAGE,);
-                                            if (result != null && result[0]!=null && result[1]!=null) {
+                                              Routes.MAIN_CATEGORY_PAGE,
+                                            );
+                                            if (result != null && result[0] != null && result[1] != null) {
                                               updateCategoryAndSubCategory(result[0]!, result[1]);
                                             }
                                           },
@@ -560,8 +570,9 @@ class _SaveStorePageState extends State<SaveStorePage> {
                                       },
                                       onTap: () async {
                                         final result = await context.push<List<Category?>>(
-                                          Routes.MAIN_CATEGORY_PAGE,);
-                                        if (result != null && result[0]!=null && result[1]!=null) {
+                                          Routes.MAIN_CATEGORY_PAGE,
+                                        );
+                                        if (result != null && result[0] != null && result[1] != null) {
                                           updateCategoryAndSubCategory(result[0]!, result[1]);
                                         }
                                       },
@@ -583,8 +594,9 @@ class _SaveStorePageState extends State<SaveStorePage> {
                                         suffixIcon: IconButton(
                                           onPressed: () async {
                                             final result = await context.push<List<Category?>>(
-                                              Routes.MAIN_CATEGORY_PAGE,);
-                                            if (result != null && result[0]!=null && result[1]!=null) {
+                                              Routes.MAIN_CATEGORY_PAGE,
+                                            );
+                                            if (result != null && result[0] != null && result[1] != null) {
                                               updateCategoryAndSubCategory(result[0]!, result[1]);
                                             }
                                           },
@@ -601,8 +613,9 @@ class _SaveStorePageState extends State<SaveStorePage> {
                                       },
                                       onTap: () async {
                                         final result = await context.push<List<Category?>>(
-                                          Routes.MAIN_CATEGORY_PAGE,);
-                                        if (result != null && result[0]!=null && result[1]!=null) {
+                                          Routes.MAIN_CATEGORY_PAGE,
+                                        );
+                                        if (result != null && result[0] != null && result[1] != null) {
                                           updateCategoryAndSubCategory(result[0]!, result[1]);
                                         }
                                       },
@@ -647,7 +660,8 @@ class _SaveStorePageState extends State<SaveStorePage> {
                                       key: const Key(
                                         'store-address-textFormField-key',
                                       ),
-                                      buildWhen: (previousDataList, latestDataList) => previousDataList != latestDataList,
+                                      buildWhen: (previousDataList, latestDataList) =>
+                                          previousDataList != latestDataList,
                                       streams: [
                                         Stream.fromFuture(
                                           AppTranslator.instance.translate('Store address'),
@@ -698,17 +712,16 @@ class _SaveStorePageState extends State<SaveStorePage> {
                                                   children: [
                                                     IconButton(
                                                       onPressed: () async {
-                                                        final result = await context.push<(String,AddressModel)>(
+                                                        final result = await context.push<(String, AddressModel)>(
                                                           Routes.ALL_SAVED_ADDRESS_LIST,
                                                           extra: {
                                                             'selectItemUseCase': SelectItemUseCase.onlySelect,
                                                           },
                                                         );
-                                                        if(result!=null){
-                                                          _storeAddressController.text=result.$1;
-                                                          setState(() {
-
-                                                          });
+                                                        if (result != null) {
+                                                          _storeAddressController.text = result.$1;
+                                                          addressModel = result.$2;
+                                                          setState(() {});
                                                         }
                                                       },
                                                       icon: const Icon(
@@ -806,7 +819,8 @@ class _SaveStorePageState extends State<SaveStorePage> {
                                                 Icons.arrow_drop_down,
                                               ),
                                               isDense: true,
-                                              contentPadding: const EdgeInsetsDirectional.symmetric(vertical: 8, horizontal: 12),
+                                              contentPadding:
+                                                  const EdgeInsetsDirectional.symmetric(vertical: 8, horizontal: 12),
                                             ),
                                             validator: (value) {
                                               if (value == null || value.isEmpty) {
@@ -839,7 +853,8 @@ class _SaveStorePageState extends State<SaveStorePage> {
                                                 Icons.arrow_drop_down,
                                               ),
                                               isDense: true,
-                                              contentPadding: const EdgeInsetsDirectional.symmetric(vertical: 8, horizontal: 12),
+                                              contentPadding:
+                                                  const EdgeInsetsDirectional.symmetric(vertical: 8, horizontal: 12),
                                             ),
                                             validator: (value) {
                                               if (value == null || value.isEmpty) {
@@ -966,8 +981,11 @@ class _SaveStorePageState extends State<SaveStorePage> {
                                                   padding: EdgeInsetsDirectional.symmetric(horizontal: margins * 2.5),
                                                   child: StoreOwnDriverFormField(
                                                     key: const Key('store-own-driver-formfield'),
-                                                    onSelectionChanged: (List<StoreOwnDeliveryPartnersInfo> selectedStoreOwnDrivers) {
-                                                      _selectedStoreOwnDrivers = List<StoreOwnDeliveryPartnersInfo>.from(selectedStoreOwnDrivers);
+                                                    onSelectionChanged:
+                                                        (List<StoreOwnDeliveryPartnersInfo> selectedStoreOwnDrivers) {
+                                                      _selectedStoreOwnDrivers =
+                                                          List<StoreOwnDeliveryPartnersInfo>.from(
+                                                              selectedStoreOwnDrivers);
                                                       setState(() {});
                                                     },
                                                     availableDriverList: _selectedStoreOwnDrivers.toList(),
@@ -999,10 +1017,12 @@ class _SaveStorePageState extends State<SaveStorePage> {
                                                             style: const TextStyle(
                                                               color: Color.fromRGBO(42, 45, 50, 1.0),
                                                             ),
-                                                            textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                                            textDirection: serviceLocator<LanguageController>()
+                                                                .targetTextDirection,
                                                           ).translate(),
                                                           onPressed: () async {
-                                                            final List<StoreOwnDeliveryPartnersInfo>? returnSelectedDriver =
+                                                            final List<StoreOwnDeliveryPartnersInfo>?
+                                                                returnSelectedDriver =
                                                                 await context.push<List<StoreOwnDeliveryPartnersInfo>>(
                                                               Routes.ALL_DRIVER_PAGE,
                                                               extra: {
@@ -1012,7 +1032,8 @@ class _SaveStorePageState extends State<SaveStorePage> {
                                                             if (returnSelectedDriver.isNotNullOrEmpty) {
                                                               setState(() {
                                                                 _selectedStoreOwnDrivers =
-                                                                    List<StoreOwnDeliveryPartnersInfo>.from(returnSelectedDriver!.toList());
+                                                                    List<StoreOwnDeliveryPartnersInfo>.from(
+                                                                        returnSelectedDriver!.toList());
                                                               });
                                                             }
                                                           },
@@ -1024,7 +1045,9 @@ class _SaveStorePageState extends State<SaveStorePage> {
                                                 const AnimatedGap(8, duration: Duration(milliseconds: 500)),
                                               ],
                                             ),
-                                            crossFadeState: (_hasStoreOwnDeliveryService == true) ? CrossFadeState.showSecond : CrossFadeState.showFirst,
+                                            crossFadeState: (_hasStoreOwnDeliveryService == true)
+                                                ? CrossFadeState.showSecond
+                                                : CrossFadeState.showFirst,
                                             duration: const Duration(milliseconds: 500),
                                           ),
                                         ],
@@ -1065,7 +1088,9 @@ class _SaveStorePageState extends State<SaveStorePage> {
                                             ],
                                             onChanged: (value) {},
                                             validator: (value) {
-                                              if (value == null || value.isEmpty || maximumDeliveryTimeFormatter.getUnmaskedText().isEmpty) {
+                                              if (value == null ||
+                                                  value.isEmpty ||
+                                                  maximumDeliveryTimeFormatter.getUnmaskedText().isEmpty) {
                                                 return 'Please enter delivery time';
                                               } else {
                                                 return null;
@@ -1125,7 +1150,8 @@ class _SaveStorePageState extends State<SaveStorePage> {
                                     const AnimatedGap(6, duration: Duration(milliseconds: 500)),
                                     MultiSelectAvailablePaymentModeFormField(
                                       onSelectionChanged: (List<StoreAcceptedPaymentModes> selectedPaymentModes) {
-                                        _selectedAcceptedPaymentModes = List<StoreAcceptedPaymentModes>.from(selectedPaymentModes);
+                                        _selectedAcceptedPaymentModes =
+                                            List<StoreAcceptedPaymentModes>.from(selectedPaymentModes);
                                         setState(() {});
                                       },
                                       availablePaymentModesList: _storeAcceptedPaymentModes.toList(),
@@ -1150,14 +1176,19 @@ class _SaveStorePageState extends State<SaveStorePage> {
                                             storePhoneNumber: userEnteredPhoneNumber,
                                             countryDialCode: initialPhoneNumberValue.countryCode,
                                             isoCode: initialPhoneNumberValue.isoCode.name,
-                                            storeAddress: AddressModel(
+                                           /* storeAddress: AddressModel(
                                               address: AddressBean(
-                                                area: _storeAddressController.value.text,
+                                                displayAddressName: _storeAddressController.value.text,
                                               ),
-                                            ),
-                                            storeImagePath: (listBanners.isNotNullOrEmpty) ? listBanners[0].imagePath : '',
-                                            storeImageMetaData: (listBanners.isNotNullOrEmpty) ? listBanners[0].metaData : <String, dynamic>{},
-                                            storeMaximumFoodDeliveryTime: int.parse(_storeMaxDeliveryTimeController.value.text),
+                                            ),*/
+                                            storeAddress: addressModel,
+                                            storeImagePath:
+                                                (listBanners.isNotNullOrEmpty) ? listBanners[0].imagePath : '',
+                                            storeImageMetaData: (listBanners.isNotNullOrEmpty)
+                                                ? listBanners[0].metaData
+                                                : <String, dynamic>{},
+                                            storeMaximumFoodDeliveryTime:
+                                                int.parse(_storeMaxDeliveryTimeController.value.text),
                                             storeMaximumFoodDeliveryRadius: _maximumDeliveryRadiusValue.toInt(),
                                             storeOpeningTime: _storeOpeningTimeController.value.text.trim(),
                                             storeClosingTime: _storeClosingTimeController.value.text.trim(),
@@ -1168,19 +1199,23 @@ class _SaveStorePageState extends State<SaveStorePage> {
                                             storeOwnDeliveryPartnersInfo: (_hasStoreOwnDeliveryService)
                                                 ? [
                                                     StoreOwnDeliveryPartnersInfo(
-                                                      driverMobileNumber: _storeOwnerDriverPhoneNumberController.value.text,
+                                                      driverMobileNumber:
+                                                          _storeOwnerDriverPhoneNumberController.value.text,
                                                       driverName: _storeOwnerDriverNameController.value.text,
-                                                      drivingLicenseNumber: _storeOwnerDriverLicenseController.value.text,
+                                                      drivingLicenseNumber:
+                                                          _storeOwnerDriverLicenseController.value.text,
                                                     ),
                                                   ]
                                                 : [],
                                             storeWorkingDays: _selectedWorkingDays.toList(),
                                             hasNewStore: widget.haveNewStore,
-                                            storeCategories: selectedCategory!=null?[selectedCategory!]:[],
+                                            storeCategories: selectedCategory != null ? [selectedCategory!] : [],
                                             phoneNumberWithoutDialCode: initialPhoneNumberValue.nsn,
                                           );
                                           StoreEntity storeEntity;
-                                          if (!widget.haveNewStore && widget.storeEntity != null && widget.currentIndex != -1) {
+                                          if (!widget.haveNewStore &&
+                                              widget.storeEntity != null &&
+                                              widget.currentIndex != -1) {
                                             storeEntity = storeInfo.copyWith(
                                               storeID: widget.storeEntity?.storeID,
                                             );
@@ -1228,57 +1263,58 @@ class _SaveStorePageState extends State<SaveStorePage> {
 
   Future<void> uploadStoreImage(BuildContext context) async {
     {
-                                             // Navigate to document picker page
-                                             final List<dynamic>? result = await context.push<List<dynamic>>(
-                                               Routes.UPLOAD_DOCUMENT_PAGE,
-                                               extra: jsonEncode(
-                                                 {
-                                                   'documentType': DocumentType.other.name,
-                                                 },
-                                               ),
-                                             );
-                                             // Check is Result exists or not
-                                             if (result != null && result.isNotEmpty) {
-                                               // Extarct and store the value
-                                               String filePath = result[0] as String;
-                                               XFile? xCroppedDocumentFile = result[1] as XFile;
-                                               File? croppedDocumentFile = result[2] as File;
-                                               XFile? xFile = result[5] as XFile;
-                                               File? file = result[6] as File;
-                                               String? assetNetworkUrl = result[7] as String?;
-                                               final int timeStamp = DateTime.now().millisecondsSinceEpoch;
-                                               var tempName = 'homeway_store_image_$timeStamp';
-                                               var fileNameWithExtension =
-                                                   path.basenameWithoutExtension(xCroppedDocumentFile?.path ?? croppedDocumentFile?.path ?? tempName);
-                                               String fileExtension = path.extension(xCroppedDocumentFile?.path ?? croppedDocumentFile?.path ?? '.png');
-                                               String croppedFilePath = (xCroppedDocumentFile.path.isEmpty) ? xCroppedDocumentFile.path : croppedDocumentFile.path;
-                                               final fileReadAsBytes = await file.readAsBytes();
-                                               final xFileReadAsBytes = await xFile.readAsBytes();
-                                               final fileReadAsString = base64Encode(fileReadAsBytes);
-                                               final xFileReadAsString = base64Encode(xFileReadAsBytes);
-                                               listBanners.insert(
-                                                   0,
-                                                   BannerModel(
-                                                     imagePath: croppedFilePath,
-                                                     id: const Uuid().v4(),
-                                                     boxFit: BoxFit.contain,
-                                                     metaData: {
-                                                       'id': const Uuid().v4(),
-                                                       'filePath': filePath,
-                                                       'croppedFilePath': croppedFilePath,
-                                                       'fileExtension': fileExtension,
-                                                       'fileNameWithExtension': fileNameWithExtension,
-                                                       //'file': file,
-                                                       //'xFile': xFile,
-                                                       'assetNetworkUrl': assetNetworkUrl,
-                                                       'fileReadAsBytes': fileReadAsBytes,
-                                                       'xFileReadAsBytes': xFileReadAsBytes,
-                                                       'fileReadAsString': fileReadAsString,
-                                                       'xFileReadAsString': xFileReadAsString,
-                                                     },
-                                                   ));
-                                               setState(() {});
-                                             }
-                                           }
+      // Navigate to document picker page
+      final List<dynamic>? result = await context.push<List<dynamic>>(
+        Routes.UPLOAD_DOCUMENT_PAGE,
+        extra: jsonEncode(
+          {
+            'documentType': DocumentType.other.name,
+          },
+        ),
+      );
+      // Check is Result exists or not
+      if (result != null && result.isNotEmpty) {
+        // Extarct and store the value
+        String filePath = result[0] as String;
+        XFile? xCroppedDocumentFile = result[1] as XFile;
+        File? croppedDocumentFile = result[2] as File;
+        XFile? xFile = result[5] as XFile;
+        File? file = result[6] as File;
+        String? assetNetworkUrl = result[7] as String?;
+        final int timeStamp = DateTime.now().millisecondsSinceEpoch;
+        var tempName = 'homeway_store_image_$timeStamp';
+        var fileNameWithExtension =
+            path.basenameWithoutExtension(xCroppedDocumentFile?.path ?? croppedDocumentFile?.path ?? tempName);
+        String fileExtension = path.extension(xCroppedDocumentFile?.path ?? croppedDocumentFile?.path ?? '.png');
+        String croppedFilePath =
+            (xCroppedDocumentFile.path.isEmpty) ? xCroppedDocumentFile.path : croppedDocumentFile.path;
+        final fileReadAsBytes = await file.readAsBytes();
+        final xFileReadAsBytes = await xFile.readAsBytes();
+        final fileReadAsString = base64Encode(fileReadAsBytes);
+        final xFileReadAsString = base64Encode(xFileReadAsBytes);
+        listBanners.insert(
+            0,
+            BannerModel(
+              imagePath: croppedFilePath,
+              id: const Uuid().v4(),
+              boxFit: BoxFit.contain,
+              metaData: {
+                'id': const Uuid().v4(),
+                'filePath': filePath,
+                'croppedFilePath': croppedFilePath,
+                'fileExtension': fileExtension,
+                'fileNameWithExtension': fileNameWithExtension,
+                //'file': file,
+                //'xFile': xFile,
+                'assetNetworkUrl': assetNetworkUrl,
+                'fileReadAsBytes': fileReadAsBytes,
+                'xFileReadAsBytes': xFileReadAsBytes,
+                'fileReadAsString': fileReadAsString,
+                'xFileReadAsString': xFileReadAsString,
+              },
+            ));
+        setState(() {});
+      }
+    }
   }
 }

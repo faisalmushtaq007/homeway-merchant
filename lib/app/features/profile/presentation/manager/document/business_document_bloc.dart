@@ -74,6 +74,8 @@ class BusinessDocumentBloc extends Bloc<BusinessDocumentEvent, BusinessDocumentS
                 var tempName = '${item.documentType.documentTypeName}_$timeStamp';
                 var fileNameWithExtension = path.basenameWithoutExtension(xCroppedDocumentFile?.path ?? croppedDocumentFile?.path ?? tempName);
                 String fileExtension = path.extension(xCroppedDocumentFile?.path ?? croppedDocumentFile?.path ?? '.png');
+                final double height=0.0;
+                final double width=0.0;
 
                 if (item.documentFrontAssets == null) {
                   item.documentFrontAssets = BusinessDocumentAssetsEntity(
@@ -245,6 +247,8 @@ class BusinessDocumentBloc extends Bloc<BusinessDocumentEvent, BusinessDocumentS
       final XFile? pickedFile = await _picker.pickImage(
         source: source,
       );
+      double height=0.0;
+      double width=0.0;
       if (pickedFile != null) {
         response = File(pickedFile.path);
         originalBytes = await pickedFile.readAsBytes();
@@ -252,13 +256,18 @@ class BusinessDocumentBloc extends Bloc<BusinessDocumentEvent, BusinessDocumentS
         final length = await pickedFile.length();
         final name = pickedFile.name;
         final path = pickedFile.path;
+        var decodedImage = await decodeImageFromList(originalBytes);
         //var encryptedBase64EncodedString = await File(path).readAsString(encoding:utf8);
         //var decoded = base64Decode(encryptedBase64EncodedString);
+        height=decodedImage.height.toDouble();
+        width=decodedImage.width.toDouble();
         metaData['mimeType'] = mimeType;
         metaData['length'] = length;
         metaData['name'] = name;
         metaData['path'] = path;
         metaData['bytes'] = originalBytes;
+        metaData['height']=height;
+        metaData['width']=width;
       }
       if (event.documentPickerSource == DocumentPickerSource.camera) {
         emit(
@@ -268,6 +277,8 @@ class BusinessDocumentBloc extends Bloc<BusinessDocumentEvent, BusinessDocumentS
             responseFile: response,
             uint8list: originalBytes,
             metaData: metaData,
+            width: width,
+            height: height,
           ),
         );
       } else {
@@ -278,6 +289,8 @@ class BusinessDocumentBloc extends Bloc<BusinessDocumentEvent, BusinessDocumentS
             responseFile: response,
             uint8list: originalBytes,
             metaData: metaData,
+            width: width,
+            height: height,
           ),
         );
       }
@@ -378,6 +391,13 @@ class BusinessDocumentBloc extends Bloc<BusinessDocumentEvent, BusinessDocumentS
               Permission.accessMediaLocation,
             ].request();
           }
+          double height=0.0;
+          double width=0.0;
+          final Uint8List originalBytes = await event.xfile?.readAsBytes()??event.file?.readAsBytesSync()??event.bytes as Uint8List? ??Uint8List.fromList([0]);
+          var decodedImage = await decodeImageFromList(originalBytes);
+          height=decodedImage.height.toDouble();
+          width=decodedImage.width.toDouble();
+
           emit(SaveCropDocumentFailedState(
             documentType: event.documentType,
             reason: 'Storage permission is not granted',
@@ -386,6 +406,8 @@ class BusinessDocumentBloc extends Bloc<BusinessDocumentEvent, BusinessDocumentS
             file: event.file,
             bytes: event.bytes,
             byteData: event.byteData,
+            height: height,
+            width: width,
           ));
         }
         emit(SaveCropDocumentProcessingState(
@@ -415,6 +437,12 @@ class BusinessDocumentBloc extends Bloc<BusinessDocumentEvent, BusinessDocumentS
             const Duration(milliseconds: 500),
             () {},
           );
+          double height=0.0;
+          double width=0.0;
+          final Uint8List originalBytes = await event.xfile?.readAsBytes()??event.file?.readAsBytesSync()??event.bytes as Uint8List? ??Uint8List.fromList([0]);
+          var decodedImage = await decodeImageFromList(originalBytes);
+          height=decodedImage.height.toDouble();
+          width=decodedImage.width.toDouble();
           emit(SaveCropDocumentFailedState(
             documentType: event.documentType,
             reason: 'Your selected document is not saved in your device, but uploaded into our server',
@@ -423,6 +451,8 @@ class BusinessDocumentBloc extends Bloc<BusinessDocumentEvent, BusinessDocumentS
             file: event.file,
             bytes: event.bytes,
             byteData: event.byteData,
+            height: height,
+            width: width,
           ));
           return;
         } else {
@@ -439,6 +469,12 @@ class BusinessDocumentBloc extends Bloc<BusinessDocumentEvent, BusinessDocumentS
           );
           //await processImage(InputImage.fromFile(File(filePath)));
           //await Future.delayed(const Duration(milliseconds: 500));
+          double height=0.0;
+          double width=0.0;
+          final Uint8List originalBytes= await event.xfile?.readAsBytes()??event.file?.readAsBytesSync()??event.bytes as Uint8List? ??Uint8List.fromList([0]);
+          var decodedImage = await decodeImageFromList(originalBytes);
+          height=decodedImage.height.toDouble();
+          width=decodedImage.width.toDouble();
           emit(
             SaveCropDocumentSuccessState(
               documentType: event.documentType,
@@ -454,6 +490,8 @@ class BusinessDocumentBloc extends Bloc<BusinessDocumentEvent, BusinessDocumentS
               byteData: event.byteData,
               newFile: File(filePath),
               newXFile: XFile(filePath),
+              height: height,
+              width: width,
             ),
           );
           return;

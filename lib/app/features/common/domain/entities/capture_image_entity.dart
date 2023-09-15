@@ -26,6 +26,8 @@ class CaptureImageEntity {
      this.blob,
      this.base64Encode='',
      this.mimeType='image/png',
+    this.height=0.0,
+    this.width=0.0,
   });
 
   factory CaptureImageEntity.fromMap(Map<String, dynamic> map) {
@@ -38,17 +40,18 @@ class CaptureImageEntity {
       originalFilePath: map['originalFilePath'] as String,
       croppedFilePath: map['croppedFilePath'] as String,
       networkUrl: map['networkUrl'] ?? '',
-      fileName: map['fileName'] as String,
-      fileNameWithExtension: map['fileNameWithExtension'] as String,
-      fileExtension: map['fileExtension'] as String,
+      fileName: map['fileName']??'' as String,
+      fileNameWithExtension: map['fileNameWithExtension']??'' as String,
+      fileExtension: map['fileExtension']??'' as String,
       xFileReadAsBytes: map['xFileReadAsBytes']??Uint8List(0) as Uint8List,
       fileReadAsBytes: map['fileReadAsBytes']??Uint8List(0) as Uint8List,
-      fileReadAsString: map['fileReadAsString'] as String,
-      xFileReadAsString: map['xFileReadAsString'] as String,
-      documentType: DocumentType.values.byName(map['documentType']),
+      fileReadAsString: map['fileReadAsString']??'' as String,
+      xFileReadAsString: map['xFileReadAsString']??'' as String,
+      documentType:(map['documentType']!=null)? DocumentType.values.byName(map['documentType']):DocumentType.other,
       blob: map['blob'] ??Blob(Uint8List(0)) as Blob,
-      base64Encode: map['base64'] as String,
-      mimeType: map['mimeType'] as String,
+      base64Encode: map['base64']??'' as String,
+      mimeType: map['mimeType']??'' as String,
+      height: map['height']??0.0 as double,
     );
   }
 
@@ -71,6 +74,8 @@ class CaptureImageEntity {
   Blob? blob;
   String base64Encode;
   String mimeType;
+  double height;
+  double width;
 
   CaptureImageEntity copyWith({
     XFile? xOriginalFile,
@@ -92,6 +97,8 @@ class CaptureImageEntity {
     String? base64Encode,
     String? mimeType,
     String? captureDocumentID,
+    double? height,
+    double? width,
   }) {
     return CaptureImageEntity(
       xOriginalFile: xOriginalFile ?? this.xOriginalFile,
@@ -113,6 +120,8 @@ class CaptureImageEntity {
       base64Encode: base64Encode ?? this.base64Encode,
       mimeType: mimeType ?? this.mimeType,
       captureDocumentID: captureDocumentID ?? this.captureDocumentID,
+      height: height??this.height,
+      width: width??this.width,
     );
   }
 
@@ -137,6 +146,8 @@ class CaptureImageEntity {
       'blob': blob??Blob(Uint8List(0)),
       'base64': base64Encode,
       'mimeType': mimeType,
+      'width':width,
+      'height':height,
     };
   }
 }

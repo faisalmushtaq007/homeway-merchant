@@ -110,6 +110,9 @@ class _NewBusinessDocumentComponentWidgetController extends State<NewBusinessDoc
       final xFileReadAsString = base64Encode(xFileReadAsBytes);
       final uuid = const Uuid().v4();
       final String mimeType = xCroppedDocumentFile.mimeType ?? xFile.mimeType ?? 'image/png';
+      var decodedImage = await decodeImageFromList(xFileReadAsBytes??fileReadAsBytes);
+      double height=decodedImage.height.toDouble();
+      double width=decodedImage.width.toDouble();
       final Map<String, dynamic> metaData = {
         'captureDocumentID': uuid,
         'originalFilePath': filePath,
@@ -130,6 +133,8 @@ class _NewBusinessDocumentComponentWidgetController extends State<NewBusinessDoc
         'blob': (xFileReadAsBytes.isNotNullOrEmpty) ? Blob(xFileReadAsBytes) : Blob(fileReadAsBytes),
         'base64': (xFileReadAsString.isNotEmpty) ? xFileReadAsString : fileReadAsString,
         'mimeType': mimeType,
+        'height':height,
+        'width':width,
       };
       final CaptureImageEntity captureImageEntity = CaptureImageEntity.fromMap(metaData);
       // Set Only single image, not list of images

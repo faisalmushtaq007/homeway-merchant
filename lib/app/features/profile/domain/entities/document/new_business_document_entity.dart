@@ -14,22 +14,27 @@ class NewBusinessDocumentEntity extends INetworkModel<NewBusinessDocumentEntity>
     this.fileNameWithExtension = '',
     this.fileExtension = '',
     this.captureDocumentID = '',
+    this.width = 0.0,
+    this.height = 0.0,
   });
 
   factory NewBusinessDocumentEntity.fromMap(Map<String, dynamic> map) {
     return NewBusinessDocumentEntity(
       documentID: map['documentID'] ?? -1,
       documentIdNumber: map['documentIdNumber'] ?? '',
-      documentType: (map['documentType'] != null) ? DocumentType.values.byName(map['documentType']) : DocumentType.other,
+      documentType:
+          (map['documentType'] != null) ? DocumentType.values.byName(map['documentType']) : DocumentType.other,
       base64: map['base64'] ?? '',
       metaInfo: map['metaInfo'] ?? <String, dynamic>{},
       mimeType: map['mimeType'] ?? 'image/png',
       localAssetPath: map['localAssetPath'] ?? '',
       networkAssetPath: map['networkAssetPath'] ?? '',
       fileName: map['fileName'] as String,
-      fileNameWithExtension: map['fileNameWithExtension'] as String,
-      fileExtension: map['fileExtension'] as String,
-      captureDocumentID: map['captureDocumentID'] as String,
+      fileNameWithExtension: map['fileNameWithExtension'] ?? '' as String,
+      fileExtension: map['fileExtension'] ?? '' as String,
+      captureDocumentID: map['captureDocumentID'] ?? '' as String,
+      height: map['height'] ?? 0.0 as double,
+      width: map['width'] ?? 0.0 as double,
     );
   }
 
@@ -45,11 +50,13 @@ class NewBusinessDocumentEntity extends INetworkModel<NewBusinessDocumentEntity>
   String fileName;
   String fileNameWithExtension;
   String fileExtension;
+  final double height;
+  final double width;
 
   Map<String, dynamic> toMap() => {
         'documentID': documentID,
         'documentIdNumber': documentIdNumber,
-        'documentType': documentType,
+        'documentType': documentType.name,
         'base64': base64,
         'metaInfo': metaInfo,
         'mimeType': mimeType,
@@ -59,6 +66,8 @@ class NewBusinessDocumentEntity extends INetworkModel<NewBusinessDocumentEntity>
         'fileNameWithExtension': fileNameWithExtension,
         'fileExtension': fileExtension,
         'captureDocumentID': captureDocumentID,
+        'height': height,
+        'width': width,
       };
 
   @override
@@ -80,6 +89,8 @@ class NewBusinessDocumentEntity extends INetworkModel<NewBusinessDocumentEntity>
     String? fileNameWithExtension,
     String? fileExtension,
     String? captureDocumentID,
+    double? height,
+    double? width,
   }) {
     return NewBusinessDocumentEntity(
       documentID: documentID ?? this.documentID,
@@ -94,6 +105,8 @@ class NewBusinessDocumentEntity extends INetworkModel<NewBusinessDocumentEntity>
       fileNameWithExtension: fileNameWithExtension ?? this.fileNameWithExtension,
       fileExtension: fileExtension ?? this.fileExtension,
       captureDocumentID: captureDocumentID ?? this.captureDocumentID,
+      width: width ?? this.width,
+      height: height ?? this.height,
     );
   }
 }

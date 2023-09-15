@@ -44,6 +44,8 @@ class UploadImageUtils {
       final fileReadAsString = base64Encode(fileReadAsBytes);
       final xFileReadAsString = base64Encode(xFileReadAsBytes);
       final documentID = const Uuid().v4();
+      final double height=0.0;
+      final double width=0.0;
       return BannerModel(
         imagePath: croppedFilePath,
         id: documentID,
@@ -60,6 +62,8 @@ class UploadImageUtils {
           'xFileReadAsBytes': xFileReadAsBytes,
           'fileReadAsString': fileReadAsString,
           'xFileReadAsString': xFileReadAsString,
+          'height':height,
+          'width':width,
         },
       );
     } else {

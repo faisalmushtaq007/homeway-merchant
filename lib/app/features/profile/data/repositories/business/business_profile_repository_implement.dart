@@ -369,11 +369,12 @@ class BusinessProfileRepositoryImplement implements UserBusinessProfileRepositor
     required BusinessProfileEntity businessProfileEntity,
     AppUserEntity? appUserEntity,
   }) async {
-    try {
+    /*try {*/
       final connectivity = serviceLocator<ConnectivityService>().getCurrentInternetStatus();
       if (connectivity.$2 == InternetConnectivityState.internet) {
         // Local DB
         // Save to local
+        appLog.d('SaveBusinessProfile data ${businessProfileEntity.toMap()}');
         final Either<RepositoryBaseFailure, BusinessProfileEntity> result = await businessProfileLocalDataSource.add(businessProfileEntity);
         // Return result
         return result.fold((l) {
@@ -412,7 +413,7 @@ class BusinessProfileRepositoryImplement implements UserBusinessProfileRepositor
           },
         );
       }
-    } catch (e, s) {
+    /*} catch (e, s) {
       appLog.d('Save profile exception $e');
       return DataSourceState<BusinessProfileEntity>.error(
         reason: e.toString(),
@@ -421,7 +422,7 @@ class BusinessProfileRepositoryImplement implements UserBusinessProfileRepositor
         error: e,
         exception: e as Exception,
       );
-    }
+    }*/
   }
 
   @override

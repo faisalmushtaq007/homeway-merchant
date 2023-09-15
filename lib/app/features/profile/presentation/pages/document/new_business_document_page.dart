@@ -121,6 +121,8 @@ class _NewBusinessDocumentPageController extends State<NewBusinessDocumentPage> 
         fileExtension: captureImageEntity.fileExtension,
         fileName: captureImageEntity.fileName,
         fileNameWithExtension: captureImageEntity.fileNameWithExtension,
+        height: captureImageEntity.height,
+        width: captureImageEntity.width,
       ),
     );
   }
@@ -139,6 +141,8 @@ class _NewBusinessDocumentPageController extends State<NewBusinessDocumentPage> 
         fileExtension: captureImageEntity.fileExtension,
         fileName: captureImageEntity.fileName,
         fileNameWithExtension: captureImageEntity.fileNameWithExtension,
+        height: captureImageEntity.height,
+        width: captureImageEntity.width,
       ),
     );
   }

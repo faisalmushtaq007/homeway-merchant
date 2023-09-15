@@ -18,7 +18,7 @@ class BusinessDocumentUploadedEntity with AppEquatable {
   factory BusinessDocumentUploadedEntity.fromMap(Map<String, dynamic> map) {
     return BusinessDocumentUploadedEntity(
       documentID: map['documentID'],
-      documentType: (map['documentType'] != null) ? DocumentType.values.byName(map['documentType']) : DocumentType.tradeLicence,
+      documentType: (map['documentType'] != null) ? DocumentType.values.byName(map['documentType']) : DocumentType.other,
       documentIDNumber: map['documentIDNumber'] as String,
       documentFrontAssets:
           map['documentFrontAssets'] != null ? BusinessDocumentAssetsEntity.fromMap(map['documentFrontAssets']) : BusinessDocumentAssetsEntity(),
