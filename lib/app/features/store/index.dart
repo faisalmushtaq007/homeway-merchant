@@ -119,6 +119,7 @@ import 'package:lottie/lottie.dart';
 import 'package:network_manager/network_manager.dart';
 import 'package:path/path.dart' as path;
 import 'package:phone_form_field/phone_form_field.dart';
+import 'package:sembast/blob.dart';
 import 'package:sembast/sembast.dart';
 import 'package:sembast/timestamp.dart';
 import 'package:sembast/utils/value_utils.dart';

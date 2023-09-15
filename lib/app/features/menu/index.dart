@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:collection/collection.dart';
@@ -11,6 +12,7 @@ import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
+import 'package:homemakers_merchant/app/features/common/domain/entities/capture_image_entity.dart';
 import 'package:homemakers_merchant/app/features/common/presentation/widgets/upload_image_utils.dart';
 
 import 'package:homemakers_merchant/app/features/menu/index.dart';
@@ -75,12 +77,14 @@ import 'package:homemakers_merchant/utils/validation/form_validation/form_valida
 import 'package:lottie/lottie.dart';
 import 'package:network_manager/network_manager.dart';
 import 'package:path/path.dart' as path;
+import 'package:sembast/blob.dart';
 import 'package:sembast/sembast.dart';
 import 'package:sembast/timestamp.dart';
 import 'package:sembast/utils/value_utils.dart';
 import 'package:sherlock/completion.dart';
 import 'package:sherlock/sherlock.dart';
 import 'package:sherlock/widget.dart';
+import 'package:uuid/uuid.dart';
 /*import 'package:homemakers_merchant/shared/widgets/universal/wrap_and_more/wrap_and_more.dart';
 import 'package:homemakers_merchant/shared/widgets/universal/wrap_text/wrap_text.dart';*/
 import 'package:wrap_and_more/wrap_and_more.dart';

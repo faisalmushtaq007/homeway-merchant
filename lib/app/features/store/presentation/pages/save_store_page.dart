@@ -1176,7 +1176,7 @@ class _SaveStorePageState extends State<SaveStorePage> {
                                             storePhoneNumber: userEnteredPhoneNumber,
                                             countryDialCode: initialPhoneNumberValue.countryCode,
                                             isoCode: initialPhoneNumberValue.isoCode.name,
-                                           /* storeAddress: AddressModel(
+                                            /* storeAddress: AddressModel(
                                               address: AddressBean(
                                                 displayAddressName: _storeAddressController.value.text,
                                               ),
@@ -1293,34 +1293,39 @@ class _SaveStorePageState extends State<SaveStorePage> {
         final fileReadAsString = base64Encode(fileReadAsBytes);
         final xFileReadAsString = base64Encode(xFileReadAsBytes);
         final String mimeType = xCroppedDocumentFile.mimeType ?? xFile.mimeType ?? 'image/png';
-        var decodedImage = await decodeImageFromList(xFileReadAsBytes??fileReadAsBytes);
-        double height=decodedImage.height.toDouble();
-        double width=decodedImage.width.toDouble();
+        var decodedImage = await decodeImageFromList(xFileReadAsBytes ?? fileReadAsBytes);
+        double height = decodedImage.height.toDouble();
+        double width = decodedImage.width.toDouble();
+        var metaData = {
+          'id': const Uuid().v4(),
+          'filePath': filePath,
+          'croppedFilePath': croppedFilePath,
+          'fileExtension': fileExtension,
+          'fileNameWithExtension': fileNameWithExtension,
+          //'file': file,
+          //'xFile': xFile,
+          'assetNetworkUrl': assetNetworkUrl,
+          'fileReadAsBytes': fileReadAsBytes,
+          'xFileReadAsBytes': xFileReadAsBytes,
+          'fileReadAsString': fileReadAsString,
+          'xFileReadAsString': xFileReadAsString,
+          //'mimeType':'image',
+          'height': height,
+          'width': width,
+          'mimeType': mimeType,
+          'documentType': DocumentType.other.name,
+          'blob': (xFileReadAsBytes.isNotNullOrEmpty) ? Blob(xFileReadAsBytes) : Blob(fileReadAsBytes),
+          'base64': (xFileReadAsString.isNotEmpty) ? xFileReadAsString : fileReadAsString,
+        };
         listBanners.insert(
             0,
             BannerModel(
               imagePath: croppedFilePath,
               id: const Uuid().v4(),
               boxFit: BoxFit.contain,
-              metaData: {
-                'id': const Uuid().v4(),
-                'filePath': filePath,
-                'croppedFilePath': croppedFilePath,
-                'fileExtension': fileExtension,
-                'fileNameWithExtension': fileNameWithExtension,
-                //'file': file,
-                //'xFile': xFile,
-                'assetNetworkUrl': assetNetworkUrl,
-                'fileReadAsBytes': fileReadAsBytes,
-                'xFileReadAsBytes': xFileReadAsBytes,
-                'fileReadAsString': fileReadAsString,
-                'xFileReadAsString': xFileReadAsString,
-                //'mimeType':'image',
-                'height':height,
-                'width':width,
-                'mimeType':mimeType,
-              },
+              metaData: metaData,
             ));
+        final CaptureImageEntity captureImageEntity = CaptureImageEntity.fromMap(metaData);
         setState(() {});
       }
     }

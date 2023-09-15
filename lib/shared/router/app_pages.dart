@@ -37,7 +37,7 @@ class AppRouter {
 
   AppRouter._();
 
-  static const String INITIAL = Routes.NEW_DOCUMENT_LIST_PAGE;
+  static const String INITIAL = Routes.SAVE_MENU_PAGE;
 
   static final GoRouter _router = GoRouter(
     debugLogDiagnostics: true,

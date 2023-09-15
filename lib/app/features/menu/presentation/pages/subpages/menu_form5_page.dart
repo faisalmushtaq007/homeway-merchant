@@ -141,42 +141,78 @@ class _MenuForm5PageState extends State<MenuForm5Page> with AutomaticKeepAliveCl
                 ],
               ),
               const AnimatedGap(12, duration: Duration(milliseconds: 500)),
-              listOfMenuRemoteImages.isNotEmpty && selectedMenuImage.isNotEmpty
-                  ? Container(
-                      width: 150,
-                      height: 150,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadiusDirectional.circular(10),
-                        border: BorderDirectional(
-                          start: BorderSide(
-                            width: 0.5,
-                            color: Color.fromRGBO(238, 238, 238, 1.0),
-                          ),
-                          end: BorderSide(
-                            width: 0.5,
-                            color: Color.fromRGBO(238, 238, 238, 1.0),
-                          ),
-                          top: BorderSide(
-                            width: 0.5,
-                            color: Color.fromRGBO(238, 238, 238, 1.0),
-                          ),
-                          bottom: BorderSide(
-                            width: 0.5,
-                            color: Color.fromRGBO(238, 238, 238, 1.0),
-                          ),
+              if (listOfMenuRemoteImages.isNotEmpty && selectedMenuImage.isNotEmpty) Center(
+                child: Container(
+                        width: 150,
+                        height: 150,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadiusDirectional.circular(10),
+                          border: Border.all(width: 0.5,
+                            color: const Color.fromRGBO(238, 238, 238, 1),),
+                          color: const Color.fromRGBO(238, 238, 238, 1),
                         ),
-                        color: Color.fromRGBO(238, 238, 238, 1.0),
+                        child:Stack(
+                          children: [
+                            AspectRatio(
+                              aspectRatio: 1/1,
+                              child: ImageHelper(
+                                image: selectedMenuImage,
+                                filterQuality: FilterQuality.high,
+                                borderRadius: BorderRadiusDirectional.circular(10),
+                                imageType: findImageType(selectedMenuImage),
+                                imageShape: ImageShape.rectangle,
+                                width: 150,
+                                height: 150,
+                                boxFit: BoxFit.cover,
+                                defaultErrorBuilderColor: Colors.blueGrey,
+                                errorBuilder: const Icon(
+                                  Icons.image_not_supported,
+                                  size: 10000,
+                                ),
+                                // loader builder widget, default as icon if null
+                                loaderBuilder: const CircularProgressIndicator(),
+                                matchTextDirection: true,
+                              ),
+                            ),
+                            GestureDetector(
+                              onTap: () async {
+                                return await uploadMenuImage(context);
+                              },
+                              child: Align(
+                                alignment: Alignment.topRight,
+                                child: DecoratedBox(
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    color: Colors.white70,
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.black.withOpacity(0.2),
+                                        spreadRadius: 2,
+                                        offset: const Offset(0, 2),
+                                        blurRadius: 2,
+                                      )
+                                    ],
+                                  ),
+                                  child: Padding(
+                                    padding: EdgeInsetsDirectional.all(6),
+                                    child: Icon(
+                                      Icons.edit,
+                                      color: context.colorScheme.primary,
+                                      size: 18,
+                                      textDirection:
+                                      serviceLocator<LanguageController>().targetTextDirection,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+
                       ),
-                      child: Image.network(
-                        selectedMenuImage,
-                        fit: BoxFit.contain,
-                        height: 100,
-                        width: 100,
-                      ),
-                    )
-                  : GestureDetector(
-                      onTap: () {
-                        // Upload nenu image
+              ) else GestureDetector(
+                      onTap: () async{
+                        return await uploadMenuImage(context);
                       },
                       child: Center(
                         child: Container(
@@ -184,25 +220,25 @@ class _MenuForm5PageState extends State<MenuForm5Page> with AutomaticKeepAliveCl
                           height: 150,
                           decoration: BoxDecoration(
                             borderRadius: BorderRadiusDirectional.circular(10),
-                            border: BorderDirectional(
+                            border: const BorderDirectional(
                               start: BorderSide(
                                 width: 0.5,
-                                color: Color.fromRGBO(238, 238, 238, 1.0),
+                                color: Color.fromRGBO(238, 238, 238, 1),
                               ),
                               end: BorderSide(
                                 width: 0.5,
-                                color: Color.fromRGBO(238, 238, 238, 1.0),
+                                color: Color.fromRGBO(238, 238, 238, 1),
                               ),
                               top: BorderSide(
                                 width: 0.5,
-                                color: Color.fromRGBO(238, 238, 238, 1.0),
+                                color: Color.fromRGBO(238, 238, 238, 1),
                               ),
                               bottom: BorderSide(
                                 width: 0.5,
-                                color: Color.fromRGBO(238, 238, 238, 1.0),
+                                color: Color.fromRGBO(238, 238, 238, 1),
                               ),
                             ),
-                            color: Color.fromRGBO(238, 238, 238, 1.0),
+                            color: const Color.fromRGBO(238, 238, 238, 1),
                           ),
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
@@ -236,28 +272,28 @@ class _MenuForm5PageState extends State<MenuForm5Page> with AutomaticKeepAliveCl
                 children: [
                   Text(
                     'Make sure your menu image is clear and visible with jpg or png format',
-                    style: context.labelMedium!.copyWith(
-                      color: Color.fromRGBO(127, 129, 132, 1),
+                    style: context.bodySmall!.copyWith(
+                      //color: const Color.fromRGBO(127, 129, 132, 1),
                     ),
                     textDirection: serviceLocator<LanguageController>().targetTextDirection,
                     maxLines: 2,
                     softWrap: true,
+                    overflow: TextOverflow.ellipsis,
                     textAlign: TextAlign.center,
                   ).translate(),
                 ],
               ),
-              const AnimatedGap(18, duration: Duration(milliseconds: 500)),
+              const AnimatedGap(24, duration: Duration(milliseconds: 500)),
               Flexible(
                 child: CarouselImages(
                   //scaleFactor: 0.9,
                   listImages: listOfMenuRemoteImages,
-                  height: 130.0,
-                  borderRadius: 10.0,
+                  height: 130,
+                  borderRadius: 10,
                   cachedNetworkImage: true,
                   viewportFraction: 0.65,
                   verticalAlignment: Alignment.bottomCenter,
                   onTap: (index) {
-                    print('Tapped on page $index');
                     setState(() {
                       selectedMenuImage = listOfMenuRemoteImages[index];
                     });
@@ -291,5 +327,88 @@ class _MenuForm5PageState extends State<MenuForm5Page> with AutomaticKeepAliveCl
         },
       ),
     );
+  }
+
+  Future<void> uploadMenuImage(BuildContext context) async{
+    // Upload nenu image
+    // Navigate to document picker page
+    final List<dynamic>? result = await context.push<List<dynamic>>(
+      Routes.UPLOAD_DOCUMENT_PAGE,
+      extra: jsonEncode(
+        {
+          'documentType': DocumentType.other.name,
+        },
+      ),
+    );
+    // Check is Result exists or not
+    if (result != null && result.isNotEmpty) {
+      // Extarct and store the value
+      String filePath = result[0] as String;
+      XFile? xCroppedDocumentFile = result[1] as XFile;
+      File? croppedDocumentFile = result[2] as File;
+      XFile? xFile = result[5] as XFile;
+      File? file = result[6] as File;
+      String? assetNetworkUrl = result[7] as String?;
+      final int timeStamp = DateTime.now().millisecondsSinceEpoch;
+      var tempName = 'homeway_document_image_$timeStamp';
+      var fileNameWithExtension = path.basename(xCroppedDocumentFile?.path ?? croppedDocumentFile?.path ?? tempName);
+      var fileNameWithoutExtension = path.basenameWithoutExtension(xCroppedDocumentFile?.path ?? croppedDocumentFile?.path ?? tempName);
+      String fileExtension = path.extension(xCroppedDocumentFile?.path ?? croppedDocumentFile?.path ?? '.png');
+      String croppedFilePath = (xCroppedDocumentFile.path.isEmpty) ? xCroppedDocumentFile.path : croppedDocumentFile.path;
+      final fileReadAsBytes = await file.readAsBytes();
+      final xFileReadAsBytes = await xFile.readAsBytes();
+      final fileReadAsString = base64Encode(fileReadAsBytes);
+      final xFileReadAsString = base64Encode(xFileReadAsBytes);
+      final uuid = const Uuid().v4();
+      final String mimeType = xCroppedDocumentFile.mimeType ?? xFile.mimeType ?? 'image/png';
+      var decodedImage = await decodeImageFromList(xFileReadAsBytes??fileReadAsBytes);
+      double height=decodedImage.height.toDouble();
+      double width=decodedImage.width.toDouble();
+
+      final Map<String, dynamic> metaData = {
+        'captureDocumentID': uuid,
+        'originalFilePath': filePath,
+        'croppedFilePath': croppedFilePath,
+        'fileExtension': fileExtension,
+        'fileNameWithExtension': fileNameWithExtension,
+        'fileName': fileNameWithoutExtension,
+        'originalFile': file,
+        'xOriginalFile': xFile,
+        'xCroppedFile': xCroppedDocumentFile,
+        'croppedFile': croppedDocumentFile,
+        'networkUrl': assetNetworkUrl,
+        'fileReadAsBytes': fileReadAsBytes,
+        'xFileReadAsBytes': xFileReadAsBytes,
+        'fileReadAsString': fileReadAsString,
+        'xFileReadAsString': xFileReadAsString,
+        'documentType': DocumentType.other.name,
+        'blob': (xFileReadAsBytes.isNotNullOrEmpty) ? Blob(xFileReadAsBytes) : Blob(fileReadAsBytes),
+        'base64': (xFileReadAsString.isNotEmpty) ? xFileReadAsString : fileReadAsString,
+        'mimeType': mimeType,
+        'height':height,
+        'width':width,
+      };
+      final CaptureImageEntity captureImageEntity = CaptureImageEntity.fromMap(metaData);
+      selectedMenuImage=croppedFilePath;
+      serviceLocator<MenuEntity>().menuImages = [
+        MenuImage(
+          imageId: '0',
+          assetPath: croppedFilePath,
+          assetExtension: fileExtension,
+          metaInfo: metaData,
+        )
+      ];
+      setState(() {});
+      if(!mounted){
+        return;
+      }
+      context.read<MenuBloc>().add(
+        PushMenuEntityData(
+          menuEntity: serviceLocator<MenuEntity>(),
+          menuFormStage: MenuFormStage.form1,
+          menuEntityStatus: MenuEntityStatus.push,
+        ),
+      );
+    }
   }
 }
