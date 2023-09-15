@@ -94,7 +94,7 @@ class _NewBusinessDocumentPageController extends State<NewBusinessDocumentPage> 
     if (_newUploadDocumentFormKey.currentState!.validate()) {
       _newUploadDocumentFormKey.currentState!.save();
       if (allBusinessDocuments.first.documentType == DocumentType.nationalID && !allBusinessDocuments.first.documentIdNumber.isEmptyOrNull) {
-        await context.push(Routes.WELCOME_PAGE);
+        context.pushReplacement(Routes.WELCOME_PAGE);
         return;
       }
       return;
@@ -168,429 +168,432 @@ class _NewBusinessDocumentPageView extends WidgetView<NewBusinessDocumentPage, _
       ),
       child: Directionality(
         textDirection: serviceLocator<LanguageController>().targetTextDirection,
-        child: Scaffold(
-          appBar: AppBar(
-            title: const Text('Document'),
-            centerTitle: false,
-            actions: const [
-              Padding(
-                padding: EdgeInsetsDirectional.only(end: 8),
-                child: LanguageSelectionWidget(),
-              ),
-            ],
-          ),
-          body: SlideInLeft(
-            key: const Key('business_document-dashboard-slideinleft-widget'),
-            from: context.width / 2 - 60,
-            duration: const Duration(milliseconds: 500),
-            child: Directionality(
-              textDirection: serviceLocator<LanguageController>().targetTextDirection,
-              child: PageBody(
-                controller: state.scrollController,
-                constraints: BoxConstraints(
-                  minWidth: 1000,
-                  minHeight: media.size.height - (media.padding.top + kToolbarHeight + media.padding.bottom),
+        child: DoubleTapToExit(
+          key: const Key('business-document-upload-doubleTap'),
+          child: Scaffold(
+            appBar: AppBar(
+              title: const Text('Document'),
+              centerTitle: false,
+              actions: const [
+                Padding(
+                  padding: EdgeInsetsDirectional.only(end: 8),
+                  child: LanguageSelectionWidget(),
                 ),
-                padding: EdgeInsetsDirectional.only(
-                  top: topPadding,
-                  //bottom: bottomPadding,
-                  start: margins * 2.5,
-                  end: margins * 2.5,
-                ),
-                child: Form(
-                  key: state._newUploadDocumentFormKey,
-                  child: CustomScrollView(
-                    controller: state.customScrollViewScrollController,
-                    shrinkWrap: true,
-                    slivers: [
-                      SliverList(
-                        delegate: SliverChildListDelegate(
-                          [
-                            const AnimatedGap(
-                              6,
-                              duration: Duration(milliseconds: 100),
-                            ),
-                            Wrap(
-                              children: [
-                                Text(
-                                  'Proof of Identity',
-                                  style: context.headlineSmall!.copyWith(
-                                    height: 0.9,
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                                  softWrap: true,
-                                  overflow: TextOverflow.ellipsis,
-                                  textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                                  maxLines: 2,
-                                ).translate(),
-                              ],
-                            ),
-                            const AnimatedGap(
-                              12,
-                              duration: Duration(milliseconds: 100),
-                            ),
-                            Wrap(
-                              children: [
-                                Text(
-                                  'Please upload a original copy of your National ID and/or Commercial License for your business verification',
-                                  softWrap: true,
-                                  overflow: TextOverflow.ellipsis,
-                                  style: context.bodyMedium!.copyWith(fontSize: 13),
-                                  textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                                  maxLines: 3,
-                                ).translate(),
-                              ],
-                            ),
-                            const AnimatedGap(
-                              16,
-                              duration: Duration(milliseconds: 100),
-                            ),
-                            Wrap(
-                              textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                              children: [
-                                Text(
-                                  'Choose your identity type',
-                                  style: context.bodyLarge!.copyWith(
-                                    fontWeight: FontWeight.w500,
-                                    fontSize: 17,
-                                  ),
-                                  softWrap: true,
-                                  overflow: TextOverflow.ellipsis,
-                                  maxLines: 1,
-                                  textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                                ).translate(),
-                              ],
-                            ),
-                            const AnimatedGap(
-                              2,
-                              duration: Duration(milliseconds: 100),
-                            ),
-                            AnimatedContainer(
-                              duration: const Duration(milliseconds: 200),
-                              height: context.width * 0.09,
-                              width: context.width,
-                              child: OverflowBar(
-                                alignment: MainAxisAlignment.start,
-                                overflowAlignment: OverflowBarAlignment.center,
-                                textDirection: serviceLocator<LanguageController>().targetTextDirection,
+              ],
+            ),
+            body: SlideInLeft(
+              key: const Key('business_document-dashboard-slideinleft-widget'),
+              from: context.width / 2 - 60,
+              duration: const Duration(milliseconds: 500),
+              child: Directionality(
+                textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                child: PageBody(
+                  controller: state.scrollController,
+                  constraints: BoxConstraints(
+                    minWidth: 1000,
+                    minHeight: media.size.height - (media.padding.top + kToolbarHeight + media.padding.bottom),
+                  ),
+                  padding: EdgeInsetsDirectional.only(
+                    top: topPadding,
+                    //bottom: bottomPadding,
+                    start: margins * 2.5,
+                    end: margins * 2.5,
+                  ),
+                  child: Form(
+                    key: state._newUploadDocumentFormKey,
+                    child: CustomScrollView(
+                      controller: state.customScrollViewScrollController,
+                      shrinkWrap: true,
+                      slivers: [
+                        SliverList(
+                          delegate: SliverChildListDelegate(
+                            [
+                              const AnimatedGap(
+                                6,
+                                duration: Duration(milliseconds: 100),
+                              ),
+                              Wrap(
                                 children: [
-                                  RadioGroup(
-                                    items: state.identityTypes.toList(),
-                                    scrollDirection: Axis.horizontal,
-                                    onChanged: (value) {
-                                      state.updateSelectedIdentityType(value);
-                                    },
-                                    selectedItem: state.currentSelectedIdentityType,
-                                    shrinkWrap: true,
-                                    labelBuilder: (ctx, index) {
-                                      return Text(
-                                        state.identityTypes[index].title,
-                                        style: context.labelLarge,
-                                        textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                                      ).translate();
-                                    },
-                                  ),
+                                  Text(
+                                    'Proof of Identity',
+                                    style: context.headlineSmall!.copyWith(
+                                      height: 0.9,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                    softWrap: true,
+                                    overflow: TextOverflow.ellipsis,
+                                    textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                    maxLines: 2,
+                                  ).translate(),
                                 ],
                               ),
-                            ),
-                            const AnimatedGap(
-                              6,
-                              duration: Duration(milliseconds: 100),
-                            ),
-                            AppTextFieldWidget(
-                              controller: state.textEditingControllers[0],
-                              textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                              textInputAction: TextInputAction.done,
-                              keyboardType: TextInputType.text,
-                              decoration: InputDecoration(
-                                labelText: '${state.currentSelectedIdentityType?.title ?? 'ID Card'} number',
-                                hintText: 'Enter your ${state.currentSelectedIdentityType?.title ?? 'ID Card'} number',
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(10),
+                              const AnimatedGap(
+                                12,
+                                duration: Duration(milliseconds: 100),
+                              ),
+                              Wrap(
+                                children: [
+                                  Text(
+                                    'Please upload a original copy of your National ID and/or Commercial License for your business verification',
+                                    softWrap: true,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: context.bodyMedium!.copyWith(fontSize: 13),
+                                    textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                    maxLines: 3,
+                                  ).translate(),
+                                ],
+                              ),
+                              const AnimatedGap(
+                                16,
+                                duration: Duration(milliseconds: 100),
+                              ),
+                              Wrap(
+                                textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                children: [
+                                  Text(
+                                    'Choose your identity type',
+                                    style: context.bodyLarge!.copyWith(
+                                      fontWeight: FontWeight.w500,
+                                      fontSize: 17,
+                                    ),
+                                    softWrap: true,
+                                    overflow: TextOverflow.ellipsis,
+                                    maxLines: 1,
+                                    textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                  ).translate(),
+                                ],
+                              ),
+                              const AnimatedGap(
+                                2,
+                                duration: Duration(milliseconds: 100),
+                              ),
+                              AnimatedContainer(
+                                duration: const Duration(milliseconds: 200),
+                                height: context.width * 0.09,
+                                width: context.width,
+                                child: OverflowBar(
+                                  alignment: MainAxisAlignment.start,
+                                  overflowAlignment: OverflowBarAlignment.center,
+                                  textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                  children: [
+                                    RadioGroup(
+                                      items: state.identityTypes.toList(),
+                                      scrollDirection: Axis.horizontal,
+                                      onChanged: (value) {
+                                        state.updateSelectedIdentityType(value);
+                                      },
+                                      selectedItem: state.currentSelectedIdentityType,
+                                      shrinkWrap: true,
+                                      labelBuilder: (ctx, index) {
+                                        return Text(
+                                          state.identityTypes[index].title,
+                                          style: context.labelLarge,
+                                          textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                        ).translate();
+                                      },
+                                    ),
+                                  ],
                                 ),
-                                isDense: true,
                               ),
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return 'Enter your ${state.currentSelectedIdentityType?.title ?? 'identity'} number';
-                                }
-                                return null;
-                              },
-                            ),
-                            const AnimatedGap(12, duration: Duration(milliseconds: 500)),
-                            NewBusinessDocumentComponentWidget(
-                              key: const Key('upload-document-identity-card-widget'),
-                              documentPlaceHolderImage: 'assets/svg/id_card.svg',
-                              animate: false,
-                              currentIndex: 0,
-                              businessDocumentUploadedEntity: (widget.businessDocumentEntities.isNotNullOrEmpty) ? widget.businessDocumentEntities[0] : null,
-                              selectedImageMetaData: (Map<String, dynamic> metaData, CaptureImageEntity captureImageEntity) {
-                                state.updateIdentityCard(metaData, captureImageEntity);
-                                return;
-                              },
-                              documentPlaceHolderWidget: Column(
-                                crossAxisAlignment: CrossAxisAlignment.stretch,
-                                mainAxisSize: MainAxisSize.min,
-                                mainAxisAlignment: MainAxisAlignment.center,
+                              const AnimatedGap(
+                                6,
+                                duration: Duration(milliseconds: 100),
+                              ),
+                              AppTextFieldWidget(
+                                controller: state.textEditingControllers[0],
+                                textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                textInputAction: TextInputAction.done,
+                                keyboardType: TextInputType.text,
+                                decoration: InputDecoration(
+                                  labelText: '${state.currentSelectedIdentityType?.title ?? 'ID Card'} number',
+                                  hintText: 'Enter your ${state.currentSelectedIdentityType?.title ?? 'ID Card'} number',
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                  isDense: true,
+                                ),
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return 'Enter your ${state.currentSelectedIdentityType?.title ?? 'identity'} number';
+                                  }
+                                  return null;
+                                },
+                              ),
+                              const AnimatedGap(12, duration: Duration(milliseconds: 500)),
+                              NewBusinessDocumentComponentWidget(
+                                key: const Key('upload-document-identity-card-widget'),
+                                documentPlaceHolderImage: 'assets/svg/id_card.svg',
+                                animate: false,
+                                currentIndex: 0,
+                                businessDocumentUploadedEntity: (widget.businessDocumentEntities.isNotNullOrEmpty) ? widget.businessDocumentEntities[0] : null,
+                                selectedImageMetaData: (Map<String, dynamic> metaData, CaptureImageEntity captureImageEntity) {
+                                  state.updateIdentityCard(metaData, captureImageEntity);
+                                  return;
+                                },
+                                documentPlaceHolderWidget: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                                  mainAxisSize: MainAxisSize.min,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                  children: [
+                                    Wrap(
+                                      textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                      children: [
+                                        Text(
+                                          'Upload Photo Identity',
+                                          textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                          maxLines: 1,
+                                          overflow: TextOverflow.ellipsis,
+                                          softWrap: true,
+                                          style: context.labelLarge!.copyWith(
+                                            fontWeight: FontWeight.w500,
+                                          ),
+                                        ).translate(),
+                                      ],
+                                    ),
+                                    const AnimatedGap(
+                                      8,
+                                      duration: Duration(milliseconds: 100),
+                                    ),
+                                    Wrap(
+                                      textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                      children: [
+                                        Text(
+                                          'We accept only',
+                                          textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                          maxLines: 1,
+                                          overflow: TextOverflow.ellipsis,
+                                          softWrap: true,
+                                          style: context.labelMedium!.copyWith(
+                                            fontWeight: FontWeight.w500,
+                                          ),
+                                        ).translate(),
+                                      ],
+                                    ),
+                                    const AnimatedGap(
+                                      2,
+                                      duration: Duration(milliseconds: 100),
+                                    ),
+                                    Wrap(
+                                      textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                      children: [
+                                        Text(
+                                          'National ID/Iqama, Passport',
+                                          textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                          maxLines: 1,
+                                          overflow: TextOverflow.ellipsis,
+                                          softWrap: true,
+                                          style: context.bodySmall!.copyWith(
+                                            fontWeight: FontWeight.w300,
+                                          ),
+                                        ).translate(),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                                documentType: DocumentType.nationalID,
+                              ),
+                              const AnimatedGap(
+                                4,
+                                duration: Duration(milliseconds: 100),
+                              ),
+                              const Divider(thickness: 0.8),
+                              const AnimatedGap(
+                                12,
+                                duration: Duration(milliseconds: 100),
+                              ),
+                              Wrap(
                                 textDirection: serviceLocator<LanguageController>().targetTextDirection,
                                 children: [
-                                  Wrap(
+                                  Text(
+                                    'Trade License ',
+                                    style: context.bodyLarge!.copyWith(
+                                      fontWeight: FontWeight.w500,
+                                      fontSize: 17,
+                                    ),
+                                    softWrap: true,
+                                    overflow: TextOverflow.ellipsis,
+                                    maxLines: 1,
                                     textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                                    children: [
-                                      Text(
-                                        'Upload Photo Identity',
-                                        textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                                        maxLines: 1,
-                                        overflow: TextOverflow.ellipsis,
-                                        softWrap: true,
-                                        style: context.labelLarge!.copyWith(
-                                          fontWeight: FontWeight.w500,
-                                        ),
-                                      ).translate(),
-                                    ],
-                                  ),
-                                  const AnimatedGap(
-                                    8,
-                                    duration: Duration(milliseconds: 100),
-                                  ),
-                                  Wrap(
-                                    textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                                    children: [
-                                      Text(
-                                        'We accept only',
-                                        textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                                        maxLines: 1,
-                                        overflow: TextOverflow.ellipsis,
-                                        softWrap: true,
-                                        style: context.labelMedium!.copyWith(
-                                          fontWeight: FontWeight.w500,
-                                        ),
-                                      ).translate(),
-                                    ],
-                                  ),
-                                  const AnimatedGap(
-                                    2,
-                                    duration: Duration(milliseconds: 100),
-                                  ),
-                                  Wrap(
-                                    textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                                    children: [
-                                      Text(
-                                        'National ID/Iqama, Passport',
-                                        textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                                        maxLines: 1,
-                                        overflow: TextOverflow.ellipsis,
-                                        softWrap: true,
-                                        style: context.bodySmall!.copyWith(
-                                          fontWeight: FontWeight.w300,
-                                        ),
-                                      ).translate(),
-                                    ],
-                                  ),
+                                  ).translate(),
                                 ],
                               ),
-                              documentType: DocumentType.nationalID,
-                            ),
-                            const AnimatedGap(
-                              4,
-                              duration: Duration(milliseconds: 100),
-                            ),
-                            const Divider(thickness: 0.8),
-                            const AnimatedGap(
-                              12,
-                              duration: Duration(milliseconds: 100),
-                            ),
-                            Wrap(
-                              textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                              children: [
-                                Text(
-                                  'Trade License ',
-                                  style: context.bodyLarge!.copyWith(
-                                    fontWeight: FontWeight.w500,
-                                    fontSize: 17,
-                                  ),
-                                  softWrap: true,
-                                  overflow: TextOverflow.ellipsis,
-                                  maxLines: 1,
-                                  textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                                ).translate(),
-                              ],
-                            ),
-                            const AnimatedGap(
-                              1,
-                              duration: Duration(milliseconds: 100),
-                            ),
-                            Wrap(
-                              textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                              children: [
-                                Text(
-                                  'Please make sure that every details of the ID document is visible and name with you',
-                                  style: context.bodyMedium!.copyWith(
-                                    fontWeight: FontWeight.w500,
-                                    fontSize: 13,
-                                  ),
-                                  softWrap: true,
-                                  overflow: TextOverflow.ellipsis,
-                                  maxLines: 2,
-                                  textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                                ).translate(),
-                              ],
-                            ),
-                            const AnimatedGap(
-                              8,
-                              duration: Duration(milliseconds: 100),
-                            ),
-                            NewBusinessDocumentComponentWidget(
-                              key: const Key('upload-document-trade-license-widget'),
-                              documentPlaceHolderImage: 'assets/svg/certificate_1.svg',
-                              currentIndex: 1,
-                              businessDocumentUploadedEntity: (widget.businessDocumentEntities.isNotNullOrEmpty && widget.businessDocumentEntities.length >= 2)
-                                  ? widget.businessDocumentEntities[1]
-                                  : null,
-                              animate: false,
-                              selectedImageMetaData: (Map<String, dynamic> metaData, CaptureImageEntity captureImageEntity) {
-                                state.updateTradeLicenseCard(metaData, captureImageEntity);
-                                return;
-                              },
-                              documentPlaceHolderWidget: Column(
-                                crossAxisAlignment: CrossAxisAlignment.stretch,
-                                mainAxisSize: MainAxisSize.min,
-                                mainAxisAlignment: MainAxisAlignment.center,
+                              const AnimatedGap(
+                                1,
+                                duration: Duration(milliseconds: 100),
+                              ),
+                              Wrap(
                                 textDirection: serviceLocator<LanguageController>().targetTextDirection,
                                 children: [
-                                  Wrap(
+                                  Text(
+                                    'Please make sure that every details of the ID document is visible and name with you',
+                                    style: context.bodyMedium!.copyWith(
+                                      fontWeight: FontWeight.w500,
+                                      fontSize: 13,
+                                    ),
+                                    softWrap: true,
+                                    overflow: TextOverflow.ellipsis,
+                                    maxLines: 2,
                                     textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                                    children: [
-                                      Text(
-                                        'Upload Trade License',
-                                        textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                                        maxLines: 1,
-                                        overflow: TextOverflow.ellipsis,
-                                        softWrap: true,
-                                        style: context.labelLarge!.copyWith(
-                                          fontWeight: FontWeight.w500,
-                                        ),
-                                      ).translate(),
-                                    ],
-                                  ),
-                                  const AnimatedGap(
-                                    8,
-                                    duration: Duration(milliseconds: 100),
-                                  ),
-                                  Wrap(
-                                    textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                                    children: [
-                                      Text(
-                                        'We accept only',
-                                        textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                                        maxLines: 1,
-                                        overflow: TextOverflow.ellipsis,
-                                        softWrap: true,
-                                        style: context.labelMedium!.copyWith(
-                                          fontWeight: FontWeight.w500,
-                                        ),
-                                      ).translate(),
-                                    ],
-                                  ),
-                                  const AnimatedGap(
-                                    2,
-                                    duration: Duration(milliseconds: 100),
-                                  ),
-                                  Wrap(
-                                    textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                                    children: [
-                                      Text(
-                                        'Trade or Commercial License',
-                                        textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                                        maxLines: 1,
-                                        overflow: TextOverflow.ellipsis,
-                                        softWrap: true,
-                                        style: context.bodySmall!.copyWith(
-                                          fontWeight: FontWeight.w300,
-                                        ),
-                                      ).translate(),
-                                    ],
-                                  ),
+                                  ).translate(),
                                 ],
                               ),
-                              documentType: DocumentType.nationalID,
-                            ),
-                            const Divider(thickness: 0.8),
-                          ],
+                              const AnimatedGap(
+                                8,
+                                duration: Duration(milliseconds: 100),
+                              ),
+                              NewBusinessDocumentComponentWidget(
+                                key: const Key('upload-document-trade-license-widget'),
+                                documentPlaceHolderImage: 'assets/svg/certificate_1.svg',
+                                currentIndex: 1,
+                                businessDocumentUploadedEntity: (widget.businessDocumentEntities.isNotNullOrEmpty && widget.businessDocumentEntities.length >= 2)
+                                    ? widget.businessDocumentEntities[1]
+                                    : null,
+                                animate: false,
+                                selectedImageMetaData: (Map<String, dynamic> metaData, CaptureImageEntity captureImageEntity) {
+                                  state.updateTradeLicenseCard(metaData, captureImageEntity);
+                                  return;
+                                },
+                                documentPlaceHolderWidget: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                                  mainAxisSize: MainAxisSize.min,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                  children: [
+                                    Wrap(
+                                      textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                      children: [
+                                        Text(
+                                          'Upload Trade License',
+                                          textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                          maxLines: 1,
+                                          overflow: TextOverflow.ellipsis,
+                                          softWrap: true,
+                                          style: context.labelLarge!.copyWith(
+                                            fontWeight: FontWeight.w500,
+                                          ),
+                                        ).translate(),
+                                      ],
+                                    ),
+                                    const AnimatedGap(
+                                      8,
+                                      duration: Duration(milliseconds: 100),
+                                    ),
+                                    Wrap(
+                                      textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                      children: [
+                                        Text(
+                                          'We accept only',
+                                          textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                          maxLines: 1,
+                                          overflow: TextOverflow.ellipsis,
+                                          softWrap: true,
+                                          style: context.labelMedium!.copyWith(
+                                            fontWeight: FontWeight.w500,
+                                          ),
+                                        ).translate(),
+                                      ],
+                                    ),
+                                    const AnimatedGap(
+                                      2,
+                                      duration: Duration(milliseconds: 100),
+                                    ),
+                                    Wrap(
+                                      textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                      children: [
+                                        Text(
+                                          'Trade or Commercial License',
+                                          textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                          maxLines: 1,
+                                          overflow: TextOverflow.ellipsis,
+                                          softWrap: true,
+                                          style: context.bodySmall!.copyWith(
+                                            fontWeight: FontWeight.w300,
+                                          ),
+                                        ).translate(),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                                documentType: DocumentType.nationalID,
+                              ),
+                              const Divider(thickness: 0.8),
+                            ],
+                          ),
                         ),
-                      ),
-                      SliverFillRemaining(
-                        fillOverscroll: true,
-                        hasScrollBody: false,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                          children: [
-                            const Spacer(),
-                            Row(
-                              mainAxisSize: MainAxisSize.min,
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Expanded(
-                                  flex: 1,
-                                  child: ElevatedButton(
-                                    onPressed: () {
-                                      if (context.canPop()) {
-                                        context.pop();
+                        SliverFillRemaining(
+                          fillOverscroll: true,
+                          hasScrollBody: false,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                            textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                            children: [
+                              const Spacer(),
+                              Row(
+                                mainAxisSize: MainAxisSize.min,
+                                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Expanded(
+                                    flex: 1,
+                                    child: ElevatedButton(
+                                      onPressed: () {
+                                        if (context.canPop()) {
+                                          context.pop();
+                                          return;
+                                        }
                                         return;
-                                      }
-                                      return;
-                                    },
-                                    style: ElevatedButton.styleFrom(
-                                      backgroundColor: Colors.white,
-                                      //minimumSize: Size(100, 40),
-                                      side: const BorderSide(
-                                        color: Color.fromRGBO(
-                                          165,
-                                          166,
-                                          168,
-                                          1.0,
+                                      },
+                                      style: ElevatedButton.styleFrom(
+                                        backgroundColor: Colors.white,
+                                        //minimumSize: Size(100, 40),
+                                        side: const BorderSide(
+                                          color: Color.fromRGBO(
+                                            165,
+                                            166,
+                                            168,
+                                            1.0,
+                                          ),
                                         ),
                                       ),
+                                      child: Text(
+                                        'Prev',
+                                        textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                        style: const TextStyle(
+                                          color: Color.fromRGBO(127, 129, 132, 1.0),
+                                        ),
+                                      ).translate(),
                                     ),
-                                    child: Text(
-                                      'Prev',
-                                      textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                                      style: const TextStyle(
-                                        color: Color.fromRGBO(127, 129, 132, 1.0),
+                                  ),
+                                  const SizedBox(
+                                    width: 24,
+                                  ),
+                                  Expanded(
+                                    flex: 2,
+                                    child: ElevatedButton(
+                                      onPressed: (state.textEditingControllers[0].value.text.trim().isNotEmpty &&
+                                              (!state.allBusinessDocuments.first.localAssetPath.isEmptyOrNull ||
+                                                  state.allBusinessDocuments.first.networkAssetPath.isEmptyOrNull))
+                                          ? state.onUploadPressed
+                                          : null,
+                                      style: ElevatedButton.styleFrom(
+                                        //minimumSize: Size(180, 40),
+                                        disabledBackgroundColor: Color.fromRGBO(255, 219, 208, 1),
+                                        disabledForegroundColor: Colors.white,
                                       ),
-                                    ).translate(),
-                                  ),
-                                ),
-                                const SizedBox(
-                                  width: 24,
-                                ),
-                                Expanded(
-                                  flex: 2,
-                                  child: ElevatedButton(
-                                    onPressed: (state.textEditingControllers[0].value.text.trim().isNotEmpty &&
-                                            (!state.allBusinessDocuments.first.localAssetPath.isEmptyOrNull ||
-                                                state.allBusinessDocuments.first.networkAssetPath.isEmptyOrNull))
-                                        ? state.onUploadPressed
-                                        : null,
-                                    style: ElevatedButton.styleFrom(
-                                      //minimumSize: Size(180, 40),
-                                      disabledBackgroundColor: Color.fromRGBO(255, 219, 208, 1),
-                                      disabledForegroundColor: Colors.white,
+                                      child: Text(
+                                        'Upload',
+                                        textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                      ).translate(),
                                     ),
-                                    child: Text(
-                                      'Upload',
-                                      textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                                    ).translate(),
                                   ),
-                                ),
-                              ],
-                            ),
-                          ],
+                                ],
+                              ),
+                            ],
+                          ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
               ),

@@ -20,9 +20,9 @@ class _PrimaryDashboardPageController extends State<PrimaryDashboardPage> {
 
   @override
   void initState() {
-    super.initState();
-    context.read<PermissionBloc>().add(RequestLocationPermissionEvent());
 
+    super.initState();
+    context.read<PermissionBloc>().add(const RequestLocationPermissionEvent());
     primaryDashboardMenuEntities.clear();
     /*primaryDashboardMenuEntities.add(
       PrimaryDashboardEntity(
@@ -104,26 +104,31 @@ class _PrimaryDashboardPageController extends State<PrimaryDashboardPage> {
       phoneNumber: !cacheUserEntity.phoneNumber.isEmptyOrNull?cacheUserEntity.phoneNumber:cacheUserEntity.businessProfile?.businessPhoneNumber??'',
       uid: cacheUserEntity.userID.toString(),
       access_token: cacheUserEntity.access_token ?? '',
-      currentUserStage: 0,
       phoneNumberWithoutDialCode: !cacheUserEntity.phoneNumberWithoutDialCode.isEmptyOrNull?cacheUserEntity.phoneNumberWithoutDialCode:cacheUserEntity.businessProfile?.phoneNumberWithoutDialCode??'',
     );
     final getCurrentUserResult = await serviceLocator<GetCurrentAppUserUseCase>()(
       input: input,
     );
-    getCurrentUserResult.when(remote: (data, meta) {
+    await getCurrentUserResult.when(remote: (data, meta) {
       if(data.isNotNull){
         appUserEntity=data!;
+        setState(() {
+
+        });
+        appLog.d('Remote User Info ${data.toMap()}');
       }
     }, localDb: (data, meta) {
       if(data.isNotNull){
         appUserEntity=data!;
+        setState(() {
+
+        });
+        appLog.d('Local User Info ${data.toMap()}');
       }
     }, error: (dataSourceFailure, reason, error, networkException, stackTrace, exception, extra) {
-
+      appLog.d('Error $reason');
     },);
-    setState(() {
 
-    });
   }
 
   @override

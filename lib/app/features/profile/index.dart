@@ -67,6 +67,7 @@ import 'package:homemakers_merchant/shared/widgets/universal/carousel_animation/
 import 'package:homemakers_merchant/shared/widgets/universal/constrained_scrollable_views/constrained_scrollable_views.dart';
 import 'package:homemakers_merchant/shared/widgets/universal/custom_radio_group_list/custom_radio_group_list.dart';
 import 'package:homemakers_merchant/shared/widgets/universal/dotted_border/dotted_border.dart';
+import 'package:homemakers_merchant/shared/widgets/universal/double_tap_exit/double_tap_to_exit.dart';
 import 'package:homemakers_merchant/shared/widgets/universal/image_loader/image_helper.dart';
 import 'package:homemakers_merchant/shared/widgets/universal/infinity_scroll/infinite_carousel.dart';
 import 'package:homemakers_merchant/shared/widgets/universal/multi_stream_builder/multi_stream_builder.dart';

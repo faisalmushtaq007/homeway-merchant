@@ -418,8 +418,15 @@ class AuthenticationRepositoryImplement implements AuthenticationRepository {
             stackTrace: failure.stacktrace,
           );
         }, (r) {
-          appLog.d('Get current appUser to local : ${r?.userID}');
-          return DataSourceState<AppUserEntity>.localDb(data: r);
+          if(r!=null) {
+            appLog.d('Get current appUser to local : ${r?.toMap()}');
+            return DataSourceState<AppUserEntity>.localDb(data: r);
+          }else{
+            return const DataSourceState<AppUserEntity>.error(
+              reason: 'User is null',
+              dataSourceFailure: DataSourceFailure.local,
+            );
+          }
         });
       } else {
         // Remote

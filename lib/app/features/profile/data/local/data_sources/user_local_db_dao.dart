@@ -196,6 +196,13 @@ class UserLocalDbRepository<User extends AppUserEntity> implements BaseUserLocal
           if (record != null) {
             appLog.d('Current user:- ${record.value}');
             return AppUserEntity.fromMap(record.value);
+          }else{
+            final result=await getAll();
+            if(result.isRight()){
+              appLog.d(result.right);
+            }else{
+              appLog.d(result.left.toString());
+            }
           }
           return null;
         },
