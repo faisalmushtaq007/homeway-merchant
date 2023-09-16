@@ -227,7 +227,8 @@ class _MenuForm1PageState extends State<MenuForm1Page>
                 textInputAction: TextInputAction.next,
                 onFieldSubmitted: (_) => fieldFocusChange(
                     context, menuForm1FocusList[1], menuForm1FocusList[2]),
-                keyboardType: TextInputType.text,
+                keyboardType: TextInputType.name,
+                inputFormatters: [FilteringTextInputFormatter.allow(RegExp('[a-z A-Z ]')),FilteringTextInputFormatter.deny('  ')],
                 decoration: InputDecoration(
                   labelText: 'Menu name',
                   hintText: 'Enter your menu name',

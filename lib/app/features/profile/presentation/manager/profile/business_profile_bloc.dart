@@ -23,6 +23,8 @@ class BusinessProfileBloc extends Bloc<BusinessProfileEvent, BusinessProfileStat
     on<GetAllBusinessProfile>(_getAllBusinessProfile);
     on<DeleteAllBusinessProfile>(_deleteAllBusinessProfile);
     on<NavigateToAddressPage>(_navigateToAddressPage);
+    on<GetCurrentUserProfile>(_getCurrentUserProfile);
+
   }
 
   FutureOr<void> _saveBusinessProfile(SaveBusinessProfile event, Emitter<BusinessProfileState> emit) async {
@@ -80,7 +82,7 @@ class BusinessProfileBloc extends Bloc<BusinessProfileEvent, BusinessProfileStat
       appLog.e('Profile bloc save exception $e');
       emit(
         BusinessProfileExceptionState(
-          message: 'Something went wrong during saving your store details, please try again',
+          message: 'Something went wrong during saving your profile details, please try again',
           //exception: e as Exception,
           stackTrace: s,
           businessProfileStatus: BusinessProfileStatus.saveBusinessProfile,
@@ -178,7 +180,7 @@ class BusinessProfileBloc extends Bloc<BusinessProfileEvent, BusinessProfileStat
       appLog.e('Profile bloc get exception $e');
       emit(
         BusinessProfileExceptionState(
-          message: 'Something went wrong during getting your store details, please try again',
+          message: 'Something went wrong during getting your profile details, please try again',
           //exception: e as Exception,
           stackTrace: s,
           businessProfileStatus: BusinessProfileStatus.getBusinessProfile,
@@ -236,7 +238,7 @@ class BusinessProfileBloc extends Bloc<BusinessProfileEvent, BusinessProfileStat
       appLog.e('Profile bloc delete exception $e');
       emit(
         BusinessProfileExceptionState(
-          message: 'Something went wrong during getting your store details, please try again',
+          message: 'Something went wrong during deleting your profile details, please try again',
           //exception: e as Exception,
           stackTrace: s,
           businessProfileStatus: BusinessProfileStatus.deleteBusinessProfile,
@@ -302,7 +304,7 @@ class BusinessProfileBloc extends Bloc<BusinessProfileEvent, BusinessProfileStat
       appLog.e('Profile bloc get all $e');
       emit(
         BusinessProfileExceptionState(
-          message: 'Something went wrong during getting your all stores, please try again',
+          message: 'Something went wrong during getting your all profiles, please try again',
           //exception: e as Exception,
           stackTrace: s,
           businessProfileStatus: BusinessProfileStatus.getAllBusinessProfile,
@@ -349,7 +351,7 @@ class BusinessProfileBloc extends Bloc<BusinessProfileEvent, BusinessProfileStat
       appLog.e('Profile bloc delete all exception $e');
       emit(
         BusinessProfileExceptionState(
-          message: 'Something went wrong during getting your store details, please try again',
+          message: 'Something went wrong during deleting your profile details, please try again',
           //exception: e as Exception,
           stackTrace: s,
           businessProfileStatus: BusinessProfileStatus.deleteAllBusinessProfile,
@@ -366,5 +368,53 @@ class BusinessProfileBloc extends Bloc<BusinessProfileEvent, BusinessProfileStat
       ),
     );
     return;
+  }
+
+  FutureOr<void> _getCurrentUserProfile(GetCurrentUserProfile event, Emitter<BusinessProfileState> emit) async{
+    try {
+      final DataSourceState<AppUserEntity?> result = await serviceLocator<GetCurrentAppUserUseCase>()(
+        input: AppUserEntity(
+          userID: event.userID,
+          uid: event.userID.toString(),
+          phoneNumber: event.phoneNumberWithFormat,
+          phoneNumberWithoutDialCode: event.phoneNumberWithoutFormat,
+        ),
+      );
+      result.when(
+        remote: (data, meta) {
+          appLog.d('Profile bloc getCurrentUser remote ${data?.toMap()}');
+          emit(
+            GetCurrentUserProfileState(appUserEntity: data),
+          );
+        },
+        localDb: (data, meta) {
+          appLog.d('Profile bloc getCurrentUser local ${data?.toMap()}');
+          emit(
+            GetCurrentUserProfileState(appUserEntity: data),
+          );
+        },
+        error: (dataSourceFailure, reason, error, networkException, stackTrace, exception, extra) {
+          appLog.d('Profile bloc getCurrentUser error $reason');
+          emit(
+            BusinessProfileExceptionState(
+              message: reason,
+              //exception: e as Exception,
+              stackTrace: stackTrace,
+              businessProfileStatus: BusinessProfileStatus.getCurrentUser,
+            ),
+          );
+        },
+      );
+    } catch (e, s) {
+      appLog.e('Profile bloc getCurrentUser exception $e');
+      emit(
+        BusinessProfileExceptionState(
+          message: 'Something went wrong during getting your user details, please try again',
+          //exception: e as Exception,
+          stackTrace: s,
+          businessProfileStatus: BusinessProfileStatus.getCurrentUser,
+        ),
+      );
+    }
   }
 }

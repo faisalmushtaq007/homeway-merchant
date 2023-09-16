@@ -10,9 +10,11 @@ class SaveBusinessType extends BusinessProfileEvent {
     this.hasEditBusinessType = false,
     this.businessProfileEntity,
   });
+
   final BusinessTypeEntity businessTypeEntity;
   final BusinessProfileEntity? businessProfileEntity;
   final bool hasEditBusinessType;
+
   @override
   bool get cacheHash => true;
 
@@ -22,8 +24,10 @@ class SaveBusinessType extends BusinessProfileEvent {
 
 class GetBusinessType extends BusinessProfileEvent {
   GetBusinessType({required this.businessTypeEntity, this.hasEditBusinessType = false});
+
   final BusinessTypeEntity businessTypeEntity;
   final bool hasEditBusinessType;
+
   @override
   bool get cacheHash => true;
 
@@ -38,15 +42,18 @@ class SaveBusinessProfile extends BusinessProfileEvent {
     this.currentIndex = -1,
     this.hasSaveBusinessType = false,
   });
+
   final BusinessProfileEntity businessProfileEntity;
   final bool hasEditBusinessProfile;
   final int currentIndex;
   final bool hasSaveBusinessType;
+
   @override
   bool get cacheHash => true;
 
   @override
-  List<Object?> get hashParameters => [
+  List<Object?> get hashParameters =>
+      [
         businessProfileEntity,
         hasEditBusinessProfile,
         currentIndex,
@@ -61,6 +68,7 @@ class DeleteBusinessProfile extends BusinessProfileEvent {
     this.index = -1,
     this.businessProfileEntities = const [],
   });
+
   final BusinessProfileEntity? businessProfileEntity;
   final int businessProfileID;
   final int index;
@@ -70,7 +78,8 @@ class DeleteBusinessProfile extends BusinessProfileEvent {
   bool get cacheHash => true;
 
   @override
-  List<Object?> get hashParameters => [
+  List<Object?> get hashParameters =>
+      [
         businessProfileEntity,
         businessProfileID,
         index,
@@ -84,20 +93,24 @@ class GetBusinessProfile extends BusinessProfileEvent {
     this.businessProfileEntity,
     this.index = -1,
   });
+
   final BusinessProfileEntity? businessProfileEntity;
   final int businessProfileID;
   final int index;
+
   @override
   bool get cacheHash => true;
 
   @override
-  List<Object?> get hashParameters => [businessProfileEntity, businessProfileID];
+  List<Object?> get hashParameters => [businessProfileEntity, businessProfileID, index];
 }
 
 class DeleteAllBusinessProfile extends BusinessProfileEvent {
   DeleteAllBusinessProfile({this.businessProfileID = -1, this.businessProfileEntity});
+
   final BusinessProfileEntity? businessProfileEntity;
   final int businessProfileID;
+
   @override
   bool get cacheHash => true;
 
@@ -113,17 +126,20 @@ class GetAllBusinessProfile extends BusinessProfileEvent {
     this.pageSize = 10,
     this.pageKey = 1,
   });
+
   final BusinessProfileEntity? businessProfileEntity;
   final int businessProfileID;
 
   final int pageKey;
   final int pageSize;
   final String searchItem;
+
   @override
   bool get cacheHash => true;
 
   @override
-  List<Object?> get hashParameters => [
+  List<Object?> get hashParameters =>
+      [
         businessProfileEntity,
         businessProfileID,
         pageKey,
@@ -134,11 +150,36 @@ class GetAllBusinessProfile extends BusinessProfileEvent {
 
 class NavigateToAddressPage extends BusinessProfileEvent {
   NavigateToAddressPage({this.businessProfileEntity, this.businessTypeEntity});
+
   final BusinessProfileEntity? businessProfileEntity;
   final BusinessTypeEntity? businessTypeEntity;
+
   @override
   bool get cacheHash => true;
 
   @override
   List<Object?> get hashParameters => [businessProfileEntity, businessTypeEntity];
+}
+
+class GetCurrentUserProfile extends BusinessProfileEvent {
+  GetCurrentUserProfile({
+    this.businessProfileID = 1,
+    this.userID = -1,
+    this.phoneNumberWithFormat = '',
+    this.phoneNumberWithoutFormat = '',
+    this.accessToken = '',
+  });
+
+  final int businessProfileID;
+  final int userID;
+  final String phoneNumberWithFormat;
+  final String phoneNumberWithoutFormat;
+  final String accessToken;
+
+  @override
+  bool get cacheHash => true;
+
+  @override
+  List<Object?> get hashParameters =>
+      [businessProfileID, userID, accessToken, phoneNumberWithFormat, phoneNumberWithoutFormat,];
 }

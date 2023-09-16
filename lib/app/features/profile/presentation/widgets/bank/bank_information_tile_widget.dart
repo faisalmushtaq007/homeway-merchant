@@ -20,26 +20,36 @@ class BankInformationTileWidget extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           textDirection: serviceLocator<LanguageController>().targetTextDirection,
           children: [
-            Text(
-              bankInfoTile.label,
-              style: context.labelLarge!.copyWith(
-                color: const Color.fromRGBO(165, 166, 168, 1),
-              ),
-              textDirection: serviceLocator<LanguageController>().targetTextDirection,
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
+            Wrap(
+              children: [
+                Text(
+                  bankInfoTile.label,
+                  style: context.labelLarge!.copyWith(
+                    color: const Color.fromRGBO(165, 166, 168, 1),
+                  ),
+                  textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                  softWrap: true,
+                ),
+              ],
             ),
             const SizedBox(
               height: 4,
             ),
-            Text(
-              bankInfoTile.content,
-              style: context.labelLarge!.copyWith(
-                color: const Color.fromRGBO(42, 45, 50, 1),
-              ),
-              textDirection: serviceLocator<LanguageController>().targetTextDirection,
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
+            Wrap(
+              children: [
+                Text(
+                  bankInfoTile.content,
+                  style: context.labelLarge!.copyWith(
+                    color: context.colorScheme.onBackground,
+                  ),
+                  textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  softWrap: true,
+                ),
+              ],
             ),
             const SizedBox(
               height: 8,

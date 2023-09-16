@@ -402,6 +402,7 @@ class _SaveDriverPageView
                             textInputAction: TextInputAction.next,
                             //onFieldSubmitted: (_) => fieldFocusChange(context, state.focusList[0], state.focusList[1]),
                             keyboardType: TextInputType.name,
+                            inputFormatters: [FilteringTextInputFormatter.allow(RegExp('[a-z A-Z ]')),FilteringTextInputFormatter.deny('  ')],
                             decoration: InputDecoration(
                               labelText: 'Driver name',
                               hintText: 'Enter driver name',

@@ -23,32 +23,31 @@ class GetOrSaveNewCurrentAppUserUseCase extends UseCaseIO<AppUserEntity, AppUser
               appLog.d('2');
               appLog.d('get or save user local ${data?.toMap()}');
               if (data != null) {
-                serviceLocator<AppUserEntity>().copyWith(
-                  userID: data.userID,
-                  phoneNumber: data.phoneNumber,
-                  businessProfile: data.businessProfile,
-                  stores: data.stores,
-                  token: data.token,
-                  tokenCreationDateTime: data.tokenCreationDateTime,
-                  hasUserAuthenticated: data.hasUserAuthenticated,
-                  businessTypeEntity: data.businessTypeEntity,
-                  currentProfileStatus: data.currentProfileStatus,
-                  menus: data.menus,
-                  drivers: data.drivers,
-                  addons: data.addons,
-                  ratingAndReviewEntity: data.ratingAndReviewEntity,
-                  hasCurrentUser: data.hasCurrentUser,
-                  country_dial_code: data.country_dial_code,
-                  isoCode: data.isoCode,
-                  user_type: data.user_type,
-                  access_token: data.access_token,
-                  currentUserStage: data.currentUserStage,
-                  uid: data.uid,
-                  paymentBankEntity: data.paymentBankEntity,
-                  hasMultiplePaymentBanks: data.hasMultiplePaymentBanks,
-                  paymentBankEntities: data.paymentBankEntities,
-                  phoneNumberWithoutDialCode: data.phoneNumberWithoutDialCode,
-                );
+                serviceLocator<AppUserEntity>()
+                  ..userID = data.userID
+                  ..phoneNumber = data.phoneNumber
+                  ..businessProfile = data.businessProfile
+                  ..stores = data.stores
+                  ..token = data.token
+                  ..tokenCreationDateTime = data.tokenCreationDateTime
+                  ..hasUserAuthenticated = data.hasUserAuthenticated
+                  ..businessTypeEntity = data.businessTypeEntity
+                  ..currentProfileStatus = data.currentProfileStatus
+                  ..menus = data.menus
+                  ..drivers = data.drivers
+                  ..addons = data.addons
+                  ..ratingAndReviewEntity = data.ratingAndReviewEntity
+                  ..hasCurrentUser = data.hasCurrentUser
+                  ..country_dial_code = data.country_dial_code
+                  ..isoCode = data.isoCode
+                  ..user_type = data.user_type
+                  ..access_token = data.access_token
+                  ..currentUserStage = data.currentUserStage
+                  ..uid = data.uid
+                  ..paymentBankEntity = data.paymentBankEntity
+                  ..hasMultiplePaymentBanks = data.hasMultiplePaymentBanks
+                  ..paymentBankEntities = data.paymentBankEntities
+                  ..phoneNumberWithoutDialCode = data.phoneNumberWithoutDialCode;
                 appUserEntity = data;
                 return data;
               } else {
@@ -85,32 +84,31 @@ class GetOrSaveNewCurrentAppUserUseCase extends UseCaseIO<AppUserEntity, AppUser
             localDb: (data, meta) {
               appLog.d('get or save user local ${data?.toMap()}');
               if (data != null) {
-                serviceLocator<AppUserEntity>().copyWith(
-                  userID: data.userID,
-                  phoneNumber: data.phoneNumber,
-                  businessProfile: data.businessProfile,
-                  stores: data.stores,
-                  token: data.token,
-                  tokenCreationDateTime: data.tokenCreationDateTime,
-                  hasUserAuthenticated: data.hasUserAuthenticated,
-                  businessTypeEntity: data.businessTypeEntity,
-                  currentProfileStatus: data.currentProfileStatus,
-                  menus: data.menus,
-                  drivers: data.drivers,
-                  addons: data.addons,
-                  ratingAndReviewEntity: data.ratingAndReviewEntity,
-                  hasCurrentUser: data.hasCurrentUser,
-                  country_dial_code: data.country_dial_code,
-                  isoCode: data.isoCode,
-                  user_type: data.user_type,
-                  access_token: data.access_token,
-                  currentUserStage: data.currentUserStage,
-                  uid: data.uid,
-                  paymentBankEntity: data.paymentBankEntity,
-                  hasMultiplePaymentBanks: data.hasMultiplePaymentBanks,
-                  paymentBankEntities: data.paymentBankEntities,
-                  phoneNumberWithoutDialCode: data.phoneNumberWithoutDialCode,
-                );
+                serviceLocator<AppUserEntity>()
+                  ..userID = data.userID
+                  ..phoneNumber = data.phoneNumber
+                  ..businessProfile = data.businessProfile
+                  ..stores = data.stores
+                  ..token = data.token
+                  ..tokenCreationDateTime = data.tokenCreationDateTime
+                  ..hasUserAuthenticated = data.hasUserAuthenticated
+                  ..businessTypeEntity = data.businessTypeEntity
+                  ..currentProfileStatus = data.currentProfileStatus
+                  ..menus = data.menus
+                  ..drivers = data.drivers
+                  ..addons = data.addons
+                  ..ratingAndReviewEntity = data.ratingAndReviewEntity
+                  ..hasCurrentUser = data.hasCurrentUser
+                  ..country_dial_code = data.country_dial_code
+                  ..isoCode = data.isoCode
+                  ..user_type = data.user_type
+                  ..access_token = data.access_token
+                  ..currentUserStage = data.currentUserStage
+                  ..uid = data.uid
+                  ..paymentBankEntity = data.paymentBankEntity
+                  ..hasMultiplePaymentBanks = data.hasMultiplePaymentBanks
+                  ..paymentBankEntities = data.paymentBankEntities
+                  ..phoneNumberWithoutDialCode = data.phoneNumberWithoutDialCode;
                 appUserEntity = data;
                 appLog.d('8');
                 return data;

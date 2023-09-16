@@ -76,6 +76,7 @@ enum BusinessProfileStatus {
   deleteAllBusinessType,
   getAllBusinessProfile,
   getAllBusinessType,
+  getCurrentUser,
   ;
 
   @override

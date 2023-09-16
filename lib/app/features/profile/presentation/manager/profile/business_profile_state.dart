@@ -302,3 +302,14 @@ class BusinessProfileProcessingState extends BusinessProfileState {
   @override
   List<Object?> get hashParameters => throw UnimplementedError();
 }
+
+class GetCurrentUserProfileState extends BusinessProfileState{
+  GetCurrentUserProfileState({this.appUserEntity});
+  final AppUserEntity? appUserEntity;
+
+  @override
+  bool get cacheHash => true;
+
+  @override
+  List<Object?> get hashParameters => [appUserEntity];
+}

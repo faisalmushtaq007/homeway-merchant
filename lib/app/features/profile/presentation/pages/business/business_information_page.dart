@@ -478,6 +478,8 @@ class _BusinessInformationPageState extends State<BusinessInformationPage> with 
                                                   labelText: snapshot[0],
                                                   isDense: true,
                                                 ),
+                                                keyboardType: TextInputType.name,
+                                                inputFormatters: [FilteringTextInputFormatter.allow(RegExp('[a-z A-Z ]')),FilteringTextInputFormatter.deny('  ')],
                                                 validator: (value) {
                                                   if (value == null || value.isEmpty) {
                                                     return '${snapshot[1]}';
@@ -521,6 +523,8 @@ class _BusinessInformationPageState extends State<BusinessInformationPage> with 
                                               child: AppTextFieldWidget(
                                                 controller: _businessNameController,
                                                 textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                                keyboardType: TextInputType.text,
+                                                inputFormatters: [FilteringTextInputFormatter.allow(RegExp('[a-z A-Z ]')),FilteringTextInputFormatter.deny('  ')],
                                                 decoration: InputDecoration(
                                                   labelText: snapshot[0],
                                                   isDense: true,

@@ -511,6 +511,7 @@ class _SaveStorePageState extends State<SaveStorePage> {
                                           child: StoreTextFieldWidget(
                                             controller: _storeNameController,
                                             keyboardType: TextInputType.name,
+                                            inputFormatters: [FilteringTextInputFormatter.allow(RegExp('[a-z A-Z ]')),FilteringTextInputFormatter.deny('  ')],
                                             decoration: InputDecoration(
                                               labelText: 'Store name',
                                               hintText: 'Enter your store name',
@@ -683,9 +684,23 @@ class _SaveStorePageState extends State<SaveStorePage> {
                                             controller: _storeAddressController,
                                             textDirection: serviceLocator<LanguageController>().targetTextDirection,
                                             maxLines: 3,
+                                            readOnly: true,
                                             //focusNode: focusList[2],
                                             textInputAction: TextInputAction.next,
                                             //onFieldSubmitted: (_) => fieldFocusChange(context, focusList[2], focusList[3]),
+                                            onTap: () async {
+                                              final result = await context.push<(String, AddressModel)>(
+                                                Routes.ALL_SAVED_ADDRESS_LIST,
+                                                extra: {
+                                                  'selectItemUseCase': SelectItemUseCase.onlySelect,
+                                                },
+                                              );
+                                              if (result != null) {
+                                                _storeAddressController.text = result.$1;
+                                                addressModel = result.$2;
+                                                setState(() {});
+                                              }
+                                            },
                                             decoration: InputDecoration(
                                               labelText: snapshot[0],
                                               isDense: true,

@@ -318,6 +318,7 @@ class _BankInformationPageState extends State<BankInformationPage> with SingleTi
                                           isDense: true,
                                         ),
                                         keyboardType: TextInputType.name,
+                                        inputFormatters: [FilteringTextInputFormatter.allow(RegExp('[a-z A-Z ]')),FilteringTextInputFormatter.deny('  ')],
                                         validator: (value) {
                                           if (value == null || value.isEmpty) {
                                             return '${snapshot[1]}';
@@ -386,6 +387,7 @@ class _BankInformationPageState extends State<BankInformationPage> with SingleTi
                                           isDense: true,
                                         ),
                                         keyboardType: TextInputType.name,
+                                        inputFormatters: [FilteringTextInputFormatter.allow(RegExp('[a-z A-Z ]')),FilteringTextInputFormatter.deny('  ')],
                                         validator: (value) {
                                           if (value == null || value.isEmpty) {
                                             return '${snapshot[1]}';
@@ -634,102 +636,100 @@ class _BankInformationPageState extends State<BankInformationPage> with SingleTi
                                 Row(
                                   children: [
                                     Expanded(
-                                      child: Padding(
-                                        padding: const EdgeInsetsDirectional.symmetric(),
-                                        child: ElevatedButton(
-                                          onPressed: () async {
-                                            if (_bankInformationFormKey.currentState!.validate() &&
-                                                ibanMuskeyFormatter.info.isValid) {
-                                              // Registration logic here
-                                              final accountHolderName = _accountHolderNameController.value.text;
-                                              final bankName = _bankNameController.value.text;
-                                              final confirmAccountNumber = _confirmAccountNumberController.value.text;
-                                              final ibanNumber =
-                                                  ibanMuskeyFormatter.info.clean; //_ibanNumberController.value.text;
-                                              final address = _accountHolderNameController.value.text;
-                                              _bankInformationFormKey.currentState!.save();
-                                              // Show confirmation dialog
-                                              List<BankInformationTileWidget> listOfBankTileWidgets = [];
-                                              listOfBankTileWidgets.clear();
-                                              listOfBankInfoTiles.asMap().forEach((
+                                      child: ElevatedButton(
+                                        onPressed: () async {
+                                          if (_bankInformationFormKey.currentState!.validate() &&
+                                              ibanMuskeyFormatter.info.isValid) {
+                                            // Registration logic here
+                                            final accountHolderName = _accountHolderNameController.value.text;
+                                            final bankName = _bankNameController.value.text;
+                                            final confirmAccountNumber = _confirmAccountNumberController.value.text;
+                                            final ibanNumber =
+                                                ibanMuskeyFormatter.info.clean; //_ibanNumberController.value.text;
+                                            final address = _accountHolderNameController.value.text;
+                                            _bankInformationFormKey.currentState!.save();
+                                            // Show confirmation dialog
+                                            List<BankInformationTileWidget> listOfBankTileWidgets = [];
+                                            listOfBankTileWidgets.clear();
+                                            listOfBankInfoTiles.asMap().forEach((
+                                              key,
+                                              value,
+                                            ) {
+                                              listOfBankTileWidgets.insert(
                                                 key,
-                                                value,
-                                              ) {
-                                                listOfBankTileWidgets.insert(
-                                                  key,
-                                                  BankInformationTileWidget(
-                                                    key: ObjectKey(value),
-                                                    bankInfoTile: value,
+                                                BankInformationTileWidget(
+                                                  key: ObjectKey(value),
+                                                  bankInfoTile: value,
+                                                ),
+                                              );
+                                            });
+                                            final result = await showConfirmationDialog<bool>(
+                                              context: context,
+                                              barrierDismissible: true,
+                                              curve: Curves.fastOutSlowIn,
+                                              duration: const Duration(milliseconds: 700),
+                                              builder: (BuildContext context) {
+                                                return ResponsiveDialog(
+                                                  context: context,
+                                                  hideButtons: false,
+                                                  maxLongSide: context.width/1.20 ,
+                                                  maxShortSide: context.width,
+                                                  title: 'Confirm Bank Details',
+                                                  confirmText: 'Confirm',
+                                                  cancelText: 'Cancel',
+                                                  okPressed: () async {
+                                                    debugPrint('Dialog confirmed');
+                                                    Navigator.of(context).pop(true);
+                                                  },
+                                                  cancelPressed: () {
+                                                    debugPrint('Dialog cancelled');
+                                                    Navigator.of(context).pop(false);
+                                                  },
+                                                  child: ListView.builder(
+                                                    padding: const EdgeInsetsDirectional.symmetric(horizontal: 8),
+                                                    itemCount: listOfBankTileWidgets.length,
+                                                    itemBuilder: (context, index) => listOfBankTileWidgets[index],
+                                                    shrinkWrap: true,
                                                   ),
                                                 );
-                                              });
-                                              final result = await showConfirmationDialog<bool>(
-                                                context: context,
-                                                barrierDismissible: true,
-                                                curve: Curves.fastOutSlowIn,
-                                                duration: const Duration(milliseconds: 700),
-                                                builder: (BuildContext context) {
-                                                  return ResponsiveDialog(
-                                                    context: context,
-                                                    hideButtons: false,
-                                                    maxLongSide: context.height / 2.25,
-                                                    maxShortSide: context.width,
-                                                    title: 'Confirm Payment',
-                                                    confirmText: 'Confirm',
-                                                    cancelText: 'Cancel',
-                                                    okPressed: () async {
-                                                      debugPrint('Dialog confirmed');
-                                                      Navigator.of(context).pop(true);
-                                                    },
-                                                    cancelPressed: () {
-                                                      debugPrint('Dialog cancelled');
-                                                      Navigator.of(context).pop(false);
-                                                    },
-                                                    child: ListView.builder(
-                                                      padding: EdgeInsetsDirectional.zero,
-                                                      itemCount: listOfBankTileWidgets.length,
-                                                      itemBuilder: (context, index) => listOfBankTileWidgets[index],
-                                                      shrinkWrap: true,
-                                                    ),
-                                                  );
-                                                },
-                                              );
-                                              if (result != null && result) {
-                                                await Future.delayed(const Duration(milliseconds: 500), () {});
-                                                if (!mounted) {
-                                                  return;
-                                                }
-                                                PaymentBankEntity paymentBankEntity;
-                                                if (widget.hasEditBankInformation && widget.paymentBankEntity != null) {
-                                                  widget.paymentBankEntity?.copyWith(
-                                                    ibanNumber: ibanNumber,
-                                                    bankHolderName: accountHolderName,
-                                                    accountNumber: confirmAccountNumber,
-                                                    bankName: bankName,
-                                                    acceptPaymentMode: AcceptPaymentMode.cash,
-                                                  );
-                                                }
-                                                paymentBankEntity = PaymentBankEntity(
-                                                  accountNumber: confirmAccountNumber,
-                                                  bankHolderName: accountHolderName,
-                                                  bankName: bankName,
+                                              },
+                                            );
+                                            if (result != null && result) {
+                                              await Future.delayed(const Duration(milliseconds: 500), () {});
+                                              if (!mounted) {
+                                                return;
+                                              }
+                                              PaymentBankEntity paymentBankEntity;
+                                              if (widget.hasEditBankInformation && widget.paymentBankEntity != null) {
+                                                widget.paymentBankEntity?.copyWith(
                                                   ibanNumber: ibanNumber,
+                                                  bankHolderName: accountHolderName,
+                                                  accountNumber: confirmAccountNumber,
+                                                  bankName: bankName,
                                                   acceptPaymentMode: AcceptPaymentMode.cash,
                                                 );
-                                                serviceLocator<AppUserEntity>().currentProfileStatus =
-                                                    CurrentProfileStatus.paymentDetailSaved;
-                                                if(!mounted){
-                                                  return;
-                                                }
-                                                return context.pushReplacement(Routes.NEW_DOCUMENT_LIST_PAGE);
                                               }
+                                              paymentBankEntity = PaymentBankEntity(
+                                                accountNumber: confirmAccountNumber,
+                                                bankHolderName: accountHolderName,
+                                                bankName: bankName,
+                                                ibanNumber: ibanNumber,
+                                                acceptPaymentMode: AcceptPaymentMode.cash,
+                                              );
+                                              serviceLocator<AppUserEntity>().currentProfileStatus =
+                                                  CurrentProfileStatus.paymentDetailSaved;
+                                              if(!mounted){
+                                                return;
+                                              }
+                                              return context.pushReplacement(Routes.NEW_DOCUMENT_LIST_PAGE);
                                             }
-                                          },
-                                          child: Text(
-                                            'Save Payment Details',
-                                            textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                                          ).translate(),
-                                        ),
+                                          }
+                                          return;
+                                        },
+                                        child: Text(
+                                          'Save Payment Details',
+                                          textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                        ).translate(),
                                       ),
                                     ),
                                   ],
