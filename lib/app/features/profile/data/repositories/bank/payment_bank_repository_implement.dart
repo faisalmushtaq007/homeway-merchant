@@ -466,8 +466,65 @@ class PaymentBankRepositoryImplement implements UserPaymentBankRepository {
   Future<DataSourceState<List<PaymentBankEntity>>> saveAllPaymentBanks({
     required List<PaymentBankEntity> paymentBanks,
     bool hasUpdateAll = false,
-  }) {
-    // TODO: implement saveAllPaymentBanks
-    throw UnimplementedError();
+  }) async {
+    try {
+      final connectivity = serviceLocator<ConnectivityService>().getCurrentInternetStatus();
+      if (connectivity.$2 == InternetConnectivityState.internet) {
+        // Local DB
+        // Save to local
+        final Either<RepositoryBaseFailure, List<PaymentBankEntity>> result = await paymentBankLocalDataSource.saveAll(
+          entities: paymentBanks,
+          hasUpdateAll: hasUpdateAll,
+        );
+        // Return result
+        return result.fold((l) {
+          final RepositoryFailure failure = l as RepositoryFailure;
+          appLog.d('Save all PaymentBankEntity local error ${failure.message}');
+          return DataSourceState<List<PaymentBankEntity>>.error(
+            reason: failure.message,
+            dataSourceFailure: DataSourceFailure.local,
+            stackTrace: failure.stacktrace,
+          );
+        }, (r) {
+          appLog.d('Save all PaymentBankEntity to local : ${r.length},');
+          return DataSourceState<List<PaymentBankEntity>>.localDb(data: r);
+        });
+      } else {
+        // Remote
+        // Save to server
+        final ApiResultState<List<PaymentBankEntity>> result = await remoteDataSource.saveAllPaymentBanks(
+          paymentBanks: paymentBanks,
+          hasUpdateAll: hasUpdateAll,
+        );
+        // Return result
+        return result.when(
+          success: (data) {
+            appLog.d('Save all PaymentBankEntity to remote');
+            return DataSourceState<List<PaymentBankEntity>>.remote(
+              data: data,
+            );
+          },
+          failure: (reason, error, exception, stackTrace) {
+            appLog.d('Save all PaymentBankEntity remote error $reason');
+            return DataSourceState<List<PaymentBankEntity>>.error(
+              reason: reason,
+              dataSourceFailure: DataSourceFailure.remote,
+              stackTrace: stackTrace,
+              error: error,
+              networkException: exception,
+            );
+          },
+        );
+      }
+    } catch (e, s) {
+      appLog.d('Save all PaymentBankEntity exception $e');
+      return DataSourceState<List<PaymentBankEntity>>.error(
+        reason: e.toString(),
+        dataSourceFailure: DataSourceFailure.local,
+        stackTrace: s,
+        error: e,
+        exception: e as Exception,
+      );
+    }
   }
 }

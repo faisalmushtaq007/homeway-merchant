@@ -547,8 +547,65 @@ class BusinessProfileRepositoryImplement implements UserBusinessProfileRepositor
   Future<DataSourceState<List<BusinessProfileEntity>>> saveAllBusinessProfiles({
     required List<BusinessProfileEntity> businessProfiles,
     bool hasUpdateAll = false,
-  }) {
-    // TODO: implement saveAllBusinessProfiles
-    throw UnimplementedError();
+  }) async {
+    try {
+      final connectivity = serviceLocator<ConnectivityService>().getCurrentInternetStatus();
+      if (connectivity.$2 == InternetConnectivityState.internet) {
+        // Local DB
+        // Save to local
+        final Either<RepositoryBaseFailure, List<BusinessProfileEntity>> result = await businessProfileLocalDataSource.saveAll(
+          entities: businessProfiles,
+          hasUpdateAll: hasUpdateAll,
+        );
+        // Return result
+        return result.fold((l) {
+          final RepositoryFailure failure = l as RepositoryFailure;
+          appLog.d('Save all BusinessProfileEntity local error ${failure.message}');
+          return DataSourceState<List<BusinessProfileEntity>>.error(
+            reason: failure.message,
+            dataSourceFailure: DataSourceFailure.local,
+            stackTrace: failure.stacktrace,
+          );
+        }, (r) {
+          appLog.d('Save all BusinessProfileEntity to local : ${r.length},');
+          return DataSourceState<List<BusinessProfileEntity>>.localDb(data: r);
+        });
+      } else {
+        // Remote
+        // Save to server
+        final ApiResultState<List<BusinessProfileEntity>> result = await remoteDataSource.saveAllBusinessDocuments(
+          newBusinessDocuments: businessProfiles,
+          hasUpdateAll: hasUpdateAll,
+        );
+        // Return result
+        return result.when(
+          success: (data) {
+            appLog.d('Save all BusinessProfileEntity to remote');
+            return DataSourceState<List<BusinessProfileEntity>>.remote(
+              data: data,
+            );
+          },
+          failure: (reason, error, exception, stackTrace) {
+            appLog.d('Save all BusinessProfileEntity remote error $reason');
+            return DataSourceState<List<BusinessProfileEntity>>.error(
+              reason: reason,
+              dataSourceFailure: DataSourceFailure.remote,
+              stackTrace: stackTrace,
+              error: error,
+              networkException: exception,
+            );
+          },
+        );
+      }
+    } catch (e, s) {
+      appLog.d('Save all BusinessProfileEntity exception $e');
+      return DataSourceState<List<BusinessProfileEntity>>.error(
+        reason: e.toString(),
+        dataSourceFailure: DataSourceFailure.local,
+        stackTrace: s,
+        error: e,
+        exception: e as Exception,
+      );
+    }
   }
 }

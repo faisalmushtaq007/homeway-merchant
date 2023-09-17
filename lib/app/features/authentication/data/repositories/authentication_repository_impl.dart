@@ -555,8 +555,65 @@ class AuthenticationRepositoryImplement implements AuthenticationRepository {
   Future<DataSourceState<List<AppUserEntity>>> saveAllUsers({
     required List<AppUserEntity> appUsers,
     bool hasUpdateAll = false,
-  }) {
-    // TODO: implement saveAllUsers
-    throw UnimplementedError();
+  }) async {
+    try {
+      final connectivity = serviceLocator<ConnectivityService>().getCurrentInternetStatus();
+      if (connectivity.$2 == InternetConnectivityState.internet) {
+        // Local DB
+        // Save to local
+        final Either<RepositoryBaseFailure, List<AppUserEntity>> result = await userLocalDbRepository.saveAll(
+          entities: appUsers,
+          hasUpdateAll: hasUpdateAll,
+        );
+        // Return result
+        return result.fold((l) {
+          final RepositoryFailure failure = l as RepositoryFailure;
+          appLog.d('Save all AppUserEntity local error ${failure.message}');
+          return DataSourceState<List<AppUserEntity>>.error(
+            reason: failure.message,
+            dataSourceFailure: DataSourceFailure.local,
+            stackTrace: failure.stacktrace,
+          );
+        }, (r) {
+          appLog.d('Save all AppUserEntity to local : ${r.length},');
+          return DataSourceState<List<AppUserEntity>>.localDb(data: r);
+        });
+      } else {
+        // Remote
+        // Save to server
+        final ApiResultState<List<AppUserEntity>> result = await remoteDataSource.saveAllAppUsers(
+          appUsers: appUsers,
+          hasUpdateAll: hasUpdateAll,
+        );
+        // Return result
+        return result.when(
+          success: (data) {
+            appLog.d('Save all AppUserEntity to remote');
+            return DataSourceState<List<AppUserEntity>>.remote(
+              data: data,
+            );
+          },
+          failure: (reason, error, exception, stackTrace) {
+            appLog.d('Save all AppUserEntity remote error $reason');
+            return DataSourceState<List<AppUserEntity>>.error(
+              reason: reason,
+              dataSourceFailure: DataSourceFailure.remote,
+              stackTrace: stackTrace,
+              error: error,
+              networkException: exception,
+            );
+          },
+        );
+      }
+    } catch (e, s) {
+      appLog.d('Save all AppUserEntity exception $e');
+      return DataSourceState<List<AppUserEntity>>.error(
+        reason: e.toString(),
+        dataSourceFailure: DataSourceFailure.local,
+        stackTrace: s,
+        error: e,
+        exception: e as Exception,
+      );
+    }
   }
 }
