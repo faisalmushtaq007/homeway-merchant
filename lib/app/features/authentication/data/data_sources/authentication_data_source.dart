@@ -33,4 +33,20 @@ abstract class AuthenticationDataSource {
   Future<ApiResultState<List<AppUserEntity>>> getAllAppUser();
 
   Future<ApiResultState<AppUserEntity?>> getCurrentAppUser({AppUserEntity? entity});
+
+  Future<ApiResultState<List<AppUserEntity>>> saveAllAppUsers({
+    required List<AppUserEntity> appUsers,
+    bool hasUpdateAll = false,
+  });
+
+  Future<ApiResultState<List<AppUserEntity>>> getAllAppUsersPagination({
+    int pageKey = 0,
+    int pageSize = 10,
+    String? searchText,
+    Map<String, dynamic> extras = const <String, dynamic>{},
+    String? filtering,
+    String? sorting,
+    Timestamp? startTime,
+    Timestamp? endTime,
+  });
 }

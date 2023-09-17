@@ -10,7 +10,9 @@ abstract class BaseUserLocalDbRepository<T extends AppUserEntity>
         DeleteByIdAndEntity<T>,
         GetByIdAndEntity<T>,
         UpdateByIdAndEntity<T>,
-        GetCurrentUser<T> {}
+        GetCurrentUser<T>,SaveAll<T>,
+        GetAll<T>,
+        GetAllWithPagination<T> {}
 
 abstract class BaseUserBusinessProfileEntityLocalDbRepository<T extends BusinessProfileEntity>
     implements

@@ -166,7 +166,7 @@ class UserPaymentBankLocalDbRepository<T extends PaymentBankEntity> implements B
 
   @override
   Future<Either<RepositoryBaseFailure, List<PaymentBankEntity>>> getAllWithPagination({
-    int pageKey = 1,
+    int pageKey = 0,
     int pageSize = 10,
     String? searchText,
     Map<String, dynamic> extras = const <String, dynamic>{},

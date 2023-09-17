@@ -34,4 +34,20 @@ abstract interface class UserBusinessDocumentRepository {
   Future<DataSourceState<List<NewBusinessDocumentEntity>>> getAllBusinessDocument({
     AppUserEntity? appUserEntity,
   });
+
+  Future<DataSourceState<List<NewBusinessDocumentEntity>>> getAllBusinessDocumentsPagination({
+    int pageKey = 0,
+    int pageSize = 10,
+    String? searchText,
+    Map<String, dynamic> extras = const <String, dynamic>{},
+    String? filtering,
+    String? sorting,
+    Timestamp? startTime,
+    Timestamp? endTime,
+  });
+
+  Future<DataSourceState<List<NewBusinessDocumentEntity>>> saveAllBusinessDocuments({
+    required List<NewBusinessDocumentEntity> businessDocuments,
+    bool hasUpdateAll = false,
+  });
 }

@@ -42,7 +42,32 @@ class UserModelStorageController with ChangeNotifier {
     // Otherwise, assign new value to private property.
     _userModel = value;
     // reassign the currentUserModel to singleton AppUserEntity
-    serviceLocator<AppUserEntity>().fromJson(value.toMap()!);
+    //serviceLocator<AppUserEntity>().fromJson(value.toMap());
+    serviceLocator<AppUserEntity>()
+      ..userID = _userModel.userID
+      ..phoneNumber = _userModel.phoneNumber
+      ..businessProfile = _userModel.businessProfile
+      ..stores = _userModel.stores
+      ..token = _userModel.token
+      ..tokenCreationDateTime = _userModel.tokenCreationDateTime
+      ..hasUserAuthenticated = _userModel.hasUserAuthenticated
+      ..businessTypeEntity = _userModel.businessTypeEntity
+      ..currentProfileStatus = _userModel.currentProfileStatus
+      ..menus = _userModel.menus
+      ..drivers = _userModel.drivers
+      ..addons = _userModel.addons
+      ..ratingAndReviewEntity = _userModel.ratingAndReviewEntity
+      ..hasCurrentUser = _userModel.hasCurrentUser
+      ..country_dial_code = _userModel.country_dial_code
+      ..isoCode = _userModel.isoCode
+      ..user_type = _userModel.user_type
+      ..access_token = _userModel.access_token
+      ..currentUserStage = _userModel.currentUserStage
+      ..uid = _userModel.uid
+      ..paymentBankEntity = _userModel.paymentBankEntity
+      ..hasMultiplePaymentBanks = _userModel.hasMultiplePaymentBanks
+      ..paymentBankEntities = _userModel.paymentBankEntities
+      ..phoneNumberWithoutDialCode = _userModel.phoneNumberWithoutDialCode;
     // Inform all listeners a change has occurred, if notify flag is true.
     if (notify) notifyListeners();
     // Persist the change to whatever storage is used with the ThemeService.

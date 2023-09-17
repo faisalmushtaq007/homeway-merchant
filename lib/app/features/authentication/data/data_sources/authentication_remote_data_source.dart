@@ -134,4 +134,16 @@ class AuthenticationRemoteDataSource extends AuthenticationDataSource {
     // TODO: implement getCurrentAppUser
     throw UnimplementedError();
   }
+
+  @override
+  Future<ApiResultState<List<AppUserEntity>>> getAllAppUsersPagination({int pageKey = 0, int pageSize = 10, String? searchText, Map<String, dynamic> extras = const <String, dynamic>{}, String? filtering, String? sorting, Timestamp? startTime, Timestamp? endTime}) {
+    // TODO: implement getAllAppUsersPagination
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<ApiResultState<List<AppUserEntity>>> saveAllAppUsers({required List<AppUserEntity> appUsers, bool hasUpdateAll = false}) {
+    // TODO: implement saveAllAppUsers
+    throw UnimplementedError();
+  }
 }

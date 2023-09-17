@@ -18,6 +18,7 @@ import 'package:homemakers_merchant/shared/states/result_state.dart';
 import 'package:homemakers_merchant/utils/app_log.dart';
 import 'package:homemakers_merchant/utils/functional/functional.dart';
 import 'package:network_manager/network_manager.dart';
+import 'package:sembast/timestamp.dart';
 
 // Data
 part 'package:homemakers_merchant/app/features/authentication/data/data_sources/authentication_data_source.dart';
@@ -37,6 +38,7 @@ part 'package:homemakers_merchant/app/features/authentication/domain/usecases/ge
 part 'package:homemakers_merchant/app/features/authentication/domain/usecases/get_or_save_new_current_appuser_usecase.dart';
 part 'package:homemakers_merchant/app/features/authentication/domain/usecases/get_all_appuser_usecase.dart';
 part 'package:homemakers_merchant/app/features/authentication/domain/usecases/save_appuser_usecase.dart';
+part 'package:homemakers_merchant/app/features/authentication/domain/usecases/save_all_app_user_usecase.dart';
 // Entities
 part 'package:homemakers_merchant/app/features/authentication/data/models/phone_number_verification/send_otp_response_model.dart';
 part 'package:homemakers_merchant/app/features/authentication/data/models/phone_number_verification/verify_otp_response_model.dart';

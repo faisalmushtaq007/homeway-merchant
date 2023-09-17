@@ -134,4 +134,51 @@ abstract interface class ProfileDataSource {
   Future<ApiResultState<List<PaymentBankEntity>>> getAllPaymentBank({
     AppUserEntity? appUserEntity,
   });
+  // Save all and Get all with pagination
+  Future<ApiResultState<List<PaymentBankEntity>>> saveAllPaymentBanks({
+    required List<PaymentBankEntity> paymentBanks,
+    bool hasUpdateAll = false,
+  });
+
+  Future<ApiResultState<List<PaymentBankEntity>>> getAllPaymentBanksPagination({
+    int pageKey = 0,
+    int pageSize = 10,
+    String? searchText,
+    Map<String, dynamic> extras = const <String, dynamic>{},
+    String? filtering,
+    String? sorting,
+    Timestamp? startTime,
+    Timestamp? endTime,
+  });
+
+  Future<ApiResultState<List<BusinessProfileEntity>>> saveAllBusinessProfiles({
+    required List<BusinessProfileEntity> businessProfiles,
+    bool hasUpdateAll = false,
+  });
+
+  Future<ApiResultState<List<BusinessProfileEntity>>> getAllBusinessProfilePagination({
+    int pageKey = 0,
+    int pageSize = 10,
+    String? searchText,
+    Map<String, dynamic> extras = const <String, dynamic>{},
+    String? filtering,
+    String? sorting,
+    Timestamp? startTime,
+    Timestamp? endTime,
+  });
+  Future<ApiResultState<List<NewBusinessDocumentEntity>>> saveAllBusinessDocuments({
+    required List<NewBusinessDocumentEntity> newBusinessDocuments,
+    bool hasUpdateAll = false,
+  });
+
+  Future<ApiResultState<List<NewBusinessDocumentEntity>>> getAllBusinessDocumentsPagination({
+    int pageKey = 0,
+    int pageSize = 10,
+    String? searchText,
+    Map<String, dynamic> extras = const <String, dynamic>{},
+    String? filtering,
+    String? sorting,
+    Timestamp? startTime,
+    Timestamp? endTime,
+  });
 }

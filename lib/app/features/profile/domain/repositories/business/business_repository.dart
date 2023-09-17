@@ -79,4 +79,22 @@ abstract interface class UserBusinessProfileRepository {
   Future<String> getCurrentUserTokenFromLocalDB({
     Map<String, dynamic> metaInfo = const {},
   });
+
+  Future<DataSourceState<List<BusinessProfileEntity>>> getAllBusinessProfilePagination({
+    int pageKey = 0,
+    int pageSize = 10,
+    String? searchText,
+    Map<String, dynamic> extras = const <String, dynamic>{},
+    String? filtering,
+    String? sorting,
+    Timestamp? startTime,
+    Timestamp? endTime,
+  });
+
+  Future<DataSourceState<List<BusinessProfileEntity>>> saveAllBusinessProfiles({
+    required List<BusinessProfileEntity> businessProfiles,
+    bool hasUpdateAll = false,
+  });
+
+
 }

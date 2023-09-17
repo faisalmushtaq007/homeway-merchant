@@ -370,4 +370,16 @@ class PaymentBankRepositoryImplement implements UserPaymentBankRepository {
       );
     }
   }
+
+  @override
+  Future<DataSourceState<List<PaymentBankEntity>>> getAllPaymentBanksPagination({int pageKey = 0, int pageSize = 10, String? searchText, Map<String, dynamic> extras = const <String, dynamic>{}, String? filtering, String? sorting, Timestamp? startTime, Timestamp? endTime}) {
+    // TODO: implement getAllPaymentBanksPagination
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<DataSourceState<List<PaymentBankEntity>>> saveAllPaymentBanks({required List<PaymentBankEntity> paymentBanks, bool hasUpdateAll = false}) {
+    // TODO: implement saveAllPaymentBanks
+    throw UnimplementedError();
+  }
 }

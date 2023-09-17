@@ -201,4 +201,40 @@ class ProfileRemoteDataSource implements ProfileDataSource {
     // TODO(prasant): implement savePaymentBank
     throw UnimplementedError();
   }
+
+  @override
+  Future<ApiResultState<List<NewBusinessDocumentEntity>>> getAllBusinessDocumentsPagination({int pageKey = 0, int pageSize = 10, String? searchText, Map<String, dynamic> extras = const <String, dynamic>{}, String? filtering, String? sorting, Timestamp? startTime, Timestamp? endTime}) {
+    // TODO: implement getAllBusinessDocumentsPagination
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<ApiResultState<List<BusinessProfileEntity>>> getAllBusinessProfilePagination({int pageKey = 0, int pageSize = 10, String? searchText, Map<String, dynamic> extras = const <String, dynamic>{}, String? filtering, String? sorting, Timestamp? startTime, Timestamp? endTime}) {
+    // TODO: implement getAllBusinessProfilePagination
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<ApiResultState<List<PaymentBankEntity>>> getAllPaymentBanksPagination({int pageKey = 0, int pageSize = 10, String? searchText, Map<String, dynamic> extras = const <String, dynamic>{}, String? filtering, String? sorting, Timestamp? startTime, Timestamp? endTime}) {
+    // TODO: implement getAllPaymentBanksPagination
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<ApiResultState<List<NewBusinessDocumentEntity>>> saveAllBusinessDocuments({required List<NewBusinessDocumentEntity> newBusinessDocuments, bool hasUpdateAll = false}) {
+    // TODO: implement saveAllBusinessDocuments
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<ApiResultState<List<BusinessProfileEntity>>> saveAllBusinessProfiles({required List<BusinessProfileEntity> businessProfiles, bool hasUpdateAll = false}) {
+    // TODO: implement saveAllBusinessProfiles
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<ApiResultState<List<PaymentBankEntity>>> saveAllPaymentBanks({required List<PaymentBankEntity> paymentBanks, bool hasUpdateAll = false}) {
+    // TODO: implement saveAllPaymentBanks
+    throw UnimplementedError();
+  }
 }

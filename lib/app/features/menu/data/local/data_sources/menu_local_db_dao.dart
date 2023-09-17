@@ -74,7 +74,7 @@ class MenuLocalDbRepository<Menu extends MenuEntity> implements BaseMenuLocalDbR
 
   @override
   Future<Either<RepositoryBaseFailure, List<MenuEntity>>> getAll() async {
-    /*final result = await tryCatch<List<MenuEntity>>(() async {
+    final result = await tryCatch<List<MenuEntity>>(() async {
       final snapshots = await _menu.find(await _db);
       appLog.d("Menu: ${snapshots[0].value}");
       if (snapshots.isEmptyOrNull) {
@@ -89,8 +89,8 @@ class MenuLocalDbRepository<Menu extends MenuEntity> implements BaseMenuLocalDbR
             .toList(growable: false);
       }
     });
-    return result;*/
-    final snapshots = await _menu.find(await _db);
+    return result;
+    /*final snapshots = await _menu.find(await _db);
     if (snapshots.isEmptyOrNull) {
       return Right(<MenuEntity>[]);
     } else {
@@ -101,7 +101,7 @@ class MenuLocalDbRepository<Menu extends MenuEntity> implements BaseMenuLocalDbR
             ),
           )
           .toList());
-    }
+    }*/
   }
 
   @override

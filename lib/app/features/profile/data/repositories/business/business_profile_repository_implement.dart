@@ -452,4 +452,17 @@ class BusinessProfileRepositoryImplement implements UserBusinessProfileRepositor
     // TODO: implement getCurrentUserTokenFromLocalDB
     throw UnimplementedError();
   }
+
+  @override
+  Future<DataSourceState<List<BusinessProfileEntity>>> getAllBusinessProfilePagination({int pageKey = 0, int pageSize = 10, String? searchText, Map<String, dynamic> extras = const <String, dynamic>{}, String? filtering, String? sorting, Timestamp? startTime, Timestamp? endTime}) {
+    // TODO: implement getAllBusinessProfilePagination
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<DataSourceState<List<BusinessProfileEntity>>> saveAllBusinessProfiles({required List<BusinessProfileEntity> businessProfiles, bool hasUpdateAll = false}) {
+    // TODO: implement saveAllBusinessProfiles
+    throw UnimplementedError();
+  }
+
 }

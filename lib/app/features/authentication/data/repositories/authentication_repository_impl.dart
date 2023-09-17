@@ -463,4 +463,16 @@ class AuthenticationRepositoryImplement implements AuthenticationRepository {
       );
     }
   }
+
+  @override
+  Future<DataSourceState<List<AppUserEntity>>> getAllUsersPagination({int pageKey = 0, int pageSize = 10, String? searchText, Map<String, dynamic> extras = const <String, dynamic>{}, String? filtering, String? sorting, Timestamp? startTime, Timestamp? endTime}) {
+    // TODO: implement getAllUsersPagination
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<DataSourceState<List<AppUserEntity>>> saveAllUsers({required List<AppUserEntity> appUsers, bool hasUpdateAll = false}) {
+    // TODO: implement saveAllUsers
+    throw UnimplementedError();
+  }
 }
