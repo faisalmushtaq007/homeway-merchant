@@ -465,6 +465,11 @@ void _setUpUseCases() {
       authenticationRepository: serviceLocator(),
     ),
   );
+  serviceLocator.registerLazySingleton<SaveAllAppUserUseCase>(
+        () => SaveAllAppUserUseCase(
+      authenticationRepository: serviceLocator(),
+    ),
+  );
 
   //Profile
   serviceLocator.registerLazySingleton<DeleteBusinessProfileUseCase>(
@@ -479,6 +484,11 @@ void _setUpUseCases() {
   );
   serviceLocator.registerLazySingleton<SaveBusinessProfileUseCase>(
     () => SaveBusinessProfileUseCase(
+      userBusinessProfileRepository: serviceLocator(),
+    ),
+  );
+  serviceLocator.registerLazySingleton<SaveAllBusinessProfileUseCase>(
+        () => SaveAllBusinessProfileUseCase(
       userBusinessProfileRepository: serviceLocator(),
     ),
   );
@@ -505,6 +515,11 @@ void _setUpUseCases() {
   //Document
   serviceLocator.registerLazySingleton<SaveDocumentUseCase>(
     () => SaveDocumentUseCase(
+      userBusinessDocumentRepository: serviceLocator(),
+    ),
+  );
+  serviceLocator.registerLazySingleton<SaveAllDocumentUseCase>(
+        () => SaveAllDocumentUseCase(
       userBusinessDocumentRepository: serviceLocator(),
     ),
   );
@@ -536,6 +551,11 @@ void _setUpUseCases() {
   //Payment Bank
   serviceLocator.registerLazySingleton<SavePaymentBankUseCase>(
     () => SavePaymentBankUseCase(
+      userPaymentBankRepository: serviceLocator(),
+    ),
+  );
+  serviceLocator.registerLazySingleton<SaveAllPaymentBankUseCase>(
+        () => SaveAllPaymentBankUseCase(
       userPaymentBankRepository: serviceLocator(),
     ),
   );
