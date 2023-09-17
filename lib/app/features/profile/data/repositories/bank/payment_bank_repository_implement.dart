@@ -68,7 +68,7 @@ class PaymentBankRepositoryImplement implements UserPaymentBankRepository {
 
   @override
   Future<DataSourceState<bool>> deletePaymentBank(
-      {required int paymentBankID, PaymentBankEntity? paymentBankEntity, AppUserEntity? appUserEntity}) async {
+      {required int paymentBankID, PaymentBankEntity? paymentBankEntity, AppUserEntity? appUserEntity,}) async {
     try {
       final connectivity = serviceLocator<ConnectivityService>().getCurrentInternetStatus();
       if (connectivity.$2 == InternetConnectivityState.internet) {
@@ -320,7 +320,7 @@ class PaymentBankRepositoryImplement implements UserPaymentBankRepository {
 
   @override
   Future<DataSourceState<PaymentBankEntity>> savePaymentBank(
-      {required PaymentBankEntity paymentBankEntity, AppUserEntity? appUserEntity}) async {
+      {required PaymentBankEntity paymentBankEntity, AppUserEntity? appUserEntity,}) async {
     try {
       final connectivity = serviceLocator<ConnectivityService>().getCurrentInternetStatus();
       if (connectivity.$2 == InternetConnectivityState.internet) {

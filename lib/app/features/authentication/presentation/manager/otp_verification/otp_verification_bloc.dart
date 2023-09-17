@@ -138,33 +138,51 @@ class OtpVerificationBloc extends Bloc<OtpVerificationEvent, OtpVerificationStat
             verifyOtpResponseModel = data;
             // Todo(prasant): Change this logic when we are verify the otp from remote
             appLog.d('Wait for processing, uploading and fetching current user');
-            final saveUserEntity = await serviceLocator<GetOrSaveNewCurrentAppUserUseCase>()(
-              AppUserEntity(
-                isoCode: event.verifyOtpEntity.isoCode,
-                country_dial_code: event.verifyOtpEntity.country_dial_code,
-                phoneNumber: event.verifyOtpEntity.phoneNumberWithFormat,
-                hasCurrentUser: true,
-                uid: verifyOtpResponseModel.uid ?? '',
-                access_token: verifyOtpResponseModel.access_token ?? '',
-                currentUserStage: 0,
-                phoneNumberWithoutDialCode: event.verifyOtpEntity.phoneNumberWithoutFormat,
-              ),
+            AppUserEntity saveUserEntity=AppUserEntity();
+            final saveUserEntityResult = await serviceLocator<SaveAllAppUserUseCase>()(
+                [AppUserEntity(
+                  isoCode: event.verifyOtpEntity.isoCode,
+                  country_dial_code: event.verifyOtpEntity.country_dial_code,
+                  phoneNumber: event.verifyOtpEntity.phoneNumberWithFormat,
+                  hasCurrentUser: true,
+                  uid: verifyOtpResponseModel.uid ?? '',
+                  access_token: verifyOtpResponseModel.access_token ?? '',
+                  currentUserStage: 0,
+                  phoneNumberWithoutDialCode: event.verifyOtpEntity.phoneNumberWithoutFormat,
+                ),]
             );
-            await Future.delayed(const Duration(milliseconds: 500), () {});
-            serviceLocator<UserModelStorageController>().setUserModel(saveUserEntity);
+            await saveUserEntityResult.when(
+              remote: (data, meta) {
+
+              },
+              localDb: (data, meta) async {
+                appLog.d('Save current user save local ${data?.first.toMap()}');
+                if (data != null) {
+                  saveUserEntity=data.first;
+                  appLog.e('Save current user ${data.first.phoneNumberWithoutDialCode ?? ''}, ${data.first.phoneNumber}');
+                  await Future.delayed(const Duration(milliseconds: 500), () {});
+                  //Save to local model
+                  serviceLocator<UserModelStorageController>().setUserModel(data.first.copyWith());
+                }
+              },
+              error: (dataSourceFailure, reason, error, networkException, stackTrace, exception, extra) {
+                appLog.d('Save current user save local exception $error');
+              },
+            );
             emit(
               VerifyOtpState(
                 verifyOtpEntity: event.verifyOtpEntity,
                 otpVerificationStatus: OtpVerificationStatus.otpVerified,
-                appUserEntity: saveUserEntity.copyWith(),
+                appUserEntity: saveUserEntity,
               ),
             );
           },
           error: (reason, error, networkException, stackTrace) async {
             // Todo(prasant): Change this logic when we are verify the otp from remote
             appLog.d('Wait for processing, uploading and fetching current user');
-            final saveUserEntity = await serviceLocator<GetOrSaveNewCurrentAppUserUseCase>()(
-              AppUserEntity(
+            AppUserEntity saveUserEntity=AppUserEntity();
+            final saveUserEntityResult = await serviceLocator<SaveAllAppUserUseCase>()(
+              [AppUserEntity(
                 isoCode: event.verifyOtpEntity.isoCode,
                 country_dial_code: event.verifyOtpEntity.country_dial_code,
                 phoneNumber: event.verifyOtpEntity.phoneNumberWithFormat,
@@ -173,11 +191,27 @@ class OtpVerificationBloc extends Bloc<OtpVerificationEvent, OtpVerificationStat
                 access_token: verifyOtpResponseModel.access_token ?? '',
                 currentUserStage: 0,
                 phoneNumberWithoutDialCode: event.verifyOtpEntity.phoneNumberWithoutFormat,
-              ),
+              ),]
             );
-            appLog.e('VerifyOtpFailedState ${saveUserEntity.phoneNumberWithoutDialCode ?? ''}, ${saveUserEntity.phoneNumber}');
-            await Future.delayed(const Duration(milliseconds: 500), () {});
-            serviceLocator<UserModelStorageController>().setUserModel(saveUserEntity);
+            await saveUserEntityResult.when(
+              remote: (data, meta) {
+
+              },
+              localDb: (data, meta) async {
+                appLog.d('Save current user save local ${data?.first.toMap()}');
+                if (data != null) {
+                  appLog.e('Save current user ${data.first.phoneNumberWithoutDialCode ?? ''}, ${data.first.phoneNumber}');
+                  saveUserEntity=data.first;
+                  await Future.delayed(const Duration(milliseconds: 500), () {});
+                  //Save to local model
+                  serviceLocator<UserModelStorageController>().setUserModel(data.first.copyWith());
+                }
+              },
+              error: (dataSourceFailure, reason, error, networkException, stackTrace, exception, extra) {
+                appLog.d('Save current user save local exception $error');
+              },
+            );
+
             emit(
               VerifyOtpFailedState(
                 verifyOtpEntity: event.verifyOtpEntity,
@@ -185,7 +219,7 @@ class OtpVerificationBloc extends Bloc<OtpVerificationEvent, OtpVerificationStat
                 stackTrace: stackTrace,
                 exception: error,
                 message: reason,
-                appUserEntity: saveUserEntity.copyWith(),
+                appUserEntity: saveUserEntity,
               ),
             );
           },

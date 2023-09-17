@@ -573,8 +573,8 @@ class BusinessProfileRepositoryImplement implements UserBusinessProfileRepositor
       } else {
         // Remote
         // Save to server
-        final ApiResultState<List<BusinessProfileEntity>> result = await remoteDataSource.saveAllBusinessDocuments(
-          newBusinessDocuments: businessProfiles,
+        final ApiResultState<List<BusinessProfileEntity>> result = await remoteDataSource.saveAllBusinessProfiles(
+          businessProfiles: businessProfiles,
           hasUpdateAll: hasUpdateAll,
         );
         // Return result
