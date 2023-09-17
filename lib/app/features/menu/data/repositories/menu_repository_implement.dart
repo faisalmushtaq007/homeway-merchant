@@ -1413,6 +1413,7 @@ class MenuRepositoryImplement implements MenuRepository {
           pageKey: pageKey,
           endTime: endTime,
           startTime: startTime,
+          menuEntity: menuEntity,
         );
         // Return result
         return result.when(

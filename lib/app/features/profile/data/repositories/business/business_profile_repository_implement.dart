@@ -1,7 +1,8 @@
 part of 'package:homemakers_merchant/app/features/profile/index.dart';
 
 class BusinessProfileRepositoryImplement implements UserBusinessProfileRepository {
-  const BusinessProfileRepositoryImplement({required this.remoteDataSource, required this.businessProfileLocalDataSource});
+  const BusinessProfileRepositoryImplement(
+      {required this.remoteDataSource, required this.businessProfileLocalDataSource});
 
   final ProfileDataSource remoteDataSource;
   final UserBusinessProfileLocalDbRepository<BusinessProfileEntity> businessProfileLocalDataSource;
@@ -64,7 +65,8 @@ class BusinessProfileRepositoryImplement implements UserBusinessProfileRepositor
   }
 
   @override
-  Future<DataSourceState<bool>> deleteAllBusinessType({AppUserEntity? appUserEntity, BusinessProfileEntity? businessProfileEntity}) {
+  Future<DataSourceState<bool>> deleteAllBusinessType(
+      {AppUserEntity? appUserEntity, BusinessProfileEntity? businessProfileEntity}) {
     // TODO(prasant): implement deleteAllBusinessType
     throw UnimplementedError();
   }
@@ -80,7 +82,8 @@ class BusinessProfileRepositoryImplement implements UserBusinessProfileRepositor
       if (connectivity.$2 == InternetConnectivityState.internet) {
         // Local DB
         // Save to local
-        final Either<RepositoryBaseFailure, bool> result = await businessProfileLocalDataSource.deleteById(UniqueId(businessProfileID));
+        final Either<RepositoryBaseFailure, bool> result =
+            await businessProfileLocalDataSource.deleteById(UniqueId(businessProfileID));
         // Return result
         return result.fold((l) {
           final RepositoryFailure failure = l as RepositoryFailure;
@@ -229,7 +232,8 @@ class BusinessProfileRepositoryImplement implements UserBusinessProfileRepositor
       if (connectivity.$2 == InternetConnectivityState.internet) {
         // Local DB
         // Save to local
-        final Either<RepositoryBaseFailure, List<BusinessProfileEntity>> result = await businessProfileLocalDataSource.getAll();
+        final Either<RepositoryBaseFailure, List<BusinessProfileEntity>> result =
+            await businessProfileLocalDataSource.getAll();
         // Return result
         return result.fold((l) {
           final RepositoryFailure failure = l as RepositoryFailure;
@@ -299,7 +303,8 @@ class BusinessProfileRepositoryImplement implements UserBusinessProfileRepositor
       if (connectivity.$2 == InternetConnectivityState.internet) {
         // Local DB
         // Save to local
-        final Either<RepositoryBaseFailure, BusinessProfileEntity?> result = await businessProfileLocalDataSource.getById(UniqueId(businessProfileID));
+        final Either<RepositoryBaseFailure, BusinessProfileEntity?> result =
+            await businessProfileLocalDataSource.getById(UniqueId(businessProfileID));
         // Return result
         return result.fold((l) {
           final RepositoryFailure failure = l as RepositoryFailure;
@@ -370,49 +375,51 @@ class BusinessProfileRepositoryImplement implements UserBusinessProfileRepositor
     AppUserEntity? appUserEntity,
   }) async {
     /*try {*/
-      final connectivity = serviceLocator<ConnectivityService>().getCurrentInternetStatus();
-      if (connectivity.$2 == InternetConnectivityState.internet) {
-        // Local DB
-        // Save to local
-        appLog.d('SaveBusinessProfile data ${businessProfileEntity.toMap()}');
-        final Either<RepositoryBaseFailure, BusinessProfileEntity> result = await businessProfileLocalDataSource.add(businessProfileEntity);
-        // Return result
-        return result.fold((l) {
-          final RepositoryFailure failure = l as RepositoryFailure;
-          appLog.d('Save profile local error ${failure.message}');
-          return DataSourceState<BusinessProfileEntity>.error(
-            reason: failure.message,
-            dataSourceFailure: DataSourceFailure.local,
-            stackTrace: failure.stacktrace,
-          );
-        }, (r) {
-          appLog.d('Save profile to local : ${r.businessProfileID}, ${r.businessName}');
-          return DataSourceState<BusinessProfileEntity>.localDb(data: r);
-        });
-      } else {
-        // Remote
-        // Save to server
-        final ApiResultState<BusinessProfileEntity> result = await remoteDataSource.saveBusinessProfile(businessProfileEntity: businessProfileEntity);
-        // Return result
-        return result.when(
-          success: (data) {
-            appLog.d('Save profile to remote');
-            return DataSourceState<BusinessProfileEntity>.remote(
-              data: data,
-            );
-          },
-          failure: (reason, error, exception, stackTrace) {
-            appLog.d('Save profile remote error $reason');
-            return DataSourceState<BusinessProfileEntity>.error(
-              reason: reason,
-              dataSourceFailure: DataSourceFailure.remote,
-              stackTrace: stackTrace,
-              error: error,
-              networkException: exception,
-            );
-          },
+    final connectivity = serviceLocator<ConnectivityService>().getCurrentInternetStatus();
+    if (connectivity.$2 == InternetConnectivityState.internet) {
+      // Local DB
+      // Save to local
+      appLog.d('SaveBusinessProfile data ${businessProfileEntity.toMap()}');
+      final Either<RepositoryBaseFailure, BusinessProfileEntity> result =
+          await businessProfileLocalDataSource.add(businessProfileEntity);
+      // Return result
+      return result.fold((l) {
+        final RepositoryFailure failure = l as RepositoryFailure;
+        appLog.d('Save profile local error ${failure.message}');
+        return DataSourceState<BusinessProfileEntity>.error(
+          reason: failure.message,
+          dataSourceFailure: DataSourceFailure.local,
+          stackTrace: failure.stacktrace,
         );
-      }
+      }, (r) {
+        appLog.d('Save profile to local : ${r.businessProfileID}, ${r.businessName}');
+        return DataSourceState<BusinessProfileEntity>.localDb(data: r);
+      });
+    } else {
+      // Remote
+      // Save to server
+      final ApiResultState<BusinessProfileEntity> result =
+          await remoteDataSource.saveBusinessProfile(businessProfileEntity: businessProfileEntity);
+      // Return result
+      return result.when(
+        success: (data) {
+          appLog.d('Save profile to remote');
+          return DataSourceState<BusinessProfileEntity>.remote(
+            data: data,
+          );
+        },
+        failure: (reason, error, exception, stackTrace) {
+          appLog.d('Save profile remote error $reason');
+          return DataSourceState<BusinessProfileEntity>.error(
+            reason: reason,
+            dataSourceFailure: DataSourceFailure.remote,
+            stackTrace: stackTrace,
+            error: error,
+            networkException: exception,
+          );
+        },
+      );
+    }
     /*} catch (e, s) {
       appLog.d('Save profile exception $e');
       return DataSourceState<BusinessProfileEntity>.error(
@@ -454,15 +461,94 @@ class BusinessProfileRepositoryImplement implements UserBusinessProfileRepositor
   }
 
   @override
-  Future<DataSourceState<List<BusinessProfileEntity>>> getAllBusinessProfilePagination({int pageKey = 0, int pageSize = 10, String? searchText, Map<String, dynamic> extras = const <String, dynamic>{}, String? filtering, String? sorting, Timestamp? startTime, Timestamp? endTime}) {
-    // TODO: implement getAllBusinessProfilePagination
-    throw UnimplementedError();
+  Future<DataSourceState<List<BusinessProfileEntity>>> getAllBusinessProfilePagination({
+    int pageKey = 0,
+    int pageSize = 10,
+    String? searchText,
+    Map<String, dynamic> extras = const <String, dynamic>{},
+    String? filtering,
+    String? sorting,
+    Timestamp? startTime,
+    Timestamp? endTime,
+  }) async {
+    try {
+      final connectivity = serviceLocator<ConnectivityService>().getCurrentInternetStatus();
+      if (connectivity.$2 == InternetConnectivityState.internet) {
+        // Local DB
+        // Save to local
+        final Either<RepositoryBaseFailure, List<BusinessProfileEntity>> result = await businessProfileLocalDataSource.getAllWithPagination(
+          filter: filtering,
+          sorting: sorting,
+          searchText: searchText,
+          pageSize: pageSize,
+          pageKey: pageKey,
+          endTimeStamp: endTime,
+          startTimeStamp: startTime,
+          extras: extras,
+        );
+        // Return result
+        return result.fold((l) {
+          final RepositoryFailure failure = l as RepositoryFailure;
+          appLog.d('Get all businessProfile local error ${failure.message}');
+          return DataSourceState<List<BusinessProfileEntity>>.error(
+            reason: failure.message,
+            dataSourceFailure: DataSourceFailure.local,
+            stackTrace: failure.stacktrace,
+          );
+        }, (r) {
+          appLog.d('Get all businessProfile local : ${r.length}');
+          return DataSourceState<List<BusinessProfileEntity>>.localDb(data: r);
+        });
+      } else {
+        // Remote
+        // Save to server
+        final ApiResultState<List<BusinessProfileEntity>> result = await remoteDataSource.getAllBusinessProfilePagination(
+          filtering: filtering,
+          sorting: sorting,
+          searchText: searchText,
+          pageSize: pageSize,
+          pageKey: pageKey,
+          endTime: endTime,
+          startTime: startTime,
+        );
+        // Return result
+        return result.when(
+          success: (data) {
+            appLog.d('Get all businessProfile from remote');
+            return DataSourceState<List<BusinessProfileEntity>>.remote(
+              data: data.toList(),
+            );
+          },
+          failure: (reason, error, exception, stackTrace) {
+            appLog.d('Get all businessProfile remote error $reason');
+            return DataSourceState<List<BusinessProfileEntity>>.error(
+              reason: reason,
+              dataSourceFailure: DataSourceFailure.remote,
+              stackTrace: stackTrace,
+              error: error,
+              networkException: exception,
+            );
+          },
+        );
+      }
+    } catch (e, s) {
+      appLog.e('Get all businessProfile exception $e');
+      return DataSourceState<List<BusinessProfileEntity>>.error(
+        reason: e.toString(),
+        dataSourceFailure: DataSourceFailure.local,
+        stackTrace: s,
+        error: e,
+        exception: e as Exception,
+      );
+    }
   }
 
   @override
-  Future<DataSourceState<List<BusinessProfileEntity>>> saveAllBusinessProfiles({required List<BusinessProfileEntity> businessProfiles, bool hasUpdateAll = false}) {
+  Future<DataSourceState<List<BusinessProfileEntity>>> saveAllBusinessProfiles({
+    required List<BusinessProfileEntity> businessProfiles,
+    bool hasUpdateAll = false,
+  }) {
     // TODO: implement saveAllBusinessProfiles
     throw UnimplementedError();
   }
-
 }

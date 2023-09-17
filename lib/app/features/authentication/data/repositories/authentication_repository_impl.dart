@@ -167,13 +167,15 @@ class AuthenticationRepositoryImplement implements AuthenticationRepository {
   }
 
   @override
-  Future<DataSourceState<AppUserEntity>> editAppUser({required AppUserEntity appUserEntity, required int userID}) async {
+  Future<DataSourceState<AppUserEntity>> editAppUser(
+      {required AppUserEntity appUserEntity, required int userID}) async {
     try {
       final connectivity = serviceLocator<ConnectivityService>().getCurrentInternetStatus();
       if (connectivity.$2 == InternetConnectivityState.internet) {
         // Local DB
         // Save to local
-        final Either<RepositoryBaseFailure, AppUserEntity> result = await userLocalDbRepository.update(appUserEntity, UniqueId(userID));
+        final Either<RepositoryBaseFailure, AppUserEntity> result =
+            await userLocalDbRepository.update(appUserEntity, UniqueId(userID));
         // Return result
         return result.fold((l) {
           final RepositoryFailure failure = l as RepositoryFailure;
@@ -290,7 +292,8 @@ class AuthenticationRepositoryImplement implements AuthenticationRepository {
       if (connectivity.$2 == InternetConnectivityState.internet) {
         // Local DB
         // Save to local
-        final Either<RepositoryBaseFailure, AppUserEntity?> result = await userLocalDbRepository.getById(UniqueId(userID));
+        final Either<RepositoryBaseFailure, AppUserEntity?> result =
+            await userLocalDbRepository.getById(UniqueId(userID));
         // Return result
         return result.fold((l) {
           final RepositoryFailure failure = l as RepositoryFailure;
@@ -407,7 +410,8 @@ class AuthenticationRepositoryImplement implements AuthenticationRepository {
       if (connectivity.$2 == InternetConnectivityState.internet) {
         // Local DB
         // Save to local
-        final Either<RepositoryBaseFailure, AppUserEntity?> result = await userLocalDbRepository.getCurrentUser(entity: entity);
+        final Either<RepositoryBaseFailure, AppUserEntity?> result =
+            await userLocalDbRepository.getCurrentUser(entity: entity);
         // Return result
         return result.fold((l) {
           final RepositoryFailure failure = l as RepositoryFailure;
@@ -418,10 +422,10 @@ class AuthenticationRepositoryImplement implements AuthenticationRepository {
             stackTrace: failure.stacktrace,
           );
         }, (r) {
-          if(r!=null) {
+          if (r != null) {
             appLog.d('Get current appUser to local : ${r?.toMap()}');
             return DataSourceState<AppUserEntity>.localDb(data: r);
-          }else{
+          } else {
             return const DataSourceState<AppUserEntity>.error(
               reason: 'User is null',
               dataSourceFailure: DataSourceFailure.local,
@@ -465,13 +469,93 @@ class AuthenticationRepositoryImplement implements AuthenticationRepository {
   }
 
   @override
-  Future<DataSourceState<List<AppUserEntity>>> getAllUsersPagination({int pageKey = 0, int pageSize = 10, String? searchText, Map<String, dynamic> extras = const <String, dynamic>{}, String? filtering, String? sorting, Timestamp? startTime, Timestamp? endTime}) {
-    // TODO: implement getAllUsersPagination
-    throw UnimplementedError();
+  Future<DataSourceState<List<AppUserEntity>>> getAllUsersPagination({
+    int pageKey = 0,
+    int pageSize = 10,
+    String? searchText,
+    Map<String, dynamic> extras = const <String, dynamic>{},
+    String? filtering,
+    String? sorting,
+    Timestamp? startTime,
+    Timestamp? endTime,
+  }) async {
+    try {
+      final connectivity = serviceLocator<ConnectivityService>().getCurrentInternetStatus();
+      if (connectivity.$2 == InternetConnectivityState.internet) {
+        // Local DB
+        // Save to local
+        final Either<RepositoryBaseFailure, List<AppUserEntity>> result = await userLocalDbRepository.getAllWithPagination(
+          filter: filtering,
+          sorting: sorting,
+          searchText: searchText,
+          pageSize: pageSize,
+          pageKey: pageKey,
+          endTimeStamp: endTime,
+          startTimeStamp: startTime,
+          extras: extras,
+        );
+        // Return result
+        return result.fold((l) {
+          final RepositoryFailure failure = l as RepositoryFailure;
+          appLog.d('Get all users local error ${failure.message}');
+          return DataSourceState<List<AppUserEntity>>.error(
+            reason: failure.message,
+            dataSourceFailure: DataSourceFailure.local,
+            stackTrace: failure.stacktrace,
+          );
+        }, (r) {
+          appLog.d('Get all menu local : ${r.length}');
+          return DataSourceState<List<AppUserEntity>>.localDb(data: r);
+        });
+      } else {
+        // Remote
+        // Save to server
+        final ApiResultState<List<AppUserEntity>> result = await remoteDataSource.getAllAppUsersPagination(
+          filtering: filtering,
+          sorting: sorting,
+          searchText: searchText,
+          pageSize: pageSize,
+          pageKey: pageKey,
+          endTime: endTime,
+          startTime: startTime,
+        );
+        // Return result
+        return result.when(
+          success: (data) {
+            appLog.d('Get all users from remote');
+            return DataSourceState<List<AppUserEntity>>.remote(
+              data: data.toList(),
+            );
+          },
+          failure: (reason, error, exception, stackTrace) {
+            appLog.d('Get all users remote error $reason');
+            return DataSourceState<List<AppUserEntity>>.error(
+              reason: reason,
+              dataSourceFailure: DataSourceFailure.remote,
+              stackTrace: stackTrace,
+              error: error,
+              networkException: exception,
+            );
+          },
+        );
+      }
+    } catch (e, s) {
+      appLog.e('Get all users exception $e');
+      return DataSourceState<List<AppUserEntity>>.error(
+        reason: e.toString(),
+        dataSourceFailure: DataSourceFailure.local,
+        stackTrace: s,
+        error: e,
+        exception: e as Exception,
+      );
+    }
   }
 
   @override
-  Future<DataSourceState<List<AppUserEntity>>> saveAllUsers({required List<AppUserEntity> appUsers, bool hasUpdateAll = false}) {
+  Future<DataSourceState<List<AppUserEntity>>> saveAllUsers({
+    required List<AppUserEntity> appUsers,
+    bool hasUpdateAll = false,
+  }) {
     // TODO: implement saveAllUsers
     throw UnimplementedError();
   }

@@ -5,8 +5,10 @@ class PaymentBankRepositoryImplement implements UserPaymentBankRepository {
     required this.remoteDataSource,
     required this.paymentBankLocalDataSource,
   });
+
   final ProfileDataSource remoteDataSource;
   final UserPaymentBankLocalDbRepository<PaymentBankEntity> paymentBankLocalDataSource;
+
   @override
   Future<DataSourceState<bool>> deleteAllPaymentBank({AppUserEntity? appUserEntity}) async {
     try {
@@ -65,13 +67,15 @@ class PaymentBankRepositoryImplement implements UserPaymentBankRepository {
   }
 
   @override
-  Future<DataSourceState<bool>> deletePaymentBank({required int paymentBankID, PaymentBankEntity? paymentBankEntity, AppUserEntity? appUserEntity}) async {
+  Future<DataSourceState<bool>> deletePaymentBank(
+      {required int paymentBankID, PaymentBankEntity? paymentBankEntity, AppUserEntity? appUserEntity}) async {
     try {
       final connectivity = serviceLocator<ConnectivityService>().getCurrentInternetStatus();
       if (connectivity.$2 == InternetConnectivityState.internet) {
         // Local DB
         // Save to local
-        final Either<RepositoryBaseFailure, bool> result = await paymentBankLocalDataSource.deleteById(UniqueId(paymentBankID));
+        final Either<RepositoryBaseFailure, bool> result =
+            await paymentBankLocalDataSource.deleteById(UniqueId(paymentBankID));
         // Return result
         return result.fold((l) {
           final RepositoryFailure failure = l as RepositoryFailure;
@@ -136,7 +140,8 @@ class PaymentBankRepositoryImplement implements UserPaymentBankRepository {
       if (connectivity.$2 == InternetConnectivityState.internet) {
         // Local DB
         // Save to local
-        final Either<RepositoryBaseFailure, PaymentBankEntity> result = await paymentBankLocalDataSource.update(paymentBankEntity, UniqueId(paymentBankID));
+        final Either<RepositoryBaseFailure, PaymentBankEntity> result =
+            await paymentBankLocalDataSource.update(paymentBankEntity, UniqueId(paymentBankID));
         // Return result
         return result.fold((l) {
           final RepositoryFailure failure = l as RepositoryFailure;
@@ -258,7 +263,8 @@ class PaymentBankRepositoryImplement implements UserPaymentBankRepository {
       if (connectivity.$2 == InternetConnectivityState.internet) {
         // Local DB
         // Save to local
-        final Either<RepositoryBaseFailure, PaymentBankEntity?> result = await paymentBankLocalDataSource.getById(UniqueId(paymentBankID));
+        final Either<RepositoryBaseFailure, PaymentBankEntity?> result =
+            await paymentBankLocalDataSource.getById(UniqueId(paymentBankID));
         // Return result
         return result.fold((l) {
           final RepositoryFailure failure = l as RepositoryFailure;
@@ -313,13 +319,15 @@ class PaymentBankRepositoryImplement implements UserPaymentBankRepository {
   }
 
   @override
-  Future<DataSourceState<PaymentBankEntity>> savePaymentBank({required PaymentBankEntity paymentBankEntity, AppUserEntity? appUserEntity}) async {
+  Future<DataSourceState<PaymentBankEntity>> savePaymentBank(
+      {required PaymentBankEntity paymentBankEntity, AppUserEntity? appUserEntity}) async {
     try {
       final connectivity = serviceLocator<ConnectivityService>().getCurrentInternetStatus();
       if (connectivity.$2 == InternetConnectivityState.internet) {
         // Local DB
         // Save to local
-        final Either<RepositoryBaseFailure, PaymentBankEntity> result = await paymentBankLocalDataSource.add(paymentBankEntity);
+        final Either<RepositoryBaseFailure, PaymentBankEntity> result =
+            await paymentBankLocalDataSource.add(paymentBankEntity);
         // Return result
         return result.fold((l) {
           final RepositoryFailure failure = l as RepositoryFailure;
@@ -372,13 +380,93 @@ class PaymentBankRepositoryImplement implements UserPaymentBankRepository {
   }
 
   @override
-  Future<DataSourceState<List<PaymentBankEntity>>> getAllPaymentBanksPagination({int pageKey = 0, int pageSize = 10, String? searchText, Map<String, dynamic> extras = const <String, dynamic>{}, String? filtering, String? sorting, Timestamp? startTime, Timestamp? endTime}) {
-    // TODO: implement getAllPaymentBanksPagination
-    throw UnimplementedError();
+  Future<DataSourceState<List<PaymentBankEntity>>> getAllPaymentBanksPagination({
+    int pageKey = 0,
+    int pageSize = 10,
+    String? searchText,
+    Map<String, dynamic> extras = const <String, dynamic>{},
+    String? filtering,
+    String? sorting,
+    Timestamp? startTime,
+    Timestamp? endTime,
+  }) async {
+    try {
+      final connectivity = serviceLocator<ConnectivityService>().getCurrentInternetStatus();
+      if (connectivity.$2 == InternetConnectivityState.internet) {
+        // Local DB
+        // Save to local
+        final Either<RepositoryBaseFailure, List<PaymentBankEntity>> result = await paymentBankLocalDataSource.getAllWithPagination(
+          filter: filtering,
+          sorting: sorting,
+          searchText: searchText,
+          pageSize: pageSize,
+          pageKey: pageKey,
+          endTimeStamp: endTime,
+          startTimeStamp: startTime,
+          extras: extras,
+        );
+        // Return result
+        return result.fold((l) {
+          final RepositoryFailure failure = l as RepositoryFailure;
+          appLog.d('Get all PaymentBank local error ${failure.message}');
+          return DataSourceState<List<PaymentBankEntity>>.error(
+            reason: failure.message,
+            dataSourceFailure: DataSourceFailure.local,
+            stackTrace: failure.stacktrace,
+          );
+        }, (r) {
+          appLog.d('Get all PaymentBank local : ${r.length}');
+          return DataSourceState<List<PaymentBankEntity>>.localDb(data: r);
+        });
+      } else {
+        // Remote
+        // Save to server
+        final ApiResultState<List<PaymentBankEntity>> result = await remoteDataSource.getAllPaymentBanksPagination(
+          filtering: filtering,
+          sorting: sorting,
+          searchText: searchText,
+          pageSize: pageSize,
+          pageKey: pageKey,
+          endTime: endTime,
+          startTime: startTime,
+        );
+        // Return result
+        return result.when(
+          success: (data) {
+            appLog.d('Get all PaymentBank from remote');
+            return DataSourceState<List<PaymentBankEntity>>.remote(
+              data: data.toList(),
+            );
+          },
+          failure: (reason, error, exception, stackTrace) {
+            appLog.d('Get all PaymentBank remote error $reason');
+            return DataSourceState<List<PaymentBankEntity>>.error(
+              reason: reason,
+              dataSourceFailure: DataSourceFailure.remote,
+              stackTrace: stackTrace,
+              error: error,
+              networkException: exception,
+            );
+          },
+        );
+      }
+    } catch (e, s) {
+      appLog.e('Get all PaymentBank exception $e');
+      return DataSourceState<List<PaymentBankEntity>>.error(
+        reason: e.toString(),
+        dataSourceFailure: DataSourceFailure.local,
+        stackTrace: s,
+        error: e,
+        exception: e as Exception,
+      );
+    }
   }
 
   @override
-  Future<DataSourceState<List<PaymentBankEntity>>> saveAllPaymentBanks({required List<PaymentBankEntity> paymentBanks, bool hasUpdateAll = false}) {
+  Future<DataSourceState<List<PaymentBankEntity>>> saveAllPaymentBanks({
+    required List<PaymentBankEntity> paymentBanks,
+    bool hasUpdateAll = false,
+  }) {
     // TODO: implement saveAllPaymentBanks
     throw UnimplementedError();
   }
