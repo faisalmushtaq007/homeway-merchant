@@ -162,6 +162,31 @@ class OtpVerificationBloc extends Bloc<OtpVerificationEvent, OtpVerificationStat
                   appLog.e('Save current user ${data.first.phoneNumberWithoutDialCode ?? ''}, ${data.first.phoneNumber}');
                   await Future.delayed(const Duration(milliseconds: 500), () {});
                   //Save to local model
+                  serviceLocator<AppUserEntity>()
+                    ..userID = saveUserEntity.userID
+                    ..phoneNumber = saveUserEntity.phoneNumber
+                    ..businessProfile = saveUserEntity.businessProfile
+                    ..stores = saveUserEntity.stores
+                    ..token = saveUserEntity.token
+                    ..tokenCreationDateTime = saveUserEntity.tokenCreationDateTime
+                    ..hasUserAuthenticated = saveUserEntity.hasUserAuthenticated
+                    ..businessTypeEntity = saveUserEntity.businessTypeEntity
+                    ..currentProfileStatus = saveUserEntity.currentProfileStatus
+                    ..menus = saveUserEntity.menus
+                    ..drivers = saveUserEntity.drivers
+                    ..addons = saveUserEntity.addons
+                    ..ratingAndReviewEntity = saveUserEntity.ratingAndReviewEntity
+                    ..hasCurrentUser = saveUserEntity.hasCurrentUser
+                    ..country_dial_code = saveUserEntity.country_dial_code
+                    ..isoCode = saveUserEntity.isoCode
+                    ..user_type = saveUserEntity.user_type
+                    ..access_token = saveUserEntity.access_token
+                    ..currentUserStage = saveUserEntity.currentUserStage
+                    ..uid = saveUserEntity.uid
+                    ..paymentBankEntity = saveUserEntity.paymentBankEntity
+                    ..hasMultiplePaymentBanks = saveUserEntity.hasMultiplePaymentBanks
+                    ..paymentBankEntities = saveUserEntity.paymentBankEntities
+                    ..phoneNumberWithoutDialCode = saveUserEntity.phoneNumberWithoutDialCode;
                   serviceLocator<UserModelStorageController>().setUserModel(data.first.copyWith());
                 }
               },

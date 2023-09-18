@@ -4,6 +4,7 @@ import 'package:bloc/bloc.dart';
 import 'package:homemakers_merchant/app/features/authentication/index.dart';
 import 'package:homemakers_merchant/app/features/profile/index.dart';
 import 'package:homemakers_merchant/bootup/injection_container.dart';
+import 'package:homemakers_merchant/core/extensions/global_extensions/list_ext.dart';
 import 'package:homemakers_merchant/core/extensions/global_extensions/src/object.dart';
 import 'package:homemakers_merchant/shared/states/data_source_state.dart';
 import 'package:homemakers_merchant/utils/app_equatable/app_equatable.dart';
@@ -91,34 +92,39 @@ class BusinessProfileBloc extends Bloc<BusinessProfileEvent, BusinessProfileStat
     }*/
   }
 
-  Future<void> updateUserProfile(BusinessProfileEntity data, int stage) async {
-    final getCurrentUserResult = await serviceLocator<GetIDAndTokenUserUseCase>()();
-    if (getCurrentUserResult.isNotNull) {
-      appLog.d('getCurrentUserResult Profile bloc save remote ${getCurrentUserResult?.toMap()}');
-      final AppUserEntity cacheAppUserEntity = getCurrentUserResult!.copyWith(
-        businessProfile: data,
-        currentUserStage: stage,
-      );
-      final editUserResult = await serviceLocator<EditAppUserUseCase>()(
-        id: getCurrentUserResult.userID,
-        input: cacheAppUserEntity,
-      );
-      editUserResult.when(
-        remote: (data, meta) {
-          appLog.d('Update current user with business profile save remote ${data?.toMap()}');
-        },
-        localDb: (data, meta) {
-          appLog.d('Update current user with business profile save local ${data?.toMap()}');
-          if (data != null) {
-            serviceLocator<UserModelStorageController>().setUserModel(data);
-          }
-        },
-        error: (dataSourceFailure, reason, error, networkException, stackTrace, exception, extra) {
-          appLog.d('Update current user with business profile exception $error');
-        },
-      );
-      return;
-    }
+  Future<void> updateUserProfile(BusinessProfileEntity businessProfileEntity, int stage) async {
+    final getCurrentUserResult = await serviceLocator<GetAllAppUserPaginationUseCase>()();
+    await getCurrentUserResult.when(remote: (data, meta) {
+
+    }, localDb: (data, meta) async {
+      if(data.isNotNullOrEmpty){
+        final AppUserEntity cacheAppUserEntity = data!.first.copyWith(
+          businessProfile: businessProfileEntity
+        );
+        final editUserResult = await serviceLocator<EditAppUserUseCase>()(
+          id: data.first.userID,
+          input: cacheAppUserEntity,
+        );
+        editUserResult.when(
+          remote: (data, meta) {
+            appLog.d('Update current user with business profile save remote ${data?.toMap()}');
+          },
+          localDb: (data, meta) {
+            appLog.d('Update current user with business profile save local ${data?.toMap()}');
+            if (data != null) {
+              var cachedAppUserEntity=serviceLocator<AppUserEntity>()..businessProfile= businessProfileEntity..currentUserStage= stage;
+              serviceLocator<UserModelStorageController>().setUserModel(cachedAppUserEntity);
+            }
+          },
+          error: (dataSourceFailure, reason, error, networkException, stackTrace, exception, extra) {
+            appLog.d('Update current user with business profile exception $error');
+          },
+        );
+      }
+    }, error: (dataSourceFailure, reason, error, networkException, stackTrace, exception, extra) {
+
+    },);
+
     return;
   }
 

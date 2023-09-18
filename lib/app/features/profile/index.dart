@@ -130,6 +130,7 @@ part 'package:homemakers_merchant/app/features/profile/domain/use_cases/profile/
 part 'package:homemakers_merchant/app/features/profile/domain/use_cases/profile/get_current_user_profile_fromlocaldb_usecase.dart';
 part 'package:homemakers_merchant/app/features/profile/domain/use_cases/profile/get_current_user_token_fromlocaldb_usecase.dart';
 part 'package:homemakers_merchant/app/features/profile/domain/use_cases/profile/save_all_business_profile_usecase.dart';
+part 'package:homemakers_merchant/app/features/profile/domain/use_cases/profile/get_all_business_profile_pagination_usecase.dart';
 
 // payment bank usecase
 part 'package:homemakers_merchant/app/features/profile/domain/use_cases/payment_bank/get_payment_bank_usecase.dart';
@@ -139,6 +140,7 @@ part 'package:homemakers_merchant/app/features/profile/domain/use_cases/payment_
 part 'package:homemakers_merchant/app/features/profile/domain/use_cases/payment_bank/delete_payment_bank_usecase.dart';
 part 'package:homemakers_merchant/app/features/profile/domain/use_cases/payment_bank/delete_all_payment_bank_usecase.dart';
 part 'package:homemakers_merchant/app/features/profile/domain/use_cases/payment_bank/save_all_bank_usecase.dart';
+part 'package:homemakers_merchant/app/features/profile/domain/use_cases/payment_bank/get_all_payment_bank_pagination_usecase.dart';
 // Document usecase
 part 'package:homemakers_merchant/app/features/profile/domain/use_cases/document/get_document_usecase.dart';
 part 'package:homemakers_merchant/app/features/profile/domain/use_cases/document/get_all_document_usecase.dart';
@@ -147,6 +149,7 @@ part 'package:homemakers_merchant/app/features/profile/domain/use_cases/document
 part 'package:homemakers_merchant/app/features/profile/domain/use_cases/document/delete_document_usecase.dart';
 part 'package:homemakers_merchant/app/features/profile/domain/use_cases/document/delete_all_document_usecase.dart';
 part 'package:homemakers_merchant/app/features/profile/domain/use_cases/document/save_all_document_usecase.dart';
+part 'package:homemakers_merchant/app/features/profile/domain/use_cases/document/get_all_document_pagination_usecase.dart';
 //
 part 'package:homemakers_merchant/app/features/profile/domain/entities/bank/payment_bank_entity.dart';
 part 'package:homemakers_merchant/app/features/profile/common/payment_bank_enum.dart';

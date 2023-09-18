@@ -567,33 +567,38 @@ class BusinessDocumentBloc extends Bloc<BusinessDocumentEvent, BusinessDocumentS
     }*/
   }
 
-  Future<void> updateUserProfile(PaymentBankEntity data) async {
-    final getCurrentUserResult = await serviceLocator<GetIDAndTokenUserUseCase>()();
-    if (getCurrentUserResult.isNotNull) {
-      appLog.d('getCurrentUserResult Profile bloc save remote ${getCurrentUserResult?.toMap()}');
-      final AppUserEntity cacheAppUserEntity = getCurrentUserResult!.copyWith(
-        currentUserStage: 3,
-      );
-      final editUserResult = await serviceLocator<EditAppUserUseCase>()(
-        id: getCurrentUserResult.userID,
-        input: cacheAppUserEntity,
-      );
-      editUserResult.when(
-        remote: (data, meta) {
-          appLog.d('Update current user with business profile save remote ${data?.toMap()}');
-        },
-        localDb: (data, meta) {
-          appLog.d('Update current user with business profile save local ${data?.toMap()}');
-          if (data != null) {
-            serviceLocator<UserModelStorageController>().setUserModel(data);
-          }
-        },
-        error: (dataSourceFailure, reason, error, networkException, stackTrace, exception, extra) {
-          appLog.d('Update current user with business profile exception $error');
-        },
-      );
-      return;
-    }
+  Future<void> updateUserProfile(NewBusinessDocumentEntity newBusinessDocumentEntity) async {
+    final getCurrentUserResult = await serviceLocator<GetAllAppUserPaginationUseCase>()();
+    await getCurrentUserResult.when(remote: (data, meta) {
+
+    }, localDb: (data, meta) async {
+      if(data.isNotNullOrEmpty){
+        final AppUserEntity cacheAppUserEntity = data!.first.copyWith(
+          currentUserStage: 3,
+        );
+        final editUserResult = await serviceLocator<EditAppUserUseCase>()(
+          id: data.first.userID,
+          input: cacheAppUserEntity,
+        );
+        editUserResult.when(
+          remote: (data, meta) {
+            appLog.d('Update current user with business profile save remote ${data?.toMap()}');
+          },
+          localDb: (data, meta) {
+            appLog.d('Update current user with business profile save local ${data?.toMap()}');
+            if (data != null) {
+              var cachedAppUserEntity=serviceLocator<AppUserEntity>()..currentUserStage= 1;
+              serviceLocator<UserModelStorageController>().setUserModel(cachedAppUserEntity);
+            }
+          },
+          error: (dataSourceFailure, reason, error, networkException, stackTrace, exception, extra) {
+            appLog.d('Update current user with business profile exception $error');
+          },
+        );
+      }
+    }, error: (dataSourceFailure, reason, error, networkException, stackTrace, exception, extra) {
+
+    },);
     return;
   }
 

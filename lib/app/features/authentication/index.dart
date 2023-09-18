@@ -39,6 +39,7 @@ part 'package:homemakers_merchant/app/features/authentication/domain/usecases/ge
 part 'package:homemakers_merchant/app/features/authentication/domain/usecases/get_all_appuser_usecase.dart';
 part 'package:homemakers_merchant/app/features/authentication/domain/usecases/save_appuser_usecase.dart';
 part 'package:homemakers_merchant/app/features/authentication/domain/usecases/save_all_app_user_usecase.dart';
+part 'package:homemakers_merchant/app/features/authentication/domain/usecases/get_all_appuser_pagination_usecase.dart';
 // Entities
 part 'package:homemakers_merchant/app/features/authentication/data/models/phone_number_verification/send_otp_response_model.dart';
 part 'package:homemakers_merchant/app/features/authentication/data/models/phone_number_verification/verify_otp_response_model.dart';

@@ -143,7 +143,7 @@ class _WalletAccountSummaryWidgetView extends WidgetView<WalletAccountSummaryWid
                               ),
                               const AnimatedGap(6, duration: Duration(milliseconds: 200)),
                               Text(
-                                'Withdrawal',
+                                'Transfer',
                                 textDirection: serviceLocator<LanguageController>().targetTextDirection,
                                 style: context.headlineSmall!.copyWith(
                                   fontSize: 19,

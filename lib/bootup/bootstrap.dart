@@ -122,12 +122,12 @@ Future<void> bootstrap(FutureOr<dynamic> Function() builder) async {
       // [END auth_persistingAuthState]
     }
 
-    if (!kReleaseMode) {
-      //FirebaseAuth.instance.useAuthEmulator('localhost', 9099);
-      //FirebaseFirestore.instance.useFirestoreEmulator('localhost', 8080);
+    /*if (!kReleaseMode) {
+      FirebaseAuth.instance.useAuthEmulator('localhost', 9099);
+      FirebaseFirestore.instance.useFirestoreEmulator('localhost', 8080);
       //FirebaseDatabase.instance.useDatabaseEmulator('localhost', 9000);
-      //FirebaseStorage.instance.useStorageEmulator('localhost', 9199);
-    }
+      FirebaseStorage.instance.useStorageEmulator('localhost', 9199);
+    }*/
     FirebaseChatCore.instance.accessDataOfflineConfigureCache();
 
     //final ThemeService themeService = ThemeServicePrefs();
