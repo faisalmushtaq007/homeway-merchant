@@ -302,7 +302,7 @@ class UserPaymentBankLocalDbRepository<T extends PaymentBankEntity> implements B
           // Watch for deleted item
           var keysToDelete = (await _paymentBank.findKeys(transaction)).toList();
           for (var order in convertOrderToMapObject) {
-            var snapshot = map[order['paymentBankID']];
+            var snapshot = map[order['paymentBankID'].toString()];
             if (snapshot != null) {
               // The record current key
               var key = snapshot.key;

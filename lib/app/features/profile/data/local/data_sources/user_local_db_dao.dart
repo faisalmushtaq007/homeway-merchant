@@ -315,53 +315,52 @@ class UserLocalDbRepository<User extends AppUserEntity> implements BaseUserLocal
   Future<Either<RepositoryBaseFailure, List<AppUserEntity>>> saveAll({required List<AppUserEntity> entities, bool hasUpdateAll = false,}) async {
     final result = await tryCatch<List<AppUserEntity>>(() async {
       final db = await _db;
-
-      final result = await getAll();
-      return result.fold((l) {
-        return <AppUserEntity>[];
-      }, (r) async {
-        //final allOrderList = r.toList();
-        final newList = entities.toList();
-        var convertOrderToMapObject = newList.map((e) => e.toMap()).toList();
-        //final bool equalityStatus = unOrdDeepEq(allOrderList.toSet().toList(), newList.toSet().toList());
-        await db.transaction((transaction) async {
-          var userProfileIDs = convertOrderToMapObject.map((map) => map['userID'] as int).toList();
-          var map = await getUserProfileEntityByIds(db, userProfileIDs);
-          // Watch for deleted item
-          var keysToDelete = (await _user.findKeys(transaction)).toList();
-          for (var order in convertOrderToMapObject) {
-            var snapshot = map[order['userID']];
-            if (snapshot != null) {
-              // The record current key
-              var key = snapshot.key;
-              // Remove from deletion list
-              keysToDelete.remove(key);
-              // Don't update if no change
-              if (const DeepCollectionEquality().equals(snapshot.value, order)) {
-                // no changes
-                continue;
-              } else {
-                // Update product
-                appLog.d('Update User ${order['userID']}');
-                await _user.record(key).put(transaction, order);
-              }
-            } else {
-              // Add missing product
-              appLog.d('Add User ${order['userID']}');
-              await _user.add(transaction, order);
-            }
-          }
-          // Delete the one not present any more
-          await _user.records(keysToDelete).delete(transaction);
+      //final allOrderList = r.toList();
+      final newList = entities.toList();
+      var convertOrderToMapObject = newList.map((e) => e.toMap()).toList();
+      //final bool equalityStatus = unOrdDeepEq(allOrderList.toSet().toList(), newList.toSet().toList());
+      await db.transaction((transaction) async {
+        var userProfileIDs = convertOrderToMapObject.map((map) => map['userID'] as int).toList();
+        var map = await getUserProfileEntityByIds(db, userProfileIDs);
+        // Watch for deleted item
+        appLog.d('Map Data');
+        map.forEach((key, value) {
+          appLog.d('message: ${key}, ${value.value}');
         });
-
-        final result = await getAll();
-        if (result.isRight()) {
-          return result.right.toList();
-        } else {
-          return <AppUserEntity>[];
+        var keysToDelete = (await _user.findKeys(transaction)).toList();
+        for (var order in convertOrderToMapObject) {
+          appLog.d('Order Data ${order}');
+          var snapshot = map[order['userID'].toString()];
+          if (snapshot != null) {
+            // The record current key
+            var key = snapshot.key;
+            // Remove from deletion list
+            keysToDelete.remove(key);
+            // Don't update if no change
+            if (const DeepCollectionEquality().equals(snapshot.value, order)) {
+              // no changes
+              continue;
+            } else {
+              // Update product
+              appLog.d('Update User ${order['userID']}');
+              await _user.record(key).update(transaction, order);
+            }
+          } else {
+            // Add missing product
+            appLog.d('Add User ${order['userID']}');
+            await _user.add(transaction, order);
+          }
         }
+        // Delete the one not present any more
+        await _user.records(keysToDelete).delete(transaction);
       });
+
+      final result = await getAllWithPagination(pageKey: 0,pageSize: 1);
+      if (result.isRight()) {
+        return result.right.toList();
+      } else {
+        return <AppUserEntity>[];
+      }
     });
     return result;
   }

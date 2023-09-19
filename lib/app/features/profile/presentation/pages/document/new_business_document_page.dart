@@ -95,8 +95,8 @@ class _NewBusinessDocumentPageController extends State<NewBusinessDocumentPage> 
       _newUploadDocumentFormKey.currentState!.save();
       if (allBusinessDocuments.first.documentType == DocumentType.nationalID &&
           !allBusinessDocuments.first.documentIdNumber.isEmptyOrNull) {
-        context.read<BusinessDocumentBloc>().add(
-              SaveBusinessDocument(
+        context.read<NewBusinessDocumentBloc>().add(
+          UploadNewBusinessDocument(
                 currentIndex: widget.currentIndex,
                 hasEditBusinessDocument: widget.hasEditBusinessDocument,
                 businessDocumentUploadedEntity: allBusinessDocuments.first,
@@ -136,6 +136,10 @@ class _NewBusinessDocumentPageController extends State<NewBusinessDocumentPage> 
         width: captureImageEntity.width,
       ),
     );
+    print('localAssetPath ${allBusinessDocuments[0].localAssetPath}, ${allBusinessDocuments[0].documentIdNumber}');
+    setState(() {
+
+    });
   }
 
   void updateTradeLicenseCard(Map<String, dynamic> mapData, CaptureImageEntity captureImageEntity) {
@@ -158,6 +162,9 @@ class _NewBusinessDocumentPageController extends State<NewBusinessDocumentPage> 
         width: captureImageEntity.width,
       ),
     );
+    setState(() {
+
+    });
   }
 
   @override
@@ -603,7 +610,7 @@ class _NewBusinessDocumentPageView extends WidgetView<NewBusinessDocumentPage, _
                                   Expanded(
                                     flex: 2,
                                     child: ElevatedButton(
-                                      onPressed: (!state.textEditingControllers[0].value.text.trim().isEmptyOrNull &&
+                                      onPressed: (state.textEditingControllers[0].value.text.trim().isNotEmpty &&
                                               (!state.allBusinessDocuments.first.localAssetPath.isEmptyOrNull ||
                                                   state.allBusinessDocuments.first.networkAssetPath.isEmptyOrNull))
                                           ? state.onUploadPressed

@@ -186,7 +186,7 @@ class OrderLocalDbRepository<T extends OrderEntity> implements BaseOrderLocalDbR
           // Watch for deleted item
           var keysToDelete = (await _order.findKeys(transaction)).toList();
           for (var order in convertOrderToMapObject) {
-            var snapshot = map[order['orderID'] as int];
+            var snapshot = map[order['orderID'].toString()];
             if (snapshot != null) {
               // The record current key
               var key = snapshot.key;

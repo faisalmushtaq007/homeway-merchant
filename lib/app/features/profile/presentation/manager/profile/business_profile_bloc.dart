@@ -96,7 +96,7 @@ class BusinessProfileBloc extends Bloc<BusinessProfileEvent, BusinessProfileStat
   }
 
   Future<void> updateUserProfile(BusinessProfileEntity businessProfileEntity, int stage) async {
-    final getCurrentUserResult = await serviceLocator<GetAllAppUserPaginationUseCase>()();
+    final getCurrentUserResult = await serviceLocator<GetAllAppUserUseCase>()();
     await getCurrentUserResult.when(remote: (data, meta) {
 
     }, localDb: (data, meta) async {
