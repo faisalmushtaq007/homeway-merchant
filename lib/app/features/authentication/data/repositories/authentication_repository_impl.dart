@@ -504,7 +504,7 @@ class AuthenticationRepositoryImplement implements AuthenticationRepository {
             stackTrace: failure.stacktrace,
           );
         }, (r) {
-          appLog.d('Get all menu local : ${r.length}');
+          appLog.d('Get all users local : ${r.length}');
           return DataSourceState<List<AppUserEntity>>.localDb(data: r);
         });
       } else {

@@ -238,7 +238,7 @@ class BusinessProfileExceptionState extends BusinessProfileState {
   final Exception? exception;
 
   @override
-  List<Object?> get props => throw UnimplementedError();
+  List<Object?> get props =>  [stackTrace,businessProfileStatus,message,exception];
 }
 
 class BusinessProfileLoadingState extends BusinessProfileState {
@@ -252,7 +252,7 @@ class BusinessProfileLoadingState extends BusinessProfileState {
   final String message;
 
   @override
-  List<Object?> get props => throw UnimplementedError();
+  List<Object?> get props =>  [isLoading,businessProfileStatus,message];
 }
 
 class BusinessProfileProcessingState extends BusinessProfileState {
@@ -266,7 +266,7 @@ class BusinessProfileProcessingState extends BusinessProfileState {
   final String message;
 
   @override
-  List<Object?> get props => throw UnimplementedError();
+  List<Object?> get props => [isProcessing,businessProfileStatus,message];
 }
 
 class GetCurrentUserProfileState extends BusinessProfileState {
@@ -365,7 +365,7 @@ class GetAllBusinessProfilePaginationExceptionState extends BusinessProfileState
   final Exception? exception;
 
   @override
-  List<Object?> get props => throw UnimplementedError();
+  List<Object?> get props => [stackTrace,businessProfileStatus,message,exception];
 }
 
 class GetAllBusinessProfilePaginationLoadingState extends BusinessProfileState {
@@ -379,7 +379,7 @@ class GetAllBusinessProfilePaginationLoadingState extends BusinessProfileState {
   final String message;
 
   @override
-  List<Object?> get props => throw UnimplementedError();
+  List<Object?> get props => [isLoading,businessProfileStatus,message];
 }
 
 class GetAllBusinessProfilePaginationProcessingState extends BusinessProfileState {
@@ -393,7 +393,7 @@ class GetAllBusinessProfilePaginationProcessingState extends BusinessProfileStat
   final String message;
 
   @override
-  List<Object?> get props => throw UnimplementedError();
+  List<Object?> get props => [isProcessing,businessProfileStatus,message];
 }
 
 // Get All User with Pagination
@@ -484,7 +484,7 @@ class GetAllAppUserProfileExceptionState extends BusinessProfileState {
   final Exception? exception;
 
   @override
-  List<Object?> get props => throw UnimplementedError();
+  List<Object?> get props => [businessProfileStatus,message,stackTrace,exception];
 }
 
 class GetAllAppUserProfileLoadingState extends BusinessProfileState {
@@ -498,7 +498,7 @@ class GetAllAppUserProfileLoadingState extends BusinessProfileState {
   final String message;
 
   @override
-  List<Object?> get props => throw UnimplementedError();
+  List<Object?> get props => [businessProfileStatus,isLoading,message,];
 }
 
 class GetAllAppUserProfileProcessingState extends BusinessProfileState {
@@ -512,5 +512,5 @@ class GetAllAppUserProfileProcessingState extends BusinessProfileState {
   final String message;
 
   @override
-  List<Object?> get props => throw UnimplementedError();
+  List<Object?> get props => [isProcessing,businessProfileStatus,message];
 }

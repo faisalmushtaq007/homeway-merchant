@@ -13,13 +13,14 @@ class StoreCard extends StatefulWidget {
 
 class _StoreCardState extends State<StoreCard> {
   Color carBackgroundColor = Colors.white;
-  var _popupStoreItemIndex = 0;
+  int? _popupStoreItemIndex;
 
   Widget _buildPopupMenuButton(int currentIndex, StoreEntity storeEntity) {
     return PopupMenuButton(
       onSelected: (value) {
-        _onStoreSelected(value as int);
+        return _onStoreSelected(value);
       },
+      initialValue: _popupStoreItemIndex,
       offset: Offset(0.0, AppBar().preferredSize.height),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadiusDirectional.circular(8),
@@ -68,7 +69,7 @@ class _StoreCardState extends State<StoreCard> {
     return PopupMenuItem(
       value: position,
       onTap: () async {
-        switch (_popupStoreItemIndex) {
+        switch (position) {
           case 0:
             {
               final navigateToStoreDetailsPage = await context.push(Routes.STORE_DETAILS_PAGE, extra: {
@@ -82,7 +83,18 @@ class _StoreCardState extends State<StoreCard> {
               context.read<StoreBloc>().add(GetAllStore());
             }
           case 1:
-            {}
+            {
+              final navigateToStorePage = await context.push(Routes.SAVE_STORE_PAGE, extra: {
+                'storeEntity': widget.storeEntity,
+                'currentIndex': widget.currentIndex,
+                'allStores': widget.listOfAllStoreEntities.toList(),
+                'haveNewStore':false,
+              });
+              if (!mounted) {
+                return;
+              }
+              context.read<StoreBloc>().add(GetAllStore());
+            }
           case 2:
             {}
           case 3:
@@ -136,7 +148,13 @@ class _StoreCardState extends State<StoreCard> {
                 if (!mounted) {
                   return;
                 }
-                serviceLocator<AppUserEntity>().stores.removeAt(currentIndex);
+                await serviceLocator<DeleteStoreUseCase>()(id: widget.storeEntity.storeID,input: widget.storeEntity,);
+                serviceLocator<AppUserEntity>().stores.removeAt(widget.currentIndex);
+                await Future.delayed(const Duration(milliseconds: 500), () {});
+                if (!mounted) {
+                  return;
+                }
+                context.read<StoreBloc>().add(GetAllStore());
               }
               return;
             }
@@ -155,9 +173,11 @@ class _StoreCardState extends State<StoreCard> {
             child: Text(
               title,
               style: context.labelLarge!.copyWith(
-                color: Color.fromRGBO(42, 45, 50, 1),
                 fontSize: 16,
               ),
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              softWrap: true,
               textDirection: serviceLocator<LanguageController>().targetTextDirection,
             ),
           ),
@@ -167,8 +187,9 @@ class _StoreCardState extends State<StoreCard> {
   }
 
   void _onStoreSelected(int value) {
+    _popupStoreItemIndex = value;
     setState(() {
-      _popupStoreItemIndex = value;
+
     });
   }
 
@@ -246,23 +267,31 @@ class _StoreCardState extends State<StoreCard> {
         borderRadius: BorderRadiusDirectional.circular(10),
         //side: BorderSide(color: Color.fromRGBO(127, 129, 132, 1)),
       ),
-      title: Text(
-        widget.storeEntity.storeName,
-        style: context.titleMedium!.copyWith(color: const Color.fromRGBO(31, 31, 31, 1)),
-        textDirection: serviceLocator<LanguageController>().targetTextDirection,
-        maxLines: 1,
-        softWrap: true,
-        overflow: TextOverflow.ellipsis,
+      title: Wrap(
+        children: [
+          Text(
+            widget.storeEntity.storeName,
+            style: context.titleMedium!.copyWith(fontWeight: FontWeight.w600),
+            textDirection: serviceLocator<LanguageController>().targetTextDirection,
+            maxLines: 3,
+            softWrap: true,
+            overflow: TextOverflow.ellipsis,
+          ),
+        ],
       ),
-      subtitle: Text(
-        widget.storeEntity.storeAddress?.address?.area ?? '',
-        style: const TextStyle(color: Color.fromRGBO(127, 129, 132, 1)),
-        textDirection: serviceLocator<LanguageController>().targetTextDirection,
-        maxLines: 1,
-        softWrap: true,
-        overflow: TextOverflow.ellipsis,
+      subtitle: Wrap(
+        children: [
+          Text(
+            widget.storeEntity.storeAddress?.address?.area ?? '',
+            //style: const TextStyle(color: Color.fromRGBO(127, 129, 132, 1)),
+            textDirection: serviceLocator<LanguageController>().targetTextDirection,
+            maxLines: 3,
+            softWrap: true,
+            overflow: TextOverflow.ellipsis,
+          ),
+        ],
       ),
-      dense: true,
+      //dense: true,
       minLeadingWidth: 20,
       onTap: () async {
         //final navigateToStoreDetailPage=await context.push(Routes.ALL_STORES_PAGE);
@@ -273,7 +302,7 @@ class _StoreCardState extends State<StoreCard> {
       ),
       selectedColor: const Color.fromRGBO(215, 243, 227, 1),
       selectedTileColor: const Color.fromRGBO(215, 243, 227, 1),
-      tileColor: Colors.white,
+      tileColor: context.colorScheme.background,
     );
   }
 }

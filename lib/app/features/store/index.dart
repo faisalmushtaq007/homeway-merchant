@@ -31,6 +31,7 @@ import 'package:homemakers_merchant/app/features/permission/presentation/bloc/pe
 import 'package:homemakers_merchant/app/features/permission/presentation/bloc/permission_bloc.dart';
 import 'package:homemakers_merchant/app/features/permission/presentation/bloc/permission_bloc.dart';
 import 'package:homemakers_merchant/app/features/profile/index.dart';
+import 'package:homemakers_merchant/app/features/profile/presentation/manager/profile/business_profile_bloc.dart';
 import 'package:homemakers_merchant/app/features/store/common/store_enum.dart';
 import 'package:homemakers_merchant/app/features/store/common/store_enum.dart';
 import 'package:homemakers_merchant/app/features/store/index.dart';

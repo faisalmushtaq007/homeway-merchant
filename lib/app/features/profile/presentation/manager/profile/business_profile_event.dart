@@ -104,7 +104,7 @@ class GetAllBusinessProfile extends BusinessProfileEvent {
     this.businessProfileEntity,
     this.searchItem = '',
     this.pageSize = 10,
-    this.pageKey = 1,
+    this.pageKey = 0,
   });
 
   final BusinessProfileEntity? businessProfileEntity;
@@ -165,7 +165,7 @@ class GetAllBusinessProfilePagination extends BusinessProfileEvent {
     this.businessProfileEntity,
     this.searchItem = '',
     this.pageSize = 10,
-    this.pageKey = 1,
+    this.pageKey = 0,
     this.endTime,
     this.filtering = '',
     this.sorting = '',
@@ -203,7 +203,7 @@ class GetAllAppUserProfilePagination extends BusinessProfileEvent {
     this.appUserEntity,
     this.searchItem = '',
     this.pageSize = 10,
-    this.pageKey = 1,
+    this.pageKey = 0,
     this.endTime,
     this.filtering = '',
     this.sorting = '',
