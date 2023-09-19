@@ -533,7 +533,7 @@ class BusinessProfileBloc extends Bloc<BusinessProfileEvent, BusinessProfileStat
         endTime: event.endTime,
         entity: event.appUserEntity??serviceLocator<AppUserEntity>()
       );
-      result.when(
+      await result.when(
         remote: (data, meta) {
           appLog.d('Get all users bloc get all remote');
           if (data == null || data.isEmpty) {

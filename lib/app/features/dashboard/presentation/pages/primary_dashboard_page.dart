@@ -114,6 +114,7 @@ class _PrimaryDashboardPageController extends State<PrimaryDashboardPage> {
     await getCurrentUserResult.when(remote: (data, meta) {
       if(data.isNotNullOrEmpty){
         appUserEntity=data!.last;
+        serviceLocator<AppUserEntity>().updateEntity(data.last);
         setState(() {
 
         });
@@ -122,6 +123,7 @@ class _PrimaryDashboardPageController extends State<PrimaryDashboardPage> {
     }, localDb: (data, meta) {
       if(data.isNotNullOrEmpty){
         appUserEntity=data!.last;
+        serviceLocator<AppUserEntity>().updateEntity(data.last);
         setState(() {
 
         });

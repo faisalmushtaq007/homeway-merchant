@@ -162,6 +162,34 @@ class AppUserEntity extends INetworkModel<AppUserEntity> with AppEquatable {
     );
   }
 
+  void updateEntity(AppUserEntity saveUserEntity){
+    serviceLocator<AppUserEntity>()
+      ..userID = saveUserEntity.userID
+      ..phoneNumber = saveUserEntity.phoneNumber
+      ..businessProfile = saveUserEntity.businessProfile
+      ..stores = saveUserEntity.stores
+      ..token = saveUserEntity.token
+      ..tokenCreationDateTime = saveUserEntity.tokenCreationDateTime
+      ..hasUserAuthenticated = saveUserEntity.hasUserAuthenticated
+      ..businessTypeEntity = saveUserEntity.businessTypeEntity
+      ..currentProfileStatus = saveUserEntity.currentProfileStatus
+      ..menus = saveUserEntity.menus
+      ..drivers = saveUserEntity.drivers
+      ..addons = saveUserEntity.addons
+      ..ratingAndReviewEntity = saveUserEntity.ratingAndReviewEntity
+      ..hasCurrentUser = saveUserEntity.hasCurrentUser
+      ..country_dial_code = saveUserEntity.country_dial_code
+      ..isoCode = saveUserEntity.isoCode
+      ..user_type = saveUserEntity.user_type
+      ..access_token = saveUserEntity.access_token
+      ..currentUserStage = saveUserEntity.currentUserStage
+      ..uid = saveUserEntity.uid
+      ..paymentBankEntity = saveUserEntity.paymentBankEntity
+      ..hasMultiplePaymentBanks = saveUserEntity.hasMultiplePaymentBanks
+      ..paymentBankEntities = saveUserEntity.paymentBankEntities
+      ..phoneNumberWithoutDialCode = saveUserEntity.phoneNumberWithoutDialCode;
+  }
+
   Map<String, dynamic> toMap() {
     return {
       'userID': this.userID??-1,
