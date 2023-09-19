@@ -180,23 +180,23 @@ class BusinessDocumentEvent with _$BusinessDocumentEvent {
   }) = SaveCropDocument;
 
   factory BusinessDocumentEvent.saveBusinessDocument({
-    @Default([]) List<BusinessDocumentUploadedEntity> allBusinessDocuments,
+    @Default([]) List<NewBusinessDocumentEntity> allBusinessDocuments,
     @Default(BusinessDocumentStatus.none) BusinessDocumentStatus businessDocumentStatus,
-    required BusinessDocumentUploadedEntity businessDocumentUploadedEntity,
+    NewBusinessDocumentEntity? businessDocumentUploadedEntity,
     @Default(false) bool hasEditBusinessDocument,
     @Default(-1) int currentIndex,
   }) = SaveBusinessDocument;
 
   factory BusinessDocumentEvent.getBusinessDocument({
-    @Default([]) List<BusinessDocumentUploadedEntity> allBusinessDocuments,
+    @Default([]) List<NewBusinessDocumentEntity> allBusinessDocuments,
     @Default(BusinessDocumentStatus.none) BusinessDocumentStatus businessDocumentStatus,
     @Default(-1) int documentID,
-    BusinessDocumentUploadedEntity? businessDocumentUploadedEntity,
+    NewBusinessDocumentEntity? businessDocumentUploadedEntity,
     @Default(-1) int currentIndex,
   }) = GetBusinessDocument;
 
   factory BusinessDocumentEvent.getAllBusinessDocument({
-    @Default([]) List<BusinessDocumentUploadedEntity> allBusinessDocuments,
+    @Default([]) List<NewBusinessDocumentEntity> allBusinessDocuments,
     @Default(BusinessDocumentStatus.none) BusinessDocumentStatus businessDocumentStatus,
     @Default(1) int pageKey,
     @Default(10) int pageSize,
@@ -204,17 +204,17 @@ class BusinessDocumentEvent with _$BusinessDocumentEvent {
   }) = GetAllBusinessDocument;
 
   factory BusinessDocumentEvent.deleteBusinessDocument({
-    @Default([]) List<BusinessDocumentUploadedEntity> allBusinessDocuments,
+    @Default([]) List<NewBusinessDocumentEntity> allBusinessDocuments,
     @Default(BusinessDocumentStatus.none) BusinessDocumentStatus businessDocumentStatus,
     @Default(-1) int documentID,
-    BusinessDocumentUploadedEntity? businessDocumentUploadedEntity,
+    NewBusinessDocumentEntity? businessDocumentUploadedEntity,
     @Default(-1) int currentIndex,
   }) = DeleteBusinessDocument;
 
   factory BusinessDocumentEvent.deleteAllBusinessDocument({
-    @Default([]) List<BusinessDocumentUploadedEntity> allBusinessDocuments,
+    @Default([]) List<NewBusinessDocumentEntity> allBusinessDocuments,
     @Default(BusinessDocumentStatus.none) BusinessDocumentStatus businessDocumentStatus,
     @Default(-1) int documentID,
-    BusinessDocumentUploadedEntity? businessDocumentUploadedEntity,
+    NewBusinessDocumentEntity? businessDocumentUploadedEntity,
   }) = DeleteAllBusinessDocument;
 }

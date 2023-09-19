@@ -24,14 +24,21 @@ class NewBusinessDocumentInitial extends NewBusinessDocumentState {
 
 class UploadNewBusinessDocumentState extends NewBusinessDocumentState {
   const UploadNewBusinessDocumentState({
-    required this.businessDocumentUploadedEntity,
+    this.businessDocumentUploadedEntity,
     this.status = UploadBusinessDocumentStatus.initial,
     this.hasNewUploadBusinessDocument = false,
+    this.allBusinessDocuments=const [],
+    this.hasEditBusinessDocument=false,
+    this.currentIndex=-1,this.businessDocumentStatus=BusinessDocumentStatus.none,
   });
 
   final UploadBusinessDocumentStatus status;
   final bool hasNewUploadBusinessDocument;
-  final NewBusinessDocumentEntity businessDocumentUploadedEntity;
+  final NewBusinessDocumentEntity? businessDocumentUploadedEntity;
+  final List<NewBusinessDocumentEntity> allBusinessDocuments;
+  final BusinessDocumentStatus businessDocumentStatus;
+  final bool hasEditBusinessDocument;
+  final int currentIndex;
 
   @override
   List<Object?> get props => [hasNewUploadBusinessDocument, status, businessDocumentUploadedEntity];
@@ -220,3 +227,4 @@ class NewBusinessDocumentEmptyState extends NewBusinessDocumentState {
         startTimeStamp,
       ];
 }
+

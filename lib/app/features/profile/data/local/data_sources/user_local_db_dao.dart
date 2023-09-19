@@ -330,7 +330,7 @@ class UserLocalDbRepository<User extends AppUserEntity> implements BaseUserLocal
           // Watch for deleted item
           var keysToDelete = (await _user.findKeys(transaction)).toList();
           for (var order in convertOrderToMapObject) {
-            var snapshot = map[order['userID'] as int];
+            var snapshot = map[order['userID']];
             if (snapshot != null) {
               // The record current key
               var key = snapshot.key;
@@ -342,10 +342,12 @@ class UserLocalDbRepository<User extends AppUserEntity> implements BaseUserLocal
                 continue;
               } else {
                 // Update product
+                appLog.d('Update User ${order['userID']}');
                 await _user.record(key).put(transaction, order);
               }
             } else {
               // Add missing product
+              appLog.d('Add User ${order['userID']}');
               await _user.add(transaction, order);
             }
           }
@@ -357,7 +359,7 @@ class UserLocalDbRepository<User extends AppUserEntity> implements BaseUserLocal
         if (result.isRight()) {
           return result.right.toList();
         } else {
-          return <BusinessProfileEntity>[];
+          return <AppUserEntity>[];
         }
       });
     });

@@ -97,6 +97,8 @@ import 'package:sembast/timestamp.dart';
 import 'package:uuid/uuid.dart';
 import 'package:path/path.dart' as path;
 import 'dart:ui' as ui;
+
+import 'presentation/manager/document/bloc/new_business_document_bloc.dart';
 //Data
 part 'package:homemakers_merchant/app/features/profile/data/local/data_sources/business_type_list_data.dart';
 part 'package:homemakers_merchant/app/features/profile/data/local/data_sources/local_usermodel_service.dart';

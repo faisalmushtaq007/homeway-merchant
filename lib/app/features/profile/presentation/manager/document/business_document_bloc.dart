@@ -72,10 +72,12 @@ class BusinessDocumentBloc extends Bloc<BusinessDocumentEvent, BusinessDocumentS
                 String? assetNetworkUrl = result[7] as String?;
                 final int timeStamp = DateTime.now().millisecondsSinceEpoch;
                 var tempName = '${item.documentType.documentTypeName}_$timeStamp';
-                var fileNameWithExtension = path.basenameWithoutExtension(xCroppedDocumentFile?.path ?? croppedDocumentFile?.path ?? tempName);
-                String fileExtension = path.extension(xCroppedDocumentFile?.path ?? croppedDocumentFile?.path ?? '.png');
-                final double height=0.0;
-                final double width=0.0;
+                var fileNameWithExtension =
+                    path.basenameWithoutExtension(xCroppedDocumentFile?.path ?? croppedDocumentFile?.path ?? tempName);
+                String fileExtension =
+                    path.extension(xCroppedDocumentFile?.path ?? croppedDocumentFile?.path ?? '.png');
+                final double height = 0.0;
+                final double width = 0.0;
 
                 if (item.documentFrontAssets == null) {
                   item.documentFrontAssets = BusinessDocumentAssetsEntity(
@@ -247,8 +249,8 @@ class BusinessDocumentBloc extends Bloc<BusinessDocumentEvent, BusinessDocumentS
       final XFile? pickedFile = await _picker.pickImage(
         source: source,
       );
-      double height=0.0;
-      double width=0.0;
+      double height = 0.0;
+      double width = 0.0;
       if (pickedFile != null) {
         response = File(pickedFile.path);
         originalBytes = await pickedFile.readAsBytes();
@@ -259,15 +261,15 @@ class BusinessDocumentBloc extends Bloc<BusinessDocumentEvent, BusinessDocumentS
         var decodedImage = await decodeImageFromList(originalBytes);
         //var encryptedBase64EncodedString = await File(path).readAsString(encoding:utf8);
         //var decoded = base64Decode(encryptedBase64EncodedString);
-        height=decodedImage.height.toDouble();
-        width=decodedImage.width.toDouble();
+        height = decodedImage.height.toDouble();
+        width = decodedImage.width.toDouble();
         metaData['mimeType'] = mimeType;
         metaData['length'] = length;
         metaData['name'] = name;
         metaData['path'] = path;
         metaData['bytes'] = originalBytes;
-        metaData['height']=height;
-        metaData['width']=width;
+        metaData['height'] = height;
+        metaData['width'] = width;
       }
       if (event.documentPickerSource == DocumentPickerSource.camera) {
         emit(
@@ -391,12 +393,15 @@ class BusinessDocumentBloc extends Bloc<BusinessDocumentEvent, BusinessDocumentS
               Permission.accessMediaLocation,
             ].request();
           }
-          double height=0.0;
-          double width=0.0;
-          final Uint8List originalBytes = await event.xfile?.readAsBytes()??event.file?.readAsBytesSync()??event.bytes as Uint8List? ??Uint8List.fromList([0]);
+          double height = 0.0;
+          double width = 0.0;
+          final Uint8List originalBytes = await event.xfile?.readAsBytes() ??
+              event.file?.readAsBytesSync() ??
+              event.bytes as Uint8List? ??
+              Uint8List.fromList([0]);
           var decodedImage = await decodeImageFromList(originalBytes);
-          height=decodedImage.height.toDouble();
-          width=decodedImage.width.toDouble();
+          height = decodedImage.height.toDouble();
+          width = decodedImage.width.toDouble();
 
           emit(SaveCropDocumentFailedState(
             documentType: event.documentType,
@@ -423,7 +428,9 @@ class BusinessDocumentBloc extends Bloc<BusinessDocumentEvent, BusinessDocumentS
           file: event.file!,
           ext: path.extension(event.xfile!.path ?? event.file!.path).replaceAll('.', ''),
           customMimeType: 'image/jpg',
-          mimeType: nameOfExtension.contains('jpg') ? fileSaver.MimeType.custom : fileSaver.MimeType.values.byName(nameOfExtension),
+          mimeType: nameOfExtension.contains('jpg')
+              ? fileSaver.MimeType.custom
+              : fileSaver.MimeType.values.byName(nameOfExtension),
         );
         if (filePath.isEmptyOrNull) {
           await Future.delayed(
@@ -437,12 +444,15 @@ class BusinessDocumentBloc extends Bloc<BusinessDocumentEvent, BusinessDocumentS
             const Duration(milliseconds: 500),
             () {},
           );
-          double height=0.0;
-          double width=0.0;
-          final Uint8List originalBytes = await event.xfile?.readAsBytes()??event.file?.readAsBytesSync()??event.bytes as Uint8List? ??Uint8List.fromList([0]);
+          double height = 0.0;
+          double width = 0.0;
+          final Uint8List originalBytes = await event.xfile?.readAsBytes() ??
+              event.file?.readAsBytesSync() ??
+              event.bytes as Uint8List? ??
+              Uint8List.fromList([0]);
           var decodedImage = await decodeImageFromList(originalBytes);
-          height=decodedImage.height.toDouble();
-          width=decodedImage.width.toDouble();
+          height = decodedImage.height.toDouble();
+          width = decodedImage.width.toDouble();
           emit(SaveCropDocumentFailedState(
             documentType: event.documentType,
             reason: 'Your selected document is not saved in your device, but uploaded into our server',
@@ -469,12 +479,15 @@ class BusinessDocumentBloc extends Bloc<BusinessDocumentEvent, BusinessDocumentS
           );
           //await processImage(InputImage.fromFile(File(filePath)));
           //await Future.delayed(const Duration(milliseconds: 500));
-          double height=0.0;
-          double width=0.0;
-          final Uint8List originalBytes= await event.xfile?.readAsBytes()??event.file?.readAsBytesSync()??event.bytes as Uint8List? ??Uint8List.fromList([0]);
+          double height = 0.0;
+          double width = 0.0;
+          final Uint8List originalBytes = await event.xfile?.readAsBytes() ??
+              event.file?.readAsBytesSync() ??
+              event.bytes as Uint8List? ??
+              Uint8List.fromList([0]);
           var decodedImage = await decodeImageFromList(originalBytes);
-          height=decodedImage.height.toDouble();
-          width=decodedImage.width.toDouble();
+          height = decodedImage.height.toDouble();
+          width = decodedImage.width.toDouble();
           emit(
             SaveCropDocumentSuccessState(
               documentType: event.documentType,
@@ -484,7 +497,8 @@ class BusinessDocumentBloc extends Bloc<BusinessDocumentEvent, BusinessDocumentS
               isCropping: event.isCropping,
               xfile: event.xfile,
               //imageInfo: imageInfo,
-              message: 'Your selected document is saved in this path: $filePath and successfully uploaded into our server',
+              message:
+                  'Your selected document is saved in this path: $filePath and successfully uploaded into our server',
               newFilePath: filePath,
               image: event.image,
               byteData: event.byteData,
@@ -509,34 +523,30 @@ class BusinessDocumentBloc extends Bloc<BusinessDocumentEvent, BusinessDocumentS
   Future<void> _assetsRemove(AssetsRemove value, Emitter<BusinessDocumentState> emit) async {}
 
   Future<void> _saveBusinessDocument(SaveBusinessDocument event, Emitter<BusinessDocumentState> emit) async {
-    /*try {
-      DataSourceState<BusinessDocumentUploadedEntity> result;
-      if (event.hasEditBusinessDocument) {
-        result = await serviceLocator<EditDocumentUseCase>()(id: event.businessDocumentUploadedEntity.documentID, input: event.businessDocumentUploadedEntity);
-      } else {
-        result = await serviceLocator<SaveDocumentUseCase>()(event.businessDocumentUploadedEntity);
-      }
-      await result.when(
+    try {
+      final DataSourceState<List<NewBusinessDocumentEntity>> results =
+          await serviceLocator<SaveAllDocumentUseCase>()(event.allBusinessDocuments.toList());
+      await results.when(
         remote: (data, meta) async {
-          appLog.d('Business Document bloc save remote ${data?.toMap()}');
-          if (data != null) {
-            //await updateUserProfile(data);
+          appLog.d('Business Document bloc save remote ${data?.length}');
+          if (data.isNotNullOrEmpty) {
+            await updateUserProfile(data!.toList());
           }
           emit(
             SaveBusinessDocumentState(
-              businessDocumentUploadedEntity: data ?? event.businessDocumentUploadedEntity,
+              allBusinessDocuments: data ?? event.allBusinessDocuments.toList(),
               hasEditBusinessDocument: event.hasEditBusinessDocument,
             ),
           );
         },
         localDb: (data, meta) async {
-          appLog.d('Business Document bloc save local ${data?.toMap()}');
-          if (data != null) {
-            //await updateUserProfile(data);
+          appLog.d('Business Document bloc save local ${data?.length}');
+          if (data.isNotNullOrEmpty) {
+            await updateUserProfile(data!.toList());
           }
           emit(
             SaveBusinessDocumentState(
-              businessDocumentUploadedEntity: data ?? event.businessDocumentUploadedEntity,
+              allBusinessDocuments: data ?? event.allBusinessDocuments.toList(),
               hasEditBusinessDocument: event.hasEditBusinessDocument,
             ),
           );
@@ -553,6 +563,7 @@ class BusinessDocumentBloc extends Bloc<BusinessDocumentEvent, BusinessDocumentS
           );
         },
       );
+
       return;
     } catch (e, s) {
       appLog.e('Business Document bloc save exception $e');
@@ -564,44 +575,52 @@ class BusinessDocumentBloc extends Bloc<BusinessDocumentEvent, BusinessDocumentS
           businessDocumentStatus: BusinessDocumentStatus.saveBusinessDocument,
         ),
       );
-    }*/
+    }
   }
 
-  Future<void> updateUserProfile(NewBusinessDocumentEntity newBusinessDocumentEntity) async {
+  Future<void> updateUserProfile(List<NewBusinessDocumentEntity> allBusinessDocuments) async {
     final getCurrentUserResult = await serviceLocator<GetAllAppUserPaginationUseCase>()();
-    await getCurrentUserResult.when(remote: (data, meta) {
-
-    }, localDb: (data, meta) async {
-      if(data.isNotNullOrEmpty){
-        appLog.d('Document GetAllAppUserPaginationUseCase is not null');
-        final AppUserEntity cacheAppUserEntity = data!.first.copyWith(
-          userID: data.first.userID,
-          currentUserStage: 4,
-        );
-        final editUserResult = await serviceLocator<SaveAllAppUserUseCase>()(
-          [cacheAppUserEntity],
-        );
-        editUserResult.when(
-          remote: (data, meta) {
-            appLog.d('Update current user with business profile save remote ${data?.first.toMap()}');
-          },
-          localDb: (data, meta) {
-            appLog.d('Update current user with business profile save local ${data?.first.toMap()}');
-            if (data != null) {
-              var cachedAppUserEntity=serviceLocator<AppUserEntity>()..currentUserStage= 1;
-              serviceLocator<UserModelStorageController>().setUserModel(cachedAppUserEntity);
-            }
-          },
-          error: (dataSourceFailure, reason, error, networkException, stackTrace, exception, extra) {
-            appLog.d('Update current user with business profile exception $error');
-          },
-        );
-      }else{
-        appLog.d('Document GetAllAppUserPaginationUseCase is null');
-      }
-    }, error: (dataSourceFailure, reason, error, networkException, stackTrace, exception, extra) {
-      appLog.d('Document updateUserProfile $reason ');
-    },);
+    await getCurrentUserResult.when(
+      remote: (data, meta) {},
+      localDb: (data, meta) async {
+        if (data.isNotNullOrEmpty) {
+          appLog.d('Document GetAllAppUserPaginationUseCase is not null');
+          data!.forEach((element) {
+            appLog.d('${element.toMap()}');
+          });
+          final AppUserEntity cacheAppUserEntity = data.last.copyWith(
+            userID: data.last.userID,
+            businessProfile: data.last.businessProfile?.copyWith(allBusinessDocuments: allBusinessDocuments),
+            currentUserStage: 4,
+          );
+          final editUserResult = await serviceLocator<SaveAllAppUserUseCase>()(
+            [cacheAppUserEntity],
+          );
+          editUserResult.when(
+            remote: (data, meta) {
+              appLog.d('Update current user with business profile save remote ${data?.last.toMap()}');
+            },
+            localDb: (data, meta) {
+              appLog.d('Update current user with business profile save local ${data?.last.toMap()}');
+              if (data != null) {
+                var cachedAppUserEntity = serviceLocator<AppUserEntity>()
+                  ..currentUserStage = 4
+                  ..businessProfile = data.last.businessProfile?.copyWith(allBusinessDocuments: allBusinessDocuments);
+                serviceLocator<UserModelStorageController>().setUserModel(cachedAppUserEntity);
+              }
+            },
+            error: (dataSourceFailure, reason, error, networkException, stackTrace, exception, extra) {
+              appLog.d('Update current user with business profile exception $error');
+            },
+          );
+        } else {
+          appLog.d('Document GetAllAppUserPaginationUseCase is null');
+        }
+      },
+      error: (dataSourceFailure, reason, error, networkException, stackTrace, exception, extra) {
+        appLog.d('Document updateUserProfile $reason ');
+      },
+    );
     return;
   }
 

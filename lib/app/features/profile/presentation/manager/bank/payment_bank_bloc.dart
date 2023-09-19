@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
+import 'package:equatable/equatable.dart';
 import 'package:homemakers_merchant/app/features/authentication/index.dart';
 import 'package:homemakers_merchant/app/features/profile/index.dart';
 import 'package:homemakers_merchant/bootup/injection_container.dart';
@@ -43,6 +44,8 @@ class PaymentBankBloc extends Bloc<PaymentBankEvent, PaymentBankState> {
               hasEditPaymentBank: event.hasEditPaymentBank,
             ),
           );
+          await Future.delayed(const Duration(milliseconds: 500), () {});
+          emit(NavigateToNextPageState(appUserEntity: serviceLocator<AppUserEntity>()));
         },
         localDb: (data, meta) async {
           appLog.d('Payment Bank bloc save local ${data?.toMap()}');
@@ -56,6 +59,8 @@ class PaymentBankBloc extends Bloc<PaymentBankEvent, PaymentBankState> {
               hasEditPaymentBank: event.hasEditPaymentBank,
             ),
           );
+          await Future.delayed(const Duration(milliseconds: 500), () {});
+          emit(NavigateToNextPageState(appUserEntity: serviceLocator<AppUserEntity>()));
         },
         error: (dataSourceFailure, reason, error, networkException, stackTrace, exception, extra) {
           appLog.d('Payment Bank bloc save error $reason');
@@ -90,8 +95,9 @@ class PaymentBankBloc extends Bloc<PaymentBankEvent, PaymentBankState> {
     }, localDb: (data, meta) async {
       if(data.isNotNullOrEmpty){
         appLog.d('Bank GetAllAppUserPaginationUseCase is not null');
-        final AppUserEntity cacheAppUserEntity = data!.first.copyWith(
-          userID: data.first.userID,
+        data!.forEach((element) {appLog.d('${element.toMap()}'); });
+        final AppUserEntity cacheAppUserEntity = data.last.copyWith(
+          userID: data.last.userID,
           paymentBankEntity: paymentBankData,
           hasMultiplePaymentBanks: false,
           paymentBankEntities: <PaymentBankEntity>[],
@@ -102,12 +108,12 @@ class PaymentBankBloc extends Bloc<PaymentBankEvent, PaymentBankState> {
         );
         editUserResult.when(
           remote: (data, meta) {
-            appLog.d('Update current user with business profile save remote ${data?.first.toMap()}');
+            appLog.d('Update current user with business profile save remote ${data?.last.toMap()}');
           },
           localDb: (data, meta) {
-            appLog.d('Update current user with business profile save local ${data?.first.toMap()}');
+            appLog.d('Update current user with business profile save local ${data?.last.toMap()}');
             if (data != null) {
-              var cachedAppUserEntity=serviceLocator<AppUserEntity>()..currentUserStage= 2..paymentBankEntity= paymentBankData..hasMultiplePaymentBanks= false..paymentBankEntities= <PaymentBankEntity>[];
+              var cachedAppUserEntity=serviceLocator<AppUserEntity>()..currentUserStage= 3..paymentBankEntity= paymentBankData..hasMultiplePaymentBanks= false..paymentBankEntities= <PaymentBankEntity>[];
               serviceLocator<UserModelStorageController>().setUserModel(cachedAppUserEntity);
             }
           },

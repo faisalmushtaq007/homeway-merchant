@@ -291,7 +291,7 @@ class UserBusinessDocumentLocalDbRepository<T extends NewBusinessDocumentEntity>
           // Watch for deleted item
           var keysToDelete = (await _businessDocument.findKeys(transaction)).toList();
           for (var order in convertOrderToMapObject) {
-            var snapshot = map[order['documentID'] as int];
+            var snapshot = map[order['documentID']];
             if (snapshot != null) {
               // The record current key
               var key = snapshot.key;

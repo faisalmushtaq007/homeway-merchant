@@ -93,8 +93,17 @@ class _NewBusinessDocumentPageController extends State<NewBusinessDocumentPage> 
   Future<void> onUploadPressed() async {
     if (_newUploadDocumentFormKey.currentState!.validate()) {
       _newUploadDocumentFormKey.currentState!.save();
-      if (allBusinessDocuments.first.documentType == DocumentType.nationalID && !allBusinessDocuments.first.documentIdNumber.isEmptyOrNull) {
-        context.pushReplacement(Routes.WELCOME_PAGE);
+      if (allBusinessDocuments.first.documentType == DocumentType.nationalID &&
+          !allBusinessDocuments.first.documentIdNumber.isEmptyOrNull) {
+        context.read<BusinessDocumentBloc>().add(
+              SaveBusinessDocument(
+                currentIndex: widget.currentIndex,
+                hasEditBusinessDocument: widget.hasEditBusinessDocument,
+                businessDocumentUploadedEntity: allBusinessDocuments.first,
+                allBusinessDocuments: allBusinessDocuments.toList(),
+                businessDocumentStatus: BusinessDocumentStatus.saveBusinessDocument,
+              ),
+            );
         return;
       }
       return;
@@ -117,7 +126,9 @@ class _NewBusinessDocumentPageController extends State<NewBusinessDocumentPage> 
         mimeType: captureImageEntity.mimeType,
         networkAssetPath: captureImageEntity.networkUrl,
         documentIdNumber: textEditingControllers[0].value.text.trim(),
-        localAssetPath: captureImageEntity.croppedFilePath.isEmptyOrNull ? captureImageEntity.originalFilePath : captureImageEntity.croppedFilePath,
+        localAssetPath: captureImageEntity.croppedFilePath.isEmptyOrNull
+            ? captureImageEntity.originalFilePath
+            : captureImageEntity.croppedFilePath,
         fileExtension: captureImageEntity.fileExtension,
         fileName: captureImageEntity.fileName,
         fileNameWithExtension: captureImageEntity.fileNameWithExtension,
@@ -137,7 +148,9 @@ class _NewBusinessDocumentPageController extends State<NewBusinessDocumentPage> 
         mimeType: captureImageEntity.mimeType,
         networkAssetPath: captureImageEntity.networkUrl,
         documentIdNumber: '',
-        localAssetPath: captureImageEntity.croppedFilePath.isEmptyOrNull ? captureImageEntity.originalFilePath : captureImageEntity.croppedFilePath,
+        localAssetPath: captureImageEntity.croppedFilePath.isEmptyOrNull
+            ? captureImageEntity.originalFilePath
+            : captureImageEntity.croppedFilePath,
         fileExtension: captureImageEntity.fileExtension,
         fileName: captureImageEntity.fileName,
         fileNameWithExtension: captureImageEntity.fileNameWithExtension,
@@ -148,7 +161,20 @@ class _NewBusinessDocumentPageController extends State<NewBusinessDocumentPage> 
   }
 
   @override
-  Widget build(BuildContext context) => _NewBusinessDocumentPageView(this);
+  Widget build(BuildContext context) => BlocConsumer<NewBusinessDocumentBloc, NewBusinessDocumentState>(
+        bloc: context.read<NewBusinessDocumentBloc>(),
+        key: const Key('new-business-document-bloc-consumer-widget'),
+        listenWhen: (previous, current) => previous != current,
+        buildWhen: (previous, current) => previous != current,
+        listener: (context, businessDocumentState) {
+          if (businessDocumentState is UploadNewBusinessDocumentState) {
+            return context.pushReplacement(Routes.WELCOME_PAGE);
+          }
+        },
+        builder: (context, state) {
+          return _NewBusinessDocumentPageView(this);
+        },
+      );
 }
 
 class _NewBusinessDocumentPageView extends WidgetView<NewBusinessDocumentPage, _NewBusinessDocumentPageController> {
@@ -306,7 +332,8 @@ class _NewBusinessDocumentPageView extends WidgetView<NewBusinessDocumentPage, _
                                 keyboardType: TextInputType.text,
                                 decoration: InputDecoration(
                                   labelText: '${state.currentSelectedIdentityType?.title ?? 'ID Card'} number',
-                                  hintText: 'Enter your ${state.currentSelectedIdentityType?.title ?? 'ID Card'} number',
+                                  hintText:
+                                      'Enter your ${state.currentSelectedIdentityType?.title ?? 'ID Card'} number',
                                   border: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(10),
                                   ),
@@ -325,8 +352,11 @@ class _NewBusinessDocumentPageView extends WidgetView<NewBusinessDocumentPage, _
                                 documentPlaceHolderImage: 'assets/svg/id_card.svg',
                                 animate: false,
                                 currentIndex: 0,
-                                businessDocumentUploadedEntity: (widget.businessDocumentEntities.isNotNullOrEmpty) ? widget.businessDocumentEntities[0] : null,
-                                selectedImageMetaData: (Map<String, dynamic> metaData, CaptureImageEntity captureImageEntity) {
+                                businessDocumentUploadedEntity: (widget.businessDocumentEntities.isNotNullOrEmpty)
+                                    ? widget.businessDocumentEntities[0]
+                                    : null,
+                                selectedImageMetaData:
+                                    (Map<String, dynamic> metaData, CaptureImageEntity captureImageEntity) {
                                   state.updateIdentityCard(metaData, captureImageEntity);
                                   return;
                                 },
@@ -446,11 +476,13 @@ class _NewBusinessDocumentPageView extends WidgetView<NewBusinessDocumentPage, _
                                 key: const Key('upload-document-trade-license-widget'),
                                 documentPlaceHolderImage: 'assets/svg/certificate_1.svg',
                                 currentIndex: 1,
-                                businessDocumentUploadedEntity: (widget.businessDocumentEntities.isNotNullOrEmpty && widget.businessDocumentEntities.length >= 2)
+                                businessDocumentUploadedEntity: (widget.businessDocumentEntities.isNotNullOrEmpty &&
+                                        widget.businessDocumentEntities.length >= 2)
                                     ? widget.businessDocumentEntities[1]
                                     : null,
                                 animate: false,
-                                selectedImageMetaData: (Map<String, dynamic> metaData, CaptureImageEntity captureImageEntity) {
+                                selectedImageMetaData:
+                                    (Map<String, dynamic> metaData, CaptureImageEntity captureImageEntity) {
                                   state.updateTradeLicenseCard(metaData, captureImageEntity);
                                   return;
                                 },
@@ -571,7 +603,7 @@ class _NewBusinessDocumentPageView extends WidgetView<NewBusinessDocumentPage, _
                                   Expanded(
                                     flex: 2,
                                     child: ElevatedButton(
-                                      onPressed: (state.textEditingControllers[0].value.text.trim().isNotEmpty &&
+                                      onPressed: (!state.textEditingControllers[0].value.text.trim().isEmptyOrNull &&
                                               (!state.allBusinessDocuments.first.localAssetPath.isEmptyOrNull ||
                                                   state.allBusinessDocuments.first.networkAssetPath.isEmptyOrNull))
                                           ? state.onUploadPressed

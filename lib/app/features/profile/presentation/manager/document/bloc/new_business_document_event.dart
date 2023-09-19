@@ -6,11 +6,18 @@ abstract class NewBusinessDocumentEvent extends Equatable {
 
 class UploadNewBusinessDocument extends NewBusinessDocumentEvent {
   const UploadNewBusinessDocument({
-    required this.businessDocumentUploadedEntity,
+    this.businessDocumentUploadedEntity,
     this.hasNewUploadBusinessDocument = false,
+    this.allBusinessDocuments=const [],
+    this.hasEditBusinessDocument=false,
+    this.currentIndex=-1,this.businessDocumentStatus=BusinessDocumentStatus.none,
   });
   final bool hasNewUploadBusinessDocument;
-  final NewBusinessDocumentEntity businessDocumentUploadedEntity;
+  final NewBusinessDocumentEntity? businessDocumentUploadedEntity;
+  final List<NewBusinessDocumentEntity> allBusinessDocuments;
+  final BusinessDocumentStatus businessDocumentStatus;
+  final bool hasEditBusinessDocument;
+  final int currentIndex;
 
   @override
   List<Object?> get props => [businessDocumentUploadedEntity, hasNewUploadBusinessDocument];

@@ -315,7 +315,7 @@ class UserBusinessProfileLocalDbRepository<T extends BusinessProfileEntity> impl
           // Watch for deleted item
           var keysToDelete = (await _businessProfile.findKeys(transaction)).toList();
           for (var order in convertOrderToMapObject) {
-            var snapshot = map[order['businessProfileID'] as int];
+            var snapshot = map[order['businessProfileID']];
             if (snapshot != null) {
               // The record current key
               var key = snapshot.key;

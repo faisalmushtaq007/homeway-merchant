@@ -1,11 +1,11 @@
 part of 'business_profile_bloc.dart';
 
-abstract class BusinessProfileEvent with AppEquatable {
-  BusinessProfileEvent();
+abstract class BusinessProfileEvent extends Equatable {
+  const BusinessProfileEvent();
 }
 
 class SaveBusinessType extends BusinessProfileEvent {
-  SaveBusinessType({
+  const SaveBusinessType({
     required this.businessTypeEntity,
     this.hasEditBusinessType = false,
     this.businessProfileEntity,
@@ -16,27 +16,21 @@ class SaveBusinessType extends BusinessProfileEvent {
   final bool hasEditBusinessType;
 
   @override
-  bool get cacheHash => true;
-
-  @override
-  List<Object?> get hashParameters => [businessTypeEntity, hasEditBusinessType, businessProfileEntity];
+  List<Object?> get props => [businessTypeEntity, hasEditBusinessType, businessProfileEntity];
 }
 
 class GetBusinessType extends BusinessProfileEvent {
-  GetBusinessType({required this.businessTypeEntity, this.hasEditBusinessType = false});
+  const GetBusinessType({required this.businessTypeEntity, this.hasEditBusinessType = false});
 
   final BusinessTypeEntity businessTypeEntity;
   final bool hasEditBusinessType;
 
   @override
-  bool get cacheHash => true;
-
-  @override
-  List<Object?> get hashParameters => [businessTypeEntity, hasEditBusinessType];
+  List<Object?> get props => [businessTypeEntity, hasEditBusinessType];
 }
 
 class SaveBusinessProfile extends BusinessProfileEvent {
-  SaveBusinessProfile({
+  const SaveBusinessProfile({
     required this.businessProfileEntity,
     this.hasEditBusinessProfile = false,
     this.currentIndex = -1,
@@ -49,11 +43,7 @@ class SaveBusinessProfile extends BusinessProfileEvent {
   final bool hasSaveBusinessType;
 
   @override
-  bool get cacheHash => true;
-
-  @override
-  List<Object?> get hashParameters =>
-      [
+  List<Object?> get props => [
         businessProfileEntity,
         hasEditBusinessProfile,
         currentIndex,
@@ -62,7 +52,7 @@ class SaveBusinessProfile extends BusinessProfileEvent {
 }
 
 class DeleteBusinessProfile extends BusinessProfileEvent {
-  DeleteBusinessProfile({
+  const DeleteBusinessProfile({
     required this.businessProfileID,
     this.businessProfileEntity,
     this.index = -1,
@@ -75,11 +65,7 @@ class DeleteBusinessProfile extends BusinessProfileEvent {
   final List<BusinessProfileEntity> businessProfileEntities;
 
   @override
-  bool get cacheHash => true;
-
-  @override
-  List<Object?> get hashParameters =>
-      [
+  List<Object?> get props => [
         businessProfileEntity,
         businessProfileID,
         index,
@@ -88,7 +74,7 @@ class DeleteBusinessProfile extends BusinessProfileEvent {
 }
 
 class GetBusinessProfile extends BusinessProfileEvent {
-  GetBusinessProfile({
+  const GetBusinessProfile({
     required this.businessProfileID,
     this.businessProfileEntity,
     this.index = -1,
@@ -99,27 +85,21 @@ class GetBusinessProfile extends BusinessProfileEvent {
   final int index;
 
   @override
-  bool get cacheHash => true;
-
-  @override
-  List<Object?> get hashParameters => [businessProfileEntity, businessProfileID, index];
+  List<Object?> get props => [businessProfileEntity, businessProfileID, index];
 }
 
 class DeleteAllBusinessProfile extends BusinessProfileEvent {
-  DeleteAllBusinessProfile({this.businessProfileID = -1, this.businessProfileEntity});
+  const DeleteAllBusinessProfile({this.businessProfileID = -1, this.businessProfileEntity});
 
   final BusinessProfileEntity? businessProfileEntity;
   final int businessProfileID;
 
   @override
-  bool get cacheHash => true;
-
-  @override
-  List<Object?> get hashParameters => [businessProfileEntity, businessProfileID];
+  List<Object?> get props => [businessProfileEntity, businessProfileID];
 }
 
 class GetAllBusinessProfile extends BusinessProfileEvent {
-  GetAllBusinessProfile({
+  const GetAllBusinessProfile({
     this.businessProfileID = -1,
     this.businessProfileEntity,
     this.searchItem = '',
@@ -135,11 +115,7 @@ class GetAllBusinessProfile extends BusinessProfileEvent {
   final String searchItem;
 
   @override
-  bool get cacheHash => true;
-
-  @override
-  List<Object?> get hashParameters =>
-      [
+  List<Object?> get props => [
         businessProfileEntity,
         businessProfileID,
         pageKey,
@@ -149,20 +125,17 @@ class GetAllBusinessProfile extends BusinessProfileEvent {
 }
 
 class NavigateToAddressPage extends BusinessProfileEvent {
-  NavigateToAddressPage({this.businessProfileEntity, this.businessTypeEntity});
+  const NavigateToAddressPage({this.businessProfileEntity, this.businessTypeEntity});
 
   final BusinessProfileEntity? businessProfileEntity;
   final BusinessTypeEntity? businessTypeEntity;
 
   @override
-  bool get cacheHash => true;
-
-  @override
-  List<Object?> get hashParameters => [businessProfileEntity, businessTypeEntity];
+  List<Object?> get props => [businessProfileEntity, businessTypeEntity];
 }
 
 class GetCurrentUserProfile extends BusinessProfileEvent {
-  GetCurrentUserProfile({
+  const GetCurrentUserProfile({
     this.businessProfileID = 1,
     this.userID = -1,
     this.phoneNumberWithFormat = '',
@@ -177,9 +150,87 @@ class GetCurrentUserProfile extends BusinessProfileEvent {
   final String accessToken;
 
   @override
-  bool get cacheHash => true;
+  List<Object?> get props => [
+        businessProfileID,
+        userID,
+        accessToken,
+        phoneNumberWithFormat,
+        phoneNumberWithoutFormat,
+      ];
+}
+
+class GetAllBusinessProfilePagination extends BusinessProfileEvent {
+  const GetAllBusinessProfilePagination({
+    this.businessProfileID = -1,
+    this.businessProfileEntity,
+    this.searchItem = '',
+    this.pageSize = 10,
+    this.pageKey = 1,
+    this.endTime,
+    this.filtering = '',
+    this.sorting = '',
+    this.startTime,
+  });
+
+  final BusinessProfileEntity? businessProfileEntity;
+  final int businessProfileID;
+
+  final int pageKey;
+  final int pageSize;
+  final String searchItem;
+  final String? filtering;
+  final String? sorting;
+  final Timestamp? startTime;
+  final Timestamp? endTime;
 
   @override
-  List<Object?> get hashParameters =>
-      [businessProfileID, userID, accessToken, phoneNumberWithFormat, phoneNumberWithoutFormat,];
+  List<Object?> get props => [
+        businessProfileEntity,
+        businessProfileID,
+        pageKey,
+        pageSize,
+        searchItem,
+        endTime,
+        filtering,
+        sorting,
+        startTime,
+      ];
+}
+
+class GetAllAppUserProfilePagination extends BusinessProfileEvent {
+  const GetAllAppUserProfilePagination({
+    this.businessProfileID = -1,
+    this.appUserEntity,
+    this.searchItem = '',
+    this.pageSize = 10,
+    this.pageKey = 1,
+    this.endTime,
+    this.filtering = '',
+    this.sorting = '',
+    this.startTime,
+  });
+
+  final AppUserEntity? appUserEntity;
+  final int businessProfileID;
+
+  final int pageKey;
+  final int pageSize;
+  final String searchItem;
+  final String? filtering;
+  final String? sorting;
+  final Timestamp? startTime;
+  final Timestamp? endTime;
+
+  @override
+  List<Object?> get props => [
+    appUserEntity,
+    businessProfileID,
+    pageKey,
+    pageSize,
+    searchItem,
+    endTime,
+    filtering,
+    sorting,
+    startTime,
+  ];
 }

@@ -21,6 +21,7 @@ import 'package:homemakers_merchant/app/features/payment/presentation/manager/wa
 import 'package:homemakers_merchant/app/features/permission/presentation/bloc/permission_bloc.dart';
 import 'package:homemakers_merchant/app/features/profile/index.dart';
 import 'package:homemakers_merchant/app/features/profile/presentation/manager/bank/payment_bank_bloc.dart';
+import 'package:homemakers_merchant/app/features/profile/presentation/manager/document/bloc/new_business_document_bloc.dart';
 import 'package:homemakers_merchant/app/features/profile/presentation/manager/document/business_document_bloc.dart';
 import 'package:homemakers_merchant/app/features/profile/presentation/manager/profile/business_profile_bloc.dart';
 import 'package:homemakers_merchant/app/features/store/presentation/manager/store_bloc.dart';
@@ -149,6 +150,11 @@ class _AppState extends State<App> with GetItStateMixin {
           key: const Key('onprocess_order_bloc_provider'),
           create: (context) => serviceLocator(),
         ),
+        BlocProvider<NewBusinessDocumentBloc>(
+          key: const Key('newBusiness_document_bloc_provider'),
+          create: (context) => serviceLocator(),
+        ),
+
       ],
       child: MultiListenableBuilder(
         listenables: [

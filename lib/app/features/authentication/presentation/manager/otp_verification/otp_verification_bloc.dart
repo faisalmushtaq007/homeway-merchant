@@ -156,10 +156,10 @@ class OtpVerificationBloc extends Bloc<OtpVerificationEvent, OtpVerificationStat
 
               },
               localDb: (data, meta) async {
-                appLog.d('Save current user save local ${data?.first.toMap()}');
+                appLog.d('Save current user save local ${data?.last.toMap()}');
                 if (data != null) {
-                  saveUserEntity=data.first;
-                  appLog.e('Save current user ${data.first.phoneNumberWithoutDialCode ?? ''}, ${data.first.phoneNumber}');
+                  saveUserEntity=data.last;
+                  appLog.e('Save current user ${saveUserEntity.userID ?? ''}, ${saveUserEntity.phoneNumber}');
                   await Future.delayed(const Duration(milliseconds: 500), () {});
                   //Save to local model
                   serviceLocator<AppUserEntity>()

@@ -301,23 +301,23 @@ class BusinessDocumentState with _$BusinessDocumentState {
   }) = SaveCropDocumentErrorState;
 
   factory BusinessDocumentState.saveBusinessDocumentState({
-    @Default([]) List<BusinessDocumentUploadedEntity> allBusinessDocuments,
+    @Default([]) List<NewBusinessDocumentEntity> allBusinessDocuments,
     @Default(BusinessDocumentStatus.saveBusinessDocument) BusinessDocumentStatus businessDocumentStatus,
-    required BusinessDocumentUploadedEntity businessDocumentUploadedEntity,
+    NewBusinessDocumentEntity? businessDocumentUploadedEntity,
     @Default(false) bool hasEditBusinessDocument,
     @Default(-1) int currentIndex,
   }) = SaveBusinessDocumentState;
 
   factory BusinessDocumentState.getBusinessDocumentState({
-    @Default([]) List<BusinessDocumentUploadedEntity> allBusinessDocuments,
+    @Default([]) List<NewBusinessDocumentEntity> allBusinessDocuments,
     @Default(BusinessDocumentStatus.getBusinessDocument) BusinessDocumentStatus businessDocumentStatus,
     @Default(-1) int documentID,
-    BusinessDocumentUploadedEntity? businessDocumentUploadedEntity,
+    NewBusinessDocumentEntity? businessDocumentUploadedEntity,
     @Default(-1) int currentIndex,
   }) = GetBusinessDocumentState;
 
   factory BusinessDocumentState.getAllBusinessDocumentState({
-    @Default([]) List<BusinessDocumentUploadedEntity> allBusinessDocuments,
+    @Default([]) List<NewBusinessDocumentEntity> allBusinessDocuments,
     @Default(BusinessDocumentStatus.getAllBusinessDocument) BusinessDocumentStatus businessDocumentStatus,
     @Default(1) int pageKey,
     @Default(10) int pageSize,
@@ -325,19 +325,19 @@ class BusinessDocumentState with _$BusinessDocumentState {
   }) = GetAllBusinessDocumentState;
 
   factory BusinessDocumentState.deleteBusinessDocumentState({
-    @Default([]) List<BusinessDocumentUploadedEntity> allBusinessDocuments,
+    @Default([]) List<NewBusinessDocumentEntity> allBusinessDocuments,
     @Default(BusinessDocumentStatus.deleteBusinessDocument) BusinessDocumentStatus businessDocumentStatus,
     @Default(-1) int documentID,
-    BusinessDocumentUploadedEntity? businessDocumentUploadedEntity,
+    NewBusinessDocumentEntity? businessDocumentUploadedEntity,
     @Default(-1) int currentIndex,
     @Default(false) bool hasDelete,
   }) = DeleteBusinessDocumentState;
 
   factory BusinessDocumentState.deleteAllBusinessDocumentState({
-    @Default([]) List<BusinessDocumentUploadedEntity> allBusinessDocuments,
+    @Default([]) List<NewBusinessDocumentEntity> allBusinessDocuments,
     @Default(BusinessDocumentStatus.deleteAllBusinessDocument) BusinessDocumentStatus businessDocumentStatus,
     @Default(-1) int documentID,
-    BusinessDocumentUploadedEntity? businessDocumentUploadedEntity,
+    NewBusinessDocumentEntity? businessDocumentUploadedEntity,
     @Default(false) bool hasDeleteAll,
   }) = DeleteAllBusinessDocumentState;
 
@@ -361,7 +361,7 @@ class BusinessDocumentState with _$BusinessDocumentState {
   factory BusinessDocumentState.emptyBusinessDocumentState({
     @Default('') String message,
     @Default(true) bool isEmpty,
-    @Default([]) List<BusinessDocumentUploadedEntity> allBusinessDocuments,
+    @Default([]) List<NewBusinessDocumentEntity> allBusinessDocuments,
     @Default(BusinessDocumentStatus.emptyForBusinessDocument) BusinessDocumentStatus businessDocumentStatus,
   }) = BusinessDocumentEmptyState;
 

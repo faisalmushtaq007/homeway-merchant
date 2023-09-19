@@ -19,6 +19,7 @@ import 'package:homemakers_merchant/app/features/payment/presentation/manager/wa
 import 'package:homemakers_merchant/app/features/permission/presentation/bloc/permission_bloc.dart';
 import 'package:homemakers_merchant/app/features/profile/index.dart';
 import 'package:homemakers_merchant/app/features/profile/presentation/manager/bank/payment_bank_bloc.dart';
+import 'package:homemakers_merchant/app/features/profile/presentation/manager/document/bloc/new_business_document_bloc.dart';
 import 'package:homemakers_merchant/app/features/profile/presentation/manager/document/business_document_bloc.dart';
 import 'package:homemakers_merchant/app/features/profile/presentation/manager/profile/business_profile_bloc.dart';
 import 'package:homemakers_merchant/app/features/rate_review/index.dart';
@@ -1069,4 +1070,5 @@ void _setUpStateManagement() {
   serviceLocator.registerFactory<DeliverOrderBloc>(() => DeliverOrderBloc());
   serviceLocator.registerFactory<ScheduleOrderBloc>(() => ScheduleOrderBloc());
   serviceLocator.registerFactory<OnProcessOrderBloc>(() => OnProcessOrderBloc());
+  serviceLocator.registerFactory<NewBusinessDocumentBloc>(() => NewBusinessDocumentBloc());
 }

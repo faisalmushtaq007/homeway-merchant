@@ -9,6 +9,7 @@ class WelcomePage extends StatefulWidget {
 
 class _WelcomePageState extends State<WelcomePage> with TickerProviderStateMixin {
   late final AnimationController _controller;
+  AppUserEntity? appUserEntity;
 
   @override
   void initState() {
@@ -21,6 +22,10 @@ class _WelcomePageState extends State<WelcomePage> with TickerProviderStateMixin
           // Rebuild the widget at each frame to update the "progress" label.
         });
       });
+    if(!mounted){
+      return;
+    }
+    context.read<BusinessProfileBloc>().add(GetAllAppUserProfilePagination(appUserEntity: serviceLocator<AppUserEntity>()),);
   }
 
   @override
@@ -75,117 +80,126 @@ class _WelcomePageState extends State<WelcomePage> with TickerProviderStateMixin
               child: BlocBuilder<PermissionBloc, PermissionState>(
                 bloc: context.read<PermissionBloc>(),
                 buildWhen: (previous, current) => previous != current,
-                builder: (context, state) {
-                  return Stack(
-                    children: [
-                      const Align(
-                        alignment: AlignmentDirectional.topStart,
-                        child: AppLogo(),
-                      ),
-                      Container(
-                        constraints: BoxConstraints(
-                          minWidth: double.infinity,
-                          minHeight: media.size.height,
-                        ),
-                        child: ScrollableColumn(
-                          controller: scrollController,
-                          padding: EdgeInsetsDirectional.only(
-                            top: 50,
+                builder: (context, permissionState) {
+                  return BlocBuilder<BusinessProfileBloc, BusinessProfileState>(
+                    bloc: context.read<BusinessProfileBloc>(),
+                    key: const Key('welcome-page-business-profile-bloc-builder'),
+                    builder: (context, state) {
+                      if(state is GetAllAppUserProfilePaginationState){
+                        appUserEntity=state.appUserEntities.last;
+                      }
+                      return Stack(
+                        children: [
+                          const Align(
+                            alignment: AlignmentDirectional.topStart,
+                            child: AppLogo(),
                           ),
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            // success logo
-                            Lottie.asset(
-                              'assets/lottie/success_check_mark.json',
-                              height: 110,
+                          Container(
+                            constraints: BoxConstraints(
+                              minWidth: double.infinity,
+                              minHeight: media.size.height,
                             ),
-                            Center(
-                              child: Text(
-                                'Welcome!',
-                                textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                                textAlign: TextAlign.center,
-                                style: context.headlineMedium!.copyWith(
-                                  color: const Color.fromRGBO(69, 201, 125, 1),
-                                  fontSize: 32,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ).translate(),
-                            ),
-                            Center(
-                              child: Text(
-                                'Nura24X7',
-                                textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                                textAlign: TextAlign.center,
-                                style: context.headlineMedium!.copyWith(
-                                  color: const Color.fromRGBO(69, 201, 125, 1),
-                                  fontSize: 32,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ).translate(),
-                            ),
-                            const AnimatedGap(
-                              60,
-                              duration: Duration(
-                                milliseconds: 300,
+                            child: ScrollableColumn(
+                              controller: scrollController,
+                              padding: EdgeInsetsDirectional.only(
+                                top: 50,
                               ),
-                            ),
-                            Center(
-                              child: Wrap(
-                                children: [
-                                  Text(
-                                    'Thank you for registering with us',
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                // success logo
+                                Lottie.asset(
+                                  'assets/lottie/success_check_mark.json',
+                                  height: 110,
+                                ),
+                                Center(
+                                  child: Text(
+                                    'Welcome!',
                                     textDirection: serviceLocator<LanguageController>().targetTextDirection,
                                     textAlign: TextAlign.center,
-                                    style: context.titleLarge!.copyWith(
-                                      fontSize: 20,
+                                    style: context.headlineMedium!.copyWith(
+                                      color: const Color.fromRGBO(69, 201, 125, 1),
+                                      fontSize: 32,
                                       fontWeight: FontWeight.bold,
                                     ),
                                   ).translate(),
-                                ],
-                              ),
-                            ),
-                            const AnimatedGap(
-                              16,
-                              duration: Duration(
-                                milliseconds: 300,
-                              ),
-                            ),
-                            Center(
-                              child: Wrap(
-                                textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                                children: [
-                                  Text(
-                                    'We will contact you in Next 1-2 Working Days to physicals business verification',
+                                ),
+                                Center(
+                                  child: Text(
+                                    appUserEntity?.businessProfile?.userName??serviceLocator<AppUserEntity>().businessProfile?.userName??'',
                                     textDirection: serviceLocator<LanguageController>().targetTextDirection,
                                     textAlign: TextAlign.center,
-                                    style: context.bodyMedium!.copyWith(
-                                      fontSize: 16,
+                                    style: context.headlineMedium!.copyWith(
+                                      color: const Color.fromRGBO(69, 201, 125, 1),
+                                      fontSize: 32,
+                                      fontWeight: FontWeight.bold,
                                     ),
                                   ).translate(),
-                                ],
+                                ),
+                                const AnimatedGap(
+                                  60,
+                                  duration: Duration(
+                                    milliseconds: 300,
+                                  ),
+                                ),
+                                Center(
+                                  child: Wrap(
+                                    children: [
+                                      Text(
+                                        'Thank you for registering with us',
+                                        textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                        textAlign: TextAlign.center,
+                                        style: context.titleLarge!.copyWith(
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ).translate(),
+                                    ],
+                                  ),
+                                ),
+                                const AnimatedGap(
+                                  16,
+                                  duration: Duration(
+                                    milliseconds: 300,
+                                  ),
+                                ),
+                                Center(
+                                  child: Wrap(
+                                    textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                    children: [
+                                      Text(
+                                        'We will contact you in Next 1-2 Working Days to physicals business verification',
+                                        textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                        textAlign: TextAlign.center,
+                                        style: context.bodyMedium!.copyWith(
+                                          fontSize: 16,
+                                        ),
+                                      ).translate(),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          Align(
+                            alignment: AlignmentDirectional.bottomCenter,
+                            child: SizedBox(
+                              width: context.width - margins * 5,
+                              child: ElevatedButton(
+                                child: Text(
+                                  'Go to Dashboard',
+                                  textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                ).translate(),
+                                onPressed: () {
+                                  context.go(Routes.PRIMARY_DASHBOARD_PAGE);
+                                  return;
+                                },
                               ),
                             ),
-                          ],
-                        ),
-                      ),
-                      Align(
-                        alignment: AlignmentDirectional.bottomCenter,
-                        child: SizedBox(
-                          width: context.width - margins * 5,
-                          child: ElevatedButton(
-                            child: Text(
-                              'Go to Dashboard',
-                              textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                            ).translate(),
-                            onPressed: () {
-                              context.go(Routes.PRIMARY_DASHBOARD_PAGE);
-                              return;
-                            },
                           ),
-                        ),
-                      ),
-                    ],
+                        ],
+                      );
+                    },
                   );
                 },
               ),

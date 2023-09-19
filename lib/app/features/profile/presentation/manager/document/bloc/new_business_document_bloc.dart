@@ -5,6 +5,7 @@ import 'package:equatable/equatable.dart';
 import 'package:homemakers_merchant/app/features/authentication/index.dart';
 import 'package:homemakers_merchant/app/features/profile/index.dart';
 import 'package:homemakers_merchant/bootup/injection_container.dart';
+import 'package:homemakers_merchant/core/extensions/global_extensions/list_ext.dart';
 import 'package:homemakers_merchant/core/extensions/global_extensions/src/object.dart';
 import 'package:homemakers_merchant/shared/states/data_source_state.dart';
 import 'package:homemakers_merchant/utils/app_log.dart';
@@ -23,10 +24,10 @@ class NewBusinessDocumentBloc extends Bloc<NewBusinessDocumentEvent, NewBusiness
   }
 
   FutureOr<void> _uploadNewBusinessDocument(UploadNewBusinessDocument event, Emitter<NewBusinessDocumentState> emit) async {
-    try {
+    /*try {
       DataSourceState<NewBusinessDocumentEntity> result;
       if (!event.hasNewUploadBusinessDocument) {
-        result = await serviceLocator<EditDocumentUseCase>()(id: event.businessDocumentUploadedEntity.documentID, input: event.businessDocumentUploadedEntity);
+        result = await serviceLocator<EditDocumentUseCase>()(id: event.businessDocumentUploadedEntity?.documentID, input: event.businessDocumentUploadedEntity);
       } else {
         result = await serviceLocator<SaveDocumentUseCase>()(event.businessDocumentUploadedEntity);
       }
@@ -82,37 +83,105 @@ class NewBusinessDocumentBloc extends Bloc<NewBusinessDocumentEvent, NewBusiness
           status: UploadBusinessDocumentStatus.save,
         ),
       );
+    }*/
+    try {
+      final DataSourceState<List<NewBusinessDocumentEntity>> results =
+      await serviceLocator<SaveAllDocumentUseCase>()(event.allBusinessDocuments.toList());
+      await results.when(
+        remote: (data, meta) async {
+          appLog.d('Business Document bloc save remote ${data?.length}');
+          if (data.isNotNullOrEmpty) {
+            await updateUserProfile(data!.toList());
+          }
+          emit(
+            UploadNewBusinessDocumentState(
+              allBusinessDocuments: data ?? event.allBusinessDocuments.toList(),
+              hasEditBusinessDocument: event.hasEditBusinessDocument,
+            ),
+          );
+        },
+        localDb: (data, meta) async {
+          appLog.d('Business Document bloc save local ${data?.length}');
+          if (data.isNotNullOrEmpty) {
+            await updateUserProfile(data!.toList());
+          }
+          emit(
+            UploadNewBusinessDocumentState(
+              allBusinessDocuments: data ?? event.allBusinessDocuments.toList(),
+              hasEditBusinessDocument: event.hasEditBusinessDocument,
+            ),
+          );
+        },
+        error: (dataSourceFailure, reason, error, networkException, stackTrace, exception, extra) {
+          appLog.d('Business Document bloc save error $reason');
+          emit(
+            NewBusinessDocumentExceptionState(
+              message: reason,
+              //exception: e as Exception,
+              stackTrace: stackTrace,
+              status: UploadBusinessDocumentStatus.save,
+            ),
+          );
+        },
+      );
+
+      return;
+    } catch (e, s) {
+      appLog.e('Business Document bloc save exception $e');
+      emit(
+        NewBusinessDocumentExceptionState(
+          message: 'Something went wrong during saving your store details, please try again',
+          //exception: e as Exception,
+          stackTrace: s,
+          status: UploadBusinessDocumentStatus.save,
+        ),
+      );
     }
   }
 
-  Future<void> updateUserProfile(NewBusinessDocumentEntity data) async {
-    final getCurrentUserResult = await serviceLocator<GetIDAndTokenUserUseCase>()();
-    if (getCurrentUserResult.isNotNull) {
-      appLog.d('getCurrentUserResult Profile bloc save remote ${getCurrentUserResult?.toMap()}');
-      final AppUserEntity cacheAppUserEntity = getCurrentUserResult!.copyWith(
-        businessProfile: getCurrentUserResult.businessProfile?.copyWith(newBusinessDocumentEntity: data),
-        currentUserStage: 3,
-      );
-      final editUserResult = await serviceLocator<EditAppUserUseCase>()(
-        id: getCurrentUserResult.userID,
-        input: cacheAppUserEntity,
-      );
-      editUserResult.when(
-        remote: (data, meta) {
-          appLog.d('Update current user with business document save remote ${data?.toMap()}');
-        },
-        localDb: (data, meta) {
-          appLog.d('Update current user with business document save local ${data?.toMap()}');
-          if (data != null) {
-            serviceLocator<UserModelStorageController>().setUserModel(data);
-          }
-        },
-        error: (dataSourceFailure, reason, error, networkException, stackTrace, exception, extra) {
-          appLog.d('Update current user with business document exception $error');
-        },
-      );
-      return;
-    }
+  Future<void> updateUserProfile(List<NewBusinessDocumentEntity> allBusinessDocuments) async {
+    final getCurrentUserResult = await serviceLocator<GetAllAppUserPaginationUseCase>()();
+    await getCurrentUserResult.when(
+      remote: (data, meta) {},
+      localDb: (data, meta) async {
+        if (data.isNotNullOrEmpty) {
+          appLog.d('Document GetAllAppUserPaginationUseCase is not null');
+          data!.forEach((element) {
+            appLog.d('${element.toMap()}');
+          });
+          final AppUserEntity cacheAppUserEntity = data.last.copyWith(
+            userID: data.last.userID,
+            businessProfile: data.last.businessProfile?.copyWith(allBusinessDocuments: allBusinessDocuments),
+            currentUserStage: 4,
+          );
+          final editUserResult = await serviceLocator<SaveAllAppUserUseCase>()(
+            [cacheAppUserEntity],
+          );
+          editUserResult.when(
+            remote: (data, meta) {
+              appLog.d('Update current user with business profile save remote ${data?.last.toMap()}');
+            },
+            localDb: (data, meta) {
+              appLog.d('Update current user with business profile save local ${data?.last.toMap()}');
+              if (data != null) {
+                var cachedAppUserEntity = serviceLocator<AppUserEntity>()
+                  ..currentUserStage = 4
+                  ..businessProfile = data.last.businessProfile?.copyWith(allBusinessDocuments: allBusinessDocuments);
+                serviceLocator<UserModelStorageController>().setUserModel(cachedAppUserEntity);
+              }
+            },
+            error: (dataSourceFailure, reason, error, networkException, stackTrace, exception, extra) {
+              appLog.d('Update current user with business profile exception $error');
+            },
+          );
+        } else {
+          appLog.d('Document GetAllAppUserPaginationUseCase is null');
+        }
+      },
+      error: (dataSourceFailure, reason, error, networkException, stackTrace, exception, extra) {
+        appLog.d('Document updateUserProfile $reason ');
+      },
+    );
     return;
   }
 

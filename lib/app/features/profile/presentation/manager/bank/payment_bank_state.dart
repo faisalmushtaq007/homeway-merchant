@@ -1,17 +1,17 @@
 part of 'payment_bank_bloc.dart';
 
-abstract class PaymentBankState with AppEquatable {}
+abstract class PaymentBankState extends Equatable {
+  const PaymentBankState();
+}
 
 class PaymentBankInitial extends PaymentBankState {
+  const PaymentBankInitial();
   @override
-  bool get cacheHash => false;
-
-  @override
-  List<Object?> get hashParameters => [];
+  List<Object?> get props => [];
 }
 
 class SavePaymentBankState extends PaymentBankState {
-  SavePaymentBankState({
+  const SavePaymentBankState({
     required this.paymentBankEntity,
     this.hasEditPaymentBank = false,
     this.currentIndex = -1,
@@ -24,14 +24,11 @@ class SavePaymentBankState extends PaymentBankState {
   final PaymentBankStatus paymentBankStatus;
 
   @override
-  bool get cacheHash => true;
-
-  @override
-  List<Object?> get hashParameters => [paymentBankEntity, hasEditPaymentBank, currentIndex, paymentBankStatus];
+  List<Object?> get props => [paymentBankEntity, hasEditPaymentBank, currentIndex, paymentBankStatus];
 }
 
 class GetPaymentBankState extends PaymentBankState {
-  GetPaymentBankState({
+  const GetPaymentBankState({
     this.paymentBankEntity,
     this.paymentBankStatus = PaymentBankStatus.getAllPaymentBank,
     this.index = -1,
@@ -44,10 +41,7 @@ class GetPaymentBankState extends PaymentBankState {
   final int paymentBankID;
 
   @override
-  bool get cacheHash => true;
-
-  @override
-  List<Object?> get hashParameters => [
+  List<Object?> get props => [
         paymentBankEntity,
         paymentBankStatus,
         index,
@@ -56,7 +50,7 @@ class GetPaymentBankState extends PaymentBankState {
 }
 
 class SaveBusinessTypeState extends PaymentBankState {
-  SaveBusinessTypeState({
+  const SaveBusinessTypeState({
     required this.businessTypeEntity,
     this.hasEditBusinessType = false,
     this.paymentBankEntity,
@@ -69,10 +63,7 @@ class SaveBusinessTypeState extends PaymentBankState {
   final PaymentBankStatus paymentBankStatus;
 
   @override
-  bool get cacheHash => true;
-
-  @override
-  List<Object?> get hashParameters => [
+  List<Object?> get props => [
         businessTypeEntity,
         hasEditBusinessType,
         paymentBankStatus,
@@ -81,7 +72,7 @@ class SaveBusinessTypeState extends PaymentBankState {
 }
 
 class DeletePaymentBankState extends PaymentBankState {
-  DeletePaymentBankState({
+  const DeletePaymentBankState({
     required this.paymentBankID,
     this.paymentBankEntity,
     this.paymentBankStatus = PaymentBankStatus.deletePaymentBank,
@@ -98,10 +89,7 @@ class DeletePaymentBankState extends PaymentBankState {
   final bool hasDelete;
 
   @override
-  bool get cacheHash => true;
-
-  @override
-  List<Object?> get hashParameters => [
+  List<Object?> get props => [
         paymentBankEntity,
         paymentBankID,
         index,
@@ -112,7 +100,7 @@ class DeletePaymentBankState extends PaymentBankState {
 }
 
 class NavigateToAddressPageState extends PaymentBankState {
-  NavigateToAddressPageState({
+  const NavigateToAddressPageState({
     this.paymentBankEntity,
     this.businessTypeEntity,
     this.paymentBankStatus = PaymentBankStatus.navigateToAddressPage,
@@ -123,14 +111,11 @@ class NavigateToAddressPageState extends PaymentBankState {
   final PaymentBankStatus paymentBankStatus;
 
   @override
-  bool get cacheHash => true;
-
-  @override
-  List<Object?> get hashParameters => [paymentBankEntity, businessTypeEntity, paymentBankStatus];
+  List<Object?> get props => [paymentBankEntity, businessTypeEntity, paymentBankStatus];
 }
 
 class DeleteAllPaymentBankState extends PaymentBankState {
-  DeleteAllPaymentBankState({
+  const DeleteAllPaymentBankState({
     this.paymentBankID = -1,
     this.paymentBankEntity,
     this.hasDeleteAll = false,
@@ -145,14 +130,11 @@ class DeleteAllPaymentBankState extends PaymentBankState {
   final PaymentBankStatus paymentBankStatus;
 
   @override
-  bool get cacheHash => true;
-
-  @override
-  List<Object?> get hashParameters => [paymentBankEntity, paymentBankID, paymentBankStatus];
+  List<Object?> get props => [paymentBankEntity, paymentBankID, paymentBankStatus];
 }
 
 class GetAllPaymentBankState extends PaymentBankState {
-  GetAllPaymentBankState({
+  const GetAllPaymentBankState({
     this.paymentBankID = -1,
     this.paymentBankEntity,
     this.paymentBankEntities = const [],
@@ -171,10 +153,7 @@ class GetAllPaymentBankState extends PaymentBankState {
   final String searchItem;
 
   @override
-  bool get cacheHash => true;
-
-  @override
-  List<Object?> get hashParameters => [
+  List<Object?> get props => [
         paymentBankEntity,
         paymentBankID,
         paymentBankStatus,
@@ -185,7 +164,7 @@ class GetAllPaymentBankState extends PaymentBankState {
 }
 
 class PaymentBankEmptyState extends PaymentBankState {
-  PaymentBankEmptyState({
+  const PaymentBankEmptyState({
     this.paymentBankEntities = const [],
     this.message = '',
     this.paymentBankStatus = PaymentBankStatus.emptyForPaymentBank,
@@ -196,10 +175,7 @@ class PaymentBankEmptyState extends PaymentBankState {
   final PaymentBankStatus paymentBankStatus;
 
   @override
-  bool get cacheHash => true;
-
-  @override
-  List<Object?> get hashParameters => [
+  List<Object?> get props => [
         paymentBankEntities,
         message,
         paymentBankStatus,
@@ -207,7 +183,7 @@ class PaymentBankEmptyState extends PaymentBankState {
 }
 
 class PaymentBankFailedState extends PaymentBankState {
-  PaymentBankFailedState({
+  const PaymentBankFailedState({
     this.paymentBankStatus = PaymentBankStatus.failedForPaymentBank,
     this.message = '',
   });
@@ -216,17 +192,14 @@ class PaymentBankFailedState extends PaymentBankState {
   final String message;
 
   @override
-  bool get cacheHash => true;
-
-  @override
-  List<Object?> get hashParameters => [
+  List<Object?> get props => [
         paymentBankStatus,
         message,
       ];
 }
 
 class PaymentBankExceptionState extends PaymentBankState {
-  PaymentBankExceptionState({
+  const PaymentBankExceptionState({
     this.paymentBankStatus = PaymentBankStatus.exceptionForPaymentBank,
     this.message = '',
     this.stackTrace,
@@ -239,36 +212,35 @@ class PaymentBankExceptionState extends PaymentBankState {
   final Exception? exception;
 
   @override
-  bool get cacheHash => true;
-
-  @override
-  List<Object?> get hashParameters => throw UnimplementedError();
+  List<Object?> get props => throw UnimplementedError();
 }
 
 class PaymentBankLoadingState extends PaymentBankState {
-  PaymentBankLoadingState({this.message = '', this.paymentBankStatus = PaymentBankStatus.loadingForPaymentBank, this.isLoading = true});
+  const PaymentBankLoadingState({this.message = '', this.paymentBankStatus = PaymentBankStatus.loadingForPaymentBank, this.isLoading = true});
 
   final bool isLoading;
   final PaymentBankStatus paymentBankStatus;
   final String message;
 
   @override
-  bool get cacheHash => true;
-
-  @override
-  List<Object?> get hashParameters => throw UnimplementedError();
+  List<Object?> get props => throw UnimplementedError();
 }
 
 class PaymentBankProcessingState extends PaymentBankState {
-  PaymentBankProcessingState({this.message = '', this.paymentBankStatus = PaymentBankStatus.loadingForPaymentBank, this.isProcessing = true});
+  const PaymentBankProcessingState({this.message = '', this.paymentBankStatus = PaymentBankStatus.loadingForPaymentBank, this.isProcessing = true});
 
   final bool isProcessing;
   final PaymentBankStatus paymentBankStatus;
   final String message;
 
   @override
-  bool get cacheHash => true;
-
-  @override
-  List<Object?> get hashParameters => throw UnimplementedError();
+  List<Object?> get props => throw UnimplementedError();
 }
+
+class NavigateToNextPageState extends PaymentBankState{
+  const NavigateToNextPageState({required this.appUserEntity,});
+  final  AppUserEntity appUserEntity;
+  @override
+  List<Object?> get props => [appUserEntity];
+}
+
