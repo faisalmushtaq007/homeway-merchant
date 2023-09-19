@@ -45,7 +45,7 @@ class MenuEntity extends INetworkModel<MenuEntity> with AppEquatable {
       storeAvailableFoodPreparationType:
           map['storeAvailableFoodPreparationType'].map((e) => MenuPreparationType.fromMap(e)).toList().cast<MenuPreparationType>(),
       menuPortions: map['menuPortions'].map((e) => MenuPortion.fromMap(e)).toList().cast<MenuPortion>(),
-      hasCustomPortion: map['hasCustomPortion'] as bool,
+      hasCustomPortion: map['hasCustomPortion']??false as bool,
       customPortions: map['customPortions'].map((e) => CustomPortion.fromMap(e)).toList().cast<CustomPortion>(),
       addons: map['addons'].map((e) => Addons.fromMap(e)).toList().cast<Addons>(),
       menuAvailableFromTime: map['menuAvailableFromTime'] as String,
@@ -145,7 +145,7 @@ class MenuEntity extends INetworkModel<MenuEntity> with AppEquatable {
       'storeAvailableFoodTypes': this.storeAvailableFoodTypes.map((e) => e.toMap()).toList(),
       'storeAvailableFoodPreparationType': this.storeAvailableFoodPreparationType.map((e) => e.toMap()).toList(),
       'menuPortions': this.menuPortions.map((e) => e.toMap()).toList(),
-      'hasCustomPortion': this.hasCustomPortion,
+      'hasCustomPortion': this.hasCustomPortion??false,
       'customPortions': this.customPortions.map((e) => e.toMap()).toList(),
       'addons': this.addons.map((e) => e.toMap()).toList(),
       'menuAvailableFromTime': this.menuAvailableFromTime,
@@ -163,8 +163,8 @@ class MenuEntity extends INetworkModel<MenuEntity> with AppEquatable {
       'menuMinPreparationTime': this.menuMinPreparationTime,
       'menuMaxPreparationTime': this.menuMaxPreparationTime,
       'ratingAndReviewEntity': this.ratingAndReviewEntity?.toMap() ?? RatingAndReviewEntity().toMap(),
-      'hasMenuAvailable': this.hasMenuAvailable,
-      'hasReadyToPickupOrder': this.hasReadyToPickupOrder,
+      'hasMenuAvailable': this.hasMenuAvailable??true,
+      'hasReadyToPickupOrder': this.hasReadyToPickupOrder??true,
     };
   }
 

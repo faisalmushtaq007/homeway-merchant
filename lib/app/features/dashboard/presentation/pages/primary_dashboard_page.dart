@@ -106,24 +106,26 @@ class _PrimaryDashboardPageController extends State<PrimaryDashboardPage> {
       access_token: cacheUserEntity.access_token ?? '',
       phoneNumberWithoutDialCode: !cacheUserEntity.phoneNumberWithoutDialCode.isEmptyOrNull?cacheUserEntity.phoneNumberWithoutDialCode:cacheUserEntity.businessProfile?.phoneNumberWithoutDialCode??'',
     );
-    final getCurrentUserResult = await serviceLocator<GetCurrentAppUserUseCase>()(
-      input: input,
+    final getCurrentUserResult = await serviceLocator<GetAllAppUserPaginationUseCase>()(
+      pageSize: 10,
+      pageKey: 0,
+      entity: input,
     );
     await getCurrentUserResult.when(remote: (data, meta) {
-      if(data.isNotNull){
-        appUserEntity=data!;
+      if(data.isNotNullOrEmpty){
+        appUserEntity=data!.last;
         setState(() {
 
         });
-        appLog.d('Remote User Info ${data.toMap()}');
+        appLog.d('Remote User Info ${data.last.toMap()}');
       }
     }, localDb: (data, meta) {
-      if(data.isNotNull){
-        appUserEntity=data!;
+      if(data.isNotNullOrEmpty){
+        appUserEntity=data!.last;
         setState(() {
 
         });
-        appLog.d('Local User Info ${data.toMap()}');
+        appLog.d('Local User Info ${data.last.toMap()}');
       }
     }, error: (dataSourceFailure, reason, error, networkException, stackTrace, exception, extra) {
       appLog.d('Error $reason');

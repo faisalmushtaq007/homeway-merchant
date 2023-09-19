@@ -29,11 +29,11 @@ class BusinessDocumentUploadedEntity with AppEquatable {
       documentBackAssetsUploadStatus: (map['documentBackAssetsUploadStatus'] != null)
           ? DocumentUploadStatus.values.byName(map['documentBackAssetsUploadStatus'])
           : DocumentUploadStatus.none,
-      hasDocumentFrontSide: map['hasDocumentFrontSide'] as bool,
+      hasDocumentFrontSide: map['hasDocumentFrontSide']??true as bool,
       businessDocumentAssetsEntity:
           map['businessDocumentAssetsEntity'].map((e) => BusinessDocumentAssetsEntity.fromMap(e)).toList().cast<BusinessDocumentAssetsEntity>(),
-      hasButtonEnable: map['hasButtonEnable'] as bool,
-      hasTextFieldEnable: map['hasTextFieldEnable'] as bool,
+      hasButtonEnable: map['hasButtonEnable']??true as bool,
+      hasTextFieldEnable: map['hasTextFieldEnable']??false as bool,
     );
   }
   int documentID;
@@ -99,14 +99,14 @@ class BusinessDocumentUploadedEntity with AppEquatable {
       'documentID': this.documentID,
       'documentType': this.documentType.name,
       'documentIDNumber': this.documentIDNumber,
-      'documentFrontAssets': this.documentFrontAssets?.toMap(),
-      'documentBackAssets': this.documentBackAssets?.toMap(),
+      'documentFrontAssets': this.documentFrontAssets?.toMap()??BusinessDocumentAssetsEntity().toMap(),
+      'documentBackAssets': this.documentBackAssets?.toMap()??BusinessDocumentAssetsEntity().toMap(),
       'documentFrontAssetsUploadStatus': this.documentFrontAssetsUploadStatus.name,
       'documentBackAssetsUploadStatus': this.documentBackAssetsUploadStatus.name,
-      'hasDocumentFrontSide': this.hasDocumentFrontSide,
+      'hasDocumentFrontSide': this.hasDocumentFrontSide??true,
       'businessDocumentAssetsEntity': this.businessDocumentAssetsEntity.map((e) => e.toMap()).toList(),
-      'hasButtonEnable': this.hasButtonEnable,
-      'hasTextFieldEnable': this.hasTextFieldEnable,
+      'hasButtonEnable': this.hasButtonEnable??true,
+      'hasTextFieldEnable': this.hasTextFieldEnable??false,
     };
   }
 }
@@ -141,7 +141,7 @@ class BusinessDocumentAssetsEntity with AppEquatable {
       assetBase64Code: map['assetBase64Code']??'' as String,
       assetsUploadStatus: map['assetsUploadStatus']!=null?DocumentUploadStatus.values.byName(map['assetsUploadStatus']):DocumentUploadStatus.none,
       assetIdNumber: map['assetIdNumber']??'' as String,
-      hasAssetsFrontSide: map['hasAssetsFrontSide'] as bool,
+      hasAssetsFrontSide: map['hasAssetsFrontSide']??true as bool,
       //backSideAssetsInfo: map['backSideAssetsInfo'] as BusinessDocumentAssetsEntity,
       //textEditingController: map['textEditingController'] as TextEditingController,
     );
@@ -223,7 +223,7 @@ class BusinessDocumentAssetsEntity with AppEquatable {
       'assetBase64Code': this.assetBase64Code,
       'assetsUploadStatus': this.assetsUploadStatus.name,
       'assetIdNumber': this.assetIdNumber,
-      'hasAssetsFrontSide': this.hasAssetsFrontSide,
+      'hasAssetsFrontSide': this.hasAssetsFrontSide??true,
       //'backSideAssetsInfo': this.backSideAssetsInfo,
       //'textEditingController': this.textEditingController,
     };

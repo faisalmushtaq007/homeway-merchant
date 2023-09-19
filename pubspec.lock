@@ -111,10 +111,10 @@ packages:
     dependency: transitive
     description:
       name: archive
-      sha256: "49b1fad315e57ab0bbc15bcbb874e83116a1d78f77ebd500a4af6c9407d6b28e"
+      sha256: e0902a06f0e00414e4e3438a084580161279f137aeb862274710f29ec10cf01e
       url: "https://pub.dev"
     source: hosted
-    version: "3.3.8"
+    version: "3.3.9"
   args:
     dependency: transitive
     description:
@@ -439,10 +439,10 @@ packages:
     dependency: transitive
     description:
       name: dart_style
-      sha256: "1efa911ca7086affd35f463ca2fc1799584fb6aa89883cf0af8e3664d6a02d55"
+      sha256: abd7625e16f51f554ea244d090292945ec4d4be7bfbaf2ec8cccea568919d334
       url: "https://pub.dev"
     source: hosted
-    version: "2.3.2"
+    version: "2.3.3"
   dartdoc:
     dependency: transitive
     description:
@@ -631,10 +631,10 @@ packages:
     dependency: transitive
     description:
       name: file_selector_macos
-      sha256: "182c3f8350cee659f7b115e956047ee3dc672a96665883a545e81581b9a82c72"
+      sha256: b15c3da8bd4908b9918111fa486903f5808e388b8d1c559949f584725a6594d6
       url: "https://pub.dev"
     source: hosted
-    version: "0.9.3+2"
+    version: "0.9.3+3"
   file_selector_platform_interface:
     dependency: transitive
     description:
@@ -877,7 +877,7 @@ packages:
     description:
       path: "packages/runner"
       ref: "upgrade-renovate-flutter-3.x"
-      resolved-ref: "8f743176c2a110577be32413beeb7121f0bca5f6"
+      resolved-ref: "9d4dd372209a5cd6e01bf0d724cb8bc6dbef5664"
       url: "https://github.com/FlutterGen/flutter_gen.git"
     source: git
     version: "5.3.1"
@@ -1159,10 +1159,10 @@ packages:
     dependency: transitive
     description:
       name: geolocator_android
-      sha256: "835ff5b4888a2f8eba128996494faf9c5d422785322a81dc0565b99e0f6c379d"
+      sha256: db75aacf93fcdc2c0ba20066019da30e3fde7b102cf579d4bd4ea542e8a8cf17
       url: "https://pub.dev"
     source: hosted
-    version: "4.2.2"
+    version: "4.2.4"
   geolocator_apple:
     dependency: transitive
     description:
@@ -1231,10 +1231,10 @@ packages:
     dependency: "direct main"
     description:
       name: go_router
-      sha256: "5668e6d3dbcb2d0dfa25f7567554b88c57e1e3f3c440b672b24d4a9477017d5b"
+      sha256: e1a30a66d734f9e498b1b6522d6a75ded28242bad2359a9158df38a1c30bcf1f
       url: "https://pub.dev"
     source: hosted
-    version: "10.1.2"
+    version: "10.2.0"
   google_fonts:
     dependency: "direct main"
     description:
@@ -1351,10 +1351,10 @@ packages:
     dependency: transitive
     description:
       name: google_sign_in_ios
-      sha256: "8edfde9698b5951f3d02632eceb39cc283865c3cff0b03216bf951089f10345b"
+      sha256: "974944859f9cd40eb8a15b3fe8efb2d47fb7e99438f763f61a1ccd28d74ff4ce"
       url: "https://pub.dev"
     source: hosted
-    version: "5.6.3"
+    version: "5.6.4"
   google_sign_in_platform_interface:
     dependency: transitive
     description:
@@ -1488,10 +1488,10 @@ packages:
     dependency: transitive
     description:
       name: image_picker_android
-      sha256: d32a997bcc4ee135aebca8e272b7c517927aa65a74b9c60a81a2764ef1a0462d
+      sha256: "47da2161c2e9f8f8a9cbbd89d466d174333fbdd769aeed848912e0b16d9cb369"
       url: "https://pub.dev"
     source: hosted
-    version: "0.8.7+5"
+    version: "0.8.8"
   image_picker_for_web:
     dependency: transitive
     description:
@@ -1697,10 +1697,11 @@ packages:
   logger:
     dependency: "direct main"
     description:
-      name: logger
-      sha256: ba3bc83117b2b49bdd723c0ea7848e8285a0fbc597ba09203b20d329d020c24a
-      url: "https://pub.dev"
-    source: hosted
+      path: "."
+      ref: master
+      resolved-ref: ddb06df8cfe7f8a3ac29a2a6bf80abeaa7ab4241
+      url: "https://github.com/prasant10050/logger.git"
+    source: git
     version: "2.0.2"
   logging:
     dependency: transitive
@@ -1821,7 +1822,7 @@ packages:
     description:
       path: network_manager
       ref: master
-      resolved-ref: "05d9913c6d08cb88fb6429a182b95c95a3bbbc21"
+      resolved-ref: "4709e2e096581ed67cd2ebbda52ad5529c7fcc87"
       url: "git@bitbucket.org:prasant72/homemakers_commons.git"
     source: git
     version: "0.1.2+1"
@@ -2028,6 +2029,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.14.0"
+  pigeon:
+    dependency: transitive
+    description:
+      name: pigeon
+      sha256: "5a79fd0b10423f6b5705525e32015597f861c31220b522a67d1e6b580da96719"
+      url: "https://pub.dev"
+    source: hosted
+    version: "11.0.1"
   pinput:
     dependency: "direct main"
     description:
@@ -2137,10 +2146,10 @@ packages:
     dependency: "direct main"
     description:
       name: responsive_framework
-      sha256: "97d4a8b9468c0ecaafe8566645d70cc59480e4b03704a1b936396e68775e2c34"
+      sha256: "23aa7be5d5136922df708f6ddccb5ec4e0eb8bc576c3f105f5093f31d6b68e50"
       url: "https://pub.dev"
     source: hosted
-    version: "1.1.0"
+    version: "1.1.1"
   retry:
     dependency: transitive
     description:
@@ -2696,10 +2705,10 @@ packages:
     dependency: transitive
     description:
       name: win32_registry
-      sha256: e4506d60b7244251bc59df15656a3093501c37fb5af02105a944d73eb95be4c9
+      sha256: "41fd8a189940d8696b1b810efb9abcf60827b6cbfab90b0c43e8439e3a39d85a"
       url: "https://pub.dev"
     source: hosted
-    version: "1.1.1"
+    version: "1.1.2"
   wkt_parser:
     dependency: transitive
     description:

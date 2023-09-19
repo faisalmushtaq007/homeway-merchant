@@ -40,7 +40,7 @@ class AppUserEntity extends INetworkModel<AppUserEntity> with AppEquatable {
           : BusinessProfileEntity(),
       stores: map['stores'] != null
           ? map['stores'].map((e) => StoreEntity.fromMap(e)).toList().cast<StoreEntity>()
-          : StoreEntity(),
+          : <StoreEntity>[],
       token: map['token'] ?? '' as String,
       tokenCreationDateTime: (map['tokenCreationDateTime'] != null &&
               (!(map['tokenCreationDateTime'].runtimeType is DateTime)) &&
@@ -48,7 +48,7 @@ class AppUserEntity extends INetworkModel<AppUserEntity> with AppEquatable {
                   map['tokenCreationDateTime'].runtimeType is String))
           ? Timestamp.parse(map['tokenCreationDateTime'].toString()).toDateTime()
           : DateTime.now(),
-      hasUserAuthenticated: map['hasUserAuthenticated'] as bool,
+      hasUserAuthenticated: map['hasUserAuthenticated']??false as bool,
       businessTypeEntity: (map['businessTypeEntity'] != null)
           ? BusinessTypeEntity.fromMap(map['businessTypeEntity'])
           : BusinessTypeEntity(),
@@ -57,14 +57,14 @@ class AppUserEntity extends INetworkModel<AppUserEntity> with AppEquatable {
           : CurrentProfileStatus.none,
       menus: (map['menus'] != null)
           ? map['menus'].map((e) => MenuEntity.fromMap(e)).toList().cast<MenuEntity>()
-          : MenuEntity(),
+          : <MenuEntity>[],
       drivers: (map['drivers'] != null)
           ? map['drivers']
               .map((e) => StoreOwnDeliveryPartnersInfo.fromMap(e))
               .toList()
               .cast<StoreOwnDeliveryPartnersInfo>()
-          : StoreOwnDeliveryPartnersInfo(),
-      addons: (map['addons']) != null ? map['addons'].map((e) => Addons.fromMap(e)).toList().cast<Addons>() : Addons(),
+          : <StoreOwnDeliveryPartnersInfo>[],
+      addons: (map['addons']) != null ? map['addons'].map((e) => Addons.fromMap(e)).toList().cast<Addons>() : <Addons>[],
       ratingAndReviewEntity: (map['ratingAndReviewEntity'] != null)
           ? RatingAndReviewEntity.fromMap(map['ratingAndReviewEntity'])
           : RatingAndReviewEntity(),
@@ -164,13 +164,13 @@ class AppUserEntity extends INetworkModel<AppUserEntity> with AppEquatable {
 
   Map<String, dynamic> toMap() {
     return {
-      'userID': this.userID,
+      'userID': this.userID??-1,
       'phoneNumber': this.phoneNumber,
       'businessProfile': (businessProfile.isNotNull) ? this.businessProfile?.toMap() : BusinessProfileEntity().toMap(),
       'stores': (stores.isNotNullOrEmpty)?this.stores.map((e) => e.toMap()).toList():<StoreEntity>[],
       'token': this.token,
       'tokenCreationDateTime': Timestamp.fromDateTime(this.tokenCreationDateTime ?? DateTime.now().toUtc()),
-      'hasUserAuthenticated': this.hasUserAuthenticated,
+      'hasUserAuthenticated': this.hasUserAuthenticated??false,
       'businessTypeEntity':
           (businessTypeEntity.isNotNull) ? this.businessTypeEntity?.toMap() : BusinessTypeEntity().toMap(),
       'currentProfileStatus': this.currentProfileStatus.name,
@@ -179,7 +179,7 @@ class AppUserEntity extends INetworkModel<AppUserEntity> with AppEquatable {
       'addons':(addons.isNotNullOrEmpty)?  this.addons.map((e) => e.toMap()).toList():<Addons>[],
       'ratingAndReviewEntity':
           (ratingAndReviewEntity.isNotNull) ? this.ratingAndReviewEntity?.toMap() : RatingAndReviewEntity().toMap(),
-      'hasCurrentUser': this.hasCurrentUser,
+      'hasCurrentUser': this.hasCurrentUser??false,
       'country_dial_code': this.country_dial_code,
       'user_type': this.user_type,
       'isoCode': this.isoCode,
@@ -187,7 +187,7 @@ class AppUserEntity extends INetworkModel<AppUserEntity> with AppEquatable {
       'access_token': this.access_token,
       'currentUserStage': this.currentUserStage,
       'paymentBankEntity': paymentBankEntity.isNotNull ? paymentBankEntity?.toMap() : PaymentBankEntity().toMap(),
-      'hasMultiplePaymentBanks': hasMultiplePaymentBanks,
+      'hasMultiplePaymentBanks': hasMultiplePaymentBanks??false,
       'paymentBankEntities':(paymentBankEntities.isNotNullOrEmpty)?this.paymentBankEntities.map((e) => e.toMap()).toList():<PaymentBankEntity>[],
       'phoneNumberWithoutDialCode': this.phoneNumberWithoutDialCode ?? '',
     };

@@ -47,7 +47,7 @@ class StoreEntity extends INetworkModel<StoreEntity> with AppEquatable {
               .map((e) => StoreAvailableFoodPreparationType.fromMap(e))
               .toList()
               .cast<StoreAvailableFoodPreparationType>(),
-      hasStoreOwnDeliveryPartners: map['hasStoreOwnDeliveryPartners'] as bool,
+      hasStoreOwnDeliveryPartners: map['hasStoreOwnDeliveryPartners']??false as bool,
       storeOwnDeliveryPartnersInfo: map['storeOwnDeliveryPartnersInfo']
           .map((e) => StoreOwnDeliveryPartnersInfo.fromMap(e))
           .toList()
@@ -70,7 +70,7 @@ class StoreEntity extends INetworkModel<StoreEntity> with AppEquatable {
           .map((e) => MenuEntity.fromMap(e))
           .toList()
           .cast<MenuEntity>(),
-      hasNewStore: map['hasNewStore'] as bool,
+      hasNewStore: map['hasNewStore']??true as bool,
       ratingAndReviewEntity: (map['ratingAndReviewEntity'] != null)
           ? RatingAndReviewEntity.fromMap(map['ratingAndReviewEntity'])
           : RatingAndReviewEntity(),

@@ -99,7 +99,6 @@ class BusinessProfileEntity with AppEquatable {
   bool get cacheHash => true;
 
   @override
-  // TODO: implement hashParameters
   List<Object?> get hashParameters => [
         userName,
         businessProfileID,
