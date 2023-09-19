@@ -17,7 +17,7 @@ class BusinessDocumentUploadedEntity with AppEquatable {
 
   factory BusinessDocumentUploadedEntity.fromMap(Map<String, dynamic> map) {
     return BusinessDocumentUploadedEntity(
-      documentID: map['documentID'],
+      documentID: map['documentID']??-1,
       documentType: (map['documentType'] != null) ? DocumentType.values.byName(map['documentType']) : DocumentType.other,
       documentIDNumber: map['documentIDNumber'] as String,
       documentFrontAssets:
@@ -132,15 +132,15 @@ class BusinessDocumentAssetsEntity with AppEquatable {
 
   factory BusinessDocumentAssetsEntity.fromMap(Map<String, dynamic> map) {
     return BusinessDocumentAssetsEntity(
-      assetName: map['assetName'] as String,
-      assetOriginalName: map['assetOriginalName'] as String,
-      assetPath: map['assetPath'] as String,
-      assetUrl: map['assetUrl'] as String,
-      assetExtension: map['assetExtension'] as String,
-      assetMoreInfo: map['assetMoreInfo'] as Map<String, dynamic>,
-      assetBase64Code: map['assetBase64Code'] as String,
-      assetsUploadStatus: DocumentUploadStatus.values.byName(map['assetsUploadStatus']),
-      assetIdNumber: map['assetIdNumber'] as String,
+      assetName: map['assetName']??'' as String,
+      assetOriginalName: map['assetOriginalName']??'' as String,
+      assetPath: map['assetPath']??'' as String,
+      assetUrl: map['assetUrl']??'' as String,
+      assetExtension: map['assetExtension']??'' as String,
+      assetMoreInfo: map['assetMoreInfo']??<String,dynamic>{} as Map<String, dynamic>,
+      assetBase64Code: map['assetBase64Code']??'' as String,
+      assetsUploadStatus: map['assetsUploadStatus']!=null?DocumentUploadStatus.values.byName(map['assetsUploadStatus']):DocumentUploadStatus.none,
+      assetIdNumber: map['assetIdNumber']??'' as String,
       hasAssetsFrontSide: map['hasAssetsFrontSide'] as bool,
       //backSideAssetsInfo: map['backSideAssetsInfo'] as BusinessDocumentAssetsEntity,
       //textEditingController: map['textEditingController'] as TextEditingController,

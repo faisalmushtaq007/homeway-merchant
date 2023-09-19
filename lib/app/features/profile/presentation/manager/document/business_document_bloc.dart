@@ -573,19 +573,20 @@ class BusinessDocumentBloc extends Bloc<BusinessDocumentEvent, BusinessDocumentS
 
     }, localDb: (data, meta) async {
       if(data.isNotNullOrEmpty){
+        appLog.d('Document GetAllAppUserPaginationUseCase is not null');
         final AppUserEntity cacheAppUserEntity = data!.first.copyWith(
-          currentUserStage: 3,
+          userID: data.first.userID,
+          currentUserStage: 4,
         );
-        final editUserResult = await serviceLocator<EditAppUserUseCase>()(
-          id: data.first.userID,
-          input: cacheAppUserEntity,
+        final editUserResult = await serviceLocator<SaveAllAppUserUseCase>()(
+          [cacheAppUserEntity],
         );
         editUserResult.when(
           remote: (data, meta) {
-            appLog.d('Update current user with business profile save remote ${data?.toMap()}');
+            appLog.d('Update current user with business profile save remote ${data?.first.toMap()}');
           },
           localDb: (data, meta) {
-            appLog.d('Update current user with business profile save local ${data?.toMap()}');
+            appLog.d('Update current user with business profile save local ${data?.first.toMap()}');
             if (data != null) {
               var cachedAppUserEntity=serviceLocator<AppUserEntity>()..currentUserStage= 1;
               serviceLocator<UserModelStorageController>().setUserModel(cachedAppUserEntity);
@@ -595,9 +596,11 @@ class BusinessDocumentBloc extends Bloc<BusinessDocumentEvent, BusinessDocumentS
             appLog.d('Update current user with business profile exception $error');
           },
         );
+      }else{
+        appLog.d('Document GetAllAppUserPaginationUseCase is null');
       }
     }, error: (dataSourceFailure, reason, error, networkException, stackTrace, exception, extra) {
-
+      appLog.d('Document updateUserProfile $reason ');
     },);
     return;
   }

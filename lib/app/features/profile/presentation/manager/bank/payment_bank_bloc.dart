@@ -89,22 +89,23 @@ class PaymentBankBloc extends Bloc<PaymentBankEvent, PaymentBankState> {
 
     }, localDb: (data, meta) async {
       if(data.isNotNullOrEmpty){
+        appLog.d('Bank GetAllAppUserPaginationUseCase is not null');
         final AppUserEntity cacheAppUserEntity = data!.first.copyWith(
+          userID: data.first.userID,
           paymentBankEntity: paymentBankData,
           hasMultiplePaymentBanks: false,
           paymentBankEntities: <PaymentBankEntity>[],
-          currentUserStage: 2,
+          currentUserStage: 3,
         );
-        final editUserResult = await serviceLocator<EditAppUserUseCase>()(
-          id: data.first.userID,
-          input: cacheAppUserEntity,
+        final editUserResult = await serviceLocator<SaveAllAppUserUseCase>()(
+          [cacheAppUserEntity],
         );
         editUserResult.when(
           remote: (data, meta) {
-            appLog.d('Update current user with business profile save remote ${data?.toMap()}');
+            appLog.d('Update current user with business profile save remote ${data?.first.toMap()}');
           },
           localDb: (data, meta) {
-            appLog.d('Update current user with business profile save local ${data?.toMap()}');
+            appLog.d('Update current user with business profile save local ${data?.first.toMap()}');
             if (data != null) {
               var cachedAppUserEntity=serviceLocator<AppUserEntity>()..currentUserStage= 2..paymentBankEntity= paymentBankData..hasMultiplePaymentBanks= false..paymentBankEntities= <PaymentBankEntity>[];
               serviceLocator<UserModelStorageController>().setUserModel(cachedAppUserEntity);
@@ -114,9 +115,11 @@ class PaymentBankBloc extends Bloc<PaymentBankEvent, PaymentBankState> {
             appLog.d('Update current user with business profile exception $error');
           },
         );
+      }else{
+        appLog.d('Bank GetAllAppUserPaginationUseCase is null');
       }
     }, error: (dataSourceFailure, reason, error, networkException, stackTrace, exception, extra) {
-
+      appLog.d('Bank updateUserProfile $reason ');
     },);
 
     return;
