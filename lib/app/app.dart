@@ -43,6 +43,7 @@ import 'package:homemakers_merchant/theme/theme_controller.dart';
 import 'package:homemakers_merchant/utils/multi/multi_listenable_buillder.dart';
 import 'package:phone_form_field/phone_form_field.dart';
 import 'package:responsive_framework/responsive_framework.dart';
+import 'package:syncfusion_localizations/syncfusion_localizations.dart';
 
 class App extends StatefulWidget with GetItStatefulWidgetMixin {
   App({required this.themeController, super.key});
@@ -240,6 +241,7 @@ class _AppState extends State<App> with GetItStateMixin {
                           GlobalWidgetsLocalizations.delegate,
                           GlobalCupertinoLocalizations.delegate,
                           PhoneFieldLocalization.delegate,
+                          SfGlobalLocalizations.delegate
                         ],
                         locale: languageController.targetAppLanguage.value,
                         supportedLocales: AppLocalizations.supportedLocales,

@@ -193,7 +193,7 @@ class _PrimaryDashboardPageView extends WidgetView<PrimaryDashboardPage, _Primar
               child: PageBody(
                 controller: state.scrollController,
                 constraints: BoxConstraints(
-                  minWidth: double.infinity,
+                  minWidth: 1000,
                   minHeight: context.height,
                 ),
                 padding: EdgeInsetsDirectional.only(

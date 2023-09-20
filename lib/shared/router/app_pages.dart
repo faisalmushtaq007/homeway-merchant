@@ -5,6 +5,7 @@ import 'package:flutter/widgets.dart';
 import 'package:geocoder_buddy/geocoder_buddy.dart';
 import 'package:go_router/go_router.dart';
 import 'package:homemakers_merchant/app/features/address/index.dart';
+import 'package:homemakers_merchant/app/features/analysis/index.dart';
 import 'package:homemakers_merchant/app/features/authentication/presentation/pages/about_us.dart';
 import 'package:homemakers_merchant/app/features/authentication/presentation/pages/login_page.dart';
 import 'package:homemakers_merchant/app/features/authentication/presentation/pages/otp_verification_page.dart';
@@ -37,7 +38,7 @@ class AppRouter {
 
   AppRouter._();
 
-  static const String INITIAL = Routes.PRIMARY_DASHBOARD_PAGE;
+  static const String INITIAL = Routes.ORDER_ANALYSIS_PAGE;
 
   static final GoRouter _router = GoRouter(
     debugLogDiagnostics: true,
@@ -522,7 +523,13 @@ class AppRouter {
           return NewMapPage();
         },
       ),
-
+      GoRoute(
+        path: Routes.ORDER_ANALYSIS_PAGE,
+        builder: (context, state) {
+          final Map<String, dynamic>? args = state.extra as Map<String, dynamic>?;
+          return OrderAnalysis();
+        },
+      ),
     ],
     /*redirect: (context, state) {
       bool hasCurrentUserLoggedIn = userModelController.userModel.hasCurrentUser;
