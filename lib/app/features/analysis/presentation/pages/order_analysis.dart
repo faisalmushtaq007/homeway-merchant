@@ -13,6 +13,10 @@ class _OrderAnalysisController extends State<OrderAnalysis> {
   String activeLocale = 'en_US';
   final Map<String, moment.MomentLocalization> locales =
       moment.MomentLocalizations.locales.map((key, value) => MapEntry(key, value()));
+  List<Widget> transactionWidgets = [];
+  List<OrderAnalysisByPeriodType> transactionTypes = [];
+  int currentIndex = 0;
+  final PageStorageBucket _transactionBucket = PageStorageBucket();
 
   @override
   void initState() {
@@ -20,13 +24,36 @@ class _OrderAnalysisController extends State<OrderAnalysis> {
     scrollController = ScrollController();
     customScrollViewScrollController = ScrollController();
     activeLocale = serviceLocator<LanguageController>().targetAppLanguage.value.toString();
+    transactionTypes = [
+      OrderAnalysisByPeriodType(typeName: 'Today', typeID: 0, hasSelected: false),
+      OrderAnalysisByPeriodType(typeName: 'This Week', typeID: 1, hasSelected: false),
+      OrderAnalysisByPeriodType(typeName: 'By Month', typeID: 2, hasSelected: false),
+    ];
+    transactionWidgets = [
+      TodayOrderAnalysis(
+        key: PageStorageKey<String>('today-order-analysis'),
+      ),
+      WeeklyOrderAnalysis(
+        key: PageStorageKey<String>('weekly-order-analysis'),
+      ),
+      MonthlyOrderAnalysis(
+        key: PageStorageKey<String>('monthly-order-analysis'),
+      ),
+    ];
   }
 
   @override
   void dispose() {
+    transactionTypes = [];
+    transactionWidgets = [];
     scrollController.dispose();
     customScrollViewScrollController.dispose();
     super.dispose();
+  }
+
+  void updateCurrentIndex(int index) {
+    currentIndex = index;
+    setState(() {});
   }
 
   @override
@@ -116,7 +143,7 @@ class _OrderAnalysisView extends WidgetView<OrderAnalysis, _OrderAnalysisControl
                   ),
                   child: CustomScrollView(
                     controller: state.customScrollViewScrollController,
-                    shrinkWrap: true,
+                    //shrinkWrap: true,
                     slivers: [
                       SliverList(
                         delegate: SliverChildListDelegate(
@@ -125,12 +152,75 @@ class _OrderAnalysisView extends WidgetView<OrderAnalysis, _OrderAnalysisControl
                               6,
                               duration: Duration(milliseconds: 100),
                             ),
-                            TodayOrderAnalysis(
-                              key: const Key('today-order-analysis'),
+                            ClipRRect(
+                              borderRadius: BorderRadius.circular(10),
+                              child: Container(
+                                height: 65,
+                                width: context.width,
+                                color: Colors.grey.shade200,
+                                child: ScrollableRow(
+                                  controller: state.scrollController,
+                                  padding: EdgeInsetsDirectional.zero,
+                                  mainAxisSize: MainAxisSize.min,
+                                  textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                  physics: const BouncingScrollPhysics(),
+                                  constraintsBuilder: (constraints) => BoxConstraints(
+                                    minWidth: constraints.maxWidth,
+                                  ),
+                                  flexible: false,
+                                  children: List.generate(
+                                      state.transactionTypes.length,
+                                          (index) => StatefulBuilder(
+                                        builder: (context, setState) {
+                                          return Padding(
+                                            padding: const EdgeInsetsDirectional.only(start: 8, end: 8.0),
+                                            child: ElevatedButton(
+                                              key: ValueKey(index),
+                                              style: ElevatedButton.styleFrom(
+                                                shape: RoundedRectangleBorder(
+                                                  borderRadius: BorderRadiusDirectional.circular(10),
+                                                ),
+                                                minimumSize: Size(74, 42),
+                                                maximumSize: Size(104, 42),
+                                                //fixedSize: Size(104, 42),
+                                                backgroundColor: (state.currentIndex == index) ? flexExt.FlexStringExtensions('#2C73D2').toColor : flexExt.FlexStringExtensions('#D4E5ED').toColor,
+                                                //disabledBackgroundColor: '#B0A8B9'.toColor,
+                                              ),
+                                              onPressed: () {
+                                                state.updateCurrentIndex(index);
+                                              },
+                                              child: Text(
+                                                state.transactionTypes[index].typeName,
+                                                maxLines: 1,
+                                                overflow: TextOverflow.ellipsis,
+                                                softWrap: true,
+                                                textAlign: TextAlign.center,
+                                                style: context.bodyMedium!.copyWith(color: state.currentIndex == index ? Colors.white : Colors.black),
+                                              ),
+                                            ),
+                                          );
+                                        },
+                                      )),
+                                ),
+                              ),
+                            ),
+                            const AnimatedGap(12, duration: Duration(milliseconds: 200)),
+
+                            PageStorage(
+                              bucket: state._transactionBucket,
+                              child: state.transactionWidgets[state.currentIndex],
                             ),
                           ],
                         ),
                       ),
+                      /*SliverFillRemaining(
+                        fillOverscroll: true,
+                        hasScrollBody: true,
+                        child: PageStorage(
+                          bucket: state._transactionBucket,
+                          child: state.transactionWidgets[state.currentIndex],
+                        ),
+                      ),*/
                     ],
                   ),
                 ),
@@ -143,4 +233,27 @@ class _OrderAnalysisView extends WidgetView<OrderAnalysis, _OrderAnalysisControl
   }
 }
 
+class OrderAnalysisByPeriodType {
+  const OrderAnalysisByPeriodType({
+    required this.typeName,
+    required this.typeID,
+    required this.hasSelected,
+  });
+
+  final String typeName;
+  final int typeID;
+  final bool hasSelected;
+
+  OrderAnalysisByPeriodType copyWith({
+    String? typeName,
+    int? typeID,
+    bool? hasSelected,
+  }) {
+    return OrderAnalysisByPeriodType(
+      typeName: typeName ?? this.typeName,
+      typeID: typeID ?? this.typeID,
+      hasSelected: hasSelected ?? this.hasSelected,
+    );
+  }
+}
 

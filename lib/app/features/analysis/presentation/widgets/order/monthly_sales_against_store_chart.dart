@@ -1,13 +1,10 @@
 part of 'package:homemakers_merchant/app/features/analysis/index.dart';
-
-class TodayOrderAgainstStoreChartWidget extends StatefulWidget {
-  const TodayOrderAgainstStoreChartWidget({super.key});
-
+class MonthlySalesAgainstStoreChartWidget extends StatefulWidget {
+  const MonthlySalesAgainstStoreChartWidget({super.key});
   @override
-  _TodayOrderAgainstStoreChartWidgetController createState() => _TodayOrderAgainstStoreChartWidgetController();
+  _MonthlySalesAgainstStoreChartWidgetController createState() => _MonthlySalesAgainstStoreChartWidgetController();
 }
-
-class _TodayOrderAgainstStoreChartWidgetController extends State<TodayOrderAgainstStoreChartWidget> {
+class _MonthlySalesAgainstStoreChartWidgetController extends State<MonthlySalesAgainstStoreChartWidget> {
   List<ChartTodayEntity>? chartData;
 
   TooltipBehavior? _tooltipBehavior;
@@ -20,21 +17,21 @@ class _TodayOrderAgainstStoreChartWidgetController extends State<TodayOrderAgain
       canShowMarker: false,
     );
     chartData = <ChartTodayEntity>[
-      ChartTodayEntity('Store A', 6, 6),
-      ChartTodayEntity('Store B', 8, 8),
-      ChartTodayEntity('Store C', 12, 8),
-      ChartTodayEntity('Store D', 15, 21),
-      ChartTodayEntity('Store E', 20, 30),
-      ChartTodayEntity('Store F', 44, 55),
+      ChartTodayEntity('Store A', 60, 44),
+      ChartTodayEntity('Store B', 30, 23),
+      ChartTodayEntity('Store C', 12, 32),
+      ChartTodayEntity('Store D', 6, 12),
+      ChartTodayEntity('Store E', 4, 30),
+      ChartTodayEntity('Store F', 48, 60),
     ];
     super.initState();
   }
 
   /// Returns the cartesian stacked bar 100 chart.
-  SfCartesianChart _buildStackedBar100Chart() {
+  SfCartesianChart _buildChart() {
     return SfCartesianChart(
       plotAreaBorderWidth: 1,
-      title: ChartTitle(text: 'Order comparison of stores'),
+      title: ChartTitle(text: 'Sales comparison of stores'),
       legend: Legend(isVisible: true, position: LegendPosition.bottom),
       primaryXAxis: CategoryAxis(
         majorGridLines: const MajorGridLines(width: 0),
@@ -79,24 +76,19 @@ class _TodayOrderAgainstStoreChartWidgetController extends State<TodayOrderAgain
     chartData!.clear();
     super.dispose();
   }
-
   @override
-  Widget build(BuildContext context) => _TodayOrderAgainstStoreChartWidgetView(this);
+  Widget build(BuildContext context) => _MonthlySalesAgainstStoreChartWidgetView(this);
 }
-
-class _TodayOrderAgainstStoreChartWidgetView
-    extends WidgetView<TodayOrderAgainstStoreChartWidget, _TodayOrderAgainstStoreChartWidgetController> {
-  const _TodayOrderAgainstStoreChartWidgetView(super.state);
-
-  @override
+class _MonthlySalesAgainstStoreChartWidgetView extends WidgetView<MonthlySalesAgainstStoreChartWidget, _MonthlySalesAgainstStoreChartWidgetController> {
+  const _MonthlySalesAgainstStoreChartWidgetView(super.state);
+@override
   Widget build(BuildContext context) {
-    //return getSampleWidget()['stacked_bar_100_chart']!(Key('bar-chart')) as Widget;
-    return SizedBox(
-      child: Column(
-        children: [
-          state._buildStackedBar100Chart(),
-        ],
-      ),
-    );
+  return SizedBox(
+    child: Column(
+      children: [
+        state._buildChart(),
+      ],
+    ),
+  );
   }
 }

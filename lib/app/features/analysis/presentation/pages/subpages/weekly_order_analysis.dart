@@ -1,18 +1,18 @@
 part of 'package:homemakers_merchant/app/features/analysis/index.dart';
 
-class TodayOrderAnalysis extends StatefulWidget {
-  const TodayOrderAnalysis({super.key});
+class WeeklyOrderAnalysis extends StatefulWidget {
+  const WeeklyOrderAnalysis({super.key});
 
   @override
-  _TodayOrderAnalysisController createState() => _TodayOrderAnalysisController();
+  _WeeklyOrderAnalysisController createState() => _WeeklyOrderAnalysisController();
 }
 
-class _TodayOrderAnalysisController extends State<TodayOrderAnalysis> {
+class _WeeklyOrderAnalysisController extends State<WeeklyOrderAnalysis> {
   bool _isSelected = false;
   List<Widget> listOfWidgets = [
-    TodayOrderAgainstStoreChartWidget(key: const Key('today-order-against-store-widget')),
-    TodaySalesAgainstStoreChartWidget(
-      key: const Key('today-sales-against-store-widget'),
+    WeeklyOrderAgainstStoreChartWidget(key: const Key('weekly-order-against-store-widget')),
+    WeeklySalesAgainstStoreChartWidget(
+      key: const Key('weekly-sales-against-store-widget'),
     ),
   ];
 
@@ -32,11 +32,11 @@ class _TodayOrderAnalysisController extends State<TodayOrderAnalysis> {
   }
 
   @override
-  Widget build(BuildContext context) => _TodayOrderAnalysisView(this);
+  Widget build(BuildContext context) => _WeeklyOrderAnalysisView(this);
 }
 
-class _TodayOrderAnalysisView extends WidgetView<TodayOrderAnalysis, _TodayOrderAnalysisController> {
-  const _TodayOrderAnalysisView(super.state);
+class _WeeklyOrderAnalysisView extends WidgetView<WeeklyOrderAnalysis, _WeeklyOrderAnalysisController> {
+  const _WeeklyOrderAnalysisView(super.state);
 
   @override
   Widget build(BuildContext context) {
@@ -61,6 +61,7 @@ class _TodayOrderAnalysisView extends WidgetView<TodayOrderAnalysis, _TodayOrder
         ),
         const AnimatedGap(2, duration: Duration(milliseconds: 500)),
         Flexible(
+          flex: 3,
           child: AnimatedSwitcher(
             duration: Duration(milliseconds: 500),
             child: state._isSelected?state.listOfWidgets[1]:state.listOfWidgets[0],

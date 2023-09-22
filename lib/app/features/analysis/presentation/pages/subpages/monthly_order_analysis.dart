@@ -1,18 +1,18 @@
 part of 'package:homemakers_merchant/app/features/analysis/index.dart';
 
-class TodayOrderAnalysis extends StatefulWidget {
-  const TodayOrderAnalysis({super.key});
+class MonthlyOrderAnalysis extends StatefulWidget {
+  const MonthlyOrderAnalysis({super.key});
 
   @override
-  _TodayOrderAnalysisController createState() => _TodayOrderAnalysisController();
+  _MonthlyOrderAnalysisController createState() => _MonthlyOrderAnalysisController();
 }
 
-class _TodayOrderAnalysisController extends State<TodayOrderAnalysis> {
+class _MonthlyOrderAnalysisController extends State<MonthlyOrderAnalysis> {
   bool _isSelected = false;
   List<Widget> listOfWidgets = [
-    TodayOrderAgainstStoreChartWidget(key: const Key('today-order-against-store-widget')),
-    TodaySalesAgainstStoreChartWidget(
-      key: const Key('today-sales-against-store-widget'),
+    MonthlyOrderAgainstStoreChartWidget(key: const Key('monthly-order-against-store-widget')),
+    MonthlySalesAgainstStoreChartWidget(
+      key: const Key('monthly-sales-against-store-widget'),
     ),
   ];
 
@@ -32,11 +32,11 @@ class _TodayOrderAnalysisController extends State<TodayOrderAnalysis> {
   }
 
   @override
-  Widget build(BuildContext context) => _TodayOrderAnalysisView(this);
+  Widget build(BuildContext context) => _MonthlyOrderAnalysisView(this);
 }
 
-class _TodayOrderAnalysisView extends WidgetView<TodayOrderAnalysis, _TodayOrderAnalysisController> {
-  const _TodayOrderAnalysisView(super.state);
+class _MonthlyOrderAnalysisView extends WidgetView<MonthlyOrderAnalysis, _MonthlyOrderAnalysisController> {
+  const _MonthlyOrderAnalysisView(super.state);
 
   @override
   Widget build(BuildContext context) {
@@ -61,6 +61,7 @@ class _TodayOrderAnalysisView extends WidgetView<TodayOrderAnalysis, _TodayOrder
         ),
         const AnimatedGap(2, duration: Duration(milliseconds: 500)),
         Flexible(
+          flex: 3,
           child: AnimatedSwitcher(
             duration: Duration(milliseconds: 500),
             child: state._isSelected?state.listOfWidgets[1]:state.listOfWidgets[0],

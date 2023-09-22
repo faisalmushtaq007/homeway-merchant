@@ -44,6 +44,7 @@ import 'package:homemakers_merchant/shared/states/widget_state.dart';
 import 'package:homemakers_merchant/shared/widgets/app/page_body.dart';
 import 'package:homemakers_merchant/shared/widgets/universal/animate_do/animate_do.dart';
 import 'package:homemakers_merchant/shared/widgets/universal/animated_gap/gap.dart';
+import 'package:homemakers_merchant/shared/widgets/universal/constrained_scrollable_views/constrained_scrollable_views.dart';
 import 'package:homemakers_merchant/shared/widgets/universal/double_tap_exit/double_tap_to_exit.dart';
 import 'package:homemakers_merchant/shared/widgets/universal/group_list_view/flutter_group_list_view.dart';
 import 'package:homemakers_merchant/shared/widgets/universal/image_loader/image_helper.dart';
@@ -76,10 +77,16 @@ import 'package:homemakers_merchant/core/extensions/string/pattern.dart';
 
 part 'package:homemakers_merchant/app/features/analysis/presentation/pages/order_analysis.dart';
 part 'package:homemakers_merchant/app/features/analysis/presentation/pages/subpages/today_order_analysis.dart';
+part 'package:homemakers_merchant/app/features/analysis/presentation/pages/subpages/weekly_order_analysis.dart';
+part 'package:homemakers_merchant/app/features/analysis/presentation/pages/subpages/monthly_order_analysis.dart';
 part 'package:homemakers_merchant/app/features/analysis/presentation/widgets/order/grid_data.dart';
 part 'package:homemakers_merchant/app/features/analysis/presentation/widgets/order/switch_order_and_sales_widget.dart';
 part 'package:homemakers_merchant/app/features/analysis/presentation/widgets/order/today_order_against_store_chart.dart';
 part 'package:homemakers_merchant/app/features/analysis/presentation/widgets/order/today_sales_against_store_chart.dart';
+part 'package:homemakers_merchant/app/features/analysis/presentation/widgets/order/weekly_order_against_store_chart.dart';
+part 'package:homemakers_merchant/app/features/analysis/presentation/widgets/order/weekly_sales_against_store_chart.dart';
+part 'package:homemakers_merchant/app/features/analysis/presentation/widgets/order/monthly_order_against_store_chart.dart';
+part 'package:homemakers_merchant/app/features/analysis/presentation/widgets/order/monthly_sales_against_store_chart.dart';
 
 // Domain
 part 'package:homemakers_merchant/app/features/analysis/domain/entities/chart_today_entity.dart';

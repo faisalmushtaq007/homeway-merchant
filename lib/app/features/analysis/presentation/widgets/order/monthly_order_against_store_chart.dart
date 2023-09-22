@@ -1,13 +1,10 @@
 part of 'package:homemakers_merchant/app/features/analysis/index.dart';
-
-class TodayOrderAgainstStoreChartWidget extends StatefulWidget {
-  const TodayOrderAgainstStoreChartWidget({super.key});
-
+class MonthlyOrderAgainstStoreChartWidget extends StatefulWidget {
+  const MonthlyOrderAgainstStoreChartWidget({super.key});
   @override
-  _TodayOrderAgainstStoreChartWidgetController createState() => _TodayOrderAgainstStoreChartWidgetController();
+  _MonthlyOrderAgainstStoreChartWidgetController createState() => _MonthlyOrderAgainstStoreChartWidgetController();
 }
-
-class _TodayOrderAgainstStoreChartWidgetController extends State<TodayOrderAgainstStoreChartWidget> {
+class _MonthlyOrderAgainstStoreChartWidgetController extends State<MonthlyOrderAgainstStoreChartWidget> {
   List<ChartTodayEntity>? chartData;
 
   TooltipBehavior? _tooltipBehavior;
@@ -31,7 +28,7 @@ class _TodayOrderAgainstStoreChartWidgetController extends State<TodayOrderAgain
   }
 
   /// Returns the cartesian stacked bar 100 chart.
-  SfCartesianChart _buildStackedBar100Chart() {
+  SfCartesianChart _buildChart() {
     return SfCartesianChart(
       plotAreaBorderWidth: 1,
       title: ChartTitle(text: 'Order comparison of stores'),
@@ -79,24 +76,19 @@ class _TodayOrderAgainstStoreChartWidgetController extends State<TodayOrderAgain
     chartData!.clear();
     super.dispose();
   }
-
   @override
-  Widget build(BuildContext context) => _TodayOrderAgainstStoreChartWidgetView(this);
+  Widget build(BuildContext context) => _MonthlyOrderAgainstStoreChartWidgetView(this);
 }
-
-class _TodayOrderAgainstStoreChartWidgetView
-    extends WidgetView<TodayOrderAgainstStoreChartWidget, _TodayOrderAgainstStoreChartWidgetController> {
-  const _TodayOrderAgainstStoreChartWidgetView(super.state);
-
-  @override
+class _MonthlyOrderAgainstStoreChartWidgetView extends WidgetView<MonthlyOrderAgainstStoreChartWidget, _MonthlyOrderAgainstStoreChartWidgetController> {
+  const _MonthlyOrderAgainstStoreChartWidgetView(super.state);
+@override
   Widget build(BuildContext context) {
-    //return getSampleWidget()['stacked_bar_100_chart']!(Key('bar-chart')) as Widget;
-    return SizedBox(
-      child: Column(
-        children: [
-          state._buildStackedBar100Chart(),
-        ],
-      ),
-    );
+  return SizedBox(
+    child: Column(
+      children: [
+        state._buildChart(),
+      ],
+    ),
+  );
   }
 }
