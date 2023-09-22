@@ -1,0 +1,173 @@
+{
+  "result":[
+    {
+      "store": {
+        "storeID": 323,
+        "storeName": "Mills Harber",
+        "today_order_status": {
+          "total_orders": 44,
+          "pending": 89,
+          "instant": 22,
+          "schedule": 13,
+          "cancel": 51,
+          "delay": 43,
+          "deliver": 67
+        },
+        "yesterday_order_status": {
+          "total_orders": 30,
+          "pending": 58,
+          "instant": 21,
+          "schedule": 24,
+          "cancel": 29,
+          "delay": 82,
+          "deliver": 38
+        }
+      },
+      "data": {
+        "total_earnings": 2360,
+        "total_customers": 78,
+        "total_stores": 3,
+        "total_orders": {
+          "new": 19,
+          "deliver": 26
+        }
+      }
+    },
+    {
+      "store": {
+        "storeID": 401,
+        "storeName": "MacGyver",
+
+        "today_order_status": {
+          "total_orders": 32,
+          "pending": 76,
+          "instant": 44,
+          "schedule": 98,
+          "cancel": 29,
+          "delay": 60,
+          "deliver": 78
+        },
+        "yesterday_order_status": {
+          "total_orders": 40,
+          "pending": 13,
+          "instant": 51,
+          "schedule": 89,
+          "cancel": 17,
+          "delay": 22,
+          "deliver": 66
+        }
+      },
+      "data": {
+        "total_earnings": 3324,
+        "total_customers": 95,
+        "total_stores": 18,
+        "total_orders": {
+          "new": 81,
+          "deliver": 30
+        }
+      }
+    },
+    {
+      "store": {
+        "storeID": 192,
+        "storeName": "Torphy",
+
+        "today_order_status": {
+          "total_orders": 49,
+          "pending": 51,
+          "instant": 59,
+          "schedule": 73,
+          "cancel": 45,
+          "delay": 30,
+          "deliver": 28
+        },
+        "yesterday_order_status": {
+          "total_orders": 36,
+          "pending": 20,
+          "instant": 29,
+          "schedule": 77,
+          "cancel": 83,
+          "delay": 61,
+          "deliver": 45
+        }
+      },
+      "data": {
+        "total_earnings": 2103,
+        "total_customers": 41,
+        "total_stores": 1,
+        "total_orders": {
+          "new": 99,
+          "deliver": 75
+        }
+      }
+    },
+    {
+      "store": {
+        "storeID": 163,
+        "storeName": "HaleyKoch",
+
+        "today_order_status": {
+          "total_orders": 29,
+          "pending": 40,
+          "instant": 56,
+          "schedule": 10,
+          "cancel": 91,
+          "delay": 76,
+          "deliver": 41
+        },
+        "yesterday_order_status": {
+          "total_orders": 20,
+          "pending": 47,
+          "instant": 35,
+          "schedule": 96,
+          "cancel": 59,
+          "delay": 80,
+          "deliver": 84
+        }
+      },
+      "data": {
+        "total_earnings": 446,
+        "total_customers": 56,
+        "total_stores": 10,
+        "total_orders": {
+          "new": 55,
+          "deliver": 27
+        }
+      }
+    },
+    {
+      "store": {
+        "storeID": 406,
+        "storeName": "Gleichner",
+
+        "today_order_status": {
+          "total_orders": 12,
+          "pending": 38,
+          "instant": 77,
+          "schedule": 28,
+          "cancel": 13,
+          "delay": 79,
+          "deliver": 44
+        },
+        "yesterday_order_status": {
+          "total_orders": 2,
+          "pending": 90,
+          "instant": 93,
+          "schedule": 62,
+          "cancel": 92,
+          "delay": 70,
+          "deliver": 39
+        }
+      },
+      "data": {
+        "total_earnings": 4104,
+        "total_customers": 9,
+        "total_stores": 10,
+        "total_orders": {
+          "new": 12,
+          "deliver": 98
+        }
+      }
+    }
+  ]
+}

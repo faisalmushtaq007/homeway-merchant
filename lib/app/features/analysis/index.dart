@@ -1,6 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:homemakers_merchant/app/features/analysis/presentation/manager/order/order_analysis_bloc.dart';
 import 'package:homemakers_merchant/app/features/analysis/presentation/widgets/chart/sample_list.dart';
 import 'package:homemakers_merchant/app/features/analysis/presentation/widgets/chart/stacked_bar_100_chart.dart';
 import 'package:homemakers_merchant/base/widget_view.dart';
@@ -59,6 +60,7 @@ import 'package:homemakers_merchant/utils/app_log.dart';
 import 'package:homemakers_merchant/utils/functional/functional.dart';
 import 'package:homemakers_merchant/utils/gradient_css/gradient_like_css.dart';
 import 'package:homemakers_merchant/utils/image_type.dart';
+import 'package:intl/intl.dart';
 import 'package:moment_dart/moment_dart.dart' as moment;
 import 'package:network_manager/network_manager.dart';
 import 'package:sembast/sembast.dart';
@@ -75,6 +77,9 @@ import 'package:homemakers_merchant/core/extensions/global_extensions/list_ext.d
 import 'package:homemakers_merchant/core/extensions/global_extensions/src/object.dart';
 import 'package:homemakers_merchant/core/extensions/string/pattern.dart';
 
+import 'presentation/pages/model/sample_view.dart';
+import 'dart:convert';
+
 part 'package:homemakers_merchant/app/features/analysis/presentation/pages/order_analysis.dart';
 part 'package:homemakers_merchant/app/features/analysis/presentation/pages/subpages/today_order_analysis.dart';
 part 'package:homemakers_merchant/app/features/analysis/presentation/pages/subpages/weekly_order_analysis.dart';
@@ -90,3 +95,14 @@ part 'package:homemakers_merchant/app/features/analysis/presentation/widgets/ord
 
 // Domain
 part 'package:homemakers_merchant/app/features/analysis/domain/entities/chart_today_entity.dart';
+part 'package:homemakers_merchant/app/features/analysis/domain/entities/today_order_analysis_entity.dart';
+part 'package:homemakers_merchant/app/features/analysis/domain/entities/monthly_entity.dart';
+part 'package:homemakers_merchant/app/features/analysis/domain/entities/today_entity.dart';
+part 'package:homemakers_merchant/app/features/analysis/domain/entities/weekly_entity.dart';
+
+// Common
+part 'package:homemakers_merchant/app/features/analysis/common/analysis_utils.dart';
+part 'package:homemakers_merchant/app/features/analysis/common/analysis_enum.dart';
+
+// Data Source
+part 'package:homemakers_merchant/app/features/analysis/data/local/data_sources/dummy_today_analysis_data.dart';

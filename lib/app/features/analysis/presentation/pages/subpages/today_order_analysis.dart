@@ -9,17 +9,22 @@ class TodayOrderAnalysis extends StatefulWidget {
 
 class _TodayOrderAnalysisController extends State<TodayOrderAnalysis> {
   bool _isSelected = false;
-  List<Widget> listOfWidgets = [
-    TodayOrderAgainstStoreChartWidget(key: const Key('today-order-against-store-widget')),
-    TodaySalesAgainstStoreChartWidget(
-      key: const Key('today-sales-against-store-widget'),
-    ),
-  ];
+  List<Widget> listOfWidgets = [];
 
   @override
   void initState() {
+    listOfWidgets = [];
+    listOfWidgets = [
+      TodayOrderAgainstStoreChartWidget(
+        key: const Key('today-order-against-store-widget'),
+      ),
+      TodaySalesAgainstStoreChartWidget(
+        key: const Key('today-sales-against-store-widget'),
+      ),
+    ];
     super.initState();
   }
+
 
   @override
   void dispose() {
@@ -63,7 +68,7 @@ class _TodayOrderAnalysisView extends WidgetView<TodayOrderAnalysis, _TodayOrder
         Flexible(
           child: AnimatedSwitcher(
             duration: Duration(milliseconds: 500),
-            child: state._isSelected?state.listOfWidgets[1]:state.listOfWidgets[0],
+            child: state._isSelected ? state.listOfWidgets[1] : state.listOfWidgets[0],
           ),
         ),
         const AnimatedGap(12, duration: Duration(milliseconds: 500)),

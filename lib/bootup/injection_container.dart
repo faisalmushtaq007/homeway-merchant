@@ -1,6 +1,7 @@
 import 'package:get_it/get_it.dart';
 import 'package:homemakers_merchant/app/features/address/index.dart';
 import 'package:homemakers_merchant/app/features/address/presentation/manager/address_bloc.dart';
+import 'package:homemakers_merchant/app/features/analysis/presentation/manager/order/order_analysis_bloc.dart';
 import 'package:homemakers_merchant/app/features/authentication/index.dart';
 
 import 'package:homemakers_merchant/app/features/authentication/presentation/manager/otp_verification/otp_verification_bloc.dart';
@@ -1071,4 +1072,5 @@ void _setUpStateManagement() {
   serviceLocator.registerFactory<ScheduleOrderBloc>(() => ScheduleOrderBloc());
   serviceLocator.registerFactory<OnProcessOrderBloc>(() => OnProcessOrderBloc());
   serviceLocator.registerFactory<NewBusinessDocumentBloc>(() => NewBusinessDocumentBloc());
+  serviceLocator.registerFactory<OrderAnalysisBloc>(() => OrderAnalysisBloc());
 }

@@ -48,12 +48,12 @@ class _WeeklyOrderAnalysisView extends WidgetView<WeeklyOrderAnalysis, _WeeklyOr
       children: [
         Flexible(
           child: OrderAnalysisGridWidget(
-            key: const Key('today-order-widget'),
+            key: const Key('weekly-order-widget'),
           ),
         ),
         const AnimatedGap(6, duration: Duration(milliseconds: 500)),
         SwitchOrderAndSalesWidget(
-          key: const Key('today-switch-order-sales-widget'),
+          key: const Key('weekly-switch-order-sales-widget'),
           onChanged: state.onChangedSwitch,
           leftLabel: 'Orders',
           rightLabel: 'Sales',
@@ -61,7 +61,6 @@ class _WeeklyOrderAnalysisView extends WidgetView<WeeklyOrderAnalysis, _WeeklyOr
         ),
         const AnimatedGap(2, duration: Duration(milliseconds: 500)),
         Flexible(
-          flex: 3,
           child: AnimatedSwitcher(
             duration: Duration(milliseconds: 500),
             child: state._isSelected?state.listOfWidgets[1]:state.listOfWidgets[0],

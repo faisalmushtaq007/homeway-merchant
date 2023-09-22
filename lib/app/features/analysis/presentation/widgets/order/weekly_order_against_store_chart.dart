@@ -5,7 +5,7 @@ class WeeklyOrderAgainstStoreChartWidget extends StatefulWidget {
   _WeeklyOrderAgainstStoreChartWidgetController createState() => _WeeklyOrderAgainstStoreChartWidgetController();
 }
 class _WeeklyOrderAgainstStoreChartWidgetController extends State<WeeklyOrderAgainstStoreChartWidget> {
-  List<ChartTodayEntity>? chartData;
+  List<ChartSampleData>? chartData;
 
   TooltipBehavior? _tooltipBehavior;
 
@@ -16,13 +16,49 @@ class _WeeklyOrderAgainstStoreChartWidgetController extends State<WeeklyOrderAga
       header: '',
       canShowMarker: false,
     );
-    chartData = <ChartTodayEntity>[
-      ChartTodayEntity('Store A', 6, 6),
-      ChartTodayEntity('Store B', 8, 8),
-      ChartTodayEntity('Store C', 12, 8),
-      ChartTodayEntity('Store D', 15, 21),
-      ChartTodayEntity('Store E', 20, 30),
-      ChartTodayEntity('Store F', 44, 55),
+    chartData = <ChartSampleData>[
+      ChartSampleData(
+          x: DateTime.monday,
+          y: 50,
+          yValue: 55,
+          secondSeriesYValue: 72,
+          thirdSeriesYValue: 65),
+      ChartSampleData(
+          x: DateTime.tuesday,
+          y: 80,
+          yValue: 75,
+          secondSeriesYValue: 70,
+          thirdSeriesYValue: 60),
+      ChartSampleData(
+          x: DateTime.wednesday,
+          y: 35,
+          yValue: 45,
+          secondSeriesYValue: 55,
+          thirdSeriesYValue: 52),
+      ChartSampleData(
+          x: DateTime.thursday,
+          y: 65,
+          yValue: 50,
+          secondSeriesYValue: 70,
+          thirdSeriesYValue: 65,),
+      ChartSampleData(
+        x: DateTime.friday,
+        y: 65,
+        yValue: 50,
+        secondSeriesYValue: 70,
+        thirdSeriesYValue: 65,),
+      ChartSampleData(
+        x: DateTime.saturday,
+        y: 65,
+        yValue: 50,
+        secondSeriesYValue: 70,
+        thirdSeriesYValue: 65,),
+      ChartSampleData(
+        x: DateTime.sunday,
+        y: 65,
+        yValue: 50,
+        secondSeriesYValue: 70,
+        thirdSeriesYValue: 65,),
     ];
     super.initState();
   }
@@ -35,10 +71,13 @@ class _WeeklyOrderAgainstStoreChartWidgetController extends State<WeeklyOrderAga
       legend: Legend(isVisible: true, position: LegendPosition.bottom),
       primaryXAxis: CategoryAxis(
         majorGridLines: const MajorGridLines(width: 0),
+        //intervalType: DateTimeIntervalType.days,
       ),
       primaryYAxis: NumericAxis(
         rangePadding: ChartRangePadding.auto,
         axisLine: const AxisLine(width: 0),
+        //labelFormat: '{value}K',
+        //maximum: 300,
         majorTickLines: const MajorTickLines(size: 0),
       ),
       series: _getStackedBarSeries(),
@@ -48,26 +87,28 @@ class _WeeklyOrderAgainstStoreChartWidgetController extends State<WeeklyOrderAga
 
   /// Returns the list of chart series
   /// which need to render on the stacked bar 100 chart.
-  List<ChartSeries<ChartTodayEntity, String>> _getStackedBarSeries() {
-    return <ChartSeries<ChartTodayEntity, String>>[
-      StackedBarSeries<ChartTodayEntity, String>(
-        dataSource: chartData!,
-        xValueMapper: (ChartTodayEntity sales, _) => sales.x,
-        yValueMapper: (ChartTodayEntity sales, _) => sales.today,
-        groupName: 'Today',
-        name: 'Today',
-        //isVisible:true,
-        dataLabelSettings: DataLabelSettings(isVisible: true, showCumulativeValues: true),
-      ),
-      StackedBarSeries<ChartTodayEntity, String>(
-        dataSource: chartData!,
-        xValueMapper: (ChartTodayEntity sales, _) => sales.x,
-        yValueMapper: (ChartTodayEntity sales, _) => sales.yesterday,
-        groupName: 'Yesterday',
-        name: 'Yesterday',
-        //isVisible:true,
-        dataLabelSettings: DataLabelSettings(isVisible: true, showCumulativeValues: true),
-      ),
+  List<StackedColumnSeries<ChartSampleData, String>> _getStackedBarSeries() {
+    return <StackedColumnSeries<ChartSampleData, String>>[
+      StackedColumnSeries<ChartSampleData, String>(
+          dataSource: chartData!,
+          xValueMapper: (ChartSampleData sales, _) => getWeekdayName(sales.x) as String,
+          yValueMapper: (ChartSampleData sales, _) => sales.y,
+          /*groupName: 'Product A',*/name: 'Store A',dataLabelSettings: DataLabelSettings(isVisible: true, showCumulativeValues: true),),
+      StackedColumnSeries<ChartSampleData, String>(
+          dataSource: chartData!,
+          xValueMapper: (ChartSampleData sales, _) => getWeekdayName(sales.x) ,
+          yValueMapper: (ChartSampleData sales, _) => sales.yValue,
+        /*groupName: 'Product B',*/name: 'Store B',dataLabelSettings: DataLabelSettings(isVisible: true, showCumulativeValues: true),),
+      StackedColumnSeries<ChartSampleData, String>(
+          dataSource: chartData!,
+          xValueMapper: (ChartSampleData sales, _) => getWeekdayName(sales.x) as String,
+          yValueMapper: (ChartSampleData sales, _) => sales.secondSeriesYValue,
+        /*groupName: 'Product C',*/name: 'Store C',dataLabelSettings: DataLabelSettings(isVisible: true, showCumulativeValues: true),),
+      StackedColumnSeries<ChartSampleData, String>(
+          dataSource: chartData!,
+          xValueMapper: (ChartSampleData sales, _) => getWeekdayName(sales.x) as String,
+          yValueMapper: (ChartSampleData sales, _) => sales.thirdSeriesYValue,
+        /*groupName: 'Product D',*/name: 'Store D',dataLabelSettings: DataLabelSettings(isVisible: true, showCumulativeValues: true),)
     ];
   }
 

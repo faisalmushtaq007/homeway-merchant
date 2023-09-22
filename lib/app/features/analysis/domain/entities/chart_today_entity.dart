@@ -10,3 +10,4 @@ class ChartTodayEntity {
   final num today;
   final num yesterday;
 }
+

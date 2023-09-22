@@ -50,8 +50,7 @@ class LocalizationSampleView extends SampleView {
 }
 
 /// Base class of the localization sample's state class
-class LocalizationSampleViewState<T extends LocalizationSampleView>
-    extends SampleViewState<T> {
+class LocalizationSampleViewState<T extends LocalizationSampleView> extends SampleViewState<T> {
   late List<Locale> _supportedLocales;
 
   @override
@@ -76,11 +75,9 @@ class LocalizationSampleViewState<T extends LocalizationSampleView>
 
   /// Add the localization selection widget.
   Widget localizationSelectorWidget(BuildContext context) {
-    final double screenWidth =
-        model.isWebFullView ? 250 : MediaQuery.of(context).size.width;
+    final double screenWidth = model.isWebFullView ? 250 : MediaQuery.of(context).size.width;
     final double dropDownWidth = 0.6 * screenWidth;
-    return StatefulBuilder(
-        builder: (BuildContext context, StateSetter stateSetter) {
+    return StatefulBuilder(builder: (BuildContext context, StateSetter stateSetter) {
       return Row(
         children: <Widget>[
           Text(this is DirectionalitySampleViewState ? 'Language' : 'Locale',
@@ -95,24 +92,18 @@ class LocalizationSampleViewState<T extends LocalizationSampleView>
               child: DropdownButton<Locale>(
                   focusColor: Colors.transparent,
                   isExpanded: true,
-                  underline:
-                      Container(color: const Color(0xFFBDBDBD), height: 1),
+                  underline: Container(color: const Color(0xFFBDBDBD), height: 1),
                   value: model.locale,
                   items: _supportedLocales.map((Locale value) {
                     String localeString = value.toString();
                     if (this is DirectionalitySampleViewState) {
-                      localeString =
-                          (localeString == 'ar_AE') ? 'Arabic' : 'English';
+                      localeString = (localeString == 'ar_AE') ? 'Arabic' : 'English';
                     } else {
-                      localeString = localeString.substring(0, 2) +
-                          '-' +
-                          localeString.substring(3, 5);
+                      localeString = localeString.substring(0, 2) + '-' + localeString.substring(3, 5);
                     }
 
                     return DropdownMenuItem<Locale>(
-                        value: value,
-                        child: Text(localeString,
-                            style: TextStyle(color: model.textColor)));
+                        value: value, child: Text(localeString, style: TextStyle(color: model.textColor)));
                   }).toList(),
                   onChanged: (Locale? value) {
                     if (model.locale != value) {
@@ -145,9 +136,7 @@ class LocalizationSampleViewState<T extends LocalizationSampleView>
           GlobalCupertinoLocalizations.delegate,
           SfGlobalLocalizations.delegate
         ],
-        child: Directionality(
-            textDirection: model.textDirection,
-            child: buildSample(context) ?? Container()));
+        child: Directionality(textDirection: model.textDirection, child: buildSample(context) ?? Container()));
   }
 
   /// Method to get the widget's color based on the widget state
@@ -186,8 +175,7 @@ class DirectionalitySampleView extends LocalizationSampleView {
 }
 
 /// Base class of the directionality sample's state class
-class DirectionalitySampleViewState<T extends DirectionalitySampleView>
-    extends LocalizationSampleViewState<T> {
+class DirectionalitySampleViewState<T extends DirectionalitySampleView> extends LocalizationSampleViewState<T> {
   final List<TextDirection> _supportedTextDirection = <TextDirection>[
     TextDirection.ltr,
     TextDirection.rtl,
@@ -205,12 +193,10 @@ class DirectionalitySampleViewState<T extends DirectionalitySampleView>
 
   /// Add the localization selection widget.
   Widget textDirectionSelectorWidget(BuildContext context) {
-    final double screenWidth =
-        model.isWebFullView ? 250 : MediaQuery.of(context).size.width;
+    final double screenWidth = model.isWebFullView ? 250 : MediaQuery.of(context).size.width;
     closeAllOverlay();
     final double dropDownWidth = 0.6 * screenWidth;
-    return StatefulBuilder(
-        builder: (BuildContext context, StateSetter stateSetter) {
+    return StatefulBuilder(builder: (BuildContext context, StateSetter stateSetter) {
       return Row(
         children: <Widget>[
           Text('Rendering\nDirection',
@@ -227,14 +213,12 @@ class DirectionalitySampleViewState<T extends DirectionalitySampleView>
               child: DropdownButton<TextDirection>(
                   focusColor: Colors.transparent,
                   isExpanded: true,
-                  underline:
-                      Container(color: const Color(0xFFBDBDBD), height: 1),
+                  underline: Container(color: const Color(0xFFBDBDBD), height: 1),
                   value: model.textDirection,
                   items: _supportedTextDirection.map((TextDirection value) {
                     return DropdownMenuItem<TextDirection>(
                         value: value,
-                        child: Text(
-                            value.toString().split('.')[1].toUpperCase(),
+                        child: Text(value.toString().split('.')[1].toUpperCase(),
                             style: TextStyle(color: model.textColor)));
                   }).toList(),
                   onChanged: (TextDirection? value) {
@@ -256,21 +240,22 @@ class DirectionalitySampleViewState<T extends DirectionalitySampleView>
 ///Chart sample data
 class ChartSampleData {
   /// Holds the datapoint values like x, y, etc.,
-  ChartSampleData(
-      {this.x,
-      this.y,
-      this.xValue,
-      this.yValue,
-      this.secondSeriesYValue,
-      this.thirdSeriesYValue,
-      this.pointColor,
-      this.size,
-      this.text,
-      this.open,
-      this.close,
-      this.low,
-      this.high,
-      this.volume});
+  ChartSampleData({
+    this.x,
+    this.y,
+    this.xValue,
+    this.yValue,
+    this.secondSeriesYValue,
+    this.thirdSeriesYValue,
+    this.pointColor,
+    this.size,
+    this.text,
+    this.open,
+    this.close,
+    this.low,
+    this.high,
+    this.volume,
+  });
 
   /// Holds x value of the datapoint
   final dynamic x;

@@ -6,6 +6,7 @@ import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:get_it_mixin/get_it_mixin.dart';
 import 'package:google_mlkit_translation/google_mlkit_translation.dart';
 import 'package:homemakers_merchant/app/features/address/presentation/manager/address_bloc.dart';
+import 'package:homemakers_merchant/app/features/analysis/presentation/manager/order/order_analysis_bloc.dart';
 import 'package:homemakers_merchant/app/features/authentication/presentation/manager/otp_verification/otp_verification_bloc.dart';
 import 'package:homemakers_merchant/app/features/authentication/presentation/manager/phone_number_verification_bloc.dart';
 import 'package:homemakers_merchant/app/features/menu/index.dart';
@@ -153,6 +154,10 @@ class _AppState extends State<App> with GetItStateMixin {
         ),
         BlocProvider<NewBusinessDocumentBloc>(
           key: const Key('newBusiness_document_bloc_provider'),
+          create: (context) => serviceLocator(),
+        ),
+        BlocProvider<OrderAnalysisBloc>(
+          key: const Key('order_analysis_bloc_provider'),
           create: (context) => serviceLocator(),
         ),
 

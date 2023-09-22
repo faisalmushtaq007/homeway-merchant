@@ -53,6 +53,31 @@ class _OrderAnalysisController extends State<OrderAnalysis> {
 
   void updateCurrentIndex(int index) {
     currentIndex = index;
+    switch (currentIndex) {
+      case 0:
+        {
+          context.read<OrderAnalysisBloc>().add(
+                const TodayOrderAnalysisEvent(),
+              );
+        }
+      case 1:
+        {
+          context.read<OrderAnalysisBloc>().add(
+                const WeeklyOrderAnalysisEvent(),
+              );
+        }
+      case 2:
+        {
+          final int month = DateTime.now().month;
+          context.read<OrderAnalysisBloc>().add(
+                ByMonthlyOrderAnalysisEvent(
+                  byMonth: month,
+                ),
+              );
+        }
+      default:
+        {}
+    }
     setState(() {});
   }
 
@@ -170,42 +195,45 @@ class _OrderAnalysisView extends WidgetView<OrderAnalysis, _OrderAnalysisControl
                                   flexible: false,
                                   children: List.generate(
                                       state.transactionTypes.length,
-                                          (index) => StatefulBuilder(
-                                        builder: (context, setState) {
-                                          return Padding(
-                                            padding: const EdgeInsetsDirectional.only(start: 8, end: 8.0),
-                                            child: ElevatedButton(
-                                              key: ValueKey(index),
-                                              style: ElevatedButton.styleFrom(
-                                                shape: RoundedRectangleBorder(
-                                                  borderRadius: BorderRadiusDirectional.circular(10),
+                                      (index) => StatefulBuilder(
+                                            builder: (context, setState) {
+                                              return Padding(
+                                                padding: const EdgeInsetsDirectional.only(start: 8, end: 8.0),
+                                                child: ElevatedButton(
+                                                  key: ValueKey(index),
+                                                  style: ElevatedButton.styleFrom(
+                                                    shape: RoundedRectangleBorder(
+                                                      borderRadius: BorderRadiusDirectional.circular(10),
+                                                    ),
+                                                    minimumSize: Size(74, 42),
+                                                    maximumSize: Size(104, 42),
+                                                    //fixedSize: Size(104, 42),
+                                                    backgroundColor: (state.currentIndex == index)
+                                                        ? flexExt.FlexStringExtensions('#2C73D2').toColor
+                                                        : flexExt.FlexStringExtensions('#D4E5ED').toColor,
+                                                    //disabledBackgroundColor: '#B0A8B9'.toColor,
+                                                  ),
+                                                  onPressed: () {
+                                                    state.updateCurrentIndex(index);
+                                                  },
+                                                  child: Text(
+                                                    state.transactionTypes[index].typeName,
+                                                    maxLines: 1,
+                                                    overflow: TextOverflow.ellipsis,
+                                                    softWrap: true,
+                                                    textAlign: TextAlign.center,
+                                                    style: context.bodyMedium!.copyWith(
+                                                        color:
+                                                            state.currentIndex == index ? Colors.white : Colors.black),
+                                                  ),
                                                 ),
-                                                minimumSize: Size(74, 42),
-                                                maximumSize: Size(104, 42),
-                                                //fixedSize: Size(104, 42),
-                                                backgroundColor: (state.currentIndex == index) ? flexExt.FlexStringExtensions('#2C73D2').toColor : flexExt.FlexStringExtensions('#D4E5ED').toColor,
-                                                //disabledBackgroundColor: '#B0A8B9'.toColor,
-                                              ),
-                                              onPressed: () {
-                                                state.updateCurrentIndex(index);
-                                              },
-                                              child: Text(
-                                                state.transactionTypes[index].typeName,
-                                                maxLines: 1,
-                                                overflow: TextOverflow.ellipsis,
-                                                softWrap: true,
-                                                textAlign: TextAlign.center,
-                                                style: context.bodyMedium!.copyWith(color: state.currentIndex == index ? Colors.white : Colors.black),
-                                              ),
-                                            ),
-                                          );
-                                        },
-                                      )),
+                                              );
+                                            },
+                                          )),
                                 ),
                               ),
                             ),
                             const AnimatedGap(12, duration: Duration(milliseconds: 200)),
-
                             PageStorage(
                               bucket: state._transactionBucket,
                               child: state.transactionWidgets[state.currentIndex],
@@ -256,4 +284,3 @@ class OrderAnalysisByPeriodType {
     );
   }
 }
-
