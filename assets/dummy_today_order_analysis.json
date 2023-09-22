@@ -29,7 +29,7 @@
         "total_stores": 3,
         "total_orders": {
           "new": 19,
-          "deliver": 26
+          "deliver": 26,"total": 35
         }
       }
     },
@@ -63,7 +63,8 @@
         "total_stores": 18,
         "total_orders": {
           "new": 81,
-          "deliver": 30
+          "deliver": 30,
+          "total": 111
         }
       }
     },
@@ -97,7 +98,7 @@
         "total_stores": 1,
         "total_orders": {
           "new": 99,
-          "deliver": 75
+          "deliver": 75,"total": 174
         }
       }
     },
@@ -131,7 +132,7 @@
         "total_stores": 10,
         "total_orders": {
           "new": 55,
-          "deliver": 27
+          "deliver": 27,"total": 82
         }
       }
     },
@@ -165,7 +166,7 @@
         "total_stores": 10,
         "total_orders": {
           "new": 12,
-          "deliver": 98
+          "deliver": 98,"total": 110
         }
       }
     }

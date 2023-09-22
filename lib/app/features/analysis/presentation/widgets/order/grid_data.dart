@@ -1,7 +1,8 @@
 part of 'package:homemakers_merchant/app/features/analysis/index.dart';
 
 class OrderAnalysisGridWidget extends StatelessWidget {
-  const OrderAnalysisGridWidget({super.key});
+  const OrderAnalysisGridWidget({super.key,this.overAllAnalysisData,});
+  final OverAllAnalysisData? overAllAnalysisData;
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +17,7 @@ class OrderAnalysisGridWidget extends StatelessWidget {
           child: Tile(
             index: 0,
             title: 'Net Revenue',
-            subTitle: '1000 SAR',
+            subTitle: '${overAllAnalysisData?.totalEarnings??0} SAR',
             gradient: linearGradient(
               Alignment.bottomCenter,
               ['#5038EA', '#C391B3'],
@@ -29,7 +30,7 @@ class OrderAnalysisGridWidget extends StatelessWidget {
           child: Tile(
             index: 1,
             title: 'Stores',
-            subTitle: '3',
+            subTitle: '${overAllAnalysisData?.totalStores??0}',
             gradient: linearGradient(
               Alignment.bottomCenter,
               ['#4077b0', '#f9c084'],
@@ -42,7 +43,7 @@ class OrderAnalysisGridWidget extends StatelessWidget {
           child: Tile(
             index: 2,
             title: 'Customers',
-            subTitle: '20',
+            subTitle: '${overAllAnalysisData?.totalCustomers??0}',
             gradient: linearGradient(
               Alignment.bottomCenter,
               ['#4077b0', '#f9c084'],
@@ -55,7 +56,7 @@ class OrderAnalysisGridWidget extends StatelessWidget {
           child: Tile(
             index: 3,
             title: 'Total Orders',
-            subTitle: '30',
+            subTitle: '${overAllAnalysisData?.totalOrders.countTotalOrders??0}',
             gradient: linearGradient(
               Alignment.bottomCenter,
               ['#5038EA', '#C391B3'],
@@ -68,7 +69,7 @@ class OrderAnalysisGridWidget extends StatelessWidget {
           child: Tile(
             index: 4,
             title: 'New',
-            subTitle: '10',
+            subTitle: '${overAllAnalysisData?.totalOrders.totalOrdersNew??0}',
             gradient: linearGradient(
               Alignment.bottomCenter,
               ['#A89198', '#B385CA'],
@@ -81,7 +82,7 @@ class OrderAnalysisGridWidget extends StatelessWidget {
           child: Tile(
             index: 5,
             title: 'Delivered',
-            subTitle: '20',
+            subTitle: '${overAllAnalysisData?.totalOrders.deliver??0}',
             gradient: linearGradient(
               Alignment.bottomCenter,
               ['#6C83CA', '#B98178'],

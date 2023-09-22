@@ -15,6 +15,12 @@ class _MonthlyOrderAnalysisController extends State<MonthlyOrderAnalysis> {
       key: const Key('monthly-sales-against-store-widget'),
     ),
   ];
+  OverAllAnalysisData overAllAnalysisData = OverAllAnalysisData(
+    totalEarnings: 0,
+    totalCustomers: 0,
+    totalOrders: TotalOrders(totalOrdersNew: 0, deliver: 0),
+    totalStores: 0,
+  );
 
   @override
   void initState() {
@@ -49,6 +55,7 @@ class _MonthlyOrderAnalysisView extends WidgetView<MonthlyOrderAnalysis, _Monthl
         Flexible(
           child: OrderAnalysisGridWidget(
             key: const Key('monthly-order-widget'),
+            overAllAnalysisData: state.overAllAnalysisData,
           ),
         ),
         const AnimatedGap(6, duration: Duration(milliseconds: 500)),

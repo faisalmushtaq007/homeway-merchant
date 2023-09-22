@@ -53,7 +53,7 @@ class _OrderAnalysisController extends State<OrderAnalysis> {
 
   void updateCurrentIndex(int index) {
     currentIndex = index;
-    switch (currentIndex) {
+    switch (index) {
       case 0:
         {
           context.read<OrderAnalysisBloc>().add(

@@ -72,19 +72,23 @@ class TotalOrders {
     TotalOrders({
         required this.totalOrdersNew,
         required this.deliver,
+        this.countTotalOrders=0,
     });
 
     int totalOrdersNew;
     int deliver;
+    int countTotalOrders;
 
     factory TotalOrders.fromJson(Map<dynamic, dynamic> json) => TotalOrders(
         totalOrdersNew: json["new"],
         deliver: json["deliver"],
+        countTotalOrders:json['total']
     );
 
     Map<dynamic, dynamic> toJson() => {
         "new": totalOrdersNew,
         "deliver": deliver,
+        'total':countTotalOrders,
     };
 }
 

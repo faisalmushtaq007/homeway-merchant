@@ -77,7 +77,17 @@ class _TodaySalesAgainstStoreChartWidgetController extends State<TodaySalesAgain
     super.dispose();
   }
   @override
-  Widget build(BuildContext context) => _TodaySalesAgainstStoreChartWidgetView(this);
+  Widget build(BuildContext context) => BlocBuilder<OrderAnalysisBloc, OrderAnalysisState>(
+    bloc: context.read<OrderAnalysisBloc>(),
+    builder: (context, orderAnalysisState) {
+      switch(orderAnalysisState){
+        case TodaySalesByStoreAnalysisState():{
+
+        }
+      }
+    return _TodaySalesAgainstStoreChartWidgetView(this);
+  },
+);
 }
 class _TodaySalesAgainstStoreChartWidgetView extends WidgetView<TodaySalesAgainstStoreChartWidget, _TodaySalesAgainstStoreChartWidgetController> {
   const _TodaySalesAgainstStoreChartWidgetView(super.state);

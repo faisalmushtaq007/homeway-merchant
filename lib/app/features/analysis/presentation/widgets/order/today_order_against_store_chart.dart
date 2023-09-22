@@ -17,27 +17,28 @@ class _TodayOrderAgainstStoreChartWidgetController extends State<TodayOrderAgain
 
   TooltipBehavior? _tooltipBehavior;
   TooltipBehavior? _orderStatusTooltipBehavior;
-
-
+  
   @override
   void initState() {
-
+    chartData=[];
+    storeOrderAnalysisData=[];
+    listOfStoreName=[];
+    _tooltipBehavior = TooltipBehavior(
+      enable: true,
+      header: '',
+      canShowMarker: false,
+    );
+    _orderStatusTooltipBehavior= TooltipBehavior(
+      enable: true,
+      header: '',
+      canShowMarker: false,
+    );
+    context.read<OrderAnalysisBloc>().add(
+      const TodayOrderAnalysisEvent(),
+    );
     super.initState();
   }
 
-
-
-  Future<void> initData() async{
-    final TodayOrderAnalysisEntity todayOrderAnalysisData = await readTodayOrderAnalysisData();
-    for (TodayOrderResult todayOrderResult in todayOrderAnalysisData.result){
-      final StoreAnalysisEntity storeAnalysisEntity = todayOrderResult.store;
-      final DayOrderStatus todayData=todayOrderResult.store.todayOrderStatus;
-      final DayOrderStatus yesterdayDayData=todayOrderResult.store.yesterdayOrderStatus;
-      chartData.add(ChartTodayEntity(storeAnalysisEntity.storeName,todayData.totalOrders,yesterdayDayData.totalOrders));
-      storeOrderAnalysisData.add(storeAnalysisEntity);
-      listOfStoreName.add(storeAnalysisEntity.storeName);
-    }
-  }
 
   /// Returns the cartesian stacked bar 100 chart.
   SfCartesianChart _buildStackedBar100Chart() {
@@ -46,7 +47,7 @@ class _TodayOrderAgainstStoreChartWidgetController extends State<TodayOrderAgain
       enableAxisAnimation: true,
       plotAreaBorderWidth: 1,
       margin:  EdgeInsets.all(5),
-      title: ChartTitle(text: 'Order comparison of stores'),
+      title: ChartTitle(text: 'Order comparison of Time Period'),
       legend: Legend(isVisible: true, position: LegendPosition.bottom),
       primaryXAxis: CategoryAxis(
         majorGridLines: const MajorGridLines(width: 0),
@@ -183,28 +184,19 @@ class _TodayOrderAgainstStoreChartWidgetController extends State<TodayOrderAgain
   }
 
   @override
-  Widget build(BuildContext context) => Builder(
-    builder: (context) {
-      _tooltipBehavior = TooltipBehavior(
-        enable: true,
-        header: '',
-        canShowMarker: false,
-      );
-      _orderStatusTooltipBehavior=TooltipBehavior(
-        enable: true,
-        header: '',
-        canShowMarker: false,
-      );
-      chartData=[];
-      storeOrderAnalysisData=[];
-      listOfStoreName=[];
-      //chartData=widget.chartData;
-      //storeOrderAnalysisData=widget.storeOrderAnalysisData;
-      //listOfStoreName=widget.listOfStoreName;
-      initData();
-      return _TodayOrderAgainstStoreChartWidgetView(this);
-    },
-  );
+  Widget build(BuildContext context) => BlocBuilder<OrderAnalysisBloc, OrderAnalysisState>(
+    bloc: context.read<OrderAnalysisBloc>(),
+  builder: (context, orderAnalysisState) {
+    switch(orderAnalysisState){
+      case TodayOrderByStoreAnalysisState():{
+        chartData=List<ChartTodayEntity>.from(orderAnalysisState.chartData.toList());
+        storeOrderAnalysisData=List<StoreAnalysisEntity>.from(orderAnalysisState.storeOrderAnalysisData.toList());
+        listOfStoreName=List<String>.from(orderAnalysisState.listOfStoreName.toList());
+      }
+    }
+    return _TodayOrderAgainstStoreChartWidgetView(this);
+  },
+);
 }
 
 class _TodayOrderAgainstStoreChartWidgetView
