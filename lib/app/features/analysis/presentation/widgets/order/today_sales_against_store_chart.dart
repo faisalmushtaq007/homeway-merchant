@@ -6,23 +6,23 @@ class TodaySalesAgainstStoreChartWidget extends StatefulWidget {
 }
 class _TodaySalesAgainstStoreChartWidgetController extends State<TodaySalesAgainstStoreChartWidget> {
   List<ChartTodayEntity> chartData=[];
-  TooltipBehavior? _tooltipBehavior;
+  TooltipBehavior? _salesOrderTooltipBehavior;
 
   List<StoreSalesAnalysisEntity> storeSalesAnalysisData=[];
   List<String> listOfStoreName=[];
-  TooltipBehavior? _orderStatusTooltipBehavior;
+  TooltipBehavior? _salesStatusTooltipBehavior;
 
   @override
   void initState() {
     chartData=[];
     storeSalesAnalysisData=[];
     listOfStoreName=[];
-    _tooltipBehavior = TooltipBehavior(
+    _salesOrderTooltipBehavior = TooltipBehavior(
       enable: true,
       header: '',
       canShowMarker: false,
     );
-    _orderStatusTooltipBehavior= TooltipBehavior(
+    _salesStatusTooltipBehavior= TooltipBehavior(
       enable: true,
       header: '',
       canShowMarker: false,
@@ -36,9 +36,10 @@ class _TodaySalesAgainstStoreChartWidgetController extends State<TodaySalesAgain
   /// Returns the cartesian stacked bar 100 chart.
   SfCartesianChart _buildStackedBar100Chart() {
     return SfCartesianChart(
+      key: const Key('sales-status-stores-analysis'),
       plotAreaBorderWidth: 1,
-      title: ChartTitle(text: 'Sales comparison of stores'),
-      legend: Legend(isVisible: true, position: LegendPosition.bottom),
+      title: ChartTitle(text: 'Sales comparison of Period'),
+      legend: const Legend(isVisible: true, position: LegendPosition.bottom),
       primaryXAxis: CategoryAxis(
         majorGridLines: const MajorGridLines(width: 0),
       ),
@@ -48,7 +49,7 @@ class _TodaySalesAgainstStoreChartWidgetController extends State<TodaySalesAgain
         majorTickLines: const MajorTickLines(size: 0),
       ),
       series: _getStackedBarSeries(),
-      tooltipBehavior: _tooltipBehavior,
+      tooltipBehavior: _salesOrderTooltipBehavior,
     );
   }
 
@@ -63,7 +64,7 @@ class _TodaySalesAgainstStoreChartWidgetController extends State<TodaySalesAgain
         groupName: 'Today',
         name: 'Today',
         //isVisible:true,
-        dataLabelSettings: DataLabelSettings(isVisible: true, showCumulativeValues: true),
+        dataLabelSettings: const DataLabelSettings(isVisible: true, showCumulativeValues: true),
       ),
       StackedBarSeries<ChartTodayEntity, String>(
         dataSource: chartData,
@@ -72,9 +73,80 @@ class _TodaySalesAgainstStoreChartWidgetController extends State<TodaySalesAgain
         groupName: 'Yesterday',
         name: 'Yesterday',
         //isVisible:true,
-        dataLabelSettings: DataLabelSettings(isVisible: true, showCumulativeValues: true),
+        dataLabelSettings: const DataLabelSettings(isVisible: true, showCumulativeValues: true),
       ),
     ];
+  }
+
+  SfCartesianChart _buildStackedColumnChart() {
+    return SfCartesianChart(
+      key: const Key('sales-status-status-analysis'),
+      enableAxisAnimation: true,
+      plotAreaBorderWidth: 1,
+      margin:  const EdgeInsets.all(5),
+      title: ChartTitle(text: 'Sales comparison of Status'),
+      legend: const Legend(isVisible: true, position: LegendPosition.bottom,padding: 5,itemPadding: 8),
+      primaryXAxis: CategoryAxis(
+        majorGridLines: const MajorGridLines(width: 0),
+        labelIntersectAction: AxisLabelIntersectAction.multipleRows,
+        maximumLabelWidth: 80,
+          //labelRotation: 90
+      ),
+      primaryYAxis: NumericAxis(
+        rangePadding: ChartRangePadding.auto,
+        axisLine: const AxisLine(width: 0),
+        majorTickLines: const MajorTickLines(size: 0),
+      ),
+      series: _getStackedColumnSeries(),
+      tooltipBehavior: _salesStatusTooltipBehavior,
+    );
+  }
+
+  List<ChartSeries<StoreSalesAnalysisEntity, String>> _getStackedColumnSeries() {
+    List<ChartSeries<StoreSalesAnalysisEntity, String>> listOfSeries=[
+      StackedColumnSeries<StoreSalesAnalysisEntity, String>(
+        dataSource: storeSalesAnalysisData,
+        xValueMapper: (StoreSalesAnalysisEntity sales, _) => sales.storeName,
+        yValueMapper: (StoreSalesAnalysisEntity sales, _) => sales.todaySalesStatus.netEarning,
+        groupName: 'Total',
+        name: 'Total',
+        dataLabelSettings: const DataLabelSettings(isVisible: true, showCumulativeValues: false,),
+      ),
+      StackedColumnSeries<StoreSalesAnalysisEntity, String>(
+        dataSource: storeSalesAnalysisData,
+        xValueMapper: (StoreSalesAnalysisEntity sales, _) => sales.storeName,
+        yValueMapper: (StoreSalesAnalysisEntity sales, _) => sales.todaySalesStatus.deliverOrderAmount,
+        groupName: 'Delivered',
+        name: 'Delivered',
+        dataLabelSettings: const DataLabelSettings(isVisible: true, showCumulativeValues: false,),
+      ),
+
+      StackedColumnSeries<StoreSalesAnalysisEntity, String>(
+        dataSource: storeSalesAnalysisData,
+        xValueMapper: (StoreSalesAnalysisEntity sales, _) => sales.storeName,
+        yValueMapper: (StoreSalesAnalysisEntity sales, _) => sales.todaySalesStatus.penaltyAmountBySystem,
+        groupName: 'Penalty',
+        name: 'Penalty',
+        dataLabelSettings: const DataLabelSettings(isVisible: true, showCumulativeValues: false,),
+      ),
+      StackedColumnSeries<StoreSalesAnalysisEntity, String>(
+        dataSource: storeSalesAnalysisData,
+        xValueMapper: (StoreSalesAnalysisEntity sales, _) => sales.storeName,
+        yValueMapper: (StoreSalesAnalysisEntity sales, _) => sales.todaySalesStatus.cancelOrderAmount,
+        groupName: 'Cancel',
+        name: 'Cancel',
+        dataLabelSettings: const DataLabelSettings(isVisible: true, showCumulativeValues: false,),
+      ),
+      StackedColumnSeries<StoreSalesAnalysisEntity, String>(
+        dataSource: storeSalesAnalysisData,
+        xValueMapper: (StoreSalesAnalysisEntity sales, _) => sales.storeName,
+        yValueMapper: (StoreSalesAnalysisEntity sales, _) => sales.todaySalesStatus.refundAmount,
+        groupName: 'Refund',
+        name: 'Refund',
+        dataLabelSettings: const DataLabelSettings(isVisible: true, showCumulativeValues: false,),
+      ),
+    ];
+    return listOfSeries.toList();
   }
 
   @override
@@ -107,6 +179,7 @@ class _TodaySalesAgainstStoreChartWidgetView extends WidgetView<TodaySalesAgains
       child: Column(
         children: [
           state._buildStackedBar100Chart(),
+          state._buildStackedColumnChart(),
         ],
       ));
   }

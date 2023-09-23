@@ -46,9 +46,9 @@ class _TodayOrderAgainstStoreChartWidgetController extends State<TodayOrderAgain
       key: const Key('order-stores-analysis'),
       enableAxisAnimation: true,
       plotAreaBorderWidth: 1,
-      margin:  EdgeInsets.all(5),
-      title: ChartTitle(text: 'Order comparison of Time Period'),
-      legend: Legend(isVisible: true, position: LegendPosition.bottom),
+      margin:  const EdgeInsets.all(5),
+      title: ChartTitle(text: 'Order comparison of Period'),
+      legend: const Legend(isVisible: true, position: LegendPosition.bottom),
       primaryXAxis: CategoryAxis(
         majorGridLines: const MajorGridLines(width: 0),
           labelIntersectAction: AxisLabelIntersectAction.multipleRows,
@@ -76,7 +76,7 @@ class _TodayOrderAgainstStoreChartWidgetController extends State<TodayOrderAgain
         groupName: 'Today',
         name: 'Today',
         //isVisible:true,
-        dataLabelSettings: DataLabelSettings(isVisible: true, showCumulativeValues: false,),
+        dataLabelSettings: const DataLabelSettings(isVisible: true, showCumulativeValues: false,),
       ),
       StackedBarSeries<ChartTodayEntity, String>(
         dataSource: chartData,
@@ -85,7 +85,7 @@ class _TodayOrderAgainstStoreChartWidgetController extends State<TodayOrderAgain
         groupName: 'Yesterday',
         name: 'Yesterday',
         //isVisible:true,
-        dataLabelSettings: DataLabelSettings(isVisible: true, showCumulativeValues: false),
+        dataLabelSettings: const DataLabelSettings(isVisible: true, showCumulativeValues: false),
       ),
     ];
   }
@@ -95,9 +95,9 @@ class _TodayOrderAgainstStoreChartWidgetController extends State<TodayOrderAgain
       key: const Key('order-status-stores-analysis'),
       enableAxisAnimation: true,
       plotAreaBorderWidth: 1,
-      margin:  EdgeInsets.all(5),
-      title: ChartTitle(text: 'Order comparison of Order Status'),
-      legend: Legend(isVisible: true, position: LegendPosition.bottom,padding: 5),
+      margin:  const EdgeInsets.all(5),
+      title: ChartTitle(text: 'Order comparison of Status'),
+      legend: const Legend(isVisible: true, position: LegendPosition.bottom,padding: 5,itemPadding: 8),
       primaryXAxis: CategoryAxis(
         majorGridLines: const MajorGridLines(width: 0),
         labelIntersectAction: AxisLabelIntersectAction.multipleRows,
@@ -124,7 +124,7 @@ class _TodayOrderAgainstStoreChartWidgetController extends State<TodayOrderAgain
       //isVisible:true,
       //groupName: value.storeName,
       //name: listOfStoreName[key],
-      dataLabelSettings: DataLabelSettings(isVisible: true, showCumulativeValues: false,),
+      dataLabelSettings: const DataLabelSettings(isVisible: true, showCumulativeValues: false,),
     ),
       StackedBarSeries<StoreAnalysisEntity, String>(
         dataSource: storeOrderAnalysisData,
@@ -135,7 +135,7 @@ class _TodayOrderAgainstStoreChartWidgetController extends State<TodayOrderAgain
         //groupName: value.storeName,
         //name: listOfStoreName[key],
         //isVisible:true,
-        dataLabelSettings: DataLabelSettings(isVisible: true, showCumulativeValues: false,),
+        dataLabelSettings: const DataLabelSettings(isVisible: true, showCumulativeValues: false,),
       ),
 
       StackedBarSeries<StoreAnalysisEntity, String>(
@@ -147,7 +147,7 @@ class _TodayOrderAgainstStoreChartWidgetController extends State<TodayOrderAgain
         //groupName: value.storeName,
         //name: listOfStoreName[key],
         //isVisible:true,
-        dataLabelSettings: DataLabelSettings(isVisible: true, showCumulativeValues: false,),
+        dataLabelSettings: const DataLabelSettings(isVisible: true, showCumulativeValues: false,),
       ),
       StackedBarSeries<StoreAnalysisEntity, String>(
         dataSource: storeOrderAnalysisData,
@@ -158,7 +158,7 @@ class _TodayOrderAgainstStoreChartWidgetController extends State<TodayOrderAgain
         //groupName: value.storeName,
         //name: listOfStoreName[key],
         //isVisible:true,
-        dataLabelSettings: DataLabelSettings(isVisible: true, showCumulativeValues: false,),
+        dataLabelSettings: const DataLabelSettings(isVisible: true, showCumulativeValues: false,),
       ),
       StackedBarSeries<StoreAnalysisEntity, String>(
         dataSource: storeOrderAnalysisData,
@@ -169,7 +169,7 @@ class _TodayOrderAgainstStoreChartWidgetController extends State<TodayOrderAgain
         //groupName: value.storeName,
         //name: listOfStoreName[key],
         //isVisible:true,
-        dataLabelSettings: DataLabelSettings(isVisible: true, showCumulativeValues: false,),
+        dataLabelSettings: const DataLabelSettings(isVisible: true, showCumulativeValues: false,),
       ),
     ];
     return listOfSeries.toList();
