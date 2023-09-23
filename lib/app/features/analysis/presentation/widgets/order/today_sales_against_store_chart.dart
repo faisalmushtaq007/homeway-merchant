@@ -112,14 +112,14 @@ class _TodaySalesAgainstStoreChartWidgetController extends State<TodaySalesAgain
         name: 'Total',
         dataLabelSettings: const DataLabelSettings(isVisible: true, showCumulativeValues: false,),
       ),
-      StackedColumnSeries<StoreSalesAnalysisEntity, String>(
+      /*StackedColumnSeries<StoreSalesAnalysisEntity, String>(
         dataSource: storeSalesAnalysisData,
         xValueMapper: (StoreSalesAnalysisEntity sales, _) => sales.storeName,
         yValueMapper: (StoreSalesAnalysisEntity sales, _) => sales.todaySalesStatus.deliverOrderAmount,
         groupName: 'Delivered',
         name: 'Delivered',
         dataLabelSettings: const DataLabelSettings(isVisible: true, showCumulativeValues: false,),
-      ),
+      ),*/
 
       StackedColumnSeries<StoreSalesAnalysisEntity, String>(
         dataSource: storeSalesAnalysisData,
@@ -137,14 +137,14 @@ class _TodaySalesAgainstStoreChartWidgetController extends State<TodaySalesAgain
         name: 'Cancel',
         dataLabelSettings: const DataLabelSettings(isVisible: true, showCumulativeValues: false,),
       ),
-      StackedColumnSeries<StoreSalesAnalysisEntity, String>(
+      /*StackedColumnSeries<StoreSalesAnalysisEntity, String>(
         dataSource: storeSalesAnalysisData,
         xValueMapper: (StoreSalesAnalysisEntity sales, _) => sales.storeName,
         yValueMapper: (StoreSalesAnalysisEntity sales, _) => sales.todaySalesStatus.refundAmount,
         groupName: 'Refund',
         name: 'Refund',
         dataLabelSettings: const DataLabelSettings(isVisible: true, showCumulativeValues: false,),
-      ),
+      ),*/
     ];
     return listOfSeries.toList();
   }

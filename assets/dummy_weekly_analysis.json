@@ -1,0 +1,398 @@
+{
+  "result": [
+    {
+      "store": {
+        "storeID": 323,
+        "storeName": "Mills Harber",
+        "month": {
+          "month_value": "9",
+          "month_current_week": "2",
+          "days": [
+            {
+              "order": {
+                "instant": 25,
+                "schdeule": 99,
+                "cancel": 88,
+                "delay": 24,
+                "deliver": 71,
+                "total_orders": 67
+              },
+              "sales": {
+                "total_orders": 88,
+                "net_earning": 813,
+                "cancel_order_amount": 500,
+                "penalty_amount_by_system": 841,
+                "refund_amount": 55,
+                "deliver_order_amount": 1654
+              }
+            },
+            {
+              "order": {
+                "instant": 1,
+                "schdeule": 79,
+                "cancel": 5,
+                "delay": 48,
+                "deliver": 87,
+                "total_orders": 65
+              },
+              "sales": {
+                "total_orders": 51,
+                "net_earning": 7484,
+                "cancel_order_amount": 926,
+                "penalty_amount_by_system": 474,
+                "refund_amount": 658,
+                "deliver_order_amount": 8395
+              }
+            }
+          ]
+        }
+      },
+      "data": {
+        "total_earnings": 4686,
+        "total_customers": 62,
+        "total_stores": 44,
+        "total_orders": {
+          "instant": 42,
+          "deliver": 45,
+          "total": 22,
+          "schedule": 1,
+          "cancel": 97
+        },
+        "total_old_customers": 56,
+        "total_new_customers": 94,
+        "total_open_stores": 35,
+        "total_closed_stores": 87,
+        "rush_hours": 1424,
+        "rush_days": 5,
+        "rush_date": 1687376702
+      }
+    },
+    {
+      "store": {
+        "storeID": 401,
+        "storeName": "Heidenreich",
+        "month": {
+          "month_value": "9",
+          "month_current_week": "2",
+          "days": [
+            {
+              "order": {
+                "instant": 92,
+                "schdeule": 90,
+                "cancel": 89,
+                "delay": 44,
+                "deliver": 66,
+                "total_orders": 22
+              },
+              "sales": {
+                "total_orders": 48,
+                "net_earning": 1856,
+                "cancel_order_amount": 66,
+                "penalty_amount_by_system": 352,
+                "refund_amount": 48,
+                "deliver_order_amount": 701
+              }
+            },
+            {
+              "order": {
+                "instant": 60,
+                "schdeule": 76,
+                "cancel": 22,
+                "delay": 0,
+                "deliver": 29,
+                "total_orders": 33
+              },
+              "sales": {
+                "total_orders": 47,
+                "net_earning": 1822,
+                "cancel_order_amount": 708,
+                "penalty_amount_by_system": 53,
+                "refund_amount": 181,
+                "deliver_order_amount": 6069
+              }
+            },
+            {
+              "order": {
+                "instant": 48,
+                "schdeule": 0,
+                "cancel": 96,
+                "delay": 0,
+                "deliver": 43,
+                "total_orders": 85
+              },
+              "sales": {
+                "total_orders": 62,
+                "net_earning": 3237,
+                "cancel_order_amount": 54,
+                "penalty_amount_by_system": 639,
+                "refund_amount": 18,
+                "deliver_order_amount": 3215
+              }
+            },
+            {
+              "order": {
+                "instant": 37,
+                "schdeule": 93,
+                "cancel": 40,
+                "delay": 1,
+                "deliver": 47,
+                "total_orders": 80
+              },
+              "sales": {
+                "total_orders": 63,
+                "net_earning": 4367,
+                "cancel_order_amount": 18,
+                "penalty_amount_by_system": 625,
+                "refund_amount": 54,
+                "deliver_order_amount": 2870
+              }
+            }
+          ]
+        }
+      },
+      "data": {
+        "total_earnings": 6000,
+        "total_customers": 70,
+        "total_stores": 20,
+        "total_orders": {
+          "instant": 91,
+          "deliver": 8,
+          "total": 32,
+          "schedule": 58,
+          "cancel": 100
+        },
+        "total_old_customers": 3,
+        "total_new_customers": 13,
+        "total_open_stores": 71,
+        "total_closed_stores": 39,
+        "rush_hours": 1648,
+        "rush_days": 4,
+        "rush_date": 1685965109
+      }
+    },
+    {
+      "store": {
+        "storeID": 192,
+        "storeName": "Torphy",
+        "month": {
+          "month_value": "9",
+          "month_current_week": "2",
+          "days": [
+            {
+              "order": {
+                "instant": 61,
+                "schdeule": 92,
+                "cancel": 50,
+                "delay": 68,
+                "deliver": 75,
+                "total_orders": 9
+              },
+              "sales": {
+                "total_orders": 33,
+                "net_earning": 5348,
+                "cancel_order_amount": 595,
+                "penalty_amount_by_system": 170,
+                "refund_amount": 64,
+                "deliver_order_amount": 6091
+              }
+            },
+            {
+              "order": {
+                "instant": 16,
+                "schdeule": 24,
+                "cancel": 48,
+                "delay": 50,
+                "deliver": 99,
+                "total_orders": 25
+              },
+              "sales": {
+                "total_orders": 5,
+                "net_earning": 4791,
+                "cancel_order_amount": 771,
+                "penalty_amount_by_system": 659,
+                "refund_amount": 840,
+                "deliver_order_amount": 4844
+              }
+            },
+            {
+              "order": {
+                "instant": 50,
+                "schdeule": 92,
+                "cancel": 89,
+                "delay": 14,
+                "deliver": 45,
+                "total_orders": 47
+              },
+              "sales": {
+                "total_orders": 38,
+                "net_earning": 9819,
+                "cancel_order_amount": 61,
+                "penalty_amount_by_system": 999,
+                "refund_amount": 8,
+                "deliver_order_amount": 931
+              }
+            },
+            {
+              "order": {
+                "instant": 90,
+                "schdeule": 33,
+                "cancel": 81,
+                "delay": 20,
+                "deliver": 84,
+                "total_orders": 98
+              },
+              "sales": {
+                "total_orders": 11,
+                "net_earning": 3814,
+                "cancel_order_amount": 99,
+                "penalty_amount_by_system": 919,
+                "refund_amount": 216,
+                "deliver_order_amount": 5035
+              }
+            }
+          ]
+        }
+      },
+      "data": {
+        "total_earnings": 1011,
+        "total_customers": 50,
+        "total_stores": 76,
+        "total_orders": {
+          "instant": 31,
+          "deliver": 85,
+          "total": 34,
+          "schedule": 28,
+          "cancel": 25
+        },
+        "total_old_customers": 84,
+        "total_new_customers": 74,
+        "total_open_stores": 79,
+        "total_closed_stores": 97,
+        "rush_hours": 2359,
+        "rush_days": 5,
+        "rush_date": 1673913528
+      }
+    },
+    {
+      "store": {
+        "storeID": 163,
+        "storeName": "HaleyKoch",
+        "month": {
+          "month_value": "9",
+          "month_current_week": "2",
+          "days": [
+            {
+              "order": {
+                "instant": 45,
+                "schdeule": 54,
+                "cancel": 66,
+                "delay": 59,
+                "deliver": 56,
+                "total_orders": 98
+              },
+              "sales": {
+                "total_orders": 29,
+                "net_earning": 9641,
+                "cancel_order_amount": 618,
+                "penalty_amount_by_system": 924,
+                "refund_amount": 750,
+                "deliver_order_amount": 9500
+              }
+            },
+            {
+              "order": {
+                "instant": 44,
+                "schdeule": 34,
+                "cancel": 29,
+                "delay": 13,
+                "deliver": 49,
+                "total_orders": 60
+              },
+              "sales": {
+                "total_orders": 50,
+                "net_earning": 4507,
+                "cancel_order_amount": 457,
+                "penalty_amount_by_system": 220,
+                "refund_amount": 825,
+                "deliver_order_amount": 9915
+              }
+            },
+            {
+              "order": {
+                "instant": 95,
+                "schdeule": 65,
+                "cancel": 35,
+                "delay": 21,
+                "deliver": 58,
+                "total_orders": 91
+              },
+              "sales": {
+                "total_orders": 78,
+                "net_earning": 2433,
+                "cancel_order_amount": 636,
+                "penalty_amount_by_system": 134,
+                "refund_amount": 949,
+                "deliver_order_amount": 5850
+              }
+            },
+            {
+              "order": {
+                "instant": 79,
+                "schdeule": 20,
+                "cancel": 4,
+                "delay": 90,
+                "deliver": 23,
+                "total_orders": 12
+              },
+              "sales": {
+                "total_orders": 6,
+                "net_earning": 4837,
+                "cancel_order_amount": 764,
+                "penalty_amount_by_system": 642,
+                "refund_amount": 825,
+                "deliver_order_amount": 5246
+              }
+            },
+            {
+              "order": {
+                "instant": 45,
+                "schdeule": 47,
+                "cancel": 54,
+                "delay": 14,
+                "deliver": 98,
+                "total_orders": 75
+              },
+              "sales": {
+                "total_orders": 86,
+                "net_earning": 7150,
+                "cancel_order_amount": 140,
+                "penalty_amount_by_system": 535,
+                "refund_amount": 591,
+                "deliver_order_amount": 8271
+              }
+            }
+          ]
+        }
+      },
+      "data": {
+        "total_earnings": 6443,
+        "total_customers": 10,
+        "total_stores": 0,
+        "total_orders": {
+          "instant": 14,
+          "deliver": 94,
+          "total": 27,
+          "schedule": 36,
+          "cancel": 12
+        },
+        "total_old_customers": 41,
+        "total_new_customers": 45,
+        "total_open_stores": 63,
+        "total_closed_stores": 28,
+        "rush_hours": 1484,
+        "rush_days": 4,
+        "rush_date": 1682336250
+      }
+    }
+  ]
+}
