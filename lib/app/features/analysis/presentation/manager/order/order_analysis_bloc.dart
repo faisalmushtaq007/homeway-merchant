@@ -32,10 +32,11 @@ class OrderAnalysisBloc extends Bloc<OrderAnalysisEvent, OrderAnalysisState> {
         listOfStoreName.add(storeAnalysisEntity.storeName);
         overAllAnalysisData.add(todayOrderResult.data);
       }
-      OverAllAnalysisData overAllData = OverAllAnalysisData(
+      final OverAllAnalysisData overAllData = OverAllAnalysisData(
         totalCustomers: overAllAnalysisData.fold(0, (sum, element) => sum + element.totalCustomers),
         totalStores: overAllAnalysisData.fold(0, (sum, element) => sum + element.totalStores),
         totalOrders: TotalOrders(
+          countTotalOrders: overAllAnalysisData.fold(0, (sum, element) => sum + element.totalOrders.countTotalOrders),
           totalOrdersNew: overAllAnalysisData.fold(0, (sum, element) => sum + element.totalOrders.totalOrdersNew),
           deliver: overAllAnalysisData.fold(0, (sum, element) => sum + element.totalOrders.deliver,),
         ),

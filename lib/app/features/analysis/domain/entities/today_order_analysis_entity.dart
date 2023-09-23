@@ -1,161 +1,168 @@
 part of 'package:homemakers_merchant/app/features/analysis/index.dart';
 
-TodayOrderAnalysisEntity todayOrderAnalysisEntityFromJson(String str) => TodayOrderAnalysisEntity.fromJson(json.decode(str));
+TodayOrderAnalysisEntity todayOrderAnalysisEntityFromJson(String str) =>
+    TodayOrderAnalysisEntity.fromJson(json.decode(str));
 
 String todayOrderAnalysisEntityToJson(TodayOrderAnalysisEntity data) => json.encode(data.toJson());
 
 class TodayOrderAnalysisEntity {
-    TodayOrderAnalysisEntity({
-        required this.result,
-    });
+  TodayOrderAnalysisEntity({
+     this.result=const <TodayOrderResult>[],
+  });
 
-    List<TodayOrderResult> result;
+  factory TodayOrderAnalysisEntity.fromJson(Map<dynamic, dynamic> json) => TodayOrderAnalysisEntity(
+        result: json['result'] != null
+            ? List<TodayOrderResult>.from(json['result'].map((x) => TodayOrderResult.fromJson(x)))
+            : [],
+      );
 
-    factory TodayOrderAnalysisEntity.fromJson(Map<dynamic, dynamic> json) => TodayOrderAnalysisEntity(
-        result: List<TodayOrderResult>.from(json["result"].map((x) => TodayOrderResult.fromJson(x))),
-    );
+  final List<TodayOrderResult> result;
 
-    Map<dynamic, dynamic> toJson() => {
-        "result": List<dynamic>.from(result.map((x) => x.toJson())),
-    };
+  Map<dynamic, dynamic> toJson() => {
+        'result': List<dynamic>.from(result.map((x) => x.toJson())),
+      };
 }
 
 class TodayOrderResult {
-    TodayOrderResult({
-        required this.data,
-        required this.store,
-    });
+  TodayOrderResult({
+     this.data=const OverAllAnalysisData(),
+     this.store=const StoreAnalysisEntity(),
+  });
 
-    OverAllAnalysisData data;
-    StoreAnalysisEntity store;
+  factory TodayOrderResult.fromJson(Map<dynamic, dynamic> json) => TodayOrderResult(
+        data: json['data'] != null ? OverAllAnalysisData.fromJson(json['data']) : const OverAllAnalysisData(),
+        store: json['store'] != null ? StoreAnalysisEntity.fromJson(json['store']) : const StoreAnalysisEntity(),
+      );
 
-    factory TodayOrderResult.fromJson(Map<dynamic, dynamic> json) => TodayOrderResult(
-        data: OverAllAnalysisData.fromJson(json["data"]),
-        store: StoreAnalysisEntity.fromJson(json["store"]),
-    );
+  final OverAllAnalysisData data;
+  final StoreAnalysisEntity store;
 
-    Map<dynamic, dynamic> toJson() => {
-        "data": data.toJson(),
-        "store": store.toJson(),
-    };
+  Map<dynamic, dynamic> toJson() => {
+        'data': data.toJson(),
+        'store': store.toJson(),
+      };
 }
 
 class OverAllAnalysisData {
-    OverAllAnalysisData({
-        required this.totalEarnings,
-        required this.totalCustomers,
-        required this.totalOrders,
-        required this.totalStores,
-    });
+  const OverAllAnalysisData({
+    this.totalEarnings = 0,
+    this.totalCustomers = 0,
+    this.totalOrders = const TotalOrders(),
+    this.totalStores = 0,
+  });
 
-    int totalEarnings;
-    int totalCustomers;
-    TotalOrders totalOrders;
-    int totalStores;
+  factory OverAllAnalysisData.fromJson(Map<dynamic, dynamic> json) => OverAllAnalysisData(
+        totalEarnings: json['total_earnings'] ?? 0,
+        totalCustomers: json['total_customers'] ?? 0,
+        totalOrders: json['total_orders'] != null ? TotalOrders.fromJson(json['total_orders']) : const TotalOrders(),
+        totalStores: json['total_stores'] ?? 0,
+      );
 
-    factory OverAllAnalysisData.fromJson(Map<dynamic, dynamic> json) => OverAllAnalysisData(
-        totalEarnings: json["total_earnings"],
-        totalCustomers: json["total_customers"],
-        totalOrders: TotalOrders.fromJson(json["total_orders"]),
-        totalStores: json["total_stores"],
-    );
+  final int totalEarnings;
+  final int totalCustomers;
+  final TotalOrders totalOrders;
+  final int totalStores;
 
-    Map<dynamic, dynamic> toJson() => {
-        "total_earnings": totalEarnings,
-        "total_customers": totalCustomers,
-        "total_orders": totalOrders.toJson(),
-        "total_stores": totalStores,
-    };
+  Map<dynamic, dynamic> toJson() => {
+        'total_earnings': totalEarnings,
+        'total_customers': totalCustomers,
+        'total_orders': totalOrders.toJson(),
+        'total_stores': totalStores,
+      };
 }
 
 class TotalOrders {
-    TotalOrders({
-        required this.totalOrdersNew,
-        required this.deliver,
-        this.countTotalOrders=0,
-    });
+  const TotalOrders({
+    this.totalOrdersNew = 0,
+    this.deliver = 0,
+    this.countTotalOrders = 0,
+  });
 
-    int totalOrdersNew;
-    int deliver;
-    int countTotalOrders;
+  factory TotalOrders.fromJson(Map<dynamic, dynamic> json) => TotalOrders(
+        totalOrdersNew: json['new'] ?? 0,
+        deliver: json['deliver'] ?? 0,
+        countTotalOrders: json['total'] ?? 0,
+      );
 
-    factory TotalOrders.fromJson(Map<dynamic, dynamic> json) => TotalOrders(
-        totalOrdersNew: json["new"],
-        deliver: json["deliver"],
-        countTotalOrders:json['total']
-    );
+  final int totalOrdersNew;
+  final int deliver;
+  final int countTotalOrders;
 
-    Map<dynamic, dynamic> toJson() => {
-        "new": totalOrdersNew,
-        "deliver": deliver,
-        'total':countTotalOrders,
-    };
+  Map<dynamic, dynamic> toJson() => {
+        'new': totalOrdersNew,
+        'deliver': deliver,
+        'total': countTotalOrders,
+      };
 }
 
 class StoreAnalysisEntity {
-    StoreAnalysisEntity({
-        required this.todayOrderStatus,
-        required this.storeName,
-        required this.storeId,
-        required this.yesterdayOrderStatus,
-    });
+  const StoreAnalysisEntity({
+    this.todayOrderStatus = const DayOrderStatus(),
+    this.storeName = '',
+    this.storeId = -11,
+    this.yesterdayOrderStatus = const DayOrderStatus(),
+  });
 
-    DayOrderStatus todayOrderStatus;
-    String storeName;
-    int storeId;
-    DayOrderStatus yesterdayOrderStatus;
+  factory StoreAnalysisEntity.fromJson(Map<dynamic, dynamic> json) => StoreAnalysisEntity(
+        todayOrderStatus: json['today_order_status'] != null
+            ? DayOrderStatus.fromJson(json['today_order_status'])
+            : const DayOrderStatus(),
+        storeName: json['storeName'] ?? '',
+        storeId: json['storeID'] ?? -1,
+        yesterdayOrderStatus: json['yesterday_order_status'] != null
+            ? DayOrderStatus.fromJson(json['yesterday_order_status'])
+            : const DayOrderStatus(),
+      );
 
-    factory StoreAnalysisEntity.fromJson(Map<dynamic, dynamic> json) => StoreAnalysisEntity(
-        todayOrderStatus: DayOrderStatus.fromJson(json["today_order_status"]),
-        storeName: json["storeName"],
-        storeId: json["storeID"],
-        yesterdayOrderStatus: DayOrderStatus.fromJson(json["yesterday_order_status"]),
-    );
+  final DayOrderStatus todayOrderStatus;
+  final String storeName;
+  final int storeId;
+  final DayOrderStatus yesterdayOrderStatus;
 
-    Map<dynamic, dynamic> toJson() => {
-        "today_order_status": todayOrderStatus.toJson(),
-        "storeName": storeName,
-        "storeID": storeId,
-        "yesterday_order_status": yesterdayOrderStatus.toJson(),
-    };
+  Map<dynamic, dynamic> toJson() => {
+        'today_order_status': todayOrderStatus.toJson(),
+        'storeName': storeName,
+        'storeID': storeId,
+        'yesterday_order_status': yesterdayOrderStatus.toJson(),
+      };
 }
 
 class DayOrderStatus {
-    DayOrderStatus({
-        required this.cancel,
-        required this.schedule,
-        required this.delay,
-        required this.pending,
-        required this.deliver,
-        required this.instant,
-        required this.totalOrders,
-    });
+  const DayOrderStatus({
+    this.cancel = 0,
+    this.schedule = 0,
+    this.delay = 0,
+    this.pending = 0,
+    this.deliver = 0,
+    this.instant = 0,
+    this.totalOrders = 0,
+  });
 
-    int cancel;
-    int schedule;
-    int delay;
-    int pending;
-    int deliver;
-    int instant;
-    int totalOrders;
+  factory DayOrderStatus.fromJson(Map<dynamic, dynamic> json) => DayOrderStatus(
+        cancel: json['cancel'] ?? 0,
+        schedule: json['schedule'] ?? 0,
+        delay: json['delay'] ?? 0,
+        pending: json['pending'] ?? 0,
+        deliver: json['deliver'] ?? 0,
+        instant: json['instant'] ?? 0,
+        totalOrders: json['total_orders'] ?? 0,
+      );
 
-    factory DayOrderStatus.fromJson(Map<dynamic, dynamic> json) => DayOrderStatus(
-        cancel: json["cancel"],
-        schedule: json["schedule"],
-        delay: json["delay"],
-        pending: json["pending"],
-        deliver: json["deliver"],
-        instant: json["instant"],
-        totalOrders: json["total_orders"],
-    );
+  final int cancel;
+  final int schedule;
+  final int delay;
+  final int pending;
+  final int deliver;
+  final int instant;
+  final int totalOrders;
 
-    Map<dynamic, dynamic> toJson() => {
-        "cancel": cancel,
-        "schedule": schedule,
-        "delay": delay,
-        "pending": pending,
-        "deliver": deliver,
-        "instant": instant,
-        "total_orders": totalOrders,
-    };
+  Map<dynamic, dynamic> toJson() => {
+        'cancel': cancel,
+        'schedule': schedule,
+        'delay': delay,
+        'pending': pending,
+        'deliver': deliver,
+        'instant': instant,
+        'total_orders': totalOrders,
+      };
 }

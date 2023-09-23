@@ -96,6 +96,7 @@ part 'package:homemakers_merchant/app/features/analysis/presentation/widgets/ord
 // Domain
 part 'package:homemakers_merchant/app/features/analysis/domain/entities/chart_today_entity.dart';
 part 'package:homemakers_merchant/app/features/analysis/domain/entities/today_order_analysis_entity.dart';
+part 'package:homemakers_merchant/app/features/analysis/domain/entities/today_sales_analysis_entity.dart';
 part 'package:homemakers_merchant/app/features/analysis/domain/entities/monthly_entity.dart';
 part 'package:homemakers_merchant/app/features/analysis/domain/entities/today_entity.dart';
 part 'package:homemakers_merchant/app/features/analysis/domain/entities/weekly_entity.dart';

@@ -1,0 +1,164 @@
+{
+  "result": [
+    {
+      "store": {
+        "storeID": 323,
+        "storeName": "Mills Harber",
+        "today_sales_status": {
+          "total_orders": 55,
+          "net_earning": 6590,
+          "cancel_order_amount": 518,
+          "penalty_amount_by_system": 737,
+          "refund_amount": 137,
+          "deliver_order_amount": 9621
+        },
+        "yesterday_sales_status": {
+          "total_orders": 60,
+          "net_earning": 9407,
+          "cancel_order_amount": 171,
+          "penalty_amount_by_system": 209,
+          "refund_amount": 259,
+          "deliver_order_amount": 6555
+        }
+      },
+      "data": {
+        "total_earnings": 9395,
+        "total_customers": 35,
+        "total_stores": 0,
+        "total_orders": {
+          "new": 2,
+          "deliver": 54,
+          "total": 32
+        }
+      }
+    },
+    {
+      "store": {
+        "storeID": 401,
+        "storeName": "Heidenreich",
+        "today_sales_status": {
+          "total_orders": 80,
+          "net_earning": 7076,
+          "cancel_order_amount": 567,
+          "penalty_amount_by_system": 631,
+          "refund_amount": 408,
+          "deliver_order_amount": 5614
+        },
+        "yesterday_sales_status": {
+          "total_orders": 71,
+          "net_earning": 9930,
+          "cancel_order_amount": 401,
+          "penalty_amount_by_system": 12,
+          "refund_amount": 82,
+          "deliver_order_amount": 3326
+        }
+      },
+      "data": {
+        "total_earnings": 3459,
+        "total_customers": 43,
+        "total_stores": 30,
+        "total_orders": {
+          "new": 67,
+          "deliver": 89,
+          "total": 27
+        }
+      }
+    },
+    {
+      "store": {
+        "storeID": 192,
+        "storeName": "Torphy",
+        "today_sales_status": {
+          "total_orders": 52,
+          "net_earning": 1632,
+          "cancel_order_amount": 381,
+          "penalty_amount_by_system": 719,
+          "refund_amount": 760,
+          "deliver_order_amount": 7085
+        },
+        "yesterday_sales_status": {
+          "total_orders": 23,
+          "net_earning": 1158,
+          "cancel_order_amount": 336,
+          "penalty_amount_by_system": 186,
+          "refund_amount": 2,
+          "deliver_order_amount": 1268
+        }
+      },
+      "data": {
+        "total_earnings": 927,
+        "total_customers": 45,
+        "total_stores": 11,
+        "total_orders": {
+          "new": 34,
+          "deliver": 14,
+          "total": 35
+        }
+      }
+    },
+    {
+      "store": {
+        "storeID": 163,
+        "storeName": "HaleyKoch",
+        "today_sales_status": {
+          "total_orders": 86,
+          "net_earning": 7610,
+          "cancel_order_amount": 592,
+          "penalty_amount_by_system": 211,
+          "refund_amount": 70,
+          "deliver_order_amount": 389
+        },
+        "yesterday_sales_status": {
+          "total_orders": 1,
+          "net_earning": 1954,
+          "cancel_order_amount": 557,
+          "penalty_amount_by_system": 281,
+          "refund_amount": 539,
+          "deliver_order_amount": 2737
+        }
+      },
+      "data": {
+        "total_earnings": 2023,
+        "total_customers": 96,
+        "total_stores": 41,
+        "total_orders": {
+          "new": 32,
+          "deliver": 80,
+          "total": 7
+        }
+      }
+    },
+    {
+      "store": {
+        "storeID": 406,
+        "storeName": "Gleichner",
+        "today_sales_status": {
+          "total_orders": 65,
+          "net_earning": 1964,
+          "cancel_order_amount": 638,
+          "penalty_amount_by_system": 730,
+          "refund_amount": 417,
+          "deliver_order_amount": 3810
+        },
+        "yesterday_sales_status": {
+          "total_orders": 32,
+          "net_earning": 3300,
+          "cancel_order_amount": 18,
+          "penalty_amount_by_system": 574,
+          "refund_amount": 672,
+          "deliver_order_amount": 2717
+        }
+      },
+      "data": {
+        "total_earnings": 8946,
+        "total_customers": 0,
+        "total_stores": 86,
+        "total_orders": {
+          "new": 41,
+          "deliver": 92,
+          "total": 93
+        }
+      }
+    }
+  ]
+}
