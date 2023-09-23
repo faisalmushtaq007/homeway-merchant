@@ -107,3 +107,4 @@ part 'package:homemakers_merchant/app/features/analysis/common/analysis_enum.dar
 
 // Data Source
 part 'package:homemakers_merchant/app/features/analysis/data/local/data_sources/dummy_today_analysis_data.dart';
+part 'package:homemakers_merchant/app/features/analysis/data/local/data_sources/dummy_today_sales_analysis_data.dart';

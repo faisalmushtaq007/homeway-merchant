@@ -48,18 +48,18 @@ class TodayOrderByStoreAnalysisState extends OrderAnalysisState {
 class TodaySalesByStoreAnalysisState extends OrderAnalysisState {
   const TodaySalesByStoreAnalysisState({
     this.analysisBy = AnalysisBy.todayOrder,
-    this.storeOrderAnalysisData = const [],
+    this.storeSalesAnalysisData = const [],
     this.chartData = const [],
     this.listOfStoreName = const [],
   });
 
   final AnalysisBy analysisBy;
-  final List<StoreAnalysisEntity> storeOrderAnalysisData;
+  final List<StoreSalesAnalysisEntity> storeSalesAnalysisData;
   final List<ChartTodayEntity> chartData;
   final List<String> listOfStoreName;
 
   @override
-  List<Object?> get props => [analysisBy, storeOrderAnalysisData, chartData, listOfStoreName];
+  List<Object?> get props => [analysisBy, storeSalesAnalysisData, chartData, listOfStoreName];
 }
 
 

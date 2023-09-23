@@ -16,12 +16,15 @@ class OrderAnalysisBloc extends Bloc<OrderAnalysisEvent, OrderAnalysisState> {
   }
 
   FutureOr<void> _todayOrderAnalysisEvent(TodayOrderAnalysisEvent event, Emitter<OrderAnalysisState> emit) async {
-    final TodayOrderAnalysisEntity todayOrderAnalysisData = await readTodayOrderAnalysisData();
-    List<ChartTodayEntity> chartData = [];
-    List<StoreAnalysisEntity> storeOrderAnalysisData = [];
-    List<String> listOfStoreName = [];
-    List<OverAllAnalysisData> overAllAnalysisData = [];
     if (event.analysisBy == AnalysisBy.todayOrder) {
+      // local: readTodayOrderAnalysisData
+      final TodayOrderAnalysisEntity todayOrderAnalysisData = await readTodayOrderAnalysisData();
+
+      List<OverAllAnalysisData> overAllAnalysisData = [];
+      List<ChartTodayEntity> chartData = [];
+      List<StoreAnalysisEntity> storeOrderAnalysisData = [];
+      List<String> listOfStoreName = [];
+
       for (TodayOrderResult todayOrderResult in todayOrderAnalysisData.result) {
         final StoreAnalysisEntity storeAnalysisEntity = todayOrderResult.store;
         final DayOrderStatus todayData = todayOrderResult.store.todayOrderStatus;
@@ -32,28 +35,76 @@ class OrderAnalysisBloc extends Bloc<OrderAnalysisEvent, OrderAnalysisState> {
         listOfStoreName.add(storeAnalysisEntity.storeName);
         overAllAnalysisData.add(todayOrderResult.data);
       }
+
       final OverAllAnalysisData overAllData = OverAllAnalysisData(
         totalCustomers: overAllAnalysisData.fold(0, (sum, element) => sum + element.totalCustomers),
         totalStores: overAllAnalysisData.fold(0, (sum, element) => sum + element.totalStores),
         totalOrders: TotalOrders(
           countTotalOrders: overAllAnalysisData.fold(0, (sum, element) => sum + element.totalOrders.countTotalOrders),
           totalOrdersNew: overAllAnalysisData.fold(0, (sum, element) => sum + element.totalOrders.totalOrdersNew),
-          deliver: overAllAnalysisData.fold(0, (sum, element) => sum + element.totalOrders.deliver,),
+          deliver: overAllAnalysisData.fold(
+            0,
+            (sum, element) => sum + element.totalOrders.deliver,
+          ),
         ),
         totalEarnings: overAllAnalysisData.fold(0, (sum, element) => sum + element.totalEarnings),
       );
-      emit(TodayOverAllOrderAnalysisState(
-        analysisBy: event.analysisBy,
-        overAllAnalysisData: overAllData,
-      ),);
-      await Future.delayed(const Duration(milliseconds: 300),(){});
+
+      emit(
+        TodayOverAllOrderAnalysisState(
+          analysisBy: event.analysisBy,
+          overAllAnalysisData: overAllData,
+        ),
+      );
+      await Future.delayed(const Duration(milliseconds: 300), () {});
+
       emit(TodayOrderByStoreAnalysisState(
         analysisBy: event.analysisBy,
         chartData: chartData.toList(),
         listOfStoreName: listOfStoreName.toList(),
         storeOrderAnalysisData: storeOrderAnalysisData.toList(),
       ));
-    } else if (event.analysisBy == AnalysisBy.todaySales) {}
+    } else if (event.analysisBy == AnalysisBy.todaySales) {
+      // local: readTodaySalesAnalysisData
+      final TodaySalesAnalysisEntity todaySalesAnalysisData = await readTodaySalesAnalysisData();
+
+      List<ChartTodayEntity> chartData = [];
+      List<StoreSalesAnalysisEntity> storeSalesAnalysisData = [];
+      List<String> listOfStoreName = [];
+      List<OverAllAnalysisData> overAllAnalysisData = [];
+
+      for (TodaySalesResult todaySalesResult in todaySalesAnalysisData.result) {
+        final StoreSalesAnalysisEntity storeAnalysisEntity = todaySalesResult.store;
+        final DaySalesStatus todayData = todaySalesResult.store.todaySalesStatus;
+        final DaySalesStatus yesterdayDayData = todaySalesResult.store.yesterdaySalesStatus;
+        chartData
+            .add(ChartTodayEntity(storeAnalysisEntity.storeName, todayData.totalOrders, yesterdayDayData.totalOrders));
+        storeSalesAnalysisData.add(storeAnalysisEntity);
+        listOfStoreName.add(storeAnalysisEntity.storeName);
+        overAllAnalysisData.add(todaySalesResult.data);
+      }
+      /*final OverAllAnalysisData overAllData = OverAllAnalysisData(
+          totalCustomers: overAllAnalysisData.fold(0, (sum, element) => sum + element.totalCustomers),
+          totalStores: overAllAnalysisData.fold(0, (sum, element) => sum + element.totalStores),
+          totalOrders: TotalOrders(
+            countTotalOrders: overAllAnalysisData.fold(0, (sum, element) => sum + element.totalOrders.countTotalOrders),
+            totalOrdersNew: overAllAnalysisData.fold(0, (sum, element) => sum + element.totalOrders.totalOrdersNew),
+            deliver: overAllAnalysisData.fold(0, (sum, element) => sum + element.totalOrders.deliver,),
+          ),
+          totalEarnings: overAllAnalysisData.fold(0, (sum, element) => sum + element.totalEarnings),
+        );
+        emit(TodayOverAllOrderAnalysisState(
+          analysisBy: event.analysisBy,
+          overAllAnalysisData: overAllData,
+        ),);
+        await Future.delayed(const Duration(milliseconds: 300),(){});*/
+      emit(TodaySalesByStoreAnalysisState(
+        analysisBy: event.analysisBy,
+        chartData: chartData.toList(),
+        listOfStoreName: listOfStoreName.toList(),
+        storeSalesAnalysisData: storeSalesAnalysisData.toList(),
+      ));
+    }
   }
 
   FutureOr<void> _weeklyOrderAnalysisEvent(WeeklyOrderAnalysisEvent event, Emitter<OrderAnalysisState> emit) async {}
