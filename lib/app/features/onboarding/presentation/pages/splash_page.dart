@@ -28,7 +28,8 @@ class SplashPage extends StatefulWidget {
   _SplashPageViewController createState() => _SplashPageViewController();
 }
 
-class _SplashPageViewController extends State<SplashPage> with SingleTickerProviderStateMixin {
+class _SplashPageViewController extends State<SplashPage>
+    with SingleTickerProviderStateMixin {
   late final ScrollController scrollController;
   late AnimationController _animationController;
   late Animation<double> _animation;
@@ -68,7 +69,8 @@ class _PageView extends WidgetView<SplashPage, _SplashPageViewController> {
   Widget build(BuildContext context) {
     final MediaQueryData media = MediaQuery.of(context);
     final double margins = GlobalApp.responsiveInsets(media.size.width);
-    final double topPadding = media.padding.top + kToolbarHeight + margins; //margins * 1.5;
+    final double topPadding =
+        media.padding.top + kToolbarHeight + margins; //margins * 1.5;
     final double bottomPadding = media.padding.bottom + margins;
     final double width = media.size.width;
     final ThemeData theme = Theme.of(context);
@@ -81,7 +83,8 @@ class _PageView extends WidgetView<SplashPage, _SplashPageViewController> {
       ),
       child: Scaffold(
         body: Directionality(
-          textDirection: serviceLocator<LanguageController>().targetTextDirection,
+          textDirection:
+              serviceLocator<LanguageController>().targetTextDirection,
           child: PageBody(
             controller: state.scrollController,
             constraints: BoxConstraints(
@@ -121,9 +124,11 @@ class _PageView extends WidgetView<SplashPage, _SplashPageViewController> {
                       alignment: AlignmentDirectional.topStart,
                       child: AppLogo(changeColorModeOfText: true),
                     ),
-                    const AnimatedGap(46, duration: Duration(milliseconds: 500)),
+                    const AnimatedGap(46,
+                        duration: Duration(milliseconds: 500)),
                     Wrap(
-                      textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                      textDirection: serviceLocator<LanguageController>()
+                          .targetTextDirection,
                       children: [
                         Text(
                           'Your Business,',
@@ -132,13 +137,15 @@ class _PageView extends WidgetView<SplashPage, _SplashPageViewController> {
                             height: 0.9,
                             color: Colors.white,
                           ),
-                          textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                          textDirection: serviceLocator<LanguageController>()
+                              .targetTextDirection,
                         ).translate(),
                       ],
                     ),
                     const AnimatedGap(6, duration: Duration(milliseconds: 500)),
                     Wrap(
-                      textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                      textDirection: serviceLocator<LanguageController>()
+                          .targetTextDirection,
                       children: [
                         Text(
                           'Our Services,',
@@ -147,17 +154,20 @@ class _PageView extends WidgetView<SplashPage, _SplashPageViewController> {
                             height: 0.9,
                             color: Colors.white,
                           ),
-                          textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                          textDirection: serviceLocator<LanguageController>()
+                              .targetTextDirection,
                         ).translate(),
                       ],
                     ),
                     const AnimatedGap(6, duration: Duration(milliseconds: 500)),
                     Wrap(
-                      textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                      textDirection: serviceLocator<LanguageController>()
+                          .targetTextDirection,
                       children: [
                         Text(
                           'Stays Forever',
-                          textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                          textDirection: serviceLocator<LanguageController>()
+                              .targetTextDirection,
                           style: context.headlineMedium!.copyWith(
                             fontWeight: FontWeight.bold,
                             height: 0.9,
@@ -166,13 +176,16 @@ class _PageView extends WidgetView<SplashPage, _SplashPageViewController> {
                         ).translate(),
                       ],
                     ),
-                    const AnimatedGap(10, duration: Duration(milliseconds: 500)),
+                    const AnimatedGap(10,
+                        duration: Duration(milliseconds: 500)),
                     Wrap(
-                      textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                      textDirection: serviceLocator<LanguageController>()
+                          .targetTextDirection,
                       children: [
                         Text(
                           'Thank you for selecting to start business with us.',
-                          textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                          textDirection: serviceLocator<LanguageController>()
+                              .targetTextDirection,
                           style: context.bodySmall!.copyWith(
                             fontWeight: FontWeight.w500,
                             height: 0.9,
@@ -185,14 +198,16 @@ class _PageView extends WidgetView<SplashPage, _SplashPageViewController> {
                     /*Center(
                                 child: Text('New Screen'),
                               ),*/
-                    const AnimatedGap(56, duration: Duration(milliseconds: 500)),
+                    const AnimatedGap(56,
+                        duration: Duration(milliseconds: 500)),
                     ElevatedButton(
                       onPressed: () {
                         context.go(Routes.AUTH_PHONE_NUMBER_VERIFICATION);
                       },
                       child: Text(
                         "Let's Get Started",
-                        textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                        textDirection: serviceLocator<LanguageController>()
+                            .targetTextDirection,
                       ).translate(),
                     ),
                   ],

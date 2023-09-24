@@ -1,16 +1,19 @@
 part of 'package:homemakers_merchant/app/features/authentication/index.dart';
 
-class GetOrSaveNewCurrentAppUserUseCase extends UseCaseIO<AppUserEntity, AppUserEntity> {
+class GetOrSaveNewCurrentAppUserUseCase
+    extends UseCaseIO<AppUserEntity, AppUserEntity> {
   @override
   Future<AppUserEntity> call(AppUserEntity input) async {
     AppUserEntity appUserEntity = input;
-    final getCurrentUserResult = await serviceLocator<GetCurrentAppUserUseCase>()(
+    final getCurrentUserResult =
+        await serviceLocator<GetCurrentAppUserUseCase>()(
       input: input,
     );
     return await getCurrentUserResult.when(
       remote: (data, meta) async {
         if (data != null) {
-          final saveCurrentUserResult = await serviceLocator<SaveAppUserUseCase>()(
+          final saveCurrentUserResult =
+              await serviceLocator<SaveAppUserUseCase>()(
             input,
           );
           return saveCurrentUserResult.when(
@@ -47,14 +50,16 @@ class GetOrSaveNewCurrentAppUserUseCase extends UseCaseIO<AppUserEntity, AppUser
                   ..paymentBankEntity = data.paymentBankEntity
                   ..hasMultiplePaymentBanks = data.hasMultiplePaymentBanks
                   ..paymentBankEntities = data.paymentBankEntities
-                  ..phoneNumberWithoutDialCode = data.phoneNumberWithoutDialCode;
+                  ..phoneNumberWithoutDialCode =
+                      data.phoneNumberWithoutDialCode;
                 appUserEntity = data;
                 return data;
               } else {
                 return appUserEntity;
               }
             },
-            error: (dataSourceFailure, reason, error, networkException, stackTrace, exception, extra) {
+            error: (dataSourceFailure, reason, error, networkException,
+                stackTrace, exception, extra) {
               appLog.d('3');
               appLog.e('get or save user exception: $reason');
               return appUserEntity;
@@ -72,7 +77,8 @@ class GetOrSaveNewCurrentAppUserUseCase extends UseCaseIO<AppUserEntity, AppUser
           appLog.d('6');
           return data;
         } else {
-          final saveCurrentUserResult = await serviceLocator<SaveAppUserUseCase>()(
+          final saveCurrentUserResult =
+              await serviceLocator<SaveAppUserUseCase>()(
             input,
           );
           return saveCurrentUserResult.when(
@@ -108,7 +114,8 @@ class GetOrSaveNewCurrentAppUserUseCase extends UseCaseIO<AppUserEntity, AppUser
                   ..paymentBankEntity = data.paymentBankEntity
                   ..hasMultiplePaymentBanks = data.hasMultiplePaymentBanks
                   ..paymentBankEntities = data.paymentBankEntities
-                  ..phoneNumberWithoutDialCode = data.phoneNumberWithoutDialCode;
+                  ..phoneNumberWithoutDialCode =
+                      data.phoneNumberWithoutDialCode;
                 appUserEntity = data;
                 appLog.d('8');
                 return data;
@@ -117,7 +124,8 @@ class GetOrSaveNewCurrentAppUserUseCase extends UseCaseIO<AppUserEntity, AppUser
                 return appUserEntity;
               }
             },
-            error: (dataSourceFailure, reason, error, networkException, stackTrace, exception, extra) {
+            error: (dataSourceFailure, reason, error, networkException,
+                stackTrace, exception, extra) {
               appLog.d('10');
               appLog.e('get or save user exception: $reason');
               return appUserEntity;
@@ -125,7 +133,8 @@ class GetOrSaveNewCurrentAppUserUseCase extends UseCaseIO<AppUserEntity, AppUser
           );
         }
       },
-      error: (dataSourceFailure, reason, error, networkException, stackTrace, exception, extra) {
+      error: (dataSourceFailure, reason, error, networkException, stackTrace,
+          exception, extra) {
         appLog.d('11');
         appLog.e('get or save user exception: $reason');
         return appUserEntity;

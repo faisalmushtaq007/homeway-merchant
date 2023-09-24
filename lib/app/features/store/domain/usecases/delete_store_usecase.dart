@@ -1,12 +1,14 @@
 part of 'package:homemakers_merchant/app/features/store/index.dart';
 
-class DeleteStoreUseCase extends UseCaseByID<StoreEntity, int, DataSourceState<bool>> {
+class DeleteStoreUseCase
+    extends UseCaseByID<StoreEntity, int, DataSourceState<bool>> {
   DeleteStoreUseCase({
     required this.storeRepository,
   });
   final StoreRepository storeRepository;
   @override
-  Future<DataSourceState<bool>> call({required int id, StoreEntity? input}) async {
+  Future<DataSourceState<bool>> call(
+      {required int id, StoreEntity? input}) async {
     return storeRepository.deleteStore(storeEntity: input, storeID: id);
   }
 }

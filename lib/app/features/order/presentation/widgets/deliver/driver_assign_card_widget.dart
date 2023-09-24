@@ -1,11 +1,13 @@
 part of 'package:homemakers_merchant/app/features/order/index.dart';
 
 class DriverAssignCardWidget extends StatefulWidget {
-  const DriverAssignCardWidget({required this.orderEntity, required this.index, super.key});
+  const DriverAssignCardWidget(
+      {required this.orderEntity, required this.index, super.key});
   final int index;
   final OrderEntity orderEntity;
   @override
-  _DriverAssignCardWidgetController createState() => _DriverAssignCardWidgetController();
+  _DriverAssignCardWidgetController createState() =>
+      _DriverAssignCardWidgetController();
 }
 
 class _DriverAssignCardWidgetController extends State<DriverAssignCardWidget> {
@@ -13,7 +15,8 @@ class _DriverAssignCardWidgetController extends State<DriverAssignCardWidget> {
   Widget build(BuildContext context) => _DriverAssignCardWidgetView(this);
 }
 
-class _DriverAssignCardWidgetView extends WidgetView<DriverAssignCardWidget, _DriverAssignCardWidgetController> {
+class _DriverAssignCardWidgetView extends WidgetView<DriverAssignCardWidget,
+    _DriverAssignCardWidgetController> {
   const _DriverAssignCardWidgetView(super.state);
 
   @override
@@ -31,7 +34,8 @@ class _DriverAssignCardWidgetView extends WidgetView<DriverAssignCardWidget, _Dr
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
-          textDirection: serviceLocator<LanguageController>().targetTextDirection,
+          textDirection:
+              serviceLocator<LanguageController>().targetTextDirection,
           children: [
             Expanded(
               child: ListTile(
@@ -74,7 +78,8 @@ class _DriverAssignCardWidgetView extends WidgetView<DriverAssignCardWidget, _Dr
                   ),
                 ),
                 title: Directionality(
-                  textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                  textDirection:
+                      serviceLocator<LanguageController>().targetTextDirection,
                   child: WrapText(
                     widget.orderEntity.driver.driverName ?? '',
                     breakWordCharacter: '-',
@@ -82,13 +87,15 @@ class _DriverAssignCardWidgetView extends WidgetView<DriverAssignCardWidget, _Dr
                     asyncMode: true,
                     minFontSize: 12,
                     maxFontSize: 14,
-                    textStyle: context.labelSmall!.copyWith(fontWeight: FontWeight.w500),
+                    textStyle: context.labelSmall!
+                        .copyWith(fontWeight: FontWeight.w500),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                   ),
                 ),
                 subtitle: Directionality(
-                  textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                  textDirection:
+                      serviceLocator<LanguageController>().targetTextDirection,
                   child: WrapText(
                     widget.orderEntity.driver.driverContactNumber ?? '',
                     breakWordCharacter: '-',
@@ -96,7 +103,8 @@ class _DriverAssignCardWidgetView extends WidgetView<DriverAssignCardWidget, _Dr
                     asyncMode: true,
                     minFontSize: 12,
                     maxFontSize: 14,
-                    textStyle: context.labelSmall!.copyWith(fontWeight: FontWeight.w500),
+                    textStyle: context.labelSmall!
+                        .copyWith(fontWeight: FontWeight.w500),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                   ),

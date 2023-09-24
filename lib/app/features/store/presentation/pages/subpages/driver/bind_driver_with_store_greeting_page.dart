@@ -13,10 +13,12 @@ class BindDriverWithStoreGreetingPage extends StatefulWidget {
   final String message;
   final bool isRemoved;
   @override
-  _BindDriverWithStoreGreetingPageController createState() => _BindDriverWithStoreGreetingPageController();
+  _BindDriverWithStoreGreetingPageController createState() =>
+      _BindDriverWithStoreGreetingPageController();
 }
 
-class _BindDriverWithStoreGreetingPageController extends State<BindDriverWithStoreGreetingPage> {
+class _BindDriverWithStoreGreetingPageController
+    extends State<BindDriverWithStoreGreetingPage> {
   late final ScrollController scrollController;
   @override
   void initState() {
@@ -38,17 +40,21 @@ class _BindDriverWithStoreGreetingPageController extends State<BindDriverWithSto
   }
 
   @override
-  Widget build(BuildContext context) => _BindDriverWithStoreGreetingPageView(this);
+  Widget build(BuildContext context) =>
+      _BindDriverWithStoreGreetingPageView(this);
 }
 
-class _BindDriverWithStoreGreetingPageView extends WidgetView<BindDriverWithStoreGreetingPage, _BindDriverWithStoreGreetingPageController> {
+class _BindDriverWithStoreGreetingPageView extends WidgetView<
+    BindDriverWithStoreGreetingPage,
+    _BindDriverWithStoreGreetingPageController> {
   const _BindDriverWithStoreGreetingPageView(super.state);
 
   @override
   Widget build(BuildContext context) {
     final MediaQueryData media = MediaQuery.of(context);
     final double margins = GlobalApp.responsiveInsets(media.size.width);
-    final double topPadding = margins; //media.padding.top + kToolbarHeight + margins; //margins * 1.5;
+    final double topPadding =
+        margins; //media.padding.top + kToolbarHeight + margins; //margins * 1.5;
     final double bottomPadding = media.padding.bottom + margins;
     final double width = media.size.width;
     final ThemeData theme = Theme.of(context);
@@ -109,7 +115,9 @@ class _BindDriverWithStoreGreetingPageView extends WidgetView<BindDriverWithStor
                           Center(
                             child: Text(
                               'Hurray!',
-                              textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                              textDirection:
+                                  serviceLocator<LanguageController>()
+                                      .targetTextDirection,
                               textAlign: TextAlign.center,
                               style: context.headlineMedium!.copyWith(
                                 color: const Color.fromRGBO(69, 201, 125, 1),
@@ -129,7 +137,9 @@ class _BindDriverWithStoreGreetingPageView extends WidgetView<BindDriverWithStor
                               children: [
                                 Text(
                                   '${widget.storeOwnDeliveryPartnersEntities.length} Drivers are successfully ${widget.isRemoved ? 'removed' : 'listed'} ${widget.isRemoved ? 'from' : 'with'} ${widget.storeEntities.length} stores',
-                                  textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                  textDirection:
+                                      serviceLocator<LanguageController>()
+                                          .targetTextDirection,
                                   textAlign: TextAlign.center,
                                   style: context.titleLarge!.copyWith(
                                     fontSize: 20,
@@ -149,12 +159,15 @@ class _BindDriverWithStoreGreetingPageView extends WidgetView<BindDriverWithStor
                         ],
                       ),
                       PositionedDirectional(
-                        bottom: kBottomNavigationBarHeight + bottomPadding + margins * 6.5,
+                        bottom: kBottomNavigationBarHeight +
+                            bottomPadding +
+                            margins * 6.5,
                         start: 0,
                         end: 0,
                         child: Center(
                           child: Wrap(
-                            textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                            textDirection: serviceLocator<LanguageController>()
+                                .targetTextDirection,
                             children: [
                               Icon(Icons.share),
                               const SizedBox(
@@ -162,7 +175,9 @@ class _BindDriverWithStoreGreetingPageView extends WidgetView<BindDriverWithStor
                               ),
                               Text(
                                 'Share your store on social media',
-                                textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                textDirection:
+                                    serviceLocator<LanguageController>()
+                                        .targetTextDirection,
                                 textAlign: TextAlign.center,
                                 style: context.titleMedium!.copyWith(
                                   fontSize: 18,
@@ -190,16 +205,21 @@ class _BindDriverWithStoreGreetingPageView extends WidgetView<BindDriverWithStor
                                   ),
                                   child: Text(
                                     'My Drivers',
-                                    style: const TextStyle(color: Color.fromRGBO(42, 45, 50, 1)),
-                                    textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                    style: const TextStyle(
+                                        color: Color.fromRGBO(42, 45, 50, 1)),
+                                    textDirection:
+                                        serviceLocator<LanguageController>()
+                                            .targetTextDirection,
                                   ).translate(),
                                   onPressed: () {
-                                    context.pushReplacement(Routes.ALL_DRIVER_PAGE);
+                                    context.pushReplacement(
+                                        Routes.ALL_DRIVER_PAGE);
                                     return;
                                   },
                                 ),
                               ),
-                              const AnimatedGap(12, duration: Duration(milliseconds: 300)),
+                              const AnimatedGap(12,
+                                  duration: Duration(milliseconds: 300)),
                               Expanded(
                                 child: ElevatedButton(
                                   style: ElevatedButton.styleFrom(
@@ -210,11 +230,15 @@ class _BindDriverWithStoreGreetingPageView extends WidgetView<BindDriverWithStor
                                   ),
                                   child: Text(
                                     'Dashboard',
-                                    style: const TextStyle(color: Color.fromRGBO(42, 45, 50, 1)),
-                                    textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                    style: const TextStyle(
+                                        color: Color.fromRGBO(42, 45, 50, 1)),
+                                    textDirection:
+                                        serviceLocator<LanguageController>()
+                                            .targetTextDirection,
                                   ).translate(),
                                   onPressed: () {
-                                    context.pushReplacement(Routes.PRIMARY_DASHBOARD_PAGE);
+                                    context.pushReplacement(
+                                        Routes.PRIMARY_DASHBOARD_PAGE);
                                     return;
                                   },
                                 ),
@@ -230,14 +254,16 @@ class _BindDriverWithStoreGreetingPageView extends WidgetView<BindDriverWithStor
                         child: ElevatedButton(
                           child: Text(
                             'Add New Driver',
-                            textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                            textDirection: serviceLocator<LanguageController>()
+                                .targetTextDirection,
                           ).translate(),
                           onPressed: () {
-                            context.pushReplacement(Routes.SAVE_DRIVER_PAGE, extra: {
-                              'storeOwnDeliveryPartnersInfo': null,
-                              'haveNewDriver': true,
-                              'currentIndex': -1,
-                            });
+                            context.pushReplacement(Routes.SAVE_DRIVER_PAGE,
+                                extra: {
+                                  'storeOwnDeliveryPartnersInfo': null,
+                                  'haveNewDriver': true,
+                                  'currentIndex': -1,
+                                });
                             return;
                           },
                         ),

@@ -14,7 +14,8 @@ import 'package:sembast/timestamp.dart';
 part 'new_business_document_event.dart';
 part 'new_business_document_state.dart';
 
-class NewBusinessDocumentBloc extends Bloc<NewBusinessDocumentEvent, NewBusinessDocumentState> {
+class NewBusinessDocumentBloc
+    extends Bloc<NewBusinessDocumentEvent, NewBusinessDocumentState> {
   NewBusinessDocumentBloc() : super(NewBusinessDocumentInitial()) {
     on<UploadNewBusinessDocument>(_uploadNewBusinessDocument);
     on<GetNewUploadBusinessDocument>(_getNewUploadBusinessDocument);
@@ -23,7 +24,8 @@ class NewBusinessDocumentBloc extends Bloc<NewBusinessDocumentEvent, NewBusiness
     on<DeleteAllNewUploadBusinessDocument>(_deleteAllNewUploadBusinessDocument);
   }
 
-  FutureOr<void> _uploadNewBusinessDocument(UploadNewBusinessDocument event, Emitter<NewBusinessDocumentState> emit) async {
+  FutureOr<void> _uploadNewBusinessDocument(UploadNewBusinessDocument event,
+      Emitter<NewBusinessDocumentState> emit) async {
     /*try {
       DataSourceState<NewBusinessDocumentEntity> result;
       if (!event.hasNewUploadBusinessDocument) {
@@ -86,7 +88,8 @@ class NewBusinessDocumentBloc extends Bloc<NewBusinessDocumentEvent, NewBusiness
     }*/
     try {
       final DataSourceState<List<NewBusinessDocumentEntity>> results =
-      await serviceLocator<SaveAllDocumentUseCase>()(event.allBusinessDocuments.toList());
+          await serviceLocator<SaveAllDocumentUseCase>()(
+              event.allBusinessDocuments.toList());
       await results.when(
         remote: (data, meta) async {
           appLog.d('Business Document bloc save remote ${data?.length}');
@@ -112,7 +115,8 @@ class NewBusinessDocumentBloc extends Bloc<NewBusinessDocumentEvent, NewBusiness
             ),
           );
         },
-        error: (dataSourceFailure, reason, error, networkException, stackTrace, exception, extra) {
+        error: (dataSourceFailure, reason, error, networkException, stackTrace,
+            exception, extra) {
           appLog.d('Business Document bloc save error $reason');
           emit(
             NewBusinessDocumentExceptionState(
@@ -130,7 +134,8 @@ class NewBusinessDocumentBloc extends Bloc<NewBusinessDocumentEvent, NewBusiness
       appLog.e('Business Document bloc save exception $e');
       emit(
         NewBusinessDocumentExceptionState(
-          message: 'Something went wrong during saving your store details, please try again',
+          message:
+              'Something went wrong during saving your store details, please try again',
           //exception: e as Exception,
           stackTrace: s,
           status: UploadBusinessDocumentStatus.save,
@@ -139,8 +144,10 @@ class NewBusinessDocumentBloc extends Bloc<NewBusinessDocumentEvent, NewBusiness
     }
   }
 
-  Future<void> updateUserProfile(List<NewBusinessDocumentEntity> allBusinessDocuments) async {
-    final getCurrentUserResult = await serviceLocator<GetAllAppUserPaginationUseCase>()();
+  Future<void> updateUserProfile(
+      List<NewBusinessDocumentEntity> allBusinessDocuments) async {
+    final getCurrentUserResult =
+        await serviceLocator<GetAllAppUserPaginationUseCase>()();
     await getCurrentUserResult.when(
       remote: (data, meta) {},
       localDb: (data, meta) async {
@@ -151,7 +158,8 @@ class NewBusinessDocumentBloc extends Bloc<NewBusinessDocumentEvent, NewBusiness
           });
           final AppUserEntity cacheAppUserEntity = data.last.copyWith(
             userID: data.last.userID,
-            businessProfile: data.last.businessProfile?.copyWith(allBusinessDocuments: allBusinessDocuments),
+            businessProfile: data.last.businessProfile
+                ?.copyWith(allBusinessDocuments: allBusinessDocuments),
             currentUserStage: 4,
           );
           final editUserResult = await serviceLocator<SaveAllAppUserUseCase>()(
@@ -159,35 +167,45 @@ class NewBusinessDocumentBloc extends Bloc<NewBusinessDocumentEvent, NewBusiness
           );
           editUserResult.when(
             remote: (data, meta) {
-              appLog.d('Update current user with business profile save remote ${data?.last.toMap()}');
+              appLog.d(
+                  'Update current user with business profile save remote ${data?.last.toMap()}');
             },
             localDb: (data, meta) {
-              appLog.d('Update current user with business profile save local ${data?.last.toMap()}');
+              appLog.d(
+                  'Update current user with business profile save local ${data?.last.toMap()}');
               if (data != null) {
                 var cachedAppUserEntity = serviceLocator<AppUserEntity>()
                   ..currentUserStage = 4
-                  ..businessProfile = data.last.businessProfile?.copyWith(allBusinessDocuments: allBusinessDocuments);
-                serviceLocator<UserModelStorageController>().setUserModel(cachedAppUserEntity);
+                  ..businessProfile = data.last.businessProfile
+                      ?.copyWith(allBusinessDocuments: allBusinessDocuments);
+                serviceLocator<UserModelStorageController>()
+                    .setUserModel(cachedAppUserEntity);
               }
             },
-            error: (dataSourceFailure, reason, error, networkException, stackTrace, exception, extra) {
-              appLog.d('Update current user with business profile exception $error');
+            error: (dataSourceFailure, reason, error, networkException,
+                stackTrace, exception, extra) {
+              appLog.d(
+                  'Update current user with business profile exception $error');
             },
           );
         } else {
           appLog.d('Document GetAllAppUserPaginationUseCase is null');
         }
       },
-      error: (dataSourceFailure, reason, error, networkException, stackTrace, exception, extra) {
+      error: (dataSourceFailure, reason, error, networkException, stackTrace,
+          exception, extra) {
         appLog.d('Document updateUserProfile $reason ');
       },
     );
     return;
   }
 
-  FutureOr<void> _getNewUploadBusinessDocument(GetNewUploadBusinessDocument event, Emitter<NewBusinessDocumentState> emit) async {
+  FutureOr<void> _getNewUploadBusinessDocument(
+      GetNewUploadBusinessDocument event,
+      Emitter<NewBusinessDocumentState> emit) async {
     try {
-      final DataSourceState<NewBusinessDocumentEntity> result = await serviceLocator<GetDocumentUseCase>()(
+      final DataSourceState<NewBusinessDocumentEntity> result =
+          await serviceLocator<GetDocumentUseCase>()(
         input: event.businessDocumentUploadedEntity,
         id: event.documentID,
       );
@@ -196,7 +214,8 @@ class NewBusinessDocumentBloc extends Bloc<NewBusinessDocumentEvent, NewBusiness
           appLog.d('NewBusinessDocument  bloc edit remote ${data?.toMap()}');
           emit(
             GetNewBusinessDocumentState(
-              businessDocumentUploadedEntity: data ?? event.businessDocumentUploadedEntity,
+              businessDocumentUploadedEntity:
+                  data ?? event.businessDocumentUploadedEntity,
               status: UploadBusinessDocumentStatus.get,
             ),
           );
@@ -205,12 +224,14 @@ class NewBusinessDocumentBloc extends Bloc<NewBusinessDocumentEvent, NewBusiness
           appLog.d('NewBusinessDocument  bloc edit local ${data?.toMap()}');
           emit(
             GetNewBusinessDocumentState(
-              businessDocumentUploadedEntity: data ?? event.businessDocumentUploadedEntity,
+              businessDocumentUploadedEntity:
+                  data ?? event.businessDocumentUploadedEntity,
               status: UploadBusinessDocumentStatus.get,
             ),
           );
         },
-        error: (dataSourceFailure, reason, error, networkException, stackTrace, exception, extra) {
+        error: (dataSourceFailure, reason, error, networkException, stackTrace,
+            exception, extra) {
           appLog.d('NewBusinessDocument  bloc edit error $reason');
           emit(
             NewBusinessDocumentExceptionState(
@@ -226,7 +247,8 @@ class NewBusinessDocumentBloc extends Bloc<NewBusinessDocumentEvent, NewBusiness
       appLog.e('NewBusinessDocument  bloc get exception $e');
       emit(
         NewBusinessDocumentExceptionState(
-          message: 'Something went wrong during getting your store details, please try again',
+          message:
+              'Something went wrong during getting your store details, please try again',
           //exception: e as Exception,
           stackTrace: s,
           status: UploadBusinessDocumentStatus.get,
@@ -235,10 +257,14 @@ class NewBusinessDocumentBloc extends Bloc<NewBusinessDocumentEvent, NewBusiness
     }
   }
 
-  FutureOr<void> _getAllNewUploadBusinessDocument(GetAllNewUploadBusinessDocument event, Emitter<NewBusinessDocumentState> emit) async {
+  FutureOr<void> _getAllNewUploadBusinessDocument(
+      GetAllNewUploadBusinessDocument event,
+      Emitter<NewBusinessDocumentState> emit) async {
     try {
-      emit(NewBusinessDocumentLoadingState(message: 'Please wait while we are fetching your profile...'));
-      final DataSourceState<List<NewBusinessDocumentEntity>> result = await serviceLocator<GetAllDocumentUseCase>()();
+      emit(NewBusinessDocumentLoadingState(
+          message: 'Please wait while we are fetching your profile...'));
+      final DataSourceState<List<NewBusinessDocumentEntity>> result =
+          await serviceLocator<GetAllDocumentUseCase>()();
       result.when(
         remote: (data, meta) {
           appLog.d('NewBusinessDocument  bloc get all remote');
@@ -276,7 +302,8 @@ class NewBusinessDocumentBloc extends Bloc<NewBusinessDocumentEvent, NewBusiness
             );
           }
         },
-        error: (dataSourceFailure, reason, error, networkException, stackTrace, exception, extra) {
+        error: (dataSourceFailure, reason, error, networkException, stackTrace,
+            exception, extra) {
           appLog.d('NewBusinessDocument  bloc get all error $reason');
           emit(
             NewBusinessDocumentExceptionState(
@@ -292,7 +319,8 @@ class NewBusinessDocumentBloc extends Bloc<NewBusinessDocumentEvent, NewBusiness
       appLog.e('NewBusinessDocument  bloc get all $e');
       emit(
         NewBusinessDocumentExceptionState(
-          message: 'Something went wrong during getting your all stores, please try again',
+          message:
+              'Something went wrong during getting your all stores, please try again',
           //exception: e as Exception,
           stackTrace: s,
           status: UploadBusinessDocumentStatus.getAll,
@@ -301,9 +329,12 @@ class NewBusinessDocumentBloc extends Bloc<NewBusinessDocumentEvent, NewBusiness
     }
   }
 
-  FutureOr<void> _deleteNewUploadBusinessDocument(DeleteNewUploadBusinessDocument event, Emitter<NewBusinessDocumentState> emit) async {
+  FutureOr<void> _deleteNewUploadBusinessDocument(
+      DeleteNewUploadBusinessDocument event,
+      Emitter<NewBusinessDocumentState> emit) async {
     try {
-      final DataSourceState<bool> result = await serviceLocator<DeleteDocumentUseCase>()(
+      final DataSourceState<bool> result =
+          await serviceLocator<DeleteDocumentUseCase>()(
         input: event.businessDocumentUploadedEntity,
         id: event.documentID,
       );
@@ -326,7 +357,8 @@ class NewBusinessDocumentBloc extends Bloc<NewBusinessDocumentEvent, NewBusiness
             ),
           );
         },
-        error: (dataSourceFailure, reason, error, networkException, stackTrace, exception, extra) {
+        error: (dataSourceFailure, reason, error, networkException, stackTrace,
+            exception, extra) {
           appLog.d('NewBusinessDocument  bloc delete error $reason');
           emit(
             NewBusinessDocumentExceptionState(
@@ -342,7 +374,8 @@ class NewBusinessDocumentBloc extends Bloc<NewBusinessDocumentEvent, NewBusiness
       appLog.e('NewBusinessDocument  bloc delete exception $e');
       emit(
         NewBusinessDocumentExceptionState(
-          message: 'Something went wrong during getting your store details, please try again',
+          message:
+              'Something went wrong during getting your store details, please try again',
           //exception: e as Exception,
           stackTrace: s,
           status: UploadBusinessDocumentStatus.delete,
@@ -351,9 +384,12 @@ class NewBusinessDocumentBloc extends Bloc<NewBusinessDocumentEvent, NewBusiness
     }
   }
 
-  FutureOr<void> _deleteAllNewUploadBusinessDocument(DeleteAllNewUploadBusinessDocument event, Emitter<NewBusinessDocumentState> emit) async {
+  FutureOr<void> _deleteAllNewUploadBusinessDocument(
+      DeleteAllNewUploadBusinessDocument event,
+      Emitter<NewBusinessDocumentState> emit) async {
     try {
-      final DataSourceState<bool> result = await serviceLocator<DeleteAllDocumentUseCase>()();
+      final DataSourceState<bool> result =
+          await serviceLocator<DeleteAllDocumentUseCase>()();
       result.when(
         remote: (data, meta) {
           appLog.d('NewBusinessDocument  bloc delete all remote $data');
@@ -373,7 +409,8 @@ class NewBusinessDocumentBloc extends Bloc<NewBusinessDocumentEvent, NewBusiness
             ),
           );
         },
-        error: (dataSourceFailure, reason, error, networkException, stackTrace, exception, extra) {
+        error: (dataSourceFailure, reason, error, networkException, stackTrace,
+            exception, extra) {
           appLog.d('NewBusinessDocument  bloc delete all error $reason');
           emit(
             NewBusinessDocumentExceptionState(
@@ -389,7 +426,8 @@ class NewBusinessDocumentBloc extends Bloc<NewBusinessDocumentEvent, NewBusiness
       appLog.e('NewBusinessDocument  bloc delete all exception $e');
       emit(
         NewBusinessDocumentExceptionState(
-          message: 'Something went wrong during getting your store details, please try again',
+          message:
+              'Something went wrong during getting your store details, please try again',
           //exception: e as Exception,
           stackTrace: s,
           status: UploadBusinessDocumentStatus.deleteAll,

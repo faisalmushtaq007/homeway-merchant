@@ -70,5 +70,6 @@ class RegexValidator extends PatternValidator {
   /// The [regExp] parameter is the regular expression pattern to be matched within the value.
   /// The [errorMessage] parameter is the error message to be returned if the value does not
   /// match the regular expression pattern.
-  const RegexValidator(RegExp regExp, {required super.errorMessage}) : super(regExp);
+  const RegexValidator(RegExp regExp, {required super.errorMessage})
+      : super(regExp);
 }

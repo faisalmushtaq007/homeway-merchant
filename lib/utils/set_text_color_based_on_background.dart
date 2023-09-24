@@ -3,16 +3,25 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:palette_generator/palette_generator.dart';
 
-Color setTextColorFromBackgroundColor({required Color backgroundColor, Color customTextColor = Colors.black87, bool useCustomColor = false}) {
-  final colorDifference = backgroundColor.computeLuminance() - customTextColor.computeLuminance();
+Color setTextColorFromBackgroundColor(
+    {required Color backgroundColor,
+    Color customTextColor = Colors.black87,
+    bool useCustomColor = false}) {
+  final colorDifference =
+      backgroundColor.computeLuminance() - customTextColor.computeLuminance();
   if (colorDifference.abs() < 0.2) {
-    return customTextColor.computeLuminance() > 0.5 ? Colors.black : Colors.white;
+    return customTextColor.computeLuminance() > 0.5
+        ? Colors.black
+        : Colors.white;
   } else {
     return customTextColor;
   }
 }
 
-Future<Color> setTextColorFromBackgroundImage({required String networkImagePath, Color customTextColor = Colors.black87, bool useCustomColor = false}) async {
+Future<Color> setTextColorFromBackgroundImage(
+    {required String networkImagePath,
+    Color customTextColor = Colors.black87,
+    bool useCustomColor = false}) async {
   PaletteGenerator paletteGenerator = await PaletteGenerator.fromImageProvider(
     NetworkImage(networkImagePath),
 
@@ -28,9 +37,12 @@ Future<Color> setTextColorFromBackgroundImage({required String networkImagePath,
   if (dominantColor == null) {
     return customTextColor;
   } else {
-    final colorDifference = dominantColor.computeLuminance() - customTextColor.computeLuminance();
+    final colorDifference =
+        dominantColor.computeLuminance() - customTextColor.computeLuminance();
     if (colorDifference.abs() < 0.2) {
-      return customTextColor.computeLuminance() > 0.5 ? Colors.black : Colors.white;
+      return customTextColor.computeLuminance() > 0.5
+          ? Colors.black
+          : Colors.white;
     } else {
       return customTextColor;
     }

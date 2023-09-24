@@ -1,6 +1,7 @@
 part of 'package:homemakers_merchant/app/features/address/index.dart';
 
-class SaveAddressUseCase extends UseCaseIO<AddressModel, DataSourceState<AddressModel>> {
+class SaveAddressUseCase
+    extends UseCaseIO<AddressModel, DataSourceState<AddressModel>> {
   SaveAddressUseCase({
     required this.userAddressRepository,
   });

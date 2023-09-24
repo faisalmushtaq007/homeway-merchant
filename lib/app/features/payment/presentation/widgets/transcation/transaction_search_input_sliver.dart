@@ -12,11 +12,14 @@ class TranscationSearchInputSliver extends StatefulWidget {
   final bool isEnabled;
 
   @override
-  _TranscationSearchInputSliverState createState() => _TranscationSearchInputSliverState();
+  _TranscationSearchInputSliverState createState() =>
+      _TranscationSearchInputSliverState();
 }
 
-class _TranscationSearchInputSliverState extends State<TranscationSearchInputSliver> {
-  final StreamController<String> _textChangeStreamController = StreamController();
+class _TranscationSearchInputSliverState
+    extends State<TranscationSearchInputSliver> {
+  final StreamController<String> _textChangeStreamController =
+      StreamController();
   late StreamSubscription _textChangesSubscription;
 
   @override
@@ -42,7 +45,9 @@ class _TranscationSearchInputSliverState extends State<TranscationSearchInputSli
   @override
   Widget build(BuildContext context) => SliverToBoxAdapter(
         child: AnimatedCrossFade(
-          crossFadeState: (widget.isEnabled) ? CrossFadeState.showFirst : CrossFadeState.showSecond,
+          crossFadeState: (widget.isEnabled)
+              ? CrossFadeState.showFirst
+              : CrossFadeState.showSecond,
           duration: const Duration(milliseconds: 200),
           firstChild: Container(
             height: 60,

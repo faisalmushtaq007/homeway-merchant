@@ -87,7 +87,8 @@ class PagedPageView<PageKeyType, ItemType> extends StatelessWidget {
   final bool shrinkWrapFirstPageIndicators;
 
   @override
-  Widget build(BuildContext context) => PagedLayoutBuilder<PageKeyType, ItemType>(
+  Widget build(BuildContext context) =>
+      PagedLayoutBuilder<PageKeyType, ItemType>(
         layoutProtocol: PagedLayoutProtocol.box,
         pagingController: pagingController,
         builderDelegate: builderDelegate,

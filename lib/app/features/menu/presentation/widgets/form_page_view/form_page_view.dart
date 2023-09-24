@@ -38,7 +38,8 @@ class FormPageView extends StatefulWidget {
 
 class _FormPageViewState extends State<FormPageView> {
   int _currentPageIndex = 0;
-  final StepProgressController _stepProgressController = StepProgressController(initialStep: 0, totalStep: 4);
+  final StepProgressController _stepProgressController =
+      StepProgressController(initialStep: 0, totalStep: 4);
   @override
   void initState() {
     super.initState();
@@ -69,8 +70,10 @@ class _FormPageViewState extends State<FormPageView> {
       setState(() {
         if (_currentPageIndex < widget.pages.length - 1) {
           _currentPageIndex++;
-          widget.controller.nextPage(duration: const Duration(milliseconds: 300), curve: Curves.ease);
-          widget.preloadPageController.nextPage(duration: const Duration(milliseconds: 300), curve: Curves.ease);
+          widget.controller.nextPage(
+              duration: const Duration(milliseconds: 300), curve: Curves.ease);
+          widget.preloadPageController.nextPage(
+              duration: const Duration(milliseconds: 300), curve: Curves.ease);
         } else {
           widget.onFormSubmitted();
         }
@@ -86,7 +89,8 @@ class _FormPageViewState extends State<FormPageView> {
           ? AppBar(
               centerTitle: widget.style?.appBarCenterTitle ?? false,
               elevation: widget.style?.appBarElevation ?? 4,
-              backgroundColor: widget.style?.appBarBackgroundColor ?? Colors.white,
+              backgroundColor:
+                  widget.style?.appBarBackgroundColor ?? Colors.white,
               toolbarHeight: widget.style?.appBarHeight ?? 56,
               leading: widget.showBackButton != null
                   ? IconButton(
@@ -105,7 +109,8 @@ class _FormPageViewState extends State<FormPageView> {
                           });
                         }
                       },
-                      icon: widget.style?.backButtonIcon ?? const Icon(Icons.arrow_back_ios),
+                      icon: widget.style?.backButtonIcon ??
+                          const Icon(Icons.arrow_back_ios),
                     )
                   : null,
               title: widget.pages[_currentPageIndex].title != null
@@ -135,9 +140,13 @@ class _FormPageViewState extends State<FormPageView> {
                               height: widget.style?.progressIndicatorSize ?? 40,
                               child: CircularProgressIndicator(
                                 value: value,
-                                strokeWidth: widget.style?.progressIndicatorStrokeWidth ?? 4,
-                                color: widget.style?.progressIndicatorColor ?? Theme.of(context).primaryColor,
-                                backgroundColor: widget.style?.progressIndicatorBackgroundColor,
+                                strokeWidth: widget
+                                        .style?.progressIndicatorStrokeWidth ??
+                                    4,
+                                color: widget.style?.progressIndicatorColor ??
+                                    Theme.of(context).primaryColor,
+                                backgroundColor: widget
+                                    .style?.progressIndicatorBackgroundColor,
                               ),
                             );
                           },
@@ -161,11 +170,16 @@ class _FormPageViewState extends State<FormPageView> {
                     builder: (context, value, child) {
                       return LinearProgressIndicator(
                         value: value,
-                        minHeight: widget.style?.progressIndicatorStrokeWidth ?? 4,
-                        color: widget.style?.progressIndicatorColor ?? Theme.of(context).primaryColor,
-                        backgroundColor: widget.style?.progressIndicatorBackgroundColor ?? Colors.grey[300],
+                        minHeight:
+                            widget.style?.progressIndicatorStrokeWidth ?? 4,
+                        color: widget.style?.progressIndicatorColor ??
+                            Theme.of(context).primaryColor,
+                        backgroundColor:
+                            widget.style?.progressIndicatorBackgroundColor ??
+                                Colors.grey[300],
                         valueColor: AlwaysStoppedAnimation<Color>(
-                          widget.style?.progressIndicatorColor ?? Theme.of(context).primaryColor,
+                          widget.style?.progressIndicatorColor ??
+                              Theme.of(context).primaryColor,
                         ),
                       );
                     },

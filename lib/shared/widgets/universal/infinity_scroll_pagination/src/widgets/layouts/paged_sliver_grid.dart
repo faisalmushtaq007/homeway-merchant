@@ -73,7 +73,8 @@ class PagedSliverGrid<PageKeyType, ItemType> extends StatelessWidget {
   final bool shrinkWrapFirstPageIndicators;
 
   @override
-  Widget build(BuildContext context) => PagedLayoutBuilder<PageKeyType, ItemType>(
+  Widget build(BuildContext context) =>
+      PagedLayoutBuilder<PageKeyType, ItemType>(
         layoutProtocol: PagedLayoutProtocol.sliver,
         pagingController: pagingController,
         builderDelegate: builderDelegate,

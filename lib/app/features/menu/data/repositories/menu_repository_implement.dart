@@ -15,20 +15,26 @@ class MenuRepositoryImplement implements MenuRepository {
   final MenuDataSource remoteDataSource;
   final MenuLocalDbRepository<MenuEntity> menuLocalDataSource;
   final AddonsLocalDbRepository<Addons> addonsLocalDataSource;
-  final AddonsBindingWithMenuLocalDbDbRepository<Addons, MenuEntity> addonsBindingWithMenuLocalDataSource;
-  final AddonsBindingWithCurrentUserLocalDbDbRepository<Addons, AppUserEntity> addonsBindingWithCurrentUserLocalDataSource;
-  final MenuBindingWithStoreLocalDbDbRepository<MenuEntity, StoreEntity> menuBindingWithStoreLocalDataSource;
-  final MenuBindingWithCurrentUserLocalDbDbRepository<MenuEntity, AppUserEntity> menuBindingWithCurrentUserLocalDataSource;
+  final AddonsBindingWithMenuLocalDbDbRepository<Addons, MenuEntity>
+      addonsBindingWithMenuLocalDataSource;
+  final AddonsBindingWithCurrentUserLocalDbDbRepository<Addons, AppUserEntity>
+      addonsBindingWithCurrentUserLocalDataSource;
+  final MenuBindingWithStoreLocalDbDbRepository<MenuEntity, StoreEntity>
+      menuBindingWithStoreLocalDataSource;
+  final MenuBindingWithCurrentUserLocalDbDbRepository<MenuEntity, AppUserEntity>
+      menuBindingWithCurrentUserLocalDataSource;
   final CategoryLocalDbRepository categoryLocalDbRepository;
 
   @override
   Future<DataSourceState<bool>> deleteAllMenu() async {
     try {
-      var connectivity = serviceLocator<ConnectivityService>().getCurrentInternetStatus();
+      var connectivity =
+          serviceLocator<ConnectivityService>().getCurrentInternetStatus();
       if (connectivity.$2 == InternetConnectivityState.internet) {
         // Local DB
         // Save to local
-        final Either<RepositoryBaseFailure, bool> result = await menuLocalDataSource.deleteAll();
+        final Either<RepositoryBaseFailure, bool> result =
+            await menuLocalDataSource.deleteAll();
         // Return result
         return result.fold((l) {
           final RepositoryFailure failure = l as RepositoryFailure;
@@ -45,7 +51,8 @@ class MenuRepositoryImplement implements MenuRepository {
       } else {
         // Remote
         // Save to server
-        final ApiResultState<bool> result = await remoteDataSource.deleteAllMenu();
+        final ApiResultState<bool> result =
+            await remoteDataSource.deleteAllMenu();
         // Return result
         return result.when(
           success: (data) {
@@ -79,13 +86,16 @@ class MenuRepositoryImplement implements MenuRepository {
   }
 
   @override
-  Future<DataSourceState<bool>> deleteMenu({required int menuID, MenuEntity? menuEntity}) async {
+  Future<DataSourceState<bool>> deleteMenu(
+      {required int menuID, MenuEntity? menuEntity}) async {
     try {
-      var connectivity = serviceLocator<ConnectivityService>().getCurrentInternetStatus();
+      var connectivity =
+          serviceLocator<ConnectivityService>().getCurrentInternetStatus();
       if (connectivity.$2 == InternetConnectivityState.internet) {
         // Local DB
         // Save to local
-        final Either<RepositoryBaseFailure, bool> result = await menuLocalDataSource.deleteById(UniqueId(menuID));
+        final Either<RepositoryBaseFailure, bool> result =
+            await menuLocalDataSource.deleteById(UniqueId(menuID));
         // Return result
         return result.fold((l) {
           final RepositoryFailure failure = l as RepositoryFailure;
@@ -102,7 +112,8 @@ class MenuRepositoryImplement implements MenuRepository {
       } else {
         // Remote
         // Save to server
-        final ApiResultState<bool> result = await remoteDataSource.deleteMenu(menuID: menuID, menuEntity: menuEntity);
+        final ApiResultState<bool> result = await remoteDataSource.deleteMenu(
+            menuID: menuID, menuEntity: menuEntity);
         // Return result
         return result.when(
           success: (data) {
@@ -141,11 +152,13 @@ class MenuRepositoryImplement implements MenuRepository {
     required int menuID,
   }) async {
     try {
-      var connectivity = serviceLocator<ConnectivityService>().getCurrentInternetStatus();
+      var connectivity =
+          serviceLocator<ConnectivityService>().getCurrentInternetStatus();
       if (connectivity.$2 == InternetConnectivityState.internet) {
         // Local DB
         // Save to local
-        final Either<RepositoryBaseFailure, MenuEntity> result = await menuLocalDataSource.update(menuEntity, UniqueId(menuID));
+        final Either<RepositoryBaseFailure, MenuEntity> result =
+            await menuLocalDataSource.update(menuEntity, UniqueId(menuID));
         // Return result
         return result.fold((l) {
           final RepositoryFailure failure = l as RepositoryFailure;
@@ -162,7 +175,8 @@ class MenuRepositoryImplement implements MenuRepository {
       } else {
         // Remote
         // Save to server
-        final ApiResultState<MenuEntity> result = await remoteDataSource.editMenu(
+        final ApiResultState<MenuEntity> result =
+            await remoteDataSource.editMenu(
           menuEntity: menuEntity,
           menuID: menuID,
         );
@@ -209,11 +223,13 @@ class MenuRepositoryImplement implements MenuRepository {
     Timestamp? endTime,
   }) async {
     /*try {*/
-    var connectivity = serviceLocator<ConnectivityService>().getCurrentInternetStatus();
+    var connectivity =
+        serviceLocator<ConnectivityService>().getCurrentInternetStatus();
     if (connectivity.$2 == InternetConnectivityState.internet) {
       // Local DB
       // Save to local
-      final Either<RepositoryBaseFailure, List<MenuEntity>> result = await menuLocalDataSource.getAll();
+      final Either<RepositoryBaseFailure, List<MenuEntity>> result =
+          await menuLocalDataSource.getAll();
       // Return result
       return result.fold((l) {
         final RepositoryFailure failure = l as RepositoryFailure;
@@ -230,7 +246,8 @@ class MenuRepositoryImplement implements MenuRepository {
     } else {
       // Remote
       // Save to server
-      final ApiResultState<List<MenuEntity>> result = await remoteDataSource.getAllMenu();
+      final ApiResultState<List<MenuEntity>> result =
+          await remoteDataSource.getAllMenu();
       // Return result
       return result.when(
         success: (data) {
@@ -264,13 +281,16 @@ class MenuRepositoryImplement implements MenuRepository {
   }
 
   @override
-  Future<DataSourceState<MenuEntity>> getMenu({required int menuID, MenuEntity? menuEntity}) async {
+  Future<DataSourceState<MenuEntity>> getMenu(
+      {required int menuID, MenuEntity? menuEntity}) async {
     try {
-      var connectivity = serviceLocator<ConnectivityService>().getCurrentInternetStatus();
+      var connectivity =
+          serviceLocator<ConnectivityService>().getCurrentInternetStatus();
       if (connectivity.$2 == InternetConnectivityState.internet) {
         // Local DB
         // Save to local
-        final Either<RepositoryBaseFailure, MenuEntity?> result = await menuLocalDataSource.getById(UniqueId(menuID));
+        final Either<RepositoryBaseFailure, MenuEntity?> result =
+            await menuLocalDataSource.getById(UniqueId(menuID));
         // Return result
         return result.fold((l) {
           final RepositoryFailure failure = l as RepositoryFailure;
@@ -287,7 +307,8 @@ class MenuRepositoryImplement implements MenuRepository {
       } else {
         // Remote
         // Save to server
-        final ApiResultState<MenuEntity> result = await remoteDataSource.getMenu(
+        final ApiResultState<MenuEntity> result =
+            await remoteDataSource.getMenu(
           menuEntity: menuEntity,
           menuID: menuID,
         );
@@ -324,13 +345,16 @@ class MenuRepositoryImplement implements MenuRepository {
   }
 
   @override
-  Future<DataSourceState<MenuEntity>> saveMenu({required MenuEntity menuEntity}) async {
+  Future<DataSourceState<MenuEntity>> saveMenu(
+      {required MenuEntity menuEntity}) async {
     try {
-      var connectivity = serviceLocator<ConnectivityService>().getCurrentInternetStatus();
+      var connectivity =
+          serviceLocator<ConnectivityService>().getCurrentInternetStatus();
       if (connectivity.$2 == InternetConnectivityState.internet) {
         // Local DB
         // Save to local
-        final Either<RepositoryBaseFailure, MenuEntity> result = await menuLocalDataSource.add(menuEntity);
+        final Either<RepositoryBaseFailure, MenuEntity> result =
+            await menuLocalDataSource.add(menuEntity);
         // Return result
         return result.fold((l) {
           final RepositoryFailure failure = l as RepositoryFailure;
@@ -347,7 +371,8 @@ class MenuRepositoryImplement implements MenuRepository {
       } else {
         // Remote
         // Save to server
-        final ApiResultState<MenuEntity> result = await remoteDataSource.saveMenu(menuEntity: menuEntity);
+        final ApiResultState<MenuEntity> result =
+            await remoteDataSource.saveMenu(menuEntity: menuEntity);
         // Return result
         return result.when(
           success: (data) {
@@ -381,13 +406,18 @@ class MenuRepositoryImplement implements MenuRepository {
   }
 
   @override
-  Future<DataSourceState<List<MenuEntity>>> bindAddonsWithMenu({required List<Addons> source, required List<MenuEntity> destination}) async {
+  Future<DataSourceState<List<MenuEntity>>> bindAddonsWithMenu(
+      {required List<Addons> source,
+      required List<MenuEntity> destination}) async {
     try {
-      var connectivity = serviceLocator<ConnectivityService>().getCurrentInternetStatus();
+      var connectivity =
+          serviceLocator<ConnectivityService>().getCurrentInternetStatus();
       if (connectivity.$2 == InternetConnectivityState.internet) {
         // Local DB
         // Save to local
-        final Either<RepositoryBaseFailure, List<MenuEntity>> result = await addonsBindingWithMenuLocalDataSource.binding(source, destination);
+        final Either<RepositoryBaseFailure, List<MenuEntity>> result =
+            await addonsBindingWithMenuLocalDataSource.binding(
+                source, destination);
         // Return result
         return result.fold((l) {
           final RepositoryFailure failure = l as RepositoryFailure;
@@ -404,7 +434,8 @@ class MenuRepositoryImplement implements MenuRepository {
       } else {
         // Remote
         // Save to server
-        final ApiResultState<List<MenuEntity>> result = await remoteDataSource.bindAddonsWithMenu(
+        final ApiResultState<List<MenuEntity>> result =
+            await remoteDataSource.bindAddonsWithMenu(
           source: source,
           destination: destination,
         );
@@ -441,13 +472,18 @@ class MenuRepositoryImplement implements MenuRepository {
   }
 
   @override
-  Future<DataSourceState<List<StoreEntity>>> bindMenuWithStores({required List<MenuEntity> source, required List<StoreEntity> destination}) async {
+  Future<DataSourceState<List<StoreEntity>>> bindMenuWithStores(
+      {required List<MenuEntity> source,
+      required List<StoreEntity> destination}) async {
     try {
-      var connectivity = serviceLocator<ConnectivityService>().getCurrentInternetStatus();
+      var connectivity =
+          serviceLocator<ConnectivityService>().getCurrentInternetStatus();
       if (connectivity.$2 == InternetConnectivityState.internet) {
         // Local DB
         // Save to local
-        final Either<RepositoryBaseFailure, List<StoreEntity>> result = await menuBindingWithStoreLocalDataSource.binding(source, destination);
+        final Either<RepositoryBaseFailure, List<StoreEntity>> result =
+            await menuBindingWithStoreLocalDataSource.binding(
+                source, destination);
         // Return result
         return result.fold((l) {
           final RepositoryFailure failure = l as RepositoryFailure;
@@ -464,7 +500,8 @@ class MenuRepositoryImplement implements MenuRepository {
       } else {
         // Remote
         // Save to server
-        final ApiResultState<List<StoreEntity>> result = await remoteDataSource.bindMenuWithStores(
+        final ApiResultState<List<StoreEntity>> result =
+            await remoteDataSource.bindMenuWithStores(
           source: source,
           destination: destination,
         );
@@ -501,13 +538,16 @@ class MenuRepositoryImplement implements MenuRepository {
   }
 
   @override
-  Future<DataSourceState<bool>> deleteAddons({required int addonsID, Addons? addons}) async {
+  Future<DataSourceState<bool>> deleteAddons(
+      {required int addonsID, Addons? addons}) async {
     try {
-      var connectivity = serviceLocator<ConnectivityService>().getCurrentInternetStatus();
+      var connectivity =
+          serviceLocator<ConnectivityService>().getCurrentInternetStatus();
       if (connectivity.$2 == InternetConnectivityState.internet) {
         // Local DB
         // Save to local
-        final Either<RepositoryBaseFailure, bool> result = await addonsLocalDataSource.deleteById(UniqueId(addonsID));
+        final Either<RepositoryBaseFailure, bool> result =
+            await addonsLocalDataSource.deleteById(UniqueId(addonsID));
         // Return result
         return result.fold((l) {
           final RepositoryFailure failure = l as RepositoryFailure;
@@ -524,7 +564,8 @@ class MenuRepositoryImplement implements MenuRepository {
       } else {
         // Remote
         // Save to server
-        final ApiResultState<bool> result = await remoteDataSource.deleteAddons(addonsID: addonsID, addons: addons);
+        final ApiResultState<bool> result = await remoteDataSource.deleteAddons(
+            addonsID: addonsID, addons: addons);
         // Return result
         return result.when(
           success: (data) {
@@ -560,11 +601,13 @@ class MenuRepositoryImplement implements MenuRepository {
   @override
   Future<DataSourceState<bool>> deleteAllAddons() async {
     try {
-      var connectivity = serviceLocator<ConnectivityService>().getCurrentInternetStatus();
+      var connectivity =
+          serviceLocator<ConnectivityService>().getCurrentInternetStatus();
       if (connectivity.$2 == InternetConnectivityState.internet) {
         // Local DB
         // Save to local
-        final Either<RepositoryBaseFailure, bool> result = await addonsLocalDataSource.deleteAll();
+        final Either<RepositoryBaseFailure, bool> result =
+            await addonsLocalDataSource.deleteAll();
         // Return result
         return result.fold((l) {
           final RepositoryFailure failure = l as RepositoryFailure;
@@ -581,7 +624,8 @@ class MenuRepositoryImplement implements MenuRepository {
       } else {
         // Remote
         // Save to server
-        final ApiResultState<bool> result = await remoteDataSource.deleteAllAddons();
+        final ApiResultState<bool> result =
+            await remoteDataSource.deleteAllAddons();
         // Return result
         return result.when(
           success: (data) {
@@ -620,11 +664,13 @@ class MenuRepositoryImplement implements MenuRepository {
     required int addonsID,
   }) async {
     try {
-      var connectivity = serviceLocator<ConnectivityService>().getCurrentInternetStatus();
+      var connectivity =
+          serviceLocator<ConnectivityService>().getCurrentInternetStatus();
       if (connectivity.$2 == InternetConnectivityState.internet) {
         // Local DB
         // Save to local
-        final Either<RepositoryBaseFailure, Addons> result = await addonsLocalDataSource.update(addons, UniqueId(addonsID));
+        final Either<RepositoryBaseFailure, Addons> result =
+            await addonsLocalDataSource.update(addons, UniqueId(addonsID));
         // Return result
         return result.fold((l) {
           final RepositoryFailure failure = l as RepositoryFailure;
@@ -678,13 +724,16 @@ class MenuRepositoryImplement implements MenuRepository {
   }
 
   @override
-  Future<DataSourceState<Addons>> getAddons({required int addonsID, Addons? addons}) async {
+  Future<DataSourceState<Addons>> getAddons(
+      {required int addonsID, Addons? addons}) async {
     try {
-      var connectivity = serviceLocator<ConnectivityService>().getCurrentInternetStatus();
+      var connectivity =
+          serviceLocator<ConnectivityService>().getCurrentInternetStatus();
       if (connectivity.$2 == InternetConnectivityState.internet) {
         // Local DB
         // Save to local
-        final Either<RepositoryBaseFailure, Addons?> result = await addonsLocalDataSource.getById(UniqueId(addonsID));
+        final Either<RepositoryBaseFailure, Addons?> result =
+            await addonsLocalDataSource.getById(UniqueId(addonsID));
         // Return result
         return result.fold((l) {
           final RepositoryFailure failure = l as RepositoryFailure;
@@ -748,11 +797,13 @@ class MenuRepositoryImplement implements MenuRepository {
     Timestamp? endTime,
   }) async {
     try {
-      var connectivity = serviceLocator<ConnectivityService>().getCurrentInternetStatus();
+      var connectivity =
+          serviceLocator<ConnectivityService>().getCurrentInternetStatus();
       if (connectivity.$2 == InternetConnectivityState.internet) {
         // Local DB
         // Save to local
-        final Either<RepositoryBaseFailure, List<Addons>> result = await addonsLocalDataSource.getAll();
+        final Either<RepositoryBaseFailure, List<Addons>> result =
+            await addonsLocalDataSource.getAll();
         // Return result
         return result.fold((l) {
           final RepositoryFailure failure = l as RepositoryFailure;
@@ -769,7 +820,8 @@ class MenuRepositoryImplement implements MenuRepository {
       } else {
         // Remote
         // Save to server
-        final ApiResultState<List<Addons>> result = await remoteDataSource.getAllAddons();
+        final ApiResultState<List<Addons>> result =
+            await remoteDataSource.getAllAddons();
         // Return result
         return result.when(
           success: (data) {
@@ -805,11 +857,13 @@ class MenuRepositoryImplement implements MenuRepository {
   @override
   Future<DataSourceState<Addons>> saveAddons({required Addons addons}) async {
     try {
-      var connectivity = serviceLocator<ConnectivityService>().getCurrentInternetStatus();
+      var connectivity =
+          serviceLocator<ConnectivityService>().getCurrentInternetStatus();
       if (connectivity.$2 == InternetConnectivityState.internet) {
         // Local DB
         // Save to local
-        final Either<RepositoryBaseFailure, Addons> result = await addonsLocalDataSource.add(addons);
+        final Either<RepositoryBaseFailure, Addons> result =
+            await addonsLocalDataSource.add(addons);
         // Return result
         return result.fold((l) {
           final RepositoryFailure failure = l as RepositoryFailure;
@@ -826,7 +880,8 @@ class MenuRepositoryImplement implements MenuRepository {
       } else {
         // Remote
         // Save to server
-        final ApiResultState<Addons> result = await remoteDataSource.saveAddons(addons: addons);
+        final ApiResultState<Addons> result =
+            await remoteDataSource.saveAddons(addons: addons);
         // Return result
         return result.when(
           success: (data) {
@@ -860,25 +915,33 @@ class MenuRepositoryImplement implements MenuRepository {
   }
 
   @override
-  Future<DataSourceState<List<MenuEntity>>> unBindAddonsWithMenu({required List<Addons> source, required List<MenuEntity> destination}) {
+  Future<DataSourceState<List<MenuEntity>>> unBindAddonsWithMenu(
+      {required List<Addons> source, required List<MenuEntity> destination}) {
     // TODO(prasant): implement unBindAddonsWithMenu
     throw UnimplementedError();
   }
 
   @override
-  Future<DataSourceState<List<StoreEntity>>> unBindMenuWithStores({required List<MenuEntity> source, required List<StoreEntity> destination}) {
+  Future<DataSourceState<List<StoreEntity>>> unBindMenuWithStores(
+      {required List<MenuEntity> source,
+      required List<StoreEntity> destination}) {
     // TODO(prasant): implement unBindMenuWithStores
     throw UnimplementedError();
   }
 
   @override
-  Future<DataSourceState<AppUserEntity>> bindAddonsWithUser({required List<Addons> source, required AppUserEntity destination}) async {
+  Future<DataSourceState<AppUserEntity>> bindAddonsWithUser(
+      {required List<Addons> source,
+      required AppUserEntity destination}) async {
     try {
-      var connectivity = serviceLocator<ConnectivityService>().getCurrentInternetStatus();
+      var connectivity =
+          serviceLocator<ConnectivityService>().getCurrentInternetStatus();
       if (connectivity.$2 == InternetConnectivityState.internet) {
         // Local DB
         // Save to local
-        final Either<RepositoryBaseFailure, AppUserEntity> result = await addonsBindingWithCurrentUserLocalDataSource.binding(source, destination);
+        final Either<RepositoryBaseFailure, AppUserEntity> result =
+            await addonsBindingWithCurrentUserLocalDataSource.binding(
+                source, destination);
         // Return result
         return result.fold((l) {
           final RepositoryFailure failure = l as RepositoryFailure;
@@ -895,7 +958,8 @@ class MenuRepositoryImplement implements MenuRepository {
       } else {
         // Remote
         // Save to server
-        final ApiResultState<AppUserEntity> result = await remoteDataSource.bindAddonsWithUser(
+        final ApiResultState<AppUserEntity> result =
+            await remoteDataSource.bindAddonsWithUser(
           source: source,
           destination: destination,
         );
@@ -932,13 +996,18 @@ class MenuRepositoryImplement implements MenuRepository {
   }
 
   @override
-  Future<DataSourceState<AppUserEntity>> bindMenuWithUser({required List<MenuEntity> source, required AppUserEntity destination}) async {
+  Future<DataSourceState<AppUserEntity>> bindMenuWithUser(
+      {required List<MenuEntity> source,
+      required AppUserEntity destination}) async {
     try {
-      var connectivity = serviceLocator<ConnectivityService>().getCurrentInternetStatus();
+      var connectivity =
+          serviceLocator<ConnectivityService>().getCurrentInternetStatus();
       if (connectivity.$2 == InternetConnectivityState.internet) {
         // Local DB
         // Save to local
-        final Either<RepositoryBaseFailure, AppUserEntity> result = await menuBindingWithCurrentUserLocalDataSource.binding(source, destination);
+        final Either<RepositoryBaseFailure, AppUserEntity> result =
+            await menuBindingWithCurrentUserLocalDataSource.binding(
+                source, destination);
         // Return result
         return result.fold((l) {
           final RepositoryFailure failure = l as RepositoryFailure;
@@ -955,7 +1024,8 @@ class MenuRepositoryImplement implements MenuRepository {
       } else {
         // Remote
         // Save to server
-        final ApiResultState<AppUserEntity> result = await remoteDataSource.bindMenuWithUser(
+        final ApiResultState<AppUserEntity> result =
+            await remoteDataSource.bindMenuWithUser(
           source: source,
           destination: destination,
         );
@@ -992,13 +1062,15 @@ class MenuRepositoryImplement implements MenuRepository {
   }
 
   @override
-  Future<DataSourceState<AppUserEntity>> unBindAddonsWithUser({required List<Addons> source, required AppUserEntity destination}) {
+  Future<DataSourceState<AppUserEntity>> unBindAddonsWithUser(
+      {required List<Addons> source, required AppUserEntity destination}) {
     // TODO: implement unBindAddonsWithUser
     throw UnimplementedError();
   }
 
   @override
-  Future<DataSourceState<AppUserEntity>> unBindMenuWithUser({required List<MenuEntity> source, required AppUserEntity destination}) {
+  Future<DataSourceState<AppUserEntity>> unBindMenuWithUser(
+      {required List<MenuEntity> source, required AppUserEntity destination}) {
     // TODO: implement unBindMenuWithUser
     throw UnimplementedError();
   }
@@ -1016,11 +1088,13 @@ class MenuRepositoryImplement implements MenuRepository {
     Timestamp? endTime,
   }) async {
     try {
-      final connectivity = serviceLocator<ConnectivityService>().getCurrentInternetStatus();
+      final connectivity =
+          serviceLocator<ConnectivityService>().getCurrentInternetStatus();
       if (connectivity.$2 == InternetConnectivityState.internet) {
         // Local DB
         // Save to local
-        final Either<RepositoryBaseFailure, List<Category>> result = await categoryLocalDbRepository.getAllWithPagination(
+        final Either<RepositoryBaseFailure, List<Category>> result =
+            await categoryLocalDbRepository.getAllWithPagination(
           filter: filtering,
           sorting: sorting,
           searchText: searchText,
@@ -1049,7 +1123,8 @@ class MenuRepositoryImplement implements MenuRepository {
       } else {
         // Remote
         // Save to server
-        final ApiResultState<List<Category>> result = await remoteDataSource.getAllCategory(
+        final ApiResultState<List<Category>> result =
+            await remoteDataSource.getAllCategory(
           filtering: filtering,
           sorting: sorting,
           searchText: searchText,
@@ -1093,13 +1168,16 @@ class MenuRepositoryImplement implements MenuRepository {
   }
 
   @override
-  Future<DataSourceState<List<Addons>>> saveAllAddons({required List<Addons> addonsEntities, bool hasUpdateAll = false}) async {
+  Future<DataSourceState<List<Addons>>> saveAllAddons(
+      {required List<Addons> addonsEntities, bool hasUpdateAll = false}) async {
     try {
-      final connectivity = serviceLocator<ConnectivityService>().getCurrentInternetStatus();
+      final connectivity =
+          serviceLocator<ConnectivityService>().getCurrentInternetStatus();
       if (connectivity.$2 == InternetConnectivityState.internet) {
         // Local DB
         // Save to local
-        final Either<RepositoryBaseFailure, List<Addons>> result = await addonsLocalDataSource.saveAll(
+        final Either<RepositoryBaseFailure, List<Addons>> result =
+            await addonsLocalDataSource.saveAll(
           entities: addonsEntities,
           hasUpdateAll: hasUpdateAll,
         );
@@ -1119,7 +1197,8 @@ class MenuRepositoryImplement implements MenuRepository {
       } else {
         // Remote
         // Save to server
-        final ApiResultState<List<Addons>> result = await remoteDataSource.saveAllAddons(
+        final ApiResultState<List<Addons>> result =
+            await remoteDataSource.saveAllAddons(
           addonsEntities: addonsEntities,
           hasUpdateAll: hasUpdateAll,
         );
@@ -1156,13 +1235,16 @@ class MenuRepositoryImplement implements MenuRepository {
   }
 
   @override
-  Future<DataSourceState<List<Category>>> saveAllCategory({required List<Category> categories, bool hasUpdateAll = false}) async {
+  Future<DataSourceState<List<Category>>> saveAllCategory(
+      {required List<Category> categories, bool hasUpdateAll = false}) async {
     try {
-      final connectivity = serviceLocator<ConnectivityService>().getCurrentInternetStatus();
+      final connectivity =
+          serviceLocator<ConnectivityService>().getCurrentInternetStatus();
       if (connectivity.$2 == InternetConnectivityState.internet) {
         // Local DB
         // Save to local
-        final Either<RepositoryBaseFailure, List<Category>> result = await categoryLocalDbRepository.saveAll(
+        final Either<RepositoryBaseFailure, List<Category>> result =
+            await categoryLocalDbRepository.saveAll(
           entities: categories,
           hasUpdateAll: hasUpdateAll,
         );
@@ -1182,7 +1264,8 @@ class MenuRepositoryImplement implements MenuRepository {
       } else {
         // Remote
         // Save to server
-        final ApiResultState<List<Category>> result = await remoteDataSource.saveAllCategory(
+        final ApiResultState<List<Category>> result =
+            await remoteDataSource.saveAllCategory(
           categories: categories,
           hasUpdateAll: hasUpdateAll,
         );
@@ -1219,13 +1302,17 @@ class MenuRepositoryImplement implements MenuRepository {
   }
 
   @override
-  Future<DataSourceState<List<MenuEntity>>> saveAllMenu({required List<MenuEntity> menuEntities, bool hasUpdateAll = false}) async {
+  Future<DataSourceState<List<MenuEntity>>> saveAllMenu(
+      {required List<MenuEntity> menuEntities,
+      bool hasUpdateAll = false}) async {
     try {
-      final connectivity = serviceLocator<ConnectivityService>().getCurrentInternetStatus();
+      final connectivity =
+          serviceLocator<ConnectivityService>().getCurrentInternetStatus();
       if (connectivity.$2 == InternetConnectivityState.internet) {
         // Local DB
         // Save to local
-        final Either<RepositoryBaseFailure, List<MenuEntity>> result = await menuLocalDataSource.saveAll(
+        final Either<RepositoryBaseFailure, List<MenuEntity>> result =
+            await menuLocalDataSource.saveAll(
           entities: menuEntities,
           hasUpdateAll: hasUpdateAll,
         );
@@ -1245,7 +1332,8 @@ class MenuRepositoryImplement implements MenuRepository {
       } else {
         // Remote
         // Save to server
-        final ApiResultState<List<MenuEntity>> result = await remoteDataSource.saveAllMenu(
+        final ApiResultState<List<MenuEntity>> result =
+            await remoteDataSource.saveAllMenu(
           menuEntities: menuEntities,
           hasUpdateAll: hasUpdateAll,
         );
@@ -1293,11 +1381,13 @@ class MenuRepositoryImplement implements MenuRepository {
     Timestamp? endTime,
   }) async {
     try {
-      final connectivity = serviceLocator<ConnectivityService>().getCurrentInternetStatus();
+      final connectivity =
+          serviceLocator<ConnectivityService>().getCurrentInternetStatus();
       if (connectivity.$2 == InternetConnectivityState.internet) {
         // Local DB
         // Save to local
-        final Either<RepositoryBaseFailure, List<Addons>> result = await addonsLocalDataSource.getAllWithPagination(
+        final Either<RepositoryBaseFailure, List<Addons>> result =
+            await addonsLocalDataSource.getAllWithPagination(
           filter: filtering,
           sorting: sorting,
           searchText: searchText,
@@ -1322,7 +1412,8 @@ class MenuRepositoryImplement implements MenuRepository {
       } else {
         // Remote
         // Save to server
-        final ApiResultState<List<Addons>> result = await remoteDataSource.getAllAddonsPagination(
+        final ApiResultState<List<Addons>> result =
+            await remoteDataSource.getAllAddonsPagination(
           filtering: filtering,
           sorting: sorting,
           searchText: searchText,
@@ -1376,11 +1467,13 @@ class MenuRepositoryImplement implements MenuRepository {
     Timestamp? endTime,
   }) async {
     try {
-      final connectivity = serviceLocator<ConnectivityService>().getCurrentInternetStatus();
+      final connectivity =
+          serviceLocator<ConnectivityService>().getCurrentInternetStatus();
       if (connectivity.$2 == InternetConnectivityState.internet) {
         // Local DB
         // Save to local
-        final Either<RepositoryBaseFailure, List<MenuEntity>> result = await menuLocalDataSource.getAllWithPagination(
+        final Either<RepositoryBaseFailure, List<MenuEntity>> result =
+            await menuLocalDataSource.getAllWithPagination(
           filter: filtering,
           sorting: sorting,
           searchText: searchText,
@@ -1405,7 +1498,8 @@ class MenuRepositoryImplement implements MenuRepository {
       } else {
         // Remote
         // Save to server
-        final ApiResultState<List<MenuEntity>> result = await remoteDataSource.getAllMenuPagination(
+        final ApiResultState<List<MenuEntity>> result =
+            await remoteDataSource.getAllMenuPagination(
           filtering: filtering,
           sorting: sorting,
           searchText: searchText,

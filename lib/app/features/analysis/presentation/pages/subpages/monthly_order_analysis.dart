@@ -4,13 +4,15 @@ class MonthlyOrderAnalysis extends StatefulWidget {
   const MonthlyOrderAnalysis({super.key});
 
   @override
-  _MonthlyOrderAnalysisController createState() => _MonthlyOrderAnalysisController();
+  _MonthlyOrderAnalysisController createState() =>
+      _MonthlyOrderAnalysisController();
 }
 
 class _MonthlyOrderAnalysisController extends State<MonthlyOrderAnalysis> {
   bool _isSelected = false;
   List<Widget> listOfWidgets = [
-    MonthlyOrderAgainstStoreChartWidget(key: const Key('monthly-order-against-store-widget')),
+    MonthlyOrderAgainstStoreChartWidget(
+        key: const Key('monthly-order-against-store-widget')),
     MonthlySalesAgainstStoreChartWidget(
       key: const Key('monthly-sales-against-store-widget'),
     ),
@@ -41,7 +43,8 @@ class _MonthlyOrderAnalysisController extends State<MonthlyOrderAnalysis> {
   Widget build(BuildContext context) => _MonthlyOrderAnalysisView(this);
 }
 
-class _MonthlyOrderAnalysisView extends WidgetView<MonthlyOrderAnalysis, _MonthlyOrderAnalysisController> {
+class _MonthlyOrderAnalysisView
+    extends WidgetView<MonthlyOrderAnalysis, _MonthlyOrderAnalysisController> {
   const _MonthlyOrderAnalysisView(super.state);
 
   @override
@@ -70,7 +73,9 @@ class _MonthlyOrderAnalysisView extends WidgetView<MonthlyOrderAnalysis, _Monthl
         Flexible(
           child: AnimatedSwitcher(
             duration: Duration(milliseconds: 500),
-            child: state._isSelected?state.listOfWidgets[1]:state.listOfWidgets[0],
+            child: state._isSelected
+                ? state.listOfWidgets[1]
+                : state.listOfWidgets[0],
           ),
         ),
         const AnimatedGap(12, duration: Duration(milliseconds: 500)),

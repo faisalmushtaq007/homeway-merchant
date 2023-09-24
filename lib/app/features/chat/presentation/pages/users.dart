@@ -49,19 +49,21 @@ class _UsersPageState extends State<UsersPage> {
       });
     }
   }
+
   void _handleTransition(String name) {}
 
-  Future<void> _handleStateChange(AppLifecycleState state) async{
+  Future<void> _handleStateChange(AppLifecycleState state) async {
     setState(() {
       _state = state;
     });
-    if(_state==AppLifecycleState.resumed){
-      return await FirebaseChatCore.instance.updateUserActiveStatus(status: true);
-    }else if(_state==AppLifecycleState.paused){
-      return await FirebaseChatCore.instance.updateUserActiveStatus(status: false);
+    if (_state == AppLifecycleState.resumed) {
+      return await FirebaseChatCore.instance
+          .updateUserActiveStatus(status: true);
+    } else if (_state == AppLifecycleState.paused) {
+      return await FirebaseChatCore.instance
+          .updateUserActiveStatus(status: false);
     }
   }
-
 
   Widget _buildAvatar(BuildContext context, ChatUser user) {
     final color = getUserAvatarNameColor(user);
@@ -95,7 +97,8 @@ class _UsersPageState extends State<UsersPage> {
           : Text(
               name.isEmpty ? '' : name[0].toUpperCase(),
               style: const TextStyle(color: Colors.white),
-              textDirection: serviceLocator<LanguageController>().targetTextDirection,
+              textDirection:
+                  serviceLocator<LanguageController>().targetTextDirection,
             ),
     );
   }
@@ -108,7 +111,8 @@ class _UsersPageState extends State<UsersPage> {
     if (!mounted) {
       return;
     }
-    final returnData = await context.push(Routes.CHAT_PAGE, extra: {'room': room});
+    final returnData =
+        await context.push(Routes.CHAT_PAGE, extra: {'room': room});
     return;
   }
 
@@ -132,7 +136,8 @@ class _UsersPageState extends State<UsersPage> {
         systemOverlayStyle: SystemUiOverlayStyle.light,
         title: Text(
           'Users',
-          textDirection: serviceLocator<LanguageController>().targetTextDirection,
+          textDirection:
+              serviceLocator<LanguageController>().targetTextDirection,
         ),
         actions: [
           IconButton(
@@ -142,7 +147,8 @@ class _UsersPageState extends State<UsersPage> {
                 : () async {
                     math.Random random = math.Random();
                     final number = random.nextIntOfDigits(4);
-                    await LoginFirebaseUser().registerUser('54753${number}', isCurrentUser: false);
+                    await LoginFirebaseUser()
+                        .registerUser('54753${number}', isCurrentUser: false);
                     //await initializeFlutterFire();
                   },
           ),
@@ -150,7 +156,7 @@ class _UsersPageState extends State<UsersPage> {
       ),
       body: _user == null
           ? SingleChildScrollView(
-            child: Container(
+              child: Container(
                 alignment: Alignment.center,
                 margin: const EdgeInsets.only(
                   bottom: 200,
@@ -160,7 +166,8 @@ class _UsersPageState extends State<UsersPage> {
                   children: [
                     Text(
                       'Not authenticated',
-                      textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                      textDirection: serviceLocator<LanguageController>()
+                          .targetTextDirection,
                     ),
                     TextButton(
                       onPressed: () async {
@@ -169,13 +176,14 @@ class _UsersPageState extends State<UsersPage> {
                       },
                       child: Text(
                         'Login',
-                        textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                        textDirection: serviceLocator<LanguageController>()
+                            .targetTextDirection,
                       ),
                     ),
                   ],
                 ),
               ),
-          )
+            )
           : StreamBuilder<List<ChatUser>>(
               stream: FirebaseChatCore.instance.users(),
               initialData: const [],
@@ -188,7 +196,8 @@ class _UsersPageState extends State<UsersPage> {
                     ),
                     child: Text(
                       'No users',
-                      textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                      textDirection: serviceLocator<LanguageController>()
+                          .targetTextDirection,
                     ),
                   );
                 }
@@ -197,9 +206,7 @@ class _UsersPageState extends State<UsersPage> {
                   slivers: [
                     AppSearchInputSliverWidget(
                       key: const Key('chat-user-search-widget'),
-                      onChanged: (value) {
-
-                      },
+                      onChanged: (value) {},
                     ),
                     Flexible(
                       flex: 3,
@@ -216,7 +223,9 @@ class _UsersPageState extends State<UsersPage> {
                               leading: _buildAvatar(context, user),
                               title: Text(
                                 getUserName(user),
-                                textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                textDirection:
+                                    serviceLocator<LanguageController>()
+                                        .targetTextDirection,
                               ),
                               onTap: () async {
                                 await _handlePressed(user, context);
@@ -239,7 +248,9 @@ class _UsersPageState extends State<UsersPage> {
                                   _buildAvatar(context, user),
                                   Text(
                                     getUserName(user),
-                                    textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                    textDirection:
+                                        serviceLocator<LanguageController>()
+                                            .targetTextDirection,
                                   ),
                                 ],
                               ),

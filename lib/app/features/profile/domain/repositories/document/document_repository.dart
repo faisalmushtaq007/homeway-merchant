@@ -31,11 +31,13 @@ abstract interface class UserBusinessDocumentRepository {
     NewBusinessDocumentEntity? businessDocumentUploadedEntity,
   });
 
-  Future<DataSourceState<List<NewBusinessDocumentEntity>>> getAllBusinessDocument({
+  Future<DataSourceState<List<NewBusinessDocumentEntity>>>
+      getAllBusinessDocument({
     AppUserEntity? appUserEntity,
   });
 
-  Future<DataSourceState<List<NewBusinessDocumentEntity>>> getAllBusinessDocumentsPagination({
+  Future<DataSourceState<List<NewBusinessDocumentEntity>>>
+      getAllBusinessDocumentsPagination({
     int pageKey = 0,
     int pageSize = 10,
     String? searchText,
@@ -46,7 +48,8 @@ abstract interface class UserBusinessDocumentRepository {
     Timestamp? endTime,
   });
 
-  Future<DataSourceState<List<NewBusinessDocumentEntity>>> saveAllBusinessDocuments({
+  Future<DataSourceState<List<NewBusinessDocumentEntity>>>
+      saveAllBusinessDocuments({
     required List<NewBusinessDocumentEntity> businessDocuments,
     bool hasUpdateAll = false,
   });

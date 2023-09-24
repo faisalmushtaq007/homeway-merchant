@@ -1,7 +1,15 @@
 part of 'package:homemakers_merchant/app/features/order/index.dart';
 
-class GetAllOnProcessOrderUseCase
-    extends OrderQueryAllUseCaseIORecord<OrderType, int, int, String?, String?, String?, Timestamp?, Timestamp?, DataSourceState<List<OrderEntity>>> {
+class GetAllOnProcessOrderUseCase extends OrderQueryAllUseCaseIORecord<
+    OrderType,
+    int,
+    int,
+    String?,
+    String?,
+    String?,
+    Timestamp?,
+    Timestamp?,
+    DataSourceState<List<OrderEntity>>> {
   GetAllOnProcessOrderUseCase({
     required this.orderRepository,
   });

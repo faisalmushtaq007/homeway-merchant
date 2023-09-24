@@ -191,8 +191,11 @@ class _Text extends StatelessWidget {
   Widget build(BuildContext context) {
     return DefaultTextStyle(
       style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-            color: useDefaultDescriptionColor ? Theme.of(context).textTheme.bodySmall?.color : null,
-            decoration: clickable ? TextDecoration.underline : TextDecoration.none,
+            color: useDefaultDescriptionColor
+                ? Theme.of(context).textTheme.bodySmall?.color
+                : null,
+            decoration:
+                clickable ? TextDecoration.underline : TextDecoration.none,
           ),
       child: Text(
         data,

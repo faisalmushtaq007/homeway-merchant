@@ -41,7 +41,8 @@ abstract class ChatUser extends Equatable {
   }) = _ChatUser;
 
   /// Creates user from a map (decoded JSON).
-  factory ChatUser.fromJson(Map<String, dynamic> json) => _$ChatUserFromJson(json);
+  factory ChatUser.fromJson(Map<String, dynamic> json) =>
+      _$ChatUserFromJson(json);
 
   /// Created user timestamp, in ms.
   final int? createdAt;
@@ -146,7 +147,9 @@ class _ChatUser extends ChatUser {
         imageUrl: imageUrl == _Unset ? this.imageUrl : imageUrl as String?,
         lastName: lastName == _Unset ? this.lastName : lastName as String?,
         lastSeen: lastSeen == _Unset ? this.lastSeen : lastSeen as int?,
-        metadata: metadata == _Unset ? this.metadata : metadata as Map<String, dynamic>?,
+        metadata: metadata == _Unset
+            ? this.metadata
+            : metadata as Map<String, dynamic>?,
         role: role == _Unset ? this.role : role as Role?,
         updatedAt: updatedAt == _Unset ? this.updatedAt : updatedAt as int?,
         isOnline: isOnline == _Unset ? this.isOnline : isOnline as bool,

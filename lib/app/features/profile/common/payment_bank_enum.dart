@@ -27,7 +27,8 @@ enum AcceptPaymentMode {
   ),
   ;
 
-  const AcceptPaymentMode({required this.acceptPaymentModeName, required this.acceptPaymentModeID});
+  const AcceptPaymentMode(
+      {required this.acceptPaymentModeName, required this.acceptPaymentModeID});
 
   final int acceptPaymentModeID;
   final String acceptPaymentModeName;

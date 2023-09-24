@@ -3,25 +3,30 @@ part of 'package:homemakers_merchant/app/features/profile/index.dart';
 class ProfileRemoteDataSource implements ProfileDataSource {
   final client = serviceLocator<INetworkManager<BaseResponseErrorModel>>();
   @override
-  Future<ApiResultState<bool>> deleteAllBusinessDocument({AppUserEntity? appUserEntity}) {
+  Future<ApiResultState<bool>> deleteAllBusinessDocument(
+      {AppUserEntity? appUserEntity}) {
     // TODO(prasant): implement deleteAllBusinessDocument
     throw UnimplementedError();
   }
 
   @override
-  Future<ApiResultState<bool>> deleteAllBusinessProfile({AppUserEntity? appUserEntity}) {
+  Future<ApiResultState<bool>> deleteAllBusinessProfile(
+      {AppUserEntity? appUserEntity}) {
     // TODO(prasant): implement deleteAllBusinessProfile
     throw UnimplementedError();
   }
 
   @override
-  Future<ApiResultState<bool>> deleteAllBusinessType({AppUserEntity? appUserEntity, BusinessProfileEntity? businessProfileEntity}) {
+  Future<ApiResultState<bool>> deleteAllBusinessType(
+      {AppUserEntity? appUserEntity,
+      BusinessProfileEntity? businessProfileEntity}) {
     // TODO(prasant): implement deleteAllBusinessType
     throw UnimplementedError();
   }
 
   @override
-  Future<ApiResultState<bool>> deleteAllPaymentBank({AppUserEntity? appUserEntity}) {
+  Future<ApiResultState<bool>> deleteAllPaymentBank(
+      {AppUserEntity? appUserEntity}) {
     // TODO(prasant): implement deleteAllPaymentBank
     throw UnimplementedError();
   }
@@ -59,7 +64,10 @@ class ProfileRemoteDataSource implements ProfileDataSource {
   }
 
   @override
-  Future<ApiResultState<bool>> deletePaymentBank({required int paymentBankID, PaymentBankEntity? paymentBankEntity, AppUserEntity? appUserEntity}) {
+  Future<ApiResultState<bool>> deletePaymentBank(
+      {required int paymentBankID,
+      PaymentBankEntity? paymentBankEntity,
+      AppUserEntity? appUserEntity}) {
     // TODO(prasant): implement deletePaymentBank
     throw UnimplementedError();
   }
@@ -86,7 +94,8 @@ class ProfileRemoteDataSource implements ProfileDataSource {
   }
 
   @override
-  Future<ApiResultState<(BusinessProfileEntity, BusinessTypeEntity)>> editBusinessType({
+  Future<ApiResultState<(BusinessProfileEntity, BusinessTypeEntity)>>
+      editBusinessType({
     required BusinessTypeEntity businessTypeEntity,
     required int businessTypeID,
     AppUserEntity? appUserEntity,
@@ -107,19 +116,22 @@ class ProfileRemoteDataSource implements ProfileDataSource {
   }
 
   @override
-  Future<ApiResultState<List<NewBusinessDocumentEntity>>> getAllBusinessDocument({AppUserEntity? appUserEntity}) {
+  Future<ApiResultState<List<NewBusinessDocumentEntity>>>
+      getAllBusinessDocument({AppUserEntity? appUserEntity}) {
     // TODO(prasant): implement getAllBusinessDocument
     throw UnimplementedError();
   }
 
   @override
-  Future<ApiResultState<List<BusinessProfileEntity>>> getAllBusinessProfile({AppUserEntity? appUserEntity}) {
+  Future<ApiResultState<List<BusinessProfileEntity>>> getAllBusinessProfile(
+      {AppUserEntity? appUserEntity}) {
     // TODO(prasant): implement getAllBusinessProfile
     throw UnimplementedError();
   }
 
   @override
-  Future<ApiResultState<(BusinessProfileEntity, List<BusinessTypeEntity>)>> getAllBusinessType({
+  Future<ApiResultState<(BusinessProfileEntity, List<BusinessTypeEntity>)>>
+      getAllBusinessType({
     AppUserEntity? appUserEntity,
     BusinessProfileEntity? businessProfileEntity,
   }) {
@@ -128,7 +140,8 @@ class ProfileRemoteDataSource implements ProfileDataSource {
   }
 
   @override
-  Future<ApiResultState<List<PaymentBankEntity>>> getAllPaymentBank({AppUserEntity? appUserEntity}) {
+  Future<ApiResultState<List<PaymentBankEntity>>> getAllPaymentBank(
+      {AppUserEntity? appUserEntity}) {
     // TODO(prasant): implement getAllPaymentBank
     throw UnimplementedError();
   }
@@ -155,7 +168,8 @@ class ProfileRemoteDataSource implements ProfileDataSource {
   }
 
   @override
-  Future<ApiResultState<(BusinessProfileEntity, BusinessTypeEntity)>> getBusinessType({
+  Future<ApiResultState<(BusinessProfileEntity, BusinessTypeEntity)>>
+      getBusinessType({
     required int businessTypeID,
     AppUserEntity? appUserEntity,
     BusinessProfileEntity? businessProfileEntity,
@@ -166,7 +180,10 @@ class ProfileRemoteDataSource implements ProfileDataSource {
   }
 
   @override
-  Future<ApiResultState<PaymentBankEntity>> getPaymentBank({required int paymentBankID, AppUserEntity? appUserEntity, PaymentBankEntity? paymentBankEntity}) {
+  Future<ApiResultState<PaymentBankEntity>> getPaymentBank(
+      {required int paymentBankID,
+      AppUserEntity? appUserEntity,
+      PaymentBankEntity? paymentBankEntity}) {
     // TODO(prasant): implement getPaymentBank
     throw UnimplementedError();
   }
@@ -181,13 +198,16 @@ class ProfileRemoteDataSource implements ProfileDataSource {
   }
 
   @override
-  Future<ApiResultState<BusinessProfileEntity>> saveBusinessProfile({required BusinessProfileEntity businessProfileEntity, AppUserEntity? appUserEntity}) {
+  Future<ApiResultState<BusinessProfileEntity>> saveBusinessProfile(
+      {required BusinessProfileEntity businessProfileEntity,
+      AppUserEntity? appUserEntity}) {
     // TODO(prasant): implement saveBusinessProfile
     throw UnimplementedError();
   }
 
   @override
-  Future<ApiResultState<(BusinessProfileEntity, BusinessTypeEntity)>> saveBusinessType({
+  Future<ApiResultState<(BusinessProfileEntity, BusinessTypeEntity)>>
+      saveBusinessType({
     required BusinessTypeEntity businessTypeEntity,
     AppUserEntity? appUserEntity,
     BusinessProfileEntity? businessProfileEntity,
@@ -197,43 +217,78 @@ class ProfileRemoteDataSource implements ProfileDataSource {
   }
 
   @override
-  Future<ApiResultState<PaymentBankEntity>> savePaymentBank({required PaymentBankEntity paymentBankEntity, AppUserEntity? appUserEntity}) {
+  Future<ApiResultState<PaymentBankEntity>> savePaymentBank(
+      {required PaymentBankEntity paymentBankEntity,
+      AppUserEntity? appUserEntity}) {
     // TODO(prasant): implement savePaymentBank
     throw UnimplementedError();
   }
 
   @override
-  Future<ApiResultState<List<NewBusinessDocumentEntity>>> getAllBusinessDocumentsPagination({int pageKey = 0, int pageSize = 10, String? searchText, Map<String, dynamic> extras = const <String, dynamic>{}, String? filtering, String? sorting, Timestamp? startTime, Timestamp? endTime}) {
+  Future<ApiResultState<List<NewBusinessDocumentEntity>>>
+      getAllBusinessDocumentsPagination(
+          {int pageKey = 0,
+          int pageSize = 10,
+          String? searchText,
+          Map<String, dynamic> extras = const <String, dynamic>{},
+          String? filtering,
+          String? sorting,
+          Timestamp? startTime,
+          Timestamp? endTime}) {
     // TODO: implement getAllBusinessDocumentsPagination
     throw UnimplementedError();
   }
 
   @override
-  Future<ApiResultState<List<BusinessProfileEntity>>> getAllBusinessProfilePagination({int pageKey = 0, int pageSize = 10, String? searchText, Map<String, dynamic> extras = const <String, dynamic>{}, String? filtering, String? sorting, Timestamp? startTime, Timestamp? endTime}) {
+  Future<ApiResultState<List<BusinessProfileEntity>>>
+      getAllBusinessProfilePagination(
+          {int pageKey = 0,
+          int pageSize = 10,
+          String? searchText,
+          Map<String, dynamic> extras = const <String, dynamic>{},
+          String? filtering,
+          String? sorting,
+          Timestamp? startTime,
+          Timestamp? endTime}) {
     // TODO: implement getAllBusinessProfilePagination
     throw UnimplementedError();
   }
 
   @override
-  Future<ApiResultState<List<PaymentBankEntity>>> getAllPaymentBanksPagination({int pageKey = 0, int pageSize = 10, String? searchText, Map<String, dynamic> extras = const <String, dynamic>{}, String? filtering, String? sorting, Timestamp? startTime, Timestamp? endTime}) {
+  Future<ApiResultState<List<PaymentBankEntity>>> getAllPaymentBanksPagination(
+      {int pageKey = 0,
+      int pageSize = 10,
+      String? searchText,
+      Map<String, dynamic> extras = const <String, dynamic>{},
+      String? filtering,
+      String? sorting,
+      Timestamp? startTime,
+      Timestamp? endTime}) {
     // TODO: implement getAllPaymentBanksPagination
     throw UnimplementedError();
   }
 
   @override
-  Future<ApiResultState<List<NewBusinessDocumentEntity>>> saveAllBusinessDocuments({required List<NewBusinessDocumentEntity> newBusinessDocuments, bool hasUpdateAll = false}) {
+  Future<ApiResultState<List<NewBusinessDocumentEntity>>>
+      saveAllBusinessDocuments(
+          {required List<NewBusinessDocumentEntity> newBusinessDocuments,
+          bool hasUpdateAll = false}) {
     // TODO: implement saveAllBusinessDocuments
     throw UnimplementedError();
   }
 
   @override
-  Future<ApiResultState<List<BusinessProfileEntity>>> saveAllBusinessProfiles({required List<BusinessProfileEntity> businessProfiles, bool hasUpdateAll = false}) {
+  Future<ApiResultState<List<BusinessProfileEntity>>> saveAllBusinessProfiles(
+      {required List<BusinessProfileEntity> businessProfiles,
+      bool hasUpdateAll = false}) {
     // TODO: implement saveAllBusinessProfiles
     throw UnimplementedError();
   }
 
   @override
-  Future<ApiResultState<List<PaymentBankEntity>>> saveAllPaymentBanks({required List<PaymentBankEntity> paymentBanks, bool hasUpdateAll = false}) {
+  Future<ApiResultState<List<PaymentBankEntity>>> saveAllPaymentBanks(
+      {required List<PaymentBankEntity> paymentBanks,
+      bool hasUpdateAll = false}) {
     // TODO: implement saveAllPaymentBanks
     throw UnimplementedError();
   }

@@ -15,10 +15,12 @@ class BusinessInformationPage extends StatefulWidget {
   final BusinessTypeEntity? businessTypeEntity;
 
   @override
-  _BusinessInformationPageState createState() => _BusinessInformationPageState();
+  _BusinessInformationPageState createState() =>
+      _BusinessInformationPageState();
 }
 
-class _BusinessInformationPageState extends State<BusinessInformationPage> with SingleTickerProviderStateMixin {
+class _BusinessInformationPageState extends State<BusinessInformationPage>
+    with SingleTickerProviderStateMixin {
   late final ScrollController scrollController;
   late final ScrollController innerScrollController;
   late AnimationController _animationController;
@@ -35,7 +37,8 @@ class _BusinessInformationPageState extends State<BusinessInformationPage> with 
   // Local PhoneController variables
   String? phoneValidation;
   String userEnteredPhoneNumber = '';
-  PhoneNumberVerification phoneNumberVerification = PhoneNumberVerification.none;
+  PhoneNumberVerification phoneNumberVerification =
+      PhoneNumberVerification.none;
   BusinessProfileEntity? businessProfileEntity;
   bool hasEditBusinessProfile = false;
   int currentIndex = -1;
@@ -45,7 +48,8 @@ class _BusinessInformationPageState extends State<BusinessInformationPage> with 
   late PhoneNumber initialPhoneNumberValue;
   late PhoneController controller;
   int businessProfileID = -1;
-  ValueNotifier<PhoneNumberVerification> valueNotifierPhoneNumberVerification = ValueNotifier<PhoneNumberVerification>(
+  ValueNotifier<PhoneNumberVerification> valueNotifierPhoneNumberVerification =
+      ValueNotifier<PhoneNumberVerification>(
     PhoneNumberVerification.none,
   );
   bool mobileOnly = true;
@@ -53,7 +57,7 @@ class _BusinessInformationPageState extends State<BusinessInformationPage> with 
   @override
   void initState() {
     super.initState();
-    addressModel=null;
+    addressModel = null;
     scrollController = ScrollController();
     innerScrollController = ScrollController();
     _usernameController = TextEditingController();
@@ -76,7 +80,8 @@ class _BusinessInformationPageState extends State<BusinessInformationPage> with 
     hasEditBusinessProfile = widget.hasEditBusinessProfile;
     currentIndex = widget.currentIndex;
     businessTypeEntity = widget.businessTypeEntity;
-    defaultCountry = IsoCode.values.byName(businessProfileEntity?.isoCode ?? 'SA');
+    defaultCountry =
+        IsoCode.values.byName(businessProfileEntity?.isoCode ?? 'SA');
     initialPhoneNumberValue = PhoneNumber(
       isoCode: IsoCode.values.byName(businessProfileEntity?.isoCode ?? 'SA'),
       nsn: businessProfileEntity?.phoneNumberWithoutDialCode ?? '',
@@ -86,20 +91,23 @@ class _BusinessInformationPageState extends State<BusinessInformationPage> with 
     if (mounted) {
       if (widget.hasEditBusinessProfile) {
         context.read<BusinessProfileBloc>().add(GetBusinessProfile(
-              businessProfileID: widget.businessProfileEntity?.businessProfileID ?? -1,
+              businessProfileID:
+                  widget.businessProfileEntity?.businessProfileID ?? -1,
               businessProfileEntity: widget.businessProfileEntity,
               index: widget.currentIndex,
             ));
       }
     }
     Future.delayed(const Duration(milliseconds: 300), () {
-      context.read<PermissionBloc>().add(const RequestLocationPermissionEvent());
+      context
+          .read<PermissionBloc>()
+          .add(const RequestLocationPermissionEvent());
     });
   }
 
   @override
   void dispose() {
-    addressModel=null;
+    addressModel = null;
     _animationController.dispose();
     _usernameController.dispose();
     _businessNameController.dispose();
@@ -117,19 +125,25 @@ class _BusinessInformationPageState extends State<BusinessInformationPage> with 
     if (phoneNumbers.isNotNull) {
       initialPhoneNumberValue = phoneNumbers!;
     }
-    userEnteredPhoneNumber = '+${phoneNumbers?.countryCode} ${phoneNumbers?.getFormattedNsn().trim()}';
+    userEnteredPhoneNumber =
+        '+${phoneNumbers?.countryCode} ${phoneNumbers?.getFormattedNsn().trim()}';
     String countryDialCode = '+${phoneNumbers?.countryCode ?? '+966'}';
     String country = phoneNumbers?.isoCode.name ?? 'SA';
     final result = getValidator(isAllowEmpty: false);
     phoneValidation = result?.call(initialPhoneNumberValue);
 
     if (phoneValidation != null && phoneValidation!.isNotEmpty) {
-      valueNotifierPhoneNumberVerification.value = PhoneNumberVerification.invalid;
+      valueNotifierPhoneNumberVerification.value =
+          PhoneNumberVerification.invalid;
     } else {
-      if (phoneValidation == null && phoneNumbers != null && phoneNumbers.getFormattedNsn().trim().isNotEmpty) {
-        valueNotifierPhoneNumberVerification.value = PhoneNumberVerification.valid;
+      if (phoneValidation == null &&
+          phoneNumbers != null &&
+          phoneNumbers.getFormattedNsn().trim().isNotEmpty) {
+        valueNotifierPhoneNumberVerification.value =
+            PhoneNumberVerification.valid;
       } else {
-        valueNotifierPhoneNumberVerification.value = PhoneNumberVerification.none;
+        valueNotifierPhoneNumberVerification.value =
+            PhoneNumberVerification.none;
       }
     }
   }
@@ -143,18 +157,24 @@ class _BusinessInformationPageState extends State<BusinessInformationPage> with 
     if (phoneNumbers.isNotNull) {
       initialPhoneNumberValue = phoneNumbers!;
     }
-    userEnteredPhoneNumber = '+${phoneNumbers?.countryCode} ${phoneNumbers?.getFormattedNsn().trim()}';
+    userEnteredPhoneNumber =
+        '+${phoneNumbers?.countryCode} ${phoneNumbers?.getFormattedNsn().trim()}';
     controller = phoneNumberControllers;
     if (phoneValidation != null && phoneValidation!.isNotEmpty) {
       phoneNumberVerification = PhoneNumberVerification.invalid;
-      valueNotifierPhoneNumberVerification.value = PhoneNumberVerification.invalid;
+      valueNotifierPhoneNumberVerification.value =
+          PhoneNumberVerification.invalid;
     } else {
-      if (phoneValidation == null && phoneNumberControllers.value != null && phoneNumberControllers.value!.getFormattedNsn().trim().isNotEmpty) {
+      if (phoneValidation == null &&
+          phoneNumberControllers.value != null &&
+          phoneNumberControllers.value!.getFormattedNsn().trim().isNotEmpty) {
         phoneNumberVerification = PhoneNumberVerification.valid;
-        valueNotifierPhoneNumberVerification.value = PhoneNumberVerification.valid;
+        valueNotifierPhoneNumberVerification.value =
+            PhoneNumberVerification.valid;
       } else {
         phoneNumberVerification = PhoneNumberVerification.none;
-        valueNotifierPhoneNumberVerification.value = PhoneNumberVerification.none;
+        valueNotifierPhoneNumberVerification.value =
+            PhoneNumberVerification.none;
       }
     }
   }
@@ -189,7 +209,8 @@ class _BusinessInformationPageState extends State<BusinessInformationPage> with 
   Widget build(BuildContext context) {
     final MediaQueryData media = MediaQuery.of(context);
     final double margins = GlobalApp.responsiveInsets(media.size.width);
-    final double topPadding = margins; //media.padding.top + kToolbarHeight + margins; //margins * 1.5;
+    final double topPadding =
+        margins; //media.padding.top + kToolbarHeight + margins; //margins * 1.5;
     final double bottomPadding = media.padding.bottom + margins;
     final double width = media.size.width;
     final ThemeData theme = Theme.of(context);
@@ -226,7 +247,8 @@ class _BusinessInformationPageState extends State<BusinessInformationPage> with 
                 ],
               ),
               body: Directionality(
-                textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                textDirection:
+                    serviceLocator<LanguageController>().targetTextDirection,
                 child: PageBody(
                   controller: scrollController,
                   constraints: BoxConstraints(
@@ -234,7 +256,8 @@ class _BusinessInformationPageState extends State<BusinessInformationPage> with 
                     minHeight: media.size.height,
                   ),
                   child: SlideInLeft(
-                    key: const Key('select-business-information-page-slideleft-widget'),
+                    key: const Key(
+                        'select-business-information-page-slideleft-widget'),
                     delay: const Duration(milliseconds: 500),
                     child: Container(
                       constraints: BoxConstraints(
@@ -254,62 +277,140 @@ class _BusinessInformationPageState extends State<BusinessInformationPage> with 
                           SliverList(
                             delegate: SliverChildListDelegate(
                               [
-                                BlocListener<BusinessProfileBloc, BusinessProfileState>(
-                                  key: const Key('business-profile-bloc-listener'),
+                                BlocListener<BusinessProfileBloc,
+                                    BusinessProfileState>(
+                                  key: const Key(
+                                      'business-profile-bloc-listener'),
                                   bloc: context.read<BusinessProfileBloc>(),
                                   listener: (context, state) {
                                     switch (state) {
                                       case SaveBusinessProfileState():
                                         {
-                                          _usernameController.text = state.businessProfileEntity.userName ?? '';
-                                          _addressController.text = state.businessProfileEntity.businessAddress?.address?.displayAddressName ?? '';
-                                          _emailController.text = state.businessProfileEntity.businessEmailAddress ?? '';
-                                          _businessNameController.text = state.businessProfileEntity.businessName ?? '';
-                                          userEnteredPhoneNumber = state.businessProfileEntity.businessPhoneNumber ??'+${initialPhoneNumberValue.countryCode} ${initialPhoneNumberValue.getFormattedNsn().trim()}';
-                                          hasEditBusinessProfile = state.hasEditBusinessProfile;
-                                          addressModel=state.businessProfileEntity.businessAddress;
+                                          _usernameController.text = state
+                                                  .businessProfileEntity
+                                                  .userName ??
+                                              '';
+                                          _addressController.text = state
+                                                  .businessProfileEntity
+                                                  .businessAddress
+                                                  ?.address
+                                                  ?.displayAddressName ??
+                                              '';
+                                          _emailController.text = state
+                                                  .businessProfileEntity
+                                                  .businessEmailAddress ??
+                                              '';
+                                          _businessNameController.text = state
+                                                  .businessProfileEntity
+                                                  .businessName ??
+                                              '';
+                                          userEnteredPhoneNumber = state
+                                                  .businessProfileEntity
+                                                  .businessPhoneNumber ??
+                                              '+${initialPhoneNumberValue.countryCode} ${initialPhoneNumberValue.getFormattedNsn().trim()}';
+                                          hasEditBusinessProfile =
+                                              state.hasEditBusinessProfile;
+                                          addressModel = state
+                                              .businessProfileEntity
+                                              .businessAddress;
                                           initialPhoneNumberValue = PhoneNumber(
-                                            isoCode: IsoCode.values.byName(state.businessProfileEntity.isoCode ?? 'SA'),
-                                            nsn: state.businessProfileEntity.businessPhoneNumber ?? '',
+                                            isoCode: IsoCode.values.byName(state
+                                                    .businessProfileEntity
+                                                    .isoCode ??
+                                                'SA'),
+                                            nsn: state.businessProfileEntity
+                                                    .businessPhoneNumber ??
+                                                '',
                                           );
                                           controller.value = PhoneNumber(
-                                            isoCode: IsoCode.values.byName(state.businessProfileEntity.isoCode ?? 'SA'),
-                                            nsn: state.businessProfileEntity.businessPhoneNumber ?? '',
+                                            isoCode: IsoCode.values.byName(state
+                                                    .businessProfileEntity
+                                                    .isoCode ??
+                                                'SA'),
+                                            nsn: state.businessProfileEntity
+                                                    .businessPhoneNumber ??
+                                                '',
                                           );
-                                          defaultCountry = IsoCode.values.byName(state.businessProfileEntity.isoCode ?? 'SA');
+                                          defaultCountry = IsoCode.values
+                                              .byName(state
+                                                      .businessProfileEntity
+                                                      .isoCode ??
+                                                  'SA');
                                           context.pushReplacement(
                                             Routes.CONFIRM_BUSINESS_TYPE_PAGE,
                                             extra: {
-                                              'businessProfileEntity': state.businessProfileEntity,
-                                              'hasEditBusinessProfile': state.hasEditBusinessProfile,
-                                              'currentIndex': state.currentIndex,
-                                              'businessTypeEntity': state.businessProfileEntity.businessTypeEntity ?? BusinessTypeEntity(),
+                                              'businessProfileEntity':
+                                                  state.businessProfileEntity,
+                                              'hasEditBusinessProfile':
+                                                  state.hasEditBusinessProfile,
+                                              'currentIndex':
+                                                  state.currentIndex,
+                                              'businessTypeEntity': state
+                                                      .businessProfileEntity
+                                                      .businessTypeEntity ??
+                                                  BusinessTypeEntity(),
                                             },
                                           );
                                         }
                                       case GetBusinessProfileState():
                                         {
-                                          businessProfileEntity = state.businessProfileEntity;
-                                          businessProfileID = state.businessProfileID;
+                                          businessProfileEntity =
+                                              state.businessProfileEntity;
+                                          businessProfileID =
+                                              state.businessProfileID;
                                           initialPhoneNumberValue = PhoneNumber(
-                                            isoCode: IsoCode.values.byName('SA'),
-                                            nsn: businessProfileEntity?.businessPhoneNumber ?? '',
+                                            isoCode:
+                                                IsoCode.values.byName('SA'),
+                                            nsn: businessProfileEntity
+                                                    ?.businessPhoneNumber ??
+                                                '',
                                           );
-                                          _usernameController.text = businessProfileEntity?.userName ?? '';
-                                          _addressController.text = businessProfileEntity?.businessAddress?.address?.displayAddressName ?? '';
-                                          addressModel=businessProfileEntity?.businessAddress;
-                                          _emailController.text = businessProfileEntity?.businessEmailAddress ?? '';
-                                          _businessNameController.text = businessProfileEntity?.businessName ?? '';
-                                          userEnteredPhoneNumber = businessProfileEntity?.businessPhoneNumber ?? '+${initialPhoneNumberValue.countryCode} ${initialPhoneNumberValue.getFormattedNsn().trim()}';
+                                          _usernameController.text =
+                                              businessProfileEntity?.userName ??
+                                                  '';
+                                          _addressController.text =
+                                              businessProfileEntity
+                                                      ?.businessAddress
+                                                      ?.address
+                                                      ?.displayAddressName ??
+                                                  '';
+                                          addressModel = businessProfileEntity
+                                              ?.businessAddress;
+                                          _emailController.text =
+                                              businessProfileEntity
+                                                      ?.businessEmailAddress ??
+                                                  '';
+                                          _businessNameController.text =
+                                              businessProfileEntity
+                                                      ?.businessName ??
+                                                  '';
+                                          userEnteredPhoneNumber =
+                                              businessProfileEntity
+                                                      ?.businessPhoneNumber ??
+                                                  '+${initialPhoneNumberValue.countryCode} ${initialPhoneNumberValue.getFormattedNsn().trim()}';
                                           initialPhoneNumberValue = PhoneNumber(
-                                            isoCode: IsoCode.values.byName(state.businessProfileEntity?.isoCode ?? 'SA'),
-                                            nsn: state.businessProfileEntity?.businessPhoneNumber ?? '',
+                                            isoCode: IsoCode.values.byName(state
+                                                    .businessProfileEntity
+                                                    ?.isoCode ??
+                                                'SA'),
+                                            nsn: state.businessProfileEntity
+                                                    ?.businessPhoneNumber ??
+                                                '',
                                           );
                                           controller.value = PhoneNumber(
-                                            isoCode: IsoCode.values.byName(state.businessProfileEntity?.isoCode ?? 'SA'),
-                                            nsn: state.businessProfileEntity?.businessPhoneNumber ?? '',
+                                            isoCode: IsoCode.values.byName(state
+                                                    .businessProfileEntity
+                                                    ?.isoCode ??
+                                                'SA'),
+                                            nsn: state.businessProfileEntity
+                                                    ?.businessPhoneNumber ??
+                                                '',
                                           );
-                                          defaultCountry = IsoCode.values.byName(state.businessProfileEntity?.isoCode ?? 'SA');
+                                          defaultCountry = IsoCode.values
+                                              .byName(state
+                                                      .businessProfileEntity
+                                                      ?.isoCode ??
+                                                  'SA');
                                         }
                                       case _:
                                         {}
@@ -319,9 +420,13 @@ class _BusinessInformationPageState extends State<BusinessInformationPage> with 
                                     key: _createBusinessProfileFormKey,
                                     child: Column(
                                       mainAxisSize: MainAxisSize.min,
-                                      mainAxisAlignment: MainAxisAlignment.start,
-                                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                                      textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.stretch,
+                                      textDirection:
+                                          serviceLocator<LanguageController>()
+                                              .targetTextDirection,
                                       children: [
                                         /*Wrap(
                                           children: [
@@ -342,19 +447,26 @@ class _BusinessInformationPageState extends State<BusinessInformationPage> with 
                                           ),
                                         ),*/
                                         Column(
-                                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.stretch,
                                           mainAxisSize: MainAxisSize.min,
-                                          textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                          textDirection: serviceLocator<
+                                                  LanguageController>()
+                                              .targetTextDirection,
                                           children: [
                                             Wrap(
                                               children: [
                                                 Text(
                                                   'Profile requirements',
-                                                  style: context.titleMedium!.copyWith(
+                                                  style: context.titleMedium!
+                                                      .copyWith(
                                                     fontWeight: FontWeight.w600,
                                                   ),
-                                                  textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                                                  overflow: TextOverflow.ellipsis,
+                                                  textDirection: serviceLocator<
+                                                          LanguageController>()
+                                                      .targetTextDirection,
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
                                                   maxLines: 1,
                                                   softWrap: true,
                                                 ).translate(),
@@ -370,11 +482,15 @@ class _BusinessInformationPageState extends State<BusinessInformationPage> with 
                                               children: [
                                                 Text(
                                                   '1. A unique ID that we assign to your businesses to ensure that changes are applied accurately in your account. This value will not be publicly visible anywhere on HomeWay',
-                                                  style: context.labelMedium!.copyWith(
+                                                  style: context.labelMedium!
+                                                      .copyWith(
                                                     fontWeight: FontWeight.w400,
                                                   ),
-                                                  textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                                                  overflow: TextOverflow.ellipsis,
+                                                  textDirection: serviceLocator<
+                                                          LanguageController>()
+                                                      .targetTextDirection,
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
                                                   maxLines: 4,
                                                   softWrap: true,
                                                 ).translate(),
@@ -390,11 +506,15 @@ class _BusinessInformationPageState extends State<BusinessInformationPage> with 
                                               children: [
                                                 Text(
                                                   '2. The name of your core business that will appear on HomeWay App. Represent your business exactly as it appears in the offline world. Your business name must be no longer than 40 characters.',
-                                                  style: context.labelMedium!.copyWith(
+                                                  style: context.labelMedium!
+                                                      .copyWith(
                                                     fontWeight: FontWeight.w400,
                                                   ),
-                                                  textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                                                  overflow: TextOverflow.ellipsis,
+                                                  textDirection: serviceLocator<
+                                                          LanguageController>()
+                                                      .targetTextDirection,
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
                                                   maxLines: 4,
                                                   softWrap: true,
                                                 ).translate(),
@@ -410,11 +530,15 @@ class _BusinessInformationPageState extends State<BusinessInformationPage> with 
                                               children: [
                                                 Text(
                                                   '3. You may provide address for new businesses to help us place them on the customer app or map. Address is only used when a business is first created in your profile and orders',
-                                                  style: context.labelMedium!.copyWith(
+                                                  style: context.labelMedium!
+                                                      .copyWith(
                                                     fontWeight: FontWeight.w400,
                                                   ),
-                                                  textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                                                  overflow: TextOverflow.ellipsis,
+                                                  textDirection: serviceLocator<
+                                                          LanguageController>()
+                                                      .targetTextDirection,
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
                                                   maxLines: 4,
                                                   softWrap: true,
                                                 ).translate(),
@@ -430,11 +554,15 @@ class _BusinessInformationPageState extends State<BusinessInformationPage> with 
                                               children: [
                                                 Text(
                                                   '4. A primary phone number is required for business, this number for our Operation team to use to reach your business',
-                                                  style: context.labelMedium!.copyWith(
+                                                  style: context.labelMedium!
+                                                      .copyWith(
                                                     fontWeight: FontWeight.w400,
                                                   ),
-                                                  textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                                                  overflow: TextOverflow.ellipsis,
+                                                  textDirection: serviceLocator<
+                                                          LanguageController>()
+                                                      .targetTextDirection,
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
                                                   maxLines: 4,
                                                   softWrap: true,
                                                 ).translate(),
@@ -452,13 +580,18 @@ class _BusinessInformationPageState extends State<BusinessInformationPage> with 
                                           key: const Key(
                                             'business-fullname-textFormField-key',
                                           ),
-                                          buildWhen: (previousDataList, latestDataList) => previousDataList != latestDataList,
+                                          buildWhen: (previousDataList,
+                                                  latestDataList) =>
+                                              previousDataList !=
+                                              latestDataList,
                                           streams: [
                                             Stream.fromFuture(
-                                              AppTranslator.instance.translate('Your Full Name'),
+                                              AppTranslator.instance
+                                                  .translate('Your Full Name'),
                                             ),
                                             Stream.fromFuture(
-                                              AppTranslator.instance.translate('Please enter a full name'),
+                                              AppTranslator.instance.translate(
+                                                  'Please enter a full name'),
                                             ),
                                             /*Stream.fromFuture(
                                                 AppTranslator.instance.translate(
@@ -466,22 +599,38 @@ class _BusinessInformationPageState extends State<BusinessInformationPage> with 
                                                 ),
                                               ),*/
                                           ],
-                                          initialStreamValue: const ['Your Full Name', 'Please enter a full name', ''],
+                                          initialStreamValue: const [
+                                            'Your Full Name',
+                                            'Please enter a full name',
+                                            ''
+                                          ],
                                           builder: (context, snapshot) {
                                             //final String translateString = snapshot[2] as String;
                                             return Directionality(
-                                              textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                              textDirection: serviceLocator<
+                                                      LanguageController>()
+                                                  .targetTextDirection,
                                               child: AppTextFieldWidget(
                                                 controller: _usernameController,
-                                                textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                                textDirection: serviceLocator<
+                                                        LanguageController>()
+                                                    .targetTextDirection,
                                                 decoration: InputDecoration(
                                                   labelText: snapshot[0],
                                                   isDense: true,
                                                 ),
-                                                keyboardType: TextInputType.name,
-                                                inputFormatters: [FilteringTextInputFormatter.allow(RegExp('[a-z A-Z ]')),FilteringTextInputFormatter.deny('  ')],
+                                                keyboardType:
+                                                    TextInputType.name,
+                                                inputFormatters: [
+                                                  FilteringTextInputFormatter
+                                                      .allow(
+                                                          RegExp('[a-z A-Z ]')),
+                                                  FilteringTextInputFormatter
+                                                      .deny('  ')
+                                                ],
                                                 validator: (value) {
-                                                  if (value == null || value.isEmpty) {
+                                                  if (value == null ||
+                                                      value.isEmpty) {
                                                     return '${snapshot[1]}';
                                                   }
                                                   return null;
@@ -500,10 +649,14 @@ class _BusinessInformationPageState extends State<BusinessInformationPage> with 
                                           key: const Key(
                                             'business-name-textFormField-key',
                                           ),
-                                          buildWhen: (previousDataList, latestDataList) => previousDataList != latestDataList,
+                                          buildWhen: (previousDataList,
+                                                  latestDataList) =>
+                                              previousDataList !=
+                                              latestDataList,
                                           streams: [
                                             Stream.fromFuture(
-                                              AppTranslator.instance.translate('Business name'),
+                                              AppTranslator.instance
+                                                  .translate('Business name'),
                                             ),
                                             Stream.fromFuture(
                                               AppTranslator.instance.translate(
@@ -516,22 +669,40 @@ class _BusinessInformationPageState extends State<BusinessInformationPage> with 
                                                 ),
                                               ),*/
                                           ],
-                                          initialStreamValue: const ['Business name', 'Please enter a valid business name', ''],
+                                          initialStreamValue: const [
+                                            'Business name',
+                                            'Please enter a valid business name',
+                                            ''
+                                          ],
                                           builder: (context, snapshot) {
                                             return Directionality(
-                                              textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                              textDirection: serviceLocator<
+                                                      LanguageController>()
+                                                  .targetTextDirection,
                                               child: AppTextFieldWidget(
-                                                controller: _businessNameController,
-                                                textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                                                keyboardType: TextInputType.text,
-                                                inputFormatters: [FilteringTextInputFormatter.allow(RegExp('[a-z A-Z ]')),FilteringTextInputFormatter.deny('  ')],
+                                                controller:
+                                                    _businessNameController,
+                                                textDirection: serviceLocator<
+                                                        LanguageController>()
+                                                    .targetTextDirection,
+                                                keyboardType:
+                                                    TextInputType.text,
+                                                inputFormatters: [
+                                                  FilteringTextInputFormatter
+                                                      .allow(
+                                                          RegExp('[a-z A-Z ]')),
+                                                  FilteringTextInputFormatter
+                                                      .deny('  ')
+                                                ],
                                                 decoration: InputDecoration(
                                                   labelText: snapshot[0],
                                                   isDense: true,
                                                 ),
                                                 //maxLength: 40,
                                                 validator: (value) {
-                                                  if (value == null || value.isEmpty || value.length>40) {
+                                                  if (value == null ||
+                                                      value.isEmpty ||
+                                                      value.length > 40) {
                                                     return '${snapshot[1]}';
                                                   }
                                                   return null;
@@ -550,10 +721,14 @@ class _BusinessInformationPageState extends State<BusinessInformationPage> with 
                                           key: const Key(
                                             'business-email-address-textFormField-key',
                                           ),
-                                          buildWhen: (previousDataList, latestDataList) => previousDataList != latestDataList,
+                                          buildWhen: (previousDataList,
+                                                  latestDataList) =>
+                                              previousDataList !=
+                                              latestDataList,
                                           streams: [
                                             Stream.fromFuture(
-                                              AppTranslator.instance.translate('Business email address'),
+                                              AppTranslator.instance.translate(
+                                                  'Business email address'),
                                             ),
                                             Stream.fromFuture(
                                               AppTranslator.instance.translate(
@@ -579,22 +754,29 @@ class _BusinessInformationPageState extends State<BusinessInformationPage> with 
                                           ],
                                           builder: (context, snapshot) {
                                             return Directionality(
-                                              textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                              textDirection: serviceLocator<
+                                                      LanguageController>()
+                                                  .targetTextDirection,
                                               child: AppTextFieldWidget(
                                                 controller: _emailController,
-                                                textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                                textDirection: serviceLocator<
+                                                        LanguageController>()
+                                                    .targetTextDirection,
                                                 decoration: InputDecoration(
                                                   labelText: snapshot[0],
                                                   isDense: true,
                                                 ),
                                                 validator: (value) {
-                                                  if (value == null || value.isEmpty) {
+                                                  if (value == null ||
+                                                      value.isEmpty) {
                                                     return '${snapshot[1]}';
                                                   }
                                                   /*else if (!value.contains('@')) {
                                                 return 'Please enter a valid email address'.tr();
                                               }*/
-                                                  else if (!value.hasValidEmailAddress(value)) {
+                                                  else if (!value
+                                                      .hasValidEmailAddress(
+                                                          value)) {
                                                     return '${snapshot[2]}';
                                                   }
                                                   return null;
@@ -613,9 +795,14 @@ class _BusinessInformationPageState extends State<BusinessInformationPage> with 
                                           mainAxisSize: MainAxisSize.min,
                                           children: [
                                             Flexible(
-                                              child: BlocBuilder<PhoneFormFieldBloc, PhoneNumberFormFieldState>(
-                                                bloc: context.read<PhoneFormFieldBloc>(),
-                                                buildWhen: (previous, current) => previous != current,
+                                              child: BlocBuilder<
+                                                  PhoneFormFieldBloc,
+                                                  PhoneNumberFormFieldState>(
+                                                bloc: context
+                                                    .read<PhoneFormFieldBloc>(),
+                                                buildWhen:
+                                                    (previous, current) =>
+                                                        previous != current,
                                                 builder: (context, state) {
                                                   state.maybeWhen(
                                                     orElse: () {},
@@ -632,11 +819,15 @@ class _BusinessInformationPageState extends State<BusinessInformationPage> with 
                                                       country,
                                                     ) {
                                                       if (phoneNumber != null) {
-                                                        initialPhoneNumberValue = phoneNumber;
+                                                        initialPhoneNumberValue =
+                                                            phoneNumber;
                                                       }
-                                                      controller = phoneController;
-                                                      this.phoneNumberVerification = phoneNumberVerification;
-                                                      this.userEnteredPhoneNumber = userEnteredPhoneNumber;
+                                                      controller =
+                                                          phoneController;
+                                                      this.phoneNumberVerification =
+                                                          phoneNumberVerification;
+                                                      this.userEnteredPhoneNumber =
+                                                          userEnteredPhoneNumber;
                                                     },
                                                   );
                                                   return MultiStreamBuilder(
@@ -647,10 +838,12 @@ class _BusinessInformationPageState extends State<BusinessInformationPage> with 
                                                       previousDataList,
                                                       latestDataList,
                                                     ) =>
-                                                        previousDataList != latestDataList,
+                                                        previousDataList !=
+                                                        latestDataList,
                                                     streams: [
                                                       Stream.fromFuture(
-                                                        AppTranslator.instance.translate(
+                                                        AppTranslator.instance
+                                                            .translate(
                                                           'Business phone number',
                                                         ),
                                                       ),
@@ -664,37 +857,56 @@ class _BusinessInformationPageState extends State<BusinessInformationPage> with 
                                                       'Business phone number',
                                                       phoneValidation,
                                                     ],
-                                                    builder: (context, snapshot) {
+                                                    builder:
+                                                        (context, snapshot) {
                                                       return Directionality(
-                                                        textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                                                        child: PhoneNumberFieldWidget(
+                                                        textDirection: serviceLocator<
+                                                                LanguageController>()
+                                                            .targetTextDirection,
+                                                        child:
+                                                            PhoneNumberFieldWidget(
                                                           key: const Key(
                                                             'user-business-phone-number-widget-key',
                                                           ),
-                                                          isCountryChipPersistent: false,
+                                                          isCountryChipPersistent:
+                                                              false,
                                                           outlineBorder: true,
                                                           shouldFormat: true,
                                                           useRtl: false,
                                                           withLabel: true,
                                                           enabled: false,
-                                                          decoration: InputDecoration(
-                                                            labelText: snapshot[0],
-                                                            alignLabelWithHint: true,
+                                                          decoration:
+                                                              InputDecoration(
+                                                            labelText:
+                                                                snapshot[0],
+                                                            alignLabelWithHint:
+                                                                true,
                                                             //hintText: 'Mobile number',
-                                                            errorText: phoneValidation,
+                                                            errorText:
+                                                                phoneValidation,
                                                             isDense: true,
                                                           ),
                                                           isAllowEmpty: false,
                                                           autofocus: false,
-                                                          style: context.bodyLarge,
-                                                          showFlagInInput: false,
-                                                          countryCodeStyle: context.bodyLarge,
-                                                          initialPhoneNumberValue: initialPhoneNumberValue,
-                                                          onPhoneNumberChanged: onPhoneNumberChanged,
+                                                          style:
+                                                              context.bodyLarge,
+                                                          showFlagInInput:
+                                                              false,
+                                                          countryCodeStyle:
+                                                              context.bodyLarge,
+                                                          initialPhoneNumberValue:
+                                                              initialPhoneNumberValue,
+                                                          onPhoneNumberChanged:
+                                                              onPhoneNumberChanged,
                                                           //phoneNumberValidationChanged: phoneNumberValidationChanged,
-                                                          haveStateManagement: false,
-                                                          keyboardType: const TextInputType.numberWithOptions(),
-                                                          textInputAction: TextInputAction.done,
+                                                          haveStateManagement:
+                                                              false,
+                                                          keyboardType:
+                                                              const TextInputType
+                                                                  .numberWithOptions(),
+                                                          textInputAction:
+                                                              TextInputAction
+                                                                  .done,
                                                         ),
                                                       );
                                                     },
@@ -714,13 +926,18 @@ class _BusinessInformationPageState extends State<BusinessInformationPage> with 
                                           key: const Key(
                                             'business-address-textFormField-key',
                                           ),
-                                          buildWhen: (previousDataList, latestDataList) => previousDataList != latestDataList,
+                                          buildWhen: (previousDataList,
+                                                  latestDataList) =>
+                                              previousDataList !=
+                                              latestDataList,
                                           streams: [
                                             Stream.fromFuture(
-                                              AppTranslator.instance.translate('Business address'),
+                                              AppTranslator.instance.translate(
+                                                  'Business address'),
                                             ),
                                             Stream.fromFuture(
-                                              AppTranslator.instance.translate('Please enter an address'),
+                                              AppTranslator.instance.translate(
+                                                  'Please enter an address'),
                                             ),
                                             /*Stream.fromFuture(
                                                 AppTranslator.instance.translate(
@@ -728,40 +945,63 @@ class _BusinessInformationPageState extends State<BusinessInformationPage> with 
                                                 ),
                                               ),*/
                                           ],
-                                          initialStreamValue: const ['Business address', 'Please enter an address', ''],
+                                          initialStreamValue: const [
+                                            'Business address',
+                                            'Please enter an address',
+                                            ''
+                                          ],
                                           builder: (context, snapshot) {
                                             return Directionality(
-                                              textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                              textDirection: serviceLocator<
+                                                      LanguageController>()
+                                                  .targetTextDirection,
                                               child: AppTextFieldWidget(
                                                 controller: _addressController,
-                                                textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                                textDirection: serviceLocator<
+                                                        LanguageController>()
+                                                    .targetTextDirection,
                                                 maxLines: 3,
                                                 readOnly: true,
-                                                onTap: () async{
-                                                  final result = await context.push<(String,AddressModel)>(
-                                                    Routes.ALL_SAVED_ADDRESS_LIST,
+                                                onTap: () async {
+                                                  final result = await context
+                                                      .push<
+                                                          (
+                                                            String,
+                                                            AddressModel
+                                                          )>(
+                                                    Routes
+                                                        .ALL_SAVED_ADDRESS_LIST,
                                                     extra: {
-                                                      'selectItemUseCase': SelectItemUseCase.onlySelect,
+                                                      'selectItemUseCase':
+                                                          SelectItemUseCase
+                                                              .onlySelect,
                                                     },
                                                   );
-                                                  if(result!=null){
-                                                    _addressController.text=result.$1;
-                                                    addressModel=result.$2;
-                                                    setState(() {
-
-                                                    });
+                                                  if (result != null) {
+                                                    _addressController.text =
+                                                        result.$1;
+                                                    addressModel = result.$2;
+                                                    setState(() {});
                                                   }
                                                 },
                                                 decoration: InputDecoration(
                                                   labelText: snapshot[0],
                                                   isDense: true,
                                                   suffixIcon: Container(
-                                                    width: kMinInteractiveDimension * 1.05,
-                                                    constraints: const BoxConstraints(
-                                                      minWidth: kMinInteractiveDimension * 1.05,
-                                                      minHeight: kMinInteractiveDimension * 2,
+                                                    width:
+                                                        kMinInteractiveDimension *
+                                                            1.05,
+                                                    constraints:
+                                                        const BoxConstraints(
+                                                      minWidth:
+                                                          kMinInteractiveDimension *
+                                                              1.05,
+                                                      minHeight:
+                                                          kMinInteractiveDimension *
+                                                              2,
                                                     ),
-                                                    decoration: const BoxDecoration(
+                                                    decoration:
+                                                        const BoxDecoration(
                                                       border: BorderDirectional(
                                                         start: BorderSide(
                                                           width: 1.0,
@@ -777,19 +1017,30 @@ class _BusinessInformationPageState extends State<BusinessInformationPage> with 
                                                     child: Row(
                                                       children: [
                                                         IconButton(
-                                                          onPressed: () async{
-                                                            final result = await context.push<(String,AddressModel)>(
-                                                              Routes.ALL_SAVED_ADDRESS_LIST,
+                                                          onPressed: () async {
+                                                            final result =
+                                                                await context
+                                                                    .push<
+                                                                        (
+                                                                          String,
+                                                                          AddressModel
+                                                                        )>(
+                                                              Routes
+                                                                  .ALL_SAVED_ADDRESS_LIST,
                                                               extra: {
-                                                                'selectItemUseCase': SelectItemUseCase.onlySelect,
+                                                                'selectItemUseCase':
+                                                                    SelectItemUseCase
+                                                                        .onlySelect,
                                                               },
                                                             );
-                                                            if(result!=null){
-                                                              _addressController.text=result.$1;
-                                                              addressModel=result.$2;
-                                                              setState(() {
-
-                                                              });
+                                                            if (result !=
+                                                                null) {
+                                                              _addressController
+                                                                      .text =
+                                                                  result.$1;
+                                                              addressModel =
+                                                                  result.$2;
+                                                              setState(() {});
                                                             }
                                                           },
                                                           icon: const Icon(
@@ -801,7 +1052,8 @@ class _BusinessInformationPageState extends State<BusinessInformationPage> with 
                                                   ),
                                                 ),
                                                 validator: (value) {
-                                                  if (value == null || value.isEmpty) {
+                                                  if (value == null ||
+                                                      value.isEmpty) {
                                                     return '${snapshot[1]}';
                                                   }
                                                   return null;
@@ -897,7 +1149,9 @@ class _BusinessInformationPageState extends State<BusinessInformationPage> with 
                           SliverFillRemaining(
                             hasScrollBody: false,
                             child: Column(
-                              textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                              textDirection:
+                                  serviceLocator<LanguageController>()
+                                      .targetTextDirection,
                               crossAxisAlignment: CrossAxisAlignment.stretch,
                               children: [
                                 const Spacer(),
@@ -907,63 +1161,117 @@ class _BusinessInformationPageState extends State<BusinessInformationPage> with 
                                     children: [
                                       Expanded(
                                         child: ElevatedButton(
-                                          key: const Key('save-business-profile-button-widget'),
+                                          key: const Key(
+                                              'save-business-profile-button-widget'),
                                           onPressed: () async {
-                                            if (_createBusinessProfileFormKey.currentState!.validate()) {
-                                              _createBusinessProfileFormKey.currentState!.save();
+                                            if (_createBusinessProfileFormKey
+                                                .currentState!
+                                                .validate()) {
+                                              _createBusinessProfileFormKey
+                                                  .currentState!
+                                                  .save();
                                               //await Future.delayed(const Duration(milliseconds: 500), () {});
-                                              BusinessProfileEntity businessProfileEntity;
-                                              if (widget.hasEditBusinessProfile && widget.businessProfileEntity.isNotNull) {
+                                              BusinessProfileEntity
+                                                  businessProfileEntity;
+                                              if (widget
+                                                      .hasEditBusinessProfile &&
+                                                  widget.businessProfileEntity
+                                                      .isNotNull) {
                                                 // Edit
-                                                businessProfileEntity = widget.businessProfileEntity!.copyWith(
-                                                  userName: _usernameController.value.text,
-                                                  /*businessAddress: AddressModel(
+                                                businessProfileEntity = widget
+                                                    .businessProfileEntity!
+                                                    .copyWith(
+                                                        userName: _usernameController
+                                                            .value.text,
+                                                        /*businessAddress: AddressModel(
                                                     address: AddressBean(displayAddressName: _addressController.value.text),
                                                   ),*/
-                                                    businessAddress: addressModel,
-                                                  businessEmailAddress: _emailController.value.text,
-                                                  businessName: _businessNameController.value.text,
-                                                    businessPhoneNumber: '+${initialPhoneNumberValue.countryCode} ${initialPhoneNumberValue.getFormattedNsn().trim()}'??userEnteredPhoneNumber,
-                                                  businessProfileID: widget.businessProfileEntity?.businessProfileID,
-                                                  countryDialCode: initialPhoneNumberValue.countryCode,
-                                                  isoCode: initialPhoneNumberValue.isoCode.name,
-                                                  phoneNumberWithoutDialCode: initialPhoneNumberValue.nsn??''
-                                                );
+                                                        businessAddress:
+                                                            addressModel,
+                                                        businessEmailAddress:
+                                                            _emailController
+                                                                .value.text,
+                                                        businessName:
+                                                            _businessNameController
+                                                                .value.text,
+                                                        businessPhoneNumber:
+                                                            '+${initialPhoneNumberValue.countryCode} ${initialPhoneNumberValue.getFormattedNsn().trim()}' ??
+                                                                userEnteredPhoneNumber,
+                                                        businessProfileID: widget
+                                                            .businessProfileEntity
+                                                            ?.businessProfileID,
+                                                        countryDialCode:
+                                                            initialPhoneNumberValue
+                                                                .countryCode,
+                                                        isoCode:
+                                                            initialPhoneNumberValue
+                                                                .isoCode.name,
+                                                        phoneNumberWithoutDialCode:
+                                                            initialPhoneNumberValue
+                                                                    .nsn ??
+                                                                '');
                                               } else {
                                                 // New
-                                                businessProfileEntity = BusinessProfileEntity(
-                                                  userName: _usernameController.value.text,
-                                                    businessAddress: addressModel,
+                                                businessProfileEntity =
+                                                    BusinessProfileEntity(
+                                                  userName: _usernameController
+                                                      .value.text,
+                                                  businessAddress: addressModel,
                                                   /*businessAddress: AddressModel(
                                                     address: AddressBean(displayAddressName: _addressController.value.text),
                                                   ),*/
-                                                  businessEmailAddress: _emailController.value.text,
-                                                  businessName: _businessNameController.value.text,
-                                                  businessPhoneNumber: '+${initialPhoneNumberValue.countryCode} ${initialPhoneNumberValue.getFormattedNsn().trim()}'??userEnteredPhoneNumber,
-                                                  businessTypeEntity: BusinessTypeEntity(),
-                                                  countryDialCode: initialPhoneNumberValue.countryCode,
-                                                  isoCode: initialPhoneNumberValue.isoCode.name,
-                                                    phoneNumberWithoutDialCode: initialPhoneNumberValue.nsn??'',
-
+                                                  businessEmailAddress:
+                                                      _emailController
+                                                          .value.text,
+                                                  businessName:
+                                                      _businessNameController
+                                                          .value.text,
+                                                  businessPhoneNumber:
+                                                      '+${initialPhoneNumberValue.countryCode} ${initialPhoneNumberValue.getFormattedNsn().trim()}' ??
+                                                          userEnteredPhoneNumber,
+                                                  businessTypeEntity:
+                                                      BusinessTypeEntity(),
+                                                  countryDialCode:
+                                                      initialPhoneNumberValue
+                                                          .countryCode,
+                                                  isoCode:
+                                                      initialPhoneNumberValue
+                                                          .isoCode.name,
+                                                  phoneNumberWithoutDialCode:
+                                                      initialPhoneNumberValue
+                                                              .nsn ??
+                                                          '',
                                                 );
                                               }
-                                              serviceLocator<AppUserEntity>().currentProfileStatus = CurrentProfileStatus.basicProfileSaved;
-                                              serviceLocator<AppUserEntity>().businessProfile = businessProfileEntity;
+                                              serviceLocator<AppUserEntity>()
+                                                      .currentProfileStatus =
+                                                  CurrentProfileStatus
+                                                      .basicProfileSaved;
+                                              serviceLocator<AppUserEntity>()
+                                                      .businessProfile =
+                                                  businessProfileEntity;
                                               if (!mounted) {
                                                 return;
                                               }
-                                              context.read<BusinessProfileBloc>().add(
+                                              context
+                                                  .read<BusinessProfileBloc>()
+                                                  .add(
                                                     SaveBusinessProfile(
-                                                      businessProfileEntity: businessProfileEntity,
-                                                      hasEditBusinessProfile: widget.hasEditBusinessProfile,
-                                                      currentIndex: widget.currentIndex,
+                                                      businessProfileEntity:
+                                                          businessProfileEntity,
+                                                      hasEditBusinessProfile: widget
+                                                          .hasEditBusinessProfile,
+                                                      currentIndex:
+                                                          widget.currentIndex,
                                                     ),
                                                   );
                                             }
                                           },
                                           child: Text(
                                             'Save & Next',
-                                            textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                            textDirection: serviceLocator<
+                                                    LanguageController>()
+                                                .targetTextDirection,
                                           ).translate(),
                                         ),
                                       ),

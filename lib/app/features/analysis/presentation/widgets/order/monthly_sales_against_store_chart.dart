@@ -1,10 +1,14 @@
 part of 'package:homemakers_merchant/app/features/analysis/index.dart';
+
 class MonthlySalesAgainstStoreChartWidget extends StatefulWidget {
   const MonthlySalesAgainstStoreChartWidget({super.key});
   @override
-  _MonthlySalesAgainstStoreChartWidgetController createState() => _MonthlySalesAgainstStoreChartWidgetController();
+  _MonthlySalesAgainstStoreChartWidgetController createState() =>
+      _MonthlySalesAgainstStoreChartWidgetController();
 }
-class _MonthlySalesAgainstStoreChartWidgetController extends State<MonthlySalesAgainstStoreChartWidget> {
+
+class _MonthlySalesAgainstStoreChartWidgetController
+    extends State<MonthlySalesAgainstStoreChartWidget> {
   List<ChartTodayEntity>? chartData;
 
   TooltipBehavior? _tooltipBehavior;
@@ -57,7 +61,8 @@ class _MonthlySalesAgainstStoreChartWidgetController extends State<MonthlySalesA
         groupName: 'Today',
         name: 'Today',
         //isVisible:true,
-        dataLabelSettings: DataLabelSettings(isVisible: true, showCumulativeValues: true),
+        dataLabelSettings:
+            DataLabelSettings(isVisible: true, showCumulativeValues: true),
       ),
       StackedBarSeries<ChartTodayEntity, String>(
         dataSource: chartData!,
@@ -66,7 +71,8 @@ class _MonthlySalesAgainstStoreChartWidgetController extends State<MonthlySalesA
         groupName: 'Yesterday',
         name: 'Yesterday',
         //isVisible:true,
-        dataLabelSettings: DataLabelSettings(isVisible: true, showCumulativeValues: true),
+        dataLabelSettings:
+            DataLabelSettings(isVisible: true, showCumulativeValues: true),
       ),
     ];
   }
@@ -76,19 +82,24 @@ class _MonthlySalesAgainstStoreChartWidgetController extends State<MonthlySalesA
     chartData!.clear();
     super.dispose();
   }
+
   @override
-  Widget build(BuildContext context) => _MonthlySalesAgainstStoreChartWidgetView(this);
+  Widget build(BuildContext context) =>
+      _MonthlySalesAgainstStoreChartWidgetView(this);
 }
-class _MonthlySalesAgainstStoreChartWidgetView extends WidgetView<MonthlySalesAgainstStoreChartWidget, _MonthlySalesAgainstStoreChartWidgetController> {
+
+class _MonthlySalesAgainstStoreChartWidgetView extends WidgetView<
+    MonthlySalesAgainstStoreChartWidget,
+    _MonthlySalesAgainstStoreChartWidgetController> {
   const _MonthlySalesAgainstStoreChartWidgetView(super.state);
-@override
+  @override
   Widget build(BuildContext context) {
-  return SizedBox(
-    child: Column(
-      children: [
-        state._buildChart(),
-      ],
-    ),
-  );
+    return SizedBox(
+      child: Column(
+        children: [
+          state._buildChart(),
+        ],
+      ),
+    );
   }
 }

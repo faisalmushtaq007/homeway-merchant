@@ -21,7 +21,8 @@ class SearchGooglePlacesWidget extends StatefulWidget {
     required this.onNewSearch,
     required this.outerMarginOfSearchTextField,
     this.newPlaceType,
-  })  : assert((location == null && radius == null) || (location != null && radius != null)),
+  })  : assert((location == null && radius == null) ||
+            (location != null && radius != null)),
         super(key: key);
 
   final Key? key;
@@ -84,7 +85,8 @@ class SearchGooglePlacesWidget extends StatefulWidget {
   _SearchMapPlaceWidgetState createState() => _SearchMapPlaceWidgetState();
 }
 
-class _SearchMapPlaceWidgetState extends State<SearchGooglePlacesWidget> with TickerProviderStateMixin {
+class _SearchMapPlaceWidgetState extends State<SearchGooglePlacesWidget>
+    with TickerProviderStateMixin {
   TextEditingController _textEditingController = TextEditingController();
   AnimationController? _animationController;
   // SearchContainer height.
@@ -107,7 +109,8 @@ class _SearchMapPlaceWidgetState extends State<SearchGooglePlacesWidget> with Ti
   @override
   void initState() {
     geocode = Geocoding(apiKey: widget.apiKey, language: widget.language);
-    _animationController = AnimationController(vsync: this, duration: Duration(milliseconds: 500));
+    _animationController =
+        AnimationController(vsync: this, duration: Duration(milliseconds: 500));
     _containerHeight = Tween<double>(begin: 60, end: 364).animate(
       CurvedAnimation(
         curve: Interval(0.0, 0.5, curve: Curves.easeInOut),
@@ -163,7 +166,8 @@ class _SearchMapPlaceWidgetState extends State<SearchGooglePlacesWidget> with Ti
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
                 Padding(
-                  padding: const EdgeInsetsDirectional.only(start: 16.0, end: 16.0, top: 6, bottom: 4),
+                  padding: const EdgeInsetsDirectional.only(
+                      start: 16.0, end: 16.0, top: 6, bottom: 4),
                   child: child,
                 ),
 
@@ -186,7 +190,8 @@ class _SearchMapPlaceWidgetState extends State<SearchGooglePlacesWidget> with Ti
                         shrinkWrap: true,
                         padding: EdgeInsets.zero,
                         children: <Widget>[
-                          for (var prediction in _placePredictionsData) _newPlaceOption(prediction),
+                          for (var prediction in _placePredictionsData)
+                            _newPlaceOption(prediction),
                         ],
                       ),
                     ),
@@ -219,7 +224,8 @@ class _SearchMapPlaceWidgetState extends State<SearchGooglePlacesWidget> with Ti
           if (widget.hasClearButton!)
             GestureDetector(
               onTap: () {
-                if (_crossFadeState == CrossFadeState.showSecond) _textEditingController.clear();
+                if (_crossFadeState == CrossFadeState.showSecond)
+                  _textEditingController.clear();
               },
               // child: Icon(_inputIcon, color: this.widget.iconColor),
               child: AnimatedCrossFade(
@@ -229,7 +235,8 @@ class _SearchMapPlaceWidgetState extends State<SearchGooglePlacesWidget> with Ti
                 secondChild: Icon(Icons.clear, color: widget.iconColor),
               ),
             ),
-          if (!widget.hasClearButton!) Icon(widget.icon, color: widget.iconColor)
+          if (!widget.hasClearButton!)
+            Icon(widget.icon, color: widget.iconColor)
         ],
       ),
     );
@@ -243,7 +250,9 @@ class _SearchMapPlaceWidgetState extends State<SearchGooglePlacesWidget> with Ti
       onPressed: () => _selectPlace(prediction: prediction),
       child: ListTile(
         title: Text(
-          place!.length < 45 ? "$place" : "${place.replaceRange(45, place.length, "")} ...",
+          place!.length < 45
+              ? "$place"
+              : "${place.replaceRange(45, place.length, "")} ...",
           style: TextStyle(
             fontSize: MediaQuery.of(context).size.width * 0.04,
             color: widget.darkMode! ? Colors.grey[100] : Colors.grey[850],
@@ -270,7 +279,9 @@ class _SearchMapPlaceWidgetState extends State<SearchGooglePlacesWidget> with Ti
       horizontalTitleGap: 0,
       child: ListTile(
         title: Text(
-          place!.length < 45 ? "$place" : "${place.replaceRange(45, place.length, "")} ...",
+          place!.length < 45
+              ? "$place"
+              : "${place.replaceRange(45, place.length, "")} ...",
           style: TextStyle(
             fontSize: MediaQuery.of(context).size.width * 0.04,
             color: widget.darkMode! ? Colors.grey[100] : Colors.grey[850],
@@ -295,7 +306,8 @@ class _SearchMapPlaceWidgetState extends State<SearchGooglePlacesWidget> with Ti
       hintText: this.widget.placeholder,
       border: InputBorder.none,
       //isDense: true,
-      contentPadding: EdgeInsetsDirectional.symmetric(horizontal: 12.0, vertical: 8.0),
+      contentPadding:
+          EdgeInsetsDirectional.symmetric(horizontal: 12.0, vertical: 8.0),
       hintStyle: TextStyle(
         color: widget.darkMode! ? Colors.grey[100] : Colors.grey[850],
       ),
@@ -306,7 +318,9 @@ class _SearchMapPlaceWidgetState extends State<SearchGooglePlacesWidget> with Ti
     return BoxDecoration(
       color: widget.darkMode! ? Colors.grey[800] : Colors.white,
       borderRadius: BorderRadius.all(Radius.circular(10.0)),
-      boxShadow: [BoxShadow(color: Colors.black12, blurRadius: 20, spreadRadius: 10)],
+      boxShadow: [
+        BoxShadow(color: Colors.black12, blurRadius: 20, spreadRadius: 10)
+      ],
     );
   }
 
@@ -333,7 +347,8 @@ class _SearchMapPlaceWidgetState extends State<SearchGooglePlacesWidget> with Ti
 
       if (_currentInput == _tempInput) {
         //final predictions = await _makeRequest(_currentInput);
-        final List<GBSearchData> data = await _searchLocationQuery(_currentInput);
+        final List<GBSearchData> data =
+            await _searchLocationQuery(_currentInput);
         await _animationController!.animateTo(0.5);
         //_placePredictionsData
         setState(() {
@@ -355,9 +370,11 @@ class _SearchMapPlaceWidgetState extends State<SearchGooglePlacesWidget> with Ti
 
   /// API request function. Returns the Predictions
   Future<dynamic> _makeRequest(input) async {
-    String url = "https://maps.googleapis.com/maps/api/place/autocomplete/json?input=$input&key=${widget.apiKey}&language=${widget.language}";
+    String url =
+        "https://maps.googleapis.com/maps/api/place/autocomplete/json?input=$input&key=${widget.apiKey}&language=${widget.language}";
     if (widget.location != null && widget.radius != null) {
-      url += "&location=${widget.location!.latitude},${widget.location!.longitude}&radius=${widget.radius}";
+      url +=
+          "&location=${widget.location!.latitude},${widget.location!.longitude}&radius=${widget.radius}";
       if (widget.strictBounds!) {
         url += "&strictbounds";
       }
@@ -371,7 +388,9 @@ class _SearchMapPlaceWidgetState extends State<SearchGooglePlacesWidget> with Ti
 
     if (json["error_message"] != null) {
       var error = json["error_message"];
-      if (error == "This API project is not authorized to use this API.") error += " Make sure the Places API is activated on your Google Cloud Platform";
+      if (error == "This API project is not authorized to use this API.")
+        error +=
+            " Make sure the Places API is activated on your Google Cloud Platform";
       throw Exception(error);
     } else {
       final predictions = json["predictions"];
@@ -421,7 +440,8 @@ class _SearchMapPlaceWidgetState extends State<SearchGooglePlacesWidget> with Ti
 
   /// Closes the expanded search box with predictions
   void _closeSearch() async {
-    if (!_animationController!.isDismissed) await _animationController!.animateTo(0.5);
+    if (!_animationController!.isDismissed)
+      await _animationController!.animateTo(0.5);
     _fn.unfocus();
     setState(() {
       _placePredictions = [];

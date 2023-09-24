@@ -101,7 +101,8 @@ Future<void> bootstrap(FutureOr<dynamic> Function() builder) async {
 
   Bloc.observer = const AppBlocObserver();
   await Zone.current.fork().run(() async {
-    final WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
+    final WidgetsBinding widgetsBinding =
+        WidgetsFlutterBinding.ensureInitialized();
     GestureBinding.instance.resamplingEnabled = true;
     final ui.RootIsolateToken rootIsolateToken = ui.RootIsolateToken.instance!;
     BackgroundIsolateBinaryMessenger.ensureInitialized(rootIsolateToken);

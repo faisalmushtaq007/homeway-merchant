@@ -56,9 +56,11 @@ class _ZoomInState extends State<ZoomIn> with TickerProviderStateMixin {
     super.initState();
 
     controller = AnimationController(duration: widget.duration, vsync: this);
-    fade = Tween(begin: 0.0, end: widget.from).animate(CurvedAnimation(curve: Curves.easeOut, parent: controller!));
+    fade = Tween(begin: 0.0, end: widget.from)
+        .animate(CurvedAnimation(curve: Curves.easeOut, parent: controller!));
 
-    opacity = Tween<double>(begin: 0.0, end: 1).animate(CurvedAnimation(parent: controller!, curve: const Interval(0, 0.65)));
+    opacity = Tween<double>(begin: 0.0, end: 1).animate(
+        CurvedAnimation(parent: controller!, curve: const Interval(0, 0.65)));
 
     if (!widget.manualTrigger && widget.animate) {
       Future.delayed(widget.delay, () {
@@ -155,9 +157,11 @@ class _ZoomOutState extends State<ZoomOut> with TickerProviderStateMixin {
 
     controller = AnimationController(duration: widget.duration, vsync: this);
 
-    zoom = Tween(begin: 1.0, end: widget.from).animate(CurvedAnimation(curve: Curves.easeOut, parent: controller!));
+    zoom = Tween(begin: 1.0, end: widget.from)
+        .animate(CurvedAnimation(curve: Curves.easeOut, parent: controller!));
 
-    opacity = Tween<double>(begin: 1.0, end: 0.0).animate(CurvedAnimation(parent: controller!, curve: const Interval(0, 0.65)));
+    opacity = Tween<double>(begin: 1.0, end: 0.0).animate(
+        CurvedAnimation(parent: controller!, curve: const Interval(0, 0.65)));
 
     if (!widget.manualTrigger && widget.animate) {
       Future.delayed(widget.delay, () {

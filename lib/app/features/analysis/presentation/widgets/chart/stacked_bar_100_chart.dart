@@ -95,10 +95,10 @@ class _StackedBar100ChartState extends SampleViewState {
 /// Private class for storing the stacked bar 100 series data points.
 class _ChartData {
   _ChartData(
-      this.x,
-      this.today,
-      this.yesterday,
-      );
+    this.x,
+    this.today,
+    this.yesterday,
+  );
 
   final String x;
   final num today;

@@ -63,23 +63,31 @@ abstract interface class MenuRepository {
     Timestamp? endTime,
   });
 
-  Future<DataSourceState<List<MenuEntity>>> bindAddonsWithMenu({required List<Addons> source, required List<MenuEntity> destination});
+  Future<DataSourceState<List<MenuEntity>>> bindAddonsWithMenu(
+      {required List<Addons> source, required List<MenuEntity> destination});
 
-  Future<DataSourceState<List<MenuEntity>>> unBindAddonsWithMenu({required List<Addons> source, required List<MenuEntity> destination});
+  Future<DataSourceState<List<MenuEntity>>> unBindAddonsWithMenu(
+      {required List<Addons> source, required List<MenuEntity> destination});
 
-  Future<DataSourceState<List<StoreEntity>>> bindMenuWithStores({required List<MenuEntity> source, required List<StoreEntity> destination});
+  Future<DataSourceState<List<StoreEntity>>> bindMenuWithStores(
+      {required List<MenuEntity> source,
+      required List<StoreEntity> destination});
 
-  Future<DataSourceState<List<StoreEntity>>> unBindMenuWithStores({required List<MenuEntity> source, required List<StoreEntity> destination});
+  Future<DataSourceState<List<StoreEntity>>> unBindMenuWithStores(
+      {required List<MenuEntity> source,
+      required List<StoreEntity> destination});
 
   // With User
-  Future<DataSourceState<AppUserEntity>> bindAddonsWithUser({required List<Addons> source, required AppUserEntity destination});
+  Future<DataSourceState<AppUserEntity>> bindAddonsWithUser(
+      {required List<Addons> source, required AppUserEntity destination});
 
   Future<DataSourceState<AppUserEntity>> unBindAddonsWithUser({
     required List<Addons> source,
     required AppUserEntity destination,
   });
 
-  Future<DataSourceState<AppUserEntity>> bindMenuWithUser({required List<MenuEntity> source, required AppUserEntity destination});
+  Future<DataSourceState<AppUserEntity>> bindMenuWithUser(
+      {required List<MenuEntity> source, required AppUserEntity destination});
 
   Future<DataSourceState<AppUserEntity>> unBindMenuWithUser({
     required List<MenuEntity> source,

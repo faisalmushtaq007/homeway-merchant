@@ -37,14 +37,16 @@ class _MainDashboardController extends State<MainDashboardPage> {
   Widget build(BuildContext context) => _MainDashboardView(this);
 }
 
-class _MainDashboardView extends WidgetView<MainDashboardPage, _MainDashboardController> {
+class _MainDashboardView
+    extends WidgetView<MainDashboardPage, _MainDashboardController> {
   const _MainDashboardView(super.state);
 
   @override
   Widget build(BuildContext context) {
     final MediaQueryData media = MediaQuery.of(context);
     final double margins = GlobalApp.responsiveInsets(media.size.width);
-    final double topPadding = margins; //media.padding.top + kToolbarHeight + margins; //margins * 1.5;
+    final double topPadding =
+        margins; //media.padding.top + kToolbarHeight + margins; //margins * 1.5;
     final double bottomPadding = margins; // media.padding.bottom + margins;
     final double width = media.size.width;
     final ThemeData theme = Theme.of(context);
@@ -77,10 +79,12 @@ class _MainDashboardView extends WidgetView<MainDashboardPage, _MainDashboardCon
                     textColor: Colors.yellow,
                     label: Text(
                       '10',
-                      style: context.labelSmall!.copyWith(color: context.colorScheme.onPrimary),
+                      style: context.labelSmall!
+                          .copyWith(color: context.colorScheme.onPrimary),
                       //Color.fromRGBO(251, 219, 11, 1)
                     ),
-                    child: Icon(Icons.notifications, color: context.colorScheme.primary),
+                    child: Icon(Icons.notifications,
+                        color: context.colorScheme.primary),
                   ),
                 ),
                 Padding(
@@ -96,12 +100,16 @@ class _MainDashboardView extends WidgetView<MainDashboardPage, _MainDashboardCon
               key: const Key('main-dashboard-page-slideinleft-widget'),
               from: context.width - 10,
               child: Directionality(
-                textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                textDirection:
+                    serviceLocator<LanguageController>().targetTextDirection,
                 child: PageBody(
                     controller: state.scrollController,
                     constraints: BoxConstraints(
                       minWidth: 1000,
-                      minHeight: media.size.height - (media.padding.top + kToolbarHeight + media.padding.bottom),
+                      minHeight: media.size.height -
+                          (media.padding.top +
+                              kToolbarHeight +
+                              media.padding.bottom),
                     ),
                     padding: EdgeInsetsDirectional.only(
                       top: topPadding,
@@ -134,14 +142,16 @@ class _MainDashboardView extends WidgetView<MainDashboardPage, _MainDashboardCon
                                 duration: Duration(milliseconds: 100),
                               ),
                               AllOrderWidget(
-                                key: const Key('dashboard-all-orders-info-widget'),
+                                key: const Key(
+                                    'dashboard-all-orders-info-widget'),
                               ),
                               const AnimatedGap(
                                 16,
                                 duration: Duration(milliseconds: 100),
                               ),
                               DashboardRecentOrders(
-                                key: const Key('dashboard-recent-orders-widget'),
+                                key:
+                                    const Key('dashboard-recent-orders-widget'),
                               ),
                               const AnimatedGap(
                                 16,
@@ -155,7 +165,8 @@ class _MainDashboardView extends WidgetView<MainDashboardPage, _MainDashboardCon
                                 duration: Duration(milliseconds: 100),
                               ),
                               DashboardRateAndReviewWidget(
-                                key: const Key('dashboard-rate-review-info-widget'),
+                                key: const Key(
+                                    'dashboard-rate-review-info-widget'),
                               ),
                               const AnimatedGap(
                                 16,

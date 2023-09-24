@@ -25,7 +25,8 @@ class PartialFile {
   });
 
   /// Creates a partial file message from a map (decoded JSON).
-  factory PartialFile.fromJson(Map<String, dynamic> json) => _$PartialFileFromJson(json);
+  factory PartialFile.fromJson(Map<String, dynamic> json) =>
+      _$PartialFileFromJson(json);
 
   /// Additional custom metadata or attributes related to the message.
   final Map<String, dynamic>? metadata;

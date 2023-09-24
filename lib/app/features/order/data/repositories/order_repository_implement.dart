@@ -13,11 +13,13 @@ class OrderRepositoryImplement implements OrderRepository {
     OrderType orderType = OrderType.none,
   }) async {
     try {
-      final connectivity = serviceLocator<ConnectivityService>().getCurrentInternetStatus();
+      final connectivity =
+          serviceLocator<ConnectivityService>().getCurrentInternetStatus();
       if (connectivity.$2 == InternetConnectivityState.internet) {
         // Local DB
         // Save to local
-        final Either<RepositoryBaseFailure, bool> result = await orderLocalDataSource.deleteAll();
+        final Either<RepositoryBaseFailure, bool> result =
+            await orderLocalDataSource.deleteAll();
         // Return result
         return result.fold((l) {
           final RepositoryFailure failure = l as RepositoryFailure;
@@ -34,7 +36,8 @@ class OrderRepositoryImplement implements OrderRepository {
       } else {
         // Remote
         // Save to server
-        final ApiResultState<bool> result = await remoteDataSource.deleteAllOrder();
+        final ApiResultState<bool> result =
+            await remoteDataSource.deleteAllOrder();
         // Return result
         return result.when(
           success: (data) {
@@ -74,11 +77,13 @@ class OrderRepositoryImplement implements OrderRepository {
     OrderType orderType = OrderType.none,
   }) async {
     try {
-      final connectivity = serviceLocator<ConnectivityService>().getCurrentInternetStatus();
+      final connectivity =
+          serviceLocator<ConnectivityService>().getCurrentInternetStatus();
       if (connectivity.$2 == InternetConnectivityState.internet) {
         // Local DB
         // Save to local
-        final Either<RepositoryBaseFailure, bool> result = await orderLocalDataSource.deleteById(UniqueId(orderID));
+        final Either<RepositoryBaseFailure, bool> result =
+            await orderLocalDataSource.deleteById(UniqueId(orderID));
         // Return result
         return result.fold((l) {
           final RepositoryFailure failure = l as RepositoryFailure;
@@ -138,11 +143,13 @@ class OrderRepositoryImplement implements OrderRepository {
     OrderType orderType = OrderType.none,
   }) async {
     try {
-      final connectivity = serviceLocator<ConnectivityService>().getCurrentInternetStatus();
+      final connectivity =
+          serviceLocator<ConnectivityService>().getCurrentInternetStatus();
       if (connectivity.$2 == InternetConnectivityState.internet) {
         // Local DB
         // Save to local
-        final Either<RepositoryBaseFailure, OrderEntity> result = await orderLocalDataSource.update(orderEntity, UniqueId(orderID));
+        final Either<RepositoryBaseFailure, OrderEntity> result =
+            await orderLocalDataSource.update(orderEntity, UniqueId(orderID));
         // Return result
         return result.fold((l) {
           final RepositoryFailure failure = l as RepositoryFailure;
@@ -159,7 +166,8 @@ class OrderRepositoryImplement implements OrderRepository {
       } else {
         // Remote
         // Save to server
-        final ApiResultState<OrderEntity> result = await remoteDataSource.editOrder(
+        final ApiResultState<OrderEntity> result =
+            await remoteDataSource.editOrder(
           orderID: orderID,
           orderEntity: orderEntity,
         );
@@ -207,11 +215,13 @@ class OrderRepositoryImplement implements OrderRepository {
     Timestamp? endTimeStamp,
   }) async {
     try {
-      final connectivity = serviceLocator<ConnectivityService>().getCurrentInternetStatus();
+      final connectivity =
+          serviceLocator<ConnectivityService>().getCurrentInternetStatus();
       if (connectivity.$2 == InternetConnectivityState.internet) {
         // Local DB
         // Save to local
-        final Either<RepositoryBaseFailure, List<OrderEntity>> result = await orderLocalDataSource.getAllOrder(
+        final Either<RepositoryBaseFailure, List<OrderEntity>> result =
+            await orderLocalDataSource.getAllOrder(
           filter: filter,
           sorting: sorting,
           searchText: searchText,
@@ -237,7 +247,8 @@ class OrderRepositoryImplement implements OrderRepository {
       } else {
         // Remote
         // Save to server
-        final ApiResultState<List<OrderEntity>> result = await remoteDataSource.getAllOrder();
+        final ApiResultState<List<OrderEntity>> result =
+            await remoteDataSource.getAllOrder();
         // Return result
         return result.when(
           success: (data) {
@@ -277,11 +288,13 @@ class OrderRepositoryImplement implements OrderRepository {
     OrderType orderType = OrderType.none,
   }) async {
     try {
-      final connectivity = serviceLocator<ConnectivityService>().getCurrentInternetStatus();
+      final connectivity =
+          serviceLocator<ConnectivityService>().getCurrentInternetStatus();
       if (connectivity.$2 == InternetConnectivityState.internet) {
         // Local DB
         // Save to local
-        final Either<RepositoryBaseFailure, OrderEntity?> result = await orderLocalDataSource.getById(UniqueId(orderID));
+        final Either<RepositoryBaseFailure, OrderEntity?> result =
+            await orderLocalDataSource.getById(UniqueId(orderID));
         // Return result
         return result.fold((l) {
           final RepositoryFailure failure = l as RepositoryFailure;
@@ -292,13 +305,15 @@ class OrderRepositoryImplement implements OrderRepository {
             stackTrace: failure.stacktrace,
           );
         }, (r) {
-          appLog.d('Get order to local : ${r?.orderID}, ${r?.orderDateTime?.toUtc().toString()}');
+          appLog.d(
+              'Get order to local : ${r?.orderID}, ${r?.orderDateTime?.toUtc().toString()}');
           return DataSourceState<OrderEntity>.localDb(data: r);
         });
       } else {
         // Remote
         // Save to server
-        final ApiResultState<OrderEntity> result = await remoteDataSource.getOrder(
+        final ApiResultState<OrderEntity> result =
+            await remoteDataSource.getOrder(
           orderID: orderID,
           orderEntity: orderEntity,
         );
@@ -340,11 +355,13 @@ class OrderRepositoryImplement implements OrderRepository {
     OrderType orderType = OrderType.none,
   }) async {
     try {
-      final connectivity = serviceLocator<ConnectivityService>().getCurrentInternetStatus();
+      final connectivity =
+          serviceLocator<ConnectivityService>().getCurrentInternetStatus();
       if (connectivity.$2 == InternetConnectivityState.internet) {
         // Local DB
         // Save to local
-        final Either<RepositoryBaseFailure, OrderEntity> result = await orderLocalDataSource.add(orderEntity);
+        final Either<RepositoryBaseFailure, OrderEntity> result =
+            await orderLocalDataSource.add(orderEntity);
         // Return result
         return result.fold((l) {
           final RepositoryFailure failure = l as RepositoryFailure;
@@ -355,13 +372,15 @@ class OrderRepositoryImplement implements OrderRepository {
             stackTrace: failure.stacktrace,
           );
         }, (r) {
-          appLog.d('Save order to local : ${r.orderID}, ${r.orderDateTime?.toUtc().toString()}');
+          appLog.d(
+              'Save order to local : ${r.orderID}, ${r.orderDateTime?.toUtc().toString()}');
           return DataSourceState<OrderEntity>.localDb(data: r);
         });
       } else {
         // Remote
         // Save to server
-        final ApiResultState<OrderEntity> result = await remoteDataSource.saveOrder(
+        final ApiResultState<OrderEntity> result =
+            await remoteDataSource.saveOrder(
           orderEntity: orderEntity,
         );
         // Return result
@@ -402,11 +421,13 @@ class OrderRepositoryImplement implements OrderRepository {
     bool hasUpdateAll = false,
   }) async {
     try {
-      final connectivity = serviceLocator<ConnectivityService>().getCurrentInternetStatus();
+      final connectivity =
+          serviceLocator<ConnectivityService>().getCurrentInternetStatus();
       if (connectivity.$2 == InternetConnectivityState.internet) {
         // Local DB
         // Save to local
-        final Either<RepositoryBaseFailure, List<OrderEntity>> result = await orderLocalDataSource.saveAll(
+        final Either<RepositoryBaseFailure, List<OrderEntity>> result =
+            await orderLocalDataSource.saveAll(
           entities: orderEntities,
           hasUpdateAll: hasUpdateAll,
         );
@@ -426,7 +447,8 @@ class OrderRepositoryImplement implements OrderRepository {
       } else {
         // Remote
         // Save to server
-        final ApiResultState<List<OrderEntity>> result = await remoteDataSource.saveAllOrder(
+        final ApiResultState<List<OrderEntity>> result =
+            await remoteDataSource.saveAllOrder(
           orderEntities: orderEntities,
           hasUpdateAll: hasUpdateAll,
         );

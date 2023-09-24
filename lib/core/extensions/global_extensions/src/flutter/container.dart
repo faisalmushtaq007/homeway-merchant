@@ -17,11 +17,19 @@ extension ContainerExtensions on Container {
   /// A shadow cast by a box
   ///
   /// [shadowColor]
-  Container withShadow({Color shadowColor = Colors.grey, double blurRadius = 20.0, double spreadRadius = 1.0, Offset offset = const Offset(10.0, 10.0)}) =>
+  Container withShadow(
+          {Color shadowColor = Colors.grey,
+          double blurRadius = 20.0,
+          double spreadRadius = 1.0,
+          Offset offset = const Offset(10.0, 10.0)}) =>
       Container(
         decoration: BoxDecoration(
           boxShadow: [
-            BoxShadow(color: shadowColor, blurRadius: blurRadius, spreadRadius: spreadRadius, offset: offset),
+            BoxShadow(
+                color: shadowColor,
+                blurRadius: blurRadius,
+                spreadRadius: spreadRadius,
+                offset: offset),
           ],
         ),
         child: this,

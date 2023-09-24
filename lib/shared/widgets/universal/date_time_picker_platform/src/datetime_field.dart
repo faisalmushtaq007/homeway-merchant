@@ -168,9 +168,11 @@ class _DateTimeFieldPlatformState extends State<DateTimeFieldPlatform> {
             confirmText: widget.textConfirm,
             helpText: widget.title,
           );
-          if (picked != null && picked != TimeOfDay.fromDateTime(selectedDate.dateTime)) {
+          if (picked != null &&
+              picked != TimeOfDay.fromDateTime(selectedDate.dateTime)) {
             final parseSelectedDate = _parseSelectedDate(picked);
-            _controller.text = Jiffy.parse(parseSelectedDate.toString()).format(pattern: _getFormattedDate());
+            _controller.text = Jiffy.parse(parseSelectedDate.toString())
+                .format(pattern: _getFormattedDate());
             selectedDate = Jiffy.parse(parseSelectedDate.toString());
             widget.onConfirm?.call(parseSelectedDate);
           }
@@ -189,7 +191,8 @@ class _DateTimeFieldPlatformState extends State<DateTimeFieldPlatform> {
           );
           if (picked != null && picked != selectedDate.dateTime) {
             selectedDate = Jiffy.parse(picked.toString());
-            _controller.text = selectedDate.format(pattern: _getFormattedDate());
+            _controller.text =
+                selectedDate.format(pattern: _getFormattedDate());
             widget.onConfirm?.call(selectedDate.dateTime);
           }
         }
@@ -225,7 +228,8 @@ class _DateTimeFieldPlatformState extends State<DateTimeFieldPlatform> {
         Navigator.of(context).pop();
       },
       onConfirm: () {
-        _controller.text = Jiffy.parse(changeDate.toString()).format(pattern: _getFormattedDate());
+        _controller.text = Jiffy.parse(changeDate.toString())
+            .format(pattern: _getFormattedDate());
         selectedDate = Jiffy.parse(changeDate.toString());
         widget.onConfirm?.call(changeDate);
         Navigator.of(context).pop();

@@ -36,16 +36,20 @@ class UploadImageUtils {
       String? assetNetworkUrl = result[7] as String?;
       final int timeStamp = DateTime.now().millisecondsSinceEpoch;
       var tempName = '${documentType.name}_$timeStamp';
-      var fileNameWithExtension = path.basenameWithoutExtension(xCroppedDocumentFile?.path ?? croppedDocumentFile?.path ?? tempName);
-      String fileExtension = path.extension(xCroppedDocumentFile?.path ?? croppedDocumentFile?.path ?? '.png');
-      String croppedFilePath = (xCroppedDocumentFile.path.isEmpty) ? xCroppedDocumentFile.path : croppedDocumentFile.path;
+      var fileNameWithExtension = path.basenameWithoutExtension(
+          xCroppedDocumentFile?.path ?? croppedDocumentFile?.path ?? tempName);
+      String fileExtension = path.extension(
+          xCroppedDocumentFile?.path ?? croppedDocumentFile?.path ?? '.png');
+      String croppedFilePath = (xCroppedDocumentFile.path.isEmpty)
+          ? xCroppedDocumentFile.path
+          : croppedDocumentFile.path;
       final fileReadAsBytes = await file.readAsBytes();
       final xFileReadAsBytes = await xFile.readAsBytes();
       final fileReadAsString = base64Encode(fileReadAsBytes);
       final xFileReadAsString = base64Encode(xFileReadAsBytes);
       final documentID = const Uuid().v4();
-      final double height=0.0;
-      final double width=0.0;
+      final double height = 0.0;
+      final double width = 0.0;
       return BannerModel(
         imagePath: croppedFilePath,
         id: documentID,
@@ -62,8 +66,8 @@ class UploadImageUtils {
           'xFileReadAsBytes': xFileReadAsBytes,
           'fileReadAsString': fileReadAsString,
           'xFileReadAsString': xFileReadAsString,
-          'height':height,
-          'width':width,
+          'height': height,
+          'width': width,
         },
       );
     } else {

@@ -1,6 +1,7 @@
 part of 'package:homemakers_merchant/app/features/authentication/index.dart';
 
-class GetAllAppUserUseCase extends UseCase<DataSourceState<List<AppUserEntity>>> {
+class GetAllAppUserUseCase
+    extends UseCase<DataSourceState<List<AppUserEntity>>> {
   GetAllAppUserUseCase({
     required this.authenticationRepository,
   });

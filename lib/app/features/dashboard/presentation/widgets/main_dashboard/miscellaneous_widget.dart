@@ -39,7 +39,12 @@ class MiscellaneousTileInfo {
           message == other.message);
 
   @override
-  int get hashCode => icon.hashCode ^ title.hashCode ^ subTitle.hashCode ^ value.hashCode ^ message.hashCode;
+  int get hashCode =>
+      icon.hashCode ^
+      title.hashCode ^
+      subTitle.hashCode ^
+      value.hashCode ^
+      message.hashCode;
 
   @override
   String toString() {
@@ -77,11 +82,13 @@ class MiscellaneousWidget extends StatefulWidget {
   const MiscellaneousWidget({super.key});
 
   @override
-  _MiscellaneousWidgetController createState() => _MiscellaneousWidgetController();
+  _MiscellaneousWidgetController createState() =>
+      _MiscellaneousWidgetController();
 }
 
 class _MiscellaneousWidgetController extends State<MiscellaneousWidget> {
-  List<MiscellaneousTileInfo> listOfMiscellaneousTileInfo = <MiscellaneousTileInfo>[];
+  List<MiscellaneousTileInfo> listOfMiscellaneousTileInfo =
+      <MiscellaneousTileInfo>[];
 
   @override
   void initState() {
@@ -175,7 +182,8 @@ class _MiscellaneousWidgetController extends State<MiscellaneousWidget> {
   Widget build(BuildContext context) => _MiscellaneousWidgetView(this);
 }
 
-class _MiscellaneousWidgetView extends WidgetView<MiscellaneousWidget, _MiscellaneousWidgetController> {
+class _MiscellaneousWidgetView
+    extends WidgetView<MiscellaneousWidget, _MiscellaneousWidgetController> {
   const _MiscellaneousWidgetView(super.state);
 
   @override

@@ -42,7 +42,8 @@ class ValidatorGroup<T> implements ValueValidator<T> {
   /// `onlyPerformValidationWhenValueExists` is `true`, the validators will only be applied if the
   /// value exists. By default, it is set to `false`. It could be useful when a field is optional but
   /// still needs validation if the value is not null or empty.
-  const ValidatorGroup(this.validators, {this.onlyPerformValidationWhenValueExists = false});
+  const ValidatorGroup(this.validators,
+      {this.onlyPerformValidationWhenValueExists = false});
 
   @override
   String? validate(T? value) {

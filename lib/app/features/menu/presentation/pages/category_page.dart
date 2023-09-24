@@ -12,7 +12,8 @@ class _CategoryPageController extends State<CategoryPage> {
   Widget build(BuildContext context) => _CategoryPageView(this);
 }
 
-class _CategoryPageView extends WidgetView<CategoryPage, _CategoryPageController> {
+class _CategoryPageView
+    extends WidgetView<CategoryPage, _CategoryPageController> {
   const _CategoryPageView(super.state);
 
   @override

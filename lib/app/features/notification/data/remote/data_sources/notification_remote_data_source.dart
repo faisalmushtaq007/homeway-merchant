@@ -9,13 +9,16 @@ class NotificationRemoteDataSource implements NotificationDataSource {
   }
 
   @override
-  Future<ApiResultState<bool>> deleteNotification({required int notificationID, NotificationEntity? notificationEntity}) {
+  Future<ApiResultState<bool>> deleteNotification(
+      {required int notificationID, NotificationEntity? notificationEntity}) {
     // TODO: implement deleteNotification
     throw UnimplementedError();
   }
 
   @override
-  Future<ApiResultState<NotificationEntity>> editNotification({required NotificationEntity notificationEntity, required int notificationID}) {
+  Future<ApiResultState<NotificationEntity>> editNotification(
+      {required NotificationEntity notificationEntity,
+      required int notificationID}) {
     // TODO: implement editNotification
     throw UnimplementedError();
   }
@@ -27,13 +30,15 @@ class NotificationRemoteDataSource implements NotificationDataSource {
   }
 
   @override
-  Future<ApiResultState<NotificationEntity>> getNotification({required int notificationID, NotificationEntity? notificationEntity}) {
+  Future<ApiResultState<NotificationEntity>> getNotification(
+      {required int notificationID, NotificationEntity? notificationEntity}) {
     // TODO: implement getNotification
     throw UnimplementedError();
   }
 
   @override
-  Future<ApiResultState<NotificationEntity>> saveNotification({required NotificationEntity notificationEntity}) {
+  Future<ApiResultState<NotificationEntity>> saveNotification(
+      {required NotificationEntity notificationEntity}) {
     // TODO: implement saveNotification
     throw UnimplementedError();
   }

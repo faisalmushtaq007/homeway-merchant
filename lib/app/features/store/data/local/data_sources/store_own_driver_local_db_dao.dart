@@ -1,14 +1,18 @@
 part of 'package:homemakers_merchant/app/features/store/index.dart';
 
-class StoreOwnDeliveryPartnersLocalDbRepository<Driver extends StoreOwnDeliveryPartnersInfo>
-    implements BaseStoreOwnDriverLocalDbRepository<StoreOwnDeliveryPartnersInfo> {
+class StoreOwnDeliveryPartnersLocalDbRepository<
+        Driver extends StoreOwnDeliveryPartnersInfo>
+    implements
+        BaseStoreOwnDriverLocalDbRepository<StoreOwnDeliveryPartnersInfo> {
   // Completer is used for transforming synchronous code into asynchronous code.
   Future<Database> get _db async => AppDatabase.instance.database;
 
-  StoreRef<int, Map<String, dynamic>> get _driver => AppDatabase.instance.driver;
+  StoreRef<int, Map<String, dynamic>> get _driver =>
+      AppDatabase.instance.driver;
 
   @override
-  Future<Either<RepositoryBaseFailure, StoreOwnDeliveryPartnersInfo>> add(StoreOwnDeliveryPartnersInfo entity) async {
+  Future<Either<RepositoryBaseFailure, StoreOwnDeliveryPartnersInfo>> add(
+      StoreOwnDeliveryPartnersInfo entity) async {
     final result = await tryCatch<StoreOwnDeliveryPartnersInfo>(() async {
       final int recordID = await _driver.add(await _db, entity.toMap());
       //final StoreOwnDeliveryPartnersInfo recordStoreOwnDeliveryPartnersInfo = entity.copyWith(driverID: recordID.toString());
@@ -27,7 +31,8 @@ class StoreOwnDeliveryPartnersLocalDbRepository<Driver extends StoreOwnDeliveryP
   }
 
   @override
-  Future<Either<RepositoryBaseFailure, bool>> delete(StoreOwnDeliveryPartnersInfo entity) async {
+  Future<Either<RepositoryBaseFailure, bool>> delete(
+      StoreOwnDeliveryPartnersInfo entity) async {
     final result = await tryCatch<bool>(() async {
       final int key = entity.driverID;
       final finder = Finder(filter: Filter.byKey(key));
@@ -59,7 +64,8 @@ class StoreOwnDeliveryPartnersLocalDbRepository<Driver extends StoreOwnDeliveryP
   }
 
   @override
-  Future<Either<RepositoryBaseFailure, bool>> deleteById(UniqueId uniqueId) async {
+  Future<Either<RepositoryBaseFailure, bool>> deleteById(
+      UniqueId uniqueId) async {
     final result = await tryCatch<bool>(() async {
       final value = await _driver.record(uniqueId.value).get(await _db);
       if (value != null) {
@@ -74,7 +80,8 @@ class StoreOwnDeliveryPartnersLocalDbRepository<Driver extends StoreOwnDeliveryP
   }
 
   @override
-  Future<Either<RepositoryBaseFailure, List<StoreOwnDeliveryPartnersInfo>>> getAll() async {
+  Future<Either<RepositoryBaseFailure, List<StoreOwnDeliveryPartnersInfo>>>
+      getAll() async {
     final result = await tryCatch<List<StoreOwnDeliveryPartnersInfo>>(() async {
       final snapshots = await _driver.find(await _db);
       if (snapshots.isEmptyOrNull) {
@@ -82,7 +89,8 @@ class StoreOwnDeliveryPartnersLocalDbRepository<Driver extends StoreOwnDeliveryP
       } else {
         return snapshots
             .map(
-              (snapshot) => StoreOwnDeliveryPartnersInfo.fromMap(snapshot.value).copyWith(
+              (snapshot) =>
+                  StoreOwnDeliveryPartnersInfo.fromMap(snapshot.value).copyWith(
                 driverID: snapshot.key,
               ),
             )
@@ -93,7 +101,8 @@ class StoreOwnDeliveryPartnersLocalDbRepository<Driver extends StoreOwnDeliveryP
   }
 
   @override
-  Future<Either<RepositoryBaseFailure, StoreOwnDeliveryPartnersInfo?>> getById(UniqueId id) async {
+  Future<Either<RepositoryBaseFailure, StoreOwnDeliveryPartnersInfo?>> getById(
+      UniqueId id) async {
     final result = await tryCatch<StoreOwnDeliveryPartnersInfo?>(() async {
       final value = await _driver.record(id.value).get(await _db);
       if (value != null) {
@@ -105,7 +114,8 @@ class StoreOwnDeliveryPartnersLocalDbRepository<Driver extends StoreOwnDeliveryP
   }
 
   @override
-  Future<Either<RepositoryBaseFailure, StoreOwnDeliveryPartnersInfo>> update(StoreOwnDeliveryPartnersInfo entity, UniqueId uniqueId) async {
+  Future<Either<RepositoryBaseFailure, StoreOwnDeliveryPartnersInfo>> update(
+      StoreOwnDeliveryPartnersInfo entity, UniqueId uniqueId) async {
     final result = await tryCatch<StoreOwnDeliveryPartnersInfo>(() async {
       final int key = uniqueId.value;
       final value = await _driver.record(key).get(await _db);
@@ -136,37 +146,51 @@ class StoreOwnDeliveryPartnersLocalDbRepository<Driver extends StoreOwnDeliveryP
     final result = await tryCatch<StoreOwnDeliveryPartnersInfo>(() async {
       final int key = entity.driverID;
       final value = await _driver.record(key).get(await _db);
-      final result = await _driver.record(key).put(await _db, entity.toMap(), merge: (value != null) || false);
+      final result = await _driver
+          .record(key)
+          .put(await _db, entity.toMap(), merge: (value != null) || false);
       return StoreOwnDeliveryPartnersInfo.fromMap(result);
     });
     return result;
   }
 
   @override
-  Future<Either<RepositoryBaseFailure, bool>> deleteByIdAndEntity(UniqueId uniqueId, StoreOwnDeliveryPartnersInfo entity) {
+  Future<Either<RepositoryBaseFailure, bool>> deleteByIdAndEntity(
+      UniqueId uniqueId, StoreOwnDeliveryPartnersInfo entity) {
     // TODO(prasant): implement deleteByIdAndEntity
     throw UnimplementedError();
   }
 
   @override
-  Future<Either<RepositoryBaseFailure, StoreOwnDeliveryPartnersInfo>> getByIdAndEntity(UniqueId uniqueId, StoreOwnDeliveryPartnersInfo entity) {
+  Future<Either<RepositoryBaseFailure, StoreOwnDeliveryPartnersInfo>>
+      getByIdAndEntity(UniqueId uniqueId, StoreOwnDeliveryPartnersInfo entity) {
     // TODO(prasant): implement getByIdAndEntity
     throw UnimplementedError();
   }
 
   @override
-  Future<Either<RepositoryBaseFailure, StoreOwnDeliveryPartnersInfo>> updateByIdAndEntity(UniqueId uniqueId, StoreOwnDeliveryPartnersInfo entity) {
+  Future<Either<RepositoryBaseFailure, StoreOwnDeliveryPartnersInfo>>
+      updateByIdAndEntity(
+          UniqueId uniqueId, StoreOwnDeliveryPartnersInfo entity) {
     // TODO(prasant): implement updateByIdAndEntity
     throw UnimplementedError();
   }
 
-  Future<Map<String, RecordSnapshot<int, Map<String, Object?>>>> getDriverByIds(DatabaseClient db, List<int> ids) async {
-    var snapshots = await _driver.find(db, finder: Finder(filter: Filter.or(ids.map((e) => Filter.equals('driverID', e)).toList())));
-    return <String, RecordSnapshot<int, Map<String, Object?>>>{for (var snapshot in snapshots) snapshot.value['driverID']!.toString(): snapshot};
+  Future<Map<String, RecordSnapshot<int, Map<String, Object?>>>> getDriverByIds(
+      DatabaseClient db, List<int> ids) async {
+    var snapshots = await _driver.find(db,
+        finder: Finder(
+            filter: Filter.or(
+                ids.map((e) => Filter.equals('driverID', e)).toList())));
+    return <String, RecordSnapshot<int, Map<String, Object?>>>{
+      for (var snapshot in snapshots)
+        snapshot.value['driverID']!.toString(): snapshot
+    };
   }
 
   @override
-  Future<Either<RepositoryBaseFailure, List<StoreOwnDeliveryPartnersInfo>>> getAllWithPagination({
+  Future<Either<RepositoryBaseFailure, List<StoreOwnDeliveryPartnersInfo>>>
+      getAllWithPagination({
     int pageKey = 1,
     int pageSize = 10,
     String? searchText,
@@ -185,7 +209,10 @@ class StoreOwnDeliveryPartnersLocalDbRepository<Driver extends StoreOwnDeliveryP
           offset: pageKey,
         );
         // If
-        if (searchText.isNotNull || filter.isNotNull || sorting.isNotNull && (startTimeStamp.isNotNull || endTimeStamp.isNotNull)) {
+        if (searchText.isNotNull ||
+            filter.isNotNull ||
+            sorting.isNotNull &&
+                (startTimeStamp.isNotNull || endTimeStamp.isNotNull)) {
           var regExp = RegExp(searchText ?? '', caseSensitive: false);
           var filterRegExp = RegExp(filter ?? '', caseSensitive: false);
           var sortingRegExp = RegExp(sorting ?? '', caseSensitive: false);
@@ -222,7 +249,9 @@ class StoreOwnDeliveryPartnersLocalDbRepository<Driver extends StoreOwnDeliveryP
           );
         }
         // Else If
-        else if (searchText.isNotNull || filter.isNotNull || sorting.isNotNull) {
+        else if (searchText.isNotNull ||
+            filter.isNotNull ||
+            sorting.isNotNull) {
           var regExp = RegExp(searchText ?? '', caseSensitive: false);
           var filterRegExp = RegExp(filter ?? '', caseSensitive: false);
           var sortingRegExp = RegExp(sorting ?? '', caseSensitive: false);
@@ -271,7 +300,8 @@ class StoreOwnDeliveryPartnersLocalDbRepository<Driver extends StoreOwnDeliveryP
         );
         // Making a List<Category> out of List<RecordSnapshot>
         return recordSnapshots.map((snapshot) {
-          final orders = StoreOwnDeliveryPartnersInfo.fromMap(snapshot.value).copyWith(
+          final orders =
+              StoreOwnDeliveryPartnersInfo.fromMap(snapshot.value).copyWith(
             // An ID is a key of a record from the database.
             driverID: snapshot.key,
           );
@@ -283,8 +313,10 @@ class StoreOwnDeliveryPartnersLocalDbRepository<Driver extends StoreOwnDeliveryP
   }
 
   @override
-  Future<Either<RepositoryBaseFailure, List<StoreOwnDeliveryPartnersInfo>>> saveAll(
-      {required List<StoreOwnDeliveryPartnersInfo> entities, bool hasUpdateAll = false}) async {
+  Future<Either<RepositoryBaseFailure, List<StoreOwnDeliveryPartnersInfo>>>
+      saveAll(
+          {required List<StoreOwnDeliveryPartnersInfo> entities,
+          bool hasUpdateAll = false}) async {
     final result = await tryCatch<List<StoreOwnDeliveryPartnersInfo>>(() async {
       final db = await _db;
 
@@ -295,10 +327,13 @@ class StoreOwnDeliveryPartnersLocalDbRepository<Driver extends StoreOwnDeliveryP
         final allOrderList = r.toList();
         final newList = entities.toList();
         var convertOrderToMapObject = newList.map((e) => e.toMap()).toList();
-        final bool equalityStatus = unOrdDeepEq(allOrderList.toSet().toList(), newList.toSet().toList());
+        final bool equalityStatus = unOrdDeepEq(
+            allOrderList.toSet().toList(), newList.toSet().toList());
 
         await db.transaction((transaction) async {
-          var driverIds = convertOrderToMapObject.map((map) => map['driverID'] as int).toList();
+          var driverIds = convertOrderToMapObject
+              .map((map) => map['driverID'] as int)
+              .toList();
           var map = await getDriverByIds(db, driverIds);
           // Watch for deleted item
           var keysToDelete = (await _driver.findKeys(transaction)).toList();
@@ -310,7 +345,8 @@ class StoreOwnDeliveryPartnersLocalDbRepository<Driver extends StoreOwnDeliveryP
               // Remove from deletion list
               keysToDelete.remove(key);
               // Don't update if no change
-              if (const DeepCollectionEquality().equals(snapshot.value, order)) {
+              if (const DeepCollectionEquality()
+                  .equals(snapshot.value, order)) {
                 // no changes
                 continue;
               } else {
@@ -338,7 +374,8 @@ class StoreOwnDeliveryPartnersLocalDbRepository<Driver extends StoreOwnDeliveryP
   }
 }
 
-class StoreOwnDriverBindingWithStoreLocalDbRepository<T extends StoreOwnDeliveryPartnersInfo, R extends StoreEntity>
+class StoreOwnDriverBindingWithStoreLocalDbRepository<
+        T extends StoreOwnDeliveryPartnersInfo, R extends StoreEntity>
     implements Binding<List<StoreOwnDeliveryPartnersInfo>, List<StoreEntity>> {
   const StoreOwnDriverBindingWithStoreLocalDbRepository({
     required this.storeLocalDbRepository,
@@ -349,13 +386,17 @@ class StoreOwnDriverBindingWithStoreLocalDbRepository<T extends StoreOwnDelivery
 
   StoreRef<int, Map<String, dynamic>> get _store => AppDatabase.instance.store;
 
-  StoreRef<int, Map<String, dynamic>> get _driver => AppDatabase.instance.driver;
+  StoreRef<int, Map<String, dynamic>> get _driver =>
+      AppDatabase.instance.driver;
 
-  final StoreOwnDeliveryPartnersLocalDbRepository<T> storeOwnDriverLocalDbRepository;
+  final StoreOwnDeliveryPartnersLocalDbRepository<T>
+      storeOwnDriverLocalDbRepository;
   final StoreLocalDbRepository<R> storeLocalDbRepository;
 
   @override
-  Future<Either<RepositoryBaseFailure, List<StoreEntity>>> binding(List<StoreOwnDeliveryPartnersInfo> source, List<StoreEntity> destination) async {
+  Future<Either<RepositoryBaseFailure, List<StoreEntity>>> binding(
+      List<StoreOwnDeliveryPartnersInfo> source,
+      List<StoreEntity> destination) async {
     final db = await _db;
     final stores = await storeLocalDbRepository.getAll();
     if (stores.isRight()) {
@@ -364,11 +405,16 @@ class StoreOwnDriverBindingWithStoreLocalDbRepository<T extends StoreOwnDelivery
       List<StoreOwnDeliveryPartnersInfo> toSelectedAdd = [];
       for (var selectedDestinationStore in destination.toSet().toList()) {
         for (var selectedDriver in source.toSet().toList()) {
-          final bool equalityStatus = unOrdDeepEq(selectedDestinationStore.storeOwnDeliveryPartnersInfo.toSet().toList(), source.toSet().toList());
+          final bool equalityStatus = unOrdDeepEq(
+              selectedDestinationStore.storeOwnDeliveryPartnersInfo
+                  .toSet()
+                  .toList(),
+              source.toSet().toList());
           if (equalityStatus) {
             continue;
           } else {
-            selectedDestinationStore.storeOwnDeliveryPartnersInfo.addAll(source);
+            selectedDestinationStore.storeOwnDeliveryPartnersInfo
+                .addAll(source);
           }
         }
       }
@@ -376,7 +422,8 @@ class StoreOwnDriverBindingWithStoreLocalDbRepository<T extends StoreOwnDelivery
       for (var currentStoreStore in getAllCurrentStore) {
         for (var selectedStore in destination) {
           if (selectedStore.storeID == currentStoreStore.storeID) {
-            currentStoreStore.storeOwnDeliveryPartnersInfo = selectedStore.storeOwnDeliveryPartnersInfo;
+            currentStoreStore.storeOwnDeliveryPartnersInfo =
+                selectedStore.storeOwnDeliveryPartnersInfo;
           } else {
             continue;
           }
@@ -393,7 +440,8 @@ class StoreOwnDriverBindingWithStoreLocalDbRepository<T extends StoreOwnDelivery
           // Delete all
           await _store.delete(txn);
           // Add all
-          await _store.addAll(txn, getAllCurrentStore.map((e) => e.toMap()).toList());
+          await _store.addAll(
+              txn, getAllCurrentStore.map((e) => e.toMap()).toList());
 
           final snapshots = await _store.find(txn);
           if (snapshots.isEmptyOrNull) {
@@ -416,7 +464,9 @@ class StoreOwnDriverBindingWithStoreLocalDbRepository<T extends StoreOwnDelivery
   }
 
   @override
-  Future<Either<RepositoryBaseFailure, List<StoreEntity>>> unbinding(List<StoreOwnDeliveryPartnersInfo> source, List<StoreEntity> destination) async {
+  Future<Either<RepositoryBaseFailure, List<StoreEntity>>> unbinding(
+      List<StoreOwnDeliveryPartnersInfo> source,
+      List<StoreEntity> destination) async {
     final db = await _db;
     final stores = await storeLocalDbRepository.getAll();
     if (stores.isRight()) {
@@ -425,15 +475,21 @@ class StoreOwnDriverBindingWithStoreLocalDbRepository<T extends StoreOwnDelivery
       List<StoreOwnDeliveryPartnersInfo> toSelectedAdd = [];
       List<StoreOwnDeliveryPartnersInfo> listOfDestinationDriver = [];
       for (var selectedDestinationStore in destination.toSet().toList()) {
-        listOfDestinationDriver.addAll(selectedDestinationStore.storeOwnDeliveryPartnersInfo.toSet().toList());
-        listOfDestinationDriver.removeWhere((element) => source.contains(element));
-        selectedDestinationStore.storeOwnDeliveryPartnersInfo = listOfDestinationDriver;
+        listOfDestinationDriver.addAll(selectedDestinationStore
+            .storeOwnDeliveryPartnersInfo
+            .toSet()
+            .toList());
+        listOfDestinationDriver
+            .removeWhere((element) => source.contains(element));
+        selectedDestinationStore.storeOwnDeliveryPartnersInfo =
+            listOfDestinationDriver;
       }
       List<StoreOwnDeliveryPartnersInfo> toAdd = [];
       for (var currentStoreStore in getAllCurrentStore) {
         for (var selectedStore in destination) {
           if (selectedStore.storeID == currentStoreStore.storeID) {
-            currentStoreStore.storeOwnDeliveryPartnersInfo = selectedStore.storeOwnDeliveryPartnersInfo;
+            currentStoreStore.storeOwnDeliveryPartnersInfo =
+                selectedStore.storeOwnDeliveryPartnersInfo;
           } else {
             continue;
           }
@@ -450,7 +506,8 @@ class StoreOwnDriverBindingWithStoreLocalDbRepository<T extends StoreOwnDelivery
           // Delete all
           await _store.delete(txn);
           // Add all
-          await _store.addAll(txn, getAllCurrentStore.map((e) => e.toMap()).toList());
+          await _store.addAll(
+              txn, getAllCurrentStore.map((e) => e.toMap()).toList());
 
           final snapshots = await _store.find(txn);
           if (snapshots.isEmptyOrNull) {
@@ -473,7 +530,8 @@ class StoreOwnDriverBindingWithStoreLocalDbRepository<T extends StoreOwnDelivery
   }
 }
 
-class StoreOwnDriverBindingWithCurrentUserLocalDbRepository<T extends StoreOwnDeliveryPartnersInfo, R extends AppUserEntity>
+class StoreOwnDriverBindingWithCurrentUserLocalDbRepository<
+        T extends StoreOwnDeliveryPartnersInfo, R extends AppUserEntity>
     implements Binding<List<StoreOwnDeliveryPartnersInfo>, AppUserEntity> {
   const StoreOwnDriverBindingWithCurrentUserLocalDbRepository({
     required this.storeOwnDriverLocalDbRepository,
@@ -486,17 +544,21 @@ class StoreOwnDriverBindingWithCurrentUserLocalDbRepository<T extends StoreOwnDe
 
   StoreRef<int, Map<String, dynamic>> get _user => AppDatabase.instance.user;
 
-  final StoreOwnDeliveryPartnersLocalDbRepository<T> storeOwnDriverLocalDbRepository;
+  final StoreOwnDeliveryPartnersLocalDbRepository<T>
+      storeOwnDriverLocalDbRepository;
   final UserLocalDbRepository<R> userLocalDbRepository;
 
   @override
-  Future<Either<RepositoryBaseFailure, AppUserEntity>> binding(List<StoreOwnDeliveryPartnersInfo> source, AppUserEntity destination) async {
+  Future<Either<RepositoryBaseFailure, AppUserEntity>> binding(
+      List<StoreOwnDeliveryPartnersInfo> source,
+      AppUserEntity destination) async {
     final db = await _db;
     final users = await userLocalDbRepository.getAll();
     if (users.isRight()) {
       // Todo:(prasant) - Check current user, now skip it
       final currentUserMap = cloneMap(users.right[0].toMap());
-      var cacheStores = currentUserMap['drivers'] as List<StoreOwnDeliveryPartnersInfo>;
+      var cacheStores =
+          currentUserMap['drivers'] as List<StoreOwnDeliveryPartnersInfo>;
 
       final result = await tryCatch<AppUserEntity>(() async {
         await db.transaction((txn) async {
@@ -509,8 +571,11 @@ class StoreOwnDriverBindingWithCurrentUserLocalDbRepository<T extends StoreOwnDe
           final value = await record.get(await txn);
           if (value != null) {
             var currentUser = cloneMap(value);
-            currentUser['drivers'] = currentUserMap['drivers'] as List<StoreOwnDeliveryPartnersInfo>..addAll(source.toList());
-            final result = await record.update(txn, {'drivers': currentUser['drivers']});
+            currentUser['drivers'] = currentUserMap['drivers']
+                as List<StoreOwnDeliveryPartnersInfo>
+              ..addAll(source.toList());
+            final result =
+                await record.update(txn, {'drivers': currentUser['drivers']});
             if (result != null) {
               return AppUserEntity.fromMap(result);
             } else {
@@ -528,7 +593,9 @@ class StoreOwnDriverBindingWithCurrentUserLocalDbRepository<T extends StoreOwnDe
   }
 
   @override
-  Future<Either<RepositoryBaseFailure, AppUserEntity>> unbinding(List<StoreOwnDeliveryPartnersInfo> source, AppUserEntity destination) async {
+  Future<Either<RepositoryBaseFailure, AppUserEntity>> unbinding(
+      List<StoreOwnDeliveryPartnersInfo> source,
+      AppUserEntity destination) async {
     // TODO(prasant): implement unbinding
     throw UnimplementedError();
   }

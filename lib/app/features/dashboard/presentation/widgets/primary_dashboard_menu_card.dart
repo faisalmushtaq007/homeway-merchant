@@ -1,7 +1,8 @@
 part of 'package:homemakers_merchant/app/features/dashboard/index.dart';
 
 class PrimaryDashboardMenuCard extends StatelessWidget {
-  const PrimaryDashboardMenuCard({required this.primaryDashboardMenuEntity, super.key});
+  const PrimaryDashboardMenuCard(
+      {required this.primaryDashboardMenuEntity, super.key});
 
   final PrimaryDashboardEntity primaryDashboardMenuEntity;
 
@@ -17,7 +18,8 @@ class PrimaryDashboardMenuCard extends StatelessWidget {
           Card(
             key: ValueKey(primaryDashboardMenuEntity.titleID),
             margin: const EdgeInsetsDirectional.only(bottom: 10),
-            shape: RoundedRectangleBorder(borderRadius: BorderRadiusDirectional.circular(10)),
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadiusDirectional.circular(10)),
             child: ListTile(
               //dense: true,
               leading: primaryDashboardMenuEntity.leading.copyWith(
@@ -25,8 +27,11 @@ class PrimaryDashboardMenuCard extends StatelessWidget {
               ),
               title: Text(
                 primaryDashboardMenuEntity.title,
-                style: primaryDashboardMenuEntity.style ?? context.titleMedium!.copyWith(fontSize: 18, fontWeight: FontWeight.w500),
-                textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                style: primaryDashboardMenuEntity.style ??
+                    context.titleMedium!
+                        .copyWith(fontSize: 18, fontWeight: FontWeight.w500),
+                textDirection:
+                    serviceLocator<LanguageController>().targetTextDirection,
               ).translate(),
               onTap: () {
                 primaryDashboardMenuEntity.onPressed();
@@ -38,7 +43,8 @@ class PrimaryDashboardMenuCard extends StatelessWidget {
                   return;
                 },
                 child: Directionality(
-                  textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                  textDirection:
+                      serviceLocator<LanguageController>().targetTextDirection,
                   child: primaryDashboardMenuEntity.trailing ??
                       Icon(
                         Icons.arrow_forward_ios,

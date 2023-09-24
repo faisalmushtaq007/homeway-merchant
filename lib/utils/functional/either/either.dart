@@ -20,10 +20,16 @@ sealed class Either<L, R> {
   R get _right;
 
   /// Get [Left] value, may throw an exception when the value is [Right]
-  L get left => this.fold<L>((value) => value, (right) => throw Exception('Illegal use. You should check isLeft before calling'));
+  L get left => this.fold<L>(
+      (value) => value,
+      (right) => throw Exception(
+          'Illegal use. You should check isLeft before calling'));
 
   /// Get [Right] value, may throw an exception when the value is [Left]
-  R get right => this.fold<R>((left) => throw Exception('Illegal use. You should check isRight before calling'), (value) => value);
+  R get right => this.fold<R>(
+      (left) => throw Exception(
+          'Illegal use. You should check isRight before calling'),
+      (value) => value);
 
   T fold<T>(T Function(L) onLeft, T Function(R) onRight);
 
@@ -103,7 +109,8 @@ final class Right<L, R> extends Either<L, R> {
   int get hashCode => value.hashCode;
 
   @override
-  bool operator ==(Object other) => other is Right<L, R> && other.value == value;
+  bool operator ==(Object other) =>
+      other is Right<L, R> && other.value == value;
 
   @override
   String toString() => 'Right($value)';

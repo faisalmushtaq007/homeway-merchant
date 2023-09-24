@@ -1,6 +1,6 @@
 part of 'package:homemakers_merchant/app/features/address/index.dart';
-class MapMarker {
 
+class MapMarker {
   MapMarker({
     required this.image,
     required this.title,

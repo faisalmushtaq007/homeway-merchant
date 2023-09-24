@@ -18,9 +18,11 @@ class NotificationCardWidget extends StatelessWidget {
     final minLeadingWidth = 26.0;
     final radius = 28.0;
     return Card(
-      shape: RoundedRectangleBorder(borderRadius: BorderRadiusDirectional.circular(10)),
+      shape: RoundedRectangleBorder(
+          borderRadius: BorderRadiusDirectional.circular(10)),
       child: ListTile(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadiusDirectional.circular(10)),
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadiusDirectional.circular(10)),
         leading: SizedBox(
           width: minLeadingWidth,
           child: ImageHelper(
@@ -64,36 +66,42 @@ class NotificationCardWidget extends StatelessWidget {
               color: Colors.white,
               fontSize: 16,
             ),
-            placeholderBackgroundColor: context.colorScheme.primary.withOpacity(0.0),
+            placeholderBackgroundColor:
+                context.colorScheme.primary.withOpacity(0.0),
           ),
         ),
         minLeadingWidth: minLeadingWidth,
         title: Column(
           mainAxisSize: MainAxisSize.min,
-          textDirection: serviceLocator<LanguageController>().targetTextDirection,
+          textDirection:
+              serviceLocator<LanguageController>().targetTextDirection,
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Wrap(
-              textDirection: serviceLocator<LanguageController>().targetTextDirection,
+              textDirection:
+                  serviceLocator<LanguageController>().targetTextDirection,
               children: [
                 Text(
                   notificationEntity.title,
                   style: context.titleMedium!.copyWith(
                     fontWeight: FontWeight.w600,
-                    color: notificationEntity.flag == 0 ? null : Colors.grey[500],
+                    color:
+                        notificationEntity.flag == 0 ? null : Colors.grey[500],
                   ),
                 ).translate(),
               ],
             ),
             Wrap(
-              textDirection: serviceLocator<LanguageController>().targetTextDirection,
+              textDirection:
+                  serviceLocator<LanguageController>().targetTextDirection,
               children: [
                 Text(
                   notificationEntity.body.message,
                   overflow: TextOverflow.ellipsis,
                   style: context.bodyMedium!.copyWith(
-                    color: notificationEntity.flag == 0 ? null : Colors.grey[400],
+                    color:
+                        notificationEntity.flag == 0 ? null : Colors.grey[400],
                   ),
                 ).translate(),
               ],
@@ -102,7 +110,8 @@ class NotificationCardWidget extends StatelessWidget {
         ),
         subtitle: Row(
           mainAxisSize: MainAxisSize.min,
-          textDirection: serviceLocator<LanguageController>().targetTextDirection,
+          textDirection:
+              serviceLocator<LanguageController>().targetTextDirection,
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [],
@@ -113,7 +122,8 @@ class NotificationCardWidget extends StatelessWidget {
               width: constraints.maxWidth / 5.5,
               child: Column(
                 mainAxisSize: MainAxisSize.min,
-                textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                textDirection:
+                    serviceLocator<LanguageController>().targetTextDirection,
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
@@ -123,7 +133,8 @@ class NotificationCardWidget extends StatelessWidget {
                         DateTimeFormat.relative(
                           DateTime.now().subtract(
                             DateTime.now().difference(
-                              DateTime.fromMillisecondsSinceEpoch(notificationEntity.timestamp * 1000),
+                              DateTime.fromMillisecondsSinceEpoch(
+                                  notificationEntity.timestamp * 1000),
                             ),
                           ),
                           appendIfAfter: 'ago',
@@ -142,7 +153,9 @@ class NotificationCardWidget extends StatelessWidget {
                       ? Container(
                           width: 40.0,
                           height: 20.0,
-                          decoration: BoxDecoration(color: Theme.of(context).primaryColor, borderRadius: BorderRadius.circular(30.0)),
+                          decoration: BoxDecoration(
+                              color: Theme.of(context).primaryColor,
+                              borderRadius: BorderRadius.circular(30.0)),
                           alignment: Alignment.center,
                           child: Text(
                             "NEW",

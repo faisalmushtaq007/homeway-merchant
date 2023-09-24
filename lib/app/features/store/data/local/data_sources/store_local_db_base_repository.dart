@@ -14,7 +14,8 @@ abstract interface class BaseStoreLocalDbRepository<T extends StoreEntity>
         GetAll<T>,
         GetAllWithPagination<T> {}
 
-abstract interface class BaseStoreOwnDriverLocalDbRepository<T extends StoreOwnDeliveryPartnersInfo>
+abstract interface class BaseStoreOwnDriverLocalDbRepository<
+        T extends StoreOwnDeliveryPartnersInfo>
     implements
         ReadOnlyRepository<T>,
         WriteOnlyRepository<T>,
@@ -28,4 +29,5 @@ abstract interface class BaseStoreOwnDriverLocalDbRepository<T extends StoreOwnD
         GetAll<T>,
         GetAllWithPagination<T> {}
 
-abstract interface class BaseStoreBindingWithUser<T extends StoreEntity, R extends AppUserEntity> implements Binding<T, R> {}
+abstract interface class BaseStoreBindingWithUser<T extends StoreEntity,
+    R extends AppUserEntity> implements Binding<T, R> {}

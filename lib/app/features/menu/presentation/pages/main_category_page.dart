@@ -79,7 +79,8 @@ class _MainCategoryPageController extends State<MainCategoryPage>
         ),
       );
     });
-    listOfSubCategories=List<Category>.from(listOfCategories[0].subCategory.toList());
+    listOfSubCategories =
+        List<Category>.from(listOfCategories[0].subCategory.toList());
     setState(() {});
   }
 
@@ -109,12 +110,14 @@ class _MainCategoryPageController extends State<MainCategoryPage>
   void onSelected(int index) {
     selectedIndex = index;
     print('onSelected ${index}');
-    selectedCategory=listOfCategories[selectedIndex];
-    selectedCategory?.subCategory=List<Category>.from(localListOfCategories[selectedIndex].subCategory.toList());
-    listOfSubCategories=List<Category>.from(localListOfCategories[selectedIndex].subCategory.toList());
-    subCategorySelectedIndex=0;
-    selectedSubCategory=null;
-    listOfSelectedSubCategories=[];
+    selectedCategory = listOfCategories[selectedIndex];
+    selectedCategory?.subCategory = List<Category>.from(
+        localListOfCategories[selectedIndex].subCategory.toList());
+    listOfSubCategories = List<Category>.from(
+        localListOfCategories[selectedIndex].subCategory.toList());
+    subCategorySelectedIndex = 0;
+    selectedSubCategory = null;
+    listOfSelectedSubCategories = [];
     print('listOfSubCategories ${listOfSubCategories.length}');
     setState(() {});
   }
@@ -125,7 +128,9 @@ class _MainCategoryPageController extends State<MainCategoryPage>
     selectedSubCategory = subCategory;
     setState(() {});
   }
-  void selectSubCategory(int? index, Category? mainCategory, Category? subCategory) {
+
+  void selectSubCategory(
+      int? index, Category? mainCategory, Category? subCategory) {
     subCategorySelectedIndex = index;
     selectedCategory = mainCategory;
     selectedSubCategory = subCategory;
@@ -164,13 +169,15 @@ class _MainCategoryPageView
             actions: [
               IconButton(
                 onPressed: () async {
-                  if(context.canPop()) {
-                    await Future.delayed(const Duration(milliseconds: 300),(){});
-                    if(!state.mounted){
+                  if (context.canPop()) {
+                    await Future.delayed(
+                        const Duration(milliseconds: 300), () {});
+                    if (!state.mounted) {
                       return;
                     }
-                    return context.pop([state.selectedCategory, state.selectedSubCategory]);
-                        //(state.selectedCategory, state.selectedSubCategory));
+                    return context.pop(
+                        [state.selectedCategory, state.selectedSubCategory]);
+                    //(state.selectedCategory, state.selectedSubCategory));
                   }
                   return;
                 },
@@ -224,7 +231,8 @@ class _MainCategoryPageView
                                         child: SizedBox(
                                           width: 60,
                                           child: NavigationRail(
-                                            key: const Key('category-navigationrail-widget'),
+                                            key: const Key(
+                                                'category-navigationrail-widget'),
                                             labelType:
                                                 NavigationRailLabelType.all,
                                             selectedIndex: state.selectedIndex,
@@ -263,11 +271,17 @@ class _MainCategoryPageView
                             Expanded(
                               flex: 2,
                               child: SubCategoryPage(
-                                key: ValueKey(state.selectedCategory?.categoryId??localListOfCategories[state.selectedIndex].categoryId),
+                                key: ValueKey(state
+                                        .selectedCategory?.categoryId ??
+                                    localListOfCategories[state.selectedIndex]
+                                        .categoryId),
                                 //key: ObjectKey(state.selectedCategory??localListOfCategories[state.selectedIndex]),
-                                selectedCategory: state.selectedCategory??localListOfCategories[state.selectedIndex],
-                                parentSubCategories: state.listOfSubCategories.toList(),
-                                onChangedCategory: state.selectedSubCategoryFunction,
+                                selectedCategory: state.selectedCategory ??
+                                    localListOfCategories[state.selectedIndex],
+                                parentSubCategories:
+                                    state.listOfSubCategories.toList(),
+                                onChangedCategory:
+                                    state.selectedSubCategoryFunction,
                               ),
                             ),
                           ],

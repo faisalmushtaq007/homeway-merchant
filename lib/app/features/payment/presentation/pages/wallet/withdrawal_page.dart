@@ -36,14 +36,16 @@ class _WithdrawalPageController extends State<WithdrawalPage> {
   Widget build(BuildContext context) => _WithdrawalPageView(this);
 }
 
-class _WithdrawalPageView extends WidgetView<WithdrawalPage, _WithdrawalPageController> {
+class _WithdrawalPageView
+    extends WidgetView<WithdrawalPage, _WithdrawalPageController> {
   const _WithdrawalPageView(super.state);
 
   @override
   Widget build(BuildContext context) {
     final MediaQueryData media = MediaQuery.of(context);
     final double margins = GlobalApp.responsiveInsets(media.size.width);
-    final double topPadding = margins; //media.padding.top + kToolbarHeight + margins; //margins * 1.5;
+    final double topPadding =
+        margins; //media.padding.top + kToolbarHeight + margins; //margins * 1.5;
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: FlexColorScheme.themedSystemNavigationBar(
         context,
@@ -74,10 +76,12 @@ class _WithdrawalPageView extends WidgetView<WithdrawalPage, _WithdrawalPageCont
                   textColor: Colors.yellow,
                   label: Text(
                     '10',
-                    style: context.labelSmall!.copyWith(color: context.colorScheme.onPrimary),
+                    style: context.labelSmall!
+                        .copyWith(color: context.colorScheme.onPrimary),
                     //Color.fromRGBO(251, 219, 11, 1)
                   ),
-                  child: Icon(Icons.notifications, color: context.colorScheme.primary),
+                  child: Icon(Icons.notifications,
+                      color: context.colorScheme.primary),
                 ),
               ),
               const Padding(
@@ -95,12 +99,16 @@ class _WithdrawalPageView extends WidgetView<WithdrawalPage, _WithdrawalPageCont
             from: context.width / 2 - 60,
             duration: const Duration(milliseconds: 500),
             child: Directionality(
-              textDirection: serviceLocator<LanguageController>().targetTextDirection,
+              textDirection:
+                  serviceLocator<LanguageController>().targetTextDirection,
               child: PageBody(
                 controller: state.scrollController,
                 constraints: BoxConstraints(
                   minWidth: 1000,
-                  minHeight: media.size.height - (media.padding.top + kToolbarHeight + media.padding.bottom),
+                  minHeight: media.size.height -
+                      (media.padding.top +
+                          kToolbarHeight +
+                          media.padding.bottom),
                 ),
                 padding: EdgeInsetsDirectional.only(
                   top: topPadding,
@@ -115,13 +123,16 @@ class _WithdrawalPageView extends WidgetView<WithdrawalPage, _WithdrawalPageCont
                     SliverList(
                       delegate: SliverChildListDelegate(
                         [
-                          const AnimatedGap(6, duration: Duration(milliseconds: 200)),
+                          const AnimatedGap(6,
+                              duration: Duration(milliseconds: 200)),
                           WalletAccountSummaryWidget(
                             key: const Key('withdrawal-account-summary-widget'),
                           ),
-                          const AnimatedGap(16, duration: Duration(milliseconds: 200)),
+                          const AnimatedGap(16,
+                              duration: Duration(milliseconds: 200)),
                           Wrap(
-                            textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                            textDirection: serviceLocator<LanguageController>()
+                                .targetTextDirection,
                             crossAxisAlignment: WrapCrossAlignment.center,
                             alignment: WrapAlignment.center,
                             children: [
@@ -138,18 +149,22 @@ class _WithdrawalPageView extends WidgetView<WithdrawalPage, _WithdrawalPageCont
                                   maxLines: 2,
                                   overflow: TextOverflow.ellipsis,
                                   textAlign: TextAlign.center,
-                                  textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                  textDirection:
+                                      serviceLocator<LanguageController>()
+                                          .targetTextDirection,
                                 ),
                               ),
                             ],
                           ),
-                          const AnimatedGap(8, duration: Duration(milliseconds: 200)),
+                          const AnimatedGap(8,
+                              duration: Duration(milliseconds: 200)),
                           StatefulBuilder(
                             builder: (context, setState) {
                               return _buildAmountSection(context);
                             },
                           ),
-                          const AnimatedGap(16, duration: Duration(milliseconds: 200)),
+                          const AnimatedGap(16,
+                              duration: Duration(milliseconds: 200)),
                         ],
                       ),
                     ),
@@ -160,7 +175,8 @@ class _WithdrawalPageView extends WidgetView<WithdrawalPage, _WithdrawalPageCont
                           Spacer(),
                           Row(
                             crossAxisAlignment: CrossAxisAlignment.center,
-                            textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                            textDirection: serviceLocator<LanguageController>()
+                                .targetTextDirection,
                             children: [
                               Expanded(
                                 child: ElevatedButton(
@@ -173,10 +189,13 @@ class _WithdrawalPageView extends WidgetView<WithdrawalPage, _WithdrawalPageCont
                                   onPressed: () async {},
                                   child: Text(
                                     'Cancel',
-                                    style: const TextStyle(color: Color.fromRGBO(42, 45, 50, 1)),
+                                    style: const TextStyle(
+                                        color: Color.fromRGBO(42, 45, 50, 1)),
                                     overflow: TextOverflow.ellipsis,
                                     maxLines: 1,
-                                    textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                    textDirection:
+                                        serviceLocator<LanguageController>()
+                                            .targetTextDirection,
                                   ).translate(),
                                 ),
                               ),
@@ -187,7 +206,8 @@ class _WithdrawalPageView extends WidgetView<WithdrawalPage, _WithdrawalPageCont
                               Expanded(
                                 child: ElevatedButton(
                                   style: ElevatedButton.styleFrom(
-                                    backgroundColor: context.colorScheme.primary,
+                                    backgroundColor:
+                                        context.colorScheme.primary,
                                   ),
                                   onPressed: () async {
                                     final result = await confirmWithdrawal(
@@ -198,11 +218,15 @@ class _WithdrawalPageView extends WidgetView<WithdrawalPage, _WithdrawalPageCont
                                     if (result != null) {
                                       if (result == true) {
                                         const snackBar = SnackBar(
-                                          content: Text('Your withdrawal request is 20001728. This is already shared in your phone and email.'),
+                                          content: Text(
+                                              'Your withdrawal request is 20001728. This is already shared in your phone and email.'),
                                         );
-                                        ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                                        await Future.delayed(const Duration(seconds: 5), () {});
-                                        final confirmation = await confirmationForInitiateWithdrawal(
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(snackBar);
+                                        await Future.delayed(
+                                            const Duration(seconds: 5), () {});
+                                        final confirmation =
+                                            await confirmationForInitiateWithdrawal(
                                           context,
                                           state.withdrawalAmount,
                                           1900,
@@ -214,7 +238,9 @@ class _WithdrawalPageView extends WidgetView<WithdrawalPage, _WithdrawalPageCont
                                     'Withdrawal',
                                     overflow: TextOverflow.ellipsis,
                                     maxLines: 1,
-                                    textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                    textDirection:
+                                        serviceLocator<LanguageController>()
+                                            .targetTextDirection,
                                   ).translate(),
                                 ),
                               ),
@@ -235,7 +261,8 @@ class _WithdrawalPageView extends WidgetView<WithdrawalPage, _WithdrawalPageCont
 
   Widget _buildAmountSection(BuildContext context) {
     return Padding(
-      padding: const EdgeInsetsDirectional.only(start: 16, end: 16, top: 12, bottom: 12),
+      padding: const EdgeInsetsDirectional.only(
+          start: 16, end: 16, top: 12, bottom: 12),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         mainAxisSize: MainAxisSize.min,
@@ -302,7 +329,8 @@ class _WithdrawalPageView extends WidgetView<WithdrawalPage, _WithdrawalPageCont
     );
   }
 
-  Future<bool?> confirmWithdrawal(BuildContext context, int amount, int mainBalance) async {
+  Future<bool?> confirmWithdrawal(
+      BuildContext context, int amount, int mainBalance) async {
     final bool? status = await showConfirmationDialog<bool>(
       context: context,
       barrierDismissible: true,
@@ -330,7 +358,8 @@ class _WithdrawalPageView extends WidgetView<WithdrawalPage, _WithdrawalPageCont
               },
               child: SingleChildScrollView(
                 child: Column(
-                  textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                  textDirection:
+                      serviceLocator<LanguageController>().targetTextDirection,
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   mainAxisAlignment: MainAxisAlignment.start,
                   mainAxisSize: MainAxisSize.min,
@@ -341,12 +370,14 @@ class _WithdrawalPageView extends WidgetView<WithdrawalPage, _WithdrawalPageCont
                         style: context.labelMedium,
                         children: <TextSpan>[
                           TextSpan(
-                            text: '\nPlease review your withdraw amount and details.\n',
+                            text:
+                                '\nPlease review your withdraw amount and details.\n',
                             style: context.labelMedium,
                           ),
                         ],
                       ),
-                      textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                      textDirection: serviceLocator<LanguageController>()
+                          .targetTextDirection,
                     ),
                     Card(
                       margin: EdgeInsetsDirectional.only(top: 6, bottom: 6),
@@ -357,7 +388,8 @@ class _WithdrawalPageView extends WidgetView<WithdrawalPage, _WithdrawalPageCont
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Column(
-                            textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                            textDirection: serviceLocator<LanguageController>()
+                                .targetTextDirection,
                             //crossAxisAlignment: CrossAxisAlignment.stretch,
                             mainAxisAlignment: MainAxisAlignment.start,
                             mainAxisSize: MainAxisSize.min,
@@ -370,7 +402,8 @@ class _WithdrawalPageView extends WidgetView<WithdrawalPage, _WithdrawalPageCont
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
-                              const AnimatedGap(12, duration: Duration(milliseconds: 200)),
+                              const AnimatedGap(12,
+                                  duration: Duration(milliseconds: 200)),
                               RowItem.text(
                                 'Withdrawal',
                                 '${amount} SAR',
@@ -382,13 +415,16 @@ class _WithdrawalPageView extends WidgetView<WithdrawalPage, _WithdrawalPageCont
                             ]),
                       ),
                     ),
-                    const AnimatedGap(18, duration: Duration(milliseconds: 200)),
+                    const AnimatedGap(18,
+                        duration: Duration(milliseconds: 200)),
                     Wrap(
-                      textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                      textDirection: serviceLocator<LanguageController>()
+                          .targetTextDirection,
                       children: [
                         Text(
                           'Please note the withdrawal process is not initiated now, it may take time to upto 3 to 4 hours working business day and time to transfer to amount to your bank or payment.',
-                          textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                          textDirection: serviceLocator<LanguageController>()
+                              .targetTextDirection,
                           style: context.bodySmall!.copyWith(
                             fontSize: 11,
                           ),
@@ -410,7 +446,8 @@ class _WithdrawalPageView extends WidgetView<WithdrawalPage, _WithdrawalPageCont
     return false;
   }
 
-  Future<bool?> confirmationForInitiateWithdrawal(BuildContext context, int amount, int mainBalance) async {
+  Future<bool?> confirmationForInitiateWithdrawal(
+      BuildContext context, int amount, int mainBalance) async {
     final bool? status = await showConfirmationDialog<bool>(
       context: context,
       barrierDismissible: true,
@@ -438,7 +475,8 @@ class _WithdrawalPageView extends WidgetView<WithdrawalPage, _WithdrawalPageCont
               },
               child: SingleChildScrollView(
                 child: Column(
-                  textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                  textDirection:
+                      serviceLocator<LanguageController>().targetTextDirection,
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   mainAxisAlignment: MainAxisAlignment.start,
                   mainAxisSize: MainAxisSize.min,
@@ -450,15 +488,18 @@ class _WithdrawalPageView extends WidgetView<WithdrawalPage, _WithdrawalPageCont
                         children: <TextSpan>[
                           TextSpan(
                             text: 'Hi,\n\n',
-                            style: context.labelMedium!.copyWith(fontWeight: FontWeight.w600),
+                            style: context.labelMedium!
+                                .copyWith(fontWeight: FontWeight.w600),
                           ),
                           TextSpan(
-                            text: 'Your withdrawal request 20001728 has been successfully processed and a total amount of ',
+                            text:
+                                'Your withdrawal request 20001728 has been successfully processed and a total amount of ',
                             style: context.labelMedium,
                           ),
                           TextSpan(
                             text: '${amount} SAR',
-                            style: context.labelMedium!.copyWith(fontWeight: FontWeight.w600),
+                            style: context.labelMedium!
+                                .copyWith(fontWeight: FontWeight.w600),
                           ),
                           TextSpan(
                             text:
@@ -467,7 +508,8 @@ class _WithdrawalPageView extends WidgetView<WithdrawalPage, _WithdrawalPageCont
                           ),
                         ],
                       ),
-                      textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                      textDirection: serviceLocator<LanguageController>()
+                          .targetTextDirection,
                     ),
                     //textDirection: serviceLocator<LanguageController>().targetTextDirection,
                   ],

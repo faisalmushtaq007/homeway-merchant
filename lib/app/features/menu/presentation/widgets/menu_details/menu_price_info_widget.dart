@@ -36,7 +36,8 @@ class _MenuPriceInfoWidgetState extends State<MenuPriceInfoWidget> {
         ));
       });
     } else {
-      if (widget.menuEntity.hasCustomPortion && widget.menuEntity.customPortion != null) {
+      if (widget.menuEntity.hasCustomPortion &&
+          widget.menuEntity.customPortion != null) {
         final CustomPortion? customPortion = widget.menuEntity.customPortion;
         listOfMenuPriceInfo.add(MenuPriceInfo(
           title: customPortion?.title ?? '',
@@ -72,24 +73,30 @@ class _MenuPriceInfoWidgetState extends State<MenuPriceInfoWidget> {
                   fontWeight: FontWeight.w600,
                   color: context.colorScheme.primary,
                 ),
-                textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                textDirection:
+                    serviceLocator<LanguageController>().targetTextDirection,
               ),
               trailing: Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisSize: MainAxisSize.min,
-                textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                textDirection:
+                    serviceLocator<LanguageController>().targetTextDirection,
                 children: [
                   Text(
                     listOfMenuPriceInfo[index].currency,
-                    textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                    style: context.titleMedium!.copyWith(fontWeight: FontWeight.w600),
+                    textDirection: serviceLocator<LanguageController>()
+                        .targetTextDirection,
+                    style: context.titleMedium!
+                        .copyWith(fontWeight: FontWeight.w600),
                   ),
                   const AnimatedGap(6, duration: Duration(milliseconds: 100)),
                   Text(
                     listOfMenuPriceInfo[index].defaultPrice.toString(),
-                    textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                    style: context.titleMedium!.copyWith(fontWeight: FontWeight.w600),
+                    textDirection: serviceLocator<LanguageController>()
+                        .targetTextDirection,
+                    style: context.titleMedium!
+                        .copyWith(fontWeight: FontWeight.w600),
                   ),
                 ],
               ),

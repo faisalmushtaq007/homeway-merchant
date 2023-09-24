@@ -211,7 +211,8 @@ extension CollectionsExtensions<T> on Iterable<T> {
   T firstOrDefault(T defaultValue) => firstOrNull ?? defaultValue;
 
   /// Will retrun new [Iterable] with all elements that satisfy the predicate [predicate],
-  Iterable<T> whereIndexed(IndexedPredicate<T> predicate) => _IndexedWhereIterable(this, predicate);
+  Iterable<T> whereIndexed(IndexedPredicate<T> predicate) =>
+      _IndexedWhereIterable(this, predicate);
 
   ///
   /// Performs the given action on each element on iterable, providing sequential index with the element.
@@ -371,7 +372,8 @@ extension CollectionsExtensions<T> on Iterable<T> {
   Iterable<List<T>> chunks(int size) => partition(this, size);
 
   /// Creates a Map instance in which the keys and values are computed from the iterable.
-  Map<dynamic, dynamic> associate(key(element), value(element)) => Map.fromIterable(this, key: key, value: value);
+  Map<dynamic, dynamic> associate(key(element), value(element)) =>
+      Map.fromIterable(this, key: key, value: value);
 
   /// Returns the first element matching the given [predicate], or `null`
   /// if element was not found.
@@ -521,7 +523,8 @@ extension IterableLastOrNull<E> on Iterable<E> {
 
 extension IterableLastOrElse<E> on Iterable<E> {
   /// Last element or `defaultValue` if the collection is empty.
-  E lastOrElse(E defaultValue) => IterableLastOrNull(this).lastOrNull ?? defaultValue;
+  E lastOrElse(E defaultValue) =>
+      IterableLastOrNull(this).lastOrNull ?? defaultValue;
 }
 
 extension IterableLastOrNullWhere<E> on Iterable<E> {
@@ -976,13 +979,15 @@ extension IterableLastWhile<E> on Iterable<E> {
 
 extension IterableFilterIndexed<E> on Iterable<E> {
   /// Returns all elements that satisfy the given [predicate].
-  Iterable<E> filterIndexed(bool Function(E element, int index) predicate) => IterableWhereIndexed(this).whereIndexed(predicate);
+  Iterable<E> filterIndexed(bool Function(E element, int index) predicate) =>
+      IterableWhereIndexed(this).whereIndexed(predicate);
 }
 
 extension IterableFilterTo<E> on Iterable<E> {
   /// Appends all elements matching the given [predicate] to the given
   /// [destination].
-  void filterTo(List<E> destination, bool Function(E element) predicate) => whereTo(destination, predicate);
+  void filterTo(List<E> destination, bool Function(E element) predicate) =>
+      whereTo(destination, predicate);
 }
 
 extension IterableFilterIndexedTo<E> on Iterable<E> {
@@ -997,18 +1002,21 @@ extension IterableFilterIndexedTo<E> on Iterable<E> {
 
 extension IterableFilterNot<E> on Iterable<E> {
   /// Returns all elements not matching the given [predicate].
-  Iterable<E> filterNot(bool Function(E element) predicate) => IterableWhereNot(this).whereNot(predicate);
+  Iterable<E> filterNot(bool Function(E element) predicate) =>
+      IterableWhereNot(this).whereNot(predicate);
 }
 
 extension IterableFilterNotIndexed<E> on Iterable<E> {
   /// Returns all elements not matching the given [predicate].
-  Iterable<E> filterNotIndexed(bool Function(E element, int index) predicate) => IterableWhereNotIndexed(this).whereNotIndexed(predicate);
+  Iterable<E> filterNotIndexed(bool Function(E element, int index) predicate) =>
+      IterableWhereNotIndexed(this).whereNotIndexed(predicate);
 }
 
 extension IterableFilterNotTo<E> on Iterable<E> {
   /// Appends all elements not matching the given [predicate] to the given
   /// [destination].
-  void filterNotTo(List<E> destination, bool Function(E element) predicate) => whereNotTo(destination, predicate);
+  void filterNotTo(List<E> destination, bool Function(E element) predicate) =>
+      whereNotTo(destination, predicate);
 }
 
 extension IterableFilterNotToIndexed<E> on Iterable<E> {
@@ -1653,7 +1661,8 @@ extension IterableCached<E> on Iterable<E> {
 }
 
 class _CachedIterable<T> extends IterableBase<T> {
-  _CachedIterable(Iterable<T> iterable) : _uncomputedIterator = iterable.iterator;
+  _CachedIterable(Iterable<T> iterable)
+      : _uncomputedIterator = iterable.iterator;
 
   final Iterator<T> _uncomputedIterator;
   final _cache = _IterableCache<T>(null);
@@ -1758,7 +1767,8 @@ extension IterableStartsWithExtension<E> on Iterable<E> {
     if (!otherIterator.moveNext()) return true;
     do {
       // this iterator is empty or the current elements are different
-      if (!thisIterator.moveNext() || otherIterator.current != thisIterator.current) {
+      if (!thisIterator.moveNext() ||
+          otherIterator.current != thisIterator.current) {
         return false;
       }
     } while (otherIterator.moveNext());

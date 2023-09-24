@@ -14,10 +14,13 @@ bool compareOpenAndCloseTime({
   final TimeOfDay openTimeOfDay = parseTimeOfDay(openingTime);
   final TimeOfDay closeTimeOfDay = parseTimeOfDay(closingTime);
   var now = DateTime.now();
-  var openTime = DateTime(now.year, now.month, now.day, openTimeOfDay.hour, openTimeOfDay.minute);
-  var closeTime = DateTime(now.year, now.month, now.day, closeTimeOfDay.hour, closeTimeOfDay.minute);
+  var openTime = DateTime(
+      now.year, now.month, now.day, openTimeOfDay.hour, openTimeOfDay.minute);
+  var closeTime = DateTime(
+      now.year, now.month, now.day, closeTimeOfDay.hour, closeTimeOfDay.minute);
   // If the time precedes the current time, treat it as a time for tomorrow.
-  if (Jiffy.parseFromDateTime(openTime).isSameOrAfter(Jiffy.parseFromDateTime(closeTime))) {
+  if (Jiffy.parseFromDateTime(openTime)
+      .isSameOrAfter(Jiffy.parseFromDateTime(closeTime))) {
     return true;
   } else {
     return false;

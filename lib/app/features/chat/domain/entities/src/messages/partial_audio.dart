@@ -26,7 +26,8 @@ class PartialAudio {
   });
 
   /// Creates a partial audio message from a map (decoded JSON).
-  factory PartialAudio.fromJson(Map<String, dynamic> json) => _$PartialAudioFromJson(json);
+  factory PartialAudio.fromJson(Map<String, dynamic> json) =>
+      _$PartialAudioFromJson(json);
 
   /// The length of the audio.
   final Duration duration;

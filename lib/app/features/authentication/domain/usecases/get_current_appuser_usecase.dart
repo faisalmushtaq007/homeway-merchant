@@ -1,6 +1,7 @@
 part of 'package:homemakers_merchant/app/features/authentication/index.dart';
 
-class GetCurrentAppUserUseCase extends UseCaseOptionalIO<AppUserEntity, DataSourceState<AppUserEntity?>> {
+class GetCurrentAppUserUseCase
+    extends UseCaseOptionalIO<AppUserEntity, DataSourceState<AppUserEntity?>> {
   GetCurrentAppUserUseCase({
     required this.authenticationRepository,
   });

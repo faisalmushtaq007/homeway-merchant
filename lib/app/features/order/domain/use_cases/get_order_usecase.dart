@@ -1,6 +1,7 @@
 part of 'package:homemakers_merchant/app/features/order/index.dart';
 
-class GetOrderUseCase extends UseCaseByID<OrderEntity, int, DataSourceState<OrderEntity>> {
+class GetOrderUseCase
+    extends UseCaseByID<OrderEntity, int, DataSourceState<OrderEntity>> {
   GetOrderUseCase({
     required this.orderRepository,
   });
@@ -8,7 +9,8 @@ class GetOrderUseCase extends UseCaseByID<OrderEntity, int, DataSourceState<Orde
   final OrderRepository orderRepository;
 
   @override
-  Future<DataSourceState<OrderEntity>> call({required int id, OrderEntity? input}) async {
+  Future<DataSourceState<OrderEntity>> call(
+      {required int id, OrderEntity? input}) async {
     return orderRepository.getOrder(orderEntity: input, orderID: id);
   }
 }

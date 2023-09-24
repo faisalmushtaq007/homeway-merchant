@@ -9,10 +9,12 @@ class StoreExpandedCardWidget<T, S> extends StatefulWidget {
   final ExpandableCardInfo<T, S> expandableCardInfo;
 
   @override
-  _StoreExpandedCardWidgetController<T, S> createState() => _StoreExpandedCardWidgetController<T, S>();
+  _StoreExpandedCardWidgetController<T, S> createState() =>
+      _StoreExpandedCardWidgetController<T, S>();
 }
 
-class _StoreExpandedCardWidgetController<T, S> extends State<StoreExpandedCardWidget<T, S>> {
+class _StoreExpandedCardWidgetController<T, S>
+    extends State<StoreExpandedCardWidget<T, S>> {
   late ExpansionTileController? controller;
   WidgetState<Widget> widgetState = const WidgetState<Widget>.none();
 
@@ -52,14 +54,16 @@ class _StoreExpandedCardWidgetController<T, S> extends State<StoreExpandedCardWi
                 width: double.infinity,
                 child: _storeMenuAndPreparationType(context),
               ),
-          2: (BuildContext context) => (widget.expandableCardInfo.storeEntity.menuEntities.isEmptyOrNull)
-              ? const Offstage()
-              : SizedBox(
-                  height: context.width / 2.25,
-                  width: double.infinity,
-                  child: _storeAvailableMenus(context),
-                ),
-          3: (BuildContext context) => (widget.expandableCardInfo.storeEntity.storeOwnDeliveryPartnersInfo.isEmptyOrNull)
+          2: (BuildContext context) =>
+              (widget.expandableCardInfo.storeEntity.menuEntities.isEmptyOrNull)
+                  ? const Offstage()
+                  : SizedBox(
+                      height: context.width / 2.25,
+                      width: double.infinity,
+                      child: _storeAvailableMenus(context),
+                    ),
+          3: (BuildContext context) => (widget.expandableCardInfo.storeEntity
+                  .storeOwnDeliveryPartnersInfo.isEmptyOrNull)
               ? const Offstage()
               : SizedBox(
                   height: 170,
@@ -90,13 +94,15 @@ class _StoreExpandedCardWidgetController<T, S> extends State<StoreExpandedCardWi
           ),
           color: Colors.white,
           child: Padding(
-            padding: const EdgeInsetsDirectional.only(start: 8, end: 8, top: 8, bottom: 6),
+            padding: const EdgeInsetsDirectional.only(
+                start: 8, end: 8, top: 8, bottom: 6),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisSize: MainAxisSize.min,
               children: [
                 Text(
-                  widget.expandableCardInfo.storeEntity.storeWorkingDays[index].shortName,
+                  widget.expandableCardInfo.storeEntity.storeWorkingDays[index]
+                      .shortName,
                   style: context.labelMedium!.copyWith(
                     fontWeight: FontWeight.bold,
                     color: const Color.fromRGBO(69, 201, 125, 1),
@@ -158,7 +164,8 @@ class _StoreExpandedCardWidgetController<T, S> extends State<StoreExpandedCardWi
                     color: Color.fromRGBO(69, 201, 125, 1),
                   ),
                   label: Text(
-                    widget.expandableCardInfo.storeEntity.storeAvailableFoodTypes[index].title,
+                    widget.expandableCardInfo.storeEntity
+                        .storeAvailableFoodTypes[index].title,
                   ),
                   backgroundColor: Colors.white,
                   elevation: 6.0,
@@ -173,7 +180,8 @@ class _StoreExpandedCardWidgetController<T, S> extends State<StoreExpandedCardWi
                 ),
               );
             },
-            itemCount: widget.expandableCardInfo.storeEntity.storeAvailableFoodTypes.length,
+            itemCount: widget
+                .expandableCardInfo.storeEntity.storeAvailableFoodTypes.length,
           ),
         ),
         //const AnimatedGap(3, duration: Duration(milliseconds: 200)),
@@ -201,7 +209,8 @@ class _StoreExpandedCardWidgetController<T, S> extends State<StoreExpandedCardWi
                     color: Color.fromRGBO(69, 201, 125, 1),
                   ),
                   label: Text(
-                    widget.expandableCardInfo.storeEntity.storeAvailableFoodPreparationType[index].title,
+                    widget.expandableCardInfo.storeEntity
+                        .storeAvailableFoodPreparationType[index].title,
                   ),
                   backgroundColor: Colors.white,
                   elevation: 6.0,
@@ -216,7 +225,8 @@ class _StoreExpandedCardWidgetController<T, S> extends State<StoreExpandedCardWi
                 ),
               );
             },
-            itemCount: widget.expandableCardInfo.storeEntity.storeAvailableFoodPreparationType.length,
+            itemCount: widget.expandableCardInfo.storeEntity
+                .storeAvailableFoodPreparationType.length,
           ),
         ),
       ],
@@ -237,7 +247,8 @@ class _StoreExpandedCardWidgetController<T, S> extends State<StoreExpandedCardWi
           ),
           color: const Color.fromRGBO(242, 242, 242, 1),
           child: Padding(
-            padding: const EdgeInsetsDirectional.only(start: 16, end: 16, top: 12, bottom: 10),
+            padding: const EdgeInsetsDirectional.only(
+                start: 16, end: 16, top: 12, bottom: 10),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
@@ -274,14 +285,16 @@ class _StoreExpandedCardWidgetController<T, S> extends State<StoreExpandedCardWi
                   matchTextDirection: true,
                 ),
                 Text(
-                  widget.expandableCardInfo.storeEntity.storeOwnDeliveryPartnersInfo[index].driverName,
+                  widget.expandableCardInfo.storeEntity
+                      .storeOwnDeliveryPartnersInfo[index].driverName,
                   style: context.titleMedium!.copyWith(
                     fontWeight: FontWeight.bold,
                   ),
                 ),
                 const AnimatedGap(4, duration: Duration(milliseconds: 200)),
                 Text(
-                  widget.expandableCardInfo.storeEntity.storeOwnDeliveryPartnersInfo[index].driverMobileNumber,
+                  widget.expandableCardInfo.storeEntity
+                      .storeOwnDeliveryPartnersInfo[index].driverMobileNumber,
                   style: context.labelMedium!.copyWith(
                     fontWeight: FontWeight.w500,
                   ),
@@ -315,7 +328,8 @@ class _StoreExpandedCardWidgetController<T, S> extends State<StoreExpandedCardWi
           ),
         );
       },
-      itemCount: widget.expandableCardInfo.storeEntity.storeOwnDeliveryPartnersInfo.length,
+      itemCount: widget
+          .expandableCardInfo.storeEntity.storeOwnDeliveryPartnersInfo.length,
     );
   }
 
@@ -342,7 +356,8 @@ class _StoreExpandedCardWidgetController<T, S> extends State<StoreExpandedCardWi
                 Flexible(
                   flex: 2,
                   child: ImageHelper(
-                    image: widget.expandableCardInfo.storeEntity.menuEntities[index].menuImages[0].assetPath,
+                    image: widget.expandableCardInfo.storeEntity
+                        .menuEntities[index].menuImages[0].assetPath,
                     //'https://img.freepik.com/premium-photo/dum-handi-chicken-biryani-is-prepared-earthen-clay-pot-called-haandi-popular-indian-non-vegetarian-food_466689-52225.jpg',
                     // image scale
                     scale: 1.0,
@@ -382,7 +397,8 @@ class _StoreExpandedCardWidgetController<T, S> extends State<StoreExpandedCardWi
                       color: Colors.white,
                       fontSize: 16,
                     ),
-                    placeholderBackgroundColor: context.colorScheme.primary.withOpacity(0.5),
+                    placeholderBackgroundColor:
+                        context.colorScheme.primary.withOpacity(0.5),
                     imageType: findImageType(
                         'https://img.freepik.com/premium-photo/dum-handi-chicken-biryani-is-prepared-earthen-clay-pot-called-haandi-popular-indian-non-vegetarian-food_466689-52225.jpg'),
                   ),
@@ -410,7 +426,8 @@ class _StoreExpandedCardWidgetController<T, S> extends State<StoreExpandedCardWi
                                 bottom: 4,
                               ),
                               child: Text(
-                                widget.expandableCardInfo.storeEntity.menuEntities[index].menuName,
+                                widget.expandableCardInfo.storeEntity
+                                    .menuEntities[index].menuName,
                                 style: context.labelMedium!.copyWith(
                                   fontWeight: FontWeight.bold,
                                   overflow: TextOverflow.ellipsis,
@@ -440,13 +457,17 @@ class _StoreExpandedCardWidgetController<T, S> extends State<StoreExpandedCardWi
                                   fontSize: 16,
                                 ),
                               ),
-                              backgroundColor: const Color.fromRGBO(69, 201, 125, 1),
+                              backgroundColor:
+                                  const Color.fromRGBO(69, 201, 125, 1),
                               elevation: 0.0,
-                              visualDensity: const VisualDensity(horizontal: -4, vertical: -4),
-                              materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                              visualDensity: const VisualDensity(
+                                  horizontal: -4, vertical: -4),
+                              materialTapTargetSize:
+                                  MaterialTapTargetSize.shrinkWrap,
                               padding: const EdgeInsetsDirectional.all(8),
                               shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadiusDirectional.circular(20),
+                                borderRadius:
+                                    BorderRadiusDirectional.circular(20),
                                 side: const BorderSide(
                                   color: Color.fromRGBO(242, 242, 242, 1),
                                 ),
@@ -488,7 +509,8 @@ class _StoreExpandedCardWidgetController<T, S> extends State<StoreExpandedCardWi
               color: Color.fromRGBO(69, 201, 125, 1),
             ),
             label: Text(
-              widget.expandableCardInfo.storeEntity.storeAcceptedPaymentModes[index].title,
+              widget.expandableCardInfo.storeEntity
+                  .storeAcceptedPaymentModes[index].title,
             ),
             //shadowColor: Colors.grey[60],
             backgroundColor: Colors.white,
@@ -506,15 +528,18 @@ class _StoreExpandedCardWidgetController<T, S> extends State<StoreExpandedCardWi
           ),
         );
       },
-      itemCount: widget.expandableCardInfo.storeEntity.storeAcceptedPaymentModes.length,
+      itemCount: widget
+          .expandableCardInfo.storeEntity.storeAcceptedPaymentModes.length,
     );
   }
 
   @override
-  Widget build(BuildContext context) => _StoreExpandedCardWidgetView<T, S>(this);
+  Widget build(BuildContext context) =>
+      _StoreExpandedCardWidgetView<T, S>(this);
 }
 
-class _StoreExpandedCardWidgetView<T, S> extends WidgetView<StoreExpandedCardWidget<T, S>, _StoreExpandedCardWidgetController<T, S>> {
+class _StoreExpandedCardWidgetView<T, S> extends WidgetView<
+    StoreExpandedCardWidget<T, S>, _StoreExpandedCardWidgetController<T, S>> {
   const _StoreExpandedCardWidgetView(super.state);
 
   @override
@@ -528,7 +553,8 @@ class _StoreExpandedCardWidgetView<T, S> extends WidgetView<StoreExpandedCardWid
         //horizontalTitleGap: 0.0,
         //minLeadingWidth: 0,
         child: ExpansionTile(
-          childrenPadding: const EdgeInsetsDirectional.symmetric(vertical: 0, horizontal: 13),
+          childrenPadding: const EdgeInsetsDirectional.symmetric(
+              vertical: 0, horizontal: 13),
           expandedCrossAxisAlignment: CrossAxisAlignment.start,
           maintainState: true,
           title: Text(
@@ -659,13 +685,16 @@ class _SingleStarRatingState extends State<SingleStarRating> {
 
   void calculateRate() {
     if (widget.rating == 0) {
-      startRateIcon = Icon(Icons.star_border, color: widget.starColor, size: widget.starSize);
+      startRateIcon = Icon(Icons.star_border,
+          color: widget.starColor, size: widget.starSize);
     } else {
       final double value = widget.rating - widget.rating.truncate();
       if (value == 0) {
-        startRateIcon = Icon(Icons.star, color: widget.starColor, size: widget.starSize);
+        startRateIcon =
+            Icon(Icons.star, color: widget.starColor, size: widget.starSize);
       } else if (value > 0 && value < 1) {
-        startRateIcon = Icon(Icons.star_half, color: widget.starColor, size: widget.starSize);
+        startRateIcon = Icon(Icons.star_half,
+            color: widget.starColor, size: widget.starSize);
       }
     }
     setState(() {});

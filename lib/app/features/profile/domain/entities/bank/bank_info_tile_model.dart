@@ -18,7 +18,11 @@ class BankInfoTile {
 
   @override
   bool operator ==(Object other) =>
-      identical(this, other) || (other is BankInfoTile && runtimeType == other.runtimeType && label == other.label && content == other.content);
+      identical(this, other) ||
+      (other is BankInfoTile &&
+          runtimeType == other.runtimeType &&
+          label == other.label &&
+          content == other.content);
 
   @override
   int get hashCode => label.hashCode ^ content.hashCode;

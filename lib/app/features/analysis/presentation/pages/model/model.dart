@@ -263,8 +263,10 @@ class SampleModel extends Listenable {
                   .add(controlList[index].childList![i].subItems![j]);
             } else {
               //ignore: prefer_foreach
-              for (final SubItem sample
-                  in controlList[index].childList![i].subItems![j].subItems as List<SubItem>) {
+              for (final SubItem sample in controlList[index]
+                  .childList![i]
+                  .subItems![j]
+                  .subItems as List<SubItem>) {
                 searchSampleItems.add(sample);
               }
             }

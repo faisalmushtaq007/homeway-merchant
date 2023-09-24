@@ -139,7 +139,8 @@ class _MultiSelectAddonsChipState extends State<MultiSelectMenuAddons> {
       return Chip(
         label: Text(
           widget.availableAddonss[index].title,
-          textDirection: serviceLocator<LanguageController>().targetTextDirection,
+          textDirection:
+              serviceLocator<LanguageController>().targetTextDirection,
         ),
         onDeleted: () {
           setState(() {
@@ -154,7 +155,8 @@ class _MultiSelectAddonsChipState extends State<MultiSelectMenuAddons> {
   @override
   void initState() {
     super.initState();
-    selectedChoices=List<Addons>.from(widget.initialSelectedAddonsList.toList());
+    selectedChoices =
+        List<Addons>.from(widget.initialSelectedAddonsList.toList());
   }
 
   @override

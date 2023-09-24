@@ -47,10 +47,18 @@ class _StoreDetailsPageController extends State<StoreDetailsPage> {
     listBanners = List<BannerModel>.from(
       [
         BannerModel(
-          imagePath: storeEntity.storeImagePath.isEmptyOrNull ? 'assets/svg/sorry-image-not-available.svg' : storeEntity.storeImagePath,
-          id: storeEntity.storeImagePath.isEmptyOrNull ? '${DateTime.now().millisecondsSinceEpoch}' : storeEntity.storeImageMetaData['id'],
-          metaData: storeEntity.storeImagePath.isEmptyOrNull ? <String, dynamic>{} : storeEntity.storeImageMetaData,
-          boxFit: storeEntity.storeImagePath.isEmptyOrNull ? BoxFit.fill : BoxFit.cover,
+          imagePath: storeEntity.storeImagePath.isEmptyOrNull
+              ? 'assets/svg/sorry-image-not-available.svg'
+              : storeEntity.storeImagePath,
+          id: storeEntity.storeImagePath.isEmptyOrNull
+              ? '${DateTime.now().millisecondsSinceEpoch}'
+              : storeEntity.storeImageMetaData['id'],
+          metaData: storeEntity.storeImagePath.isEmptyOrNull
+              ? <String, dynamic>{}
+              : storeEntity.storeImageMetaData,
+          boxFit: storeEntity.storeImagePath.isEmptyOrNull
+              ? BoxFit.fill
+              : BoxFit.cover,
         ),
       ],
     );
@@ -127,14 +135,16 @@ class _StoreDetailsPageController extends State<StoreDetailsPage> {
   void addMenu() {}
 }
 
-class _StoreDetailsPageView extends WidgetView<StoreDetailsPage, _StoreDetailsPageController> {
+class _StoreDetailsPageView
+    extends WidgetView<StoreDetailsPage, _StoreDetailsPageController> {
   const _StoreDetailsPageView(super.state);
 
   @override
   Widget build(BuildContext context) {
     final MediaQueryData media = MediaQuery.of(context);
     final double margins = GlobalApp.responsiveInsets(media.size.width);
-    final double topPadding = margins; //media.padding.top + kToolbarHeight + margins; //margins * 1.5;
+    final double topPadding =
+        margins; //media.padding.top + kToolbarHeight + margins; //margins * 1.5;
     final double bottomPadding = margins; //media.padding.bottom + margins;
     return Directionality(
       textDirection: serviceLocator<LanguageController>().targetTextDirection,
@@ -150,7 +160,8 @@ class _StoreDetailsPageView extends WidgetView<StoreDetailsPage, _StoreDetailsPa
             automaticallyImplyLeading: true,
             title: Text(
               'Your store',
-              textDirection: serviceLocator<LanguageController>().targetTextDirection,
+              textDirection:
+                  serviceLocator<LanguageController>().targetTextDirection,
             ),
             actions: const [
               Padding(
@@ -183,7 +194,8 @@ class _StoreDetailsPageView extends WidgetView<StoreDetailsPage, _StoreDetailsPa
                 },
                 body: CustomScrollView(
                   controller: state.sliverListScrollController,
-                  physics: const ClampingScrollPhysics(parent: ClampingScrollPhysics()),
+                  physics: const ClampingScrollPhysics(
+                      parent: ClampingScrollPhysics()),
                   shrinkWrap: true,
                   slivers: [
                     AdaptiveHeightSliverPersistentHeader(
@@ -192,7 +204,11 @@ class _StoreDetailsPageView extends WidgetView<StoreDetailsPage, _StoreDetailsPa
                         height: 150,
                         child: BannerCarousel(
                           banners: state.listBanners,
-                          customizedIndicators: const IndicatorModel.animation(width: 20, height: 5, spaceBetween: 2, widthAnimation: 50),
+                          customizedIndicators: const IndicatorModel.animation(
+                              width: 20,
+                              height: 5,
+                              spaceBetween: 2,
+                              widthAnimation: 50),
                           height: 150,
                           activeColor: Colors.amberAccent,
                           disableColor: Colors.white,
@@ -203,7 +219,8 @@ class _StoreDetailsPageView extends WidgetView<StoreDetailsPage, _StoreDetailsPa
                           //width: 250,
                           indicatorBottom: false,
                           outerBorderRadius: BorderRadiusDirectional.zero,
-                          bannerWidgetBorderRadius: BorderRadiusDirectional.zero,
+                          bannerWidgetBorderRadius:
+                              BorderRadiusDirectional.zero,
                           //physics: const ClampingScrollPhysics(parent: ClampingScrollPhysics()),
                         ),
                       ),
@@ -223,7 +240,8 @@ class _StoreDetailsPageView extends WidgetView<StoreDetailsPage, _StoreDetailsPa
                               mainAxisAlignment: MainAxisAlignment.start,
                               crossAxisAlignment: CrossAxisAlignment.stretch,
                               children: [
-                                const AnimatedGap(12, duration: Duration(milliseconds: 200)),
+                                const AnimatedGap(12,
+                                    duration: Duration(milliseconds: 200)),
                                 Wrap(
                                   alignment: WrapAlignment.center,
                                   crossAxisAlignment: WrapCrossAlignment.center,
@@ -233,34 +251,42 @@ class _StoreDetailsPageView extends WidgetView<StoreDetailsPage, _StoreDetailsPa
                                       color: context.colorScheme.primary,
                                       size: 32,
                                     ),
-                                    const AnimatedGap(12, duration: Duration(milliseconds: 200)),
+                                    const AnimatedGap(12,
+                                        duration: Duration(milliseconds: 200)),
                                     Text(
                                       state.storeEntity.storeName,
-                                      style: context.headlineSmall!.copyWith(fontWeight: FontWeight.bold),
+                                      style: context.headlineSmall!.copyWith(
+                                          fontWeight: FontWeight.bold),
                                       textAlign: TextAlign.center,
                                     ),
                                   ],
                                 ),
-                                const AnimatedGap(8, duration: Duration(milliseconds: 200)),
+                                const AnimatedGap(8,
+                                    duration: Duration(milliseconds: 200)),
                                 Wrap(
                                   alignment: WrapAlignment.center,
                                   crossAxisAlignment: WrapCrossAlignment.center,
                                   children: [
                                     Text(
-                                      state.storeEntity.storeAddress?.address?.area ??
+                                      state.storeEntity.storeAddress?.address
+                                              ?.area ??
                                           'Macs Eatery ماكس ايتري  18th Street, As Salam, Dammam 32416, Saudi Arabia',
-                                      style: context.bodyMedium!.copyWith(fontWeight: FontWeight.w500),
+                                      style: context.bodyMedium!.copyWith(
+                                          fontWeight: FontWeight.w500),
                                       textAlign: TextAlign.center,
                                     ),
                                   ],
                                 ),
-                                const AnimatedGap(8, duration: Duration(milliseconds: 200)),
+                                const AnimatedGap(8,
+                                    duration: Duration(milliseconds: 200)),
                                 const Divider(),
                                 IntrinsicHeight(
                                   child: Row(
                                     mainAxisSize: MainAxisSize.min,
-                                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceAround,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
                                     children: [
                                       IntrinsicHeight(
                                         child: TextButton.icon(
@@ -273,8 +299,10 @@ class _StoreDetailsPageView extends WidgetView<StoreDetailsPage, _StoreDetailsPa
                                       IntrinsicHeight(
                                         child: Row(
                                           mainAxisSize: MainAxisSize.min,
-                                          mainAxisAlignment: MainAxisAlignment.start,
-                                          crossAxisAlignment: CrossAxisAlignment.center,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
                                           children: [
                                             Transform.scale(
                                               //scale: 0.8,
@@ -282,7 +310,8 @@ class _StoreDetailsPageView extends WidgetView<StoreDetailsPage, _StoreDetailsPa
                                               scaleY: 0.7,
                                               child: CupertinoSwitch(
                                                 value: state.isStoreOnline,
-                                                onChanged: state.onStoreOnlineChanged,
+                                                onChanged:
+                                                    state.onStoreOnlineChanged,
                                               ),
                                             ),
                                             const Text('Store Online'),
@@ -293,23 +322,29 @@ class _StoreDetailsPageView extends WidgetView<StoreDetailsPage, _StoreDetailsPa
                                   ),
                                 ),
                                 const Divider(),
-                                const AnimatedGap(8, duration: Duration(milliseconds: 200)),
+                                const AnimatedGap(8,
+                                    duration: Duration(milliseconds: 200)),
                                 Card(
                                   child: ListTile(
                                     title: Column(
                                       mainAxisSize: MainAxisSize.min,
-                                      mainAxisAlignment: MainAxisAlignment.start,
-                                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.stretch,
                                       children: [
                                         Text(
                                           'Customer Review',
-                                          style: context.titleMedium!.copyWith(fontWeight: FontWeight.w600),
+                                          style: context.titleMedium!.copyWith(
+                                              fontWeight: FontWeight.w600),
                                         ),
                                         IntrinsicHeight(
                                           child: Row(
                                             mainAxisSize: MainAxisSize.min,
-                                            crossAxisAlignment: CrossAxisAlignment.center,
-                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.center,
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
                                             children: [
                                               const RatingBar.readOnly(
                                                 filledIcon: Icons.star,
@@ -321,17 +356,28 @@ class _StoreDetailsPageView extends WidgetView<StoreDetailsPage, _StoreDetailsPa
                                                 isHalfAllowed: true,
                                               ),
                                               Container(
-                                                padding: const EdgeInsetsDirectional.symmetric(vertical: 2, horizontal: 8),
-                                                margin: const EdgeInsetsDirectional.only(end: 8),
+                                                padding:
+                                                    const EdgeInsetsDirectional
+                                                        .symmetric(
+                                                        vertical: 2,
+                                                        horizontal: 8),
+                                                margin:
+                                                    const EdgeInsetsDirectional
+                                                        .only(end: 8),
                                                 child: Text(
                                                   "${4.5.toStringAsPrecision(2)}/${5.toStringAsPrecision(2)}",
                                                 ),
                                                 decoration: BoxDecoration(
-                                                    color: const Color.fromRGBO(242, 242, 242, 1),
+                                                    color: const Color.fromRGBO(
+                                                        242, 242, 242, 1),
                                                     shape: BoxShape.rectangle,
-                                                    borderRadius: BorderRadius.circular(12),
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            12),
                                                     border: Border.all(
-                                                      color: const Color.fromRGBO(42, 45, 50, 0.15),
+                                                      color:
+                                                          const Color.fromRGBO(
+                                                              42, 45, 50, 0.15),
                                                     )),
                                               ),
                                             ],
@@ -344,27 +390,38 @@ class _StoreDetailsPageView extends WidgetView<StoreDetailsPage, _StoreDetailsPa
                                     ),
                                   ),
                                 ),
-                                const AnimatedGap(12, duration: Duration(milliseconds: 200)),
+                                const AnimatedGap(12,
+                                    duration: Duration(milliseconds: 200)),
                                 Card(
                                   child: Padding(
-                                    padding: const EdgeInsetsDirectional.symmetric(horizontal: 13),
+                                    padding:
+                                        const EdgeInsetsDirectional.symmetric(
+                                            horizontal: 13),
                                     child: Column(
                                       mainAxisSize: MainAxisSize.min,
-                                      mainAxisAlignment: MainAxisAlignment.start,
-                                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.stretch,
                                       children: [
-                                        const AnimatedGap(6, duration: Duration(milliseconds: 200)),
+                                        const AnimatedGap(6,
+                                            duration:
+                                                Duration(milliseconds: 200)),
                                         Row(
                                           mainAxisSize: MainAxisSize.min,
-                                          mainAxisAlignment: MainAxisAlignment.start,
-                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
                                           children: [
                                             Expanded(
                                               child: Text(
                                                 'Store Orders',
-                                                style: context.titleLarge!.copyWith(
+                                                style: context.titleLarge!
+                                                    .copyWith(
                                                   fontWeight: FontWeight.w600,
-                                                  color: context.colorScheme.primary,
+                                                  color: context
+                                                      .colorScheme.primary,
                                                 ),
                                               ),
                                             ),
@@ -375,49 +432,78 @@ class _StoreDetailsPageView extends WidgetView<StoreDetailsPage, _StoreDetailsPa
                                           child: IntrinsicHeight(
                                             child: Row(
                                               mainAxisSize: MainAxisSize.min,
-                                              mainAxisAlignment: MainAxisAlignment.start,
-                                              crossAxisAlignment: CrossAxisAlignment.center,
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.start,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.center,
                                               children: [
                                                 StoreOrderCardWidget(
-                                                  storeOrderInfo: StoreOrderInfo(
+                                                  storeOrderInfo:
+                                                      StoreOrderInfo(
                                                     title: 'Total',
                                                     subTitle: '90',
-                                                    titleTextColor: context.colorScheme.onPrimaryContainer,
-                                                    subTitleTextColor: context.colorScheme.onPrimaryContainer,
+                                                    titleTextColor: context
+                                                        .colorScheme
+                                                        .onPrimaryContainer,
+                                                    subTitleTextColor: context
+                                                        .colorScheme
+                                                        .onPrimaryContainer,
                                                   ),
                                                 ),
-                                                const AnimatedGap(6, duration: Duration(milliseconds: 200)),
+                                                const AnimatedGap(6,
+                                                    duration: Duration(
+                                                        milliseconds: 200)),
                                                 const VerticalDivider(
                                                   thickness: 0.75,
                                                   indent: 6,
                                                   endIndent: 6,
                                                 ),
-                                                const AnimatedGap(6, duration: Duration(milliseconds: 200)),
+                                                const AnimatedGap(6,
+                                                    duration: Duration(
+                                                        milliseconds: 200)),
                                                 Expanded(
                                                   child: ListView.separated(
-                                                    scrollDirection: Axis.horizontal,
+                                                    scrollDirection:
+                                                        Axis.horizontal,
                                                     shrinkWrap: true,
-                                                    separatorBuilder: (context, index) {
+                                                    separatorBuilder:
+                                                        (context, index) {
                                                       return const Row(
-                                                        mainAxisSize: MainAxisSize.min,
-                                                        mainAxisAlignment: MainAxisAlignment.start,
-                                                        crossAxisAlignment: CrossAxisAlignment.center,
+                                                        mainAxisSize:
+                                                            MainAxisSize.min,
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .start,
+                                                        crossAxisAlignment:
+                                                            CrossAxisAlignment
+                                                                .center,
                                                         children: [
-                                                          AnimatedGap(4, duration: Duration(milliseconds: 200)),
+                                                          AnimatedGap(4,
+                                                              duration: Duration(
+                                                                  milliseconds:
+                                                                      200)),
                                                           VerticalDivider(
                                                             thickness: 0.75,
                                                             indent: 6,
                                                             endIndent: 6,
                                                           ),
-                                                          AnimatedGap(4, duration: Duration(milliseconds: 200)),
+                                                          AnimatedGap(4,
+                                                              duration: Duration(
+                                                                  milliseconds:
+                                                                      200)),
                                                         ],
                                                       );
                                                     },
-                                                    itemCount: state.listOfStoreOrderInfo.length,
-                                                    itemBuilder: (context, index) {
+                                                    itemCount: state
+                                                        .listOfStoreOrderInfo
+                                                        .length,
+                                                    itemBuilder:
+                                                        (context, index) {
                                                       return StoreOrderCardWidget(
                                                         key: ValueKey(index),
-                                                        storeOrderInfo: state.listOfStoreOrderInfo[index],
+                                                        storeOrderInfo: state
+                                                                .listOfStoreOrderInfo[
+                                                            index],
                                                       );
                                                     },
                                                   ),
@@ -426,19 +512,27 @@ class _StoreDetailsPageView extends WidgetView<StoreDetailsPage, _StoreDetailsPa
                                             ),
                                           ),
                                         ),
-                                        const AnimatedGap(6, duration: Duration(milliseconds: 200)),
+                                        const AnimatedGap(6,
+                                            duration:
+                                                Duration(milliseconds: 200)),
                                       ],
                                     ),
                                   ),
                                 ),
-                                const AnimatedGap(12, duration: Duration(milliseconds: 200)),
-                                StoreExpandedCardWidget<StoreWorkingDayAndTime, String>(
-                                  key: const Key('store-details-availability-widget'),
-                                  expandableCardInfo: ExpandableCardInfo<StoreWorkingDayAndTime, String>(
+                                const AnimatedGap(12,
+                                    duration: Duration(milliseconds: 200)),
+                                StoreExpandedCardWidget<StoreWorkingDayAndTime,
+                                    String>(
+                                  key: const Key(
+                                      'store-details-availability-widget'),
+                                  expandableCardInfo: ExpandableCardInfo<
+                                      StoreWorkingDayAndTime, String>(
                                     id: 0,
-                                    data: state.storeEntity.storeWorkingDays.toList(),
+                                    data: state.storeEntity.storeWorkingDays
+                                        .toList(),
                                     title: 'Availability',
-                                    subTitle: 'Store availability day(s) and time',
+                                    subTitle:
+                                        'Store availability day(s) and time',
                                     storeEntity: state.storeEntity,
                                   ),
                                 ),
@@ -454,44 +548,65 @@ class _StoreDetailsPageView extends WidgetView<StoreDetailsPage, _StoreDetailsPa
                                     storeEntity: state.storeEntity,
                                   ),
                                 ),*/
-                                const AnimatedGap(12, duration: Duration(milliseconds: 200)),
+                                const AnimatedGap(12,
+                                    duration: Duration(milliseconds: 200)),
                                 StoreExpandedCardWidget<MenuEntity, MenuEntity>(
                                   key: const Key('store-details-menu-widget'),
-                                  expandableCardInfo: ExpandableCardInfo<MenuEntity, MenuEntity>(
+                                  expandableCardInfo: ExpandableCardInfo<
+                                      MenuEntity, MenuEntity>(
                                     id: 2,
-                                    data: state.storeEntity.menuEntities.toList(),
+                                    data:
+                                        state.storeEntity.menuEntities.toList(),
                                     title: 'Menu',
                                     subTitle: 'Store available menu',
                                     storeEntity: state.storeEntity,
                                   ),
                                 ),
-                                const AnimatedGap(12, duration: Duration(milliseconds: 200)),
-                                StoreExpandedCardWidget<StoreOwnDeliveryPartnersInfo, StoreOwnDeliveryPartnersInfo>(
-                                  key: const Key('store-details-delivery-widget'),
-                                  expandableCardInfo: ExpandableCardInfo<StoreOwnDeliveryPartnersInfo, StoreOwnDeliveryPartnersInfo>(
+                                const AnimatedGap(12,
+                                    duration: Duration(milliseconds: 200)),
+                                StoreExpandedCardWidget<
+                                    StoreOwnDeliveryPartnersInfo,
+                                    StoreOwnDeliveryPartnersInfo>(
+                                  key: const Key(
+                                      'store-details-delivery-widget'),
+                                  expandableCardInfo: ExpandableCardInfo<
+                                      StoreOwnDeliveryPartnersInfo,
+                                      StoreOwnDeliveryPartnersInfo>(
                                     id: 3,
-                                    data: state.storeEntity.storeOwnDeliveryPartnersInfo.toList(),
+                                    data: state.storeEntity
+                                        .storeOwnDeliveryPartnersInfo
+                                        .toList(),
                                     title: 'Your Delivery Partner',
                                     subTitle: 'Store own delivery drivers',
                                     storeEntity: state.storeEntity,
                                   ),
                                 ),
-                                const AnimatedGap(12, duration: Duration(milliseconds: 200)),
-                                StoreExpandedCardWidget<StoreAcceptedPaymentModes, StoreAcceptedPaymentModes>(
-                                  key: const Key('store-details-payment-widget'),
-                                  expandableCardInfo: ExpandableCardInfo<StoreAcceptedPaymentModes, StoreAcceptedPaymentModes>(
+                                const AnimatedGap(12,
+                                    duration: Duration(milliseconds: 200)),
+                                StoreExpandedCardWidget<
+                                    StoreAcceptedPaymentModes,
+                                    StoreAcceptedPaymentModes>(
+                                  key:
+                                      const Key('store-details-payment-widget'),
+                                  expandableCardInfo: ExpandableCardInfo<
+                                      StoreAcceptedPaymentModes,
+                                      StoreAcceptedPaymentModes>(
                                     id: 4,
-                                    data: state.storeEntity.storeAcceptedPaymentModes.toList(),
+                                    data: state
+                                        .storeEntity.storeAcceptedPaymentModes
+                                        .toList(),
                                     title: 'Payment',
                                     subTitle: 'Store available payment methods',
                                     storeEntity: state.storeEntity,
                                   ),
                                 ),
-                                const AnimatedGap(12, duration: Duration(milliseconds: 200)),
+                                const AnimatedGap(12,
+                                    duration: Duration(milliseconds: 200)),
                                 // Buttons
                                 Row(
                                   mainAxisSize: MainAxisSize.min,
-                                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceAround,
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
                                     Expanded(
@@ -512,9 +627,12 @@ class _StoreDetailsPageView extends WidgetView<StoreDetailsPage, _StoreDetailsPa
                                         ),
                                         child: Text(
                                           'Edit',
-                                          textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                          textDirection: serviceLocator<
+                                                  LanguageController>()
+                                              .targetTextDirection,
                                           style: const TextStyle(
-                                            color: Color.fromRGBO(127, 129, 132, 1.0),
+                                            color: Color.fromRGBO(
+                                                127, 129, 132, 1.0),
                                           ),
                                         ).translate(),
                                       ),
@@ -533,7 +651,9 @@ class _StoreDetailsPageView extends WidgetView<StoreDetailsPage, _StoreDetailsPa
                                             ),
                                         child: Text(
                                           'Add New Menu',
-                                          textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                          textDirection: serviceLocator<
+                                                  LanguageController>()
+                                              .targetTextDirection,
                                           //style: TextStyle(color:  Colors.white),
                                         ).translate(),
                                       ),

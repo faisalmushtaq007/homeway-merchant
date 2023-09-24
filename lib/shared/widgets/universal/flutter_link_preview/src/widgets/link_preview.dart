@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:homemakers_merchant/app/features/chat/domain/entities/chat_types_entity.dart' show PreviewData;
+import 'package:homemakers_merchant/app/features/chat/domain/entities/chat_types_entity.dart'
+    show PreviewData;
 import 'package:flutter_linkify/flutter_linkify.dart' hide UrlLinkifier;
 import 'package:url_launcher/url_launcher.dart';
 
@@ -116,7 +117,8 @@ class LinkPreview extends StatefulWidget {
   State<LinkPreview> createState() => _LinkPreviewState();
 }
 
-class _LinkPreviewState extends State<LinkPreview> with SingleTickerProviderStateMixin {
+class _LinkPreviewState extends State<LinkPreview>
+    with SingleTickerProviderStateMixin {
   bool isFetchingPreviewData = false;
   bool shouldAnimate = false;
 
@@ -159,7 +161,8 @@ class _LinkPreviewState extends State<LinkPreview> with SingleTickerProviderStat
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         GestureDetector(
-          onTap: widget.openOnPreviewTitleTap ? () => _onOpen(data.link!) : null,
+          onTap:
+              widget.openOnPreviewTitleTap ? () => _onOpen(data.link!) : null,
           child: Container(
             padding: EdgeInsets.only(
               bottom: padding.bottom,
@@ -170,12 +173,14 @@ class _LinkPreviewState extends State<LinkPreview> with SingleTickerProviderStat
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 if (data.title != null) _titleWidget(data.title!),
-                if (data.description != null) _descriptionWidget(data.description!),
+                if (data.description != null)
+                  _descriptionWidget(data.description!),
               ],
             ),
           ),
         ),
-        if (data.image?.url != null && widget.hideImage != true) _imageWidget(data.image!.url, data.link!, width),
+        if (data.image?.url != null && widget.hideImage != true)
+          _imageWidget(data.image!.url, data.link!, width),
       ],
     );
   }
@@ -222,11 +227,13 @@ class _LinkPreviewState extends State<LinkPreview> with SingleTickerProviderStat
                     ),
                   ),
                 widget.textWidget ?? _linkify(),
-                if (withPadding && child != null) shouldAnimate ? _animated(child) : child,
+                if (withPadding && child != null)
+                  shouldAnimate ? _animated(child) : child,
               ],
             ),
           ),
-          if (!withPadding && child != null) shouldAnimate ? _animated(child) : child,
+          if (!withPadding && child != null)
+            shouldAnimate ? _animated(child) : child,
         ],
       ),
     );
@@ -270,11 +277,18 @@ class _LinkPreviewState extends State<LinkPreview> with SingleTickerProviderStat
     }
   }
 
-  bool _hasData(PreviewData? previewData) => previewData?.title != null || previewData?.description != null || previewData?.image?.url != null;
+  bool _hasData(PreviewData? previewData) =>
+      previewData?.title != null ||
+      previewData?.description != null ||
+      previewData?.image?.url != null;
 
-  bool _hasOnlyImage() => widget.previewData?.title == null && widget.previewData?.description == null && widget.previewData?.image?.url != null;
+  bool _hasOnlyImage() =>
+      widget.previewData?.title == null &&
+      widget.previewData?.description == null &&
+      widget.previewData?.image?.url != null;
 
-  Widget _imageWidget(String imageUrl, String linkUrl, double width) => GestureDetector(
+  Widget _imageWidget(String imageUrl, String linkUrl, double width) =>
+      GestureDetector(
         onTap: widget.openOnPreviewImageTap ? () => _onOpen(linkUrl) : null,
         child: Container(
           constraints: BoxConstraints(
@@ -316,20 +330,24 @@ class _LinkPreviewState extends State<LinkPreview> with SingleTickerProviderStat
                 children: <Widget>[
                   Expanded(
                     child: GestureDetector(
-                      onTap: widget.openOnPreviewTitleTap ? () => _onOpen(data.link!) : null,
+                      onTap: widget.openOnPreviewTitleTap
+                          ? () => _onOpen(data.link!)
+                          : null,
                       child: Container(
                         margin: const EdgeInsets.only(right: 4),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
                             if (data.title != null) _titleWidget(data.title!),
-                            if (data.description != null) _descriptionWidget(data.description!),
+                            if (data.description != null)
+                              _descriptionWidget(data.description!),
                           ],
                         ),
                       ),
                     ),
                   ),
-                  if (data.image?.url != null && widget.hideImage != true) _minimizedImageWidget(data.image!.url, data.link!),
+                  if (data.image?.url != null && widget.hideImage != true)
+                    _minimizedImageWidget(data.image!.url, data.link!),
                 ],
               ),
             ),
@@ -345,7 +363,9 @@ class _LinkPreviewState extends State<LinkPreview> with SingleTickerProviderStat
           child: SizedBox(
             height: 48,
             width: 48,
-            child: widget.imageBuilder != null ? widget.imageBuilder!(imageUrl) : Image.network(imageUrl),
+            child: widget.imageBuilder != null
+                ? widget.imageBuilder!(imageUrl)
+                : Image.network(imageUrl),
           ),
         ),
       );
@@ -410,13 +430,18 @@ class _LinkPreviewState extends State<LinkPreview> with SingleTickerProviderStat
       if (widget.previewBuilder != null) {
         return widget.previewBuilder!(context, previewData);
       } else {
-        final aspectRatio = widget.previewData!.image == null ? null : widget.previewData!.image!.width / widget.previewData!.image!.height;
+        final aspectRatio = widget.previewData!.image == null
+            ? null
+            : widget.previewData!.image!.width /
+                widget.previewData!.image!.height;
 
         final width = aspectRatio == 1 ? widget.width : widget.width - 32;
 
         return _containerWidget(
           animate: shouldAnimate,
-          child: aspectRatio == 1 ? _minimizedBodyWidget(previewData) : _bodyWidget(previewData, width),
+          child: aspectRatio == 1
+              ? _minimizedBodyWidget(previewData)
+              : _bodyWidget(previewData, width),
           withPadding: aspectRatio == 1,
         );
       }

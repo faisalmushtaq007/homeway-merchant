@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:homemakers_merchant/app/features/analysis/index.dart';
+import 'package:homemakers_merchant/core/extensions/global_extensions/src/object.dart';
 
 part 'order_analysis_event.dart';
 
@@ -107,7 +108,36 @@ class OrderAnalysisBloc extends Bloc<OrderAnalysisEvent, OrderAnalysisState> {
     }
   }
 
-  FutureOr<void> _weeklyOrderAnalysisEvent(WeeklyOrderAnalysisEvent event, Emitter<OrderAnalysisState> emit) async {}
+  FutureOr<void> _weeklyOrderAnalysisEvent(WeeklyOrderAnalysisEvent event, Emitter<OrderAnalysisState> emit) async {
+    final WeeklyAnalysisEntity weeklyAnalysisData = await readWeeklyAnalysisData();
+
+    List<WeeklyOverallAnalysisData> overAllAnalysisData = [];
+    List<AnalysisDay> chartData = [];
+    final WeeklyAnalysisResult weeklyResult = weeklyAnalysisData.result;
+    final WeeklyAnalysisOverAllData weeklyOverallAnalysisData = weeklyResult.overAllData;
+    if (weeklyResult.fromDate.isNotNull && weeklyResult.toDate.isNotNull) {
+      chartData = List<AnalysisDay>.from(weeklyResult.days.toList());
+    }
+
+    if (event.analysisBy == AnalysisBy.weeklyOrder) {
+      emit(
+        WeeklyOverAllOrderAnalysisState(
+          analysisBy: event.analysisBy,
+          overAllAnalysisData: weeklyOverallAnalysisData,
+        ),
+      );
+      await Future.delayed(const Duration(milliseconds: 300), () {});
+      emit(WeeklyOrderByStoreAnalysisState(
+        analysisBy: event.analysisBy,
+        chartData: chartData.toList(),
+      ));
+    } else if (event.analysisBy == AnalysisBy.weeklySales) {
+      emit(WeeklySalesByStoreAnalysisState(
+        analysisBy: event.analysisBy,
+        chartData: chartData.toList(),
+      ));
+    }
+  }
 
   FutureOr<void> _monthlyOrderAnalysisEvent(
       ByMonthlyOrderAnalysisEvent event, Emitter<OrderAnalysisState> emit) async {}

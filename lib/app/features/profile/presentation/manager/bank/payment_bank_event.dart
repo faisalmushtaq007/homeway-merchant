@@ -5,13 +5,17 @@ abstract class PaymentBankEvent extends Equatable {
 }
 
 class SavePaymentBank extends PaymentBankEvent {
-  SavePaymentBank({required this.paymentBankEntity, this.hasEditPaymentBank = false, this.currentIndex = -1});
+  SavePaymentBank(
+      {required this.paymentBankEntity,
+      this.hasEditPaymentBank = false,
+      this.currentIndex = -1});
   final PaymentBankEntity paymentBankEntity;
   final bool hasEditPaymentBank;
   final int currentIndex;
 
   @override
-  List<Object?> get props => [paymentBankEntity, hasEditPaymentBank, currentIndex];
+  List<Object?> get props =>
+      [paymentBankEntity, hasEditPaymentBank, currentIndex];
 }
 
 class DeletePaymentBank extends PaymentBankEvent {
@@ -25,7 +29,6 @@ class DeletePaymentBank extends PaymentBankEvent {
   final int paymentBankID;
   final int index;
   final List<PaymentBankEntity> paymentBankEntities;
-
 
   @override
   List<Object?> get props => [
@@ -81,7 +84,6 @@ class GetAllPaymentBank extends PaymentBankEvent {
   final int pageSize;
   final String searchItem;
 
-
   @override
   List<Object?> get props => [
         paymentBankEntity,
@@ -92,9 +94,11 @@ class GetAllPaymentBank extends PaymentBankEvent {
       ];
 }
 
-class NavigateToNextPage extends PaymentBankEvent{
-  const NavigateToNextPage({required this.appUserEntity,});
-  final  AppUserEntity appUserEntity;
+class NavigateToNextPage extends PaymentBankEvent {
+  const NavigateToNextPage({
+    required this.appUserEntity,
+  });
+  final AppUserEntity appUserEntity;
   @override
   List<Object?> get props => [appUserEntity];
 }

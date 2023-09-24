@@ -1,14 +1,17 @@
 part of 'package:homemakers_merchant/app/features/store/index.dart';
 
-class MultiSelectAvailableFoodPreparationTypesFormField extends FormField<List<StoreAvailableFoodPreparationType>> {
+class MultiSelectAvailableFoodPreparationTypesFormField
+    extends FormField<List<StoreAvailableFoodPreparationType>> {
   final Widget title;
   final Widget hintWidget;
   final bool required;
   final String errorText;
 
   //final List? dataSource;
-  final List<StoreAvailableFoodPreparationType> availableFoodPreparationTypesList;
-  final List<StoreAvailableFoodPreparationType> initialSelectedFoodPreparationTypesList;
+  final List<StoreAvailableFoodPreparationType>
+      availableFoodPreparationTypesList;
+  final List<StoreAvailableFoodPreparationType>
+      initialSelectedFoodPreparationTypesList;
   final Function(List<StoreAvailableFoodPreparationType>) onSelectionChanged;
   final Function(List<StoreAvailableFoodPreparationType>)? onMaxSelected;
   final int? maxSelection;
@@ -76,7 +79,8 @@ class MultiSelectAvailableFoodPreparationTypesFormField extends FormField<List<S
           validator: validator,
           initialValue: initialSelectedFoodPreparationTypesList.toList(),
           autovalidateMode: autovalidate,
-          builder: (FormFieldState<List<StoreAvailableFoodPreparationType>> state) {
+          builder:
+              (FormFieldState<List<StoreAvailableFoodPreparationType>> state) {
             // String selectedChoice = "";
             List<StoreAvailableFoodPreparationType> selectedChoices = [];
             return InputDecorator(
@@ -96,7 +100,8 @@ class MultiSelectAvailableFoodPreparationTypesFormField extends FormField<List<S
               ),
               isEmpty: state.value == null || state.value!.isEmpty,
               child: MultiSelectStoreAvailableFoodPreparationTypes(
-                onSelectionChanged: (List<StoreAvailableFoodPreparationType> selectedItems) {
+                onSelectionChanged:
+                    (List<StoreAvailableFoodPreparationType> selectedItems) {
                   selectedChoices = selectedItems.toList();
                   onSelectionChanged?.call(selectedChoices);
                   state.didChange(selectedChoices);
@@ -105,8 +110,10 @@ class MultiSelectAvailableFoodPreparationTypesFormField extends FormField<List<S
                   }
                   state.save();
                 },
-                availableFoodPreparationTypesList: availableFoodPreparationTypesList.toList(),
-                initialSelectedAvailableFoodPreparationTypesList: initialSelectedFoodPreparationTypesList.toList(),
+                availableFoodPreparationTypesList:
+                    availableFoodPreparationTypesList.toList(),
+                initialSelectedAvailableFoodPreparationTypesList:
+                    initialSelectedFoodPreparationTypesList.toList(),
                 maxSelection: maxSelection,
                 onMaxSelected: onMaxSelected,
                 isSingleSelect: isSingleSelect,
@@ -127,20 +134,24 @@ class MultiSelectStoreAvailableFoodPreparationTypes extends StatefulWidget {
     this.isSingleSelect = false,
   });
 
-  final List<StoreAvailableFoodPreparationType> availableFoodPreparationTypesList;
+  final List<StoreAvailableFoodPreparationType>
+      availableFoodPreparationTypesList;
   final Function(List<StoreAvailableFoodPreparationType>) onSelectionChanged;
   final Function(List<StoreAvailableFoodPreparationType>)? onMaxSelected;
-  final List<StoreAvailableFoodPreparationType> initialSelectedAvailableFoodPreparationTypesList;
+  final List<StoreAvailableFoodPreparationType>
+      initialSelectedAvailableFoodPreparationTypesList;
   final int? maxSelection;
 
   /// Enable single choice
   final bool isSingleSelect;
 
   @override
-  _MultiSelectStoreAvailableFoodPreparationTypesState createState() => _MultiSelectStoreAvailableFoodPreparationTypesState();
+  _MultiSelectStoreAvailableFoodPreparationTypesState createState() =>
+      _MultiSelectStoreAvailableFoodPreparationTypesState();
 }
 
-class _MultiSelectStoreAvailableFoodPreparationTypesState extends State<MultiSelectStoreAvailableFoodPreparationTypes> {
+class _MultiSelectStoreAvailableFoodPreparationTypesState
+    extends State<MultiSelectStoreAvailableFoodPreparationTypes> {
   // String selectedChoice = "";
   List<StoreAvailableFoodPreparationType> selectedChoices = [];
 
@@ -151,7 +162,8 @@ class _MultiSelectStoreAvailableFoodPreparationTypesState extends State<MultiSel
       choices.add(ChoiceChip(
         label: Text(
           item.title,
-          textDirection: serviceLocator<LanguageController>().targetTextDirection,
+          textDirection:
+              serviceLocator<LanguageController>().targetTextDirection,
         ),
         selected: selectedChoices.contains(item),
         onSelected: (selected) {
@@ -163,11 +175,14 @@ class _MultiSelectStoreAvailableFoodPreparationTypesState extends State<MultiSel
               widget.onSelectionChanged?.call(selectedChoices);
             });
           } else {
-            if (selectedChoices.length == (widget.maxSelection ?? -1) && !selectedChoices.contains(item)) {
+            if (selectedChoices.length == (widget.maxSelection ?? -1) &&
+                !selectedChoices.contains(item)) {
               widget.onMaxSelected?.call(selectedChoices);
             } else {
               setState(() {
-                selectedChoices.contains(item) ? selectedChoices.remove(item) : selectedChoices.add(item);
+                selectedChoices.contains(item)
+                    ? selectedChoices.remove(item)
+                    : selectedChoices.add(item);
                 widget.onSelectionChanged?.call(selectedChoices);
               });
             }
@@ -182,7 +197,8 @@ class _MultiSelectStoreAvailableFoodPreparationTypesState extends State<MultiSel
   @override
   void initState() {
     super.initState();
-    selectedChoices=List<StoreAvailableFoodPreparationType>.from(widget.initialSelectedAvailableFoodPreparationTypesList.toList());
+    selectedChoices = List<StoreAvailableFoodPreparationType>.from(
+        widget.initialSelectedAvailableFoodPreparationTypesList.toList());
   }
 
   @override

@@ -215,7 +215,8 @@ class BusinessDocumentState with _$BusinessDocumentState {
   factory BusinessDocumentState.selectDocumentSourceTypeState({
     @Default(DocumentType.tradeLicence) DocumentType documentType,
     @Default(ImageSource.camera) ImageSource imageSource,
-    @Default(DocumentPickerSource.camera) DocumentPickerSource documentPickerSource,
+    @Default(DocumentPickerSource.camera)
+    DocumentPickerSource documentPickerSource,
   }) = SelectDocumentSourceTypState;
 
   factory BusinessDocumentState.closeMediaPickerState({
@@ -302,7 +303,8 @@ class BusinessDocumentState with _$BusinessDocumentState {
 
   factory BusinessDocumentState.saveBusinessDocumentState({
     @Default([]) List<NewBusinessDocumentEntity> allBusinessDocuments,
-    @Default(BusinessDocumentStatus.saveBusinessDocument) BusinessDocumentStatus businessDocumentStatus,
+    @Default(BusinessDocumentStatus.saveBusinessDocument)
+    BusinessDocumentStatus businessDocumentStatus,
     NewBusinessDocumentEntity? businessDocumentUploadedEntity,
     @Default(false) bool hasEditBusinessDocument,
     @Default(-1) int currentIndex,
@@ -310,7 +312,8 @@ class BusinessDocumentState with _$BusinessDocumentState {
 
   factory BusinessDocumentState.getBusinessDocumentState({
     @Default([]) List<NewBusinessDocumentEntity> allBusinessDocuments,
-    @Default(BusinessDocumentStatus.getBusinessDocument) BusinessDocumentStatus businessDocumentStatus,
+    @Default(BusinessDocumentStatus.getBusinessDocument)
+    BusinessDocumentStatus businessDocumentStatus,
     @Default(-1) int documentID,
     NewBusinessDocumentEntity? businessDocumentUploadedEntity,
     @Default(-1) int currentIndex,
@@ -318,7 +321,8 @@ class BusinessDocumentState with _$BusinessDocumentState {
 
   factory BusinessDocumentState.getAllBusinessDocumentState({
     @Default([]) List<NewBusinessDocumentEntity> allBusinessDocuments,
-    @Default(BusinessDocumentStatus.getAllBusinessDocument) BusinessDocumentStatus businessDocumentStatus,
+    @Default(BusinessDocumentStatus.getAllBusinessDocument)
+    BusinessDocumentStatus businessDocumentStatus,
     @Default(1) int pageKey,
     @Default(10) int pageSize,
     @Default('') String searchItem,
@@ -326,7 +330,8 @@ class BusinessDocumentState with _$BusinessDocumentState {
 
   factory BusinessDocumentState.deleteBusinessDocumentState({
     @Default([]) List<NewBusinessDocumentEntity> allBusinessDocuments,
-    @Default(BusinessDocumentStatus.deleteBusinessDocument) BusinessDocumentStatus businessDocumentStatus,
+    @Default(BusinessDocumentStatus.deleteBusinessDocument)
+    BusinessDocumentStatus businessDocumentStatus,
     @Default(-1) int documentID,
     NewBusinessDocumentEntity? businessDocumentUploadedEntity,
     @Default(-1) int currentIndex,
@@ -335,7 +340,8 @@ class BusinessDocumentState with _$BusinessDocumentState {
 
   factory BusinessDocumentState.deleteAllBusinessDocumentState({
     @Default([]) List<NewBusinessDocumentEntity> allBusinessDocuments,
-    @Default(BusinessDocumentStatus.deleteAllBusinessDocument) BusinessDocumentStatus businessDocumentStatus,
+    @Default(BusinessDocumentStatus.deleteAllBusinessDocument)
+    BusinessDocumentStatus businessDocumentStatus,
     @Default(-1) int documentID,
     NewBusinessDocumentEntity? businessDocumentUploadedEntity,
     @Default(false) bool hasDeleteAll,
@@ -343,32 +349,37 @@ class BusinessDocumentState with _$BusinessDocumentState {
 
   factory BusinessDocumentState.failedBusinessDocumentState({
     @Default('') String message,
-    @Default(BusinessDocumentStatus.failedForBusinessDocument) BusinessDocumentStatus businessDocumentStatus,
+    @Default(BusinessDocumentStatus.failedForBusinessDocument)
+    BusinessDocumentStatus businessDocumentStatus,
   }) = BusinessDocumentFailedState;
 
   factory BusinessDocumentState.loadingBusinessDocumentState({
     @Default('') String message,
     @Default(true) bool isLoading,
-    @Default(BusinessDocumentStatus.loadingForBusinessDocument) BusinessDocumentStatus businessDocumentStatus,
+    @Default(BusinessDocumentStatus.loadingForBusinessDocument)
+    BusinessDocumentStatus businessDocumentStatus,
   }) = BusinessDocumentLoadingState;
 
   factory BusinessDocumentState.processingBusinessDocumentState({
     @Default('') String message,
     @Default(true) bool isProcessing,
-    @Default(BusinessDocumentStatus.processingForBusinessDocument) BusinessDocumentStatus businessDocumentStatus,
+    @Default(BusinessDocumentStatus.processingForBusinessDocument)
+    BusinessDocumentStatus businessDocumentStatus,
   }) = BusinessDocumentProcessingState;
 
   factory BusinessDocumentState.emptyBusinessDocumentState({
     @Default('') String message,
     @Default(true) bool isEmpty,
     @Default([]) List<NewBusinessDocumentEntity> allBusinessDocuments,
-    @Default(BusinessDocumentStatus.emptyForBusinessDocument) BusinessDocumentStatus businessDocumentStatus,
+    @Default(BusinessDocumentStatus.emptyForBusinessDocument)
+    BusinessDocumentStatus businessDocumentStatus,
   }) = BusinessDocumentEmptyState;
 
   factory BusinessDocumentState.exceptionBusinessDocumentState({
     @Default('') String message,
     StackTrace? stackTrace,
     Exception? exception,
-    @Default(BusinessDocumentStatus.exceptionForBusinessDocument) BusinessDocumentStatus businessDocumentStatus,
+    @Default(BusinessDocumentStatus.exceptionForBusinessDocument)
+    BusinessDocumentStatus businessDocumentStatus,
   }) = BusinessDocumentExceptionState;
 }

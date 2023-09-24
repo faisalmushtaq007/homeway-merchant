@@ -80,7 +80,8 @@ class _LoginPageController extends State<LoginPage> {
     if (_controller.text == '') return;
     String error;
     try {
-      final possibleLanguages = await _languageIdentifier.identifyPossibleLanguages(_controller.text);
+      final possibleLanguages =
+          await _languageIdentifier.identifyPossibleLanguages(_controller.text);
       setState(() {
         _identifiedLanguages = possibleLanguages;
       });
@@ -103,7 +104,9 @@ class _LoginPageController extends State<LoginPage> {
     Toast().show(
       'Downloading model (${_sourceLanguage.name})...',
       // TODO(prasant)(prasant): Set isWifiRequired: false.
-      _modelManager.downloadModel(_sourceLanguage.bcpCode).then((value) => value ? 'success' : 'failed'),
+      _modelManager
+          .downloadModel(_sourceLanguage.bcpCode)
+          .then((value) => value ? 'success' : 'failed'),
       context,
       this,
     );
@@ -113,7 +116,9 @@ class _LoginPageController extends State<LoginPage> {
     Toast().show(
       'Downloading model (${_targetLanguage.name})...',
       // TODO(prasant)(prasant): Set isWifiRequired: false.
-      _modelManager.downloadModel(_targetLanguage.bcpCode).then((value) => value ? 'success' : 'failed'),
+      _modelManager
+          .downloadModel(_targetLanguage.bcpCode)
+          .then((value) => value ? 'success' : 'failed'),
       context,
       this,
     );
@@ -122,7 +127,9 @@ class _LoginPageController extends State<LoginPage> {
   Future<void> _deleteSourceModel() async {
     Toast().show(
       'Deleting model (${_sourceLanguage.name})...',
-      _modelManager.deleteModel(_sourceLanguage.bcpCode).then((value) => value ? 'success' : 'failed'),
+      _modelManager
+          .deleteModel(_sourceLanguage.bcpCode)
+          .then((value) => value ? 'success' : 'failed'),
       context,
       this,
     );
@@ -131,7 +138,9 @@ class _LoginPageController extends State<LoginPage> {
   Future<void> _deleteTargetModel() async {
     Toast().show(
       'Deleting model (${_targetLanguage.name})...',
-      _modelManager.deleteModel(_targetLanguage.bcpCode).then((value) => value ? 'success' : 'failed'),
+      _modelManager
+          .deleteModel(_targetLanguage.bcpCode)
+          .then((value) => value ? 'success' : 'failed'),
       context,
       this,
     );
@@ -140,7 +149,9 @@ class _LoginPageController extends State<LoginPage> {
   Future<void> _isSourceModelDownloaded() async {
     Toast().show(
       'Checking if model (${_sourceLanguage.name}) is downloaded...',
-      _modelManager.isModelDownloaded(_sourceLanguage.bcpCode).then((value) => value ? 'downloaded' : 'not downloaded'),
+      _modelManager
+          .isModelDownloaded(_sourceLanguage.bcpCode)
+          .then((value) => value ? 'downloaded' : 'not downloaded'),
       context,
       this,
     );
@@ -149,7 +160,9 @@ class _LoginPageController extends State<LoginPage> {
   Future<void> _isTargetModelDownloaded() async {
     Toast().show(
       'Checking if model (${_targetLanguage.name}) is downloaded...',
-      _modelManager.isModelDownloaded(_targetLanguage.bcpCode).then((value) => value ? 'downloaded' : 'not downloaded'),
+      _modelManager
+          .isModelDownloaded(_targetLanguage.bcpCode)
+          .then((value) => value ? 'downloaded' : 'not downloaded'),
       context,
       this,
     );
@@ -191,11 +204,14 @@ class _LoginPageController extends State<LoginPage> {
                     itemBuilder: (context, index) {
                       return ListTile(
                         onTap: () async {
-                          if (serviceLocator<LanguageController>().targetAppLanguage == GlobalApp.defaultLanguages[index]) {
+                          if (serviceLocator<LanguageController>()
+                                  .targetAppLanguage ==
+                              GlobalApp.defaultLanguages[index]) {
                             return;
                           } else {
                             // Change target language
-                            serviceLocator<LanguageController>().changeTargetLanguage(
+                            serviceLocator<LanguageController>()
+                                .changeTargetLanguage(
                               GlobalApp.defaultLanguages[index],
                             );
                           }
@@ -213,7 +229,9 @@ class _LoginPageController extends State<LoginPage> {
                           ),
                         ),
                         title: Text(GlobalApp.defaultLanguages[index].text),
-                        trailing: GlobalApp.defaultLanguages[index] == serviceLocator<LanguageController>().targetAppLanguage
+                        trailing: GlobalApp.defaultLanguages[index] ==
+                                serviceLocator<LanguageController>()
+                                    .targetAppLanguage
                             ? Icon(
                                 Icons.check_circle_rounded,
                                 color: Theme.of(context).primaryColorLight,
@@ -221,15 +239,21 @@ class _LoginPageController extends State<LoginPage> {
                             : null,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10),
-                          side: GlobalApp.defaultLanguages[index] == serviceLocator<LanguageController>().targetAppLanguage
+                          side: GlobalApp.defaultLanguages[index] ==
+                                  serviceLocator<LanguageController>()
+                                      .targetAppLanguage
                               ? BorderSide(
                                   color: Theme.of(context).primaryColorLight,
                                   width: 1.5,
                                 )
                               : BorderSide(color: Colors.grey[300]!),
                         ),
-                        tileColor: GlobalApp.defaultLanguages[index] == serviceLocator<LanguageController>().targetAppLanguage
-                            ? Theme.of(context).primaryColorLight.withOpacity(0.05)
+                        tileColor: GlobalApp.defaultLanguages[index] ==
+                                serviceLocator<LanguageController>()
+                                    .targetAppLanguage
+                            ? Theme.of(context)
+                                .primaryColorLight
+                                .withOpacity(0.05)
                             : null,
                       );
                     },
@@ -250,8 +274,10 @@ class _LoginPageController extends State<LoginPage> {
     TranslateApi.instance.isolateManagerSourceModelDownload.onMessage.listen(
       (status) {
         if (status) {
-          serviceLocator<LanguageController>().hasSourceModelDownloadedSuccess = status;
-          serviceLocator<LanguageController>().hasSourceModelDownloaded = status;
+          serviceLocator<LanguageController>().hasSourceModelDownloadedSuccess =
+              status;
+          serviceLocator<LanguageController>().hasSourceModelDownloaded =
+              status;
           if (status) {
             // Show dialog for success
           } else {
@@ -260,7 +286,8 @@ class _LoginPageController extends State<LoginPage> {
         }
       },
       onError: (e) {
-        serviceLocator<LanguageController>().hasSourceModelDownloadedSuccess = false;
+        serviceLocator<LanguageController>().hasSourceModelDownloadedSuccess =
+            false;
         serviceLocator<LanguageController>().hasSourceModelDownloaded = false;
         TranslateApi.instance.stopSourceModelDownload();
         // Show Dialog
@@ -306,7 +333,8 @@ class _LoginPageView extends WidgetView<LoginPage, _LoginPageController> {
                     child: OutlinedButton(
                       onPressed: () => state.showLanguageBottomSheet(context),
                       style: OutlinedButton.styleFrom(
-                        padding: const EdgeInsetsDirectional.only(top: 8, bottom: 8),
+                        padding:
+                            const EdgeInsetsDirectional.only(top: 8, bottom: 8),
                         minimumSize: Size(55, 38),
                         foregroundColor: Colors.grey.withOpacity(0.6),
                         shape: RoundedRectangleBorder(
@@ -324,7 +352,10 @@ class _LoginPageView extends WidgetView<LoginPage, _LoginPageController> {
                               width: 32,
                               height: 32,
                               child: ClipOval(
-                                child: serviceLocator<LanguageController>().targetAppLanguage.image.svg(
+                                child: serviceLocator<LanguageController>()
+                                    .targetAppLanguage
+                                    .image
+                                    .svg(
                                       height: 32,
                                       width: 32,
                                     ),
@@ -400,7 +431,8 @@ class _LoginPageView extends WidgetView<LoginPage, _LoginPageController> {
                       );
                     },
                   ),
-                  ThemeModeSwitchListTile(controller: serviceLocator<ThemeController>()),
+                  ThemeModeSwitchListTile(
+                      controller: serviceLocator<ThemeController>()),
                   const SizedBox(height: 30),
                   Center(
                     child: Text(
@@ -410,7 +442,8 @@ class _LoginPageView extends WidgetView<LoginPage, _LoginPageController> {
                   Padding(
                     padding: const EdgeInsetsDirectional.all(20),
                     child: Container(
-                      padding: const EdgeInsetsDirectional.symmetric(horizontal: 20),
+                      padding:
+                          const EdgeInsetsDirectional.symmetric(horizontal: 20),
                       decoration: BoxDecoration(
                         border: Border.all(
                           width: 2,
@@ -418,7 +451,8 @@ class _LoginPageView extends WidgetView<LoginPage, _LoginPageController> {
                       ),
                       child: TextField(
                         controller: state._controller1,
-                        decoration: const InputDecoration(border: InputBorder.none),
+                        decoration:
+                            const InputDecoration(border: InputBorder.none),
                         maxLines: null,
                       ),
                     ),

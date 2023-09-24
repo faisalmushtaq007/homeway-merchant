@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-
 ///Local import
 import 'package:homemakers_merchant/app/features/analysis/presentation/pages/model/helper.dart';
 import 'package:homemakers_merchant/app/features/analysis/presentation/pages/model/model.dart';

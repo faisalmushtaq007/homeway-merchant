@@ -14,7 +14,8 @@ class PhoneNumberValidateWidget extends StatefulWidget {
   final PhoneNumberVerification phoneNumberVerification;
 
   @override
-  _PhoneNumberValidateWidgetState createState() => _PhoneNumberValidateWidgetState();
+  _PhoneNumberValidateWidgetState createState() =>
+      _PhoneNumberValidateWidgetState();
 }
 
 class _PhoneNumberValidateWidgetState extends State<PhoneNumberValidateWidget> {

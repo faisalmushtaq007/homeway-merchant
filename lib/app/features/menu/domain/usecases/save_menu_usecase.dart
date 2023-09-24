@@ -1,6 +1,7 @@
 part of 'package:homemakers_merchant/app/features/menu/index.dart';
 
-class SaveMenuUseCase extends UseCaseIO<MenuEntity, DataSourceState<MenuEntity>> {
+class SaveMenuUseCase
+    extends UseCaseIO<MenuEntity, DataSourceState<MenuEntity>> {
   SaveMenuUseCase({
     required this.menuRepository,
   });

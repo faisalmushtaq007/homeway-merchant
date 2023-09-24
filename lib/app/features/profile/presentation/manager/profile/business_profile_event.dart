@@ -16,11 +16,13 @@ class SaveBusinessType extends BusinessProfileEvent {
   final bool hasEditBusinessType;
 
   @override
-  List<Object?> get props => [businessTypeEntity, hasEditBusinessType, businessProfileEntity];
+  List<Object?> get props =>
+      [businessTypeEntity, hasEditBusinessType, businessProfileEntity];
 }
 
 class GetBusinessType extends BusinessProfileEvent {
-  const GetBusinessType({required this.businessTypeEntity, this.hasEditBusinessType = false});
+  const GetBusinessType(
+      {required this.businessTypeEntity, this.hasEditBusinessType = false});
 
   final BusinessTypeEntity businessTypeEntity;
   final bool hasEditBusinessType;
@@ -89,7 +91,8 @@ class GetBusinessProfile extends BusinessProfileEvent {
 }
 
 class DeleteAllBusinessProfile extends BusinessProfileEvent {
-  const DeleteAllBusinessProfile({this.businessProfileID = -1, this.businessProfileEntity});
+  const DeleteAllBusinessProfile(
+      {this.businessProfileID = -1, this.businessProfileEntity});
 
   final BusinessProfileEntity? businessProfileEntity;
   final int businessProfileID;
@@ -125,7 +128,8 @@ class GetAllBusinessProfile extends BusinessProfileEvent {
 }
 
 class NavigateToAddressPage extends BusinessProfileEvent {
-  const NavigateToAddressPage({this.businessProfileEntity, this.businessTypeEntity});
+  const NavigateToAddressPage(
+      {this.businessProfileEntity, this.businessTypeEntity});
 
   final BusinessProfileEntity? businessProfileEntity;
   final BusinessTypeEntity? businessTypeEntity;
@@ -223,14 +227,14 @@ class GetAllAppUserProfilePagination extends BusinessProfileEvent {
 
   @override
   List<Object?> get props => [
-    appUserEntity,
-    businessProfileID,
-    pageKey,
-    pageSize,
-    searchItem,
-    endTime,
-    filtering,
-    sorting,
-    startTime,
-  ];
+        appUserEntity,
+        businessProfileID,
+        pageKey,
+        pageSize,
+        searchItem,
+        endTime,
+        filtering,
+        sorting,
+        startTime,
+      ];
 }

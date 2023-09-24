@@ -1,7 +1,8 @@
 part of 'package:homemakers_merchant/app/features/menu/index.dart';
 
 class AllMenuPage extends StatefulWidget {
-  const AllMenuPage({super.key, this.selectItemUseCase = SelectItemUseCase.none});
+  const AllMenuPage(
+      {super.key, this.selectItemUseCase = SelectItemUseCase.none});
   final SelectItemUseCase selectItemUseCase;
 
   @override
@@ -13,7 +14,8 @@ class _AllMenuPageController extends State<AllMenuPage> {
   late final ScrollController innerScrollController;
   List<MenuEntity> listOfAllMenus = [];
   List<MenuEntity> listOfAllSelectedMenus = [];
-  final TextEditingController searchTextEditingController = TextEditingController();
+  final TextEditingController searchTextEditingController =
+      TextEditingController();
   WidgetState<MenuEntity> widgetState = const WidgetState<MenuEntity>.none();
   bool? haveSelectAllMenus = false;
 
@@ -68,14 +70,16 @@ class _AllMenuPageController extends State<AllMenuPage> {
           switch (state) {
             case GetAllMenuState():
               {
-                listOfAllMenus = List<MenuEntity>.from(state.menuEntities.toList());
+                listOfAllMenus =
+                    List<MenuEntity>.from(state.menuEntities.toList());
                 widgetState = WidgetState<MenuEntity>.allData(
                   context: context,
                 );
               }
             case GetEmptyMenuState():
               {
-                listOfAllMenus = List<MenuEntity>.from(state.menuEntities.toList());
+                listOfAllMenus =
+                    List<MenuEntity>.from(state.menuEntities.toList());
                 widgetState = WidgetState<MenuEntity>.empty(
                   context: context,
                 );
@@ -89,7 +93,8 @@ class _AllMenuPageController extends State<AllMenuPage> {
 
   void onSelectionChanged(List<MenuEntity> listOfMenuEntities) {
     setState(() {
-      listOfAllSelectedMenus = List<MenuEntity>.from(listOfMenuEntities.toList());
+      listOfAllSelectedMenus =
+          List<MenuEntity>.from(listOfMenuEntities.toList());
     });
   }
 
@@ -112,7 +117,8 @@ class _AllMenuPageView extends WidgetView<AllMenuPage, _AllMenuPageController> {
   Widget build(BuildContext context) {
     final MediaQueryData media = MediaQuery.of(context);
     final double margins = GlobalApp.responsiveInsets(media.size.width);
-    final double topPadding = margins; //media.padding.top + kToolbarHeight + margins; //margins * 1.5;
+    final double topPadding =
+        margins; //media.padding.top + kToolbarHeight + margins; //margins * 1.5;
     final double bottomPadding = media.padding.bottom + margins;
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: FlexColorScheme.themedSystemNavigationBar(
@@ -151,7 +157,8 @@ class _AllMenuPageView extends WidgetView<AllMenuPage, _AllMenuPageController> {
                         'selectedMenus': state.listOfAllSelectedMenus.toList(),
                       },
                     );
-                    await Future.delayed(const Duration(milliseconds: 300), () {});
+                    await Future.delayed(
+                        const Duration(milliseconds: 300), () {});
                     if (!state.mounted) {
                       return;
                     }
@@ -165,7 +172,8 @@ class _AllMenuPageView extends WidgetView<AllMenuPage, _AllMenuPageController> {
             ),
           ),
           body: Directionality(
-            textDirection: serviceLocator<LanguageController>().targetTextDirection,
+            textDirection:
+                serviceLocator<LanguageController>().targetTextDirection,
             child: SlideInLeft(
               key: const Key('get-all-menus-slideinleft-widget'),
               delay: const Duration(milliseconds: 500),
@@ -180,7 +188,10 @@ class _AllMenuPageView extends WidgetView<AllMenuPage, _AllMenuPageController> {
                   child: Container(
                     constraints: BoxConstraints(
                       minWidth: double.infinity,
-                      maxHeight: media.size.height - (media.padding.top + kToolbarHeight + media.padding.bottom),
+                      maxHeight: media.size.height -
+                          (media.padding.top +
+                              kToolbarHeight +
+                              media.padding.bottom),
                     ),
                     padding: EdgeInsetsDirectional.only(
                       top: topPadding,
@@ -192,52 +203,69 @@ class _AllMenuPageView extends WidgetView<AllMenuPage, _AllMenuPageController> {
                       mainAxisAlignment: MainAxisAlignment.start,
                       mainAxisSize: MainAxisSize.min,
                       crossAxisAlignment: CrossAxisAlignment.stretch,
-                      textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                      textDirection: serviceLocator<LanguageController>()
+                          .targetTextDirection,
                       children: [
                         AnimatedCrossFade(
                           firstChild: Column(
                             mainAxisSize: MainAxisSize.min,
                             mainAxisAlignment: MainAxisAlignment.start,
                             crossAxisAlignment: CrossAxisAlignment.stretch,
-                            textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                            textDirection: serviceLocator<LanguageController>()
+                                .targetTextDirection,
                             children: [
-                              const AnimatedGap(6, duration: Duration(milliseconds: 500)),
+                              const AnimatedGap(6,
+                                  duration: Duration(milliseconds: 500)),
                               IntrinsicHeight(
                                 child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  textDirection:
+                                      serviceLocator<LanguageController>()
+                                          .targetTextDirection,
                                   children: [
                                     Expanded(
                                       child: AppTextFieldWidget(
-                                        controller: state.searchTextEditingController,
-                                        textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                        controller:
+                                            state.searchTextEditingController,
+                                        textDirection:
+                                            serviceLocator<LanguageController>()
+                                                .targetTextDirection,
                                         textInputAction: TextInputAction.done,
                                         keyboardType: TextInputType.text,
                                         decoration: InputDecoration(
                                           labelText: 'Search',
                                           hintText: 'Search menu and addons',
                                           border: OutlineInputBorder(
-                                            borderRadius: BorderRadius.circular(10),
+                                            borderRadius:
+                                                BorderRadius.circular(10),
                                           ),
                                           isDense: true,
                                         ),
                                       ),
                                     ),
-                                    const AnimatedGap(12, duration: Duration(milliseconds: 500)),
+                                    const AnimatedGap(12,
+                                        duration: Duration(milliseconds: 500)),
                                     SizedBox(
                                       height: 52,
                                       child: OutlinedButton(
                                         onPressed: () {},
                                         style: OutlinedButton.styleFrom(
                                           shape: RoundedRectangleBorder(
-                                            borderRadius: BorderRadiusDirectional.circular(10),
+                                            borderRadius:
+                                                BorderRadiusDirectional
+                                                    .circular(10),
                                           ),
-                                          side: const BorderSide(color: Color.fromRGBO(238, 238, 238, 1)),
+                                          side: const BorderSide(
+                                              color: Color.fromRGBO(
+                                                  238, 238, 238, 1)),
                                           backgroundColor: Colors.white,
                                         ),
                                         child: Icon(
                                           Icons.filter_list,
-                                          textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                          textDirection: serviceLocator<
+                                                  LanguageController>()
+                                              .targetTextDirection,
                                           color: context.primaryColor,
                                         ),
                                       ),
@@ -245,53 +273,79 @@ class _AllMenuPageView extends WidgetView<AllMenuPage, _AllMenuPageController> {
                                   ],
                                 ),
                               ),
-                              const AnimatedGap(12, duration: Duration(milliseconds: 500)),
+                              const AnimatedGap(12,
+                                  duration: Duration(milliseconds: 500)),
                               CheckboxListTile(
                                 value: state.haveSelectAllMenus,
                                 onChanged: (value) {
                                   state.selectAllMenus(isSelectAllMenus: value);
                                 },
                                 tristate: true,
-                                visualDensity: const VisualDensity(horizontal: -4, vertical: -4),
-                                contentPadding: const EdgeInsetsDirectional.symmetric(horizontal: 0),
+                                visualDensity: const VisualDensity(
+                                    horizontal: -4, vertical: -4),
+                                contentPadding:
+                                    const EdgeInsetsDirectional.symmetric(
+                                        horizontal: 0),
                                 //dense: true,
                                 title: IntrinsicHeight(
                                   child: Row(
-                                    textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                    textDirection:
+                                        serviceLocator<LanguageController>()
+                                            .targetTextDirection,
                                     children: [
                                       Text(
                                         'Your Menus',
-                                        textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                        textDirection:
+                                            serviceLocator<LanguageController>()
+                                                .targetTextDirection,
                                       ),
-                                      const AnimatedGap(3, duration: Duration(milliseconds: 500)),
+                                      const AnimatedGap(3,
+                                          duration:
+                                              Duration(milliseconds: 500)),
                                       Card(
                                         shape: RoundedRectangleBorder(
-                                          borderRadius: BorderRadiusDirectional.circular(20),
+                                          borderRadius:
+                                              BorderRadiusDirectional.circular(
+                                                  20),
                                         ),
                                         child: Padding(
-                                          padding: const EdgeInsetsDirectional.only(start: 12.0, end: 12, top: 4, bottom: 4),
+                                          padding:
+                                              const EdgeInsetsDirectional.only(
+                                                  start: 12.0,
+                                                  end: 12,
+                                                  top: 4,
+                                                  bottom: 4),
                                           child: Text(
                                             '${state.listOfAllMenus.length}',
-                                            textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                            textDirection: serviceLocator<
+                                                    LanguageController>()
+                                                .targetTextDirection,
                                           ),
                                         ),
                                       ),
-                                      const AnimatedGap(12, duration: Duration(milliseconds: 500)),
+                                      const AnimatedGap(12,
+                                          duration:
+                                              Duration(milliseconds: 500)),
                                       const Spacer(flex: 2),
                                       Text(
                                         'Select All',
-                                        textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                        textDirection:
+                                            serviceLocator<LanguageController>()
+                                                .targetTextDirection,
                                       ),
                                     ],
                                   ),
                                 ),
                               ),
-                              const AnimatedGap(12, duration: Duration(milliseconds: 500)),
+                              const AnimatedGap(12,
+                                  duration: Duration(milliseconds: 500)),
                             ],
                           ),
                           secondChild: const Offstage(),
                           duration: const Duration(milliseconds: 500),
-                          crossFadeState: (state.listOfAllMenus.isNotEmpty) ? CrossFadeState.showFirst : CrossFadeState.showSecond,
+                          crossFadeState: (state.listOfAllMenus.isNotEmpty)
+                              ? CrossFadeState.showFirst
+                              : CrossFadeState.showSecond,
                         ),
                         Expanded(
                           child: state.widgetState.maybeWhen(
@@ -300,7 +354,9 @@ class _AllMenuPageView extends WidgetView<AllMenuPage, _AllMenuPageController> {
                               child: Text(
                                 'No menu available or added by you',
                                 style: context.labelLarge,
-                                textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                textDirection:
+                                    serviceLocator<LanguageController>()
+                                        .targetTextDirection,
                               ).translate(),
                             ),
                             loading: (context, child, message, isLoading) {
@@ -320,16 +376,22 @@ class _AllMenuPageView extends WidgetView<AllMenuPage, _AllMenuPageController> {
                                     key: ValueKey(index),
                                     menuEntity: state.listOfAllMenus[index],
                                     currentIndex: index,
-                                    listOfAllMenuEntities: state.listOfAllMenus.toList(),
-                                    onSelectionChanged: (List<MenuEntity> listOfAllMenuEntities) {
-                                      state.onSelectionChanged(listOfAllMenuEntities.toList());
+                                    listOfAllMenuEntities:
+                                        state.listOfAllMenus.toList(),
+                                    onSelectionChanged: (List<MenuEntity>
+                                        listOfAllMenuEntities) {
+                                      state.onSelectionChanged(
+                                          listOfAllMenuEntities.toList());
                                     },
-                                    listOfAllSelectedMenuEntities: state.listOfAllSelectedMenus.toList(),
+                                    listOfAllSelectedMenuEntities:
+                                        state.listOfAllSelectedMenus.toList(),
                                   );
                                 },
                                 itemCount: state.listOfAllMenus.length,
                                 separatorBuilder: (context, index) {
-                                  return const Divider(thickness: 0.25, color: Color.fromRGBO(127, 129, 132, 1));
+                                  return const Divider(
+                                      thickness: 0.25,
+                                      color: Color.fromRGBO(127, 129, 132, 1));
                                 },
                               );
                             },
@@ -338,7 +400,9 @@ class _AllMenuPageView extends WidgetView<AllMenuPage, _AllMenuPageController> {
                                 child: Text(
                                   'No menu available or added by you',
                                   style: context.labelLarge,
-                                  textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                  textDirection:
+                                      serviceLocator<LanguageController>()
+                                          .targetTextDirection,
                                 ).translate(),
                               );
                             },
@@ -347,14 +411,17 @@ class _AllMenuPageView extends WidgetView<AllMenuPage, _AllMenuPageController> {
                             },
                           ),
                         ),
-                        const AnimatedGap(12, duration: Duration(milliseconds: 500)),
+                        const AnimatedGap(12,
+                            duration: Duration(milliseconds: 500)),
                         Row(
-                          textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                          textDirection: serviceLocator<LanguageController>()
+                              .targetTextDirection,
                           children: [
                             Expanded(
                               child: ElevatedButton(
                                 onPressed: () async {
-                                  final navigateToSaveMenuPage = await context.push(
+                                  final navigateToSaveMenuPage =
+                                      await context.push(
                                     Routes.SAVE_MENU_PAGE,
                                     extra: {
                                       'menuEntity': null,
@@ -370,7 +437,9 @@ class _AllMenuPageView extends WidgetView<AllMenuPage, _AllMenuPageController> {
                                 },
                                 child: Text(
                                   'Add New Menu',
-                                  textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                  textDirection:
+                                      serviceLocator<LanguageController>()
+                                          .targetTextDirection,
                                 ),
                               ),
                             ),

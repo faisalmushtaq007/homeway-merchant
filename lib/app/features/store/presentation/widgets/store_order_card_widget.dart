@@ -47,7 +47,9 @@ class StoreOrderCardWidget extends StatelessWidget {
           children: [
             Text(
               storeOrderInfo.subTitle,
-              style: context.titleMedium!.copyWith(color: storeOrderInfo.subTitleTextColor, fontWeight: FontWeight.w600),
+              style: context.titleMedium!.copyWith(
+                  color: storeOrderInfo.subTitleTextColor,
+                  fontWeight: FontWeight.w600),
             ),
             Visibility(
               visible: storeOrderInfo.hasOpenUrl,

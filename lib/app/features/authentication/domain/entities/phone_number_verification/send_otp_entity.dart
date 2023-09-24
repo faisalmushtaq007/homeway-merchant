@@ -16,7 +16,8 @@ class SendOtpEntity extends INetworkModel<SendOtpEntity> {
         user_type: json['user_type'] ?? 'merchant' as String,
         mobile: json['mobile'] ?? '' as String,
         isoCode: json['isoCode'] ?? 'SA' as String,
-        phoneNumberWithoutFormat: json['phoneNumberWithoutFormat'] ?? '' as String,
+        phoneNumberWithoutFormat:
+            json['phoneNumberWithoutFormat'] ?? '' as String,
         phoneNumberWithFormat: json['phoneNumberWithFormat'] ?? '' as String,
         db: json['db'] ?? 'odoo16home',
       );

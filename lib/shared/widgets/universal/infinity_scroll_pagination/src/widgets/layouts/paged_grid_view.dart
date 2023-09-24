@@ -39,7 +39,8 @@ class PagedGridView<PageKeyType, ItemType> extends BoxScrollView {
     // Matches [ScrollView.dragStartBehavior].
     DragStartBehavior dragStartBehavior = DragStartBehavior.start,
     // Matches [ScrollView.keyboardDismissBehavior].
-    ScrollViewKeyboardDismissBehavior keyboardDismissBehavior = ScrollViewKeyboardDismissBehavior.manual,
+    ScrollViewKeyboardDismissBehavior keyboardDismissBehavior =
+        ScrollViewKeyboardDismissBehavior.manual,
     // Matches [ScrollView.restorationId].
     String? restorationId,
     // Matches [ScrollView.clipBehavior].
@@ -93,16 +94,20 @@ class PagedGridView<PageKeyType, ItemType> extends BoxScrollView {
   final bool _shrinkWrapFirstPageIndicators;
 
   @override
-  Widget buildChildLayout(BuildContext context) => PagedSliverGrid<PageKeyType, ItemType>(
+  Widget buildChildLayout(BuildContext context) =>
+      PagedSliverGrid<PageKeyType, ItemType>(
         builderDelegate: builderDelegate,
         pagingController: pagingController,
         gridDelegate: gridDelegate,
         addAutomaticKeepAlives: addAutomaticKeepAlives,
         addRepaintBoundaries: addRepaintBoundaries,
         addSemanticIndexes: addSemanticIndexes,
-        showNewPageProgressIndicatorAsGridChild: showNewPageProgressIndicatorAsGridChild,
-        showNewPageErrorIndicatorAsGridChild: showNewPageErrorIndicatorAsGridChild,
-        showNoMoreItemsIndicatorAsGridChild: showNoMoreItemsIndicatorAsGridChild,
+        showNewPageProgressIndicatorAsGridChild:
+            showNewPageProgressIndicatorAsGridChild,
+        showNewPageErrorIndicatorAsGridChild:
+            showNewPageErrorIndicatorAsGridChild,
+        showNoMoreItemsIndicatorAsGridChild:
+            showNoMoreItemsIndicatorAsGridChild,
         shrinkWrapFirstPageIndicators: _shrinkWrapFirstPageIndicators,
       );
 }

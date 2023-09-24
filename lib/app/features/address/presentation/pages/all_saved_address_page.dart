@@ -29,8 +29,7 @@ class _AllSavedAddressPageController extends State<AllSavedAddressPage> {
 
   @override
   void initState() {
-    _pagingController =
-        PagingController(firstPageKey: 0);
+    _pagingController = PagingController(firstPageKey: 0);
     addressEntities = [];
     addressEntities.clear();
     //_pagingController.refresh();
@@ -43,7 +42,10 @@ class _AllSavedAddressPageController extends State<AllSavedAddressPage> {
   }
 
   Future<void> _fetchPage(int pageKey,
-      {int pageSize = 10, String? searchItem, String? filter, String? sort}) async{
+      {int pageSize = 10,
+      String? searchItem,
+      String? filter,
+      String? sort}) async {
     /*if (pageKey == 0) {
       _pagingController.itemList = [];
     }*/
@@ -51,14 +53,14 @@ class _AllSavedAddressPageController extends State<AllSavedAddressPage> {
     print('Loading section $sectionNumber');
     try {
       context.read<AddressBloc>().add(
-                 GetAllAddressPagination(
-                  pageKey: pageKey,
-                  pageSize: pageSize,
-                  searchText: searchItem,
-                  filter: filtering ?? filter,
-                  sorting: sorting ?? sort,
-                ),
-              );
+            GetAllAddressPagination(
+              pageKey: pageKey,
+              pageSize: pageSize,
+              searchText: searchItem,
+              filter: filtering ?? filter,
+              sorting: sorting ?? sort,
+            ),
+          );
       appLog.i('Fetch Address');
       return;
     } catch (error) {
@@ -69,9 +71,9 @@ class _AllSavedAddressPageController extends State<AllSavedAddressPage> {
 
   @override
   void dispose() {
-    _pagingController.removeListener(() { });
-    _pagingController.removePageRequestListener((pageKey) { });
-    _pagingController.removeStatusListener((status) { });
+    _pagingController.removeListener(() {});
+    _pagingController.removePageRequestListener((pageKey) {});
+    _pagingController.removeStatusListener((status) {});
     _pagingController.dispose();
     scrollController.dispose();
     innerScrollController.dispose();
@@ -89,7 +91,7 @@ class _AllSavedAddressPageController extends State<AllSavedAddressPage> {
     //_pagingController.refresh();
     _pagingController.nextPageKey = 0;
     _fetchPage(0);
-    _pagingController.addPageRequestListener((pageKey)  {
+    _pagingController.addPageRequestListener((pageKey) {
       this.pageKey = pageKey;
       appLog.d('Page key addPageRequestListener ${pageKey}');
       _fetchPage(pageKey);
@@ -118,7 +120,7 @@ class _AllSavedAddressPageController extends State<AllSavedAddressPage> {
         bloc: context.read<AddressBloc>(),
         //listenWhen: (previous, current) => previous != current,
         listener: (context, addressListenerState) {
-          switch(addressListenerState){
+          switch (addressListenerState) {
             case GetAllAddressPaginationState():
               {
                 try {
@@ -139,8 +141,7 @@ class _AllSavedAddressPageController extends State<AllSavedAddressPage> {
                     context: context,
                     data: _pagingController.value.itemList ?? [],
                   );
-                  addressEntities =
-                      _pagingController.value.itemList ?? [];
+                  addressEntities = _pagingController.value.itemList ?? [];
                 } catch (error) {
                   _pagingController.error = error;
                   widgetState = WidgetState<AddressModel>.error(
@@ -180,7 +181,6 @@ class _AllSavedAddressPageController extends State<AllSavedAddressPage> {
           builder: (context, addressState) {
             print(addressState.runtimeType);
             switch (addressState) {
-
               case AddressExceptionState():
                 {
                   widgetState = WidgetState<AddressModel>.error(
@@ -455,16 +455,23 @@ class _AllSavedAddressPageView
                                   controller: state.innerScrollController,
                                   slivers: [
                                     PagedSliverList<int, AddressModel>(
-                                      key: const Key('address-list-pagedSliverList-widget'),
+                                      key: const Key(
+                                          'address-list-pagedSliverList-widget'),
                                       pagingController: state._pagingController,
-                                      builderDelegate: PagedChildBuilderDelegate<AddressModel>(
+                                      builderDelegate:
+                                          PagedChildBuilderDelegate<
+                                              AddressModel>(
                                         animateTransitions: true,
-                                        itemBuilder: (context, item, index) => AddressCardWidget(
+                                        itemBuilder: (context, item, index) =>
+                                            AddressCardWidget(
                                           key: ValueKey(index),
-                                          addressEntity: state.addressEntities[index],
-                                          listOfAllAddressEntities: state.addressEntities.toList(),
+                                          addressEntity:
+                                              state.addressEntities[index],
+                                          listOfAllAddressEntities:
+                                              state.addressEntities.toList(),
                                           currentIndex: index,
-                                          selectItemUseCase: widget.selectItemUseCase,
+                                          selectItemUseCase:
+                                              widget.selectItemUseCase,
                                         ),
                                       ),
                                     ),
@@ -527,11 +534,17 @@ class _AllSavedAddressPageView
                                       return;
                                     }
                                     //context.read<AddressBloc>().add(const GetAllAddress());
-                                    if(state._pagingController.value.itemList==null || state._pagingController.value.itemList.isEmptyOrNull){
-                                      appLog.d('state._pagingController.value.itemList null');
+                                    if (state._pagingController.value
+                                                .itemList ==
+                                            null ||
+                                        state._pagingController.value.itemList
+                                            .isEmptyOrNull) {
+                                      appLog.d(
+                                          'state._pagingController.value.itemList null');
                                       await state._fetchPage(0);
-                                    }else {
-                                      appLog.d('state._pagingController.value.itemList not null');
+                                    } else {
+                                      appLog.d(
+                                          'state._pagingController.value.itemList not null');
                                       state._pagingController.refresh();
                                     }
                                     return;

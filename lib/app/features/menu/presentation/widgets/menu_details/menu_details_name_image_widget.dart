@@ -59,9 +59,12 @@ class MenuDetailsNameImageWidget extends StatelessWidget {
                     fontSize: 16,
                   ),
                   // indicates where image will be loaded from, types are [network, asset,file]
-                  placeholderBackgroundColor: context.colorScheme.primary.withOpacity(0.5),
+                  placeholderBackgroundColor:
+                      context.colorScheme.primary.withOpacity(0.5),
                   imageType: findImageType(
-                    menuEntity.menuImages[0].assetPath.isEmptyOrNull ? 'assets/svg/sorry-image-not-available.svg' : menuEntity.menuImages[0].assetPath,
+                    menuEntity.menuImages[0].assetPath.isEmptyOrNull
+                        ? 'assets/svg/sorry-image-not-available.svg'
+                        : menuEntity.menuImages[0].assetPath,
                   ),
                 ),
               ),
@@ -73,15 +76,18 @@ class MenuDetailsNameImageWidget extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisSize: MainAxisSize.min,
-                  textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                  textDirection:
+                      serviceLocator<LanguageController>().targetTextDirection,
                   children: [
                     // Menu name
                     Wrap(
                       children: [
                         Text(
                           menuEntity.menuName,
-                          textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                          style: context.titleMedium!.copyWith(fontWeight: FontWeight.w600),
+                          textDirection: serviceLocator<LanguageController>()
+                              .targetTextDirection,
+                          style: context.titleMedium!
+                              .copyWith(fontWeight: FontWeight.w600),
                           maxLines: 3,
                           softWrap: true,
                           overflow: TextOverflow.ellipsis,
@@ -92,7 +98,8 @@ class MenuDetailsNameImageWidget extends StatelessWidget {
                     // Menu ID
                     Text(
                       'Menu ID #HMW-MENU-${menuEntity.menuId}',
-                      textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                      textDirection: serviceLocator<LanguageController>()
+                          .targetTextDirection,
                       style: context.labelMedium!.copyWith(),
                     ),
                     const AnimatedGap(6, duration: Duration(milliseconds: 100)),
@@ -113,12 +120,16 @@ class MenuDetailsNameImageWidget extends StatelessWidget {
                               fontWeight: FontWeight.w600,
                               fontSize: 13,
                             ),
-                            textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                            textDirection: serviceLocator<LanguageController>()
+                                .targetTextDirection,
                           ),
-                          backgroundColor: const Color.fromRGBO(69, 201, 125, 1),
+                          backgroundColor:
+                              const Color.fromRGBO(69, 201, 125, 1),
                           elevation: 0.0,
-                          visualDensity: const VisualDensity(horizontal: -4, vertical: -4),
-                          materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                          visualDensity:
+                              const VisualDensity(horizontal: -4, vertical: -4),
+                          materialTapTargetSize:
+                              MaterialTapTargetSize.shrinkWrap,
                           padding: const EdgeInsetsDirectional.all(8),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadiusDirectional.circular(20),
@@ -137,15 +148,18 @@ class MenuDetailsNameImageWidget extends StatelessWidget {
                               fontWeight: FontWeight.w600,
                               fontSize: 13,
                             ),
-                            textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                            textDirection: serviceLocator<LanguageController>()
+                                .targetTextDirection,
                             maxLines: 1,
                             softWrap: true,
                             overflow: TextOverflow.ellipsis,
                           ),
                           backgroundColor: context.colorScheme.primary,
                           elevation: 0.0,
-                          visualDensity: const VisualDensity(horizontal: -4, vertical: -4),
-                          materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                          visualDensity:
+                              const VisualDensity(horizontal: -4, vertical: -4),
+                          materialTapTargetSize:
+                              MaterialTapTargetSize.shrinkWrap,
                           padding: const EdgeInsetsDirectional.all(8),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadiusDirectional.circular(20),

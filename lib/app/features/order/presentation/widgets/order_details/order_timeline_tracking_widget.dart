@@ -1,16 +1,19 @@
 part of 'package:homemakers_merchant/app/features/order/index.dart';
 
 class OrderTimelineTrackingWidget extends StatefulWidget {
-  const OrderTimelineTrackingWidget({required this.orderEntity, this.activeLocale = 'en_US', super.key});
+  const OrderTimelineTrackingWidget(
+      {required this.orderEntity, this.activeLocale = 'en_US', super.key});
 
   final OrderEntity orderEntity;
   final String activeLocale;
 
   @override
-  _OrderTimelineTrackingWidgetController createState() => _OrderTimelineTrackingWidgetController();
+  _OrderTimelineTrackingWidgetController createState() =>
+      _OrderTimelineTrackingWidgetController();
 }
 
-class _OrderTimelineTrackingWidgetController extends State<OrderTimelineTrackingWidget> {
+class _OrderTimelineTrackingWidgetController
+    extends State<OrderTimelineTrackingWidget> {
   List<TrackingInfo> trackingInfo = [];
 
   @override
@@ -36,12 +39,14 @@ class _OrderTimelineTrackingWidgetController extends State<OrderTimelineTracking
   Widget build(BuildContext context) => _OrderTimelineTrackingWidgetView(this);
 }
 
-class _OrderTimelineTrackingWidgetView extends WidgetView<OrderTimelineTrackingWidget, _OrderTimelineTrackingWidgetController> {
+class _OrderTimelineTrackingWidgetView extends WidgetView<
+    OrderTimelineTrackingWidget, _OrderTimelineTrackingWidgetController> {
   const _OrderTimelineTrackingWidgetView(super.state);
 
   @override
   Widget build(BuildContext context) {
-    moment.Moment.setGlobalLocalization(moment.MomentLocalizations.byLocale(widget.activeLocale)!);
+    moment.Moment.setGlobalLocalization(
+        moment.MomentLocalizations.byLocale(widget.activeLocale)!);
     final moment.Moment now = moment.Moment.now();
     return Card(
       margin: const EdgeInsetsDirectional.only(bottom: 8),
@@ -73,15 +78,24 @@ class _OrderTimelineTrackingWidgetView extends WidgetView<OrderTimelineTrackingW
                         padding: const EdgeInsetsDirectional.all(4),
                         child: Column(
                           mainAxisSize: MainAxisSize.min,
-                          textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                          textDirection: serviceLocator<LanguageController>()
+                              .targetTextDirection,
                           mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Column(
                               children: [
                                 Text(
-                                  state.trackingInfo[0].tracking!.eventHistory![index].eventCode?.groupTitle ?? '',
-                                  textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                  state
+                                          .trackingInfo[0]
+                                          .tracking!
+                                          .eventHistory![index]
+                                          .eventCode
+                                          ?.groupTitle ??
+                                      '',
+                                  textDirection:
+                                      serviceLocator<LanguageController>()
+                                          .targetTextDirection,
                                   style: context.bodyMedium!.copyWith(
                                     fontWeight: FontWeight.w600,
                                   ),
@@ -95,10 +109,18 @@ class _OrderTimelineTrackingWidgetView extends WidgetView<OrderTimelineTrackingW
                               children: [
                                 Text(
                                   now
-                                      .subtract(now.difference(
-                                          moment.Moment.fromMillisecondsSinceEpoch(state.trackingInfo[0].tracking!.eventHistory![index].eventTime ?? 0)))
-                                      .calendar(customFormat: "llll" /*"LLLL"*/),
-                                  textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                      .subtract(now.difference(moment.Moment
+                                          .fromMillisecondsSinceEpoch(state
+                                                  .trackingInfo[0]
+                                                  .tracking!
+                                                  .eventHistory![index]
+                                                  .eventTime ??
+                                              0)))
+                                      .calendar(
+                                          customFormat: "llll" /*"LLLL"*/),
+                                  textDirection:
+                                      serviceLocator<LanguageController>()
+                                          .targetTextDirection,
                                   style: context.labelMedium!.copyWith(
                                     fontWeight: FontWeight.w500,
                                   ),
@@ -114,7 +136,8 @@ class _OrderTimelineTrackingWidgetView extends WidgetView<OrderTimelineTrackingW
                     },
                     itemCount: (state.trackingInfo.isNotNullOrEmpty &&
                             state.trackingInfo[0].isNotNull &&
-                            state.trackingInfo[0].tracking!.eventHistory.isNotNullOrEmpty)
+                            state.trackingInfo[0].tracking!.eventHistory
+                                .isNotNullOrEmpty)
                         ? state.trackingInfo[0].tracking!.eventHistory!.length
                         : 0,
                   ),

@@ -16,7 +16,8 @@ class BusinessDocumentPage extends StatefulWidget {
   State<BusinessDocumentPage> createState() => _BusinessDocumentPageState();
 }
 
-class _BusinessDocumentPageState extends State<BusinessDocumentPage> with SingleTickerProviderStateMixin {
+class _BusinessDocumentPageState extends State<BusinessDocumentPage>
+    with SingleTickerProviderStateMixin {
   late final ScrollController scrollController;
   late final ScrollController innerListScrollController;
   List<BusinessDocumentUploadedEntity> allBusinessDocuments = [];
@@ -34,8 +35,13 @@ class _BusinessDocumentPageState extends State<BusinessDocumentPage> with Single
   late AnimationController _animationController;
   late Animation<double> _animation;
 
-  static final List<GlobalKey<FormState>> _uploadDocumentFormKeys = [GlobalKey<FormState>(), GlobalKey<FormState>(), GlobalKey<FormState>()];
-  static final GlobalKey<FormState> _uploadDocumentFormKey = GlobalKey<FormState>();
+  static final List<GlobalKey<FormState>> _uploadDocumentFormKeys = [
+    GlobalKey<FormState>(),
+    GlobalKey<FormState>(),
+    GlobalKey<FormState>()
+  ];
+  static final GlobalKey<FormState> _uploadDocumentFormKey =
+      GlobalKey<FormState>();
 
   @override
   void initState() {
@@ -83,7 +89,8 @@ class _BusinessDocumentPageState extends State<BusinessDocumentPage> with Single
   Widget build(BuildContext context) {
     final MediaQueryData media = MediaQuery.of(context);
     final double margins = GlobalApp.responsiveInsets(media.size.width);
-    final double topPadding = margins; //media.padding.top + kToolbarHeight + margins; //margins * 1.5;
+    final double topPadding =
+        margins; //media.padding.top + kToolbarHeight + margins; //margins * 1.5;
     final double bottomPadding = media.padding.bottom + margins;
     final double width = media.size.width;
     final ThemeData theme = Theme.of(context);
@@ -105,7 +112,8 @@ class _BusinessDocumentPageState extends State<BusinessDocumentPage> with Single
           ],
         ),
         body: Directionality(
-          textDirection: serviceLocator<LanguageController>().targetTextDirection,
+          textDirection:
+              serviceLocator<LanguageController>().targetTextDirection,
           child: AnimatedBuilder(
             animation: _animationController,
             builder: (BuildContext context, Widget? child) {
@@ -150,14 +158,18 @@ class _BusinessDocumentPageState extends State<BusinessDocumentPage> with Single
                               ),
                               children: [
                                 ScrollableRow(
-                                  textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                  textDirection:
+                                      serviceLocator<LanguageController>()
+                                          .targetTextDirection,
                                   children: [
                                     Text(
                                       'Upload Legal Documents',
                                       style: context.headlineSmall!.copyWith(
                                         fontWeight: FontWeight.bold,
                                       ),
-                                      textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                      textDirection:
+                                          serviceLocator<LanguageController>()
+                                              .targetTextDirection,
                                     ).translate()
                                   ],
                                 ),
@@ -166,12 +178,16 @@ class _BusinessDocumentPageState extends State<BusinessDocumentPage> with Single
                                   duration: Duration(milliseconds: 300),
                                 ),
                                 Wrap(
-                                  textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                  textDirection:
+                                      serviceLocator<LanguageController>()
+                                          .targetTextDirection,
                                   children: [
                                     Text(
                                       'Share with us commercial license and government ID for your business verification',
                                       style: context.labelMedium!.copyWith(),
-                                      textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                      textDirection:
+                                          serviceLocator<LanguageController>()
+                                              .targetTextDirection,
                                     ).translate()
                                   ],
                                 ),
@@ -179,8 +195,10 @@ class _BusinessDocumentPageState extends State<BusinessDocumentPage> with Single
                                   8,
                                   duration: Duration(milliseconds: 300),
                                 ),
-                                BlocBuilder<BusinessDocumentBloc, BusinessDocumentState>(
-                                  buildWhen: (previous, current) => previous != current,
+                                BlocBuilder<BusinessDocumentBloc,
+                                    BusinessDocumentState>(
+                                  buildWhen: (previous, current) =>
+                                      previous != current,
                                   bloc: context.watch<BusinessDocumentBloc>(),
                                   builder: (context, state) {
                                     state.maybeMap(
@@ -201,8 +219,10 @@ class _BusinessDocumentPageState extends State<BusinessDocumentPage> with Single
                                             businessDocumentAssetsEntity: [],
                                           ),
                                         );*/
-                                        final listOfUpdateDocuments = value.allBusinessDocuments.toList();
-                                        allBusinessDocuments = List<BusinessDocumentUploadedEntity>.from(
+                                        final listOfUpdateDocuments =
+                                            value.allBusinessDocuments.toList();
+                                        allBusinessDocuments = List<
+                                            BusinessDocumentUploadedEntity>.from(
                                           listOfUpdateDocuments.toList(),
                                         );
                                       },
@@ -216,17 +236,26 @@ class _BusinessDocumentPageState extends State<BusinessDocumentPage> with Single
                                           key: ObjectKey(
                                             allBusinessDocuments[index],
                                           ),
-                                          mainAxisAlignment: MainAxisAlignment.start,
-                                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.stretch,
                                           mainAxisSize: MainAxisSize.min,
                                           children: [
                                             Wrap(
-                                              textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                              textDirection: serviceLocator<
+                                                      LanguageController>()
+                                                  .targetTextDirection,
                                               children: [
                                                 Text(
-                                                  allBusinessDocuments[index].documentType.documentTypeName,
-                                                  textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                                                  overflow: TextOverflow.ellipsis,
+                                                  allBusinessDocuments[index]
+                                                      .documentType
+                                                      .documentTypeName,
+                                                  textDirection: serviceLocator<
+                                                          LanguageController>()
+                                                      .targetTextDirection,
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
                                                   softWrap: true,
                                                   maxLines: 2,
                                                 )
@@ -234,13 +263,20 @@ class _BusinessDocumentPageState extends State<BusinessDocumentPage> with Single
                                             ),
                                             AnimatedCrossFade(
                                               crossFadeState:
-                                                  (allBusinessDocuments[index].hasTextFieldEnable) ? CrossFadeState.showFirst : CrossFadeState.showSecond,
+                                                  (allBusinessDocuments[index]
+                                                          .hasTextFieldEnable)
+                                                      ? CrossFadeState.showFirst
+                                                      : CrossFadeState
+                                                          .showSecond,
                                               duration: const Duration(
                                                 milliseconds: 400,
                                               ),
-                                              secondChild: const SizedBox.shrink(),
+                                              secondChild:
+                                                  const SizedBox.shrink(),
                                               firstChild: Padding(
-                                                padding: const EdgeInsetsDirectional.only(
+                                                padding:
+                                                    const EdgeInsetsDirectional
+                                                        .only(
                                                   top: 12,
                                                   bottom: 4,
                                                 ),
@@ -248,8 +284,10 @@ class _BusinessDocumentPageState extends State<BusinessDocumentPage> with Single
                                                   children: [
                                                     Flexible(
                                                       child: DocumentTextField(
-                                                        allBusinessDocuments: allBusinessDocuments,
-                                                        textEditingControllers: textEditingControllers,
+                                                        allBusinessDocuments:
+                                                            allBusinessDocuments,
+                                                        textEditingControllers:
+                                                            textEditingControllers,
                                                         index: index,
                                                       ),
                                                     ),
@@ -258,22 +296,34 @@ class _BusinessDocumentPageState extends State<BusinessDocumentPage> with Single
                                               ),
                                             ),
                                             AnimatedCrossFade(
-                                              crossFadeState: (allBusinessDocuments[index].documentFrontAssets != null &&
-                                                      allBusinessDocuments[index].documentFrontAssets?.assetName != null)
+                                              crossFadeState: (allBusinessDocuments[
+                                                                  index]
+                                                              .documentFrontAssets !=
+                                                          null &&
+                                                      allBusinessDocuments[
+                                                                  index]
+                                                              .documentFrontAssets
+                                                              ?.assetName !=
+                                                          null)
                                                   ? CrossFadeState.showFirst
                                                   : CrossFadeState.showSecond,
                                               duration: const Duration(
                                                 milliseconds: 400,
                                               ),
-                                              secondChild: const SizedBox.shrink(),
+                                              secondChild:
+                                                  const SizedBox.shrink(),
                                               firstChild: Padding(
-                                                padding: const EdgeInsetsDirectional.only(
+                                                padding:
+                                                    const EdgeInsetsDirectional
+                                                        .only(
                                                   top: 8,
                                                   bottom: 4,
                                                 ),
                                                 child: Card(
                                                   shape: RoundedRectangleBorder(
-                                                    borderRadius: BorderRadiusDirectional.circular(10),
+                                                    borderRadius:
+                                                        BorderRadiusDirectional
+                                                            .circular(10),
                                                   ),
                                                   color: const Color.fromRGBO(
                                                     220,
@@ -285,34 +335,56 @@ class _BusinessDocumentPageState extends State<BusinessDocumentPage> with Single
                                                     key: ValueKey(
                                                       index.toString(),
                                                     ),
-                                                    selected: (allBusinessDocuments[index].documentFrontAssets != null &&
-                                                        allBusinessDocuments[index].documentFrontAssets?.assetName != null),
-                                                    selectedTileColor: const Color.fromRGBO(
+                                                    selected: (allBusinessDocuments[
+                                                                    index]
+                                                                .documentFrontAssets !=
+                                                            null &&
+                                                        allBusinessDocuments[
+                                                                    index]
+                                                                .documentFrontAssets
+                                                                ?.assetName !=
+                                                            null),
+                                                    selectedTileColor:
+                                                        const Color.fromRGBO(
                                                       220,
                                                       242,
                                                       228,
                                                       1,
                                                     ),
-                                                    shape: RoundedRectangleBorder(
-                                                      borderRadius: BorderRadiusDirectional.circular(10),
+                                                    shape:
+                                                        RoundedRectangleBorder(
+                                                      borderRadius:
+                                                          BorderRadiusDirectional
+                                                              .circular(10),
                                                     ),
                                                     dense: true,
-                                                    visualDensity: const VisualDensity(
+                                                    visualDensity:
+                                                        const VisualDensity(
                                                       horizontal: 0,
                                                       vertical: 0,
                                                     ),
                                                     title: Text(
-                                                      allBusinessDocuments[index].documentFrontAssets?.assetName ?? '',
-                                                      style: context.labelMedium!.copyWith(
-                                                        color: const Color.fromRGBO(
+                                                      allBusinessDocuments[
+                                                                  index]
+                                                              .documentFrontAssets
+                                                              ?.assetName ??
+                                                          '',
+                                                      style: context
+                                                          .labelMedium!
+                                                          .copyWith(
+                                                        color: const Color
+                                                            .fromRGBO(
                                                           42,
                                                           45,
                                                           50,
                                                           1.0,
                                                         ),
                                                       ),
-                                                      textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                                                      overflow: TextOverflow.ellipsis,
+                                                      textDirection: serviceLocator<
+                                                              LanguageController>()
+                                                          .targetTextDirection,
+                                                      overflow:
+                                                          TextOverflow.ellipsis,
                                                       softWrap: true,
                                                       maxLines: 2,
                                                     ).translate(),
@@ -320,21 +392,28 @@ class _BusinessDocumentPageState extends State<BusinessDocumentPage> with Single
                                                       height: 26,
                                                       width: 26,
                                                       child: ElevatedButton(
-                                                        style: ElevatedButton.styleFrom(
-                                                          backgroundColor: const Color.fromRGBO(
+                                                        style: ElevatedButton
+                                                            .styleFrom(
+                                                          backgroundColor:
+                                                              const Color
+                                                                  .fromRGBO(
                                                             234,
                                                             247,
                                                             238,
                                                             1,
                                                           ),
-                                                          foregroundColor: const Color.fromRGBO(
+                                                          foregroundColor:
+                                                              const Color
+                                                                  .fromRGBO(
                                                             127,
                                                             129,
                                                             132,
                                                             1,
                                                           ),
-                                                          padding: EdgeInsets.zero,
-                                                          shape: const CircleBorder(),
+                                                          padding:
+                                                              EdgeInsets.zero,
+                                                          shape:
+                                                              const CircleBorder(),
                                                         ),
                                                         onPressed: () {},
                                                         child: const Icon(
@@ -343,7 +422,8 @@ class _BusinessDocumentPageState extends State<BusinessDocumentPage> with Single
                                                         ),
                                                       ),
                                                     ),
-                                                    tileColor: const Color.fromRGBO(
+                                                    tileColor:
+                                                        const Color.fromRGBO(
                                                       220,
                                                       242,
                                                       228,
@@ -354,30 +434,51 @@ class _BusinessDocumentPageState extends State<BusinessDocumentPage> with Single
                                               ),
                                             ),
                                             AnimatedCrossFade(
-                                              crossFadeState: (allBusinessDocuments[index].documentFrontAssets == null ||
-                                                      allBusinessDocuments[index].documentFrontAssets?.assetsUploadStatus != DocumentUploadStatus.uploaded)
+                                              crossFadeState: (allBusinessDocuments[
+                                                                  index]
+                                                              .documentFrontAssets ==
+                                                          null ||
+                                                      allBusinessDocuments[
+                                                                  index]
+                                                              .documentFrontAssets
+                                                              ?.assetsUploadStatus !=
+                                                          DocumentUploadStatus
+                                                              .uploaded)
                                                   ? CrossFadeState.showFirst
                                                   : CrossFadeState.showSecond,
                                               duration: const Duration(
                                                 milliseconds: 400,
                                               ),
                                               firstChild: Padding(
-                                                padding: const EdgeInsetsDirectional.only(top: 12.0),
+                                                padding:
+                                                    const EdgeInsetsDirectional
+                                                        .only(top: 12.0),
                                                 child: ElevatedButton.icon(
                                                   onPressed: () async {
                                                     // Navigate to document picker page
-                                                    final List<dynamic>? result = await context.push<List<dynamic>>(
-                                                      Routes.UPLOAD_DOCUMENT_PAGE,
+                                                    final List<dynamic>?
+                                                        result =
+                                                        await context.push<
+                                                            List<dynamic>>(
+                                                      Routes
+                                                          .UPLOAD_DOCUMENT_PAGE,
                                                       extra: jsonEncode(
                                                         {
-                                                          'documentType': allBusinessDocuments[index].documentType.name,
+                                                          'documentType':
+                                                              allBusinessDocuments[
+                                                                      index]
+                                                                  .documentType
+                                                                  .name,
                                                         },
                                                       ),
                                                     );
                                                     // Check is Result exists or not
-                                                    if (result != null && result.isNotEmpty) {
+                                                    if (result != null &&
+                                                        result.isNotEmpty) {
                                                       var currentIndex = index;
-                                                      if ((index + 1) < documentTypes.length) {
+                                                      if ((index + 1) <
+                                                          documentTypes
+                                                              .length) {
                                                         await Future.delayed(
                                                           const Duration(
                                                             milliseconds: 500,
@@ -385,14 +486,28 @@ class _BusinessDocumentPageState extends State<BusinessDocumentPage> with Single
                                                           () {},
                                                         );
                                                         if (!mounted) return;
-                                                        context.read<BusinessDocumentBloc>().add(
+                                                        context
+                                                            .read<
+                                                                BusinessDocumentBloc>()
+                                                            .add(
                                                               AddNewDocument(
-                                                                newIndexPosition: currentIndex + 1,
-                                                                documentType: documentTypes[currentIndex + 1],
-                                                                allBusinessDocuments: allBusinessDocuments.toList(),
-                                                                businessDocumentUploadedEntity: allBusinessDocuments[currentIndex],
-                                                                currentIndex: currentIndex,
-                                                                uploadedData: result,
+                                                                newIndexPosition:
+                                                                    currentIndex +
+                                                                        1,
+                                                                documentType:
+                                                                    documentTypes[
+                                                                        currentIndex +
+                                                                            1],
+                                                                allBusinessDocuments:
+                                                                    allBusinessDocuments
+                                                                        .toList(),
+                                                                businessDocumentUploadedEntity:
+                                                                    allBusinessDocuments[
+                                                                        currentIndex],
+                                                                currentIndex:
+                                                                    currentIndex,
+                                                                uploadedData:
+                                                                    result,
                                                               ),
                                                             );
                                                       } else {
@@ -403,15 +518,31 @@ class _BusinessDocumentPageState extends State<BusinessDocumentPage> with Single
                                                           () {},
                                                         );
                                                         if (!mounted) return;
-                                                        serviceLocator<AppUserEntity>().currentProfileStatus = CurrentProfileStatus.businessDocumentUploaded;
-                                                        context.read<BusinessDocumentBloc>().add(
+                                                        serviceLocator<
+                                                                    AppUserEntity>()
+                                                                .currentProfileStatus =
+                                                            CurrentProfileStatus
+                                                                .businessDocumentUploaded;
+                                                        context
+                                                            .read<
+                                                                BusinessDocumentBloc>()
+                                                            .add(
                                                               AddNewDocument(
-                                                                newIndexPosition: currentIndex,
-                                                                documentType: documentTypes[currentIndex],
-                                                                allBusinessDocuments: allBusinessDocuments.toList(),
-                                                                businessDocumentUploadedEntity: allBusinessDocuments[currentIndex],
-                                                                currentIndex: currentIndex,
-                                                                uploadedData: result,
+                                                                newIndexPosition:
+                                                                    currentIndex,
+                                                                documentType:
+                                                                    documentTypes[
+                                                                        currentIndex],
+                                                                allBusinessDocuments:
+                                                                    allBusinessDocuments
+                                                                        .toList(),
+                                                                businessDocumentUploadedEntity:
+                                                                    allBusinessDocuments[
+                                                                        currentIndex],
+                                                                currentIndex:
+                                                                    currentIndex,
+                                                                uploadedData:
+                                                                    result,
                                                               ),
                                                             );
                                                       }
@@ -428,9 +559,13 @@ class _BusinessDocumentPageState extends State<BusinessDocumentPage> with Single
                                                   ),
                                                   label: Text(
                                                     'Upload ${allBusinessDocuments[index].documentType.documentTypeName} Document',
-                                                    textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                                                    style: context.labelLarge!.copyWith(
-                                                      color: const Color.fromRGBO(
+                                                    textDirection: serviceLocator<
+                                                            LanguageController>()
+                                                        .targetTextDirection,
+                                                    style: context.labelLarge!
+                                                        .copyWith(
+                                                      color:
+                                                          const Color.fromRGBO(
                                                         42,
                                                         45,
                                                         50,
@@ -438,13 +573,17 @@ class _BusinessDocumentPageState extends State<BusinessDocumentPage> with Single
                                                       ),
                                                     ),
                                                   ).translate(),
-                                                  style: ElevatedButton.styleFrom(
-                                                    backgroundColor: Colors.white,
-                                                    minimumSize: Size(context.width, 46),
+                                                  style:
+                                                      ElevatedButton.styleFrom(
+                                                    backgroundColor:
+                                                        Colors.white,
+                                                    minimumSize:
+                                                        Size(context.width, 46),
                                                   ),
                                                 ),
                                               ),
-                                              secondChild: const SizedBox.shrink(),
+                                              secondChild:
+                                                  const SizedBox.shrink(),
                                             ),
                                           ],
                                         );
@@ -488,9 +627,12 @@ class _BusinessDocumentPageState extends State<BusinessDocumentPage> with Single
                                     ),
                                     child: Text(
                                       'Prev',
-                                      textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                      textDirection:
+                                          serviceLocator<LanguageController>()
+                                              .targetTextDirection,
                                       style: const TextStyle(
-                                        color: Color.fromRGBO(127, 129, 132, 1.0),
+                                        color:
+                                            Color.fromRGBO(127, 129, 132, 1.0),
                                       ),
                                     ).translate(),
                                   ),
@@ -501,15 +643,23 @@ class _BusinessDocumentPageState extends State<BusinessDocumentPage> with Single
                                 Expanded(
                                   flex: 2,
                                   child: ElevatedButton(
-                                    onPressed: (allBusinessDocuments.any((element) => element.documentFrontAssets != null)) ? onUploadPressed : null,
+                                    onPressed: (allBusinessDocuments.any(
+                                            (element) =>
+                                                element.documentFrontAssets !=
+                                                null))
+                                        ? onUploadPressed
+                                        : null,
                                     style: ElevatedButton.styleFrom(
                                       //minimumSize: Size(180, 40),
-                                      disabledBackgroundColor: Color.fromRGBO(255, 219, 208, 1),
+                                      disabledBackgroundColor:
+                                          Color.fromRGBO(255, 219, 208, 1),
                                       disabledForegroundColor: Colors.white,
                                     ),
                                     child: Text(
                                       'Upload',
-                                      textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                      textDirection:
+                                          serviceLocator<LanguageController>()
+                                              .targetTextDirection,
                                     ).translate(),
                                   ),
                                 ),
@@ -552,12 +702,15 @@ class DocumentTextField extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextField(
       key: ValueKey(index),
-      controller: allBusinessDocuments[index].documentFrontAssets?.textEditingController,
+      controller: allBusinessDocuments[index]
+          .documentFrontAssets
+          ?.textEditingController,
       keyboardType: TextInputType.text,
       textInputAction: TextInputAction.done,
       textDirection: serviceLocator<LanguageController>().targetTextDirection,
       decoration: InputDecoration(
-        labelText: 'Enter ${allBusinessDocuments[index].documentType.documentTypeName}',
+        labelText:
+            'Enter ${allBusinessDocuments[index].documentType.documentTypeName}',
         alignLabelWithHint: true,
         isDense: true,
       ),
@@ -567,7 +720,8 @@ class DocumentTextField extends StatelessWidget {
         context.read<BusinessDocumentBloc>().add(
               TradeLicenseNumberOnChanged(
                 textEditingController: textEditingControllers[index],
-                currentUpdatedValue: textEditingControllers[index].value.text.trim(),
+                currentUpdatedValue:
+                    textEditingControllers[index].value.text.trim(),
                 index: index,
               ),
             );

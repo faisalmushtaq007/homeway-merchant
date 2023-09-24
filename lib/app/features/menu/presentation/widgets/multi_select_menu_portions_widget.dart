@@ -106,7 +106,8 @@ class MultiSelectMenuPortionFormField extends FormField<List<MenuPortion>> {
                   state.save();
                 },
                 availableMenuPortions: availableMenuPortionList.toList(),
-                initialSelectedMenuPortionList: initialSelectedMenuPortionList.toList(),
+                initialSelectedMenuPortionList:
+                    initialSelectedMenuPortionList.toList(),
                 isSingleSelect: isSingleSelect,
                 onMaxSelected: onMaxSelected,
                 maxSelection: maxSelection,
@@ -137,7 +138,8 @@ class MultiSelectMenuMenuPortion extends StatefulWidget {
   final bool isSingleSelect;
 
   @override
-  _MultiSelectPortionsChipState createState() => _MultiSelectPortionsChipState();
+  _MultiSelectPortionsChipState createState() =>
+      _MultiSelectPortionsChipState();
 }
 
 class _MultiSelectPortionsChipState extends State<MultiSelectMenuMenuPortion> {
@@ -152,7 +154,8 @@ class _MultiSelectPortionsChipState extends State<MultiSelectMenuMenuPortion> {
         ChoiceChip(
           label: Text(
             '${item.title} ${item.unit}',
-            textDirection: serviceLocator<LanguageController>().targetTextDirection,
+            textDirection:
+                serviceLocator<LanguageController>().targetTextDirection,
           ),
           selected: selectedChoices.contains(item),
           onSelected: (selected) {
@@ -164,13 +167,16 @@ class _MultiSelectPortionsChipState extends State<MultiSelectMenuMenuPortion> {
                 widget.onSelectionChanged?.call(selectedChoices);
               });
             } else {
-              if (selectedChoices.length == (widget.maxSelection ?? -1) && !selectedChoices.contains(item)) {
+              if (selectedChoices.length == (widget.maxSelection ?? -1) &&
+                  !selectedChoices.contains(item)) {
                 setState(() {
                   widget.onMaxSelected?.call(selectedChoices);
                 });
               } else {
                 setState(() {
-                  selectedChoices.contains(item) ? selectedChoices.remove(item) : selectedChoices.add(item);
+                  selectedChoices.contains(item)
+                      ? selectedChoices.remove(item)
+                      : selectedChoices.add(item);
                   widget.onSelectionChanged?.call(selectedChoices);
                 });
               }
@@ -186,7 +192,8 @@ class _MultiSelectPortionsChipState extends State<MultiSelectMenuMenuPortion> {
   @override
   void initState() {
     super.initState();
-    selectedChoices=List<MenuPortion>.from(widget.initialSelectedMenuPortionList.toList());
+    selectedChoices =
+        List<MenuPortion>.from(widget.initialSelectedMenuPortionList.toList());
   }
 
   @override

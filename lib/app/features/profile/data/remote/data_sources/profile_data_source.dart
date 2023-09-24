@@ -33,13 +33,15 @@ abstract interface class ProfileDataSource {
   });
 
   // BusinessType
-  Future<ApiResultState<(BusinessProfileEntity, BusinessTypeEntity)>> saveBusinessType({
+  Future<ApiResultState<(BusinessProfileEntity, BusinessTypeEntity)>>
+      saveBusinessType({
     required BusinessTypeEntity businessTypeEntity,
     AppUserEntity? appUserEntity,
     BusinessProfileEntity? businessProfileEntity,
   });
 
-  Future<ApiResultState<(BusinessProfileEntity, BusinessTypeEntity)>> editBusinessType({
+  Future<ApiResultState<(BusinessProfileEntity, BusinessTypeEntity)>>
+      editBusinessType({
     required BusinessTypeEntity businessTypeEntity,
     required int businessTypeID,
     AppUserEntity? appUserEntity,
@@ -58,14 +60,16 @@ abstract interface class ProfileDataSource {
     BusinessProfileEntity? businessProfileEntity,
   });
 
-  Future<ApiResultState<(BusinessProfileEntity, BusinessTypeEntity)>> getBusinessType({
+  Future<ApiResultState<(BusinessProfileEntity, BusinessTypeEntity)>>
+      getBusinessType({
     required int businessTypeID,
     AppUserEntity? appUserEntity,
     BusinessProfileEntity? businessProfileEntity,
     BusinessTypeEntity? businessTypeEntity,
   });
 
-  Future<ApiResultState<(BusinessProfileEntity, List<BusinessTypeEntity>)>> getAllBusinessType({
+  Future<ApiResultState<(BusinessProfileEntity, List<BusinessTypeEntity>)>>
+      getAllBusinessType({
     AppUserEntity? appUserEntity,
     BusinessProfileEntity? businessProfileEntity,
   });
@@ -100,7 +104,8 @@ abstract interface class ProfileDataSource {
     NewBusinessDocumentEntity? businessDocumentUploadedEntity,
   });
 
-  Future<ApiResultState<List<NewBusinessDocumentEntity>>> getAllBusinessDocument({
+  Future<ApiResultState<List<NewBusinessDocumentEntity>>>
+      getAllBusinessDocument({
     AppUserEntity? appUserEntity,
   });
 
@@ -156,7 +161,8 @@ abstract interface class ProfileDataSource {
     bool hasUpdateAll = false,
   });
 
-  Future<ApiResultState<List<BusinessProfileEntity>>> getAllBusinessProfilePagination({
+  Future<ApiResultState<List<BusinessProfileEntity>>>
+      getAllBusinessProfilePagination({
     int pageKey = 0,
     int pageSize = 10,
     String? searchText,
@@ -166,12 +172,14 @@ abstract interface class ProfileDataSource {
     Timestamp? startTime,
     Timestamp? endTime,
   });
-  Future<ApiResultState<List<NewBusinessDocumentEntity>>> saveAllBusinessDocuments({
+  Future<ApiResultState<List<NewBusinessDocumentEntity>>>
+      saveAllBusinessDocuments({
     required List<NewBusinessDocumentEntity> newBusinessDocuments,
     bool hasUpdateAll = false,
   });
 
-  Future<ApiResultState<List<NewBusinessDocumentEntity>>> getAllBusinessDocumentsPagination({
+  Future<ApiResultState<List<NewBusinessDocumentEntity>>>
+      getAllBusinessDocumentsPagination({
     int pageKey = 0,
     int pageSize = 10,
     String? searchText,

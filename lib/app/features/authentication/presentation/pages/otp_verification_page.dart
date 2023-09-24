@@ -54,7 +54,8 @@ class _OTPVerificationPageState extends State<OTPVerificationPage> {
   late Timer countdownTimer;
 
   // Button Controller
-  AsyncBtnStatesController otpVerificationButtonController = AsyncBtnStatesController();
+  AsyncBtnStatesController otpVerificationButtonController =
+      AsyncBtnStatesController();
   static final verifyOTPFormKey = GlobalKey<FormState>();
   final otpFocusNode = FocusNode();
 
@@ -228,8 +229,9 @@ class _OTPVerificationPageState extends State<OTPVerificationPage> {
     );
 
     final submittedPinTheme = defaultPinTheme.copyWith(
-      decoration:
-          defaultPinTheme.decoration?.copyWith(color: const Color.fromRGBO(215, 243, 227, 1), border: Border.all(color: Color.fromRGBO(69, 201, 125, 1.0))),
+      decoration: defaultPinTheme.decoration?.copyWith(
+          color: const Color.fromRGBO(215, 243, 227, 1),
+          border: Border.all(color: Color.fromRGBO(69, 201, 125, 1.0))),
     );
     final errorPinTheme = defaultPinTheme.copyWith(
       decoration: BoxDecoration(
@@ -276,25 +278,40 @@ class _OTPVerificationPageState extends State<OTPVerificationPage> {
                       Routes.CREATE_BUSINESS_PROFILE_PAGE,
                       extra: {
                         'businessProfileEntity': BusinessProfileEntity(
-                          businessPhoneNumber: otpVerificationState.appUserEntity?.phoneNumber,
-                          countryDialCode: otpVerificationState.appUserEntity?.country_dial_code ?? '+966',
-                          isoCode: otpVerificationState.appUserEntity?.isoCode ?? 'SA',
-                          phoneNumberWithoutDialCode: otpVerificationState.appUserEntity?.phoneNumberWithoutDialCode ?? '',
+                          businessPhoneNumber:
+                              otpVerificationState.appUserEntity?.phoneNumber,
+                          countryDialCode: otpVerificationState
+                                  .appUserEntity?.country_dial_code ??
+                              '+966',
+                          isoCode:
+                              otpVerificationState.appUserEntity?.isoCode ??
+                                  'SA',
+                          phoneNumberWithoutDialCode: otpVerificationState
+                                  .appUserEntity?.phoneNumberWithoutDialCode ??
+                              '',
                         ),
                       },
                     );
                     return;
                   } else if (otpVerificationState is VerifyOtpFailedState) {
                     // Todo(prasant): temp purpose
-                    appLog.e('VerifyOtpFailedState ${otpVerificationState.appUserEntity?.toMap() ?? ''}, ${otpVerificationState.appUserEntity?.phoneNumber}');
+                    appLog.e(
+                        'VerifyOtpFailedState ${otpVerificationState.appUserEntity?.toMap() ?? ''}, ${otpVerificationState.appUserEntity?.phoneNumber}');
                     context.pushReplacement(
                       Routes.CREATE_BUSINESS_PROFILE_PAGE,
                       extra: {
                         'businessProfileEntity': BusinessProfileEntity(
-                          businessPhoneNumber: otpVerificationState.appUserEntity?.phoneNumber,
-                          countryDialCode: otpVerificationState.appUserEntity?.country_dial_code ?? '+966',
-                          isoCode: otpVerificationState.appUserEntity?.isoCode ?? 'SA',
-                          phoneNumberWithoutDialCode: otpVerificationState.appUserEntity?.phoneNumberWithoutDialCode ?? '',
+                          businessPhoneNumber:
+                              otpVerificationState.appUserEntity?.phoneNumber,
+                          countryDialCode: otpVerificationState
+                                  .appUserEntity?.country_dial_code ??
+                              '+966',
+                          isoCode:
+                              otpVerificationState.appUserEntity?.isoCode ??
+                                  'SA',
+                          phoneNumberWithoutDialCode: otpVerificationState
+                                  .appUserEntity?.phoneNumberWithoutDialCode ??
+                              '',
                         ),
                       },
                     );
@@ -312,7 +329,8 @@ class _OTPVerificationPageState extends State<OTPVerificationPage> {
                     switch (otpVerificationState) {
                       case VerifyOtpState():
                         {
-                          if (otpVerificationState.otpVerificationStatus == OtpVerificationStatus.otpVerified) {
+                          if (otpVerificationState.otpVerificationStatus ==
+                              OtpVerificationStatus.otpVerified) {
                             // Reset the OTP text field
                             otpController.clear();
                           }
@@ -336,7 +354,8 @@ class _OTPVerificationPageState extends State<OTPVerificationPage> {
                           break;
                         }
                       case _:
-                        appLog.d('Default case: bloc builder PhoneNumberVerificationBloc page');
+                        appLog.d(
+                            'Default case: bloc builder PhoneNumberVerificationBloc page');
                     }
 
                     return Form(
@@ -355,14 +374,17 @@ class _OTPVerificationPageState extends State<OTPVerificationPage> {
                           mainAxisSize: MainAxisSize.min,
                           mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.stretch,
-                          textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                          textDirection: serviceLocator<LanguageController>()
+                              .targetTextDirection,
                           children: [
-                            const AnimatedGap(16, duration: Duration(milliseconds: 400)),
+                            const AnimatedGap(16,
+                                duration: Duration(milliseconds: 400)),
                             Align(
                               alignment: AlignmentDirectional.topStart,
                               child: const AppLogo(),
                             ),
-                            const AnimatedGap(36, duration: Duration(milliseconds: 400)),
+                            const AnimatedGap(36,
+                                duration: Duration(milliseconds: 400)),
                             SizedBox(
                               child: Wrap(
                                 alignment: WrapAlignment.start,
@@ -370,13 +392,19 @@ class _OTPVerificationPageState extends State<OTPVerificationPage> {
                                 children: [
                                   Text(
                                     'Enter verification code',
-                                    style: Theme.of(context).textTheme.headlineMedium!.copyWith(fontWeight: FontWeight.w600),
-                                    textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .headlineMedium!
+                                        .copyWith(fontWeight: FontWeight.w600),
+                                    textDirection:
+                                        serviceLocator<LanguageController>()
+                                            .targetTextDirection,
                                   ),
                                 ],
                               ),
                             ),
-                            const AnimatedGap(4, duration: Duration(milliseconds: 400)),
+                            const AnimatedGap(4,
+                                duration: Duration(milliseconds: 400)),
                             SizedBox(
                               child: Wrap(
                                 alignment: WrapAlignment.start,
@@ -384,30 +412,41 @@ class _OTPVerificationPageState extends State<OTPVerificationPage> {
                                 children: [
                                   Text(
                                     "We've sent an OTP code to ${widget.phoneNumber}",
-                                    style: Theme.of(context).textTheme.labelLarge,
-                                    textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                    style:
+                                        Theme.of(context).textTheme.labelLarge,
+                                    textDirection:
+                                        serviceLocator<LanguageController>()
+                                            .targetTextDirection,
                                   ),
                                 ],
                               ),
                             ),
-                            const AnimatedGap(16, duration: Duration(milliseconds: 400)),
+                            const AnimatedGap(16,
+                                duration: Duration(milliseconds: 400)),
                             Directionality(
-                              textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                              textDirection:
+                                  serviceLocator<LanguageController>()
+                                      .targetTextDirection,
                               child: Pinput(
                                 length: 6,
                                 controller: otpController,
                                 focusNode: otpFocusNode,
-                                androidSmsAutofillMethod: AndroidSmsAutofillMethod.smsUserConsentApi,
+                                androidSmsAutofillMethod:
+                                    AndroidSmsAutofillMethod.smsUserConsentApi,
                                 listenForMultipleSmsOnAndroid: true,
-                                hapticFeedbackType: HapticFeedbackType.lightImpact,
+                                hapticFeedbackType:
+                                    HapticFeedbackType.lightImpact,
                                 autofocus: true,
                                 defaultPinTheme: defaultPinTheme,
                                 focusedPinTheme: focusedPinTheme,
                                 submittedPinTheme: submittedPinTheme,
                                 errorPinTheme: errorPinTheme,
-                                forceErrorState: otpErrorText != null ? true : false,
+                                forceErrorState:
+                                    otpErrorText != null ? true : false,
                                 validator: (otpValue) {
-                                  if (otpValue == null || otpValue.isEmpty || !validateOTP(otpValue)) {
+                                  if (otpValue == null ||
+                                      otpValue.isEmpty ||
+                                      !validateOTP(otpValue)) {
                                     otpErrorText = 'Enter the OTP code';
                                     return 'Enter the OTP code';
                                   } else {
@@ -415,7 +454,8 @@ class _OTPVerificationPageState extends State<OTPVerificationPage> {
                                     return null;
                                   }
                                 },
-                                pinputAutovalidateMode: PinputAutovalidateMode.onSubmit,
+                                pinputAutovalidateMode:
+                                    PinputAutovalidateMode.onSubmit,
                                 showCursor: true,
                                 onCompleted: (pin) {
                                   debugPrint('OTP onCompleted: pin');
@@ -426,37 +466,51 @@ class _OTPVerificationPageState extends State<OTPVerificationPage> {
                                 errorText: otpErrorText,
                               ),
                             ),
-                            const AnimatedGap(16, duration: Duration(milliseconds: 400)),
+                            const AnimatedGap(16,
+                                duration: Duration(milliseconds: 400)),
                             AnimatedCrossFade(
                               duration: const Duration(milliseconds: 700),
-                              crossFadeState: isResendEnabled ? CrossFadeState.showSecond : CrossFadeState.showFirst,
+                              crossFadeState: isResendEnabled
+                                  ? CrossFadeState.showSecond
+                                  : CrossFadeState.showFirst,
                               firstChild: Text(
                                 'OTP will expire in $countdown seconds',
                                 style: context.labelLarge!.copyWith(),
-                                textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                textDirection:
+                                    serviceLocator<LanguageController>()
+                                        .targetTextDirection,
                               ),
                               secondChild: Wrap(
-                                textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                textDirection:
+                                    serviceLocator<LanguageController>()
+                                        .targetTextDirection,
                                 children: [
                                   Text(
                                     "Didn't received the OTP? ",
                                     style: context.labelLarge!.copyWith(),
-                                    textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                    textDirection:
+                                        serviceLocator<LanguageController>()
+                                            .targetTextDirection,
                                   ),
                                   InkWell(
-                                    onTap: isResendEnabled ? () => resendOTP() : null,
+                                    onTap: isResendEnabled
+                                        ? () => resendOTP()
+                                        : null,
                                     child: Text(
                                       'Resend OTP',
                                       style: context.labelLarge!.copyWith(
                                         color: context.primaryColor,
                                       ),
-                                      textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                      textDirection:
+                                          serviceLocator<LanguageController>()
+                                              .targetTextDirection,
                                     ),
                                   ),
                                 ],
                               ),
                             ),
-                            const AnimatedGap(20, duration: Duration(milliseconds: 400)),
+                            const AnimatedGap(20,
+                                duration: Duration(milliseconds: 400)),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.start,
                               crossAxisAlignment: CrossAxisAlignment.center,
@@ -465,39 +519,58 @@ class _OTPVerificationPageState extends State<OTPVerificationPage> {
                                   child: ElevatedButton(
                                     //asyncBtnStatesController: otpVerificationButtonController,
                                     onPressed: () async {
-                                      if (verifyOTPFormKey.currentState!.validate()) {
+                                      if (verifyOTPFormKey.currentState!
+                                          .validate()) {
                                         appLog.d('OTP Validate');
                                         verifyOTPFormKey.currentState?.save();
-                                        if (otpController.value.text == '123456') {
+                                        if (otpController.value.text ==
+                                            '123456') {
                                           // OTP is valid
                                           otpErrorText = null;
 
                                           setState(() {});
-                                          await Future.delayed(const Duration(milliseconds: 500), () {});
+                                          await Future.delayed(
+                                              const Duration(milliseconds: 500),
+                                              () {});
                                           if (!mounted) {
                                             return;
                                           }
-                                          serviceLocator<AppUserEntity>().phoneNumber = widget.phoneNumber;
-                                          serviceLocator<AppUserEntity>().currentProfileStatus = CurrentProfileStatus.phoneNumberVerified;
-                                          context.read<OtpVerificationBloc>().add(
+                                          serviceLocator<AppUserEntity>()
+                                              .phoneNumber = widget.phoneNumber;
+                                          serviceLocator<AppUserEntity>()
+                                                  .currentProfileStatus =
+                                              CurrentProfileStatus
+                                                  .phoneNumberVerified;
+                                          context
+                                              .read<OtpVerificationBloc>()
+                                              .add(
                                                 VerifyOtp(
-                                                  verifyOtpEntity: VerifyOtpEntity(
+                                                  verifyOtpEntity:
+                                                      VerifyOtpEntity(
                                                     user_type: 'merchant',
-                                                    mobile: widget.phoneNumberWithoutFormat,
-                                                    country_dial_code: widget.countryDialCode,
+                                                    mobile: widget
+                                                        .phoneNumberWithoutFormat,
+                                                    country_dial_code:
+                                                        widget.countryDialCode,
                                                     otp: int.parse(
-                                                      otpController.value.text.trim(),
+                                                      otpController.value.text
+                                                          .trim(),
                                                     ),
                                                     // Todo(prasant): Check password and db property from backend developer
                                                     db: '',
                                                     password: int.parse(
-                                                      otpController.value.text.trim(),
+                                                      otpController.value.text
+                                                          .trim(),
                                                     ),
                                                     isoCode: widget.isoCode,
-                                                    phoneNumberWithFormat: widget.phoneNumber,
-                                                    phoneNumberWithoutFormat: widget.phoneNumberWithoutFormat,
+                                                    phoneNumberWithFormat:
+                                                        widget.phoneNumber,
+                                                    phoneNumberWithoutFormat: widget
+                                                        .phoneNumberWithoutFormat,
                                                   ),
-                                                  otpVerificationStatus: OtpVerificationStatus.otpSent,
+                                                  otpVerificationStatus:
+                                                      OtpVerificationStatus
+                                                          .otpSent,
                                                 ),
                                               );
                                         } else {
@@ -511,7 +584,9 @@ class _OTPVerificationPageState extends State<OTPVerificationPage> {
                                     },
                                     child: Text(
                                       'Verify OTP',
-                                      textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                      textDirection:
+                                          serviceLocator<LanguageController>()
+                                              .targetTextDirection,
                                     ),
                                   ),
                                 ),

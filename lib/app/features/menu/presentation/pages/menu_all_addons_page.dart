@@ -1,7 +1,8 @@
 part of 'package:homemakers_merchant/app/features/menu/index.dart';
 
 class MenuAllAddonsPage extends StatefulWidget {
-  const MenuAllAddonsPage({super.key, this.selectItemUseCase = SelectItemUseCase.none});
+  const MenuAllAddonsPage(
+      {super.key, this.selectItemUseCase = SelectItemUseCase.none});
 
   final SelectItemUseCase selectItemUseCase;
 
@@ -24,7 +25,8 @@ class _MenuAllAddonsPageController extends State<MenuAllAddonsPage> {
   int pageSize = 10;
   int pageKey = 1;
   String? searchText = '';
-  final PagingController<int, Addons> _pagingController = PagingController(firstPageKey: 1);
+  final PagingController<int, Addons> _pagingController =
+      PagingController(firstPageKey: 1);
 
   @override
   void initState() {
@@ -58,7 +60,8 @@ class _MenuAllAddonsPageController extends State<MenuAllAddonsPage> {
     //initMenuAddons();
   }
 
-  Future<void> _fetchPage(pageKey, {int pageSize = 10, String? searchItem}) async {
+  Future<void> _fetchPage(pageKey,
+      {int pageSize = 10, String? searchItem}) async {
     context.read<MenuBloc>().add(
           GetAllAddons(
             pageKey: pageKey,
@@ -102,12 +105,15 @@ class _MenuAllAddonsPageController extends State<MenuAllAddonsPage> {
           } else if (menuState is GetAllAddonsState) {
             //_menuAvailableAddons = List<Addons>.from(addonsState.addonsEntities.toList());
             try {
-              final isLastPage = menuState.addonsEntities.toList().length < pageSize;
+              final isLastPage =
+                  menuState.addonsEntities.toList().length < pageSize;
               if (isLastPage) {
-                _pagingController.appendLastPage(menuState.addonsEntities.toList());
+                _pagingController
+                    .appendLastPage(menuState.addonsEntities.toList());
               } else {
                 final nextPageKey = pageKey + 1;
-                _pagingController.appendPage(menuState.addonsEntities.toList(), nextPageKey);
+                _pagingController.appendPage(
+                    menuState.addonsEntities.toList(), nextPageKey);
               }
               widgetState = WidgetState<Addons>.allData(
                 context: context,
@@ -155,7 +161,8 @@ class _MenuAllAddonsPageController extends State<MenuAllAddonsPage> {
                 }
               case SelectAddonsState():
                 {
-                  _selectedAddons = List<Addons>.from(addonsState.selectedAddonsEntities.toList());
+                  _selectedAddons = List<Addons>.from(
+                      addonsState.selectedAddonsEntities.toList());
                 }
               case AddonsExceptionState():
                 {
@@ -174,14 +181,16 @@ class _MenuAllAddonsPageController extends State<MenuAllAddonsPage> {
       );
 }
 
-class _MenuAllAddonsPageView extends WidgetView<MenuAllAddonsPage, _MenuAllAddonsPageController> {
+class _MenuAllAddonsPageView
+    extends WidgetView<MenuAllAddonsPage, _MenuAllAddonsPageController> {
   const _MenuAllAddonsPageView(super.state);
 
   @override
   Widget build(BuildContext context) {
     final MediaQueryData media = MediaQuery.of(context);
     final double margins = GlobalApp.responsiveInsets(media.size.width);
-    final double topPadding = margins; //media.padding.top + kToolbarHeight + margins; //margins * 1.5;
+    final double topPadding =
+        margins; //media.padding.top + kToolbarHeight + margins; //margins * 1.5;
     final double bottomPadding = margins; //media.padding.bottom + margins;
     final double width = media.size.width;
     final ThemeData theme = Theme.of(context);
@@ -200,7 +209,8 @@ class _MenuAllAddonsPageView extends WidgetView<MenuAllAddonsPage, _MenuAllAddon
             automaticallyImplyLeading: true,
             title: Text(
               'All Addons',
-              textDirection: serviceLocator<LanguageController>().targetTextDirection,
+              textDirection:
+                  serviceLocator<LanguageController>().targetTextDirection,
             ),
             actions: const [
               Padding(
@@ -221,7 +231,8 @@ class _MenuAllAddonsPageView extends WidgetView<MenuAllAddonsPage, _MenuAllAddon
                 backgroundColor: const Color.fromRGBO(69, 201, 125, 1.0),
                 onPressed: () {
                   context.read<MenuBloc>().add(
-                        PopToMenuPage(addonsEntity: state._selectedAddons.toList()),
+                        PopToMenuPage(
+                            addonsEntity: state._selectedAddons.toList()),
                       );
                 },
               ),
@@ -251,50 +262,75 @@ class _MenuAllAddonsPageView extends WidgetView<MenuAllAddonsPage, _MenuAllAddon
                   return SingleChildScrollView(
                     child: Container(
                       constraints: BoxConstraints(
-                        maxHeight: media.size.height - (media.padding.top + kToolbarHeight + media.padding.bottom + margins),
+                        maxHeight: media.size.height -
+                            (media.padding.top +
+                                kToolbarHeight +
+                                media.padding.bottom +
+                                margins),
                         //minHeight: media.size.height,
                       ),
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.stretch,
-                        textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                        textDirection: serviceLocator<LanguageController>()
+                            .targetTextDirection,
                         children: [
                           AnimatedCrossFade(
                             firstChild: Column(
                               mainAxisSize: MainAxisSize.min,
                               mainAxisAlignment: MainAxisAlignment.start,
                               crossAxisAlignment: CrossAxisAlignment.stretch,
-                              textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                              textDirection:
+                                  serviceLocator<LanguageController>()
+                                      .targetTextDirection,
                               children: [
-                                const AnimatedGap(6, duration: Duration(milliseconds: 500)),
+                                const AnimatedGap(6,
+                                    duration: Duration(milliseconds: 500)),
                                 IntrinsicHeight(
                                   child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                    textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    textDirection:
+                                        serviceLocator<LanguageController>()
+                                            .targetTextDirection,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
                                     children: [
                                       Expanded(
                                         child: SherlockSearchBar(
                                           //isFullScreen: true,
-                                          sherlock: Sherlock(elements: state._menuAvailableAddons.map((e) => e.toMap()).toList()),
+                                          sherlock: Sherlock(
+                                              elements: state
+                                                  ._menuAvailableAddons
+                                                  .map((e) => e.toMap())
+                                                  .toList()),
                                           sherlockCompletion:
-                                              SherlockCompletion(where: 'by', elements: state._menuAvailableAddons.map((e) => e.toMap()).toList()),
+                                              SherlockCompletion(
+                                                  where: 'by',
+                                                  elements: state
+                                                      ._menuAvailableAddons
+                                                      .map((e) => e.toMap())
+                                                      .toList()),
                                           sherlockCompletionMinResults: 1,
                                           onSearch: (input, sherlock) {
                                             /*setState(() {
                                                                   state._results = sherlock.search(input: input);
                                                                 });*/
                                           },
-                                          completionsBuilder: (context, completions) => SherlockCompletionsBuilder(
+                                          completionsBuilder:
+                                              (context, completions) =>
+                                                  SherlockCompletionsBuilder(
                                             completions: completions,
-                                            buildCompletion: (completion) => Padding(
+                                            buildCompletion: (completion) =>
+                                                Padding(
                                               padding: const EdgeInsets.all(8),
                                               child: Row(
                                                 children: [
                                                   Text(
                                                     completion,
-                                                    style: const TextStyle(fontSize: 14),
+                                                    style: const TextStyle(
+                                                        fontSize: 14),
                                                   ),
                                                   const Spacer(),
                                                   const Icon(Icons.check),
@@ -303,39 +339,60 @@ class _MenuAllAddonsPageView extends WidgetView<MenuAllAddonsPage, _MenuAllAddon
                                               ),
                                             ),
                                           ),
-                                          padding: const EdgeInsetsDirectional.symmetric(horizontal: 16.0),
-                                          constraints: const BoxConstraints(minWidth: 360.0, maxWidth: 800.0, minHeight: 48.0),
+                                          padding: const EdgeInsetsDirectional
+                                              .symmetric(horizontal: 16.0),
+                                          constraints: const BoxConstraints(
+                                              minWidth: 360.0,
+                                              maxWidth: 800.0,
+                                              minHeight: 48.0),
                                           viewConstraints: BoxConstraints(
                                             minWidth: 360 - (margins * 5),
                                             minHeight: 150.0,
                                             maxHeight: context.height / 2 -
-                                                (context.mediaQueryViewInsets.bottom + margins + media.padding.top + kToolbarHeight + media.padding.bottom),
+                                                (context.mediaQueryViewInsets
+                                                        .bottom +
+                                                    margins +
+                                                    media.padding.top +
+                                                    kToolbarHeight +
+                                                    media.padding.bottom),
                                           ),
                                           viewShape: RoundedRectangleBorder(
-                                            borderRadius: BorderRadiusDirectional.circular(12),
+                                            borderRadius:
+                                                BorderRadiusDirectional
+                                                    .circular(12),
                                           ),
                                           isFullScreen: false,
                                           shape: RoundedRectangleBorder(
-                                            borderRadius: BorderRadiusDirectional.circular(12),
+                                            borderRadius:
+                                                BorderRadiusDirectional
+                                                    .circular(12),
                                           ),
                                           elevation: 1,
                                         ),
                                       ),
-                                      const AnimatedGap(12, duration: Duration(milliseconds: 500)),
+                                      const AnimatedGap(12,
+                                          duration:
+                                              Duration(milliseconds: 500)),
                                       SizedBox(
                                         height: 48,
                                         child: OutlinedButton(
                                           onPressed: () {},
                                           style: OutlinedButton.styleFrom(
                                             shape: RoundedRectangleBorder(
-                                              borderRadius: BorderRadiusDirectional.circular(10),
+                                              borderRadius:
+                                                  BorderRadiusDirectional
+                                                      .circular(10),
                                             ),
-                                            side: const BorderSide(color: Color.fromRGBO(238, 238, 238, 1)),
+                                            side: const BorderSide(
+                                                color: Color.fromRGBO(
+                                                    238, 238, 238, 1)),
                                             backgroundColor: Colors.white,
                                           ),
                                           child: Icon(
                                             Icons.filter_list,
-                                            textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                            textDirection: serviceLocator<
+                                                    LanguageController>()
+                                                .targetTextDirection,
                                             color: context.primaryColor,
                                           ),
                                         ),
@@ -343,79 +400,115 @@ class _MenuAllAddonsPageView extends WidgetView<MenuAllAddonsPage, _MenuAllAddon
                                     ],
                                   ),
                                 ),
-                                const AnimatedGap(6, duration: Duration(milliseconds: 500)),
+                                const AnimatedGap(6,
+                                    duration: Duration(milliseconds: 500)),
                                 ListTile(
                                   dense: true,
                                   title: IntrinsicHeight(
                                     child: Row(
-                                      textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                      textDirection:
+                                          serviceLocator<LanguageController>()
+                                              .targetTextDirection,
                                       children: [
                                         Text(
                                           'Your Addons',
-                                          style: context.labelLarge!.copyWith(fontWeight: FontWeight.w500, fontSize: 18),
-                                          textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                          style: context.labelLarge!.copyWith(
+                                              fontWeight: FontWeight.w500,
+                                              fontSize: 18),
+                                          textDirection: serviceLocator<
+                                                  LanguageController>()
+                                              .targetTextDirection,
                                         ),
-                                        const AnimatedGap(3, duration: Duration(milliseconds: 500)),
+                                        const AnimatedGap(3,
+                                            duration:
+                                                Duration(milliseconds: 500)),
                                         Card(
                                           shape: RoundedRectangleBorder(
-                                            borderRadius: BorderRadiusDirectional.circular(20),
+                                            borderRadius:
+                                                BorderRadiusDirectional
+                                                    .circular(20),
                                           ),
                                           child: Padding(
-                                            padding: const EdgeInsetsDirectional.only(start: 12.0, end: 12, top: 4, bottom: 4),
+                                            padding: const EdgeInsetsDirectional
+                                                .only(
+                                                start: 12.0,
+                                                end: 12,
+                                                top: 4,
+                                                bottom: 4),
                                             child: Text(
                                               '${state._menuAvailableAddons.length}',
-                                              textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                              textDirection: serviceLocator<
+                                                      LanguageController>()
+                                                  .targetTextDirection,
                                             ),
                                           ),
                                         ),
                                       ],
                                     ),
                                   ),
-                                  visualDensity: const VisualDensity(horizontal: -4, vertical: -4),
+                                  visualDensity: const VisualDensity(
+                                      horizontal: -4, vertical: -4),
                                   horizontalTitleGap: 0,
                                   minLeadingWidth: 0,
-                                  contentPadding: const EdgeInsetsDirectional.symmetric(horizontal: 2),
+                                  contentPadding:
+                                      const EdgeInsetsDirectional.symmetric(
+                                          horizontal: 2),
                                 ),
-                                const AnimatedGap(6, duration: Duration(milliseconds: 500)),
+                                const AnimatedGap(6,
+                                    duration: Duration(milliseconds: 500)),
                               ],
                             ),
                             secondChild: const Offstage(),
                             duration: const Duration(milliseconds: 500),
-                            crossFadeState: (state._menuAvailableAddons.isNotEmpty) ? CrossFadeState.showFirst : CrossFadeState.showSecond,
+                            crossFadeState:
+                                (state._menuAvailableAddons.isNotEmpty)
+                                    ? CrossFadeState.showFirst
+                                    : CrossFadeState.showSecond,
                           ),
                           Expanded(
                             child: CustomScrollView(
                               controller: state.innerScrollController,
                               slivers: [
                                 state.widgetState.maybeWhen(
-                                  empty: (context, child, message, data) => SliverToBoxAdapter(
+                                  empty: (context, child, message, data) =>
+                                      SliverToBoxAdapter(
                                     child: Column(
-                                      mainAxisAlignment: MainAxisAlignment.center,
-                                      crossAxisAlignment: CrossAxisAlignment.center,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
                                       children: [
                                         Center(
-                                          key: const Key('get-all-addons-empty-widget'),
+                                          key: const Key(
+                                              'get-all-addons-empty-widget'),
                                           child: Text(
                                             'No addons available or added by you',
                                             style: context.labelLarge,
-                                            textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                            textDirection: serviceLocator<
+                                                    LanguageController>()
+                                                .targetTextDirection,
                                           ).translate(),
                                         ),
                                       ],
                                     ),
                                   ),
-                                  loading: (context, child, message, isLoading) {
+                                  loading:
+                                      (context, child, message, isLoading) {
                                     return SliverToBoxAdapter(
                                       child: Column(
-                                        mainAxisAlignment: MainAxisAlignment.center,
-                                        crossAxisAlignment: CrossAxisAlignment.center,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
                                         children: [
                                           const Center(
-                                            key: Key('get-all-addons-center-widget'),
+                                            key: Key(
+                                                'get-all-addons-center-widget'),
                                             child: SizedBox(
                                               width: 48,
                                               height: 48,
-                                              child: CircularProgressIndicator(),
+                                              child:
+                                                  CircularProgressIndicator(),
                                             ),
                                           ),
                                         ],
@@ -425,40 +518,59 @@ class _MenuAllAddonsPageView extends WidgetView<MenuAllAddonsPage, _MenuAllAddon
                                   allData: (context, child, message, data) {
                                     return PagedSliverList<int, Addons>(
                                       pagingController: state._pagingController,
-                                      builderDelegate: PagedChildBuilderDelegate<Addons>(
-                                          animateTransitions: true,
-                                          itemBuilder: (context, notificationResult, index) {
-                                            return AddonsCard(
-                                              key: ValueKey(index),
-                                              addonsEntity: notificationResult,
-                                              onChangedAddons: (value) {
-                                                //state._selectedAddons = List<StoreAvailableFoodPreparationType>.from(value);
-                                                context.read<MenuBloc>().add(
-                                                      SelectAddons(
-                                                        index: index,
-                                                        addonsID: notificationResult.addonsID,
-                                                        addonsEntity: notificationResult,
-                                                        addonsEntities: state._menuAvailableAddons.toList(),
-                                                        selectedAddonsEntities: state._selectedAddons.toList(),
-                                                      ),
-                                                    );
-                                              },
-                                              selectedAllAddons: state._selectedAddons.toList(),
-                                            );
-                                          }),
+                                      builderDelegate:
+                                          PagedChildBuilderDelegate<Addons>(
+                                              animateTransitions: true,
+                                              itemBuilder: (context,
+                                                  notificationResult, index) {
+                                                return AddonsCard(
+                                                  key: ValueKey(index),
+                                                  addonsEntity:
+                                                      notificationResult,
+                                                  onChangedAddons: (value) {
+                                                    //state._selectedAddons = List<StoreAvailableFoodPreparationType>.from(value);
+                                                    context
+                                                        .read<MenuBloc>()
+                                                        .add(
+                                                          SelectAddons(
+                                                            index: index,
+                                                            addonsID:
+                                                                notificationResult
+                                                                    .addonsID,
+                                                            addonsEntity:
+                                                                notificationResult,
+                                                            addonsEntities: state
+                                                                ._menuAvailableAddons
+                                                                .toList(),
+                                                            selectedAddonsEntities:
+                                                                state
+                                                                    ._selectedAddons
+                                                                    .toList(),
+                                                          ),
+                                                        );
+                                                  },
+                                                  selectedAllAddons: state
+                                                      ._selectedAddons
+                                                      .toList(),
+                                                );
+                                              }),
                                     );
                                   },
                                   none: () {
                                     return SliverToBoxAdapter(
                                       child: Column(
-                                        mainAxisAlignment: MainAxisAlignment.center,
-                                        crossAxisAlignment: CrossAxisAlignment.center,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
                                         children: [
                                           Center(
                                             child: Text(
                                               'No addons available or added by you',
                                               style: context.labelLarge,
-                                              textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                              textDirection: serviceLocator<
+                                                      LanguageController>()
+                                                  .targetTextDirection,
                                             ).translate(),
                                           ),
                                         ],
@@ -466,7 +578,8 @@ class _MenuAllAddonsPageView extends WidgetView<MenuAllAddonsPage, _MenuAllAddon
                                     );
                                   },
                                   orElse: () {
-                                    return const SliverToBoxAdapter(child: SizedBox());
+                                    return const SliverToBoxAdapter(
+                                        child: SizedBox());
                                   },
                                 ),
                               ],
@@ -477,7 +590,8 @@ class _MenuAllAddonsPageView extends WidgetView<MenuAllAddonsPage, _MenuAllAddon
                               Expanded(
                                 child: ElevatedButton(
                                   onPressed: () async {
-                                    final navigateToSaveAddonsPage = await context.push(
+                                    final navigateToSaveAddonsPage =
+                                        await context.push(
                                       Routes.SAVE_ADDONS_PAGE,
                                       extra: {
                                         'addons': null,
@@ -497,7 +611,9 @@ class _MenuAllAddonsPageView extends WidgetView<MenuAllAddonsPage, _MenuAllAddon
                                   },
                                   child: Text(
                                     'Add Addons',
-                                    textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                    textDirection:
+                                        serviceLocator<LanguageController>()
+                                            .targetTextDirection,
                                   ).translate(),
                                 ),
                               ),

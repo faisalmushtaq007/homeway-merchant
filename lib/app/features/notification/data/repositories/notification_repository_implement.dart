@@ -7,15 +7,18 @@ class NotificationRepositoryImplement implements NotificationRepository {
   });
 
   final NotificationDataSource remoteDataSource;
-  final NotificationLocalDbRepository<NotificationEntity> notificationLocalDataSource;
+  final NotificationLocalDbRepository<NotificationEntity>
+      notificationLocalDataSource;
   @override
   Future<DataSourceState<bool>> deleteAllNotification() async {
     try {
-      final connectivity = serviceLocator<ConnectivityService>().getCurrentInternetStatus();
+      final connectivity =
+          serviceLocator<ConnectivityService>().getCurrentInternetStatus();
       if (connectivity.$2 == InternetConnectivityState.internet) {
         // Local DB
         // Save to local
-        final Either<RepositoryBaseFailure, bool> result = await notificationLocalDataSource.deleteAll();
+        final Either<RepositoryBaseFailure, bool> result =
+            await notificationLocalDataSource.deleteAll();
         // Return result
         return result.fold((l) {
           final RepositoryFailure failure = l as RepositoryFailure;
@@ -32,7 +35,8 @@ class NotificationRepositoryImplement implements NotificationRepository {
       } else {
         // Remote
         // Save to server
-        final ApiResultState<bool> result = await remoteDataSource.deleteAllNotification();
+        final ApiResultState<bool> result =
+            await remoteDataSource.deleteAllNotification();
         // Return result
         return result.when(
           success: (data) {
@@ -66,13 +70,18 @@ class NotificationRepositoryImplement implements NotificationRepository {
   }
 
   @override
-  Future<DataSourceState<bool>> deleteNotification({required int notificationID, NotificationEntity? notificationEntity}) async {
+  Future<DataSourceState<bool>> deleteNotification(
+      {required int notificationID,
+      NotificationEntity? notificationEntity}) async {
     try {
-      final connectivity = serviceLocator<ConnectivityService>().getCurrentInternetStatus();
+      final connectivity =
+          serviceLocator<ConnectivityService>().getCurrentInternetStatus();
       if (connectivity.$2 == InternetConnectivityState.internet) {
         // Local DB
         // Save to local
-        final Either<RepositoryBaseFailure, bool> result = await notificationLocalDataSource.deleteById(UniqueId(notificationID));
+        final Either<RepositoryBaseFailure, bool> result =
+            await notificationLocalDataSource
+                .deleteById(UniqueId(notificationID));
         // Return result
         return result.fold((l) {
           final RepositoryFailure failure = l as RepositoryFailure;
@@ -89,7 +98,8 @@ class NotificationRepositoryImplement implements NotificationRepository {
       } else {
         // Remote
         // Save to server
-        final ApiResultState<bool> result = await remoteDataSource.deleteNotification(
+        final ApiResultState<bool> result =
+            await remoteDataSource.deleteNotification(
           notificationID: notificationID,
           notificationEntity: notificationEntity,
         );
@@ -126,13 +136,18 @@ class NotificationRepositoryImplement implements NotificationRepository {
   }
 
   @override
-  Future<DataSourceState<NotificationEntity>> editNotification({required NotificationEntity notificationEntity, required int notificationID}) async {
+  Future<DataSourceState<NotificationEntity>> editNotification(
+      {required NotificationEntity notificationEntity,
+      required int notificationID}) async {
     try {
-      final connectivity = serviceLocator<ConnectivityService>().getCurrentInternetStatus();
+      final connectivity =
+          serviceLocator<ConnectivityService>().getCurrentInternetStatus();
       if (connectivity.$2 == InternetConnectivityState.internet) {
         // Local DB
         // Save to local
-        final Either<RepositoryBaseFailure, NotificationEntity> result = await notificationLocalDataSource.update(notificationEntity, UniqueId(notificationID));
+        final Either<RepositoryBaseFailure, NotificationEntity> result =
+            await notificationLocalDataSource.update(
+                notificationEntity, UniqueId(notificationID));
         // Return result
         return result.fold((l) {
           final RepositoryFailure failure = l as RepositoryFailure;
@@ -149,7 +164,8 @@ class NotificationRepositoryImplement implements NotificationRepository {
       } else {
         // Remote
         // Save to server
-        final ApiResultState<NotificationEntity> result = await remoteDataSource.editNotification(
+        final ApiResultState<NotificationEntity> result =
+            await remoteDataSource.editNotification(
           notificationID: notificationID,
           notificationEntity: notificationEntity,
         );
@@ -188,11 +204,13 @@ class NotificationRepositoryImplement implements NotificationRepository {
   @override
   Future<DataSourceState<List<NotificationEntity>>> getAllNotification() async {
     try {
-      final connectivity = serviceLocator<ConnectivityService>().getCurrentInternetStatus();
+      final connectivity =
+          serviceLocator<ConnectivityService>().getCurrentInternetStatus();
       if (connectivity.$2 == InternetConnectivityState.internet) {
         // Local DB
         // Save to local
-        final Either<RepositoryBaseFailure, List<NotificationEntity>> result = await notificationLocalDataSource.getAll();
+        final Either<RepositoryBaseFailure, List<NotificationEntity>> result =
+            await notificationLocalDataSource.getAll();
         // Return result
         return result.fold((l) {
           final RepositoryFailure failure = l as RepositoryFailure;
@@ -209,7 +227,8 @@ class NotificationRepositoryImplement implements NotificationRepository {
       } else {
         // Remote
         // Save to server
-        final ApiResultState<List<NotificationEntity>> result = await remoteDataSource.getAllNotification();
+        final ApiResultState<List<NotificationEntity>> result =
+            await remoteDataSource.getAllNotification();
         // Return result
         return result.when(
           success: (data) {
@@ -243,13 +262,17 @@ class NotificationRepositoryImplement implements NotificationRepository {
   }
 
   @override
-  Future<DataSourceState<NotificationEntity>> getNotification({required int notificationID, NotificationEntity? notificationEntity}) async {
+  Future<DataSourceState<NotificationEntity>> getNotification(
+      {required int notificationID,
+      NotificationEntity? notificationEntity}) async {
     try {
-      final connectivity = serviceLocator<ConnectivityService>().getCurrentInternetStatus();
+      final connectivity =
+          serviceLocator<ConnectivityService>().getCurrentInternetStatus();
       if (connectivity.$2 == InternetConnectivityState.internet) {
         // Local DB
         // Save to local
-        final Either<RepositoryBaseFailure, NotificationEntity?> result = await notificationLocalDataSource.getById(UniqueId(notificationID));
+        final Either<RepositoryBaseFailure, NotificationEntity?> result =
+            await notificationLocalDataSource.getById(UniqueId(notificationID));
         // Return result
         return result.fold((l) {
           final RepositoryFailure failure = l as RepositoryFailure;
@@ -260,13 +283,15 @@ class NotificationRepositoryImplement implements NotificationRepository {
             stackTrace: failure.stacktrace,
           );
         }, (r) {
-          appLog.d('Get notification to local : ${r?.notificationID}, ${r?.title}');
+          appLog.d(
+              'Get notification to local : ${r?.notificationID}, ${r?.title}');
           return DataSourceState<NotificationEntity>.localDb(data: r);
         });
       } else {
         // Remote
         // Save to server
-        final ApiResultState<NotificationEntity> result = await remoteDataSource.getNotification(
+        final ApiResultState<NotificationEntity> result =
+            await remoteDataSource.getNotification(
           notificationID: notificationID,
           notificationEntity: notificationEntity,
         );
@@ -303,13 +328,16 @@ class NotificationRepositoryImplement implements NotificationRepository {
   }
 
   @override
-  Future<DataSourceState<NotificationEntity>> saveNotification({required NotificationEntity notificationEntity}) async {
+  Future<DataSourceState<NotificationEntity>> saveNotification(
+      {required NotificationEntity notificationEntity}) async {
     try {
-      final connectivity = serviceLocator<ConnectivityService>().getCurrentInternetStatus();
+      final connectivity =
+          serviceLocator<ConnectivityService>().getCurrentInternetStatus();
       if (connectivity.$2 == InternetConnectivityState.internet) {
         // Local DB
         // Save to local
-        final Either<RepositoryBaseFailure, NotificationEntity> result = await notificationLocalDataSource.add(notificationEntity);
+        final Either<RepositoryBaseFailure, NotificationEntity> result =
+            await notificationLocalDataSource.add(notificationEntity);
         // Return result
         return result.fold((l) {
           final RepositoryFailure failure = l as RepositoryFailure;
@@ -320,13 +348,15 @@ class NotificationRepositoryImplement implements NotificationRepository {
             stackTrace: failure.stacktrace,
           );
         }, (r) {
-          appLog.d('Save notification to local : ${r.notificationID}, ${r.title}');
+          appLog.d(
+              'Save notification to local : ${r.notificationID}, ${r.title}');
           return DataSourceState<NotificationEntity>.localDb(data: r);
         });
       } else {
         // Remote
         // Save to server
-        final ApiResultState<NotificationEntity> result = await remoteDataSource.saveNotification(
+        final ApiResultState<NotificationEntity> result =
+            await remoteDataSource.saveNotification(
           notificationEntity: notificationEntity,
         );
         // Return result
@@ -367,11 +397,13 @@ class NotificationRepositoryImplement implements NotificationRepository {
     bool hasUpdateAll = false,
   }) async {
     try {
-      final connectivity = serviceLocator<ConnectivityService>().getCurrentInternetStatus();
+      final connectivity =
+          serviceLocator<ConnectivityService>().getCurrentInternetStatus();
       if (connectivity.$2 == InternetConnectivityState.internet) {
         // Local DB
         // Save to local
-        final Either<RepositoryBaseFailure, List<NotificationEntity>> result = await notificationLocalDataSource.saveAll(
+        final Either<RepositoryBaseFailure, List<NotificationEntity>> result =
+            await notificationLocalDataSource.saveAll(
           entities: notificationEntities,
           hasUpdateAll: hasUpdateAll,
         );
@@ -391,7 +423,8 @@ class NotificationRepositoryImplement implements NotificationRepository {
       } else {
         // Remote
         // Save to server
-        final ApiResultState<List<NotificationEntity>> result = await remoteDataSource.saveAllNotification(
+        final ApiResultState<List<NotificationEntity>> result =
+            await remoteDataSource.saveAllNotification(
           notificationEntities: notificationEntities,
           hasUpdateAll: hasUpdateAll,
         );

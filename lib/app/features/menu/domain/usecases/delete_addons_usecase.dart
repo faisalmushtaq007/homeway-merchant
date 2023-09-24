@@ -1,6 +1,7 @@
 part of 'package:homemakers_merchant/app/features/menu/index.dart';
 
-class DeleteAddonsUseCase extends UseCaseByID<Addons, int, DataSourceState<bool>> {
+class DeleteAddonsUseCase
+    extends UseCaseByID<Addons, int, DataSourceState<bool>> {
   DeleteAddonsUseCase({
     required this.menuRepository,
   });

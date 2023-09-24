@@ -106,7 +106,8 @@ class MultiSelectTasteLevelFormField extends FormField<List<TasteLevel>> {
                   state.save();
                 },
                 availableTasteLevels: availableTasteLevelList.toList(),
-                initialSelectedTasteLevelList: initialSelectedTasteLevelList.toList(),
+                initialSelectedTasteLevelList:
+                    initialSelectedTasteLevelList.toList(),
                 maxSelection: maxSelection,
                 onMaxSelected: onMaxSelected,
                 isSingleSelect: isSingleSelect,
@@ -137,7 +138,8 @@ class MultiSelectMenuTasteLevel extends StatefulWidget {
   final bool isSingleSelect;
 
   @override
-  _MultiSelectTasteLevelChipState createState() => _MultiSelectTasteLevelChipState();
+  _MultiSelectTasteLevelChipState createState() =>
+      _MultiSelectTasteLevelChipState();
 }
 
 class _MultiSelectTasteLevelChipState extends State<MultiSelectMenuTasteLevel> {
@@ -151,7 +153,8 @@ class _MultiSelectTasteLevelChipState extends State<MultiSelectMenuTasteLevel> {
       choices.add(ChoiceChip(
         label: Text(
           item.title,
-          textDirection: serviceLocator<LanguageController>().targetTextDirection,
+          textDirection:
+              serviceLocator<LanguageController>().targetTextDirection,
         ),
         selected: selectedChoices.contains(item),
         onSelected: (selected) {
@@ -163,11 +166,14 @@ class _MultiSelectTasteLevelChipState extends State<MultiSelectMenuTasteLevel> {
               widget.onSelectionChanged?.call(selectedChoices);
             });
           } else {
-            if (selectedChoices.length == (widget.maxSelection ?? -1) && !selectedChoices.contains(item)) {
+            if (selectedChoices.length == (widget.maxSelection ?? -1) &&
+                !selectedChoices.contains(item)) {
               widget.onMaxSelected?.call(selectedChoices);
             } else {
               setState(() {
-                selectedChoices.contains(item) ? selectedChoices.remove(item) : selectedChoices.add(item);
+                selectedChoices.contains(item)
+                    ? selectedChoices.remove(item)
+                    : selectedChoices.add(item);
                 widget.onSelectionChanged?.call(selectedChoices);
               });
             }
@@ -182,7 +188,8 @@ class _MultiSelectTasteLevelChipState extends State<MultiSelectMenuTasteLevel> {
   @override
   void initState() {
     super.initState();
-    selectedChoices=List<TasteLevel>.from(widget.initialSelectedTasteLevelList.toList());
+    selectedChoices =
+        List<TasteLevel>.from(widget.initialSelectedTasteLevelList.toList());
   }
 
   @override

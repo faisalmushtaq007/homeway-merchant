@@ -12,7 +12,7 @@ class IndicatorModel {
     required double width,
     required double height,
     required double spaceBetween,
-  })   : _height = height,
+  })  : _height = height,
         _width = width,
         _widthAnimation = width,
         _heightAnimation = height,

@@ -52,7 +52,8 @@ class _CarouselImagesState extends State<CarouselImages> {
   @override
   void initState() {
     super.initState();
-    _pageController = PageController(viewportFraction: widget.viewportFraction.clamp(0.5, 1.0));
+    _pageController = PageController(
+        viewportFraction: widget.viewportFraction.clamp(0.5, 1.0));
     _pageController.addListener(() {
       setState(() {
         _currentPageValue = _pageController.page!;
@@ -81,39 +82,66 @@ class _CarouselImagesState extends State<CarouselImages> {
               controller: _pageController,
               itemCount: widget.listImages.length,
               itemBuilder: (context, position) {
-                double value = (1 - ((_currentPageValue - position).abs() * (1 - widget.scaleFactor))).clamp(0.0, 1.0);
+                double value = (1 -
+                        ((_currentPageValue - position).abs() *
+                            (1 - widget.scaleFactor)))
+                    .clamp(0.0, 1.0);
                 return Padding(
                   padding: EdgeInsets.symmetric(horizontal: 5.0),
                   child: Stack(
                     children: <Widget>[
-                      SizedBox(height: Curves.ease.transform(value) * widget.height, child: child),
+                      SizedBox(
+                          height: Curves.ease.transform(value) * widget.height,
+                          child: child),
                       Align(
-                        alignment: widget.verticalAlignment != null ? widget.verticalAlignment! : Alignment.center,
+                        alignment: widget.verticalAlignment != null
+                            ? widget.verticalAlignment!
+                            : Alignment.center,
                         child: SizedBox(
                           height: Curves.ease.transform(value) * widget.height,
                           child: ClipRRect(
-                            borderRadius: BorderRadius.circular(widget.borderRadius != null ? widget.borderRadius! : 16.0),
+                            borderRadius: BorderRadius.circular(
+                                widget.borderRadius != null
+                                    ? widget.borderRadius!
+                                    : 16.0),
                             child: Transform.translate(
-                                offset: Offset((_currentPageValue - position) * width / 4 * math.pow(widget.viewportFraction, 3), 0),
-                                child: widget.listImages[position].startsWith('http')
+                                offset: Offset(
+                                    (_currentPageValue - position) *
+                                        width /
+                                        4 *
+                                        math.pow(widget.viewportFraction, 3),
+                                    0),
+                                child: widget.listImages[position]
+                                        .startsWith('http')
                                     ? widget.cachedNetworkImage
                                         ? CachedNetworkImage(
-                                            imageUrl: widget.listImages[position],
-                                            imageBuilder: (context, image) => GestureDetector(
-                                              onTap: () => widget.onTap != null ? widget.onTap!(position) : () {},
-                                              child: Image(image: image, fit: BoxFit.fitHeight),
+                                            imageUrl:
+                                                widget.listImages[position],
+                                            imageBuilder: (context, image) =>
+                                                GestureDetector(
+                                              onTap: () => widget.onTap != null
+                                                  ? widget.onTap!(position)
+                                                  : () {},
+                                              child: Image(
+                                                  image: image,
+                                                  fit: BoxFit.fitHeight),
                                             ),
                                           )
                                         : GestureDetector(
-                                            onTap: () => widget.onTap != null ? widget.onTap!(position) : () {},
+                                            onTap: () => widget.onTap != null
+                                                ? widget.onTap!(position)
+                                                : () {},
                                             child: FadeInImage.memoryNetwork(
                                               placeholder: kTransparentImage,
-                                              image: widget.listImages[position],
+                                              image:
+                                                  widget.listImages[position],
                                               fit: BoxFit.fitHeight,
                                             ),
                                           )
                                     : GestureDetector(
-                                        onTap: () => widget.onTap != null ? widget.onTap!(position) : () {},
+                                        onTap: () => widget.onTap != null
+                                            ? widget.onTap!(position)
+                                            : () {},
                                         child: Image.asset(
                                           widget.listImages[position],
                                           fit: BoxFit.fitHeight,

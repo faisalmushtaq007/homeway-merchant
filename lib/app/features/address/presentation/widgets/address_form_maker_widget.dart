@@ -57,7 +57,8 @@ class AddressFormMakerWidget extends StatelessWidget {
                 Expanded(
                   child: Text(
                     title!,
-                    style: titleStyle ?? Theme.of(context).textTheme.titleMedium,
+                    style:
+                        titleStyle ?? Theme.of(context).textTheme.titleMedium,
                   ),
                 ),
               ],

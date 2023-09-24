@@ -1,6 +1,7 @@
 part of 'package:homemakers_merchant/app/features/authentication/index.dart';
 
-class SendOtpUseCase extends UseCaseIO<SendOtpEntity, ResultState<SendOtpResponseModel>> {
+class SendOtpUseCase
+    extends UseCaseIO<SendOtpEntity, ResultState<SendOtpResponseModel>> {
   SendOtpUseCase({required this.authenticationRepository});
 
   final AuthenticationRepository authenticationRepository;

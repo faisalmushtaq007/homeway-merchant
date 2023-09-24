@@ -22,7 +22,7 @@ class _TransactionsPageController extends State<TransactionsPage> {
     customScrollViewScrollController = ScrollController();
     transactionTypes = [
       TransactionTypeInfo(typeName: 'All', typeID: 0, hasSelected: false),
-     /* TransactionTypeInfo(typeName: 'Income', typeID: 0, hasSelected: false),
+      /* TransactionTypeInfo(typeName: 'Income', typeID: 0, hasSelected: false),
       TransactionTypeInfo(typeName: 'Withdrawal', typeID: 0, hasSelected: false),*/
     ];
     transactionWidgets = [
@@ -54,13 +54,15 @@ class _TransactionsPageController extends State<TransactionsPage> {
   Widget build(BuildContext context) => _TransactionsPageView(this);
 }
 
-class _TransactionsPageView extends WidgetView<TransactionsPage, _TransactionsPageController> {
+class _TransactionsPageView
+    extends WidgetView<TransactionsPage, _TransactionsPageController> {
   const _TransactionsPageView(super.state);
   @override
   Widget build(BuildContext context) {
     final MediaQueryData media = MediaQuery.of(context);
     final double margins = GlobalApp.responsiveInsets(media.size.width);
-    final double topPadding = margins; //media.padding.top + kToolbarHeight + margins; //margins * 1.5;
+    final double topPadding =
+        margins; //media.padding.top + kToolbarHeight + margins; //margins * 1.5;
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: FlexColorScheme.themedSystemNavigationBar(
         context,
@@ -91,10 +93,12 @@ class _TransactionsPageView extends WidgetView<TransactionsPage, _TransactionsPa
                   textColor: Colors.yellow,
                   label: Text(
                     '10',
-                    style: context.labelSmall!.copyWith(color: context.colorScheme.onPrimary),
+                    style: context.labelSmall!
+                        .copyWith(color: context.colorScheme.onPrimary),
                     //Color.fromRGBO(251, 219, 11, 1)
                   ),
-                  child: Icon(Icons.notifications, color: context.colorScheme.primary),
+                  child: Icon(Icons.notifications,
+                      color: context.colorScheme.primary),
                 ),
               ),
               const Padding(
@@ -112,12 +116,16 @@ class _TransactionsPageView extends WidgetView<TransactionsPage, _TransactionsPa
             from: context.width / 2 - 60,
             duration: const Duration(milliseconds: 500),
             child: Directionality(
-              textDirection: serviceLocator<LanguageController>().targetTextDirection,
+              textDirection:
+                  serviceLocator<LanguageController>().targetTextDirection,
               child: PageBody(
                 controller: state.scrollController,
                 constraints: BoxConstraints(
                   minWidth: 1000,
-                  minHeight: media.size.height - (media.padding.top + kToolbarHeight + media.padding.bottom),
+                  minHeight: media.size.height -
+                      (media.padding.top +
+                          kToolbarHeight +
+                          media.padding.bottom),
                 ),
                 padding: EdgeInsetsDirectional.only(
                   top: topPadding,
@@ -132,7 +140,8 @@ class _TransactionsPageView extends WidgetView<TransactionsPage, _TransactionsPa
                     SliverList(
                       delegate: SliverChildListDelegate(
                         [
-                          const AnimatedGap(6, duration: Duration(milliseconds: 200)),
+                          const AnimatedGap(6,
+                              duration: Duration(milliseconds: 200)),
                           ClipRRect(
                             borderRadius: BorderRadius.circular(10),
                             child: Container(
@@ -143,9 +152,12 @@ class _TransactionsPageView extends WidgetView<TransactionsPage, _TransactionsPa
                                 controller: state.scrollController,
                                 padding: EdgeInsetsDirectional.zero,
                                 mainAxisSize: MainAxisSize.min,
-                                textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                textDirection:
+                                    serviceLocator<LanguageController>()
+                                        .targetTextDirection,
                                 physics: const BouncingScrollPhysics(),
-                                constraintsBuilder: (constraints) => BoxConstraints(
+                                constraintsBuilder: (constraints) =>
+                                    BoxConstraints(
                                   minWidth: constraints.maxWidth,
                                 ),
                                 flexible: false,
@@ -154,29 +166,47 @@ class _TransactionsPageView extends WidgetView<TransactionsPage, _TransactionsPa
                                     (index) => StatefulBuilder(
                                           builder: (context, setState) {
                                             return Padding(
-                                              padding: const EdgeInsetsDirectional.only(start: 8, end: 8.0),
+                                              padding:
+                                                  const EdgeInsetsDirectional
+                                                      .only(start: 8, end: 8.0),
                                               child: ElevatedButton(
                                                 key: ValueKey(index),
                                                 style: ElevatedButton.styleFrom(
                                                   shape: RoundedRectangleBorder(
-                                                    borderRadius: BorderRadiusDirectional.circular(10),
+                                                    borderRadius:
+                                                        BorderRadiusDirectional
+                                                            .circular(10),
                                                   ),
                                                   minimumSize: Size(74, 42),
                                                   maximumSize: Size(104, 42),
                                                   //fixedSize: Size(104, 42),
-                                                  backgroundColor: (state.currentIndex == index) ? '#2C73D2'.toColor : '#D4E5ED'.toColor,
+                                                  backgroundColor:
+                                                      (state.currentIndex ==
+                                                              index)
+                                                          ? '#2C73D2'.toColor
+                                                          : '#D4E5ED'.toColor,
                                                   //disabledBackgroundColor: '#B0A8B9'.toColor,
                                                 ),
                                                 onPressed: () {
-                                                  state.updateCurrentIndex(index);
+                                                  state.updateCurrentIndex(
+                                                      index);
                                                 },
                                                 child: Text(
-                                                  state.transactionTypes[index].typeName,
+                                                  state.transactionTypes[index]
+                                                      .typeName,
                                                   maxLines: 1,
-                                                  overflow: TextOverflow.ellipsis,
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
                                                   softWrap: true,
                                                   textAlign: TextAlign.center,
-                                                  style: context.bodyMedium!.copyWith(color: state.currentIndex == index ? Colors.white : Colors.black),
+                                                  style: context.bodyMedium!
+                                                      .copyWith(
+                                                          color:
+                                                              state.currentIndex ==
+                                                                      index
+                                                                  ? Colors.white
+                                                                  : Colors
+                                                                      .black),
                                                 ),
                                               ),
                                             );
@@ -185,7 +215,8 @@ class _TransactionsPageView extends WidgetView<TransactionsPage, _TransactionsPa
                               ),
                             ),
                           ),
-                          const AnimatedGap(12, duration: Duration(milliseconds: 200)),
+                          const AnimatedGap(12,
+                              duration: Duration(milliseconds: 200)),
                         ],
                       ),
                     ),

@@ -121,7 +121,8 @@ class MenuBloc extends Bloc<MenuEvent, MenuState> {
     );
   }
 
-  Future<void> _getAllAddons(GetAllAddons event, Emitter<MenuState> emit) async {
+  Future<void> _getAllAddons(
+      GetAllAddons event, Emitter<MenuState> emit) async {
     try {
       emit(
         AddonsLoadingState(
@@ -130,7 +131,8 @@ class MenuBloc extends Bloc<MenuEvent, MenuState> {
         ),
       );
       //List<Addons> _menuAvailableAddons = List<Addons>.from(localMenuAddons.toList());
-      final DataSourceState<List<Addons>> result = await serviceLocator<GetAllAddonsUseCase>()();
+      final DataSourceState<List<Addons>> result =
+          await serviceLocator<GetAllAddonsUseCase>()();
       result.when(
         remote: (data, meta) {
           appLog.d('Addons bloc get all remote');
@@ -162,7 +164,8 @@ class MenuBloc extends Bloc<MenuEvent, MenuState> {
             ));
           }
         },
-        error: (dataSourceFailure, reason, error, networkException, stackTrace, exception, extra) {
+        error: (dataSourceFailure, reason, error, networkException, stackTrace,
+            exception, extra) {
           appLog.d('Addons bloc get all error $reason');
           emit(
             AddonsExceptionState(
@@ -179,7 +182,8 @@ class MenuBloc extends Bloc<MenuEvent, MenuState> {
       appLog.e('Addons bloc get all exception $e');
       emit(
         AddonsExceptionState(
-          message: 'Something went wrong during saving your store details, please try again',
+          message:
+              'Something went wrong during saving your store details, please try again',
           //exception: e as Exception,
           stackTrace: s,
           addonsSelectionUseCase: AddonsSelectionUseCase.getAll,
@@ -190,7 +194,8 @@ class MenuBloc extends Bloc<MenuEvent, MenuState> {
   }
 
   void _selectAddons(SelectAddons event, Emitter<MenuState> emit) {
-    List<Addons> _menuAvailableAddons = List<Addons>.from(event.addonsEntities.toList());
+    List<Addons> _menuAvailableAddons =
+        List<Addons>.from(event.addonsEntities.toList());
     var selectedAllAddonsEntities = event.selectedAddonsEntities;
     var selectedAddonsEntity = event.addonsEntity;
     if (selectedAddonsEntity != null) {
@@ -216,7 +221,8 @@ class MenuBloc extends Bloc<MenuEvent, MenuState> {
     try {
       DataSourceState<Addons> result;
       if (!event.hasNewAddons && event.currentIndex != -1) {
-        result = await serviceLocator<EditAddonsUseCase>()(id: event.addonsEntity.addonsID, input: event.addonsEntity);
+        result = await serviceLocator<EditAddonsUseCase>()(
+            id: event.addonsEntity.addonsID, input: event.addonsEntity);
       } else {
         result = await serviceLocator<SaveAddonsUseCase>()(event.addonsEntity);
       }
@@ -230,7 +236,9 @@ class MenuBloc extends Bloc<MenuEvent, MenuState> {
             ),
           );
           await Future.delayed(const Duration(milliseconds: 500), () {});
-          emit(NavigateToAddonsMenuState(addonsEntity: data ?? event.addonsEntity, hasNewAddons: event.hasNewAddons));
+          emit(NavigateToAddonsMenuState(
+              addonsEntity: data ?? event.addonsEntity,
+              hasNewAddons: event.hasNewAddons));
           add(GetAllAddons());
         },
         localDb: (data, meta) async {
@@ -242,10 +250,13 @@ class MenuBloc extends Bloc<MenuEvent, MenuState> {
             ),
           );
           await Future.delayed(const Duration(milliseconds: 500), () {});
-          emit(NavigateToAddonsMenuState(addonsEntity: data ?? event.addonsEntity, hasNewAddons: event.hasNewAddons));
+          emit(NavigateToAddonsMenuState(
+              addonsEntity: data ?? event.addonsEntity,
+              hasNewAddons: event.hasNewAddons));
           add(GetAllAddons());
         },
-        error: (dataSourceFailure, reason, error, networkException, stackTrace, exception, extra) {
+        error: (dataSourceFailure, reason, error, networkException, stackTrace,
+            exception, extra) {
           appLog.d('Addons bloc save error $reason');
           emit(
             AddonsExceptionState(
@@ -261,7 +272,8 @@ class MenuBloc extends Bloc<MenuEvent, MenuState> {
       appLog.e('Addons bloc save exception $e');
       emit(
         AddonsExceptionState(
-          message: 'Something went wrong during saving your store details, please try again',
+          message:
+              'Something went wrong during saving your store details, please try again',
           //exception: e as Exception,
           stackTrace: s,
           addonsSelectionUseCase: AddonsSelectionUseCase.save,
@@ -270,7 +282,8 @@ class MenuBloc extends Bloc<MenuEvent, MenuState> {
     }
   }
 
-  FutureOr<void> _selectAddonsMaxPortion(SelectAddonsMaxPortion event, Emitter<MenuState> emit) async {
+  FutureOr<void> _selectAddonsMaxPortion(
+      SelectAddonsMaxPortion event, Emitter<MenuState> emit) async {
     emit(
       SelectAddonsMaxPortionState(
         addonsEntities: event.addonsEntities.toList(),
@@ -289,7 +302,8 @@ class MenuBloc extends Bloc<MenuEvent, MenuState> {
     );
   }
 
-  FutureOr<void> _pushMenuEntityData(PushMenuEntityData event, Emitter<MenuState> emit) async {
+  FutureOr<void> _pushMenuEntityData(
+      PushMenuEntityData event, Emitter<MenuState> emit) async {
     try {
       /*final MenuEntity cacheMenuEntity = serviceLocator<MenuEntity>();
       final MenuEntity updatedCacheMenuEntity = serviceLocator<MenuEntity>().copyWith(
@@ -324,7 +338,8 @@ class MenuBloc extends Bloc<MenuEvent, MenuState> {
       //await Future.delayed(const Duration(milliseconds: 500), () {});
       debugPrint('MenuBloc ${DateTime.now().hour}:${DateTime.now().minute}--> ${cacheMenuEntity.toMap()}');
       debugPrint('=======>');*/
-      appLog.d('PushMenuEntityData ${DateTime.now().hour}:${DateTime.now().minute}--> ${event.menuEntity.toMap()}');
+      appLog.d(
+          'PushMenuEntityData ${DateTime.now().hour}:${DateTime.now().minute}--> ${event.menuEntity.toMap()}');
       emit(
         PushMenuEntityDataState(
           menuEntity: event.menuEntity ?? serviceLocator<MenuEntity>(),
@@ -351,7 +366,8 @@ class MenuBloc extends Bloc<MenuEvent, MenuState> {
     }
   }
 
-  FutureOr<void> _pullMenuEntityData(PullMenuEntityData event, Emitter<MenuState> emit) async {
+  FutureOr<void> _pullMenuEntityData(
+      PullMenuEntityData event, Emitter<MenuState> emit) async {
     try {
       final MenuEntity cacheMenuEntity = serviceLocator<MenuEntity>();
       //await Future.delayed(const Duration(milliseconds: 500), () {});
@@ -390,7 +406,8 @@ class MenuBloc extends Bloc<MenuEvent, MenuState> {
         menuStateStatus: MenuStateStatus.loading,
       ),
     );
-    final DataSourceState<List<MenuEntity>> result = await serviceLocator<GetAllMenuUseCase>()();
+    final DataSourceState<List<MenuEntity>> result =
+        await serviceLocator<GetAllMenuUseCase>()();
     result.when(
       remote: (data, meta) {
         appLog.d('Menu bloc get all remote');
@@ -433,7 +450,8 @@ class MenuBloc extends Bloc<MenuEvent, MenuState> {
           );
         }
       },
-      error: (dataSourceFailure, reason, error, networkException, stackTrace, exception, extra) {
+      error: (dataSourceFailure, reason, error, networkException, stackTrace,
+          exception, extra) {
         appLog.d('Store bloc get all error $reason');
         emit(
           MenuExceptionState(
@@ -476,7 +494,8 @@ class MenuBloc extends Bloc<MenuEvent, MenuState> {
     try {
       DataSourceState<MenuEntity> result;
       if (!event.hasNewMenu && event.currentIndex != -1) {
-        result = await serviceLocator<EditMenuUseCase>()(id: event.menuEntity.menuId, input: event.menuEntity);
+        result = await serviceLocator<EditMenuUseCase>()(
+            id: event.menuEntity.menuId, input: event.menuEntity);
       } else {
         result = await serviceLocator<SaveMenuUseCase>()(event.menuEntity);
       }
@@ -484,16 +503,23 @@ class MenuBloc extends Bloc<MenuEvent, MenuState> {
         remote: (data, meta) async {
           appLog.d('Menu bloc save remote ${data?.toMap()}');
           emit(
-            SaveMenuState(menuEntity: data ?? event.menuEntity, hasNewMenu: event.hasNewMenu, menuStateStatus: MenuStateStatus.success),
+            SaveMenuState(
+                menuEntity: data ?? event.menuEntity,
+                hasNewMenu: event.hasNewMenu,
+                menuStateStatus: MenuStateStatus.success),
           );
         },
         localDb: (data, meta) async {
           appLog.d('Menu bloc save local ${data?.toMap()}');
           emit(
-            SaveMenuState(menuEntity: data ?? event.menuEntity, hasNewMenu: event.hasNewMenu, menuStateStatus: MenuStateStatus.success),
+            SaveMenuState(
+                menuEntity: data ?? event.menuEntity,
+                hasNewMenu: event.hasNewMenu,
+                menuStateStatus: MenuStateStatus.success),
           );
         },
-        error: (dataSourceFailure, reason, error, networkException, stackTrace, exception, extra) {
+        error: (dataSourceFailure, reason, error, networkException, stackTrace,
+            exception, extra) {
           appLog.d('Menu bloc save error $reason');
           emit(
             MenuExceptionState(
@@ -504,7 +530,10 @@ class MenuBloc extends Bloc<MenuEvent, MenuState> {
             ),
           );
           emit(
-            SaveMenuState(menuEntity: event.menuEntity, hasNewMenu: event.hasNewMenu, menuStateStatus: MenuStateStatus.exception),
+            SaveMenuState(
+                menuEntity: event.menuEntity,
+                hasNewMenu: event.hasNewMenu,
+                menuStateStatus: MenuStateStatus.exception),
           );
         },
       );
@@ -512,21 +541,27 @@ class MenuBloc extends Bloc<MenuEvent, MenuState> {
       appLog.e('Menu bloc save exception $e');
       emit(
         MenuExceptionState(
-          message: 'Something went wrong during saving your store details, please try again',
+          message:
+              'Something went wrong during saving your store details, please try again',
           //exception: e as Exception,
           stackTrace: s,
           menuStateStatus: MenuStateStatus.createNewWithStore,
         ),
       );
       emit(
-        SaveMenuState(menuEntity: event.menuEntity, hasNewMenu: event.hasNewMenu, menuStateStatus: MenuStateStatus.exception),
+        SaveMenuState(
+            menuEntity: event.menuEntity,
+            hasNewMenu: event.hasNewMenu,
+            menuStateStatus: MenuStateStatus.exception),
       );
     }
   }
 
-  FutureOr<void> _removeByIDMenu(RemoveByIDMenu event, Emitter<MenuState> emit) async {
+  FutureOr<void> _removeByIDMenu(
+      RemoveByIDMenu event, Emitter<MenuState> emit) async {
     try {
-      final DataSourceState<bool> result = await serviceLocator<DeleteMenuUseCase>()(
+      final DataSourceState<bool> result =
+          await serviceLocator<DeleteMenuUseCase>()(
         input: event.menuEntity,
         id: int.parse(event.menuID),
       );
@@ -555,7 +590,8 @@ class MenuBloc extends Bloc<MenuEvent, MenuState> {
             ),
           );
         },
-        error: (dataSourceFailure, reason, error, networkException, stackTrace, exception, extra) {
+        error: (dataSourceFailure, reason, error, networkException, stackTrace,
+            exception, extra) {
           appLog.d('Menu bloc delete error $reason');
           emit(
             MenuExceptionState(
@@ -571,7 +607,8 @@ class MenuBloc extends Bloc<MenuEvent, MenuState> {
       appLog.e('Menu bloc delete exception $e');
       emit(
         MenuExceptionState(
-          message: 'Something went wrong during getting your all drivers, please try again',
+          message:
+              'Something went wrong during getting your all drivers, please try again',
           //exception: e as Exception,
           stackTrace: s,
           menuStateStatus: MenuStateStatus.delete,
@@ -580,9 +617,11 @@ class MenuBloc extends Bloc<MenuEvent, MenuState> {
     }
   }
 
-  FutureOr<void> _removeAllMenu(RemoveAllMenu event, Emitter<MenuState> emit) async {
+  FutureOr<void> _removeAllMenu(
+      RemoveAllMenu event, Emitter<MenuState> emit) async {
     try {
-      final DataSourceState<bool> result = await serviceLocator<DeleteAllMenuUseCase>()();
+      final DataSourceState<bool> result =
+          await serviceLocator<DeleteAllMenuUseCase>()();
       result.when(
         remote: (data, meta) {
           appLog.d('Menu bloc delete all remote $data');
@@ -604,7 +643,8 @@ class MenuBloc extends Bloc<MenuEvent, MenuState> {
             ),
           );
         },
-        error: (dataSourceFailure, reason, error, networkException, stackTrace, exception, extra) {
+        error: (dataSourceFailure, reason, error, networkException, stackTrace,
+            exception, extra) {
           appLog.d('Menu bloc delete all error $reason');
           emit(
             MenuExceptionState(
@@ -620,7 +660,8 @@ class MenuBloc extends Bloc<MenuEvent, MenuState> {
       appLog.e('Menu bloc delete all exception $e');
       emit(
         MenuExceptionState(
-          message: 'Something went wrong during getting your all drivers, please try again',
+          message:
+              'Something went wrong during getting your all drivers, please try again',
           //exception: e as Exception,
           stackTrace: s,
           menuStateStatus: MenuStateStatus.deleteAll,
@@ -629,9 +670,11 @@ class MenuBloc extends Bloc<MenuEvent, MenuState> {
     }
   }
 
-  FutureOr<void> _getByIDMenu(GetByIDMenu event, Emitter<MenuState> emit) async {
+  FutureOr<void> _getByIDMenu(
+      GetByIDMenu event, Emitter<MenuState> emit) async {
     try {
-      final DataSourceState<MenuEntity> result = await serviceLocator<GetMenuUseCase>()(
+      final DataSourceState<MenuEntity> result =
+          await serviceLocator<GetMenuUseCase>()(
         input: event.menuEntity,
         id: int.parse(event.menuID),
       );
@@ -658,7 +701,8 @@ class MenuBloc extends Bloc<MenuEvent, MenuState> {
             ),
           );
         },
-        error: (dataSourceFailure, reason, error, networkException, stackTrace, exception, extra) {
+        error: (dataSourceFailure, reason, error, networkException, stackTrace,
+            exception, extra) {
           appLog.d('Menu bloc edit error $reason');
           emit(
             MenuExceptionState(
@@ -674,7 +718,8 @@ class MenuBloc extends Bloc<MenuEvent, MenuState> {
       appLog.e('Menu bloc get exception $e');
       emit(
         MenuExceptionState(
-          message: 'Something went wrong during getting your store details, please try again',
+          message:
+              'Something went wrong during getting your store details, please try again',
           //exception: e as Exception,
           stackTrace: s,
           menuStateStatus: MenuStateStatus.getByID,
@@ -683,18 +728,21 @@ class MenuBloc extends Bloc<MenuEvent, MenuState> {
     }
   }
 
-  FutureOr<void> _selectAllMenu(SelectAllMenu event, Emitter<MenuState> emit) async {
+  FutureOr<void> _selectAllMenu(
+      SelectAllMenu event, Emitter<MenuState> emit) async {
     try {} catch (e) {}
   }
 
-  FutureOr<void> _navigateToStorePage(NavigateToStorePage event, Emitter<MenuState> emit) async {
+  FutureOr<void> _navigateToStorePage(
+      NavigateToStorePage event, Emitter<MenuState> emit) async {
     emit(NavigateToStorePageState(
       menuEntities: event.menuEntities.toList(),
       listOfSelectedMenuEntities: event.listOfSelectedMenuEntities.toList(),
     ));
   }
 
-  FutureOr<void> _fetchAllStores(FetchAllStores event, Emitter<MenuState> emit) async {
+  FutureOr<void> _fetchAllStores(
+      FetchAllStores event, Emitter<MenuState> emit) async {
     try {
       emit(
         FetchAllStoresState(
@@ -715,7 +763,8 @@ class MenuBloc extends Bloc<MenuEvent, MenuState> {
               area: 'Reyadh',
             ),
           ),
-          storeImagePath: 'https://img.freepik.com/free-vector/flat-restaurant-with-lampposts_23-2147539585.jpg',
+          storeImagePath:
+              'https://img.freepik.com/free-vector/flat-restaurant-with-lampposts_23-2147539585.jpg',
         ),
         StoreEntity(
           storeID: 1,
@@ -736,7 +785,8 @@ class MenuBloc extends Bloc<MenuEvent, MenuState> {
               area: 'Macca',
             ),
           ),
-          storeImagePath: 'https://img.freepik.com/premium-photo/closeup-interior-chinese-restaurant_1417-16144.jpg',
+          storeImagePath:
+              'https://img.freepik.com/premium-photo/closeup-interior-chinese-restaurant_1417-16144.jpg',
         ),
       ];
       Future.delayed(const Duration(seconds: 1), () {});
@@ -745,7 +795,8 @@ class MenuBloc extends Bloc<MenuEvent, MenuState> {
           FetchAllStoresState(
             menuEntities: event.menuEntities.toList(),
             menuStateStatus: MenuStateStatus.empty,
-            listOfSelectedMenuEntities: event.listOfSelectedMenuEntities.toList(),
+            listOfSelectedMenuEntities:
+                event.listOfSelectedMenuEntities.toList(),
             storeEntities: [],
             message: 'Your store is empty',
           ),
@@ -756,7 +807,8 @@ class MenuBloc extends Bloc<MenuEvent, MenuState> {
             menuEntities: event.menuEntities.toList(),
             message: '',
             menuStateStatus: MenuStateStatus.success,
-            listOfSelectedMenuEntities: event.listOfSelectedMenuEntities.toList(),
+            listOfSelectedMenuEntities:
+                event.listOfSelectedMenuEntities.toList(),
             storeEntities: listOfStores.toList(),
           ),
         );
@@ -774,7 +826,8 @@ class MenuBloc extends Bloc<MenuEvent, MenuState> {
     }
   }
 
-  FutureOr<void> _bindMenuWithStores(BindMenuWithStores event, Emitter<MenuState> emit) async {
+  FutureOr<void> _bindMenuWithStores(
+      BindMenuWithStores event, Emitter<MenuState> emit) async {
     try {
       emit(
         BindMenuWithStoresState(
@@ -786,7 +839,8 @@ class MenuBloc extends Bloc<MenuEvent, MenuState> {
           bindMenuToStoreStage: BindMenuToStoreStage.attaching,
         ),
       );
-      final DataSourceState<List<StoreEntity>> result = await serviceLocator<BindMenuWithStoreUseCase>()(
+      final DataSourceState<List<StoreEntity>> result =
+          await serviceLocator<BindMenuWithStoreUseCase>()(
         destination: event.listOfSelectedStoreEntities,
         source: event.listOfSelectedMenuEntities,
       );
@@ -797,7 +851,8 @@ class MenuBloc extends Bloc<MenuEvent, MenuState> {
             BindMenuWithStoresState(
               menuEntities: event.menuEntities.toList(),
               menuStateStatus: MenuStateStatus.success,
-              listOfSelectedMenuEntities: event.listOfSelectedMenuEntities.toList(),
+              listOfSelectedMenuEntities:
+                  event.listOfSelectedMenuEntities.toList(),
               storeEntities: data ?? event.storeEntities,
               message: event.message,
               bindMenuToStoreStage: BindMenuToStoreStage.attached,
@@ -811,7 +866,8 @@ class MenuBloc extends Bloc<MenuEvent, MenuState> {
             BindMenuWithStoresState(
               menuEntities: event.menuEntities.toList(),
               menuStateStatus: MenuStateStatus.success,
-              listOfSelectedMenuEntities: event.listOfSelectedMenuEntities.toList(),
+              listOfSelectedMenuEntities:
+                  event.listOfSelectedMenuEntities.toList(),
               storeEntities: data ?? event.storeEntities,
               message: event.message,
               bindMenuToStoreStage: BindMenuToStoreStage.attached,
@@ -819,13 +875,15 @@ class MenuBloc extends Bloc<MenuEvent, MenuState> {
             ),
           );
         },
-        error: (dataSourceFailure, reason, error, networkException, stackTrace, exception, extra) {
+        error: (dataSourceFailure, reason, error, networkException, stackTrace,
+            exception, extra) {
           appLog.d('Binding menu with Store error $reason');
           emit(
             BindMenuWithStoresState(
               menuEntities: event.menuEntities.toList(),
               menuStateStatus: MenuStateStatus.exception,
-              listOfSelectedMenuEntities: event.listOfSelectedMenuEntities.toList(),
+              listOfSelectedMenuEntities:
+                  event.listOfSelectedMenuEntities.toList(),
               storeEntities: event.storeEntities.toList(),
               message: reason,
               bindMenuToStoreStage: BindMenuToStoreStage.failed,
@@ -842,7 +900,8 @@ class MenuBloc extends Bloc<MenuEvent, MenuState> {
           menuStateStatus: MenuStateStatus.exception,
           listOfSelectedMenuEntities: event.listOfSelectedMenuEntities.toList(),
           storeEntities: event.storeEntities.toList(),
-          message: 'Something went wrong during binding menu with store, please try again',
+          message:
+              'Something went wrong during binding menu with store, please try again',
           bindMenuToStoreStage: BindMenuToStoreStage.exception,
           listOfSelectedStoreEntities: event.listOfSelectedStoreEntities,
         ),
@@ -850,7 +909,8 @@ class MenuBloc extends Bloc<MenuEvent, MenuState> {
     }
   }
 
-  FutureOr<void> _unbindMenuWithStores(UnBindMenuWithStores event, Emitter<MenuState> emit) async {
+  FutureOr<void> _unbindMenuWithStores(
+      UnBindMenuWithStores event, Emitter<MenuState> emit) async {
     try {
       emit(
         UnBindMenuWithStoresState(
@@ -862,7 +922,8 @@ class MenuBloc extends Bloc<MenuEvent, MenuState> {
           bindMenuToStoreStage: BindMenuToStoreStage.attaching,
         ),
       );
-      final DataSourceState<List<StoreEntity>> result = await serviceLocator<UnBindMenuWithStoreUseCase>()(
+      final DataSourceState<List<StoreEntity>> result =
+          await serviceLocator<UnBindMenuWithStoreUseCase>()(
         destination: event.listOfSelectedStoreEntities,
         source: event.listOfSelectedMenuEntities,
       );
@@ -873,11 +934,13 @@ class MenuBloc extends Bloc<MenuEvent, MenuState> {
             UnBindMenuWithStoresState(
               menuEntities: event.menuEntities.toList(),
               menuStateStatus: MenuStateStatus.success,
-              listOfSelectedMenuEntities: event.listOfSelectedMenuEntities.toList(),
+              listOfSelectedMenuEntities:
+                  event.listOfSelectedMenuEntities.toList(),
               storeEntities: data ?? event.storeEntities.toList(),
               message: event.message,
               bindMenuToStoreStage: BindMenuToStoreStage.remove,
-              listOfSelectedStoreEntities: event.listOfSelectedStoreEntities.toList(),
+              listOfSelectedStoreEntities:
+                  event.listOfSelectedStoreEntities.toList(),
             ),
           );
         },
@@ -887,21 +950,25 @@ class MenuBloc extends Bloc<MenuEvent, MenuState> {
             UnBindMenuWithStoresState(
               menuEntities: event.menuEntities.toList(),
               menuStateStatus: MenuStateStatus.success,
-              listOfSelectedMenuEntities: event.listOfSelectedMenuEntities.toList(),
+              listOfSelectedMenuEntities:
+                  event.listOfSelectedMenuEntities.toList(),
               storeEntities: data ?? event.storeEntities.toList(),
               message: event.message,
               bindMenuToStoreStage: BindMenuToStoreStage.remove,
-              listOfSelectedStoreEntities: event.listOfSelectedStoreEntities.toList(),
+              listOfSelectedStoreEntities:
+                  event.listOfSelectedStoreEntities.toList(),
             ),
           );
         },
-        error: (dataSourceFailure, reason, error, networkException, stackTrace, exception, extra) {
+        error: (dataSourceFailure, reason, error, networkException, stackTrace,
+            exception, extra) {
           appLog.d('UnBinding menu with Store error $reason');
           emit(
             UnBindMenuWithStoresState(
               menuEntities: event.menuEntities.toList(),
               menuStateStatus: MenuStateStatus.exception,
-              listOfSelectedMenuEntities: event.listOfSelectedMenuEntities.toList(),
+              listOfSelectedMenuEntities:
+                  event.listOfSelectedMenuEntities.toList(),
               storeEntities: event.storeEntities.toList(),
               message: reason,
               bindMenuToStoreStage: BindMenuToStoreStage.failed,
@@ -918,7 +985,8 @@ class MenuBloc extends Bloc<MenuEvent, MenuState> {
           menuStateStatus: MenuStateStatus.exception,
           listOfSelectedMenuEntities: event.listOfSelectedMenuEntities.toList(),
           storeEntities: event.storeEntities.toList(),
-          message: 'Something went wrong during unbinding your menu with store, please try again',
+          message:
+              'Something went wrong during unbinding your menu with store, please try again',
           bindMenuToStoreStage: BindMenuToStoreStage.exception,
           listOfSelectedStoreEntities: event.listOfSelectedStoreEntities,
         ),
@@ -926,9 +994,11 @@ class MenuBloc extends Bloc<MenuEvent, MenuState> {
     }
   }
 
-  FutureOr<void> _removeByIDAddons(RemoveByIDAddons event, Emitter<MenuState> emit) async {
+  FutureOr<void> _removeByIDAddons(
+      RemoveByIDAddons event, Emitter<MenuState> emit) async {
     try {
-      final DataSourceState<bool> result = await serviceLocator<DeleteAddonsUseCase>()(
+      final DataSourceState<bool> result =
+          await serviceLocator<DeleteAddonsUseCase>()(
         input: event.addonsEntity,
         id: int.parse(event.addonsID),
       );
@@ -957,7 +1027,8 @@ class MenuBloc extends Bloc<MenuEvent, MenuState> {
             ),
           );
         },
-        error: (dataSourceFailure, reason, error, networkException, stackTrace, exception, extra) {
+        error: (dataSourceFailure, reason, error, networkException, stackTrace,
+            exception, extra) {
           appLog.d('Addons bloc delete error $reason');
           emit(
             AddonsExceptionState(
@@ -973,7 +1044,8 @@ class MenuBloc extends Bloc<MenuEvent, MenuState> {
       appLog.e('Addons bloc delete exception $e');
       emit(
         AddonsExceptionState(
-          message: 'Something went wrong during getting your all drivers, please try again',
+          message:
+              'Something went wrong during getting your all drivers, please try again',
           //exception: e as Exception,
           stackTrace: s,
           addonsSelectionUseCase: AddonsSelectionUseCase.delete,
@@ -982,9 +1054,11 @@ class MenuBloc extends Bloc<MenuEvent, MenuState> {
     }
   }
 
-  FutureOr<void> _removeAllAddons(RemoveAllAddons event, Emitter<MenuState> emit) async {
+  FutureOr<void> _removeAllAddons(
+      RemoveAllAddons event, Emitter<MenuState> emit) async {
     try {
-      final DataSourceState<bool> result = await serviceLocator<DeleteAllAddonsUseCase>()();
+      final DataSourceState<bool> result =
+          await serviceLocator<DeleteAllAddonsUseCase>()();
       result.when(
         remote: (data, meta) {
           appLog.d('Addons bloc delete all remote $data');
@@ -1006,7 +1080,8 @@ class MenuBloc extends Bloc<MenuEvent, MenuState> {
             ),
           );
         },
-        error: (dataSourceFailure, reason, error, networkException, stackTrace, exception, extra) {
+        error: (dataSourceFailure, reason, error, networkException, stackTrace,
+            exception, extra) {
           appLog.d('Driver bloc delete all error $reason');
           emit(
             AddonsExceptionState(
@@ -1022,7 +1097,8 @@ class MenuBloc extends Bloc<MenuEvent, MenuState> {
       appLog.e('Addons bloc delete all exception $e');
       emit(
         AddonsExceptionState(
-          message: 'Something went wrong during getting your all drivers, please try again',
+          message:
+              'Something went wrong during getting your all drivers, please try again',
           //exception: e as Exception,
           stackTrace: s,
           addonsSelectionUseCase: AddonsSelectionUseCase.deleteAll,
@@ -1031,9 +1107,11 @@ class MenuBloc extends Bloc<MenuEvent, MenuState> {
     }
   }
 
-  FutureOr<void> _getByIDAddons(GetByIDAddons event, Emitter<MenuState> emit) async {
+  FutureOr<void> _getByIDAddons(
+      GetByIDAddons event, Emitter<MenuState> emit) async {
     try {
-      final DataSourceState<Addons> result = await serviceLocator<GetAddonsUseCase>()(
+      final DataSourceState<Addons> result =
+          await serviceLocator<GetAddonsUseCase>()(
         input: event.addonsEntity,
         id: int.parse(event.addonsID),
       );
@@ -1060,7 +1138,8 @@ class MenuBloc extends Bloc<MenuEvent, MenuState> {
             ),
           );
         },
-        error: (dataSourceFailure, reason, error, networkException, stackTrace, exception, extra) {
+        error: (dataSourceFailure, reason, error, networkException, stackTrace,
+            exception, extra) {
           appLog.d('Addons bloc get error $reason');
           emit(
             AddonsExceptionState(
@@ -1075,7 +1154,8 @@ class MenuBloc extends Bloc<MenuEvent, MenuState> {
       appLog.e('Addons bloc get exception $e');
       emit(
         AddonsExceptionState(
-            message: 'Something went wrong during getting your store details, please try again',
+            message:
+                'Something went wrong during getting your store details, please try again',
             //exception: e as Exception,
             stackTrace: s,
             addonsSelectionUseCase: AddonsSelectionUseCase.getByID),
@@ -1083,16 +1163,23 @@ class MenuBloc extends Bloc<MenuEvent, MenuState> {
     }
   }
 
-  FutureOr<void> _bindMenuWithUser(BindMenuWithUser event, Emitter<MenuState> emit) async {}
+  FutureOr<void> _bindMenuWithUser(
+      BindMenuWithUser event, Emitter<MenuState> emit) async {}
 
-  FutureOr<void> _bindAddonsWithMenu(BindAddonsWithMenu event, Emitter<MenuState> emit) async {}
+  FutureOr<void> _bindAddonsWithMenu(
+      BindAddonsWithMenu event, Emitter<MenuState> emit) async {}
 
-  FutureOr<void> _bindAddonsWithUser(BindAddonsWithUser event, Emitter<MenuState> emit) async {}
+  FutureOr<void> _bindAddonsWithUser(
+      BindAddonsWithUser event, Emitter<MenuState> emit) async {}
 
-  FutureOr<void> _getAllAddonsPagination(GetAllAddonsPagination event, Emitter<MenuState> emit) async {
+  FutureOr<void> _getAllAddonsPagination(
+      GetAllAddonsPagination event, Emitter<MenuState> emit) async {
     try {
-      emit(GetAllLoadingAddonsPaginationState(isLoading: true, message: 'Please wait while we are fetching all addons...'));
-      final DataSourceState<List<Addons>> result = await serviceLocator<GetAllAddonsPaginationUseCase>()(
+      emit(GetAllLoadingAddonsPaginationState(
+          isLoading: true,
+          message: 'Please wait while we are fetching all addons...'));
+      final DataSourceState<List<Addons>> result =
+          await serviceLocator<GetAllAddonsPaginationUseCase>()(
         pageKey: event.pageKey,
         pageSize: event.pageSize,
         searchText: event.searchText,
@@ -1164,7 +1251,8 @@ class MenuBloc extends Bloc<MenuEvent, MenuState> {
             );
           }
         },
-        error: (dataSourceFailure, reason, error, networkException, stackTrace, exception, extra) {
+        error: (dataSourceFailure, reason, error, networkException, stackTrace,
+            exception, extra) {
           appLog.d('Get all addons bloc get all error $reason');
           emit(
             GetAllExceptionAddonsPaginationState(
@@ -1179,7 +1267,8 @@ class MenuBloc extends Bloc<MenuEvent, MenuState> {
       appLog.e('Get all addons bloc get all $e');
       emit(
         GetAllExceptionAddonsPaginationState(
-          message: 'Something went wrong during getting all addons, please try again',
+          message:
+              'Something went wrong during getting all addons, please try again',
           //exception: e as Exception,
           stackTrace: s,
         ),
@@ -1187,10 +1276,14 @@ class MenuBloc extends Bloc<MenuEvent, MenuState> {
     }
   }
 
-  FutureOr<void> _getAllMenuPagination(GetAllMenuPagination event, Emitter<MenuState> emit) async {
+  FutureOr<void> _getAllMenuPagination(
+      GetAllMenuPagination event, Emitter<MenuState> emit) async {
     try {
-      emit(GetAllLoadingMenuPaginationState(isLoading: true, message: 'Please wait while we are fetching all address...'));
-      final DataSourceState<List<MenuEntity>> result = await serviceLocator<GetAllMenuPaginationUseCase>()(
+      emit(GetAllLoadingMenuPaginationState(
+          isLoading: true,
+          message: 'Please wait while we are fetching all address...'));
+      final DataSourceState<List<MenuEntity>> result =
+          await serviceLocator<GetAllMenuPaginationUseCase>()(
         pageKey: event.pageKey,
         pageSize: event.pageSize,
         searchText: event.searchText,
@@ -1262,7 +1355,8 @@ class MenuBloc extends Bloc<MenuEvent, MenuState> {
             );
           }
         },
-        error: (dataSourceFailure, reason, error, networkException, stackTrace, exception, extra) {
+        error: (dataSourceFailure, reason, error, networkException, stackTrace,
+            exception, extra) {
           appLog.d('Get all menu bloc get all error $reason');
           emit(
             GetAllExceptionMenuPaginationState(
@@ -1277,7 +1371,8 @@ class MenuBloc extends Bloc<MenuEvent, MenuState> {
       appLog.e('Get all menu bloc get all $e');
       emit(
         GetAllExceptionMenuPaginationState(
-          message: 'Something went wrong during getting all menu, please try again',
+          message:
+              'Something went wrong during getting all menu, please try again',
           //exception: e as Exception,
           stackTrace: s,
         ),

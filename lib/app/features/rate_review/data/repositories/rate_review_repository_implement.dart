@@ -7,15 +7,18 @@ class RateAndReviewRepositoryImplement implements RateAndReviewRepository {
   });
 
   final RateAndReviewDataSource remoteDataSource;
-  final RateAndReviewLocalDbRepository<RateAndReviewEntity> notificationLocalDataSource;
+  final RateAndReviewLocalDbRepository<RateAndReviewEntity>
+      notificationLocalDataSource;
   @override
   Future<DataSourceState<bool>> deleteAllRateAndReview() async {
     try {
-      final connectivity = serviceLocator<ConnectivityService>().getCurrentInternetStatus();
+      final connectivity =
+          serviceLocator<ConnectivityService>().getCurrentInternetStatus();
       if (connectivity.$2 == InternetConnectivityState.internet) {
         // Local DB
         // Save to local
-        final Either<RepositoryBaseFailure, bool> result = await notificationLocalDataSource.deleteAll();
+        final Either<RepositoryBaseFailure, bool> result =
+            await notificationLocalDataSource.deleteAll();
         // Return result
         return result.fold((l) {
           final RepositoryFailure failure = l as RepositoryFailure;
@@ -32,7 +35,8 @@ class RateAndReviewRepositoryImplement implements RateAndReviewRepository {
       } else {
         // Remote
         // Save to server
-        final ApiResultState<bool> result = await remoteDataSource.deleteAllRateAndReview();
+        final ApiResultState<bool> result =
+            await remoteDataSource.deleteAllRateAndReview();
         // Return result
         return result.when(
           success: (data) {
@@ -66,13 +70,16 @@ class RateAndReviewRepositoryImplement implements RateAndReviewRepository {
   }
 
   @override
-  Future<DataSourceState<bool>> deleteRateAndReview({required int ratingID, RateAndReviewEntity? rateAndReviewEntity}) async {
+  Future<DataSourceState<bool>> deleteRateAndReview(
+      {required int ratingID, RateAndReviewEntity? rateAndReviewEntity}) async {
     try {
-      final connectivity = serviceLocator<ConnectivityService>().getCurrentInternetStatus();
+      final connectivity =
+          serviceLocator<ConnectivityService>().getCurrentInternetStatus();
       if (connectivity.$2 == InternetConnectivityState.internet) {
         // Local DB
         // Save to local
-        final Either<RepositoryBaseFailure, bool> result = await notificationLocalDataSource.deleteById(UniqueId(ratingID));
+        final Either<RepositoryBaseFailure, bool> result =
+            await notificationLocalDataSource.deleteById(UniqueId(ratingID));
         // Return result
         return result.fold((l) {
           final RepositoryFailure failure = l as RepositoryFailure;
@@ -89,7 +96,8 @@ class RateAndReviewRepositoryImplement implements RateAndReviewRepository {
       } else {
         // Remote
         // Save to server
-        final ApiResultState<bool> result = await remoteDataSource.deleteRateAndReview(
+        final ApiResultState<bool> result =
+            await remoteDataSource.deleteRateAndReview(
           ratingID: ratingID,
           rateAndReviewEntity: rateAndReviewEntity,
         );
@@ -126,13 +134,18 @@ class RateAndReviewRepositoryImplement implements RateAndReviewRepository {
   }
 
   @override
-  Future<DataSourceState<RateAndReviewEntity>> editRateAndReview({required RateAndReviewEntity rateAndReviewEntity, required int ratingID}) async {
+  Future<DataSourceState<RateAndReviewEntity>> editRateAndReview(
+      {required RateAndReviewEntity rateAndReviewEntity,
+      required int ratingID}) async {
     try {
-      final connectivity = serviceLocator<ConnectivityService>().getCurrentInternetStatus();
+      final connectivity =
+          serviceLocator<ConnectivityService>().getCurrentInternetStatus();
       if (connectivity.$2 == InternetConnectivityState.internet) {
         // Local DB
         // Save to local
-        final Either<RepositoryBaseFailure, RateAndReviewEntity> result = await notificationLocalDataSource.update(rateAndReviewEntity, UniqueId(ratingID));
+        final Either<RepositoryBaseFailure, RateAndReviewEntity> result =
+            await notificationLocalDataSource.update(
+                rateAndReviewEntity, UniqueId(ratingID));
         // Return result
         return result.fold((l) {
           final RepositoryFailure failure = l as RepositoryFailure;
@@ -149,7 +162,8 @@ class RateAndReviewRepositoryImplement implements RateAndReviewRepository {
       } else {
         // Remote
         // Save to server
-        final ApiResultState<RateAndReviewEntity> result = await remoteDataSource.editRateAndReview(
+        final ApiResultState<RateAndReviewEntity> result =
+            await remoteDataSource.editRateAndReview(
           ratingID: ratingID,
           rateAndReviewEntity: rateAndReviewEntity,
         );
@@ -186,13 +200,16 @@ class RateAndReviewRepositoryImplement implements RateAndReviewRepository {
   }
 
   @override
-  Future<DataSourceState<List<RateAndReviewEntity>>> getAllRateAndReview() async {
+  Future<DataSourceState<List<RateAndReviewEntity>>>
+      getAllRateAndReview() async {
     try {
-      final connectivity = serviceLocator<ConnectivityService>().getCurrentInternetStatus();
+      final connectivity =
+          serviceLocator<ConnectivityService>().getCurrentInternetStatus();
       if (connectivity.$2 == InternetConnectivityState.internet) {
         // Local DB
         // Save to local
-        final Either<RepositoryBaseFailure, List<RateAndReviewEntity>> result = await notificationLocalDataSource.getAll();
+        final Either<RepositoryBaseFailure, List<RateAndReviewEntity>> result =
+            await notificationLocalDataSource.getAll();
         // Return result
         return result.fold((l) {
           final RepositoryFailure failure = l as RepositoryFailure;
@@ -209,7 +226,8 @@ class RateAndReviewRepositoryImplement implements RateAndReviewRepository {
       } else {
         // Remote
         // Save to server
-        final ApiResultState<List<RateAndReviewEntity>> result = await remoteDataSource.getAllRateAndReview();
+        final ApiResultState<List<RateAndReviewEntity>> result =
+            await remoteDataSource.getAllRateAndReview();
         // Return result
         return result.when(
           success: (data) {
@@ -243,13 +261,16 @@ class RateAndReviewRepositoryImplement implements RateAndReviewRepository {
   }
 
   @override
-  Future<DataSourceState<RateAndReviewEntity>> getRateAndReview({required int ratingID, RateAndReviewEntity? rateAndReviewEntity}) async {
+  Future<DataSourceState<RateAndReviewEntity>> getRateAndReview(
+      {required int ratingID, RateAndReviewEntity? rateAndReviewEntity}) async {
     try {
-      final connectivity = serviceLocator<ConnectivityService>().getCurrentInternetStatus();
+      final connectivity =
+          serviceLocator<ConnectivityService>().getCurrentInternetStatus();
       if (connectivity.$2 == InternetConnectivityState.internet) {
         // Local DB
         // Save to local
-        final Either<RepositoryBaseFailure, RateAndReviewEntity?> result = await notificationLocalDataSource.getById(UniqueId(ratingID));
+        final Either<RepositoryBaseFailure, RateAndReviewEntity?> result =
+            await notificationLocalDataSource.getById(UniqueId(ratingID));
         // Return result
         return result.fold((l) {
           final RepositoryFailure failure = l as RepositoryFailure;
@@ -260,13 +281,15 @@ class RateAndReviewRepositoryImplement implements RateAndReviewRepository {
             stackTrace: failure.stacktrace,
           );
         }, (r) {
-          appLog.d('Get rate and review to local : ${r?.ratingID}, ${r?.title}');
+          appLog
+              .d('Get rate and review to local : ${r?.ratingID}, ${r?.title}');
           return DataSourceState<RateAndReviewEntity>.localDb(data: r);
         });
       } else {
         // Remote
         // Save to server
-        final ApiResultState<RateAndReviewEntity> result = await remoteDataSource.getRateAndReview(
+        final ApiResultState<RateAndReviewEntity> result =
+            await remoteDataSource.getRateAndReview(
           ratingID: ratingID,
           rateAndReviewEntity: rateAndReviewEntity,
         );
@@ -303,13 +326,16 @@ class RateAndReviewRepositoryImplement implements RateAndReviewRepository {
   }
 
   @override
-  Future<DataSourceState<RateAndReviewEntity>> saveRateAndReview({required RateAndReviewEntity rateAndReviewEntity}) async {
+  Future<DataSourceState<RateAndReviewEntity>> saveRateAndReview(
+      {required RateAndReviewEntity rateAndReviewEntity}) async {
     try {
-      final connectivity = serviceLocator<ConnectivityService>().getCurrentInternetStatus();
+      final connectivity =
+          serviceLocator<ConnectivityService>().getCurrentInternetStatus();
       if (connectivity.$2 == InternetConnectivityState.internet) {
         // Local DB
         // Save to local
-        final Either<RepositoryBaseFailure, RateAndReviewEntity> result = await notificationLocalDataSource.add(rateAndReviewEntity);
+        final Either<RepositoryBaseFailure, RateAndReviewEntity> result =
+            await notificationLocalDataSource.add(rateAndReviewEntity);
         // Return result
         return result.fold((l) {
           final RepositoryFailure failure = l as RepositoryFailure;
@@ -326,7 +352,8 @@ class RateAndReviewRepositoryImplement implements RateAndReviewRepository {
       } else {
         // Remote
         // Save to server
-        final ApiResultState<RateAndReviewEntity> result = await remoteDataSource.saveRateAndReview(
+        final ApiResultState<RateAndReviewEntity> result =
+            await remoteDataSource.saveRateAndReview(
           rateAndReviewEntity: rateAndReviewEntity,
         );
         // Return result
@@ -367,11 +394,13 @@ class RateAndReviewRepositoryImplement implements RateAndReviewRepository {
     bool hasUpdateAll = false,
   }) async {
     try {
-      final connectivity = serviceLocator<ConnectivityService>().getCurrentInternetStatus();
+      final connectivity =
+          serviceLocator<ConnectivityService>().getCurrentInternetStatus();
       if (connectivity.$2 == InternetConnectivityState.internet) {
         // Local DB
         // Save to local
-        final Either<RepositoryBaseFailure, List<RateAndReviewEntity>> result = await notificationLocalDataSource.saveAll(
+        final Either<RepositoryBaseFailure, List<RateAndReviewEntity>> result =
+            await notificationLocalDataSource.saveAll(
           entities: rateAndReviewEntities,
           hasUpdateAll: hasUpdateAll,
         );
@@ -391,7 +420,8 @@ class RateAndReviewRepositoryImplement implements RateAndReviewRepository {
       } else {
         // Remote
         // Save to server
-        final ApiResultState<List<RateAndReviewEntity>> result = await remoteDataSource.saveAllRateAndReview(
+        final ApiResultState<List<RateAndReviewEntity>> result =
+            await remoteDataSource.saveAllRateAndReview(
           rateAndReviewEntities: rateAndReviewEntities,
           hasUpdateAll: hasUpdateAll,
         );

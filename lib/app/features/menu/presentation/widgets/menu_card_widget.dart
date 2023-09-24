@@ -115,7 +115,8 @@ class _MenuCardWidgetState extends State<MenuCardWidget> {
                     cancelText: 'Cancel',
                     okPressed: () async {
                       debugPrint('Dialog confirmed');
-                      await Future.delayed(const Duration(milliseconds: 300), () {});
+                      await Future.delayed(
+                          const Duration(milliseconds: 300), () {});
                       if (!mounted) {
                         return;
                       }
@@ -123,7 +124,8 @@ class _MenuCardWidgetState extends State<MenuCardWidget> {
                     },
                     cancelPressed: () async {
                       debugPrint('Dialog cancelled');
-                      await Future.delayed(const Duration(milliseconds: 300), () {});
+                      await Future.delayed(
+                          const Duration(milliseconds: 300), () {});
                       if (!mounted) {
                         return;
                       }
@@ -132,11 +134,13 @@ class _MenuCardWidgetState extends State<MenuCardWidget> {
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       crossAxisAlignment: CrossAxisAlignment.stretch,
-                      textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                      textDirection: serviceLocator<LanguageController>()
+                          .targetTextDirection,
                       children: [
                         Text(
                           'Permanently delete this menu. If there is an order for this menu in any of your stores, then it will be deleted only after completing the order, and if you still confirm for delete, then this menu will remain pending and under review. Are you sure you want to delete this menu?',
-                          textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                          textDirection: serviceLocator<LanguageController>()
+                              .targetTextDirection,
                         ),
                       ],
                     ),
@@ -175,7 +179,8 @@ class _MenuCardWidgetState extends State<MenuCardWidget> {
                 color: Color.fromRGBO(42, 45, 50, 1),
                 fontSize: 16,
               ),
-              textDirection: serviceLocator<LanguageController>().targetTextDirection,
+              textDirection:
+                  serviceLocator<LanguageController>().targetTextDirection,
             ),
           ),
         ],
@@ -232,8 +237,11 @@ class _MenuCardWidgetState extends State<MenuCardWidget> {
           color: Colors.white,
           fontSize: 16,
         ),
-        placeholderBackgroundColor: context.colorScheme.primary.withOpacity(0.5),
-        imageType: (widget.menuEntity.menuImages[0].assetPath.isNotEmpty) ? ImageType.network : ImageType.text,
+        placeholderBackgroundColor:
+            context.colorScheme.primary.withOpacity(0.5),
+        imageType: (widget.menuEntity.menuImages[0].assetPath.isNotEmpty)
+            ? ImageType.network
+            : ImageType.text,
       ),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadiusDirectional.circular(10),
@@ -241,7 +249,8 @@ class _MenuCardWidgetState extends State<MenuCardWidget> {
       ),
       title: Text(
         widget.menuEntity.menuName,
-        style: context.titleMedium!.copyWith(color: const Color.fromRGBO(31, 31, 31, 1)),
+        style: context.titleMedium!
+            .copyWith(color: const Color.fromRGBO(31, 31, 31, 1)),
         textDirection: serviceLocator<LanguageController>().targetTextDirection,
         maxLines: 1,
         softWrap: true,
@@ -265,16 +274,18 @@ class _MenuCardWidgetState extends State<MenuCardWidget> {
           widget.onSelectionChanged?.call(widget.listOfAllSelectedMenuEntities);
         });
       },
-      selected: widget.listOfAllSelectedMenuEntities.contains(widget.menuEntity),
-      trailing: (widget.listOfAllSelectedMenuEntities.contains(widget.menuEntity))
-          ? const Icon(
-              Icons.check,
-              color: Color.fromRGBO(69, 201, 125, 1),
-            )
-          : _buildPopupMenuButton(
-              widget.currentIndex,
-              widget.menuEntity,
-            ),
+      selected:
+          widget.listOfAllSelectedMenuEntities.contains(widget.menuEntity),
+      trailing:
+          (widget.listOfAllSelectedMenuEntities.contains(widget.menuEntity))
+              ? const Icon(
+                  Icons.check,
+                  color: Color.fromRGBO(69, 201, 125, 1),
+                )
+              : _buildPopupMenuButton(
+                  widget.currentIndex,
+                  widget.menuEntity,
+                ),
       selectedColor: const Color.fromRGBO(215, 243, 227, 1),
       selectedTileColor: const Color.fromRGBO(215, 243, 227, 1),
       tileColor: Colors.white,

@@ -94,15 +94,20 @@ class PagedLayoutBuilder<PageKeyType, ItemType> extends StatefulWidget {
   final PagedLayoutProtocol layoutProtocol;
 
   @override
-  _PagedLayoutBuilderState<PageKeyType, ItemType> createState() => _PagedLayoutBuilderState<PageKeyType, ItemType>();
+  _PagedLayoutBuilderState<PageKeyType, ItemType> createState() =>
+      _PagedLayoutBuilderState<PageKeyType, ItemType>();
 }
 
-class _PagedLayoutBuilderState<PageKeyType, ItemType> extends State<PagedLayoutBuilder<PageKeyType, ItemType>> {
-  PagingController<PageKeyType, ItemType> get _pagingController => widget.pagingController;
+class _PagedLayoutBuilderState<PageKeyType, ItemType>
+    extends State<PagedLayoutBuilder<PageKeyType, ItemType>> {
+  PagingController<PageKeyType, ItemType> get _pagingController =>
+      widget.pagingController;
 
-  PagedChildBuilderDelegate<ItemType> get _builderDelegate => widget.builderDelegate;
+  PagedChildBuilderDelegate<ItemType> get _builderDelegate =>
+      widget.builderDelegate;
 
-  bool get _shrinkWrapFirstPageIndicators => widget.shrinkWrapFirstPageIndicators;
+  bool get _shrinkWrapFirstPageIndicators =>
+      widget.shrinkWrapFirstPageIndicators;
 
   PagedLayoutProtocol get _layoutProtocol => widget.layoutProtocol;
 
@@ -118,15 +123,23 @@ class _PagedLayoutBuilderState<PageKeyType, ItemType> extends State<PagedLayoutB
             onTap: _pagingController.retryLastFailedRequest,
           );
 
-  WidgetBuilder get _firstPageProgressIndicatorBuilder => _builderDelegate.firstPageProgressIndicatorBuilder ?? (_) => FirstPageProgressIndicator();
+  WidgetBuilder get _firstPageProgressIndicatorBuilder =>
+      _builderDelegate.firstPageProgressIndicatorBuilder ??
+      (_) => FirstPageProgressIndicator();
 
-  WidgetBuilder get _newPageProgressIndicatorBuilder => _builderDelegate.newPageProgressIndicatorBuilder ?? (_) => const NewPageProgressIndicator();
+  WidgetBuilder get _newPageProgressIndicatorBuilder =>
+      _builderDelegate.newPageProgressIndicatorBuilder ??
+      (_) => const NewPageProgressIndicator();
 
-  WidgetBuilder get _noItemsFoundIndicatorBuilder => _builderDelegate.noItemsFoundIndicatorBuilder ?? (_) => NoItemsFoundIndicator();
+  WidgetBuilder get _noItemsFoundIndicatorBuilder =>
+      _builderDelegate.noItemsFoundIndicatorBuilder ??
+      (_) => NoItemsFoundIndicator();
 
-  WidgetBuilder? get _noMoreItemsIndicatorBuilder => _builderDelegate.noMoreItemsIndicatorBuilder;
+  WidgetBuilder? get _noMoreItemsIndicatorBuilder =>
+      _builderDelegate.noMoreItemsIndicatorBuilder;
 
-  int get _invisibleItemsThreshold => _pagingController.invisibleItemsThreshold ?? 3;
+  int get _invisibleItemsThreshold =>
+      _pagingController.invisibleItemsThreshold ?? 3;
 
   int get _itemCount => _pagingController.itemCount;
 
@@ -248,7 +261,8 @@ class _PagedLayoutBuilderState<PageKeyType, ItemType> extends State<PagedLayoutB
     List<ItemType> itemList,
   ) {
     if (!_hasRequestedNextPage) {
-      final newPageRequestTriggerIndex = max(0, _itemCount - _invisibleItemsThreshold);
+      final newPageRequestTriggerIndex =
+          max(0, _itemCount - _invisibleItemsThreshold);
 
       final isBuildingTriggerIndexItem = index == newPageRequestTriggerIndex;
 

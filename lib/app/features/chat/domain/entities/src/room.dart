@@ -137,8 +137,12 @@ class _Room extends Room {
         createdAt: createdAt == _Unset ? this.createdAt : createdAt as int?,
         id: id ?? this.id,
         imageUrl: imageUrl == _Unset ? this.imageUrl : imageUrl as String?,
-        lastMessages: lastMessages == _Unset ? this.lastMessages : lastMessages as List<Message>?,
-        metadata: metadata == _Unset ? this.metadata : metadata as Map<String, dynamic>?,
+        lastMessages: lastMessages == _Unset
+            ? this.lastMessages
+            : lastMessages as List<Message>?,
+        metadata: metadata == _Unset
+            ? this.metadata
+            : metadata as Map<String, dynamic>?,
         name: name == _Unset ? this.name : name as String?,
         type: type == _Unset ? this.type : type as RoomType?,
         updatedAt: updatedAt == _Unset ? this.updatedAt : updatedAt as int?,

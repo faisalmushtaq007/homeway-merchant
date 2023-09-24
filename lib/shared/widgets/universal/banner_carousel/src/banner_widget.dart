@@ -30,7 +30,8 @@ class BannerWidget extends StatelessWidget {
         super(key: key);
 
   ImageProvider get _getImage {
-    if (_bannerModel.imagePath.contains("https://") || _bannerModel.imagePath.contains("http://")) {
+    if (_bannerModel.imagePath.contains("https://") ||
+        _bannerModel.imagePath.contains("http://")) {
       return NetworkImage(_bannerModel.imagePath);
     }
     return AssetImage(_bannerModel.imagePath);
@@ -64,14 +65,18 @@ class BannerWidget extends StatelessWidget {
           // Quality levels for image sampling in [ImageFilter] and [Shader] objects that sample
           filterQuality: FilterQuality.high,
           // border radius only work with [ImageShape.rounded]
-          borderRadius: bannerWidgetBorderRadius ?? BorderRadiusDirectional.circular(borderRadius),
+          borderRadius: bannerWidgetBorderRadius ??
+              BorderRadiusDirectional.circular(borderRadius),
           //boxBorder:Border.all(color: context.colorScheme.inverseSurface),
           // alignment of image
           //alignment: Alignment.center,
           // indicates where image will be loaded from, types are [network, asset,file]
-          imageType: (_bannerModel.imagePath.isNotEmpty && (_bannerModel.imagePath.contains("https://") || _bannerModel.imagePath.contains("http://")))
+          imageType: (_bannerModel.imagePath.isNotEmpty &&
+                  (_bannerModel.imagePath.contains("https://") ||
+                      _bannerModel.imagePath.contains("http://")))
               ? ImageType.network
-              : (_bannerModel.imagePath.isNotEmpty && _bannerModel.imagePath.contains(".svg"))
+              : (_bannerModel.imagePath.isNotEmpty &&
+                      _bannerModel.imagePath.contains(".svg"))
                   ? ImageType.svg
                   : ImageType.file,
           // indicates what shape you would like to be with image [rectangle, oval,circle or none]

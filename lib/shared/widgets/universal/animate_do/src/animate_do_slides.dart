@@ -56,7 +56,8 @@ class _SlideInUpState extends State<SlideInUp> with TickerProviderStateMixin {
 
     controller = AnimationController(duration: widget.duration, vsync: this);
 
-    animation = Tween<double>(begin: widget.from, end: 0).animate(CurvedAnimation(parent: controller!, curve: Curves.easeOut));
+    animation = Tween<double>(begin: widget.from, end: 0)
+        .animate(CurvedAnimation(parent: controller!, curve: Curves.easeOut));
 
     if (!widget.manualTrigger && widget.animate) {
       Future.delayed(widget.delay, () {
@@ -85,7 +86,8 @@ class _SlideInUpState extends State<SlideInUp> with TickerProviderStateMixin {
     return AnimatedBuilder(
         animation: controller!,
         builder: (BuildContext context, Widget? child) {
-          return Transform.translate(offset: Offset(0, animation.value), child: widget.child);
+          return Transform.translate(
+              offset: Offset(0, animation.value), child: widget.child);
         });
   }
 }
@@ -173,7 +175,8 @@ class SlideInLeft extends StatefulWidget {
 }
 
 /// State class, where the magic happens
-class _SlideInLeftState extends State<SlideInLeft> with TickerProviderStateMixin {
+class _SlideInLeftState extends State<SlideInLeft>
+    with TickerProviderStateMixin {
   AnimationController? controller;
   bool disposed = false;
   late Animation<double> animation;
@@ -191,7 +194,8 @@ class _SlideInLeftState extends State<SlideInLeft> with TickerProviderStateMixin
 
     controller = AnimationController(duration: widget.duration, vsync: this);
 
-    animation = Tween<double>(begin: widget.from * -1, end: 0).animate(CurvedAnimation(parent: controller!, curve: Curves.easeOut));
+    animation = Tween<double>(begin: widget.from * -1, end: 0)
+        .animate(CurvedAnimation(parent: controller!, curve: Curves.easeOut));
 
     if (!widget.manualTrigger && widget.animate) {
       Future.delayed(widget.delay, () {
@@ -220,7 +224,8 @@ class _SlideInLeftState extends State<SlideInLeft> with TickerProviderStateMixin
     return AnimatedBuilder(
         animation: controller!,
         builder: (BuildContext context, Widget? child) {
-          return Transform.translate(offset: Offset(animation.value, 0), child: widget.child);
+          return Transform.translate(
+              offset: Offset(animation.value, 0), child: widget.child);
         });
   }
 }

@@ -3,7 +3,8 @@ part of 'package:homemakers_merchant/app/features/payment/index.dart';
 class WithdrawalFormPage extends StatefulWidget {
   const WithdrawalFormPage({super.key});
   @override
-  _WithdrawalFormPageController createState() => _WithdrawalFormPageController();
+  _WithdrawalFormPageController createState() =>
+      _WithdrawalFormPageController();
 }
 
 class _WithdrawalFormPageController extends State<WithdrawalFormPage> {
@@ -27,14 +28,16 @@ class _WithdrawalFormPageController extends State<WithdrawalFormPage> {
   Widget build(BuildContext context) => _WithdrawalFormPageView(this);
 }
 
-class _WithdrawalFormPageView extends WidgetView<WithdrawalFormPage, _WithdrawalFormPageController> {
+class _WithdrawalFormPageView
+    extends WidgetView<WithdrawalFormPage, _WithdrawalFormPageController> {
   const _WithdrawalFormPageView(super.state);
 
   @override
   Widget build(BuildContext context) {
     final MediaQueryData media = MediaQuery.of(context);
     final double margins = GlobalApp.responsiveInsets(media.size.width);
-    final double topPadding = margins; //media.padding.top + kToolbarHeight + margins; //margins * 1.5;
+    final double topPadding =
+        margins; //media.padding.top + kToolbarHeight + margins; //margins * 1.5;
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: FlexColorScheme.themedSystemNavigationBar(
         context,
@@ -53,7 +56,8 @@ class _WithdrawalFormPageView extends WidgetView<WithdrawalFormPage, _Withdrawal
               actions: [
                 IconButton(
                   onPressed: () async {
-                    final notification = await context.push(Routes.NOTIFICATIONS);
+                    final notification =
+                        await context.push(Routes.NOTIFICATIONS);
                     return;
                   },
                   icon: Badge(
@@ -66,10 +70,12 @@ class _WithdrawalFormPageView extends WidgetView<WithdrawalFormPage, _Withdrawal
                     textColor: Colors.yellow,
                     label: Text(
                       '10',
-                      style: context.labelSmall!.copyWith(color: context.colorScheme.onPrimary),
+                      style: context.labelSmall!
+                          .copyWith(color: context.colorScheme.onPrimary),
                       //Color.fromRGBO(251, 219, 11, 1)
                     ),
-                    child: Icon(Icons.notifications, color: context.colorScheme.primary),
+                    child: Icon(Icons.notifications,
+                        color: context.colorScheme.primary),
                   ),
                 ),
                 const Padding(
@@ -87,12 +93,16 @@ class _WithdrawalFormPageView extends WidgetView<WithdrawalFormPage, _Withdrawal
               from: context.width / 2 - 60,
               duration: const Duration(milliseconds: 500),
               child: Directionality(
-                textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                textDirection:
+                    serviceLocator<LanguageController>().targetTextDirection,
                 child: PageBody(
                   controller: state.scrollController,
                   constraints: BoxConstraints(
                     minWidth: 1000,
-                    minHeight: media.size.height - (media.padding.top + kToolbarHeight + media.padding.bottom),
+                    minHeight: media.size.height -
+                        (media.padding.top +
+                            kToolbarHeight +
+                            media.padding.bottom),
                   ),
                   padding: EdgeInsetsDirectional.only(
                     top: topPadding,
@@ -107,7 +117,8 @@ class _WithdrawalFormPageView extends WidgetView<WithdrawalFormPage, _Withdrawal
                       SliverList(
                         delegate: SliverChildListDelegate(
                           [
-                            const AnimatedGap(6, duration: Duration(milliseconds: 200)),
+                            const AnimatedGap(6,
+                                duration: Duration(milliseconds: 200)),
                           ],
                         ),
                       ),

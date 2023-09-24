@@ -24,7 +24,8 @@ class MiscellaneousTile extends StatelessWidget {
       child: Card(
         color: Colors.white,
         child: Padding(
-          padding: const EdgeInsetsDirectional.symmetric(horizontal: 12.0, vertical: 8),
+          padding: const EdgeInsetsDirectional.symmetric(
+              horizontal: 12.0, vertical: 8),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             mainAxisAlignment: MainAxisAlignment.center,
@@ -42,7 +43,8 @@ class MiscellaneousTile extends StatelessWidget {
                 children: [
                   Text(
                     miscellaneousTileInfo.title,
-                    style: context.titleMedium!.copyWith(fontWeight: FontWeight.w600, fontSize: 18),
+                    style: context.titleMedium!
+                        .copyWith(fontWeight: FontWeight.w600, fontSize: 18),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                   ),

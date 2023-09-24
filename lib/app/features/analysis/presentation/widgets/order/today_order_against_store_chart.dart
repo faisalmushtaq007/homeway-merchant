@@ -1,44 +1,49 @@
 part of 'package:homemakers_merchant/app/features/analysis/index.dart';
 
 class TodayOrderAgainstStoreChartWidget extends StatefulWidget {
-  const TodayOrderAgainstStoreChartWidget({super.key,this.listOfStoreName=const[],this.storeOrderAnalysisData=const[],this.chartData=const[]});
+  const TodayOrderAgainstStoreChartWidget(
+      {super.key,
+      this.listOfStoreName = const [],
+      this.storeOrderAnalysisData = const [],
+      this.chartData = const []});
   final List<ChartTodayEntity> chartData;
   final List<StoreAnalysisEntity> storeOrderAnalysisData;
   final List<String> listOfStoreName;
 
   @override
-  _TodayOrderAgainstStoreChartWidgetController createState() => _TodayOrderAgainstStoreChartWidgetController();
+  _TodayOrderAgainstStoreChartWidgetController createState() =>
+      _TodayOrderAgainstStoreChartWidgetController();
 }
 
-class _TodayOrderAgainstStoreChartWidgetController extends State<TodayOrderAgainstStoreChartWidget> {
-  List<ChartTodayEntity> chartData=[];
-  List<StoreAnalysisEntity> storeOrderAnalysisData=[];
-  List<String> listOfStoreName=[];
+class _TodayOrderAgainstStoreChartWidgetController
+    extends State<TodayOrderAgainstStoreChartWidget> {
+  List<ChartTodayEntity> chartData = [];
+  List<StoreAnalysisEntity> storeOrderAnalysisData = [];
+  List<String> listOfStoreName = [];
 
   TooltipBehavior? _tooltipBehavior;
   TooltipBehavior? _orderStatusTooltipBehavior;
-  
+
   @override
   void initState() {
-    chartData=[];
-    storeOrderAnalysisData=[];
-    listOfStoreName=[];
+    chartData = [];
+    storeOrderAnalysisData = [];
+    listOfStoreName = [];
     _tooltipBehavior = TooltipBehavior(
       enable: true,
       header: '',
       canShowMarker: false,
     );
-    _orderStatusTooltipBehavior= TooltipBehavior(
+    _orderStatusTooltipBehavior = TooltipBehavior(
       enable: true,
       header: '',
       canShowMarker: false,
     );
     context.read<OrderAnalysisBloc>().add(
-      const TodayOrderAnalysisEvent(),
-    );
+          const TodayOrderAnalysisEvent(),
+        );
     super.initState();
   }
-
 
   /// Returns the cartesian stacked bar 100 chart.
   SfCartesianChart _buildStackedBar100Chart() {
@@ -46,19 +51,18 @@ class _TodayOrderAgainstStoreChartWidgetController extends State<TodayOrderAgain
       key: const Key('order-stores-analysis'),
       enableAxisAnimation: true,
       plotAreaBorderWidth: 1,
-      margin:  const EdgeInsets.all(5),
+      margin: const EdgeInsets.all(5),
       title: ChartTitle(text: 'Order comparison of Period'),
       legend: const Legend(isVisible: true, position: LegendPosition.bottom),
       primaryXAxis: CategoryAxis(
         majorGridLines: const MajorGridLines(width: 0),
-          labelIntersectAction: AxisLabelIntersectAction.multipleRows,
+        labelIntersectAction: AxisLabelIntersectAction.multipleRows,
         maximumLabelWidth: 80,
       ),
       primaryYAxis: NumericAxis(
         rangePadding: ChartRangePadding.auto,
         axisLine: const AxisLine(width: 0),
         majorTickLines: const MajorTickLines(size: 0),
-
       ),
       series: _getStackedBarSeries(),
       tooltipBehavior: _tooltipBehavior,
@@ -76,7 +80,10 @@ class _TodayOrderAgainstStoreChartWidgetController extends State<TodayOrderAgain
         groupName: 'Today',
         name: 'Today',
         //isVisible:true,
-        dataLabelSettings: const DataLabelSettings(isVisible: true, showCumulativeValues: false,),
+        dataLabelSettings: const DataLabelSettings(
+          isVisible: true,
+          showCumulativeValues: false,
+        ),
       ),
       StackedBarSeries<ChartTodayEntity, String>(
         dataSource: chartData,
@@ -85,7 +92,8 @@ class _TodayOrderAgainstStoreChartWidgetController extends State<TodayOrderAgain
         groupName: 'Yesterday',
         name: 'Yesterday',
         //isVisible:true,
-        dataLabelSettings: const DataLabelSettings(isVisible: true, showCumulativeValues: false),
+        dataLabelSettings: const DataLabelSettings(
+            isVisible: true, showCumulativeValues: false),
       ),
     ];
   }
@@ -95,9 +103,13 @@ class _TodayOrderAgainstStoreChartWidgetController extends State<TodayOrderAgain
       key: const Key('order-status-stores-analysis'),
       enableAxisAnimation: true,
       plotAreaBorderWidth: 1,
-      margin:  const EdgeInsets.all(5),
+      margin: const EdgeInsets.all(5),
       title: ChartTitle(text: 'Order comparison of Status'),
-      legend: const Legend(isVisible: true, position: LegendPosition.bottom,padding: 5,itemPadding: 8),
+      legend: const Legend(
+          isVisible: true,
+          position: LegendPosition.bottom,
+          padding: 5,
+          itemPadding: 8),
       primaryXAxis: CategoryAxis(
         majorGridLines: const MajorGridLines(width: 0),
         labelIntersectAction: AxisLabelIntersectAction.multipleRows,
@@ -114,62 +126,81 @@ class _TodayOrderAgainstStoreChartWidgetController extends State<TodayOrderAgain
   }
 
   List<ChartSeries<StoreAnalysisEntity, String>> _getStackedColumnSeries() {
-    List<ChartSeries<StoreAnalysisEntity, String>> listOfSeries=[
-      StackedBarSeries<StoreAnalysisEntity, String>(
-      dataSource: storeOrderAnalysisData,
-      xValueMapper: (StoreAnalysisEntity sales, _) => sales.storeName,
-      yValueMapper: (StoreAnalysisEntity sales, _) => (sales.todayOrderStatus.instant+sales.todayOrderStatus.schedule),
-      //groupName: 'New',
-      name: 'New',
-      //isVisible:true,
-      //groupName: value.storeName,
-      //name: listOfStoreName[key],
-      dataLabelSettings: const DataLabelSettings(isVisible: true, showCumulativeValues: false,),
-    ),
+    List<ChartSeries<StoreAnalysisEntity, String>> listOfSeries = [
       StackedBarSeries<StoreAnalysisEntity, String>(
         dataSource: storeOrderAnalysisData,
         xValueMapper: (StoreAnalysisEntity sales, _) => sales.storeName,
-        yValueMapper: (StoreAnalysisEntity sales, _) => sales.todayOrderStatus.pending,
+        yValueMapper: (StoreAnalysisEntity sales, _) =>
+            (sales.todayOrderStatus.instant + sales.todayOrderStatus.schedule),
+        //groupName: 'New',
+        name: 'New',
+        //isVisible:true,
+        //groupName: value.storeName,
+        //name: listOfStoreName[key],
+        dataLabelSettings: const DataLabelSettings(
+          isVisible: true,
+          showCumulativeValues: false,
+        ),
+      ),
+      StackedBarSeries<StoreAnalysisEntity, String>(
+        dataSource: storeOrderAnalysisData,
+        xValueMapper: (StoreAnalysisEntity sales, _) => sales.storeName,
+        yValueMapper: (StoreAnalysisEntity sales, _) =>
+            sales.todayOrderStatus.pending,
         //groupName: 'OnGoing',
         name: 'OnGoing',
         //groupName: value.storeName,
         //name: listOfStoreName[key],
         //isVisible:true,
-        dataLabelSettings: const DataLabelSettings(isVisible: true, showCumulativeValues: false,),
+        dataLabelSettings: const DataLabelSettings(
+          isVisible: true,
+          showCumulativeValues: false,
+        ),
       ),
-
       StackedBarSeries<StoreAnalysisEntity, String>(
         dataSource: storeOrderAnalysisData,
         xValueMapper: (StoreAnalysisEntity sales, _) => sales.storeName,
-        yValueMapper: (StoreAnalysisEntity sales, _) => sales.todayOrderStatus.deliver,
+        yValueMapper: (StoreAnalysisEntity sales, _) =>
+            sales.todayOrderStatus.deliver,
         //groupName: 'Delivered',
         name: 'Delivered',
         //groupName: value.storeName,
         //name: listOfStoreName[key],
         //isVisible:true,
-        dataLabelSettings: const DataLabelSettings(isVisible: true, showCumulativeValues: false,),
+        dataLabelSettings: const DataLabelSettings(
+          isVisible: true,
+          showCumulativeValues: false,
+        ),
       ),
       StackedBarSeries<StoreAnalysisEntity, String>(
         dataSource: storeOrderAnalysisData,
         xValueMapper: (StoreAnalysisEntity sales, _) => sales.storeName,
-        yValueMapper: (StoreAnalysisEntity sales, _) => sales.todayOrderStatus.cancel,
+        yValueMapper: (StoreAnalysisEntity sales, _) =>
+            sales.todayOrderStatus.cancel,
         //groupName: 'Cancel',
         name: 'Cancel',
         //groupName: value.storeName,
         //name: listOfStoreName[key],
         //isVisible:true,
-        dataLabelSettings: const DataLabelSettings(isVisible: true, showCumulativeValues: false,),
+        dataLabelSettings: const DataLabelSettings(
+          isVisible: true,
+          showCumulativeValues: false,
+        ),
       ),
       StackedBarSeries<StoreAnalysisEntity, String>(
         dataSource: storeOrderAnalysisData,
         xValueMapper: (StoreAnalysisEntity sales, _) => sales.storeName,
-        yValueMapper: (StoreAnalysisEntity sales, _) => sales.todayOrderStatus.delay,
+        yValueMapper: (StoreAnalysisEntity sales, _) =>
+            sales.todayOrderStatus.delay,
         //groupName: 'Delay',
         name: 'Delay',
         //groupName: value.storeName,
         //name: listOfStoreName[key],
         //isVisible:true,
-        dataLabelSettings: const DataLabelSettings(isVisible: true, showCumulativeValues: false,),
+        dataLabelSettings: const DataLabelSettings(
+          isVisible: true,
+          showCumulativeValues: false,
+        ),
       ),
     ];
     return listOfSeries.toList();
@@ -184,23 +215,29 @@ class _TodayOrderAgainstStoreChartWidgetController extends State<TodayOrderAgain
   }
 
   @override
-  Widget build(BuildContext context) => BlocBuilder<OrderAnalysisBloc, OrderAnalysisState>(
-    bloc: context.read<OrderAnalysisBloc>(),
-  builder: (context, orderAnalysisState) {
-    switch(orderAnalysisState){
-      case TodayOrderByStoreAnalysisState():{
-        chartData=List<ChartTodayEntity>.from(orderAnalysisState.chartData.toList());
-        storeOrderAnalysisData=List<StoreAnalysisEntity>.from(orderAnalysisState.storeOrderAnalysisData.toList());
-        listOfStoreName=List<String>.from(orderAnalysisState.listOfStoreName.toList());
-      }
-    }
-    return _TodayOrderAgainstStoreChartWidgetView(this);
-  },
-);
+  Widget build(BuildContext context) =>
+      BlocBuilder<OrderAnalysisBloc, OrderAnalysisState>(
+        bloc: context.read<OrderAnalysisBloc>(),
+        builder: (context, orderAnalysisState) {
+          switch (orderAnalysisState) {
+            case TodayOrderByStoreAnalysisState():
+              {
+                chartData = List<ChartTodayEntity>.from(
+                    orderAnalysisState.chartData.toList());
+                storeOrderAnalysisData = List<StoreAnalysisEntity>.from(
+                    orderAnalysisState.storeOrderAnalysisData.toList());
+                listOfStoreName = List<String>.from(
+                    orderAnalysisState.listOfStoreName.toList());
+              }
+          }
+          return _TodayOrderAgainstStoreChartWidgetView(this);
+        },
+      );
 }
 
-class _TodayOrderAgainstStoreChartWidgetView
-    extends WidgetView<TodayOrderAgainstStoreChartWidget, _TodayOrderAgainstStoreChartWidgetController> {
+class _TodayOrderAgainstStoreChartWidgetView extends WidgetView<
+    TodayOrderAgainstStoreChartWidget,
+    _TodayOrderAgainstStoreChartWidgetController> {
   const _TodayOrderAgainstStoreChartWidgetView(super.state);
 
   @override

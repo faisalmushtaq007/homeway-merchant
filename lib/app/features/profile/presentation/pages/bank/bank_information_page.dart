@@ -16,7 +16,8 @@ class BankInformationPage extends StatefulWidget {
   State<BankInformationPage> createState() => _BankInformationPageState();
 }
 
-class _BankInformationPageState extends State<BankInformationPage> with SingleTickerProviderStateMixin {
+class _BankInformationPageState extends State<BankInformationPage>
+    with SingleTickerProviderStateMixin {
   late final ScrollController scrollController;
   late final ScrollController innerScrollController;
   late AnimationController _animationController;
@@ -25,7 +26,8 @@ class _BankInformationPageState extends State<BankInformationPage> with SingleTi
   final _bankInformationFormKey = GlobalKey<FormState>();
   TextEditingController _bankNameController = TextEditingController();
   TextEditingController _accountNumberController = TextEditingController();
-  TextEditingController _confirmAccountNumberController = TextEditingController();
+  TextEditingController _confirmAccountNumberController =
+      TextEditingController();
   TextEditingController _accountHolderNameController = TextEditingController();
   TextEditingController _ibanNumberController = TextEditingController();
   List<BankInfoTile> listOfBankInfoTiles = [];
@@ -38,7 +40,11 @@ class _BankInformationPageState extends State<BankInformationPage> with SingleTi
   // SA03 8000 0000 6080 1016 7519
   final ibanMuskeyFormatter = MuskeyFormatter(
     masks: ['@%## #### #### #### #### ####'],
-    wildcards: {'#': RegExp('[0-9]'), '@': RegExp('[s|S]'), '%': RegExp('[a|A]')},
+    wildcards: {
+      '#': RegExp('[0-9]'),
+      '@': RegExp('[s|S]'),
+      '%': RegExp('[a|A]')
+    },
     charTransforms: {
       '@': (s) => s.toUpperCase(),
       '%': (s) => s.toUpperCase(),
@@ -92,7 +98,8 @@ class _BankInformationPageState extends State<BankInformationPage> with SingleTi
   Widget build(BuildContext context) {
     final MediaQueryData media = MediaQuery.of(context);
     final double margins = GlobalApp.responsiveInsets(media.size.width);
-    final double topPadding = margins; //media.padding.top + kToolbarHeight + margins; //margins * 1.5;
+    final double topPadding =
+        margins; //media.padding.top + kToolbarHeight + margins; //margins * 1.5;
     final double bottomPadding = media.padding.bottom + margins;
     final double width = media.size.width;
     final ThemeData theme = Theme.of(context);
@@ -120,7 +127,8 @@ class _BankInformationPageState extends State<BankInformationPage> with SingleTi
               ],
             ),
             body: Directionality(
-              textDirection: serviceLocator<LanguageController>().targetTextDirection,
+              textDirection:
+                  serviceLocator<LanguageController>().targetTextDirection,
               child: PageBody(
                 controller: scrollController,
                 constraints: BoxConstraints(
@@ -145,7 +153,8 @@ class _BankInformationPageState extends State<BankInformationPage> with SingleTi
                         buildWhen: (previous, current) => previous != current,
                         listener: (context, state) {
                           if (state is NavigateToNextPageState) {
-                            return context.pushReplacement(Routes.NEW_DOCUMENT_LIST_PAGE);
+                            return context
+                                .pushReplacement(Routes.NEW_DOCUMENT_LIST_PAGE);
                           }
                         },
                         builder: (context, state) {
@@ -160,7 +169,9 @@ class _BankInformationPageState extends State<BankInformationPage> with SingleTi
                                         Text(
                                           'Bank Account Information',
                                           style: context.titleLarge,
-                                          textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                          textDirection: serviceLocator<
+                                                  LanguageController>()
+                                              .targetTextDirection,
                                           overflow: TextOverflow.ellipsis,
                                           maxLines: 3,
                                           softWrap: true,
@@ -177,8 +188,11 @@ class _BankInformationPageState extends State<BankInformationPage> with SingleTi
                                       children: [
                                         Text(
                                           'To get monthly merchant payouts from HomeWay for your sales, add a bank account to your payments profile. Provide the exact info as it is on file with your bank.',
-                                          style: context.labelSmall!.copyWith(fontStyle: FontStyle.italic),
-                                          textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                          style: context.labelSmall!.copyWith(
+                                              fontStyle: FontStyle.italic),
+                                          textDirection: serviceLocator<
+                                                  LanguageController>()
+                                              .targetTextDirection,
                                           overflow: TextOverflow.ellipsis,
                                           maxLines: 3,
                                           softWrap: true,
@@ -192,18 +206,24 @@ class _BankInformationPageState extends State<BankInformationPage> with SingleTi
                                       ),
                                     ),
                                     Column(
-                                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.stretch,
                                       mainAxisSize: MainAxisSize.min,
-                                      textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                      textDirection:
+                                          serviceLocator<LanguageController>()
+                                              .targetTextDirection,
                                       children: [
                                         Wrap(
                                           children: [
                                             Text(
                                               'Bank account requirements',
-                                              style: context.titleMedium!.copyWith(
+                                              style:
+                                                  context.titleMedium!.copyWith(
                                                 fontWeight: FontWeight.w600,
                                               ),
-                                              textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                              textDirection: serviceLocator<
+                                                      LanguageController>()
+                                                  .targetTextDirection,
                                               overflow: TextOverflow.ellipsis,
                                               maxLines: 1,
                                               softWrap: true,
@@ -220,10 +240,13 @@ class _BankInformationPageState extends State<BankInformationPage> with SingleTi
                                           children: [
                                             Text(
                                               'Your bank account must be:',
-                                              style: context.labelLarge!.copyWith(
+                                              style:
+                                                  context.labelLarge!.copyWith(
                                                 fontWeight: FontWeight.w500,
                                               ),
-                                              textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                              textDirection: serviceLocator<
+                                                      LanguageController>()
+                                                  .targetTextDirection,
                                               overflow: TextOverflow.ellipsis,
                                               maxLines: 1,
                                               softWrap: true,
@@ -240,10 +263,13 @@ class _BankInformationPageState extends State<BankInformationPage> with SingleTi
                                           children: [
                                             Text(
                                               '1. Able to receive Electronic Funds Transfer (EFT) ',
-                                              style: context.labelMedium!.copyWith(
+                                              style:
+                                                  context.labelMedium!.copyWith(
                                                 fontWeight: FontWeight.w400,
                                               ),
-                                              textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                              textDirection: serviceLocator<
+                                                      LanguageController>()
+                                                  .targetTextDirection,
                                               overflow: TextOverflow.ellipsis,
                                               maxLines: 2,
                                               softWrap: true,
@@ -260,10 +286,13 @@ class _BankInformationPageState extends State<BankInformationPage> with SingleTi
                                           children: [
                                             Text(
                                               '2. In the same country or region where the merchant account is registered',
-                                              style: context.labelMedium!.copyWith(
+                                              style:
+                                                  context.labelMedium!.copyWith(
                                                 fontWeight: FontWeight.w400,
                                               ),
-                                              textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                              textDirection: serviceLocator<
+                                                      LanguageController>()
+                                                  .targetTextDirection,
                                               overflow: TextOverflow.ellipsis,
                                               maxLines: 3,
                                               softWrap: true,
@@ -282,11 +311,13 @@ class _BankInformationPageState extends State<BankInformationPage> with SingleTi
                                       key: const Key(
                                         'bank-holder-name-textFormField-key',
                                       ),
-                                      buildWhen: (previousDataList, latestDataList) =>
+                                      buildWhen: (previousDataList,
+                                              latestDataList) =>
                                           previousDataList != latestDataList,
                                       streams: [
                                         Stream.fromFuture(
-                                          AppTranslator.instance.translate('Account Holder Name'),
+                                          AppTranslator.instance
+                                              .translate('Account Holder Name'),
                                         ),
                                         Stream.fromFuture(
                                           AppTranslator.instance.translate(
@@ -295,54 +326,75 @@ class _BankInformationPageState extends State<BankInformationPage> with SingleTi
                                         ),
                                         Stream.fromFuture(
                                           AppTranslator.instance.translate(
-                                            _accountHolderNameController.value.text.trim(),
+                                            _accountHolderNameController
+                                                .value.text
+                                                .trim(),
                                           ),
                                         ),
                                       ],
                                       initialStreamValue: [
                                         'Account Holder Name',
                                         'Please enter a account holder name',
-                                        _accountHolderNameController.value.text.trim(),
+                                        _accountHolderNameController.value.text
+                                            .trim(),
                                       ],
                                       builder: (context, snapshot) {
                                         if (listOfBankInfoTiles.isNotEmpty &&
-                                            listOfBankInfoTiles.elementAtOrNull(0) != null) {
+                                            listOfBankInfoTiles
+                                                    .elementAtOrNull(0) !=
+                                                null) {
                                           listOfBankInfoTiles.removeAt(0);
                                           listOfBankInfoTiles.insert(
                                             0,
-                                            BankInfoTile(label: snapshot[0] as String, content: snapshot[2] as String),
+                                            BankInfoTile(
+                                                label: snapshot[0] as String,
+                                                content: snapshot[2] as String),
                                           );
                                         } else {
                                           listOfBankInfoTiles.insert(
                                             0,
-                                            BankInfoTile(label: snapshot[0] as String, content: snapshot[2] as String),
+                                            BankInfoTile(
+                                                label: snapshot[0] as String,
+                                                content: snapshot[2] as String),
                                           );
                                         }
 
                                         return Directionality(
-                                          textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                          textDirection: serviceLocator<
+                                                  LanguageController>()
+                                              .targetTextDirection,
                                           child: AppTextFieldWidget(
-                                            controller: _accountHolderNameController,
-                                            focusNode: _accountHolderNameControllerFocusNode,
-                                            textInputAction: TextInputAction.next,
-                                            textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                            controller:
+                                                _accountHolderNameController,
+                                            focusNode:
+                                                _accountHolderNameControllerFocusNode,
+                                            textInputAction:
+                                                TextInputAction.next,
+                                            textDirection: serviceLocator<
+                                                    LanguageController>()
+                                                .targetTextDirection,
                                             decoration: InputDecoration(
                                               labelText: snapshot[0],
                                               isDense: true,
                                             ),
                                             keyboardType: TextInputType.name,
                                             inputFormatters: [
-                                              FilteringTextInputFormatter.allow(RegExp('[a-z A-Z ]')),
-                                              FilteringTextInputFormatter.deny('  ')
+                                              FilteringTextInputFormatter.allow(
+                                                  RegExp('[a-z A-Z ]')),
+                                              FilteringTextInputFormatter.deny(
+                                                  '  ')
                                             ],
                                             validator: (value) {
-                                              if (value == null || value.isEmpty) {
+                                              if (value == null ||
+                                                  value.isEmpty) {
                                                 return '${snapshot[1]}';
                                               }
                                               return null;
                                             },
-                                            onFieldSubmitted: (_) => _fieldFocusChange(context,
-                                                _accountHolderNameControllerFocusNode, _ibanNumberControllerFocusNode),
+                                            onFieldSubmitted: (_) => _fieldFocusChange(
+                                                context,
+                                                _accountHolderNameControllerFocusNode,
+                                                _ibanNumberControllerFocusNode),
                                           ),
                                         );
                                       },
@@ -357,18 +409,22 @@ class _BankInformationPageState extends State<BankInformationPage> with SingleTi
                                       key: const Key(
                                         'bank-name-textFormField-key',
                                       ),
-                                      buildWhen: (previousDataList, latestDataList) =>
+                                      buildWhen: (previousDataList,
+                                              latestDataList) =>
                                           previousDataList != latestDataList,
                                       streams: [
                                         Stream.fromFuture(
-                                          AppTranslator.instance.translate('Bank Name'),
-                                        ),
-                                        Stream.fromFuture(
-                                          AppTranslator.instance.translate('Please enter a bank name'),
+                                          AppTranslator.instance
+                                              .translate('Bank Name'),
                                         ),
                                         Stream.fromFuture(
                                           AppTranslator.instance.translate(
-                                            _bankNameController.value.text.trim(),
+                                              'Please enter a bank name'),
+                                        ),
+                                        Stream.fromFuture(
+                                          AppTranslator.instance.translate(
+                                            _bankNameController.value.text
+                                                .trim(),
                                           ),
                                         ),
                                       ],
@@ -378,45 +434,64 @@ class _BankInformationPageState extends State<BankInformationPage> with SingleTi
                                         _bankNameController.value.text.trim(),
                                       ],
                                       builder: (context, snapshot) {
-                                        final String translateString = snapshot[2] as String;
+                                        final String translateString =
+                                            snapshot[2] as String;
                                         if (listOfBankInfoTiles.isNotEmpty &&
-                                            listOfBankInfoTiles.elementAtOrNull(1) != null) {
+                                            listOfBankInfoTiles
+                                                    .elementAtOrNull(1) !=
+                                                null) {
                                           listOfBankInfoTiles.removeAt(1);
                                           listOfBankInfoTiles.insert(
                                             1,
-                                            BankInfoTile(label: snapshot[0] as String, content: snapshot[2] as String),
+                                            BankInfoTile(
+                                                label: snapshot[0] as String,
+                                                content: snapshot[2] as String),
                                           );
                                         } else {
                                           listOfBankInfoTiles.insert(
                                             1,
-                                            BankInfoTile(label: snapshot[0] as String, content: snapshot[2] as String),
+                                            BankInfoTile(
+                                                label: snapshot[0] as String,
+                                                content: snapshot[2] as String),
                                           );
                                         }
 
                                         return Directionality(
-                                          textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                          textDirection: serviceLocator<
+                                                  LanguageController>()
+                                              .targetTextDirection,
                                           child: AppTextFieldWidget(
                                             controller: _bankNameController,
-                                            focusNode: _bankNameControllerFocusNode,
-                                            textInputAction: TextInputAction.next,
-                                            textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                            focusNode:
+                                                _bankNameControllerFocusNode,
+                                            textInputAction:
+                                                TextInputAction.next,
+                                            textDirection: serviceLocator<
+                                                    LanguageController>()
+                                                .targetTextDirection,
                                             decoration: InputDecoration(
                                               labelText: snapshot[0],
                                               isDense: true,
                                             ),
                                             keyboardType: TextInputType.name,
                                             inputFormatters: [
-                                              FilteringTextInputFormatter.allow(RegExp('[a-z A-Z ]')),
-                                              FilteringTextInputFormatter.deny('  ')
+                                              FilteringTextInputFormatter.allow(
+                                                  RegExp('[a-z A-Z ]')),
+                                              FilteringTextInputFormatter.deny(
+                                                  '  ')
                                             ],
                                             validator: (value) {
-                                              if (value == null || value.isEmpty) {
+                                              if (value == null ||
+                                                  value.isEmpty) {
                                                 return '${snapshot[1]}';
                                               }
                                               return null;
                                             },
-                                            onFieldSubmitted: (_) => _fieldFocusChange(context,
-                                                _bankNameControllerFocusNode, _accountNumberControllerFocusNode),
+                                            onFieldSubmitted: (_) =>
+                                                _fieldFocusChange(
+                                                    context,
+                                                    _bankNameControllerFocusNode,
+                                                    _accountNumberControllerFocusNode),
                                           ),
                                         );
                                       },
@@ -431,11 +506,13 @@ class _BankInformationPageState extends State<BankInformationPage> with SingleTi
                                       key: const Key(
                                         'account-number-textFormField-key',
                                       ),
-                                      buildWhen: (previousDataList, latestDataList) =>
+                                      buildWhen: (previousDataList,
+                                              latestDataList) =>
                                           previousDataList != latestDataList,
                                       streams: [
                                         Stream.fromFuture(
-                                          AppTranslator.instance.translate('Account Number'),
+                                          AppTranslator.instance
+                                              .translate('Account Number'),
                                         ),
                                         Stream.fromFuture(
                                           AppTranslator.instance.translate(
@@ -444,45 +521,64 @@ class _BankInformationPageState extends State<BankInformationPage> with SingleTi
                                         ),
                                         Stream.fromFuture(
                                           AppTranslator.instance.translate(
-                                            _accountNumberController.value.text.trim(),
+                                            _accountNumberController.value.text
+                                                .trim(),
                                           ),
                                         ),
                                       ],
                                       initialStreamValue: [
                                         'Account Number',
                                         'Please enter a account number',
-                                        _accountNumberController.value.text.trim(),
+                                        _accountNumberController.value.text
+                                            .trim(),
                                       ],
                                       builder: (context, snapshot) {
                                         if (listOfBankInfoTiles.isNotEmpty &&
-                                            listOfBankInfoTiles.elementAtOrNull(2) != null) {
+                                            listOfBankInfoTiles
+                                                    .elementAtOrNull(2) !=
+                                                null) {
                                           listOfBankInfoTiles.removeAt(2);
                                           listOfBankInfoTiles.insert(
                                             2,
-                                            BankInfoTile(label: snapshot[0] as String, content: snapshot[2] as String),
+                                            BankInfoTile(
+                                                label: snapshot[0] as String,
+                                                content: snapshot[2] as String),
                                           );
                                         } else {
                                           listOfBankInfoTiles.insert(
                                             2,
-                                            BankInfoTile(label: snapshot[0] as String, content: snapshot[2] as String),
+                                            BankInfoTile(
+                                                label: snapshot[0] as String,
+                                                content: snapshot[2] as String),
                                           );
                                         }
 
                                         return Directionality(
-                                          textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                          textDirection: serviceLocator<
+                                                  LanguageController>()
+                                              .targetTextDirection,
                                           child: AppTextFieldWidget(
-                                            controller: _accountNumberController,
-                                            focusNode: _accountNumberControllerFocusNode,
-                                            textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                            controller:
+                                                _accountNumberController,
+                                            focusNode:
+                                                _accountNumberControllerFocusNode,
+                                            textDirection: serviceLocator<
+                                                    LanguageController>()
+                                                .targetTextDirection,
                                             decoration: InputDecoration(
                                               labelText: snapshot[0],
                                               isDense: true,
                                             ),
-                                            textInputAction: TextInputAction.next,
+                                            textInputAction:
+                                                TextInputAction.next,
                                             keyboardType: TextInputType.number,
-                                            inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                                            inputFormatters: [
+                                              FilteringTextInputFormatter
+                                                  .digitsOnly
+                                            ],
                                             validator: (value) {
-                                              if (value == null || value.isEmpty) {
+                                              if (value == null ||
+                                                  value.isEmpty) {
                                                 return '${snapshot[1]}';
                                               }
                                               return null;
@@ -505,11 +601,13 @@ class _BankInformationPageState extends State<BankInformationPage> with SingleTi
                                       key: const Key(
                                         'confirm-account-number-textFormField-key',
                                       ),
-                                      buildWhen: (previousDataList, latestDataList) =>
+                                      buildWhen: (previousDataList,
+                                              latestDataList) =>
                                           previousDataList != latestDataList,
                                       streams: [
                                         Stream.fromFuture(
-                                          AppTranslator.instance.translate('Confirm Account Number'),
+                                          AppTranslator.instance.translate(
+                                              'Confirm Account Number'),
                                         ),
                                         Stream.fromFuture(
                                           AppTranslator.instance.translate(
@@ -523,7 +621,9 @@ class _BankInformationPageState extends State<BankInformationPage> with SingleTi
                                         ),
                                         Stream.fromFuture(
                                           AppTranslator.instance.translate(
-                                            _confirmAccountNumberController.value.text.trim(),
+                                            _confirmAccountNumberController
+                                                .value.text
+                                                .trim(),
                                           ),
                                         ),
                                       ],
@@ -531,26 +631,41 @@ class _BankInformationPageState extends State<BankInformationPage> with SingleTi
                                         'Confirm Account Number',
                                         'Please enter an confirm account number',
                                         'Please enter a valid account number',
-                                        _confirmAccountNumberController.value.text.trim(),
+                                        _confirmAccountNumberController
+                                            .value.text
+                                            .trim(),
                                       ],
                                       builder: (context, snapshot) {
                                         return Directionality(
-                                          textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                          textDirection: serviceLocator<
+                                                  LanguageController>()
+                                              .targetTextDirection,
                                           child: AppTextFieldWidget(
-                                            controller: _confirmAccountNumberController,
-                                            focusNode: _confirmAccountNumberControllerFocusNode,
-                                            textInputAction: TextInputAction.next,
-                                            textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                            controller:
+                                                _confirmAccountNumberController,
+                                            focusNode:
+                                                _confirmAccountNumberControllerFocusNode,
+                                            textInputAction:
+                                                TextInputAction.next,
+                                            textDirection: serviceLocator<
+                                                    LanguageController>()
+                                                .targetTextDirection,
                                             decoration: InputDecoration(
                                               labelText: snapshot[0],
                                               isDense: true,
                                             ),
                                             keyboardType: TextInputType.number,
-                                            inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                                            inputFormatters: [
+                                              FilteringTextInputFormatter
+                                                  .digitsOnly
+                                            ],
                                             validator: (value) {
-                                              if (value == null || value.isEmpty) {
+                                              if (value == null ||
+                                                  value.isEmpty) {
                                                 return '${snapshot[1]}';
-                                              } else if (!_accountNumberController.value.text.contains(value)) {
+                                              } else if (!_accountNumberController
+                                                  .value.text
+                                                  .contains(value)) {
                                                 return '${snapshot[2]}';
                                               } else {
                                                 return null;
@@ -574,11 +689,13 @@ class _BankInformationPageState extends State<BankInformationPage> with SingleTi
                                       key: const Key(
                                         'bank-iban-number-textFormField-key',
                                       ),
-                                      buildWhen: (previousDataList, latestDataList) =>
+                                      buildWhen: (previousDataList,
+                                              latestDataList) =>
                                           previousDataList != latestDataList,
                                       streams: [
                                         Stream.fromFuture(
-                                          AppTranslator.instance.translate('IBAN Number'),
+                                          AppTranslator.instance
+                                              .translate('IBAN Number'),
                                         ),
                                         Stream.fromFuture(
                                           AppTranslator.instance.translate(
@@ -600,31 +717,45 @@ class _BankInformationPageState extends State<BankInformationPage> with SingleTi
                                       ],
                                       builder: (context, snapshot) {
                                         if (listOfBankInfoTiles.isNotEmpty &&
-                                            listOfBankInfoTiles.elementAtOrNull(3) != null) {
+                                            listOfBankInfoTiles
+                                                    .elementAtOrNull(3) !=
+                                                null) {
                                           listOfBankInfoTiles.removeAt(3);
                                           listOfBankInfoTiles.insert(
                                             3,
-                                            BankInfoTile(label: snapshot[0] as String, content: snapshot[2] as String),
+                                            BankInfoTile(
+                                                label: snapshot[0] as String,
+                                                content: snapshot[2] as String),
                                           );
                                         } else {
                                           listOfBankInfoTiles.insert(
                                             3,
-                                            BankInfoTile(label: snapshot[0] as String, content: snapshot[2] as String),
+                                            BankInfoTile(
+                                                label: snapshot[0] as String,
+                                                content: snapshot[2] as String),
                                           );
                                         }
 
                                         return Directionality(
-                                          textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                          textDirection: serviceLocator<
+                                                  LanguageController>()
+                                              .targetTextDirection,
                                           child: AppTextFieldWidget(
                                             controller: _ibanNumberController,
-                                            focusNode: _ibanNumberControllerFocusNode,
-                                            textInputAction: TextInputAction.done,
-                                            textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                            focusNode:
+                                                _ibanNumberControllerFocusNode,
+                                            textInputAction:
+                                                TextInputAction.done,
+                                            textDirection: serviceLocator<
+                                                    LanguageController>()
+                                                .targetTextDirection,
                                             decoration: InputDecoration(
                                               labelText: snapshot[0],
-                                              hintText: 'SA## #### #### #### #### ####',
-                                              hintTextDirection:
-                                                  serviceLocator<LanguageController>().targetTextDirection,
+                                              hintText:
+                                                  'SA## #### #### #### #### ####',
+                                              hintTextDirection: serviceLocator<
+                                                      LanguageController>()
+                                                  .targetTextDirection,
                                               isDense: true,
                                             ),
                                             //keyboardType: TextInputType.text,
@@ -636,14 +767,18 @@ class _BankInformationPageState extends State<BankInformationPage> with SingleTi
                                             validator: (value) {
                                               if (value == null ||
                                                   value.isEmpty ||
-                                                  ibanMuskeyFormatter.info.clean.isEmpty) {
+                                                  ibanMuskeyFormatter
+                                                      .info.clean.isEmpty) {
                                                 return '${snapshot[1]}';
-                                              } else if (!ibanMuskeyFormatter.info.isValid) {
+                                              } else if (!ibanMuskeyFormatter
+                                                  .info.isValid) {
                                                 return '${snapshot[1]}';
                                               }
                                               return null;
                                             },
-                                            onFieldSubmitted: (_) => FocusScope.of(context).unfocus(),
+                                            onFieldSubmitted: (_) =>
+                                                FocusScope.of(context)
+                                                    .unfocus(),
                                           ),
                                         );
                                       },
@@ -660,7 +795,9 @@ class _BankInformationPageState extends State<BankInformationPage> with SingleTi
                               SliverFillRemaining(
                                 hasScrollBody: false,
                                 child: Column(
-                                  textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                  textDirection:
+                                      serviceLocator<LanguageController>()
+                                          .targetTextDirection,
                                   children: [
                                     const Spacer(),
                                     Row(
@@ -668,20 +805,37 @@ class _BankInformationPageState extends State<BankInformationPage> with SingleTi
                                         Expanded(
                                           child: ElevatedButton(
                                             onPressed: () async {
-                                              if (_bankInformationFormKey.currentState!.validate() &&
-                                                  ibanMuskeyFormatter.info.isValid) {
+                                              if (_bankInformationFormKey
+                                                      .currentState!
+                                                      .validate() &&
+                                                  ibanMuskeyFormatter
+                                                      .info.isValid) {
                                                 // Registration logic here
-                                                final accountHolderName = _accountHolderNameController.value.text;
-                                                final bankName = _bankNameController.value.text;
-                                                final confirmAccountNumber = _confirmAccountNumberController.value.text;
+                                                final accountHolderName =
+                                                    _accountHolderNameController
+                                                        .value.text;
+                                                final bankName =
+                                                    _bankNameController
+                                                        .value.text;
+                                                final confirmAccountNumber =
+                                                    _confirmAccountNumberController
+                                                        .value.text;
                                                 final ibanNumber =
-                                                    ibanMuskeyFormatter.info.clean; //_ibanNumberController.value.text;
-                                                final address = _accountHolderNameController.value.text;
-                                                _bankInformationFormKey.currentState!.save();
+                                                    ibanMuskeyFormatter.info
+                                                        .clean; //_ibanNumberController.value.text;
+                                                final address =
+                                                    _accountHolderNameController
+                                                        .value.text;
+                                                _bankInformationFormKey
+                                                    .currentState!
+                                                    .save();
                                                 // Show confirmation dialog
-                                                List<BankInformationTileWidget> listOfBankTileWidgets = [];
+                                                List<BankInformationTileWidget>
+                                                    listOfBankTileWidgets = [];
                                                 listOfBankTileWidgets.clear();
-                                                listOfBankInfoTiles.asMap().forEach((
+                                                listOfBankInfoTiles
+                                                    .asMap()
+                                                    .forEach((
                                                   key,
                                                   value,
                                                 ) {
@@ -693,70 +847,112 @@ class _BankInformationPageState extends State<BankInformationPage> with SingleTi
                                                     ),
                                                   );
                                                 });
-                                                final result = await showConfirmationDialog<bool>(
+                                                final result =
+                                                    await showConfirmationDialog<
+                                                        bool>(
                                                   context: context,
                                                   barrierDismissible: true,
                                                   curve: Curves.fastOutSlowIn,
-                                                  duration: const Duration(milliseconds: 700),
-                                                  builder: (BuildContext context) {
+                                                  duration: const Duration(
+                                                      milliseconds: 700),
+                                                  builder:
+                                                      (BuildContext context) {
                                                     return ResponsiveDialog(
                                                       context: context,
                                                       hideButtons: false,
-                                                      maxLongSide: context.width / 1.20,
-                                                      maxShortSide: context.width,
-                                                      title: 'Confirm Bank Details',
+                                                      maxLongSide:
+                                                          context.width / 1.20,
+                                                      maxShortSide:
+                                                          context.width,
+                                                      title:
+                                                          'Confirm Bank Details',
                                                       confirmText: 'Confirm',
                                                       cancelText: 'Cancel',
                                                       okPressed: () async {
-                                                        debugPrint('Dialog confirmed');
-                                                        Navigator.of(context).pop(true);
+                                                        debugPrint(
+                                                            'Dialog confirmed');
+                                                        Navigator.of(context)
+                                                            .pop(true);
                                                       },
                                                       cancelPressed: () {
-                                                        debugPrint('Dialog cancelled');
-                                                        Navigator.of(context).pop(false);
+                                                        debugPrint(
+                                                            'Dialog cancelled');
+                                                        Navigator.of(context)
+                                                            .pop(false);
                                                       },
                                                       child: ListView.builder(
-                                                        padding: const EdgeInsetsDirectional.symmetric(horizontal: 8),
-                                                        itemCount: listOfBankTileWidgets.length,
-                                                        itemBuilder: (context, index) => listOfBankTileWidgets[index],
+                                                        padding:
+                                                            const EdgeInsetsDirectional
+                                                                .symmetric(
+                                                                horizontal: 8),
+                                                        itemCount:
+                                                            listOfBankTileWidgets
+                                                                .length,
+                                                        itemBuilder: (context,
+                                                                index) =>
+                                                            listOfBankTileWidgets[
+                                                                index],
                                                         shrinkWrap: true,
                                                       ),
                                                     );
                                                   },
                                                 );
                                                 if (result != null && result) {
-                                                  await Future.delayed(const Duration(milliseconds: 500), () {});
+                                                  await Future.delayed(
+                                                      const Duration(
+                                                          milliseconds: 500),
+                                                      () {});
                                                   if (!mounted) {
                                                     return;
                                                   }
-                                                  PaymentBankEntity paymentBankEntity;
-                                                  if (widget.hasEditBankInformation &&
-                                                      widget.paymentBankEntity != null) {
-                                                    widget.paymentBankEntity?.copyWith(
+                                                  PaymentBankEntity
+                                                      paymentBankEntity;
+                                                  if (widget
+                                                          .hasEditBankInformation &&
+                                                      widget.paymentBankEntity !=
+                                                          null) {
+                                                    widget.paymentBankEntity
+                                                        ?.copyWith(
                                                       ibanNumber: ibanNumber,
-                                                      bankHolderName: accountHolderName,
-                                                      accountNumber: confirmAccountNumber,
+                                                      bankHolderName:
+                                                          accountHolderName,
+                                                      accountNumber:
+                                                          confirmAccountNumber,
                                                       bankName: bankName,
-                                                      acceptPaymentMode: AcceptPaymentMode.cash,
+                                                      acceptPaymentMode:
+                                                          AcceptPaymentMode
+                                                              .cash,
                                                     );
                                                   }
-                                                  paymentBankEntity = PaymentBankEntity(
-                                                    accountNumber: confirmAccountNumber,
-                                                    bankHolderName: accountHolderName,
+                                                  paymentBankEntity =
+                                                      PaymentBankEntity(
+                                                    accountNumber:
+                                                        confirmAccountNumber,
+                                                    bankHolderName:
+                                                        accountHolderName,
                                                     bankName: bankName,
                                                     ibanNumber: ibanNumber,
-                                                    acceptPaymentMode: AcceptPaymentMode.cash,
+                                                    acceptPaymentMode:
+                                                        AcceptPaymentMode.cash,
                                                   );
-                                                  serviceLocator<AppUserEntity>().currentProfileStatus =
-                                                      CurrentProfileStatus.paymentDetailSaved;
+                                                  serviceLocator<
+                                                              AppUserEntity>()
+                                                          .currentProfileStatus =
+                                                      CurrentProfileStatus
+                                                          .paymentDetailSaved;
                                                   if (!mounted) {
                                                     return;
                                                   }
-                                                  context.read<PaymentBankBloc>().add(
+                                                  context
+                                                      .read<PaymentBankBloc>()
+                                                      .add(
                                                         SavePaymentBank(
-                                                          paymentBankEntity: paymentBankEntity,
-                                                          currentIndex: widget.currentIndex,
-                                                          hasEditPaymentBank: widget.hasEditBankInformation,
+                                                          paymentBankEntity:
+                                                              paymentBankEntity,
+                                                          currentIndex: widget
+                                                              .currentIndex,
+                                                          hasEditPaymentBank: widget
+                                                              .hasEditBankInformation,
                                                         ),
                                                       );
                                                   return;
@@ -766,7 +962,9 @@ class _BankInformationPageState extends State<BankInformationPage> with SingleTi
                                             },
                                             child: Text(
                                               'Save Payment Details',
-                                              textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                              textDirection: serviceLocator<
+                                                      LanguageController>()
+                                                  .targetTextDirection,
                                             ).translate(),
                                           ),
                                         ),
@@ -790,7 +988,8 @@ class _BankInformationPageState extends State<BankInformationPage> with SingleTi
     );
   }
 
-  void _fieldFocusChange(BuildContext context, FocusNode currentFocus, FocusNode nextFocus) {
+  void _fieldFocusChange(
+      BuildContext context, FocusNode currentFocus, FocusNode nextFocus) {
     currentFocus.unfocus();
     FocusScope.of(context).requestFocus(nextFocus);
   }

@@ -9,7 +9,8 @@ class RateAndReviewPage extends StatefulWidget {
 
 class _RateAndReviewPageController extends State<RateAndReviewPage> {
   static const _pageSize = 20;
-  final PagingController<int, RateAndReviewEntity> _pagingController = PagingController(firstPageKey: 1);
+  final PagingController<int, RateAndReviewEntity> _pagingController =
+      PagingController(firstPageKey: 1);
   String? _searchTerm;
   late final ScrollController scrollController;
   late final ScrollController innerScrollController;
@@ -48,7 +49,8 @@ class _RateAndReviewPageController extends State<RateAndReviewPage> {
         RateAndReviewEntity(
           body: RateAndReviewBody(
             category: 'Business Profile',
-            message: 'Lorem ipsum is placeholder text commonly used in the graphic, print, and publishing industries for previewing layouts and visual mockups',
+            message:
+                'Lorem ipsum is placeholder text commonly used in the graphic, print, and publishing industries for previewing layouts and visual mockups',
             rating: 3.36,
             reviewDescription:
                 "Eiusmod Lorem ex ullamco aute proident magna aute quis ullamco. Fugiat do incididunt veniam commodo non nostrud laboris labore ad qui pariatur quis quis. Id amet labore dolore anim ad est pariatur veniam velit nisi irure Lorem consequat labore. Non aliqua adipisicing eu quis ea tempor. Qui incididunt laborum laboris incididunt.",
@@ -72,7 +74,8 @@ class _RateAndReviewPageController extends State<RateAndReviewPage> {
         RateAndReviewEntity(
           body: RateAndReviewBody(
             category: 'Business Document',
-            message: 'Lorem ipsum is placeholder text commonly used in the graphic, print, and publishing industries for previewing layouts and visual mockups',
+            message:
+                'Lorem ipsum is placeholder text commonly used in the graphic, print, and publishing industries for previewing layouts and visual mockups',
             rating: 1.36,
             reviewDescription:
                 "Eiusmod Lorem ex ullamco aute proident magna aute quis ullamco. Fugiat do incididunt veniam commodo non nostrud laboris labore ad qui pariatur quis quis. Id amet labore dolore anim ad est pariatur veniam velit nisi irure Lorem consequat labore. Non aliqua adipisicing eu quis ea tempor. Qui incididunt laborum laboris incididunt.",
@@ -96,7 +99,8 @@ class _RateAndReviewPageController extends State<RateAndReviewPage> {
         RateAndReviewEntity(
           body: RateAndReviewBody(
             category: 'Order',
-            message: 'Lorem ipsum is placeholder text commonly used in the graphic, print, and publishing industries for previewing layouts and visual mockups',
+            message:
+                'Lorem ipsum is placeholder text commonly used in the graphic, print, and publishing industries for previewing layouts and visual mockups',
             rating: 3.36,
             reviewDescription:
                 "Eiusmod Lorem ex ullamco aute proident magna aute quis ullamco. Fugiat do incididunt veniam commodo non nostrud laboris labore ad qui pariatur quis quis. Id amet labore dolore anim ad est pariatur veniam velit nisi irure Lorem consequat labore. Non aliqua adipisicing eu quis ea tempor. Qui incididunt laborum laboris incididunt.",
@@ -120,7 +124,8 @@ class _RateAndReviewPageController extends State<RateAndReviewPage> {
         RateAndReviewEntity(
           body: RateAndReviewBody(
             category: 'Order',
-            message: 'Lorem ipsum is placeholder text commonly used in the graphic, print, and publishing industries for previewing layouts and visual mockups',
+            message:
+                'Lorem ipsum is placeholder text commonly used in the graphic, print, and publishing industries for previewing layouts and visual mockups',
             rating: 4.6,
             reviewDescription:
                 "Eiusmod Lorem ex ullamco aute proident magna aute quis ullamco. Fugiat do incididunt veniam commodo non nostrud laboris labore ad qui pariatur quis quis. Id amet labore dolore anim ad est pariatur veniam velit nisi irure Lorem consequat labore. Non aliqua adipisicing eu quis ea tempor. Qui incididunt laborum laboris incididunt.",
@@ -144,7 +149,8 @@ class _RateAndReviewPageController extends State<RateAndReviewPage> {
         RateAndReviewEntity(
           body: RateAndReviewBody(
             category: 'Payment',
-            message: 'Lorem ipsum is placeholder text commonly used in the graphic, print, and publishing industries for previewing layouts and visual mockups',
+            message:
+                'Lorem ipsum is placeholder text commonly used in the graphic, print, and publishing industries for previewing layouts and visual mockups',
             rating: 5.0,
             reviewDescription:
                 "Eiusmod Lorem ex ullamco aute proident magna aute quis ullamco. Fugiat do incididunt veniam commodo non nostrud laboris labore ad qui pariatur quis quis. Id amet labore dolore anim ad est pariatur veniam velit nisi irure Lorem consequat labore. Non aliqua adipisicing eu quis ea tempor. Qui incididunt laborum laboris incididunt.",
@@ -155,7 +161,8 @@ class _RateAndReviewPageController extends State<RateAndReviewPage> {
             ),
           ),
           title: 'Payment Send',
-          subtitle: 'You have successfully send the amount from wallet to your payment bank',
+          subtitle:
+              'You have successfully send the amount from wallet to your payment bank',
           flag: 1,
           priority: 1,
           type: 'Payment',
@@ -168,7 +175,8 @@ class _RateAndReviewPageController extends State<RateAndReviewPage> {
         RateAndReviewEntity(
           body: RateAndReviewBody(
             category: 'Business Profile',
-            message: 'Lorem ipsum is placeholder text commonly used in the graphic, print, and publishing industries for previewing layouts and visual mockups',
+            message:
+                'Lorem ipsum is placeholder text commonly used in the graphic, print, and publishing industries for previewing layouts and visual mockups',
             rating: 3.0,
             reviewDescription:
                 "Eiusmod Lorem ex ullamco aute proident magna aute quis ullamco. Fugiat do incididunt veniam commodo non nostrud laboris labore ad qui pariatur quis quis. Id amet labore dolore anim ad est pariatur veniam velit nisi irure Lorem consequat labore. Non aliqua adipisicing eu quis ea tempor. Qui incididunt laborum laboris incididunt.",
@@ -192,7 +200,8 @@ class _RateAndReviewPageController extends State<RateAndReviewPage> {
         RateAndReviewEntity(
           body: RateAndReviewBody(
             category: 'Business Document',
-            message: 'Lorem ipsum is placeholder text commonly used in the graphic, print, and publishing industries for previewing layouts and visual mockups',
+            message:
+                'Lorem ipsum is placeholder text commonly used in the graphic, print, and publishing industries for previewing layouts and visual mockups',
             rating: 3.36,
             reviewDescription:
                 "Eiusmod Lorem ex ullamco aute proident magna aute quis ullamco. Fugiat do incididunt veniam commodo non nostrud laboris labore ad qui pariatur quis quis. Id amet labore dolore anim ad est pariatur veniam velit nisi irure Lorem consequat labore. Non aliqua adipisicing eu quis ea tempor. Qui incididunt laborum laboris incididunt.",
@@ -216,7 +225,8 @@ class _RateAndReviewPageController extends State<RateAndReviewPage> {
         RateAndReviewEntity(
           body: RateAndReviewBody(
             category: 'Order',
-            message: 'Lorem ipsum is placeholder text commonly used in the graphic, print, and publishing industries for previewing layouts and visual mockups',
+            message:
+                'Lorem ipsum is placeholder text commonly used in the graphic, print, and publishing industries for previewing layouts and visual mockups',
             rating: 5.0,
             reviewDescription:
                 "Eiusmod Lorem ex ullamco aute proident magna aute quis ullamco. Fugiat do incididunt veniam commodo non nostrud laboris labore ad qui pariatur quis quis. Id amet labore dolore anim ad est pariatur veniam velit nisi irure Lorem consequat labore. Non aliqua adipisicing eu quis ea tempor. Qui incididunt laborum laboris incididunt.",
@@ -240,7 +250,8 @@ class _RateAndReviewPageController extends State<RateAndReviewPage> {
         RateAndReviewEntity(
           body: RateAndReviewBody(
             category: 'Order',
-            message: 'Lorem ipsum is placeholder text commonly used in the graphic, print, and publishing industries for previewing layouts and visual mockups',
+            message:
+                'Lorem ipsum is placeholder text commonly used in the graphic, print, and publishing industries for previewing layouts and visual mockups',
             rating: 4.0,
             reviewDescription:
                 "Eiusmod Lorem ex ullamco aute proident magna aute quis ullamco. Fugiat do incididunt veniam commodo non nostrud laboris labore ad qui pariatur quis quis. Id amet labore dolore anim ad est pariatur veniam velit nisi irure Lorem consequat labore. Non aliqua adipisicing eu quis ea tempor. Qui incididunt laborum laboris incididunt.",
@@ -270,7 +281,8 @@ class _RateAndReviewPageController extends State<RateAndReviewPage> {
       localDb: (data, meta) {
         appLog.d('Saved rate and review to local ${data?.length}');
       },
-      error: (dataSourceFailure, reason, error, networkException, stackTrace, exception, extra) {
+      error: (dataSourceFailure, reason, error, networkException, stackTrace,
+          exception, extra) {
         appLog.d('Saved rate and review to local $reason');
       },
     );
@@ -299,7 +311,8 @@ class _RateAndReviewPageController extends State<RateAndReviewPage> {
             newItems = data!.toList();
           }
         },
-        error: (dataSourceFailure, reason, error, networkException, stackTrace, exception, extra) {
+        error: (dataSourceFailure, reason, error, networkException, stackTrace,
+            exception, extra) {
           appLog.d('Get rate and review to local $reason');
         },
       );
@@ -332,14 +345,16 @@ class _RateAndReviewPageController extends State<RateAndReviewPage> {
   Widget build(BuildContext context) => _RateAndReviewPageView(this);
 }
 
-class _RateAndReviewPageView extends WidgetView<RateAndReviewPage, _RateAndReviewPageController> {
+class _RateAndReviewPageView
+    extends WidgetView<RateAndReviewPage, _RateAndReviewPageController> {
   const _RateAndReviewPageView(super.state);
 
   @override
   Widget build(BuildContext context) {
     final MediaQueryData media = MediaQuery.of(context);
     final double margins = GlobalApp.responsiveInsets(media.size.width);
-    final double topPadding = margins; //media.padding.top + kToolbarHeight + margins; //margins * 1.5;
+    final double topPadding =
+        margins; //media.padding.top + kToolbarHeight + margins; //margins * 1.5;
     final double bottomPadding = margins; //media.padding.bottom + margins;
     final double width = media.size.width;
     final ThemeData theme = Theme.of(context);
@@ -358,7 +373,8 @@ class _RateAndReviewPageView extends WidgetView<RateAndReviewPage, _RateAndRevie
             automaticallyImplyLeading: true,
             title: Text(
               'Your Ratings',
-              textDirection: serviceLocator<LanguageController>().targetTextDirection,
+              textDirection:
+                  serviceLocator<LanguageController>().targetTextDirection,
             ),
             actions: const [
               Padding(
@@ -387,9 +403,11 @@ class _RateAndReviewPageView extends WidgetView<RateAndReviewPage, _RateAndRevie
                 slivers: <Widget>[
                   PagedSliverList<int, RateAndReviewEntity>(
                     pagingController: state._pagingController,
-                    builderDelegate: PagedChildBuilderDelegate<RateAndReviewEntity>(
+                    builderDelegate:
+                        PagedChildBuilderDelegate<RateAndReviewEntity>(
                       animateTransitions: true,
-                      itemBuilder: (context, rateAndReviewResult, index) => RateAndReviewCardWidget(
+                      itemBuilder: (context, rateAndReviewResult, index) =>
+                          RateAndReviewCardWidget(
                         key: ValueKey(index),
                         rateAndReviewEntity: rateAndReviewResult,
                       ),

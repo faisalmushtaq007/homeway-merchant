@@ -2,7 +2,8 @@ import 'package:json_annotation/json_annotation.dart';
 import 'package:meta/meta.dart';
 
 import 'package:homemakers_merchant/app/features/chat/domain/entities/src/message.dart';
-import 'package:homemakers_merchant/app/features/chat/domain/entities/src/chat_user.dart' show ChatUser;
+import 'package:homemakers_merchant/app/features/chat/domain/entities/src/chat_user.dart'
+    show ChatUser;
 import 'package:homemakers_merchant/app/features/chat/domain/entities/src/messages/partial_video.dart';
 
 part 'video_message.g.dart';
@@ -53,7 +54,8 @@ abstract class VideoMessage extends Message {
   }) = _VideoMessage;
 
   /// Creates a video message from a map (decoded JSON).
-  factory VideoMessage.fromJson(Map<String, dynamic> json) => _$VideoMessageFromJson(json);
+  factory VideoMessage.fromJson(Map<String, dynamic> json) =>
+      _$VideoMessageFromJson(json);
 
   /// Creates a full video message from a partial one.
   factory VideoMessage.fromPartial({
@@ -197,12 +199,17 @@ class _VideoMessage extends VideoMessage {
         createdAt: createdAt == _Unset ? this.createdAt : createdAt as int?,
         height: height == _Unset ? this.height : height as double?,
         id: id ?? this.id,
-        metadata: metadata == _Unset ? this.metadata : metadata as Map<String, dynamic>?,
+        metadata: metadata == _Unset
+            ? this.metadata
+            : metadata as Map<String, dynamic>?,
         name: name ?? this.name,
         remoteId: remoteId == _Unset ? this.remoteId : remoteId as String?,
-        repliedMessage: repliedMessage == _Unset ? this.repliedMessage : repliedMessage as Message?,
+        repliedMessage: repliedMessage == _Unset
+            ? this.repliedMessage
+            : repliedMessage as Message?,
         roomId: roomId == _Unset ? this.roomId : roomId as String?,
-        showStatus: showStatus == _Unset ? this.showStatus : showStatus as bool?,
+        showStatus:
+            showStatus == _Unset ? this.showStatus : showStatus as bool?,
         size: size ?? this.size,
         status: status == _Unset ? this.status : status as Status?,
         updatedAt: updatedAt == _Unset ? this.updatedAt : updatedAt as int?,

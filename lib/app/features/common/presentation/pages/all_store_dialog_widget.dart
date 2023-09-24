@@ -29,7 +29,8 @@ class AllStoreDialogWidget extends StatefulWidget {
   final EdgeInsetsGeometry padding;
 
   @override
-  _AllStoreDialogWidgetController createState() => _AllStoreDialogWidgetController();
+  _AllStoreDialogWidgetController createState() =>
+      _AllStoreDialogWidgetController();
 }
 
 class _AllStoreDialogWidgetController extends State<AllStoreDialogWidget> {
@@ -66,7 +67,8 @@ class _AllStoreDialogWidgetController extends State<AllStoreDialogWidget> {
   }
 }
 
-class _AllStoreDialogWidgetView extends WidgetView<AllStoreDialogWidget, _AllStoreDialogWidgetController> {
+class _AllStoreDialogWidgetView
+    extends WidgetView<AllStoreDialogWidget, _AllStoreDialogWidgetController> {
   const _AllStoreDialogWidgetView(super.state);
 
   @override
@@ -101,14 +103,16 @@ class _AllStoreDialogWidgetView extends WidgetView<AllStoreDialogWidget, _AllSto
                   stores = [];
                 }
               },
-              error: (dataSourceFailure, reason, error, networkException, stackTrace, exception, extra) {
+              error: (dataSourceFailure, reason, error, networkException,
+                  stackTrace, exception, extra) {
                 stores = [];
               },
             );
             return defaultWidget(context, stores);
           }
         },
-        error: (context, error, stackTrace) => widget.errorWidget ?? defaultWidget(context));
+        error: (context, error, stackTrace) =>
+            widget.errorWidget ?? defaultWidget(context));
   }
 
   Widget defaultWidget(
@@ -123,7 +127,8 @@ class _AllStoreDialogWidgetView extends WidgetView<AllStoreDialogWidget, _AllSto
           child: Padding(
             padding: widget.padding,
             child: Row(
-              textDirection: serviceLocator<LanguageController>().targetTextDirection,
+              textDirection:
+                  serviceLocator<LanguageController>().targetTextDirection,
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.start,
@@ -136,7 +141,8 @@ class _AllStoreDialogWidgetView extends WidgetView<AllStoreDialogWidget, _AllSto
                           color: Color.fromRGBO(127, 129, 132, 1),
                           fontWeight: FontWeight.w600,
                         ),
-                    textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                    textDirection: serviceLocator<LanguageController>()
+                        .targetTextDirection,
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                     softWrap: true,
@@ -158,7 +164,9 @@ class _AllStoreDialogWidgetView extends WidgetView<AllStoreDialogWidget, _AllSto
     );
   }
 
-  Future<void> onPressed({required BuildContext context, List<StoreEntity>? stores = const []}) async {
+  Future<void> onPressed(
+      {required BuildContext context,
+      List<StoreEntity>? stores = const []}) async {
     if (stores.isNotNullOrEmpty) {
       final StoreEntity? storeEntity = await selectYourStore(context, stores!);
       if (storeEntity != null) {
@@ -171,7 +179,8 @@ class _AllStoreDialogWidgetView extends WidgetView<AllStoreDialogWidget, _AllSto
     }
   }
 
-  Future<StoreEntity?> selectYourStore(BuildContext context, List<StoreEntity> stores) async {
+  Future<StoreEntity?> selectYourStore(
+      BuildContext context, List<StoreEntity> stores) async {
     final StoreEntity? storeEntity = await showConfirmationDialog<StoreEntity>(
       context: context,
       barrierDismissible: true,
@@ -200,7 +209,8 @@ class _AllStoreDialogWidgetView extends WidgetView<AllStoreDialogWidget, _AllSto
               child: ListView.builder(
                 padding: EdgeInsetsDirectional.zero,
                 itemCount: stores.length,
-                itemBuilder: (context, index) => _allStoresCard(context, index, setState, stores[index]),
+                itemBuilder: (context, index) =>
+                    _allStoresCard(context, index, setState, stores[index]),
                 shrinkWrap: true,
               ),
             );
@@ -214,11 +224,15 @@ class _AllStoreDialogWidgetView extends WidgetView<AllStoreDialogWidget, _AllSto
     return storeEntity;
   }
 
-  Widget _allStoresCard(BuildContext context, int index, StateSetter innerSetState, StoreEntity storeEntity) {
+  Widget _allStoresCard(BuildContext context, int index,
+      StateSetter innerSetState, StoreEntity storeEntity) {
     return DecoratedBox(
       decoration: BoxDecoration(
         border: Border(
-            top: (index == 0) ? BorderSide(color: Theme.of(context).dividerColor) : BorderSide.none, bottom: BorderSide(color: Theme.of(context).dividerColor)),
+            top: (index == 0)
+                ? BorderSide(color: Theme.of(context).dividerColor)
+                : BorderSide.none,
+            bottom: BorderSide(color: Theme.of(context).dividerColor)),
       ),
       child: ListTile(
         dense: true,
@@ -228,7 +242,8 @@ class _AllStoreDialogWidgetView extends WidgetView<AllStoreDialogWidget, _AllSto
         visualDensity: const VisualDensity(vertical: -1, horizontal: 0),
         title: Text(
           '${storeEntity.storeName}',
-          textDirection: serviceLocator<LanguageController>().targetTextDirection,
+          textDirection:
+              serviceLocator<LanguageController>().targetTextDirection,
         ),
         onTap: () {
           innerSetState(() {});

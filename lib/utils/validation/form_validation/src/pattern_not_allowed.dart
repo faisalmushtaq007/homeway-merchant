@@ -69,5 +69,6 @@ class RegexNotAllowedValidator extends PatternNotAllowedValidator {
   ///
   /// The [regExp] parameter is the regular expression pattern that should not be matched within the value.
   /// The [errorMessage] parameter is the error message to be returned if the value matches the regular expression pattern.
-  const RegexNotAllowedValidator(RegExp regExp, {required super.errorMessage}) : super(regExp);
+  const RegexNotAllowedValidator(RegExp regExp, {required super.errorMessage})
+      : super(regExp);
 }

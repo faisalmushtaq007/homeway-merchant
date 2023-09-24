@@ -1,13 +1,15 @@
 part of 'package:homemakers_merchant/app/features/profile/index.dart';
 
-class UserLocalDbRepository<User extends AppUserEntity> implements BaseUserLocalDbRepository<AppUserEntity> {
+class UserLocalDbRepository<User extends AppUserEntity>
+    implements BaseUserLocalDbRepository<AppUserEntity> {
   // Completer is used for transforming synchronous code into asynchronous code.
   Future<Database> get _db async => AppDatabase.instance.database;
 
   StoreRef<int, Map<String, dynamic>> get _user => AppDatabase.instance.user;
 
   @override
-  Future<Either<RepositoryBaseFailure, AppUserEntity>> add(AppUserEntity entity) async {
+  Future<Either<RepositoryBaseFailure, AppUserEntity>> add(
+      AppUserEntity entity) async {
     final result = await tryCatch<AppUserEntity>(() async {
       final int recordID = await _user.add(await _db, entity.toMap());
       //final AppUserEntity recordAppUserEntity = entity.copyWith(storeID: recordID.toString());
@@ -23,7 +25,8 @@ class UserLocalDbRepository<User extends AppUserEntity> implements BaseUserLocal
   }
 
   @override
-  Future<Either<RepositoryBaseFailure, bool>> delete(AppUserEntity entity) async {
+  Future<Either<RepositoryBaseFailure, bool>> delete(
+      AppUserEntity entity) async {
     final result = await tryCatch<bool>(() async {
       final int key = entity.userID;
       final finder = Finder(filter: Filter.byKey(key));
@@ -55,7 +58,8 @@ class UserLocalDbRepository<User extends AppUserEntity> implements BaseUserLocal
   }
 
   @override
-  Future<Either<RepositoryBaseFailure, bool>> deleteById(UniqueId uniqueId) async {
+  Future<Either<RepositoryBaseFailure, bool>> deleteById(
+      UniqueId uniqueId) async {
     final result = await tryCatch<bool>(() async {
       final value = await _user.record(uniqueId.value).get(await _db);
       if (value != null) {
@@ -83,7 +87,8 @@ class UserLocalDbRepository<User extends AppUserEntity> implements BaseUserLocal
   }
 
   @override
-  Future<Either<RepositoryBaseFailure, AppUserEntity?>> getById(UniqueId id) async {
+  Future<Either<RepositoryBaseFailure, AppUserEntity?>> getById(
+      UniqueId id) async {
     final result = await tryCatch<AppUserEntity?>(() async {
       final value = await _user.record(id.value).get(await _db);
       if (value != null) {
@@ -95,7 +100,8 @@ class UserLocalDbRepository<User extends AppUserEntity> implements BaseUserLocal
   }
 
   @override
-  Future<Either<RepositoryBaseFailure, AppUserEntity>> update(AppUserEntity entity, UniqueId uniqueId) async {
+  Future<Either<RepositoryBaseFailure, AppUserEntity>> update(
+      AppUserEntity entity, UniqueId uniqueId) async {
     final result = await tryCatch<AppUserEntity>(() async {
       final int key = uniqueId.value;
       final value = await _user.record(key).get(await _db);
@@ -118,30 +124,38 @@ class UserLocalDbRepository<User extends AppUserEntity> implements BaseUserLocal
 
   @override
   Future<Either<RepositoryBaseFailure, AppUserEntity>> upsert(
-      {UniqueId? id, String? token, required AppUserEntity entity, bool checkIfUserLoggedIn = false}) async {
+      {UniqueId? id,
+      String? token,
+      required AppUserEntity entity,
+      bool checkIfUserLoggedIn = false}) async {
     final result = await tryCatch<AppUserEntity>(() async {
       final int key = entity.userID;
       final value = await _user.record(key).get(await _db);
-      final result = await _user.record(key).put(await _db, entity.toMap(), merge: (value != null) || false);
+      final result = await _user
+          .record(key)
+          .put(await _db, entity.toMap(), merge: (value != null) || false);
       return AppUserEntity.fromMap(result);
     });
     return result;
   }
 
   @override
-  Future<Either<RepositoryBaseFailure, bool>> deleteByIdAndEntity(UniqueId uniqueId, AppUserEntity entity) {
+  Future<Either<RepositoryBaseFailure, bool>> deleteByIdAndEntity(
+      UniqueId uniqueId, AppUserEntity entity) {
     // TODO(prasant): implement deleteByIdAndEntity
     throw UnimplementedError();
   }
 
   @override
-  Future<Either<RepositoryBaseFailure, AppUserEntity>> getByIdAndEntity(UniqueId uniqueId, AppUserEntity entity) {
+  Future<Either<RepositoryBaseFailure, AppUserEntity>> getByIdAndEntity(
+      UniqueId uniqueId, AppUserEntity entity) {
     // TODO(prasant): implement getByIdAndEntity
     throw UnimplementedError();
   }
 
   @override
-  Future<Either<RepositoryBaseFailure, AppUserEntity>> updateByIdAndEntity(UniqueId uniqueId, AppUserEntity entity) {
+  Future<Either<RepositoryBaseFailure, AppUserEntity>> updateByIdAndEntity(
+      UniqueId uniqueId, AppUserEntity entity) {
     // TODO(prasant): implement updateByIdAndEntity
     throw UnimplementedError();
   }
@@ -165,7 +179,11 @@ class UserLocalDbRepository<User extends AppUserEntity> implements BaseUserLocal
             txn,
             finder: Finder(
               filter: Filter.or([
-                Filter.equals('hasCurrentUser', true,anyInList: true,),
+                Filter.equals(
+                  'hasCurrentUser',
+                  true,
+                  anyInList: true,
+                ),
                 Filter.equals(
                   'phoneNumberWithoutDialCode',
                   entity?.phoneNumberWithoutDialCode ?? '',
@@ -173,31 +191,38 @@ class UserLocalDbRepository<User extends AppUserEntity> implements BaseUserLocal
                 ),
                 Filter.equals(
                   'phoneNumber',
-                  entity?.phoneNumber ?? '',anyInList: true,
+                  entity?.phoneNumber ?? '',
+                  anyInList: true,
                 ),
                 Filter.equals(
                   'access_token',
-                  byToken,anyInList: true,
+                  byToken,
+                  anyInList: true,
                 ),
                 Filter.equals(
                   'access_token',
-                  entity?.access_token ?? '',anyInList: true,
+                  entity?.access_token ?? '',
+                  anyInList: true,
                 ),
                 Filter.equals(
                   'uid',
-                  byID,anyInList: true,
+                  byID,
+                  anyInList: true,
                 ),
                 Filter.equals(
                   'uid',
-                  entity?.uid ?? entity?.userID,anyInList: true,
+                  entity?.uid ?? entity?.userID,
+                  anyInList: true,
                 ),
                 Filter.equals(
                   'userID',
-                  byID,anyInList: true,
+                  byID,
+                  anyInList: true,
                 ),
                 Filter.equals(
                   'userID',
-                  entity?.uid ?? entity?.userID,anyInList: true,
+                  entity?.uid ?? entity?.userID,
+                  anyInList: true,
                 ),
               ]),
             ),
@@ -205,7 +230,7 @@ class UserLocalDbRepository<User extends AppUserEntity> implements BaseUserLocal
           if (record != null) {
             appLog.d('Current user:- ${record.value}');
             return AppUserEntity.fromMap(record.value);
-          }/*else{
+          } /*else{
             final result=await getAll();
             if(result.isRight()){
               appLog.d(result.right);
@@ -221,17 +246,34 @@ class UserLocalDbRepository<User extends AppUserEntity> implements BaseUserLocal
     return result;
   }
 
-  Future<Map<String, RecordSnapshot<int, Map<String, Object?>>>> getUserProfileEntityByIds(DatabaseClient db, List<int> ids) async {
-    var snapshots = await _user.find(db, finder: Finder(filter: Filter.or(ids.map((e) => Filter.equals('userID', e)).toList())));
-    return <String, RecordSnapshot<int, Map<String, Object?>>>{for (var snapshot in snapshots) snapshot.value['userID']!.toString(): snapshot};
+  Future<Map<String, RecordSnapshot<int, Map<String, Object?>>>>
+      getUserProfileEntityByIds(DatabaseClient db, List<int> ids) async {
+    var snapshots = await _user.find(db,
+        finder: Finder(
+            filter: Filter.or(
+                ids.map((e) => Filter.equals('userID', e)).toList())));
+    return <String, RecordSnapshot<int, Map<String, Object?>>>{
+      for (var snapshot in snapshots)
+        snapshot.value['userID']!.toString(): snapshot
+    };
   }
-  
+
   @override
-  Future<Either<RepositoryBaseFailure, List<AppUserEntity>>> getAllWithPagination({int pageKey = 0, int pageSize = 10, String? searchText, Map<String, dynamic> extras = const <String, dynamic>{}, String? filter, String? sorting, Timestamp? startTimeStamp, Timestamp? endTimeStamp,})async {
+  Future<Either<RepositoryBaseFailure, List<AppUserEntity>>>
+      getAllWithPagination({
+    int pageKey = 0,
+    int pageSize = 10,
+    String? searchText,
+    Map<String, dynamic> extras = const <String, dynamic>{},
+    String? filter,
+    String? sorting,
+    Timestamp? startTimeStamp,
+    Timestamp? endTimeStamp,
+  }) async {
     final result = await tryCatch<List<AppUserEntity>>(() async {
       final db = await _db;
       return await db.transaction((transaction) async {
-        AppUserEntity entity=AppUserEntity.fromMap(extras);
+        AppUserEntity entity = AppUserEntity.fromMap(extras);
         // Finder object can also sort data.
         Finder finder = Finder(
           limit: pageSize,
@@ -239,15 +281,21 @@ class UserLocalDbRepository<User extends AppUserEntity> implements BaseUserLocal
         );
         // If
         if (searchText.isNotNull || filter.isNotNull) {
-          var regExp = searchText;//RegExp(searchText ?? '', caseSensitive: false);
-          var filterRegExp = filter;//RegExp(filter ?? '', caseSensitive: false);
+          var regExp =
+              searchText; //RegExp(searchText ?? '', caseSensitive: false);
+          var filterRegExp =
+              filter; //RegExp(filter ?? '', caseSensitive: false);
           finder = Finder(
             limit: pageSize,
             offset: pageKey,
             filter: Filter.and(
               [
                 Filter.or([
-                  Filter.equals('hasCurrentUser', true,anyInList: true,),
+                  Filter.equals(
+                    'hasCurrentUser',
+                    true,
+                    anyInList: true,
+                  ),
                   Filter.equals(
                     'phoneNumberWithoutDialCode',
                     entity.phoneNumberWithoutDialCode ?? '',
@@ -255,31 +303,38 @@ class UserLocalDbRepository<User extends AppUserEntity> implements BaseUserLocal
                   ),
                   Filter.equals(
                     'phoneNumber',
-                    entity.phoneNumber ?? '',anyInList: true,
+                    entity.phoneNumber ?? '',
+                    anyInList: true,
                   ),
                   Filter.equals(
                     'access_token',
-                    entity.token,anyInList: true,
+                    entity.token,
+                    anyInList: true,
                   ),
                   Filter.equals(
                     'access_token',
-                    entity.access_token ?? '',anyInList: true,
+                    entity.access_token ?? '',
+                    anyInList: true,
                   ),
                   Filter.equals(
                     'uid',
-                    entity.uid,anyInList: true,
+                    entity.uid,
+                    anyInList: true,
                   ),
                   Filter.equals(
                     'uid',
-                    entity.uid ?? entity.userID,anyInList: true,
+                    entity.uid ?? entity.userID,
+                    anyInList: true,
                   ),
                   Filter.equals(
                     'userID',
-                    entity.userID,anyInList: true,
+                    entity.userID,
+                    anyInList: true,
                   ),
                   Filter.equals(
                     'userID',
-                    entity.uid ?? entity.userID,anyInList: true,
+                    entity.uid ?? entity.userID,
+                    anyInList: true,
                   ),
                 ]),
               ],
@@ -312,7 +367,10 @@ class UserLocalDbRepository<User extends AppUserEntity> implements BaseUserLocal
   }
 
   @override
-  Future<Either<RepositoryBaseFailure, List<AppUserEntity>>> saveAll({required List<AppUserEntity> entities, bool hasUpdateAll = false,}) async {
+  Future<Either<RepositoryBaseFailure, List<AppUserEntity>>> saveAll({
+    required List<AppUserEntity> entities,
+    bool hasUpdateAll = false,
+  }) async {
     final result = await tryCatch<List<AppUserEntity>>(() async {
       final db = await _db;
       //final allOrderList = r.toList();
@@ -320,7 +378,8 @@ class UserLocalDbRepository<User extends AppUserEntity> implements BaseUserLocal
       var convertOrderToMapObject = newList.map((e) => e.toMap()).toList();
       //final bool equalityStatus = unOrdDeepEq(allOrderList.toSet().toList(), newList.toSet().toList());
       await db.transaction((transaction) async {
-        var userProfileIDs = convertOrderToMapObject.map((map) => map['userID'] as int).toList();
+        var userProfileIDs =
+            convertOrderToMapObject.map((map) => map['userID'] as int).toList();
         var map = await getUserProfileEntityByIds(db, userProfileIDs);
         // Watch for deleted item
         appLog.d('Map Data');
@@ -355,7 +414,7 @@ class UserLocalDbRepository<User extends AppUserEntity> implements BaseUserLocal
         await _user.records(keysToDelete).delete(transaction);
       });
 
-      final result = await getAllWithPagination(pageKey: 0,pageSize: 1);
+      final result = await getAllWithPagination(pageKey: 0, pageSize: 1);
       if (result.isRight()) {
         return result.right.toList();
       } else {

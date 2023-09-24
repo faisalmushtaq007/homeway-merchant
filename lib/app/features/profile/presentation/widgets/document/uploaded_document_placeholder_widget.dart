@@ -4,7 +4,8 @@ class UploadedDocumentPlaceholderWidget extends StatelessWidget {
   const UploadedDocumentPlaceholderWidget(
       {super.key,
       this.title = 'Upload document',
-      this.subTitle = 'Capture document from camera or Browse and choose the document from Gallery that you want to upload.'});
+      this.subTitle =
+          'Capture document from camera or Browse and choose the document from Gallery that you want to upload.'});
 
   final String? title;
   final String? subTitle;
@@ -34,7 +35,8 @@ class UploadedDocumentPlaceholderWidget extends StatelessWidget {
           title!,
           style: context.headlineSmall!.copyWith(fontWeight: FontWeight.bold),
           textAlign: TextAlign.center,
-          textDirection: serviceLocator<LanguageController>().targetTextDirection,
+          textDirection:
+              serviceLocator<LanguageController>().targetTextDirection,
         ),
         const AnimatedGap(
           15,
@@ -46,7 +48,8 @@ class UploadedDocumentPlaceholderWidget extends StatelessWidget {
             subTitle!,
             textAlign: TextAlign.center,
             style: context.labelLarge,
-            textDirection: serviceLocator<LanguageController>().targetTextDirection,
+            textDirection:
+                serviceLocator<LanguageController>().targetTextDirection,
           ),
         ),
         const AnimatedGap(

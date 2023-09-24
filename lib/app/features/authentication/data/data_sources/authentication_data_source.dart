@@ -1,9 +1,11 @@
 part of 'package:homemakers_merchant/app/features/authentication/index.dart';
 
 abstract class AuthenticationDataSource {
-  Future<ApiResultState<SendOtpResponseModel>> sendPhoneAuthenticationOTP({required BaseRequestModel<SendOtpEntity> sendOtpEntity});
+  Future<ApiResultState<SendOtpResponseModel>> sendPhoneAuthenticationOTP(
+      {required BaseRequestModel<SendOtpEntity> sendOtpEntity});
 
-  Future<ApiResultState<VerifyOtpResponseModel>> verifyPhoneAuthenticationOTP({required BaseRequestModel<VerifyOtpEntity> verifyOtpEntity});
+  Future<ApiResultState<VerifyOtpResponseModel>> verifyPhoneAuthenticationOTP(
+      {required BaseRequestModel<VerifyOtpEntity> verifyOtpEntity});
 
   Future<ApiResultState<AppUserEntity>> getUserProfile({String userID = ''});
 
@@ -32,7 +34,8 @@ abstract class AuthenticationDataSource {
 
   Future<ApiResultState<List<AppUserEntity>>> getAllAppUser();
 
-  Future<ApiResultState<AppUserEntity?>> getCurrentAppUser({AppUserEntity? entity});
+  Future<ApiResultState<AppUserEntity?>> getCurrentAppUser(
+      {AppUserEntity? entity});
 
   Future<ApiResultState<List<AppUserEntity>>> saveAllAppUsers({
     required List<AppUserEntity> appUsers,

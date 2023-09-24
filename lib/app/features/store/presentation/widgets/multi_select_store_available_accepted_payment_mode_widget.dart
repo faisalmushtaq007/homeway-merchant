@@ -1,6 +1,7 @@
 part of 'package:homemakers_merchant/app/features/store/index.dart';
 
-class MultiSelectAvailablePaymentModeFormField extends FormField<List<StoreAcceptedPaymentModes>> {
+class MultiSelectAvailablePaymentModeFormField
+    extends FormField<List<StoreAcceptedPaymentModes>> {
   final Widget title;
   final Widget hintWidget;
   final bool required;
@@ -8,7 +9,8 @@ class MultiSelectAvailablePaymentModeFormField extends FormField<List<StoreAccep
 
   //final List? dataSource;
   final List<StoreAcceptedPaymentModes> availablePaymentModesList;
-  final List<StoreAcceptedPaymentModes> initialSelectedAvailablePaymentModesList;
+  final List<StoreAcceptedPaymentModes>
+      initialSelectedAvailablePaymentModesList;
   final Function(List<StoreAcceptedPaymentModes>) onSelectionChanged;
   final Function(List<StoreAcceptedPaymentModes>)? onMaxSelected;
   final int? maxSelection;
@@ -96,7 +98,8 @@ class MultiSelectAvailablePaymentModeFormField extends FormField<List<StoreAccep
               ),
               isEmpty: state.value == null || state.value!.isEmpty,
               child: MultiSelectStoreAvailablePaymentMode(
-                onSelectionChanged: (List<StoreAcceptedPaymentModes> selectedItems) {
+                onSelectionChanged:
+                    (List<StoreAcceptedPaymentModes> selectedItems) {
                   selectedChoices = selectedItems.toList();
                   onSelectionChanged?.call(selectedChoices);
                   state.didChange(selectedChoices);
@@ -106,7 +109,8 @@ class MultiSelectAvailablePaymentModeFormField extends FormField<List<StoreAccep
                   state.save();
                 },
                 availablePaymentModes: availablePaymentModesList.toList(),
-                initialSelectedAvailablePaymentModesList: initialSelectedAvailablePaymentModesList.toList(),
+                initialSelectedAvailablePaymentModesList:
+                    initialSelectedAvailablePaymentModesList.toList(),
                 maxSelection: maxSelection,
                 onMaxSelected: onMaxSelected,
                 isSingleSelect: isSingleSelect,
@@ -130,17 +134,20 @@ class MultiSelectStoreAvailablePaymentMode extends StatefulWidget {
   final List<StoreAcceptedPaymentModes> availablePaymentModes;
   final Function(List<StoreAcceptedPaymentModes>) onSelectionChanged;
   final Function(List<StoreAcceptedPaymentModes>)? onMaxSelected;
-  final List<StoreAcceptedPaymentModes> initialSelectedAvailablePaymentModesList;
+  final List<StoreAcceptedPaymentModes>
+      initialSelectedAvailablePaymentModesList;
   final int? maxSelection;
 
   /// Enable single choice
   final bool isSingleSelect;
 
   @override
-  _MultiSelectStoreAvailablePaymentModeState createState() => _MultiSelectStoreAvailablePaymentModeState();
+  _MultiSelectStoreAvailablePaymentModeState createState() =>
+      _MultiSelectStoreAvailablePaymentModeState();
 }
 
-class _MultiSelectStoreAvailablePaymentModeState extends State<MultiSelectStoreAvailablePaymentMode> {
+class _MultiSelectStoreAvailablePaymentModeState
+    extends State<MultiSelectStoreAvailablePaymentMode> {
   // String selectedChoice = "";
   List<StoreAcceptedPaymentModes> selectedChoices = [];
 
@@ -151,7 +158,8 @@ class _MultiSelectStoreAvailablePaymentModeState extends State<MultiSelectStoreA
       choices.add(ChoiceChip(
         label: Text(
           item.title,
-          textDirection: serviceLocator<LanguageController>().targetTextDirection,
+          textDirection:
+              serviceLocator<LanguageController>().targetTextDirection,
         ),
         selected: selectedChoices.contains(item),
         onSelected: (selected) {
@@ -163,11 +171,14 @@ class _MultiSelectStoreAvailablePaymentModeState extends State<MultiSelectStoreA
               widget.onSelectionChanged?.call(selectedChoices);
             });
           } else {
-            if (selectedChoices.length == (widget.maxSelection ?? -1) && !selectedChoices.contains(item)) {
+            if (selectedChoices.length == (widget.maxSelection ?? -1) &&
+                !selectedChoices.contains(item)) {
               widget.onMaxSelected?.call(selectedChoices);
             } else {
               setState(() {
-                selectedChoices.contains(item) ? selectedChoices.remove(item) : selectedChoices.add(item);
+                selectedChoices.contains(item)
+                    ? selectedChoices.remove(item)
+                    : selectedChoices.add(item);
                 widget.onSelectionChanged?.call(selectedChoices);
               });
             }

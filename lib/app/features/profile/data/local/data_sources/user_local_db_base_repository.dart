@@ -10,11 +10,13 @@ abstract class BaseUserLocalDbRepository<T extends AppUserEntity>
         DeleteByIdAndEntity<T>,
         GetByIdAndEntity<T>,
         UpdateByIdAndEntity<T>,
-        GetCurrentUser<T>,SaveAll<T>,
+        GetCurrentUser<T>,
+        SaveAll<T>,
         GetAll<T>,
         GetAllWithPagination<T> {}
 
-abstract class BaseUserBusinessProfileEntityLocalDbRepository<T extends BusinessProfileEntity>
+abstract class BaseUserBusinessProfileEntityLocalDbRepository<
+        T extends BusinessProfileEntity>
     implements
         ReadOnlyRepository<T>,
         WriteOnlyRepository<T>,
@@ -28,7 +30,8 @@ abstract class BaseUserBusinessProfileEntityLocalDbRepository<T extends Business
         GetAll<T>,
         GetAllWithPagination<T> {}
 
-abstract class BaseUserBusinessDocumentEntityLocalDbRepository<T extends NewBusinessDocumentEntity>
+abstract class BaseUserBusinessDocumentEntityLocalDbRepository<
+        T extends NewBusinessDocumentEntity>
     implements
         ReadOnlyRepository<T>,
         WriteOnlyRepository<T>,

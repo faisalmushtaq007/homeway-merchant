@@ -38,7 +38,8 @@ class BounceInDown extends StatefulWidget {
 }
 
 /// Bounce class State, this is where the magic happens
-class _BounceInDownState extends State<BounceInDown> with TickerProviderStateMixin {
+class _BounceInDownState extends State<BounceInDown>
+    with TickerProviderStateMixin {
   AnimationController? controller;
   bool disposed = false;
   late Animation<double> animation;
@@ -56,9 +57,11 @@ class _BounceInDownState extends State<BounceInDown> with TickerProviderStateMix
 
     controller = AnimationController(duration: widget.duration, vsync: this);
 
-    opacity = Tween<double>(begin: 0, end: 1).animate(CurvedAnimation(parent: controller!, curve: const Interval(0, 0.65)));
+    opacity = Tween<double>(begin: 0, end: 1).animate(
+        CurvedAnimation(parent: controller!, curve: const Interval(0, 0.65)));
 
-    animation = Tween<double>(begin: widget.from * -1, end: 0).animate(CurvedAnimation(parent: controller!, curve: Curves.bounceOut));
+    animation = Tween<double>(begin: widget.from * -1, end: 0)
+        .animate(CurvedAnimation(parent: controller!, curve: Curves.bounceOut));
 
     if (!widget.manualTrigger && widget.animate) {
       Future.delayed(widget.delay, () {
@@ -87,7 +90,9 @@ class _BounceInDownState extends State<BounceInDown> with TickerProviderStateMix
     return AnimatedBuilder(
         animation: controller!,
         builder: (BuildContext context, Widget? child) {
-          return Transform.translate(offset: Offset(0, animation.value), child: Opacity(opacity: opacity.value, child: widget.child));
+          return Transform.translate(
+              offset: Offset(0, animation.value),
+              child: Opacity(opacity: opacity.value, child: widget.child));
         });
   }
 }
@@ -175,7 +180,8 @@ class BounceInLeft extends StatefulWidget {
 }
 
 /// Bounce class State, this is where the magic happens
-class _BounceInLeftState extends State<BounceInLeft> with TickerProviderStateMixin {
+class _BounceInLeftState extends State<BounceInLeft>
+    with TickerProviderStateMixin {
   AnimationController? controller;
   bool disposed = false;
   late Animation<double> animation;
@@ -192,9 +198,11 @@ class _BounceInLeftState extends State<BounceInLeft> with TickerProviderStateMix
     super.initState();
 
     controller = AnimationController(duration: widget.duration, vsync: this);
-    opacity = Tween<double>(begin: 0, end: 1).animate(CurvedAnimation(parent: controller!, curve: const Interval(0, 0.65)));
+    opacity = Tween<double>(begin: 0, end: 1).animate(
+        CurvedAnimation(parent: controller!, curve: const Interval(0, 0.65)));
 
-    animation = Tween<double>(begin: widget.from * -1, end: 0).animate(CurvedAnimation(parent: controller!, curve: Curves.bounceOut));
+    animation = Tween<double>(begin: widget.from * -1, end: 0)
+        .animate(CurvedAnimation(parent: controller!, curve: Curves.bounceOut));
 
     if (!widget.manualTrigger && widget.animate) {
       Future.delayed(widget.delay, () {

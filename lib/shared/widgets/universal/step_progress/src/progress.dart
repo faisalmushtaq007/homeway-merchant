@@ -10,7 +10,8 @@ class StepProgressController extends ChangeNotifier {
 
   StepProgressController({this.initialStep = 0, this.totalStep = 2})
       : assert(totalStep >= 2, 'totalSteps must be 2 at least.'),
-        assert(initialStep >= 0 && initialStep < totalStep, 'initialStep must be between 0 and ${totalStep - 1}');
+        assert(initialStep >= 0 && initialStep < totalStep,
+            'initialStep must be between 0 and ${totalStep - 1}');
 
   late int currentStep = initialStep;
 
@@ -62,7 +63,8 @@ class Progress extends StatefulWidget {
   _ProgressState createState() => _ProgressState();
 }
 
-class _ProgressState extends State<Progress> with SingleTickerProviderStateMixin {
+class _ProgressState extends State<Progress>
+    with SingleTickerProviderStateMixin {
   late AnimationController _animationController;
   late Animation<double> _progressAnimation;
   late Animation<double> _stepAnimation;
@@ -70,11 +72,16 @@ class _ProgressState extends State<Progress> with SingleTickerProviderStateMixin
 
   @override
   void initState() {
-    _animationController = AnimationController(vsync: this, duration: const Duration(milliseconds: 300));
+    _animationController = AnimationController(
+        vsync: this, duration: const Duration(milliseconds: 300));
     _progressTween = Tween<double>(begin: 0.0, end: _getEndProgress());
-    _progressAnimation = _progressTween.animate(CurvedAnimation(parent: _animationController, curve: Interval(0.0, 0.3, curve: Curves.easeIn)));
-    _stepAnimation =
-        Tween<double>(begin: 0.0, end: 1.0).animate(CurvedAnimation(parent: _animationController, curve: Interval(0.25, 1.0, curve: Curves.easeOut)));
+    _progressAnimation = _progressTween.animate(CurvedAnimation(
+        parent: _animationController,
+        curve: Interval(0.0, 0.3, curve: Curves.easeIn)));
+    _stepAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
+        CurvedAnimation(
+            parent: _animationController,
+            curve: Interval(0.25, 1.0, curve: Curves.easeOut)));
     widget.stepProgressController.addListener(() {
       _animateProgress();
     });
@@ -95,7 +102,8 @@ class _ProgressState extends State<Progress> with SingleTickerProviderStateMixin
   }
 
   double _getEndProgress() {
-    double percent = widget.stepProgressController.currentStep / (widget.stepProgressController.totalStep - 1);
+    double percent = widget.stepProgressController.currentStep /
+        (widget.stepProgressController.totalStep - 1);
     if (percent > 1)
       return 1;
     else if (percent < 0)
@@ -126,7 +134,8 @@ class _ProgressState extends State<Progress> with SingleTickerProviderStateMixin
                 valueColor: widget.valueColor,
                 defaultColor: widget.defaultColor,
                 tickColor: widget.tickColor,
-                ltr: widget.ltr ?? Directionality.of(context) == TextDirection.ltr),
+                ltr: widget.ltr ??
+                    Directionality.of(context) == TextDirection.ltr),
           );
         },
       ),

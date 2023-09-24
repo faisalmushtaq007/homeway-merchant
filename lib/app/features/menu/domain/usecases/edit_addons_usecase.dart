@@ -1,6 +1,7 @@
 part of 'package:homemakers_merchant/app/features/menu/index.dart';
 
-class EditAddonsUseCase extends UseCaseByIDAndEntity<Addons, int, DataSourceState<Addons>> {
+class EditAddonsUseCase
+    extends UseCaseByIDAndEntity<Addons, int, DataSourceState<Addons>> {
   EditAddonsUseCase({
     required this.menuRepository,
   });
@@ -8,7 +9,8 @@ class EditAddonsUseCase extends UseCaseByIDAndEntity<Addons, int, DataSourceStat
   final MenuRepository menuRepository;
 
   @override
-  Future<DataSourceState<Addons>> call({required Addons input, required int id}) async {
+  Future<DataSourceState<Addons>> call(
+      {required Addons input, required int id}) async {
     return menuRepository.editAddons(addons: input, addonsID: id);
   }
 }

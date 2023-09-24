@@ -1,6 +1,7 @@
 part of 'package:homemakers_merchant/app/features/store/index.dart';
 
-class StoreOwnDriverFormField extends FormField<List<StoreOwnDeliveryPartnersInfo>> {
+class StoreOwnDriverFormField
+    extends FormField<List<StoreOwnDeliveryPartnersInfo>> {
   final Widget title;
   final Widget hintWidget;
   final bool required;
@@ -96,7 +97,8 @@ class StoreOwnDriverFormField extends FormField<List<StoreOwnDeliveryPartnersInf
               ),
               isEmpty: state.value == null || state.value!.isEmpty,
               child: StoreOwnDriverWidget(
-                onSelectionChanged: (List<StoreOwnDeliveryPartnersInfo> selectedItems) {
+                onSelectionChanged:
+                    (List<StoreOwnDeliveryPartnersInfo> selectedItems) {
                   selectedChoices = selectedItems.toList();
                   onSelectionChanged?.call(selectedChoices);
                   state.didChange(selectedChoices);
@@ -106,7 +108,8 @@ class StoreOwnDriverFormField extends FormField<List<StoreOwnDeliveryPartnersInf
                   state.save();
                 },
                 availableDriverList: availableDriverList.toList(),
-                initialSelectedAvailableDriverList: initialSelectedAvailableDriverList.toList(),
+                initialSelectedAvailableDriverList:
+                    initialSelectedAvailableDriverList.toList(),
                 maxSelection: maxSelection,
                 onMaxSelected: onMaxSelected,
                 isSingleSelect: isSingleSelect,
@@ -146,11 +149,13 @@ class _StoreOwnDriverWidgetState extends State<StoreOwnDriverWidget> {
 
   List<Widget> _buildChoiceList() {
     List<Widget> choices = [];
-    return List<Widget>.generate(widget.availableDriverList.length, (int index) {
+    return List<Widget>.generate(widget.availableDriverList.length,
+        (int index) {
       return Chip(
         label: Text(
           widget.availableDriverList[index].driverName,
-          textDirection: serviceLocator<LanguageController>().targetTextDirection,
+          textDirection:
+              serviceLocator<LanguageController>().targetTextDirection,
         ),
         onDeleted: () {
           setState(() {

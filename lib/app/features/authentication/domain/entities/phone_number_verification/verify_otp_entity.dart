@@ -13,7 +13,8 @@ class VerifyOtpEntity extends INetworkModel<VerifyOtpEntity> {
     this.phoneNumberWithFormat = '',
   });
 
-  factory VerifyOtpEntity.fromJson(Map<String, dynamic> json) => VerifyOtpEntity(
+  factory VerifyOtpEntity.fromJson(Map<String, dynamic> json) =>
+      VerifyOtpEntity(
         mobile: json['mobile'] ?? '' as String,
         user_type: json['user_type'] ?? 'merchant' as String,
         country_dial_code: json['country_dial_code'] ?? '' as String,
@@ -21,7 +22,8 @@ class VerifyOtpEntity extends INetworkModel<VerifyOtpEntity> {
         password: json['password'] ?? '' as int,
         db: json['db'] ?? 'odoo16home' as String,
         isoCode: json['isoCode'] as String,
-        phoneNumberWithoutFormat: json['phoneNumberWithoutFormat'] ?? '' as String,
+        phoneNumberWithoutFormat:
+            json['phoneNumberWithoutFormat'] ?? '' as String,
         phoneNumberWithFormat: json['phoneNumberWithFormat'] ?? '' as String,
       );
 

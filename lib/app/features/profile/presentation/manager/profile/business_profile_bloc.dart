@@ -16,7 +16,8 @@ part 'business_profile_event.dart';
 
 part 'business_profile_state.dart';
 
-class BusinessProfileBloc extends Bloc<BusinessProfileEvent, BusinessProfileState> {
+class BusinessProfileBloc
+    extends Bloc<BusinessProfileEvent, BusinessProfileState> {
   BusinessProfileBloc() : super(const BusinessProfileInitial()) {
     on<SaveBusinessProfile>(_saveBusinessProfile);
     on<SaveBusinessType>(_saveBusinessType);
@@ -31,57 +32,62 @@ class BusinessProfileBloc extends Bloc<BusinessProfileEvent, BusinessProfileStat
     on<GetAllAppUserProfilePagination>(_getAllAppUserProfilePagination);
   }
 
-  FutureOr<void> _saveBusinessProfile(SaveBusinessProfile event, Emitter<BusinessProfileState> emit) async {
+  FutureOr<void> _saveBusinessProfile(
+      SaveBusinessProfile event, Emitter<BusinessProfileState> emit) async {
     /*try {*/
-      DataSourceState<BusinessProfileEntity> result;
-      if (event.hasEditBusinessProfile || event.hasSaveBusinessType) {
-        result = await serviceLocator<EditBusinessProfileUseCase>()(id: event.businessProfileEntity.businessProfileID, input: event.businessProfileEntity);
-      } else {
-        result = await serviceLocator<SaveBusinessProfileUseCase>()(event.businessProfileEntity);
-      }
-      await result.when(
-        remote: (data, meta) async {
-          appLog.d('Profile bloc save remote ${data?.toMap()}');
-          if (data != null) {
-            await updateUserProfile(data, event.hasSaveBusinessType ? 2 : 1);
-          }
-          await Future.delayed(const Duration(milliseconds: 500), () {});
-          emit(
-            SaveBusinessProfileState(
-              businessProfileEntity: data ?? event.businessProfileEntity,
-              hasEditBusinessProfile: event.hasEditBusinessProfile,
-              businessProfileStatus: BusinessProfileStatus.saveBusinessProfile,
-              hasSaveBusinessType: event.hasSaveBusinessType,
-            ),
-          );
-        },
-        localDb: (data, meta) async {
-          appLog.d('Profile bloc save local ${data?.toMap()}');
-          if (data != null) {
-            await updateUserProfile(data, event.hasSaveBusinessType ? 2 : 1);
-          }
-          await Future.delayed(const Duration(milliseconds: 500), () {});
-          emit(
-            SaveBusinessProfileState(
-              businessProfileEntity: data ?? event.businessProfileEntity,
-              hasEditBusinessProfile: event.hasEditBusinessProfile,
-              businessProfileStatus: BusinessProfileStatus.saveBusinessProfile,
-              hasSaveBusinessType: event.hasSaveBusinessType,
-            ),
-          );
-        },
-        error: (dataSourceFailure, reason, error, networkException, stackTrace, exception, extra) {
-          appLog.d('Profile bloc save error $reason');
-          emit(
-            BusinessProfileExceptionState(
-              message: reason,
-              //exception: e as Exception,
-              stackTrace: stackTrace,
-              businessProfileStatus: BusinessProfileStatus.saveBusinessProfile,
-            ),
-          );
-        },
-      );
+    DataSourceState<BusinessProfileEntity> result;
+    if (event.hasEditBusinessProfile || event.hasSaveBusinessType) {
+      result = await serviceLocator<EditBusinessProfileUseCase>()(
+          id: event.businessProfileEntity.businessProfileID,
+          input: event.businessProfileEntity);
+    } else {
+      result = await serviceLocator<SaveBusinessProfileUseCase>()(
+          event.businessProfileEntity);
+    }
+    await result.when(
+      remote: (data, meta) async {
+        appLog.d('Profile bloc save remote ${data?.toMap()}');
+        if (data != null) {
+          await updateUserProfile(data, event.hasSaveBusinessType ? 2 : 1);
+        }
+        await Future.delayed(const Duration(milliseconds: 500), () {});
+        emit(
+          SaveBusinessProfileState(
+            businessProfileEntity: data ?? event.businessProfileEntity,
+            hasEditBusinessProfile: event.hasEditBusinessProfile,
+            businessProfileStatus: BusinessProfileStatus.saveBusinessProfile,
+            hasSaveBusinessType: event.hasSaveBusinessType,
+          ),
+        );
+      },
+      localDb: (data, meta) async {
+        appLog.d('Profile bloc save local ${data?.toMap()}');
+        if (data != null) {
+          await updateUserProfile(data, event.hasSaveBusinessType ? 2 : 1);
+        }
+        await Future.delayed(const Duration(milliseconds: 500), () {});
+        emit(
+          SaveBusinessProfileState(
+            businessProfileEntity: data ?? event.businessProfileEntity,
+            hasEditBusinessProfile: event.hasEditBusinessProfile,
+            businessProfileStatus: BusinessProfileStatus.saveBusinessProfile,
+            hasSaveBusinessType: event.hasSaveBusinessType,
+          ),
+        );
+      },
+      error: (dataSourceFailure, reason, error, networkException, stackTrace,
+          exception, extra) {
+        appLog.d('Profile bloc save error $reason');
+        emit(
+          BusinessProfileExceptionState(
+            message: reason,
+            //exception: e as Exception,
+            stackTrace: stackTrace,
+            businessProfileStatus: BusinessProfileStatus.saveBusinessProfile,
+          ),
+        );
+      },
+    );
 /*    } catch (e, s) {
       appLog.e('Profile bloc save exception $e');
       emit(
@@ -95,50 +101,62 @@ class BusinessProfileBloc extends Bloc<BusinessProfileEvent, BusinessProfileStat
     }*/
   }
 
-  Future<void> updateUserProfile(BusinessProfileEntity businessProfileEntity, int stage) async {
+  Future<void> updateUserProfile(
+      BusinessProfileEntity businessProfileEntity, int stage) async {
     final getCurrentUserResult = await serviceLocator<GetAllAppUserUseCase>()();
-    await getCurrentUserResult.when(remote: (data, meta) {
-
-    }, localDb: (data, meta) async {
-      if(data.isNotNullOrEmpty){
-        appLog.d('Profile GetAllAppUserPaginationUseCase is not null');
-        data!.forEach((element) {
-          appLog.d('${element.toMap()}');
-        });
-        final AppUserEntity cacheAppUserEntity = data.last.copyWith(
-          userID: data.last.userID,
-          businessProfile: businessProfileEntity,
-          currentUserStage: stage,
-        );
-        final editUserResult = await serviceLocator<SaveAllAppUserUseCase>()(
-          [cacheAppUserEntity],
-        );
-        editUserResult.when(
-          remote: (data, meta) {
-            appLog.d('Update current user with business profile save remote ${data?.last.toMap()}');
-          },
-          localDb: (data, meta) {
-            appLog.d('Update current user with business profile save local ${data?.last.toMap()}');
-            if (data != null) {
-              var cachedAppUserEntity=serviceLocator<AppUserEntity>()..businessProfile= businessProfileEntity..currentUserStage= stage;
-              serviceLocator<UserModelStorageController>().setUserModel(cachedAppUserEntity);
-            }
-          },
-          error: (dataSourceFailure, reason, error, networkException, stackTrace, exception, extra) {
-            appLog.d('Update current user with business profile exception $error');
-          },
-        );
-      }else{
-        appLog.d('Profile GetAllAppUserPaginationUseCase is null');
-      }
-    }, error: (dataSourceFailure, reason, error, networkException, stackTrace, exception, extra) {
-      appLog.d('Profile updateUserProfile $reason ');
-    },);
+    await getCurrentUserResult.when(
+      remote: (data, meta) {},
+      localDb: (data, meta) async {
+        if (data.isNotNullOrEmpty) {
+          appLog.d('Profile GetAllAppUserPaginationUseCase is not null');
+          data!.forEach((element) {
+            appLog.d('${element.toMap()}');
+          });
+          final AppUserEntity cacheAppUserEntity = data.last.copyWith(
+            userID: data.last.userID,
+            businessProfile: businessProfileEntity,
+            currentUserStage: stage,
+          );
+          final editUserResult = await serviceLocator<SaveAllAppUserUseCase>()(
+            [cacheAppUserEntity],
+          );
+          editUserResult.when(
+            remote: (data, meta) {
+              appLog.d(
+                  'Update current user with business profile save remote ${data?.last.toMap()}');
+            },
+            localDb: (data, meta) {
+              appLog.d(
+                  'Update current user with business profile save local ${data?.last.toMap()}');
+              if (data != null) {
+                var cachedAppUserEntity = serviceLocator<AppUserEntity>()
+                  ..businessProfile = businessProfileEntity
+                  ..currentUserStage = stage;
+                serviceLocator<UserModelStorageController>()
+                    .setUserModel(cachedAppUserEntity);
+              }
+            },
+            error: (dataSourceFailure, reason, error, networkException,
+                stackTrace, exception, extra) {
+              appLog.d(
+                  'Update current user with business profile exception $error');
+            },
+          );
+        } else {
+          appLog.d('Profile GetAllAppUserPaginationUseCase is null');
+        }
+      },
+      error: (dataSourceFailure, reason, error, networkException, stackTrace,
+          exception, extra) {
+        appLog.d('Profile updateUserProfile $reason ');
+      },
+    );
 
     return;
   }
 
-  FutureOr<void> _saveBusinessType(SaveBusinessType event, Emitter<BusinessProfileState> emit) async {
+  FutureOr<void> _saveBusinessType(
+      SaveBusinessType event, Emitter<BusinessProfileState> emit) async {
     emit(
       SaveBusinessTypeState(
         businessTypeEntity: event.businessTypeEntity,
@@ -149,11 +167,14 @@ class BusinessProfileBloc extends Bloc<BusinessProfileEvent, BusinessProfileStat
     return;
   }
 
-  FutureOr<void> _getBusinessType(GetBusinessType event, Emitter<BusinessProfileState> emit) async {}
+  FutureOr<void> _getBusinessType(
+      GetBusinessType event, Emitter<BusinessProfileState> emit) async {}
 
-  FutureOr<void> _getBusinessProfile(GetBusinessProfile event, Emitter<BusinessProfileState> emit) async {
+  FutureOr<void> _getBusinessProfile(
+      GetBusinessProfile event, Emitter<BusinessProfileState> emit) async {
     try {
-      final DataSourceState<BusinessProfileEntity> result = await serviceLocator<GetBusinessProfileUseCase>()(
+      final DataSourceState<BusinessProfileEntity> result =
+          await serviceLocator<GetBusinessProfileUseCase>()(
         input: event.businessProfileEntity,
         id: event.businessProfileID,
       );
@@ -180,7 +201,8 @@ class BusinessProfileBloc extends Bloc<BusinessProfileEvent, BusinessProfileStat
             ),
           );
         },
-        error: (dataSourceFailure, reason, error, networkException, stackTrace, exception, extra) {
+        error: (dataSourceFailure, reason, error, networkException, stackTrace,
+            exception, extra) {
           appLog.d('Profile bloc edit error $reason');
           emit(
             BusinessProfileExceptionState(
@@ -196,7 +218,8 @@ class BusinessProfileBloc extends Bloc<BusinessProfileEvent, BusinessProfileStat
       appLog.e('Profile bloc get exception $e');
       emit(
         BusinessProfileExceptionState(
-          message: 'Something went wrong during getting your profile details, please try again',
+          message:
+              'Something went wrong during getting your profile details, please try again',
           //exception: e as Exception,
           stackTrace: s,
           businessProfileStatus: BusinessProfileStatus.getBusinessProfile,
@@ -205,9 +228,11 @@ class BusinessProfileBloc extends Bloc<BusinessProfileEvent, BusinessProfileStat
     }
   }
 
-  FutureOr<void> _deleteBusinessProfile(DeleteBusinessProfile event, Emitter<BusinessProfileState> emit) async {
+  FutureOr<void> _deleteBusinessProfile(
+      DeleteBusinessProfile event, Emitter<BusinessProfileState> emit) async {
     try {
-      final DataSourceState<bool> result = await serviceLocator<DeleteBusinessProfileUseCase>()(
+      final DataSourceState<bool> result =
+          await serviceLocator<DeleteBusinessProfileUseCase>()(
         input: event.businessProfileEntity,
         id: event.businessProfileID,
       );
@@ -221,7 +246,8 @@ class BusinessProfileBloc extends Bloc<BusinessProfileEvent, BusinessProfileStat
               businessProfileEntities: event.businessProfileEntities.toList(),
               businessProfileID: event.businessProfileID,
               hasDelete: data ?? false,
-              businessProfileStatus: BusinessProfileStatus.deleteBusinessProfile,
+              businessProfileStatus:
+                  BusinessProfileStatus.deleteBusinessProfile,
             ),
           );
         },
@@ -234,18 +260,21 @@ class BusinessProfileBloc extends Bloc<BusinessProfileEvent, BusinessProfileStat
               businessProfileEntities: event.businessProfileEntities.toList(),
               businessProfileID: event.businessProfileID,
               hasDelete: data ?? false,
-              businessProfileStatus: BusinessProfileStatus.deleteBusinessProfile,
+              businessProfileStatus:
+                  BusinessProfileStatus.deleteBusinessProfile,
             ),
           );
         },
-        error: (dataSourceFailure, reason, error, networkException, stackTrace, exception, extra) {
+        error: (dataSourceFailure, reason, error, networkException, stackTrace,
+            exception, extra) {
           appLog.d('Profile bloc delete error $reason');
           emit(
             BusinessProfileExceptionState(
               message: reason,
               //exception: e as Exception,
               stackTrace: stackTrace,
-              businessProfileStatus: BusinessProfileStatus.deleteBusinessProfile,
+              businessProfileStatus:
+                  BusinessProfileStatus.deleteBusinessProfile,
             ),
           );
         },
@@ -254,7 +283,8 @@ class BusinessProfileBloc extends Bloc<BusinessProfileEvent, BusinessProfileStat
       appLog.e('Profile bloc delete exception $e');
       emit(
         BusinessProfileExceptionState(
-          message: 'Something went wrong during deleting your profile details, please try again',
+          message:
+              'Something went wrong during deleting your profile details, please try again',
           //exception: e as Exception,
           stackTrace: s,
           businessProfileStatus: BusinessProfileStatus.deleteBusinessProfile,
@@ -263,10 +293,13 @@ class BusinessProfileBloc extends Bloc<BusinessProfileEvent, BusinessProfileStat
     }
   }
 
-  FutureOr<void> _getAllBusinessProfile(GetAllBusinessProfile event, Emitter<BusinessProfileState> emit) async {
+  FutureOr<void> _getAllBusinessProfile(
+      GetAllBusinessProfile event, Emitter<BusinessProfileState> emit) async {
     try {
-      emit(const BusinessProfileLoadingState(message: 'Please wait while we are fetching your profile...'));
-      final DataSourceState<List<BusinessProfileEntity>> result = await serviceLocator<GetAllBusinessProfileUseCase>()();
+      emit(const BusinessProfileLoadingState(
+          message: 'Please wait while we are fetching your profile...'));
+      final DataSourceState<List<BusinessProfileEntity>> result =
+          await serviceLocator<GetAllBusinessProfileUseCase>()();
       result.when(
         remote: (data, meta) {
           appLog.d('Profile bloc get all remote');
@@ -275,7 +308,8 @@ class BusinessProfileBloc extends Bloc<BusinessProfileEvent, BusinessProfileStat
               const BusinessProfileEmptyState(
                 message: 'Profile is empty',
                 businessProfileEntities: [],
-                businessProfileStatus: BusinessProfileStatus.getAllBusinessProfile,
+                businessProfileStatus:
+                    BusinessProfileStatus.getAllBusinessProfile,
               ),
             );
           } else {
@@ -293,7 +327,8 @@ class BusinessProfileBloc extends Bloc<BusinessProfileEvent, BusinessProfileStat
               const BusinessProfileEmptyState(
                 message: 'Profile is empty',
                 businessProfileEntities: [],
-                businessProfileStatus: BusinessProfileStatus.getAllBusinessProfile,
+                businessProfileStatus:
+                    BusinessProfileStatus.getAllBusinessProfile,
               ),
             );
           } else {
@@ -304,14 +339,16 @@ class BusinessProfileBloc extends Bloc<BusinessProfileEvent, BusinessProfileStat
             );
           }
         },
-        error: (dataSourceFailure, reason, error, networkException, stackTrace, exception, extra) {
+        error: (dataSourceFailure, reason, error, networkException, stackTrace,
+            exception, extra) {
           appLog.d('Profile bloc get all error $reason');
           emit(
             BusinessProfileExceptionState(
               message: reason,
               //exception: e as Exception,
               stackTrace: stackTrace,
-              businessProfileStatus: BusinessProfileStatus.getAllBusinessProfile,
+              businessProfileStatus:
+                  BusinessProfileStatus.getAllBusinessProfile,
             ),
           );
         },
@@ -320,7 +357,8 @@ class BusinessProfileBloc extends Bloc<BusinessProfileEvent, BusinessProfileStat
       appLog.e('Profile bloc get all $e');
       emit(
         BusinessProfileExceptionState(
-          message: 'Something went wrong during getting your all profiles, please try again',
+          message:
+              'Something went wrong during getting your all profiles, please try again',
           //exception: e as Exception,
           stackTrace: s,
           businessProfileStatus: BusinessProfileStatus.getAllBusinessProfile,
@@ -329,9 +367,11 @@ class BusinessProfileBloc extends Bloc<BusinessProfileEvent, BusinessProfileStat
     }
   }
 
-  FutureOr<void> _deleteAllBusinessProfile(DeleteAllBusinessProfile event, Emitter<BusinessProfileState> emit) async {
+  FutureOr<void> _deleteAllBusinessProfile(DeleteAllBusinessProfile event,
+      Emitter<BusinessProfileState> emit) async {
     try {
-      final DataSourceState<bool> result = await serviceLocator<DeleteAllBusinessProfileUseCase>()();
+      final DataSourceState<bool> result =
+          await serviceLocator<DeleteAllBusinessProfileUseCase>()();
       result.when(
         remote: (data, meta) {
           appLog.d('Profile bloc delete all remote $data');
@@ -351,14 +391,16 @@ class BusinessProfileBloc extends Bloc<BusinessProfileEvent, BusinessProfileStat
             ),
           );
         },
-        error: (dataSourceFailure, reason, error, networkException, stackTrace, exception, extra) {
+        error: (dataSourceFailure, reason, error, networkException, stackTrace,
+            exception, extra) {
           appLog.d('Profile bloc delete all error $reason');
           emit(
             BusinessProfileExceptionState(
               message: reason,
               //exception: e as Exception,
               stackTrace: stackTrace,
-              businessProfileStatus: BusinessProfileStatus.deleteAllBusinessProfile,
+              businessProfileStatus:
+                  BusinessProfileStatus.deleteAllBusinessProfile,
             ),
           );
         },
@@ -367,7 +409,8 @@ class BusinessProfileBloc extends Bloc<BusinessProfileEvent, BusinessProfileStat
       appLog.e('Profile bloc delete all exception $e');
       emit(
         BusinessProfileExceptionState(
-          message: 'Something went wrong during deleting your profile details, please try again',
+          message:
+              'Something went wrong during deleting your profile details, please try again',
           //exception: e as Exception,
           stackTrace: s,
           businessProfileStatus: BusinessProfileStatus.deleteAllBusinessProfile,
@@ -376,7 +419,8 @@ class BusinessProfileBloc extends Bloc<BusinessProfileEvent, BusinessProfileStat
     }
   }
 
-  FutureOr<void> _navigateToAddressPage(NavigateToAddressPage event, Emitter<BusinessProfileState> emit) async {
+  FutureOr<void> _navigateToAddressPage(
+      NavigateToAddressPage event, Emitter<BusinessProfileState> emit) async {
     emit(
       NavigateToAddressPageState(
         businessTypeEntity: event.businessTypeEntity,
@@ -386,9 +430,11 @@ class BusinessProfileBloc extends Bloc<BusinessProfileEvent, BusinessProfileStat
     return;
   }
 
-  FutureOr<void> _getCurrentUserProfile(GetCurrentUserProfile event, Emitter<BusinessProfileState> emit) async{
+  FutureOr<void> _getCurrentUserProfile(
+      GetCurrentUserProfile event, Emitter<BusinessProfileState> emit) async {
     try {
-      final DataSourceState<AppUserEntity?> result = await serviceLocator<GetCurrentAppUserUseCase>()(
+      final DataSourceState<AppUserEntity?> result =
+          await serviceLocator<GetCurrentAppUserUseCase>()(
         input: AppUserEntity(
           userID: event.userID,
           uid: event.userID.toString(),
@@ -409,7 +455,8 @@ class BusinessProfileBloc extends Bloc<BusinessProfileEvent, BusinessProfileStat
             GetCurrentUserProfileState(appUserEntity: data),
           );
         },
-        error: (dataSourceFailure, reason, error, networkException, stackTrace, exception, extra) {
+        error: (dataSourceFailure, reason, error, networkException, stackTrace,
+            exception, extra) {
           appLog.d('Profile bloc getCurrentUser error $reason');
           emit(
             BusinessProfileExceptionState(
@@ -425,7 +472,8 @@ class BusinessProfileBloc extends Bloc<BusinessProfileEvent, BusinessProfileStat
       appLog.e('Profile bloc getCurrentUser exception $e');
       emit(
         BusinessProfileExceptionState(
-          message: 'Something went wrong during getting your user details, please try again',
+          message:
+              'Something went wrong during getting your user details, please try again',
           //exception: e as Exception,
           stackTrace: s,
           businessProfileStatus: BusinessProfileStatus.getCurrentUser,
@@ -434,10 +482,15 @@ class BusinessProfileBloc extends Bloc<BusinessProfileEvent, BusinessProfileStat
     }
   }
 
-  FutureOr<void> _getAllBusinessProfilePagination(GetAllBusinessProfilePagination event, Emitter<BusinessProfileState> emit) async{
+  FutureOr<void> _getAllBusinessProfilePagination(
+      GetAllBusinessProfilePagination event,
+      Emitter<BusinessProfileState> emit) async {
     try {
-      emit(const GetAllBusinessProfilePaginationLoadingState(isLoading: true, message: 'Please wait while we are fetching all profile...'));
-      final DataSourceState<List<BusinessProfileEntity>> result = await serviceLocator<GetAllBusinessProfilePaginationUseCase>()(
+      emit(const GetAllBusinessProfilePaginationLoadingState(
+          isLoading: true,
+          message: 'Please wait while we are fetching all profile...'));
+      final DataSourceState<List<BusinessProfileEntity>> result =
+          await serviceLocator<GetAllBusinessProfilePaginationUseCase>()(
         pageKey: event.pageKey,
         pageSize: event.pageSize,
         searchText: event.searchItem,
@@ -456,8 +509,7 @@ class BusinessProfileBloc extends Bloc<BusinessProfileEvent, BusinessProfileStat
                 businessProfileEntities: [],
               ),
             );
-          }
-          else {
+          } else {
             emit(
               GetAllBusinessProfilePaginationState(
                 businessProfileEntities: data.toList(),
@@ -481,8 +533,7 @@ class BusinessProfileBloc extends Bloc<BusinessProfileEvent, BusinessProfileStat
                 businessProfileEntities: [],
               ),
             );
-          }
-          else {
+          } else {
             emit(
               GetAllBusinessProfilePaginationState(
                 businessProfileEntities: data.toList(),
@@ -497,7 +548,8 @@ class BusinessProfileBloc extends Bloc<BusinessProfileEvent, BusinessProfileStat
             );
           }
         },
-        error: (dataSourceFailure, reason, error, networkException, stackTrace, exception, extra) {
+        error: (dataSourceFailure, reason, error, networkException, stackTrace,
+            exception, extra) {
           appLog.d('Get all profile bloc get all error $reason');
           emit(
             GetAllBusinessProfilePaginationExceptionState(
@@ -512,7 +564,8 @@ class BusinessProfileBloc extends Bloc<BusinessProfileEvent, BusinessProfileStat
       appLog.e('Get all profile bloc get all $e');
       emit(
         GetAllBusinessProfilePaginationExceptionState(
-          message: 'Something went wrong during getting all profile, please try again',
+          message:
+              'Something went wrong during getting all profile, please try again',
           //exception: e as Exception,
           stackTrace: s,
         ),
@@ -520,19 +573,23 @@ class BusinessProfileBloc extends Bloc<BusinessProfileEvent, BusinessProfileStat
     }
   }
 
-  FutureOr<void> _getAllAppUserProfilePagination(GetAllAppUserProfilePagination event, Emitter<BusinessProfileState> emit) async{
+  FutureOr<void> _getAllAppUserProfilePagination(
+      GetAllAppUserProfilePagination event,
+      Emitter<BusinessProfileState> emit) async {
     try {
-      emit(const GetAllAppUserProfileLoadingState(isLoading: true, message: 'Please wait while we are fetching all users...'));
-      final DataSourceState<List<AppUserEntity>> result = await serviceLocator<GetAllAppUserPaginationUseCase>()(
-        pageKey: event.pageKey,
-        pageSize: event.pageSize,
-        searchText: event.searchItem,
-        filtering: event.filtering,
-        sorting: event.sorting,
-        startTime: event.startTime,
-        endTime: event.endTime,
-        entity: event.appUserEntity??serviceLocator<AppUserEntity>()
-      );
+      emit(const GetAllAppUserProfileLoadingState(
+          isLoading: true,
+          message: 'Please wait while we are fetching all users...'));
+      final DataSourceState<List<AppUserEntity>> result =
+          await serviceLocator<GetAllAppUserPaginationUseCase>()(
+              pageKey: event.pageKey,
+              pageSize: event.pageSize,
+              searchText: event.searchItem,
+              filtering: event.filtering,
+              sorting: event.sorting,
+              startTime: event.startTime,
+              endTime: event.endTime,
+              entity: event.appUserEntity ?? serviceLocator<AppUserEntity>());
       await result.when(
         remote: (data, meta) {
           appLog.d('Get all users bloc get all remote');
@@ -542,8 +599,7 @@ class BusinessProfileBloc extends Bloc<BusinessProfileEvent, BusinessProfileStat
                 message: 'All users is empty',
               ),
             );
-          }
-          else {
+          } else {
             emit(
               GetAllAppUserProfilePaginationState(
                 appUserEntities: data.toList(),
@@ -566,8 +622,7 @@ class BusinessProfileBloc extends Bloc<BusinessProfileEvent, BusinessProfileStat
                 message: 'All users is empty',
               ),
             );
-          }
-          else {
+          } else {
             emit(
               GetAllAppUserProfilePaginationState(
                 appUserEntities: data.toList(),
@@ -582,7 +637,8 @@ class BusinessProfileBloc extends Bloc<BusinessProfileEvent, BusinessProfileStat
             );
           }
         },
-        error: (dataSourceFailure, reason, error, networkException, stackTrace, exception, extra) {
+        error: (dataSourceFailure, reason, error, networkException, stackTrace,
+            exception, extra) {
           appLog.d('Get all users bloc get all error $reason');
           emit(
             GetAllAppUserProfileExceptionState(
@@ -597,7 +653,8 @@ class BusinessProfileBloc extends Bloc<BusinessProfileEvent, BusinessProfileStat
       appLog.e('Get all users bloc get all $e');
       emit(
         GetAllAppUserProfileExceptionState(
-          message: 'Something went wrong during getting all users, please try again',
+          message:
+              'Something went wrong during getting all users, please try again',
           //exception: e as Exception,
           stackTrace: s,
         ),

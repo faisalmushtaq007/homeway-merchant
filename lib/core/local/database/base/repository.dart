@@ -82,7 +82,8 @@ abstract class Update<EntityType> extends BaseRepositoryOperation<EntityType> {
 /// and others like a Map<String, dynamic>.
 /// Note: Edit is not part of the repository definition as this would imply
 /// Extending all repositories to have 2 type variables.
-abstract class Edit<Operation, EntityType> extends BaseRepositoryOperation<EntityType> {
+abstract class Edit<Operation, EntityType>
+    extends BaseRepositoryOperation<EntityType> {
   /// Performs some edit operation on a already present entity.
   Future<Either<RepositoryBaseFailure, EntityType>> edit(
     UniqueId id,
@@ -93,9 +94,11 @@ abstract class Edit<Operation, EntityType> extends BaseRepositoryOperation<Entit
 /// A repository with only with the subset of opertions related to reading
 ///
 /// Operations: GetAll and GetById
-abstract class ReadOnlyRepository<EntityType> implements GetAll<EntityType>, GetById<EntityType> {}
+abstract class ReadOnlyRepository<EntityType>
+    implements GetAll<EntityType>, GetById<EntityType> {}
 
-abstract class WriteOnlyRepository<EntityType> implements Add<EntityType>, Delete<EntityType>, Update<EntityType> {}
+abstract class WriteOnlyRepository<EntityType>
+    implements Add<EntityType>, Delete<EntityType>, Update<EntityType> {}
 
 abstract class Repository<EntityType>
     implements
@@ -119,7 +122,8 @@ abstract class Init<EntityType> extends BaseRepositoryOperation<EntityType> {
   Future<Either<RepositoryBaseFailure, void>> init();
 }
 
-abstract class GetCurrentUserTokenByID<EntityType> extends BaseRepositoryOperation<EntityType> {
+abstract class GetCurrentUserTokenByID<EntityType>
+    extends BaseRepositoryOperation<EntityType> {
   /// Returns the object with the given a unique id
   ///
   /// Will return a Failure if no corresponding entity for id is found.
@@ -128,7 +132,8 @@ abstract class GetCurrentUserTokenByID<EntityType> extends BaseRepositoryOperati
   );
 }
 
-abstract class GetCurrentUser<EntityType> extends BaseRepositoryOperation<EntityType> {
+abstract class GetCurrentUser<EntityType>
+    extends BaseRepositoryOperation<EntityType> {
   /// Returns the object without the given a unique id
   ///
   /// Will return a Failure if no corresponding entity for is found.
@@ -140,32 +145,41 @@ abstract class GetCurrentUser<EntityType> extends BaseRepositoryOperation<Entity
   });
 }
 
-abstract class DeleteAll<EntityType> extends BaseRepositoryOperation<EntityType> {
+abstract class DeleteAll<EntityType>
+    extends BaseRepositoryOperation<EntityType> {
   /// Completely remove the entity instance from repository
   Future<Either<RepositoryBaseFailure, bool>> deleteAll();
 }
 
-abstract class DeleteById<EntityType> extends BaseRepositoryOperation<EntityType> {
+abstract class DeleteById<EntityType>
+    extends BaseRepositoryOperation<EntityType> {
   /// Completely remove the entity instance from repository
   Future<Either<RepositoryBaseFailure, bool>> deleteById(UniqueId uniqueId);
 }
 
-abstract class DeleteByIdAndEntity<EntityType> extends BaseRepositoryOperation<EntityType> {
+abstract class DeleteByIdAndEntity<EntityType>
+    extends BaseRepositoryOperation<EntityType> {
   /// Completely remove the entity instance from repository
-  Future<Either<RepositoryBaseFailure, bool>> deleteByIdAndEntity(UniqueId uniqueId, EntityType entity);
+  Future<Either<RepositoryBaseFailure, bool>> deleteByIdAndEntity(
+      UniqueId uniqueId, EntityType entity);
 }
 
-abstract class UpdateByIdAndEntity<EntityType> extends BaseRepositoryOperation<EntityType> {
+abstract class UpdateByIdAndEntity<EntityType>
+    extends BaseRepositoryOperation<EntityType> {
   /// Completely update the entity instance from repository
-  Future<Either<RepositoryBaseFailure, EntityType>> updateByIdAndEntity(UniqueId uniqueId, EntityType entity);
+  Future<Either<RepositoryBaseFailure, EntityType>> updateByIdAndEntity(
+      UniqueId uniqueId, EntityType entity);
 }
 
-abstract class GetByIdAndEntity<EntityType> extends BaseRepositoryOperation<EntityType> {
+abstract class GetByIdAndEntity<EntityType>
+    extends BaseRepositoryOperation<EntityType> {
   /// Completely get the entity instance from repository
-  Future<Either<RepositoryBaseFailure, EntityType>> getByIdAndEntity(UniqueId uniqueId, EntityType entity);
+  Future<Either<RepositoryBaseFailure, EntityType>> getByIdAndEntity(
+      UniqueId uniqueId, EntityType entity);
 }
 
-abstract class FindUserByTokenOrID<EntityType> extends BaseRepositoryOperation<EntityType> {
+abstract class FindUserByTokenOrID<EntityType>
+    extends BaseRepositoryOperation<EntityType> {
   /// Returns the object with the given a unique id
   ///
   /// Will return a Failure if no corresponding entity for id is found.
@@ -175,7 +189,8 @@ abstract class FindUserByTokenOrID<EntityType> extends BaseRepositoryOperation<E
   });
 }
 
-abstract class AddOrUpdateUser<EntityType> extends BaseRepositoryOperation<EntityType> {
+abstract class AddOrUpdateUser<EntityType>
+    extends BaseRepositoryOperation<EntityType> {
   /// Returns the object with the given a model
   ///
   /// Will return a Failure if no corresponding entity for id is found.
@@ -189,17 +204,22 @@ abstract class AddOrUpdateUser<EntityType> extends BaseRepositoryOperation<Entit
 
 // Binding
 abstract class BaseRepositoryBindOperation<T, R> {
-  BindingSourceToDestinationFunc<T, R> binding(List<T> source, List<R> destination);
+  BindingSourceToDestinationFunc<T, R> binding(
+      List<T> source, List<R> destination);
 
-  BindingSourceToDestinationFunc<T, R> unbinding(List<T> source, List<R> destination);
+  BindingSourceToDestinationFunc<T, R> unbinding(
+      List<T> source, List<R> destination);
 }
 
-abstract class BindSourceToDestination<T, R> implements BaseRepositoryBindOperation<T, R> {
+abstract class BindSourceToDestination<T, R>
+    implements BaseRepositoryBindOperation<T, R> {
   @override
-  BindingSourceToDestinationFunc<T, R> binding(List<T> source, List<R> destination);
+  BindingSourceToDestinationFunc<T, R> binding(
+      List<T> source, List<R> destination);
 
   @override
-  BindingSourceToDestinationFunc<T, R> unbinding(List<T> source, List<R> destination);
+  BindingSourceToDestinationFunc<T, R> unbinding(
+      List<T> source, List<R> destination);
 }
 
 // Add all
@@ -207,7 +227,8 @@ abstract class BaseRepositoryAddAllOperation<EntityType> {
   BaseRepositoryAddAllOperation<EntityType> addALL(EntityType entities);
 }
 
-abstract class AddAll<EntityType> implements BaseRepositoryAddAllOperation<EntityType> {
+abstract class AddAll<EntityType>
+    implements BaseRepositoryAddAllOperation<EntityType> {
   @override
   BaseRepositoryAddAllOperation<EntityType> addALL(EntityType entities);
 }
@@ -217,7 +238,8 @@ abstract class BaseRepositoryUpdateAllOperation<EntityType> {
   BaseRepositoryUpdateAllOperation<EntityType> updateALL(EntityType entities);
 }
 
-abstract class UpdateAll<EntityType> implements BaseRepositoryUpdateAllOperation<EntityType> {
+abstract class UpdateAll<EntityType>
+    implements BaseRepositoryUpdateAllOperation<EntityType> {
   @override
   BaseRepositoryUpdateAllOperation<EntityType> updateALL(EntityType entities);
 }
@@ -229,7 +251,8 @@ abstract class Binding<T, R> {
   Future<Either<RepositoryBaseFailure, R>> unbinding(T source, R destination);
 }
 
-abstract class GetAllWithPagination<EntityType> extends BaseRepositoryOperation<EntityType> {
+abstract class GetAllWithPagination<EntityType>
+    extends BaseRepositoryOperation<EntityType> {
   /// Returns a list of all entities in repository
   ///
   /// Will return empty array if no entities found.

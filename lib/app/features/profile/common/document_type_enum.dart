@@ -19,7 +19,8 @@ enum DocumentType {
   ),
   ;
 
-  const DocumentType({required this.documentTypeName, required this.documentTypeID});
+  const DocumentType(
+      {required this.documentTypeName, required this.documentTypeID});
 
   final int documentTypeID;
   final String documentTypeName;

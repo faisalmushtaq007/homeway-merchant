@@ -67,7 +67,9 @@ class _EnhancedFutureBuilderState<T> extends State<EnhancedFutureBuilder<T>> {
           return widget.whenWaiting!;
         }
 
-        if (widget.initialData != null && snapshot.isWaiting && snapshot.data != null) {
+        if (widget.initialData != null &&
+            snapshot.isWaiting &&
+            snapshot.data != null) {
           return widget.whenDone(snapshot.data as T);
         }
 

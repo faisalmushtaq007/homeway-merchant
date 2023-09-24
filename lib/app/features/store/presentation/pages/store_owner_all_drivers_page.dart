@@ -9,7 +9,8 @@ class StoreOwnerAllDrivers extends StatefulWidget {
   final SelectItemUseCase selectItemUseCase;
 
   @override
-  _StoreOwnerAllDriversController createState() => _StoreOwnerAllDriversController();
+  _StoreOwnerAllDriversController createState() =>
+      _StoreOwnerAllDriversController();
 }
 
 class _StoreOwnerAllDriversController extends State<StoreOwnerAllDrivers> {
@@ -17,8 +18,10 @@ class _StoreOwnerAllDriversController extends State<StoreOwnerAllDrivers> {
   late final ScrollController innerScrollController;
   List<StoreOwnDeliveryPartnersInfo> listOfAllDrivers = [];
   List<StoreOwnDeliveryPartnersInfo> listOfAllSelectedDrivers = [];
-  final TextEditingController searchTextEditingController = TextEditingController();
-  WidgetState<StoreOwnDeliveryPartnersInfo> widgetState = const WidgetState<StoreOwnDeliveryPartnersInfo>.none();
+  final TextEditingController searchTextEditingController =
+      TextEditingController();
+  WidgetState<StoreOwnDeliveryPartnersInfo> widgetState =
+      const WidgetState<StoreOwnDeliveryPartnersInfo>.none();
   bool? haveSelectAllMenus = false;
 
   @override
@@ -57,9 +60,11 @@ class _StoreOwnerAllDriversController extends State<StoreOwnerAllDrivers> {
     super.dispose();
   }
 
-  void onSelectionChanged(List<StoreOwnDeliveryPartnersInfo> listOfMenuEntities) {
+  void onSelectionChanged(
+      List<StoreOwnDeliveryPartnersInfo> listOfMenuEntities) {
     setState(() {
-      listOfAllSelectedDrivers = List<StoreOwnDeliveryPartnersInfo>.from(listOfMenuEntities.toList());
+      listOfAllSelectedDrivers =
+          List<StoreOwnDeliveryPartnersInfo>.from(listOfMenuEntities.toList());
     });
   }
 
@@ -99,7 +104,8 @@ class _StoreOwnerAllDriversController extends State<StoreOwnerAllDrivers> {
             case ReturnToStorePageState():
               {
                 if (context.canPop()) {
-                  context.pop(storeState.listOfStoreOwnDeliveryPartners.toList());
+                  context
+                      .pop(storeState.listOfStoreOwnDeliveryPartners.toList());
                 }
               }
             case _:
@@ -113,8 +119,10 @@ class _StoreOwnerAllDriversController extends State<StoreOwnerAllDrivers> {
             switch (state) {
               case GetAllDriverState():
                 {
-                  listOfAllDrivers = List<StoreOwnDeliveryPartnersInfo>.from(state.storeOwnDeliveryPartnerEntities.toList());
-                  widgetState = WidgetState<StoreOwnDeliveryPartnersInfo>.allData(
+                  listOfAllDrivers = List<StoreOwnDeliveryPartnersInfo>.from(
+                      state.storeOwnDeliveryPartnerEntities.toList());
+                  widgetState =
+                      WidgetState<StoreOwnDeliveryPartnersInfo>.allData(
                     context: context,
                   );
                 }
@@ -123,7 +131,8 @@ class _StoreOwnerAllDriversController extends State<StoreOwnerAllDrivers> {
                   if (state.driverStateStage == DriverStateStage.getAllDriver) {
                     listOfAllDrivers = [];
                     listOfAllDrivers.clear();
-                    widgetState = WidgetState<StoreOwnDeliveryPartnersInfo>.empty(
+                    widgetState =
+                        WidgetState<StoreOwnDeliveryPartnersInfo>.empty(
                       context: context,
                       message: state.message,
                     );
@@ -132,7 +141,8 @@ class _StoreOwnerAllDriversController extends State<StoreOwnerAllDrivers> {
               case DriverLoadingState():
                 {
                   if (state.driverStateStage == DriverStateStage.getAllDriver) {
-                    widgetState = WidgetState<StoreOwnDeliveryPartnersInfo>.loading(
+                    widgetState =
+                        WidgetState<StoreOwnDeliveryPartnersInfo>.loading(
                       context: context,
                       isLoading: state.isLoading,
                       message: state.message,
@@ -142,8 +152,12 @@ class _StoreOwnerAllDriversController extends State<StoreOwnerAllDrivers> {
               case DriverExceptionState():
                 {
                   if (state.driverStateStage == DriverStateStage.getAllDriver) {
-                    widgetState = WidgetState<StoreOwnDeliveryPartnersInfo>.error(
-                        context: context, stackTrace: state.stackTrace, reason: state.message, error: state.exception);
+                    widgetState =
+                        WidgetState<StoreOwnDeliveryPartnersInfo>.error(
+                            context: context,
+                            stackTrace: state.stackTrace,
+                            reason: state.message,
+                            error: state.exception);
                   }
                 }
               case _:
@@ -155,14 +169,16 @@ class _StoreOwnerAllDriversController extends State<StoreOwnerAllDrivers> {
       );
 }
 
-class _StoreOwnerAllDriversView extends WidgetView<StoreOwnerAllDrivers, _StoreOwnerAllDriversController> {
+class _StoreOwnerAllDriversView
+    extends WidgetView<StoreOwnerAllDrivers, _StoreOwnerAllDriversController> {
   const _StoreOwnerAllDriversView(super.state);
 
   @override
   Widget build(BuildContext context) {
     final MediaQueryData media = MediaQuery.of(context);
     final double margins = GlobalApp.responsiveInsets(media.size.width);
-    final double topPadding = margins; //media.padding.top + kToolbarHeight + margins; //margins * 1.5;
+    final double topPadding =
+        margins; //media.padding.top + kToolbarHeight + margins; //margins * 1.5;
     final double bottomPadding = margins; //media.padding.bottom + margins;
     final double width = media.size.width;
     final ThemeData theme = Theme.of(context);
@@ -181,7 +197,8 @@ class _StoreOwnerAllDriversView extends WidgetView<StoreOwnerAllDrivers, _StoreO
             automaticallyImplyLeading: true,
             title: Text(
               'All Drivers',
-              textDirection: serviceLocator<LanguageController>().targetTextDirection,
+              textDirection:
+                  serviceLocator<LanguageController>().targetTextDirection,
             ),
             actions: const [
               Padding(
@@ -215,7 +232,8 @@ class _StoreOwnerAllDriversView extends WidgetView<StoreOwnerAllDrivers, _StoreO
                         {
                           context.read<StoreBloc>().add(
                                 ReturnToStorePage(
-                                  listOfStoreOwnDeliveryPartners: state.listOfAllSelectedDrivers.toList(),
+                                  listOfStoreOwnDeliveryPartners:
+                                      state.listOfAllSelectedDrivers.toList(),
                                 ),
                               );
                           return;
@@ -224,8 +242,10 @@ class _StoreOwnerAllDriversView extends WidgetView<StoreOwnerAllDrivers, _StoreO
                         {
                           context.read<StoreBloc>().add(
                                 SelectDriversForStores(
-                                  listOfStoreOwnDeliveryPartners: state.listOfAllDrivers.toList(),
-                                  listOfSelectedStoreOwnDeliveryPartners: state.listOfAllSelectedDrivers.toList(),
+                                  listOfStoreOwnDeliveryPartners:
+                                      state.listOfAllDrivers.toList(),
+                                  listOfSelectedStoreOwnDeliveryPartners:
+                                      state.listOfAllSelectedDrivers.toList(),
                                   selectItemUseCase: widget.selectItemUseCase,
                                 ),
                               );
@@ -267,27 +287,35 @@ class _StoreOwnerAllDriversView extends WidgetView<StoreOwnerAllDrivers, _StoreO
               ),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
-                mainAxisAlignment: state.listOfAllDrivers.isEmpty ? MainAxisAlignment.center : MainAxisAlignment.start,
+                mainAxisAlignment: state.listOfAllDrivers.isEmpty
+                    ? MainAxisAlignment.center
+                    : MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.stretch,
-                textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                textDirection:
+                    serviceLocator<LanguageController>().targetTextDirection,
                 children: [
                   AnimatedCrossFade(
                     firstChild: Column(
                       mainAxisSize: MainAxisSize.min,
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.stretch,
-                      textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                      textDirection: serviceLocator<LanguageController>()
+                          .targetTextDirection,
                       children: [
-                        const AnimatedGap(6, duration: Duration(milliseconds: 100)),
+                        const AnimatedGap(6,
+                            duration: Duration(milliseconds: 100)),
                         IntrinsicHeight(
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                            textDirection: serviceLocator<LanguageController>()
+                                .targetTextDirection,
                             children: [
                               Expanded(
                                 child: AppTextFieldWidget(
                                   controller: state.searchTextEditingController,
-                                  textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                  textDirection:
+                                      serviceLocator<LanguageController>()
+                                          .targetTextDirection,
                                   textInputAction: TextInputAction.done,
                                   keyboardType: TextInputType.text,
                                   decoration: InputDecoration(
@@ -300,21 +328,27 @@ class _StoreOwnerAllDriversView extends WidgetView<StoreOwnerAllDrivers, _StoreO
                                   ),
                                 ),
                               ),
-                              const AnimatedGap(12, duration: Duration(milliseconds: 500)),
+                              const AnimatedGap(12,
+                                  duration: Duration(milliseconds: 500)),
                               SizedBox(
                                 height: 52,
                                 child: OutlinedButton(
                                   onPressed: () {},
                                   style: OutlinedButton.styleFrom(
                                     shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadiusDirectional.circular(10),
+                                      borderRadius:
+                                          BorderRadiusDirectional.circular(10),
                                     ),
-                                    side: const BorderSide(color: Color.fromRGBO(238, 238, 238, 1)),
+                                    side: const BorderSide(
+                                        color:
+                                            Color.fromRGBO(238, 238, 238, 1)),
                                     backgroundColor: Colors.white,
                                   ),
                                   child: Icon(
                                     Icons.filter_list,
-                                    textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                    textDirection:
+                                        serviceLocator<LanguageController>()
+                                            .targetTextDirection,
                                     color: context.primaryColor,
                                   ),
                                 ),
@@ -322,42 +356,60 @@ class _StoreOwnerAllDriversView extends WidgetView<StoreOwnerAllDrivers, _StoreO
                             ],
                           ),
                         ),
-                        const AnimatedGap(6, duration: Duration(milliseconds: 100)),
+                        const AnimatedGap(6,
+                            duration: Duration(milliseconds: 100)),
                         CheckboxListTile(
                           value: state.haveSelectAllMenus,
                           onChanged: (value) {
                             state.selectAllDrivers(isSelectAllDrivers: value);
                           },
                           tristate: true,
-                          visualDensity: const VisualDensity(horizontal: -4, vertical: -4),
-                          contentPadding: const EdgeInsetsDirectional.symmetric(horizontal: 0),
+                          visualDensity:
+                              const VisualDensity(horizontal: -4, vertical: -4),
+                          contentPadding: const EdgeInsetsDirectional.symmetric(
+                              horizontal: 0),
                           //dense: true,
                           title: IntrinsicHeight(
                             child: Row(
-                              textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                              textDirection:
+                                  serviceLocator<LanguageController>()
+                                      .targetTextDirection,
                               children: [
                                 Text(
                                   'Your Drivers',
-                                  textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                  textDirection:
+                                      serviceLocator<LanguageController>()
+                                          .targetTextDirection,
                                 ),
-                                const AnimatedGap(3, duration: Duration(milliseconds: 100)),
+                                const AnimatedGap(3,
+                                    duration: Duration(milliseconds: 100)),
                                 Card(
                                   shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadiusDirectional.circular(20),
+                                    borderRadius:
+                                        BorderRadiusDirectional.circular(20),
                                   ),
                                   child: Padding(
-                                    padding: const EdgeInsetsDirectional.only(start: 12.0, end: 12, top: 4, bottom: 4),
+                                    padding: const EdgeInsetsDirectional.only(
+                                        start: 12.0,
+                                        end: 12,
+                                        top: 4,
+                                        bottom: 4),
                                     child: Text(
                                       '${state.listOfAllDrivers.length}',
-                                      textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                      textDirection:
+                                          serviceLocator<LanguageController>()
+                                              .targetTextDirection,
                                     ),
                                   ),
                                 ),
-                                const AnimatedGap(12, duration: Duration(milliseconds: 100)),
+                                const AnimatedGap(12,
+                                    duration: Duration(milliseconds: 100)),
                                 const Spacer(flex: 2),
                                 Text(
                                   'Select All',
-                                  textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                  textDirection:
+                                      serviceLocator<LanguageController>()
+                                          .targetTextDirection,
                                 ),
                               ],
                             ),
@@ -395,12 +447,15 @@ class _StoreOwnerAllDriversView extends WidgetView<StoreOwnerAllDrivers, _StoreO
                           minLeadingWidth: 0,
                           contentPadding: EdgeInsetsDirectional.symmetric(horizontal: 2),
                         ),*/
-                        const AnimatedGap(6, duration: Duration(milliseconds: 100)),
+                        const AnimatedGap(6,
+                            duration: Duration(milliseconds: 100)),
                       ],
                     ),
                     secondChild: const Offstage(),
                     duration: const Duration(milliseconds: 500),
-                    crossFadeState: (state.listOfAllDrivers.isNotEmpty) ? CrossFadeState.showFirst : CrossFadeState.showSecond,
+                    crossFadeState: (state.listOfAllDrivers.isNotEmpty)
+                        ? CrossFadeState.showFirst
+                        : CrossFadeState.showSecond,
                   ),
                   Expanded(
                     flex: 2,
@@ -410,7 +465,8 @@ class _StoreOwnerAllDriversView extends WidgetView<StoreOwnerAllDrivers, _StoreO
                         child: Text(
                           'No driver available or added by you',
                           style: context.labelLarge,
-                          textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                          textDirection: serviceLocator<LanguageController>()
+                              .targetTextDirection,
                         ).translate(),
                       ),
                       loading: (context, child, message, isLoading) {
@@ -428,18 +484,27 @@ class _StoreOwnerAllDriversView extends WidgetView<StoreOwnerAllDrivers, _StoreO
                           itemBuilder: (context, index) {
                             return DriverCard(
                               key: ValueKey(index),
-                              storeOwnDeliveryPartnerEntity: state.listOfAllDrivers[index],
-                              listOfAllStoreOwnDeliveryPartnerEntities: state.listOfAllDrivers.toList(),
+                              storeOwnDeliveryPartnerEntity:
+                                  state.listOfAllDrivers[index],
+                              listOfAllStoreOwnDeliveryPartnerEntities:
+                                  state.listOfAllDrivers.toList(),
                               currentIndex: index,
-                              onSelectionChanged: (List<StoreOwnDeliveryPartnersInfo> listOfAllStoreOwnDeliveryPartnerEntities) {
-                                state.onSelectionChanged(listOfAllStoreOwnDeliveryPartnerEntities.toList());
+                              onSelectionChanged: (List<
+                                      StoreOwnDeliveryPartnersInfo>
+                                  listOfAllStoreOwnDeliveryPartnerEntities) {
+                                state.onSelectionChanged(
+                                    listOfAllStoreOwnDeliveryPartnerEntities
+                                        .toList());
                               },
-                              listOfAllSelectedStoreOwnDeliveryPartnerEntities: state.listOfAllSelectedDrivers.toList(),
+                              listOfAllSelectedStoreOwnDeliveryPartnerEntities:
+                                  state.listOfAllSelectedDrivers.toList(),
                             );
                           },
                           itemCount: state.listOfAllDrivers.length,
                           separatorBuilder: (context, index) {
-                            return const Divider(thickness: 0.25, color: Color.fromRGBO(127, 129, 132, 1));
+                            return const Divider(
+                                thickness: 0.25,
+                                color: Color.fromRGBO(127, 129, 132, 1));
                           },
                         );
                       },
@@ -448,7 +513,8 @@ class _StoreOwnerAllDriversView extends WidgetView<StoreOwnerAllDrivers, _StoreO
                           child: Text(
                             'No drivers available or added by you',
                             style: context.labelLarge,
-                            textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                            textDirection: serviceLocator<LanguageController>()
+                                .targetTextDirection,
                           ).translate(),
                         );
                       },
@@ -474,7 +540,8 @@ class _StoreOwnerAllDriversView extends WidgetView<StoreOwnerAllDrivers, _StoreO
                           },
                           child: Text(
                             'Add New Driver',
-                            textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                            textDirection: serviceLocator<LanguageController>()
+                                .targetTextDirection,
                           ).translate(),
                         ),
                       ),

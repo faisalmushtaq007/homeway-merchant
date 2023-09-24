@@ -17,7 +17,8 @@ class SetAddonsPriceWidget extends StatefulWidget {
 }
 
 class _SetAddonsPriceWidgetState extends State<SetAddonsPriceWidget> {
-  final TextEditingController maximumRetailPriceOfMenuTextEditingController = TextEditingController(text: '00.00');
+  final TextEditingController maximumRetailPriceOfMenuTextEditingController =
+      TextEditingController(text: '00.00');
   String portionName = '';
   String sellingMaxRetailPrice = '00.00';
   final formKey = GlobalKey<FormState>();
@@ -26,8 +27,10 @@ class _SetAddonsPriceWidgetState extends State<SetAddonsPriceWidget> {
   void initState() {
     super.initState();
     portionName = '${widget.addons.title ?? ''} ${widget.addons.unit ?? ''}';
-    maximumRetailPriceOfMenuTextEditingController.text = widget.addons.defaultPrice.toString() ?? '00.00';
-    sellingMaxRetailPrice = maximumRetailPriceOfMenuTextEditingController.value.text.trim();
+    maximumRetailPriceOfMenuTextEditingController.text =
+        widget.addons.defaultPrice.toString() ?? '00.00';
+    sellingMaxRetailPrice =
+        maximumRetailPriceOfMenuTextEditingController.value.text.trim();
   }
 
   @override
@@ -54,10 +57,12 @@ class _SetAddonsPriceWidgetState extends State<SetAddonsPriceWidget> {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.stretch,
-            textDirection: serviceLocator<LanguageController>().targetTextDirection,
+            textDirection:
+                serviceLocator<LanguageController>().targetTextDirection,
             children: [
               Wrap(
-                textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                textDirection:
+                    serviceLocator<LanguageController>().targetTextDirection,
                 alignment: WrapAlignment.spaceBetween,
                 crossAxisAlignment: WrapCrossAlignment.center,
                 children: [
@@ -67,7 +72,8 @@ class _SetAddonsPriceWidgetState extends State<SetAddonsPriceWidget> {
                       fontWeight: FontWeight.w600,
                       color: Color.fromRGBO(42, 45, 50, 1.0),
                     ),
-                    textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                    textDirection: serviceLocator<LanguageController>()
+                        .targetTextDirection,
                   ).translate(),
                   /*Directionality(
                     textDirection: serviceLocator<LanguageController>().targetTextDirection,
@@ -90,7 +96,8 @@ class _SetAddonsPriceWidgetState extends State<SetAddonsPriceWidget> {
               const AnimatedGap(12, duration: Duration(milliseconds: 500)),
               AppTextFieldWidget(
                 controller: maximumRetailPriceOfMenuTextEditingController,
-                textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                textDirection:
+                    serviceLocator<LanguageController>().targetTextDirection,
                 textInputAction: TextInputAction.done,
                 inputFormatters: [
                   FilteringTextInputFormatter.allow(
@@ -120,7 +127,10 @@ class _SetAddonsPriceWidgetState extends State<SetAddonsPriceWidget> {
                   setState(() {});
                 },
                 onSaved: (newValue) {
-                  setAddonsMaxRetailPriceFunction(context, maximumRetailPriceOfMenuTextEditingController.value.text.trim());
+                  setAddonsMaxRetailPriceFunction(
+                      context,
+                      maximumRetailPriceOfMenuTextEditingController.value.text
+                          .trim());
                   return;
                 },
               ),
@@ -138,9 +148,13 @@ class _SetAddonsPriceWidgetState extends State<SetAddonsPriceWidget> {
   void setAddonsMaxRetailPriceFunction(BuildContext context, String newValue) {
     debugPrint('Addons setMaxRetailPriceFunction ${newValue}');
     widget.addons.defaultPrice = double.tryParse(newValue) ?? 0.0;
-    widget.listOfAddons[widget.currentIndex].defaultPrice = double.tryParse(newValue) ?? 0.0;
-    serviceLocator<MenuEntity>().addons[widget.currentIndex].defaultPrice =
-        double.tryParse(maximumRetailPriceOfMenuTextEditingController.value.text.trim()) ?? 0.0;
+    widget.listOfAddons[widget.currentIndex].defaultPrice =
+        double.tryParse(newValue) ?? 0.0;
+    serviceLocator<MenuEntity>()
+        .addons[widget.currentIndex]
+        .defaultPrice = double.tryParse(
+            maximumRetailPriceOfMenuTextEditingController.value.text.trim()) ??
+        0.0;
     context.read<MenuBloc>().add(
           PushMenuEntityData(
             menuEntity: serviceLocator<MenuEntity>(),

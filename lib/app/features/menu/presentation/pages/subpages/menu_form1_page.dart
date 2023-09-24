@@ -90,16 +90,17 @@ class _MenuForm1PageState extends State<MenuForm1Page>
     if (subCategory != null) {
       selectedSubCategory = subCategory;
       menuSubCategoryTextEditingController.text = subCategory.title ?? '';
-      final copyCategory=selectedCategory?.copyWith(subCategory: List<Category>.from([subCategory]));
+      final copyCategory = selectedCategory?.copyWith(
+          subCategory: List<Category>.from([subCategory]));
       serviceLocator<MenuEntity>().menuCategories = [copyCategory!];
     }
     context.read<MenuBloc>().add(
-      PushMenuEntityData(
-        menuEntity: serviceLocator<MenuEntity>(),
-        menuFormStage: MenuFormStage.form1,
-        menuEntityStatus: MenuEntityStatus.push,
-      ),
-    );
+          PushMenuEntityData(
+            menuEntity: serviceLocator<MenuEntity>(),
+            menuFormStage: MenuFormStage.form1,
+            menuEntityStatus: MenuEntityStatus.push,
+          ),
+        );
     return;
   }
 
@@ -144,8 +145,11 @@ class _MenuForm1PageState extends State<MenuForm1Page>
                     onPressed: () async {
                       //await selectMenuCategory(context);
                       final result = await context.push<List<Category?>>(
-                          Routes.MAIN_CATEGORY_PAGE,);
-                      if (result != null && result[0]!=null && result[1]!=null) {
+                        Routes.MAIN_CATEGORY_PAGE,
+                      );
+                      if (result != null &&
+                          result[0] != null &&
+                          result[1] != null) {
                         updateCategoryAndSubCategory(result[0]!, result[1]);
                       }
                       return;
@@ -165,7 +169,9 @@ class _MenuForm1PageState extends State<MenuForm1Page>
                   //await selectMenuCategory(context);
                   final result = await context
                       .push<List<Category?>>(Routes.MAIN_CATEGORY_PAGE);
-                  if (result != null && result[0]!=null && result[1]!=null) {
+                  if (result != null &&
+                      result[0] != null &&
+                      result[1] != null) {
                     updateCategoryAndSubCategory(result[0]!, result[1]);
                   }
                   return;
@@ -192,7 +198,9 @@ class _MenuForm1PageState extends State<MenuForm1Page>
                       //await selectMenuCategory(context);
                       final result = await context
                           .push<List<Category?>>(Routes.MAIN_CATEGORY_PAGE);
-                      if (result != null && result[0]!=null && result[1]!=null) {
+                      if (result != null &&
+                          result[0] != null &&
+                          result[1] != null) {
                         //updateCategoryAndSubCategory(result[0]!, result[1]);
                       }
                       return;
@@ -212,7 +220,9 @@ class _MenuForm1PageState extends State<MenuForm1Page>
                   //await selectMenuCategory(context);
                   final result = await context
                       .push<List<Category?>>(Routes.MAIN_CATEGORY_PAGE);
-                  if (result != null && result[0]!=null && result[1]!=null) {
+                  if (result != null &&
+                      result[0] != null &&
+                      result[1] != null) {
                     //updateCategoryAndSubCategory(result[0]!, result[1]);
                   }
                   return;
@@ -228,7 +238,10 @@ class _MenuForm1PageState extends State<MenuForm1Page>
                 onFieldSubmitted: (_) => fieldFocusChange(
                     context, menuForm1FocusList[1], menuForm1FocusList[2]),
                 keyboardType: TextInputType.name,
-                inputFormatters: [FilteringTextInputFormatter.allow(RegExp('[a-z A-Z ]')),FilteringTextInputFormatter.deny('  ')],
+                inputFormatters: [
+                  FilteringTextInputFormatter.allow(RegExp('[a-z A-Z ]')),
+                  FilteringTextInputFormatter.deny('  ')
+                ],
                 decoration: InputDecoration(
                   labelText: 'Menu name',
                   hintText: 'Enter your menu name',

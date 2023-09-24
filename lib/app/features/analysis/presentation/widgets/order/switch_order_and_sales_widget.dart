@@ -29,11 +29,14 @@ class SwitchOrderAndSalesWidget extends StatelessWidget {
             child: Text(
               key: const Key('switch-left-text'),
               leftLabel,
-              textDirection: serviceLocator<LanguageController>().targetTextDirection,
+              textDirection:
+                  serviceLocator<LanguageController>().targetTextDirection,
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
               softWrap: true,
-              style: context.bodyMedium!.copyWith(fontWeight: FontWeight.w600,),
+              style: context.bodyMedium!.copyWith(
+                fontWeight: FontWeight.w600,
+              ),
             ).translate(),
           ),
           Switch(
@@ -46,11 +49,14 @@ class SwitchOrderAndSalesWidget extends StatelessWidget {
             child: Text(
               key: const Key('switch-right-text'),
               rightLabel,
-              textDirection: serviceLocator<LanguageController>().targetTextDirection,
+              textDirection:
+                  serviceLocator<LanguageController>().targetTextDirection,
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
               softWrap: true,
-              style: context.bodyMedium!.copyWith(fontWeight: FontWeight.w600,),
+              style: context.bodyMedium!.copyWith(
+                fontWeight: FontWeight.w600,
+              ),
             ).translate(),
           ),
         ],

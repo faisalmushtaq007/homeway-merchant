@@ -19,7 +19,8 @@ class DrawerEntity with AppEquatable {
   }) {
     if (hasExpanded) {
       assert(controller != null, 'ExpansionTileController should not be null');
-      assert(expandedCrossAxisAlignment != null, 'ExpandedCrossAxisAlignment should not be null');
+      assert(expandedCrossAxisAlignment != null,
+          'ExpandedCrossAxisAlignment should not be null');
     }
   }
 
@@ -103,7 +104,8 @@ class DrawerEntity with AppEquatable {
       hasOpened: hasOpened ?? this.hasOpened,
       leading: leading ?? this.leading,
       controller: controller ?? this.controller,
-      expandedCrossAxisAlignment: expandedCrossAxisAlignment ?? this.expandedCrossAxisAlignment,
+      expandedCrossAxisAlignment:
+          expandedCrossAxisAlignment ?? this.expandedCrossAxisAlignment,
     );
   }
 }

@@ -13,10 +13,12 @@ class BindMenuWithStoreGreetingPage extends StatefulWidget {
   final String message;
   final bool isRemoved;
   @override
-  _BindMenuWithStoreGreetingPageController createState() => _BindMenuWithStoreGreetingPageController();
+  _BindMenuWithStoreGreetingPageController createState() =>
+      _BindMenuWithStoreGreetingPageController();
 }
 
-class _BindMenuWithStoreGreetingPageController extends State<BindMenuWithStoreGreetingPage> {
+class _BindMenuWithStoreGreetingPageController
+    extends State<BindMenuWithStoreGreetingPage> {
   late final ScrollController scrollController;
   @override
   void initState() {
@@ -38,17 +40,20 @@ class _BindMenuWithStoreGreetingPageController extends State<BindMenuWithStoreGr
   }
 
   @override
-  Widget build(BuildContext context) => _BindMenuWithStoreGreetingPageView(this);
+  Widget build(BuildContext context) =>
+      _BindMenuWithStoreGreetingPageView(this);
 }
 
-class _BindMenuWithStoreGreetingPageView extends WidgetView<BindMenuWithStoreGreetingPage, _BindMenuWithStoreGreetingPageController> {
+class _BindMenuWithStoreGreetingPageView extends WidgetView<
+    BindMenuWithStoreGreetingPage, _BindMenuWithStoreGreetingPageController> {
   const _BindMenuWithStoreGreetingPageView(super.state);
 
   @override
   Widget build(BuildContext context) {
     final MediaQueryData media = MediaQuery.of(context);
     final double margins = GlobalApp.responsiveInsets(media.size.width);
-    final double topPadding = margins; //media.padding.top + kToolbarHeight + margins; //margins * 1.5;
+    final double topPadding =
+        margins; //media.padding.top + kToolbarHeight + margins; //margins * 1.5;
     final double bottomPadding = media.padding.bottom + margins;
     final double width = media.size.width;
     final ThemeData theme = Theme.of(context);
@@ -109,7 +114,9 @@ class _BindMenuWithStoreGreetingPageView extends WidgetView<BindMenuWithStoreGre
                           Center(
                             child: Text(
                               'Hurray!',
-                              textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                              textDirection:
+                                  serviceLocator<LanguageController>()
+                                      .targetTextDirection,
                               textAlign: TextAlign.center,
                               style: context.headlineMedium!.copyWith(
                                 color: const Color.fromRGBO(69, 201, 125, 1),
@@ -129,7 +136,9 @@ class _BindMenuWithStoreGreetingPageView extends WidgetView<BindMenuWithStoreGre
                               children: [
                                 Text(
                                   '${widget.menuEntities.length} Menus are successfully ${widget.isRemoved ? 'removed' : 'listed'} ${widget.isRemoved ? 'from' : 'with'} ${widget.storeEntities.length} stores',
-                                  textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                  textDirection:
+                                      serviceLocator<LanguageController>()
+                                          .targetTextDirection,
                                   textAlign: TextAlign.center,
                                   style: context.titleLarge!.copyWith(
                                     fontSize: 20,
@@ -149,12 +158,15 @@ class _BindMenuWithStoreGreetingPageView extends WidgetView<BindMenuWithStoreGre
                         ],
                       ),
                       PositionedDirectional(
-                        bottom: kBottomNavigationBarHeight + bottomPadding + margins * 6.5,
+                        bottom: kBottomNavigationBarHeight +
+                            bottomPadding +
+                            margins * 6.5,
                         start: 0,
                         end: 0,
                         child: Center(
                           child: Wrap(
-                            textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                            textDirection: serviceLocator<LanguageController>()
+                                .targetTextDirection,
                             children: [
                               Icon(Icons.share),
                               const SizedBox(
@@ -162,7 +174,9 @@ class _BindMenuWithStoreGreetingPageView extends WidgetView<BindMenuWithStoreGre
                               ),
                               Text(
                                 'Share your store on social media',
-                                textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                textDirection:
+                                    serviceLocator<LanguageController>()
+                                        .targetTextDirection,
                                 textAlign: TextAlign.center,
                                 style: context.titleMedium!.copyWith(
                                   fontSize: 18,
@@ -174,7 +188,9 @@ class _BindMenuWithStoreGreetingPageView extends WidgetView<BindMenuWithStoreGre
                         ),
                       ),
                       PositionedDirectional(
-                        bottom: kBottomNavigationBarHeight + bottomPadding - margins,
+                        bottom: kBottomNavigationBarHeight +
+                            bottomPadding -
+                            margins,
                         start: 0,
                         end: 0,
                         child: ElevatedButton(
@@ -186,11 +202,14 @@ class _BindMenuWithStoreGreetingPageView extends WidgetView<BindMenuWithStoreGre
                           ),
                           child: Text(
                             'Dashboard',
-                            style: TextStyle(color: Color.fromRGBO(42, 45, 50, 1)),
-                            textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                            style:
+                                TextStyle(color: Color.fromRGBO(42, 45, 50, 1)),
+                            textDirection: serviceLocator<LanguageController>()
+                                .targetTextDirection,
                           ).translate(),
                           onPressed: () {
-                            context.pushReplacement(Routes.PRIMARY_DASHBOARD_PAGE);
+                            context
+                                .pushReplacement(Routes.PRIMARY_DASHBOARD_PAGE);
                             return;
                           },
                         ),
@@ -208,8 +227,10 @@ class _BindMenuWithStoreGreetingPageView extends WidgetView<BindMenuWithStoreGre
                           ),
                           child: Text(
                             'All Menus',
-                            style: TextStyle(color: Color.fromRGBO(42, 45, 50, 1)),
-                            textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                            style:
+                                TextStyle(color: Color.fromRGBO(42, 45, 50, 1)),
+                            textDirection: serviceLocator<LanguageController>()
+                                .targetTextDirection,
                           ).translate(),
                           onPressed: () {
                             context.pushReplacement(Routes.ALL_MENU_PAGE);
@@ -224,7 +245,8 @@ class _BindMenuWithStoreGreetingPageView extends WidgetView<BindMenuWithStoreGre
                         child: ElevatedButton(
                           child: Text(
                             'Add New Menu',
-                            textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                            textDirection: serviceLocator<LanguageController>()
+                                .targetTextDirection,
                           ).translate(),
                           onPressed: () async {
                             context.pushReplacement(

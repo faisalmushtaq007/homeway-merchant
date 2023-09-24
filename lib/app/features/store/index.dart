@@ -58,7 +58,8 @@ import 'package:homemakers_merchant/config/translation/widgets/language_selectio
 import 'package:homemakers_merchant/core/common/entity/image_entity.dart';
 import 'package:homemakers_merchant/core/common/entity/ratingAndReviewEntity.dart';
 import 'package:homemakers_merchant/core/common/enum/generic_enum.dart';
-import 'package:homemakers_merchant/core/common/enum/store_enum.dart' as storeEnum;
+import 'package:homemakers_merchant/core/common/enum/store_enum.dart'
+    as storeEnum;
 import 'package:homemakers_merchant/core/constants/global_app_constants.dart';
 import 'package:homemakers_merchant/core/constants/global_app_constants.dart';
 import 'package:homemakers_merchant/core/constants/global_app_constants.dart';

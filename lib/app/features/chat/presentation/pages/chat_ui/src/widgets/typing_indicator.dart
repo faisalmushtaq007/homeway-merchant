@@ -28,7 +28,8 @@ class TypingIndicator extends StatefulWidget {
   State<TypingIndicator> createState() => _TypingIndicatorState();
 }
 
-class _TypingIndicatorState extends State<TypingIndicator> with TickerProviderStateMixin {
+class _TypingIndicatorState extends State<TypingIndicator>
+    with TickerProviderStateMixin {
   late double stackingWidth;
   late AnimationController _appearanceController;
   late AnimationController _animatedCirclesController;
@@ -139,7 +140,9 @@ class _TypingIndicatorState extends State<TypingIndicator> with TickerProviderSt
           child: child,
         ),
         child: Row(
-          mainAxisAlignment: widget.bubbleAlignment == BubbleRtlAlignment.right ? MainAxisAlignment.start : MainAxisAlignment.end,
+          mainAxisAlignment: widget.bubbleAlignment == BubbleRtlAlignment.right
+              ? MainAxisAlignment.start
+              : MainAxisAlignment.end,
           children: <Widget>[
             widget.bubbleAlignment == BubbleRtlAlignment.left
                 ? Container(
@@ -152,24 +155,41 @@ class _TypingIndicatorState extends State<TypingIndicator> with TickerProviderSt
                   )
                 : const SizedBox(),
             Container(
-              margin: widget.bubbleAlignment == BubbleRtlAlignment.right ? const EdgeInsets.fromLTRB(24, 24, 0, 24) : const EdgeInsets.fromLTRB(0, 24, 24, 24),
+              margin: widget.bubbleAlignment == BubbleRtlAlignment.right
+                  ? const EdgeInsets.fromLTRB(24, 24, 0, 24)
+                  : const EdgeInsets.fromLTRB(0, 24, 24, 24),
               decoration: BoxDecoration(
-                borderRadius: InheritedChatTheme.of(context).theme.typingIndicatorTheme.bubbleBorder,
-                color: InheritedChatTheme.of(context).theme.typingIndicatorTheme.bubbleColor,
+                borderRadius: InheritedChatTheme.of(context)
+                    .theme
+                    .typingIndicatorTheme
+                    .bubbleBorder,
+                color: InheritedChatTheme.of(context)
+                    .theme
+                    .typingIndicatorTheme
+                    .bubbleColor,
               ),
               child: Wrap(
                 spacing: 3.0,
                 children: <Widget>[
                   AnimatedCircles(
-                    circlesColor: InheritedChatTheme.of(context).theme.typingIndicatorTheme.animatedCirclesColor,
+                    circlesColor: InheritedChatTheme.of(context)
+                        .theme
+                        .typingIndicatorTheme
+                        .animatedCirclesColor,
                     animationOffset: _firstCircleOffsetAnimation,
                   ),
                   AnimatedCircles(
-                    circlesColor: InheritedChatTheme.of(context).theme.typingIndicatorTheme.animatedCirclesColor,
+                    circlesColor: InheritedChatTheme.of(context)
+                        .theme
+                        .typingIndicatorTheme
+                        .animatedCirclesColor,
                     animationOffset: _secondCircleOffsetAnimation,
                   ),
                   AnimatedCircles(
-                    circlesColor: InheritedChatTheme.of(context).theme.typingIndicatorTheme.animatedCirclesColor,
+                    circlesColor: InheritedChatTheme.of(context)
+                        .theme
+                        .typingIndicatorTheme
+                        .animatedCirclesColor,
                     animationOffset: _thirdCircleOffsetAnimation,
                   ),
                 ],
@@ -237,8 +257,12 @@ class TypingWidget extends StatelessWidget {
       return SizedBox(
         child: Text(
           _multiUserTextBuilder(widget.options.typingUsers),
-          style: InheritedChatTheme.of(context).theme.typingIndicatorTheme.multipleUserTextStyle,
-          textDirection: serviceLocator<LanguageController>().targetTextDirection,
+          style: InheritedChatTheme.of(context)
+              .theme
+              .typingIndicatorTheme
+              .multipleUserTextStyle,
+          textDirection:
+              serviceLocator<LanguageController>().targetTextDirection,
         ),
       );
     } else if (mode == TypingIndicatorMode.avatar) {
@@ -262,8 +286,12 @@ class TypingWidget extends StatelessWidget {
           const SizedBox(width: 10),
           Text(
             _multiUserTextBuilder(widget.options.typingUsers),
-            style: InheritedChatTheme.of(context).theme.typingIndicatorTheme.multipleUserTextStyle,
-            textDirection: serviceLocator<LanguageController>().targetTextDirection,
+            style: InheritedChatTheme.of(context)
+                .theme
+                .typingIndicatorTheme
+                .multipleUserTextStyle,
+            textDirection:
+                serviceLocator<LanguageController>().targetTextDirection,
           ),
         ],
       );
@@ -314,15 +342,22 @@ class AvatarHandler extends StatelessWidget {
               left: 32,
               child: CircleAvatar(
                 radius: 13,
-                backgroundColor: InheritedChatTheme.of(context).theme.typingIndicatorTheme.countAvatarColor,
+                backgroundColor: InheritedChatTheme.of(context)
+                    .theme
+                    .typingIndicatorTheme
+                    .countAvatarColor,
                 child: Text(
                   '${author.length - 2}',
                   style: TextStyle(
-                    color: InheritedChatTheme.of(context).theme.typingIndicatorTheme.countTextColor,
+                    color: InheritedChatTheme.of(context)
+                        .theme
+                        .typingIndicatorTheme
+                        .countTextColor,
                   ),
                   textAlign: TextAlign.center,
                   textScaleFactor: 0.7,
-                  textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                  textDirection:
+                      serviceLocator<LanguageController>().targetTextDirection,
                 ),
               ),
             ),
@@ -354,7 +389,9 @@ class TypingAvatar extends StatelessWidget {
     final initials = getUserInitials(author);
 
     return CircleAvatar(
-      backgroundColor: hasImage ? InheritedChatTheme.of(context).theme.userAvatarImageBackgroundColor : color,
+      backgroundColor: hasImage
+          ? InheritedChatTheme.of(context).theme.userAvatarImageBackgroundColor
+          : color,
       backgroundImage: hasImage ? NetworkImage(author.imageUrl!) : null,
       radius: 13,
       child: !hasImage
@@ -362,7 +399,8 @@ class TypingAvatar extends StatelessWidget {
               initials,
               style: InheritedChatTheme.of(context).theme.userAvatarTextStyle,
               textScaleFactor: 0.7,
-              textDirection: serviceLocator<LanguageController>().targetTextDirection,
+              textDirection:
+                  serviceLocator<LanguageController>().targetTextDirection,
             )
           : null,
     );
@@ -383,8 +421,14 @@ class AnimatedCircles extends StatelessWidget {
   Widget build(BuildContext context) => SlideTransition(
         position: animationOffset,
         child: Container(
-          height: InheritedChatTheme.of(context).theme.typingIndicatorTheme.animatedCircleSize,
-          width: InheritedChatTheme.of(context).theme.typingIndicatorTheme.animatedCircleSize,
+          height: InheritedChatTheme.of(context)
+              .theme
+              .typingIndicatorTheme
+              .animatedCircleSize,
+          width: InheritedChatTheme.of(context)
+              .theme
+              .typingIndicatorTheme
+              .animatedCircleSize,
           decoration: BoxDecoration(
             color: circlesColor,
             shape: BoxShape.circle,

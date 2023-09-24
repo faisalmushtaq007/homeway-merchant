@@ -26,7 +26,8 @@ class GroupListView extends StatefulWidget {
   ///Function which returns an Widget which defines the item at the specified IndexPath.
   ///
   ///[itemInSectionBuilder] provides the current section and index.
-  final Widget Function(BuildContext context, IndexPath indexPath) itemInSectionBuilder;
+  final Widget Function(BuildContext context, IndexPath indexPath)
+      itemInSectionBuilder;
 
   ///Function which returns an Widget which defines the separator at the specified IndexPath.
   ///
@@ -291,27 +292,37 @@ class _GroupListViewState extends State<GroupListView> {
     _indexToIndexPathList = [];
     ListItem listItem;
     for (int section = 0; section < widget.sectionCount; section++) {
-      listItem = ListItem(indexPath: IndexPath(section: section, index: 0), type: ListItemType.sectionHeader);
+      listItem = ListItem(
+          indexPath: IndexPath(section: section, index: 0),
+          type: ListItemType.sectionHeader);
       _indexToIndexPathList.add(listItem);
 
       final int itemCountInSection = widget.itemInSectionCount(section);
       for (int index = 0; index < itemCountInSection; index++) {
-        listItem = ListItem(indexPath: IndexPath(section: section, index: index), type: ListItemType.item);
+        listItem = ListItem(
+            indexPath: IndexPath(section: section, index: index),
+            type: ListItemType.item);
         _indexToIndexPathList.add(listItem);
 
         if (widget.separatorBuilder != null) {
-          listItem = ListItem(indexPath: IndexPath(section: section, index: index), type: ListItemType.itemSeparator);
+          listItem = ListItem(
+              indexPath: IndexPath(section: section, index: index),
+              type: ListItemType.itemSeparator);
           _indexToIndexPathList.add(listItem);
         }
       }
 
       if (widget.footerForSectionBuilder != null) {
-        listItem = ListItem(indexPath: IndexPath(section: section, index: 0), type: ListItemType.sectionFooter);
+        listItem = ListItem(
+            indexPath: IndexPath(section: section, index: 0),
+            type: ListItemType.sectionFooter);
         _indexToIndexPathList.add(listItem);
       }
 
       if (widget.sectionSeparatorBuilder != null) {
-        listItem = ListItem(indexPath: IndexPath(section: section, index: 0), type: ListItemType.sectionSeparator);
+        listItem = ListItem(
+            indexPath: IndexPath(section: section, index: 0),
+            type: ListItemType.sectionSeparator);
         _indexToIndexPathList.add(listItem);
       }
     }

@@ -4,7 +4,8 @@ class ManageOrderHeadlineWidget extends StatefulWidget {
   const ManageOrderHeadlineWidget({super.key});
 
   @override
-  State<ManageOrderHeadlineWidget> createState() => _ManageOrderHeadlineWidgetState();
+  State<ManageOrderHeadlineWidget> createState() =>
+      _ManageOrderHeadlineWidgetState();
 }
 
 class _ManageOrderHeadlineWidgetState extends State<ManageOrderHeadlineWidget> {
@@ -30,7 +31,8 @@ class _ManageOrderHeadlineWidgetState extends State<ManageOrderHeadlineWidget> {
           style: context.headlineSmall!.copyWith(
             fontWeight: FontWeight.w600,
           ),
-          textDirection: serviceLocator<LanguageController>().targetTextDirection,
+          textDirection:
+              serviceLocator<LanguageController>().targetTextDirection,
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
         ).translate(),

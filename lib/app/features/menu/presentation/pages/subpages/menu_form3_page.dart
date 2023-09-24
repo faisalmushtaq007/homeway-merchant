@@ -1,8 +1,11 @@
 part of 'package:homemakers_merchant/app/features/menu/index.dart';
 
 class MenuForm3Page extends StatefulWidget {
-  const MenuForm3Page({super.key,this.haveNewMenu = true,
-    this.menuEntity,});
+  const MenuForm3Page({
+    super.key,
+    this.haveNewMenu = true,
+    this.menuEntity,
+  });
   final bool haveNewMenu;
   final MenuEntity? menuEntity;
 
@@ -10,19 +13,26 @@ class MenuForm3Page extends StatefulWidget {
   State<MenuForm3Page> createState() => _MenuForm3PageState();
 }
 
-class _MenuForm3PageState extends State<MenuForm3Page> with AutomaticKeepAliveClientMixin<MenuForm3Page> {
+class _MenuForm3PageState extends State<MenuForm3Page>
+    with AutomaticKeepAliveClientMixin<MenuForm3Page> {
   late final ScrollController scrollController;
 
   List<StoreWorkingDayAndTime> _menuAvailableDays = [];
   List<StoreWorkingDayAndTime> _selectedWorkingDays = [];
   List<StoreWorkingDayAndTime> _initSelectedWorkingDays = [];
-  final TextEditingController _menuOpeningTimeController = TextEditingController();
-  final TextEditingController _menuClosingTimeController = TextEditingController();
+  final TextEditingController _menuOpeningTimeController =
+      TextEditingController();
+  final TextEditingController _menuClosingTimeController =
+      TextEditingController();
   late final MaskTextInputFormatter maximumDeliveryTimeFormatter;
-  final TextEditingController _menuMinPreparationTimeController = TextEditingController();
-  final TextEditingController _menuMaxPreparationTimeController = TextEditingController();
-  final TextEditingController _menuMinStockQuantityController = TextEditingController(text: '1');
-  final TextEditingController _menuMaxStockQuantityController = TextEditingController();
+  final TextEditingController _menuMinPreparationTimeController =
+      TextEditingController();
+  final TextEditingController _menuMaxPreparationTimeController =
+      TextEditingController();
+  final TextEditingController _menuMinStockQuantityController =
+      TextEditingController(text: '1');
+  final TextEditingController _menuMaxStockQuantityController =
+      TextEditingController();
 
   //List<Timing> _menuAvailablePreparationTimings = [];
   List<String> _menuAvailablePreparationTimings = [];
@@ -49,30 +59,40 @@ class _MenuForm3PageState extends State<MenuForm3Page> with AutomaticKeepAliveCl
     _selectedWorkingDays = [];
     _menuAvailablePreparationTimings = [];
     _initSelectedWorkingDays = [];
-    maximumDeliveryTimeFormatter = MaskTextInputFormatter(mask: '##', filter: {'#': RegExp(r'[0-9]')}, type: MaskAutoCompletionType.lazy);
+    maximumDeliveryTimeFormatter = MaskTextInputFormatter(
+        mask: '##',
+        filter: {'#': RegExp(r'[0-9]')},
+        type: MaskAutoCompletionType.lazy);
     initializeMenuWorkingDays();
     initializeMenuAvailableTimings();
     initData();
   }
 
-  void initData(){
-    if(!widget.haveNewMenu && widget.menuEntity.isNotNull){
+  void initData() {
+    if (!widget.haveNewMenu && widget.menuEntity.isNotNull) {
       // Init data of days
       //var cacheMenuAvailableDayAndTime = List<MenuAvailableDayAndTime>.from(widget.menuEntity!.menuAvailableInDays.toList().map((e) => MenuAvailableDayAndTime.fromMap(e.toMap())).toList());
-      _initSelectedWorkingDays = List<StoreWorkingDayAndTime>.from(widget.menuEntity!.menuAvailableInDays.toList());
-      _selectedWorkingDays=List<StoreWorkingDayAndTime>.from(widget.menuEntity!.menuAvailableInDays.toList());
+      _initSelectedWorkingDays = List<StoreWorkingDayAndTime>.from(
+          widget.menuEntity!.menuAvailableInDays.toList());
+      _selectedWorkingDays = List<StoreWorkingDayAndTime>.from(
+          widget.menuEntity!.menuAvailableInDays.toList());
 
       // Init data of working time
-      _menuOpeningTimeController.text=widget.menuEntity!.menuAvailableFromTime;
-      _menuClosingTimeController.text=widget.menuEntity!.menuAvailableToTime;
+      _menuOpeningTimeController.text =
+          widget.menuEntity!.menuAvailableFromTime;
+      _menuClosingTimeController.text = widget.menuEntity!.menuAvailableToTime;
 
       // Init data of menu preparation time
-      _menuMaxPreparationTimeController.text=widget.menuEntity!.menuMaxPreparationTime;
-      _menuMinPreparationTimeController.text=widget.menuEntity!.menuMinPreparationTime;
+      _menuMaxPreparationTimeController.text =
+          widget.menuEntity!.menuMaxPreparationTime;
+      _menuMinPreparationTimeController.text =
+          widget.menuEntity!.menuMinPreparationTime;
 
       // Init data of stocks
-      _menuMinStockQuantityController.text=widget.menuEntity!.minStockAvailable.toString();
-      _menuMaxStockQuantityController.text=widget.menuEntity!.maxStockAvailable.toString();
+      _menuMinStockQuantityController.text =
+          widget.menuEntity!.minStockAvailable.toString();
+      _menuMaxStockQuantityController.text =
+          widget.menuEntity!.maxStockAvailable.toString();
     }
   }
 
@@ -103,7 +123,8 @@ class _MenuForm3PageState extends State<MenuForm3Page> with AutomaticKeepAliveCl
   bool get wantKeepAlive => true;
 
   void initializeMenuWorkingDays() {
-    _menuAvailableDays = List<StoreWorkingDayAndTime>.from(localStoreWorkingDays.toList());
+    _menuAvailableDays =
+        List<StoreWorkingDayAndTime>.from(localStoreWorkingDays.toList());
   }
 
   void initializeMenuAvailableTimings() {
@@ -119,21 +140,26 @@ class _MenuForm3PageState extends State<MenuForm3Page> with AutomaticKeepAliveCl
         key: const Key('menu-form3-page-bloc-builder-widget'),
         bloc: context.watch<MenuBloc>(),
         builder: (context, state) {
-          if (state is PushMenuEntityDataState && state.menuFormStage is MenuForm3Page) {}
-          if (state is PullMenuEntityDataState && state.menuFormStage is MenuForm3Page) {}
+          if (state is PushMenuEntityDataState &&
+              state.menuFormStage is MenuForm3Page) {}
+          if (state is PullMenuEntityDataState &&
+              state.menuFormStage is MenuForm3Page) {}
           return Column(
             //controller: scrollController,
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.stretch,
-            textDirection: serviceLocator<LanguageController>().targetTextDirection,
+            textDirection:
+                serviceLocator<LanguageController>().targetTextDirection,
             children: [
               Column(
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.stretch,
-                textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                textDirection:
+                    serviceLocator<LanguageController>().targetTextDirection,
                 children: [
                   Wrap(
-                    textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                    textDirection: serviceLocator<LanguageController>()
+                        .targetTextDirection,
                     children: [
                       Text(
                         'Menu availability',
@@ -141,18 +167,21 @@ class _MenuForm3PageState extends State<MenuForm3Page> with AutomaticKeepAliveCl
                           fontWeight: FontWeight.w600,
                           fontSize: 20,
                         ),
-                        textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                        textDirection: serviceLocator<LanguageController>()
+                            .targetTextDirection,
                       ).translate(),
                     ],
                   ),
                   const AnimatedGap(2, duration: Duration(milliseconds: 500)),
                   Wrap(
-                    textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                    textDirection: serviceLocator<LanguageController>()
+                        .targetTextDirection,
                     children: [
                       Text(
                         'Select menu availability day(s) and time',
                         style: context.labelMedium,
-                        textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                        textDirection: serviceLocator<LanguageController>()
+                            .targetTextDirection,
                       ).translate(),
                     ],
                   ),
@@ -161,7 +190,8 @@ class _MenuForm3PageState extends State<MenuForm3Page> with AutomaticKeepAliveCl
               const AnimatedGap(12, duration: Duration(milliseconds: 500)),
               Text(
                 'Select days',
-                textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                textDirection:
+                    serviceLocator<LanguageController>().targetTextDirection,
                 style: context.titleMedium!.copyWith(
                   fontWeight: FontWeight.w600,
                   fontSize: 14,
@@ -169,11 +199,17 @@ class _MenuForm3PageState extends State<MenuForm3Page> with AutomaticKeepAliveCl
               ).translate(),
               const AnimatedGap(6, duration: Duration(milliseconds: 500)),
               MultiSelectAvailableWorkingDaysFormField(
-                onSelectionChanged: (List<StoreWorkingDayAndTime> selectedWorkingDays) {
-                  _selectedWorkingDays = List<StoreWorkingDayAndTime>.from(selectedWorkingDays);
+                onSelectionChanged:
+                    (List<StoreWorkingDayAndTime> selectedWorkingDays) {
+                  _selectedWorkingDays =
+                      List<StoreWorkingDayAndTime>.from(selectedWorkingDays);
                   var cacheMenuAvailableDayAndTime =
-                      List<MenuAvailableDayAndTime>.from(_selectedWorkingDays.map((e) => MenuAvailableDayAndTime.fromMap(e.toMap())).toList());
-                  serviceLocator<MenuEntity>().menuAvailableInDays = cacheMenuAvailableDayAndTime.toList();
+                      List<MenuAvailableDayAndTime>.from(_selectedWorkingDays
+                          .map(
+                              (e) => MenuAvailableDayAndTime.fromMap(e.toMap()))
+                          .toList());
+                  serviceLocator<MenuEntity>().menuAvailableInDays =
+                      cacheMenuAvailableDayAndTime.toList();
                   setState(() {});
                   context.read<MenuBloc>().add(
                         PushMenuEntityData(
@@ -186,7 +222,8 @@ class _MenuForm3PageState extends State<MenuForm3Page> with AutomaticKeepAliveCl
                 availableWorkingDaysList: _menuAvailableDays.toList(),
                 validator: (value) {
                   return ValidatorGroup<List<StoreWorkingDayAndTime>>([
-                    const RequiredValidator<List<StoreWorkingDayAndTime>>(errorMessage: 'Select valid time'),
+                    const RequiredValidator<List<StoreWorkingDayAndTime>>(
+                        errorMessage: 'Select valid time'),
                     CustomValidator<List<StoreWorkingDayAndTime>>(
                       validator: (value) {
                         if (value == null || value.isEmpty) {
@@ -205,8 +242,12 @@ class _MenuForm3PageState extends State<MenuForm3Page> with AutomaticKeepAliveCl
                 initialSelectedAvailableWorkingDaysList: [],
                 onSaved: (newValue) {
                   var cacheMenuAvailableDayAndTime =
-                      List<MenuAvailableDayAndTime>.from(_selectedWorkingDays.map((e) => MenuAvailableDayAndTime.fromMap(e.toMap())).toList());
-                  serviceLocator<MenuEntity>().menuAvailableInDays = cacheMenuAvailableDayAndTime.toList();
+                      List<MenuAvailableDayAndTime>.from(_selectedWorkingDays
+                          .map(
+                              (e) => MenuAvailableDayAndTime.fromMap(e.toMap()))
+                          .toList());
+                  serviceLocator<MenuEntity>().menuAvailableInDays =
+                      cacheMenuAvailableDayAndTime.toList();
                   context.read<MenuBloc>().add(
                         PushMenuEntityData(
                           menuEntity: serviceLocator<MenuEntity>(),
@@ -218,11 +259,13 @@ class _MenuForm3PageState extends State<MenuForm3Page> with AutomaticKeepAliveCl
               ),
               const AnimatedGap(12, duration: Duration(milliseconds: 500)),
               Wrap(
-                textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                textDirection:
+                    serviceLocator<LanguageController>().targetTextDirection,
                 children: [
                   Text(
                     'Select menu availability in time',
-                    textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                    textDirection: serviceLocator<LanguageController>()
+                        .targetTextDirection,
                     style: context.titleMedium!.copyWith(
                       fontWeight: FontWeight.w600,
                       fontSize: 14,
@@ -233,14 +276,16 @@ class _MenuForm3PageState extends State<MenuForm3Page> with AutomaticKeepAliveCl
               const AnimatedGap(12, duration: Duration(milliseconds: 500)),
               Row(
                 mainAxisSize: MainAxisSize.min,
-                textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                textDirection:
+                    serviceLocator<LanguageController>().targetTextDirection,
                 children: [
                   Expanded(
                     child: DateTimeFieldPlatform(
                       key: const Key('menu-available-from-time-widget'),
                       mode: DateMode.time,
                       maximumDate: DateTime.now().add(const Duration(hours: 2)),
-                      minimumDate: DateTime.now().subtract(const Duration(hours: 2)),
+                      minimumDate:
+                          DateTime.now().subtract(const Duration(hours: 2)),
                       controller: _menuOpeningTimeController,
                       decoration: InputDecoration(
                         labelText: 'From',
@@ -252,15 +297,22 @@ class _MenuForm3PageState extends State<MenuForm3Page> with AutomaticKeepAliveCl
                           Icons.arrow_drop_down,
                         ),
                         isDense: true,
-                        contentPadding: const EdgeInsetsDirectional.symmetric(vertical: 8, horizontal: 12),
+                        contentPadding: const EdgeInsetsDirectional.symmetric(
+                            vertical: 8, horizontal: 12),
                       ),
                       validator: (value) {
                         return ValidatorGroup<String>([
-                          const RequiredValidator<String>(errorMessage: 'Select valid time'),
+                          const RequiredValidator<String>(
+                              errorMessage: 'Select valid time'),
                           CustomValidator<String>(
                             validator: (value) {
                               if (compareOpenAndCloseTime(
-                                  openingTime: _menuOpeningTimeController.value.text.trim(), closingTime: _menuClosingTimeController.value.text.trim())) {
+                                  openingTime: _menuOpeningTimeController
+                                      .value.text
+                                      .trim(),
+                                  closingTime: _menuClosingTimeController
+                                      .value.text
+                                      .trim())) {
                                 return 'Select valid time';
                               }
                               return null;
@@ -269,7 +321,8 @@ class _MenuForm3PageState extends State<MenuForm3Page> with AutomaticKeepAliveCl
                         ]).validate(value);
                       },
                       onSaved: (newValue) {
-                        serviceLocator<MenuEntity>().menuAvailableFromTime = _menuOpeningTimeController.value.text.trim();
+                        serviceLocator<MenuEntity>().menuAvailableFromTime =
+                            _menuOpeningTimeController.value.text.trim();
                         context.read<MenuBloc>().add(
                               PushMenuEntityData(
                                 menuEntity: serviceLocator<MenuEntity>(),
@@ -281,7 +334,8 @@ class _MenuForm3PageState extends State<MenuForm3Page> with AutomaticKeepAliveCl
                       onEditingComplete: () {},
                       onFieldSubmitted: (value) {},
                       onChanged: (value) {
-                        serviceLocator<MenuEntity>().menuAvailableFromTime = value;
+                        serviceLocator<MenuEntity>().menuAvailableFromTime =
+                            value;
                         context.read<MenuBloc>().add(
                               PushMenuEntityData(
                                 menuEntity: serviceLocator<MenuEntity>(),
@@ -298,7 +352,8 @@ class _MenuForm3PageState extends State<MenuForm3Page> with AutomaticKeepAliveCl
                       key: const Key('menu-available-to-time-widget'),
                       mode: DateMode.time,
                       maximumDate: DateTime.now().add(const Duration(hours: 2)),
-                      minimumDate: DateTime.now().subtract(const Duration(hours: 2)),
+                      minimumDate:
+                          DateTime.now().subtract(const Duration(hours: 2)),
                       controller: _menuClosingTimeController,
                       decoration: InputDecoration(
                         labelText: 'To',
@@ -310,15 +365,22 @@ class _MenuForm3PageState extends State<MenuForm3Page> with AutomaticKeepAliveCl
                           Icons.arrow_drop_down,
                         ),
                         isDense: true,
-                        contentPadding: const EdgeInsetsDirectional.symmetric(vertical: 8, horizontal: 12),
+                        contentPadding: const EdgeInsetsDirectional.symmetric(
+                            vertical: 8, horizontal: 12),
                       ),
                       validator: (value) {
                         return ValidatorGroup<String>([
-                          const RequiredValidator<String>(errorMessage: 'Select valid time'),
+                          const RequiredValidator<String>(
+                              errorMessage: 'Select valid time'),
                           CustomValidator<String>(
                             validator: (value) {
                               if (compareOpenAndCloseTime(
-                                  openingTime: _menuOpeningTimeController.value.text.trim(), closingTime: _menuClosingTimeController.value.text.trim())) {
+                                  openingTime: _menuOpeningTimeController
+                                      .value.text
+                                      .trim(),
+                                  closingTime: _menuClosingTimeController
+                                      .value.text
+                                      .trim())) {
                                 return 'Select valid time';
                               }
                               return null;
@@ -327,7 +389,8 @@ class _MenuForm3PageState extends State<MenuForm3Page> with AutomaticKeepAliveCl
                         ]).validate(value);
                       },
                       onSaved: (newValue) {
-                        serviceLocator<MenuEntity>().menuAvailableToTime = _menuClosingTimeController.value.text.trim();
+                        serviceLocator<MenuEntity>().menuAvailableToTime =
+                            _menuClosingTimeController.value.text.trim();
                         context.read<MenuBloc>().add(
                               PushMenuEntityData(
                                 menuEntity: serviceLocator<MenuEntity>(),
@@ -339,7 +402,8 @@ class _MenuForm3PageState extends State<MenuForm3Page> with AutomaticKeepAliveCl
                       onEditingComplete: () {},
                       onFieldSubmitted: (value) {},
                       onChanged: (value) {
-                        serviceLocator<MenuEntity>().menuAvailableToTime = value;
+                        serviceLocator<MenuEntity>().menuAvailableToTime =
+                            value;
                         context.read<MenuBloc>().add(
                               PushMenuEntityData(
                                 menuEntity: serviceLocator<MenuEntity>(),
@@ -354,12 +418,14 @@ class _MenuForm3PageState extends State<MenuForm3Page> with AutomaticKeepAliveCl
               ),
               const Divider(),
               Column(
-                textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                textDirection:
+                    serviceLocator<LanguageController>().targetTextDirection,
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   Wrap(
-                    textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                    textDirection: serviceLocator<LanguageController>()
+                        .targetTextDirection,
                     children: [
                       Text(
                         'Menu preparation time',
@@ -367,18 +433,21 @@ class _MenuForm3PageState extends State<MenuForm3Page> with AutomaticKeepAliveCl
                           fontWeight: FontWeight.w600,
                           fontSize: 20,
                         ),
-                        textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                        textDirection: serviceLocator<LanguageController>()
+                            .targetTextDirection,
                       ).translate(),
                     ],
                   ),
                   const AnimatedGap(2, duration: Duration(milliseconds: 500)),
                   Wrap(
-                    textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                    textDirection: serviceLocator<LanguageController>()
+                        .targetTextDirection,
                     children: [
                       Text(
                         'Select menu preparation or cooking time',
                         style: context.labelMedium,
-                        textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                        textDirection: serviceLocator<LanguageController>()
+                            .targetTextDirection,
                       ).translate(),
                     ],
                   ),
@@ -395,8 +464,11 @@ class _MenuForm3PageState extends State<MenuForm3Page> with AutomaticKeepAliveCl
                     if (timing != null) {
                       setState(() {
                         _menuMinPreparationTimeController.text = timing ?? '';
-                        final cacheMenuTiming = _menuPreparationTiming?.copyWith(
-                          minPreparingTime: _menuMinPreparationTimeController.value.text.trim(),
+                        final cacheMenuTiming =
+                            _menuPreparationTiming?.copyWith(
+                          minPreparingTime: _menuMinPreparationTimeController
+                              .value.text
+                              .trim(),
                         );
                       });
                     }
@@ -407,12 +479,19 @@ class _MenuForm3PageState extends State<MenuForm3Page> with AutomaticKeepAliveCl
                 ),
                 validator: (value) {
                   return ValidatorGroup<String>([
-                    const RequiredValidator<String>(errorMessage: 'Select minimum preparation time'),
+                    const RequiredValidator<String>(
+                        errorMessage: 'Select minimum preparation time'),
                     CustomValidator<String>(
                       validator: (value) {
                         //final intInStr = RegExp(r'\d+');
-                        final maximumTime = int.parse(_menuMaxPreparationTimeController.value.text.trim().replaceAll(RegExp(r'[^0-9]'), ''));
-                        final minimumTime = int.parse(_menuMinPreparationTimeController.value.text.trim().replaceAll(RegExp(r'[^0-9]'), ''));
+                        final maximumTime = int.parse(
+                            _menuMaxPreparationTimeController.value.text
+                                .trim()
+                                .replaceAll(RegExp(r'[^0-9]'), ''));
+                        final minimumTime = int.parse(
+                            _menuMinPreparationTimeController.value.text
+                                .trim()
+                                .replaceAll(RegExp(r'[^0-9]'), ''));
                         if (minimumTime > maximumTime) {
                           return 'Select valid minimum preparation time';
                         }
@@ -432,7 +511,8 @@ class _MenuForm3PageState extends State<MenuForm3Page> with AutomaticKeepAliveCl
                       );
                 },
                 onSaved: (newValue) {
-                  serviceLocator<MenuEntity>().menuMinPreparationTime = _menuMinPreparationTimeController.value.text.trim();
+                  serviceLocator<MenuEntity>().menuMinPreparationTime =
+                      _menuMinPreparationTimeController.value.text.trim();
                   context.read<MenuBloc>().add(
                         PushMenuEntityData(
                           menuEntity: serviceLocator<MenuEntity>(),
@@ -453,8 +533,11 @@ class _MenuForm3PageState extends State<MenuForm3Page> with AutomaticKeepAliveCl
                     if (timing != null) {
                       setState(() {
                         _menuMaxPreparationTimeController.text = timing ?? '';
-                        final cacheMenuTiming = _menuPreparationTiming?.copyWith(
-                          minPreparingTime: _menuMaxPreparationTimeController.value.text.trim(),
+                        final cacheMenuTiming =
+                            _menuPreparationTiming?.copyWith(
+                          minPreparingTime: _menuMaxPreparationTimeController
+                              .value.text
+                              .trim(),
                         );
                       });
                     }
@@ -465,11 +548,18 @@ class _MenuForm3PageState extends State<MenuForm3Page> with AutomaticKeepAliveCl
                 ),
                 validator: (value) {
                   return ValidatorGroup<String>([
-                    const RequiredValidator<String>(errorMessage: 'Select maximum preparation time'),
+                    const RequiredValidator<String>(
+                        errorMessage: 'Select maximum preparation time'),
                     CustomValidator<String>(
                       validator: (value) {
-                        final maximumTime = int.parse(_menuMaxPreparationTimeController.value.text.trim().replaceAll(RegExp(r'[^0-9]'), ''));
-                        final minimumTime = int.parse(_menuMinPreparationTimeController.value.text.trim().replaceAll(RegExp(r'[^0-9]'), ''));
+                        final maximumTime = int.parse(
+                            _menuMaxPreparationTimeController.value.text
+                                .trim()
+                                .replaceAll(RegExp(r'[^0-9]'), ''));
+                        final minimumTime = int.parse(
+                            _menuMinPreparationTimeController.value.text
+                                .trim()
+                                .replaceAll(RegExp(r'[^0-9]'), ''));
                         if (maximumTime < minimumTime) {
                           return 'Select valid maximum preparation time';
                         }
@@ -489,7 +579,8 @@ class _MenuForm3PageState extends State<MenuForm3Page> with AutomaticKeepAliveCl
                       );
                 },
                 onSaved: (newValue) {
-                  serviceLocator<MenuEntity>().menuMaxPreparationTime = _menuMaxPreparationTimeController.value.text.trim();
+                  serviceLocator<MenuEntity>().menuMaxPreparationTime =
+                      _menuMaxPreparationTimeController.value.text.trim();
                   context.read<MenuBloc>().add(
                         PushMenuEntityData(
                           menuEntity: serviceLocator<MenuEntity>(),
@@ -503,7 +594,8 @@ class _MenuForm3PageState extends State<MenuForm3Page> with AutomaticKeepAliveCl
               Column(
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.stretch,
-                textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                textDirection:
+                    serviceLocator<LanguageController>().targetTextDirection,
                 children: [
                   Text(
                     'Stocks',
@@ -511,25 +603,30 @@ class _MenuForm3PageState extends State<MenuForm3Page> with AutomaticKeepAliveCl
                       fontWeight: FontWeight.w600,
                       fontSize: 20,
                     ),
-                    textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                    textDirection: serviceLocator<LanguageController>()
+                        .targetTextDirection,
                   ).translate(),
                   const AnimatedGap(2, duration: Duration(milliseconds: 500)),
                   Text(
                     'Select menu minimum and maximum stock',
                     style: context.labelMedium,
-                    textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                    textDirection: serviceLocator<LanguageController>()
+                        .targetTextDirection,
                   ).translate(),
                 ],
               ),
               const AnimatedGap(12, duration: Duration(milliseconds: 500)),
               Directionality(
-                textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                textDirection:
+                    serviceLocator<LanguageController>().targetTextDirection,
                 child: AppTextFieldWidget(
                   controller: _menuMinStockQuantityController,
-                  textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                  textDirection:
+                      serviceLocator<LanguageController>().targetTextDirection,
                   focusNode: menuForm3FocusList[0],
                   textInputAction: TextInputAction.next,
-                  onFieldSubmitted: (_) => fieldFocusChange(context, menuForm3FocusList[0], menuForm3FocusList[1]),
+                  onFieldSubmitted: (_) => fieldFocusChange(
+                      context, menuForm3FocusList[0], menuForm3FocusList[1]),
                   keyboardType: const TextInputType.numberWithOptions(),
                   decoration: InputDecoration(
                     labelText: 'Minimum Quantity',
@@ -541,11 +638,18 @@ class _MenuForm3PageState extends State<MenuForm3Page> with AutomaticKeepAliveCl
                   ),
                   validator: (value) {
                     return ValidatorGroup<String>([
-                      const RequiredValidator<String>(errorMessage: 'Enter minimum stock quantity'),
+                      const RequiredValidator<String>(
+                          errorMessage: 'Enter minimum stock quantity'),
                       CustomValidator<String>(
                         validator: (value) {
-                          final maximumStockValue = int.parse(_menuMaxStockQuantityController.value.text.trim().replaceAll(RegExp(r'[^0-9]'), ''));
-                          final minimumStockValue = int.parse(_menuMinStockQuantityController.value.text.trim().replaceAll(RegExp(r'[^0-9]'), ''));
+                          final maximumStockValue = int.parse(
+                              _menuMaxStockQuantityController.value.text
+                                  .trim()
+                                  .replaceAll(RegExp(r'[^0-9]'), ''));
+                          final minimumStockValue = int.parse(
+                              _menuMinStockQuantityController.value.text
+                                  .trim()
+                                  .replaceAll(RegExp(r'[^0-9]'), ''));
                           if (minimumStockValue > maximumStockValue) {
                             return 'Enter valid minimum quantity';
                           }
@@ -555,7 +659,8 @@ class _MenuForm3PageState extends State<MenuForm3Page> with AutomaticKeepAliveCl
                     ]).validate(value);
                   },
                   onChanged: (value) {
-                    serviceLocator<MenuEntity>().minStockAvailable = int.tryParse(value) ?? 0;
+                    serviceLocator<MenuEntity>().minStockAvailable =
+                        int.tryParse(value) ?? 0;
                     context.read<MenuBloc>().add(
                           PushMenuEntityData(
                             menuEntity: serviceLocator<MenuEntity>(),
@@ -565,7 +670,10 @@ class _MenuForm3PageState extends State<MenuForm3Page> with AutomaticKeepAliveCl
                         );
                   },
                   onSaved: (newValue) {
-                    serviceLocator<MenuEntity>().minStockAvailable = int.tryParse(_menuMinStockQuantityController.value.text.trim()) ?? 0;
+                    serviceLocator<MenuEntity>().minStockAvailable =
+                        int.tryParse(_menuMinStockQuantityController.value.text
+                                .trim()) ??
+                            0;
                     context.read<MenuBloc>().add(
                           PushMenuEntityData(
                             menuEntity: serviceLocator<MenuEntity>(),
@@ -578,10 +686,12 @@ class _MenuForm3PageState extends State<MenuForm3Page> with AutomaticKeepAliveCl
               ),
               const AnimatedGap(12, duration: Duration(milliseconds: 500)),
               Directionality(
-                textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                textDirection:
+                    serviceLocator<LanguageController>().targetTextDirection,
                 child: AppTextFieldWidget(
                   controller: _menuMaxStockQuantityController,
-                  textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                  textDirection:
+                      serviceLocator<LanguageController>().targetTextDirection,
                   focusNode: menuForm3FocusList[1],
                   textInputAction: TextInputAction.done,
                   keyboardType: const TextInputType.numberWithOptions(),
@@ -595,11 +705,18 @@ class _MenuForm3PageState extends State<MenuForm3Page> with AutomaticKeepAliveCl
                   ),
                   validator: (value) {
                     return ValidatorGroup<String>([
-                      const RequiredValidator<String>(errorMessage: 'Enter maximum stock quantity'),
+                      const RequiredValidator<String>(
+                          errorMessage: 'Enter maximum stock quantity'),
                       CustomValidator<String>(
                         validator: (value) {
-                          final maximumStockValue = int.parse(_menuMaxStockQuantityController.value.text.trim().replaceAll(RegExp(r'[^0-9]'), ''));
-                          final minimumStockValue = int.parse(_menuMinStockQuantityController.value.text.trim().replaceAll(RegExp(r'[^0-9]'), ''));
+                          final maximumStockValue = int.parse(
+                              _menuMaxStockQuantityController.value.text
+                                  .trim()
+                                  .replaceAll(RegExp(r'[^0-9]'), ''));
+                          final minimumStockValue = int.parse(
+                              _menuMinStockQuantityController.value.text
+                                  .trim()
+                                  .replaceAll(RegExp(r'[^0-9]'), ''));
                           if (maximumStockValue < minimumStockValue) {
                             return 'Enter valid maximum quantity';
                           }
@@ -609,7 +726,8 @@ class _MenuForm3PageState extends State<MenuForm3Page> with AutomaticKeepAliveCl
                     ]).validate(value);
                   },
                   onChanged: (value) {
-                    serviceLocator<MenuEntity>().maxStockAvailable = int.tryParse(value) ?? 0;
+                    serviceLocator<MenuEntity>().maxStockAvailable =
+                        int.tryParse(value) ?? 0;
                     context.read<MenuBloc>().add(
                           PushMenuEntityData(
                             menuEntity: serviceLocator<MenuEntity>(),
@@ -619,7 +737,10 @@ class _MenuForm3PageState extends State<MenuForm3Page> with AutomaticKeepAliveCl
                         );
                   },
                   onSaved: (newValue) {
-                    serviceLocator<MenuEntity>().maxStockAvailable = int.tryParse(_menuMaxStockQuantityController.value.text.trim()) ?? 0;
+                    serviceLocator<MenuEntity>().maxStockAvailable =
+                        int.tryParse(_menuMaxStockQuantityController.value.text
+                                .trim()) ??
+                            0;
                     context.read<MenuBloc>().add(
                           PushMenuEntityData(
                             menuEntity: serviceLocator<MenuEntity>(),
@@ -658,7 +779,8 @@ class _MenuForm3PageState extends State<MenuForm3Page> with AutomaticKeepAliveCl
               child: ListView.builder(
                 padding: EdgeInsetsDirectional.zero,
                 itemCount: _menuAvailablePreparationTimings.length,
-                itemBuilder: (context, index) => _menuPreparationWidget(context, index, setState),
+                itemBuilder: (context, index) =>
+                    _menuPreparationWidget(context, index, setState),
                 shrinkWrap: true,
               ),
             );
@@ -669,11 +791,15 @@ class _MenuForm3PageState extends State<MenuForm3Page> with AutomaticKeepAliveCl
     return timing;
   }
 
-  Widget _menuPreparationWidget(BuildContext context, int index, StateSetter innerSetState) {
+  Widget _menuPreparationWidget(
+      BuildContext context, int index, StateSetter innerSetState) {
     return DecoratedBox(
       decoration: BoxDecoration(
         border: Border(
-            top: (index == 0) ? BorderSide(color: Theme.of(context).dividerColor) : BorderSide.none, bottom: BorderSide(color: Theme.of(context).dividerColor)),
+            top: (index == 0)
+                ? BorderSide(color: Theme.of(context).dividerColor)
+                : BorderSide.none,
+            bottom: BorderSide(color: Theme.of(context).dividerColor)),
       ),
       child: ListTile(
         dense: true,
@@ -683,7 +809,8 @@ class _MenuForm3PageState extends State<MenuForm3Page> with AutomaticKeepAliveCl
         visualDensity: const VisualDensity(vertical: -1),
         title: Text(
           _menuAvailablePreparationTimings[index],
-          textDirection: serviceLocator<LanguageController>().targetTextDirection,
+          textDirection:
+              serviceLocator<LanguageController>().targetTextDirection,
         ),
         onTap: () {
           innerSetState(() {});

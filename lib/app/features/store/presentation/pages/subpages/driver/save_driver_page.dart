@@ -193,7 +193,8 @@ class _SaveDriverPageController extends State<SaveDriverPage> {
   }
 
   void initStoreOwnDeliveryPartners(
-      StoreOwnDeliveryPartnersInfo? storeOwnDeliveryPartnersInfo,) {
+    StoreOwnDeliveryPartnersInfo? storeOwnDeliveryPartnersInfo,
+  ) {
     if (storeOwnDeliveryPartnersInfo.isNotNull) {
       drivingLicenseNumberTextEditingController.text =
           storeOwnDeliveryPartnersInfo?.drivingLicenseNumber ?? '';
@@ -205,7 +206,7 @@ class _SaveDriverPageController extends State<SaveDriverPage> {
       driverDeliveryTypeNumberTextEditingController.text =
           storeOwnDeliveryPartnersInfo?.deliveryMode ?? '';
       if (storeOwnDeliveryPartnersInfo?.vehicleInfo != null) {
-        listOfInitialSelectedVehicleTypeInfo  = [
+        listOfInitialSelectedVehicleTypeInfo = [
           storeOwnDeliveryPartnersInfo!.vehicleInfo!,
         ];
         driverVehicleNumberTextEditingController.text =
@@ -226,7 +227,9 @@ class _SaveDriverPageController extends State<SaveDriverPage> {
   }
 
   void uploadDrivingLicense(
-      Map<String, dynamic> mapData, CaptureImageEntity captureImageEntity,) {
+    Map<String, dynamic> mapData,
+    CaptureImageEntity captureImageEntity,
+  ) {
     newBusinessDocumentEntity = NewBusinessDocumentEntity(
       documentType: captureImageEntity.documentType,
       base64: captureImageEntity.base64Encode,
@@ -349,7 +352,10 @@ class _SaveDriverPageView
                             duration: const Duration(milliseconds: 500),
                             height: 60,
                             width: 60,
-                            decoration: BoxDecoration(shape: BoxShape.rectangle,borderRadius: BorderRadiusDirectional.circular(6)),
+                            decoration: BoxDecoration(
+                                shape: BoxShape.rectangle,
+                                borderRadius:
+                                    BorderRadiusDirectional.circular(6)),
                             child: DisplayImage(
                               imagePath: state.userImagePath,
                               onPressed: () async {
@@ -357,12 +363,14 @@ class _SaveDriverPageView
                                     .selectImagePicker(context);
                                 if (result.imagePath.isNotEmpty) {
                                   state.updateUserProfileImage(
-                                      result.imagePath,);
+                                    result.imagePath,
+                                  );
                                 } else {}
                               },
                               hasIconImage:
                                   state.userImagePath.isEmpty ? true : false,
-                              hasEditButton: state.userImagePath.isEmpty ? false : true,
+                              hasEditButton:
+                                  state.userImagePath.isEmpty ? false : true,
                               hasCustomIcon:
                                   state.userImagePath.isEmpty ? true : false,
                               customIcon: Icon(Icons.camera_alt),
@@ -372,8 +380,10 @@ class _SaveDriverPageView
                               bottom: 1,
                             ),
                           ),
-                          const AnimatedGap(6,
-                              duration: Duration(milliseconds: 500),),
+                          const AnimatedGap(
+                            6,
+                            duration: Duration(milliseconds: 500),
+                          ),
                           //const Spacer(),
                           Wrap(
                             alignment: WrapAlignment.center,
@@ -390,10 +400,14 @@ class _SaveDriverPageView
                               ),
                             ],
                           ),
-                          const AnimatedGap(6,
-                              duration: Duration(milliseconds: 500),),
-                          const AnimatedGap(12,
-                              duration: Duration(milliseconds: 500),),
+                          const AnimatedGap(
+                            6,
+                            duration: Duration(milliseconds: 500),
+                          ),
+                          const AnimatedGap(
+                            12,
+                            duration: Duration(milliseconds: 500),
+                          ),
                           AppTextFieldWidget(
                             controller: state.driverNameTextEditingController,
                             textDirection: serviceLocator<LanguageController>()
@@ -402,7 +416,11 @@ class _SaveDriverPageView
                             textInputAction: TextInputAction.next,
                             //onFieldSubmitted: (_) => fieldFocusChange(context, state.focusList[0], state.focusList[1]),
                             keyboardType: TextInputType.name,
-                            inputFormatters: [FilteringTextInputFormatter.allow(RegExp('[a-z A-Z ]')),FilteringTextInputFormatter.deny('  ')],
+                            inputFormatters: [
+                              FilteringTextInputFormatter.allow(
+                                  RegExp('[a-z A-Z ]')),
+                              FilteringTextInputFormatter.deny('  ')
+                            ],
                             decoration: InputDecoration(
                               labelText: 'Driver name',
                               hintText: 'Enter driver name',
@@ -418,8 +436,10 @@ class _SaveDriverPageView
                               return null;
                             },
                           ),
-                          const AnimatedGap(12,
-                              duration: Duration(milliseconds: 500),),
+                          const AnimatedGap(
+                            12,
+                            duration: Duration(milliseconds: 500),
+                          ),
                           Directionality(
                             textDirection: serviceLocator<LanguageController>()
                                 .targetTextDirection,
@@ -457,8 +477,10 @@ class _SaveDriverPageView
                                   const TextInputType.numberWithOptions(),
                             ),
                           ),
-                          const AnimatedGap(12,
-                              duration: Duration(milliseconds: 500),),
+                          const AnimatedGap(
+                            12,
+                            duration: Duration(milliseconds: 500),
+                          ),
                           AppTextFieldWidget(
                             controller:
                                 state.drivingLicenseNumberTextEditingController,
@@ -483,8 +505,10 @@ class _SaveDriverPageView
                               return null;
                             },
                           ),
-                          const AnimatedGap(12,
-                              duration: Duration(milliseconds: 500),),
+                          const AnimatedGap(
+                            12,
+                            duration: Duration(milliseconds: 500),
+                          ),
                           NewBusinessDocumentComponentWidget(
                             key: const Key('upload-driver-license-widget'),
                             documentPlaceHolderImage: 'assets/svg/id_card.svg',
@@ -499,11 +523,14 @@ class _SaveDriverPageView
                                 ? widget.storeOwnDeliveryPartnersInfo
                                     ?.driverLicenseDocument
                                 : null,
-                            selectedImageMetaData:
-                                (Map<String, dynamic> metaData,
-                                    CaptureImageEntity captureImageEntity,) {
+                            selectedImageMetaData: (
+                              Map<String, dynamic> metaData,
+                              CaptureImageEntity captureImageEntity,
+                            ) {
                               state.uploadDrivingLicense(
-                                  metaData, captureImageEntity,);
+                                metaData,
+                                captureImageEntity,
+                              );
                               return;
                             },
                             documentPlaceHolderWidget: Column(
@@ -583,8 +610,10 @@ class _SaveDriverPageView
                             ),
                             documentType: DocumentType.nationalID,
                           ),
-                          const AnimatedGap(12,
-                              duration: Duration(milliseconds: 500),),
+                          const AnimatedGap(
+                            12,
+                            duration: Duration(milliseconds: 500),
+                          ),
                           Column(
                             mainAxisSize: MainAxisSize.min,
                             crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -599,8 +628,10 @@ class _SaveDriverPageView
                                     serviceLocator<LanguageController>()
                                         .targetTextDirection,
                               ).translate(),
-                              const AnimatedGap(4,
-                                  duration: Duration(milliseconds: 500),),
+                              const AnimatedGap(
+                                4,
+                                duration: Duration(milliseconds: 500),
+                              ),
                               Text(
                                 'Select the vehicle type of your own driver',
                                 style: context.labelMedium,
@@ -610,16 +641,21 @@ class _SaveDriverPageView
                               ).translate(),
                             ],
                           ),
-                          const AnimatedGap(6,
-                              duration: Duration(milliseconds: 500),),
+                          const AnimatedGap(
+                            6,
+                            duration: Duration(milliseconds: 500),
+                          ),
                           StoreOwnPartnerVehicleTypeFormField(
                             key: const Key(
-                                'store-own-partner-vehicle-type-formfield',),
+                              'store-own-partner-vehicle-type-formfield',
+                            ),
                             onSelectionChanged:
                                 state.onSelectionChangedVehicleType,
                             availableVehicleInfoList:
                                 state.listOfVehicleTypeInfo.toList(),
-                            initialVehicleInfoList: state.listOfInitialSelectedVehicleTypeInfo.toList(),
+                            initialVehicleInfoList: state
+                                .listOfInitialSelectedVehicleTypeInfo
+                                .toList(),
                             onSaved: (newValue) {},
                             isSingleSelect: true,
                             validator: (value) {
@@ -630,8 +666,10 @@ class _SaveDriverPageView
                               }
                             },
                           ),
-                          const AnimatedGap(12,
-                              duration: Duration(milliseconds: 500),),
+                          const AnimatedGap(
+                            12,
+                            duration: Duration(milliseconds: 500),
+                          ),
                           AppTextFieldWidget(
                             controller:
                                 state.driverVehicleNumberTextEditingController,
@@ -641,15 +679,16 @@ class _SaveDriverPageView
                             textInputAction: TextInputAction.done,
                             keyboardType: TextInputType.text,
                             decoration: InputDecoration(
-                                labelText: 'Vehicle Number',
-                                hintText: 'Enter driver vehicle number',
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                                isDense: true,
-                                prefixIcon: const Icon(
-                                  Icons.drive_eta,
-                                ),),
+                              labelText: 'Vehicle Number',
+                              hintText: 'Enter driver vehicle number',
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              isDense: true,
+                              prefixIcon: const Icon(
+                                Icons.drive_eta,
+                              ),
+                            ),
                             validator: (value) {
                               if (value == null || value.isEmpty) {
                                 return 'Enter driver vehicle number';
@@ -657,8 +696,10 @@ class _SaveDriverPageView
                               return null;
                             },
                           ),
-                          const AnimatedGap(12,
-                              duration: Duration(milliseconds: 500),),
+                          const AnimatedGap(
+                            12,
+                            duration: Duration(milliseconds: 500),
+                          ),
                           AppTextFieldWidget(
                             controller: state
                                 .driverDeliveryTypeNumberTextEditingController,
@@ -704,8 +745,10 @@ class _SaveDriverPageView
                               return;
                             },
                           ),
-                          const AnimatedGap(12,
-                              duration: Duration(milliseconds: 500),),
+                          const AnimatedGap(
+                            12,
+                            duration: Duration(milliseconds: 500),
+                          ),
                         ],
                       ),
                     ),
@@ -767,7 +810,8 @@ class _SaveDriverPageView
                                                   ? true
                                                   : false,
                                           imageEntity: ImageEntity(
-                                              imagePath: state.userImagePath,),
+                                            imagePath: state.userImagePath,
+                                          ),
                                           deliveryMode: state
                                               .driverDeliveryTypeNumberTextEditingController
                                               .value
@@ -781,7 +825,8 @@ class _SaveDriverPageView
                                           isoCode:
                                               state.phoneNumber?.isoCode.name ??
                                                   'SA',
-                                          driverLicenseDocument: state.newBusinessDocumentEntity,
+                                          driverLicenseDocument:
+                                              state.newBusinessDocumentEntity,
                                         );
                                       }
                                       // New driver
@@ -819,7 +864,8 @@ class _SaveDriverPageView
                                                   ? true
                                                   : false,
                                           imageEntity: ImageEntity(
-                                              imagePath: state.userImagePath,),
+                                            imagePath: state.userImagePath,
+                                          ),
                                           deliveryMode: state
                                               .driverDeliveryTypeNumberTextEditingController
                                               .value
@@ -833,7 +879,8 @@ class _SaveDriverPageView
                                           isoCode:
                                               state.phoneNumber?.isoCode.name ??
                                                   'SA',
-                                              driverLicenseDocument: state.newBusinessDocumentEntity,
+                                          driverLicenseDocument:
+                                              state.newBusinessDocumentEntity,
                                         );
                                       }
                                       // Execute save action
@@ -918,14 +965,18 @@ class _SaveDriverPageView
   }
 
   Widget _allDriverDeliveryTypes(
-      BuildContext context, int index, StateSetter innerSetState,) {
+    BuildContext context,
+    int index,
+    StateSetter innerSetState,
+  ) {
     return DecoratedBox(
       decoration: BoxDecoration(
         border: Border(
-            top: (index == 0)
-                ? BorderSide(color: Theme.of(context).dividerColor)
-                : BorderSide.none,
-            bottom: BorderSide(color: Theme.of(context).dividerColor),),
+          top: (index == 0)
+              ? BorderSide(color: Theme.of(context).dividerColor)
+              : BorderSide.none,
+          bottom: BorderSide(color: Theme.of(context).dividerColor),
+        ),
       ),
       child: ListTile(
         dense: true,

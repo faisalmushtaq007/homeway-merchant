@@ -5,7 +5,10 @@ abstract class AddressEvent extends Equatable {
 }
 
 class SaveAddress extends AddressEvent {
-  const SaveAddress({required this.addressEntity, required this.hasNewAddress, this.currentIndex = -1});
+  const SaveAddress(
+      {required this.addressEntity,
+      required this.hasNewAddress,
+      this.currentIndex = -1});
 
   final AddressModel addressEntity;
   final bool hasNewAddress;
@@ -35,7 +38,8 @@ class RemoveAddressByID extends AddressEvent {
   final bool hasRemove;
 
   @override
-  List<Object?> get props => [addressEntity, index, addressEntities, addressID, hasRemove];
+  List<Object?> get props =>
+      [addressEntity, index, addressEntities, addressID, hasRemove];
 }
 
 class RemoveAllAddress extends AddressEvent {

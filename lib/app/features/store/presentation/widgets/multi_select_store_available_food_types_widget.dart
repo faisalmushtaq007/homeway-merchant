@@ -1,6 +1,7 @@
 part of 'package:homemakers_merchant/app/features/store/index.dart';
 
-class MultiSelectAvailableFoodTypeFormField extends FormField<List<StoreAvailableFoodTypes>> {
+class MultiSelectAvailableFoodTypeFormField
+    extends FormField<List<StoreAvailableFoodTypes>> {
   final Widget title;
   final Widget hintWidget;
   final bool required;
@@ -96,7 +97,8 @@ class MultiSelectAvailableFoodTypeFormField extends FormField<List<StoreAvailabl
               ),
               isEmpty: state.value == null || state.value!.isEmpty,
               child: MultiSelectStoreAvailableFoodTypes(
-                onSelectionChanged: (List<StoreAvailableFoodTypes> selectedItems) {
+                onSelectionChanged:
+                    (List<StoreAvailableFoodTypes> selectedItems) {
                   selectedChoices = selectedItems.toList();
                   onSelectionChanged?.call(selectedChoices);
                   state.didChange(selectedChoices);
@@ -106,7 +108,8 @@ class MultiSelectAvailableFoodTypeFormField extends FormField<List<StoreAvailabl
                   state.save();
                 },
                 availableFoodTypesList: availableFoodTypesList.toList(),
-                initialSelectedAvailableFoodTypesList: initialSelectedAvailableFoodTypesList.toList(),
+                initialSelectedAvailableFoodTypesList:
+                    initialSelectedAvailableFoodTypesList.toList(),
                 maxSelection: maxSelection,
                 onMaxSelected: onMaxSelected,
                 isSingleSelect: isSingleSelect,
@@ -137,10 +140,12 @@ class MultiSelectStoreAvailableFoodTypes extends StatefulWidget {
   final bool isSingleSelect;
 
   @override
-  _MultiSelectStoreAvailableFoodTypesState createState() => _MultiSelectStoreAvailableFoodTypesState();
+  _MultiSelectStoreAvailableFoodTypesState createState() =>
+      _MultiSelectStoreAvailableFoodTypesState();
 }
 
-class _MultiSelectStoreAvailableFoodTypesState extends State<MultiSelectStoreAvailableFoodTypes> {
+class _MultiSelectStoreAvailableFoodTypesState
+    extends State<MultiSelectStoreAvailableFoodTypes> {
   // String selectedChoice = "";
   List<StoreAvailableFoodTypes> selectedChoices = [];
 
@@ -151,7 +156,8 @@ class _MultiSelectStoreAvailableFoodTypesState extends State<MultiSelectStoreAva
       choices.add(ChoiceChip(
         label: Text(
           item.title,
-          textDirection: serviceLocator<LanguageController>().targetTextDirection,
+          textDirection:
+              serviceLocator<LanguageController>().targetTextDirection,
         ),
         selected: selectedChoices.contains(item),
         onSelected: (selected) {
@@ -163,11 +169,14 @@ class _MultiSelectStoreAvailableFoodTypesState extends State<MultiSelectStoreAva
               widget.onSelectionChanged?.call(selectedChoices);
             });
           } else {
-            if (selectedChoices.length == (widget.maxSelection ?? -1) && !selectedChoices.contains(item)) {
+            if (selectedChoices.length == (widget.maxSelection ?? -1) &&
+                !selectedChoices.contains(item)) {
               widget.onMaxSelected?.call(selectedChoices);
             } else {
               setState(() {
-                selectedChoices.contains(item) ? selectedChoices.remove(item) : selectedChoices.add(item);
+                selectedChoices.contains(item)
+                    ? selectedChoices.remove(item)
+                    : selectedChoices.add(item);
                 widget.onSelectionChanged?.call(selectedChoices);
               });
             }

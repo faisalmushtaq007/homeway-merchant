@@ -26,10 +26,13 @@ class PhoneNumberVerificationPage extends StatefulWidget {
   const PhoneNumberVerificationPage({super.key});
 
   @override
-  _PhoneNumberVerificationPageState createState() => _PhoneNumberVerificationPageState();
+  _PhoneNumberVerificationPageState createState() =>
+      _PhoneNumberVerificationPageState();
 }
 
-class _PhoneNumberVerificationPageState extends State<PhoneNumberVerificationPage> with SingleTickerProviderStateMixin {
+class _PhoneNumberVerificationPageState
+    extends State<PhoneNumberVerificationPage>
+    with SingleTickerProviderStateMixin {
   late final ScrollController scrollController;
   late AnimationController _animationController;
   late Animation<double> _animation;
@@ -39,14 +42,17 @@ class _PhoneNumberVerificationPageState extends State<PhoneNumberVerificationPag
   static final requestOTPFormKey = GlobalKey<FormState>();
 
   // Button Controller
-  AsyncBtnStatesController phoneNumberVerificationButtonController = AsyncBtnStatesController();
+  AsyncBtnStatesController phoneNumberVerificationButtonController =
+      AsyncBtnStatesController();
   String userEnteredPhoneNumber = '';
   PhoneController phoneController = PhoneController(null);
-  PhoneNumberVerification phoneNumberVerification = PhoneNumberVerification.none;
+  PhoneNumberVerification phoneNumberVerification =
+      PhoneNumberVerification.none;
   Widget? suffixIcon;
   PhoneNumber? phoneNumber;
   late PhoneController phoneNumberController;
-  ValueNotifier<PhoneNumberVerification> valueNotifierPhoneNumberVerification = ValueNotifier<PhoneNumberVerification>(
+  ValueNotifier<PhoneNumberVerification> valueNotifierPhoneNumberVerification =
+      ValueNotifier<PhoneNumberVerification>(
     PhoneNumberVerification.none,
   );
   bool mobileOnly = true;
@@ -79,19 +85,25 @@ class _PhoneNumberVerificationPageState extends State<PhoneNumberVerificationPag
     PhoneNumber? phoneNumbers,
   ) {
     phoneNumber = phoneNumbers;
-    userEnteredPhoneNumber = '+${phoneNumbers?.countryCode} ${phoneNumbers?.getFormattedNsn().trim()}';
+    userEnteredPhoneNumber =
+        '+${phoneNumbers?.countryCode} ${phoneNumbers?.getFormattedNsn().trim()}';
     String countryDialCode = '+${phoneNumbers?.countryCode ?? '+966'}';
     String country = phoneNumbers?.isoCode.name ?? 'SA';
     final result = getValidator(isAllowEmpty: false);
     phoneValidation = result?.call(phoneNumber);
 
     if (phoneValidation != null && phoneValidation!.isNotEmpty) {
-      valueNotifierPhoneNumberVerification.value = PhoneNumberVerification.invalid;
+      valueNotifierPhoneNumberVerification.value =
+          PhoneNumberVerification.invalid;
     } else {
-      if (phoneValidation == null && phoneNumbers != null && phoneNumbers.getFormattedNsn().trim().isNotEmpty) {
-        valueNotifierPhoneNumberVerification.value = PhoneNumberVerification.valid;
+      if (phoneValidation == null &&
+          phoneNumbers != null &&
+          phoneNumbers.getFormattedNsn().trim().isNotEmpty) {
+        valueNotifierPhoneNumberVerification.value =
+            PhoneNumberVerification.valid;
       } else {
-        valueNotifierPhoneNumberVerification.value = PhoneNumberVerification.none;
+        valueNotifierPhoneNumberVerification.value =
+            PhoneNumberVerification.none;
       }
     }
     //setState(() {});
@@ -104,18 +116,24 @@ class _PhoneNumberVerificationPageState extends State<PhoneNumberVerificationPag
   ) {
     phoneValidation = value;
     phoneNumber = phoneNumbers;
-    userEnteredPhoneNumber = '+${phoneNumbers?.countryCode} ${phoneNumbers?.getFormattedNsn().trim()}';
+    userEnteredPhoneNumber =
+        '+${phoneNumbers?.countryCode} ${phoneNumbers?.getFormattedNsn().trim()}';
     phoneNumberController = phoneNumberControllers;
     if (phoneValidation != null && phoneValidation!.isNotEmpty) {
       phoneNumberVerification = PhoneNumberVerification.invalid;
-      valueNotifierPhoneNumberVerification.value = PhoneNumberVerification.invalid;
+      valueNotifierPhoneNumberVerification.value =
+          PhoneNumberVerification.invalid;
     } else {
-      if (phoneValidation == null && phoneNumberControllers.value != null && phoneNumberControllers.value!.getFormattedNsn().trim().isNotEmpty) {
+      if (phoneValidation == null &&
+          phoneNumberControllers.value != null &&
+          phoneNumberControllers.value!.getFormattedNsn().trim().isNotEmpty) {
         phoneNumberVerification = PhoneNumberVerification.valid;
-        valueNotifierPhoneNumberVerification.value = PhoneNumberVerification.valid;
+        valueNotifierPhoneNumberVerification.value =
+            PhoneNumberVerification.valid;
       } else {
         phoneNumberVerification = PhoneNumberVerification.none;
-        valueNotifierPhoneNumberVerification.value = PhoneNumberVerification.none;
+        valueNotifierPhoneNumberVerification.value =
+            PhoneNumberVerification.none;
         phoneNumberVerificationButtonController.update(AsyncBtnState.idle);
       }
     }
@@ -158,7 +176,8 @@ class _PhoneNumberVerificationPageState extends State<PhoneNumberVerificationPag
             //LanguageSelectionButton(),
           ],
         ),*/
-        body: BlocListener<PhoneNumberVerificationBloc, PhoneNumberVerificationState>(
+        body: BlocListener<PhoneNumberVerificationBloc,
+            PhoneNumberVerificationState>(
           bloc: context.read<PhoneNumberVerificationBloc>(),
           listenWhen: (previous, current) => previous != current,
           listener: (context, state) {
@@ -196,7 +215,8 @@ class _PhoneNumberVerificationPageState extends State<PhoneNumberVerificationPag
                 minHeight: media.size.height,
               ),
               child: Stack(
-                textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                textDirection:
+                    serviceLocator<LanguageController>().targetTextDirection,
                 children: [
                   PositionedDirectional(
                     top: margins,
@@ -230,13 +250,17 @@ class _PhoneNumberVerificationPageState extends State<PhoneNumberVerificationPag
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
-                          const AnimatedGap(8, duration: Duration(milliseconds: 500)),
+                          const AnimatedGap(8,
+                              duration: Duration(milliseconds: 500)),
                           Wrap(
-                            textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                            textDirection: serviceLocator<LanguageController>()
+                                .targetTextDirection,
                             children: [
                               Text(
                                 'Hi,',
-                                textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                textDirection:
+                                    serviceLocator<LanguageController>()
+                                        .targetTextDirection,
                                 style: context.headlineLarge!.copyWith(
                                   fontWeight: FontWeight.bold,
                                   height: 0.9,
@@ -247,13 +271,17 @@ class _PhoneNumberVerificationPageState extends State<PhoneNumberVerificationPag
                             ],
                           ),
 
-                          const AnimatedGap(12, duration: Duration(milliseconds: 500)),
+                          const AnimatedGap(12,
+                              duration: Duration(milliseconds: 500)),
                           Wrap(
-                            textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                            textDirection: serviceLocator<LanguageController>()
+                                .targetTextDirection,
                             children: [
                               Text(
                                 'Create better together.',
-                                textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                textDirection:
+                                    serviceLocator<LanguageController>()
+                                        .targetTextDirection,
                                 style: GoogleFonts.raleway(
                                   textStyle: context.headlineMedium!.copyWith(
                                     fontWeight: FontWeight.bold,
@@ -263,13 +291,17 @@ class _PhoneNumberVerificationPageState extends State<PhoneNumberVerificationPag
                               ).translate(),
                             ],
                           ),
-                          const AnimatedGap(4, duration: Duration(milliseconds: 500)),
+                          const AnimatedGap(4,
+                              duration: Duration(milliseconds: 500)),
                           Wrap(
-                            textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                            textDirection: serviceLocator<LanguageController>()
+                                .targetTextDirection,
                             children: [
                               Text(
                                 'Join with us',
-                                textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                textDirection:
+                                    serviceLocator<LanguageController>()
+                                        .targetTextDirection,
                                 style: context.bodyMedium!.copyWith(
                                   fontSize: 18,
                                   fontStyle: FontStyle.normal,
@@ -277,7 +309,8 @@ class _PhoneNumberVerificationPageState extends State<PhoneNumberVerificationPag
                               ).translate(),
                             ],
                           ),
-                          const AnimatedGap(36, duration: Duration(milliseconds: 500)),
+                          const AnimatedGap(36,
+                              duration: Duration(milliseconds: 500)),
 
                           /* SizedBox(
                                 child: Wrap(
@@ -294,12 +327,15 @@ class _PhoneNumberVerificationPageState extends State<PhoneNumberVerificationPag
                               ),
                               const AnimatedGap(6, duration: Duration(milliseconds: 500)),*/
                           Row(
-                            textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                            textDirection: serviceLocator<LanguageController>()
+                                .targetTextDirection,
                             mainAxisSize: MainAxisSize.min,
                             children: [
                               Expanded(
                                 child: Directionality(
-                                  textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                  textDirection:
+                                      serviceLocator<LanguageController>()
+                                          .targetTextDirection,
                                   child: PhoneNumberFieldWidget(
                                     key: const Key('user-phone-number-widget'),
                                     isCountryChipPersistent: false,
@@ -323,49 +359,65 @@ class _PhoneNumberVerificationPageState extends State<PhoneNumberVerificationPag
                                     onPhoneNumberChanged: onPhoneNumberChanged,
                                     //phoneNumberValidationChanged: phoneNumberValidationChanged,
                                     haveStateManagement: false,
-                                    keyboardType: const TextInputType.numberWithOptions(),
+                                    keyboardType:
+                                        const TextInputType.numberWithOptions(),
                                     textInputAction: TextInputAction.done,
                                   ),
                                 ),
                               ),
                             ],
                           ),
-                          const AnimatedGap(14, duration: Duration(milliseconds: 400)),
+                          const AnimatedGap(14,
+                              duration: Duration(milliseconds: 400)),
                           Wrap(
-                            textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                            textDirection: serviceLocator<LanguageController>()
+                                .targetTextDirection,
                             children: [
                               Text(
                                 'A 6 digit OTP code will be sent via SMS to verify your mobile number',
                                 style: context.labelMedium!.copyWith(
                                   color: Color.fromRGBO(127, 129, 132, 1),
                                 ),
-                                textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                textDirection:
+                                    serviceLocator<LanguageController>()
+                                        .targetTextDirection,
                               ).translate(),
                             ],
                           ),
-                          const AnimatedGap(26, duration: Duration(milliseconds: 400)),
+                          const AnimatedGap(26,
+                              duration: Duration(milliseconds: 400)),
                           //const Spacer(),
                           SizedBox(
                             width: context.width,
-                            child: ValueListenableBuilder<PhoneNumberVerification>(
-                              valueListenable: valueNotifierPhoneNumberVerification,
+                            child:
+                                ValueListenableBuilder<PhoneNumberVerification>(
+                              valueListenable:
+                                  valueNotifierPhoneNumberVerification,
                               builder: (context, value, child) {
                                 return ElevatedButton(
-                                  key: const Key('phone-number_verification-button-key'),
+                                  key: const Key(
+                                      'phone-number_verification-button-key'),
                                   style: ElevatedButton.styleFrom(
-                                    disabledBackgroundColor: Color.fromRGBO(255, 219, 208, 1),
+                                    disabledBackgroundColor:
+                                        Color.fromRGBO(255, 219, 208, 1),
                                     disabledForegroundColor: Colors.white,
                                   ),
-                                  onPressed: (value == PhoneNumberVerification.valid) ? verifyPhoneNumber : null,
+                                  onPressed:
+                                      (value == PhoneNumberVerification.valid)
+                                          ? verifyPhoneNumber
+                                          : null,
                                   child: Text(
                                     'Get OTP',
-                                    textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                    textDirection:
+                                        serviceLocator<LanguageController>()
+                                            .targetTextDirection,
                                   ).translate(),
                                 );
                               },
                             ),
                           ),
-                          const AnimatedGap(26, duration: Duration(milliseconds: 500)),
+                          const AnimatedGap(26,
+                              duration: Duration(milliseconds: 500)),
                           const TermsConditionStatementWidget(),
                         ],
                       ),

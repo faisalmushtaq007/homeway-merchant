@@ -1,7 +1,16 @@
 part of 'package:homemakers_merchant/app/features/menu/index.dart';
 
-class GetAllCategoryUseCase
-    extends CategoryQueryAllUseCaseIORecord<Category, Category, int, int, String?, String?, String?, Timestamp?, Timestamp?, DataSourceState<List<Category>>> {
+class GetAllCategoryUseCase extends CategoryQueryAllUseCaseIORecord<
+    Category,
+    Category,
+    int,
+    int,
+    String?,
+    String?,
+    String?,
+    Timestamp?,
+    Timestamp?,
+    DataSourceState<List<Category>>> {
   GetAllCategoryUseCase({
     required this.menuRepository,
   });

@@ -56,7 +56,8 @@ class AttachmentButton extends StatelessWidget {
                     image: 'assets/image/icon-attachment.png',
                     filterQuality: FilterQuality.high,
                     borderRadius: BorderRadiusDirectional.circular(10),
-                    imageType: findImageType('assets/image/icon-attachment.png'),
+                    imageType:
+                        findImageType('assets/image/icon-attachment.png'),
                     imageShape: ImageShape.rectangle,
                     color: context.colorScheme.primary,
                     boxFit: BoxFit.cover,
@@ -72,7 +73,8 @@ class AttachmentButton extends StatelessWidget {
           onPressed: isLoading ? null : onPressed,
           padding: padding,
           splashRadius: 24,
-          tooltip: InheritedL10n.of(context).l10n.attachmentButtonAccessibilityLabel,
+          tooltip:
+              InheritedL10n.of(context).l10n.attachmentButtonAccessibilityLabel,
         ),
       );
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:homemakers_merchant/app/features/chat/domain/entities/chat_types_entity.dart' as types;
+import 'package:homemakers_merchant/app/features/chat/domain/entities/chat_types_entity.dart'
+    as types;
 import 'package:homemakers_merchant/core/extensions/app_extension.dart';
 import 'package:homemakers_merchant/shared/widgets/universal/image_loader/image_helper.dart';
 import 'package:homemakers_merchant/utils/image_type.dart';

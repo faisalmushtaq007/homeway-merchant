@@ -49,7 +49,8 @@ class DefaultFirebaseOptions {
     messagingSenderId: '297962461340',
     projectId: 'homemakers-merchant-prod',
     authDomain: 'homemakers-merchant-prod.firebaseapp.com',
-    databaseURL: 'https://homemakers-merchant-prod-default-rtdb.europe-west1.firebasedatabase.app',
+    databaseURL:
+        'https://homemakers-merchant-prod-default-rtdb.europe-west1.firebasedatabase.app',
     storageBucket: 'homemakers-merchant-prod.appspot.com',
     measurementId: 'G-TTRN4GP630',
   );
@@ -59,7 +60,8 @@ class DefaultFirebaseOptions {
     appId: '1:297962461340:android:ee371866e177d3d5907559',
     messagingSenderId: '297962461340',
     projectId: 'homemakers-merchant-prod',
-    databaseURL: 'https://homemakers-merchant-prod-default-rtdb.europe-west1.firebasedatabase.app',
+    databaseURL:
+        'https://homemakers-merchant-prod-default-rtdb.europe-west1.firebasedatabase.app',
     storageBucket: 'homemakers-merchant-prod.appspot.com',
   );
 
@@ -68,9 +70,11 @@ class DefaultFirebaseOptions {
     appId: '1:297962461340:ios:cd5c6d90237155f9907559',
     messagingSenderId: '297962461340',
     projectId: 'homemakers-merchant-prod',
-    databaseURL: 'https://homemakers-merchant-prod-default-rtdb.europe-west1.firebasedatabase.app',
+    databaseURL:
+        'https://homemakers-merchant-prod-default-rtdb.europe-west1.firebasedatabase.app',
     storageBucket: 'homemakers-merchant-prod.appspot.com',
-    iosClientId: '297962461340-vuf56s5rp31slf2a72n0cmjqrtg4ptd1.apps.googleusercontent.com',
+    iosClientId:
+        '297962461340-vuf56s5rp31slf2a72n0cmjqrtg4ptd1.apps.googleusercontent.com',
     iosBundleId: 'com.homemakers.merchant.prod',
   );
 
@@ -79,9 +83,11 @@ class DefaultFirebaseOptions {
     appId: '1:297962461340:ios:50f87be0d3f7487c907559',
     messagingSenderId: '297962461340',
     projectId: 'homemakers-merchant-prod',
-    databaseURL: 'https://homemakers-merchant-prod-default-rtdb.europe-west1.firebasedatabase.app',
+    databaseURL:
+        'https://homemakers-merchant-prod-default-rtdb.europe-west1.firebasedatabase.app',
     storageBucket: 'homemakers-merchant-prod.appspot.com',
-    iosClientId: '297962461340-eg5c9bjk88s09bbnaqq9alglhtpbrd77.apps.googleusercontent.com',
+    iosClientId:
+        '297962461340-eg5c9bjk88s09bbnaqq9alglhtpbrd77.apps.googleusercontent.com',
     iosBundleId: 'com.homemakers.merchant.RunnerTests.prod',
   );
 }

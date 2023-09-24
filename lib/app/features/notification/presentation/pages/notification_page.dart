@@ -9,7 +9,8 @@ class NotificationPage extends StatefulWidget {
 
 class _NotificationPageController extends State<NotificationPage> {
   static const _pageSize = 20;
-  final PagingController<int, NotificationEntity> _pagingController = PagingController(firstPageKey: 1);
+  final PagingController<int, NotificationEntity> _pagingController =
+      PagingController(firstPageKey: 1);
   String? _searchTerm;
   late final ScrollController scrollController;
   late final ScrollController innerScrollController;
@@ -47,7 +48,8 @@ class _NotificationPageController extends State<NotificationPage> {
         NotificationEntity(
           body: NotificationBody(
             category: 'Business Profile',
-            message: 'Lorem ipsum is placeholder text commonly used in the graphic, print, and publishing industries for previewing layouts and visual mockups',
+            message:
+                'Lorem ipsum is placeholder text commonly used in the graphic, print, and publishing industries for previewing layouts and visual mockups',
           ),
           title: 'Registration',
           subtitle: 'Your business account is created successfully',
@@ -59,7 +61,8 @@ class _NotificationPageController extends State<NotificationPage> {
         NotificationEntity(
           body: NotificationBody(
             category: 'Business Document',
-            message: 'Lorem ipsum is placeholder text commonly used in the graphic, print, and publishing industries for previewing layouts and visual mockups',
+            message:
+                'Lorem ipsum is placeholder text commonly used in the graphic, print, and publishing industries for previewing layouts and visual mockups',
           ),
           title: 'Business Document',
           subtitle: 'Your document account is uploaded successfully',
@@ -71,7 +74,8 @@ class _NotificationPageController extends State<NotificationPage> {
         NotificationEntity(
           body: NotificationBody(
             category: 'Order',
-            message: 'Lorem ipsum is placeholder text commonly used in the graphic, print, and publishing industries for previewing layouts and visual mockups',
+            message:
+                'Lorem ipsum is placeholder text commonly used in the graphic, print, and publishing industries for previewing layouts and visual mockups',
           ),
           title: 'New Order',
           subtitle: 'One new order is placed into your store',
@@ -83,7 +87,8 @@ class _NotificationPageController extends State<NotificationPage> {
         NotificationEntity(
           body: NotificationBody(
             category: 'Order',
-            message: 'Lorem ipsum is placeholder text commonly used in the graphic, print, and publishing industries for previewing layouts and visual mockups',
+            message:
+                'Lorem ipsum is placeholder text commonly used in the graphic, print, and publishing industries for previewing layouts and visual mockups',
           ),
           title: 'Order Delivered',
           subtitle: 'Your business account is created successfully',
@@ -95,10 +100,12 @@ class _NotificationPageController extends State<NotificationPage> {
         NotificationEntity(
           body: NotificationBody(
             category: 'Payment',
-            message: 'Lorem ipsum is placeholder text commonly used in the graphic, print, and publishing industries for previewing layouts and visual mockups',
+            message:
+                'Lorem ipsum is placeholder text commonly used in the graphic, print, and publishing industries for previewing layouts and visual mockups',
           ),
           title: 'Payment Send',
-          subtitle: 'You have successfully send the amount from wallet to your payment bank',
+          subtitle:
+              'You have successfully send the amount from wallet to your payment bank',
           flag: 1,
           priority: 1,
           type: 'Payment',
@@ -107,7 +114,8 @@ class _NotificationPageController extends State<NotificationPage> {
         NotificationEntity(
           body: NotificationBody(
             category: 'Business Profile',
-            message: 'Lorem ipsum is placeholder text commonly used in the graphic, print, and publishing industries for previewing layouts and visual mockups',
+            message:
+                'Lorem ipsum is placeholder text commonly used in the graphic, print, and publishing industries for previewing layouts and visual mockups',
           ),
           title: 'Registration',
           subtitle: 'Your business account is created successfully',
@@ -119,7 +127,8 @@ class _NotificationPageController extends State<NotificationPage> {
         NotificationEntity(
           body: NotificationBody(
             category: 'Business Document',
-            message: 'Lorem ipsum is placeholder text commonly used in the graphic, print, and publishing industries for previewing layouts and visual mockups',
+            message:
+                'Lorem ipsum is placeholder text commonly used in the graphic, print, and publishing industries for previewing layouts and visual mockups',
           ),
           title: 'Business Document',
           subtitle: 'Your document account is uploaded successfully',
@@ -131,7 +140,8 @@ class _NotificationPageController extends State<NotificationPage> {
         NotificationEntity(
           body: NotificationBody(
             category: 'Order',
-            message: 'Lorem ipsum is placeholder text commonly used in the graphic, print, and publishing industries for previewing layouts and visual mockups',
+            message:
+                'Lorem ipsum is placeholder text commonly used in the graphic, print, and publishing industries for previewing layouts and visual mockups',
           ),
           title: 'New Order',
           subtitle: 'One new order is placed into your store',
@@ -143,7 +153,8 @@ class _NotificationPageController extends State<NotificationPage> {
         NotificationEntity(
           body: NotificationBody(
             category: 'Order',
-            message: 'Lorem ipsum is placeholder text commonly used in the graphic, print, and publishing industries for previewing layouts and visual mockups',
+            message:
+                'Lorem ipsum is placeholder text commonly used in the graphic, print, and publishing industries for previewing layouts and visual mockups',
           ),
           title: 'Order Delivered',
           subtitle: 'Your business account is created successfully',
@@ -155,10 +166,12 @@ class _NotificationPageController extends State<NotificationPage> {
         NotificationEntity(
           body: NotificationBody(
             category: 'Payment',
-            message: 'Lorem ipsum is placeholder text commonly used in the graphic, print, and publishing industries for previewing layouts and visual mockups',
+            message:
+                'Lorem ipsum is placeholder text commonly used in the graphic, print, and publishing industries for previewing layouts and visual mockups',
           ),
           title: 'Payment Send',
-          subtitle: 'You have successfully send the amount from wallet to your payment bank',
+          subtitle:
+              'You have successfully send the amount from wallet to your payment bank',
           flag: 1,
           priority: 1,
           type: 'Payment',
@@ -167,7 +180,8 @@ class _NotificationPageController extends State<NotificationPage> {
         NotificationEntity(
           body: NotificationBody(
             category: 'Business Profile',
-            message: 'Lorem ipsum is placeholder text commonly used in the graphic, print, and publishing industries for previewing layouts and visual mockups',
+            message:
+                'Lorem ipsum is placeholder text commonly used in the graphic, print, and publishing industries for previewing layouts and visual mockups',
           ),
           title: 'Registration',
           subtitle: 'Your business account is created successfully',
@@ -179,7 +193,8 @@ class _NotificationPageController extends State<NotificationPage> {
         NotificationEntity(
           body: NotificationBody(
             category: 'Business Document',
-            message: 'Lorem ipsum is placeholder text commonly used in the graphic, print, and publishing industries for previewing layouts and visual mockups',
+            message:
+                'Lorem ipsum is placeholder text commonly used in the graphic, print, and publishing industries for previewing layouts and visual mockups',
           ),
           title: 'Business Document',
           subtitle: 'Your document account is uploaded successfully',
@@ -191,7 +206,8 @@ class _NotificationPageController extends State<NotificationPage> {
         NotificationEntity(
           body: NotificationBody(
             category: 'Order',
-            message: 'Lorem ipsum is placeholder text commonly used in the graphic, print, and publishing industries for previewing layouts and visual mockups',
+            message:
+                'Lorem ipsum is placeholder text commonly used in the graphic, print, and publishing industries for previewing layouts and visual mockups',
           ),
           title: 'New Order',
           subtitle: 'One new order is placed into your store',
@@ -203,7 +219,8 @@ class _NotificationPageController extends State<NotificationPage> {
         NotificationEntity(
           body: NotificationBody(
             category: 'Order',
-            message: 'Lorem ipsum is placeholder text commonly used in the graphic, print, and publishing industries for previewing layouts and visual mockups',
+            message:
+                'Lorem ipsum is placeholder text commonly used in the graphic, print, and publishing industries for previewing layouts and visual mockups',
           ),
           title: 'Order Delivered',
           subtitle: 'Your business account is created successfully',
@@ -215,10 +232,12 @@ class _NotificationPageController extends State<NotificationPage> {
         NotificationEntity(
           body: NotificationBody(
             category: 'Payment',
-            message: 'Lorem ipsum is placeholder text commonly used in the graphic, print, and publishing industries for previewing layouts and visual mockups',
+            message:
+                'Lorem ipsum is placeholder text commonly used in the graphic, print, and publishing industries for previewing layouts and visual mockups',
           ),
           title: 'Payment Send',
-          subtitle: 'You have successfully send the amount from wallet to your payment bank',
+          subtitle:
+              'You have successfully send the amount from wallet to your payment bank',
           flag: 1,
           priority: 1,
           type: 'Payment',
@@ -233,7 +252,8 @@ class _NotificationPageController extends State<NotificationPage> {
       localDb: (data, meta) {
         appLog.d('Saved notification to local ${data?.length}');
       },
-      error: (dataSourceFailure, reason, error, networkException, stackTrace, exception, extra) {
+      error: (dataSourceFailure, reason, error, networkException, stackTrace,
+          exception, extra) {
         appLog.d('Saved notification to local $reason');
       },
     );
@@ -262,7 +282,8 @@ class _NotificationPageController extends State<NotificationPage> {
             newItems = data!.toList();
           }
         },
-        error: (dataSourceFailure, reason, error, networkException, stackTrace, exception, extra) {
+        error: (dataSourceFailure, reason, error, networkException, stackTrace,
+            exception, extra) {
           appLog.d('Get notification to local $reason');
         },
       );
@@ -295,14 +316,16 @@ class _NotificationPageController extends State<NotificationPage> {
   Widget build(BuildContext context) => _NotificationPageView(this);
 }
 
-class _NotificationPageView extends WidgetView<NotificationPage, _NotificationPageController> {
+class _NotificationPageView
+    extends WidgetView<NotificationPage, _NotificationPageController> {
   const _NotificationPageView(super.state);
 
   @override
   Widget build(BuildContext context) {
     final MediaQueryData media = MediaQuery.of(context);
     final double margins = GlobalApp.responsiveInsets(media.size.width);
-    final double topPadding = margins; //media.padding.top + kToolbarHeight + margins; //margins * 1.5;
+    final double topPadding =
+        margins; //media.padding.top + kToolbarHeight + margins; //margins * 1.5;
     final double bottomPadding = margins; //media.padding.bottom + margins;
     final double width = media.size.width;
     final ThemeData theme = Theme.of(context);
@@ -321,7 +344,8 @@ class _NotificationPageView extends WidgetView<NotificationPage, _NotificationPa
             automaticallyImplyLeading: true,
             title: Text(
               'Your Notifications',
-              textDirection: serviceLocator<LanguageController>().targetTextDirection,
+              textDirection:
+                  serviceLocator<LanguageController>().targetTextDirection,
             ),
             actions: const [
               Padding(
@@ -350,9 +374,11 @@ class _NotificationPageView extends WidgetView<NotificationPage, _NotificationPa
                 slivers: <Widget>[
                   PagedSliverList<int, NotificationEntity>(
                     pagingController: state._pagingController,
-                    builderDelegate: PagedChildBuilderDelegate<NotificationEntity>(
+                    builderDelegate:
+                        PagedChildBuilderDelegate<NotificationEntity>(
                       animateTransitions: true,
-                      itemBuilder: (context, notificationResult, index) => NotificationCardWidget(
+                      itemBuilder: (context, notificationResult, index) =>
+                          NotificationCardWidget(
                         key: ValueKey(index),
                         notificationEntity: notificationResult,
                       ),

@@ -17,7 +17,9 @@ extension HttpExtensions on String {
 
     try {
       final response = await http.get(Uri.http(this, endPoint));
-      return response.statusCode == 200 ? convert.jsonDecode(response.body) : print('Request failed with status: ${response.statusCode}.');
+      return response.statusCode == 200
+          ? convert.jsonDecode(response.body)
+          : print('Request failed with status: ${response.statusCode}.');
     } on Exception catch (e) {
       return Future.error(e);
     }
@@ -30,12 +32,16 @@ extension HttpExtensions on String {
   /// current string is www.mydomain.com
   /// endpoint param - user
   /// result request -> www.mydomain.com/user
-  Future<dynamic> httpPost(String endPoint, String json, [Map<String, String> headers = _defaultHeaders]) async {
+  Future<dynamic> httpPost(String endPoint, String json,
+      [Map<String, String> headers = _defaultHeaders]) async {
     if (this.isEmptyOrNull) return;
 
     try {
-      final response = await http.post(Uri.http(this, endPoint), headers: headers, body: json);
-      return response.statusCode == 200 ? convert.jsonDecode(response.body) : print('Request failed with status: ${response.statusCode}.');
+      final response = await http.post(Uri.http(this, endPoint),
+          headers: headers, body: json);
+      return response.statusCode == 200
+          ? convert.jsonDecode(response.body)
+          : print('Request failed with status: ${response.statusCode}.');
     } on Exception catch (e) {
       return Future.error(e);
     }
@@ -48,12 +54,16 @@ extension HttpExtensions on String {
   /// current string is www.mydomain.com
   /// endpoint param - user
   /// result request -> www.mydomain.com/user
-  Future<dynamic> httpPut(String endPoint, String json, [Map<String, String> headers = _defaultHeaders]) async {
+  Future<dynamic> httpPut(String endPoint, String json,
+      [Map<String, String> headers = _defaultHeaders]) async {
     if (this.isEmptyOrNull) return;
 
     try {
-      final response = await http.put(Uri.http(this, endPoint), headers: headers, body: json);
-      return response.statusCode == 200 ? convert.jsonDecode(response.body) : print('Request failed with status: ${response.statusCode}.');
+      final response = await http.put(Uri.http(this, endPoint),
+          headers: headers, body: json);
+      return response.statusCode == 200
+          ? convert.jsonDecode(response.body)
+          : print('Request failed with status: ${response.statusCode}.');
     } on Exception catch (e) {
       return Future.error(e);
     }
@@ -66,12 +76,16 @@ extension HttpExtensions on String {
   /// current string is www.mydomain.com
   /// endpoint param - user
   /// result request -> www.mydomain.com/user
-  Future<dynamic> httpDelete(String endPoint, {Map<String, String>? headers}) async {
+  Future<dynamic> httpDelete(String endPoint,
+      {Map<String, String>? headers}) async {
     if (this.isEmptyOrNull) return;
 
     try {
-      final response = await http.delete(Uri.http(this, endPoint), headers: headers);
-      return response.statusCode == 200 ? convert.jsonDecode(response.body) : print('Request failed with status: ${response.statusCode}.');
+      final response =
+          await http.delete(Uri.http(this, endPoint), headers: headers);
+      return response.statusCode == 200
+          ? convert.jsonDecode(response.body)
+          : print('Request failed with status: ${response.statusCode}.');
     } on Exception catch (e) {
       return Future.error(e);
     }

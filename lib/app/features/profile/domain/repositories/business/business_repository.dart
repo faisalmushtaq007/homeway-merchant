@@ -33,13 +33,15 @@ abstract interface class UserBusinessProfileRepository {
   });
 
   // BusinessType
-  Future<DataSourceState<(BusinessProfileEntity, BusinessTypeEntity)>> saveBusinessType({
+  Future<DataSourceState<(BusinessProfileEntity, BusinessTypeEntity)>>
+      saveBusinessType({
     required BusinessTypeEntity businessTypeEntity,
     AppUserEntity? appUserEntity,
     BusinessProfileEntity? businessProfileEntity,
   });
 
-  Future<DataSourceState<(BusinessProfileEntity, BusinessTypeEntity)>> editBusinessType({
+  Future<DataSourceState<(BusinessProfileEntity, BusinessTypeEntity)>>
+      editBusinessType({
     required BusinessTypeEntity businessTypeEntity,
     required int businessTypeID,
     AppUserEntity? appUserEntity,
@@ -58,14 +60,16 @@ abstract interface class UserBusinessProfileRepository {
     BusinessProfileEntity? businessProfileEntity,
   });
 
-  Future<DataSourceState<(BusinessProfileEntity, BusinessTypeEntity)>> getBusinessType({
+  Future<DataSourceState<(BusinessProfileEntity, BusinessTypeEntity)>>
+      getBusinessType({
     required int businessTypeID,
     AppUserEntity? appUserEntity,
     BusinessProfileEntity? businessProfileEntity,
     BusinessTypeEntity? businessTypeEntity,
   });
 
-  Future<DataSourceState<(BusinessProfileEntity, List<BusinessTypeEntity>)>> getAllBusinessType({
+  Future<DataSourceState<(BusinessProfileEntity, List<BusinessTypeEntity>)>>
+      getAllBusinessType({
     AppUserEntity? appUserEntity,
     BusinessProfileEntity? businessProfileEntity,
   });
@@ -80,7 +84,8 @@ abstract interface class UserBusinessProfileRepository {
     Map<String, dynamic> metaInfo = const {},
   });
 
-  Future<DataSourceState<List<BusinessProfileEntity>>> getAllBusinessProfilePagination({
+  Future<DataSourceState<List<BusinessProfileEntity>>>
+      getAllBusinessProfilePagination({
     int pageKey = 0,
     int pageSize = 10,
     String? searchText,
@@ -95,6 +100,4 @@ abstract interface class UserBusinessProfileRepository {
     required List<BusinessProfileEntity> businessProfiles,
     bool hasUpdateAll = false,
   });
-
-
 }

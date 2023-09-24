@@ -1,6 +1,7 @@
 part of 'package:homemakers_merchant/app/features/menu/index.dart';
 
-class BindMenuWithUserUseCase extends BindingUseCase<List<MenuEntity>, AppUserEntity, DataSourceState<AppUserEntity>> {
+class BindMenuWithUserUseCase extends BindingUseCase<List<MenuEntity>,
+    AppUserEntity, DataSourceState<AppUserEntity>> {
   BindMenuWithUserUseCase({
     required this.menuRepository,
   });
@@ -8,7 +9,10 @@ class BindMenuWithUserUseCase extends BindingUseCase<List<MenuEntity>, AppUserEn
   final MenuRepository menuRepository;
 
   @override
-  Future<DataSourceState<AppUserEntity>> call({required List<MenuEntity> source, required AppUserEntity destination}) async {
-    return menuRepository.bindMenuWithUser(source: source, destination: destination);
+  Future<DataSourceState<AppUserEntity>> call(
+      {required List<MenuEntity> source,
+      required AppUserEntity destination}) async {
+    return menuRepository.bindMenuWithUser(
+        source: source, destination: destination);
   }
 }

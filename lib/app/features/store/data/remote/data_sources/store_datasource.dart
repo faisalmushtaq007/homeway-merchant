@@ -47,16 +47,25 @@ abstract interface class StoreDataSource {
 
   Future<ApiResultState<List<StoreOwnDeliveryPartnersInfo>>> getAllDriver();
 
-  Future<ApiResultState<List<StoreEntity>>> bindDriverWithStores({required List<StoreOwnDeliveryPartnersInfo> source, required List<StoreEntity> destination});
+  Future<ApiResultState<List<StoreEntity>>> bindDriverWithStores(
+      {required List<StoreOwnDeliveryPartnersInfo> source,
+      required List<StoreEntity> destination});
 
   Future<ApiResultState<List<StoreEntity>>> unBindDriverWithStores(
-      {required List<StoreOwnDeliveryPartnersInfo> source, required List<StoreEntity> destination});
+      {required List<StoreOwnDeliveryPartnersInfo> source,
+      required List<StoreEntity> destination});
 
-  Future<ApiResultState<AppUserEntity>> bindDriverWithUser({required List<StoreOwnDeliveryPartnersInfo> source, required AppUserEntity destination});
+  Future<ApiResultState<AppUserEntity>> bindDriverWithUser(
+      {required List<StoreOwnDeliveryPartnersInfo> source,
+      required AppUserEntity destination});
 
-  Future<ApiResultState<AppUserEntity>> unBindDriversWithUser({required List<StoreOwnDeliveryPartnersInfo> source, required AppUserEntity destination});
+  Future<ApiResultState<AppUserEntity>> unBindDriversWithUser(
+      {required List<StoreOwnDeliveryPartnersInfo> source,
+      required AppUserEntity destination});
 
-  Future<ApiResultState<AppUserEntity>> bindStoreWithUser({required List<StoreEntity> source, required AppUserEntity destination});
+  Future<ApiResultState<AppUserEntity>> bindStoreWithUser(
+      {required List<StoreEntity> source, required AppUserEntity destination});
 
-  Future<ApiResultState<AppUserEntity>> unBindStoreWithUser({required List<StoreEntity> source, required AppUserEntity destination});
+  Future<ApiResultState<AppUserEntity>> unBindStoreWithUser(
+      {required List<StoreEntity> source, required AppUserEntity destination});
 }

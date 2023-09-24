@@ -31,7 +31,11 @@ abstract class Range<T extends Comparable> {
 
   @override
   bool operator ==(Object other) =>
-      identical(this, other) || other is Range && runtimeType == other.runtimeType && start == other.start && endInclusive == other.endInclusive;
+      identical(this, other) ||
+      other is Range &&
+          runtimeType == other.runtimeType &&
+          start == other.start &&
+          endInclusive == other.endInclusive;
 
   @override
   int get hashCode => start.hashCode ^ endInclusive.hashCode;
@@ -57,7 +61,8 @@ class ComparableRange<T extends Comparable<T>> extends Range<T> {
 extension ComparableRangeX<T extends Comparable<T>> on T {
   /// Creates a [Range] from this [Comparable] value
   /// to the specified [endInclusive] value.
-  ComparableRange<T> rangeTo(T endInclusive) => ComparableRange<T>(this, endInclusive);
+  ComparableRange<T> rangeTo(T endInclusive) =>
+      ComparableRange<T>(this, endInclusive);
 }
 
 /// The equivalent for [double] is [DoubleRangeExtension]
@@ -184,7 +189,11 @@ class IntProgression extends IterableBase<int> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is IntProgression && runtimeType == other.runtimeType && _first == other._first && _last == other._last && stepSize == other.stepSize;
+      other is IntProgression &&
+          runtimeType == other.runtimeType &&
+          _first == other._first &&
+          _last == other._last &&
+          stepSize == other.stepSize;
 
   @override
   int get hashCode => _first.hashCode ^ _last.hashCode ^ stepSize.hashCode;

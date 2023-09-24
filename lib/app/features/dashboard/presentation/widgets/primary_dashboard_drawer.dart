@@ -8,7 +8,8 @@ class PrimaryDashboardDrawer extends StatefulWidget {
   final bool isMainDrawerPage;
 
   @override
-  _PrimaryDashboardDrawerController createState() => _PrimaryDashboardDrawerController();
+  _PrimaryDashboardDrawerController createState() =>
+      _PrimaryDashboardDrawerController();
 }
 
 class _PrimaryDashboardDrawerController extends State<PrimaryDashboardDrawer> {
@@ -307,7 +308,8 @@ class _PrimaryDashboardDrawerController extends State<PrimaryDashboardDrawer> {
   Widget build(BuildContext context) => _PrimaryDashboardDrawerView(this);
 }
 
-class _PrimaryDashboardDrawerView extends WidgetView<PrimaryDashboardDrawer, _PrimaryDashboardDrawerController> {
+class _PrimaryDashboardDrawerView extends WidgetView<PrimaryDashboardDrawer,
+    _PrimaryDashboardDrawerController> {
   const _PrimaryDashboardDrawerView(super.state);
 
   @override
@@ -326,7 +328,8 @@ class _PrimaryDashboardDrawerView extends WidgetView<PrimaryDashboardDrawer, _Pr
                 accountName: Text(
                   "Thomas Shelby",
                   style: context.titleLarge!.copyWith(),
-                  textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                  textDirection:
+                      serviceLocator<LanguageController>().targetTextDirection,
                 ).translate(),
                 accountEmail: Text("thomashomeservice@gmail.com"),
                 currentAccountPictureSize: Size.square(50),
@@ -335,12 +338,14 @@ class _PrimaryDashboardDrawerView extends WidgetView<PrimaryDashboardDrawer, _Pr
                   child: Text(
                     "T",
                     style: context.titleMedium!.copyWith(),
-                    textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                    textDirection: serviceLocator<LanguageController>()
+                        .targetTextDirection,
                   ).translate(), //Text
                 ), //circleAvatar
               ), //UserAccountDrawerHeader
             ),
-            for (final DrawerEntity drawerEntity in state.drawerEntities) buildDrawerTiles(context, drawerEntity),
+            for (final DrawerEntity drawerEntity in state.drawerEntities)
+              buildDrawerTiles(context, drawerEntity),
           ],
         ),
       ),
@@ -359,16 +364,22 @@ class _PrimaryDashboardDrawerView extends WidgetView<PrimaryDashboardDrawer, _Pr
         expandedCrossAxisAlignment: drawerEntity.expandedCrossAxisAlignment,
         title: Text(
           drawerEntity.drawerName,
-          textDirection: serviceLocator<LanguageController>().targetTextDirection,
+          textDirection:
+              serviceLocator<LanguageController>().targetTextDirection,
         ).translate(),
-        children: drawerEntity.children.map<Widget>((DrawerEntity entity) => buildDrawerTiles(context, entity)).toList().cast<Widget>(),
+        children: drawerEntity.children
+            .map<Widget>(
+                (DrawerEntity entity) => buildDrawerTiles(context, entity))
+            .toList()
+            .cast<Widget>(),
       ),
       fallbackBuilder: (BuildContext context) => ListTile(
         leading: drawerEntity.leading,
         onTap: drawerEntity.onPressed,
         title: Text(
           drawerEntity.drawerName,
-          textDirection: serviceLocator<LanguageController>().targetTextDirection,
+          textDirection:
+              serviceLocator<LanguageController>().targetTextDirection,
         ).translate(),
       ),
     );

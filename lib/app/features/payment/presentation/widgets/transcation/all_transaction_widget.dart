@@ -9,12 +9,14 @@ class AllTranscationsWidget extends StatefulWidget {
   final bool hasShownInWalletDashboard;
 
   @override
-  _AllTranscationsWidgetController createState() => _AllTranscationsWidgetController();
+  _AllTranscationsWidgetController createState() =>
+      _AllTranscationsWidgetController();
 }
 
 class _AllTranscationsWidgetController extends State<AllTranscationsWidget> {
   late final ScrollController listViewBuilderScrollController;
-  WidgetState<TranscationEntity> widgetState = const WidgetState<TranscationEntity>.none();
+  WidgetState<TranscationEntity> widgetState =
+      const WidgetState<TranscationEntity>.none();
 
   // Pagination
   int pageSize = 20;
@@ -22,18 +24,22 @@ class _AllTranscationsWidgetController extends State<AllTranscationsWidget> {
   String? searchText;
   String? sorting;
   String? filtering;
-  final PagingController<int, TranscationEntity> _pagingController = PagingController(firstPageKey: 0);
+  final PagingController<int, TranscationEntity> _pagingController =
+      PagingController(firstPageKey: 0);
   List<TranscationEntity> _allAvailableTranscations = [];
   String? _searchTerm;
   String activeLocale = 'en_US';
-  final Map<String, moment.MomentLocalization> locales = moment.MomentLocalizations.locales.map((key, value) => MapEntry(key, value()));
+  final Map<String, moment.MomentLocalization> locales = moment
+      .MomentLocalizations.locales
+      .map((key, value) => MapEntry(key, value()));
 
   @override
   void initState() {
     super.initState();
 
     listViewBuilderScrollController = ScrollController();
-    activeLocale = serviceLocator<LanguageController>().targetAppLanguage.value.toString();
+    activeLocale =
+        serviceLocator<LanguageController>().targetAppLanguage.value.toString();
     _allAvailableTranscations = [];
     _allAvailableTranscations.clear();
     _pagingController.nextPageKey = 0;
@@ -59,18 +65,22 @@ class _AllTranscationsWidgetController extends State<AllTranscationsWidget> {
     });
   }
 
-  Future<void> _fetchPage(int pageKey, {int pageSize = 10, String? searchItem, String? filter, String? sort}) async {
+  Future<void> _fetchPage(int pageKey,
+      {int pageSize = 10,
+      String? searchItem,
+      String? filter,
+      String? sort}) async {
     try {
       final newItems = await readTrackingData();
       final isLastPage = newItems.length < pageSize;
       if (isLastPage) {
         _pagingController.appendLastPage(newItems);
       } else {
-        if(widget.hasShownInWalletDashboard){
+        if (widget.hasShownInWalletDashboard) {
           // No update in pageKey
           final nextPageKey = pageKey;
           _pagingController.appendPage(newItems, nextPageKey);
-        }else {
+        } else {
           final nextPageKey = pageKey + 1;
           _pagingController.appendPage(newItems, nextPageKey);
         }
@@ -104,12 +114,14 @@ class _AllTranscationsWidgetController extends State<AllTranscationsWidget> {
   Widget build(BuildContext context) => _AllTranscationsWidgetView(this);
 }
 
-class _AllTranscationsWidgetView extends WidgetView<AllTranscationsWidget, _AllTranscationsWidgetController> {
+class _AllTranscationsWidgetView extends WidgetView<AllTranscationsWidget,
+    _AllTranscationsWidgetController> {
   const _AllTranscationsWidgetView(super.state);
 
   @override
   Widget build(BuildContext context) {
-    moment.Moment.setGlobalLocalization(moment.MomentLocalizations.byLocale(state.activeLocale)!);
+    moment.Moment.setGlobalLocalization(
+        moment.MomentLocalizations.byLocale(state.activeLocale)!);
     final moment.Moment now = moment.Moment.now();
     return SizedBox(
       child: RefreshIndicator(
@@ -135,13 +147,15 @@ class _AllTranscationsWidgetView extends WidgetView<AllTranscationsWidget, _AllT
                     child: ListTile(
                       minVerticalPadding: 0,
                       leading: CircleAvatar(
-                        backgroundColor: context.colorScheme.primaryContainer.withOpacity(0.9),
+                        backgroundColor: context.colorScheme.primaryContainer
+                            .withOpacity(0.9),
                         radius: 20,
                         child: ImageHelper(
                           image: getTranscationUserProfileName(item),
                           filterQuality: FilterQuality.high,
                           borderRadius: BorderRadiusDirectional.circular(10),
-                          imageType: findImageType(getTranscationUserProfileName(item)),
+                          imageType: findImageType(
+                              getTranscationUserProfileName(item)),
                           imageShape: ImageShape.rectangle,
                           boxFit: BoxFit.cover,
                           defaultErrorBuilderColor: Colors.blueGrey,
@@ -160,7 +174,8 @@ class _AllTranscationsWidgetView extends WidgetView<AllTranscationsWidget, _AllT
                       ),
                       title: Text(
                         getTranscationUserProfileName(item),
-                        textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                        textDirection: serviceLocator<LanguageController>()
+                            .targetTextDirection,
                         maxLines: 3,
                         overflow: TextOverflow.ellipsis,
                         softWrap: true,
@@ -170,7 +185,8 @@ class _AllTranscationsWidgetView extends WidgetView<AllTranscationsWidget, _AllT
                       ),
                       subtitle: Text(
                         getRecord(item, now).$1,
-                        textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                        textDirection: serviceLocator<LanguageController>()
+                            .targetTextDirection,
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                         softWrap: true,
@@ -183,17 +199,24 @@ class _AllTranscationsWidgetView extends WidgetView<AllTranscationsWidget, _AllT
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.center,
-                          textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                          textDirection: serviceLocator<LanguageController>()
+                              .targetTextDirection,
                           children: [
                             Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               crossAxisAlignment: CrossAxisAlignment.center,
-                              textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                              textDirection:
+                                  serviceLocator<LanguageController>()
+                                      .targetTextDirection,
                               children: [
                                 Icon(
-                                  (item.hasIncome) ? Icons.arrow_upward : Icons.arrow_downward,
+                                  (item.hasIncome)
+                                      ? Icons.arrow_upward
+                                      : Icons.arrow_downward,
                                   size: 18,
-                                  color: (item.hasIncome) ? '#38b000'.toColor : '#f95738'.toColor,
+                                  color: (item.hasIncome)
+                                      ? '#38b000'.toColor
+                                      : '#f95738'.toColor,
                                 ),
                                 /*Text(
                                   (item.hasIncome) ? '+' : '-',
@@ -207,10 +230,13 @@ class _AllTranscationsWidgetView extends WidgetView<AllTranscationsWidget, _AllT
                                   ),
                                   textAlign: TextAlign.center,
                                 ),*/
-                                const AnimatedGap(2, duration: Duration(milliseconds: 200)),
+                                const AnimatedGap(2,
+                                    duration: Duration(milliseconds: 200)),
                                 Text(
                                   getRecord(item, now).$2,
-                                  textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                  textDirection:
+                                      serviceLocator<LanguageController>()
+                                          .targetTextDirection,
                                   maxLines: 1,
                                   overflow: TextOverflow.ellipsis,
                                   softWrap: true,
@@ -224,12 +250,16 @@ class _AllTranscationsWidgetView extends WidgetView<AllTranscationsWidget, _AllT
                             Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               //crossAxisAlignment: CrossAxisAlignment.center,
-                              textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                              textDirection:
+                                  serviceLocator<LanguageController>()
+                                      .targetTextDirection,
                               children: [
                                 Center(
                                   child: Text(
                                     'SAR',
-                                    textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                    textDirection:
+                                        serviceLocator<LanguageController>()
+                                            .targetTextDirection,
                                     maxLines: 1,
                                     overflow: TextOverflow.ellipsis,
                                     softWrap: true,
@@ -265,16 +295,21 @@ String getTranscationUserProfileName(TranscationEntity transcationEntity) {
   }
 }
 
-(String transcationDate, String paymentAmount) getRecord(TranscationEntity transcationEntity, moment.Moment now) {
+(String transcationDate, String paymentAmount) getRecord(
+    TranscationEntity transcationEntity, moment.Moment now) {
   String paymentDateTime = '';
   String paymentAmountValue = '';
   if (transcationEntity.hasIncome) {
-    paymentDateTime = convertDateTimeToHumanReadable(now, transcationEntity.summary.receive.paymentTransferDateTime);
-    paymentAmountValue = transcationEntity.summary.receive.transcationAmount.toString();
+    paymentDateTime = convertDateTimeToHumanReadable(
+        now, transcationEntity.summary.receive.paymentTransferDateTime);
+    paymentAmountValue =
+        transcationEntity.summary.receive.transcationAmount.toString();
     return (paymentDateTime, paymentAmountValue);
   } else {
-    paymentDateTime = convertDateTimeToHumanReadable(now, transcationEntity.summary.transfer.paymentTransferDateTime);
-    paymentAmountValue = transcationEntity.summary.transfer.transcationAmount.toString();
+    paymentDateTime = convertDateTimeToHumanReadable(
+        now, transcationEntity.summary.transfer.paymentTransferDateTime);
+    paymentAmountValue =
+        transcationEntity.summary.transfer.transcationAmount.toString();
     return (paymentDateTime, paymentAmountValue);
   }
 }

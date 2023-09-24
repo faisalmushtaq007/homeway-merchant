@@ -33,7 +33,8 @@ import 'package:homemakers_merchant/shared/widgets/universal/image_loader/image_
 import 'package:homemakers_merchant/utils/app_log.dart';
 import 'package:meta/meta.dart';
 import 'dart:io';
-import 'package:homemakers_merchant/app/features/chat/domain/entities/chat_types_entity.dart' as types;
+import 'package:homemakers_merchant/app/features/chat/domain/entities/chat_types_entity.dart'
+    as types;
 
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';

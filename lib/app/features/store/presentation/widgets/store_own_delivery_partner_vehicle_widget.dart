@@ -106,7 +106,8 @@ class StoreOwnPartnerVehicleTypeFormField extends FormField<List<VehicleInfo>> {
                   state.save();
                 },
                 availableVehicleInfoList: availableVehicleInfoList.toList(),
-                initialSelectedAvailableVehicleInfoList: initialVehicleInfoList.toList(),
+                initialSelectedAvailableVehicleInfoList:
+                    initialVehicleInfoList.toList(),
                 maxSelection: maxSelection,
                 onMaxSelected: onMaxSelected,
                 isSingleSelect: isSingleSelect,
@@ -137,10 +138,12 @@ class StoreOwnPartnerVehicleType extends StatefulWidget {
   final bool isSingleSelect;
 
   @override
-  _StoreOwnPartnerVehicleTypeState createState() => _StoreOwnPartnerVehicleTypeState();
+  _StoreOwnPartnerVehicleTypeState createState() =>
+      _StoreOwnPartnerVehicleTypeState();
 }
 
-class _StoreOwnPartnerVehicleTypeState extends State<StoreOwnPartnerVehicleType> {
+class _StoreOwnPartnerVehicleTypeState
+    extends State<StoreOwnPartnerVehicleType> {
   // String selectedChoice = "";
   List<VehicleInfo> selectedChoices = [];
 
@@ -166,7 +169,8 @@ class _StoreOwnPartnerVehicleTypeState extends State<StoreOwnPartnerVehicleType>
         ),
         label: Text(
           item.vehicleType,
-          textDirection: serviceLocator<LanguageController>().targetTextDirection,
+          textDirection:
+              serviceLocator<LanguageController>().targetTextDirection,
         ),
         selected: selectedChoices.contains(item),
         onSelected: (selected) {
@@ -178,11 +182,14 @@ class _StoreOwnPartnerVehicleTypeState extends State<StoreOwnPartnerVehicleType>
               widget.onSelectionChanged?.call(selectedChoices);
             });
           } else {
-            if (selectedChoices.length == (widget.maxSelection ?? -1) && !selectedChoices.contains(item)) {
+            if (selectedChoices.length == (widget.maxSelection ?? -1) &&
+                !selectedChoices.contains(item)) {
               widget.onMaxSelected?.call(selectedChoices);
             } else {
               setState(() {
-                selectedChoices.contains(item) ? selectedChoices.remove(item) : selectedChoices.add(item);
+                selectedChoices.contains(item)
+                    ? selectedChoices.remove(item)
+                    : selectedChoices.add(item);
                 widget.onSelectionChanged?.call(selectedChoices);
               });
             }
@@ -197,7 +204,7 @@ class _StoreOwnPartnerVehicleTypeState extends State<StoreOwnPartnerVehicleType>
   @override
   void initState() {
     super.initState();
-    selectedChoices=widget.initialSelectedAvailableVehicleInfoList;
+    selectedChoices = widget.initialSelectedAvailableVehicleInfoList;
   }
 
   @override

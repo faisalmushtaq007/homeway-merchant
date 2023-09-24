@@ -26,7 +26,8 @@ class PartialImage {
   });
 
   /// Creates a partial image message from a map (decoded JSON).
-  factory PartialImage.fromJson(Map<String, dynamic> json) => _$PartialImageFromJson(json);
+  factory PartialImage.fromJson(Map<String, dynamic> json) =>
+      _$PartialImageFromJson(json);
 
   /// Image height in pixels.
   final double? height;

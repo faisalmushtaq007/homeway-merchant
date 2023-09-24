@@ -1,4 +1,3 @@
-
 import 'package:homemakers_merchant/utils/functional/functional.dart';
 import 'identifiable.dart';
 import 'repository_failure.dart';

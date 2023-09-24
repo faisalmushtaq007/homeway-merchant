@@ -18,4 +18,5 @@ Color getUserAvatarNameColor(ChatUser user) {
   return colors[index];
 }
 
-String getUserName(ChatUser user) => '${user.firstName ?? ''} ${user.lastName ?? ''}'.trim();
+String getUserName(ChatUser user) =>
+    '${user.firstName ?? ''} ${user.lastName ?? ''}'.trim();

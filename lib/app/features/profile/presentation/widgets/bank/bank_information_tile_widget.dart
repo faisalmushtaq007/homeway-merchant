@@ -18,7 +18,8 @@ class BankInformationTileWidget extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.stretch,
-          textDirection: serviceLocator<LanguageController>().targetTextDirection,
+          textDirection:
+              serviceLocator<LanguageController>().targetTextDirection,
           children: [
             Wrap(
               children: [
@@ -27,7 +28,8 @@ class BankInformationTileWidget extends StatelessWidget {
                   style: context.labelLarge!.copyWith(
                     color: const Color.fromRGBO(165, 166, 168, 1),
                   ),
-                  textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                  textDirection:
+                      serviceLocator<LanguageController>().targetTextDirection,
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
                   softWrap: true,
@@ -44,7 +46,8 @@ class BankInformationTileWidget extends StatelessWidget {
                   style: context.labelLarge!.copyWith(
                     color: context.colorScheme.onBackground,
                   ),
-                  textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                  textDirection:
+                      serviceLocator<LanguageController>().targetTextDirection,
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   softWrap: true,

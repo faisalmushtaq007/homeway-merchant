@@ -26,7 +26,8 @@ class PartialVideo {
   });
 
   /// Creates a partial video message from a map (decoded JSON).
-  factory PartialVideo.fromJson(Map<String, dynamic> json) => _$PartialVideoFromJson(json);
+  factory PartialVideo.fromJson(Map<String, dynamic> json) =>
+      _$PartialVideoFromJson(json);
 
   /// Video height in pixels.
   final double? height;

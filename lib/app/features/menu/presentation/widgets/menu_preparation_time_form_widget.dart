@@ -66,7 +66,8 @@ class MenuPreparationTimeFormField extends FormField<String> {
                   ),
                   child: IntrinsicHeight(
                     child: Row(
-                      textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                      textDirection: serviceLocator<LanguageController>()
+                          .targetTextDirection,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       mainAxisSize: MainAxisSize.min,
                       children: [
@@ -78,7 +79,9 @@ class MenuPreparationTimeFormField extends FormField<String> {
                             child: Text(
                               title,
                               //style: context.labelLarge,
-                              textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                              textDirection:
+                                  serviceLocator<LanguageController>()
+                                      .targetTextDirection,
                             ),
                           ),
                         ),
@@ -89,7 +92,8 @@ class MenuPreparationTimeFormField extends FormField<String> {
                         Expanded(
                           child: AppTextFieldWidget(
                             controller: controller,
-                            textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                            textDirection: serviceLocator<LanguageController>()
+                                .targetTextDirection,
                             //focusNode: menuForm3FocusList[0],
                             textInputAction: TextInputAction.next,
                             //onFieldSubmitted: (_) => fieldFocusChange(context, menuForm3FocusList[0], menuForm3FocusList[1]),
@@ -104,7 +108,9 @@ class MenuPreparationTimeFormField extends FormField<String> {
                               disabledBorder: InputBorder.none,
                               errorBorder: InputBorder.none,
                               isDense: true,
-                              contentPadding: const EdgeInsetsDirectional.symmetric(horizontal: 8, vertical: 14),
+                              contentPadding:
+                                  const EdgeInsetsDirectional.symmetric(
+                                      horizontal: 8, vertical: 14),
                               suffixIcon: suffixIcon,
                             ),
                             onChanged: (value) {
@@ -229,7 +235,8 @@ class MenuPreparationTimeWidget extends StatefulWidget {
   final String? hintText;
 
   @override
-  State<MenuPreparationTimeWidget> createState() => _MenuPreparationTimeWidgetState();
+  State<MenuPreparationTimeWidget> createState() =>
+      _MenuPreparationTimeWidgetState();
 }
 
 class _MenuPreparationTimeWidgetState extends State<MenuPreparationTimeWidget> {
@@ -257,11 +264,13 @@ class _MenuPreparationTimeWidgetState extends State<MenuPreparationTimeWidget> {
           thickness: 1,
         ),*/
         Directionality(
-          textDirection: serviceLocator<LanguageController>().targetTextDirection,
+          textDirection:
+              serviceLocator<LanguageController>().targetTextDirection,
           child: Expanded(
             child: AppTextFieldWidget(
               controller: widget.controller,
-              textDirection: serviceLocator<LanguageController>().targetTextDirection,
+              textDirection:
+                  serviceLocator<LanguageController>().targetTextDirection,
               //focusNode: menuForm3FocusList[0],
               textInputAction: TextInputAction.next,
               //onFieldSubmitted: (_) => fieldFocusChange(context, menuForm3FocusList[0], menuForm3FocusList[1]),
@@ -273,7 +282,8 @@ class _MenuPreparationTimeWidgetState extends State<MenuPreparationTimeWidget> {
                   borderRadius: BorderRadius.circular(10),
                 ),
                 isDense: true,
-                contentPadding: const EdgeInsetsDirectional.only(start: 12, end: 12, top: 14, bottom: 14),
+                contentPadding: const EdgeInsetsDirectional.only(
+                    start: 12, end: 12, top: 14, bottom: 14),
                 suffixIcon: widget.suffixIcon,
                 prefixIcon: Container(
                   width: kMinInteractiveDimension * 3.25,
@@ -282,9 +292,11 @@ class _MenuPreparationTimeWidgetState extends State<MenuPreparationTimeWidget> {
                     //minHeight: kMinInteractiveDimension,
                   ),
                   child: Row(
-                    textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                    textDirection: serviceLocator<LanguageController>()
+                        .targetTextDirection,
                     children: [
-                      const AnimatedGap(18, duration: Duration(milliseconds: 100)),
+                      const AnimatedGap(18,
+                          duration: Duration(milliseconds: 100)),
                       Text('${widget.title}'),
                       Spacer(),
                       Container(
@@ -307,7 +319,8 @@ class _MenuPreparationTimeWidgetState extends State<MenuPreparationTimeWidget> {
                           ),
                         ),
                       ),
-                      const AnimatedGap(12, duration: Duration(milliseconds: 100)),
+                      const AnimatedGap(12,
+                          duration: Duration(milliseconds: 100)),
                     ],
                   ),
                 ),

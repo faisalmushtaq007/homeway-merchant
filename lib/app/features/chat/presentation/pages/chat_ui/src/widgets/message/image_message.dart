@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:homemakers_merchant/app/features/chat/domain/entities/chat_types_entity.dart' as types;
+import 'package:homemakers_merchant/app/features/chat/domain/entities/chat_types_entity.dart'
+    as types;
 
 import 'package:homemakers_merchant/app/features/chat/presentation/pages/chat_ui/src/conditional/conditional.dart';
 import 'package:homemakers_merchant/app/features/chat/presentation/pages/chat_ui/src/util.dart';
@@ -110,7 +111,9 @@ class _ImageMessageState extends State<ImageMessage> {
       );
     } else if (_size.aspectRatio < 0.1 || _size.aspectRatio > 10) {
       return Container(
-        color: user.id == widget.message.author.id ? InheritedChatTheme.of(context).theme.primaryColor : InheritedChatTheme.of(context).theme.secondaryColor,
+        color: user.id == widget.message.author.id
+            ? InheritedChatTheme.of(context).theme.primaryColor
+            : InheritedChatTheme.of(context).theme.secondaryColor,
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -145,10 +148,15 @@ class _ImageMessageState extends State<ImageMessage> {
                     Text(
                       widget.message.name,
                       style: user.id == widget.message.author.id
-                          ? InheritedChatTheme.of(context).theme.sentMessageBodyTextStyle
-                          : InheritedChatTheme.of(context).theme.receivedMessageBodyTextStyle,
+                          ? InheritedChatTheme.of(context)
+                              .theme
+                              .sentMessageBodyTextStyle
+                          : InheritedChatTheme.of(context)
+                              .theme
+                              .receivedMessageBodyTextStyle,
                       textWidthBasis: TextWidthBasis.longestLine,
-                      textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                      textDirection: serviceLocator<LanguageController>()
+                          .targetTextDirection,
                     ),
                     Container(
                       margin: const EdgeInsets.only(
@@ -157,9 +165,14 @@ class _ImageMessageState extends State<ImageMessage> {
                       child: Text(
                         formatBytes(widget.message.size.truncate()),
                         style: user.id == widget.message.author.id
-                            ? InheritedChatTheme.of(context).theme.sentMessageCaptionTextStyle
-                            : InheritedChatTheme.of(context).theme.receivedMessageCaptionTextStyle,
-                        textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                            ? InheritedChatTheme.of(context)
+                                .theme
+                                .sentMessageCaptionTextStyle
+                            : InheritedChatTheme.of(context)
+                                .theme
+                                .receivedMessageCaptionTextStyle,
+                        textDirection: serviceLocator<LanguageController>()
+                            .targetTextDirection,
                       ),
                     ),
                   ],

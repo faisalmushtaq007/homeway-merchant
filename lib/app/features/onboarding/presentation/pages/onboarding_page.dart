@@ -20,7 +20,8 @@ class OnBoardingPage extends StatefulWidget {
   const OnBoardingPage({super.key});
 
   @override
-  _OnBoardingPageViewController createState() => _OnBoardingPageViewController();
+  _OnBoardingPageViewController createState() =>
+      _OnBoardingPageViewController();
 }
 
 class _OnBoardingPageViewController extends State<OnBoardingPage> {
@@ -42,12 +43,14 @@ class _OnBoardingPageViewController extends State<OnBoardingPage> {
   Widget build(BuildContext context) => _PageView(this);
 }
 
-class _PageView extends WidgetView<OnBoardingPage, _OnBoardingPageViewController> {
+class _PageView
+    extends WidgetView<OnBoardingPage, _OnBoardingPageViewController> {
   const _PageView(super.state);
 
   @override
   Widget build(BuildContext context) {
-    final Color kDarkBlueColor = context.primaryColor; // const Color(0xFF053149);
+    final Color kDarkBlueColor =
+        context.primaryColor; // const Color(0xFF053149);
     return Directionality(
       textDirection: serviceLocator<LanguageController>().targetTextDirection,
       child: AnnotatedRegion<SystemUiOverlayStyle>(

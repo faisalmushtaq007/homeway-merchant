@@ -197,8 +197,10 @@ class ProgressiveImage extends StatefulWidget {
     this.matchTextDirection = false,
     this.excludeFromSemantics = false,
     this.imageSemanticLabel,
-  })  : placeholder =
-            placeholderScale != null ? ExactAssetImage(placeholder, bundle: bundle, scale: placeholderScale) : AssetImage(placeholder, bundle: bundle),
+  })  : placeholder = placeholderScale != null
+            ? ExactAssetImage(placeholder,
+                bundle: bundle, scale: placeholderScale)
+            : AssetImage(placeholder, bundle: bundle),
         thumbnail = NetworkImage(thumbnail),
         image = NetworkImage(image),
         placeholderBuilder = null,
@@ -366,7 +368,8 @@ class _ProgressiveImageState extends State<ProgressiveImage> {
   void initState() {
     super.initState();
 
-    ImageStreamListener _targetListener = ImageStreamListener((ImageInfo info, bool _) {
+    ImageStreamListener _targetListener =
+        ImageStreamListener((ImageInfo info, bool _) {
       Timer(widget.fadeDuration, () {
         setState(() {
           _thumbnailDelay = false;
@@ -375,7 +378,8 @@ class _ProgressiveImageState extends State<ProgressiveImage> {
       _updateProgress(Progress.TargetLoaded);
     });
 
-    ImageStreamListener _thumbnailListener = ImageStreamListener((ImageInfo info, bool _) {
+    ImageStreamListener _thumbnailListener =
+        ImageStreamListener((ImageInfo info, bool _) {
       Timer(widget.fadeDuration, () {
         setState(() {
           _placeholderDelay = false;
@@ -389,7 +393,9 @@ class _ProgressiveImageState extends State<ProgressiveImage> {
       }
     });
 
-    widget.thumbnail.resolve(ImageConfiguration()).addListener(_thumbnailListener);
+    widget.thumbnail
+        .resolve(ImageConfiguration())
+        .addListener(_thumbnailListener);
   }
 
   Image _image({
@@ -420,20 +426,32 @@ class _ProgressiveImageState extends State<ProgressiveImage> {
         AnimatedOpacity(
             duration: widget.fadeDuration,
             // Fade out placeholder only after the thumbnail fades in completely
-            opacity: _status == Progress.Loading || (_status == Progress.ThumbnailLoaded && _placeholderDelay) ? 1.0 : 0.0,
-            child: (widget.placeholder == null) ? widget.placeholderBuilder?.call(context) : _image(image: widget.placeholder!)),
+            opacity: _status == Progress.Loading ||
+                    (_status == Progress.ThumbnailLoaded && _placeholderDelay)
+                ? 1.0
+                : 0.0,
+            child: (widget.placeholder == null)
+                ? widget.placeholderBuilder?.call(context)
+                : _image(image: widget.placeholder!)),
         AnimatedOpacity(
           // Fade out thumbnail only after the target image fades in completely
-          opacity: _status == Progress.ThumbnailLoaded || (_status == Progress.TargetLoaded && _thumbnailDelay) ? 1.0 : 0.0,
+          opacity: _status == Progress.ThumbnailLoaded ||
+                  (_status == Progress.TargetLoaded && _thumbnailDelay)
+              ? 1.0
+              : 0.0,
           duration: widget.fadeDuration,
           child: _image(image: widget.thumbnail),
         ),
         Opacity(
           // Fade out blur effect only after the target image fades in completely
-          opacity: _status == Progress.ThumbnailLoaded || (_status == Progress.TargetLoaded && _thumbnailDelay) ? 1.0 : 0.0,
+          opacity: _status == Progress.ThumbnailLoaded ||
+                  (_status == Progress.TargetLoaded && _thumbnailDelay)
+              ? 1.0
+              : 0.0,
           child: ClipRect(
             child: BackdropFilter(
-              filter: ImageFilter.blur(sigmaX: widget.blur, sigmaY: widget.blur),
+              filter:
+                  ImageFilter.blur(sigmaX: widget.blur, sigmaY: widget.blur),
               child: Container(
                 // height: apparentHeight(),
                 // width: apparentWidth(),
@@ -449,7 +467,9 @@ class _ProgressiveImageState extends State<ProgressiveImage> {
         AnimatedOpacity(
           opacity: _status == Progress.TargetLoaded ? 1.0 : 0.0,
           duration: widget.fadeDuration,
-          child: _status == Progress.Loading ? SizedBox(height: 0, width: 0) : _image(image: widget.image),
+          child: _status == Progress.Loading
+              ? SizedBox(height: 0, width: 0)
+              : _image(image: widget.image),
         )
       ],
     );

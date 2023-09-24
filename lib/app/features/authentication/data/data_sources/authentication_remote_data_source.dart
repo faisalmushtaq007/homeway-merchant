@@ -9,7 +9,8 @@ class AuthenticationRemoteDataSource extends AuthenticationDataSource {
   }) async {
     try {
       const String apiPath = AuthenticationConstants.getUserProfile;
-      final response = await client.send<BaseResponseModel<AppUserEntity>, AppUserEntity>(
+      final response =
+          await client.send<BaseResponseModel<AppUserEntity>, AppUserEntity>(
         apiPath,
         parseModel: BaseResponseModel<AppUserEntity>(),
         method: RequestType.GET,
@@ -18,12 +19,16 @@ class AuthenticationRemoteDataSource extends AuthenticationDataSource {
         return ApiResultState<AppUserEntity>.success(data: response.data!);
       } else {
         return ApiResultState<AppUserEntity>.failure(
-          reason: GetApiException().handleApiFailure(response.error?.model).message.toString(),
+          reason: GetApiException()
+              .handleApiFailure(response.error?.model)
+              .message
+              .toString(),
         );
       }
     } on Exception catch (e, s) {
       return ApiResultState<AppUserEntity>.failure(
-        reason: GetApiException().handleHttpApiException(e).message ?? e.toString(),
+        reason:
+            GetApiException().handleHttpApiException(e).message ?? e.toString(),
         stackTrace: s,
         //exception: GetApiException().handleHttpApiException(e),
         error: e,
@@ -37,7 +42,8 @@ class AuthenticationRemoteDataSource extends AuthenticationDataSource {
   }) async {
     try {
       const String apiPath = AuthenticationConstants.sendOtp;
-      final response = await client.send<BaseResponseModel<SendOtpResponseModel>, SendOtpResponseModel>(
+      final response = await client
+          .send<BaseResponseModel<SendOtpResponseModel>, SendOtpResponseModel>(
         apiPath,
         parseModel: BaseResponseModel<SendOtpResponseModel>(),
         method: RequestType.POST,
@@ -49,12 +55,16 @@ class AuthenticationRemoteDataSource extends AuthenticationDataSource {
         );
       } else {
         return ApiResultState<SendOtpResponseModel>.failure(
-          reason: GetApiException().handleApiFailure(response.error?.model).message.toString(),
+          reason: GetApiException()
+              .handleApiFailure(response.error?.model)
+              .message
+              .toString(),
         );
       }
     } on Exception catch (e, s) {
       return ApiResultState<SendOtpResponseModel>.failure(
-        reason: GetApiException().handleHttpApiException(e).message ?? e.toString(),
+        reason:
+            GetApiException().handleHttpApiException(e).message ?? e.toString(),
         stackTrace: s,
         //exception: GetApiException().handleHttpApiException(e),
         error: e,
@@ -68,7 +78,8 @@ class AuthenticationRemoteDataSource extends AuthenticationDataSource {
   }) async {
     try {
       const String apiPath = AuthenticationConstants.verifyOtp;
-      final response = await client.send<BaseResponseModel<VerifyOtpResponseModel>, VerifyOtpResponseModel>(
+      final response = await client.send<
+          BaseResponseModel<VerifyOtpResponseModel>, VerifyOtpResponseModel>(
         apiPath,
         parseModel: BaseResponseModel<VerifyOtpResponseModel>(),
         method: RequestType.POST,
@@ -80,12 +91,16 @@ class AuthenticationRemoteDataSource extends AuthenticationDataSource {
         );
       } else {
         return ApiResultState<VerifyOtpResponseModel>.failure(
-          reason: GetApiException().handleApiFailure(response.error?.model).message.toString(),
+          reason: GetApiException()
+              .handleApiFailure(response.error?.model)
+              .message
+              .toString(),
         );
       }
     } on Exception catch (e, s) {
       return ApiResultState<VerifyOtpResponseModel>.failure(
-        reason: GetApiException().handleHttpApiException(e).message ?? e.toString(),
+        reason:
+            GetApiException().handleHttpApiException(e).message ?? e.toString(),
         stackTrace: s,
         //exception: GetApiException().handleHttpApiException(e),
         error: e,
@@ -94,19 +109,22 @@ class AuthenticationRemoteDataSource extends AuthenticationDataSource {
   }
 
   @override
-  Future<ApiResultState<bool>> deleteAllAppUser({AppUserEntity? appUserEntity}) {
+  Future<ApiResultState<bool>> deleteAllAppUser(
+      {AppUserEntity? appUserEntity}) {
     // TODO: implement deleteAllAppUser
     throw UnimplementedError();
   }
 
   @override
-  Future<ApiResultState<bool>> deleteAppUser({required int userID, AppUserEntity? appUserEntity}) {
+  Future<ApiResultState<bool>> deleteAppUser(
+      {required int userID, AppUserEntity? appUserEntity}) {
     // TODO: implement deleteAppUser
     throw UnimplementedError();
   }
 
   @override
-  Future<ApiResultState<AppUserEntity>> editAppUser({required AppUserEntity appUserEntity, required int userID}) {
+  Future<ApiResultState<AppUserEntity>> editAppUser(
+      {required AppUserEntity appUserEntity, required int userID}) {
     // TODO: implement editAppUser
     throw UnimplementedError();
   }
@@ -118,31 +136,43 @@ class AuthenticationRemoteDataSource extends AuthenticationDataSource {
   }
 
   @override
-  Future<ApiResultState<AppUserEntity>> getAppUser({required int userID, AppUserEntity? appUserEntity}) {
+  Future<ApiResultState<AppUserEntity>> getAppUser(
+      {required int userID, AppUserEntity? appUserEntity}) {
     // TODO: implement getAppUser
     throw UnimplementedError();
   }
 
   @override
-  Future<ApiResultState<AppUserEntity>> saveAppUser({required AppUserEntity appUserEntity}) {
+  Future<ApiResultState<AppUserEntity>> saveAppUser(
+      {required AppUserEntity appUserEntity}) {
     // TODO: implement saveAppUser
     throw UnimplementedError();
   }
 
   @override
-  Future<ApiResultState<AppUserEntity?>> getCurrentAppUser({AppUserEntity? entity}) {
+  Future<ApiResultState<AppUserEntity?>> getCurrentAppUser(
+      {AppUserEntity? entity}) {
     // TODO: implement getCurrentAppUser
     throw UnimplementedError();
   }
 
   @override
-  Future<ApiResultState<List<AppUserEntity>>> getAllAppUsersPagination({int pageKey = 0, int pageSize = 10, String? searchText, Map<String, dynamic> extras = const <String, dynamic>{}, String? filtering, String? sorting, Timestamp? startTime, Timestamp? endTime}) {
+  Future<ApiResultState<List<AppUserEntity>>> getAllAppUsersPagination(
+      {int pageKey = 0,
+      int pageSize = 10,
+      String? searchText,
+      Map<String, dynamic> extras = const <String, dynamic>{},
+      String? filtering,
+      String? sorting,
+      Timestamp? startTime,
+      Timestamp? endTime}) {
     // TODO: implement getAllAppUsersPagination
     throw UnimplementedError();
   }
 
   @override
-  Future<ApiResultState<List<AppUserEntity>>> saveAllAppUsers({required List<AppUserEntity> appUsers, bool hasUpdateAll = false}) {
+  Future<ApiResultState<List<AppUserEntity>>> saveAllAppUsers(
+      {required List<AppUserEntity> appUsers, bool hasUpdateAll = false}) {
     // TODO: implement saveAllAppUsers
     throw UnimplementedError();
   }

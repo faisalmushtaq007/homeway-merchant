@@ -52,8 +52,10 @@ abstract interface class IPermissionService {
 
   /// Open App setting
   Future<void> openAppSetting({
-    FutureOr<dynamic> Function(OpenSettingsPlusAndroid openSettingsPlusAndroid)? androidBuilder,
-    FutureOr<dynamic> Function(OpenSettingsPlusIOS openSettingsPlusIOS)? iOSBuilder,
+    FutureOr<dynamic> Function(OpenSettingsPlusAndroid openSettingsPlusAndroid)?
+        androidBuilder,
+    FutureOr<dynamic> Function(OpenSettingsPlusIOS openSettingsPlusIOS)?
+        iOSBuilder,
     FutureOr<dynamic> Function()? builder,
   });
 
@@ -106,7 +108,8 @@ class PermissionServiceHive implements IPermissionService {
     PermissionStatus defaultValue,
   ) {
     try {
-      final PermissionStatus loaded = _hiveBox.get(key, defaultValue: defaultValue) as PermissionStatus;
+      final PermissionStatus loaded =
+          _hiveBox.get(key, defaultValue: defaultValue) as PermissionStatus;
       if (_debug) {
         log('Permission Hive type   : $key as ${defaultValue.runtimeType}');
         log('Permission Hive loaded : $key as $loaded with ${loaded.runtimeType}');
@@ -124,8 +127,10 @@ class PermissionServiceHive implements IPermissionService {
 
   @override
   Future<void> openAppSetting({
-    FutureOr<dynamic> Function(OpenSettingsPlusAndroid openSettingsPlusAndroid)? androidBuilder,
-    FutureOr<dynamic> Function(OpenSettingsPlusIOS openSettingsPlusIOS)? iOSBuilder,
+    FutureOr<dynamic> Function(OpenSettingsPlusAndroid openSettingsPlusAndroid)?
+        androidBuilder,
+    FutureOr<dynamic> Function(OpenSettingsPlusIOS openSettingsPlusIOS)?
+        iOSBuilder,
     FutureOr<dynamic> Function()? builder,
   }) async {
     if (UniversalPlatform.isAndroid) {
@@ -169,8 +174,11 @@ class PermissionServiceHive implements IPermissionService {
     final status = await key.status;
     if (status.isGranted) {
       return (key, PermissionStatus.granted);
-    } else if (status.isDenied && UniversalPlatform.isAndroid && await key.shouldShowRequestRationale) {
-      final (Permission, PermissionStatus) rationalePermissionStatus = await requestPermission(key);
+    } else if (status.isDenied &&
+        UniversalPlatform.isAndroid &&
+        await key.shouldShowRequestRationale) {
+      final (Permission, PermissionStatus) rationalePermissionStatus =
+          await requestPermission(key);
       if (rationalePermissionStatus.$2 case PermissionStatus.granted) {
         return (key, PermissionStatus.granted);
       } else {
@@ -178,7 +186,8 @@ class PermissionServiceHive implements IPermissionService {
       }
     } else if (status.isDenied) {
       // Request permission for android
-      final (Permission, PermissionStatus) permissionStatus = await requestPermission(key);
+      final (Permission, PermissionStatus) permissionStatus =
+          await requestPermission(key);
       /*if (permissionStatus.$2 case PermissionStatus.denied) {
         if (UniversalPlatform.isAndroid &&
             await key.shouldShowRequestRationale) {

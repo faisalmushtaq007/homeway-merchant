@@ -5,7 +5,8 @@ class IntersperseIterable<E> extends Iterable<E> {
   IntersperseIterable(this._iterable, this._element);
 
   @override
-  Iterator<E> get iterator => IntersperseIterator<E>(_iterable.iterator, _element, 2 * _iterable.length - 1);
+  Iterator<E> get iterator => IntersperseIterator<E>(
+      _iterable.iterator, _element, 2 * _iterable.length - 1);
 }
 
 class IntersperseIterator<E> implements Iterator<E> {

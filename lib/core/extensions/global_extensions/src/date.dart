@@ -38,42 +38,48 @@ extension DateExtensions on DateTime {
   /// This means the exact month, including year.
   ///
   /// Does not account for timezones.
-  bool isAtSameMonthAs(DateTime other) => isAtSameYearAs(other) && month == other.month;
+  bool isAtSameMonthAs(DateTime other) =>
+      isAtSameYearAs(other) && month == other.month;
 
   /// Returns true if [other] is on the same day as [this].
   ///
   /// This means the exact day, including year and month.
   ///
   /// Does not account for timezones.
-  bool isAtSameDayAs(DateTime other) => isAtSameMonthAs(other) && day == other.day;
+  bool isAtSameDayAs(DateTime other) =>
+      isAtSameMonthAs(other) && day == other.day;
 
   /// Returns true if [other] is at the same hour as [this].
   ///
   /// This means the exact hour, including year, month and day.
   ///
   /// Does not account for timezones.
-  bool isAtSameHourAs(DateTime other) => isAtSameDayAs(other) && hour == other.hour;
+  bool isAtSameHourAs(DateTime other) =>
+      isAtSameDayAs(other) && hour == other.hour;
 
   /// Returns true if [other] is at the same minute as [this].
   ///
   /// This means the exact minute, including year, month, day and hour.
   ///
   /// Does not account for timezones.
-  bool disAtSameMinuteAs(DateTime other) => isAtSameHourAs(other) && minute == other.minute;
+  bool disAtSameMinuteAs(DateTime other) =>
+      isAtSameHourAs(other) && minute == other.minute;
 
   /// Returns true if [other] is at the same minute as [this].
   ///
   /// This means the exact minute, including year, month, day and hour.
   ///
   /// Does not account for timezones.
-  bool isAtSameMinuteAs(DateTime other) => isAtSameHourAs(other) && minute == other.minute;
+  bool isAtSameMinuteAs(DateTime other) =>
+      isAtSameHourAs(other) && minute == other.minute;
 
   /// Returns true if [other] is at the same second as [this].
   ///
   /// This means the exact second, including year, month, day, hour and minute.
   ///
   /// Does not account for timezones.
-  bool isAtSameSecondAs(DateTime other) => isAtSameMinuteAs(other) && second == other.second;
+  bool isAtSameSecondAs(DateTime other) =>
+      isAtSameMinuteAs(other) && second == other.second;
 
   /// Returns true if [other] is at the same millisecond as [this].
   ///
@@ -81,7 +87,8 @@ extension DateExtensions on DateTime {
   /// including year, month, day, hour, minute and second.
   ///
   /// Does not account for timezones.
-  bool isAtSameMillisecondAs(DateTime other) => isAtSameSecondAs(other) && millisecond == other.millisecond;
+  bool isAtSameMillisecondAs(DateTime other) =>
+      isAtSameSecondAs(other) && millisecond == other.millisecond;
 
   /// Returns true if [other] is at the same microsecond as [this].
   ///
@@ -89,11 +96,14 @@ extension DateExtensions on DateTime {
   /// including year, month, day, hour, minute, second and millisecond.
   ///
   /// Does not account for timezones.
-  bool isAtSameMicrosecondAs(DateTime other) => isAtSameMillisecondAs(other) && microsecond == other.microsecond;
+  bool isAtSameMicrosecondAs(DateTime other) =>
+      isAtSameMillisecondAs(other) && microsecond == other.microsecond;
 
   bool get isYesterday {
     final nowDate = DateTime.now();
-    return year == nowDate.year && month == nowDate.month && day == nowDate.day - 1;
+    return year == nowDate.year &&
+        month == nowDate.month &&
+        day == nowDate.day - 1;
   }
 
   /// The list of days in a given month
@@ -144,7 +154,9 @@ extension DateExtensions on DateTime {
 
   /// The last day of a given month
   DateTime get lastDayOfMonth {
-    var beginningNextMonth = (this.month < 12) ? DateTime(this.year, this.month + 1, 1) : DateTime(this.year + 1, 1, 1);
+    var beginningNextMonth = (this.month < 12)
+        ? DateTime(this.year, this.month + 1, 1)
+        : DateTime(this.year + 1, 1, 1);
     return beginningNextMonth.subtract(Duration(days: 1));
   }
 
@@ -213,7 +225,8 @@ extension DateExtensions on DateTime {
   }
 
   /// Whether or not two times are on the same day.
-  static bool isSameDay(DateTime a, DateTime b) => a.year == b.year && a.month == b.month && a.day == b.day;
+  static bool isSameDay(DateTime a, DateTime b) =>
+      a.year == b.year && a.month == b.month && a.day == b.day;
 
   /// return true if the date is today
   bool isToday() {
@@ -267,9 +280,12 @@ extension DateExtensions on DateTime {
   DateTime yesterday() => DateTime(year, month, day - 1);
 
   /// return the smaller date between
-  DateTime min(DateTime that) => (millisecondsSinceEpoch < that.millisecondsSinceEpoch) ? this : that;
+  DateTime min(DateTime that) =>
+      (millisecondsSinceEpoch < that.millisecondsSinceEpoch) ? this : that;
 
-  DateTime max(DateTime that) => (millisecondsSinceEpoch > that.millisecondsSinceEpoch) ? this : that;
+  DateTime max(DateTime that) =>
+      (millisecondsSinceEpoch > that.millisecondsSinceEpoch) ? this : that;
 
-  bool get isLeapYear => (year % 4 == 0) && ((year % 100 != 0) || (year % 400 == 0));
+  bool get isLeapYear =>
+      (year % 4 == 0) && ((year % 100 != 0) || (year % 400 == 0));
 }

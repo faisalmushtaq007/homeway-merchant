@@ -1,7 +1,15 @@
 part of 'package:homemakers_merchant/app/features/menu/index.dart';
 
-class GetAllMenuPaginationUseCase
-    extends PaginationQueryAllUseCaseIORecord<MenuEntity, int, int, String?, String?, String?, Timestamp?, Timestamp?, DataSourceState<List<MenuEntity>>> {
+class GetAllMenuPaginationUseCase extends PaginationQueryAllUseCaseIORecord<
+    MenuEntity,
+    int,
+    int,
+    String?,
+    String?,
+    String?,
+    Timestamp?,
+    Timestamp?,
+    DataSourceState<List<MenuEntity>>> {
   GetAllMenuPaginationUseCase({
     required this.menuRepository,
   });

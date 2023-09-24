@@ -47,10 +47,13 @@ class _MultiContactFormWidgetState extends State<MultiContactFormWidget> {
   void onSave() {
     bool allValid = true;
 
-    contactForms.forEach((element) => allValid = (allValid && element.isValidated()));
+    contactForms
+        .forEach((element) => allValid = (allValid && element.isValidated()));
 
     if (allValid) {
-      List<String> names = contactForms.map((e) => e.storeOwnDeliveryPartnerEntity.driverName).toList();
+      List<String> names = contactForms
+          .map((e) => e.storeOwnDeliveryPartnerEntity.driverName)
+          .toList();
       debugPrint('$names');
     } else {
       debugPrint('Form is Not Valid');
@@ -60,14 +63,16 @@ class _MultiContactFormWidgetState extends State<MultiContactFormWidget> {
   //Delete specific form
   void onRemove(StoreOwnDeliveryPartnersInfo contact) {
     setState(() {
-      int index = contactForms.indexWhere((element) => element.storeOwnDeliveryPartnerEntity.driverID == contact.driverID);
+      int index = contactForms.indexWhere((element) =>
+          element.storeOwnDeliveryPartnerEntity.driverID == contact.driverID);
       contactForms.removeAt(index);
     });
   }
 
   void onAdd() {
     setState(() {
-      StoreOwnDeliveryPartnersInfo _contactModel = StoreOwnDeliveryPartnersInfo(driverID: contactForms.length);
+      StoreOwnDeliveryPartnersInfo _contactModel =
+          StoreOwnDeliveryPartnersInfo(driverID: contactForms.length);
       contactForms.add(ContactFormItemWidget(
         index: contactForms.length,
         storeOwnDeliveryPartnerEntity: _contactModel,

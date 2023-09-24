@@ -120,7 +120,8 @@ class StoreTextFieldWidget extends StatelessWidget {
   final SpellCheckConfiguration? spellCheckConfiguration;
   final TextMagnifierConfiguration? magnifierConfiguration;
 
-  static Widget _defaultContextMenuBuilder(BuildContext context, EditableTextState editableTextState) {
+  static Widget _defaultContextMenuBuilder(
+      BuildContext context, EditableTextState editableTextState) {
     return AdaptiveTextSelectionToolbar.editableText(
       editableTextState: editableTextState,
     );
@@ -150,8 +151,10 @@ class StoreTextFieldWidget extends StatelessWidget {
         obscuringCharacter: obscuringCharacter,
         obscureText: obscureText,
         autocorrect: autocorrect,
-        smartDashesType: smartDashesType ?? (obscureText ? SmartDashesType.disabled : SmartDashesType.enabled),
-        smartQuotesType: smartQuotesType ?? (obscureText ? SmartQuotesType.disabled : SmartQuotesType.enabled),
+        smartDashesType: smartDashesType ??
+            (obscureText ? SmartDashesType.disabled : SmartDashesType.enabled),
+        smartQuotesType: smartQuotesType ??
+            (obscureText ? SmartQuotesType.disabled : SmartQuotesType.enabled),
         enableSuggestions: enableSuggestions,
         maxLengthEnforcement: maxLengthEnforcement,
         maxLines: maxLines,
@@ -172,7 +175,8 @@ class StoreTextFieldWidget extends StatelessWidget {
         scrollPadding: scrollPadding,
         scrollPhysics: scrollPhysics,
         keyboardAppearance: keyboardAppearance,
-        enableInteractiveSelection: enableInteractiveSelection ?? (!obscureText || !readOnly),
+        enableInteractiveSelection:
+            enableInteractiveSelection ?? (!obscureText || !readOnly),
         selectionControls: selectionControls,
         buildCounter: buildCounter,
         autofillHints: autofillHints,

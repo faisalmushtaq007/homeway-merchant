@@ -3,7 +3,7 @@ part of 'package:homemakers_merchant/app/features/store/index.dart';
 final localStoreAvailableFoodPreparationType = [
   StoreAvailableFoodPreparationType(id: 0, title: 'Preparing'),
   StoreAvailableFoodPreparationType(id: 1, title: 'Prepared'),
- /* StoreAvailableFoodPreparationType(id: 0, title: 'Cooking'),
+  /* StoreAvailableFoodPreparationType(id: 0, title: 'Cooking'),
   StoreAvailableFoodPreparationType(id: 1, title: 'Cooked'),
   StoreAvailableFoodPreparationType(id: 2, title: 'Baking'),
   StoreAvailableFoodPreparationType(id: 3, title: 'Baked'),

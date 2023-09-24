@@ -279,7 +279,8 @@ class ImageHelper extends StatelessWidget {
 
   Widget get _rounded => Container(
         clipBehavior: Clip.antiAlias,
-        decoration: BoxDecoration(borderRadius: borderRadius, border: boxBorder),
+        decoration:
+            BoxDecoration(borderRadius: borderRadius, border: boxBorder),
         child: Container(
             child: _loadImage,
             clipBehavior: Clip.hardEdge,
@@ -452,16 +453,36 @@ class ImageHelper extends StatelessWidget {
       );
 
   Widget get _jsonAsset => Lottie.asset(image,
-      width: width, alignment: alignment, errorBuilder: (context, error, stackTrace) => _errorBuilder, repeat: true, fit: boxFit, height: height);
+      width: width,
+      alignment: alignment,
+      errorBuilder: (context, error, stackTrace) => _errorBuilder,
+      repeat: true,
+      fit: boxFit,
+      height: height);
 
   Widget get _jsonNetwork => Lottie.network(image,
-      width: width, alignment: alignment, errorBuilder: (context, error, stackTrace) => _errorBuilder, repeat: true, fit: boxFit, height: height);
+      width: width,
+      alignment: alignment,
+      errorBuilder: (context, error, stackTrace) => _errorBuilder,
+      repeat: true,
+      fit: boxFit,
+      height: height);
 
   Widget get _jsonMemory => Lottie.memory(dataFromBase64String(image),
-      width: width, alignment: alignment, errorBuilder: (context, error, stackTrace) => _errorBuilder, repeat: true, fit: boxFit, height: height);
+      width: width,
+      alignment: alignment,
+      errorBuilder: (context, error, stackTrace) => _errorBuilder,
+      repeat: true,
+      fit: boxFit,
+      height: height);
 
   Widget get _jsonFile => Lottie.file(image,
-      width: width, alignment: alignment, errorBuilder: (context, error, stackTrace) => _errorBuilder, repeat: true, fit: boxFit, height: height);
+      width: width,
+      alignment: alignment,
+      errorBuilder: (context, error, stackTrace) => _errorBuilder,
+      repeat: true,
+      fit: boxFit,
+      height: height);
 
   Widget get _text => SizedBox(
         height: height,
@@ -470,7 +491,8 @@ class ImageHelper extends StatelessWidget {
           child: Text(
             '${(placeholderText ?? '').getInitials()}',
             maxLines: 1,
-            textDirection: serviceLocator<LanguageController>().targetTextDirection,
+            textDirection:
+                serviceLocator<LanguageController>().targetTextDirection,
             style: placeholderTextStyle,
           ),
         ),

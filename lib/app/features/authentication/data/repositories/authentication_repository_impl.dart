@@ -10,7 +10,8 @@ class AuthenticationRepositoryImplement implements AuthenticationRepository {
   final UserLocalDbRepository<AppUserEntity> userLocalDbRepository;
 
   @override
-  Future<ResultState<SendOtpResponseModel>> sendPhoneAuthenticationOtp(SendOtpEntity sendOtpEntity) async {
+  Future<ResultState<SendOtpResponseModel>> sendPhoneAuthenticationOtp(
+      SendOtpEntity sendOtpEntity) async {
     final response = await remoteDataSource.sendPhoneAuthenticationOTP(
       sendOtpEntity: BaseRequestModel<SendOtpEntity>(data: sendOtpEntity),
     );
@@ -30,7 +31,8 @@ class AuthenticationRepositoryImplement implements AuthenticationRepository {
   }
 
   @override
-  Future<ResultState<VerifyOtpResponseModel>> verifyPhoneAuthenticationOtp(VerifyOtpEntity verifyOtpEntity) async {
+  Future<ResultState<VerifyOtpResponseModel>> verifyPhoneAuthenticationOtp(
+      VerifyOtpEntity verifyOtpEntity) async {
     final response = await remoteDataSource.verifyPhoneAuthenticationOTP(
       verifyOtpEntity: BaseRequestModel<VerifyOtpEntity>(data: verifyOtpEntity),
     );
@@ -52,11 +54,13 @@ class AuthenticationRepositoryImplement implements AuthenticationRepository {
   @override
   Future<DataSourceState<bool>> deleteAllAppUser() async {
     try {
-      final connectivity = serviceLocator<ConnectivityService>().getCurrentInternetStatus();
+      final connectivity =
+          serviceLocator<ConnectivityService>().getCurrentInternetStatus();
       if (connectivity.$2 == InternetConnectivityState.internet) {
         // Local DB
         // Save to local
-        final Either<RepositoryBaseFailure, bool> result = await userLocalDbRepository.deleteAll();
+        final Either<RepositoryBaseFailure, bool> result =
+            await userLocalDbRepository.deleteAll();
         // Return result
         return result.fold((l) {
           final RepositoryFailure failure = l as RepositoryFailure;
@@ -73,7 +77,8 @@ class AuthenticationRepositoryImplement implements AuthenticationRepository {
       } else {
         // Remote
         // Save to server
-        final ApiResultState<bool> result = await remoteDataSource.deleteAllAppUser();
+        final ApiResultState<bool> result =
+            await remoteDataSource.deleteAllAppUser();
         // Return result
         return result.when(
           success: (data) {
@@ -107,13 +112,16 @@ class AuthenticationRepositoryImplement implements AuthenticationRepository {
   }
 
   @override
-  Future<DataSourceState<bool>> deleteAppUser({required int userID, AppUserEntity? appUserEntity}) async {
+  Future<DataSourceState<bool>> deleteAppUser(
+      {required int userID, AppUserEntity? appUserEntity}) async {
     try {
-      final connectivity = serviceLocator<ConnectivityService>().getCurrentInternetStatus();
+      final connectivity =
+          serviceLocator<ConnectivityService>().getCurrentInternetStatus();
       if (connectivity.$2 == InternetConnectivityState.internet) {
         // Local DB
         // Save to local
-        final Either<RepositoryBaseFailure, bool> result = await userLocalDbRepository.deleteById(UniqueId(userID));
+        final Either<RepositoryBaseFailure, bool> result =
+            await userLocalDbRepository.deleteById(UniqueId(userID));
         // Return result
         return result.fold((l) {
           final RepositoryFailure failure = l as RepositoryFailure;
@@ -130,7 +138,8 @@ class AuthenticationRepositoryImplement implements AuthenticationRepository {
       } else {
         // Remote
         // Save to server
-        final ApiResultState<bool> result = await remoteDataSource.deleteAppUser(
+        final ApiResultState<bool> result =
+            await remoteDataSource.deleteAppUser(
           userID: userID,
           appUserEntity: appUserEntity,
         );
@@ -170,7 +179,8 @@ class AuthenticationRepositoryImplement implements AuthenticationRepository {
   Future<DataSourceState<AppUserEntity>> editAppUser(
       {required AppUserEntity appUserEntity, required int userID}) async {
     try {
-      final connectivity = serviceLocator<ConnectivityService>().getCurrentInternetStatus();
+      final connectivity =
+          serviceLocator<ConnectivityService>().getCurrentInternetStatus();
       if (connectivity.$2 == InternetConnectivityState.internet) {
         // Local DB
         // Save to local
@@ -192,7 +202,8 @@ class AuthenticationRepositoryImplement implements AuthenticationRepository {
       } else {
         // Remote
         // Save to server
-        final ApiResultState<AppUserEntity> result = await remoteDataSource.editAppUser(
+        final ApiResultState<AppUserEntity> result =
+            await remoteDataSource.editAppUser(
           userID: userID,
           appUserEntity: appUserEntity,
         );
@@ -231,11 +242,13 @@ class AuthenticationRepositoryImplement implements AuthenticationRepository {
   @override
   Future<DataSourceState<List<AppUserEntity>>> getAllAppUser() async {
     try {
-      final connectivity = serviceLocator<ConnectivityService>().getCurrentInternetStatus();
+      final connectivity =
+          serviceLocator<ConnectivityService>().getCurrentInternetStatus();
       if (connectivity.$2 == InternetConnectivityState.internet) {
         // Local DB
         // Save to local
-        final Either<RepositoryBaseFailure, List<AppUserEntity>> result = await userLocalDbRepository.getAll();
+        final Either<RepositoryBaseFailure, List<AppUserEntity>> result =
+            await userLocalDbRepository.getAll();
         // Return result
         return result.fold((l) {
           final RepositoryFailure failure = l as RepositoryFailure;
@@ -252,7 +265,8 @@ class AuthenticationRepositoryImplement implements AuthenticationRepository {
       } else {
         // Remote
         // Save to server
-        final ApiResultState<List<AppUserEntity>> result = await remoteDataSource.getAllAppUser();
+        final ApiResultState<List<AppUserEntity>> result =
+            await remoteDataSource.getAllAppUser();
         // Return result
         return result.when(
           success: (data) {
@@ -286,9 +300,11 @@ class AuthenticationRepositoryImplement implements AuthenticationRepository {
   }
 
   @override
-  Future<DataSourceState<AppUserEntity>> getAppUser({required int userID, AppUserEntity? appUserEntity}) async {
+  Future<DataSourceState<AppUserEntity>> getAppUser(
+      {required int userID, AppUserEntity? appUserEntity}) async {
     try {
-      final connectivity = serviceLocator<ConnectivityService>().getCurrentInternetStatus();
+      final connectivity =
+          serviceLocator<ConnectivityService>().getCurrentInternetStatus();
       if (connectivity.$2 == InternetConnectivityState.internet) {
         // Local DB
         // Save to local
@@ -310,7 +326,8 @@ class AuthenticationRepositoryImplement implements AuthenticationRepository {
       } else {
         // Remote
         // Save to server
-        final ApiResultState<AppUserEntity> result = await remoteDataSource.getAppUser(
+        final ApiResultState<AppUserEntity> result =
+            await remoteDataSource.getAppUser(
           userID: userID,
           appUserEntity: appUserEntity,
         );
@@ -347,13 +364,16 @@ class AuthenticationRepositoryImplement implements AuthenticationRepository {
   }
 
   @override
-  Future<DataSourceState<AppUserEntity>> saveAppUser({required AppUserEntity appUserEntity}) async {
+  Future<DataSourceState<AppUserEntity>> saveAppUser(
+      {required AppUserEntity appUserEntity}) async {
     try {
-      final connectivity = serviceLocator<ConnectivityService>().getCurrentInternetStatus();
+      final connectivity =
+          serviceLocator<ConnectivityService>().getCurrentInternetStatus();
       if (connectivity.$2 == InternetConnectivityState.internet) {
         // Local DB
         // Save to local
-        final Either<RepositoryBaseFailure, AppUserEntity> result = await userLocalDbRepository.add(appUserEntity);
+        final Either<RepositoryBaseFailure, AppUserEntity> result =
+            await userLocalDbRepository.add(appUserEntity);
         // Return result
         return result.fold((l) {
           final RepositoryFailure failure = l as RepositoryFailure;
@@ -370,7 +390,8 @@ class AuthenticationRepositoryImplement implements AuthenticationRepository {
       } else {
         // Remote
         // Save to server
-        final ApiResultState<AppUserEntity> result = await remoteDataSource.saveAppUser(appUserEntity: appUserEntity);
+        final ApiResultState<AppUserEntity> result =
+            await remoteDataSource.saveAppUser(appUserEntity: appUserEntity);
         // Return result
         return result.when(
           success: (data) {
@@ -404,9 +425,11 @@ class AuthenticationRepositoryImplement implements AuthenticationRepository {
   }
 
   @override
-  Future<DataSourceState<AppUserEntity?>> getCurrentAppUser({AppUserEntity? entity}) async {
+  Future<DataSourceState<AppUserEntity?>> getCurrentAppUser(
+      {AppUserEntity? entity}) async {
     try {
-      final connectivity = serviceLocator<ConnectivityService>().getCurrentInternetStatus();
+      final connectivity =
+          serviceLocator<ConnectivityService>().getCurrentInternetStatus();
       if (connectivity.$2 == InternetConnectivityState.internet) {
         // Local DB
         // Save to local
@@ -435,7 +458,8 @@ class AuthenticationRepositoryImplement implements AuthenticationRepository {
       } else {
         // Remote
         // Save to server
-        final ApiResultState<AppUserEntity?> result = await remoteDataSource.getCurrentAppUser(entity: entity);
+        final ApiResultState<AppUserEntity?> result =
+            await remoteDataSource.getCurrentAppUser(entity: entity);
         // Return result
         return result.when(
           success: (data) {
@@ -480,11 +504,13 @@ class AuthenticationRepositoryImplement implements AuthenticationRepository {
     Timestamp? endTime,
   }) async {
     try {
-      final connectivity = serviceLocator<ConnectivityService>().getCurrentInternetStatus();
+      final connectivity =
+          serviceLocator<ConnectivityService>().getCurrentInternetStatus();
       if (connectivity.$2 == InternetConnectivityState.internet) {
         // Local DB
         // Save to local
-        final Either<RepositoryBaseFailure, List<AppUserEntity>> result = await userLocalDbRepository.getAllWithPagination(
+        final Either<RepositoryBaseFailure, List<AppUserEntity>> result =
+            await userLocalDbRepository.getAllWithPagination(
           filter: filtering,
           sorting: sorting,
           searchText: searchText,
@@ -510,7 +536,8 @@ class AuthenticationRepositoryImplement implements AuthenticationRepository {
       } else {
         // Remote
         // Save to server
-        final ApiResultState<List<AppUserEntity>> result = await remoteDataSource.getAllAppUsersPagination(
+        final ApiResultState<List<AppUserEntity>> result =
+            await remoteDataSource.getAllAppUsersPagination(
           filtering: filtering,
           sorting: sorting,
           searchText: searchText,
@@ -557,11 +584,13 @@ class AuthenticationRepositoryImplement implements AuthenticationRepository {
     bool hasUpdateAll = false,
   }) async {
     try {
-      final connectivity = serviceLocator<ConnectivityService>().getCurrentInternetStatus();
+      final connectivity =
+          serviceLocator<ConnectivityService>().getCurrentInternetStatus();
       if (connectivity.$2 == InternetConnectivityState.internet) {
         // Local DB
         // Save to local
-        final Either<RepositoryBaseFailure, List<AppUserEntity>> result = await userLocalDbRepository.saveAll(
+        final Either<RepositoryBaseFailure, List<AppUserEntity>> result =
+            await userLocalDbRepository.saveAll(
           entities: appUsers,
           hasUpdateAll: hasUpdateAll,
         );
@@ -581,7 +610,8 @@ class AuthenticationRepositoryImplement implements AuthenticationRepository {
       } else {
         // Remote
         // Save to server
-        final ApiResultState<List<AppUserEntity>> result = await remoteDataSource.saveAllAppUsers(
+        final ApiResultState<List<AppUserEntity>> result =
+            await remoteDataSource.saveAllAppUsers(
           appUsers: appUsers,
           hasUpdateAll: hasUpdateAll,
         );

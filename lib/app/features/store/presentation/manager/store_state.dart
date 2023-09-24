@@ -509,7 +509,8 @@ class BindDriverWithStoresState extends StoreState {
   });
 
   final List<StoreOwnDeliveryPartnersInfo> listOfStoreOwnDeliveryPartners;
-  final List<StoreOwnDeliveryPartnersInfo> listOfSelectedStoreOwnDeliveryPartners;
+  final List<StoreOwnDeliveryPartnersInfo>
+      listOfSelectedStoreOwnDeliveryPartners;
   final List<StoreEntity> storeEntities;
   final List<StoreEntity> listOfSelectedStoreEntities;
   final StoreStateStage storeStateStatus;
@@ -543,7 +544,8 @@ class UnBindDriverWithStoresState extends StoreState {
   });
 
   final List<StoreOwnDeliveryPartnersInfo> listOfStoreOwnDeliveryPartners;
-  final List<StoreOwnDeliveryPartnersInfo> listOfSelectedStoreOwnDeliveryPartners;
+  final List<StoreOwnDeliveryPartnersInfo>
+      listOfSelectedStoreOwnDeliveryPartners;
   final List<StoreEntity> storeEntities;
   final List<StoreEntity> listOfSelectedStoreEntities;
   final StoreStateStage storeStateStatus;
@@ -692,7 +694,8 @@ class BindDriverWithUserState extends StoreState {
   final String message;
   final BindingStage bindingStage;
   final List<StoreOwnDeliveryPartnersInfo> listOfStoreOwnDeliveryPartners;
-  final List<StoreOwnDeliveryPartnersInfo> listOfSelectedStoreOwnDeliveryPartners;
+  final List<StoreOwnDeliveryPartnersInfo>
+      listOfSelectedStoreOwnDeliveryPartners;
   final AppUserEntity appUserEntity;
 
   @override
@@ -743,7 +746,8 @@ class BindStoreWithUserState extends StoreState {
 class ReturnToStorePageState extends StoreState {
   ReturnToStorePageState({
     this.message = '',
-    this.listOfStoreOwnDeliveryPartners = const <StoreOwnDeliveryPartnersInfo>[],
+    this.listOfStoreOwnDeliveryPartners =
+        const <StoreOwnDeliveryPartnersInfo>[],
   });
   final String message;
   final List<StoreOwnDeliveryPartnersInfo> listOfStoreOwnDeliveryPartners;
@@ -766,7 +770,8 @@ class SelectDriversForStoresState extends StoreState {
       this.selectItemUseCase = SelectItemUseCase.bindingWithOther});
 
   final List<StoreOwnDeliveryPartnersInfo> listOfStoreOwnDeliveryPartners;
-  final List<StoreOwnDeliveryPartnersInfo> listOfSelectedStoreOwnDeliveryPartners;
+  final List<StoreOwnDeliveryPartnersInfo>
+      listOfSelectedStoreOwnDeliveryPartners;
 
   final String message;
   final SelectItemUseCase selectItemUseCase;

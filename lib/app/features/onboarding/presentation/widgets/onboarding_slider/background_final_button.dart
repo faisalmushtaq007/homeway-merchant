@@ -67,10 +67,15 @@ class BackgroundFinalButton extends StatelessWidget {
     return addButton
         ? hasSkip
             ? Directionality(
-                textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                textDirection:
+                    serviceLocator<LanguageController>().targetTextDirection,
                 child: AnimatedContainer(
-                  padding: currentPage == totalPage - 1 ? EdgeInsetsDirectional.symmetric(horizontal: 30) : EdgeInsetsDirectional.all(0),
-                  width: currentPage == totalPage - 1 ? MediaQuery.of(context).size.width - 30 : 60,
+                  padding: currentPage == totalPage - 1
+                      ? EdgeInsetsDirectional.symmetric(horizontal: 30)
+                      : EdgeInsetsDirectional.all(0),
+                  width: currentPage == totalPage - 1
+                      ? MediaQuery.of(context).size.width - 30
+                      : 60,
                   duration: Duration(milliseconds: 100),
                   child: currentPage == totalPage - 1
                       ? FloatingActionButton.extended(
@@ -78,8 +83,10 @@ class BackgroundFinalButton extends StatelessWidget {
                           elevation: finishButtonStyle?.elevation,
                           focusElevation: finishButtonStyle?.focusElevation,
                           hoverElevation: finishButtonStyle?.hoverElevation,
-                          highlightElevation: finishButtonStyle?.highlightElevation,
-                          disabledElevation: finishButtonStyle?.disabledElevation,
+                          highlightElevation:
+                              finishButtonStyle?.highlightElevation,
+                          disabledElevation:
+                              finishButtonStyle?.disabledElevation,
                           foregroundColor: finishButtonStyle?.foregroundColor,
                           backgroundColor: finishButtonStyle?.backgroundColor,
                           focusColor: finishButtonStyle?.focusColor,
@@ -98,8 +105,10 @@ class BackgroundFinalButton extends StatelessWidget {
                           elevation: finishButtonStyle?.elevation,
                           focusElevation: finishButtonStyle?.focusElevation,
                           hoverElevation: finishButtonStyle?.hoverElevation,
-                          highlightElevation: finishButtonStyle?.highlightElevation,
-                          disabledElevation: finishButtonStyle?.disabledElevation,
+                          highlightElevation:
+                              finishButtonStyle?.highlightElevation,
+                          disabledElevation:
+                              finishButtonStyle?.disabledElevation,
                           foregroundColor: finishButtonStyle?.foregroundColor,
                           backgroundColor: finishButtonStyle?.backgroundColor,
                           focusColor: finishButtonStyle?.focusColor,
@@ -111,7 +120,8 @@ class BackgroundFinalButton extends StatelessWidget {
                 ),
               )
             : Directionality(
-                textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                textDirection:
+                    serviceLocator<LanguageController>().targetTextDirection,
                 child: Container(
                     padding: EdgeInsetsDirectional.symmetric(horizontal: 30),
                     width: MediaQuery.of(context).size.width - 30,

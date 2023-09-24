@@ -3,16 +3,19 @@ part of 'package:homemakers_merchant/app/features/analysis/index.dart';
 TodayOrderAnalysisEntity todayOrderAnalysisEntityFromJson(String str) =>
     TodayOrderAnalysisEntity.fromJson(json.decode(str));
 
-String todayOrderAnalysisEntityToJson(TodayOrderAnalysisEntity data) => json.encode(data.toJson());
+String todayOrderAnalysisEntityToJson(TodayOrderAnalysisEntity data) =>
+    json.encode(data.toJson());
 
-class TodayOrderAnalysisEntity {
-  TodayOrderAnalysisEntity({
-     this.result=const <TodayOrderResult>[],
+class TodayOrderAnalysisEntity extends Equatable {
+  const TodayOrderAnalysisEntity({
+    this.result = const <TodayOrderResult>[],
   });
 
-  factory TodayOrderAnalysisEntity.fromJson(Map<dynamic, dynamic> json) => TodayOrderAnalysisEntity(
+  factory TodayOrderAnalysisEntity.fromJson(Map<dynamic, dynamic> json) =>
+      TodayOrderAnalysisEntity(
         result: json['result'] != null
-            ? List<TodayOrderResult>.from(json['result'].map((x) => TodayOrderResult.fromJson(x)))
+            ? List<TodayOrderResult>.from(
+                json['result'].map((x) => TodayOrderResult.fromJson(x)))
             : [],
       );
 
@@ -21,17 +24,25 @@ class TodayOrderAnalysisEntity {
   Map<dynamic, dynamic> toJson() => {
         'result': List<dynamic>.from(result.map((x) => x.toJson())),
       };
+
+  @override
+  List<Object?> get props => [result];
 }
 
-class TodayOrderResult {
-  TodayOrderResult({
-     this.data=const OverAllAnalysisData(),
-     this.store=const StoreAnalysisEntity(),
+class TodayOrderResult extends Equatable {
+  const TodayOrderResult({
+    this.data = const OverAllAnalysisData(),
+    this.store = const StoreAnalysisEntity(),
   });
 
-  factory TodayOrderResult.fromJson(Map<dynamic, dynamic> json) => TodayOrderResult(
-        data: json['data'] != null ? OverAllAnalysisData.fromJson(json['data']) : const OverAllAnalysisData(),
-        store: json['store'] != null ? StoreAnalysisEntity.fromJson(json['store']) : const StoreAnalysisEntity(),
+  factory TodayOrderResult.fromJson(Map<dynamic, dynamic> json) =>
+      TodayOrderResult(
+        data: json['data'] != null
+            ? OverAllAnalysisData.fromJson(json['data'])
+            : const OverAllAnalysisData(),
+        store: json['store'] != null
+            ? StoreAnalysisEntity.fromJson(json['store'])
+            : const StoreAnalysisEntity(),
       );
 
   final OverAllAnalysisData data;
@@ -41,9 +52,11 @@ class TodayOrderResult {
         'data': data.toJson(),
         'store': store.toJson(),
       };
+  @override
+  List<Object?> get props => [data, store];
 }
 
-class OverAllAnalysisData {
+class OverAllAnalysisData extends Equatable {
   const OverAllAnalysisData({
     this.totalEarnings = 0,
     this.totalCustomers = 0,
@@ -51,10 +64,13 @@ class OverAllAnalysisData {
     this.totalStores = 0,
   });
 
-  factory OverAllAnalysisData.fromJson(Map<dynamic, dynamic> json) => OverAllAnalysisData(
+  factory OverAllAnalysisData.fromJson(Map<dynamic, dynamic> json) =>
+      OverAllAnalysisData(
         totalEarnings: json['total_earnings'] ?? 0,
         totalCustomers: json['total_customers'] ?? 0,
-        totalOrders: json['total_orders'] != null ? TotalOrders.fromJson(json['total_orders']) : const TotalOrders(),
+        totalOrders: json['total_orders'] != null
+            ? TotalOrders.fromJson(json['total_orders'])
+            : const TotalOrders(),
         totalStores: json['total_stores'] ?? 0,
       );
 
@@ -69,6 +85,10 @@ class OverAllAnalysisData {
         'total_orders': totalOrders.toJson(),
         'total_stores': totalStores,
       };
+
+  @override
+  List<Object?> get props =>
+      [totalEarnings, totalCustomers, totalOrders, totalStores];
 }
 
 class TotalOrders {
@@ -103,7 +123,8 @@ class StoreAnalysisEntity {
     this.yesterdayOrderStatus = const DayOrderStatus(),
   });
 
-  factory StoreAnalysisEntity.fromJson(Map<dynamic, dynamic> json) => StoreAnalysisEntity(
+  factory StoreAnalysisEntity.fromJson(Map<dynamic, dynamic> json) =>
+      StoreAnalysisEntity(
         todayOrderStatus: json['today_order_status'] != null
             ? DayOrderStatus.fromJson(json['today_order_status'])
             : const DayOrderStatus(),

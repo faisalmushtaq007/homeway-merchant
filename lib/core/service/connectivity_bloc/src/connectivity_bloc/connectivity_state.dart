@@ -14,7 +14,8 @@ class ConnectivityInitialState extends ConnectivityState {
 }
 
 class ConnectivityConnectedState extends ConnectivityState {
-  ConnectivityConnectedState({required this.connectivityResult, required this.connectivityStatus});
+  ConnectivityConnectedState(
+      {required this.connectivityResult, required this.connectivityStatus});
 
   final ConnectivityResult connectivityResult;
   final InternetConnectivityStatus connectivityStatus;
@@ -29,7 +30,8 @@ class ConnectivityConnectedState extends ConnectivityState {
 }
 
 class ConnectivityDisconnectedState extends ConnectivityState {
-  ConnectivityDisconnectedState({required this.connectivityResult, required this.connectivityStatus});
+  ConnectivityDisconnectedState(
+      {required this.connectivityResult, required this.connectivityStatus});
 
   final ConnectivityResult connectivityResult;
   final InternetConnectivityStatus connectivityStatus;
@@ -44,7 +46,8 @@ class ConnectivityDisconnectedState extends ConnectivityState {
 }
 
 class ConnectivityWeakConnectedState extends ConnectivityState {
-  ConnectivityWeakConnectedState({required this.connectivityResult, required this.connectivityStatus});
+  ConnectivityWeakConnectedState(
+      {required this.connectivityResult, required this.connectivityStatus});
 
   final ConnectivityResult connectivityResult;
   final InternetConnectivityStatus connectivityStatus;

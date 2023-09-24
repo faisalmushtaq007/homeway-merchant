@@ -32,8 +32,8 @@ class DisplayImage extends StatelessWidget {
     this.hasCustomIcon = false,
     this.top,
     this.end,
-    this.circularRadius=36,
-    this.borderRadius=20,
+    this.circularRadius = 36,
+    this.borderRadius = 20,
     this.bottom,
   }) : super(key: key);
 
@@ -50,9 +50,9 @@ class DisplayImage extends StatelessWidget {
           if (hasEditButton)
             PositionedDirectional(
               child: buildEditIcon(color, context),
-              end: end??-4,
+              end: end ?? -4,
               //top: top??10,
-                bottom:bottom,
+              bottom: bottom,
             ),
         ],
       ),
@@ -81,7 +81,8 @@ class DisplayImage extends StatelessWidget {
                 ? ImageHelper(
                     image: imagePath,
                     filterQuality: FilterQuality.high,
-                    borderRadius: BorderRadiusDirectional.circular(borderRadius),
+                    borderRadius:
+                        BorderRadiusDirectional.circular(borderRadius),
                     imageType: findImageType(imagePath),
                     imageShape: ImageShape.rectangle,
                     boxFit: BoxFit.cover,

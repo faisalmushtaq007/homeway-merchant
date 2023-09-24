@@ -15,10 +15,12 @@ class ConfirmBusinessTypePage extends StatefulWidget {
   final BusinessTypeEntity? businessTypeEntity;
 
   @override
-  _ConfirmBusinessTypePageController createState() => _ConfirmBusinessTypePageController();
+  _ConfirmBusinessTypePageController createState() =>
+      _ConfirmBusinessTypePageController();
 }
 
-class _ConfirmBusinessTypePageController extends State<ConfirmBusinessTypePage> {
+class _ConfirmBusinessTypePageController
+    extends State<ConfirmBusinessTypePage> {
   List<BusinessTypeEntity> _businessTypesList = [];
   late SwiperController swiperController;
 
@@ -49,7 +51,8 @@ class _ConfirmBusinessTypePageController extends State<ConfirmBusinessTypePage> 
   void initState() {
     super.initState();
     _businessTypesList = [];
-    _businessTypesList = List<BusinessTypeEntity>.from(businessTypeList.toList());
+    _businessTypesList =
+        List<BusinessTypeEntity>.from(businessTypeList.toList());
     swiperController = SwiperController();
     _controller = InfiniteScrollController(initialItem: _selectedIndex);
   }
@@ -82,12 +85,14 @@ class _ConfirmBusinessTypePageController extends State<ConfirmBusinessTypePage> 
     }
     _businessTypesList[selectedIndex].hasSelected = true;
     selectedBusinessTypeEntity = _businessTypesList[selectedIndex];
-    pickupBusinessTypeName = _businessTypesList[selectedIndex].businessTypeName ?? '';
+    pickupBusinessTypeName =
+        _businessTypesList[selectedIndex].businessTypeName ?? '';
     setState(() {});
   }
 
   void _nextButtonOnPressed() {
-    serviceLocator<AppUserEntity>().currentProfileStatus = CurrentProfileStatus.businessTypeSaved;
+    serviceLocator<AppUserEntity>().currentProfileStatus =
+        CurrentProfileStatus.businessTypeSaved;
     if (!mounted) {
       return;
     }
@@ -113,14 +118,16 @@ class _ConfirmBusinessTypePageController extends State<ConfirmBusinessTypePage> 
   Widget build(BuildContext context) => _ConfirmBusinessTypePageView(this);
 }
 
-class _ConfirmBusinessTypePageView extends WidgetView<ConfirmBusinessTypePage, _ConfirmBusinessTypePageController> {
+class _ConfirmBusinessTypePageView extends WidgetView<ConfirmBusinessTypePage,
+    _ConfirmBusinessTypePageController> {
   const _ConfirmBusinessTypePageView(super.state);
 
   @override
   Widget build(BuildContext context) {
     final MediaQueryData media = MediaQuery.of(context);
     final double margins = GlobalApp.responsiveInsets(media.size.width);
-    final double topPadding = margins; //media.padding.top + kToolbarHeight + margins; //margins * 1.5;
+    final double topPadding =
+        margins; //media.padding.top + kToolbarHeight + margins; //margins * 1.5;
     final double bottomPadding = media.padding.bottom + margins;
     final double width = media.size.width;
     final ThemeData theme = Theme.of(context);
@@ -167,7 +174,8 @@ class _ConfirmBusinessTypePageView extends WidgetView<ConfirmBusinessTypePage, _
                   key: const Key('business-type--page-bloc-listener'),
                   bloc: context.read<BusinessProfileBloc>(),
                   listener: (context, businessState) {
-                    if (businessState is SaveBusinessProfileState && businessState.hasSaveBusinessType) {
+                    if (businessState is SaveBusinessProfileState &&
+                        businessState.hasSaveBusinessType) {
                       context.pushReplacement(
                         Routes.BANK_INFORMATION_PAGE,
                       );
@@ -179,7 +187,8 @@ class _ConfirmBusinessTypePageView extends WidgetView<ConfirmBusinessTypePage, _
                     buildWhen: (previous, current) => previous != current,
                     builder: (context, permissionState) {
                       return Stack(
-                        textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                        textDirection: serviceLocator<LanguageController>()
+                            .targetTextDirection,
                         children: [
                           const Align(
                             alignment: AlignmentDirectional.topStart,
@@ -194,7 +203,10 @@ class _ConfirmBusinessTypePageView extends WidgetView<ConfirmBusinessTypePage, _
                               controller: scrollController,
                               children: [
                                 Container(
-                                  margin: EdgeInsetsDirectional.only(top: media.padding.top + kToolbarHeight + margins),
+                                  margin: EdgeInsetsDirectional.only(
+                                      top: media.padding.top +
+                                          kToolbarHeight +
+                                          margins),
                                   height: context.width / 1.25,
                                   width: context.width,
                                   child: Swiper(
@@ -212,54 +224,92 @@ class _ConfirmBusinessTypePageView extends WidgetView<ConfirmBusinessTypePage, _
                                     itemBuilder: (context, index) {
                                       return Center(
                                         child: AnimateWidget(
-                                          duration: const Duration(milliseconds: 500),
+                                          duration:
+                                              const Duration(milliseconds: 500),
                                           curve: Curves.fastOutSlowIn,
-                                          builder: (BuildContext context, Animate animate) {
+                                          builder: (BuildContext context,
+                                              Animate animate) {
                                             return ScaleTransition(
                                               scale: animate.curvedAnimation,
-                                              alignment: FractionalOffset.center,
+                                              alignment:
+                                                  FractionalOffset.center,
                                               child: AnimatedContainer(
-                                                duration: const Duration(milliseconds: 500),
+                                                duration: const Duration(
+                                                    milliseconds: 500),
                                                 height: selectedHeightInActive,
                                                 width: selectedWidthInActive,
                                                 decoration: BoxDecoration(
-                                                  boxShadow: state._businessTypesList[index].hasSelected
+                                                  boxShadow: state
+                                                          ._businessTypesList[
+                                                              index]
+                                                          .hasSelected
                                                       ? [
                                                           BoxShadow(
                                                             blurRadius: 36,
                                                             spreadRadius: 17,
-                                                            blurStyle: BlurStyle.normal,
-                                                            offset: Offset.fromDirection(0.0, 0.0),
-                                                            color: const Color.fromRGBO(69, 201, 125, 1),
+                                                            blurStyle: BlurStyle
+                                                                .normal,
+                                                            offset: Offset
+                                                                .fromDirection(
+                                                                    0.0, 0.0),
+                                                            color: const Color
+                                                                .fromRGBO(69,
+                                                                201, 125, 1),
                                                           ),
                                                         ]
                                                       : null,
-                                                  borderRadius: BorderRadiusDirectional.circular(15),
+                                                  borderRadius:
+                                                      BorderRadiusDirectional
+                                                          .circular(15),
                                                 ),
                                                 child: Card(
                                                   key: ValueKey(index),
-                                                  color: const Color.fromRGBO(240, 237, 237, 1.0),
+                                                  color: const Color.fromRGBO(
+                                                      240, 237, 237, 1.0),
                                                   shape: RoundedRectangleBorder(
-                                                    borderRadius: BorderRadiusDirectional.circular(15),
+                                                    borderRadius:
+                                                        BorderRadiusDirectional
+                                                            .circular(15),
                                                     /*side: BorderSide(
                                                     color: Colors.white,
                                                     width: 2,
                                                   ),*/
                                                   ),
                                                   child: Column(
-                                                    mainAxisAlignment: MainAxisAlignment.center,
-                                                    crossAxisAlignment: CrossAxisAlignment.center,
-                                                    mainAxisSize: MainAxisSize.min,
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .center,
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .center,
+                                                    mainAxisSize:
+                                                        MainAxisSize.min,
                                                     children: [
-                                                      state._businessTypesList[index].localAssetWidget ??
-                                                          SvgPicture.asset(state._businessTypesList[index].localAssetPath),
-                                                      const AnimatedGap(16, duration: Duration(milliseconds: 500)),
+                                                      state
+                                                              ._businessTypesList[
+                                                                  index]
+                                                              .localAssetWidget ??
+                                                          SvgPicture.asset(state
+                                                              ._businessTypesList[
+                                                                  index]
+                                                              .localAssetPath),
+                                                      const AnimatedGap(16,
+                                                          duration: Duration(
+                                                              milliseconds:
+                                                                  500)),
                                                       Wrap(
                                                         children: [
                                                           Text(
                                                             '${state._businessTypesList[index].businessTypeName}',
-                                                            style: context.titleMedium!.copyWith(color: '#090909'.toColor),
-                                                            textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                                            style: context
+                                                                .titleMedium!
+                                                                .copyWith(
+                                                                    color: '#090909'
+                                                                        .toColor),
+                                                            textDirection:
+                                                                serviceLocator<
+                                                                        LanguageController>()
+                                                                    .targetTextDirection,
                                                           ).translate(),
                                                         ],
                                                       ),
@@ -280,19 +330,25 @@ class _ConfirmBusinessTypePageView extends WidgetView<ConfirmBusinessTypePage, _
                                     curve: Curves.fastOutSlowIn,
                                   ),
                                 ),
-                                const AnimatedGap(24, duration: Duration(milliseconds: 500)),
+                                const AnimatedGap(24,
+                                    duration: Duration(milliseconds: 500)),
                                 Wrap(
                                   alignment: WrapAlignment.center,
                                   crossAxisAlignment: WrapCrossAlignment.center,
-                                  textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                  textDirection:
+                                      serviceLocator<LanguageController>()
+                                          .targetTextDirection,
                                   children: [
                                     AnimatedSwitcher(
-                                      duration: const Duration(milliseconds: 500),
+                                      duration:
+                                          const Duration(milliseconds: 500),
                                       child: Text(
                                         (state.pickupBusinessTypeName.isEmpty)
                                             ? 'Pickup your business type'
                                             : 'Your business type is ${state.pickupBusinessTypeName}',
-                                        textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                        textDirection:
+                                            serviceLocator<LanguageController>()
+                                                .targetTextDirection,
                                         style: context.titleMedium,
                                       ).translate(),
                                     ),
@@ -334,9 +390,12 @@ class _ConfirmBusinessTypePageView extends WidgetView<ConfirmBusinessTypePage, _
                                     ),
                                     child: Text(
                                       'Prev',
-                                      textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                      textDirection:
+                                          serviceLocator<LanguageController>()
+                                              .targetTextDirection,
                                       style: const TextStyle(
-                                        color: Color.fromRGBO(127, 129, 132, 1.0),
+                                        color:
+                                            Color.fromRGBO(127, 129, 132, 1.0),
                                       ),
                                     ).translate(),
                                   ),
@@ -347,15 +406,22 @@ class _ConfirmBusinessTypePageView extends WidgetView<ConfirmBusinessTypePage, _
                                 Expanded(
                                   flex: 2,
                                   child: ElevatedButton(
-                                    onPressed: state.pickupBusinessTypeName.isNotEmpty ? state._nextButtonOnPressed : null,
+                                    onPressed:
+                                        state.pickupBusinessTypeName.isNotEmpty
+                                            ? state._nextButtonOnPressed
+                                            : null,
                                     style: ElevatedButton.styleFrom(
                                       //minimumSize: Size(180, 40),
-                                      disabledBackgroundColor: const Color.fromRGBO(255, 219, 208, 1),
+                                      disabledBackgroundColor:
+                                          const Color.fromRGBO(
+                                              255, 219, 208, 1),
                                       disabledForegroundColor: Colors.white,
                                     ),
                                     child: Text(
                                       'Next',
-                                      textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                      textDirection:
+                                          serviceLocator<LanguageController>()
+                                              .targetTextDirection,
                                     ).translate(),
                                   ),
                                 ),

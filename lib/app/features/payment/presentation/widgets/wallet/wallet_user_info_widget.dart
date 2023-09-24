@@ -4,7 +4,8 @@ class WalletUserInfoWidget extends StatefulWidget {
   const WalletUserInfoWidget({super.key});
 
   @override
-  _WalletUserInfoWidgetController createState() => _WalletUserInfoWidgetController();
+  _WalletUserInfoWidgetController createState() =>
+      _WalletUserInfoWidgetController();
 }
 
 class _WalletUserInfoWidgetController extends State<WalletUserInfoWidget> {
@@ -19,13 +20,15 @@ class _WalletUserInfoWidgetController extends State<WalletUserInfoWidget> {
   }
 
   @override
-  Widget build(BuildContext context) => BlocListener<BusinessProfileBloc, BusinessProfileState>(
+  Widget build(BuildContext context) =>
+      BlocListener<BusinessProfileBloc, BusinessProfileState>(
         bloc: context.read<BusinessProfileBloc>(),
         key: const Key('wallet_user_info_bloc_listener'),
         listener: (context, businessProfileState) {
           if (businessProfileState is GetAllBusinessProfileState) {
             if (businessProfileState.businessProfileEntities.isNotNullOrEmpty) {
-              businessProfileEntity = businessProfileState.businessProfileEntities.first;
+              businessProfileEntity =
+                  businessProfileState.businessProfileEntities.first;
             }
           } else if (businessProfileState is GetBusinessProfileState) {
             businessProfileEntity = businessProfileState.businessProfileEntity;
@@ -35,7 +38,8 @@ class _WalletUserInfoWidgetController extends State<WalletUserInfoWidget> {
       );
 }
 
-class _WalletUserInfoWidgetView extends WidgetView<WalletUserInfoWidget, _WalletUserInfoWidgetController> {
+class _WalletUserInfoWidgetView
+    extends WidgetView<WalletUserInfoWidget, _WalletUserInfoWidgetController> {
   const _WalletUserInfoWidgetView(super.state);
 
   @override
@@ -48,11 +52,13 @@ class _WalletUserInfoWidgetView extends WidgetView<WalletUserInfoWidget, _Wallet
       color: Colors.transparent,
       elevation: 0,
       child: Padding(
-        padding: const EdgeInsetsDirectional.only(start: 0, end: 0, top: 12, bottom: 0),
+        padding: const EdgeInsetsDirectional.only(
+            start: 0, end: 0, top: 12, bottom: 0),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.center,
-          textDirection: serviceLocator<LanguageController>().targetTextDirection,
+          textDirection:
+              serviceLocator<LanguageController>().targetTextDirection,
           children: [
             CircleAvatar(
               backgroundColor: Colors.transparent,
@@ -60,7 +66,8 @@ class _WalletUserInfoWidgetView extends WidgetView<WalletUserInfoWidget, _Wallet
                 image: getUserProfileImagePath(state.businessProfileEntity!),
                 filterQuality: FilterQuality.high,
                 borderRadius: BorderRadiusDirectional.circular(10),
-                imageType: findImageType(getUserProfileImagePath(state.businessProfileEntity!)),
+                imageType: findImageType(
+                    getUserProfileImagePath(state.businessProfileEntity!)),
                 imageShape: ImageShape.rectangle,
                 boxFit: BoxFit.cover,
                 defaultErrorBuilderColor: Colors.blueGrey,
@@ -88,7 +95,8 @@ class _WalletUserInfoWidgetView extends WidgetView<WalletUserInfoWidget, _Wallet
                     Text(
                       'Good Morning,',
                       style: context.headlineSmall!.copyWith(fontSize: 15),
-                      textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                      textDirection: serviceLocator<LanguageController>()
+                          .targetTextDirection,
                       maxLines: 1,
                       softWrap: true,
                       overflow: TextOverflow.ellipsis,
@@ -96,8 +104,10 @@ class _WalletUserInfoWidgetView extends WidgetView<WalletUserInfoWidget, _Wallet
                     const AnimatedGap(2, duration: Duration(milliseconds: 200)),
                     Text(
                       'Prasant Kumar', //'${state.businessProfileEntity?.userName ?? 'User'},',
-                      style: context.headlineSmall!.copyWith(fontSize: 17, fontWeight: FontWeight.w500),
-                      textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                      style: context.headlineSmall!
+                          .copyWith(fontSize: 17, fontWeight: FontWeight.w500),
+                      textDirection: serviceLocator<LanguageController>()
+                          .targetTextDirection,
                       maxLines: 3,
                       softWrap: true,
                       overflow: TextOverflow.ellipsis,
@@ -115,11 +125,14 @@ class _WalletUserInfoWidgetView extends WidgetView<WalletUserInfoWidget, _Wallet
 
 String getUserProfileImagePath(BusinessProfileEntity businessProfileEntity) {
   String defaultAssetPath = 'assets/svg/user_avatar.svg';
-  BusinessDocumentUploadedEntity? businessDocumentUploadedEntity = businessProfileEntity.businessDocumentUploadedEntity;
+  BusinessDocumentUploadedEntity? businessDocumentUploadedEntity =
+      businessProfileEntity.businessDocumentUploadedEntity;
   if (businessDocumentUploadedEntity.isNotNull) {
     appLog.d('Wallet user ${businessDocumentUploadedEntity?.toMap()}');
     if (businessDocumentUploadedEntity!.documentType == DocumentType.selfie) {
-      return businessDocumentUploadedEntity.documentFrontAssets?.assetUrl ?? businessDocumentUploadedEntity.documentFrontAssets?.assetPath ?? defaultAssetPath;
+      return businessDocumentUploadedEntity.documentFrontAssets?.assetUrl ??
+          businessDocumentUploadedEntity.documentFrontAssets?.assetPath ??
+          defaultAssetPath;
     } else {
       return defaultAssetPath;
     }

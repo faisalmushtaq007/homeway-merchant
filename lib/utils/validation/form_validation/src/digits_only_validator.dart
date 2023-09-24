@@ -25,5 +25,6 @@ class DigitsOnlyValidator extends PatternValidator {
   ///
   /// The [errorMessage] parameter is the error message to be returned if the value
   /// contains any non-digit characters.
-  DigitsOnlyValidator({required super.errorMessage}) : super(RegExp(r'^[0-9]*$'));
+  DigitsOnlyValidator({required super.errorMessage})
+      : super(RegExp(r'^[0-9]*$'));
 }

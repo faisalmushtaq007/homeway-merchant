@@ -1,6 +1,7 @@
 part of 'package:homemakers_merchant/app/features/store/index.dart';
 
-class MultiSelectAvailableWorkingDaysFormField extends FormField<List<StoreWorkingDayAndTime>> {
+class MultiSelectAvailableWorkingDaysFormField
+    extends FormField<List<StoreWorkingDayAndTime>> {
   final Widget title;
   final Widget hintWidget;
   final bool required;
@@ -96,7 +97,8 @@ class MultiSelectAvailableWorkingDaysFormField extends FormField<List<StoreWorki
               ),
               isEmpty: state.value == null || state.value!.isEmpty,
               child: MultiSelectStoreAvailableWorkingDays(
-                onSelectionChanged: (List<StoreWorkingDayAndTime> selectedItems) {
+                onSelectionChanged:
+                    (List<StoreWorkingDayAndTime> selectedItems) {
                   selectedChoices = selectedItems.toList();
                   onSelectionChanged?.call(selectedChoices);
                   state.didChange(selectedChoices);
@@ -106,7 +108,8 @@ class MultiSelectAvailableWorkingDaysFormField extends FormField<List<StoreWorki
                   state.save();
                 },
                 availableWorkingDayList: availableWorkingDaysList.toList(),
-                initialSelectedAvailableWorkingDayList: initialSelectedAvailableWorkingDaysList.toList(),
+                initialSelectedAvailableWorkingDayList:
+                    initialSelectedAvailableWorkingDaysList.toList(),
                 maxSelection: maxSelection,
                 onMaxSelected: onMaxSelected,
                 isSingleSelect: isSingleSelect,
@@ -137,10 +140,12 @@ class MultiSelectStoreAvailableWorkingDays extends StatefulWidget {
   final bool isSingleSelect;
 
   @override
-  _MultiSelectStoreAvailableWorkingDaysState createState() => _MultiSelectStoreAvailableWorkingDaysState();
+  _MultiSelectStoreAvailableWorkingDaysState createState() =>
+      _MultiSelectStoreAvailableWorkingDaysState();
 }
 
-class _MultiSelectStoreAvailableWorkingDaysState extends State<MultiSelectStoreAvailableWorkingDays> {
+class _MultiSelectStoreAvailableWorkingDaysState
+    extends State<MultiSelectStoreAvailableWorkingDays> {
   // String selectedChoice = "";
   List<StoreWorkingDayAndTime> selectedChoices = [];
   bool? _hasStoreOpenAllDays;
@@ -167,7 +172,8 @@ class _MultiSelectStoreAvailableWorkingDaysState extends State<MultiSelectStoreA
       choices.add(ChoiceChip(
         label: Text(
           item.shortName,
-          textDirection: serviceLocator<LanguageController>().targetTextDirection,
+          textDirection:
+              serviceLocator<LanguageController>().targetTextDirection,
         ),
         selected: selectedChoices.contains(item),
         onSelected: (selected) {
@@ -179,11 +185,14 @@ class _MultiSelectStoreAvailableWorkingDaysState extends State<MultiSelectStoreA
               widget.onSelectionChanged?.call(selectedChoices);
             });
           } else {
-            if (selectedChoices.length == (widget.maxSelection ?? -1) && !selectedChoices.contains(item)) {
+            if (selectedChoices.length == (widget.maxSelection ?? -1) &&
+                !selectedChoices.contains(item)) {
               widget.onMaxSelected?.call(selectedChoices);
             } else {
               setState(() {
-                selectedChoices.contains(item) ? selectedChoices.remove(item) : selectedChoices.add(item);
+                selectedChoices.contains(item)
+                    ? selectedChoices.remove(item)
+                    : selectedChoices.add(item);
                 widget.onSelectionChanged?.call(selectedChoices);
               });
             }
@@ -210,7 +219,8 @@ class _MultiSelectStoreAvailableWorkingDaysState extends State<MultiSelectStoreA
         Wrap(
           spacing: 8,
           runSpacing: 0,
-          textDirection: serviceLocator<LanguageController>().targetTextDirection,
+          textDirection:
+              serviceLocator<LanguageController>().targetTextDirection,
           children: _buildChoiceList(),
         ),
         CheckboxListTile(
@@ -228,7 +238,8 @@ class _MultiSelectStoreAvailableWorkingDaysState extends State<MultiSelectStoreA
           tristate: true,
           title: Text(
             'All days',
-            textDirection: serviceLocator<LanguageController>().targetTextDirection,
+            textDirection:
+                serviceLocator<LanguageController>().targetTextDirection,
             style: context.titleSmall,
           ),
         ),

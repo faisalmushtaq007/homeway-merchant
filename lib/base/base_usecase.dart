@@ -14,7 +14,8 @@ class AddUseCase<I, Repo extends BaseCRUDRepo<I>> extends UseCaseIO<I, int> {
   }
 }
 
-class AddAllUseCase<I, Repo extends BaseCRUDRepo<I>> extends UseCaseIO<List<I>, List<int>> {
+class AddAllUseCase<I, Repo extends BaseCRUDRepo<I>>
+    extends UseCaseIO<List<I>, List<int>> {
   AddAllUseCase(this.repo);
   final Repo repo;
 
@@ -24,7 +25,8 @@ class AddAllUseCase<I, Repo extends BaseCRUDRepo<I>> extends UseCaseIO<List<I>, 
   }
 }
 
-class GetByIdUseCase<O, Repo extends BaseCRUDRepo<O>> extends UseCaseIO<int, O?> {
+class GetByIdUseCase<O, Repo extends BaseCRUDRepo<O>>
+    extends UseCaseIO<int, O?> {
   GetByIdUseCase(this.repo);
   final Repo repo;
 
@@ -44,7 +46,8 @@ class GetAllUseCase<O, Repo extends BaseCRUDRepo<O>> extends UseCase<List<O>> {
   }
 }
 
-class UpdateUseCase<I, Repo extends BaseCRUDRepo<I>> extends UseCaseIO<I, void> {
+class UpdateUseCase<I, Repo extends BaseCRUDRepo<I>>
+    extends UseCaseIO<I, void> {
   UpdateUseCase(this.repo);
   final Repo repo;
 
@@ -54,7 +57,8 @@ class UpdateUseCase<I, Repo extends BaseCRUDRepo<I>> extends UseCaseIO<I, void> 
   }
 }
 
-class UpdateAllUseCase<I, Repo extends BaseCRUDRepo<I>> extends UseCaseIO<List<I>, void> {
+class UpdateAllUseCase<I, Repo extends BaseCRUDRepo<I>>
+    extends UseCaseIO<List<I>, void> {
   UpdateAllUseCase(this.repo);
   final Repo repo;
 
@@ -64,7 +68,8 @@ class UpdateAllUseCase<I, Repo extends BaseCRUDRepo<I>> extends UseCaseIO<List<I
   }
 }
 
-class DeleteUseCase<I, Repo extends BaseCRUDRepo<I>> extends UseCaseIO<I, void> {
+class DeleteUseCase<I, Repo extends BaseCRUDRepo<I>>
+    extends UseCaseIO<I, void> {
   DeleteUseCase(this.repo);
   final Repo repo;
 
@@ -74,7 +79,8 @@ class DeleteUseCase<I, Repo extends BaseCRUDRepo<I>> extends UseCaseIO<I, void> 
   }
 }
 
-class DeleteAllUseCase<I, Repo extends BaseCRUDRepo<I>> extends UseCaseIO<List<I>, void> {
+class DeleteAllUseCase<I, Repo extends BaseCRUDRepo<I>>
+    extends UseCaseIO<List<I>, void> {
   DeleteAllUseCase(this.repo);
   final Repo repo;
 
@@ -117,10 +123,12 @@ abstract class UseCaseIOPattern<Input, T> {
 }
 
 abstract class QueryAllUseCaseIORecord<PageKey, PageSize, SearchTerm, T> {
-  Future<T> call((PageKey pageKey, PageSize pageSize, SearchTerm? searchText) record);
+  Future<T> call(
+      (PageKey pageKey, PageSize pageSize, SearchTerm? searchText) record);
 }
 
-abstract class OrderQueryAllUseCaseIORecord<Type, PageKey, PageSize, SearchTerm, Filtering, Sorting, StartTime, EndTime, T> {
+abstract class OrderQueryAllUseCaseIORecord<Type, PageKey, PageSize, SearchTerm,
+    Filtering, Sorting, StartTime, EndTime, T> {
   Future<T> call(
       (
         PageKey pageKey,
@@ -134,7 +142,8 @@ abstract class OrderQueryAllUseCaseIORecord<Type, PageKey, PageSize, SearchTerm,
       ) record);
 }
 
-abstract class CategoryQueryAllUseCaseIORecord<MainCategory, SubCategory, PageKey, PageSize, SearchTerm, Filtering, Sorting, StartTime, EndTime, T> {
+abstract class CategoryQueryAllUseCaseIORecord<MainCategory, SubCategory,
+    PageKey, PageSize, SearchTerm, Filtering, Sorting, StartTime, EndTime, T> {
   Future<T> call({
     PageKey pageKey,
     PageSize pageSize,
@@ -148,7 +157,8 @@ abstract class CategoryQueryAllUseCaseIORecord<MainCategory, SubCategory, PageKe
   });
 }
 
-abstract class AddressQueryAllUseCaseIORecord<AddressModel, PageKey, PageSize, SearchTerm, Filtering, Sorting, StartTime, EndTime, T> {
+abstract class AddressQueryAllUseCaseIORecord<AddressModel, PageKey, PageSize,
+    SearchTerm, Filtering, Sorting, StartTime, EndTime, T> {
   Future<T> call({
     PageKey pageKey,
     PageSize pageSize,
@@ -161,7 +171,8 @@ abstract class AddressQueryAllUseCaseIORecord<AddressModel, PageKey, PageSize, S
   });
 }
 
-abstract class PaginationQueryAllUseCaseIORecord<Model, PageKey, PageSize, SearchTerm, Filtering, Sorting, StartTime, EndTime, T> {
+abstract class PaginationQueryAllUseCaseIORecord<Model, PageKey, PageSize,
+    SearchTerm, Filtering, Sorting, StartTime, EndTime, T> {
   Future<T> call({
     PageKey pageKey,
     PageSize pageSize,

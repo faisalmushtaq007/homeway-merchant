@@ -11,7 +11,8 @@ class _AllNewOrderPageController extends State<AllNewOrderPage> {
   Widget build(BuildContext context) => _AllNewOrderPageView(this);
 }
 
-class _AllNewOrderPageView extends WidgetView<AllNewOrderPage, _AllNewOrderPageController> {
+class _AllNewOrderPageView
+    extends WidgetView<AllNewOrderPage, _AllNewOrderPageController> {
   const _AllNewOrderPageView(super.state);
 
   @override

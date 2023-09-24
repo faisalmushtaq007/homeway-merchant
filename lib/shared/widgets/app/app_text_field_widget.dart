@@ -123,7 +123,8 @@ class AppTextFieldWidget extends StatelessWidget {
   final SpellCheckConfiguration? spellCheckConfiguration;
   final TextMagnifierConfiguration? magnifierConfiguration;
 
-  static Widget _defaultContextMenuBuilder(BuildContext context, EditableTextState editableTextState) {
+  static Widget _defaultContextMenuBuilder(
+      BuildContext context, EditableTextState editableTextState) {
     return AdaptiveTextSelectionToolbar.editableText(
       editableTextState: editableTextState,
     );
@@ -144,7 +145,8 @@ class AppTextFieldWidget extends StatelessWidget {
         strutStyle: strutStyle,
         textAlign: textAlign,
         textAlignVertical: textAlignVertical,
-        textDirection: textDirection ?? serviceLocator<LanguageController>().targetTextDirection,
+        textDirection: textDirection ??
+            serviceLocator<LanguageController>().targetTextDirection,
         textCapitalization: textCapitalization,
         autofocus: autofocus,
         toolbarOptions: toolbarOptions,
@@ -153,8 +155,10 @@ class AppTextFieldWidget extends StatelessWidget {
         obscuringCharacter: obscuringCharacter,
         obscureText: obscureText,
         autocorrect: autocorrect,
-        smartDashesType: smartDashesType ?? (obscureText ? SmartDashesType.disabled : SmartDashesType.enabled),
-        smartQuotesType: smartQuotesType ?? (obscureText ? SmartQuotesType.disabled : SmartQuotesType.enabled),
+        smartDashesType: smartDashesType ??
+            (obscureText ? SmartDashesType.disabled : SmartDashesType.enabled),
+        smartQuotesType: smartQuotesType ??
+            (obscureText ? SmartQuotesType.disabled : SmartQuotesType.enabled),
         enableSuggestions: enableSuggestions,
         maxLengthEnforcement: maxLengthEnforcement,
         maxLines: maxLines,
@@ -175,7 +179,8 @@ class AppTextFieldWidget extends StatelessWidget {
         scrollPadding: scrollPadding,
         scrollPhysics: scrollPhysics,
         keyboardAppearance: keyboardAppearance,
-        enableInteractiveSelection: enableInteractiveSelection ?? (!obscureText || !readOnly),
+        enableInteractiveSelection:
+            enableInteractiveSelection ?? (!obscureText || !readOnly),
         selectionControls: selectionControls,
         buildCounter: buildCounter,
         autofillHints: autofillHints,

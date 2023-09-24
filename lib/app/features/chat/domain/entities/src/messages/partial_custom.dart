@@ -21,7 +21,8 @@ class PartialCustom {
   });
 
   /// Creates a partial custom message from a map (decoded JSON).
-  factory PartialCustom.fromJson(Map<String, dynamic> json) => _$PartialCustomFromJson(json);
+  factory PartialCustom.fromJson(Map<String, dynamic> json) =>
+      _$PartialCustomFromJson(json);
 
   /// Additional custom metadata or attributes related to the message.
   final Map<String, dynamic>? metadata;

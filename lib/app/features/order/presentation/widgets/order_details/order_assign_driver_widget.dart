@@ -54,7 +54,8 @@ class AssignDriverWidget extends StatelessWidget {
               style: context.titleMedium!.copyWith(
                 fontWeight: FontWeight.w600,
               ),
-              textDirection: serviceLocator<LanguageController>().targetTextDirection,
+              textDirection:
+                  serviceLocator<LanguageController>().targetTextDirection,
               overflow: TextOverflow.ellipsis,
               softWrap: true,
               maxLines: 3,
@@ -64,7 +65,8 @@ class AssignDriverWidget extends StatelessWidget {
               style: context.labelMedium!.copyWith(
                 fontWeight: FontWeight.w600,
               ),
-              textDirection: serviceLocator<LanguageController>().targetTextDirection,
+              textDirection:
+                  serviceLocator<LanguageController>().targetTextDirection,
               overflow: TextOverflow.ellipsis,
               softWrap: true,
               maxLines: 1,
@@ -72,7 +74,8 @@ class AssignDriverWidget extends StatelessWidget {
             trailing: SizedBox(
               child: Row(
                 mainAxisSize: MainAxisSize.min,
-                textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                textDirection:
+                    serviceLocator<LanguageController>().targetTextDirection,
                 children: [
                   IconButton(
                     icon: Icon(
@@ -103,10 +106,12 @@ class AssignDriverWidget extends StatelessWidget {
             padding: const EdgeInsetsDirectional.only(start: 12, end: 12),
             child: Row(
               mainAxisSize: MainAxisSize.min,
-              textDirection: serviceLocator<LanguageController>().targetTextDirection,
+              textDirection:
+                  serviceLocator<LanguageController>().targetTextDirection,
               children: [
                 Column(
-                  textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                  textDirection:
+                      serviceLocator<LanguageController>().targetTextDirection,
                   children: [
                     CircleAvatar(
                       backgroundColor: context.colorScheme.primaryContainer,
@@ -146,18 +151,21 @@ class AssignDriverWidget extends StatelessWidget {
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     crossAxisAlignment: CrossAxisAlignment.stretch,
-                    textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                    textDirection: serviceLocator<LanguageController>()
+                        .targetTextDirection,
                     children: [
                       Row(
                         mainAxisSize: MainAxisSize.min,
-                        textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                        textDirection: serviceLocator<LanguageController>()
+                            .targetTextDirection,
                         children: [
                           Text(
                             'On the way',
                             style: context.bodyMedium!.copyWith(
                               fontWeight: FontWeight.w500,
                             ),
-                            textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                            textDirection: serviceLocator<LanguageController>()
+                                .targetTextDirection,
                             overflow: TextOverflow.ellipsis,
                             softWrap: true,
                             maxLines: 1,
@@ -171,14 +179,16 @@ class AssignDriverWidget extends StatelessWidget {
                             style: context.bodyMedium!.copyWith(
                               fontWeight: FontWeight.w600,
                             ),
-                            textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                            textDirection: serviceLocator<LanguageController>()
+                                .targetTextDirection,
                             overflow: TextOverflow.ellipsis,
                             softWrap: true,
                             maxLines: 1,
                           ),
                         ],
                       ),
-                      const AnimatedGap(1, duration: Duration(milliseconds: 100)),
+                      const AnimatedGap(1,
+                          duration: Duration(milliseconds: 100)),
                       Wrap(
                         children: [
                           Text(
@@ -186,7 +196,8 @@ class AssignDriverWidget extends StatelessWidget {
                             style: context.labelMedium!.copyWith(
                               fontWeight: FontWeight.w500,
                             ),
-                            textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                            textDirection: serviceLocator<LanguageController>()
+                                .targetTextDirection,
                             overflow: TextOverflow.ellipsis,
                             softWrap: true,
                             maxLines: 2,

@@ -16,7 +16,8 @@ class RateAndReviewEntity {
     this.userID = -1,
   });
 
-  factory RateAndReviewEntity.fromJson(Map<String, dynamic> json) => RateAndReviewEntity(
+  factory RateAndReviewEntity.fromJson(Map<String, dynamic> json) =>
+      RateAndReviewEntity(
         flag: (json['flag'] != null) ? json['flag'] : 0,
         subtitle: json['subtitle'],
         ratingID: json['ratingID'],
@@ -24,7 +25,9 @@ class RateAndReviewEntity {
         clickAction: json['click_action'],
         type: json['type'],
         priority: json['priority'],
-        body: json['body'] != null ? RateAndReviewBody.fromJson(json['body']) : RateAndReviewBody(),
+        body: json['body'] != null
+            ? RateAndReviewBody.fromJson(json['body'])
+            : RateAndReviewBody(),
         timestamp: json['timestamp'],
         userImage: json['user_image'],
         userID: json['userID'],
@@ -101,14 +104,17 @@ class RateAndReviewBody {
     this.ratingOrderDetails,
   });
 
-  factory RateAndReviewBody.fromJson(Map<String, dynamic> json) => RateAndReviewBody(
-      imageUrl: json['imageUrl'],
-      iconUrl: json['iconUrl'],
-      category: json['category'],
-      message: json['message'],
-      rating: json['rating'],
-      reviewDescription: json['reviewDescription'],
-      ratingOrderDetails: json['order_details'] != null ? RatingOrderDetails.fromJson(json['order_details']) : RatingOrderDetails());
+  factory RateAndReviewBody.fromJson(Map<String, dynamic> json) =>
+      RateAndReviewBody(
+          imageUrl: json['imageUrl'],
+          iconUrl: json['iconUrl'],
+          category: json['category'],
+          message: json['message'],
+          rating: json['rating'],
+          reviewDescription: json['reviewDescription'],
+          ratingOrderDetails: json['order_details'] != null
+              ? RatingOrderDetails.fromJson(json['order_details'])
+              : RatingOrderDetails());
 
   final String imageUrl;
   final String iconUrl;
@@ -125,7 +131,9 @@ class RateAndReviewBody {
         'message': message,
         'reviewDescription': reviewDescription,
         'rating': rating,
-        'order_details': (ratingOrderDetails.isNotNull) ? ratingOrderDetails?.toJson() : RatingOrderDetails().toJson(),
+        'order_details': (ratingOrderDetails.isNotNull)
+            ? ratingOrderDetails?.toJson()
+            : RatingOrderDetails().toJson(),
       };
 
   RateAndReviewBody copyWith({
@@ -154,7 +162,8 @@ class RatingOrderDetails {
     this.orderDate = -1,
   });
 
-  factory RatingOrderDetails.fromJson(Map<String, dynamic> json) => RatingOrderDetails(
+  factory RatingOrderDetails.fromJson(Map<String, dynamic> json) =>
+      RatingOrderDetails(
         orderID: json['orderID'],
         menuName: json['menu_name'],
         orderDate: json['order_date'],

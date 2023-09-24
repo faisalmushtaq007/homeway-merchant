@@ -1,7 +1,11 @@
 part of 'package:homemakers_merchant/app/features/store/index.dart';
 
 class StoreCard extends StatefulWidget {
-  const StoreCard({required this.storeEntity, super.key, required this.currentIndex, required this.listOfAllStoreEntities});
+  const StoreCard(
+      {required this.storeEntity,
+      super.key,
+      required this.currentIndex,
+      required this.listOfAllStoreEntities});
 
   final StoreEntity storeEntity;
   final int currentIndex;
@@ -72,7 +76,8 @@ class _StoreCardState extends State<StoreCard> {
         switch (position) {
           case 0:
             {
-              final navigateToStoreDetailsPage = await context.push(Routes.STORE_DETAILS_PAGE, extra: {
+              final navigateToStoreDetailsPage =
+                  await context.push(Routes.STORE_DETAILS_PAGE, extra: {
                 'store': widget.storeEntity,
                 'index': widget.currentIndex,
                 'allStores': widget.listOfAllStoreEntities.toList(),
@@ -84,11 +89,12 @@ class _StoreCardState extends State<StoreCard> {
             }
           case 1:
             {
-              final navigateToStorePage = await context.push(Routes.SAVE_STORE_PAGE, extra: {
+              final navigateToStorePage =
+                  await context.push(Routes.SAVE_STORE_PAGE, extra: {
                 'storeEntity': widget.storeEntity,
                 'currentIndex': widget.currentIndex,
                 'allStores': widget.listOfAllStoreEntities.toList(),
-                'haveNewStore':false,
+                'haveNewStore': false,
               });
               if (!mounted) {
                 return;
@@ -115,7 +121,8 @@ class _StoreCardState extends State<StoreCard> {
                     cancelText: 'Cancel',
                     okPressed: () async {
                       debugPrint('Dialog confirmed');
-                      await Future.delayed(const Duration(milliseconds: 300), () {});
+                      await Future.delayed(
+                          const Duration(milliseconds: 300), () {});
                       if (!mounted) {
                         return;
                       }
@@ -123,7 +130,8 @@ class _StoreCardState extends State<StoreCard> {
                     },
                     cancelPressed: () async {
                       debugPrint('Dialog cancelled');
-                      await Future.delayed(const Duration(milliseconds: 300), () {});
+                      await Future.delayed(
+                          const Duration(milliseconds: 300), () {});
                       if (!mounted) {
                         return;
                       }
@@ -132,11 +140,13 @@ class _StoreCardState extends State<StoreCard> {
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       crossAxisAlignment: CrossAxisAlignment.stretch,
-                      textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                      textDirection: serviceLocator<LanguageController>()
+                          .targetTextDirection,
                       children: [
                         Text(
                           'Permanently delete this store. If there is an order for this store, then it will be deleted only after completing the orders, and if you still confirm for delete, then this store will remain pending and under review. Are you sure you want to delete this store?',
-                          textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                          textDirection: serviceLocator<LanguageController>()
+                              .targetTextDirection,
                         ),
                       ],
                     ),
@@ -148,8 +158,13 @@ class _StoreCardState extends State<StoreCard> {
                 if (!mounted) {
                   return;
                 }
-                await serviceLocator<DeleteStoreUseCase>()(id: widget.storeEntity.storeID,input: widget.storeEntity,);
-                serviceLocator<AppUserEntity>().stores.removeAt(widget.currentIndex);
+                await serviceLocator<DeleteStoreUseCase>()(
+                  id: widget.storeEntity.storeID,
+                  input: widget.storeEntity,
+                );
+                serviceLocator<AppUserEntity>()
+                    .stores
+                    .removeAt(widget.currentIndex);
                 await Future.delayed(const Duration(milliseconds: 500), () {});
                 if (!mounted) {
                   return;
@@ -178,7 +193,8 @@ class _StoreCardState extends State<StoreCard> {
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
               softWrap: true,
-              textDirection: serviceLocator<LanguageController>().targetTextDirection,
+              textDirection:
+                  serviceLocator<LanguageController>().targetTextDirection,
             ),
           ),
         ],
@@ -188,9 +204,7 @@ class _StoreCardState extends State<StoreCard> {
 
   void _onStoreSelected(int value) {
     _popupStoreItemIndex = value;
-    setState(() {
-
-    });
+    setState(() {});
   }
 
   ImageType _findImageType(String? assetsPath) {
@@ -198,11 +212,13 @@ class _StoreCardState extends State<StoreCard> {
       return ImageType.text;
     } else {
       switch (assetsPath) {
-        case (final String path) when path.startsWith('http') || path.startsWith('https'):
+        case (final String path)
+            when path.startsWith('http') || path.startsWith('https'):
           {
             return ImageType.network;
           }
-        case (final String path) when path.startsWith('/') || path.startsWith('//'):
+        case (final String path)
+            when path.startsWith('/') || path.startsWith('//'):
           {
             return ImageType.file;
           }
@@ -261,7 +277,8 @@ class _StoreCardState extends State<StoreCard> {
           color: Colors.white,
           fontSize: 16,
         ),
-        placeholderBackgroundColor: context.colorScheme.primary.withOpacity(0.5),
+        placeholderBackgroundColor:
+            context.colorScheme.primary.withOpacity(0.5),
       ),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadiusDirectional.circular(10),
@@ -272,7 +289,8 @@ class _StoreCardState extends State<StoreCard> {
           Text(
             widget.storeEntity.storeName,
             style: context.titleMedium!.copyWith(fontWeight: FontWeight.w600),
-            textDirection: serviceLocator<LanguageController>().targetTextDirection,
+            textDirection:
+                serviceLocator<LanguageController>().targetTextDirection,
             maxLines: 3,
             softWrap: true,
             overflow: TextOverflow.ellipsis,
@@ -284,7 +302,8 @@ class _StoreCardState extends State<StoreCard> {
           Text(
             widget.storeEntity.storeAddress?.address?.area ?? '',
             //style: const TextStyle(color: Color.fromRGBO(127, 129, 132, 1)),
-            textDirection: serviceLocator<LanguageController>().targetTextDirection,
+            textDirection:
+                serviceLocator<LanguageController>().targetTextDirection,
             maxLines: 3,
             softWrap: true,
             overflow: TextOverflow.ellipsis,

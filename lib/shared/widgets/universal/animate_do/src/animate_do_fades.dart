@@ -163,9 +163,11 @@ class _FadeInDownState extends State<FadeInDown> with TickerProviderStateMixin {
 
     controller = AnimationController(duration: widget.duration, vsync: this);
 
-    animation = Tween<double>(begin: widget.from * -1, end: 0).animate(CurvedAnimation(parent: controller!, curve: Curves.easeOut));
+    animation = Tween<double>(begin: widget.from * -1, end: 0)
+        .animate(CurvedAnimation(parent: controller!, curve: Curves.easeOut));
 
-    opacity = Tween<double>(begin: 0, end: 1).animate(CurvedAnimation(parent: controller!, curve: const Interval(0, 0.65)));
+    opacity = Tween<double>(begin: 0, end: 1).animate(
+        CurvedAnimation(parent: controller!, curve: const Interval(0, 0.65)));
 
     if (!widget.manualTrigger && widget.animate) {
       Future.delayed(widget.delay, () {
@@ -239,8 +241,14 @@ class FadeInDownBig extends StatelessWidget {
   }
 
   @override
-  Widget build(BuildContext context) =>
-      FadeInDown(child: child, duration: duration, delay: delay, controller: controller, manualTrigger: manualTrigger, animate: animate, from: from);
+  Widget build(BuildContext context) => FadeInDown(
+      child: child,
+      duration: duration,
+      delay: delay,
+      controller: controller,
+      manualTrigger: manualTrigger,
+      animate: animate,
+      from: from);
 }
 
 /// Class [FadeInUp]:
@@ -308,8 +316,10 @@ class _FadeInUpState extends State<FadeInUp> with TickerProviderStateMixin {
 
     controller = AnimationController(duration: widget.duration, vsync: this);
 
-    animation = Tween<double>(begin: widget.from, end: 0).animate(CurvedAnimation(parent: controller!, curve: Curves.easeOut));
-    opacity = Tween<double>(begin: 0, end: 1).animate(CurvedAnimation(parent: controller!, curve: const Interval(0, 0.65)));
+    animation = Tween<double>(begin: widget.from, end: 0)
+        .animate(CurvedAnimation(parent: controller!, curve: Curves.easeOut));
+    opacity = Tween<double>(begin: 0, end: 1).animate(
+        CurvedAnimation(parent: controller!, curve: const Interval(0, 0.65)));
 
     if (!widget.manualTrigger && widget.animate) {
       Future.delayed(widget.delay, () {
@@ -450,8 +460,10 @@ class _FadeInLeftState extends State<FadeInLeft> with TickerProviderStateMixin {
 
     controller = AnimationController(duration: widget.duration, vsync: this);
 
-    animation = Tween<double>(begin: widget.from * -1, end: 0).animate(CurvedAnimation(parent: controller!, curve: Curves.easeOut));
-    opacity = Tween<double>(begin: 0, end: 1).animate(CurvedAnimation(parent: controller!, curve: const Interval(0, 0.65)));
+    animation = Tween<double>(begin: widget.from * -1, end: 0)
+        .animate(CurvedAnimation(parent: controller!, curve: Curves.easeOut));
+    opacity = Tween<double>(begin: 0, end: 1).animate(
+        CurvedAnimation(parent: controller!, curve: const Interval(0, 0.65)));
 
     if (!widget.manualTrigger && widget.animate) {
       Future.delayed(widget.delay, () {
@@ -574,7 +586,8 @@ class FadeInRight extends StatefulWidget {
 
 /// FadeState class
 /// The animation magic happens here
-class _FadeInRightState extends State<FadeInRight> with TickerProviderStateMixin {
+class _FadeInRightState extends State<FadeInRight>
+    with TickerProviderStateMixin {
   AnimationController? controller;
   bool disposed = false;
   late Animation<double> animation;
@@ -592,8 +605,10 @@ class _FadeInRightState extends State<FadeInRight> with TickerProviderStateMixin
 
     controller = AnimationController(duration: widget.duration, vsync: this);
 
-    animation = Tween<double>(begin: widget.from, end: 0).animate(CurvedAnimation(parent: controller!, curve: Curves.easeOut));
-    opacity = Tween<double>(begin: 0, end: 1).animate(CurvedAnimation(parent: controller!, curve: const Interval(0, 0.65)));
+    animation = Tween<double>(begin: widget.from, end: 0)
+        .animate(CurvedAnimation(parent: controller!, curve: Curves.easeOut));
+    opacity = Tween<double>(begin: 0, end: 1).animate(
+        CurvedAnimation(parent: controller!, curve: const Interval(0, 0.65)));
 
     if (!widget.manualTrigger && widget.animate) {
       Future.delayed(widget.delay, () {

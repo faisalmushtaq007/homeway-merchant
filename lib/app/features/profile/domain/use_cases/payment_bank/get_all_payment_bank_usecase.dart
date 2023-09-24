@@ -1,6 +1,7 @@
 part of 'package:homemakers_merchant/app/features/profile/index.dart';
 
-class GetAllPaymentBankUseCase extends UseCase<DataSourceState<List<PaymentBankEntity>>> {
+class GetAllPaymentBankUseCase
+    extends UseCase<DataSourceState<List<PaymentBankEntity>>> {
   GetAllPaymentBankUseCase({
     required this.userPaymentBankRepository,
   });

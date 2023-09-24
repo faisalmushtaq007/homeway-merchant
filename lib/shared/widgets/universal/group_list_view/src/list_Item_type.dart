@@ -1,4 +1,10 @@
-enum ListItemType { sectionHeader, itemSeparator, sectionSeparator, item, sectionFooter }
+enum ListItemType {
+  sectionHeader,
+  itemSeparator,
+  sectionSeparator,
+  item,
+  sectionFooter
+}
 
 extension PageTypeExtension on ListItemType {
   /// is the item ?

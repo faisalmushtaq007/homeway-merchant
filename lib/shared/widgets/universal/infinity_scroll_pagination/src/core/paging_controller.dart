@@ -21,7 +21,8 @@ typedef PagingStatusListener = void Function(
 ///
 /// This object should generally have a lifetime longer than the widgets
 /// itself; it should be reused each time a paged widget constructor is called.
-class PagingController<PageKeyType, ItemType> extends ValueNotifier<PagingState<PageKeyType, ItemType>> {
+class PagingController<PageKeyType, ItemType>
+    extends ValueNotifier<PagingState<PageKeyType, ItemType>> {
   PagingController({
     required this.firstPageKey,
     this.invisibleItemsThreshold,
@@ -38,9 +39,11 @@ class PagingController<PageKeyType, ItemType> extends ValueNotifier<PagingState<
     this.invisibleItemsThreshold,
   }) : super(value);
 
-  ObserverList<PagingStatusListener>? _statusListeners = ObserverList<PagingStatusListener>();
+  ObserverList<PagingStatusListener>? _statusListeners =
+      ObserverList<PagingStatusListener>();
 
-  ObserverList<PageRequestListener<PageKeyType>>? _pageRequestListeners = ObserverList<PageRequestListener<PageKeyType>>();
+  ObserverList<PageRequestListener<PageKeyType>>? _pageRequestListeners =
+      ObserverList<PageRequestListener<PageKeyType>>();
 
   /// The number of remaining invisible items that should trigger a new fetch.
   final int? invisibleItemsThreshold;
@@ -215,7 +218,8 @@ class PagingController<PageKeyType, ItemType> extends ValueNotifier<PagingState<
       return;
     }
 
-    final localListeners = List<PageRequestListener<PageKeyType>>.from(_pageRequestListeners!);
+    final localListeners =
+        List<PageRequestListener<PageKeyType>>.from(_pageRequestListeners!);
 
     localListeners.forEach((listener) {
       if (_pageRequestListeners!.contains(listener)) {

@@ -1,6 +1,7 @@
 part of 'package:homemakers_merchant/app/features/profile/index.dart';
 
-class GetAllDocumentUseCase extends UseCase<DataSourceState<List<NewBusinessDocumentEntity>>> {
+class GetAllDocumentUseCase
+    extends UseCase<DataSourceState<List<NewBusinessDocumentEntity>>> {
   GetAllDocumentUseCase({
     required this.userBusinessDocumentRepository,
   });

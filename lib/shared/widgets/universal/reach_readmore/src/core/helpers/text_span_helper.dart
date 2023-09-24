@@ -11,7 +11,9 @@ class TextSpanHelper {
   TextSpanHelper();
 
   /// Returns a [TextSpan] adding the [actionText] on the children
-  TextSpan buildTextSpan({required TextSpan span, required TextSpan actionText}) => TextSpan(children: [
+  TextSpan buildTextSpan(
+          {required TextSpan span, required TextSpan actionText}) =>
+      TextSpan(children: [
         span,
         actionText,
       ]);
@@ -26,7 +28,8 @@ class TextSpanHelper {
       required int endIndex}) {
     switch (settings.trimMode) {
       case TrimMode.length:
-        final LengthModeSettings lengthSettings = settings as LengthModeSettings;
+        final LengthModeSettings lengthSettings =
+            settings as LengthModeSettings;
         if (lengthSettings.trimLength < data.toPlainText().length) {
           final textSpan = isExpanded ? data.substring(0, endIndex) : data;
           return buildTextSpan(span: textSpan, actionText: actionText);
@@ -44,8 +47,15 @@ class TextSpanHelper {
   }
 
   /// Updates the [actionText] depending on the [isExpanded] value
-  TextSpan updateActionText({required ReadMoreSettings settings, required bool isExpanded, required VoidCallback onTap}) => TextSpan(
-        text: ' ' + (isExpanded ? settings.trimCollapsedText : settings.trimExpandedText),
+  TextSpan updateActionText(
+          {required ReadMoreSettings settings,
+          required bool isExpanded,
+          required VoidCallback onTap}) =>
+      TextSpan(
+        text: ' ' +
+            (isExpanded
+                ? settings.trimCollapsedText
+                : settings.trimExpandedText),
         style: isExpanded ? settings.moreStyle : settings.lessStyle,
         recognizer: TapGestureRecognizer()..onTap = onTap,
       );

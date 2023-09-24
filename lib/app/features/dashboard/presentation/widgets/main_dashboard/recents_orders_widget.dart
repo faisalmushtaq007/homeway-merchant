@@ -4,13 +4,15 @@ class DashboardRecentOrders extends StatefulWidget {
   const DashboardRecentOrders({super.key});
 
   @override
-  _DashboardRecentOrdersController createState() => _DashboardRecentOrdersController();
+  _DashboardRecentOrdersController createState() =>
+      _DashboardRecentOrdersController();
 }
 
 class _DashboardRecentOrdersController extends State<DashboardRecentOrders> {
   static const _pageSize = 10;
   int pageSize = 1;
-  final PagingController<int, OrderEntity> _pagingController = PagingController(firstPageKey: 1);
+  final PagingController<int, OrderEntity> _pagingController =
+      PagingController(firstPageKey: 1);
   String? _searchTerm;
   late PageController pageController;
 
@@ -129,7 +131,8 @@ class _DashboardRecentOrdersController extends State<DashboardRecentOrders> {
           orderType: OrderType.recent.index,
           driver: DeliveryDriver(),
           payment: Payment(
-            paymentDateTime: DateTime.now().add(Duration(hours: 1, minutes: 15)),
+            paymentDateTime:
+                DateTime.now().add(Duration(hours: 1, minutes: 15)),
           ),
         ),
         OrderEntity(
@@ -187,7 +190,8 @@ class _DashboardRecentOrdersController extends State<DashboardRecentOrders> {
   Widget build(BuildContext context) => _DashboardRecentOrdersView(this);
 }
 
-class _DashboardRecentOrdersView extends WidgetView<DashboardRecentOrders, _DashboardRecentOrdersController> {
+class _DashboardRecentOrdersView extends WidgetView<DashboardRecentOrders,
+    _DashboardRecentOrdersController> {
   const _DashboardRecentOrdersView(super.state);
 
   @override
@@ -206,7 +210,8 @@ class _DashboardRecentOrdersView extends WidgetView<DashboardRecentOrders, _Dash
               children: [
                 Text(
                   'Recent Orders',
-                  style: context.titleMedium!.copyWith(fontWeight: FontWeight.w600, fontSize: 18),
+                  style: context.titleMedium!
+                      .copyWith(fontWeight: FontWeight.w600, fontSize: 18),
                 ),
               ],
             ),
@@ -337,12 +342,14 @@ class RecentOrderTileWidget extends StatelessWidget {
                   clipBehavior: Clip.none,
                   children: [
                     Padding(
-                      padding: const EdgeInsetsDirectional.symmetric(horizontal: 12),
+                      padding:
+                          const EdgeInsetsDirectional.symmetric(horizontal: 12),
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
-                          const AnimatedGap(16, duration: Duration(milliseconds: 100)),
+                          const AnimatedGap(16,
+                              duration: Duration(milliseconds: 100)),
                           Wrap(
                             children: [
                               Text(
@@ -356,7 +363,8 @@ class RecentOrderTileWidget extends StatelessWidget {
                               ),
                             ],
                           ),
-                          const AnimatedGap(4, duration: Duration(milliseconds: 100)),
+                          const AnimatedGap(4,
+                              duration: Duration(milliseconds: 100)),
                           Text(
                             'Qty: ${entity.store.menu[0].quantity.toString()}',
                             style: context.labelMedium!.copyWith(
@@ -366,13 +374,16 @@ class RecentOrderTileWidget extends StatelessWidget {
                             maxLines: 1,
                             textAlign: TextAlign.start,
                           ),
-                          const AnimatedGap(4, duration: Duration(milliseconds: 100)),
+                          const AnimatedGap(4,
+                              duration: Duration(milliseconds: 100)),
                           Wrap(
                             children: [
                               Text(
                                 '10.0 SAR',
-                                style: context.labelLarge!
-                                    .copyWith(fontWeight: FontWeight.bold, overflow: TextOverflow.ellipsis, color: context.colorScheme.primary),
+                                style: context.labelLarge!.copyWith(
+                                    fontWeight: FontWeight.bold,
+                                    overflow: TextOverflow.ellipsis,
+                                    color: context.colorScheme.primary),
                                 maxLines: 1,
                                 textAlign: TextAlign.start,
                               ),
@@ -395,10 +406,13 @@ class RecentOrderTileWidget extends StatelessWidget {
                               fontSize: 14,
                             ),
                           ),
-                          backgroundColor: const Color.fromRGBO(69, 201, 125, 1),
+                          backgroundColor:
+                              const Color.fromRGBO(69, 201, 125, 1),
                           elevation: 0.0,
-                          visualDensity: const VisualDensity(horizontal: -4, vertical: -4),
-                          materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                          visualDensity:
+                              const VisualDensity(horizontal: -4, vertical: -4),
+                          materialTapTargetSize:
+                              MaterialTapTargetSize.shrinkWrap,
                           padding: const EdgeInsetsDirectional.all(8),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadiusDirectional.circular(20),

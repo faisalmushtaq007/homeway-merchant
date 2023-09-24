@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:homemakers_merchant/app/features/chat/domain/entities/chat_types_entity.dart' as types;
+import 'package:homemakers_merchant/app/features/chat/domain/entities/chat_types_entity.dart'
+    as types;
 
 import 'package:homemakers_merchant/app/features/chat/presentation/pages/chat_ui/src/util.dart';
 import 'package:homemakers_merchant/app/features/chat/presentation/pages/chat_ui/src/widgets/state/inherited_chat_theme.dart';
@@ -32,7 +33,8 @@ class UserName extends StatelessWidget {
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
               style: theme.userNameTextStyle.copyWith(color: color),
-              textDirection: serviceLocator<LanguageController>().targetTextDirection,
+              textDirection:
+                  serviceLocator<LanguageController>().targetTextDirection,
             ),
           );
   }

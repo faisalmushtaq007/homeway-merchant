@@ -1,6 +1,7 @@
 part of 'package:homemakers_merchant/app/features/menu/index.dart';
 
-class GetAddonsUseCase extends UseCaseByID<Addons, int, DataSourceState<Addons>> {
+class GetAddonsUseCase
+    extends UseCaseByID<Addons, int, DataSourceState<Addons>> {
   GetAddonsUseCase({
     required this.menuRepository,
   });

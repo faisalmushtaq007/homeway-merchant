@@ -29,7 +29,8 @@ part 'business_document_state.dart';
 
 part 'business_document_bloc.freezed.dart';
 
-class BusinessDocumentBloc extends Bloc<BusinessDocumentEvent, BusinessDocumentState> {
+class BusinessDocumentBloc
+    extends Bloc<BusinessDocumentEvent, BusinessDocumentState> {
   BusinessDocumentBloc() : super(BusinessDocumentInitial()) {
     on<BusinessDocumentEvent>(
       (events, emit) async {
@@ -59,7 +60,8 @@ class BusinessDocumentBloc extends Bloc<BusinessDocumentEvent, BusinessDocumentS
             var allDocumentItems = <BusinessDocumentUploadedEntity>[];
             final int currentIndex = value.currentIndex;
             final int nextIndex = value.newIndexPosition;
-            allDocumentItems = List<BusinessDocumentUploadedEntity>.from(value.allBusinessDocuments.toList());
+            allDocumentItems = List<BusinessDocumentUploadedEntity>.from(
+                value.allBusinessDocuments.toList());
             allDocumentItems.asMap().forEach((key, item) async {
               if (item == value.businessDocumentUploadedEntity) {
                 var result = value.uploadedData;
@@ -71,11 +73,16 @@ class BusinessDocumentBloc extends Bloc<BusinessDocumentEvent, BusinessDocumentS
                 File? file = result[6] as File;
                 String? assetNetworkUrl = result[7] as String?;
                 final int timeStamp = DateTime.now().millisecondsSinceEpoch;
-                var tempName = '${item.documentType.documentTypeName}_$timeStamp';
-                var fileNameWithExtension =
-                    path.basenameWithoutExtension(xCroppedDocumentFile?.path ?? croppedDocumentFile?.path ?? tempName);
-                String fileExtension =
-                    path.extension(xCroppedDocumentFile?.path ?? croppedDocumentFile?.path ?? '.png');
+                var tempName =
+                    '${item.documentType.documentTypeName}_$timeStamp';
+                var fileNameWithExtension = path.basenameWithoutExtension(
+                    xCroppedDocumentFile?.path ??
+                        croppedDocumentFile?.path ??
+                        tempName);
+                String fileExtension = path.extension(
+                    xCroppedDocumentFile?.path ??
+                        croppedDocumentFile?.path ??
+                        '.png');
                 final double height = 0.0;
                 final double width = 0.0;
 
@@ -83,7 +90,8 @@ class BusinessDocumentBloc extends Bloc<BusinessDocumentEvent, BusinessDocumentS
                   item.documentFrontAssets = BusinessDocumentAssetsEntity(
                     assetName: fileNameWithExtension,
                     assetPath: filePath,
-                    assetOriginalName: path.basenameWithoutExtension(xFile.path ?? file.path),
+                    assetOriginalName:
+                        path.basenameWithoutExtension(xFile.path ?? file.path),
                     assetExtension: fileExtension,
                     assetsUploadStatus: DocumentUploadStatus.uploaded,
                   );
@@ -91,9 +99,11 @@ class BusinessDocumentBloc extends Bloc<BusinessDocumentEvent, BusinessDocumentS
 
                 /// Copywith
                 else {
-                  BusinessDocumentAssetsEntity businessDocumentAssetsEntity = item.documentFrontAssets!.copyWith(
+                  BusinessDocumentAssetsEntity businessDocumentAssetsEntity =
+                      item.documentFrontAssets!.copyWith(
                     assetName: fileNameWithExtension,
-                    assetOriginalName: path.basenameWithoutExtension(xFile.path ?? file.path),
+                    assetOriginalName:
+                        path.basenameWithoutExtension(xFile.path ?? file.path),
                     assetPath: filePath,
                     assetExtension: fileExtension,
                     //assetIdNumber: value.textEditingControllers[value.currentIndex].value.text.trim(),
@@ -101,7 +111,8 @@ class BusinessDocumentBloc extends Bloc<BusinessDocumentEvent, BusinessDocumentS
                     hasAssetsFrontSide: true,
                   );
                   allDocumentItems[value.currentIndex].hasButtonEnable = false;
-                  allDocumentItems[value.currentIndex].documentFrontAssets = businessDocumentAssetsEntity;
+                  allDocumentItems[value.currentIndex].documentFrontAssets =
+                      businessDocumentAssetsEntity;
                 }
               }
             });
@@ -109,7 +120,8 @@ class BusinessDocumentBloc extends Bloc<BusinessDocumentEvent, BusinessDocumentS
             if (currentIndex != nextIndex) {
               allDocumentItems.insert(
                 nextIndex,
-                BusinessDocumentUploadedEntity(documentType: documentTypes[nextIndex]),
+                BusinessDocumentUploadedEntity(
+                    documentType: documentTypes[nextIndex]),
               );
             }
             emit(AddNewDocumentState(
@@ -119,8 +131,10 @@ class BusinessDocumentBloc extends Bloc<BusinessDocumentEvent, BusinessDocumentS
               documentType: value.documentType,
               allBusinessDocuments: allDocumentItems.toList(),
               assetsEntries: value.assetsEntries.toList(),
-              businessDocumentAssetsEntity: allDocumentItems[value.currentIndex].documentFrontAssets,
-              businessDocumentUploadedEntity: allDocumentItems[value.currentIndex],
+              businessDocumentAssetsEntity:
+                  allDocumentItems[value.currentIndex].documentFrontAssets,
+              businessDocumentUploadedEntity:
+                  allDocumentItems[value.currentIndex],
               currentIndex: value.currentIndex,
               uploadedData: value.uploadedData,
             ));
@@ -131,15 +145,18 @@ class BusinessDocumentBloc extends Bloc<BusinessDocumentEvent, BusinessDocumentS
           selectImageFromGallery: (value) {},
           restoreSelectImageFromGallery: (value) {},
           openMediaPicker: (value) async => await _openMediaPicker(value, emit),
-          selectDocumentSourceType: (value) async => await _selectDocumentSourceType(value, emit),
-          closeMediaPicker: (value) async => await _closeMediaPicker(value, emit),
+          selectDocumentSourceType: (value) async =>
+              await _selectDocumentSourceType(value, emit),
+          closeMediaPicker: (value) async =>
+              await _closeMediaPicker(value, emit),
           crop: (value) async => await _assetCrop(value, emit),
           rightRotate: (value) async => await _assetRightRotate(value, emit),
           leftRotate: (value) async => await _assetLeftRotate(value, emit),
           flip: (value) async => await _assetFlip(value, emit),
           resetAsset: (value) async => await _resetAsset(value, emit),
           resetAll: (value) async => await _resetAllAsset(value, emit),
-          saveCropDocument: (value) async => await _saveCropDocument(value, emit),
+          saveCropDocument: (value) async =>
+              await _saveCropDocument(value, emit),
           addNewAsset: (value) {
             emit(AddNewAssetState(
               newIndexPosition: value.newIndexPosition,
@@ -151,16 +168,22 @@ class BusinessDocumentBloc extends Bloc<BusinessDocumentEvent, BusinessDocumentS
               allBusinessDocuments: value.allBusinessDocuments.toList(),
               assetsEntries: value.assetsEntries.toList(),
               businessDocumentAssetsEntity: value.businessDocumentAssetsEntity,
-              businessDocumentUploadedEntity: value.businessDocumentUploadedEntity,
+              businessDocumentUploadedEntity:
+                  value.businessDocumentUploadedEntity,
               currentIndex: value.currentIndex,
               uploadedData: value.uploadedData,
             ));
           },
-          saveBusinessDocument: (SaveBusinessDocument value) => _saveBusinessDocument(value, emit),
-          deleteAllBusinessDocument: (DeleteAllBusinessDocument value) => _deleteAllBusinessDocument(value, emit),
-          deleteBusinessDocument: (DeleteBusinessDocument value) => _deleteBusinessDocument(value, emit),
-          getAllBusinessDocument: (GetAllBusinessDocument value) => _getAllBusinessDocument(value, emit),
-          getBusinessDocument: (GetBusinessDocument value) => _getBusinessDocument(value, emit),
+          saveBusinessDocument: (SaveBusinessDocument value) =>
+              _saveBusinessDocument(value, emit),
+          deleteAllBusinessDocument: (DeleteAllBusinessDocument value) =>
+              _deleteAllBusinessDocument(value, emit),
+          deleteBusinessDocument: (DeleteBusinessDocument value) =>
+              _deleteBusinessDocument(value, emit),
+          getAllBusinessDocument: (GetAllBusinessDocument value) =>
+              _getAllBusinessDocument(value, emit),
+          getBusinessDocument: (GetBusinessDocument value) =>
+              _getBusinessDocument(value, emit),
         );
       },
       //transformer: sequential(),
@@ -314,7 +337,8 @@ class BusinessDocumentBloc extends Bloc<BusinessDocumentEvent, BusinessDocumentS
     }
   }
 
-  FutureOr<void> _assetCrop(AssetCrop event, Emitter<BusinessDocumentState> emit) async {
+  FutureOr<void> _assetCrop(
+      AssetCrop event, Emitter<BusinessDocumentState> emit) async {
     emit(
       AssetCropState(
         documentType: event.documentType,
@@ -326,7 +350,8 @@ class BusinessDocumentBloc extends Bloc<BusinessDocumentEvent, BusinessDocumentS
     );
   }
 
-  FutureOr<void> _assetLeftRotate(AssetLeftRotate event, Emitter<BusinessDocumentState> emit) async {
+  FutureOr<void> _assetLeftRotate(
+      AssetLeftRotate event, Emitter<BusinessDocumentState> emit) async {
     emit(
       AssetLeftRotateState(
         hasRightTurn: event.hasRightTurn,
@@ -336,7 +361,8 @@ class BusinessDocumentBloc extends Bloc<BusinessDocumentEvent, BusinessDocumentS
     return;
   }
 
-  FutureOr<void> _assetRightRotate(AssetRightRotate event, Emitter<BusinessDocumentState> emit) async {
+  FutureOr<void> _assetRightRotate(
+      AssetRightRotate event, Emitter<BusinessDocumentState> emit) async {
     emit(
       AssetRightRotateState(
         hasRightTurn: event.hasRightTurn,
@@ -346,7 +372,8 @@ class BusinessDocumentBloc extends Bloc<BusinessDocumentEvent, BusinessDocumentS
     return;
   }
 
-  FutureOr<void> _assetFlip(AssetFlip event, Emitter<BusinessDocumentState> emit) async {
+  FutureOr<void> _assetFlip(
+      AssetFlip event, Emitter<BusinessDocumentState> emit) async {
     emit(
       AssetFlipState(
         documentType: event.documentType,
@@ -355,7 +382,8 @@ class BusinessDocumentBloc extends Bloc<BusinessDocumentEvent, BusinessDocumentS
     return;
   }
 
-  FutureOr<void> _resetAsset(ResetAsset event, Emitter<BusinessDocumentState> emit) async {
+  FutureOr<void> _resetAsset(
+      ResetAsset event, Emitter<BusinessDocumentState> emit) async {
     emit(
       ResetAssetState(
         documentType: event.documentType,
@@ -364,7 +392,8 @@ class BusinessDocumentBloc extends Bloc<BusinessDocumentEvent, BusinessDocumentS
     return;
   }
 
-  FutureOr<void> _resetAllAsset(ResetAllAsset event, Emitter<BusinessDocumentState> emit) async {
+  FutureOr<void> _resetAllAsset(
+      ResetAllAsset event, Emitter<BusinessDocumentState> emit) async {
     emit(
       ResetAllAssetState(
         documentType: event.documentType,
@@ -373,7 +402,8 @@ class BusinessDocumentBloc extends Bloc<BusinessDocumentEvent, BusinessDocumentS
     return;
   }
 
-  FutureOr<void> _saveCropDocument(SaveCropDocument event, Emitter<BusinessDocumentState> emit) async {
+  FutureOr<void> _saveCropDocument(
+      SaveCropDocument event, Emitter<BusinessDocumentState> emit) async {
     try {
       if (event.xfile != null || event.file != null) {
         if (UniversalPlatform.isAndroid || UniversalPlatform.isIOS) {
@@ -383,7 +413,8 @@ class BusinessDocumentBloc extends Bloc<BusinessDocumentEvent, BusinessDocumentS
             //Permission.manageExternalStorage,
             Permission.accessMediaLocation,
           ].request();
-          bool status = statuses.entries.any((element) => element.value.isGranted);
+          bool status =
+              statuses.entries.any((element) => element.value.isGranted);
           //bool status = await Permission.storage.isGranted;
           if (!status) {
             Map<Permission, PermissionStatus> statuses = await [
@@ -420,13 +451,18 @@ class BusinessDocumentBloc extends Bloc<BusinessDocumentEvent, BusinessDocumentS
         ));
         //final EditImageInfo imageInfo = await cropImageDataWithDartLibrary(state: event.extendedImageEditorState);
         final int timeStamp = DateTime.now().millisecondsSinceEpoch;
-        String nameOfExtension = path.extension(event.xfile!.path ?? event.file!.path).replaceAll('.', '');
+        String nameOfExtension = path
+            .extension(event.xfile!.path ?? event.file!.path)
+            .replaceAll('.', '');
         final String filePath = await fileSaver.FileSaver.instance.saveFile(
-          name: '${path.basenameWithoutExtension(event.xfile!.path ?? event.file!.path)}_$timeStamp',
+          name:
+              '${path.basenameWithoutExtension(event.xfile!.path ?? event.file!.path)}_$timeStamp',
           bytes: event.bytes!,
           filePath: event.xfile?.path,
           file: event.file!,
-          ext: path.extension(event.xfile!.path ?? event.file!.path).replaceAll('.', ''),
+          ext: path
+              .extension(event.xfile!.path ?? event.file!.path)
+              .replaceAll('.', ''),
           customMimeType: 'image/jpg',
           mimeType: nameOfExtension.contains('jpg')
               ? fileSaver.MimeType.custom
@@ -455,7 +491,8 @@ class BusinessDocumentBloc extends Bloc<BusinessDocumentEvent, BusinessDocumentS
           width = decodedImage.width.toDouble();
           emit(SaveCropDocumentFailedState(
             documentType: event.documentType,
-            reason: 'Your selected document is not saved in your device, but uploaded into our server',
+            reason:
+                'Your selected document is not saved in your device, but uploaded into our server',
             imageEditorController: event.imageEditorController,
             xfile: event.xfile,
             file: event.file,
@@ -520,12 +557,15 @@ class BusinessDocumentBloc extends Bloc<BusinessDocumentEvent, BusinessDocumentS
     }
   }
 
-  Future<void> _assetsRemove(AssetsRemove value, Emitter<BusinessDocumentState> emit) async {}
+  Future<void> _assetsRemove(
+      AssetsRemove value, Emitter<BusinessDocumentState> emit) async {}
 
-  Future<void> _saveBusinessDocument(SaveBusinessDocument event, Emitter<BusinessDocumentState> emit) async {
+  Future<void> _saveBusinessDocument(
+      SaveBusinessDocument event, Emitter<BusinessDocumentState> emit) async {
     try {
       final DataSourceState<List<NewBusinessDocumentEntity>> results =
-          await serviceLocator<SaveAllDocumentUseCase>()(event.allBusinessDocuments.toList());
+          await serviceLocator<SaveAllDocumentUseCase>()(
+              event.allBusinessDocuments.toList());
       await results.when(
         remote: (data, meta) async {
           appLog.d('Business Document bloc save remote ${data?.length}');
@@ -551,14 +591,16 @@ class BusinessDocumentBloc extends Bloc<BusinessDocumentEvent, BusinessDocumentS
             ),
           );
         },
-        error: (dataSourceFailure, reason, error, networkException, stackTrace, exception, extra) {
+        error: (dataSourceFailure, reason, error, networkException, stackTrace,
+            exception, extra) {
           appLog.d('Business Document bloc save error $reason');
           emit(
             BusinessDocumentExceptionState(
               message: reason,
               //exception: e as Exception,
               stackTrace: stackTrace,
-              businessDocumentStatus: BusinessDocumentStatus.saveBusinessDocument,
+              businessDocumentStatus:
+                  BusinessDocumentStatus.saveBusinessDocument,
             ),
           );
         },
@@ -569,7 +611,8 @@ class BusinessDocumentBloc extends Bloc<BusinessDocumentEvent, BusinessDocumentS
       appLog.e('Business Document bloc save exception $e');
       emit(
         BusinessDocumentExceptionState(
-          message: 'Something went wrong during saving your store details, please try again',
+          message:
+              'Something went wrong during saving your store details, please try again',
           //exception: e as Exception,
           stackTrace: s,
           businessDocumentStatus: BusinessDocumentStatus.saveBusinessDocument,
@@ -578,8 +621,10 @@ class BusinessDocumentBloc extends Bloc<BusinessDocumentEvent, BusinessDocumentS
     }
   }
 
-  Future<void> updateUserProfile(List<NewBusinessDocumentEntity> allBusinessDocuments) async {
-    final getCurrentUserResult = await serviceLocator<GetAllAppUserPaginationUseCase>()();
+  Future<void> updateUserProfile(
+      List<NewBusinessDocumentEntity> allBusinessDocuments) async {
+    final getCurrentUserResult =
+        await serviceLocator<GetAllAppUserPaginationUseCase>()();
     await getCurrentUserResult.when(
       remote: (data, meta) {},
       localDb: (data, meta) async {
@@ -590,7 +635,8 @@ class BusinessDocumentBloc extends Bloc<BusinessDocumentEvent, BusinessDocumentS
           });
           final AppUserEntity cacheAppUserEntity = data.last.copyWith(
             userID: data.last.userID,
-            businessProfile: data.last.businessProfile?.copyWith(allBusinessDocuments: allBusinessDocuments),
+            businessProfile: data.last.businessProfile
+                ?.copyWith(allBusinessDocuments: allBusinessDocuments),
             currentUserStage: 4,
           );
           final editUserResult = await serviceLocator<SaveAllAppUserUseCase>()(
@@ -598,35 +644,44 @@ class BusinessDocumentBloc extends Bloc<BusinessDocumentEvent, BusinessDocumentS
           );
           editUserResult.when(
             remote: (data, meta) {
-              appLog.d('Update current user with business profile save remote ${data?.last.toMap()}');
+              appLog.d(
+                  'Update current user with business profile save remote ${data?.last.toMap()}');
             },
             localDb: (data, meta) {
-              appLog.d('Update current user with business profile save local ${data?.last.toMap()}');
+              appLog.d(
+                  'Update current user with business profile save local ${data?.last.toMap()}');
               if (data != null) {
                 var cachedAppUserEntity = serviceLocator<AppUserEntity>()
                   ..currentUserStage = 4
-                  ..businessProfile = data.last.businessProfile?.copyWith(allBusinessDocuments: allBusinessDocuments);
-                serviceLocator<UserModelStorageController>().setUserModel(cachedAppUserEntity);
+                  ..businessProfile = data.last.businessProfile
+                      ?.copyWith(allBusinessDocuments: allBusinessDocuments);
+                serviceLocator<UserModelStorageController>()
+                    .setUserModel(cachedAppUserEntity);
               }
             },
-            error: (dataSourceFailure, reason, error, networkException, stackTrace, exception, extra) {
-              appLog.d('Update current user with business profile exception $error');
+            error: (dataSourceFailure, reason, error, networkException,
+                stackTrace, exception, extra) {
+              appLog.d(
+                  'Update current user with business profile exception $error');
             },
           );
         } else {
           appLog.d('Document GetAllAppUserPaginationUseCase is null');
         }
       },
-      error: (dataSourceFailure, reason, error, networkException, stackTrace, exception, extra) {
+      error: (dataSourceFailure, reason, error, networkException, stackTrace,
+          exception, extra) {
         appLog.d('Document updateUserProfile $reason ');
       },
     );
     return;
   }
 
-  Future<void> _deleteAllBusinessDocument(DeleteAllBusinessDocument event, Emitter<BusinessDocumentState> emit) async {
+  Future<void> _deleteAllBusinessDocument(DeleteAllBusinessDocument event,
+      Emitter<BusinessDocumentState> emit) async {
     try {
-      final DataSourceState<bool> result = await serviceLocator<DeleteAllDocumentUseCase>()();
+      final DataSourceState<bool> result =
+          await serviceLocator<DeleteAllDocumentUseCase>()();
       result.when(
         remote: (data, meta) {
           appLog.d('Business Document bloc delete all remote $data');
@@ -646,14 +701,16 @@ class BusinessDocumentBloc extends Bloc<BusinessDocumentEvent, BusinessDocumentS
             ),
           );
         },
-        error: (dataSourceFailure, reason, error, networkException, stackTrace, exception, extra) {
+        error: (dataSourceFailure, reason, error, networkException, stackTrace,
+            exception, extra) {
           appLog.d('Business Document bloc delete all error $reason');
           emit(
             BusinessDocumentExceptionState(
               message: reason,
               //exception: e as Exception,
               stackTrace: stackTrace,
-              businessDocumentStatus: BusinessDocumentStatus.deleteAllBusinessDocument,
+              businessDocumentStatus:
+                  BusinessDocumentStatus.deleteAllBusinessDocument,
             ),
           );
         },
@@ -662,16 +719,19 @@ class BusinessDocumentBloc extends Bloc<BusinessDocumentEvent, BusinessDocumentS
       appLog.e('Business Document bloc delete all exception $e');
       emit(
         BusinessDocumentExceptionState(
-          message: 'Something went wrong during getting your store details, please try again',
+          message:
+              'Something went wrong during getting your store details, please try again',
           //exception: e as Exception,
           stackTrace: s,
-          businessDocumentStatus: BusinessDocumentStatus.deleteAllBusinessDocument,
+          businessDocumentStatus:
+              BusinessDocumentStatus.deleteAllBusinessDocument,
         ),
       );
     }
   }
 
-  Future<void> _deleteBusinessDocument(DeleteBusinessDocument event, Emitter<BusinessDocumentState> emit) async {
+  Future<void> _deleteBusinessDocument(
+      DeleteBusinessDocument event, Emitter<BusinessDocumentState> emit) async {
     /*try {
       final DataSourceState<bool> result = await serviceLocator<DeleteDocumentUseCase>()(
         input: event.businessDocumentUploadedEntity,
@@ -727,7 +787,8 @@ class BusinessDocumentBloc extends Bloc<BusinessDocumentEvent, BusinessDocumentS
     }*/
   }
 
-  Future<void> _getAllBusinessDocument(GetAllBusinessDocument event, Emitter<BusinessDocumentState> emit) async {
+  Future<void> _getAllBusinessDocument(
+      GetAllBusinessDocument event, Emitter<BusinessDocumentState> emit) async {
     /*try {
       emit(BusinessDocumentLoadingState(message: 'Please wait while we are fetching your profile...'));
       final DataSourceState<List<BusinessDocumentUploadedEntity>> result = await serviceLocator<GetAllDocumentUseCase>()();
@@ -793,7 +854,8 @@ class BusinessDocumentBloc extends Bloc<BusinessDocumentEvent, BusinessDocumentS
     }*/
   }
 
-  Future<void> _getBusinessDocument(GetBusinessDocument event, Emitter<BusinessDocumentState> emit) async {
+  Future<void> _getBusinessDocument(
+      GetBusinessDocument event, Emitter<BusinessDocumentState> emit) async {
     /*try {
       final DataSourceState<BusinessDocumentUploadedEntity> result = await serviceLocator<GetDocumentUseCase>()(
         input: event.businessDocumentUploadedEntity,

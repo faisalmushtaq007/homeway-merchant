@@ -10,13 +10,15 @@ class OrderRemoteDataSource implements OrderDataSource {
   }
 
   @override
-  Future<ApiResultState<bool>> deleteOrder({required int orderID, OrderEntity? orderEntity}) {
+  Future<ApiResultState<bool>> deleteOrder(
+      {required int orderID, OrderEntity? orderEntity}) {
     // TODO: implement deleteOrder
     throw UnimplementedError();
   }
 
   @override
-  Future<ApiResultState<OrderEntity>> editOrder({required OrderEntity orderEntity, required int orderID}) {
+  Future<ApiResultState<OrderEntity>> editOrder(
+      {required OrderEntity orderEntity, required int orderID}) {
     // TODO: implement editOrder
     throw UnimplementedError();
   }
@@ -126,19 +128,22 @@ class OrderRemoteDataSource implements OrderDataSource {
   }
 
   @override
-  Future<ApiResultState<OrderEntity>> getOrder({required int orderID, OrderEntity? orderEntity}) {
+  Future<ApiResultState<OrderEntity>> getOrder(
+      {required int orderID, OrderEntity? orderEntity}) {
     // TODO: implement getOrder
     throw UnimplementedError();
   }
 
   @override
-  Future<ApiResultState<List<OrderEntity>>> saveAllOrder({required List<OrderEntity> orderEntities, bool hasUpdateAll = false}) {
+  Future<ApiResultState<List<OrderEntity>>> saveAllOrder(
+      {required List<OrderEntity> orderEntities, bool hasUpdateAll = false}) {
     // TODO: implement saveAllOrder
     throw UnimplementedError();
   }
 
   @override
-  Future<ApiResultState<OrderEntity>> saveOrder({required OrderEntity orderEntity}) {
+  Future<ApiResultState<OrderEntity>> saveOrder(
+      {required OrderEntity orderEntity}) {
     // TODO: implement saveOrder
     throw UnimplementedError();
   }

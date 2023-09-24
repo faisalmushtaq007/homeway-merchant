@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:homemakers_merchant/bootup/injection_container.dart';
 import 'package:homemakers_merchant/config/translation/language_controller.dart';
-import 'package:scroll_to_index/scroll_to_index.dart' show scrollAnimationDuration;
+import 'package:scroll_to_index/scroll_to_index.dart'
+    show scrollAnimationDuration;
 
 import 'state/inherited_chat_theme.dart';
 import 'state/inherited_l10n.dart';
@@ -20,9 +21,11 @@ class UnreadHeader extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
         child: Text(
           InheritedL10n.of(context).l10n.unreadMessagesLabel,
-          style: InheritedChatTheme.of(context).theme.unreadHeaderTheme.textStyle,
+          style:
+              InheritedChatTheme.of(context).theme.unreadHeaderTheme.textStyle,
           textAlign: TextAlign.center,
-          textDirection: serviceLocator<LanguageController>().targetTextDirection,
+          textDirection:
+              serviceLocator<LanguageController>().targetTextDirection,
         ),
       );
 }

@@ -33,11 +33,13 @@ class CommonRepositoryImplement implements CommonRepository {
   @override
   Future<AppUserEntity?> getCurrentUserProfileFromLocalDb() async {
     // Local DB
-    final Either<RepositoryBaseFailure, AppUserEntity?> result = await userLocalDbRepository.getCurrentUser();
+    final Either<RepositoryBaseFailure, AppUserEntity?> result =
+        await userLocalDbRepository.getCurrentUser();
     // Return result
     return result.fold((l) {
       final RepositoryFailure failure = l as RepositoryFailure;
-      appLog.d('Get getCurrentUserProfileFromLocalDb local error ${failure.message}');
+      appLog.d(
+          'Get getCurrentUserProfileFromLocalDb local error ${failure.message}');
       return null;
     }, (r) {
       appLog.d('Get getCurrentUserProfileFromLocalDb to local :');
@@ -48,7 +50,8 @@ class CommonRepositoryImplement implements CommonRepository {
   @override
   Future<String> getCurrentUserToken() async {
     // Local DB
-    final Either<RepositoryBaseFailure, AppUserEntity?> result = await userLocalDbRepository.getCurrentUser();
+    final Either<RepositoryBaseFailure, AppUserEntity?> result =
+        await userLocalDbRepository.getCurrentUser();
     // Return result
     return result.fold((l) {
       final RepositoryFailure failure = l as RepositoryFailure;

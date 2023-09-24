@@ -3,7 +3,8 @@ part of 'package:homemakers_merchant/app/features/menu/index.dart';
 class MenuDescriptionPage extends StatefulWidget {
   const MenuDescriptionPage({super.key});
   @override
-  _MenuDescriptionPageController createState() => _MenuDescriptionPageController();
+  _MenuDescriptionPageController createState() =>
+      _MenuDescriptionPageController();
 }
 
 class _MenuDescriptionPageController extends State<MenuDescriptionPage> {
@@ -31,14 +32,16 @@ class _MenuDescriptionPageController extends State<MenuDescriptionPage> {
   Widget build(BuildContext context) => _MenuDescriptionPageView(this);
 }
 
-class _MenuDescriptionPageView extends WidgetView<MenuDescriptionPage, _MenuDescriptionPageController> {
+class _MenuDescriptionPageView
+    extends WidgetView<MenuDescriptionPage, _MenuDescriptionPageController> {
   const _MenuDescriptionPageView(super.state);
 
   @override
   Widget build(BuildContext context) {
     final MediaQueryData media = MediaQuery.of(context);
     final double margins = GlobalApp.responsiveInsets(media.size.width);
-    final double topPadding = margins; //media.padding.top + kToolbarHeight + margins; //margins * 1.5;
+    final double topPadding =
+        margins; //media.padding.top + kToolbarHeight + margins; //margins * 1.5;
     final double bottomPadding = media.padding.bottom + margins;
     final double width = media.size.width;
     final ThemeData theme = Theme.of(context);
@@ -69,7 +72,8 @@ class _MenuDescriptionPageView extends WidgetView<MenuDescriptionPage, _MenuDesc
           ],
         ),
         body: Directionality(
-          textDirection: serviceLocator<LanguageController>().targetTextDirection,
+          textDirection:
+              serviceLocator<LanguageController>().targetTextDirection,
           child: PageBody(
             controller: state.scrollController,
             constraints: BoxConstraints(
@@ -77,7 +81,11 @@ class _MenuDescriptionPageView extends WidgetView<MenuDescriptionPage, _MenuDesc
               minHeight: media.size.height,
             ),
             child: Container(
-              padding: EdgeInsetsDirectional.only(top: topPadding, start: margins * 2.5, end: margins * 2.5, bottom: bottomPadding),
+              padding: EdgeInsetsDirectional.only(
+                  top: topPadding,
+                  start: margins * 2.5,
+                  end: margins * 2.5,
+                  bottom: bottomPadding),
               constraints: BoxConstraints(
                 minWidth: double.infinity,
                 minHeight: media.size.height,

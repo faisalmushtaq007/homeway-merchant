@@ -8,9 +8,10 @@ class UploadNewBusinessDocument extends NewBusinessDocumentEvent {
   const UploadNewBusinessDocument({
     this.businessDocumentUploadedEntity,
     this.hasNewUploadBusinessDocument = false,
-    this.allBusinessDocuments=const [],
-    this.hasEditBusinessDocument=false,
-    this.currentIndex=-1,this.businessDocumentStatus=BusinessDocumentStatus.none,
+    this.allBusinessDocuments = const [],
+    this.hasEditBusinessDocument = false,
+    this.currentIndex = -1,
+    this.businessDocumentStatus = BusinessDocumentStatus.none,
   });
   final bool hasNewUploadBusinessDocument;
   final NewBusinessDocumentEntity? businessDocumentUploadedEntity;
@@ -20,11 +21,13 @@ class UploadNewBusinessDocument extends NewBusinessDocumentEvent {
   final int currentIndex;
 
   @override
-  List<Object?> get props => [businessDocumentUploadedEntity, hasNewUploadBusinessDocument];
+  List<Object?> get props =>
+      [businessDocumentUploadedEntity, hasNewUploadBusinessDocument];
 }
 
 class DeleteNewUploadBusinessDocument extends NewBusinessDocumentEvent {
-  const DeleteNewUploadBusinessDocument({this.businessDocumentUploadedEntity, this.documentID = -1});
+  const DeleteNewUploadBusinessDocument(
+      {this.businessDocumentUploadedEntity, this.documentID = -1});
   final NewBusinessDocumentEntity? businessDocumentUploadedEntity;
   final int documentID;
 
@@ -40,7 +43,8 @@ class DeleteAllNewUploadBusinessDocument extends NewBusinessDocumentEvent {
 }
 
 class GetNewUploadBusinessDocument extends NewBusinessDocumentEvent {
-  const GetNewUploadBusinessDocument({this.businessDocumentUploadedEntity, this.documentID = -1});
+  const GetNewUploadBusinessDocument(
+      {this.businessDocumentUploadedEntity, this.documentID = -1});
   final NewBusinessDocumentEntity? businessDocumentUploadedEntity;
   final int documentID;
 

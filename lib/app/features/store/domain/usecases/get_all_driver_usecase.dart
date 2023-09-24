@@ -1,6 +1,7 @@
 part of 'package:homemakers_merchant/app/features/store/index.dart';
 
-class GetAllDriverUseCase extends UseCase<DataSourceState<List<StoreOwnDeliveryPartnersInfo>>> {
+class GetAllDriverUseCase
+    extends UseCase<DataSourceState<List<StoreOwnDeliveryPartnersInfo>>> {
   GetAllDriverUseCase({
     required this.storeRepository,
   });

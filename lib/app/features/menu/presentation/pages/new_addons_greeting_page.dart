@@ -8,7 +8,8 @@ class NewAddonsGreetingPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final MediaQueryData media = MediaQuery.of(context);
     final double margins = GlobalApp.responsiveInsets(media.size.width);
-    final double topPadding = margins; //media.padding.top + kToolbarHeight + margins; //margins * 1.5;
+    final double topPadding =
+        margins; //media.padding.top + kToolbarHeight + margins; //margins * 1.5;
     final double bottomPadding = media.padding.bottom + margins;
     final double width = media.size.width;
     final ThemeData theme = Theme.of(context);
@@ -70,7 +71,9 @@ class NewAddonsGreetingPage extends StatelessWidget {
                           Center(
                             child: Text(
                               'Hurray! New Addons',
-                              textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                              textDirection:
+                                  serviceLocator<LanguageController>()
+                                      .targetTextDirection,
                               textAlign: TextAlign.center,
                               style: context.headlineMedium!.copyWith(
                                 color: const Color.fromRGBO(69, 201, 125, 1),
@@ -82,7 +85,9 @@ class NewAddonsGreetingPage extends StatelessWidget {
                           Center(
                             child: Text(
                               '${addonsEntity?.title}',
-                              textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                              textDirection:
+                                  serviceLocator<LanguageController>()
+                                      .targetTextDirection,
                               textAlign: TextAlign.center,
                               style: context.headlineMedium!.copyWith(
                                 color: const Color.fromRGBO(69, 201, 125, 1),
@@ -102,7 +107,9 @@ class NewAddonsGreetingPage extends StatelessWidget {
                               children: [
                                 Text(
                                   'Your addons has been successfully added',
-                                  textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                  textDirection:
+                                      serviceLocator<LanguageController>()
+                                          .targetTextDirection,
                                   textAlign: TextAlign.center,
                                   style: context.titleLarge!.copyWith(
                                     fontSize: 20,
@@ -123,7 +130,9 @@ class NewAddonsGreetingPage extends StatelessWidget {
                               children: [
                                 Text(
                                   'Your addons is under verification process',
-                                  textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                  textDirection:
+                                      serviceLocator<LanguageController>()
+                                          .targetTextDirection,
                                   textAlign: TextAlign.center,
                                   style: context.bodyMedium!.copyWith(
                                     fontSize: 14,
@@ -146,7 +155,8 @@ class NewAddonsGreetingPage extends StatelessWidget {
                         end: 0,
                         child: Center(
                           child: Wrap(
-                            textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                            textDirection: serviceLocator<LanguageController>()
+                                .targetTextDirection,
                             children: [
                               Icon(Icons.share),
                               const SizedBox(
@@ -154,7 +164,9 @@ class NewAddonsGreetingPage extends StatelessWidget {
                               ),
                               Text(
                                 'Share your store on social media',
-                                textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                textDirection:
+                                    serviceLocator<LanguageController>()
+                                        .targetTextDirection,
                                 textAlign: TextAlign.center,
                                 style: context.titleMedium!.copyWith(
                                   fontSize: 18,
@@ -178,8 +190,10 @@ class NewAddonsGreetingPage extends StatelessWidget {
                           ),
                           child: Text(
                             'Show All Addons',
-                            style: TextStyle(color: Color.fromRGBO(42, 45, 50, 1)),
-                            textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                            style:
+                                TextStyle(color: Color.fromRGBO(42, 45, 50, 1)),
+                            textDirection: serviceLocator<LanguageController>()
+                                .targetTextDirection,
                           ).translate(),
                           onPressed: () {
                             context.pushReplacement(Routes.ALL_ADDONS_PAGE);
@@ -194,7 +208,8 @@ class NewAddonsGreetingPage extends StatelessWidget {
                         child: ElevatedButton(
                           child: Text(
                             'Add New Addons',
-                            textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                            textDirection: serviceLocator<LanguageController>()
+                                .targetTextDirection,
                           ).translate(),
                           onPressed: () async {
                             context.pushReplacement(

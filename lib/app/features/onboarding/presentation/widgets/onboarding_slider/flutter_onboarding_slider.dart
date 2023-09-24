@@ -206,7 +206,8 @@ class _OnBoardingSliderState extends State<OnBoardingSlider> {
                   speed: widget.speed,
                   totalPage: widget.totalPage,
                   child: Column(
-                      textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                      textDirection: serviceLocator<LanguageController>()
+                          .targetTextDirection,
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [

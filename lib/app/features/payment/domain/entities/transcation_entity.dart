@@ -1,8 +1,10 @@
 part of 'package:homemakers_merchant/app/features/payment/index.dart';
 
-TranscationEntity transcationEntityFromJson(String str) => TranscationEntity.fromJson(json.decode(str));
+TranscationEntity transcationEntityFromJson(String str) =>
+    TranscationEntity.fromJson(json.decode(str));
 
-String transcationEntityToJson(TranscationEntity data) => json.encode(data.toJson());
+String transcationEntityToJson(TranscationEntity data) =>
+    json.encode(data.toJson());
 
 class TranscationEntity {
   TranscationEntity({
@@ -17,7 +19,8 @@ class TranscationEntity {
   String transcationId;
   bool hasIncome;
 
-  factory TranscationEntity.fromJson(Map<dynamic, dynamic> json) => TranscationEntity(
+  factory TranscationEntity.fromJson(Map<dynamic, dynamic> json) =>
+      TranscationEntity(
         summary: Summary.fromJson(json['summary']),
         transcationNumber: json['transcation_number'],
         transcationId: json['transcation_id'],
@@ -115,12 +118,13 @@ class OrderInformation {
   String storeName;
   int storeId;
 
-  factory OrderInformation.fromJson(Map<dynamic, dynamic> json) => OrderInformation(
-        orderId: json['orderID']??-1,
-        menuId: json['menuID']??'',
-        menuName: json['menuName']??'',
-        storeName: json['storeName']??'',
-        storeId: json['storeID']??-1,
+  factory OrderInformation.fromJson(Map<dynamic, dynamic> json) =>
+      OrderInformation(
+        orderId: json['orderID'] ?? -1,
+        menuId: json['menuID'] ?? '',
+        menuName: json['menuName'] ?? '',
+        storeName: json['storeName'] ?? '',
+        storeId: json['storeID'] ?? -1,
       );
 
   Map<dynamic, dynamic> toJson() => {

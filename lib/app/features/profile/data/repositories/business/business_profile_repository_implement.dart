@@ -1,20 +1,26 @@
 part of 'package:homemakers_merchant/app/features/profile/index.dart';
 
-class BusinessProfileRepositoryImplement implements UserBusinessProfileRepository {
+class BusinessProfileRepositoryImplement
+    implements UserBusinessProfileRepository {
   const BusinessProfileRepositoryImplement(
-      {required this.remoteDataSource, required this.businessProfileLocalDataSource});
+      {required this.remoteDataSource,
+      required this.businessProfileLocalDataSource});
 
   final ProfileDataSource remoteDataSource;
-  final UserBusinessProfileLocalDbRepository<BusinessProfileEntity> businessProfileLocalDataSource;
+  final UserBusinessProfileLocalDbRepository<BusinessProfileEntity>
+      businessProfileLocalDataSource;
 
   @override
-  Future<DataSourceState<bool>> deleteAllBusinessProfile({AppUserEntity? appUserEntity}) async {
+  Future<DataSourceState<bool>> deleteAllBusinessProfile(
+      {AppUserEntity? appUserEntity}) async {
     try {
-      final connectivity = serviceLocator<ConnectivityService>().getCurrentInternetStatus();
+      final connectivity =
+          serviceLocator<ConnectivityService>().getCurrentInternetStatus();
       if (connectivity.$2 == InternetConnectivityState.internet) {
         // Local DB
         // Save to local
-        final Either<RepositoryBaseFailure, bool> result = await businessProfileLocalDataSource.deleteAll();
+        final Either<RepositoryBaseFailure, bool> result =
+            await businessProfileLocalDataSource.deleteAll();
         // Return result
         return result.fold((l) {
           final RepositoryFailure failure = l as RepositoryFailure;
@@ -31,7 +37,8 @@ class BusinessProfileRepositoryImplement implements UserBusinessProfileRepositor
       } else {
         // Remote
         // Save to server
-        final ApiResultState<bool> result = await remoteDataSource.deleteAllBusinessProfile();
+        final ApiResultState<bool> result =
+            await remoteDataSource.deleteAllBusinessProfile();
         // Return result
         return result.when(
           success: (data) {
@@ -66,7 +73,8 @@ class BusinessProfileRepositoryImplement implements UserBusinessProfileRepositor
 
   @override
   Future<DataSourceState<bool>> deleteAllBusinessType(
-      {AppUserEntity? appUserEntity, BusinessProfileEntity? businessProfileEntity}) {
+      {AppUserEntity? appUserEntity,
+      BusinessProfileEntity? businessProfileEntity}) {
     // TODO(prasant): implement deleteAllBusinessType
     throw UnimplementedError();
   }
@@ -78,12 +86,14 @@ class BusinessProfileRepositoryImplement implements UserBusinessProfileRepositor
     AppUserEntity? appUserEntity,
   }) async {
     try {
-      final connectivity = serviceLocator<ConnectivityService>().getCurrentInternetStatus();
+      final connectivity =
+          serviceLocator<ConnectivityService>().getCurrentInternetStatus();
       if (connectivity.$2 == InternetConnectivityState.internet) {
         // Local DB
         // Save to local
         final Either<RepositoryBaseFailure, bool> result =
-            await businessProfileLocalDataSource.deleteById(UniqueId(businessProfileID));
+            await businessProfileLocalDataSource
+                .deleteById(UniqueId(businessProfileID));
         // Return result
         return result.fold((l) {
           final RepositoryFailure failure = l as RepositoryFailure;
@@ -100,7 +110,8 @@ class BusinessProfileRepositoryImplement implements UserBusinessProfileRepositor
       } else {
         // Remote
         // Save to server
-        final ApiResultState<bool> result = await remoteDataSource.deleteBusinessProfile(
+        final ApiResultState<bool> result =
+            await remoteDataSource.deleteBusinessProfile(
           businessProfileID: businessProfileID,
           businessProfileEntity: businessProfileEntity,
           appUserEntity: appUserEntity,
@@ -155,12 +166,14 @@ class BusinessProfileRepositoryImplement implements UserBusinessProfileRepositor
     AppUserEntity? appUserEntity,
   }) async {
     try {
-      final connectivity = serviceLocator<ConnectivityService>().getCurrentInternetStatus();
+      final connectivity =
+          serviceLocator<ConnectivityService>().getCurrentInternetStatus();
       if (connectivity.$2 == InternetConnectivityState.internet) {
         // Local DB
         // Save to local
         final Either<RepositoryBaseFailure, BusinessProfileEntity> result =
-            await businessProfileLocalDataSource.update(businessProfileEntity, UniqueId(businessProfileID));
+            await businessProfileLocalDataSource.update(
+                businessProfileEntity, UniqueId(businessProfileID));
         // Return result
         return result.fold((l) {
           final RepositoryFailure failure = l as RepositoryFailure;
@@ -171,13 +184,15 @@ class BusinessProfileRepositoryImplement implements UserBusinessProfileRepositor
             stackTrace: failure.stacktrace,
           );
         }, (r) {
-          appLog.d('Edit profile local : ${r.businessProfileID}, ${r.businessName}');
+          appLog.d(
+              'Edit profile local : ${r.businessProfileID}, ${r.businessName}');
           return DataSourceState<BusinessProfileEntity>.localDb(data: r);
         });
       } else {
         // Remote
         // Save to server
-        final ApiResultState<BusinessProfileEntity> result = await remoteDataSource.editBusinessProfile(
+        final ApiResultState<BusinessProfileEntity> result =
+            await remoteDataSource.editBusinessProfile(
           businessProfileID: businessProfileID,
           businessProfileEntity: businessProfileEntity,
           appUserEntity: appUserEntity,
@@ -215,7 +230,8 @@ class BusinessProfileRepositoryImplement implements UserBusinessProfileRepositor
   }
 
   @override
-  Future<DataSourceState<(BusinessProfileEntity, BusinessTypeEntity)>> editBusinessType({
+  Future<DataSourceState<(BusinessProfileEntity, BusinessTypeEntity)>>
+      editBusinessType({
     required BusinessTypeEntity businessTypeEntity,
     required int businessTypeID,
     AppUserEntity? appUserEntity,
@@ -226,14 +242,16 @@ class BusinessProfileRepositoryImplement implements UserBusinessProfileRepositor
   }
 
   @override
-  Future<DataSourceState<List<BusinessProfileEntity>>> getAllBusinessProfile({AppUserEntity? appUserEntity}) async {
+  Future<DataSourceState<List<BusinessProfileEntity>>> getAllBusinessProfile(
+      {AppUserEntity? appUserEntity}) async {
     try {
-      final connectivity = serviceLocator<ConnectivityService>().getCurrentInternetStatus();
+      final connectivity =
+          serviceLocator<ConnectivityService>().getCurrentInternetStatus();
       if (connectivity.$2 == InternetConnectivityState.internet) {
         // Local DB
         // Save to local
-        final Either<RepositoryBaseFailure, List<BusinessProfileEntity>> result =
-            await businessProfileLocalDataSource.getAll();
+        final Either<RepositoryBaseFailure, List<BusinessProfileEntity>>
+            result = await businessProfileLocalDataSource.getAll();
         // Return result
         return result.fold((l) {
           final RepositoryFailure failure = l as RepositoryFailure;
@@ -250,7 +268,8 @@ class BusinessProfileRepositoryImplement implements UserBusinessProfileRepositor
       } else {
         // Remote
         // Save to server
-        final ApiResultState<List<BusinessProfileEntity>> result = await remoteDataSource.getAllBusinessProfile();
+        final ApiResultState<List<BusinessProfileEntity>> result =
+            await remoteDataSource.getAllBusinessProfile();
         // Return result
         return result.when(
           success: (data) {
@@ -284,7 +303,8 @@ class BusinessProfileRepositoryImplement implements UserBusinessProfileRepositor
   }
 
   @override
-  Future<DataSourceState<(BusinessProfileEntity, List<BusinessTypeEntity>)>> getAllBusinessType({
+  Future<DataSourceState<(BusinessProfileEntity, List<BusinessTypeEntity>)>>
+      getAllBusinessType({
     AppUserEntity? appUserEntity,
     BusinessProfileEntity? businessProfileEntity,
   }) {
@@ -299,12 +319,14 @@ class BusinessProfileRepositoryImplement implements UserBusinessProfileRepositor
     BusinessProfileEntity? businessProfileEntity,
   }) async {
     try {
-      final connectivity = serviceLocator<ConnectivityService>().getCurrentInternetStatus();
+      final connectivity =
+          serviceLocator<ConnectivityService>().getCurrentInternetStatus();
       if (connectivity.$2 == InternetConnectivityState.internet) {
         // Local DB
         // Save to local
         final Either<RepositoryBaseFailure, BusinessProfileEntity?> result =
-            await businessProfileLocalDataSource.getById(UniqueId(businessProfileID));
+            await businessProfileLocalDataSource
+                .getById(UniqueId(businessProfileID));
         // Return result
         return result.fold((l) {
           final RepositoryFailure failure = l as RepositoryFailure;
@@ -315,13 +337,15 @@ class BusinessProfileRepositoryImplement implements UserBusinessProfileRepositor
             stackTrace: failure.stacktrace,
           );
         }, (r) {
-          appLog.d('Get profile to local : ${r?.businessProfileID}, ${r?.businessName}');
+          appLog.d(
+              'Get profile to local : ${r?.businessProfileID}, ${r?.businessName}');
           return DataSourceState<BusinessProfileEntity>.localDb(data: r);
         });
       } else {
         // Remote
         // Save to server
-        final ApiResultState<BusinessProfileEntity> result = await remoteDataSource.getBusinessProfile(
+        final ApiResultState<BusinessProfileEntity> result =
+            await remoteDataSource.getBusinessProfile(
           businessProfileEntity: businessProfileEntity,
           businessProfileID: businessProfileID,
           appUserEntity: appUserEntity,
@@ -359,7 +383,8 @@ class BusinessProfileRepositoryImplement implements UserBusinessProfileRepositor
   }
 
   @override
-  Future<DataSourceState<(BusinessProfileEntity, BusinessTypeEntity)>> getBusinessType({
+  Future<DataSourceState<(BusinessProfileEntity, BusinessTypeEntity)>>
+      getBusinessType({
     required int businessTypeID,
     AppUserEntity? appUserEntity,
     BusinessProfileEntity? businessProfileEntity,
@@ -375,7 +400,8 @@ class BusinessProfileRepositoryImplement implements UserBusinessProfileRepositor
     AppUserEntity? appUserEntity,
   }) async {
     /*try {*/
-    final connectivity = serviceLocator<ConnectivityService>().getCurrentInternetStatus();
+    final connectivity =
+        serviceLocator<ConnectivityService>().getCurrentInternetStatus();
     if (connectivity.$2 == InternetConnectivityState.internet) {
       // Local DB
       // Save to local
@@ -392,14 +418,16 @@ class BusinessProfileRepositoryImplement implements UserBusinessProfileRepositor
           stackTrace: failure.stacktrace,
         );
       }, (r) {
-        appLog.d('Save profile to local : ${r.businessProfileID}, ${r.businessName}');
+        appLog.d(
+            'Save profile to local : ${r.businessProfileID}, ${r.businessName}');
         return DataSourceState<BusinessProfileEntity>.localDb(data: r);
       });
     } else {
       // Remote
       // Save to server
       final ApiResultState<BusinessProfileEntity> result =
-          await remoteDataSource.saveBusinessProfile(businessProfileEntity: businessProfileEntity);
+          await remoteDataSource.saveBusinessProfile(
+              businessProfileEntity: businessProfileEntity);
       // Return result
       return result.when(
         success: (data) {
@@ -433,7 +461,8 @@ class BusinessProfileRepositoryImplement implements UserBusinessProfileRepositor
   }
 
   @override
-  Future<DataSourceState<(BusinessProfileEntity, BusinessTypeEntity)>> saveBusinessType({
+  Future<DataSourceState<(BusinessProfileEntity, BusinessTypeEntity)>>
+      saveBusinessType({
     required BusinessTypeEntity businessTypeEntity,
     AppUserEntity? appUserEntity,
     BusinessProfileEntity? businessProfileEntity,
@@ -461,7 +490,8 @@ class BusinessProfileRepositoryImplement implements UserBusinessProfileRepositor
   }
 
   @override
-  Future<DataSourceState<List<BusinessProfileEntity>>> getAllBusinessProfilePagination({
+  Future<DataSourceState<List<BusinessProfileEntity>>>
+      getAllBusinessProfilePagination({
     int pageKey = 0,
     int pageSize = 10,
     String? searchText,
@@ -472,11 +502,13 @@ class BusinessProfileRepositoryImplement implements UserBusinessProfileRepositor
     Timestamp? endTime,
   }) async {
     try {
-      final connectivity = serviceLocator<ConnectivityService>().getCurrentInternetStatus();
+      final connectivity =
+          serviceLocator<ConnectivityService>().getCurrentInternetStatus();
       if (connectivity.$2 == InternetConnectivityState.internet) {
         // Local DB
         // Save to local
-        final Either<RepositoryBaseFailure, List<BusinessProfileEntity>> result = await businessProfileLocalDataSource.getAllWithPagination(
+        final Either<RepositoryBaseFailure, List<BusinessProfileEntity>>
+            result = await businessProfileLocalDataSource.getAllWithPagination(
           filter: filtering,
           sorting: sorting,
           searchText: searchText,
@@ -502,7 +534,8 @@ class BusinessProfileRepositoryImplement implements UserBusinessProfileRepositor
       } else {
         // Remote
         // Save to server
-        final ApiResultState<List<BusinessProfileEntity>> result = await remoteDataSource.getAllBusinessProfilePagination(
+        final ApiResultState<List<BusinessProfileEntity>> result =
+            await remoteDataSource.getAllBusinessProfilePagination(
           filtering: filtering,
           sorting: sorting,
           searchText: searchText,
@@ -549,18 +582,21 @@ class BusinessProfileRepositoryImplement implements UserBusinessProfileRepositor
     bool hasUpdateAll = false,
   }) async {
     try {
-      final connectivity = serviceLocator<ConnectivityService>().getCurrentInternetStatus();
+      final connectivity =
+          serviceLocator<ConnectivityService>().getCurrentInternetStatus();
       if (connectivity.$2 == InternetConnectivityState.internet) {
         // Local DB
         // Save to local
-        final Either<RepositoryBaseFailure, List<BusinessProfileEntity>> result = await businessProfileLocalDataSource.saveAll(
+        final Either<RepositoryBaseFailure, List<BusinessProfileEntity>>
+            result = await businessProfileLocalDataSource.saveAll(
           entities: businessProfiles,
           hasUpdateAll: hasUpdateAll,
         );
         // Return result
         return result.fold((l) {
           final RepositoryFailure failure = l as RepositoryFailure;
-          appLog.d('Save all BusinessProfileEntity local error ${failure.message}');
+          appLog.d(
+              'Save all BusinessProfileEntity local error ${failure.message}');
           return DataSourceState<List<BusinessProfileEntity>>.error(
             reason: failure.message,
             dataSourceFailure: DataSourceFailure.local,
@@ -573,7 +609,8 @@ class BusinessProfileRepositoryImplement implements UserBusinessProfileRepositor
       } else {
         // Remote
         // Save to server
-        final ApiResultState<List<BusinessProfileEntity>> result = await remoteDataSource.saveAllBusinessProfiles(
+        final ApiResultState<List<BusinessProfileEntity>> result =
+            await remoteDataSource.saveAllBusinessProfiles(
           businessProfiles: businessProfiles,
           hasUpdateAll: hasUpdateAll,
         );

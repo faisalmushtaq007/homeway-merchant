@@ -16,7 +16,8 @@ class UserProfileWidget extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Wrap(
-              textDirection: serviceLocator<LanguageController>().targetTextDirection,
+              textDirection:
+                  serviceLocator<LanguageController>().targetTextDirection,
               children: [
                 Text.rich(
                   TextSpan(
@@ -41,7 +42,8 @@ class UserProfileWidget extends StatelessWidget {
                       ),
                     ],
                   ),
-                  textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                  textDirection:
+                      serviceLocator<LanguageController>().targetTextDirection,
                   style: context.headlineLarge!.copyWith(
                     fontWeight: FontWeight.bold,
                     height: 0.9,
@@ -53,11 +55,13 @@ class UserProfileWidget extends StatelessWidget {
             ),
             const AnimatedGap(8, duration: Duration(milliseconds: 500)),
             Wrap(
-              textDirection: serviceLocator<LanguageController>().targetTextDirection,
+              textDirection:
+                  serviceLocator<LanguageController>().targetTextDirection,
               children: [
                 Text(
                   'Welcome again.',
-                  textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                  textDirection:
+                      serviceLocator<LanguageController>().targetTextDirection,
                   style: GoogleFonts.raleway(
                     textStyle: context.headlineSmall!.copyWith(
                       fontWeight: FontWeight.w500,

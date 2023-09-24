@@ -37,14 +37,16 @@ class _ChatPageState extends State<ChatPage> {
 
   void _handleTransition(String name) {}
 
-  Future<void> _handleStateChange(AppLifecycleState state) async{
+  Future<void> _handleStateChange(AppLifecycleState state) async {
     setState(() {
       _state = state;
     });
-    if(_state==AppLifecycleState.resumed){
-      return await FirebaseChatCore.instance.updateUserActiveStatus(status: true);
-    }else if(_state==AppLifecycleState.paused){
-      return await FirebaseChatCore.instance.updateUserActiveStatus(status: false);
+    if (_state == AppLifecycleState.resumed) {
+      return await FirebaseChatCore.instance
+          .updateUserActiveStatus(status: true);
+    } else if (_state == AppLifecycleState.paused) {
+      return await FirebaseChatCore.instance
+          .updateUserActiveStatus(status: false);
     }
   }
 
@@ -53,7 +55,6 @@ class _ChatPageState extends State<ChatPage> {
     _listener.dispose();
     super.dispose();
   }
-
 
   void _handleAttachmentPressed() {
     showModalBottomSheet<void>(
@@ -73,7 +74,8 @@ class _ChatPageState extends State<ChatPage> {
                   alignment: Alignment.centerLeft,
                   child: Text(
                     'Photo',
-                    textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                    textDirection: serviceLocator<LanguageController>()
+                        .targetTextDirection,
                   ),
                 ),
               ),
@@ -86,7 +88,8 @@ class _ChatPageState extends State<ChatPage> {
                   alignment: Alignment.centerLeft,
                   child: Text(
                     'File',
-                    textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                    textDirection: serviceLocator<LanguageController>()
+                        .targetTextDirection,
                   ),
                 ),
               ),
@@ -96,7 +99,8 @@ class _ChatPageState extends State<ChatPage> {
                   alignment: Alignment.centerLeft,
                   child: Text(
                     'Cancel',
-                    textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                    textDirection: serviceLocator<LanguageController>()
+                        .targetTextDirection,
                   ),
                 ),
               ),
@@ -240,13 +244,15 @@ class _ChatPageState extends State<ChatPage> {
           systemOverlayStyle: SystemUiOverlayStyle.light,
           title: Text(
             'Chat',
-            textDirection: serviceLocator<LanguageController>().targetTextDirection,
+            textDirection:
+                serviceLocator<LanguageController>().targetTextDirection,
           ),
         ),
         body: StreamBuilder<Room>(
           initialData: widget.room,
           stream: FirebaseChatCore.instance.room(widget.room.id),
-          builder: (context, roomSnapshot) => StreamBuilder<List<types.Message>>(
+          builder: (context, roomSnapshot) =>
+              StreamBuilder<List<types.Message>>(
             initialData: const [],
             stream: FirebaseChatCore.instance.messages(roomSnapshot.data!),
             builder: (context, snapshot) => Chat(

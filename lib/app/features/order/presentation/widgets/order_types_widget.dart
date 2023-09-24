@@ -83,7 +83,8 @@ class _OrderTypeWidgetController extends State<OrderTypeWidget> {
   Widget build(BuildContext context) => _OrderTypeWidgetView(this);
 }
 
-class _OrderTypeWidgetView extends WidgetView<OrderTypeWidget, _OrderTypeWidgetController> {
+class _OrderTypeWidgetView
+    extends WidgetView<OrderTypeWidget, _OrderTypeWidgetController> {
   const _OrderTypeWidgetView(super.state);
 
   @override
@@ -121,19 +122,28 @@ class _OrderTypeWidgetView extends WidgetView<OrderTypeWidget, _OrderTypeWidgetC
           ),
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
-          textDirection: serviceLocator<LanguageController>().targetTextDirection,
+          textDirection:
+              serviceLocator<LanguageController>().targetTextDirection,
         ).translate(),
         labelStyle: TextStyle(
-          color: (state.selectedIndex == index) ? context.colorScheme.primary : context.colorScheme.onSurface,
-          fontWeight: (state.selectedIndex == index) ? FontWeight.w600 : FontWeight.w500,
+          color: (state.selectedIndex == index)
+              ? context.colorScheme.primary
+              : context.colorScheme.onSurface,
+          fontWeight: (state.selectedIndex == index)
+              ? FontWeight.w600
+              : FontWeight.w500,
         ),
         selected: state.selectedIndex == index,
         side: BorderSide(
-          color: (state.selectedIndex == index) ? context.colorScheme.primary : const Color.fromRGBO(165, 166, 168, 1),
+          color: (state.selectedIndex == index)
+              ? context.colorScheme.primary
+              : const Color.fromRGBO(165, 166, 168, 1),
         ),
         selectedColor: const Color.fromRGBO(238, 238, 238, 1),
         disabledColor: context.colorScheme.surface,
-        backgroundColor: (state.selectedIndex == index) ? const Color.fromRGBO(238, 238, 238, 1) : Colors.white,
+        backgroundColor: (state.selectedIndex == index)
+            ? const Color.fromRGBO(238, 238, 238, 1)
+            : Colors.white,
         onSelected: (bool value) {
           return state.selectOrderTypeInfo(index);
         },

@@ -18,7 +18,8 @@ class OrderPaymentSummary extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           mainAxisAlignment: MainAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
-          textDirection: serviceLocator<LanguageController>().targetTextDirection,
+          textDirection:
+              serviceLocator<LanguageController>().targetTextDirection,
           children: [
             const AnimatedGap(
               12,
@@ -26,27 +27,37 @@ class OrderPaymentSummary extends StatelessWidget {
             ),
             Directionality(
               key: const Key('subTotal-key'),
-              textDirection: serviceLocator<LanguageController>().targetTextDirection,
+              textDirection:
+                  serviceLocator<LanguageController>().targetTextDirection,
               child: RowItem.text(
                 'SubTotal',
                 orderEntity.payment.amount.toString() + ' SAR',
-                titleStyle: context.bodyMedium!.copyWith(fontWeight: FontWeight.w500, overflow: TextOverflow.ellipsis),
-                descriptionStyle: context.bodyMedium!.copyWith(fontWeight: FontWeight.w500, overflow: TextOverflow.ellipsis),
+                titleStyle: context.bodyMedium!.copyWith(
+                    fontWeight: FontWeight.w500,
+                    overflow: TextOverflow.ellipsis),
+                descriptionStyle: context.bodyMedium!.copyWith(
+                    fontWeight: FontWeight.w500,
+                    overflow: TextOverflow.ellipsis),
               ),
             ),
             const Divider(thickness: 0.25),
             Directionality(
               key: const Key('delivery-charge-key'),
-              textDirection: serviceLocator<LanguageController>().targetTextDirection,
+              textDirection:
+                  serviceLocator<LanguageController>().targetTextDirection,
               child: RowItem.text(
                 'Delivery Charge',
                 orderEntity.payment.deliveryAmount.toString() + ' SAR',
-                titleStyle: context.bodyMedium!.copyWith(fontWeight: FontWeight.w500, overflow: TextOverflow.ellipsis),
-                descriptionStyle: context.bodyMedium!.copyWith(fontWeight: FontWeight.w500, overflow: TextOverflow.ellipsis),
+                titleStyle: context.bodyMedium!.copyWith(
+                    fontWeight: FontWeight.w500,
+                    overflow: TextOverflow.ellipsis),
+                descriptionStyle: context.bodyMedium!.copyWith(
+                    fontWeight: FontWeight.w500,
+                    overflow: TextOverflow.ellipsis),
               ),
             ),
             const Divider(thickness: 0.25),
-           /* Directionality(
+            /* Directionality(
               key: const Key('service-charge-key'),
               textDirection: serviceLocator<LanguageController>().targetTextDirection,
               child: RowItem.text(
@@ -59,24 +70,38 @@ class OrderPaymentSummary extends StatelessWidget {
             const Divider(thickness: 0.25),*/
             Directionality(
               key: const Key('tax-key'),
-              textDirection: serviceLocator<LanguageController>().targetTextDirection,
+              textDirection:
+                  serviceLocator<LanguageController>().targetTextDirection,
               child: RowItem.text(
                 'Tax',
                 orderEntity.payment.tax.toString() + ' SAR',
-                titleStyle: context.bodyMedium!.copyWith(fontWeight: FontWeight.w500, overflow: TextOverflow.ellipsis),
-                descriptionStyle: context.bodyMedium!.copyWith(fontWeight: FontWeight.w500, overflow: TextOverflow.ellipsis),
+                titleStyle: context.bodyMedium!.copyWith(
+                    fontWeight: FontWeight.w500,
+                    overflow: TextOverflow.ellipsis),
+                descriptionStyle: context.bodyMedium!.copyWith(
+                    fontWeight: FontWeight.w500,
+                    overflow: TextOverflow.ellipsis),
               ),
             ),
             const Divider(thickness: 1.5),
             Directionality(
               key: const Key('total-key'),
-              textDirection: serviceLocator<LanguageController>().targetTextDirection,
+              textDirection:
+                  serviceLocator<LanguageController>().targetTextDirection,
               child: RowItem.text(
                 'Total',
-                (orderEntity.payment.amount + orderEntity.payment.deliveryAmount + orderEntity.payment.serviceAmount + orderEntity.payment.tax).toString() +
+                (orderEntity.payment.amount +
+                            orderEntity.payment.deliveryAmount +
+                            orderEntity.payment.serviceAmount +
+                            orderEntity.payment.tax)
+                        .toString() +
                     ' SAR',
-                titleStyle: context.bodyLarge!.copyWith(fontWeight: FontWeight.w600, overflow: TextOverflow.ellipsis),
-                descriptionStyle: context.bodyLarge!.copyWith(fontWeight: FontWeight.w600, overflow: TextOverflow.ellipsis),
+                titleStyle: context.bodyLarge!.copyWith(
+                    fontWeight: FontWeight.w600,
+                    overflow: TextOverflow.ellipsis),
+                descriptionStyle: context.bodyLarge!.copyWith(
+                    fontWeight: FontWeight.w600,
+                    overflow: TextOverflow.ellipsis),
               ),
             ),
             const AnimatedGap(

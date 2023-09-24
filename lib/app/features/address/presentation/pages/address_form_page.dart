@@ -34,7 +34,8 @@ class _AddressFormPageController extends State<AddressFormPage> {
   // Phone Form Field
   String? phoneValidation;
   String userEnteredPhoneNumber = '';
-  PhoneNumberVerification phoneNumberVerification = PhoneNumberVerification.none;
+  PhoneNumberVerification phoneNumberVerification =
+      PhoneNumberVerification.none;
   final isoCodeNameMap = IsoCode.values.asNameMap();
   IsoCode defaultCountry = IsoCode.SA;
   PhoneNumber initialPhoneNumberValue = PhoneNumber(
@@ -48,7 +49,8 @@ class _AddressFormPageController extends State<AddressFormPage> {
     ),
   );
   int businessProfileID = -1;
-  ValueNotifier<PhoneNumberVerification> valueNotifierPhoneNumberVerification = ValueNotifier<PhoneNumberVerification>(
+  ValueNotifier<PhoneNumberVerification> valueNotifierPhoneNumberVerification =
+      ValueNotifier<PhoneNumberVerification>(
     PhoneNumberVerification.none,
   );
   bool mobileOnly = true;
@@ -71,7 +73,13 @@ class _AddressFormPageController extends State<AddressFormPage> {
   // Others
   bool checkBoxValue = false;
   List<bool> isToggleButtonSelected = [false, false, false, false, false];
-  List<String> valueOfToggleButtonSelected = ['Home', 'Office', 'Friend', 'Business', 'Other'];
+  List<String> valueOfToggleButtonSelected = [
+    'Home',
+    'Office',
+    'Friend',
+    'Business',
+    'Other'
+  ];
   late final GBData locationAddressData;
   AddressModel? addressModel;
   int indexOfSaveAddress = -1;
@@ -104,7 +112,8 @@ class _AddressFormPageController extends State<AddressFormPage> {
     if (widget.addressModel.isNotNull) {
       addressModel = widget.addressModel;
     }
-    setAddressEntityData(addressModel, locationAddressData: locationAddressData);
+    setAddressEntityData(addressModel,
+        locationAddressData: locationAddressData);
   }
 
   @override
@@ -143,19 +152,25 @@ class _AddressFormPageController extends State<AddressFormPage> {
     if (phoneNumbers.isNotNull) {
       initialPhoneNumberValue = phoneNumbers!;
     }
-    userEnteredPhoneNumber = '+${phoneNumbers?.countryCode} ${phoneNumbers?.getFormattedNsn().trim()}';
+    userEnteredPhoneNumber =
+        '+${phoneNumbers?.countryCode} ${phoneNumbers?.getFormattedNsn().trim()}';
     final String countryDialCode = '+${phoneNumbers?.countryCode ?? '+966'}';
     final String country = phoneNumbers?.isoCode.name ?? 'SA';
     final result = getValidator(isAllowEmpty: false);
     phoneValidation = result?.call(initialPhoneNumberValue);
 
     if (phoneValidation != null && phoneValidation!.isNotEmpty) {
-      valueNotifierPhoneNumberVerification.value = PhoneNumberVerification.invalid;
+      valueNotifierPhoneNumberVerification.value =
+          PhoneNumberVerification.invalid;
     } else {
-      if (phoneValidation == null && phoneNumbers != null && phoneNumbers.getFormattedNsn().trim().isNotEmpty) {
-        valueNotifierPhoneNumberVerification.value = PhoneNumberVerification.valid;
+      if (phoneValidation == null &&
+          phoneNumbers != null &&
+          phoneNumbers.getFormattedNsn().trim().isNotEmpty) {
+        valueNotifierPhoneNumberVerification.value =
+            PhoneNumberVerification.valid;
       } else {
-        valueNotifierPhoneNumberVerification.value = PhoneNumberVerification.none;
+        valueNotifierPhoneNumberVerification.value =
+            PhoneNumberVerification.none;
       }
     }
     //setState(() {});
@@ -170,18 +185,24 @@ class _AddressFormPageController extends State<AddressFormPage> {
     if (phoneNumbers.isNotNull) {
       initialPhoneNumberValue = phoneNumbers!;
     }
-    userEnteredPhoneNumber = '+${phoneNumbers?.countryCode} ${phoneNumbers?.getFormattedNsn().trim()}';
+    userEnteredPhoneNumber =
+        '+${phoneNumbers?.countryCode} ${phoneNumbers?.getFormattedNsn().trim()}';
     controller = phoneNumberControllers;
     if (phoneValidation != null && phoneValidation!.isNotEmpty) {
       phoneNumberVerification = PhoneNumberVerification.invalid;
-      valueNotifierPhoneNumberVerification.value = PhoneNumberVerification.invalid;
+      valueNotifierPhoneNumberVerification.value =
+          PhoneNumberVerification.invalid;
     } else {
-      if (phoneValidation == null && phoneNumberControllers.value != null && phoneNumberControllers.value!.getFormattedNsn().trim().isNotEmpty) {
+      if (phoneValidation == null &&
+          phoneNumberControllers.value != null &&
+          phoneNumberControllers.value!.getFormattedNsn().trim().isNotEmpty) {
         phoneNumberVerification = PhoneNumberVerification.valid;
-        valueNotifierPhoneNumberVerification.value = PhoneNumberVerification.valid;
+        valueNotifierPhoneNumberVerification.value =
+            PhoneNumberVerification.valid;
       } else {
         phoneNumberVerification = PhoneNumberVerification.none;
-        valueNotifierPhoneNumberVerification.value = PhoneNumberVerification.none;
+        valueNotifierPhoneNumberVerification.value =
+            PhoneNumberVerification.none;
       }
     }
     //setState(() {});
@@ -222,7 +243,8 @@ class _AddressFormPageController extends State<AddressFormPage> {
     return ValidatorGroup<bool>([
       CustomValidator<bool>(
         validator: (value) {
-          final bool result = isToggleButtonSelected.any((element) => element == true);
+          final bool result =
+              isToggleButtonSelected.any((element) => element == true);
           if (!result) {
             addressTypeValidation = 'Select any one address type';
             return addressTypeValidation;
@@ -233,21 +255,29 @@ class _AddressFormPageController extends State<AddressFormPage> {
     ]).validate(value);
   }
 
-  void setAddressEntityData(AddressModel? sharedAddressModel, {GBData? locationAddressData}) {
+  void setAddressEntityData(AddressModel? sharedAddressModel,
+      {GBData? locationAddressData}) {
     if (sharedAddressModel.isNotNull && sharedAddressModel!.address != null) {
       areaTextFieldController.text = sharedAddressModel!.address?.area ?? '';
-      mapAddressTextFieldController.text = sharedAddressModel!.address?.displayAddressName ?? '';
-      districtAddressTextFieldController.text = sharedAddressModel!.address?.district ?? '';
-      zipCodeTextFieldController.text = sharedAddressModel!.address?.postalCode.toString() ?? '';
+      mapAddressTextFieldController.text =
+          sharedAddressModel!.address?.displayAddressName ?? '';
+      districtAddressTextFieldController.text =
+          sharedAddressModel!.address?.district ?? '';
+      zipCodeTextFieldController.text =
+          sharedAddressModel!.address?.postalCode.toString() ?? '';
       cityTextFieldController.text = sharedAddressModel!.address?.city ?? '';
       stateTextFieldController.text = sharedAddressModel!.address?.state ?? '';
-      countryTextFieldController.text = sharedAddressModel!.address?.country ?? '';
+      countryTextFieldController.text =
+          sharedAddressModel!.address?.country ?? '';
       fullNameTextFieldController.text = sharedAddressModel!.fullName ?? '';
       if (sharedAddressModel!.phoneNumber != null) {
-        mobileNumberTextFieldController.text = sharedAddressModel!.phoneNumber.toString();
+        mobileNumberTextFieldController.text =
+            sharedAddressModel!.phoneNumber.toString();
       }
-      buildingTextFieldController.text = sharedAddressModel!.address?.apartment ?? '';
-      landmarkTextFieldController.text = sharedAddressModel!.address?.landmark ?? '';
+      buildingTextFieldController.text =
+          sharedAddressModel!.address?.apartment ?? '';
+      landmarkTextFieldController.text =
+          sharedAddressModel!.address?.landmark ?? '';
       checkBoxValue = sharedAddressModel!.address?.isDefault ?? false;
       //isToggleButtonSelected
       if (sharedAddressModel!.address?.indexOfSavedAddressAs != null) {
@@ -258,30 +288,43 @@ class _AddressFormPageController extends State<AddressFormPage> {
       }
       // Phone number information
       mobileNumberTextFieldController.clear();
-      mobileNumberTextFieldController.text = sharedAddressModel!.phoneNumber ?? '';
+      mobileNumberTextFieldController.text =
+          sharedAddressModel!.phoneNumber ?? '';
       initialPhoneNumberValue = PhoneNumber(
-        isoCode: isoCodeNameMap.values.byName(sharedAddressModel!.isoCode ?? 'SA'),
+        isoCode:
+            isoCodeNameMap.values.byName(sharedAddressModel!.isoCode ?? 'SA'),
         nsn: sharedAddressModel!.phoneNumber ?? '',
       );
       controller.value = PhoneNumber(
-        isoCode: isoCodeNameMap.values.byName(sharedAddressModel!.isoCode ?? 'SA'),
+        isoCode:
+            isoCodeNameMap.values.byName(sharedAddressModel!.isoCode ?? 'SA'),
         nsn: sharedAddressModel!.phoneNumber ?? '',
       );
-      defaultCountry = isoCodeNameMap.values.byName(sharedAddressModel!.isoCode ?? 'SA');
+      defaultCountry =
+          isoCodeNameMap.values.byName(sharedAddressModel!.isoCode ?? 'SA');
       //phoneValidation = controller.phoneKey.currentState?.errorText;
     }
-    if (locationAddressData.isNotNull && locationAddressData!.address.isNotNull) {
+    if (locationAddressData.isNotNull &&
+        locationAddressData!.address.isNotNull) {
       if (areaTextFieldController.text.isEmpty) {
-        areaTextFieldController.text = locationAddressData.address?.village ?? locationAddressData.address?.city ?? locationAddressData.address?.county ?? '';
+        areaTextFieldController.text = locationAddressData.address?.village ??
+            locationAddressData.address?.city ??
+            locationAddressData.address?.county ??
+            '';
       }
       if (mapAddressTextFieldController.text.isEmpty) {
-        mapAddressTextFieldController.text = locationAddressData.displayName ?? '';
+        mapAddressTextFieldController.text =
+            locationAddressData.displayName ?? '';
       }
       if (districtAddressTextFieldController.text.isEmpty) {
-        districtAddressTextFieldController.text = locationAddressData.address?.cityDistrict ?? locationAddressData.address?.stateDistrict ?? '';
+        districtAddressTextFieldController.text =
+            locationAddressData.address?.cityDistrict ??
+                locationAddressData.address?.stateDistrict ??
+                '';
       }
       if (zipCodeTextFieldController.text.isEmpty) {
-        zipCodeTextFieldController.text = locationAddressData.address?.postcode ?? '';
+        zipCodeTextFieldController.text =
+            locationAddressData.address?.postcode ?? '';
       }
       if (cityTextFieldController.text.isEmpty) {
         cityTextFieldController.text = locationAddressData.address?.city ??
@@ -293,10 +336,12 @@ class _AddressFormPageController extends State<AddressFormPage> {
             '';
       }
       if (stateTextFieldController.text.isEmpty) {
-        stateTextFieldController.text = locationAddressData.address?.state ?? '';
+        stateTextFieldController.text =
+            locationAddressData.address?.state ?? '';
       }
       if (countryTextFieldController.text.isEmpty) {
-        countryTextFieldController.text = locationAddressData.address?.country ?? '';
+        countryTextFieldController.text =
+            locationAddressData.address?.country ?? '';
       }
     }
   }
@@ -309,7 +354,8 @@ class _AddressFormPageController extends State<AddressFormPage> {
           switch (addressState) {
             case SaveAddressState():
               {
-                appLog.d('SaveAddressState ${addressState.addressEntity.toMap()}');
+                appLog.d(
+                    'SaveAddressState ${addressState.addressEntity.toMap()}');
                 if (context.canPop()) {
                   context.pop();
                   context.pop();
@@ -328,17 +374,20 @@ class _AddressFormPageController extends State<AddressFormPage> {
             case AddressProcessingState():
               {
                 if (addressState.addressStatus == AddressStatus.saveAddress) {
-                } else if (addressState.addressStatus == AddressStatus.getAddress) {}
+                } else if (addressState.addressStatus ==
+                    AddressStatus.getAddress) {}
               }
             case AddressExceptionState():
               {
                 if (addressState.addressStatus == AddressStatus.saveAddress) {
-                } else if (addressState.addressStatus == AddressStatus.getAddress) {}
+                } else if (addressState.addressStatus ==
+                    AddressStatus.getAddress) {}
               }
             case AddressFailedState():
               {
                 if (addressState.addressStatus == AddressStatus.saveAddress) {
-                } else if (addressState.addressStatus == AddressStatus.getAddress) {}
+                } else if (addressState.addressStatus ==
+                    AddressStatus.getAddress) {}
               }
             case _:
               appLog.d('Default case: address form page');
@@ -348,14 +397,16 @@ class _AddressFormPageController extends State<AddressFormPage> {
       );
 }
 
-class _AddressFormPageView extends WidgetView<AddressFormPage, _AddressFormPageController> {
+class _AddressFormPageView
+    extends WidgetView<AddressFormPage, _AddressFormPageController> {
   const _AddressFormPageView(super.state);
 
   @override
   Widget build(BuildContext context) {
     final MediaQueryData media = MediaQuery.of(context);
     final double margins = GlobalApp.responsiveInsets(media.size.width);
-    final double topPadding = margins; //media.padding.top + kToolbarHeight + margins; //margins * 1.5;
+    final double topPadding =
+        margins; //media.padding.top + kToolbarHeight + margins; //margins * 1.5;
     final double bottomPadding = media.padding.bottom + margins;
     final double width = media.size.width;
     final ThemeData theme = Theme.of(context);
@@ -376,7 +427,8 @@ class _AddressFormPageView extends WidgetView<AddressFormPage, _AddressFormPageC
           ],
         ),
         body: Directionality(
-          textDirection: serviceLocator<LanguageController>().targetTextDirection,
+          textDirection:
+              serviceLocator<LanguageController>().targetTextDirection,
           child: SlideInLeft(
             key: const Key('address-form-page-slideleft-widget'),
             delay: const Duration(milliseconds: 500),
@@ -413,21 +465,28 @@ class _AddressFormPageView extends WidgetView<AddressFormPage, _AddressFormPageC
                                 Column(
                                   mainAxisSize: MainAxisSize.min,
                                   mainAxisAlignment: MainAxisAlignment.start,
-                                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                                  textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                  crossAxisAlignment:
+                                      CrossAxisAlignment.stretch,
+                                  textDirection:
+                                      serviceLocator<LanguageController>()
+                                          .targetTextDirection,
                                   children: [
-                                    const AnimatedGap(6, duration: Duration(milliseconds: 500)),
+                                    const AnimatedGap(6,
+                                        duration: Duration(milliseconds: 500)),
                                     Align(
                                       alignment: AlignmentDirectional.topStart,
                                       child: Text(
                                         'Address Details',
                                         style: context.titleLarge,
-                                        textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                        textDirection:
+                                            serviceLocator<LanguageController>()
+                                                .targetTextDirection,
                                         maxLines: 1,
                                         overflow: TextOverflow.ellipsis,
                                       ).translate(),
                                     ),
-                                    const AnimatedGap(6, duration: Duration(milliseconds: 500)),
+                                    const AnimatedGap(6,
+                                        duration: Duration(milliseconds: 500)),
                                     /*AddressFormMakerWidget(
                                       key: const Key('address-user-mobile-number'),
                                       title: 'Mobile number',
@@ -476,23 +535,30 @@ class _AddressFormPageView extends WidgetView<AddressFormPage, _AddressFormPageC
                                       ),
                                     ),*/
                                     AddressFormMakerWidget(
-                                      key: const Key('address-user-flat-building'),
-                                      title: 'Flat, House no., Building, Company, Apartment',
+                                      key: const Key(
+                                          'address-user-flat-building'),
+                                      title:
+                                          'Flat, House no., Building, Company, Apartment',
                                       child: AppTextFieldWidget(
-                                        controller: state.buildingTextFieldController,
+                                        controller:
+                                            state.buildingTextFieldController,
                                         keyboardType: TextInputType.text,
                                         decoration: const InputDecoration(
                                           hintText: 'Optional',
                                           isDense: true,
                                         ),
-                                        textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                        textDirection:
+                                            serviceLocator<LanguageController>()
+                                                .targetTextDirection,
                                       ),
                                     ),
                                     AddressFormMakerWidget(
-                                      key: const Key('address-user-area-street'),
+                                      key:
+                                          const Key('address-user-area-street'),
                                       title: 'Area, Street, Sector, Village',
                                       child: AppTextFieldWidget(
-                                        controller: state.areaTextFieldController,
+                                        controller:
+                                            state.areaTextFieldController,
                                         keyboardType: TextInputType.text,
                                         decoration: const InputDecoration(
                                           hintText: 'Optional',
@@ -504,7 +570,8 @@ class _AddressFormPageView extends WidgetView<AddressFormPage, _AddressFormPageC
                                       key: const Key('address-user-landmark'),
                                       title: 'Landmark',
                                       child: AppTextFieldWidget(
-                                        controller: state.landmarkTextFieldController,
+                                        controller:
+                                            state.landmarkTextFieldController,
                                         keyboardType: TextInputType.text,
                                         decoration: const InputDecoration(
                                           hintText: 'Optional',
@@ -513,20 +580,25 @@ class _AddressFormPageView extends WidgetView<AddressFormPage, _AddressFormPageC
                                       ),
                                     ),
                                     AddressFormMakerWidget(
-                                      key: const Key('address-user-map-address'),
+                                      key:
+                                          const Key('address-user-map-address'),
                                       title: 'Selected address',
                                       child: AppTextFieldWidget(
-                                        controller: state.mapAddressTextFieldController,
+                                        controller:
+                                            state.mapAddressTextFieldController,
                                         keyboardType: TextInputType.text,
                                         decoration: const InputDecoration(
                                           hintText: 'Required',
-                                          helperText: 'Your selected location is being shown here from the map',
+                                          helperText:
+                                              'Your selected location is being shown here from the map',
                                           isDense: true,
                                           hintMaxLines: 2,
                                         ),
                                         validator: (value) {
                                           return const ValidatorGroup<String>([
-                                            RequiredValidator<String>(errorMessage: 'Select your location address'),
+                                            RequiredValidator<String>(
+                                                errorMessage:
+                                                    'Select your location address'),
                                           ]).validate(value);
                                         },
                                       ),
@@ -535,7 +607,8 @@ class _AddressFormPageView extends WidgetView<AddressFormPage, _AddressFormPageC
                                       key: const Key('address-user-district'),
                                       title: 'District',
                                       child: AppTextFieldWidget(
-                                        controller: state.districtAddressTextFieldController,
+                                        controller: state
+                                            .districtAddressTextFieldController,
                                         keyboardType: TextInputType.text,
                                         decoration: const InputDecoration(
                                           hintText: 'Optional',
@@ -547,7 +620,8 @@ class _AddressFormPageView extends WidgetView<AddressFormPage, _AddressFormPageC
                                       key: const Key('address-user-zipcode'),
                                       title: 'Postal code',
                                       child: AppTextFieldWidget(
-                                        controller: state.zipCodeTextFieldController,
+                                        controller:
+                                            state.zipCodeTextFieldController,
                                         keyboardType: TextInputType.number,
                                         decoration: const InputDecoration(
                                           hintText: 'Optional',
@@ -559,7 +633,8 @@ class _AddressFormPageView extends WidgetView<AddressFormPage, _AddressFormPageC
                                       key: const Key('address-user-city'),
                                       title: 'City or Town',
                                       child: AppTextFieldWidget(
-                                        controller: state.cityTextFieldController,
+                                        controller:
+                                            state.cityTextFieldController,
                                         keyboardType: TextInputType.text,
                                         decoration: const InputDecoration(
                                           hintText: 'Required',
@@ -567,7 +642,9 @@ class _AddressFormPageView extends WidgetView<AddressFormPage, _AddressFormPageC
                                         ),
                                         validator: (value) {
                                           return const ValidatorGroup<String>([
-                                            RequiredValidator<String>(errorMessage: 'Enter your city or town'),
+                                            RequiredValidator<String>(
+                                                errorMessage:
+                                                    'Enter your city or town'),
                                           ]).validate(value);
                                         },
                                       ),
@@ -576,7 +653,8 @@ class _AddressFormPageView extends WidgetView<AddressFormPage, _AddressFormPageC
                                       key: const Key('address-user-state'),
                                       title: 'State',
                                       child: AppTextFieldWidget(
-                                        controller: state.stateTextFieldController,
+                                        controller:
+                                            state.stateTextFieldController,
                                         keyboardType: TextInputType.text,
                                         decoration: const InputDecoration(
                                           hintText: 'Required',
@@ -585,7 +663,9 @@ class _AddressFormPageView extends WidgetView<AddressFormPage, _AddressFormPageC
                                         enabled: false,
                                         validator: (value) {
                                           return const ValidatorGroup<String>([
-                                            RequiredValidator<String>(errorMessage: 'Enter your state'),
+                                            RequiredValidator<String>(
+                                                errorMessage:
+                                                    'Enter your state'),
                                           ]).validate(value);
                                         },
                                       ),
@@ -595,7 +675,8 @@ class _AddressFormPageView extends WidgetView<AddressFormPage, _AddressFormPageC
                                       title: 'Country',
                                       gap: 1,
                                       child: AppTextFieldWidget(
-                                        controller: state.countryTextFieldController,
+                                        controller:
+                                            state.countryTextFieldController,
                                         keyboardType: TextInputType.text,
                                         decoration: const InputDecoration(
                                           hintText: 'Required',
@@ -604,7 +685,9 @@ class _AddressFormPageView extends WidgetView<AddressFormPage, _AddressFormPageC
                                         enabled: false,
                                         validator: (value) {
                                           return const ValidatorGroup<String>([
-                                            RequiredValidator<String>(errorMessage: 'Enter your country'),
+                                            RequiredValidator<String>(
+                                                errorMessage:
+                                                    'Enter your country'),
                                           ]).validate(value);
                                         },
                                       ),
@@ -614,33 +697,42 @@ class _AddressFormPageView extends WidgetView<AddressFormPage, _AddressFormPageC
                                       minVerticalPadding: 2,
                                       horizontalTitleGap: 0,
                                       child: CheckboxListTile(
-                                        controlAffinity: ListTileControlAffinity.leading,
-                                        title: const Text('Make this is my default address'),
+                                        controlAffinity:
+                                            ListTileControlAffinity.leading,
+                                        title: const Text(
+                                            'Make this is my default address'),
                                         value: state.checkBoxValue,
                                         onChanged: state.checkBoxOnChanged,
                                       ),
                                     ),
                                     const SizedBox(height: 4),
                                     AddressFormMakerWidget(
-                                      key: const Key('address-user-address-type'),
+                                      key: const Key(
+                                          'address-user-address-type'),
                                       title: 'Save address as',
                                       child: Flexible(
                                         child: FormField<bool>(
-                                          initialValue: state.isToggleButtonSelected[0],
+                                          initialValue:
+                                              state.isToggleButtonSelected[0],
                                           validator: (value) {
-                                            return state.validateAddressType(value!);
+                                            return state
+                                                .validateAddressType(value!);
                                           },
-                                          builder: (FormFieldState<bool> field) {
+                                          builder:
+                                              (FormFieldState<bool> field) {
                                             return InputDecorator(
                                               decoration: InputDecoration(
-                                                errorText: state.addressTypeValidation,
+                                                errorText:
+                                                    state.addressTypeValidation,
                                                 contentPadding: EdgeInsets.zero,
                                                 border: InputBorder.none,
-                                                disabledBorder: InputBorder.none,
+                                                disabledBorder:
+                                                    InputBorder.none,
                                                 enabledBorder: InputBorder.none,
                                                 errorBorder: InputBorder.none,
                                                 focusedBorder: InputBorder.none,
-                                                focusedErrorBorder: InputBorder.none,
+                                                focusedErrorBorder:
+                                                    InputBorder.none,
                                                 isDense: true,
                                               ),
                                               child: ScrollableRow(
@@ -650,19 +742,41 @@ class _AddressFormPageView extends WidgetView<AddressFormPage, _AddressFormPageC
                                                     textStyle: Theme.of(context)
                                                         .textTheme
                                                         .bodyMedium!
-                                                        .copyWith(color: context.colorScheme.secondary, fontWeight: FontWeight.w500, fontSize: 14),
-                                                    borderRadius: const BorderRadius.all(Radius.circular(6)),
-                                                    selectedBorderColor: context.colorScheme.primary,
-                                                    borderColor: context.colorScheme.primary.withOpacity(0.7),
+                                                        .copyWith(
+                                                            color: context
+                                                                .colorScheme
+                                                                .secondary,
+                                                            fontWeight:
+                                                                FontWeight.w500,
+                                                            fontSize: 14),
+                                                    borderRadius:
+                                                        const BorderRadius.all(
+                                                            Radius.circular(6)),
+                                                    selectedBorderColor: context
+                                                        .colorScheme.primary,
+                                                    borderColor: context
+                                                        .colorScheme.primary
+                                                        .withOpacity(0.7),
                                                     selectedColor: Colors.white,
-                                                    constraints: const BoxConstraints(minHeight: 44),
-                                                    color: context.colorScheme.primary,
-                                                    fillColor: context.colorScheme.primary,
-                                                    isSelected: state.isToggleButtonSelected,
-                                                    onPressed: state.onToggleButtonPressed,
-                                                    children: state.valueOfToggleButtonSelected.map((name) {
+                                                    constraints:
+                                                        const BoxConstraints(
+                                                            minHeight: 44),
+                                                    color: context
+                                                        .colorScheme.primary,
+                                                    fillColor: context
+                                                        .colorScheme.primary,
+                                                    isSelected: state
+                                                        .isToggleButtonSelected,
+                                                    onPressed: state
+                                                        .onToggleButtonPressed,
+                                                    children: state
+                                                        .valueOfToggleButtonSelected
+                                                        .map((name) {
                                                       return Padding(
-                                                        padding: const EdgeInsets.symmetric(horizontal: 12),
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .symmetric(
+                                                                horizontal: 12),
                                                         child: Text(
                                                           name,
                                                         ),
@@ -678,8 +792,12 @@ class _AddressFormPageView extends WidgetView<AddressFormPage, _AddressFormPageC
                                     ),
                                     ElevatedButton(
                                       onPressed: () {
-                                        if (state.addressFormPageFormKey.currentState!.validate()) {
-                                          state.addressFormPageFormKey.currentState!.save();
+                                        if (state.addressFormPageFormKey
+                                            .currentState!
+                                            .validate()) {
+                                          state.addressFormPageFormKey
+                                              .currentState!
+                                              .save();
                                           if (widget.hasViewAddress) {
                                             // View Address
                                             return;
@@ -691,57 +809,134 @@ class _AddressFormPageView extends WidgetView<AddressFormPage, _AddressFormPageC
                                             final addressInfo = AddressModel(
                                               isDefault: state.checkBoxValue,
                                               address: AddressBean(
-                                                city: state.cityTextFieldController.value.text.trim(),
-                                                state: state.stateTextFieldController.value.text.trim(),
-                                                country: state.countryTextFieldController.value.text.trim(),
-                                                savedAddressAs: state.valueOfSavedAddress,
-                                                indexOfSavedAddressAs: state.indexOfSaveAddress,
-                                                addressType: state.locationAddressData.addresstype,
-                                                apartment: state.buildingTextFieldController.value.text,
-                                                area: state.areaTextFieldController.value.text,
-                                                category: state.locationAddressData.category,
+                                                city: state
+                                                    .cityTextFieldController
+                                                    .value
+                                                    .text
+                                                    .trim(),
+                                                state: state
+                                                    .stateTextFieldController
+                                                    .value
+                                                    .text
+                                                    .trim(),
+                                                country: state
+                                                    .countryTextFieldController
+                                                    .value
+                                                    .text
+                                                    .trim(),
+                                                savedAddressAs:
+                                                    state.valueOfSavedAddress,
+                                                indexOfSavedAddressAs:
+                                                    state.indexOfSaveAddress,
+                                                addressType: state
+                                                    .locationAddressData
+                                                    .addresstype,
+                                                apartment: state
+                                                    .buildingTextFieldController
+                                                    .value
+                                                    .text,
+                                                area: state
+                                                    .areaTextFieldController
+                                                    .value
+                                                    .text,
+                                                category: state
+                                                    .locationAddressData
+                                                    .category,
                                                 cityCode: -1,
-                                                cityDistrict: state.locationAddressData.address?.cityDistrict,
+                                                cityDistrict: state
+                                                    .locationAddressData
+                                                    .address
+                                                    ?.cityDistrict,
                                                 countryCode: -1,
-                                                county: state.locationAddressData.address?.county,
-                                                district: state.districtAddressTextFieldController.value.text.trim(),
+                                                county: state
+                                                    .locationAddressData
+                                                    .address
+                                                    ?.county,
+                                                district: state
+                                                    .districtAddressTextFieldController
+                                                    .value
+                                                    .text
+                                                    .trim(),
                                                 //isDefault: checkBoxValue,
-                                                landmark: state.landmarkTextFieldController.value.text.trim(),
+                                                landmark: state
+                                                    .landmarkTextFieldController
+                                                    .value
+                                                    .text
+                                                    .trim(),
                                                 latitude: state.latitude,
                                                 longitude: state.longitude,
-                                                municipality: state.locationAddressData.address?.municipality,
-                                                osmId: state.locationAddressData.id,
-                                                osmType: state.locationAddressData.osmType,
-                                                pickupAddress: state.locationAddressData.displayName,
-                                                placeId: state.locationAddressData.placeId,
-                                                placeRank: state.locationAddressData.placeRank,
-                                                postalCode: int.parse(state.zipCodeTextFieldController.value.text.trim()),
-                                                road: state.locationAddressData.address?.road,
+                                                municipality: state
+                                                    .locationAddressData
+                                                    .address
+                                                    ?.municipality,
+                                                osmId: state
+                                                    .locationAddressData.id,
+                                                osmType: state
+                                                    .locationAddressData
+                                                    .osmType,
+                                                pickupAddress: state
+                                                    .locationAddressData
+                                                    .displayName,
+                                                placeId: state
+                                                    .locationAddressData
+                                                    .placeId,
+                                                placeRank: state
+                                                    .locationAddressData
+                                                    .placeRank,
+                                                postalCode: int.parse(state
+                                                    .zipCodeTextFieldController
+                                                    .value
+                                                    .text
+                                                    .trim()),
+                                                road: state.locationAddressData
+                                                    .address?.road,
                                                 stateCode: -1,
-                                                stateDistrict: state.locationAddressData.address?.stateDistrict,
-                                                suburb: state.locationAddressData.address?.suburb,
-                                                town: state.locationAddressData.address?.town,
-                                                type: state.locationAddressData.type,
-                                                village: state.locationAddressData.address?.village,
-                                                displayAddressName: state.mapAddressTextFieldController.value.text.trim(),
+                                                stateDistrict: state
+                                                    .locationAddressData
+                                                    .address
+                                                    ?.stateDistrict,
+                                                suburb: state
+                                                    .locationAddressData
+                                                    .address
+                                                    ?.suburb,
+                                                town: state.locationAddressData
+                                                    .address?.town,
+                                                type: state
+                                                    .locationAddressData.type,
+                                                village: state
+                                                    .locationAddressData
+                                                    .address
+                                                    ?.village,
+                                                displayAddressName: state
+                                                    .mapAddressTextFieldController
+                                                    .value
+                                                    .text
+                                                    .trim(),
                                               ),
                                             );
                                             AddressModel addressModel;
-                                            if (!widget.hasNewAddress && widget.addressModel.isNotNull) {
+                                            if (!widget.hasNewAddress &&
+                                                widget.addressModel.isNotNull) {
                                               // Edit Address
-                                              addressModel = addressInfo.copyWith(
-                                                addressID: widget.addressModel?.addressID,
+                                              addressModel =
+                                                  addressInfo.copyWith(
+                                                addressID: widget
+                                                    .addressModel?.addressID,
                                               );
                                             } else {
                                               // New Address
-                                              addressModel = addressInfo.copyWith();
+                                              addressModel =
+                                                  addressInfo.copyWith();
                                             }
                                             if (!state.mounted) {
                                               return;
                                             }
-                                            context.read<AddressBloc>().add(SaveAddress(
+                                            context
+                                                .read<AddressBloc>()
+                                                .add(SaveAddress(
                                                   addressEntity: addressModel,
-                                                  hasNewAddress: widget.hasNewAddress,
+                                                  hasNewAddress:
+                                                      widget.hasNewAddress,
                                                 ));
                                             return;
                                           }
@@ -750,11 +945,14 @@ class _AddressFormPageView extends WidgetView<AddressFormPage, _AddressFormPageC
                                         return;
                                       },
                                       style: ElevatedButton.styleFrom(
-                                        backgroundColor: const Color.fromRGBO(69, 201, 125, 1),
+                                        backgroundColor: const Color.fromRGBO(
+                                            69, 201, 125, 1),
                                       ),
                                       child: Text(
                                         'Save Address',
-                                        textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                        textDirection:
+                                            serviceLocator<LanguageController>()
+                                                .targetTextDirection,
                                       ).translate(),
                                     ),
                                   ],

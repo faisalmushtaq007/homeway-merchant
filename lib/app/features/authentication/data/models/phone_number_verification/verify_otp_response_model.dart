@@ -8,7 +8,8 @@ class VerifyOtpResponseModel extends INetworkModel<VerifyOtpResponseModel> {
     this.uid,
     this.access_token,
   });
-  factory VerifyOtpResponseModel.fromJson(Map<String, Object?> json) => VerifyOtpResponseModel(
+  factory VerifyOtpResponseModel.fromJson(Map<String, Object?> json) =>
+      VerifyOtpResponseModel(
         user_type: json['user_type'] as String?,
         message: json['message'] as String?,
         current_status: json['current_status'] as int?,

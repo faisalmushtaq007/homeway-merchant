@@ -1,6 +1,7 @@
 part of 'package:homemakers_merchant/app/features/menu/index.dart';
 
-class EditMenuUseCase extends UseCaseByIDAndEntity<MenuEntity, int, DataSourceState<MenuEntity>> {
+class EditMenuUseCase
+    extends UseCaseByIDAndEntity<MenuEntity, int, DataSourceState<MenuEntity>> {
   EditMenuUseCase({
     required this.menuRepository,
   });
@@ -8,7 +9,8 @@ class EditMenuUseCase extends UseCaseByIDAndEntity<MenuEntity, int, DataSourceSt
   final MenuRepository menuRepository;
 
   @override
-  Future<DataSourceState<MenuEntity>> call({required MenuEntity input, required int id}) async {
+  Future<DataSourceState<MenuEntity>> call(
+      {required MenuEntity input, required int id}) async {
     return menuRepository.editMenu(menuEntity: input, menuID: id);
   }
 }

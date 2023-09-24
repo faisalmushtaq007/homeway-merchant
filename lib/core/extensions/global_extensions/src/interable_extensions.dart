@@ -20,7 +20,8 @@ extension IterableExtensions<E> on Iterable<E> {
   // Common
 
   /// Returns count of elements that satisfy the predicate [test].
-  int countWhere(TestPredicate<E> test) => fold(0, (count, e) => test(e) ? count + 1 : count);
+  int countWhere(TestPredicate<E> test) =>
+      fold(0, (count, e) => test(e) ? count + 1 : count);
 
   /// Returns `true` if the collection contains all elements from the [elements].
   ///
@@ -43,7 +44,8 @@ extension IterableExtensions<E> on Iterable<E> {
   /// Return `true` if two iterable have the same number of elements,
   /// and the elements of this iterable can be paired with the elements of
   /// the other iterable, so that each pair are equal.
-  bool isUnorderedEquivalent(Iterable<E> other) => _getUnorderedEquality<E>().equals(this, other);
+  bool isUnorderedEquivalent(Iterable<E> other) =>
+      _getUnorderedEquality<E>().equals(this, other);
 
   // Common - Search
 
@@ -82,7 +84,8 @@ extension IterableExtensions<E> on Iterable<E> {
   ///
   /// The iterable must have at least one element.
   /// If it has only one element, that element is returned.
-  T reduceValue<T>(T Function(T value, T elementVal) combine, GetValue<E, T> getVal) {
+  T reduceValue<T>(
+      T Function(T value, T elementVal) combine, GetValue<E, T> getVal) {
     final iterator = this.iterator;
     if (!iterator.moveNext()) {
       throw StateError('No element');
@@ -119,7 +122,8 @@ extension IterableExtensions<E> on Iterable<E> {
   ///
   /// If iterable have only one element then
   /// returns interable with only one element.
-  Iterable<E> intersperse(E element) => isEmpty ? [] : IntersperseIterable(this, element);
+  Iterable<E> intersperse(E element) =>
+      isEmpty ? [] : IntersperseIterable(this, element);
 
   /// Create a new iterable by passing each element and index to the callback.
   ///
@@ -131,7 +135,8 @@ extension IterableExtensions<E> on Iterable<E> {
   /// iteration order with a generated index.
   ///
   /// See [Iterable.map] for caveats about the lazy iterable.
-  Iterable<T> mapIndex<T>(MapIndexedValue<E, T> toElement) => enumerate(this).map((e) => toElement(e.value, e.index));
+  Iterable<T> mapIndex<T>(MapIndexedValue<E, T> toElement) =>
+      enumerate(this).map((e) => toElement(e.value, e.index));
 
   // Transformation - String
 
@@ -139,7 +144,8 @@ extension IterableExtensions<E> on Iterable<E> {
   ///
   /// [getVal] used to get string value for element. It can be value of some
   /// field, or custom stringify function.
-  String joinOf(GetValue<E, String> getVal, [String separator = '']) => fold('', (res, e) => res != '' ? res + separator + getVal(e) : getVal(e));
+  String joinOf(GetValue<E, String> getVal, [String separator = '']) =>
+      fold('', (res, e) => res != '' ? res + separator + getVal(e) : getVal(e));
 
   // Transformation - Map
 
@@ -147,7 +153,9 @@ extension IterableExtensions<E> on Iterable<E> {
   ///
   /// [getKey] used to get key for result Map.
   /// [getVal] used to get value for result Map.
-  Map<TKey, TVal> toMap<TKey, TVal>(GetValue<E, TKey> getKey, GetValue<E, TVal> getVal) => {for (final e in this) getKey(e): getVal(e)};
+  Map<TKey, TVal> toMap<TKey, TVal>(
+          GetValue<E, TKey> getKey, GetValue<E, TVal> getVal) =>
+      {for (final e in this) getKey(e): getVal(e)};
 
   // Math
 
@@ -161,7 +169,8 @@ extension IterableExtensions<E> on Iterable<E> {
   ///
   /// [getVal] should return value for sum up. It can be property of element,
   /// or any another value by element.
-  double sumOfDouble(GetValue<E, double> getVal) => fold(0, (sum, e) => sum + getVal(e));
+  double sumOfDouble(GetValue<E, double> getVal) =>
+      fold(0, (sum, e) => sum + getVal(e));
 
   /// Returns the average value of int values by elements.
   ///
@@ -234,19 +243,24 @@ extension NumIterableExtensions<E extends num> on Iterable<E> {
 extension BigIntItrableExtention on Iterable<BigInt> {
   /// Returns max value of values.
   BigInt min() {
-    final min = isEmpty ? BigInt.zero : reduce((value, element) => value < element ? value : element);
+    final min = isEmpty
+        ? BigInt.zero
+        : reduce((value, element) => value < element ? value : element);
     return min;
   }
 
   /// Returns min value of values.
   BigInt max() {
-    final max = isEmpty ? BigInt.zero : reduce((value, element) => value > element ? value : element);
+    final max = isEmpty
+        ? BigInt.zero
+        : reduce((value, element) => value > element ? value : element);
     return max;
   }
 }
 
 extension IterableExtension<E> on Iterable<E> {
-  BigInt sumOfBigInt(GetValue<E, BigInt> getVal) => fold(BigInt.zero, (sum, e) => sum + getVal(e));
+  BigInt sumOfBigInt(GetValue<E, BigInt> getVal) =>
+      fold(BigInt.zero, (sum, e) => sum + getVal(e));
 }
 
 /// Extension methods for [Iterable] of int.
@@ -280,5 +294,7 @@ extension DoubleIterableExtensions on Iterable<double> {
 /// It will be `0` for [int] and `0.0` for [double].
 T _zero<T extends num>() => T == int ? 0 as T : 0.0 as T;
 
-UnorderedIterableEquality<T> _getUnorderedEquality<T>() =>
-    (_unorderedEquality[T] ?? (_unorderedEquality[T] = UnorderedIterableEquality<T>())) as UnorderedIterableEquality<T>;
+UnorderedIterableEquality<T>
+    _getUnorderedEquality<T>() => (_unorderedEquality[T] ??
+            (_unorderedEquality[T] = UnorderedIterableEquality<T>()))
+        as UnorderedIterableEquality<T>;

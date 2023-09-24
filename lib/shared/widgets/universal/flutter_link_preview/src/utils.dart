@@ -2,7 +2,8 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/material.dart' hide Element;
-import 'package:homemakers_merchant/app/features/chat/domain/entities/chat_types_entity.dart' show PreviewData, PreviewDataImage;
+import 'package:homemakers_merchant/app/features/chat/domain/entities/chat_types_entity.dart'
+    show PreviewData, PreviewDataImage;
 import 'package:html/dom.dart' show Document, Element;
 import 'package:html/parser.dart' as parser show parse;
 import 'package:http/http.dart' as http show get;
@@ -45,18 +46,24 @@ String? _getTitle(Document document) {
   final titleElements = document.getElementsByTagName('title');
   if (titleElements.isNotEmpty) return titleElements.first.text;
 
-  return _getMetaContent(document, 'og:title') ?? _getMetaContent(document, 'twitter:title') ?? _getMetaContent(document, 'og:site_name');
+  return _getMetaContent(document, 'og:title') ??
+      _getMetaContent(document, 'twitter:title') ??
+      _getMetaContent(document, 'og:site_name');
 }
 
 String? _getDescription(Document document) =>
-    _getMetaContent(document, 'og:description') ?? _getMetaContent(document, 'description') ?? _getMetaContent(document, 'twitter:description');
+    _getMetaContent(document, 'og:description') ??
+    _getMetaContent(document, 'description') ??
+    _getMetaContent(document, 'twitter:description');
 
 List<String> _getImageUrls(Document document, String baseUrl) {
   final meta = document.getElementsByTagName('meta');
   var attribute = 'content';
   var elements = meta
       .where(
-        (e) => e.attributes['property'] == 'og:image' || e.attributes['property'] == 'twitter:image',
+        (e) =>
+            e.attributes['property'] == 'og:image' ||
+            e.attributes['property'] == 'twitter:image',
       )
       .toList();
 
@@ -71,7 +78,9 @@ List<String> _getImageUrls(Document document, String baseUrl) {
       element.attributes[attribute]?.trim(),
     );
 
-    return actualImageUrl != null ? [...previousValue, actualImageUrl] : previousValue;
+    return actualImageUrl != null
+        ? [...previousValue, actualImageUrl]
+        : previousValue;
   });
 }
 
@@ -225,7 +234,9 @@ Future<PreviewData> getPreviewData(
     String imageUrl;
 
     if (imageUrls.isNotEmpty) {
-      imageUrl = imageUrls.length == 1 ? _calculateUrl(imageUrls[0], proxy) : await _getBiggestImageUrl(imageUrls, proxy);
+      imageUrl = imageUrls.length == 1
+          ? _calculateUrl(imageUrls[0], proxy)
+          : await _getBiggestImageUrl(imageUrls, proxy);
 
       imageSize = await _getImageSize(imageUrl);
       previewDataImage = PreviewDataImage(
@@ -257,4 +268,5 @@ const regexEmail = r'[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}';
 const regexImageContentType = r'image\/*';
 
 /// Regex to find all links in the text.
-const regexLink = r'((http|ftp|https):\/\/)?([\w_-]+(?:(?:\.[\w_-]*[a-zA-Z_][\w_-]*)+))([\w.,@?^=%&:/~+#-]*[\w@?^=%&/~+#-])?[^\.\s]';
+const regexLink =
+    r'((http|ftp|https):\/\/)?([\w_-]+(?:(?:\.[\w_-]*[a-zA-Z_][\w_-]*)+))([\w.,@?^=%&:/~+#-]*[\w@?^=%&/~+#-])?[^\.\s]';

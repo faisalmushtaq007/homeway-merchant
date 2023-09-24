@@ -61,7 +61,8 @@ class _AddressPageController extends State<PickupLocationFromMapPage> {
     // Check Permission and Get Current Location
     _initData().then((value) async {
       controller = await mapcontroller.future;
-      await controller?.animateCamera(CameraUpdate.newLatLngZoom(value, zoomLevel));
+      await controller
+          ?.animateCamera(CameraUpdate.newLatLngZoom(value, zoomLevel));
       await controller?.animateCamera(
         CameraUpdate.newCameraPosition(CameraPosition(
           target: value,
@@ -79,13 +80,12 @@ class _AddressPageController extends State<PickupLocationFromMapPage> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-
   }
 
   @override
   void dispose() {
     overlayEntry?.remove();
-    if(!mounted) {
+    if (!mounted) {
       controller?.dispose();
       mapcontroller.complete(controller);
     }
@@ -97,12 +97,15 @@ class _AddressPageController extends State<PickupLocationFromMapPage> {
       appLog.d('IF');
       final sharedAddressModel = widget.addressModel as AddressModel?;
       addressModel = sharedAddressModel;
-      defaultLatLng = LatLng(addressModel?.address?.latitude ?? defaultLatLng.latitude, addressModel?.address?.longitude ?? defaultLatLng.longitude);
+      defaultLatLng = LatLng(
+          addressModel?.address?.latitude ?? defaultLatLng.latitude,
+          addressModel?.address?.longitude ?? defaultLatLng.longitude);
       getCurrentUserLatlng = defaultLatLng;
       return defaultLatLng;
     } else {
       appLog.d('ELSE 0.0 ${defaultLatLng}, ${getCurrentUserLatlng}');
-      await fetchUserLocation().whenComplete(() => defaultLatLng = getCurrentUserLatlng);
+      await fetchUserLocation()
+          .whenComplete(() => defaultLatLng = getCurrentUserLatlng);
       appLog.d('ELSE 1.0 ${defaultLatLng}, ${getCurrentUserLatlng}');
       return defaultLatLng;
     }
@@ -124,8 +127,10 @@ class _AddressPageController extends State<PickupLocationFromMapPage> {
 
     // Will animate the GoogleMap camera, taking us to the selected position with an appropriate zoom
     final GoogleMapController controller = await mapcontroller.future;
-    controller.animateCamera(CameraUpdate.newLatLngZoom(geolocation!.coordinates, zoomLevel));
-    controller.animateCamera(CameraUpdate.newLatLngBounds(geolocation.bounds, 0));
+    controller.animateCamera(
+        CameraUpdate.newLatLngZoom(geolocation!.coordinates, zoomLevel));
+    controller
+        .animateCamera(CameraUpdate.newLatLngBounds(geolocation.bounds, 0));
     controller.animateCamera(
       CameraUpdate.newCameraPosition(CameraPosition(
         target: geolocation!.coordinates,
@@ -168,8 +173,10 @@ class _AddressPageController extends State<PickupLocationFromMapPage> {
     final GoogleMapController mapController = await mapcontroller.future;
     var defaultZoom = await mapController.getZoomLevel();
     LatLngBounds bounds = await mapController.getVisibleRegion();
-    final longitude = (bounds.northeast.longitude + bounds.southwest.longitude) / 2;
-    final latitude = (bounds.northeast.latitude + bounds.southwest.latitude) / 2;
+    final longitude =
+        (bounds.northeast.longitude + bounds.southwest.longitude) / 2;
+    final latitude =
+        (bounds.northeast.latitude + bounds.southwest.latitude) / 2;
     //mapController.animateCamera(CameraUpdate.newLatLng(LatLng(latitude, longitude)));
     LatLng latLng = LatLng(latitude, longitude);
     mapController.animateCamera(CameraUpdate.newLatLngZoom(
@@ -226,7 +233,8 @@ class _AddressPageController extends State<PickupLocationFromMapPage> {
         snippet: 'Place the pin to your exact location',
       ),
     );
-    markers.removeWhere((key, value) => value.markerId.value == markedIdOfCurrentUser);
+    markers.removeWhere(
+        (key, value) => value.markerId.value == markedIdOfCurrentUser);
     markers[MarkerId(markedIdOfCurrentUser)] = currentUserMarker;
     GoogleMapController controller = await mapcontroller.future;
     await controller.showMarkerInfoWindow(MarkerId(markedIdOfCurrentUser));
@@ -239,13 +247,18 @@ class _AddressPageController extends State<PickupLocationFromMapPage> {
   Future<void> fetchAddressDetails(LatLng latLng) async {
     appLog.i('fetchAddressDetails defaultLatLng - ${latLng.toJson()}');
     String placeMarkDisplayName = '';
-    GBData data = await GeocoderBuddy.findDetails(GBLatLng(lat: latLng.latitude, lng: latLng.longitude));
+    GBData data = await GeocoderBuddy.findDetails(
+        GBLatLng(lat: latLng.latitude, lng: latLng.longitude));
     locationAddressData = GBData.fromJson(data.toJson());
-    if (locationAddressData != null && locationAddressData?.displayName != null && locationAddressData?.address != null) {
-      placeMarkDisplayName = locationAddressData?.displayName ?? 'Please wait...';
+    if (locationAddressData != null &&
+        locationAddressData?.displayName != null &&
+        locationAddressData?.address != null) {
+      placeMarkDisplayName =
+          locationAddressData?.displayName ?? 'Please wait...';
       appLog.i("placeMarkDisplayName 1 - ${placeMarkDisplayName}");
     } else {
-      List<Placemark> listOfPlaceMark = await placemarkFromCoordinates(latLng.latitude, latLng.longitude);
+      List<Placemark> listOfPlaceMark =
+          await placemarkFromCoordinates(latLng.latitude, latLng.longitude);
       this.listOfPlaceMark.clear();
       this.listOfPlaceMark = [];
       this.listOfPlaceMark = List<Placemark>.from(listOfPlaceMark.toList());
@@ -350,10 +363,12 @@ class _AddressPageController extends State<PickupLocationFromMapPage> {
   Future<void> _checkPermissions() async {
     final permissionGrantedResult = await location.hasPermission();
     _permissionGranted = permissionGrantedResult;
-    if (_permissionGranted == loc.PermissionStatus.granted || _permissionGranted == loc.PermissionStatus.grantedLimited) {
+    if (_permissionGranted == loc.PermissionStatus.granted ||
+        _permissionGranted == loc.PermissionStatus.grantedLimited) {
       await _getLocation();
       GoogleMapController controller = await mapcontroller.future;
-      controller.animateCamera(CameraUpdate.newLatLngZoom(defaultLatLng, zoomLevel));
+      controller
+          .animateCamera(CameraUpdate.newLatLngZoom(defaultLatLng, zoomLevel));
       controller.animateCamera(
         CameraUpdate.newCameraPosition(CameraPosition(
           target: defaultLatLng,
@@ -412,7 +427,8 @@ class _AddressPageController extends State<PickupLocationFromMapPage> {
       longitude = _locationResult.longitude ?? 0;
       getCurrentUserLatlng = LatLng(latitude, longitude);
       defaultLatLng = getCurrentUserLatlng;
-      debugPrint("Location - ${defaultLatLng.toJson()}- ${getCurrentUserLatlng.toJson()}");
+      debugPrint(
+          "Location - ${defaultLatLng.toJson()}- ${getCurrentUserLatlng.toJson()}");
       _loading = false;
       setState(() {});
 
@@ -430,7 +446,8 @@ class _AddressPageController extends State<PickupLocationFromMapPage> {
   Future<void> onNewSelected(GBSearchData data) async {
     defaultLatLng = LatLng(double.parse(data.lat), double.parse(data.lon));
     GoogleMapController controller = await mapcontroller.future;
-    controller.animateCamera(CameraUpdate.newLatLngZoom(defaultLatLng, zoomLevel));
+    controller
+        .animateCamera(CameraUpdate.newLatLngZoom(defaultLatLng, zoomLevel));
     controller.animateCamera(
       CameraUpdate.newCameraPosition(CameraPosition(
         target: defaultLatLng,
@@ -443,14 +460,16 @@ class _AddressPageController extends State<PickupLocationFromMapPage> {
   }
 
   @override
-  Widget build(BuildContext context) => BlocBuilder<PermissionBloc, PermissionState>(
+  Widget build(BuildContext context) =>
+      BlocBuilder<PermissionBloc, PermissionState>(
         bloc: context.read<PermissionBloc>(),
         buildWhen: (previous, current) => previous != current,
         builder: (context, permissionState) {
           switch (permissionState) {
             case PermissionStateGranted():
               {
-                getCurrentUserLatlng = LatLng(permissionState.latitude, permissionState.longitude);
+                getCurrentUserLatlng =
+                    LatLng(permissionState.latitude, permissionState.longitude);
                 defaultLatLng = getCurrentUserLatlng;
               }
             case PermissionStateDenied():
@@ -471,14 +490,16 @@ class _AddressPageController extends State<PickupLocationFromMapPage> {
       );
 }
 
-class _AddressPageView extends WidgetView<PickupLocationFromMapPage, _AddressPageController> {
+class _AddressPageView
+    extends WidgetView<PickupLocationFromMapPage, _AddressPageController> {
   const _AddressPageView(super.state);
 
   @override
   Widget build(BuildContext context) {
     final MediaQueryData media = MediaQuery.of(context);
     final double margins = GlobalApp.responsiveInsets(media.size.width);
-    final double topPadding = margins; //media.padding.top + kToolbarHeight + margins; //margins * 1.5;
+    final double topPadding =
+        margins; //media.padding.top + kToolbarHeight + margins; //margins * 1.5;
     final double bottomPadding = media.padding.bottom + margins;
     final double width = media.size.width;
     final ThemeData theme = Theme.of(context);
@@ -517,13 +538,17 @@ class _AddressPageView extends WidgetView<PickupLocationFromMapPage, _AddressPag
                 child: Container(
                   constraints: BoxConstraints(
                     minWidth: double.infinity,
-                    maxHeight: media.size.height - (media.padding.top + kToolbarHeight + media.padding.bottom),
+                    maxHeight: media.size.height -
+                        (media.padding.top +
+                            kToolbarHeight +
+                            media.padding.bottom),
                   ),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     mainAxisSize: MainAxisSize.min,
-                    textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                    textDirection: serviceLocator<LanguageController>()
+                        .targetTextDirection,
                     children: [
                       Expanded(
                         flex: 4,
@@ -531,7 +556,8 @@ class _AddressPageView extends WidgetView<PickupLocationFromMapPage, _AddressPag
                           children: [
                             Animarker(
                               curve: Curves.ease,
-                              mapId: state.mapcontroller.future.then<int>((value) => value.mapId),
+                              mapId: state.mapcontroller.future
+                                  .then<int>((value) => value.mapId),
                               //Grab Google Map Id
                               markers: state.markers.values.toSet(),
                               rippleRadius: 0.12,
@@ -554,7 +580,8 @@ class _AddressPageView extends WidgetView<PickupLocationFromMapPage, _AddressPag
                                 zoomGesturesEnabled: true,
                                 zoomControlsEnabled: true,
                                 gestureRecognizers: Set()
-                                  ..add(Factory<EagerGestureRecognizer>(() => EagerGestureRecognizer()))
+                                  ..add(Factory<EagerGestureRecognizer>(
+                                      () => EagerGestureRecognizer()))
                                   ..add(
                                     Factory<OneSequenceGestureRecognizer>(
                                       () => new EagerGestureRecognizer(),
@@ -569,7 +596,8 @@ class _AddressPageView extends WidgetView<PickupLocationFromMapPage, _AddressPag
                               end: 0,
                               child: Container(
                                 child: SearchGooglePlacesWidget(
-                                    apiKey: 'AIzaSyB6wUuIm0xLJbTFm6qPiwKgULJupJ8IE8s',
+                                    apiKey:
+                                        'AIzaSyB6wUuIm0xLJbTFm6qPiwKgULJupJ8IE8s',
                                     // The language of the autocompletion
                                     language: 'en',
                                     // The position used to give better recommendations. In this case we are using the user position
@@ -579,7 +607,9 @@ class _AddressPageView extends WidgetView<PickupLocationFromMapPage, _AddressPag
                                     onSearch: (Place place) {},
                                     onNewSearch: state.onNewSearch,
                                     onNewSelected: state.onNewSelected,
-                                    outerMarginOfSearchTextField: EdgeInsetsDirectional.only(start: margins, end: margins)),
+                                    outerMarginOfSearchTextField:
+                                        EdgeInsetsDirectional.only(
+                                            start: margins, end: margins)),
                               ),
                             ),
                             PositionedDirectional(
@@ -596,9 +626,11 @@ class _AddressPageView extends WidgetView<PickupLocationFromMapPage, _AddressPag
                                   'Use current location',
                                 ),
                                 style: OutlinedButton.styleFrom(
-                                  padding: EdgeInsetsDirectional.symmetric(horizontal: 16),
+                                  padding: EdgeInsetsDirectional.symmetric(
+                                      horizontal: 16),
                                   shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadiusDirectional.all(Radius.circular(10)),
+                                    borderRadius: BorderRadiusDirectional.all(
+                                        Radius.circular(10)),
                                   ),
                                 ),
                               ),
@@ -606,7 +638,8 @@ class _AddressPageView extends WidgetView<PickupLocationFromMapPage, _AddressPag
                           ],
                         ),
                       ),
-                      const AnimatedGap(12, duration: Duration(milliseconds: 100)),
+                      const AnimatedGap(12,
+                          duration: Duration(milliseconds: 100)),
                       Expanded(
                           child: Padding(
                         padding: EdgeInsetsDirectional.only(
@@ -619,21 +652,27 @@ class _AddressPageView extends WidgetView<PickupLocationFromMapPage, _AddressPag
                           mainAxisSize: MainAxisSize.min,
                           children: [
                             Text('Your location',
-                                style: Theme.of(context).textTheme.titleMedium!.copyWith(
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .titleMedium!
+                                    .copyWith(
                                       fontWeight: FontWeight.w600,
                                     )),
-                            const AnimatedGap(6, duration: Duration(milliseconds: 100)),
+                            const AnimatedGap(6,
+                                duration: Duration(milliseconds: 100)),
                             Flexible(
                               child: Wrap(
                                 children: [
                                   Text(
                                     '${state.displayName}',
-                                    style: Theme.of(context).textTheme.labelLarge,
+                                    style:
+                                        Theme.of(context).textTheme.labelLarge,
                                   ),
                                 ],
                               ),
                             ),
-                            const AnimatedGap(6, duration: Duration(milliseconds: 100)),
+                            const AnimatedGap(6,
+                                duration: Duration(milliseconds: 100)),
                           ],
                         ),
                       )),
@@ -645,7 +684,8 @@ class _AddressPageView extends WidgetView<PickupLocationFromMapPage, _AddressPag
                         ),
                         child: ElevatedButton(
                           onPressed: () async {
-                            await context.push(Routes.ADDRESS_FORM_PAGE, extra: {
+                            await context
+                                .push(Routes.ADDRESS_FORM_PAGE, extra: {
                               'locationData': state.locationAddressData,
                               'latitude': state.defaultLatLng.latitude,
                               'longitude': state.defaultLatLng.longitude,

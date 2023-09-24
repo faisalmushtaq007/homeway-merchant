@@ -17,7 +17,9 @@ class PaymentBankEntity with AppEquatable {
       bankName: map['bankName'] ?? '',
       accountNumber: map['accountNumber'] ?? '',
       ibanNumber: map['ibanNumber'] ?? '',
-      acceptPaymentMode: (map['acceptPaymentMode'] != null) ? AcceptPaymentMode.values.byName(map['acceptPaymentMode']) : AcceptPaymentMode.none,
+      acceptPaymentMode: (map['acceptPaymentMode'] != null)
+          ? AcceptPaymentMode.values.byName(map['acceptPaymentMode'])
+          : AcceptPaymentMode.none,
     );
   }
 

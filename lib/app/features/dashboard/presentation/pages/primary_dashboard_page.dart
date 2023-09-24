@@ -9,7 +9,8 @@ class PrimaryDashboardPage extends StatefulWidget {
   final List<PrimaryDashboardEntity> primaryDashboardMenuEntities;
 
   @override
-  _PrimaryDashboardPageController createState() => _PrimaryDashboardPageController();
+  _PrimaryDashboardPageController createState() =>
+      _PrimaryDashboardPageController();
 }
 
 class _PrimaryDashboardPageController extends State<PrimaryDashboardPage> {
@@ -20,7 +21,6 @@ class _PrimaryDashboardPageController extends State<PrimaryDashboardPage> {
 
   @override
   void initState() {
-
     super.initState();
     context.read<PermissionBloc>().add(const RequestLocationPermissionEvent());
     primaryDashboardMenuEntities.clear();
@@ -55,7 +55,8 @@ class _PrimaryDashboardPageController extends State<PrimaryDashboardPage> {
         title: 'My Stores',
         titleID: 2,
         onPressed: () async {
-          final navigateToStorePage = await context.push(Routes.ALL_STORES_PAGE);
+          final navigateToStorePage =
+              await context.push(Routes.ALL_STORES_PAGE);
           return;
         },
         leading: const Icon(
@@ -95,44 +96,54 @@ class _PrimaryDashboardPageController extends State<PrimaryDashboardPage> {
     initData();
   }
 
-  Future<void> initData() async{
-    final cacheUserEntity=serviceLocator<AppUserEntity>();
-    AppUserEntity input=AppUserEntity(
+  Future<void> initData() async {
+    final cacheUserEntity = serviceLocator<AppUserEntity>();
+    AppUserEntity input = AppUserEntity(
       hasCurrentUser: true,
-      isoCode: !cacheUserEntity.isoCode.isEmptyOrNull?cacheUserEntity.isoCode:cacheUserEntity.businessProfile?.isoCode??'',
-      country_dial_code: !cacheUserEntity.country_dial_code.isEmptyOrNull?cacheUserEntity.country_dial_code:cacheUserEntity.businessProfile?.countryDialCode??'',
-      phoneNumber: !cacheUserEntity.phoneNumber.isEmptyOrNull?cacheUserEntity.phoneNumber:cacheUserEntity.businessProfile?.businessPhoneNumber??'',
+      isoCode: !cacheUserEntity.isoCode.isEmptyOrNull
+          ? cacheUserEntity.isoCode
+          : cacheUserEntity.businessProfile?.isoCode ?? '',
+      country_dial_code: !cacheUserEntity.country_dial_code.isEmptyOrNull
+          ? cacheUserEntity.country_dial_code
+          : cacheUserEntity.businessProfile?.countryDialCode ?? '',
+      phoneNumber: !cacheUserEntity.phoneNumber.isEmptyOrNull
+          ? cacheUserEntity.phoneNumber
+          : cacheUserEntity.businessProfile?.businessPhoneNumber ?? '',
       uid: cacheUserEntity.userID.toString(),
       access_token: cacheUserEntity.access_token ?? '',
-      phoneNumberWithoutDialCode: !cacheUserEntity.phoneNumberWithoutDialCode.isEmptyOrNull?cacheUserEntity.phoneNumberWithoutDialCode:cacheUserEntity.businessProfile?.phoneNumberWithoutDialCode??'',
+      phoneNumberWithoutDialCode: !cacheUserEntity
+              .phoneNumberWithoutDialCode.isEmptyOrNull
+          ? cacheUserEntity.phoneNumberWithoutDialCode
+          : cacheUserEntity.businessProfile?.phoneNumberWithoutDialCode ?? '',
     );
-    final getCurrentUserResult = await serviceLocator<GetAllAppUserPaginationUseCase>()(
+    final getCurrentUserResult =
+        await serviceLocator<GetAllAppUserPaginationUseCase>()(
       pageSize: 10,
       pageKey: 0,
       entity: input,
     );
-    await getCurrentUserResult.when(remote: (data, meta) {
-      if(data.isNotNullOrEmpty){
-        appUserEntity=data!.last;
-        serviceLocator<AppUserEntity>().updateEntity(data.last);
-        setState(() {
-
-        });
-        appLog.d('Remote User Info ${data.last.toMap()}');
-      }
-    }, localDb: (data, meta) {
-      if(data.isNotNullOrEmpty){
-        appUserEntity=data!.last;
-        serviceLocator<AppUserEntity>().updateEntity(data.last);
-        setState(() {
-
-        });
-        appLog.d('Local User Info ${data.last.toMap()}');
-      }
-    }, error: (dataSourceFailure, reason, error, networkException, stackTrace, exception, extra) {
-      appLog.d('Error $reason');
-    },);
-
+    await getCurrentUserResult.when(
+      remote: (data, meta) {
+        if (data.isNotNullOrEmpty) {
+          appUserEntity = data!.last;
+          serviceLocator<AppUserEntity>().updateEntity(data.last);
+          setState(() {});
+          appLog.d('Remote User Info ${data.last.toMap()}');
+        }
+      },
+      localDb: (data, meta) {
+        if (data.isNotNullOrEmpty) {
+          appUserEntity = data!.last;
+          serviceLocator<AppUserEntity>().updateEntity(data.last);
+          setState(() {});
+          appLog.d('Local User Info ${data.last.toMap()}');
+        }
+      },
+      error: (dataSourceFailure, reason, error, networkException, stackTrace,
+          exception, extra) {
+        appLog.d('Error $reason');
+      },
+    );
   }
 
   @override
@@ -143,21 +154,24 @@ class _PrimaryDashboardPageController extends State<PrimaryDashboardPage> {
   }
 
   @override
-  Widget build(BuildContext context) => BlocBuilder<BusinessProfileBloc, BusinessProfileState>(
+  Widget build(BuildContext context) =>
+      BlocBuilder<BusinessProfileBloc, BusinessProfileState>(
         builder: (context, state) {
           return _PrimaryDashboardPageView(this);
         },
       );
 }
 
-class _PrimaryDashboardPageView extends WidgetView<PrimaryDashboardPage, _PrimaryDashboardPageController> {
+class _PrimaryDashboardPageView
+    extends WidgetView<PrimaryDashboardPage, _PrimaryDashboardPageController> {
   const _PrimaryDashboardPageView(super.state);
 
   @override
   Widget build(BuildContext context) {
     final MediaQueryData media = MediaQuery.of(context);
     final double margins = GlobalApp.responsiveInsets(media.size.width);
-    final double topPadding = margins; //media.padding.top + kToolbarHeight + margins; //margins * 1.5;
+    final double topPadding =
+        margins; //media.padding.top + kToolbarHeight + margins; //margins * 1.5;
     final double bottomPadding = media.padding.bottom + margins;
     final double width = media.size.width;
     final ThemeData theme = Theme.of(context);
@@ -219,7 +233,9 @@ class _PrimaryDashboardPageView extends WidgetView<PrimaryDashboardPage, _Primar
                             delegate: SliverChildListDelegate(
                               [
                                 Wrap(
-                                  textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                  textDirection:
+                                      serviceLocator<LanguageController>()
+                                          .targetTextDirection,
                                   alignment: WrapAlignment.center,
                                   children: [
                                     const CircleAvatar(
@@ -236,42 +252,66 @@ class _PrimaryDashboardPageView extends WidgetView<PrimaryDashboardPage, _Primar
                                 ),
                                 Wrap(
                                   alignment: WrapAlignment.center,
-                                  textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                  textDirection:
+                                      serviceLocator<LanguageController>()
+                                          .targetTextDirection,
                                   children: [
                                     Text(
-                                      "${(state.appUserEntity.isNotNull && state.appUserEntity!.businessProfile.isNotNull && !state.appUserEntity!.businessProfile!.userName.isEmptyOrNull ) ? state.appUserEntity!.businessProfile!.userName : 'Hello User'}",
-                                      style: const TextStyle(fontWeight: FontWeight.w900, fontSize: 18),
-                                      textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                      "${(state.appUserEntity.isNotNull && state.appUserEntity!.businessProfile.isNotNull && !state.appUserEntity!.businessProfile!.userName.isEmptyOrNull) ? state.appUserEntity!.businessProfile!.userName : 'Hello User'}",
+                                      style: const TextStyle(
+                                          fontWeight: FontWeight.w900,
+                                          fontSize: 18),
+                                      textDirection:
+                                          serviceLocator<LanguageController>()
+                                              .targetTextDirection,
                                     ).translate(),
                                   ],
                                 ),
-                                if((state.appUserEntity.isNotNull && state.appUserEntity!.businessProfile.isNotNull && !state.appUserEntity!.businessProfile!.businessEmailAddress.isEmptyOrNull ))
+                                if ((state.appUserEntity.isNotNull &&
+                                    state.appUserEntity!.businessProfile
+                                        .isNotNull &&
+                                    !state.appUserEntity!.businessProfile!
+                                        .businessEmailAddress.isEmptyOrNull))
                                   Wrap(
-                                  alignment: WrapAlignment.center,
-                                  textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                                  children: [
-                                    Text("${state.appUserEntity?.businessProfile!.businessEmailAddress}")
-                                        .translate(),
-                                  ],
-                                ),
+                                    alignment: WrapAlignment.center,
+                                    textDirection:
+                                        serviceLocator<LanguageController>()
+                                            .targetTextDirection,
+                                    children: [
+                                      Text("${state.appUserEntity?.businessProfile!.businessEmailAddress}")
+                                          .translate(),
+                                    ],
+                                  ),
                                 const AnimatedGap(
                                   16,
                                   duration: Duration(milliseconds: 500),
                                 ),
                                 Wrap(
-                                  textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                  textDirection:
+                                      serviceLocator<LanguageController>()
+                                          .targetTextDirection,
                                   alignment: WrapAlignment.center,
                                   children: [
                                     DecoratedBox(
-                                      decoration: const BoxDecoration(color: Color.fromRGBO(252, 240, 218, 1)),
+                                      decoration: const BoxDecoration(
+                                          color:
+                                              Color.fromRGBO(252, 240, 218, 1)),
                                       child: Padding(
-                                        padding: const EdgeInsetsDirectional.only(top: 8, bottom: 8, start: 4, end: 4),
+                                        padding:
+                                            const EdgeInsetsDirectional.only(
+                                                top: 8,
+                                                bottom: 8,
+                                                start: 4,
+                                                end: 4),
                                         child: Text(
                                           'Your business verification is under review process. Thank you so much for being our partner.',
-                                          textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                          textDirection: serviceLocator<
+                                                  LanguageController>()
+                                              .targetTextDirection,
                                           textAlign: TextAlign.center,
-                                          style: context.bodyMedium!
-                                              .copyWith(color: const Color.fromRGBO(207, 138, 10, 1)),
+                                          style: context.bodyMedium!.copyWith(
+                                              color: const Color.fromRGBO(
+                                                  207, 138, 10, 1)),
                                         ).translate(),
                                       ),
                                     ),
@@ -282,18 +322,19 @@ class _PrimaryDashboardPageView extends WidgetView<PrimaryDashboardPage, _Primar
                                   duration: Duration(milliseconds: 500),
                                 ),
                               ],
-
                             ),
                           ),
                           SliverFillRemaining(
                             child: ListView.builder(
                               shrinkWrap: true,
                               //physics: const ClampingScrollPhysics(),
-                              itemCount: state.primaryDashboardMenuEntities.length,
+                              itemCount:
+                                  state.primaryDashboardMenuEntities.length,
                               itemBuilder: (context, index) {
                                 return PrimaryDashboardMenuCard(
                                   key: ValueKey(index),
-                                  primaryDashboardMenuEntity: state.primaryDashboardMenuEntities[index],
+                                  primaryDashboardMenuEntity:
+                                      state.primaryDashboardMenuEntities[index],
                                 );
                               },
                             ),

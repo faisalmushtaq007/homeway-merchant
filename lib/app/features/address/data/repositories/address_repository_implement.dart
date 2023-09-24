@@ -10,13 +10,16 @@ class AddressRepositoryImplement implements UserAddressRepository {
   final AddressLocalDbRepository<AddressModel> addressLocalDataSource;
 
   @override
-  Future<DataSourceState<bool>> deleteAllAddress({AppUserEntity? appUserEntity}) async {
+  Future<DataSourceState<bool>> deleteAllAddress(
+      {AppUserEntity? appUserEntity}) async {
     try {
-      final connectivity = serviceLocator<ConnectivityService>().getCurrentInternetStatus();
+      final connectivity =
+          serviceLocator<ConnectivityService>().getCurrentInternetStatus();
       if (connectivity.$2 == InternetConnectivityState.internet) {
         // Local DB
         // Save to local
-        final Either<RepositoryBaseFailure, bool> result = await addressLocalDataSource.deleteAll();
+        final Either<RepositoryBaseFailure, bool> result =
+            await addressLocalDataSource.deleteAll();
         // Return result
         return result.fold((l) {
           final RepositoryFailure failure = l as RepositoryFailure;
@@ -33,7 +36,8 @@ class AddressRepositoryImplement implements UserAddressRepository {
       } else {
         // Remote
         // Save to server
-        final ApiResultState<bool> result = await remoteDataSource.deleteAllAddress();
+        final ApiResultState<bool> result =
+            await remoteDataSource.deleteAllAddress();
         // Return result
         return result.when(
           success: (data) {
@@ -67,13 +71,18 @@ class AddressRepositoryImplement implements UserAddressRepository {
   }
 
   @override
-  Future<DataSourceState<bool>> deleteAddress({required int addressID, AddressModel? addressEntity, AppUserEntity? appUserEntity}) async {
+  Future<DataSourceState<bool>> deleteAddress(
+      {required int addressID,
+      AddressModel? addressEntity,
+      AppUserEntity? appUserEntity}) async {
     try {
-      final connectivity = serviceLocator<ConnectivityService>().getCurrentInternetStatus();
+      final connectivity =
+          serviceLocator<ConnectivityService>().getCurrentInternetStatus();
       if (connectivity.$2 == InternetConnectivityState.internet) {
         // Local DB
         // Save to local
-        final Either<RepositoryBaseFailure, bool> result = await addressLocalDataSource.deleteById(UniqueId(addressID));
+        final Either<RepositoryBaseFailure, bool> result =
+            await addressLocalDataSource.deleteById(UniqueId(addressID));
         // Return result
         return result.fold((l) {
           final RepositoryFailure failure = l as RepositoryFailure;
@@ -90,7 +99,8 @@ class AddressRepositoryImplement implements UserAddressRepository {
       } else {
         // Remote
         // Save to server
-        final ApiResultState<bool> result = await remoteDataSource.deleteAddress(
+        final ApiResultState<bool> result =
+            await remoteDataSource.deleteAddress(
           addressID: addressID,
           addressEntity: addressEntity,
           appUserEntity: appUserEntity,
@@ -134,11 +144,14 @@ class AddressRepositoryImplement implements UserAddressRepository {
     AppUserEntity? appUserEntity,
   }) async {
     try {
-      final connectivity = serviceLocator<ConnectivityService>().getCurrentInternetStatus();
+      final connectivity =
+          serviceLocator<ConnectivityService>().getCurrentInternetStatus();
       if (connectivity.$2 == InternetConnectivityState.internet) {
         // Local DB
         // Save to local
-        final Either<RepositoryBaseFailure, AddressModel> result = await addressLocalDataSource.update(addressEntity, UniqueId(addressID));
+        final Either<RepositoryBaseFailure, AddressModel> result =
+            await addressLocalDataSource.update(
+                addressEntity, UniqueId(addressID));
         // Return result
         return result.fold((l) {
           final RepositoryFailure failure = l as RepositoryFailure;
@@ -149,13 +162,15 @@ class AddressRepositoryImplement implements UserAddressRepository {
             stackTrace: failure.stacktrace,
           );
         }, (r) {
-          appLog.d('Edit address local : ${r.addressID}, ${r.address?.area ?? 'No Address'}');
+          appLog.d(
+              'Edit address local : ${r.addressID}, ${r.address?.area ?? 'No Address'}');
           return DataSourceState<AddressModel>.localDb(data: r);
         });
       } else {
         // Remote
         // Save to server
-        final ApiResultState<AddressModel> result = await remoteDataSource.editAddress(
+        final ApiResultState<AddressModel> result =
+            await remoteDataSource.editAddress(
           addressID: addressID,
           addressEntity: addressEntity,
           appUserEntity: appUserEntity,
@@ -193,13 +208,16 @@ class AddressRepositoryImplement implements UserAddressRepository {
   }
 
   @override
-  Future<DataSourceState<List<AddressModel>>> getAllAddress({AppUserEntity? appUserEntity}) async {
+  Future<DataSourceState<List<AddressModel>>> getAllAddress(
+      {AppUserEntity? appUserEntity}) async {
     try {
-      final connectivity = serviceLocator<ConnectivityService>().getCurrentInternetStatus();
+      final connectivity =
+          serviceLocator<ConnectivityService>().getCurrentInternetStatus();
       if (connectivity.$2 == InternetConnectivityState.internet) {
         // Local DB
         // Save to local
-        final Either<RepositoryBaseFailure, List<AddressModel>> result = await addressLocalDataSource.getAll();
+        final Either<RepositoryBaseFailure, List<AddressModel>> result =
+            await addressLocalDataSource.getAll();
         // Return result
         return result.fold((l) {
           final RepositoryFailure failure = l as RepositoryFailure;
@@ -216,7 +234,8 @@ class AddressRepositoryImplement implements UserAddressRepository {
       } else {
         // Remote
         // Save to server
-        final ApiResultState<List<AddressModel>> result = await remoteDataSource.getAllAddress();
+        final ApiResultState<List<AddressModel>> result =
+            await remoteDataSource.getAllAddress();
         // Return result
         return result.when(
           success: (data) {
@@ -256,11 +275,13 @@ class AddressRepositoryImplement implements UserAddressRepository {
     AddressModel? addressEntity,
   }) async {
     try {
-      final connectivity = serviceLocator<ConnectivityService>().getCurrentInternetStatus();
+      final connectivity =
+          serviceLocator<ConnectivityService>().getCurrentInternetStatus();
       if (connectivity.$2 == InternetConnectivityState.internet) {
         // Local DB
         // Save to local
-        final Either<RepositoryBaseFailure, AddressModel?> result = await addressLocalDataSource.getById(UniqueId(addressID));
+        final Either<RepositoryBaseFailure, AddressModel?> result =
+            await addressLocalDataSource.getById(UniqueId(addressID));
         // Return result
         return result.fold((l) {
           final RepositoryFailure failure = l as RepositoryFailure;
@@ -271,13 +292,15 @@ class AddressRepositoryImplement implements UserAddressRepository {
             stackTrace: failure.stacktrace,
           );
         }, (r) {
-          appLog.d('Get address to local : ${r?.addressID}, ${r?.address?.area ?? 'No Address'}');
+          appLog.d(
+              'Get address to local : ${r?.addressID}, ${r?.address?.area ?? 'No Address'}');
           return DataSourceState<AddressModel>.localDb(data: r);
         });
       } else {
         // Remote
         // Save to server
-        final ApiResultState<AddressModel> result = await remoteDataSource.getAddress(
+        final ApiResultState<AddressModel> result =
+            await remoteDataSource.getAddress(
           addressID: addressID,
           addressEntity: addressEntity,
           appUserEntity: appUserEntity,
@@ -315,13 +338,17 @@ class AddressRepositoryImplement implements UserAddressRepository {
   }
 
   @override
-  Future<DataSourceState<AddressModel>> saveAddress({required AddressModel addressEntity, AppUserEntity? appUserEntity}) async {
+  Future<DataSourceState<AddressModel>> saveAddress(
+      {required AddressModel addressEntity,
+      AppUserEntity? appUserEntity}) async {
     try {
-      final connectivity = serviceLocator<ConnectivityService>().getCurrentInternetStatus();
+      final connectivity =
+          serviceLocator<ConnectivityService>().getCurrentInternetStatus();
       if (connectivity.$2 == InternetConnectivityState.internet) {
         // Local DB
         // Save to local
-        final Either<RepositoryBaseFailure, AddressModel> result = await addressLocalDataSource.add(addressEntity);
+        final Either<RepositoryBaseFailure, AddressModel> result =
+            await addressLocalDataSource.add(addressEntity);
         // Return result
         return result.fold((l) {
           final RepositoryFailure failure = l as RepositoryFailure;
@@ -332,13 +359,15 @@ class AddressRepositoryImplement implements UserAddressRepository {
             stackTrace: failure.stacktrace,
           );
         }, (r) {
-          appLog.d('Save address to local : ${r.addressID}, ${r.address?.area ?? 'No Address'}');
+          appLog.d(
+              'Save address to local : ${r.addressID}, ${r.address?.area ?? 'No Address'}');
           return DataSourceState<AddressModel>.localDb(data: r);
         });
       } else {
         // Remote
         // Save to server
-        final ApiResultState<AddressModel> result = await remoteDataSource.saveAddress(
+        final ApiResultState<AddressModel> result =
+            await remoteDataSource.saveAddress(
           addressEntity: addressEntity,
         );
         // Return result
@@ -385,11 +414,13 @@ class AddressRepositoryImplement implements UserAddressRepository {
     Timestamp? endTime,
   }) async {
     try {
-      final connectivity = serviceLocator<ConnectivityService>().getCurrentInternetStatus();
+      final connectivity =
+          serviceLocator<ConnectivityService>().getCurrentInternetStatus();
       if (connectivity.$2 == InternetConnectivityState.internet) {
         // Local DB
         // Save to local
-        final Either<RepositoryBaseFailure, List<AddressModel>> result = await addressLocalDataSource.getAllWithPagination(
+        final Either<RepositoryBaseFailure, List<AddressModel>> result =
+            await addressLocalDataSource.getAllWithPagination(
           filter: filtering,
           sorting: sorting,
           searchText: searchText,
@@ -414,7 +445,8 @@ class AddressRepositoryImplement implements UserAddressRepository {
       } else {
         // Remote
         // Save to server
-        final ApiResultState<List<AddressModel>> result = await remoteDataSource.getAllAddressPagination(
+        final ApiResultState<List<AddressModel>> result =
+            await remoteDataSource.getAllAddressPagination(
           filtering: filtering,
           sorting: sorting,
           searchText: searchText,
@@ -456,13 +488,17 @@ class AddressRepositoryImplement implements UserAddressRepository {
   }
 
   @override
-  Future<DataSourceState<List<AddressModel>>> saveAllAddress({required List<AddressModel> addressEntities, bool hasUpdateAll = false}) async {
+  Future<DataSourceState<List<AddressModel>>> saveAllAddress(
+      {required List<AddressModel> addressEntities,
+      bool hasUpdateAll = false}) async {
     try {
-      final connectivity = serviceLocator<ConnectivityService>().getCurrentInternetStatus();
+      final connectivity =
+          serviceLocator<ConnectivityService>().getCurrentInternetStatus();
       if (connectivity.$2 == InternetConnectivityState.internet) {
         // Local DB
         // Save to local
-        final Either<RepositoryBaseFailure, List<AddressModel>> result = await addressLocalDataSource.saveAll(
+        final Either<RepositoryBaseFailure, List<AddressModel>> result =
+            await addressLocalDataSource.saveAll(
           entities: addressEntities,
           hasUpdateAll: hasUpdateAll,
         );
@@ -482,7 +518,8 @@ class AddressRepositoryImplement implements UserAddressRepository {
       } else {
         // Remote
         // Save to server
-        final ApiResultState<List<AddressModel>> result = await remoteDataSource.saveAllAddress(
+        final ApiResultState<List<AddressModel>> result =
+            await remoteDataSource.saveAllAddress(
           addressEntities: addressEntities,
           hasUpdateAll: hasUpdateAll,
         );

@@ -47,7 +47,8 @@ class AppTranslator {
   List<IdentifiedLanguage> identifiedLanguages = <IdentifiedLanguage>[];
   final languageIdentifier = LanguageIdentifier(confidenceThreshold: 0.5);
   String identifiedLanguage = '';
-  final OnDeviceTranslatorModelManager modelManager = OnDeviceTranslatorModelManager();
+  final OnDeviceTranslatorModelManager modelManager =
+      OnDeviceTranslatorModelManager();
   late OnDeviceTranslator onDeviceTranslator;
   late TranslateLanguage sourceTranslateLanguage;
   late TranslateLanguage targetTranslateLanguage;
@@ -76,18 +77,24 @@ class AppTranslator {
     TextDirection? initTextDirection,
     bool hasInitCall = true,
   }) async {
-    sourceTranslateLanguage = sourceLanguage ?? languageController.sourceTranslateLanguage;
-    targetTranslateLanguage = targetLanguage ?? languageController.targetTranslateLanguage;
-    this.sourceAppLanguage = sourceAppLanguage ?? languageController.sourceApplanguage;
-    this.targetAppLanguage = targetAppLanguage ?? languageController.targetAppLanguage;
+    sourceTranslateLanguage =
+        sourceLanguage ?? languageController.sourceTranslateLanguage;
+    targetTranslateLanguage =
+        targetLanguage ?? languageController.targetTranslateLanguage;
+    this.sourceAppLanguage =
+        sourceAppLanguage ?? languageController.sourceApplanguage;
+    this.targetAppLanguage =
+        targetAppLanguage ?? languageController.targetAppLanguage;
     onDeviceTranslator = OnDeviceTranslator(
       sourceLanguage: sourceTranslateLanguage,
       targetLanguage: targetTranslateLanguage,
     );
     _delayTime = delayTime ?? _delayTime;
-    targetTextDirection = initTextDirection ?? languageController.targetTextDirection;
+    targetTextDirection =
+        initTextDirection ?? languageController.targetTextDirection;
     asyncCache = AsyncCache(const Duration(hours: 1));
-    debugPrint('app_translator - init: ${sourceTranslateLanguage},${targetTranslateLanguage}');
+    debugPrint(
+        'app_translator - init: ${sourceTranslateLanguage},${targetTranslateLanguage}');
     await _doInit();
   }
 
@@ -96,7 +103,8 @@ class AppTranslator {
     if (_delayTime < 100) {
       throw AutoLocalizationException('Delay time is too low.');
     } else if (_delayTime < 300) {
-      final String text = 'WARNING: The provided delay time ($_delayTime ms) is lower than recommended time. It could cause a request block.';
+      final String text =
+          'WARNING: The provided delay time ($_delayTime ms) is lower than recommended time. It could cause a request block.';
       log('\x1B[33m$text\x1B[0m');
     }
   }
@@ -105,7 +113,8 @@ class AppTranslator {
     if (_delayTime < 100) {
       throw AutoLocalizationException('Delay time is too low.');
     } else if (_delayTime < 300) {
-      final String text = 'WARNING: The provided delay time ($_delayTime ms) is lower than recommended time. It could cause a request block.';
+      final String text =
+          'WARNING: The provided delay time ($_delayTime ms) is lower than recommended time. It could cause a request block.';
       log('\x1B[33m$text\x1B[0m');
     }
     if (_isInitialized) {
@@ -153,8 +162,10 @@ class AppTranslator {
       userLanguage: targetLanguage ?? targetTranslateLanguage,
       startText: text,
     );
-    List<dynamic> dynamicSearch = dbHive.values.where((element) => element == result).toList();
-    List<SaveTranslationObject> search = List<SaveTranslationObject>.from(dynamicSearch);
+    List<dynamic> dynamicSearch =
+        dbHive.values.where((element) => element == result).toList();
+    List<SaveTranslationObject> search =
+        List<SaveTranslationObject>.from(dynamicSearch);
 
     //CACHE NOT FOUND
     if (search.isEmpty || !cache) {
@@ -183,19 +194,26 @@ class AppTranslator {
     if (returnJSON) {
       return jsonEncode({
         'text': text,
-        'translation': (search.first.appLanguage == (targetLanguage ?? targetTranslateLanguage) &&
-                search.first.userLanguage == (startingLanguage ?? sourceTranslateLanguage))
+        'translation': (search.first.appLanguage ==
+                    (targetLanguage ?? targetTranslateLanguage) &&
+                search.first.userLanguage ==
+                    (startingLanguage ?? sourceTranslateLanguage))
             ? (search.first.startText)
             : (search.first.resultText!),
         'cache': true,
-        'reverse_cache': search.first.appLanguage == (targetLanguage ?? targetTranslateLanguage) &&
-            search.first.userLanguage == (startingLanguage ?? sourceTranslateLanguage),
+        'reverse_cache': search.first.appLanguage ==
+                (targetLanguage ?? targetTranslateLanguage) &&
+            search.first.userLanguage ==
+                (startingLanguage ?? sourceTranslateLanguage),
         'lang_start': startingLanguage ?? sourceTranslateLanguage,
         'lang_end': targetLanguage ?? targetTranslateLanguage,
         'time': DateTime.now().toIso8601String()
       });
     }
-    if (search.first.appLanguage == (targetLanguage ?? targetTranslateLanguage) && search.first.userLanguage == (startingLanguage ?? sourceTranslateLanguage)) {
+    if (search.first.appLanguage ==
+            (targetLanguage ?? targetTranslateLanguage) &&
+        search.first.userLanguage ==
+            (startingLanguage ?? sourceTranslateLanguage)) {
       return search.first.startText;
     }
     return search.first.resultText!;
@@ -258,15 +276,18 @@ class AppTranslator {
         } else if (language.contains('ar')) {
           identifiedSourceLanguage = TranslateLanguage.arabic;
         } else {
-          identifiedSourceLanguage = identifiedSourceLanguage = TranslateLanguage.values.firstWhere(
+          identifiedSourceLanguage =
+              identifiedSourceLanguage = TranslateLanguage.values.firstWhere(
             (element) => element.bcpCode == language,
-            orElse: () => serviceLocator<LanguageController>().sourceTranslateLanguage,
+            orElse: () =>
+                serviceLocator<LanguageController>().sourceTranslateLanguage,
           );
         }
       });
       late final onDeviceTranslator = OnDeviceTranslator(
         sourceLanguage: identifiedSourceLanguage,
-        targetLanguage: targetLanguage ?? serviceLocator<LanguageController>().targetTranslateLanguage,
+        targetLanguage: targetLanguage ??
+            serviceLocator<LanguageController>().targetTranslateLanguage,
       );
       // Execute the translation process
       final result = await onDeviceTranslator.translateText(text);
@@ -308,7 +329,8 @@ class AppTranslator {
     if (text == '') return;
     String error;
     try {
-      final possibleLanguages = await languageIdentifier.identifyPossibleLanguages(text);
+      final possibleLanguages =
+          await languageIdentifier.identifyPossibleLanguages(text);
       if (updateCurrentPossibleIdentifiedLanguages) {
         identifiedLanguages = possibleLanguages;
       }
@@ -323,7 +345,8 @@ class AppTranslator {
     } catch (e) {
       error = 'identifyPossibleLanguages error: $e';
     }
-    if (updateCurrentPossibleIdentifiedLanguages || updateCurrentIdentifiedLanguage) {
+    if (updateCurrentPossibleIdentifiedLanguages ||
+        updateCurrentIdentifiedLanguage) {
       identifiedLanguages = [];
       identifiedLanguage = error;
     }
@@ -345,7 +368,8 @@ class AppTranslator {
     targetTranslateLanguage = language.sourceLanguage;
     targetAppLanguage = language;
     targetTextDirection = language.textDirection;
-    appLog.e('app translator: changeTargetTranslateLanguage: ${sourceTranslateLanguage}->${targetTranslateLanguage}');
+    appLog.e(
+        'app translator: changeTargetTranslateLanguage: ${sourceTranslateLanguage}->${targetTranslateLanguage}');
     await init(
       languageController: serviceLocator<LanguageController>(),
       targetAppLanguage: targetAppLanguage,
@@ -357,11 +381,17 @@ class AppTranslator {
     );
   }
 
-  (TranslateLanguage, TranslateLanguage, Language, Language) switchCurrentSourceAndTargetLanguage() {
+  (TranslateLanguage, TranslateLanguage, Language, Language)
+      switchCurrentSourceAndTargetLanguage() {
     var tempSourceLanguage = sourceTranslateLanguage;
     sourceTranslateLanguage = targetTranslateLanguage;
     targetTranslateLanguage = tempSourceLanguage;
-    return (sourceTranslateLanguage, targetTranslateLanguage, sourceAppLanguage, targetAppLanguage);
+    return (
+      sourceTranslateLanguage,
+      targetTranslateLanguage,
+      sourceAppLanguage,
+      targetAppLanguage
+    );
   }
 
   void dispose() {

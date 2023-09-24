@@ -42,7 +42,8 @@ enum CurrentProfileStatus {
     statusValue: 'none',
   );
 
-  const CurrentProfileStatus({required this.statusValue, required this.statusID});
+  const CurrentProfileStatus(
+      {required this.statusValue, required this.statusID});
 
   final int statusID;
   final String statusValue;

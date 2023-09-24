@@ -2,7 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:homemakers_merchant/config/translation/widgets/language_selection_widget.dart';
 
-class OnBoardingNavigationBar extends StatelessWidget implements ObstructingPreferredSizeWidget {
+class OnBoardingNavigationBar extends StatelessWidget
+    implements ObstructingPreferredSizeWidget {
   final int currentPage;
   final Function onSkip;
   final int totalPage;

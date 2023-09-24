@@ -122,7 +122,12 @@ class GetBusinessTypeState extends BusinessProfileState {
   final BusinessProfileStatus businessProfileStatus;
 
   @override
-  List<Object?> get props => [businessProfileEntity, businessProfileID, businessTypeEntity, businessProfileStatus];
+  List<Object?> get props => [
+        businessProfileEntity,
+        businessProfileID,
+        businessTypeEntity,
+        businessProfileStatus
+      ];
 }
 
 class NavigateToAddressPageState extends BusinessProfileState {
@@ -137,7 +142,8 @@ class NavigateToAddressPageState extends BusinessProfileState {
   final BusinessProfileStatus businessProfileStatus;
 
   @override
-  List<Object?> get props => [businessProfileEntity, businessTypeEntity, businessProfileStatus];
+  List<Object?> get props =>
+      [businessProfileEntity, businessTypeEntity, businessProfileStatus];
 }
 
 class DeleteAllBusinessProfileState extends BusinessProfileState {
@@ -156,7 +162,8 @@ class DeleteAllBusinessProfileState extends BusinessProfileState {
   final BusinessProfileStatus businessProfileStatus;
 
   @override
-  List<Object?> get props => [businessProfileEntity, businessProfileID, businessProfileStatus];
+  List<Object?> get props =>
+      [businessProfileEntity, businessProfileID, businessProfileStatus];
 }
 
 class GetAllBusinessProfileState extends BusinessProfileState {
@@ -226,7 +233,8 @@ class BusinessProfileFailedState extends BusinessProfileState {
 
 class BusinessProfileExceptionState extends BusinessProfileState {
   const BusinessProfileExceptionState({
-    this.businessProfileStatus = BusinessProfileStatus.exceptionForBusinessProfile,
+    this.businessProfileStatus =
+        BusinessProfileStatus.exceptionForBusinessProfile,
     this.message = '',
     this.stackTrace,
     this.exception,
@@ -238,7 +246,8 @@ class BusinessProfileExceptionState extends BusinessProfileState {
   final Exception? exception;
 
   @override
-  List<Object?> get props =>  [stackTrace,businessProfileStatus,message,exception];
+  List<Object?> get props =>
+      [stackTrace, businessProfileStatus, message, exception];
 }
 
 class BusinessProfileLoadingState extends BusinessProfileState {
@@ -252,13 +261,14 @@ class BusinessProfileLoadingState extends BusinessProfileState {
   final String message;
 
   @override
-  List<Object?> get props =>  [isLoading,businessProfileStatus,message];
+  List<Object?> get props => [isLoading, businessProfileStatus, message];
 }
 
 class BusinessProfileProcessingState extends BusinessProfileState {
   const BusinessProfileProcessingState(
       {this.message = '',
-      this.businessProfileStatus = BusinessProfileStatus.loadingForBusinessProfile,
+      this.businessProfileStatus =
+          BusinessProfileStatus.loadingForBusinessProfile,
       this.isProcessing = true});
 
   final bool isProcessing;
@@ -266,7 +276,7 @@ class BusinessProfileProcessingState extends BusinessProfileState {
   final String message;
 
   @override
-  List<Object?> get props => [isProcessing,businessProfileStatus,message];
+  List<Object?> get props => [isProcessing, businessProfileStatus, message];
 }
 
 class GetCurrentUserProfileState extends BusinessProfileState {
@@ -281,7 +291,7 @@ class GetCurrentUserProfileState extends BusinessProfileState {
 class GetAllBusinessProfilePaginationState extends BusinessProfileState {
   const GetAllBusinessProfilePaginationState({
     this.businessProfileID = -1,
-    this.businessProfileEntities=const[],
+    this.businessProfileEntities = const [],
     this.searchItem = '',
     this.pageSize = 10,
     this.pageKey = 1,
@@ -304,16 +314,16 @@ class GetAllBusinessProfilePaginationState extends BusinessProfileState {
 
   @override
   List<Object?> get props => [
-    businessProfileEntities,
-    businessProfileID,
-    pageKey,
-    pageSize,
-    searchItem,
-    endTime,
-    filtering,
-    sorting,
-    startTime,
-  ];
+        businessProfileEntities,
+        businessProfileID,
+        pageKey,
+        pageSize,
+        searchItem,
+        endTime,
+        filtering,
+        sorting,
+        startTime,
+      ];
 }
 
 class GetAllBusinessProfilePaginationEmptyState extends BusinessProfileState {
@@ -329,10 +339,10 @@ class GetAllBusinessProfilePaginationEmptyState extends BusinessProfileState {
 
   @override
   List<Object?> get props => [
-    businessProfileEntities,
-    message,
-    businessProfileStatus,
-  ];
+        businessProfileEntities,
+        message,
+        businessProfileStatus,
+      ];
 }
 
 class GetAllBusinessProfilePaginationFailedState extends BusinessProfileState {
@@ -346,14 +356,16 @@ class GetAllBusinessProfilePaginationFailedState extends BusinessProfileState {
 
   @override
   List<Object?> get props => [
-    businessProfileStatus,
-    message,
-  ];
+        businessProfileStatus,
+        message,
+      ];
 }
 
-class GetAllBusinessProfilePaginationExceptionState extends BusinessProfileState {
+class GetAllBusinessProfilePaginationExceptionState
+    extends BusinessProfileState {
   const GetAllBusinessProfilePaginationExceptionState({
-    this.businessProfileStatus = BusinessProfileStatus.exceptionForBusinessProfile,
+    this.businessProfileStatus =
+        BusinessProfileStatus.exceptionForBusinessProfile,
     this.message = '',
     this.stackTrace,
     this.exception,
@@ -365,42 +377,45 @@ class GetAllBusinessProfilePaginationExceptionState extends BusinessProfileState
   final Exception? exception;
 
   @override
-  List<Object?> get props => [stackTrace,businessProfileStatus,message,exception];
+  List<Object?> get props =>
+      [stackTrace, businessProfileStatus, message, exception];
 }
 
 class GetAllBusinessProfilePaginationLoadingState extends BusinessProfileState {
   const GetAllBusinessProfilePaginationLoadingState(
       {this.message = '',
-        this.businessProfileStatus = BusinessProfileStatus.loadingForBusinessType,
-        this.isLoading = true});
+      this.businessProfileStatus = BusinessProfileStatus.loadingForBusinessType,
+      this.isLoading = true});
 
   final bool isLoading;
   final BusinessProfileStatus businessProfileStatus;
   final String message;
 
   @override
-  List<Object?> get props => [isLoading,businessProfileStatus,message];
+  List<Object?> get props => [isLoading, businessProfileStatus, message];
 }
 
-class GetAllBusinessProfilePaginationProcessingState extends BusinessProfileState {
+class GetAllBusinessProfilePaginationProcessingState
+    extends BusinessProfileState {
   const GetAllBusinessProfilePaginationProcessingState(
       {this.message = '',
-        this.businessProfileStatus = BusinessProfileStatus.loadingForBusinessProfile,
-        this.isProcessing = true});
+      this.businessProfileStatus =
+          BusinessProfileStatus.loadingForBusinessProfile,
+      this.isProcessing = true});
 
   final bool isProcessing;
   final BusinessProfileStatus businessProfileStatus;
   final String message;
 
   @override
-  List<Object?> get props => [isProcessing,businessProfileStatus,message];
+  List<Object?> get props => [isProcessing, businessProfileStatus, message];
 }
 
 // Get All User with Pagination
 class GetAllAppUserProfilePaginationState extends BusinessProfileState {
   const GetAllAppUserProfilePaginationState({
     this.businessProfileID = -1,
-    this.appUserEntities=const[],
+    this.appUserEntities = const [],
     this.searchItem = '',
     this.pageSize = 10,
     this.pageKey = 1,
@@ -423,16 +438,16 @@ class GetAllAppUserProfilePaginationState extends BusinessProfileState {
 
   @override
   List<Object?> get props => [
-    appUserEntities,
-    businessProfileID,
-    pageKey,
-    pageSize,
-    searchItem,
-    endTime,
-    filtering,
-    sorting,
-    startTime,
-  ];
+        appUserEntities,
+        businessProfileID,
+        pageKey,
+        pageSize,
+        searchItem,
+        endTime,
+        filtering,
+        sorting,
+        startTime,
+      ];
 }
 
 class GetAllAppUserProfileEmptyState extends BusinessProfileState {
@@ -448,10 +463,10 @@ class GetAllAppUserProfileEmptyState extends BusinessProfileState {
 
   @override
   List<Object?> get props => [
-    appUserEntities,
-    message,
-    businessProfileStatus,
-  ];
+        appUserEntities,
+        message,
+        businessProfileStatus,
+      ];
 }
 
 class GetAllAppUserProfileFailedState extends BusinessProfileState {
@@ -465,14 +480,15 @@ class GetAllAppUserProfileFailedState extends BusinessProfileState {
 
   @override
   List<Object?> get props => [
-    businessProfileStatus,
-    message,
-  ];
+        businessProfileStatus,
+        message,
+      ];
 }
 
 class GetAllAppUserProfileExceptionState extends BusinessProfileState {
   const GetAllAppUserProfileExceptionState({
-    this.businessProfileStatus = BusinessProfileStatus.exceptionForBusinessProfile,
+    this.businessProfileStatus =
+        BusinessProfileStatus.exceptionForBusinessProfile,
     this.message = '',
     this.stackTrace,
     this.exception,
@@ -484,33 +500,39 @@ class GetAllAppUserProfileExceptionState extends BusinessProfileState {
   final Exception? exception;
 
   @override
-  List<Object?> get props => [businessProfileStatus,message,stackTrace,exception];
+  List<Object?> get props =>
+      [businessProfileStatus, message, stackTrace, exception];
 }
 
 class GetAllAppUserProfileLoadingState extends BusinessProfileState {
   const GetAllAppUserProfileLoadingState(
       {this.message = '',
-        this.businessProfileStatus = BusinessProfileStatus.loadingForBusinessType,
-        this.isLoading = true});
+      this.businessProfileStatus = BusinessProfileStatus.loadingForBusinessType,
+      this.isLoading = true});
 
   final bool isLoading;
   final BusinessProfileStatus businessProfileStatus;
   final String message;
 
   @override
-  List<Object?> get props => [businessProfileStatus,isLoading,message,];
+  List<Object?> get props => [
+        businessProfileStatus,
+        isLoading,
+        message,
+      ];
 }
 
 class GetAllAppUserProfileProcessingState extends BusinessProfileState {
   const GetAllAppUserProfileProcessingState(
       {this.message = '',
-        this.businessProfileStatus = BusinessProfileStatus.loadingForBusinessProfile,
-        this.isProcessing = true});
+      this.businessProfileStatus =
+          BusinessProfileStatus.loadingForBusinessProfile,
+      this.isProcessing = true});
 
   final bool isProcessing;
   final BusinessProfileStatus businessProfileStatus;
   final String message;
 
   @override
-  List<Object?> get props => [isProcessing,businessProfileStatus,message];
+  List<Object?> get props => [isProcessing, businessProfileStatus, message];
 }

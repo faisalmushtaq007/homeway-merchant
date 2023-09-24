@@ -64,14 +64,16 @@ class _MenuDetailsPageController extends State<MenuDetailsPage> {
       );
 }
 
-class _StoreDetailsPageView extends WidgetView<MenuDetailsPage, _MenuDetailsPageController> {
+class _StoreDetailsPageView
+    extends WidgetView<MenuDetailsPage, _MenuDetailsPageController> {
   const _StoreDetailsPageView(super.state);
 
   @override
   Widget build(BuildContext context) {
     final MediaQueryData media = MediaQuery.of(context);
     final double margins = GlobalApp.responsiveInsets(media.size.width);
-    final double topPadding = margins; //media.padding.top + kToolbarHeight + margins; //margins * 1.5;
+    final double topPadding =
+        margins; //media.padding.top + kToolbarHeight + margins; //margins * 1.5;
     final double bottomPadding = margins; //media.padding.bottom + margins;
     return Directionality(
       textDirection: serviceLocator<LanguageController>().targetTextDirection,
@@ -87,7 +89,8 @@ class _StoreDetailsPageView extends WidgetView<MenuDetailsPage, _MenuDetailsPage
             automaticallyImplyLeading: true,
             title: Text(
               'Your menu',
-              textDirection: serviceLocator<LanguageController>().targetTextDirection,
+              textDirection:
+                  serviceLocator<LanguageController>().targetTextDirection,
             ),
             actions: const [
               Padding(
@@ -118,16 +121,19 @@ class _StoreDetailsPageView extends WidgetView<MenuDetailsPage, _MenuDetailsPage
                     delegate: SliverChildListDelegate(
                       [
                         Column(
-                          textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                          textDirection: serviceLocator<LanguageController>()
+                              .targetTextDirection,
                           mainAxisSize: MainAxisSize.min,
                           crossAxisAlignment: CrossAxisAlignment.stretch,
                           children: [
-                            const AnimatedGap(8, duration: Duration(milliseconds: 100)),
+                            const AnimatedGap(8,
+                                duration: Duration(milliseconds: 100)),
                             // Top section
                             MenuDetailsNameImageWidget(
                               menuEntity: state.menuEntity,
                             ),
-                            const AnimatedGap(8, duration: Duration(milliseconds: 100)),
+                            const AnimatedGap(8,
+                                duration: Duration(milliseconds: 100)),
                             const Divider(thickness: 0.75),
                             // Description section
                             Wrap(
@@ -143,38 +149,48 @@ class _StoreDetailsPageView extends WidgetView<MenuDetailsPage, _MenuDetailsPage
                                 ),
                               ],
                             ),
-                            const AnimatedGap(8, duration: Duration(milliseconds: 100)),
+                            const AnimatedGap(8,
+                                duration: Duration(milliseconds: 100)),
                             const Divider(thickness: 0.75),
                             MenuComponentWidget(
                               menuEntity: state.menuEntity,
                             ),
-                            const AnimatedGap(8, duration: Duration(milliseconds: 100)),
+                            const AnimatedGap(8,
+                                duration: Duration(milliseconds: 100)),
                             const Divider(thickness: 0.75),
                             Flexible(
                               child: MenuPriceInfoWidget(
                                 menuEntity: state.menuEntity,
-                                key: const Key('menu-details-portions-price-widget'),
+                                key: const Key(
+                                    'menu-details-portions-price-widget'),
                               ),
                             ),
-                            const AnimatedGap(8, duration: Duration(milliseconds: 100)),
+                            const AnimatedGap(8,
+                                duration: Duration(milliseconds: 100)),
                             const Divider(thickness: 0.75),
                             ListTile(
                               dense: true,
                               title: Text(
                                 'Extra Includes',
-                                textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                                style: context.titleMedium!.copyWith(fontWeight: FontWeight.w600),
+                                textDirection:
+                                    serviceLocator<LanguageController>()
+                                        .targetTextDirection,
+                                style: context.titleMedium!
+                                    .copyWith(fontWeight: FontWeight.w600),
                               ),
                             ),
-                            const AnimatedGap(2, duration: Duration(milliseconds: 100)),
+                            const AnimatedGap(2,
+                                duration: Duration(milliseconds: 100)),
                             Flexible(
                               child: MenuPriceInfoWidget(
                                 menuEntity: state.menuEntity,
                                 hasAddons: true,
-                                key: const Key('menu-details-addons-price-widget'),
+                                key: const Key(
+                                    'menu-details-addons-price-widget'),
                               ),
                             ),
-                            const AnimatedGap(8, duration: Duration(milliseconds: 200)),
+                            const AnimatedGap(8,
+                                duration: Duration(milliseconds: 200)),
                             // Buttons
                           ],
                         ),
@@ -206,7 +222,9 @@ class _StoreDetailsPageView extends WidgetView<MenuDetailsPage, _MenuDetailsPage
                                 ),
                                 child: Text(
                                   'Edit',
-                                  textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                  textDirection:
+                                      serviceLocator<LanguageController>()
+                                          .targetTextDirection,
                                   style: const TextStyle(
                                     color: Color.fromRGBO(127, 129, 132, 1.0),
                                   ),
@@ -227,7 +245,9 @@ class _StoreDetailsPageView extends WidgetView<MenuDetailsPage, _MenuDetailsPage
                                     ),
                                 child: Text(
                                   'Add New Menu',
-                                  textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                  textDirection:
+                                      serviceLocator<LanguageController>()
+                                          .targetTextDirection,
                                   //style: TextStyle(color:  Colors.white),
                                 ).translate(),
                               ),

@@ -1,6 +1,7 @@
 part of 'package:homemakers_merchant/app/features/notification/index.dart';
 
-class GetAllNotificationUseCase extends UseCase<DataSourceState<List<NotificationEntity>>> {
+class GetAllNotificationUseCase
+    extends UseCase<DataSourceState<List<NotificationEntity>>> {
   GetAllNotificationUseCase({
     required this.userNotificationRepository,
   });

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:homemakers_merchant/app/features/chat/domain/entities/chat_types_entity.dart' as types;
+import 'package:homemakers_merchant/app/features/chat/domain/entities/chat_types_entity.dart'
+    as types;
 import 'package:homemakers_merchant/bootup/injection_container.dart';
 import 'package:homemakers_merchant/config/translation/language_controller.dart';
 import 'package:homemakers_merchant/core/extensions/app_extension.dart';
@@ -42,11 +43,17 @@ class UserAvatar extends StatelessWidget {
     final hasImage = author.imageUrl != null;
     final initials = getUserInitials(author);
     return Container(
-      margin: bubbleRtlAlignment == BubbleRtlAlignment.left ? const EdgeInsetsDirectional.only(end: 8) : const EdgeInsets.only(right: 8),
+      margin: bubbleRtlAlignment == BubbleRtlAlignment.left
+          ? const EdgeInsetsDirectional.only(end: 8)
+          : const EdgeInsets.only(right: 8),
       child: GestureDetector(
         onTap: () => onAvatarTap?.call(author),
         child: CircleAvatar(
-          backgroundColor: hasImage ? InheritedChatTheme.of(context).theme.userAvatarImageBackgroundColor : color,
+          backgroundColor: hasImage
+              ? InheritedChatTheme.of(context)
+                  .theme
+                  .userAvatarImageBackgroundColor
+              : color,
           //backgroundImage: hasImage ? NetworkImage(author.imageUrl!, headers: imageHeaders) : null,
           radius: 16,
           child: hasImage
@@ -72,8 +79,10 @@ class UserAvatar extends StatelessWidget {
                 )
               : Text(
                   initials,
-                  style: InheritedChatTheme.of(context).theme.userAvatarTextStyle,
-                  textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                  style:
+                      InheritedChatTheme.of(context).theme.userAvatarTextStyle,
+                  textDirection:
+                      serviceLocator<LanguageController>().targetTextDirection,
                 ),
         ),
       ),

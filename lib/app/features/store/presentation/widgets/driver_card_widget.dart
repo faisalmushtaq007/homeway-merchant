@@ -12,8 +12,10 @@ class DriverCard extends StatefulWidget {
 
   final StoreOwnDeliveryPartnersInfo storeOwnDeliveryPartnerEntity;
   final int currentIndex;
-  final List<StoreOwnDeliveryPartnersInfo> listOfAllStoreOwnDeliveryPartnerEntities;
-  final List<StoreOwnDeliveryPartnersInfo> listOfAllSelectedStoreOwnDeliveryPartnerEntities;
+  final List<StoreOwnDeliveryPartnersInfo>
+      listOfAllStoreOwnDeliveryPartnerEntities;
+  final List<StoreOwnDeliveryPartnersInfo>
+      listOfAllSelectedStoreOwnDeliveryPartnerEntities;
   final Function(List<StoreOwnDeliveryPartnersInfo>) onSelectionChanged;
 
   @override
@@ -24,7 +26,8 @@ class _DriverCardState extends State<DriverCard> {
   Color carBackgroundColor = Colors.white;
   var _popupStoreItemIndex = 0;
 
-  Widget _buildPopupMenuButton(int currentIndex, StoreOwnDeliveryPartnersInfo storeOwnDeliveryPartnerEntity) {
+  Widget _buildPopupMenuButton(int currentIndex,
+      StoreOwnDeliveryPartnersInfo storeOwnDeliveryPartnerEntity) {
     return PopupMenuButton(
       onSelected: (value) {
         _onStoreSelected(value as int);
@@ -80,7 +83,8 @@ class _DriverCardState extends State<DriverCard> {
         switch (_popupStoreItemIndex) {
           case 0:
             {
-              final navigateToStoreDetailsPage = await context.push(Routes.STORE_DETAILS_PAGE);
+              final navigateToStoreDetailsPage =
+                  await context.push(Routes.STORE_DETAILS_PAGE);
             }
           case 1:
             {}
@@ -107,7 +111,8 @@ class _DriverCardState extends State<DriverCard> {
                     cancelText: 'Cancel',
                     okPressed: () async {
                       debugPrint('Dialog confirmed');
-                      await Future.delayed(const Duration(milliseconds: 300), () {});
+                      await Future.delayed(
+                          const Duration(milliseconds: 300), () {});
                       if (!mounted) {
                         return;
                       }
@@ -115,7 +120,8 @@ class _DriverCardState extends State<DriverCard> {
                     },
                     cancelPressed: () async {
                       debugPrint('Dialog cancelled');
-                      await Future.delayed(const Duration(milliseconds: 300), () {});
+                      await Future.delayed(
+                          const Duration(milliseconds: 300), () {});
                       if (!mounted) {
                         return;
                       }
@@ -124,11 +130,13 @@ class _DriverCardState extends State<DriverCard> {
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       crossAxisAlignment: CrossAxisAlignment.stretch,
-                      textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                      textDirection: serviceLocator<LanguageController>()
+                          .targetTextDirection,
                       children: [
                         Text(
                           'Permanently delete this driver. If there is an order for this driver, then it will be deleted only after completing the orders, and if you still confirm for delete, then this driver will remain pending and under review. Are you sure you want to delete this driver?',
-                          textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                          textDirection: serviceLocator<LanguageController>()
+                              .targetTextDirection,
                         ),
                       ],
                     ),
@@ -162,7 +170,8 @@ class _DriverCardState extends State<DriverCard> {
                 color: Color.fromRGBO(42, 45, 50, 1),
                 fontSize: 16,
               ),
-              textDirection: serviceLocator<LanguageController>().targetTextDirection,
+              textDirection:
+                  serviceLocator<LanguageController>().targetTextDirection,
             ),
           ),
         ],
@@ -180,7 +189,9 @@ class _DriverCardState extends State<DriverCard> {
   Widget build(BuildContext context) {
     return ListTile(
       leading: ImageHelper(
-        image: (widget.storeOwnDeliveryPartnerEntity.imageEntity != null && widget.storeOwnDeliveryPartnerEntity.imageEntity!.imagePath.isNotEmpty)
+        image: (widget.storeOwnDeliveryPartnerEntity.imageEntity != null &&
+                widget.storeOwnDeliveryPartnerEntity.imageEntity!.imagePath
+                    .isNotEmpty)
             ? widget.storeOwnDeliveryPartnerEntity.imageEntity?.imagePath ?? ''
             : (widget.storeOwnDeliveryPartnerEntity.hasOnline)
                 ? 'assets/svg/online_driver.svg'
@@ -192,7 +203,9 @@ class _DriverCardState extends State<DriverCard> {
         // alignment of image
         //alignment: Alignment.center,
         // indicates where image will be loaded from, types are [network, asset,file]
-        imageType: (widget.storeOwnDeliveryPartnerEntity.imageEntity != null && widget.storeOwnDeliveryPartnerEntity.imageEntity!.imagePath.isNotEmpty)
+        imageType: (widget.storeOwnDeliveryPartnerEntity.imageEntity != null &&
+                widget.storeOwnDeliveryPartnerEntity.imageEntity!.imagePath
+                    .isNotEmpty)
             ? ImageType.network
             : ImageType.text,
         // indicates what shape you would like to be with image [rectangle, oval,circle or none]
@@ -214,7 +227,8 @@ class _DriverCardState extends State<DriverCard> {
           color: Colors.white,
           fontSize: 16,
         ),
-        placeholderBackgroundColor: context.colorScheme.primary.withOpacity(0.5),
+        placeholderBackgroundColor:
+            context.colorScheme.primary.withOpacity(0.5),
       ),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadiusDirectional.circular(10),
@@ -222,7 +236,8 @@ class _DriverCardState extends State<DriverCard> {
       ),
       title: Text(
         widget.storeOwnDeliveryPartnerEntity.driverName,
-        style: context.titleMedium!.copyWith(color: const Color.fromRGBO(31, 31, 31, 1)),
+        style: context.titleMedium!
+            .copyWith(color: const Color.fromRGBO(31, 31, 31, 1)),
         textDirection: serviceLocator<LanguageController>().targetTextDirection,
         maxLines: 1,
         softWrap: true,
@@ -240,14 +255,20 @@ class _DriverCardState extends State<DriverCard> {
       minLeadingWidth: 20,
       onTap: () {
         setState(() {
-          widget.listOfAllSelectedStoreOwnDeliveryPartnerEntities.contains(widget.storeOwnDeliveryPartnerEntity)
-              ? widget.listOfAllSelectedStoreOwnDeliveryPartnerEntities.remove(widget.storeOwnDeliveryPartnerEntity)
-              : widget.listOfAllSelectedStoreOwnDeliveryPartnerEntities.add(widget.storeOwnDeliveryPartnerEntity);
-          widget.onSelectionChanged?.call(widget.listOfAllSelectedStoreOwnDeliveryPartnerEntities);
+          widget.listOfAllSelectedStoreOwnDeliveryPartnerEntities
+                  .contains(widget.storeOwnDeliveryPartnerEntity)
+              ? widget.listOfAllSelectedStoreOwnDeliveryPartnerEntities
+                  .remove(widget.storeOwnDeliveryPartnerEntity)
+              : widget.listOfAllSelectedStoreOwnDeliveryPartnerEntities
+                  .add(widget.storeOwnDeliveryPartnerEntity);
+          widget.onSelectionChanged
+              ?.call(widget.listOfAllSelectedStoreOwnDeliveryPartnerEntities);
         });
       },
-      selected: widget.listOfAllSelectedStoreOwnDeliveryPartnerEntities.contains(widget.storeOwnDeliveryPartnerEntity),
-      trailing: (widget.listOfAllSelectedStoreOwnDeliveryPartnerEntities.contains(widget.storeOwnDeliveryPartnerEntity))
+      selected: widget.listOfAllSelectedStoreOwnDeliveryPartnerEntities
+          .contains(widget.storeOwnDeliveryPartnerEntity),
+      trailing: (widget.listOfAllSelectedStoreOwnDeliveryPartnerEntities
+              .contains(widget.storeOwnDeliveryPartnerEntity))
           ? const Icon(
               Icons.check,
               color: Color.fromRGBO(69, 201, 125, 1),

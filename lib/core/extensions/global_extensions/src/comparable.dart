@@ -58,7 +58,8 @@ extension ComparableBetweenExtension<T extends Comparable<T>> on T {
   /// arguments doesn't matter.
   ///
   /// Alias for `first.rangeTo(endInclusive).contains(this)`
-  bool between(T first, T endInclusive) => first.rangeTo(endInclusive).contains(this);
+  bool between(T first, T endInclusive) =>
+      first.rangeTo(endInclusive).contains(this);
 }
 
 extension ComparableInRangeExtension<T extends Comparable<T>> on T {

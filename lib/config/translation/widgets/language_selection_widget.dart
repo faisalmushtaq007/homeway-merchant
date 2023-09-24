@@ -14,7 +14,8 @@ class LanguageSelectionWidget extends StatefulWidget {
   const LanguageSelectionWidget({super.key});
 
   @override
-  State<LanguageSelectionWidget> createState() => _LanguageSelectionWidgetState();
+  State<LanguageSelectionWidget> createState() =>
+      _LanguageSelectionWidgetState();
 }
 
 class _LanguageSelectionWidgetState extends State<LanguageSelectionWidget> {
@@ -45,11 +46,15 @@ class _LanguageSelectionWidgetState extends State<LanguageSelectionWidget> {
                     itemBuilder: (context, index) {
                       return ListTile(
                         onTap: () async {
-                          if (serviceLocator<LanguageController>().targetAppLanguage == GlobalApp.defaultLanguages[index].sourceLanguage) {
+                          if (serviceLocator<LanguageController>()
+                                  .targetAppLanguage ==
+                              GlobalApp
+                                  .defaultLanguages[index].sourceLanguage) {
                             return;
                           } else {
                             // Change target language
-                            serviceLocator<LanguageController>().changeTargetLanguage(
+                            serviceLocator<LanguageController>()
+                                .changeTargetLanguage(
                               GlobalApp.defaultLanguages[index],
                             );
                           }
@@ -67,7 +72,9 @@ class _LanguageSelectionWidgetState extends State<LanguageSelectionWidget> {
                           ),
                         ),
                         title: Text(GlobalApp.defaultLanguages[index].text),
-                        trailing: GlobalApp.defaultLanguages[index] == serviceLocator<LanguageController>().targetAppLanguage
+                        trailing: GlobalApp.defaultLanguages[index] ==
+                                serviceLocator<LanguageController>()
+                                    .targetAppLanguage
                             ? Icon(
                                 Icons.check_circle_rounded,
                                 color: Theme.of(context).primaryColorLight,
@@ -75,15 +82,21 @@ class _LanguageSelectionWidgetState extends State<LanguageSelectionWidget> {
                             : null,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10),
-                          side: GlobalApp.defaultLanguages[index] == serviceLocator<LanguageController>().targetAppLanguage
+                          side: GlobalApp.defaultLanguages[index] ==
+                                  serviceLocator<LanguageController>()
+                                      .targetAppLanguage
                               ? BorderSide(
                                   color: Theme.of(context).primaryColorLight,
                                   width: 1.5,
                                 )
                               : BorderSide(color: Colors.grey[300]!),
                         ),
-                        tileColor: GlobalApp.defaultLanguages[index] == serviceLocator<LanguageController>().targetAppLanguage
-                            ? Theme.of(context).primaryColorLight.withOpacity(0.05)
+                        tileColor: GlobalApp.defaultLanguages[index] ==
+                                serviceLocator<LanguageController>()
+                                    .targetAppLanguage
+                            ? Theme.of(context)
+                                .primaryColorLight
+                                .withOpacity(0.05)
                             : null,
                       );
                     },

@@ -1,6 +1,7 @@
 part of 'package:homemakers_merchant/app/features/profile/index.dart';
 
-class NewBusinessDocumentEntity extends INetworkModel<NewBusinessDocumentEntity> {
+class NewBusinessDocumentEntity
+    extends INetworkModel<NewBusinessDocumentEntity> {
   NewBusinessDocumentEntity({
     this.documentID = -1,
     this.documentIdNumber = '',
@@ -22,8 +23,9 @@ class NewBusinessDocumentEntity extends INetworkModel<NewBusinessDocumentEntity>
     return NewBusinessDocumentEntity(
       documentID: map['documentID'] ?? -1,
       documentIdNumber: map['documentIdNumber'] ?? '',
-      documentType:
-          (map['documentType'] != null) ? DocumentType.values.byName(map['documentType']) : DocumentType.other,
+      documentType: (map['documentType'] != null)
+          ? DocumentType.values.byName(map['documentType'])
+          : DocumentType.other,
       base64: map['base64'] ?? '',
       metaInfo: map['metaInfo'] ?? <String, dynamic>{},
       mimeType: map['mimeType'] ?? 'image/png',
@@ -71,7 +73,8 @@ class NewBusinessDocumentEntity extends INetworkModel<NewBusinessDocumentEntity>
       };
 
   @override
-  NewBusinessDocumentEntity fromJson(Map<String, dynamic> json) => NewBusinessDocumentEntity.fromMap(json);
+  NewBusinessDocumentEntity fromJson(Map<String, dynamic> json) =>
+      NewBusinessDocumentEntity.fromMap(json);
 
   @override
   Map<String, dynamic>? toJson() => toMap();
@@ -102,7 +105,8 @@ class NewBusinessDocumentEntity extends INetworkModel<NewBusinessDocumentEntity>
       localAssetPath: localAssetPath ?? this.localAssetPath,
       networkAssetPath: networkAssetPath ?? this.networkAssetPath,
       fileName: fileName ?? this.fileName,
-      fileNameWithExtension: fileNameWithExtension ?? this.fileNameWithExtension,
+      fileNameWithExtension:
+          fileNameWithExtension ?? this.fileNameWithExtension,
       fileExtension: fileExtension ?? this.fileExtension,
       captureDocumentID: captureDocumentID ?? this.captureDocumentID,
       width: width ?? this.width,

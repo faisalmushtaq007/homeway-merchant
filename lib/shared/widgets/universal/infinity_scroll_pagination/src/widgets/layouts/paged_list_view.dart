@@ -39,7 +39,8 @@ class PagedListView<PageKeyType, ItemType> extends BoxScrollView {
     // Matches [ScrollView.dragStartBehavior]
     DragStartBehavior dragStartBehavior = DragStartBehavior.start,
     // Matches [ScrollView.keyboardDismissBehavior]
-    ScrollViewKeyboardDismissBehavior keyboardDismissBehavior = ScrollViewKeyboardDismissBehavior.manual,
+    ScrollViewKeyboardDismissBehavior keyboardDismissBehavior =
+        ScrollViewKeyboardDismissBehavior.manual,
     // Matches [ScrollView.restorationId]
     String? restorationId,
     // Matches [ScrollView.clipBehavior]
@@ -94,7 +95,8 @@ class PagedListView<PageKeyType, ItemType> extends BoxScrollView {
     // Matches [ScrollView.dragStartBehavior]
     DragStartBehavior dragStartBehavior = DragStartBehavior.start,
     // Matches [ScrollView.keyboardDismissBehavior]
-    ScrollViewKeyboardDismissBehavior keyboardDismissBehavior = ScrollViewKeyboardDismissBehavior.manual,
+    ScrollViewKeyboardDismissBehavior keyboardDismissBehavior =
+        ScrollViewKeyboardDismissBehavior.manual,
     // Matches [ScrollView.restorationId]
     String? restorationId,
     // Matches [ScrollView.clipBehavior]

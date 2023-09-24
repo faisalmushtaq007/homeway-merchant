@@ -21,7 +21,8 @@ enum PositionOnScreen {
   BOTTOM,
 }
 
-class LanguageScreenWrapper extends StatefulWidget with GetItStatefulWidgetMixin {
+class LanguageScreenWrapper extends StatefulWidget
+    with GetItStatefulWidgetMixin {
   LanguageScreenWrapper({
     super.key,
     this.child,
@@ -77,11 +78,16 @@ class LanguageScreenWrapper extends StatefulWidget with GetItStatefulWidgetMixin
   State<LanguageScreenWrapper> createState() => _LanguageScreenWrapperState();
 }
 
-class _LanguageScreenWrapperState extends State<LanguageScreenWrapper> with LifecycleMixin, GetItStateMixin {
+class _LanguageScreenWrapperState extends State<LanguageScreenWrapper>
+    with LifecycleMixin, GetItStateMixin {
   @override
   Widget build(BuildContext context) {
-    final bool hasAtleastSourceLanguage = LanguageInheritedWidget.of(context)?.allLanguageModelStatus.entries.any((element) {
-          if (element.value.languageDownloadStatus != LanguageDownloadStatus.downloaded) {
+    final bool hasAtleastSourceLanguage = LanguageInheritedWidget.of(context)
+            ?.allLanguageModelStatus
+            .entries
+            .any((element) {
+          if (element.value.languageDownloadStatus !=
+              LanguageDownloadStatus.downloaded) {
             return true;
           }
           return false;
@@ -98,8 +104,10 @@ class _LanguageScreenWrapperState extends State<LanguageScreenWrapper> with Life
       child: AnimatedContainer(
         height: height,
         width: MediaQuery.of(context).size.width,
-        decoration: widget.decoration ?? BoxDecoration(color: widget.color ?? Colors.red.shade500),
-        margin: EdgeInsetsDirectional.only(top: media.padding.top + kToolbarHeight + margins),
+        decoration: widget.decoration ??
+            BoxDecoration(color: widget.color ?? Colors.red.shade500),
+        margin: EdgeInsetsDirectional.only(
+            top: media.padding.top + kToolbarHeight + margins),
         duration: widget.duration ?? const Duration(milliseconds: 300),
         child: Center(
           child: Text(

@@ -13,16 +13,21 @@ class InMemoryRepository<E extends WithId> implements Repository<E> {
 
   final Duration delay;
 
-  factory InMemoryRepository.fromList(List<E> entities, {Duration delay = const Duration(milliseconds: 300)}) {
-    final map = Map<String, E>.fromEntries(entities.map((e) => MapEntry(e.stringedId, e)));
+  factory InMemoryRepository.fromList(List<E> entities,
+      {Duration delay = const Duration(milliseconds: 300)}) {
+    final map = Map<String, E>.fromEntries(
+        entities.map((e) => MapEntry(e.stringedId, e)));
     return InMemoryRepository._(map, delay);
   }
 
-  factory InMemoryRepository.blank({Duration delay = const Duration(milliseconds: 0)}) {
+  factory InMemoryRepository.blank(
+      {Duration delay = const Duration(milliseconds: 0)}) {
     return InMemoryRepository<E>._({}, delay);
   }
 
-  InMemoryRepository._(this._entitySet, Duration delay, {this.operation = 'edit', this.wikiRole = 3}) : this.delay = delay ?? const Duration(seconds: 0);
+  InMemoryRepository._(this._entitySet, Duration delay,
+      {this.operation = 'edit', this.wikiRole = 3})
+      : this.delay = delay ?? const Duration(seconds: 0);
 
   String? entityId(E entity) => entity.stringedId;
 
@@ -50,12 +55,14 @@ class InMemoryRepository<E extends WithId> implements Repository<E> {
   Future<Either<RepositoryBaseFailure, E?>> getById(UniqueId id) async {
     await Future.delayed(delay);
     final entity = _entitySet[id.value];
-    if (entity == null) return Left(RepositoryFailure.server('Entity not found'));
+    if (entity == null)
+      return Left(RepositoryFailure.server('Entity not found'));
     return Right(entity);
   }
 
   @override
-  Future<Either<RepositoryBaseFailure, E>> update(E entity, UniqueId? uniqueId) async {
+  Future<Either<RepositoryBaseFailure, E>> update(
+      E entity, UniqueId? uniqueId) async {
     final id = entityId(entity);
     _entitySet[id] = entity;
     return Right(entity);
@@ -77,7 +84,8 @@ class InMemoryRepository<E extends WithId> implements Repository<E> {
   String? currentUserToken;
 
   @override
-  Future<Either<RepositoryBaseFailure, String>> getCurrentUserTokenByID(UniqueId id) {
+  Future<Either<RepositoryBaseFailure, String>> getCurrentUserTokenByID(
+      UniqueId id) {
     // TODO(prasant): implement getCurrentUserTokenByID
     throw UnimplementedError();
   }
@@ -98,13 +106,18 @@ class InMemoryRepository<E extends WithId> implements Repository<E> {
   }
 
   @override
-  Future<Either<RepositoryBaseFailure, E>> findUserByTokenOrID({UniqueId? id, String? token}) {
+  Future<Either<RepositoryBaseFailure, E>> findUserByTokenOrID(
+      {UniqueId? id, String? token}) {
     // TODO(prasant): implement findUserByTokenOrID
     throw UnimplementedError();
   }
 
   @override
-  Future<Either<RepositoryBaseFailure, E>> upsert({UniqueId? id, String? token, required E entity, bool checkIfUserLoggedIn = false}) {
+  Future<Either<RepositoryBaseFailure, E>> upsert(
+      {UniqueId? id,
+      String? token,
+      required E entity,
+      bool checkIfUserLoggedIn = false}) {
     // TODO(prasant): implement addOrUpdateUser
     throw UnimplementedError();
   }

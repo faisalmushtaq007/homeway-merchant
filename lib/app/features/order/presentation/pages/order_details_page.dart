@@ -25,7 +25,10 @@ class _OrderDetailPageController extends State<OrderDetailPage> {
     userInfo: UserInfo(
       userName: 'Sonu',
       contactNumber: '+966 556789675',
-      deliveryAddress: DeliveryAddress(contactNumber: '+966 556789675', completeAddress: '8228 Imam Ali Road,Riyadh,16789,Saudi Arabia', contactPerson: 'Sonu'),
+      deliveryAddress: DeliveryAddress(
+          contactNumber: '+966 556789675',
+          completeAddress: '8228 Imam Ali Road,Riyadh,16789,Saudi Arabia',
+          contactPerson: 'Sonu'),
     ),
     store: Store(
       storeID: 1,
@@ -40,7 +43,8 @@ class _OrderDetailPageController extends State<OrderDetailPage> {
           menuID: 21,
           price: 10,
           menuName: 'Chicken Biryani',
-          menuImage: 'https://img.freepik.com/premium-photo/fish-biriyani-south-indian-style-fish-biriyani-arranged-traditionally-brass-vessel_527904-1690.jpg',
+          menuImage:
+              'https://img.freepik.com/premium-photo/fish-biriyani-south-indian-style-fish-biriyani-arranged-traditionally-brass-vessel_527904-1690.jpg',
           addons: [],
           tasteType: 'Spicy',
           tasteLevel: 'Medium',
@@ -80,7 +84,8 @@ class _OrderDetailPageController extends State<OrderDetailPage> {
               ),
               addonsId: 4,
               price: 2,
-              addonsImage: 'https://img.freepik.com/premium-photo/gulab-jamun-indian-dessert-topped-with-pistachio_136354-1769.jpg',
+              addonsImage:
+                  'https://img.freepik.com/premium-photo/gulab-jamun-indian-dessert-topped-with-pistachio_136354-1769.jpg',
             ),
           ],
           tasteType: 'Pungent',
@@ -103,7 +108,8 @@ class _OrderDetailPageController extends State<OrderDetailPage> {
       driverAddress: AddressBean(
         latitude: 23.86,
         longitude: 45.27,
-        displayAddressName: '12 King Fahd Rd, Al Islamiah, Jeddah, Jeddah,57513,Saudi Arabia',
+        displayAddressName:
+            '12 King Fahd Rd, Al Islamiah, Jeddah, Jeddah,57513,Saudi Arabia',
       ),
     ),
     payment: Payment(
@@ -118,7 +124,9 @@ class _OrderDetailPageController extends State<OrderDetailPage> {
   );
 
   String activeLocale = 'en_US';
-  final Map<String, moment.MomentLocalization> locales = moment.MomentLocalizations.locales.map((key, value) => MapEntry(key, value()));
+  final Map<String, moment.MomentLocalization> locales = moment
+      .MomentLocalizations.locales
+      .map((key, value) => MapEntry(key, value()));
   final TextEditingController cancelReason = TextEditingController();
 
   @override
@@ -127,7 +135,8 @@ class _OrderDetailPageController extends State<OrderDetailPage> {
     //orderEntity = widget.orderEntity;
     scrollController = ScrollController();
     customScrollViewScrollController = ScrollController();
-    activeLocale = serviceLocator<LanguageController>().targetAppLanguage.value.toString();
+    activeLocale =
+        serviceLocator<LanguageController>().targetAppLanguage.value.toString();
     subTotal = 0.0;
   }
 
@@ -148,7 +157,8 @@ class _OrderDetailPageController extends State<OrderDetailPage> {
     setState(() {});
   }
 
-  Future<bool?> confirmCancelOrder(BuildContext context, OrderEntity orderEntity) async {
+  Future<bool?> confirmCancelOrder(
+      BuildContext context, OrderEntity orderEntity) async {
     final bool? status = await showConfirmationDialog<bool>(
       context: context,
       barrierDismissible: true,
@@ -176,7 +186,8 @@ class _OrderDetailPageController extends State<OrderDetailPage> {
               },
               child: SingleChildScrollView(
                 child: Column(
-                  textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                  textDirection:
+                      serviceLocator<LanguageController>().targetTextDirection,
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     Wrap(
@@ -192,11 +203,13 @@ class _OrderDetailPageController extends State<OrderDetailPage> {
                                 style: context.labelMedium,
                               ),
                               TextSpan(
-                                text: '\nAre you sure you want to cancel this order. The action can not be undone.\n',
+                                text:
+                                    '\nAre you sure you want to cancel this order. The action can not be undone.\n',
                                 style: context.labelMedium,
                               ),
                               TextSpan(
-                                text: '\nWe are always here to help. For any question, please visit our ',
+                                text:
+                                    '\nWe are always here to help. For any question, please visit our ',
                                 style: context.labelMedium,
                               ),
                               TextSpan(
@@ -205,7 +218,8 @@ class _OrderDetailPageController extends State<OrderDetailPage> {
                                     decoration: TextDecoration.underline,
                                     fontWeight: FontWeight.w600,
                                   ),
-                                  recognizer: TapGestureRecognizer()..onTap = () async {}),
+                                  recognizer: TapGestureRecognizer()
+                                    ..onTap = () async {}),
                               TextSpan(
                                 text: ' for more information.\n',
                                 style: context.labelMedium,
@@ -218,7 +232,9 @@ class _OrderDetailPageController extends State<OrderDetailPage> {
                     TextField(
                       controller: cancelReason,
                       maxLines: 3,
-                      decoration: InputDecoration(hintText: 'Share the reason for canceling this order'),
+                      decoration: InputDecoration(
+                          hintText:
+                              'Share the reason for canceling this order'),
                     ),
                     //textDirection: serviceLocator<LanguageController>().targetTextDirection,
                   ],
@@ -236,10 +252,12 @@ class _OrderDetailPageController extends State<OrderDetailPage> {
   }
 
   Widget bottomWidget(int index) {
-    return switch (OrderStatus.values.byName(OrderStatus.values[index].toString())) {
+    return switch (
+        OrderStatus.values.byName(OrderStatus.values[index].toString())) {
       OrderStatus.newOrder => Row(
           crossAxisAlignment: CrossAxisAlignment.center,
-          textDirection: serviceLocator<LanguageController>().targetTextDirection,
+          textDirection:
+              serviceLocator<LanguageController>().targetTextDirection,
           children: [
             Expanded(
               child: ElevatedButton(
@@ -257,7 +275,8 @@ class _OrderDetailPageController extends State<OrderDetailPage> {
                   style: const TextStyle(color: Color.fromRGBO(42, 45, 50, 1)),
                   overflow: TextOverflow.ellipsis,
                   maxLines: 1,
-                  textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                  textDirection:
+                      serviceLocator<LanguageController>().targetTextDirection,
                 ).translate(),
               ),
             ),
@@ -275,14 +294,16 @@ class _OrderDetailPageController extends State<OrderDetailPage> {
                   'Accept',
                   overflow: TextOverflow.ellipsis,
                   maxLines: 1,
-                  textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                  textDirection:
+                      serviceLocator<LanguageController>().targetTextDirection,
                 ).translate(),
               ),
             ),
           ],
         ),
       OrderStatus.onProcessing || OrderStatus.preparing => Row(
-          textDirection: serviceLocator<LanguageController>().targetTextDirection,
+          textDirection:
+              serviceLocator<LanguageController>().targetTextDirection,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Expanded(
@@ -299,7 +320,8 @@ class _OrderDetailPageController extends State<OrderDetailPage> {
                   style: const TextStyle(color: Color.fromRGBO(42, 45, 50, 1)),
                   overflow: TextOverflow.ellipsis,
                   maxLines: 1,
-                  textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                  textDirection:
+                      serviceLocator<LanguageController>().targetTextDirection,
                 ).translate(),
               ),
             ),
@@ -317,7 +339,8 @@ class _OrderDetailPageController extends State<OrderDetailPage> {
                   'Move to Ready',
                   overflow: TextOverflow.ellipsis,
                   maxLines: 1,
-                  textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                  textDirection:
+                      serviceLocator<LanguageController>().targetTextDirection,
                 ).translate(),
               ),
             ),
@@ -331,16 +354,19 @@ class _OrderDetailPageController extends State<OrderDetailPage> {
   Widget build(BuildContext context) => _OrderDetailPageView(this);
 }
 
-class _OrderDetailPageView extends WidgetView<OrderDetailPage, _OrderDetailPageController> {
+class _OrderDetailPageView
+    extends WidgetView<OrderDetailPage, _OrderDetailPageController> {
   const _OrderDetailPageView(super.state);
 
   @override
   Widget build(BuildContext context) {
     final MediaQueryData media = MediaQuery.of(context);
     final double margins = GlobalApp.responsiveInsets(media.size.width);
-    final double topPadding = margins; //media.padding.top + kToolbarHeight + margins; //margins * 1.5;
+    final double topPadding =
+        margins; //media.padding.top + kToolbarHeight + margins; //margins * 1.5;
     final double bottomPadding = margins;
-    moment.Moment.setGlobalLocalization(moment.MomentLocalizations.byLocale(state.activeLocale)!);
+    moment.Moment.setGlobalLocalization(
+        moment.MomentLocalizations.byLocale(state.activeLocale)!);
 
     final moment.Moment now = moment.Moment.now();
 
@@ -374,24 +400,28 @@ class _OrderDetailPageView extends WidgetView<OrderDetailPage, _OrderDetailPageC
                     textColor: Colors.yellow,
                     label: Text(
                       '10',
-                      style: context.labelSmall!.copyWith(color: context.colorScheme.onPrimary),
+                      style: context.labelSmall!
+                          .copyWith(color: context.colorScheme.onPrimary),
                       //Color.fromRGBO(251, 219, 11, 1)
                     ),
                     child: Icon(
                       Icons.notifications,
                       color: context.colorScheme.primary,
-                      textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                      textDirection: serviceLocator<LanguageController>()
+                          .targetTextDirection,
                     ),
                   ),
                 ),
                 Directionality(
-                  textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                  textDirection:
+                      serviceLocator<LanguageController>().targetTextDirection,
                   child: IconButton(
                     onPressed: () {},
                     icon: Icon(
                       Icons.help,
                       color: context.colorScheme.primary,
-                      textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                      textDirection: serviceLocator<LanguageController>()
+                          .targetTextDirection,
                     ),
                   ),
                 ),
@@ -410,12 +440,16 @@ class _OrderDetailPageView extends WidgetView<OrderDetailPage, _OrderDetailPageC
               from: context.width / 2 - 60,
               duration: const Duration(milliseconds: 500),
               child: Directionality(
-                textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                textDirection:
+                    serviceLocator<LanguageController>().targetTextDirection,
                 child: PageBody(
                   controller: state.scrollController,
                   constraints: BoxConstraints(
                     minWidth: 1000,
-                    minHeight: media.size.height - (media.padding.top + kToolbarHeight + media.padding.bottom),
+                    minHeight: media.size.height -
+                        (media.padding.top +
+                            kToolbarHeight +
+                            media.padding.bottom),
                   ),
                   padding: EdgeInsetsDirectional.only(
                     //top: topPadding,
@@ -432,7 +466,9 @@ class _OrderDetailPageView extends WidgetView<OrderDetailPage, _OrderDetailPageC
                           [
                             ListTile(
                               title: Directionality(
-                                textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                textDirection:
+                                    serviceLocator<LanguageController>()
+                                        .targetTextDirection,
                                 child: WrapText(
                                   state.orderEntity.store.storeName,
                                   breakWordCharacter: '-',
@@ -449,7 +485,9 @@ class _OrderDetailPageView extends WidgetView<OrderDetailPage, _OrderDetailPageC
                                 ),
                               ),
                               subtitle: Directionality(
-                                textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                textDirection:
+                                    serviceLocator<LanguageController>()
+                                        .targetTextDirection,
                                 child: WrapText(
                                   'Order ID: HMW-${state.orderEntity.orderID}',
                                   breakWordCharacter: '-',
@@ -457,24 +495,33 @@ class _OrderDetailPageView extends WidgetView<OrderDetailPage, _OrderDetailPageC
                                   asyncMode: true,
                                   minFontSize: 12,
                                   maxFontSize: 14,
-                                  textStyle: context.labelLarge!.copyWith(fontWeight: FontWeight.w500),
+                                  textStyle: context.labelLarge!
+                                      .copyWith(fontWeight: FontWeight.w500),
                                   maxLines: 1,
                                   overflow: TextOverflow.ellipsis,
                                 ),
                               ),
                               trailing: ClipRRect(
-                                borderRadius: BorderRadiusDirectional.circular(24),
+                                borderRadius:
+                                    BorderRadiusDirectional.circular(24),
                                 child: Container(
-                                  padding: const EdgeInsetsDirectional.symmetric(horizontal: 8, vertical: 4),
+                                  padding:
+                                      const EdgeInsetsDirectional.symmetric(
+                                          horizontal: 8, vertical: 4),
                                   decoration: BoxDecoration(
-                                    color: const Color.fromRGBO(251, 219, 11, 1),
-                                    borderRadius: BorderRadiusDirectional.circular(24),
+                                    color:
+                                        const Color.fromRGBO(251, 219, 11, 1),
+                                    borderRadius:
+                                        BorderRadiusDirectional.circular(24),
                                     border: Border.all(
-                                      color: const Color.fromRGBO(243, 188, 88, 1),
+                                      color:
+                                          const Color.fromRGBO(243, 188, 88, 1),
                                     ),
                                   ),
                                   child: Directionality(
-                                    textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                    textDirection:
+                                        serviceLocator<LanguageController>()
+                                            .targetTextDirection,
                                     child: WrapText(
                                       state.orderEntity.payment.mode,
                                       breakWordCharacter: '-',
@@ -492,7 +539,8 @@ class _OrderDetailPageView extends WidgetView<OrderDetailPage, _OrderDetailPageC
                                 ),
                               ),
                               horizontalTitleGap: 0,
-                              visualDensity: const VisualDensity(horizontal: -4),
+                              visualDensity:
+                                  const VisualDensity(horizontal: -4),
                               minLeadingWidth: 0,
                               contentPadding: EdgeInsetsDirectional.zero,
                             ),
@@ -502,7 +550,8 @@ class _OrderDetailPageView extends WidgetView<OrderDetailPage, _OrderDetailPageC
                             ),*/
 
                             OrderTimeLineCardWidget(
-                              key: const Key('order-details-timeline-card-widget'),
+                              key: const Key(
+                                  'order-details-timeline-card-widget'),
                               orderEntity: state.orderEntity,
                               activeLocale: state.activeLocale,
                             ),
@@ -513,7 +562,8 @@ class _OrderDetailPageView extends WidgetView<OrderDetailPage, _OrderDetailPageC
                             Wrap(
                               children: [
                                 OrderTimelineTrackingWidget(
-                                  key: const Key('order-details-timeline--tracking-card-widget'),
+                                  key: const Key(
+                                      'order-details-timeline--tracking-card-widget'),
                                   orderEntity: state.orderEntity,
                                   activeLocale: state.activeLocale,
                                 ),
@@ -524,9 +574,13 @@ class _OrderDetailPageView extends WidgetView<OrderDetailPage, _OrderDetailPageC
                               duration: Duration(milliseconds: 100),
                             ),
                             Directionality(
-                              textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                              textDirection:
+                                  serviceLocator<LanguageController>()
+                                      .targetTextDirection,
                               child: Wrap(
-                                textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                textDirection:
+                                    serviceLocator<LanguageController>()
+                                        .targetTextDirection,
                                 children: [
                                   Text(
                                     'Ordered Menu',
@@ -547,10 +601,13 @@ class _OrderDetailPageView extends WidgetView<OrderDetailPage, _OrderDetailPageC
                             ),
                             Wrap(
                               //direction: Axis.vertical,
-                              textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                              textDirection:
+                                  serviceLocator<LanguageController>()
+                                      .targetTextDirection,
                               children: [
                                 OrderMenuDetailsWidget(
-                                  key: const Key('order-details-menu-details-widget'),
+                                  key: const Key(
+                                      'order-details-menu-details-widget'),
                                   orderEntity: state.orderEntity,
                                   subTotalOnChange: (value) {},
                                 ),
@@ -560,7 +617,10 @@ class _OrderDetailPageView extends WidgetView<OrderDetailPage, _OrderDetailPageC
                               12,
                               duration: Duration(milliseconds: 100),
                             ),
-                            OrderDeliveryInfoWidget(key: const Key('order-details-customer-info-widget'), orderEntity: state.orderEntity),
+                            OrderDeliveryInfoWidget(
+                                key: const Key(
+                                    'order-details-customer-info-widget'),
+                                orderEntity: state.orderEntity),
                             const AnimatedGap(
                               12,
                               duration: Duration(milliseconds: 100),
@@ -570,7 +630,9 @@ class _OrderDetailPageView extends WidgetView<OrderDetailPage, _OrderDetailPageC
                               style: context.bodyMedium!.copyWith(
                                 fontWeight: FontWeight.w600,
                               ),
-                              textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                              textDirection:
+                                  serviceLocator<LanguageController>()
+                                      .targetTextDirection,
                               overflow: TextOverflow.ellipsis,
                               softWrap: true,
                               maxLines: 1,
@@ -580,7 +642,8 @@ class _OrderDetailPageView extends WidgetView<OrderDetailPage, _OrderDetailPageC
                               duration: Duration(milliseconds: 100),
                             ),
                             AssignDriverWidget(
-                              key: const Key('order-details-assign-driver-widget'),
+                              key: const Key(
+                                  'order-details-assign-driver-widget'),
                               orderEntity: state.orderEntity,
                             ),
                             const AnimatedGap(
@@ -592,7 +655,9 @@ class _OrderDetailPageView extends WidgetView<OrderDetailPage, _OrderDetailPageC
                               style: context.bodyMedium!.copyWith(
                                 fontWeight: FontWeight.w600,
                               ),
-                              textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                              textDirection:
+                                  serviceLocator<LanguageController>()
+                                      .targetTextDirection,
                               overflow: TextOverflow.ellipsis,
                               softWrap: true,
                               maxLines: 1,
@@ -602,7 +667,8 @@ class _OrderDetailPageView extends WidgetView<OrderDetailPage, _OrderDetailPageC
                               duration: Duration(milliseconds: 100),
                             ),
                             OrderPaymentSummary(
-                              key: const Key('order-details-payment-summary-widget'),
+                              key: const Key(
+                                  'order-details-payment-summary-widget'),
                               orderEntity: state.orderEntity,
                             ),
                             const AnimatedGap(

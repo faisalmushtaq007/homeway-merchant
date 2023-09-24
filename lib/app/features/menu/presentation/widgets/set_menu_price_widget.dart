@@ -21,8 +21,10 @@ class SetMenuPriceWidget extends StatefulWidget {
 }
 
 class _SetMenuPriceWidgetState extends State<SetMenuPriceWidget> {
-  TextEditingController maximumRetailPriceOfMenuTextEditingController = TextEditingController(text: '00.00');
-  TextEditingController discountPriceOfMenuTextEditingController = TextEditingController(text: '00.00');
+  TextEditingController maximumRetailPriceOfMenuTextEditingController =
+      TextEditingController(text: '00.00');
+  TextEditingController discountPriceOfMenuTextEditingController =
+      TextEditingController(text: '00.00');
   String portionName = '';
   String sellingMaxRetailPrice = '00.00';
   String sellingDiscountPrice = '00.00';
@@ -32,18 +34,28 @@ class _SetMenuPriceWidgetState extends State<SetMenuPriceWidget> {
   void initState() {
     super.initState();
     if (widget.hasCustomPortion && widget.customPortion != null) {
-      portionName = '${widget.customPortion?.title ?? ''} ${widget.customPortion?.unit ?? ''}';
-      maximumRetailPriceOfMenuTextEditingController.text = widget.customPortion?.defaultPrice.toString() ?? '00.00';
-      discountPriceOfMenuTextEditingController.text = widget.customPortion?.discountedPrice.toString() ?? '00.00';
-      sellingMaxRetailPrice = maximumRetailPriceOfMenuTextEditingController.value.text.trim();
-      sellingDiscountPrice = discountPriceOfMenuTextEditingController.value.text.trim();
+      portionName =
+          '${widget.customPortion?.title ?? ''} ${widget.customPortion?.unit ?? ''}';
+      maximumRetailPriceOfMenuTextEditingController.text =
+          widget.customPortion?.defaultPrice.toString() ?? '00.00';
+      discountPriceOfMenuTextEditingController.text =
+          widget.customPortion?.discountedPrice.toString() ?? '00.00';
+      sellingMaxRetailPrice =
+          maximumRetailPriceOfMenuTextEditingController.value.text.trim();
+      sellingDiscountPrice =
+          discountPriceOfMenuTextEditingController.value.text.trim();
     } else {
       if (widget.menuPortion != null) {
-        portionName = '${widget.menuPortion?.title ?? ''} ${widget.menuPortion?.unit ?? ''}';
-        maximumRetailPriceOfMenuTextEditingController.text = widget.menuPortion?.defaultPrice.toString() ?? '00.00';
-        discountPriceOfMenuTextEditingController.text = widget.menuPortion?.discountedPrice.toString() ?? '00.00';
-        sellingMaxRetailPrice = maximumRetailPriceOfMenuTextEditingController.value.text.trim();
-        sellingDiscountPrice = discountPriceOfMenuTextEditingController.value.text.trim();
+        portionName =
+            '${widget.menuPortion?.title ?? ''} ${widget.menuPortion?.unit ?? ''}';
+        maximumRetailPriceOfMenuTextEditingController.text =
+            widget.menuPortion?.defaultPrice.toString() ?? '00.00';
+        discountPriceOfMenuTextEditingController.text =
+            widget.menuPortion?.discountedPrice.toString() ?? '00.00';
+        sellingMaxRetailPrice =
+            maximumRetailPriceOfMenuTextEditingController.value.text.trim();
+        sellingDiscountPrice =
+            discountPriceOfMenuTextEditingController.value.text.trim();
       }
     }
   }
@@ -74,10 +86,12 @@ class _SetMenuPriceWidgetState extends State<SetMenuPriceWidget> {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.stretch,
-            textDirection: serviceLocator<LanguageController>().targetTextDirection,
+            textDirection:
+                serviceLocator<LanguageController>().targetTextDirection,
             children: [
               Wrap(
-                textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                textDirection:
+                    serviceLocator<LanguageController>().targetTextDirection,
                 alignment: WrapAlignment.spaceBetween,
                 crossAxisAlignment: WrapCrossAlignment.center,
                 children: [
@@ -102,12 +116,14 @@ class _SetMenuPriceWidgetState extends State<SetMenuPriceWidget> {
                           fontWeight: FontWeight.w600,
                           color: Color.fromRGBO(42, 45, 50, 1.0),
                         ),
-                        textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                        textDirection: serviceLocator<LanguageController>()
+                            .targetTextDirection,
                       ).translate(),
                     ),
                   ),
                   Directionality(
-                    textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                    textDirection: serviceLocator<LanguageController>()
+                        .targetTextDirection,
                     child: RichText(
                       text: TextSpan(
                         style: context.bodyMedium!.copyWith(),
@@ -131,7 +147,8 @@ class _SetMenuPriceWidgetState extends State<SetMenuPriceWidget> {
               const AnimatedGap(12, duration: Duration(milliseconds: 500)),
               AppTextFieldWidget(
                 controller: maximumRetailPriceOfMenuTextEditingController,
-                textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                textDirection:
+                    serviceLocator<LanguageController>().targetTextDirection,
                 textInputAction: TextInputAction.done,
                 inputFormatters: [
                   FilteringTextInputFormatter.allow(
@@ -161,14 +178,18 @@ class _SetMenuPriceWidgetState extends State<SetMenuPriceWidget> {
                   setState(() {});
                 },
                 onSaved: (newValue) {
-                  setMaxRetailPriceFunction(context, maximumRetailPriceOfMenuTextEditingController.value.text.trim());
+                  setMaxRetailPriceFunction(
+                      context,
+                      maximumRetailPriceOfMenuTextEditingController.value.text
+                          .trim());
                   return;
                 },
               ),
               const AnimatedGap(12, duration: Duration(milliseconds: 500)),
               AppTextFieldWidget(
                 controller: discountPriceOfMenuTextEditingController,
-                textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                textDirection:
+                    serviceLocator<LanguageController>().targetTextDirection,
                 textInputAction: TextInputAction.done,
                 inputFormatters: [
                   FilteringTextInputFormatter.allow(
@@ -198,7 +219,10 @@ class _SetMenuPriceWidgetState extends State<SetMenuPriceWidget> {
                   setState(() {});
                 },
                 onSaved: (newValue) {
-                  setDiscountPriceFunction(context, discountPriceOfMenuTextEditingController.value.text.trim());
+                  setDiscountPriceFunction(
+                      context,
+                      discountPriceOfMenuTextEditingController.value.text
+                          .trim());
                   return;
                 },
               ),
@@ -231,7 +255,8 @@ class _SetMenuPriceWidgetState extends State<SetMenuPriceWidget> {
             );
       } else {
         // new value
-        serviceLocator<MenuEntity>().customPortion?.defaultPrice = double.tryParse(newValue) ?? 0.0;
+        serviceLocator<MenuEntity>().customPortion?.defaultPrice =
+            double.tryParse(newValue) ?? 0.0;
         context.read<MenuBloc>().add(
               PushMenuEntityData(
                 menuEntity: serviceLocator<MenuEntity>(),
@@ -244,9 +269,14 @@ class _SetMenuPriceWidgetState extends State<SetMenuPriceWidget> {
       final cacheMenuPortion = serviceLocator<MenuEntity>().menuPortions;
       widget.menuPortion?.defaultPrice = double.tryParse(newValue) ?? 0.0;
       if (widget.currentIndex != null) {
-        widget.listOfMenuPortions[widget.currentIndex!].defaultPrice = double.tryParse(newValue) ?? 0.0;
-        serviceLocator<MenuEntity>().menuPortions[widget.currentIndex!].defaultPrice =
-            double.tryParse(maximumRetailPriceOfMenuTextEditingController.value.text.trim()) ?? 0.0;
+        widget.listOfMenuPortions[widget.currentIndex!].defaultPrice =
+            double.tryParse(newValue) ?? 0.0;
+        serviceLocator<MenuEntity>()
+            .menuPortions[widget.currentIndex!]
+            .defaultPrice = double.tryParse(
+                maximumRetailPriceOfMenuTextEditingController.value.text
+                    .trim()) ??
+            0.0;
         context.read<MenuBloc>().add(
               PushMenuEntityData(
                 menuEntity: serviceLocator<MenuEntity>(),
@@ -276,7 +306,8 @@ class _SetMenuPriceWidgetState extends State<SetMenuPriceWidget> {
             );
       } else {
         // new value
-        serviceLocator<MenuEntity>().customPortion?.discountedPrice = double.tryParse(newValue) ?? 0.0;
+        serviceLocator<MenuEntity>().customPortion?.discountedPrice =
+            double.tryParse(newValue) ?? 0.0;
         context.read<MenuBloc>().add(
               PushMenuEntityData(
                 menuEntity: serviceLocator<MenuEntity>(),
@@ -289,9 +320,14 @@ class _SetMenuPriceWidgetState extends State<SetMenuPriceWidget> {
       final cacheMenuPortion = serviceLocator<MenuEntity>().menuPortions;
       widget.menuPortion?.discountedPrice = double.tryParse(newValue) ?? 0.0;
       if (widget.currentIndex != null) {
-        widget.listOfMenuPortions[widget.currentIndex!].discountedPrice = double.tryParse(newValue) ?? 0.0;
-        serviceLocator<MenuEntity>().menuPortions[widget.currentIndex!].discountedPrice =
-            double.tryParse(maximumRetailPriceOfMenuTextEditingController.value.text.trim()) ?? 0.0;
+        widget.listOfMenuPortions[widget.currentIndex!].discountedPrice =
+            double.tryParse(newValue) ?? 0.0;
+        serviceLocator<MenuEntity>()
+            .menuPortions[widget.currentIndex!]
+            .discountedPrice = double.tryParse(
+                maximumRetailPriceOfMenuTextEditingController.value.text
+                    .trim()) ??
+            0.0;
         context.read<MenuBloc>().add(
               PushMenuEntityData(
                 menuEntity: serviceLocator<MenuEntity>(),

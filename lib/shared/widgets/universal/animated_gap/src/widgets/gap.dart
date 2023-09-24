@@ -79,7 +79,8 @@ class Gap extends StatelessWidget {
   Widget build(BuildContext context) {
     final ScrollableState? scrollableState = Scrollable.maybeOf(context);
     final AxisDirection? axisDirection = scrollableState?.axisDirection;
-    final Axis? fallbackDirection = axisDirection == null ? null : axisDirectionToAxis(axisDirection);
+    final Axis? fallbackDirection =
+        axisDirection == null ? null : axisDirectionToAxis(axisDirection);
 
     return _RawGap(
       mainAxisExtent,
@@ -194,7 +195,8 @@ class _RawGap extends LeafRenderObjectWidget {
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
     properties.add(DoubleProperty('mainAxisExtent', mainAxisExtent));
-    properties.add(DoubleProperty('crossAxisExtent', crossAxisExtent, defaultValue: 0));
+    properties.add(
+        DoubleProperty('crossAxisExtent', crossAxisExtent, defaultValue: 0));
     properties.add(ColorProperty('color', color));
     properties.add(EnumProperty<Axis>('fallbackDirection', fallbackDirection));
   }

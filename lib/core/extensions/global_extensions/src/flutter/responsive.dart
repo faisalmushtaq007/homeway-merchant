@@ -15,7 +15,8 @@ class ResponsiveTools {
 
   static late double w;
 
-  static void setAppSize(BoxConstraints constraints, Orientation currentOrientation) {
+  static void setAppSize(
+      BoxConstraints constraints, Orientation currentOrientation) {
     boxConstraints = constraints;
     orientation = currentOrientation;
 
@@ -32,7 +33,8 @@ class ResponsiveTools {
     if (kIsWeb) {
       deviceType = DeviceType.web;
     } else if (Platform.isAndroid || Platform.isIOS) {
-      if ((orientation == Orientation.portrait && w < 600) || (orientation == Orientation.landscape && h < 600)) {
+      if ((orientation == Orientation.portrait && w < 600) ||
+          (orientation == Orientation.landscape && h < 600)) {
         deviceType = DeviceType.mobile;
       } else {
         deviceType = DeviceType.tablet;

@@ -92,7 +92,11 @@ class _WrapAndMoreState extends State<WrapAndMore> with GetItStateMixin {
   @override
   void initState() {
     super.initState();
-    serviceLocator<WrapAndMoreController>().initData(children: widget.children, key: rowKey, maxRow: widget.maxLine, spacing: widget.spacing);
+    serviceLocator<WrapAndMoreController>().initData(
+        children: widget.children,
+        key: rowKey,
+        maxRow: widget.maxLine,
+        spacing: widget.spacing);
   }
 
   @override
@@ -105,20 +109,33 @@ class _WrapAndMoreState extends State<WrapAndMore> with GetItStateMixin {
           return MeasureSize(
             onChange: (size) {
               serviceLocator<WrapAndMoreController>().updateWrapArea(size);
-              widget.overflowWidget(serviceLocator<WrapAndMoreController>().showChildCount);
+              widget.overflowWidget(
+                  serviceLocator<WrapAndMoreController>().showChildCount);
             },
             child: SizedBox(
-              height: (serviceLocator<WrapAndMoreController>().overflowSize.height * widget.maxLine) + (widget.runSpacing * (widget.maxLine - 1)),
+              height:
+                  (serviceLocator<WrapAndMoreController>().overflowSize.height *
+                          widget.maxLine) +
+                      (widget.runSpacing * (widget.maxLine - 1)),
               child: Wrap(
                 direction: widget.direction,
-                textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                textDirection:
+                    serviceLocator<LanguageController>().targetTextDirection,
                 spacing: widget.spacing,
                 runSpacing: widget.runSpacing,
                 children: serviceLocator<WrapAndMoreController>().isRendered
                     ? [
-                        ...widget.children.take(serviceLocator<WrapAndMoreController>().showChildCount).toList(),
-                        if (widget.children.length - serviceLocator<WrapAndMoreController>().showChildCount > 0)
-                          widget.overflowWidget(widget.children.length - serviceLocator<WrapAndMoreController>().showChildCount)
+                        ...widget.children
+                            .take(serviceLocator<WrapAndMoreController>()
+                                .showChildCount)
+                            .toList(),
+                        if (widget.children.length -
+                                serviceLocator<WrapAndMoreController>()
+                                    .showChildCount >
+                            0)
+                          widget.overflowWidget(widget.children.length -
+                              serviceLocator<WrapAndMoreController>()
+                                  .showChildCount)
                       ]
                     : widget.children.toList(),
               ),
@@ -141,7 +158,8 @@ class _WrapAndMoreState extends State<WrapAndMore> with GetItStateMixin {
                           index,
                           MeasureSize(
                             onChange: (Size size) {
-                              serviceLocator<WrapAndMoreController>().updateChildrenSize(index, size);
+                              serviceLocator<WrapAndMoreController>()
+                                  .updateChildrenSize(index, size);
                             },
                             child: value,
                           ));
@@ -151,7 +169,8 @@ class _WrapAndMoreState extends State<WrapAndMore> with GetItStateMixin {
                 MeasureSize(
                   child: widget.overflowWidget(0),
                   onChange: (p0) {
-                    serviceLocator<WrapAndMoreController>().updateOverflowSize(p0);
+                    serviceLocator<WrapAndMoreController>()
+                        .updateOverflowSize(p0);
                   },
                 )
               ],

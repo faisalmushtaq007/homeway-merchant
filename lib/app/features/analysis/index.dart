@@ -1,4 +1,4 @@
-
+import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:homemakers_merchant/app/features/analysis/presentation/manager/order/order_analysis_bloc.dart';
@@ -61,6 +61,7 @@ import 'package:homemakers_merchant/utils/functional/functional.dart';
 import 'package:homemakers_merchant/utils/gradient_css/gradient_like_css.dart';
 import 'package:homemakers_merchant/utils/image_type.dart';
 import 'package:intl/intl.dart';
+import 'package:jiffy/jiffy.dart';
 import 'package:moment_dart/moment_dart.dart' as moment;
 import 'package:network_manager/network_manager.dart';
 import 'package:sembast/sembast.dart';
@@ -84,6 +85,7 @@ part 'package:homemakers_merchant/app/features/analysis/presentation/pages/order
 part 'package:homemakers_merchant/app/features/analysis/presentation/pages/subpages/today_order_analysis.dart';
 part 'package:homemakers_merchant/app/features/analysis/presentation/pages/subpages/weekly_order_analysis.dart';
 part 'package:homemakers_merchant/app/features/analysis/presentation/pages/subpages/monthly_order_analysis.dart';
+part 'package:homemakers_merchant/app/features/analysis/presentation/widgets/order/weekly_grid_data.dart';
 part 'package:homemakers_merchant/app/features/analysis/presentation/widgets/order/grid_data.dart';
 part 'package:homemakers_merchant/app/features/analysis/presentation/widgets/order/switch_order_and_sales_widget.dart';
 part 'package:homemakers_merchant/app/features/analysis/presentation/widgets/order/today_order_against_store_chart.dart';
@@ -97,10 +99,10 @@ part 'package:homemakers_merchant/app/features/analysis/presentation/widgets/ord
 part 'package:homemakers_merchant/app/features/analysis/domain/entities/chart_today_entity.dart';
 part 'package:homemakers_merchant/app/features/analysis/domain/entities/today_order_analysis_entity.dart';
 part 'package:homemakers_merchant/app/features/analysis/domain/entities/today_sales_analysis_entity.dart';
-part 'package:homemakers_merchant/app/features/analysis/domain/entities/weekly_analysis_entity.dart';
-part 'package:homemakers_merchant/app/features/analysis/domain/entities/monthly_entity.dart';
-part 'package:homemakers_merchant/app/features/analysis/domain/entities/today_entity.dart';
-part 'package:homemakers_merchant/app/features/analysis/domain/entities/weekly_entity.dart';
+part 'package:homemakers_merchant/app/features/analysis/domain/entities/weekly_analysis/weekly_analysis_entity.dart';
+part 'package:homemakers_merchant/app/features/analysis/domain/entities/weekly_analysis_old_entity.dart';
+part 'package:homemakers_merchant/app/features/analysis/domain/entities/chart_monthly_entity.dart';
+part 'package:homemakers_merchant/app/features/analysis/domain/entities/chart_weekly_entity.dart';
 
 // Common
 part 'package:homemakers_merchant/app/features/analysis/common/analysis_utils.dart';
@@ -109,3 +111,4 @@ part 'package:homemakers_merchant/app/features/analysis/common/analysis_enum.dar
 // Data Source
 part 'package:homemakers_merchant/app/features/analysis/data/local/data_sources/dummy_today_analysis_data.dart';
 part 'package:homemakers_merchant/app/features/analysis/data/local/data_sources/dummy_today_sales_analysis_data.dart';
+part 'package:homemakers_merchant/app/features/analysis/data/local/data_sources/dummy_weekly_analysis_data.dart';

@@ -25,5 +25,6 @@ class EmailValidator extends PatternValidator {
   ///
   /// The [errorMessage] parameter is the error message to be returned if the value
   /// does not represent a valid email address.
-  EmailValidator({required super.errorMessage}) : super(RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$'));
+  EmailValidator({required super.errorMessage})
+      : super(RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$'));
 }

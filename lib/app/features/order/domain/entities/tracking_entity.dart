@@ -10,11 +10,19 @@ class TrackingInfo {
   });
 
   TrackingInfo.fromJson(Map<String, dynamic> json)
-      : tracking = (json['tracking'] as Map<String, dynamic>?) != null ? Tracking.fromJson(json['tracking'] as Map<String, dynamic>) : null,
-        pickup = (json['pickup'] as Map<String, dynamic>?) != null ? PickupEntity.fromJson(json['pickup'] as Map<String, dynamic>) : null,
+      : tracking = (json['tracking'] as Map<String, dynamic>?) != null
+            ? Tracking.fromJson(json['tracking'] as Map<String, dynamic>)
+            : null,
+        pickup = (json['pickup'] as Map<String, dynamic>?) != null
+            ? PickupEntity.fromJson(json['pickup'] as Map<String, dynamic>)
+            : null,
         estimatedDeliverDateTime = json['estimated_deliver_date_time'] as int?,
-        delivery = (json['delivery'] as Map<String, dynamic>?) != null ? DeliveryEntity.fromJson(json['delivery'] as Map<String, dynamic>) : null,
-        driver = (json['driver'] as Map<String, dynamic>?) != null ? DeliveryDriver.fromJson(json['driver'] as Map<String, dynamic>) : null;
+        delivery = (json['delivery'] as Map<String, dynamic>?) != null
+            ? DeliveryEntity.fromJson(json['delivery'] as Map<String, dynamic>)
+            : null,
+        driver = (json['driver'] as Map<String, dynamic>?) != null
+            ? DeliveryDriver.fromJson(json['driver'] as Map<String, dynamic>)
+            : null;
   final Tracking? tracking;
   final PickupEntity? pickup;
   final int? estimatedDeliverDateTime;
@@ -42,10 +50,15 @@ class Tracking {
   Tracking.fromJson(Map<String, dynamic> json)
       : trackingId = json['tracking_id'] as String?,
         trackingNumber = json['tracking_number'] as String?,
-        eventHistory = (json['event_history'] as List?)?.map((dynamic e) => EventHistory.fromJson(e as Map<String, dynamic>)).toList(),
+        eventHistory = (json['event_history'] as List?)
+            ?.map(
+                (dynamic e) => EventHistory.fromJson(e as Map<String, dynamic>))
+            .toList(),
         //tackingTitle = json['tacking_title'] as String?,
         //trackingTitle=tackingTitleValues.map[json['tracking_title']] as TrackingTitle?,
-        trackingTitle = (json['tracking_title'] != null) ? tackingTitleValues.map[json["tracking_title"]] : TrackingTitle.ORDER_ARRIVED,
+        trackingTitle = (json['tracking_title'] != null)
+            ? tackingTitleValues.map[json["tracking_title"]]
+            : TrackingTitle.ORDER_ARRIVED,
         status = json['status'] as String?;
   final String? trackingId;
   final String? trackingNumber;
@@ -59,7 +72,8 @@ class Tracking {
         'event_history': eventHistory?.map((e) => e.toJson()).toList(),
         //'tacking_title': tackingTitle,
         //'tracking_title': tackingTitleValues.reverse[trackingTitle],
-        'tracking_title': tackingTitleValues.reverse[trackingTitle] ?? TrackingTitle.ORDER_ARRIVED.name,
+        'tracking_title': tackingTitleValues.reverse[trackingTitle] ??
+            TrackingTitle.ORDER_ARRIVED.name,
         'status': status,
       };
 }
@@ -75,11 +89,17 @@ class EventHistory {
   });
 
   EventHistory.fromJson(Map<String, dynamic> json)
-      : eventCode = (json['event_code'] != null) ? tackingTitleValues.map[json["event_code"]] : TrackingTitle.ORDER_ARRIVED,
+      : eventCode = (json['event_code'] != null)
+            ? tackingTitleValues.map[json["event_code"]]
+            : TrackingTitle.ORDER_ARRIVED,
         eventTime = json['event_time'] as int?,
         status = json['status'] as int?,
         eventMessage = json['event_message'] as String?,
-        eventLocation = (json['event_location'] as Map<String, dynamic>?) != null ? AddressBean.fromJson(json['event_location'] as Map<String, dynamic>) : null,
+        eventLocation =
+            (json['event_location'] as Map<String, dynamic>?) != null
+                ? AddressBean.fromJson(
+                    json['event_location'] as Map<String, dynamic>)
+                : null,
         eventSummary = json['event_summary'] as String?;
   final TrackingTitle? eventCode;
   final int? eventTime;
@@ -89,7 +109,8 @@ class EventHistory {
   final String? eventSummary;
 
   Map<String, dynamic> toJson() => {
-        'event_code': tackingTitleValues.reverse[eventCode] ?? TrackingTitle.ORDER_ARRIVED.name,
+        'event_code': tackingTitleValues.reverse[eventCode] ??
+            TrackingTitle.ORDER_ARRIVED.name,
         'event_time': eventTime,
         'status': status,
         'event_message': eventMessage,
@@ -166,7 +187,10 @@ class PickupEntity {
         pickupUserFullname = json['pickup_user_fullname'] as String?,
         pickupUserMobileNumber = json['pickup_user_mobile_number'] as String?,
         pickupUserAddress =
-            (json['pickup_user_address'] as Map<String, dynamic>?) != null ? AddressBean.fromJson(json['pickup_user_address'] as Map<String, dynamic>) : null,
+            (json['pickup_user_address'] as Map<String, dynamic>?) != null
+                ? AddressBean.fromJson(
+                    json['pickup_user_address'] as Map<String, dynamic>)
+                : null,
         pickupOrderId = json['pickup_order_id'] as int?;
   final String? pickupID;
   final String? pickupUserFullname;
@@ -195,10 +219,13 @@ class DeliveryEntity {
   DeliveryEntity.fromJson(Map<String, dynamic> json)
       : deliveryID = json['deliveryID'] as String?,
         deliveryUserFullname = json['delivery_user_fullname'] as String?,
-        deliveryUserMobileNumber = json['delivery_user_mobile_number'] as String?,
-        deliveryUserAddress = (json['delivery_user_address'] as Map<String, dynamic>?) != null
-            ? AddressBean.fromJson(json['delivery_user_address'] as Map<String, dynamic>)
-            : null,
+        deliveryUserMobileNumber =
+            json['delivery_user_mobile_number'] as String?,
+        deliveryUserAddress =
+            (json['delivery_user_address'] as Map<String, dynamic>?) != null
+                ? AddressBean.fromJson(
+                    json['delivery_user_address'] as Map<String, dynamic>)
+                : null,
         deliveryOrderId = json['delivery_order_id'] as int?;
   final String? deliveryID;
   final String? deliveryUserFullname;
@@ -228,7 +255,11 @@ class DeliveryDriver {
       : driverID = json['driverID'] as int?,
         driverName = json['driverName'] as String?,
         driverContactNumber = json['driver_contact_number'] as String?,
-        driverAddress = (json['driver_address'] as Map<String, dynamic>?) != null ? AddressBean.fromJson(json['driver_address'] as Map<String, dynamic>) : null,
+        driverAddress =
+            (json['driver_address'] as Map<String, dynamic>?) != null
+                ? AddressBean.fromJson(
+                    json['driver_address'] as Map<String, dynamic>)
+                : null,
         driverImage = json['driver_image'] as String?;
   final int? driverID;
   final String? driverName;

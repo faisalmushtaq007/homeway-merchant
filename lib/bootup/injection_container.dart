@@ -72,7 +72,8 @@ void _setupGetIt() {
 }
 
 void _setUpModel() {
-  serviceLocator.registerLazySingleton<BusinessProfileEntity>(BusinessProfileEntity.new);
+  serviceLocator
+      .registerLazySingleton<BusinessProfileEntity>(BusinessProfileEntity.new);
   // Addons entity
   serviceLocator.registerLazySingleton<Addons>(
     Addons.new,
@@ -87,7 +88,8 @@ void _setUpModel() {
   serviceLocator.registerLazySingleton<StoreOwnDeliveryPartnersInfo>(
     StoreOwnDeliveryPartnersInfo.new,
   );
-  serviceLocator.registerLazySingleton<List<StoreOwnDeliveryPartnersInfo>>(() => []);
+  serviceLocator
+      .registerLazySingleton<List<StoreOwnDeliveryPartnersInfo>>(() => []);
   // Store entity
   serviceLocator.registerLazySingleton<StoreEntity>(
     () => StoreEntity(
@@ -110,18 +112,21 @@ void _setUpModel() {
 
 Future<void> _setUpAppSetting() async {
   // Wrap and More Controller
-  serviceLocator.registerSingleton<WrapAndMoreController>(WrapAndMoreController());
+  serviceLocator
+      .registerSingleton<WrapAndMoreController>(WrapAndMoreController());
   // Manager Order Controller
   serviceLocator.registerSingleton<ManageOrderController>(
     ManageOrderController(),
   );
   await serviceLocator<ManageOrderController>().loadAll();
-  serviceLocator.registerSingleton<ThemeService>(ThemeServiceHive('app_color_scheme_box'));
+  serviceLocator.registerSingleton<ThemeService>(
+      ThemeServiceHive('app_color_scheme_box'));
   //final ThemeService themeService = ThemeServicePrefs();
   //final ThemeService themeService = ThemeServiceHive('app_color_scheme_box');
   // Initialize the theme service.
   await serviceLocator<ThemeService>().init();
-  serviceLocator.registerSingleton<ThemeController>(ThemeController(serviceLocator()));
+  serviceLocator
+      .registerSingleton<ThemeController>(ThemeController(serviceLocator()));
   // Create a ThemeController that uses the ThemeService.
   //final ThemeController themeController = ThemeController(themeService);
   // Load preferred theme settings, while the app is loading, before MaterialApp
@@ -139,7 +144,8 @@ Future<void> _setUpAppSetting() async {
   );
   await serviceLocator<PermissionController>().loadAll();
   // User Model service
-  serviceLocator.registerSingleton<IStorageService>(LocalUserModelService(GlobalApp.storageBoxName));
+  serviceLocator.registerSingleton<IStorageService>(
+      LocalUserModelService(GlobalApp.storageBoxName));
   await serviceLocator<IStorageService>().init();
 
   serviceLocator.registerSingleton<UserModelStorageController>(
@@ -167,7 +173,8 @@ Future<void> _setUpAppSetting() async {
   // TranslateApi init
   //await translateApi.init(sourceLanguage: GlobalApp.defaultSourceTranslateLanguage, targetLanguage: GlobalApp.defaultSourceTranslateLanguage);
   // Multiple language download
-  final MultipleLanguageDownload multipleLanguageDownload = MultipleLanguageDownload(
+  final MultipleLanguageDownload multipleLanguageDownload =
+      MultipleLanguageDownload(
     languageService: serviceLocator<ILanguageService>(),
     boxName: GlobalApp.languageBoxName,
   );
@@ -179,8 +186,10 @@ Future<void> _setUpAppSetting() async {
   );
   await appTranslator.init(
     languageController: serviceLocator(),
-    sourceLanguage: serviceLocator<LanguageController>().sourceTranslateLanguage,
-    targetLanguage: serviceLocator<LanguageController>().targetTranslateLanguage,
+    sourceLanguage:
+        serviceLocator<LanguageController>().sourceTranslateLanguage,
+    targetLanguage:
+        serviceLocator<LanguageController>().targetTranslateLanguage,
     sourceAppLanguage: serviceLocator<LanguageController>().sourceApplanguage,
     targetAppLanguage: serviceLocator<LanguageController>().targetAppLanguage,
     initTextDirection: serviceLocator<LanguageController>().targetTextDirection,
@@ -188,7 +197,9 @@ Future<void> _setUpAppSetting() async {
 }
 
 void _setUpService() {
-  serviceLocator.registerSingleton<ConnectivityService>(ConnectivityService()).initConnectivityService();
+  serviceLocator
+      .registerSingleton<ConnectivityService>(ConnectivityService())
+      .initConnectivityService();
   serviceLocator
     ..registerSingleton<FreshTokenInterceptor<OAuth2Token>>(
       FreshTokenInterceptor.oAuth2(
@@ -445,7 +456,7 @@ void _setUpUseCases() {
     ),
   );
   serviceLocator.registerLazySingleton<GetAllAppUserPaginationUseCase>(
-        () => GetAllAppUserPaginationUseCase(
+    () => GetAllAppUserPaginationUseCase(
       authenticationRepository: serviceLocator(),
     ),
   );
@@ -473,7 +484,7 @@ void _setUpUseCases() {
     ),
   );
   serviceLocator.registerLazySingleton<SaveAllAppUserUseCase>(
-        () => SaveAllAppUserUseCase(
+    () => SaveAllAppUserUseCase(
       authenticationRepository: serviceLocator(),
     ),
   );
@@ -495,7 +506,7 @@ void _setUpUseCases() {
     ),
   );
   serviceLocator.registerLazySingleton<SaveAllBusinessProfileUseCase>(
-        () => SaveAllBusinessProfileUseCase(
+    () => SaveAllBusinessProfileUseCase(
       userBusinessProfileRepository: serviceLocator(),
     ),
   );
@@ -510,7 +521,7 @@ void _setUpUseCases() {
     ),
   );
   serviceLocator.registerLazySingleton<GetAllBusinessProfilePaginationUseCase>(
-        () => GetAllBusinessProfilePaginationUseCase(
+    () => GetAllBusinessProfilePaginationUseCase(
       userBusinessProfileRepository: serviceLocator(),
     ),
   );
@@ -531,7 +542,7 @@ void _setUpUseCases() {
     ),
   );
   serviceLocator.registerLazySingleton<SaveAllDocumentUseCase>(
-        () => SaveAllDocumentUseCase(
+    () => SaveAllDocumentUseCase(
       userBusinessDocumentRepository: serviceLocator(),
     ),
   );
@@ -551,7 +562,7 @@ void _setUpUseCases() {
     ),
   );
   serviceLocator.registerLazySingleton<GetAllDocumentPaginationUseCase>(
-        () => GetAllDocumentPaginationUseCase(
+    () => GetAllDocumentPaginationUseCase(
       userBusinessDocumentRepository: serviceLocator(),
     ),
   );
@@ -572,7 +583,7 @@ void _setUpUseCases() {
     ),
   );
   serviceLocator.registerLazySingleton<SaveAllPaymentBankUseCase>(
-        () => SaveAllPaymentBankUseCase(
+    () => SaveAllPaymentBankUseCase(
       userPaymentBankRepository: serviceLocator(),
     ),
   );
@@ -592,7 +603,7 @@ void _setUpUseCases() {
     ),
   );
   serviceLocator.registerLazySingleton<GetAllPaymentBankPaginationUseCase>(
-        () => GetAllPaymentBankPaginationUseCase(
+    () => GetAllPaymentBankPaginationUseCase(
       userPaymentBankRepository: serviceLocator(),
     ),
   );
@@ -810,60 +821,80 @@ void _setUpUseCases() {
 }
 
 void _setUpRepository() {
-  serviceLocator.registerSingleton<UserLocalDbRepository<AppUserEntity>>(UserLocalDbRepository<AppUserEntity>());
-  serviceLocator.registerSingleton<AddonsLocalDbRepository<Addons>>(AddonsLocalDbRepository<Addons>());
-  serviceLocator.registerSingleton<StoreOwnDeliveryPartnersLocalDbRepository<StoreOwnDeliveryPartnersInfo>>(
+  serviceLocator.registerSingleton<UserLocalDbRepository<AppUserEntity>>(
+      UserLocalDbRepository<AppUserEntity>());
+  serviceLocator.registerSingleton<AddonsLocalDbRepository<Addons>>(
+      AddonsLocalDbRepository<Addons>());
+  serviceLocator.registerSingleton<
+      StoreOwnDeliveryPartnersLocalDbRepository<StoreOwnDeliveryPartnersInfo>>(
     StoreOwnDeliveryPartnersLocalDbRepository<StoreOwnDeliveryPartnersInfo>(),
   );
-  serviceLocator.registerSingleton<StoreLocalDbRepository<StoreEntity>>(StoreLocalDbRepository<StoreEntity>());
-  serviceLocator.registerSingleton<MenuLocalDbRepository<MenuEntity>>(MenuLocalDbRepository<MenuEntity>());
+  serviceLocator.registerSingleton<StoreLocalDbRepository<StoreEntity>>(
+      StoreLocalDbRepository<StoreEntity>());
+  serviceLocator.registerSingleton<MenuLocalDbRepository<MenuEntity>>(
+      MenuLocalDbRepository<MenuEntity>());
   // Category
-  serviceLocator.registerSingleton<CategoryLocalDbRepository<Category>>(CategoryLocalDbRepository<Category>());
-  serviceLocator.registerSingleton<AuthenticationDataSource>(AuthenticationRemoteDataSource());
+  serviceLocator.registerSingleton<CategoryLocalDbRepository<Category>>(
+      CategoryLocalDbRepository<Category>());
+  serviceLocator.registerSingleton<AuthenticationDataSource>(
+      AuthenticationRemoteDataSource());
   serviceLocator.registerSingleton<AuthenticationRepository>(
-    AuthenticationRepositoryImplement(remoteDataSource: serviceLocator(), userLocalDbRepository: serviceLocator()),
+    AuthenticationRepositoryImplement(
+        remoteDataSource: serviceLocator(),
+        userLocalDbRepository: serviceLocator()),
   );
   // Store
   serviceLocator.registerSingleton<StoreDataSource>(StoreRemoteDataSource());
   // Store and Driver local data source
-  serviceLocator.registerSingleton<StoreOwnDriverBindingWithStoreLocalDbRepository<StoreOwnDeliveryPartnersInfo, StoreEntity>>(
-    StoreOwnDriverBindingWithStoreLocalDbRepository<StoreOwnDeliveryPartnersInfo, StoreEntity>(
+  serviceLocator.registerSingleton<
+      StoreOwnDriverBindingWithStoreLocalDbRepository<
+          StoreOwnDeliveryPartnersInfo, StoreEntity>>(
+    StoreOwnDriverBindingWithStoreLocalDbRepository<
+        StoreOwnDeliveryPartnersInfo, StoreEntity>(
       storeLocalDbRepository: serviceLocator(),
       storeOwnDriverLocalDbRepository: serviceLocator(),
     ),
   );
-  serviceLocator.registerSingleton<StoreOwnDriverBindingWithCurrentUserLocalDbRepository<StoreOwnDeliveryPartnersInfo, AppUserEntity>>(
-    StoreOwnDriverBindingWithCurrentUserLocalDbRepository<StoreOwnDeliveryPartnersInfo, AppUserEntity>(
+  serviceLocator.registerSingleton<
+      StoreOwnDriverBindingWithCurrentUserLocalDbRepository<
+          StoreOwnDeliveryPartnersInfo, AppUserEntity>>(
+    StoreOwnDriverBindingWithCurrentUserLocalDbRepository<
+        StoreOwnDeliveryPartnersInfo, AppUserEntity>(
       storeOwnDriverLocalDbRepository: serviceLocator(),
       userLocalDbRepository: serviceLocator(),
     ),
   );
-  serviceLocator.registerSingleton<StoreBindingWithUserLocalDbRepository<StoreEntity, AppUserEntity>>(
+  serviceLocator.registerSingleton<
+      StoreBindingWithUserLocalDbRepository<StoreEntity, AppUserEntity>>(
     StoreBindingWithUserLocalDbRepository<StoreEntity, AppUserEntity>(
       userLocalDbRepository: serviceLocator(),
       storeLocalDbRepository: serviceLocator(),
     ),
   );
   // Menu and Addons local data source
-  serviceLocator.registerSingleton<MenuBindingWithStoreLocalDbDbRepository<MenuEntity, StoreEntity>>(
+  serviceLocator.registerSingleton<
+      MenuBindingWithStoreLocalDbDbRepository<MenuEntity, StoreEntity>>(
     MenuBindingWithStoreLocalDbDbRepository<MenuEntity, StoreEntity>(
       menuLocalDbRepository: serviceLocator(),
       storeLocalDbRepository: serviceLocator(),
     ),
   );
-  serviceLocator.registerSingleton<MenuBindingWithCurrentUserLocalDbDbRepository<MenuEntity, AppUserEntity>>(
+  serviceLocator.registerSingleton<
+      MenuBindingWithCurrentUserLocalDbDbRepository<MenuEntity, AppUserEntity>>(
     MenuBindingWithCurrentUserLocalDbDbRepository<MenuEntity, AppUserEntity>(
       menuLocalDbRepository: serviceLocator(),
       userLocalDbRepository: serviceLocator(),
     ),
   );
-  serviceLocator.registerSingleton<AddonsBindingWithMenuLocalDbDbRepository<Addons, MenuEntity>>(
+  serviceLocator.registerSingleton<
+      AddonsBindingWithMenuLocalDbDbRepository<Addons, MenuEntity>>(
     AddonsBindingWithMenuLocalDbDbRepository<Addons, MenuEntity>(
       menuLocalDbRepository: serviceLocator(),
       addonsLocalDbRepository: serviceLocator(),
     ),
   );
-  serviceLocator.registerSingleton<AddonsBindingWithCurrentUserLocalDbDbRepository<Addons, AppUserEntity>>(
+  serviceLocator.registerSingleton<
+      AddonsBindingWithCurrentUserLocalDbDbRepository<Addons, AppUserEntity>>(
     AddonsBindingWithCurrentUserLocalDbDbRepository<Addons, AppUserEntity>(
       addonsLocalDbRepository: serviceLocator(),
       userLocalDbRepository: serviceLocator(),
@@ -872,8 +903,11 @@ void _setUpRepository() {
   serviceLocator.registerSingleton<StoreRepository>(
     StoreRepositoryImplement(
       remoteDataSource: serviceLocator(),
-      storeLocalDataSource: serviceLocator<StoreLocalDbRepository<StoreEntity>>(),
-      driverLocalDataSource: serviceLocator<StoreOwnDeliveryPartnersLocalDbRepository<StoreOwnDeliveryPartnersInfo>>(),
+      storeLocalDataSource:
+          serviceLocator<StoreLocalDbRepository<StoreEntity>>(),
+      driverLocalDataSource: serviceLocator<
+          StoreOwnDeliveryPartnersLocalDbRepository<
+              StoreOwnDeliveryPartnersInfo>>(),
       storeBindingWithUserLocalDataSource: serviceLocator(),
       storeOwnDriverBindingWithCurrentUserLocalDataSource: serviceLocator(),
       storeOwnDriverBindingWithStoreLocalDataSource: serviceLocator(),
@@ -896,14 +930,21 @@ void _setUpRepository() {
   );
   // User
   // local db
-  serviceLocator.registerSingleton<UserLocalDbRepository<AppUserEntity>>(UserLocalDbRepository<AppUserEntity>());
-  serviceLocator.registerSingleton<UserBusinessProfileLocalDbRepository<BusinessProfileEntity>>(UserBusinessProfileLocalDbRepository<BusinessProfileEntity>());
-  serviceLocator.registerSingleton<UserBusinessDocumentLocalDbRepository<NewBusinessDocumentEntity>>(
+  serviceLocator.registerSingleton<UserLocalDbRepository<AppUserEntity>>(
+      UserLocalDbRepository<AppUserEntity>());
+  serviceLocator.registerSingleton<
+          UserBusinessProfileLocalDbRepository<BusinessProfileEntity>>(
+      UserBusinessProfileLocalDbRepository<BusinessProfileEntity>());
+  serviceLocator.registerSingleton<
+      UserBusinessDocumentLocalDbRepository<NewBusinessDocumentEntity>>(
     UserBusinessDocumentLocalDbRepository<NewBusinessDocumentEntity>(),
   );
-  serviceLocator.registerSingleton<UserPaymentBankLocalDbRepository<PaymentBankEntity>>(UserPaymentBankLocalDbRepository<PaymentBankEntity>());
+  serviceLocator
+      .registerSingleton<UserPaymentBankLocalDbRepository<PaymentBankEntity>>(
+          UserPaymentBankLocalDbRepository<PaymentBankEntity>());
   // remote
-  serviceLocator.registerSingleton<ProfileDataSource>(ProfileRemoteDataSource());
+  serviceLocator
+      .registerSingleton<ProfileDataSource>(ProfileRemoteDataSource());
   //repository UserPaymentBankRepository
   serviceLocator.registerSingleton<UserPaymentBankRepository>(
     PaymentBankRepositoryImplement(
@@ -938,9 +979,11 @@ void _setUpRepository() {
     ),
   );*/
   // repository
-  serviceLocator.registerSingleton<AddressLocalDbRepository<AddressModel>>(AddressLocalDbRepository<AddressModel>());
+  serviceLocator.registerSingleton<AddressLocalDbRepository<AddressModel>>(
+      AddressLocalDbRepository<AddressModel>());
   // remote
-  serviceLocator.registerSingleton<AddressDataSource>(AddressRemoteDataSource());
+  serviceLocator
+      .registerSingleton<AddressDataSource>(AddressRemoteDataSource());
   //repository UserPaymentBankRepository
   serviceLocator.registerSingleton<UserAddressRepository>(
     AddressRepositoryImplement(
@@ -949,13 +992,15 @@ void _setUpRepository() {
     ),
   );
   // Bindings Menu
-  serviceLocator.registerSingleton<MenuBindingWithStoreLocalDbDbRepository<MenuEntity, StoreEntity>>(
+  serviceLocator.registerSingleton<
+      MenuBindingWithStoreLocalDbDbRepository<MenuEntity, StoreEntity>>(
     MenuBindingWithStoreLocalDbDbRepository<MenuEntity, StoreEntity>(
       menuLocalDbRepository: serviceLocator(),
       storeLocalDbRepository: serviceLocator(),
     ),
   );
-  serviceLocator.registerSingleton<MenuBindingWithCurrentUserLocalDbDbRepository<MenuEntity, AppUserEntity>>(
+  serviceLocator.registerSingleton<
+      MenuBindingWithCurrentUserLocalDbDbRepository<MenuEntity, AppUserEntity>>(
     MenuBindingWithCurrentUserLocalDbDbRepository(
       menuLocalDbRepository: serviceLocator(),
       userLocalDbRepository: serviceLocator(),
@@ -963,13 +1008,15 @@ void _setUpRepository() {
   );
 
   //Binding Addons
-  serviceLocator.registerSingleton<AddonsBindingWithMenuLocalDbDbRepository<Addons, MenuEntity>>(
+  serviceLocator.registerSingleton<
+      AddonsBindingWithMenuLocalDbDbRepository<Addons, MenuEntity>>(
     AddonsBindingWithMenuLocalDbDbRepository<Addons, MenuEntity>(
       menuLocalDbRepository: serviceLocator(),
       addonsLocalDbRepository: serviceLocator(),
     ),
   );
-  serviceLocator.registerSingleton<AddonsBindingWithCurrentUserLocalDbDbRepository<Addons, AppUserEntity>>(
+  serviceLocator.registerSingleton<
+      AddonsBindingWithCurrentUserLocalDbDbRepository<Addons, AppUserEntity>>(
     AddonsBindingWithCurrentUserLocalDbDbRepository<Addons, AppUserEntity>(
       addonsLocalDbRepository: serviceLocator(),
       userLocalDbRepository: serviceLocator(),
@@ -977,21 +1024,28 @@ void _setUpRepository() {
   );
 
   // Binding Drivers
-  serviceLocator.registerSingleton<StoreOwnDriverBindingWithStoreLocalDbRepository<StoreOwnDeliveryPartnersInfo, StoreEntity>>(
-    StoreOwnDriverBindingWithStoreLocalDbRepository<StoreOwnDeliveryPartnersInfo, StoreEntity>(
+  serviceLocator.registerSingleton<
+      StoreOwnDriverBindingWithStoreLocalDbRepository<
+          StoreOwnDeliveryPartnersInfo, StoreEntity>>(
+    StoreOwnDriverBindingWithStoreLocalDbRepository<
+        StoreOwnDeliveryPartnersInfo, StoreEntity>(
       storeOwnDriverLocalDbRepository: serviceLocator(),
       storeLocalDbRepository: serviceLocator(),
     ),
   );
-  serviceLocator.registerSingleton<StoreOwnDriverBindingWithCurrentUserLocalDbRepository<StoreOwnDeliveryPartnersInfo, AppUserEntity>>(
-    StoreOwnDriverBindingWithCurrentUserLocalDbRepository<StoreOwnDeliveryPartnersInfo, AppUserEntity>(
+  serviceLocator.registerSingleton<
+      StoreOwnDriverBindingWithCurrentUserLocalDbRepository<
+          StoreOwnDeliveryPartnersInfo, AppUserEntity>>(
+    StoreOwnDriverBindingWithCurrentUserLocalDbRepository<
+        StoreOwnDeliveryPartnersInfo, AppUserEntity>(
       storeOwnDriverLocalDbRepository: serviceLocator(),
       userLocalDbRepository: serviceLocator(),
     ),
   );
 
   // Binding Store
-  serviceLocator.registerSingleton<StoreBindingWithUserLocalDbRepository<StoreEntity, AppUserEntity>>(
+  serviceLocator.registerSingleton<
+      StoreBindingWithUserLocalDbRepository<StoreEntity, AppUserEntity>>(
     StoreBindingWithUserLocalDbRepository<StoreEntity, AppUserEntity>(
       storeLocalDbRepository: serviceLocator(),
       userLocalDbRepository: serviceLocator(),
@@ -999,9 +1053,12 @@ void _setUpRepository() {
   );
 
   // Notification
-  serviceLocator.registerSingleton<NotificationLocalDbRepository<NotificationEntity>>(NotificationLocalDbRepository<NotificationEntity>());
+  serviceLocator
+      .registerSingleton<NotificationLocalDbRepository<NotificationEntity>>(
+          NotificationLocalDbRepository<NotificationEntity>());
   // remote
-  serviceLocator.registerSingleton<NotificationDataSource>(NotificationRemoteDataSource());
+  serviceLocator.registerSingleton<NotificationDataSource>(
+      NotificationRemoteDataSource());
   //repository UserPaymentBankRepository
   serviceLocator.registerSingleton<NotificationRepository>(
     NotificationRepositoryImplement(
@@ -1010,9 +1067,12 @@ void _setUpRepository() {
     ),
   );
   // Rate and Review
-  serviceLocator.registerSingleton<RateAndReviewLocalDbRepository<RateAndReviewEntity>>(RateAndReviewLocalDbRepository<RateAndReviewEntity>());
+  serviceLocator
+      .registerSingleton<RateAndReviewLocalDbRepository<RateAndReviewEntity>>(
+          RateAndReviewLocalDbRepository<RateAndReviewEntity>());
   // remote
-  serviceLocator.registerSingleton<RateAndReviewDataSource>(RateAndReviewRemoteDataSource());
+  serviceLocator.registerSingleton<RateAndReviewDataSource>(
+      RateAndReviewRemoteDataSource());
   //repository UserPaymentBankRepository
   serviceLocator.registerSingleton<RateAndReviewRepository>(
     RateAndReviewRepositoryImplement(
@@ -1023,7 +1083,8 @@ void _setUpRepository() {
 
   // Order
   // Notification
-  serviceLocator.registerSingleton<OrderLocalDbRepository<OrderEntity>>(OrderLocalDbRepository<OrderEntity>());
+  serviceLocator.registerSingleton<OrderLocalDbRepository<OrderEntity>>(
+      OrderLocalDbRepository<OrderEntity>());
   // remote
   serviceLocator.registerSingleton<OrderDataSource>(OrderRemoteDataSource());
   //repository UserPaymentBankRepository
@@ -1051,11 +1112,13 @@ void _setUpStateManagement() {
   );
   serviceLocator.registerFactory<PermissionBloc>(PermissionBloc.new);
   // Document Bloc
-  serviceLocator.registerFactory<BusinessDocumentBloc>(() => BusinessDocumentBloc());
+  serviceLocator
+      .registerFactory<BusinessDocumentBloc>(() => BusinessDocumentBloc());
   // Bank Bloc
   serviceLocator.registerFactory<PaymentBankBloc>(() => PaymentBankBloc());
   //BusinessProfileBloc
-  serviceLocator.registerFactory<BusinessProfileBloc>(() => BusinessProfileBloc());
+  serviceLocator
+      .registerFactory<BusinessProfileBloc>(() => BusinessProfileBloc());
   // Menu Bloc
   serviceLocator.registerFactory<MenuBloc>(() => MenuBloc());
   // Store Bloc
@@ -1070,7 +1133,9 @@ void _setUpStateManagement() {
   serviceLocator.registerFactory<NewOrderBloc>(() => NewOrderBloc());
   serviceLocator.registerFactory<DeliverOrderBloc>(() => DeliverOrderBloc());
   serviceLocator.registerFactory<ScheduleOrderBloc>(() => ScheduleOrderBloc());
-  serviceLocator.registerFactory<OnProcessOrderBloc>(() => OnProcessOrderBloc());
-  serviceLocator.registerFactory<NewBusinessDocumentBloc>(() => NewBusinessDocumentBloc());
+  serviceLocator
+      .registerFactory<OnProcessOrderBloc>(() => OnProcessOrderBloc());
+  serviceLocator.registerFactory<NewBusinessDocumentBloc>(
+      () => NewBusinessDocumentBloc());
   serviceLocator.registerFactory<OrderAnalysisBloc>(() => OrderAnalysisBloc());
 }

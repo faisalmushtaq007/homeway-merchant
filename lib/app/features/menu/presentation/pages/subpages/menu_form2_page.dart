@@ -112,49 +112,56 @@ class _MenuForm2PageState extends State<MenuForm2Page>
       // Init data of Menu Preparation type
       _initialSelectedFoodPreparationType =
           List<StoreAvailableFoodPreparationType>.from(
-              widget.menuEntity!.storeAvailableFoodPreparationType.toList(),);
-      _selectedFoodPreparationType=List<StoreAvailableFoodPreparationType>.from(
-        widget.menuEntity!.storeAvailableFoodPreparationType.toList(),);
+        widget.menuEntity!.storeAvailableFoodPreparationType.toList(),
+      );
+      _selectedFoodPreparationType =
+          List<StoreAvailableFoodPreparationType>.from(
+        widget.menuEntity!.storeAvailableFoodPreparationType.toList(),
+      );
 
       // Init data of Menu Taste type and its level
       if (widget.menuEntity!.tasteType.isNotNull) {
         // Menu Taste type
-        _initialSelectedTasteType =
-            List<TasteType>.from(
+        _initialSelectedTasteType = List<TasteType>.from(
           [widget.menuEntity!.tasteType!.title ?? ''],
         );
         // Menu Taste level
-        _initialSelectedTasteLevel =
-            List<TasteLevel>.from(
+        _initialSelectedTasteLevel = List<TasteLevel>.from(
           widget.menuEntity!.tasteType!.tasteLevel.toList(),
         );
-        _initialSelectedTasteType=List<TasteType>.from(
+        _initialSelectedTasteType = List<TasteType>.from(
           [widget.menuEntity!.tasteType!.title ?? ''],
         );
-        _initialSelectedTasteLevel=List<TasteLevel>.from(
+        _initialSelectedTasteLevel = List<TasteLevel>.from(
           widget.menuEntity!.tasteType!.tasteLevel.toList(),
         );
       }
 
       // Init data of Menu portion
-      _initialSelectedMenuPortions =
-          List<MenuPortion>.from(
-              widget.menuEntity!.menuPortions.toList(),);
-      _selectedMenuPortions=List<MenuPortion>.from(
-        widget.menuEntity!.menuPortions.toList(),);
+      _initialSelectedMenuPortions = List<MenuPortion>.from(
+        widget.menuEntity!.menuPortions.toList(),
+      );
+      _selectedMenuPortions = List<MenuPortion>.from(
+        widget.menuEntity!.menuPortions.toList(),
+      );
 
       // Init date of Custom Portion
-      if(widget.menuEntity!.hasCustomPortion==true && widget.menuEntity!.customPortion.isNotNull){
-        _hasCustomMenuPortionSize=true;
-        _menuPortionNameController.text =widget.menuEntity!.customPortion!.title??'';
-        _menuPortionValueController.text =widget.menuEntity!.customPortion!.quantity.toString()??'';
-        _menuPortionSizeController.text = widget.menuEntity!.customPortion!.maxServingPerson.toString()??'';
-        _menuPortionUnitController.text = widget.menuEntity!.customPortion!.unit??'';
+      if (widget.menuEntity!.hasCustomPortion == true &&
+          widget.menuEntity!.customPortion.isNotNull) {
+        _hasCustomMenuPortionSize = true;
+        _menuPortionNameController.text =
+            widget.menuEntity!.customPortion!.title ?? '';
+        _menuPortionValueController.text =
+            widget.menuEntity!.customPortion!.quantity.toString() ?? '';
+        _menuPortionSizeController.text =
+            widget.menuEntity!.customPortion!.maxServingPerson.toString() ?? '';
+        _menuPortionUnitController.text =
+            widget.menuEntity!.customPortion!.unit ?? '';
       }
 
       // Init data of selected addons
-      _initialSelectedAddons=List<Addons>.from(widget.menuEntity!.addons);
-      _selectedAddons=List<Addons>.from(widget.menuEntity!.addons);
+      _initialSelectedAddons = List<Addons>.from(widget.menuEntity!.addons);
+      _selectedAddons = List<Addons>.from(widget.menuEntity!.addons);
     }
   }
 

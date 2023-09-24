@@ -20,11 +20,15 @@ extension StringExtensions on String? {
   }
 
   /// Checks if string is a valid username.
-  bool isUsername(String s) => hasMatch(s, r'^[a-zA-Z0-9][a-zA-Z0-9_.]+[a-zA-Z0-9]$');
+  bool isUsername(String s) =>
+      hasMatch(s, r'^[a-zA-Z0-9][a-zA-Z0-9_.]+[a-zA-Z0-9]$');
 
   /// Checks if string is Palindrom.
   bool isPalindrom(String string) {
-    final cleanString = string.toLowerCase().replaceAll(RegExp(r"\s+"), '').replaceAll(RegExp(r"[^0-9a-zA-Z]+"), "");
+    final cleanString = string
+        .toLowerCase()
+        .replaceAll(RegExp(r"\s+"), '')
+        .replaceAll(RegExp(r"[^0-9a-zA-Z]+"), "");
 
     for (var i = 0; i < cleanString.length; i++) {
       if (cleanString[i] != cleanString[cleanString.length - i - 1]) {
@@ -71,14 +75,22 @@ extension StringExtensions on String? {
   bool isAudio(String filePath) {
     final ext = filePath.toLowerCase();
 
-    return ext.endsWith(".mp3") || ext.endsWith(".wav") || ext.endsWith(".wma") || ext.endsWith(".amr") || ext.endsWith(".ogg");
+    return ext.endsWith(".mp3") ||
+        ext.endsWith(".wav") ||
+        ext.endsWith(".wma") ||
+        ext.endsWith(".amr") ||
+        ext.endsWith(".ogg");
   }
 
   /// Checks if string is an image file.
   bool isImage(String filePath) {
     final ext = filePath.toLowerCase();
 
-    return ext.endsWith(".jpg") || ext.endsWith(".jpeg") || ext.endsWith(".png") || ext.endsWith(".gif") || ext.endsWith(".bmp");
+    return ext.endsWith(".jpg") ||
+        ext.endsWith(".jpeg") ||
+        ext.endsWith(".png") ||
+        ext.endsWith(".gif") ||
+        ext.endsWith(".bmp");
   }
 
   bool hasMatch(String? value, String pattern) {
@@ -144,10 +156,16 @@ extension StringExtensions on String? {
 
   bool validateEmail() {
     if (this == null) return false;
-    return RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+").hasMatch(this!);
+    return RegExp(
+            r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+        .hasMatch(this!);
   }
 
-  bool equalsIgnoreCase(String? other) => (this == null && other == null) || (this != null && other != null && this!.toLowerCase() == other.toLowerCase());
+  bool equalsIgnoreCase(String? other) =>
+      (this == null && other == null) ||
+      (this != null &&
+          other != null &&
+          this!.toLowerCase() == other.toLowerCase());
 
   /// Return the string only if the delimiter exists in both ends, otherwise it will return the current string
   String? removeSurrounding(String delimiter) {
@@ -155,7 +173,9 @@ extension StringExtensions on String? {
     final prefix = delimiter;
     final suffix = delimiter;
 
-    if ((this!.length >= prefix.length + suffix.length) && this!.startsWith(prefix) && this!.endsWith(suffix)) {
+    if ((this!.length >= prefix.length + suffix.length) &&
+        this!.startsWith(prefix) &&
+        this!.endsWith(suffix)) {
       return this!.substring(prefix.length, this!.length - suffix.length);
     }
     return this;
@@ -166,7 +186,8 @@ extension StringExtensions on String? {
 
   ///  Replace part of string after the first occurrence of given delimiter with the [replacement] string.
   ///  If the string does not contain the delimiter, returns [defaultValue] which defaults to the original string.
-  String? replaceAfter(String delimiter, String replacement, [String? defaultValue]) {
+  String? replaceAfter(String delimiter, String replacement,
+      [String? defaultValue]) {
     if (this == null) return null;
     final index = this!.indexOf(delimiter);
     return (index == -1)
@@ -179,7 +200,8 @@ extension StringExtensions on String? {
   ///
   /// Replace part of string before the first occurrence of given delimiter with the [replacement] string.
   ///  If the string does not contain the delimiter, returns [missingDelimiterValue?] which defaults to the original string.
-  String? replaceBefore(String delimiter, String replacement, [String? defaultValue]) {
+  String? replaceBefore(String delimiter, String replacement,
+      [String? defaultValue]) {
     if (this == null) return null;
     final index = this!.indexOf(delimiter);
     return (index == -1)
@@ -191,7 +213,8 @@ extension StringExtensions on String? {
 
   ///Returns `true` if at least one element matches the given [predicate].
   /// the [predicate] should have only one character
-  bool anyChar(bool predicate(String element)) => this.isEmptyOrNull ? false : this!.split('').any((s) => predicate(s));
+  bool anyChar(bool predicate(String element)) =>
+      this.isEmptyOrNull ? false : this!.split('').any((s) => predicate(s));
 
   /// Returns the string if it is not `null`, or the empty string otherwise
   String get orEmpty => this ?? "";
@@ -218,7 +241,8 @@ extension StringExtensions on String? {
 
   /// Returns a String without white space at all
   /// "hello world" // helloworld
-  String? removeAllWhiteSpace() => this.isEmptyOrNull ? null : this!.replaceAll(RegExp(r"\s+\b|\b\s"), "");
+  String? removeAllWhiteSpace() =>
+      this.isEmptyOrNull ? null : this!.replaceAll(RegExp(r"\s+\b|\b\s"), "");
 
   /// Returns true if s is neither null, empty nor is solely made of whitespace characters.
   bool get isNotBlank => this != null && this!.trim().isNotEmpty;
@@ -227,7 +251,8 @@ extension StringExtensions on String? {
   List<String> toCharArray() => isNotBlank ? this!.split('') : [];
 
   /// Returns a new string in which a specified string is inserted at a specified index position in this instance.
-  String insert(int index, String str) => (List<String>.from(this.toCharArray())..insert(index, str)).join();
+  String insert(int index, String str) =>
+      (List<String>.from(this.toCharArray())..insert(index, str)).join();
 
   /// Indicates whether a specified string is `null`, `empty`, or consists only of `white-space` characters.
   bool get isNullOrWhiteSpace {
@@ -237,11 +262,14 @@ extension StringExtensions on String? {
 
   /// Shrink a string to be no more than [maxSize] in length, extending from the end.
   /// For example, in a string with 10 charachters, a [maxSize] of 3 would return the last 3 charachters.
-  String? limitFromEnd(int maxSize) => (this?.length ?? 0) < maxSize ? this : this!.substring(this!.length - maxSize);
+  String? limitFromEnd(int maxSize) => (this?.length ?? 0) < maxSize
+      ? this
+      : this!.substring(this!.length - maxSize);
 
   /// Shrink a string to be no more than [maxSize] in length, extending from the start.
   /// For example, in a string with 10 charachters, a [maxSize] of 3 would return the first 3 charachters.
-  String? limitFromStart(int maxSize) => (this?.length ?? 0) < maxSize ? this : this!.substring(0, maxSize);
+  String? limitFromStart(int maxSize) =>
+      (this?.length ?? 0) < maxSize ? this : this!.substring(0, maxSize);
 
   /// Convert this string into boolean.
   ///

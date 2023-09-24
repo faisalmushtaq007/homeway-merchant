@@ -1,5 +1,6 @@
 import 'dart:async';
 import '../date.dart';
+
 extension DurationExt on Duration {
   /// Utility to delay some callback (or code execution).
   ///
@@ -12,7 +13,7 @@ extension DurationExt on Duration {
   ///```
   Future delay([FutureOr callback()?]) async => Future.delayed(this, callback);
 
-   static const int daysPerWeek = 7;
+  static const int daysPerWeek = 7;
   static const int nanosecondsPerMicrosecond = 1000;
 
   /// Returns the representation in weeks
@@ -23,5 +24,4 @@ extension DurationExt on Duration {
 
   /// Subtracts the Duration from the current DateTime and returns a DateTime in the past
   DateTime get ago => DateTime.now() - this;
-
 }

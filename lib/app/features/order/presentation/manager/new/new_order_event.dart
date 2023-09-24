@@ -27,13 +27,13 @@ class GetAllNewOrder extends NewOrderEvent {
 
   @override
   List<Object?> get props => [
-    orderType,
-    pageKey,
-    searchText,
-    pageSize,
-    endTimeStamp,
-    filter,
-    sorting,
-    startTimeStamp,
-  ];
+        orderType,
+        pageKey,
+        searchText,
+        pageSize,
+        endTimeStamp,
+        filter,
+        sorting,
+        startTimeStamp,
+      ];
 }

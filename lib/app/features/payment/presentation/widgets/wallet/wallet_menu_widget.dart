@@ -58,7 +58,8 @@ class _WalletMenuWidgetController extends State<WalletMenuWidget> {
   Widget build(BuildContext context) => _WalletMenuWidgetView(this);
 }
 
-class _WalletMenuWidgetView extends WidgetView<WalletMenuWidget, _WalletMenuWidgetController> {
+class _WalletMenuWidgetView
+    extends WidgetView<WalletMenuWidget, _WalletMenuWidgetController> {
   const _WalletMenuWidgetView(super.state);
 
   @override
@@ -115,14 +116,16 @@ class _WalletMenuWidgetView extends WidgetView<WalletMenuWidget, _WalletMenuWidg
           ),
           const AnimatedGap(6, duration: Duration(milliseconds: 200)),
           Wrap(
-            textDirection: serviceLocator<LanguageController>().targetTextDirection,
+            textDirection:
+                serviceLocator<LanguageController>().targetTextDirection,
             children: [
               Text(
                 title,
                 softWrap: true,
                 overflow: TextOverflow.ellipsis,
                 maxLines: 2,
-                textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                textDirection:
+                    serviceLocator<LanguageController>().targetTextDirection,
               ),
             ],
           ),

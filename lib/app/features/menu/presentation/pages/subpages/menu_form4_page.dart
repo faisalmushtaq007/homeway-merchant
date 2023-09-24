@@ -1,8 +1,11 @@
 part of 'package:homemakers_merchant/app/features/menu/index.dart';
 
 class MenuForm4Page extends StatefulWidget {
-  const MenuForm4Page({super.key,this.haveNewMenu = true,
-    this.menuEntity,});
+  const MenuForm4Page({
+    super.key,
+    this.haveNewMenu = true,
+    this.menuEntity,
+  });
   final bool haveNewMenu;
   final MenuEntity? menuEntity;
 
@@ -10,7 +13,8 @@ class MenuForm4Page extends StatefulWidget {
   State<MenuForm4Page> createState() => _MenuForm4PageState();
 }
 
-class _MenuForm4PageState extends State<MenuForm4Page> with AutomaticKeepAliveClientMixin<MenuForm4Page> {
+class _MenuForm4PageState extends State<MenuForm4Page>
+    with AutomaticKeepAliveClientMixin<MenuForm4Page> {
   final ScrollController scrollController = ScrollController();
   List<MenuPortion> listOfMenuPortions = [];
   List<Addons> listOfAddons = [];
@@ -28,12 +32,14 @@ class _MenuForm4PageState extends State<MenuForm4Page> with AutomaticKeepAliveCl
   void initData() {
     menuEntity = serviceLocator<MenuEntity>();
     if (serviceLocator<MenuEntity>().menuPortions.isNotEmpty) {
-      listOfMenuPortions = List<MenuPortion>.from(serviceLocator<MenuEntity>().menuPortions.toList());
+      listOfMenuPortions = List<MenuPortion>.from(
+          serviceLocator<MenuEntity>().menuPortions.toList());
     }
     hasCustomPortion = menuEntity.hasCustomPortion;
     customPortion = menuEntity.customPortion;
     if (serviceLocator<MenuEntity>().addons.isNotEmpty) {
-      listOfAddons = List<Addons>.from(serviceLocator<MenuEntity>().addons.toList());
+      listOfAddons =
+          List<Addons>.from(serviceLocator<MenuEntity>().addons.toList());
     }
     setState(() {});
   }
@@ -64,7 +70,8 @@ class _MenuForm4PageState extends State<MenuForm4Page> with AutomaticKeepAliveCl
         bloc: context.watch<MenuBloc>(),
         builder: (context, state) {
           if (state is PushMenuEntityDataState) {
-            if (state.menuFormStage is MenuForm2Page || state.menuFormStage is MenuForm4Page) {
+            if (state.menuFormStage is MenuForm2Page ||
+                state.menuFormStage is MenuForm4Page) {
               /*menuEntity = state.menuEntity;
               hasCustomPortion = menuEntity.hasCustomPortion;
               customPortion = menuEntity.customPortion;
@@ -75,16 +82,19 @@ class _MenuForm4PageState extends State<MenuForm4Page> with AutomaticKeepAliveCl
           return Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.stretch,
-            textDirection: serviceLocator<LanguageController>().targetTextDirection,
+            textDirection:
+                serviceLocator<LanguageController>().targetTextDirection,
             children: [
               Flexible(
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.stretch,
-                  textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                  textDirection:
+                      serviceLocator<LanguageController>().targetTextDirection,
                   children: [
                     Wrap(
-                      textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                      textDirection: serviceLocator<LanguageController>()
+                          .targetTextDirection,
                       children: [
                         Text(
                           'Menu price',
@@ -92,22 +102,26 @@ class _MenuForm4PageState extends State<MenuForm4Page> with AutomaticKeepAliveCl
                             fontWeight: FontWeight.w600,
                             fontSize: 20,
                           ),
-                          textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                          textDirection: serviceLocator<LanguageController>()
+                              .targetTextDirection,
                         ).translate(),
                       ],
                     ),
                     const AnimatedGap(2, duration: Duration(milliseconds: 500)),
                     Wrap(
-                      textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                      textDirection: serviceLocator<LanguageController>()
+                          .targetTextDirection,
                       children: [
                         Text(
                           'Set menu selling price for customer ',
                           style: context.labelMedium,
-                          textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                          textDirection: serviceLocator<LanguageController>()
+                              .targetTextDirection,
                         ).translate(),
                       ],
                     ),
-                    const AnimatedGap(12, duration: Duration(milliseconds: 500)),
+                    const AnimatedGap(12,
+                        duration: Duration(milliseconds: 500)),
                     Flexible(
                       child: AnimatedCrossFade(
                         firstChild: SizedBox(
@@ -121,7 +135,8 @@ class _MenuForm4PageState extends State<MenuForm4Page> with AutomaticKeepAliveCl
                                     return SetMenuPriceWidget(
                                       currentIndex: index,
                                       listOfMenuPortions: listOfMenuPortions,
-                                      key: PageStorageKey('set-menu-price-${listOfMenuPortions[index].title}_${index}'),
+                                      key: PageStorageKey(
+                                          'set-menu-price-${listOfMenuPortions[index].title}_${index}'),
                                       menuPortion: listOfMenuPortions[index],
                                     );
                                   },
@@ -132,7 +147,10 @@ class _MenuForm4PageState extends State<MenuForm4Page> with AutomaticKeepAliveCl
                           ),
                         ),
                         secondChild: const Offstage(),
-                        crossFadeState: (!hasCustomPortion && listOfMenuPortions.isNotEmpty) ? CrossFadeState.showFirst : CrossFadeState.showSecond,
+                        crossFadeState:
+                            (!hasCustomPortion && listOfMenuPortions.isNotEmpty)
+                                ? CrossFadeState.showFirst
+                                : CrossFadeState.showSecond,
                         duration: const Duration(milliseconds: 500),
                       ),
                     ),
@@ -147,15 +165,20 @@ class _MenuForm4PageState extends State<MenuForm4Page> with AutomaticKeepAliveCl
                   key: const Key('set-custom-price-widget'),
                 ),
                 secondChild: const Offstage(),
-                crossFadeState: hasCustomPortion ? CrossFadeState.showFirst : CrossFadeState.showSecond,
+                crossFadeState: hasCustomPortion
+                    ? CrossFadeState.showFirst
+                    : CrossFadeState.showSecond,
                 duration: const Duration(
                   milliseconds: 500,
                 ),
               ),
               AnimatedCrossFade(
-                firstChild: const AnimatedGap(12, duration: Duration(milliseconds: 500)),
+                firstChild: const AnimatedGap(12,
+                    duration: Duration(milliseconds: 500)),
                 secondChild: const Offstage(),
-                crossFadeState: hasCustomPortion ? CrossFadeState.showFirst : CrossFadeState.showSecond,
+                crossFadeState: hasCustomPortion
+                    ? CrossFadeState.showFirst
+                    : CrossFadeState.showSecond,
                 duration: const Duration(
                   milliseconds: 500,
                 ),
@@ -163,7 +186,9 @@ class _MenuForm4PageState extends State<MenuForm4Page> with AutomaticKeepAliveCl
               AnimatedCrossFade(
                 firstChild: const Divider(),
                 secondChild: const Offstage(),
-                crossFadeState: hasCustomPortion ? CrossFadeState.showFirst : CrossFadeState.showSecond,
+                crossFadeState: hasCustomPortion
+                    ? CrossFadeState.showFirst
+                    : CrossFadeState.showSecond,
                 duration: const Duration(
                   milliseconds: 500,
                 ),
@@ -172,10 +197,12 @@ class _MenuForm4PageState extends State<MenuForm4Page> with AutomaticKeepAliveCl
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.stretch,
-                  textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                  textDirection:
+                      serviceLocator<LanguageController>().targetTextDirection,
                   children: [
                     Wrap(
-                      textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                      textDirection: serviceLocator<LanguageController>()
+                          .targetTextDirection,
                       children: [
                         Text(
                           'Extras price',
@@ -183,22 +210,26 @@ class _MenuForm4PageState extends State<MenuForm4Page> with AutomaticKeepAliveCl
                             fontWeight: FontWeight.w600,
                             fontSize: 20,
                           ),
-                          textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                          textDirection: serviceLocator<LanguageController>()
+                              .targetTextDirection,
                         ).translate(),
                       ],
                     ),
                     const AnimatedGap(2, duration: Duration(milliseconds: 500)),
                     Wrap(
-                      textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                      textDirection: serviceLocator<LanguageController>()
+                          .targetTextDirection,
                       children: [
                         Text(
                           'Set extras selling price for customer ',
                           style: context.labelMedium,
-                          textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                          textDirection: serviceLocator<LanguageController>()
+                              .targetTextDirection,
                         ).translate(),
                       ],
                     ),
-                    const AnimatedGap(12, duration: Duration(milliseconds: 500)),
+                    const AnimatedGap(12,
+                        duration: Duration(milliseconds: 500)),
                     Flexible(
                       child: AnimatedCrossFade(
                         firstChild: SizedBox(
@@ -212,7 +243,8 @@ class _MenuForm4PageState extends State<MenuForm4Page> with AutomaticKeepAliveCl
                                     return SetAddonsPriceWidget(
                                       currentIndex: index,
                                       listOfAddons: listOfAddons,
-                                      key: PageStorageKey('set-addons-price-${listOfAddons[index].title}_${index}'),
+                                      key: PageStorageKey(
+                                          'set-addons-price-${listOfAddons[index].title}_${index}'),
                                       addons: listOfAddons[index],
                                     );
                                   },
@@ -223,7 +255,10 @@ class _MenuForm4PageState extends State<MenuForm4Page> with AutomaticKeepAliveCl
                           ),
                         ),
                         secondChild: const Offstage(),
-                        crossFadeState: (!hasCustomPortion && listOfMenuPortions.isNotEmpty) ? CrossFadeState.showFirst : CrossFadeState.showSecond,
+                        crossFadeState:
+                            (!hasCustomPortion && listOfMenuPortions.isNotEmpty)
+                                ? CrossFadeState.showFirst
+                                : CrossFadeState.showSecond,
                         duration: const Duration(milliseconds: 500),
                       ),
                     ),

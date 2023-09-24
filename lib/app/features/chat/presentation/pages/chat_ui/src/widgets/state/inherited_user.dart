@@ -1,5 +1,6 @@
 import 'package:flutter/widgets.dart';
-import 'package:homemakers_merchant/app/features/chat/domain/entities/chat_types_entity.dart' as types;
+import 'package:homemakers_merchant/app/features/chat/domain/entities/chat_types_entity.dart'
+    as types;
 
 /// Used to make provided [types.User] class available through the whole package.
 class InheritedUser extends InheritedWidget {
@@ -10,11 +11,13 @@ class InheritedUser extends InheritedWidget {
     required super.child,
   });
 
-  static InheritedUser of(BuildContext context) => context.dependOnInheritedWidgetOfExactType<InheritedUser>()!;
+  static InheritedUser of(BuildContext context) =>
+      context.dependOnInheritedWidgetOfExactType<InheritedUser>()!;
 
   /// Represents current logged in user. Used to determine message's author.
   final types.ChatUser user;
 
   @override
-  bool updateShouldNotify(InheritedUser oldWidget) => user.id != oldWidget.user.id;
+  bool updateShouldNotify(InheritedUser oldWidget) =>
+      user.id != oldWidget.user.id;
 }

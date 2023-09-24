@@ -139,7 +139,8 @@ class _AddressCardWidgetController extends State<AddressCardWidget> {
                     cancelText: 'Cancel',
                     okPressed: () async {
                       debugPrint('Dialog confirmed');
-                      await Future.delayed(const Duration(milliseconds: 300), () {});
+                      await Future.delayed(
+                          const Duration(milliseconds: 300), () {});
                       if (!mounted) {
                         return;
                       }
@@ -147,7 +148,8 @@ class _AddressCardWidgetController extends State<AddressCardWidget> {
                     },
                     cancelPressed: () async {
                       debugPrint('Dialog cancelled');
-                      await Future.delayed(const Duration(milliseconds: 300), () {});
+                      await Future.delayed(
+                          const Duration(milliseconds: 300), () {});
                       if (!mounted) {
                         return;
                       }
@@ -156,11 +158,13 @@ class _AddressCardWidgetController extends State<AddressCardWidget> {
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       crossAxisAlignment: CrossAxisAlignment.stretch,
-                      textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                      textDirection: serviceLocator<LanguageController>()
+                          .targetTextDirection,
                       children: [
                         Text(
                           'Permanently delete this address. If there is an order for this address, then it will be deleted only after completing the orders, and if you still confirm for delete, then this address will remain pending and under review. Are you sure you want to delete this address?',
-                          textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                          textDirection: serviceLocator<LanguageController>()
+                              .targetTextDirection,
                         ),
                       ],
                     ),
@@ -190,7 +194,8 @@ class _AddressCardWidgetController extends State<AddressCardWidget> {
             child: Text(
               title,
               style: context.labelLarge!.copyWith(),
-              textDirection: serviceLocator<LanguageController>().targetTextDirection,
+              textDirection:
+                  serviceLocator<LanguageController>().targetTextDirection,
             ),
           ),
         ],
@@ -216,7 +221,8 @@ class _AddressCardWidgetController extends State<AddressCardWidget> {
   Widget build(BuildContext context) => _AddressCardWidgetView(this);
 }
 
-class _AddressCardWidgetView extends WidgetView<AddressCardWidget, _AddressCardWidgetController> {
+class _AddressCardWidgetView
+    extends WidgetView<AddressCardWidget, _AddressCardWidgetController> {
   const _AddressCardWidgetView(super.state);
 
   @override
@@ -226,13 +232,25 @@ class _AddressCardWidgetView extends WidgetView<AddressCardWidget, _AddressCardW
     final String landmark = state.addressEntity.address?.landmark ?? '';
     final String city = state.addressEntity.address?.city ?? '';
     final String district = state.addressEntity.address?.district ?? '';
-    final String postalcode = state.addressEntity.address?.postalCode?.toString() ?? '';
+    final String postalcode =
+        state.addressEntity.address?.postalCode?.toString() ?? '';
     final String currentState = state.addressEntity.address?.state ?? '';
     final String country = state.addressEntity.address?.country ?? '';
     final bool isDefaultAddress = state.addressEntity?.isDefault ?? false;
-    final String saveAddressAs = state.addressEntity.address?.savedAddressAs ?? '';
-    final String selectedMapAddress = state.addressEntity.address?.displayAddressName ?? '';
-    final listOfAddressElements = <String>[building, landmark, area, city, district, postalcode, currentState, country];
+    final String saveAddressAs =
+        state.addressEntity.address?.savedAddressAs ?? '';
+    final String selectedMapAddress =
+        state.addressEntity.address?.displayAddressName ?? '';
+    final listOfAddressElements = <String>[
+      building,
+      landmark,
+      area,
+      city,
+      district,
+      postalcode,
+      currentState,
+      country
+    ];
     listOfAddressElements.removeWhere((element) => element.isEmpty);
     final sb = StringBuffer();
     sb.writeAll(listOfAddressElements, ', ');
@@ -240,40 +258,44 @@ class _AddressCardWidgetView extends WidgetView<AddressCardWidget, _AddressCardW
       textDirection: serviceLocator<LanguageController>().targetTextDirection,
       child: InkWell(
         onTap: () {
-          switch(widget.selectItemUseCase){
-            case SelectItemUseCase.onlySelect || SelectItemUseCase.selectAndReturn:{
-              if(context.canPop()){
-                context.pop((sb.toString(),state.addressEntity));
+          switch (widget.selectItemUseCase) {
+            case SelectItemUseCase.onlySelect ||
+                  SelectItemUseCase.selectAndReturn:
+              {
+                if (context.canPop()) {
+                  context.pop((sb.toString(), state.addressEntity));
+                }
+                break;
               }
-              break;
-            }
-            case _:{
-
-            }
+            case _:
+              {}
           }
-
         },
         child: Card(
           margin: EdgeInsetsDirectional.only(
             bottom: 8,
           ),
           child: Padding(
-            padding: const EdgeInsetsDirectional.symmetric(horizontal: 16, vertical: 12),
+            padding: const EdgeInsetsDirectional.symmetric(
+                horizontal: 16, vertical: 12),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.center,
-              textDirection: serviceLocator<LanguageController>().targetTextDirection,
+              textDirection:
+                  serviceLocator<LanguageController>().targetTextDirection,
               children: [
                 Expanded(
                   flex: 3,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
-                    textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                    textDirection: serviceLocator<LanguageController>()
+                        .targetTextDirection,
                     children: [
                       Wrap(
                         children: [
                           Text(
                             saveAddressAs,
-                            textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                            textDirection: serviceLocator<LanguageController>()
+                                .targetTextDirection,
                             maxLines: 1,
                             softWrap: true,
                             overflow: TextOverflow.ellipsis,
@@ -281,12 +303,14 @@ class _AddressCardWidgetView extends WidgetView<AddressCardWidget, _AddressCardW
                           ),
                         ],
                       ),
-                      const AnimatedGap(6, duration: Duration(milliseconds: 100)),
+                      const AnimatedGap(6,
+                          duration: Duration(milliseconds: 100)),
                       Wrap(
                         children: [
                           Text(
                             sb.toString(),
-                            textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                            textDirection: serviceLocator<LanguageController>()
+                                .targetTextDirection,
                             maxLines: 6,
                             softWrap: true,
                             overflow: TextOverflow.ellipsis,

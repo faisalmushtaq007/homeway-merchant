@@ -34,7 +34,8 @@ class DefaultErrorWidget extends StatelessWidget {
           _noImageFound,
           height: _imageNotFoundHeight,
           width: _imageNotFoundWidth,
-          colorFilter: color == null ? null: ColorFilter.mode(color!, blendMode),
+          colorFilter:
+              color == null ? null : ColorFilter.mode(color!, blendMode),
           fit: boxFit,
           alignment: alignment,
           excludeFromSemantics: excludeFromSemantics,

@@ -20,7 +20,8 @@ class GetIDAndTokenUserUseCase extends UseCase<AppUserEntity?> {
         appLog.d('GetIDAndTokenUserUseCase local ${data?.toMap()}');
         appUserEntity = data;
       },
-      error: (dataSourceFailure, reason, error, networkException, stackTrace, exception, extra) {
+      error: (dataSourceFailure, reason, error, networkException, stackTrace,
+          exception, extra) {
         appLog.d('GetIDAndTokenUserUseCase exception $error');
       },
     );

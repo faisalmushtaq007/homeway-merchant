@@ -23,7 +23,8 @@ class _BindMenuWithStoreController extends State<BindMenuWithStore> {
   List<MenuEntity> listOfAllSelectedMenus = [];
   List<StoreEntity> listOfAllStores = [];
   List<StoreEntity> listOfAllSelectedStores = [];
-  final TextEditingController searchTextEditingController = TextEditingController();
+  final TextEditingController searchTextEditingController =
+      TextEditingController();
   WidgetState<StoreEntity> widgetState = const WidgetState<StoreEntity>.none();
   bool? haveSelectAllStores = false;
 
@@ -53,7 +54,8 @@ class _BindMenuWithStoreController extends State<BindMenuWithStore> {
 
   void initLoadSelectedMenu() {
     listOfAllMenus = List<MenuEntity>.from(widget.listOfAllMenus.toList());
-    listOfAllSelectedMenus = List<MenuEntity>.from(widget.listOfAllSelectedMenus.toList());
+    listOfAllSelectedMenus =
+        List<MenuEntity>.from(widget.listOfAllSelectedMenus.toList());
     setState(() {});
   }
 
@@ -75,7 +77,8 @@ class _BindMenuWithStoreController extends State<BindMenuWithStore> {
 
   void onSelectionChanged(List<StoreEntity> listOfStoreEntities) {
     setState(() {
-      listOfAllSelectedStores = List<StoreEntity>.from(listOfStoreEntities.toList());
+      listOfAllSelectedStores =
+          List<StoreEntity>.from(listOfStoreEntities.toList());
     });
   }
 
@@ -149,7 +152,8 @@ class _BindMenuWithStoreController extends State<BindMenuWithStore> {
             switch (state) {
               case FetchAllStoresState():
                 {
-                  listOfAllStores = List<StoreEntity>.from(state.storeEntities.toList());
+                  listOfAllStores =
+                      List<StoreEntity>.from(state.storeEntities.toList());
                   widgetState = WidgetState<StoreEntity>.allData(
                     context: context,
                   );
@@ -163,14 +167,16 @@ class _BindMenuWithStoreController extends State<BindMenuWithStore> {
       );
 }
 
-class _BindMenuWithStoreView extends WidgetView<BindMenuWithStore, _BindMenuWithStoreController> {
+class _BindMenuWithStoreView
+    extends WidgetView<BindMenuWithStore, _BindMenuWithStoreController> {
   const _BindMenuWithStoreView(super.state);
 
   @override
   Widget build(BuildContext context) {
     final MediaQueryData media = MediaQuery.of(context);
     final double margins = GlobalApp.responsiveInsets(media.size.width);
-    final double topPadding = margins; //media.padding.top + kWitholbarHeight + margins; //margins * 1.5;
+    final double topPadding =
+        margins; //media.padding.top + kWitholbarHeight + margins; //margins * 1.5;
     final double bottomPadding = media.padding.bottom + margins;
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: FlexColorScheme.themedSystemNavigationBar(
@@ -192,14 +198,18 @@ class _BindMenuWithStoreView extends WidgetView<BindMenuWithStore, _BindMenuWith
             ],
           ),
           floatingActionButton: AnimatedOpacity(
-            opacity: (state.listOfAllSelectedMenus.isEmpty && state.listOfAllSelectedStores.isEmpty) ? 0.0 : 1.0,
+            opacity: (state.listOfAllSelectedMenus.isEmpty &&
+                    state.listOfAllSelectedStores.isEmpty)
+                ? 0.0
+                : 1.0,
             duration: const Duration(milliseconds: 500),
             child: Padding(
               padding: const EdgeInsetsDirectional.only(bottom: 70),
               child: FloatingActionButton(
                 backgroundColor: const Color.fromRGBO(69, 201, 125, 1.0),
                 onPressed: () async {
-                  if (state.listOfAllSelectedMenus.isEmpty && state.listOfAllSelectedStores.isEmpty) {
+                  if (state.listOfAllSelectedMenus.isEmpty &&
+                      state.listOfAllSelectedStores.isEmpty) {
                     return;
                   } else {
                     context.go(
@@ -218,7 +228,8 @@ class _BindMenuWithStoreView extends WidgetView<BindMenuWithStore, _BindMenuWith
             ),
           ),
           body: Directionality(
-            textDirection: serviceLocator<LanguageController>().targetTextDirection,
+            textDirection:
+                serviceLocator<LanguageController>().targetTextDirection,
             child: SlideInLeft(
               key: const Key('bind-menu-with-store-slideinleft-widget'),
               delay: const Duration(milliseconds: 500),
@@ -234,23 +245,31 @@ class _BindMenuWithStoreView extends WidgetView<BindMenuWithStore, _BindMenuWith
                     minWidth: double.infinity,
                     minHeight: media.size.height,
                   ),
-                  padding: EdgeInsetsDirectional.only(top: topPadding, start: margins * 2.5, end: margins * 2.5),
+                  padding: EdgeInsetsDirectional.only(
+                      top: topPadding,
+                      start: margins * 2.5,
+                      end: margins * 2.5),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     mainAxisSize: MainAxisSize.min,
                     crossAxisAlignment: CrossAxisAlignment.stretch,
-                    textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                    textDirection: serviceLocator<LanguageController>()
+                        .targetTextDirection,
                     children: [
-                      const AnimatedGap(6, duration: Duration(milliseconds: 500)),
+                      const AnimatedGap(6,
+                          duration: Duration(milliseconds: 500)),
                       IntrinsicHeight(
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                          textDirection: serviceLocator<LanguageController>()
+                              .targetTextDirection,
                           children: [
                             Expanded(
                               child: AppTextFieldWidget(
                                 controller: state.searchTextEditingController,
-                                textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                textDirection:
+                                    serviceLocator<LanguageController>()
+                                        .targetTextDirection,
                                 textInputAction: TextInputAction.done,
                                 keyboardType: TextInputType.text,
                                 decoration: InputDecoration(
@@ -263,21 +282,26 @@ class _BindMenuWithStoreView extends WidgetView<BindMenuWithStore, _BindMenuWith
                                 ),
                               ),
                             ),
-                            const AnimatedGap(12, duration: Duration(milliseconds: 500)),
+                            const AnimatedGap(12,
+                                duration: Duration(milliseconds: 500)),
                             SizedBox(
                               height: 52,
                               child: OutlinedButton(
                                 onPressed: () {},
                                 style: OutlinedButton.styleFrom(
                                   shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadiusDirectional.circular(10),
+                                    borderRadius:
+                                        BorderRadiusDirectional.circular(10),
                                   ),
-                                  side: const BorderSide(color: Color.fromRGBO(238, 238, 238, 1)),
+                                  side: const BorderSide(
+                                      color: Color.fromRGBO(238, 238, 238, 1)),
                                   backgroundColor: Colors.white,
                                 ),
                                 child: Icon(
                                   Icons.filter_list,
-                                  textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                  textDirection:
+                                      serviceLocator<LanguageController>()
+                                          .targetTextDirection,
                                   color: context.primaryColor,
                                 ),
                               ),
@@ -285,64 +309,82 @@ class _BindMenuWithStoreView extends WidgetView<BindMenuWithStore, _BindMenuWith
                           ],
                         ),
                       ),
-                      const AnimatedGap(12, duration: Duration(milliseconds: 500)),
+                      const AnimatedGap(12,
+                          duration: Duration(milliseconds: 500)),
                       CheckboxListTile(
                         value: state.haveSelectAllStores,
                         onChanged: (value) {
                           state.selectAllStores(isSelectAllStores: value);
                         },
                         tristate: true,
-                        visualDensity: const VisualDensity(horizontal: -4, vertical: -4),
-                        contentPadding: const EdgeInsetsDirectional.symmetric(horizontal: 0),
+                        visualDensity:
+                            const VisualDensity(horizontal: -4, vertical: -4),
+                        contentPadding: const EdgeInsetsDirectional.symmetric(
+                            horizontal: 0),
                         //dense: true,
                         title: IntrinsicHeight(
                           child: Row(
                             children: [
                               Text(
                                 'Your Stores',
-                                textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                textDirection:
+                                    serviceLocator<LanguageController>()
+                                        .targetTextDirection,
                               ),
-                              const AnimatedGap(3, duration: Duration(milliseconds: 500)),
+                              const AnimatedGap(3,
+                                  duration: Duration(milliseconds: 500)),
                               Card(
                                 shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadiusDirectional.circular(20),
+                                  borderRadius:
+                                      BorderRadiusDirectional.circular(20),
                                 ),
                                 child: Padding(
-                                  padding: const EdgeInsetsDirectional.only(start: 12.0, end: 12, top: 4, bottom: 4),
+                                  padding: const EdgeInsetsDirectional.only(
+                                      start: 12.0, end: 12, top: 4, bottom: 4),
                                   child: Text(
                                     '${state.listOfAllMenus.length}',
-                                    textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                    textDirection:
+                                        serviceLocator<LanguageController>()
+                                            .targetTextDirection,
                                   ),
                                 ),
                               ),
-                              const AnimatedGap(12, duration: Duration(milliseconds: 500)),
+                              const AnimatedGap(12,
+                                  duration: Duration(milliseconds: 500)),
                               const Spacer(flex: 2),
                               Text(
                                 'Select All',
-                                textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                textDirection:
+                                    serviceLocator<LanguageController>()
+                                        .targetTextDirection,
                               ),
                             ],
                           ),
                         ),
                       ),
-                      const AnimatedGap(12, duration: Duration(milliseconds: 500)),
+                      const AnimatedGap(12,
+                          duration: Duration(milliseconds: 500)),
                       Text(
                         'Select Store',
                         style: context.titleMedium!.copyWith(
                           fontWeight: FontWeight.w600,
                         ),
-                        textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                        textDirection: serviceLocator<LanguageController>()
+                            .targetTextDirection,
                       ),
-                      const AnimatedGap(12, duration: Duration(milliseconds: 500)),
+                      const AnimatedGap(12,
+                          duration: Duration(milliseconds: 500)),
                       Text(
                         'For your Menu',
                         style: context.labelMedium!.copyWith(
                           fontWeight: FontWeight.w600,
                           color: context.colorScheme.primary,
                         ),
-                        textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                        textDirection: serviceLocator<LanguageController>()
+                            .targetTextDirection,
                       ),
-                      const AnimatedGap(12, duration: Duration(milliseconds: 500)),
+                      const AnimatedGap(12,
+                          duration: Duration(milliseconds: 500)),
                       Expanded(
                         flex: 3,
                         child: ListView.separated(
@@ -350,35 +392,51 @@ class _BindMenuWithStoreView extends WidgetView<BindMenuWithStore, _BindMenuWith
                             return StoreCardWidget(
                               key: ValueKey(index),
                               currentIndex: index,
-                              listOfAllMenuEntities: state.listOfAllMenus.toList(),
-                              onSelectionChanged: (List<StoreEntity> listOfAllStoreEntities) {
-                                state.onSelectionChanged(listOfAllStoreEntities.toList());
+                              listOfAllMenuEntities:
+                                  state.listOfAllMenus.toList(),
+                              onSelectionChanged:
+                                  (List<StoreEntity> listOfAllStoreEntities) {
+                                state.onSelectionChanged(
+                                    listOfAllStoreEntities.toList());
                               },
-                              listOfAllSelectedMenuEntities: state.listOfAllSelectedMenus.toList(),
-                              listOfAllSelectedStoreEntities: state.listOfAllSelectedStores.toList(),
-                              listOfAllStoreEntities: state.listOfAllStores.toList(),
+                              listOfAllSelectedMenuEntities:
+                                  state.listOfAllSelectedMenus.toList(),
+                              listOfAllSelectedStoreEntities:
+                                  state.listOfAllSelectedStores.toList(),
+                              listOfAllStoreEntities:
+                                  state.listOfAllStores.toList(),
                               storeEntity: state.listOfAllStores[index],
                             );
                           },
                           itemCount: state.listOfAllStores.length,
                           separatorBuilder: (context, index) {
-                            return const Divider(thickness: 0.25, color: Color.fromRGBO(127, 129, 132, 1));
+                            return const Divider(
+                                thickness: 0.25,
+                                color: Color.fromRGBO(127, 129, 132, 1));
                           },
                         ),
                       ),
-                      const AnimatedGap(12, duration: Duration(milliseconds: 500)),
+                      const AnimatedGap(12,
+                          duration: Duration(milliseconds: 500)),
                       Row(
-                        textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                        textDirection: serviceLocator<LanguageController>()
+                            .targetTextDirection,
                         children: [
                           Expanded(
                             child: ElevatedButton(
                               onPressed: () {
                                 context.read<MenuBloc>().add(
                                       UnBindMenuWithStores(
-                                        menuEntities: state.listOfAllMenus.toList(),
-                                        listOfSelectedMenuEntities: state.listOfAllSelectedMenus.toList(),
-                                        listOfSelectedStoreEntities: state.listOfAllSelectedStores.toList(),
-                                        storeEntities: state.listOfAllStores.toList(),
+                                        menuEntities:
+                                            state.listOfAllMenus.toList(),
+                                        listOfSelectedMenuEntities: state
+                                            .listOfAllSelectedMenus
+                                            .toList(),
+                                        listOfSelectedStoreEntities: state
+                                            .listOfAllSelectedStores
+                                            .toList(),
+                                        storeEntities:
+                                            state.listOfAllStores.toList(),
                                       ),
                                     );
                                 return;
@@ -391,8 +449,11 @@ class _BindMenuWithStoreView extends WidgetView<BindMenuWithStore, _BindMenuWith
                               ),
                               child: Text(
                                 'Remove',
-                                style: const TextStyle(color: Color.fromRGBO(42, 45, 50, 1)),
-                                textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                style: const TextStyle(
+                                    color: Color.fromRGBO(42, 45, 50, 1)),
+                                textDirection:
+                                    serviceLocator<LanguageController>()
+                                        .targetTextDirection,
                               ).translate(),
                             ),
                           ),
@@ -407,20 +468,29 @@ class _BindMenuWithStoreView extends WidgetView<BindMenuWithStore, _BindMenuWith
                                 //context.push(Routes.SAVE_MENU_PAGE);
                                 context.read<MenuBloc>().add(
                                       BindMenuWithStores(
-                                        menuEntities: state.listOfAllMenus.toList(),
-                                        listOfSelectedMenuEntities: state.listOfAllSelectedMenus.toList(),
-                                        listOfSelectedStoreEntities: state.listOfAllSelectedStores.toList(),
-                                        storeEntities: state.listOfAllStores.toList(),
+                                        menuEntities:
+                                            state.listOfAllMenus.toList(),
+                                        listOfSelectedMenuEntities: state
+                                            .listOfAllSelectedMenus
+                                            .toList(),
+                                        listOfSelectedStoreEntities: state
+                                            .listOfAllSelectedStores
+                                            .toList(),
+                                        storeEntities:
+                                            state.listOfAllStores.toList(),
                                       ),
                                     );
                                 return;
                               },
                               style: ElevatedButton.styleFrom(
-                                backgroundColor: const Color.fromRGBO(69, 201, 125, 1),
+                                backgroundColor:
+                                    const Color.fromRGBO(69, 201, 125, 1),
                               ),
                               child: Text(
                                 'Save',
-                                textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                textDirection:
+                                    serviceLocator<LanguageController>()
+                                        .targetTextDirection,
                               ),
                             ),
                           ),

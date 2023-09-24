@@ -1,7 +1,15 @@
 part of 'package:homemakers_merchant/app/features/menu/index.dart';
 
-class GetAllAddonsPaginationUseCase
-    extends PaginationQueryAllUseCaseIORecord<Addons, int, int, String?, String?, String?, Timestamp?, Timestamp?, DataSourceState<List<Addons>>> {
+class GetAllAddonsPaginationUseCase extends PaginationQueryAllUseCaseIORecord<
+    Addons,
+    int,
+    int,
+    String?,
+    String?,
+    String?,
+    Timestamp?,
+    Timestamp?,
+    DataSourceState<List<Addons>>> {
   GetAllAddonsPaginationUseCase({
     required this.menuRepository,
   });

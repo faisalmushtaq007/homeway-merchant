@@ -6,10 +6,15 @@ class SendOtpResponseModel extends INetworkModel<SendOtpResponseModel> {
     this.id = '',
   });
 
-  factory SendOtpResponseModel.fromJson(Map<String, Object?> json) => SendOtpResponseModel(
-        app_user_type: (json['app_user_type'].isNotNull) ? json['app_user_type'] as String : '',
+  factory SendOtpResponseModel.fromJson(Map<String, Object?> json) =>
+      SendOtpResponseModel(
+        app_user_type: (json['app_user_type'].isNotNull)
+            ? json['app_user_type'] as String
+            : '',
         id: (json['id'].isNotNull) ? json['id'] as String : '',
-      )..result = json['result'].isNull ? SendOtpResultModel() : SendOtpResultModel.fromJson(json['result'] as Map<String, dynamic>);
+      )..result = json['result'].isNull
+          ? SendOtpResultModel()
+          : SendOtpResultModel.fromJson(json['result'] as Map<String, dynamic>);
   String id;
   String app_user_type;
   SendOtpResultModel? result;
@@ -35,7 +40,8 @@ class SendOtpResultModel extends INetworkModel<SendOtpResultModel> {
     this.message = '',
   });
 
-  factory SendOtpResultModel.fromJson(Map<String, Object?> json) => SendOtpResultModel(
+  factory SendOtpResultModel.fromJson(Map<String, Object?> json) =>
+      SendOtpResultModel(
         otp: (json['otp'].isNotNull) ? json['otp'] as int : -1,
         message: json['message'].isNotNull ? json['message'] as String : '',
       );

@@ -3,7 +3,8 @@ part of 'package:homemakers_merchant/app/features/payment/index.dart';
 class WalletDashboardPage extends StatefulWidget {
   const WalletDashboardPage({super.key});
   @override
-  _WalletDashboardPageController createState() => _WalletDashboardPageController();
+  _WalletDashboardPageController createState() =>
+      _WalletDashboardPageController();
 }
 
 class _WalletDashboardPageController extends State<WalletDashboardPage> {
@@ -28,14 +29,16 @@ class _WalletDashboardPageController extends State<WalletDashboardPage> {
   Widget build(BuildContext context) => _WalletDashboardPageView(this);
 }
 
-class _WalletDashboardPageView extends WidgetView<WalletDashboardPage, _WalletDashboardPageController> {
+class _WalletDashboardPageView
+    extends WidgetView<WalletDashboardPage, _WalletDashboardPageController> {
   const _WalletDashboardPageView(super.state);
 
   @override
   Widget build(BuildContext context) {
     final MediaQueryData media = MediaQuery.of(context);
     final double margins = GlobalApp.responsiveInsets(media.size.width);
-    final double topPadding = margins; //media.padding.top + kToolbarHeight + margins; //margins * 1.5;
+    final double topPadding =
+        margins; //media.padding.top + kToolbarHeight + margins; //margins * 1.5;
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: FlexColorScheme.themedSystemNavigationBar(
         context,
@@ -66,10 +69,12 @@ class _WalletDashboardPageView extends WidgetView<WalletDashboardPage, _WalletDa
                   textColor: Colors.yellow,
                   label: Text(
                     '10',
-                    style: context.labelSmall!.copyWith(color: context.colorScheme.onPrimary),
+                    style: context.labelSmall!
+                        .copyWith(color: context.colorScheme.onPrimary),
                     //Color.fromRGBO(251, 219, 11, 1)
                   ),
-                  child: Icon(Icons.notifications, color: context.colorScheme.primary),
+                  child: Icon(Icons.notifications,
+                      color: context.colorScheme.primary),
                 ),
               ),
               const Padding(
@@ -87,12 +92,16 @@ class _WalletDashboardPageView extends WidgetView<WalletDashboardPage, _WalletDa
             from: context.width / 2 - 60,
             duration: const Duration(milliseconds: 500),
             child: Directionality(
-              textDirection: serviceLocator<LanguageController>().targetTextDirection,
+              textDirection:
+                  serviceLocator<LanguageController>().targetTextDirection,
               child: PageBody(
                 controller: state.scrollController,
                 constraints: BoxConstraints(
                   minWidth: 1000,
-                  minHeight: media.size.height - (media.padding.top + kToolbarHeight + media.padding.bottom),
+                  minHeight: media.size.height -
+                      (media.padding.top +
+                          kToolbarHeight +
+                          media.padding.bottom),
                 ),
                 padding: EdgeInsetsDirectional.only(
                   top: topPadding,
@@ -126,15 +135,19 @@ class _WalletDashboardPageView extends WidgetView<WalletDashboardPage, _WalletDa
                             overflow: TextOverflow.ellipsis,
                           ).translate(),
                            */
-                          const AnimatedGap(6, duration: Duration(milliseconds: 200)),
+                          const AnimatedGap(6,
+                              duration: Duration(milliseconds: 200)),
                           WalletAccountSummaryWidget(
-                            key: const Key('wallet-dashboard-account-summary-widget'),
+                            key: const Key(
+                                'wallet-dashboard-account-summary-widget'),
                           ),
-                          const AnimatedGap(16, duration: Duration(milliseconds: 200)),
+                          const AnimatedGap(16,
+                              duration: Duration(milliseconds: 200)),
                           WalletMenuWidget(
                             key: const Key('wallet-dashboard-menus-widget'),
                           ),
-                          const AnimatedGap(16, duration: Duration(milliseconds: 200)),
+                          const AnimatedGap(16,
+                              duration: Duration(milliseconds: 200)),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
@@ -146,7 +159,9 @@ class _WalletDashboardPageView extends WidgetView<WalletDashboardPage, _WalletDa
                                     fontWeight: FontWeight.w500,
                                     fontSize: 19,
                                   ),
-                                  textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                  textDirection:
+                                      serviceLocator<LanguageController>()
+                                          .targetTextDirection,
                                   maxLines: 1,
                                   softWrap: true,
                                   overflow: TextOverflow.ellipsis,
@@ -154,7 +169,8 @@ class _WalletDashboardPageView extends WidgetView<WalletDashboardPage, _WalletDa
                               ),
                               InkWell(
                                 onTap: () async {
-                                  await context.push(Routes.ALL_TRANSCATIONS_PAGE);
+                                  await context
+                                      .push(Routes.ALL_TRANSCATIONS_PAGE);
                                 },
                                 child: Text(
                                   'View All',
@@ -163,7 +179,9 @@ class _WalletDashboardPageView extends WidgetView<WalletDashboardPage, _WalletDa
                                     color: context.colorScheme.secondary,
                                     fontSize: 17,
                                   ),
-                                  textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                  textDirection:
+                                      serviceLocator<LanguageController>()
+                                          .targetTextDirection,
                                   maxLines: 1,
                                   softWrap: true,
                                   overflow: TextOverflow.ellipsis,
@@ -182,7 +200,8 @@ class _WalletDashboardPageView extends WidgetView<WalletDashboardPage, _WalletDa
                       fillOverscroll: true,
                       hasScrollBody: true,
                       child: AllTranscationsWidget(
-                        key: const Key('waller-dashboard-all-transcation-widget'),
+                        key: const Key(
+                            'waller-dashboard-all-transcation-widget'),
                         hasShownInWalletDashboard: true,
                       ),
                     ),

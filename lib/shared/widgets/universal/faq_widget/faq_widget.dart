@@ -56,22 +56,35 @@ class _FaqWidgetState extends State<FaqWidget> {
   @override
   Widget build(BuildContext context) {
     return ListExpandableWidget(
-      ansDecoration: widget.ansDecoration ?? BoxDecoration(color: Colors.grey[200], borderRadius: const BorderRadius.all(Radius.circular(20))),
-      queDecoration: widget.queDecoration ?? BoxDecoration(color: Colors.grey[200], borderRadius: const BorderRadius.all(Radius.circular(20))),
-      ansPadding: widget.ansPadding ?? const EdgeInsets.symmetric(horizontal: 35.0, vertical: 10),
+      ansDecoration: widget.ansDecoration ??
+          BoxDecoration(
+              color: Colors.grey[200],
+              borderRadius: const BorderRadius.all(Radius.circular(20))),
+      queDecoration: widget.queDecoration ??
+          BoxDecoration(
+              color: Colors.grey[200],
+              borderRadius: const BorderRadius.all(Radius.circular(20))),
+      ansPadding: widget.ansPadding ??
+          const EdgeInsets.symmetric(horizontal: 35.0, vertical: 10),
       separator: widget.separator ?? const Divider(),
       showDivider: widget.showDivider,
       isExpanded: widget.isExpanded,
-      expandedIcon: widget.expandedIcon ?? const Icon(Icons.keyboard_arrow_down),
-      collapsedIcon: widget.collapsedIcon ?? const Icon(Icons.keyboard_arrow_right),
+      expandedIcon:
+          widget.expandedIcon ?? const Icon(Icons.keyboard_arrow_down),
+      collapsedIcon:
+          widget.collapsedIcon ?? const Icon(Icons.keyboard_arrow_right),
       header: Text(
         widget.question,
-        style: widget.queStyle ?? const TextStyle(color: Colors.red, fontWeight: FontWeight.bold, fontSize: 20),
+        style: widget.queStyle ??
+            const TextStyle(
+                color: Colors.red, fontWeight: FontWeight.bold, fontSize: 20),
       ),
       items: Text(
         widget.answer,
         textAlign: TextAlign.justify,
-        style: widget.ansStyle ?? const TextStyle(color: Colors.black, fontWeight: FontWeight.w500, fontSize: 18),
+        style: widget.ansStyle ??
+            const TextStyle(
+                color: Colors.black, fontWeight: FontWeight.w500, fontSize: 18),
       ),
     );
   }
@@ -123,7 +136,8 @@ class _ListExpandableWidgetState extends State<ListExpandableWidget> {
     _updateExpandState(widget.isExpanded!);
   }
 
-  void _updateExpandState(bool isExpanded) => setState(() => _isExpanded = isExpanded);
+  void _updateExpandState(bool isExpanded) =>
+      setState(() => _isExpanded = isExpanded);
 
   @override
   Widget build(BuildContext context) {
@@ -158,7 +172,11 @@ class _ListExpandableWidgetState extends State<ListExpandableWidget> {
   Widget _buildListItems(BuildContext context) {
     List<Widget> titles = [];
     titles.add(_wrapHeader());
-    titles.add(Container(width: double.infinity, decoration: widget.ansDecoration, padding: widget.ansPadding, child: widget.items));
+    titles.add(Container(
+        width: double.infinity,
+        decoration: widget.ansDecoration,
+        padding: widget.ansPadding,
+        child: widget.items));
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: ListTile.divideTiles(tiles: titles, context: context).toList(),

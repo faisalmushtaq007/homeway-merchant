@@ -70,9 +70,10 @@ class PagedMasonryGridView<PageKeyType, ItemType> extends StatelessWidget {
     this.addSemanticIndexes = true,
     Key? key,
   })  : _shrinkWrapFirstPageIndicators = shrinkWrap,
-        gridDelegateBuilder = ((childCount) => SliverSimpleGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: crossAxisCount,
-            )),
+        gridDelegateBuilder =
+            ((childCount) => SliverSimpleGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: crossAxisCount,
+                )),
         super(
           key: key,
         );
@@ -102,9 +103,10 @@ class PagedMasonryGridView<PageKeyType, ItemType> extends StatelessWidget {
     this.addSemanticIndexes = true,
     Key? key,
   })  : _shrinkWrapFirstPageIndicators = shrinkWrap,
-        gridDelegateBuilder = ((childCount) => SliverSimpleGridDelegateWithMaxCrossAxisExtent(
-              maxCrossAxisExtent: maxCrossAxisExtent,
-            )),
+        gridDelegateBuilder =
+            ((childCount) => SliverSimpleGridDelegateWithMaxCrossAxisExtent(
+                  maxCrossAxisExtent: maxCrossAxisExtent,
+                )),
         super(
           key: key,
         );
@@ -169,7 +171,8 @@ class PagedMasonryGridView<PageKeyType, ItemType> extends StatelessWidget {
   final bool _shrinkWrapFirstPageIndicators;
 
   @override
-  Widget build(BuildContext context) => PagedLayoutBuilder<PageKeyType, ItemType>(
+  Widget build(BuildContext context) =>
+      PagedLayoutBuilder<PageKeyType, ItemType>(
         layoutProtocol: PagedLayoutProtocol.box,
         pagingController: pagingController,
         builderDelegate: builderDelegate,

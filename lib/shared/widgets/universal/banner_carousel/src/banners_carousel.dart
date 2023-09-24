@@ -11,7 +11,8 @@ import 'indicators_widget.dart';
 ///
 /// Along with a row of indicators and as an animation for each page change.
 class BannerCarousel extends StatefulWidget {
-  static const IndicatorModel _indicatorModel = IndicatorModel.animation(width: 10, height: 10, spaceBetween: 3.0);
+  static const IndicatorModel _indicatorModel =
+      IndicatorModel.animation(width: 10, height: 10, spaceBetween: 3.0);
 
   /// [banners] List of BannerModel.
   /// The [imagePath] can be assert Path or Network Path
@@ -135,7 +136,8 @@ class BannerCarousel extends StatefulWidget {
     this.outerBorderRadius,
     this.bannerWidgetBorderRadius,
     this.physics,
-  })  : assert(banners != null || customizedBanners != null, 'banners or customizedBanners need to be implemented'),
+  })  : assert(banners != null || customizedBanners != null,
+            'banners or customizedBanners need to be implemented'),
         assert(
             banners == null || customizedBanners == null,
             'Cannot provide both a banners and a customizedBanners\n'
@@ -172,7 +174,8 @@ class BannerCarousel extends StatefulWidget {
   })  : this.width = double.maxFinite,
         this.spaceBetween = 0.0,
         this.margin = EdgeInsets.zero,
-        assert(banners != null || customizedBanners != null, 'banners or customizedBanners need to be implemented'),
+        assert(banners != null || customizedBanners != null,
+            'banners or customizedBanners need to be implemented'),
         assert(
             banners == null || customizedBanners == null,
             'Cannot provide both a banners and a customizedBanners\n'
@@ -191,9 +194,13 @@ class _BannerCarouselState extends State<BannerCarousel> {
   @override
   void initState() {
     _page = widget.initialPage;
-    _controller = PageController(initialPage: widget.initialPage, viewportFraction: widget.viewportFraction, keepPage: false);
+    _controller = PageController(
+        initialPage: widget.initialPage,
+        viewportFraction: widget.viewportFraction,
+        keepPage: false);
     if (widget.shouldTriggerChange != null) {
-      streamSubscription = widget.shouldTriggerChange!.listen((n) => changeCurrentPage(n));
+      streamSubscription =
+          widget.shouldTriggerChange!.listen((n) => changeCurrentPage(n));
     }
     super.initState();
   }
@@ -203,12 +210,14 @@ class _BannerCarouselState extends State<BannerCarousel> {
     super.didUpdateWidget(old);
     if (widget.shouldTriggerChange != old.shouldTriggerChange) {
       streamSubscription.cancel();
-      streamSubscription = widget.shouldTriggerChange!.listen((n) => changeCurrentPage(n));
+      streamSubscription =
+          widget.shouldTriggerChange!.listen((n) => changeCurrentPage(n));
     }
   }
 
   /// Shadow Banner
-  bool get _showShadow => widget.viewportFraction == 1 && widget.customizedBanners == null;
+  bool get _showShadow =>
+      widget.viewportFraction == 1 && widget.customizedBanners == null;
 
   Color get _shadowColor => Colors.black.withOpacity(_showShadow ? 0.25 : 0.0);
 
@@ -225,7 +234,9 @@ class _BannerCarouselState extends State<BannerCarousel> {
                 key: Key("Banner${banner.id}"),
                 bannerModel: banner,
                 spaceBetween: widget.spaceBetween,
-                onTap: widget.onTap != null ? () => widget.onTap!(banner.id) : () => print("Double Tap Banner ${banner.id}"),
+                onTap: widget.onTap != null
+                    ? () => widget.onTap!(banner.id)
+                    : () => print("Double Tap Banner ${banner.id}"),
                 borderRadius: widget.borderRadius,
                 bannerWidgetBorderRadius: widget.bannerWidgetBorderRadius,
               ))
@@ -243,7 +254,9 @@ class _BannerCarouselState extends State<BannerCarousel> {
           ))
       .toList();
 
-  double get _totalHeigth => widget.indicatorBottom && widget.showIndicator ? widget.height + widget.customizedIndicators.heightExpanded + 15 : widget.height;
+  double get _totalHeigth => widget.indicatorBottom && widget.showIndicator
+      ? widget.height + widget.customizedIndicators.heightExpanded + 15
+      : widget.height;
 
   @override
   Widget build(BuildContext context) {
@@ -256,7 +269,7 @@ class _BannerCarouselState extends State<BannerCarousel> {
         children: [
           Container(
             decoration: _boxDecoration,
-            height:widget.showIndicator?widget.height: _totalHeigth,//,
+            height: widget.showIndicator ? widget.height : _totalHeigth, //,
             child: PageView(
               physics: widget.physics,
               controller: _controller,
@@ -284,7 +297,8 @@ class _BannerCarouselState extends State<BannerCarousel> {
 
   BoxDecoration get _boxDecoration => BoxDecoration(
         color: context.colorScheme.onPrimary,
-        borderRadius: widget.outerBorderRadius ?? BorderRadiusDirectional.circular(10),
+        borderRadius:
+            widget.outerBorderRadius ?? BorderRadiusDirectional.circular(10),
         border: Border.all(color: context.colorScheme.inverseSurface),
         boxShadow: [
           BoxShadow(
@@ -307,9 +321,14 @@ class _BannerCarouselState extends State<BannerCarousel> {
 
   /// Method for changing current page
   void changeCurrentPage(int page) {
-    Curve curve = (widget.transitionCurve != null ? widget.transitionCurve : Curves.linear)!;
-    Duration duration = (widget.transitionDuration != null ? widget.transitionDuration : Duration(seconds: 1))!;
-    if (page.runtimeType == int && page >= 0 && page < _listBanners.length) _controller.animateToPage(page, curve: curve, duration: duration);
+    Curve curve = (widget.transitionCurve != null
+        ? widget.transitionCurve
+        : Curves.linear)!;
+    Duration duration = (widget.transitionDuration != null
+        ? widget.transitionDuration
+        : Duration(seconds: 1))!;
+    if (page.runtimeType == int && page >= 0 && page < _listBanners.length)
+      _controller.animateToPage(page, curve: curve, duration: duration);
     setState(() => _page = page);
   }
 }

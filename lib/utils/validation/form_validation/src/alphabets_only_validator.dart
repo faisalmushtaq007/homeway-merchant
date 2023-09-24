@@ -25,5 +25,6 @@ class AlphaletsOnlyValidator extends PatternValidator {
   ///
   /// The [errorMessage] parameter is the error message to be returned if the value
   /// contains any non-alphabetic characters.
-  AlphaletsOnlyValidator({required super.errorMessage}) : super(RegExp(r'^[a-zA-Z ]*$'));
+  AlphaletsOnlyValidator({required super.errorMessage})
+      : super(RegExp(r'^[a-zA-Z ]*$'));
 }

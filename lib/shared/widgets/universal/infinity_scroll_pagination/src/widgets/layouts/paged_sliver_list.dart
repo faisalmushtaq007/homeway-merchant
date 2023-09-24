@@ -83,7 +83,8 @@ class PagedSliverList<PageKeyType, ItemType> extends StatelessWidget {
   final bool shrinkWrapFirstPageIndicators;
 
   @override
-  Widget build(BuildContext context) => PagedLayoutBuilder<PageKeyType, ItemType>(
+  Widget build(BuildContext context) =>
+      PagedLayoutBuilder<PageKeyType, ItemType>(
         layoutProtocol: PagedLayoutProtocol.sliver,
         pagingController: pagingController,
         builderDelegate: builderDelegate,
@@ -136,7 +137,8 @@ class PagedSliverList<PageKeyType, ItemType> extends StatelessWidget {
 
     final itemExtent = this.itemExtent;
 
-    return ((itemExtent == null && prototypeItem == null) || _separatorBuilder != null)
+    return ((itemExtent == null && prototypeItem == null) ||
+            _separatorBuilder != null)
         ? SliverList(
             delegate: delegate,
           )

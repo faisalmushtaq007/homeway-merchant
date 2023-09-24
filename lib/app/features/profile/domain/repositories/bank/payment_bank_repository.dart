@@ -32,7 +32,8 @@ abstract interface class UserPaymentBankRepository {
     AppUserEntity? appUserEntity,
   });
 
-  Future<DataSourceState<List<PaymentBankEntity>>> getAllPaymentBanksPagination({
+  Future<DataSourceState<List<PaymentBankEntity>>>
+      getAllPaymentBanksPagination({
     int pageKey = 0,
     int pageSize = 10,
     String? searchText,

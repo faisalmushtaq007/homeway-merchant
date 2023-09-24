@@ -51,12 +51,10 @@ class _RoomsPageController extends State<RoomsPage> {
       final (ConnectivityPlusState?, InternetConnectivityState?) result =
           serviceLocator<ConnectivityService>().getCurrentInternetStatus();
       if (result.$2 == InternetConnectivityState.internet) {
-        await FirebaseChatCore.instance
-            .updateUserActiveStatus();
+        await FirebaseChatCore.instance.updateUserActiveStatus();
         return;
       } else {
-        await FirebaseChatCore.instance
-            .updateUserActiveStatus(status: false);
+        await FirebaseChatCore.instance.updateUserActiveStatus(status: false);
         return;
       }
     } catch (e) {
@@ -78,17 +76,14 @@ class _RoomsPageController extends State<RoomsPage> {
       final (ConnectivityPlusState?, InternetConnectivityState?) result =
           serviceLocator<ConnectivityService>().getCurrentInternetStatus();
       if (result.$2 == InternetConnectivityState.internet) {
-        await FirebaseChatCore.instance
-            .updateUserActiveStatus();
+        await FirebaseChatCore.instance.updateUserActiveStatus();
         return;
       } else {
-        await FirebaseChatCore.instance
-            .updateUserActiveStatus(status: false);
+        await FirebaseChatCore.instance.updateUserActiveStatus(status: false);
         return;
       }
     } else if (_state == AppLifecycleState.paused) {
-      await FirebaseChatCore.instance
-          .updateUserActiveStatus(status: false);
+      await FirebaseChatCore.instance.updateUserActiveStatus(status: false);
       return;
     }
   }
@@ -324,7 +319,13 @@ class _RoomsPageView extends WidgetView<RoomsPage, _RoomsPageController> {
                                                   LanguageController>()
                                               .targetTextDirection,
                                         ),
-                                        subtitle:(room.lastMessages.isNotNull&&room.lastMessages?.last.type==types.MessageType.text)?Text('${room.lastMessages!.last as types.TextMessage..text}'): null,
+                                        subtitle: (room
+                                                    .lastMessages.isNotNull &&
+                                                room.lastMessages?.last.type ==
+                                                    types.MessageType.text)
+                                            ? Text(
+                                                '${room.lastMessages!.last as types.TextMessage..text}')
+                                            : null,
                                         leading: state._buildAvatar(room),
                                       ),
                                     );

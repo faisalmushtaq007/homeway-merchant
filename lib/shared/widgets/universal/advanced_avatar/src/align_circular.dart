@@ -1,7 +1,6 @@
 import 'package:flutter/widgets.dart';
 import 'package:homemakers_merchant/shared/widgets/universal/advanced_avatar/advanced_avatar.dart';
 
-
 /// Common positioned widget wrapper.
 class AlignCircular extends StatelessWidget {
   const AlignCircular({

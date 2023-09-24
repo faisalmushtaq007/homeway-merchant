@@ -9,7 +9,8 @@ class FaqPage extends StatefulWidget {
 
 class _FaqPageController extends State<FaqPage> {
   static const _pageSize = 20;
-  final PagingController<int, FaqEntity> _pagingController = PagingController(firstPageKey: 1);
+  final PagingController<int, FaqEntity> _pagingController =
+      PagingController(firstPageKey: 1);
   String? _searchTerm;
   late final ScrollController scrollController;
   late final ScrollController innerScrollController;
@@ -251,22 +252,26 @@ class _FaqPageController extends State<FaqPage> {
         FaqEntity(
           faqID: 1,
           question: 'I want to partner my business with HomeWay',
-          answer: 'Partner with us, Send an email to partner@homeway.ar. We will revert within 24-48 hrs',
+          answer:
+              'Partner with us, Send an email to partner@homeway.ar. We will revert within 24-48 hrs',
         ),
         FaqEntity(
             faqID: 2,
-            question: 'What are the mandatory documents needed to list my business on HomeWay?',
+            question:
+                'What are the mandatory documents needed to list my business on HomeWay?',
             answer:
                 "-  Copies of the below documents are mandatory \n-  FSSAI Licence OR FSSAI Acknowledgement \n-  Pan Card \n-  GSTIN Certificate \n-  Cancelled Cheque OR bank Passbook \n-  Menu"),
         FaqEntity(
           faqID: 3,
-          question: 'After I submit all documents, how long will it take for my business to go live on HomeWay?',
+          question:
+              'After I submit all documents, how long will it take for my business to go live on HomeWay?',
           answer:
               'After all mandatory documents have been received and verified it takes upto 7-10 working days for the onboarding to be completed and make your business live on the platform.',
         ),
         FaqEntity(
           faqID: 4,
-          question: 'I don’t have an FSSAI licence for my business. Can it still be onboarded?',
+          question:
+              'I don’t have an FSSAI licence for my business. Can it still be onboarded?',
           answer:
               'FSSAI licence is a mandatory requirement according to the government’s policies. However, if you are yet to receive the licence at the time of onboarding, you can proceed with the acknowledgement number which you will have received from FSSAI for your registration.',
         ),
@@ -325,7 +330,8 @@ class _FaqPageView extends WidgetView<FaqPage, _FaqPageController> {
   Widget build(BuildContext context) {
     final MediaQueryData media = MediaQuery.of(context);
     final double margins = GlobalApp.responsiveInsets(media.size.width);
-    final double topPadding = margins; //media.padding.top + kToolbarHeight + margins; //margins * 1.5;
+    final double topPadding =
+        margins; //media.padding.top + kToolbarHeight + margins; //margins * 1.5;
     final double bottomPadding = margins; //media.padding.bottom + margins;
     final double width = media.size.width;
     final ThemeData theme = Theme.of(context);
@@ -343,7 +349,8 @@ class _FaqPageView extends WidgetView<FaqPage, _FaqPageController> {
             automaticallyImplyLeading: true,
             title: Text(
               'FAQ',
-              textDirection: serviceLocator<LanguageController>().targetTextDirection,
+              textDirection:
+                  serviceLocator<LanguageController>().targetTextDirection,
             ),
             actions: const [
               Padding(
@@ -378,11 +385,17 @@ class _FaqPageView extends WidgetView<FaqPage, _FaqPageController> {
                         question: faqResult.question,
                         answer: faqResult.answer,
                         key: ValueKey(index),
-                        ansDecoration: const BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(10))),
-                        queDecoration: const BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(10))),
-                        queStyle: context.titleMedium!.copyWith(fontWeight: FontWeight.w600),
+                        ansDecoration: const BoxDecoration(
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(10))),
+                        queDecoration: const BoxDecoration(
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(10))),
+                        queStyle: context.titleMedium!
+                            .copyWith(fontWeight: FontWeight.w600),
                         ansStyle: context.bodyMedium!.copyWith(),
-                        ansPadding: const EdgeInsetsDirectional.symmetric(vertical: 10, horizontal: 16),
+                        ansPadding: const EdgeInsetsDirectional.symmetric(
+                            vertical: 10, horizontal: 16),
                       ),
                     ),
                   ),

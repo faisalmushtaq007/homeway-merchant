@@ -10,7 +10,8 @@ class MenuRemoteDataSource implements MenuDataSource {
   }
 
   @override
-  Future<ApiResultState<bool>> deleteMenu({MenuEntity? menuEntity, required int menuID}) {
+  Future<ApiResultState<bool>> deleteMenu(
+      {MenuEntity? menuEntity, required int menuID}) {
     // TODO(prasant): implement deleteMenu
     throw UnimplementedError();
   }
@@ -39,31 +40,37 @@ class MenuRemoteDataSource implements MenuDataSource {
   }
 
   @override
-  Future<ApiResultState<MenuEntity>> getMenu({MenuEntity? menuEntity, required int menuID}) {
+  Future<ApiResultState<MenuEntity>> getMenu(
+      {MenuEntity? menuEntity, required int menuID}) {
     // TODO(prasant): implement getMenu
     throw UnimplementedError();
   }
 
   @override
-  Future<ApiResultState<MenuEntity>> saveMenu({required MenuEntity menuEntity}) {
+  Future<ApiResultState<MenuEntity>> saveMenu(
+      {required MenuEntity menuEntity}) {
     // TODO(prasant): implement saveMenu
     throw UnimplementedError();
   }
 
   @override
-  Future<ApiResultState<List<MenuEntity>>> bindAddonsWithMenu({required List<Addons> source, required List<MenuEntity> destination}) {
+  Future<ApiResultState<List<MenuEntity>>> bindAddonsWithMenu(
+      {required List<Addons> source, required List<MenuEntity> destination}) {
     // TODO(prasant): implement bindAddonsWithMenu
     throw UnimplementedError();
   }
 
   @override
-  Future<ApiResultState<List<StoreEntity>>> bindMenuWithStores({required List<MenuEntity> source, required List<StoreEntity> destination}) {
+  Future<ApiResultState<List<StoreEntity>>> bindMenuWithStores(
+      {required List<MenuEntity> source,
+      required List<StoreEntity> destination}) {
     // TODO(prasant): implement bindMenuWithStores
     throw UnimplementedError();
   }
 
   @override
-  Future<ApiResultState<bool>> deleteAddons({required int addonsID, Addons? addons}) {
+  Future<ApiResultState<bool>> deleteAddons(
+      {required int addonsID, Addons? addons}) {
     // TODO(prasant): implement deleteAddons
     throw UnimplementedError();
   }
@@ -75,13 +82,15 @@ class MenuRemoteDataSource implements MenuDataSource {
   }
 
   @override
-  Future<ApiResultState<Addons>> editAddons({required Addons addons, required int addonsID}) {
+  Future<ApiResultState<Addons>> editAddons(
+      {required Addons addons, required int addonsID}) {
     // TODO(prasant): implement editAddons
     throw UnimplementedError();
   }
 
   @override
-  Future<ApiResultState<Addons>> getAddons({required int addonsID, Addons? addons}) {
+  Future<ApiResultState<Addons>> getAddons(
+      {required int addonsID, Addons? addons}) {
     // TODO(prasant): implement getAddons
     throw UnimplementedError();
   }
@@ -107,37 +116,44 @@ class MenuRemoteDataSource implements MenuDataSource {
   }
 
   @override
-  Future<ApiResultState<List<MenuEntity>>> unBindAddonsWithMenu({required List<Addons> source, required List<MenuEntity> destination}) {
+  Future<ApiResultState<List<MenuEntity>>> unBindAddonsWithMenu(
+      {required List<Addons> source, required List<MenuEntity> destination}) {
     // TODO(prasant): implement unBindAddonsWithMenu
     throw UnimplementedError();
   }
 
   @override
-  Future<ApiResultState<List<StoreEntity>>> unBindMenuWithStores({required List<MenuEntity> source, required List<StoreEntity> destination}) {
+  Future<ApiResultState<List<StoreEntity>>> unBindMenuWithStores(
+      {required List<MenuEntity> source,
+      required List<StoreEntity> destination}) {
     // TODO(prasant): implement unBindMenuWithStores
     throw UnimplementedError();
   }
 
   @override
-  Future<ApiResultState<AppUserEntity>> bindAddonsWithUser({required List<Addons> source, required AppUserEntity destination}) {
+  Future<ApiResultState<AppUserEntity>> bindAddonsWithUser(
+      {required List<Addons> source, required AppUserEntity destination}) {
     // TODO: implement bindAddonsWithUser
     throw UnimplementedError();
   }
 
   @override
-  Future<ApiResultState<AppUserEntity>> bindMenuWithUser({required List<MenuEntity> source, required AppUserEntity destination}) {
+  Future<ApiResultState<AppUserEntity>> bindMenuWithUser(
+      {required List<MenuEntity> source, required AppUserEntity destination}) {
     // TODO: implement bindMenuWithUser
     throw UnimplementedError();
   }
 
   @override
-  Future<ApiResultState<AppUserEntity>> unBindAddonsWithUser({required List<Addons> source, required AppUserEntity destination}) {
+  Future<ApiResultState<AppUserEntity>> unBindAddonsWithUser(
+      {required List<Addons> source, required AppUserEntity destination}) {
     // TODO: implement unBindAddonsWithUser
     throw UnimplementedError();
   }
 
   @override
-  Future<ApiResultState<AppUserEntity>> unBindMenuWithUser({required List<MenuEntity> source, required AppUserEntity destination}) {
+  Future<ApiResultState<AppUserEntity>> unBindMenuWithUser(
+      {required List<MenuEntity> source, required AppUserEntity destination}) {
     // TODO: implement unBindMenuWithUser
     throw UnimplementedError();
   }
@@ -159,19 +175,22 @@ class MenuRemoteDataSource implements MenuDataSource {
   }
 
   @override
-  Future<ApiResultState<List<Addons>>> saveAllAddons({required List<Addons> addonsEntities, bool hasUpdateAll = false}) {
+  Future<ApiResultState<List<Addons>>> saveAllAddons(
+      {required List<Addons> addonsEntities, bool hasUpdateAll = false}) {
     // TODO: implement saveAllAddons
     throw UnimplementedError();
   }
 
   @override
-  Future<ApiResultState<List<Category>>> saveAllCategory({required List<Category> categories, bool hasUpdateAll = false}) {
+  Future<ApiResultState<List<Category>>> saveAllCategory(
+      {required List<Category> categories, bool hasUpdateAll = false}) {
     // TODO: implement saveAllCategory
     throw UnimplementedError();
   }
 
   @override
-  Future<ApiResultState<List<MenuEntity>>> saveAllMenu({required List<MenuEntity> menuEntities, bool hasUpdateAll = false}) {
+  Future<ApiResultState<List<MenuEntity>>> saveAllMenu(
+      {required List<MenuEntity> menuEntities, bool hasUpdateAll = false}) {
     // TODO: implement saveAllMenu
     throw UnimplementedError();
   }

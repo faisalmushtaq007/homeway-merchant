@@ -19,7 +19,8 @@ abstract class BaseOrderLocalDbRepository<T extends OrderEntity>
         GetAllDeliveryOrder<T>,
         GetAllScheduleOrder<T> {}
 
-abstract class GetAllOrder<EntityType> extends BaseRepositoryOperation<EntityType> {
+abstract class GetAllOrder<EntityType>
+    extends BaseRepositoryOperation<EntityType> {
   /// Returns a list of all entities in repository
   ///
   /// Will return empty array if no entities found.
@@ -35,7 +36,8 @@ abstract class GetAllOrder<EntityType> extends BaseRepositoryOperation<EntityTyp
   });
 }
 
-abstract class GetAllRecentOrder<EntityType> extends BaseRepositoryOperation<EntityType> {
+abstract class GetAllRecentOrder<EntityType>
+    extends BaseRepositoryOperation<EntityType> {
   /// Returns a list of all entities in repository
   ///
   /// Will return empty array if no entities found.
@@ -51,7 +53,8 @@ abstract class GetAllRecentOrder<EntityType> extends BaseRepositoryOperation<Ent
   });
 }
 
-abstract class GetAllOnProcessOrder<EntityType> extends BaseRepositoryOperation<EntityType> {
+abstract class GetAllOnProcessOrder<EntityType>
+    extends BaseRepositoryOperation<EntityType> {
   /// Returns a list of all entities in repository
   ///
   /// Will return empty array if no entities found.
@@ -67,7 +70,8 @@ abstract class GetAllOnProcessOrder<EntityType> extends BaseRepositoryOperation<
   });
 }
 
-abstract class GetAllNewOrder<EntityType> extends BaseRepositoryOperation<EntityType> {
+abstract class GetAllNewOrder<EntityType>
+    extends BaseRepositoryOperation<EntityType> {
   /// Returns a list of all entities in repository
   ///
   /// Will return empty array if no entities found.
@@ -83,7 +87,8 @@ abstract class GetAllNewOrder<EntityType> extends BaseRepositoryOperation<Entity
   });
 }
 
-abstract class GetAllCancelOrder<EntityType> extends BaseRepositoryOperation<EntityType> {
+abstract class GetAllCancelOrder<EntityType>
+    extends BaseRepositoryOperation<EntityType> {
   /// Returns a list of all entities in repository
   ///
   /// Will return empty array if no entities found.
@@ -99,7 +104,8 @@ abstract class GetAllCancelOrder<EntityType> extends BaseRepositoryOperation<Ent
   });
 }
 
-abstract class GetAllDeliveryOrder<EntityType> extends BaseRepositoryOperation<EntityType> {
+abstract class GetAllDeliveryOrder<EntityType>
+    extends BaseRepositoryOperation<EntityType> {
   /// Returns a list of all entities in repository
   ///
   /// Will return empty array if no entities found.
@@ -115,7 +121,8 @@ abstract class GetAllDeliveryOrder<EntityType> extends BaseRepositoryOperation<E
   });
 }
 
-abstract class GetAllScheduleOrder<EntityType> extends BaseRepositoryOperation<EntityType> {
+abstract class GetAllScheduleOrder<EntityType>
+    extends BaseRepositoryOperation<EntityType> {
   /// Returns a list of all entities in repository
   ///
   /// Will return empty array if no entities found.

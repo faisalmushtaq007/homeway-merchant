@@ -98,7 +98,8 @@ class _PhoneNumberFieldWidgetState extends State<PhoneNumberFieldWidget> {
   );
 
   // Country picker selector mode
-  CountrySelectorNavigator selectorNavigator = const CountrySelectorNavigator.searchDelegate();
+  CountrySelectorNavigator selectorNavigator =
+      const CountrySelectorNavigator.searchDelegate();
   final phoneKey = GlobalKey<FormFieldState<PhoneNumber>>();
   bool mobileOnly = true;
   String? phoneValidation;
@@ -108,7 +109,8 @@ class _PhoneNumberFieldWidgetState extends State<PhoneNumberFieldWidget> {
   bool isCountryChipPersistent = false;
   bool withLabel = true;
   bool useRtl = false;
-  ValueNotifier<PhoneNumberVerification> valueNotifierPhoneNumberVerification = ValueNotifier<PhoneNumberVerification>(
+  ValueNotifier<PhoneNumberVerification> valueNotifierPhoneNumberVerification =
+      ValueNotifier<PhoneNumberVerification>(
     PhoneNumberVerification.none,
   );
 
@@ -192,8 +194,10 @@ class _PhoneNumberFieldWidgetState extends State<PhoneNumberFieldWidget> {
             }*/
             context.read<PhoneNumberVerificationBloc>().add(
                   ValidatePhoneNumber(
-                    phoneNumber: '+${phoneController.value?.countryCode} ${phoneController.value?.getFormattedNsn().trim()}',
-                    countryDialCode: '+${phoneController.value?.countryCode ?? '+966'}',
+                    phoneNumber:
+                        '+${phoneController.value?.countryCode} ${phoneController.value?.getFormattedNsn().trim()}',
+                    countryDialCode:
+                        '+${phoneController.value?.countryCode ?? '+966'}',
                     country: phoneController.value?.isoCode.name ?? 'SA',
                     phoneValidation: phoneValidation,
                     phoneNumberInputValidator: phoneNumberInputValidator,
@@ -206,8 +210,10 @@ class _PhoneNumberFieldWidgetState extends State<PhoneNumberFieldWidget> {
           onChange: (phoneNumber, controller) {
             context.read<PhoneNumberVerificationBloc>().add(
                   PhoneNumberChanged(
-                    phoneNumber: '+${controller?.value?.countryCode} ${controller?.value?.getFormattedNsn().trim()}',
-                    countryDialCode: '+${controller?.value?.countryCode ?? '+966'}',
+                    phoneNumber:
+                        '+${controller?.value?.countryCode} ${controller?.value?.getFormattedNsn().trim()}',
+                    countryDialCode:
+                        '+${controller?.value?.countryCode ?? '+966'}',
                     country: controller?.value?.isoCode.name ?? 'SA',
                     enteredPhoneNumber: phoneNumber,
                     phoneController: controller!,
@@ -250,11 +256,16 @@ class _PhoneNumberFieldWidgetState extends State<PhoneNumberFieldWidget> {
               ),
             ),
           ],
-          initialStreamValue: ['Mobile number', '${widget.withLabel}', phoneValidation],
+          initialStreamValue: [
+            'Mobile number',
+            '${widget.withLabel}',
+            phoneValidation
+          ],
           builder: (context, snapshot) {
             return AutofillGroup(
               child: Directionality(
-                textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                textDirection:
+                    serviceLocator<LanguageController>().targetTextDirection,
                 //widget.useRtl ? TextDirection.rtl : TextDirection.ltr,
                 child: PhoneFormField(
                   key: phoneKey,
@@ -269,7 +280,8 @@ class _PhoneNumberFieldWidgetState extends State<PhoneNumberFieldWidget> {
                   decoration: widget.decoration?.copyWith(
                         suffixIcon: (!widget.haveStateManagement)
                             ? ValueListenableBuilder(
-                                valueListenable: valueNotifierPhoneNumberVerification,
+                                valueListenable:
+                                    valueNotifierPhoneNumberVerification,
                                 builder: (context, value, child) {
                                   return PhoneNumberValidateWidget(
                                     phoneNumberVerification: value,
@@ -279,18 +291,24 @@ class _PhoneNumberFieldWidgetState extends State<PhoneNumberFieldWidget> {
                             : const PhoneNumberValidationIconWidget(),
                       ) ??
                       InputDecoration(
-                        label: widget.withLabel ? const Text('Mobile number').translate() : null,
-                        border: widget.outlineBorder ? const OutlineInputBorder() : const UnderlineInputBorder(),
+                        label: widget.withLabel
+                            ? const Text('Mobile number').translate()
+                            : null,
+                        border: widget.outlineBorder
+                            ? const OutlineInputBorder()
+                            : const UnderlineInputBorder(),
                         hintText: widget.withLabel ? '' : snapshot[0],
                         errorText: phoneValidation,
-                        suffixIcon: widget.suffixIcon ?? const PhoneNumberValidationIconWidget(),
+                        suffixIcon: widget.suffixIcon ??
+                            const PhoneNumberValidationIconWidget(),
                       ),
                   enabled: widget.enabled,
                   textInputAction: widget.textInputAction,
                   keyboardType: widget.keyboardType,
                   showFlagInInput: widget.showFlagInInput,
                   validator: (PhoneNumber? phoneNumber) {
-                    final result = widget.validator ?? getValidator(isAllowEmpty: widget.isAllowEmpty);
+                    final result = widget.validator ??
+                        getValidator(isAllowEmpty: widget.isAllowEmpty);
                     phoneValidation = result?.call(phoneNumber);
                     if (widget.haveStateManagement) {
                       context.read<PhoneFormFieldBloc>().add(
@@ -301,13 +319,22 @@ class _PhoneNumberFieldWidgetState extends State<PhoneNumberFieldWidget> {
                             ),
                           );
                     } else {
-                      if (phoneValidation != null && phoneValidation!.isNotEmpty) {
-                        valueNotifierPhoneNumberVerification.value = PhoneNumberVerification.invalid;
+                      if (phoneValidation != null &&
+                          phoneValidation!.isNotEmpty) {
+                        valueNotifierPhoneNumberVerification.value =
+                            PhoneNumberVerification.invalid;
                       } else {
-                        if (phoneValidation == null && controller.value != null && controller.value!.getFormattedNsn().trim().isNotEmpty) {
-                          valueNotifierPhoneNumberVerification.value = PhoneNumberVerification.valid;
+                        if (phoneValidation == null &&
+                            controller.value != null &&
+                            controller.value!
+                                .getFormattedNsn()
+                                .trim()
+                                .isNotEmpty) {
+                          valueNotifierPhoneNumberVerification.value =
+                              PhoneNumberVerification.valid;
                         } else {
-                          valueNotifierPhoneNumberVerification.value = PhoneNumberVerification.none;
+                          valueNotifierPhoneNumberVerification.value =
+                              PhoneNumberVerification.none;
                         }
                       }
                     }
@@ -318,7 +345,8 @@ class _PhoneNumberFieldWidgetState extends State<PhoneNumberFieldWidget> {
                     );
                     return phoneValidation;
                   },
-                  autovalidateMode: widget.autovalidateMode ?? AutovalidateMode.onUserInteraction,
+                  autovalidateMode: widget.autovalidateMode ??
+                      AutovalidateMode.onUserInteraction,
                   cursorColor: Theme.of(context).colorScheme.primary,
                   onSaved: (PhoneNumber? p) {
                     widget.onPhoneNumberSaved?.call(p);
@@ -347,7 +375,8 @@ class PhoneNumberValidationIconWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<PhoneNumberVerificationBloc, PhoneNumberVerificationState>(
+    return BlocBuilder<PhoneNumberVerificationBloc,
+        PhoneNumberVerificationState>(
       bloc: context.read<PhoneNumberVerificationBloc>(),
       buildWhen: (previous, current) => previous != current,
       builder: (context, state) {
@@ -368,7 +397,8 @@ class PhoneNumberValidationIconWidget extends StatelessWidget {
                 Icons.check_circle,
                 color: Colors.green,
               );
-            } else if (phoneNumberVerification == PhoneNumberVerification.invalid) {
+            } else if (phoneNumberVerification ==
+                PhoneNumberVerification.invalid) {
               return const Icon(
                 Icons.error,
                 color: Colors.red,

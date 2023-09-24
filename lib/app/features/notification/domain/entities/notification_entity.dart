@@ -13,7 +13,8 @@ class NotificationEntity {
     this.timestamp = -1,
   });
 
-  factory NotificationEntity.fromJson(Map<String, dynamic> json) => NotificationEntity(
+  factory NotificationEntity.fromJson(Map<String, dynamic> json) =>
+      NotificationEntity(
         flag: json['flag'],
         subtitle: json['subtitle'],
         notificationID: json['notificationID'],
@@ -21,7 +22,9 @@ class NotificationEntity {
         clickAction: json['click_action'],
         type: json['type'],
         priority: json['priority'],
-        body: json['body'] != null ? NotificationBody.fromJson(json['body']) : NotificationBody(),
+        body: json['body'] != null
+            ? NotificationBody.fromJson(json['body'])
+            : NotificationBody(),
         timestamp: json['timestamp'],
       );
 
@@ -80,7 +83,8 @@ class NotificationBody {
     this.message = '',
   });
 
-  factory NotificationBody.fromJson(Map<String, dynamic> json) => NotificationBody(
+  factory NotificationBody.fromJson(Map<String, dynamic> json) =>
+      NotificationBody(
         imageUrl: json['imageUrl'],
         iconUrl: json['iconUrl'],
         category: json['category'],

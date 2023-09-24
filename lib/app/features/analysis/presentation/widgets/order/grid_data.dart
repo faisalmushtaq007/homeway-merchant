@@ -1,7 +1,10 @@
 part of 'package:homemakers_merchant/app/features/analysis/index.dart';
 
 class OrderAnalysisGridWidget extends StatelessWidget {
-  const OrderAnalysisGridWidget({super.key,this.overAllAnalysisData,});
+  const OrderAnalysisGridWidget({
+    super.key,
+    this.overAllAnalysisData,
+  });
   final OverAllAnalysisData? overAllAnalysisData;
 
   @override
@@ -17,7 +20,7 @@ class OrderAnalysisGridWidget extends StatelessWidget {
           child: Tile(
             index: 0,
             title: 'Net Revenue',
-            subTitle: '${overAllAnalysisData?.totalEarnings??0} SAR',
+            subTitle: '${overAllAnalysisData?.totalEarnings ?? 0} SAR',
             gradient: linearGradient(
               Alignment.bottomCenter,
               ['#5038EA', '#C391B3'],
@@ -30,7 +33,7 @@ class OrderAnalysisGridWidget extends StatelessWidget {
           child: Tile(
             index: 1,
             title: 'Stores',
-            subTitle: '${overAllAnalysisData?.totalStores??0}',
+            subTitle: '${overAllAnalysisData?.totalStores ?? 0}',
             gradient: linearGradient(
               Alignment.bottomCenter,
               ['#4077b0', '#f9c084'],
@@ -43,7 +46,7 @@ class OrderAnalysisGridWidget extends StatelessWidget {
           child: Tile(
             index: 2,
             title: 'Customers',
-            subTitle: '${overAllAnalysisData?.totalCustomers??0}',
+            subTitle: '${overAllAnalysisData?.totalCustomers ?? 0}',
             gradient: linearGradient(
               Alignment.bottomCenter,
               ['#4077b0', '#f9c084'],
@@ -56,7 +59,8 @@ class OrderAnalysisGridWidget extends StatelessWidget {
           child: Tile(
             index: 3,
             title: 'Total Orders',
-            subTitle: '${overAllAnalysisData?.totalOrders.countTotalOrders??0}',
+            subTitle:
+                '${overAllAnalysisData?.totalOrders.countTotalOrders ?? 0}',
             gradient: linearGradient(
               Alignment.bottomCenter,
               ['#5038EA', '#C391B3'],
@@ -69,7 +73,7 @@ class OrderAnalysisGridWidget extends StatelessWidget {
           child: Tile(
             index: 4,
             title: 'New',
-            subTitle: '${overAllAnalysisData?.totalOrders.totalOrdersNew??0}',
+            subTitle: '${overAllAnalysisData?.totalOrders.totalOrdersNew ?? 0}',
             gradient: linearGradient(
               Alignment.bottomCenter,
               ['#A89198', '#B385CA'],
@@ -82,7 +86,7 @@ class OrderAnalysisGridWidget extends StatelessWidget {
           child: Tile(
             index: 5,
             title: 'Delivered',
-            subTitle: '${overAllAnalysisData?.totalOrders.deliver??0}',
+            subTitle: '${overAllAnalysisData?.totalOrders.deliver ?? 0}',
             gradient: linearGradient(
               Alignment.bottomCenter,
               ['#6C83CA', '#B98178'],
@@ -135,7 +139,8 @@ class Tile extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
-          textDirection: serviceLocator<LanguageController>().targetTextDirection,
+          textDirection:
+              serviceLocator<LanguageController>().targetTextDirection,
           children: [
             Wrap(
               children: [
@@ -149,11 +154,13 @@ class Tile extends StatelessWidget {
                     fontWeight: FontWeight.w600,
                     color: Colors.white,
                   ),
-                  textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                  textDirection:
+                      serviceLocator<LanguageController>().targetTextDirection,
                 ).translate(),
               ],
             ),
-            AnimatedGap(mainAxisExtent, duration: const Duration(milliseconds: 500)),
+            AnimatedGap(mainAxisExtent,
+                duration: const Duration(milliseconds: 500)),
             Wrap(
               children: [
                 Text(
@@ -167,7 +174,8 @@ class Tile extends StatelessWidget {
                     fontSize: 16,
                     color: Colors.white,
                   ),
-                  textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                  textDirection:
+                      serviceLocator<LanguageController>().targetTextDirection,
                 ).translate(),
               ],
             ),

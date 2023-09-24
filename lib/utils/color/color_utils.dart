@@ -101,7 +101,9 @@ Color enforceColor(Color color, [double percent = 0.2]) {
 
   if (brightness == threshold) return color;
 
-  final newBrightness = (brightness + (brightness > threshold ? percent : -percent)).clamp(0.0, 1.0);
+  final newBrightness =
+      (brightness + (brightness > threshold ? percent : -percent))
+          .clamp(0.0, 1.0);
   return color.withLightness(newBrightness);
 }
 

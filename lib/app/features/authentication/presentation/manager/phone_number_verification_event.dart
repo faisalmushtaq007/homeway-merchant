@@ -31,7 +31,8 @@ class PhoneNumberVerificationEvent with _$PhoneNumberVerificationEvent {
     PhoneNumberInputValidator? phoneNumberInputValidator,
     String? phoneValidation,
     PhoneNumber? enteredPhoneNumber,
-    @Default(PhoneNumberVerification.none) PhoneNumberVerification phoneNumberVerification,
+    @Default(PhoneNumberVerification.none)
+    PhoneNumberVerification phoneNumberVerification,
     required PhoneController phoneController,
     @Default('SA') String isoCode,
   }) = ValidatePhoneNumber;

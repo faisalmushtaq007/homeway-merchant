@@ -1,10 +1,14 @@
 part of 'package:homemakers_merchant/app/features/analysis/index.dart';
+
 class WeeklySalesAgainstStoreChartWidget extends StatefulWidget {
   const WeeklySalesAgainstStoreChartWidget({super.key});
   @override
-  _WeeklySalesAgainstStoreChartWidgetController createState() => _WeeklySalesAgainstStoreChartWidgetController();
+  _WeeklySalesAgainstStoreChartWidgetController createState() =>
+      _WeeklySalesAgainstStoreChartWidgetController();
 }
-class _WeeklySalesAgainstStoreChartWidgetController extends State<WeeklySalesAgainstStoreChartWidget> {
+
+class _WeeklySalesAgainstStoreChartWidgetController
+    extends State<WeeklySalesAgainstStoreChartWidget> {
   List<ChartSampleData>? chartData;
 
   TooltipBehavior? _tooltipBehavior;
@@ -40,25 +44,29 @@ class _WeeklySalesAgainstStoreChartWidgetController extends State<WeeklySalesAga
         y: 65,
         yValue: 50,
         secondSeriesYValue: 70,
-        thirdSeriesYValue: 65,),
+        thirdSeriesYValue: 65,
+      ),
       ChartSampleData(
         x: DateTime.friday,
         y: 65,
         yValue: 50,
         secondSeriesYValue: 70,
-        thirdSeriesYValue: 65,),
+        thirdSeriesYValue: 65,
+      ),
       ChartSampleData(
         x: DateTime.saturday,
         y: 65,
         yValue: 50,
         secondSeriesYValue: 70,
-        thirdSeriesYValue: 65,),
+        thirdSeriesYValue: 65,
+      ),
       ChartSampleData(
         x: DateTime.sunday,
         y: 65,
         yValue: 50,
         secondSeriesYValue: 70,
-        thirdSeriesYValue: 65,),
+        thirdSeriesYValue: 65,
+      ),
     ];
     super.initState();
   }
@@ -91,24 +99,39 @@ class _WeeklySalesAgainstStoreChartWidgetController extends State<WeeklySalesAga
     return <StackedColumnSeries<ChartSampleData, String>>[
       StackedColumnSeries<ChartSampleData, String>(
         dataSource: chartData!,
-        xValueMapper: (ChartSampleData sales, _) => getWeekdayName(sales.x) as String,
+        xValueMapper: (ChartSampleData sales, _) =>
+            getWeekdayName(sales.x) as String,
         yValueMapper: (ChartSampleData sales, _) => sales.y,
-        /*groupName: 'Product A',*/name: 'Store A',dataLabelSettings: DataLabelSettings(isVisible: true, showCumulativeValues: true),),
+        /*groupName: 'Product A',*/ name: 'Store A',
+        dataLabelSettings:
+            DataLabelSettings(isVisible: true, showCumulativeValues: true),
+      ),
       StackedColumnSeries<ChartSampleData, String>(
         dataSource: chartData!,
-        xValueMapper: (ChartSampleData sales, _) => getWeekdayName(sales.x) ,
+        xValueMapper: (ChartSampleData sales, _) => getWeekdayName(sales.x),
         yValueMapper: (ChartSampleData sales, _) => sales.yValue,
-        /*groupName: 'Product B',*/name: 'Store B',dataLabelSettings: DataLabelSettings(isVisible: true, showCumulativeValues: true),),
+        /*groupName: 'Product B',*/ name: 'Store B',
+        dataLabelSettings:
+            DataLabelSettings(isVisible: true, showCumulativeValues: true),
+      ),
       StackedColumnSeries<ChartSampleData, String>(
         dataSource: chartData!,
-        xValueMapper: (ChartSampleData sales, _) => getWeekdayName(sales.x) as String,
+        xValueMapper: (ChartSampleData sales, _) =>
+            getWeekdayName(sales.x) as String,
         yValueMapper: (ChartSampleData sales, _) => sales.secondSeriesYValue,
-        /*groupName: 'Product C',*/name: 'Store C',dataLabelSettings: DataLabelSettings(isVisible: true, showCumulativeValues: true),),
+        /*groupName: 'Product C',*/ name: 'Store C',
+        dataLabelSettings:
+            DataLabelSettings(isVisible: true, showCumulativeValues: true),
+      ),
       StackedColumnSeries<ChartSampleData, String>(
         dataSource: chartData!,
-        xValueMapper: (ChartSampleData sales, _) => getWeekdayName(sales.x) as String,
+        xValueMapper: (ChartSampleData sales, _) =>
+            getWeekdayName(sales.x) as String,
         yValueMapper: (ChartSampleData sales, _) => sales.thirdSeriesYValue,
-        /*groupName: 'Product D',*/name: 'Store D',dataLabelSettings: DataLabelSettings(isVisible: true, showCumulativeValues: true),)
+        /*groupName: 'Product D',*/ name: 'Store D',
+        dataLabelSettings:
+            DataLabelSettings(isVisible: true, showCumulativeValues: true),
+      )
     ];
   }
 
@@ -117,19 +140,24 @@ class _WeeklySalesAgainstStoreChartWidgetController extends State<WeeklySalesAga
     chartData!.clear();
     super.dispose();
   }
+
   @override
-  Widget build(BuildContext context) => _WeeklySalesAgainstStoreChartWidgetView(this);
+  Widget build(BuildContext context) =>
+      _WeeklySalesAgainstStoreChartWidgetView(this);
 }
-class _WeeklySalesAgainstStoreChartWidgetView extends WidgetView<WeeklySalesAgainstStoreChartWidget, _WeeklySalesAgainstStoreChartWidgetController> {
+
+class _WeeklySalesAgainstStoreChartWidgetView extends WidgetView<
+    WeeklySalesAgainstStoreChartWidget,
+    _WeeklySalesAgainstStoreChartWidgetController> {
   const _WeeklySalesAgainstStoreChartWidgetView(super.state);
-@override
+  @override
   Widget build(BuildContext context) {
-  return SizedBox(
-    child: Column(
-      children: [
-        state._buildChart(),
-      ],
-    ),
-  );
+    return SizedBox(
+      child: Column(
+        children: [
+          state._buildChart(),
+        ],
+      ),
+    );
   }
 }

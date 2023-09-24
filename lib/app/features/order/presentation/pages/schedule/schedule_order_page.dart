@@ -3,7 +3,8 @@ part of 'package:homemakers_merchant/app/features/order/index.dart';
 class AllScheduleOrderPage extends StatefulWidget {
   const AllScheduleOrderPage({super.key});
   @override
-  _AllScheduleOrderPageController createState() => _AllScheduleOrderPageController();
+  _AllScheduleOrderPageController createState() =>
+      _AllScheduleOrderPageController();
 }
 
 class _AllScheduleOrderPageController extends State<AllScheduleOrderPage> {
@@ -11,7 +12,8 @@ class _AllScheduleOrderPageController extends State<AllScheduleOrderPage> {
   Widget build(BuildContext context) => _AllScheduleOrderPageView(this);
 }
 
-class _AllScheduleOrderPageView extends WidgetView<AllScheduleOrderPage, _AllScheduleOrderPageController> {
+class _AllScheduleOrderPageView
+    extends WidgetView<AllScheduleOrderPage, _AllScheduleOrderPageController> {
   const _AllScheduleOrderPageView(super.state);
 
   @override

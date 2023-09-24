@@ -382,15 +382,26 @@ class Assets {
   Assets._();
 
   static const String dummyTackingData = 'assets/dummy_tacking_data.json';
+  static const String dummyTodayOrderAnalysis =
+      'assets/dummy_today_order_analysis.json';
+  static const String dummyTodaySalesAnalysis =
+      'assets/dummy_today_sales_analysis.json';
   static const String dummyTranscationData =
       'assets/dummy_transcation_data.json';
+  static const String dummyWeeklyAnalysis = 'assets/dummy_weekly_old_analysis.json';
   static const $AssetsImageGen image = $AssetsImageGen();
   static const $AssetsLottieGen lottie = $AssetsLottieGen();
   static const $AssetsSvgGen svg = $AssetsSvgGen();
   static const $GoogleFontsGen googleFonts = $GoogleFontsGen();
 
   /// List of all assets
-  List<String> get values => [dummyTackingData, dummyTranscationData];
+  List<String> get values => [
+        dummyTackingData,
+        dummyTodayOrderAnalysis,
+        dummyTodaySalesAnalysis,
+        dummyTranscationData,
+        dummyWeeklyAnalysis
+      ];
 }
 
 class AssetGenImage {

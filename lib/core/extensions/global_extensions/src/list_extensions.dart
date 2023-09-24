@@ -44,7 +44,8 @@ extension ListExtensions<E> on List<E> {
   /// Copy current list with adding all [elements] at the position of new list.
   ///
   /// Error throwed due to a value being outside a valid range.
-  List<E> copyWithInsertAll(int index, List<E> elements) => List.from(this)..insertAll(index, elements);
+  List<E> copyWithInsertAll(int index, List<E> elements) =>
+      List.from(this)..insertAll(index, elements);
 
   /// Copy current list, replacing elements of list that
   /// satisfy [test] predicate with [replacement].
@@ -112,10 +113,12 @@ extension ListExtensions<E> on List<E> {
   // Modification - Sorting
 
   /// Sorts the list in ascending order of the object's field value.
-  void sortBy(Comparable Function(E e) getVal) => sort((a, b) => getVal(a).compareTo(getVal(b)));
+  void sortBy(Comparable Function(E e) getVal) =>
+      sort((a, b) => getVal(a).compareTo(getVal(b)));
 
   /// Sorts the list in descending order of the object's field value.
-  void sortByDescending(Comparable Function(E e) getVal) => sort((a, b) => getVal(b).compareTo(getVal(a)));
+  void sortByDescending(Comparable Function(E e) getVal) =>
+      sort((a, b) => getVal(b).compareTo(getVal(a)));
 }
 
 extension NullableListExtensions<E> on List<E>? {
@@ -131,13 +134,15 @@ extension NullableListExtensions<E> on List<E>? {
   /// Copy current list with adding all [elements] at the end of new list.
   ///
   /// If current list is `null` - copy of list [elements] will be created.
-  List<E> copyWithAll(List<E> elements) => this?.copyWithAll(elements) ?? List.from(elements);
+  List<E> copyWithAll(List<E> elements) =>
+      this?.copyWithAll(elements) ?? List.from(elements);
 
   /// Copy current list with adding all [elements] at the position of new list.
   ///
   /// If current list is `null` - copy of list [elements] will be created.
   /// Error throwed due to a value being outside a valid range.
-  List<E> copyWithInsertAll(int index, List<E> elements) => this?.copyWithInsertAll(index, elements) ?? List.from(elements);
+  List<E> copyWithInsertAll(int index, List<E> elements) =>
+      this?.copyWithInsertAll(index, elements) ?? List.from(elements);
 
   /// Copy current list, replacing all [element] occurrences with [replacement].
   ///

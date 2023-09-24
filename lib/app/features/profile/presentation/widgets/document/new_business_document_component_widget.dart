@@ -26,13 +26,18 @@ class NewBusinessDocumentComponentWidget extends StatefulWidget {
   final String documentPlaceHolderImage;
   final bool animate;
   final Widget? customCloseButton;
-  final void Function(Map<String, dynamic> metaData, CaptureImageEntity captureImageEntity) selectedImageMetaData;
+  final void Function(
+          Map<String, dynamic> metaData, CaptureImageEntity captureImageEntity)
+      selectedImageMetaData;
 
   @override
-  _NewBusinessDocumentComponentWidgetController createState() => _NewBusinessDocumentComponentWidgetController();
+  _NewBusinessDocumentComponentWidgetController createState() =>
+      _NewBusinessDocumentComponentWidgetController();
 }
 
-class _NewBusinessDocumentComponentWidgetController extends State<NewBusinessDocumentComponentWidget> with SingleTickerProviderStateMixin {
+class _NewBusinessDocumentComponentWidgetController
+    extends State<NewBusinessDocumentComponentWidget>
+    with SingleTickerProviderStateMixin {
   bool enableTextField = false;
   bool hasAssetsPath = false;
   List<BannerModel> listBanners = [];
@@ -79,7 +84,8 @@ class _NewBusinessDocumentComponentWidgetController extends State<NewBusinessDoc
     super.dispose();
   }
 
-  Future<void> selectDocumentPicker({DocumentType documentType = DocumentType.other}) async {
+  Future<void> selectDocumentPicker(
+      {DocumentType documentType = DocumentType.other}) async {
     // Navigate to document picker page
     final List<dynamic>? result = await context.push<List<dynamic>>(
       Routes.UPLOAD_DOCUMENT_PAGE,
@@ -100,19 +106,26 @@ class _NewBusinessDocumentComponentWidgetController extends State<NewBusinessDoc
       String? assetNetworkUrl = result[7] as String?;
       final int timeStamp = DateTime.now().millisecondsSinceEpoch;
       var tempName = 'homeway_document_image_$timeStamp';
-      var fileNameWithExtension = path.basename(xCroppedDocumentFile?.path ?? croppedDocumentFile?.path ?? tempName);
-      var fileNameWithoutExtension = path.basenameWithoutExtension(xCroppedDocumentFile?.path ?? croppedDocumentFile?.path ?? tempName);
-      String fileExtension = path.extension(xCroppedDocumentFile?.path ?? croppedDocumentFile?.path ?? '.png');
-      String croppedFilePath = (xCroppedDocumentFile.path.isEmpty) ? xCroppedDocumentFile.path : croppedDocumentFile.path;
+      var fileNameWithExtension = path.basename(
+          xCroppedDocumentFile?.path ?? croppedDocumentFile?.path ?? tempName);
+      var fileNameWithoutExtension = path.basenameWithoutExtension(
+          xCroppedDocumentFile?.path ?? croppedDocumentFile?.path ?? tempName);
+      String fileExtension = path.extension(
+          xCroppedDocumentFile?.path ?? croppedDocumentFile?.path ?? '.png');
+      String croppedFilePath = (xCroppedDocumentFile.path.isEmpty)
+          ? xCroppedDocumentFile.path
+          : croppedDocumentFile.path;
       final fileReadAsBytes = await file.readAsBytes();
       final xFileReadAsBytes = await xFile.readAsBytes();
       final fileReadAsString = base64Encode(fileReadAsBytes);
       final xFileReadAsString = base64Encode(xFileReadAsBytes);
       final uuid = const Uuid().v4();
-      final String mimeType = xCroppedDocumentFile.mimeType ?? xFile.mimeType ?? 'image/png';
-      var decodedImage = await decodeImageFromList(xFileReadAsBytes??fileReadAsBytes);
-      double height=decodedImage.height.toDouble();
-      double width=decodedImage.width.toDouble();
+      final String mimeType =
+          xCroppedDocumentFile.mimeType ?? xFile.mimeType ?? 'image/png';
+      var decodedImage =
+          await decodeImageFromList(xFileReadAsBytes ?? fileReadAsBytes);
+      double height = decodedImage.height.toDouble();
+      double width = decodedImage.width.toDouble();
 
       final Map<String, dynamic> metaData = {
         'captureDocumentID': uuid,
@@ -131,13 +144,18 @@ class _NewBusinessDocumentComponentWidgetController extends State<NewBusinessDoc
         'fileReadAsString': fileReadAsString,
         'xFileReadAsString': xFileReadAsString,
         'documentType': widget.documentType.name,
-        'blob': (xFileReadAsBytes.isNotNullOrEmpty) ? Blob(xFileReadAsBytes) : Blob(fileReadAsBytes),
-        'base64': (xFileReadAsString.isNotEmpty) ? xFileReadAsString : fileReadAsString,
+        'blob': (xFileReadAsBytes.isNotNullOrEmpty)
+            ? Blob(xFileReadAsBytes)
+            : Blob(fileReadAsBytes),
+        'base64': (xFileReadAsString.isNotEmpty)
+            ? xFileReadAsString
+            : fileReadAsString,
         'mimeType': mimeType,
-        'height':height,
-        'width':width,
+        'height': height,
+        'width': width,
       };
-      final CaptureImageEntity captureImageEntity = CaptureImageEntity.fromMap(metaData);
+      final CaptureImageEntity captureImageEntity =
+          CaptureImageEntity.fromMap(metaData);
       // Set Only single image, not list of images
       // when select new image, it will replace the old selected image
       listBanners = [];
@@ -157,10 +175,13 @@ class _NewBusinessDocumentComponentWidgetController extends State<NewBusinessDoc
   }
 
   @override
-  Widget build(BuildContext context) => _NewBusinessDocumentComponentWidgetView(this);
+  Widget build(BuildContext context) =>
+      _NewBusinessDocumentComponentWidgetView(this);
 }
 
-class _NewBusinessDocumentComponentWidgetView extends WidgetView<NewBusinessDocumentComponentWidget, _NewBusinessDocumentComponentWidgetController> {
+class _NewBusinessDocumentComponentWidgetView extends WidgetView<
+    NewBusinessDocumentComponentWidget,
+    _NewBusinessDocumentComponentWidgetController> {
   const _NewBusinessDocumentComponentWidgetView(super.state);
 
   @override
@@ -170,7 +191,8 @@ class _NewBusinessDocumentComponentWidgetView extends WidgetView<NewBusinessDocu
         children: [
           BannerCarousel(
             banners: state.listBanners.toList(),
-            customizedIndicators: const IndicatorModel.animation(width: 20, height: 5, spaceBetween: 2, widthAnimation: 50),
+            customizedIndicators: const IndicatorModel.animation(
+                width: 20, height: 5, spaceBetween: 2, widthAnimation: 50),
             height: context.width / 2.75,
             activeColor: Colors.amberAccent,
             disableColor: Colors.white,
@@ -208,7 +230,8 @@ class _NewBusinessDocumentComponentWidgetView extends WidgetView<NewBusinessDocu
                         Icons.edit,
                         color: context.colorScheme.primary,
                         size: 18,
-                        textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                        textDirection: serviceLocator<LanguageController>()
+                            .targetTextDirection,
                       ),
                     ),
                   ),
@@ -239,16 +262,19 @@ class _NewBusinessDocumentComponentWidgetView extends WidgetView<NewBusinessDocu
                 mainAxisSize: MainAxisSize.min,
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.stretch,
-                textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                textDirection:
+                    serviceLocator<LanguageController>().targetTextDirection,
                 children: [
                   Flexible(
                     child: Padding(
-                      padding: const EdgeInsetsDirectional.symmetric(horizontal: 16),
+                      padding:
+                          const EdgeInsetsDirectional.symmetric(horizontal: 16),
                       child: Row(
                         mainAxisSize: MainAxisSize.min,
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         crossAxisAlignment: CrossAxisAlignment.center,
-                        textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                        textDirection: serviceLocator<LanguageController>()
+                            .targetTextDirection,
                         children: [
                           Expanded(
                             flex: 3,
@@ -259,12 +285,15 @@ class _NewBusinessDocumentComponentWidgetView extends WidgetView<NewBusinessDocu
                               height: context.width / 6,
                               width: context.width / 6,
                               child: ClipRRect(
-                                borderRadius: BorderRadiusDirectional.circular(10),
+                                borderRadius:
+                                    BorderRadiusDirectional.circular(10),
                                 child: ImageHelper(
                                   image: widget.documentPlaceHolderImage,
                                   filterQuality: FilterQuality.high,
-                                  borderRadius: BorderRadiusDirectional.circular(10),
-                                  imageType: findImageType(widget.documentPlaceHolderImage),
+                                  borderRadius:
+                                      BorderRadiusDirectional.circular(10),
+                                  imageType: findImageType(
+                                      widget.documentPlaceHolderImage),
                                   imageShape: ImageShape.rectangle,
                                   boxFit: BoxFit.cover,
                                   defaultErrorBuilderColor: Colors.blueGrey,
@@ -272,7 +301,8 @@ class _NewBusinessDocumentComponentWidgetView extends WidgetView<NewBusinessDocu
                                     Icons.image_not_supported,
                                     size: 10000,
                                   ),
-                                  loaderBuilder: const CircularProgressIndicator(),
+                                  loaderBuilder:
+                                      const CircularProgressIndicator(),
                                 ),
                               ),
                             ),
@@ -287,7 +317,9 @@ class _NewBusinessDocumentComponentWidgetView extends WidgetView<NewBusinessDocu
           ),
         ),
       ),
-      crossFadeState: (state.listBanners.isNotNullOrEmpty) ? CrossFadeState.showFirst : CrossFadeState.showSecond,
+      crossFadeState: (state.listBanners.isNotNullOrEmpty)
+          ? CrossFadeState.showFirst
+          : CrossFadeState.showSecond,
       duration: const Duration(milliseconds: 200),
     );
   }

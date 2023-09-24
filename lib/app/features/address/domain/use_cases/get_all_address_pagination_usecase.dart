@@ -1,7 +1,15 @@
 part of 'package:homemakers_merchant/app/features/address/index.dart';
 
-class GetAllAddressPaginationUseCase
-    extends AddressQueryAllUseCaseIORecord<AddressModel, int, int, String?, String?, String?, Timestamp?, Timestamp?, DataSourceState<List<AddressModel>>> {
+class GetAllAddressPaginationUseCase extends AddressQueryAllUseCaseIORecord<
+    AddressModel,
+    int,
+    int,
+    String?,
+    String?,
+    String?,
+    Timestamp?,
+    Timestamp?,
+    DataSourceState<List<AddressModel>>> {
   GetAllAddressPaginationUseCase({
     required this.userAddressRepository,
   });

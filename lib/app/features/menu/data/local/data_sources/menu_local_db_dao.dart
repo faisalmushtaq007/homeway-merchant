@@ -1,13 +1,15 @@
 part of 'package:homemakers_merchant/app/features/menu/index.dart';
 
-class MenuLocalDbRepository<Menu extends MenuEntity> implements BaseMenuLocalDbRepository<MenuEntity> {
+class MenuLocalDbRepository<Menu extends MenuEntity>
+    implements BaseMenuLocalDbRepository<MenuEntity> {
   // Completer is used for transforming synchronous code into asynchronous code.
   Future<Database> get _db async => AppDatabase.instance.database;
 
   StoreRef<int, Map<String, dynamic>> get _menu => AppDatabase.instance.menu;
 
   @override
-  Future<Either<RepositoryBaseFailure, MenuEntity>> add(MenuEntity entity) async {
+  Future<Either<RepositoryBaseFailure, MenuEntity>> add(
+      MenuEntity entity) async {
     final result = await tryCatch<MenuEntity>(() async {
       final int recordID = await _menu.add(await _db, entity.toMap());
       //final MenuEntity recordMenuEntity = entity.copyWith(storeID: recordID.toString());
@@ -58,7 +60,8 @@ class MenuLocalDbRepository<Menu extends MenuEntity> implements BaseMenuLocalDbR
   }
 
   @override
-  Future<Either<RepositoryBaseFailure, bool>> deleteById(UniqueId uniqueId) async {
+  Future<Either<RepositoryBaseFailure, bool>> deleteById(
+      UniqueId uniqueId) async {
     final result = await tryCatch<bool>(() async {
       final value = await _menu.record(uniqueId.value).get(await _db);
       if (value != null) {
@@ -105,7 +108,8 @@ class MenuLocalDbRepository<Menu extends MenuEntity> implements BaseMenuLocalDbR
   }
 
   @override
-  Future<Either<RepositoryBaseFailure, MenuEntity?>> getById(UniqueId id) async {
+  Future<Either<RepositoryBaseFailure, MenuEntity?>> getById(
+      UniqueId id) async {
     final result = await tryCatch<MenuEntity?>(() async {
       final value = await _menu.record(id.value).get(await _db);
       if (value != null) {
@@ -117,7 +121,8 @@ class MenuLocalDbRepository<Menu extends MenuEntity> implements BaseMenuLocalDbR
   }
 
   @override
-  Future<Either<RepositoryBaseFailure, MenuEntity>> update(MenuEntity entity, UniqueId uniqueId) async {
+  Future<Either<RepositoryBaseFailure, MenuEntity>> update(
+      MenuEntity entity, UniqueId uniqueId) async {
     final result = await tryCatch<MenuEntity>(() async {
       final int key = uniqueId.value;
       final value = await _menu.record(key).get(await _db);
@@ -139,41 +144,58 @@ class MenuLocalDbRepository<Menu extends MenuEntity> implements BaseMenuLocalDbR
   }
 
   @override
-  Future<Either<RepositoryBaseFailure, MenuEntity>> upsert({UniqueId? id, String? token, required MenuEntity entity, bool checkIfUserLoggedIn = false}) async {
+  Future<Either<RepositoryBaseFailure, MenuEntity>> upsert(
+      {UniqueId? id,
+      String? token,
+      required MenuEntity entity,
+      bool checkIfUserLoggedIn = false}) async {
     final result = await tryCatch<MenuEntity>(() async {
       final int key = entity.menuId;
       final value = await _menu.record(key).get(await _db);
-      final result = await _menu.record(key).put(await _db, entity.toMap(), merge: (value != null) || false);
+      final result = await _menu
+          .record(key)
+          .put(await _db, entity.toMap(), merge: (value != null) || false);
       return MenuEntity.fromMap(result);
     });
     return result;
   }
 
   @override
-  Future<Either<RepositoryBaseFailure, bool>> deleteByIdAndEntity(UniqueId uniqueId, MenuEntity entity) {
+  Future<Either<RepositoryBaseFailure, bool>> deleteByIdAndEntity(
+      UniqueId uniqueId, MenuEntity entity) {
     // TODO(prasant): implement deleteByIdAndEntity
     throw UnimplementedError();
   }
 
   @override
-  Future<Either<RepositoryBaseFailure, MenuEntity>> getByIdAndEntity(UniqueId uniqueId, MenuEntity entity) {
+  Future<Either<RepositoryBaseFailure, MenuEntity>> getByIdAndEntity(
+      UniqueId uniqueId, MenuEntity entity) {
     // TODO(prasant): implement getByIdAndEntity
     throw UnimplementedError();
   }
 
   @override
-  Future<Either<RepositoryBaseFailure, MenuEntity>> updateByIdAndEntity(UniqueId uniqueId, MenuEntity entity) {
+  Future<Either<RepositoryBaseFailure, MenuEntity>> updateByIdAndEntity(
+      UniqueId uniqueId, MenuEntity entity) {
     // TODO(prasant): implement updateByIdAndEntity
     throw UnimplementedError();
   }
 
-  Future<Map<String, RecordSnapshot<int, Map<String, Object?>>>> getCategoryByIds(DatabaseClient db, List<int> ids) async {
-    var snapshots = await _menu.find(db, finder: Finder(filter: Filter.or(ids.map((e) => Filter.equals('menuId', e)).toList())));
-    return <String, RecordSnapshot<int, Map<String, Object?>>>{for (var snapshot in snapshots) snapshot.value['menuId']!.toString(): snapshot};
+  Future<Map<String, RecordSnapshot<int, Map<String, Object?>>>>
+      getCategoryByIds(DatabaseClient db, List<int> ids) async {
+    var snapshots = await _menu.find(db,
+        finder: Finder(
+            filter: Filter.or(
+                ids.map((e) => Filter.equals('menuId', e)).toList())));
+    return <String, RecordSnapshot<int, Map<String, Object?>>>{
+      for (var snapshot in snapshots)
+        snapshot.value['menuId']!.toString(): snapshot
+    };
   }
 
   @override
-  Future<Either<RepositoryBaseFailure, List<MenuEntity>>> saveAll({required List<MenuEntity> entities, bool hasUpdateAll = false}) async {
+  Future<Either<RepositoryBaseFailure, List<MenuEntity>>> saveAll(
+      {required List<MenuEntity> entities, bool hasUpdateAll = false}) async {
     final result = await tryCatch<List<MenuEntity>>(() async {
       final db = await _db;
 
@@ -184,10 +206,13 @@ class MenuLocalDbRepository<Menu extends MenuEntity> implements BaseMenuLocalDbR
         final allOrderList = r.toList();
         final newList = entities.toList();
         var convertOrderToMapObject = newList.map((e) => e.toMap()).toList();
-        final bool equalityStatus = unOrdDeepEq(allOrderList.toSet().toList(), newList.toSet().toList());
+        final bool equalityStatus = unOrdDeepEq(
+            allOrderList.toSet().toList(), newList.toSet().toList());
 
         await db.transaction((transaction) async {
-          var menuIds = convertOrderToMapObject.map((map) => map['menuId'] as int).toList();
+          var menuIds = convertOrderToMapObject
+              .map((map) => map['menuId'] as int)
+              .toList();
           var map = await getCategoryByIds(db, menuIds);
           // Watch for deleted item
           var keysToDelete = (await _menu.findKeys(transaction)).toList();
@@ -199,7 +224,8 @@ class MenuLocalDbRepository<Menu extends MenuEntity> implements BaseMenuLocalDbR
               // Remove from deletion list
               keysToDelete.remove(key);
               // Don't update if no change
-              if (const DeepCollectionEquality().equals(snapshot.value, order)) {
+              if (const DeepCollectionEquality()
+                  .equals(snapshot.value, order)) {
                 // no changes
                 continue;
               } else {
@@ -246,7 +272,10 @@ class MenuLocalDbRepository<Menu extends MenuEntity> implements BaseMenuLocalDbR
           offset: pageKey,
         );
         // If
-        if (searchText.isNotNull || filter.isNotNull || sorting.isNotNull && (startTimeStamp.isNotNull || endTimeStamp.isNotNull)) {
+        if (searchText.isNotNull ||
+            filter.isNotNull ||
+            sorting.isNotNull &&
+                (startTimeStamp.isNotNull || endTimeStamp.isNotNull)) {
           var regExp = RegExp(searchText ?? '', caseSensitive: false);
           var filterRegExp = RegExp(filter ?? '', caseSensitive: false);
           var sortingRegExp = RegExp(sorting ?? '', caseSensitive: false);
@@ -322,15 +351,19 @@ class MenuLocalDbRepository<Menu extends MenuEntity> implements BaseMenuLocalDbR
                     filterRegExp,
                     anyInList: true,
                   ),
-                  Filter.greaterThanOrEquals('menuAvailableFromTime', startTimeStamp ?? 0),
-                  Filter.lessThanOrEquals('menuAvailableToTime', endTimeStamp ?? 0),
+                  Filter.greaterThanOrEquals(
+                      'menuAvailableFromTime', startTimeStamp ?? 0),
+                  Filter.lessThanOrEquals(
+                      'menuAvailableToTime', endTimeStamp ?? 0),
                 ]),
               ],
             ),
           );
         }
         // Else If
-        else if (searchText.isNotNull || filter.isNotNull || sorting.isNotNull) {
+        else if (searchText.isNotNull ||
+            filter.isNotNull ||
+            sorting.isNotNull) {
           var regExp = RegExp(searchText ?? '', caseSensitive: false);
           var filterRegExp = RegExp(filter ?? '', caseSensitive: false);
           var sortingRegExp = RegExp(sorting ?? '', caseSensitive: false);
@@ -436,7 +469,9 @@ class MenuLocalDbRepository<Menu extends MenuEntity> implements BaseMenuLocalDbR
   }
 }
 
-class MenuBindingWithStoreLocalDbDbRepository<T extends MenuEntity, R extends StoreEntity> implements Binding<List<MenuEntity>, List<StoreEntity>> {
+class MenuBindingWithStoreLocalDbDbRepository<T extends MenuEntity,
+        R extends StoreEntity>
+    implements Binding<List<MenuEntity>, List<StoreEntity>> {
   const MenuBindingWithStoreLocalDbDbRepository({
     required this.menuLocalDbRepository,
     required this.storeLocalDbRepository,
@@ -452,7 +487,8 @@ class MenuBindingWithStoreLocalDbDbRepository<T extends MenuEntity, R extends St
   final StoreLocalDbRepository<R> storeLocalDbRepository;
 
   @override
-  Future<Either<RepositoryBaseFailure, List<StoreEntity>>> binding(List<MenuEntity> source, List<StoreEntity> destination) async {
+  Future<Either<RepositoryBaseFailure, List<StoreEntity>>> binding(
+      List<MenuEntity> source, List<StoreEntity> destination) async {
     final db = await _db;
     final stores = await storeLocalDbRepository.getAll();
     if (stores.isRight()) {
@@ -461,7 +497,9 @@ class MenuBindingWithStoreLocalDbDbRepository<T extends MenuEntity, R extends St
       List<MenuEntity> toSelectedAdd = [];
       for (var selectedDestinationStore in destination.toSet().toList()) {
         for (var selectedMenu in source.toSet().toList()) {
-          final bool equalityStatus = unOrdDeepEq(selectedDestinationStore.menuEntities.toSet().toList(), source.toSet().toList());
+          final bool equalityStatus = unOrdDeepEq(
+              selectedDestinationStore.menuEntities.toSet().toList(),
+              source.toSet().toList());
           if (equalityStatus) {
             continue;
           } else {
@@ -490,7 +528,8 @@ class MenuBindingWithStoreLocalDbDbRepository<T extends MenuEntity, R extends St
           // Delete all
           await _store.delete(txn);
           // Add all
-          await _store.addAll(txn, getAllCurrentStore.map((e) => e.toMap()).toList());
+          await _store.addAll(
+              txn, getAllCurrentStore.map((e) => e.toMap()).toList());
 
           final snapshots = await _store.find(txn);
           if (snapshots.isEmptyOrNull) {
@@ -513,7 +552,8 @@ class MenuBindingWithStoreLocalDbDbRepository<T extends MenuEntity, R extends St
   }
 
   @override
-  Future<Either<RepositoryBaseFailure, List<StoreEntity>>> unbinding(List<MenuEntity> source, List<StoreEntity> destination) async {
+  Future<Either<RepositoryBaseFailure, List<StoreEntity>>> unbinding(
+      List<MenuEntity> source, List<StoreEntity> destination) async {
     final db = await _db;
     final stores = await storeLocalDbRepository.getAll();
     if (stores.isRight()) {
@@ -522,8 +562,10 @@ class MenuBindingWithStoreLocalDbDbRepository<T extends MenuEntity, R extends St
       List<MenuEntity> toSelectedAdd = [];
       List<MenuEntity> listOfDestinationMenu = [];
       for (var selectedDestinationStore in destination.toSet().toList()) {
-        listOfDestinationMenu.addAll(selectedDestinationStore.menuEntities.toSet().toList());
-        listOfDestinationMenu.removeWhere((element) => source.contains(element));
+        listOfDestinationMenu
+            .addAll(selectedDestinationStore.menuEntities.toSet().toList());
+        listOfDestinationMenu
+            .removeWhere((element) => source.contains(element));
         selectedDestinationStore.menuEntities = listOfDestinationMenu;
       }
       List<MenuEntity> toAdd = [];
@@ -547,7 +589,8 @@ class MenuBindingWithStoreLocalDbDbRepository<T extends MenuEntity, R extends St
           // Delete all
           await _store.delete(txn);
           // Add all
-          await _store.addAll(txn, getAllCurrentStore.map((e) => e.toMap()).toList());
+          await _store.addAll(
+              txn, getAllCurrentStore.map((e) => e.toMap()).toList());
 
           final snapshots = await _store.find(txn);
           if (snapshots.isEmptyOrNull) {
@@ -570,7 +613,9 @@ class MenuBindingWithStoreLocalDbDbRepository<T extends MenuEntity, R extends St
   }
 }
 
-class MenuBindingWithCurrentUserLocalDbDbRepository<T extends MenuEntity, R extends AppUserEntity> implements Binding<List<MenuEntity>, AppUserEntity> {
+class MenuBindingWithCurrentUserLocalDbDbRepository<T extends MenuEntity,
+        R extends AppUserEntity>
+    implements Binding<List<MenuEntity>, AppUserEntity> {
   const MenuBindingWithCurrentUserLocalDbDbRepository({
     required this.menuLocalDbRepository,
     required this.userLocalDbRepository,
@@ -586,7 +631,8 @@ class MenuBindingWithCurrentUserLocalDbDbRepository<T extends MenuEntity, R exte
   final UserLocalDbRepository<R> userLocalDbRepository;
 
   @override
-  Future<Either<RepositoryBaseFailure, AppUserEntity>> binding(List<MenuEntity> source, AppUserEntity destination) async {
+  Future<Either<RepositoryBaseFailure, AppUserEntity>> binding(
+      List<MenuEntity> source, AppUserEntity destination) async {
     final db = await _db;
     final users = await userLocalDbRepository.getAll();
     if (users.isRight()) {
@@ -605,8 +651,10 @@ class MenuBindingWithCurrentUserLocalDbDbRepository<T extends MenuEntity, R exte
           final value = await record.get(await txn);
           if (value != null) {
             var currentUser = cloneMap(value);
-            currentUser['menus'] = currentUserMap['menus'] as List<MenuEntity>..addAll(source.toList());
-            final result = await record.update(txn, {'menus': currentUser['menus']});
+            currentUser['menus'] = currentUserMap['menus'] as List<MenuEntity>
+              ..addAll(source.toList());
+            final result =
+                await record.update(txn, {'menus': currentUser['menus']});
             if (result != null) {
               return AppUserEntity.fromMap(result);
             } else {
@@ -624,7 +672,8 @@ class MenuBindingWithCurrentUserLocalDbDbRepository<T extends MenuEntity, R exte
   }
 
   @override
-  Future<Either<RepositoryBaseFailure, AppUserEntity>> unbinding(List<MenuEntity> source, AppUserEntity destination) async {
+  Future<Either<RepositoryBaseFailure, AppUserEntity>> unbinding(
+      List<MenuEntity> source, AppUserEntity destination) async {
     // TODO(prasant): implement unbinding
     throw UnimplementedError();
   }

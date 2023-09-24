@@ -7,7 +7,8 @@ class WelcomePage extends StatefulWidget {
   State<WelcomePage> createState() => _WelcomePageState();
 }
 
-class _WelcomePageState extends State<WelcomePage> with TickerProviderStateMixin {
+class _WelcomePageState extends State<WelcomePage>
+    with TickerProviderStateMixin {
   late final AnimationController _controller;
   AppUserEntity? appUserEntity;
 
@@ -22,10 +23,13 @@ class _WelcomePageState extends State<WelcomePage> with TickerProviderStateMixin
           // Rebuild the widget at each frame to update the "progress" label.
         });
       });
-    if(!mounted){
+    if (!mounted) {
       return;
     }
-    context.read<BusinessProfileBloc>().add(GetAllAppUserProfilePagination(appUserEntity: serviceLocator<AppUserEntity>()),);
+    context.read<BusinessProfileBloc>().add(
+          GetAllAppUserProfilePagination(
+              appUserEntity: serviceLocator<AppUserEntity>()),
+        );
   }
 
   @override
@@ -38,7 +42,8 @@ class _WelcomePageState extends State<WelcomePage> with TickerProviderStateMixin
   Widget build(BuildContext context) {
     final MediaQueryData media = MediaQuery.of(context);
     final double margins = GlobalApp.responsiveInsets(media.size.width);
-    final double topPadding = margins; //media.padding.top + kToolbarHeight + margins; //margins * 1.5;
+    final double topPadding =
+        margins; //media.padding.top + kToolbarHeight + margins; //margins * 1.5;
     final double bottomPadding = media.padding.bottom + margins;
     final double width = media.size.width;
     final ThemeData theme = Theme.of(context);
@@ -83,10 +88,11 @@ class _WelcomePageState extends State<WelcomePage> with TickerProviderStateMixin
                 builder: (context, permissionState) {
                   return BlocBuilder<BusinessProfileBloc, BusinessProfileState>(
                     bloc: context.read<BusinessProfileBloc>(),
-                    key: const Key('welcome-page-business-profile-bloc-builder'),
+                    key:
+                        const Key('welcome-page-business-profile-bloc-builder'),
                     builder: (context, state) {
-                      if(state is GetAllAppUserProfilePaginationState){
-                        appUserEntity=state.appUserEntities.last;
+                      if (state is GetAllAppUserProfilePaginationState) {
+                        appUserEntity = state.appUserEntities.last;
                       }
                       return Stack(
                         children: [
@@ -115,10 +121,13 @@ class _WelcomePageState extends State<WelcomePage> with TickerProviderStateMixin
                                 Center(
                                   child: Text(
                                     'Welcome!',
-                                    textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                    textDirection:
+                                        serviceLocator<LanguageController>()
+                                            .targetTextDirection,
                                     textAlign: TextAlign.center,
                                     style: context.headlineMedium!.copyWith(
-                                      color: const Color.fromRGBO(69, 201, 125, 1),
+                                      color:
+                                          const Color.fromRGBO(69, 201, 125, 1),
                                       fontSize: 32,
                                       fontWeight: FontWeight.bold,
                                     ),
@@ -126,11 +135,18 @@ class _WelcomePageState extends State<WelcomePage> with TickerProviderStateMixin
                                 ),
                                 Center(
                                   child: Text(
-                                    appUserEntity?.businessProfile?.userName??serviceLocator<AppUserEntity>().businessProfile?.userName??'',
-                                    textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                    appUserEntity?.businessProfile?.userName ??
+                                        serviceLocator<AppUserEntity>()
+                                            .businessProfile
+                                            ?.userName ??
+                                        '',
+                                    textDirection:
+                                        serviceLocator<LanguageController>()
+                                            .targetTextDirection,
                                     textAlign: TextAlign.center,
                                     style: context.headlineMedium!.copyWith(
-                                      color: const Color.fromRGBO(69, 201, 125, 1),
+                                      color:
+                                          const Color.fromRGBO(69, 201, 125, 1),
                                       fontSize: 32,
                                       fontWeight: FontWeight.bold,
                                     ),
@@ -147,7 +163,9 @@ class _WelcomePageState extends State<WelcomePage> with TickerProviderStateMixin
                                     children: [
                                       Text(
                                         'Thank you for registering with us',
-                                        textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                        textDirection:
+                                            serviceLocator<LanguageController>()
+                                                .targetTextDirection,
                                         textAlign: TextAlign.center,
                                         style: context.titleLarge!.copyWith(
                                           fontSize: 20,
@@ -165,11 +183,15 @@ class _WelcomePageState extends State<WelcomePage> with TickerProviderStateMixin
                                 ),
                                 Center(
                                   child: Wrap(
-                                    textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                    textDirection:
+                                        serviceLocator<LanguageController>()
+                                            .targetTextDirection,
                                     children: [
                                       Text(
                                         'We will contact you in Next 1-2 Working Days to physicals business verification',
-                                        textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                        textDirection:
+                                            serviceLocator<LanguageController>()
+                                                .targetTextDirection,
                                         textAlign: TextAlign.center,
                                         style: context.bodyMedium!.copyWith(
                                           fontSize: 16,
@@ -188,7 +210,9 @@ class _WelcomePageState extends State<WelcomePage> with TickerProviderStateMixin
                               child: ElevatedButton(
                                 child: Text(
                                   'Go to Dashboard',
-                                  textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                  textDirection:
+                                      serviceLocator<LanguageController>()
+                                          .targetTextDirection,
                                 ).translate(),
                                 onPressed: () {
                                   context.go(Routes.PRIMARY_DASHBOARD_PAGE);

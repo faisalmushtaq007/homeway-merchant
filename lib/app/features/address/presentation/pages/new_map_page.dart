@@ -7,7 +7,8 @@ class NewMapPage extends StatefulWidget {
   _NewMapPageController createState() => _NewMapPageController();
 }
 
-class _NewMapPageController extends State<NewMapPage>  with TickerProviderStateMixin{
+class _NewMapPageController extends State<NewMapPage>
+    with TickerProviderStateMixin {
   late final ScrollController scrollController;
   late final ScrollController customScrollViewScrollController;
   late final mapBox.MapController mapController;
@@ -78,7 +79,7 @@ class _NewMapPageController extends State<NewMapPage>  with TickerProviderStateM
     // The animation determines what path the animation will take. You can try different Curves values, although I found
     // fastOutSlowIn to be my favorite.
     final Animation<double> animation =
-    CurvedAnimation(parent: controller, curve: Curves.fastOutSlowIn);
+        CurvedAnimation(parent: controller, curve: Curves.fastOutSlowIn);
 
     // Note this method of encoding the target destination is a workaround.
     // When proper animated movement is supported (see #1263) we should be able
@@ -99,7 +100,8 @@ class _NewMapPageController extends State<NewMapPage>  with TickerProviderStateM
       }
 
       hasTriggeredMove |= mapController.move(
-        latlng2.LatLng(latTween.evaluate(animation), lngTween.evaluate(animation)),
+        latlng2.LatLng(
+            latTween.evaluate(animation), lngTween.evaluate(animation)),
         zoomTween.evaluate(animation),
         id: id,
       );
@@ -117,7 +119,8 @@ class _NewMapPageController extends State<NewMapPage>  with TickerProviderStateM
   }
 
   final _animatedMoveTileUpdateTransformer =
-  mapBox.TileUpdateTransformer.fromHandlers(handleData: (updateEvent, sink) {
+      mapBox.TileUpdateTransformer.fromHandlers(
+          handleData: (updateEvent, sink) {
     final mapEvent = updateEvent.mapEvent;
 
     final id = mapEvent is mapBox.MapEventMove ? mapEvent.id : null;
@@ -159,7 +162,8 @@ class _NewMapPageView extends WidgetView<NewMapPage, _NewMapPageController> {
   Widget build(BuildContext context) {
     final MediaQueryData media = MediaQuery.of(context);
     final double margins = GlobalApp.responsiveInsets(media.size.width);
-    final double topPadding = margins; //media.padding.top + kToolbarHeight + margins; //margins * 1.5;
+    final double topPadding =
+        margins; //media.padding.top + kToolbarHeight + margins; //margins * 1.5;
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: FlexColorScheme.themedSystemNavigationBar(
         context,
@@ -189,10 +193,12 @@ class _NewMapPageView extends WidgetView<NewMapPage, _NewMapPageController> {
                   textColor: Colors.yellow,
                   label: Text(
                     '10',
-                    style: context.labelSmall!.copyWith(color: context.colorScheme.onPrimary),
+                    style: context.labelSmall!
+                        .copyWith(color: context.colorScheme.onPrimary),
                     //Color.fromRGBO(251, 219, 11, 1)
                   ),
-                  child: Icon(Icons.notifications, color: context.colorScheme.primary),
+                  child: Icon(Icons.notifications,
+                      color: context.colorScheme.primary),
                 ),
               ),
               const Padding(
@@ -206,12 +212,16 @@ class _NewMapPageView extends WidgetView<NewMapPage, _NewMapPageController> {
             from: context.width / 2 - 60,
             duration: const Duration(milliseconds: 500),
             child: Directionality(
-              textDirection: serviceLocator<LanguageController>().targetTextDirection,
+              textDirection:
+                  serviceLocator<LanguageController>().targetTextDirection,
               child: PageBody(
                 controller: state.scrollController,
                 constraints: BoxConstraints(
                   minWidth: 1000,
-                  minHeight: media.size.height - (media.padding.top + kToolbarHeight + media.padding.bottom),
+                  minHeight: media.size.height -
+                      (media.padding.top +
+                          kToolbarHeight +
+                          media.padding.bottom),
                 ),
                 padding: EdgeInsetsDirectional.only(
                   top: 0,
@@ -234,12 +244,14 @@ class _NewMapPageView extends WidgetView<NewMapPage, _NewMapPageController> {
                         children: [
                           mapBox.TileLayer(
                             urlTemplate:
-                            'https://api.mapbox.com/styles/v1/prasant10050/{mapStyleId}/tiles/256/{z}/{x}/{y}@2x?access_token={accessToken}',
+                                'https://api.mapbox.com/styles/v1/prasant10050/{mapStyleId}/tiles/256/{z}/{x}/{y}@2x?access_token={accessToken}',
                             userAgentPackageName: 'com.homemakers.merchant',
-                            tileUpdateTransformer: state._animatedMoveTileUpdateTransformer,
+                            tileUpdateTransformer:
+                                state._animatedMoveTileUpdateTransformer,
                             additionalOptions: {
                               'mapStyleId': 'clmgpwxia01is01pjgmzx9hmh',
-                              'accessToken': 'pk.eyJ1IjoicHJhc2FudDEwMDUwIiwiYSI6ImNqbDZ5YjQzcDFjN3QzcG1xZzJxd21qZWsifQ.HJO13RDtCRYneLun9t2dQA',
+                              'accessToken':
+                                  'pk.eyJ1IjoicHJhc2FudDEwMDUwIiwiYSI6ImNqbDZ5YjQzcDFjN3QzcG1xZzJxd21qZWsifQ.HJO13RDtCRYneLun9t2dQA',
                             },
                           ),
                           mapBox.MarkerLayer(markers: state.markers),
@@ -255,6 +267,4 @@ class _NewMapPageView extends WidgetView<NewMapPage, _NewMapPageController> {
       ),
     );
   }
-
-
 }

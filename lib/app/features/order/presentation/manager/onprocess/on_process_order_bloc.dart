@@ -9,7 +9,8 @@ import 'package:sembast/timestamp.dart';
 part 'on_process_order_event.dart';
 part 'on_process_order_state.dart';
 
-class OnProcessOrderBloc extends Bloc<OnProcessOrderEvent, OnProcessOrderState> {
+class OnProcessOrderBloc
+    extends Bloc<OnProcessOrderEvent, OnProcessOrderState> {
   OnProcessOrderBloc() : super(OnProcessOrderInitial()) {
     on<OnProcessOrderEvent>((event, emit) {
       // TODO: implement event handler

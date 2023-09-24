@@ -4,23 +4,20 @@ class WeeklyOrderAnalysis extends StatefulWidget {
   const WeeklyOrderAnalysis({super.key});
 
   @override
-  _WeeklyOrderAnalysisController createState() => _WeeklyOrderAnalysisController();
+  _WeeklyOrderAnalysisController createState() =>
+      _WeeklyOrderAnalysisController();
 }
 
 class _WeeklyOrderAnalysisController extends State<WeeklyOrderAnalysis> {
   bool _isSelected = false;
   List<Widget> listOfWidgets = [
-    WeeklyOrderAgainstStoreChartWidget(key: const Key('weekly-order-against-store-widget')),
+    WeeklyOrderAgainstStoreChartWidget(
+        key: const Key('weekly-order-against-store-widget')),
     WeeklySalesAgainstStoreChartWidget(
       key: const Key('weekly-sales-against-store-widget'),
     ),
   ];
-  OverAllAnalysisData overAllAnalysisData = OverAllAnalysisData(
-    totalEarnings: 0,
-    totalCustomers: 0,
-    totalOrders: TotalOrders(totalOrdersNew: 0, deliver: 0),
-    totalStores: 0,
-  );
+  WeeklyAnalysisOverAllData overAllAnalysisData = WeeklyAnalysisOverAllData();
 
   @override
   void initState() {
@@ -34,11 +31,25 @@ class _WeeklyOrderAnalysisController extends State<WeeklyOrderAnalysis> {
 
   void onChangedSwitch(bool isSelected) {
     _isSelected = isSelected;
+    if (isSelected) {
+      context.read<OrderAnalysisBloc>().add(
+          const WeeklyOrderAnalysisEvent(analysisBy: AnalysisBy.weeklySales));
+    } else {
+      context.read<OrderAnalysisBloc>().add(const WeeklyOrderAnalysisEvent());
+    }
     setState(() {});
   }
 
   @override
-  Widget build(BuildContext context) => _WeeklyOrderAnalysisView(this);
+  Widget build(BuildContext context) =>
+      BlocBuilder<OrderAnalysisBloc, OrderAnalysisState>(
+        builder: (context, orderAnalysisState) {
+          if(orderAnalysisState is WeeklyOverAllOrderAnalysisState){
+            overAllAnalysisData=orderAnalysisState.overAllAnalysisData;
+          }
+          return _WeeklyOrderAnalysisView(this);
+        },
+      );
 }
 
 class _WeeklyOrderAnalysisView extends WidgetView<WeeklyOrderAnalysis, _WeeklyOrderAnalysisController> {
@@ -53,7 +64,7 @@ class _WeeklyOrderAnalysisView extends WidgetView<WeeklyOrderAnalysis, _WeeklyOr
       textDirection: serviceLocator<LanguageController>().targetTextDirection,
       children: [
         Flexible(
-          child: OrderAnalysisGridWidget(
+          child: WeeklyOverAllAnalysisGridWidget(
             key: const Key('weekly-order-widget'),
             overAllAnalysisData: state.overAllAnalysisData,
           ),
@@ -70,7 +81,9 @@ class _WeeklyOrderAnalysisView extends WidgetView<WeeklyOrderAnalysis, _WeeklyOr
         Flexible(
           child: AnimatedSwitcher(
             duration: Duration(milliseconds: 500),
-            child: state._isSelected?state.listOfWidgets[1]:state.listOfWidgets[0],
+            child: state._isSelected
+                ? state.listOfWidgets[1]
+                : state.listOfWidgets[0],
           ),
         ),
         const AnimatedGap(12, duration: Duration(milliseconds: 500)),

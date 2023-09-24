@@ -16,20 +16,23 @@ class SaveMenuPage extends StatefulWidget {
   _SaveMenuPageController createState() => _SaveMenuPageController();
 }
 
-class _SaveMenuPageController extends State<SaveMenuPage> with AutomaticKeepAliveClientMixin<SaveMenuPage>, WidgetsBindingObserver {
+class _SaveMenuPageController extends State<SaveMenuPage>
+    with AutomaticKeepAliveClientMixin<SaveMenuPage>, WidgetsBindingObserver {
   late final ScrollController scrollController;
   late final ScrollController _screenScrollController;
   int _currentPageIndex = 2;
 
   // StepProgressController
-  final StepProgressController stepProgressController = StepProgressController(totalStep: 5, initialStep: 2);
+  final StepProgressController stepProgressController =
+      StepProgressController(totalStep: 5, initialStep: 2);
   PageController controller = PageController(
     initialPage: 2,
   );
   FormPageStyle? formPageStyle = const FormPageStyle();
 
   // PageView
-  PreloadPageController preloadPageController = PreloadPageController(initialPage: 2);
+  PreloadPageController preloadPageController =
+      PreloadPageController(initialPage: 2);
 
   // ProgressIndicatorType
   ProgressIndicatorType progress = ProgressIndicatorType.linear;
@@ -54,14 +57,23 @@ class _SaveMenuPageController extends State<SaveMenuPage> with AutomaticKeepAliv
     super.initState();
     scrollController = ScrollController();
     WidgetsBinding.instance?.addObserver(this);
-    formKeys = [GlobalKey<FormState>(), GlobalKey<FormState>(), GlobalKey<FormState>(), GlobalKey<FormState>(), GlobalKey<FormState>()];
+    formKeys = [
+      GlobalKey<FormState>(),
+      GlobalKey<FormState>(),
+      GlobalKey<FormState>(),
+      GlobalKey<FormState>(),
+      GlobalKey<FormState>()
+    ];
     pages = [
       FormPageModel(
         body: Form(
           key: formKeys[0],
           child: PageStorage(
             bucket: pageStorageBucketMenuForm1,
-            child: MenuForm1Page(haveNewMenu: widget.haveNewMenu,menuEntity: widget.menuEntity,),
+            child: MenuForm1Page(
+              haveNewMenu: widget.haveNewMenu,
+              menuEntity: widget.menuEntity,
+            ),
           ),
         ),
         formKey: formKeys[0],
@@ -71,7 +83,10 @@ class _SaveMenuPageController extends State<SaveMenuPage> with AutomaticKeepAliv
           key: formKeys[1],
           child: PageStorage(
             bucket: pageStorageBucketMenuForm2,
-            child: MenuForm2Page(haveNewMenu: widget.haveNewMenu,menuEntity: widget.menuEntity,),
+            child: MenuForm2Page(
+              haveNewMenu: widget.haveNewMenu,
+              menuEntity: widget.menuEntity,
+            ),
           ),
         ),
         formKey: formKeys[1],
@@ -81,7 +96,10 @@ class _SaveMenuPageController extends State<SaveMenuPage> with AutomaticKeepAliv
           key: formKeys[2],
           child: PageStorage(
             bucket: pageStorageBucketMenuForm3,
-            child:  MenuForm3Page(haveNewMenu: widget.haveNewMenu,menuEntity: widget.menuEntity,),
+            child: MenuForm3Page(
+              haveNewMenu: widget.haveNewMenu,
+              menuEntity: widget.menuEntity,
+            ),
           ),
         ),
         formKey: formKeys[2],
@@ -91,7 +109,10 @@ class _SaveMenuPageController extends State<SaveMenuPage> with AutomaticKeepAliv
           key: formKeys[3],
           child: PageStorage(
             bucket: pageStorageBucketMenuForm4,
-            child:  MenuForm4Page(haveNewMenu: widget.haveNewMenu,menuEntity: widget.menuEntity,),
+            child: MenuForm4Page(
+              haveNewMenu: widget.haveNewMenu,
+              menuEntity: widget.menuEntity,
+            ),
           ),
         ),
         formKey: formKeys[3],
@@ -101,13 +122,27 @@ class _SaveMenuPageController extends State<SaveMenuPage> with AutomaticKeepAliv
           key: formKeys[4],
           child: PageStorage(
             bucket: pageStorageBucketMenuForm5,
-            child:  MenuForm5Page(haveNewMenu: widget.haveNewMenu,menuEntity: widget.menuEntity,),
+            child: MenuForm5Page(
+              haveNewMenu: widget.haveNewMenu,
+              menuEntity: widget.menuEntity,
+            ),
           ),
         ),
         formKey: formKeys[4],
       ),
     ];
-    focusList = [FocusNode(), FocusNode(), FocusNode(), FocusNode(), FocusNode(), FocusNode(), FocusNode(), FocusNode(), FocusNode(), FocusNode()];
+    focusList = [
+      FocusNode(),
+      FocusNode(),
+      FocusNode(),
+      FocusNode(),
+      FocusNode(),
+      FocusNode(),
+      FocusNode(),
+      FocusNode(),
+      FocusNode(),
+      FocusNode()
+    ];
     _screenScrollController = ScrollController()..addListener(_scrollListener);
   }
 
@@ -142,10 +177,14 @@ class _SaveMenuPageController extends State<SaveMenuPage> with AutomaticKeepAliv
   }
 
   void _scrollListener() {
-    if (_screenScrollController.offset >= _screenScrollController.position.maxScrollExtent && !_screenScrollController.position.outOfRange) {
+    if (_screenScrollController.offset >=
+            _screenScrollController.position.maxScrollExtent &&
+        !_screenScrollController.position.outOfRange) {
       //reach the top
     }
-    if (_screenScrollController.offset <= _screenScrollController.position.minScrollExtent && !_screenScrollController.position.outOfRange) {
+    if (_screenScrollController.offset <=
+            _screenScrollController.position.minScrollExtent &&
+        !_screenScrollController.position.outOfRange) {
       //reach the top
     }
   }
@@ -169,7 +208,8 @@ class _SaveMenuPageController extends State<SaveMenuPage> with AutomaticKeepAliv
         if (_currentPageIndex < pages.length - 1) {
           _currentPageIndex++;
           //controller.nextPage(duration: const Duration(milliseconds: 300), curve: Curves.ease);
-          preloadPageController.nextPage(duration: const Duration(milliseconds: 300), curve: Curves.ease);
+          preloadPageController.nextPage(
+              duration: const Duration(milliseconds: 300), curve: Curves.ease);
           stepProgressController.nextStep();
         } else {
           onFormSubmitted();
@@ -224,7 +264,8 @@ class _SaveMenuPageController extends State<SaveMenuPage> with AutomaticKeepAliv
             case SaveMenuState():
               {
                 menuStateStatus = state.menuStateStatus;
-                context.go(Routes.NEW_MENU_GREETING_PAGE, extra: state.menuEntity);
+                context.go(Routes.NEW_MENU_GREETING_PAGE,
+                    extra: state.menuEntity);
                 return;
               }
             case _:
@@ -240,14 +281,16 @@ class _SaveMenuPageController extends State<SaveMenuPage> with AutomaticKeepAliv
   bool get wantKeepAlive => true;
 }
 
-class _SaveMenuPageView extends WidgetView<SaveMenuPage, _SaveMenuPageController> {
+class _SaveMenuPageView
+    extends WidgetView<SaveMenuPage, _SaveMenuPageController> {
   const _SaveMenuPageView(super.state);
 
   @override
   Widget build(BuildContext context) {
     final MediaQueryData media = MediaQuery.of(context);
     final double margins = GlobalApp.responsiveInsets(media.size.width);
-    final double topPadding = margins; //media.padding.top + kToolbarHeight + margins; //margins * 1.5;
+    final double topPadding =
+        margins; //media.padding.top + kToolbarHeight + margins; //margins * 1.5;
     final double bottomPadding = media.padding.bottom + margins;
     final double width = media.size.width;
     final ThemeData theme = Theme.of(context);
@@ -271,7 +314,8 @@ class _SaveMenuPageView extends WidgetView<SaveMenuPage, _SaveMenuPageController
           ],
         ),
         body: Directionality(
-          textDirection: serviceLocator<LanguageController>().targetTextDirection,
+          textDirection:
+              serviceLocator<LanguageController>().targetTextDirection,
           child: PageBody(
             controller: state.scrollController,
             constraints: BoxConstraints(
@@ -290,7 +334,8 @@ class _SaveMenuPageView extends WidgetView<SaveMenuPage, _SaveMenuPageController
                     SliverList(
                       delegate: SliverChildListDelegate(
                         [
-                          const AnimatedGap(50, duration: Duration(milliseconds: 500)),
+                          const AnimatedGap(50,
+                              duration: Duration(milliseconds: 500)),
                           AnimatedContainer(
                             height: context.height * 0.64,
                             margin: EdgeInsetsDirectional.only(
@@ -308,7 +353,8 @@ class _SaveMenuPageView extends WidgetView<SaveMenuPage, _SaveMenuPageController
                             ),
                             decoration: BoxDecoration(
                               color: context.colorScheme.background,
-                              borderRadius: BorderRadiusDirectional.circular(10),
+                              borderRadius:
+                                  BorderRadiusDirectional.circular(10),
                               boxShadow: const [
                                 BoxShadow(
                                   offset: Offset(0, 3),
@@ -331,7 +377,8 @@ class _SaveMenuPageView extends WidgetView<SaveMenuPage, _SaveMenuPageController
                                     clipBehavior: Clip.none,
                                     children: [
                                       AnimatedPositioned(
-                                        duration: const Duration(milliseconds: 300),
+                                        duration:
+                                            const Duration(milliseconds: 300),
                                         top: -42,
                                         child: DisplayImage(
                                           imagePath: '',
@@ -348,14 +395,15 @@ class _SaveMenuPageView extends WidgetView<SaveMenuPage, _SaveMenuPageController
                                     controller: state.preloadPageController,
                                     itemCount: state.pages.length,
                                     preloadPagesCount: 0,
-                                    physics: const NeverScrollableScrollPhysics(),
+                                    physics:
+                                        const NeverScrollableScrollPhysics(),
                                     onPageChanged: state.onPageChanged,
                                     itemBuilder: (context, index) {
                                       return SingleChildScrollView(
                                         physics: const ClampingScrollPhysics(),
                                         child: Column(
                                           children: [
-                                           /* Wrap(
+                                            /* Wrap(
                                               alignment: WrapAlignment.center,
                                               crossAxisAlignment: WrapCrossAlignment.center,
                                               children: [
@@ -375,7 +423,9 @@ class _SaveMenuPageView extends WidgetView<SaveMenuPage, _SaveMenuPageController
                                                 ),
                                               ],
                                             ),*/
-                                            const AnimatedGap(18, duration: Duration(milliseconds: 500)),
+                                            const AnimatedGap(18,
+                                                duration: Duration(
+                                                    milliseconds: 500)),
                                             state.pages[index].body,
                                           ],
                                         ),
@@ -387,8 +437,10 @@ class _SaveMenuPageView extends WidgetView<SaveMenuPage, _SaveMenuPageController
                             ),
                           ),
                           Progress(
-                            stepProgressController: state.stepProgressController,
-                            strokeColor: context.colorScheme.surfaceTint.withOpacity(0.75),
+                            stepProgressController:
+                                state.stepProgressController,
+                            strokeColor: context.colorScheme.surfaceTint
+                                .withOpacity(0.75),
                             valueColor: Colors.white,
                             //context.colorScheme.surface,
                             //backgroundColor: context.primaryColor,
@@ -396,7 +448,8 @@ class _SaveMenuPageView extends WidgetView<SaveMenuPage, _SaveMenuPageController
                             onStepChanged: state.onStepChanged,
                             defaultColor: context.colorScheme.surface,
                             height: kToolbarHeight - margins,
-                            margin: EdgeInsetsDirectional.symmetric(horizontal: context.width / margins),
+                            margin: EdgeInsetsDirectional.symmetric(
+                                horizontal: context.width / margins),
                           ),
                           Padding(
                             padding: EdgeInsetsDirectional.only(
@@ -426,9 +479,12 @@ class _SaveMenuPageView extends WidgetView<SaveMenuPage, _SaveMenuPageController
                                     ),
                                     child: Text(
                                       'Prev',
-                                      textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                      textDirection:
+                                          serviceLocator<LanguageController>()
+                                              .targetTextDirection,
                                       style: const TextStyle(
-                                        color: Color.fromRGBO(127, 129, 132, 1.0),
+                                        color:
+                                            Color.fromRGBO(127, 129, 132, 1.0),
                                       ),
                                     ).translate(),
                                   ),
@@ -442,16 +498,31 @@ class _SaveMenuPageView extends WidgetView<SaveMenuPage, _SaveMenuPageController
                                     onPressed: state._nextButtonOnPressed,
                                     style: ElevatedButton.styleFrom(
                                       //minimumSize: Size(180, 40),
-                                      backgroundColor: (state._currentPageIndex == state.pages.length - 1) ? const Color.fromRGBO(69, 201, 125, 1) : null,
-                                      disabledBackgroundColor: (state._currentPageIndex == state.pages.length - 1)
-                                          ? const Color.fromRGBO(215, 243, 227, 1)
-                                          : const Color.fromRGBO(255, 219, 208, 1),
+                                      backgroundColor:
+                                          (state._currentPageIndex ==
+                                                  state.pages.length - 1)
+                                              ? const Color.fromRGBO(
+                                                  69, 201, 125, 1)
+                                              : null,
+                                      disabledBackgroundColor:
+                                          (state._currentPageIndex ==
+                                                  state.pages.length - 1)
+                                              ? const Color.fromRGBO(
+                                                  215, 243, 227, 1)
+                                              : const Color.fromRGBO(
+                                                  255, 219, 208, 1),
                                       disabledForegroundColor: Colors.white,
                                     ),
                                     child: Text(
                                       'Next',
-                                      textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                                      style: TextStyle(color: (state._currentPageIndex == state.pages.length - 1) ? Colors.white : null),
+                                      textDirection:
+                                          serviceLocator<LanguageController>()
+                                              .targetTextDirection,
+                                      style: TextStyle(
+                                          color: (state._currentPageIndex ==
+                                                  state.pages.length - 1)
+                                              ? Colors.white
+                                              : null),
                                     ).translate(),
                                   ),
                                 ),

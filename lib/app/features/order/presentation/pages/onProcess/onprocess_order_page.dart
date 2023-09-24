@@ -3,7 +3,8 @@ part of 'package:homemakers_merchant/app/features/order/index.dart';
 class AllOnProcessOrderPage extends StatefulWidget {
   const AllOnProcessOrderPage({super.key});
   @override
-  _AllOnProcessOrderPageController createState() => _AllOnProcessOrderPageController();
+  _AllOnProcessOrderPageController createState() =>
+      _AllOnProcessOrderPageController();
 }
 
 class _AllOnProcessOrderPageController extends State<AllOnProcessOrderPage> {
@@ -11,7 +12,8 @@ class _AllOnProcessOrderPageController extends State<AllOnProcessOrderPage> {
   Widget build(BuildContext context) => _AllOnProcessOrderPageView(this);
 }
 
-class _AllOnProcessOrderPageView extends WidgetView<AllOnProcessOrderPage, _AllOnProcessOrderPageController> {
+class _AllOnProcessOrderPageView extends WidgetView<AllOnProcessOrderPage,
+    _AllOnProcessOrderPageController> {
   const _AllOnProcessOrderPageView(super.state);
 
   @override

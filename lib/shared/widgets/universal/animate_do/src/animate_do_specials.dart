@@ -55,9 +55,11 @@ class _JelloInState extends State<JelloIn> with TickerProviderStateMixin {
 
     controller = AnimationController(duration: widget.duration, vsync: this);
 
-    rotation = Tween<double>(begin: 1.5, end: 0.0).animate(CurvedAnimation(parent: controller!, curve: Curves.bounceOut));
+    rotation = Tween<double>(begin: 1.5, end: 0.0)
+        .animate(CurvedAnimation(parent: controller!, curve: Curves.bounceOut));
 
-    opacity = Tween<double>(begin: 0, end: 1).animate(CurvedAnimation(parent: controller!, curve: const Interval(0, 0.65)));
+    opacity = Tween<double>(begin: 0, end: 1).animate(
+        CurvedAnimation(parent: controller!, curve: const Interval(0, 0.65)));
 
     if (!widget.manualTrigger && widget.animate) {
       Future.delayed(widget.delay, () {

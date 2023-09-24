@@ -9,11 +9,17 @@ part 'widget_state.freezed.dart';
 class WidgetState<T> with _$WidgetState<T> {
   const factory WidgetState.idle() = _WidgetStateIdle<T>;
   const factory WidgetState.none() = _WidgetStateNone<T>;
-  const factory WidgetState.loading({required BuildContext context, Widget? child, @Default('Loading...') String message, @Default(false) isLoading}) =
-      _WidgetLoading<T>;
+  const factory WidgetState.loading(
+      {required BuildContext context,
+      Widget? child,
+      @Default('Loading...') String message,
+      @Default(false) isLoading}) = _WidgetLoading<T>;
 
-  const factory WidgetState.processing({required BuildContext context, Widget? child, @Default('Loading...') String message, @Default(false) isLoading}) =
-      _WidgetProcessing<T>;
+  const factory WidgetState.processing(
+      {required BuildContext context,
+      Widget? child,
+      @Default('Loading...') String message,
+      @Default(false) isLoading}) = _WidgetProcessing<T>;
 
   const factory WidgetState.success({
     required BuildContext context,
@@ -30,9 +36,15 @@ class WidgetState<T> with _$WidgetState<T> {
       NetworkException? networkException,
       StackTrace? stackTrace}) = _WidgetError<T>;
 
-  const factory WidgetState.empty({required BuildContext context, Widget? child, @Default('Empty') String message, @Default([]) List<T> data}) =
-      _WidgetEmpty<T>;
+  const factory WidgetState.empty(
+      {required BuildContext context,
+      Widget? child,
+      @Default('Empty') String message,
+      @Default([]) List<T> data}) = _WidgetEmpty<T>;
 
-  const factory WidgetState.allData({required BuildContext context, Widget? child, @Default('All Data') String message, @Default([]) List<T> data}) =
-      _WidgetAllData<T>;
+  const factory WidgetState.allData(
+      {required BuildContext context,
+      Widget? child,
+      @Default('All Data') String message,
+      @Default([]) List<T> data}) = _WidgetAllData<T>;
 }

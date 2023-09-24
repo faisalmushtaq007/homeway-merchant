@@ -95,7 +95,8 @@ class WrapAndMoreController extends ChangeNotifier {
 
   /// Calculates the number of child widgets to display within the `Wrap`.
   void countChildWidgetShow() {
-    List<double> listOfTempArea = List.generate(maxRowChild, (index) => areaWrap / maxRowChild);
+    List<double> listOfTempArea =
+        List.generate(maxRowChild, (index) => areaWrap / maxRowChild);
 
     int indexOfTempArea = 0;
     int showAreaCount = 0;
@@ -117,7 +118,8 @@ class WrapAndMoreController extends ChangeNotifier {
       }
     }
 
-    double lastRowArea = listAreaOfLastChild.sum + (overflowSize.width * overflowSize.height);
+    double lastRowArea =
+        listAreaOfLastChild.sum + (overflowSize.width * overflowSize.height);
 
     if (lastRowArea >= listOfTempArea.last) {
       showAreaCount--;

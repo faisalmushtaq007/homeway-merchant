@@ -37,13 +37,18 @@ class LanguageAppWrapper extends StatefulWidget with GetItStatefulWidgetMixin {
   State<LanguageAppWrapper> createState() => _LanguageAppWrapperState();
 }
 
-class _LanguageAppWrapperState extends State<LanguageAppWrapper> with GetItStateMixin, LifecycleMixin {
+class _LanguageAppWrapperState extends State<LanguageAppWrapper>
+    with GetItStateMixin, LifecycleMixin {
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder2<Map<TranslateLanguage, Language>, Map<TranslateLanguage, Language>>(
+    return StreamBuilder2<Map<TranslateLanguage, Language>,
+        Map<TranslateLanguage, Language>>(
       streams: StreamTuple2(
-          MultipleLanguageDownload.instance.allLanguageSteam.map((event) => event),
-          MultipleLanguageDownload.instance.allLanguageSteam.map((event) => event).where(
+          MultipleLanguageDownload.instance.allLanguageSteam
+              .map((event) => event),
+          MultipleLanguageDownload.instance.allLanguageSteam
+              .map((event) => event)
+              .where(
                 (event) => event.containsKey(TranslateLanguage.arabic),
               )),
       initialData: InitialDataTuple2({

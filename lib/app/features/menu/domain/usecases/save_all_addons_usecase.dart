@@ -1,6 +1,7 @@
 part of 'package:homemakers_merchant/app/features/menu/index.dart';
 
-class SaveAllAddonsUseCase extends UseCaseIO<List<Addons>, DataSourceState<List<Addons>>> {
+class SaveAllAddonsUseCase
+    extends UseCaseIO<List<Addons>, DataSourceState<List<Addons>>> {
   SaveAllAddonsUseCase({
     required this.menuRepository,
   });

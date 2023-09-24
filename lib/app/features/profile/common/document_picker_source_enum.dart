@@ -23,7 +23,10 @@ enum DocumentPickerSource {
   ),
   ;
 
-  const DocumentPickerSource({required this.documentPickerName, required this.pickerSourceID, required this.icon});
+  const DocumentPickerSource(
+      {required this.documentPickerName,
+      required this.pickerSourceID,
+      required this.icon});
 
   final int pickerSourceID;
   final String documentPickerName;

@@ -73,7 +73,8 @@ class MultiSelectTasteTypeFormField extends FormField<List<TasteType>> {
                   state.save();
                 },
                 availableTasteTypes: availableTasteTypeList.toList(),
-                initialSelectedTasteTypeList: initialSelectedTasteTypeList.toList(),
+                initialSelectedTasteTypeList:
+                    initialSelectedTasteTypeList.toList(),
                 maxSelection: maxSelection,
                 onMaxSelected: onMaxSelected,
                 isSingleSelect: isSingleSelect,
@@ -136,7 +137,8 @@ class MultiSelectMenuTasteType extends StatefulWidget {
   final bool isSingleSelect;
 
   @override
-  _MultiSelectTasteTypeChipState createState() => _MultiSelectTasteTypeChipState();
+  _MultiSelectTasteTypeChipState createState() =>
+      _MultiSelectTasteTypeChipState();
 }
 
 class _MultiSelectTasteTypeChipState extends State<MultiSelectMenuTasteType> {
@@ -150,7 +152,8 @@ class _MultiSelectTasteTypeChipState extends State<MultiSelectMenuTasteType> {
       choices.add(ChoiceChip(
         label: Text(
           item.title,
-          textDirection: serviceLocator<LanguageController>().targetTextDirection,
+          textDirection:
+              serviceLocator<LanguageController>().targetTextDirection,
         ),
         selected: selectedChoices.contains(item),
         onSelected: (selected) {
@@ -162,11 +165,14 @@ class _MultiSelectTasteTypeChipState extends State<MultiSelectMenuTasteType> {
               widget.onSelectionChanged?.call(selectedChoices);
             });
           } else {
-            if (selectedChoices.length == (widget.maxSelection ?? -1) && !selectedChoices.contains(item)) {
+            if (selectedChoices.length == (widget.maxSelection ?? -1) &&
+                !selectedChoices.contains(item)) {
               widget.onMaxSelected?.call(selectedChoices);
             } else {
               setState(() {
-                selectedChoices.contains(item) ? selectedChoices.remove(item) : selectedChoices.add(item);
+                selectedChoices.contains(item)
+                    ? selectedChoices.remove(item)
+                    : selectedChoices.add(item);
                 widget.onSelectionChanged?.call(selectedChoices);
               });
             }
@@ -181,7 +187,8 @@ class _MultiSelectTasteTypeChipState extends State<MultiSelectMenuTasteType> {
   @override
   void initState() {
     super.initState();
-    selectedChoices=List<TasteType>.from(widget.initialSelectedTasteTypeList.toList());
+    selectedChoices =
+        List<TasteType>.from(widget.initialSelectedTasteTypeList.toList());
   }
 
   @override

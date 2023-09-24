@@ -1,7 +1,12 @@
 part of 'package:homemakers_merchant/app/features/store/index.dart';
 
 class ContactFormItemWidget extends StatefulWidget {
-  ContactFormItemWidget({required Key key, required this.storeOwnDeliveryPartnerEntity, required this.onRemove, required this.index}) : super(key: key);
+  ContactFormItemWidget(
+      {required Key key,
+      required this.storeOwnDeliveryPartnerEntity,
+      required this.onRemove,
+      required this.index})
+      : super(key: key);
 
   final int index;
   final StoreOwnDeliveryPartnersInfo storeOwnDeliveryPartnerEntity;
@@ -12,8 +17,10 @@ class ContactFormItemWidget extends StatefulWidget {
   State<StatefulWidget> createState() => state;
 
   final TextEditingController _driverNameController = TextEditingController();
-  final TextEditingController _driverContactNumberController = TextEditingController();
-  final TextEditingController _drivingLicenseNumberController = TextEditingController();
+  final TextEditingController _driverContactNumberController =
+      TextEditingController();
+  final TextEditingController _drivingLicenseNumberController =
+      TextEditingController();
   FocusNode _driverNameFocusNode = FocusNode();
   FocusNode _driverContactNumberFocusNode = FocusNode();
   FocusNode _drivingLicenseNumberFocusNode = FocusNode();
@@ -52,7 +59,8 @@ class _ContactFormItemWidgetState extends State<ContactFormItemWidget> {
                   children: [
                     Text(
                       'Contact - ${widget.index}',
-                      style: context.titleMedium!.copyWith(color: context.colorScheme.primary),
+                      style: context.titleMedium!
+                          .copyWith(color: context.colorScheme.primary),
                     ),
                     Row(
                       mainAxisSize: MainAxisSize.min,
@@ -61,9 +69,12 @@ class _ContactFormItemWidgetState extends State<ContactFormItemWidget> {
                             onPressed: () {
                               setState(() {
                                 //Clear All forms Data
-                                widget.storeOwnDeliveryPartnerEntity.driverName = '';
-                                widget.storeOwnDeliveryPartnerEntity.driverMobileNumber = '';
-                                widget.storeOwnDeliveryPartnerEntity.drivingLicenseNumber = '';
+                                widget.storeOwnDeliveryPartnerEntity
+                                    .driverName = '';
+                                widget.storeOwnDeliveryPartnerEntity
+                                    .driverMobileNumber = '';
+                                widget.storeOwnDeliveryPartnerEntity
+                                    .drivingLicenseNumber = '';
                                 widget._driverNameController.clear();
                                 widget._driverContactNumberController.clear();
                                 widget._drivingLicenseNumberController.clear();
@@ -83,11 +94,15 @@ class _ContactFormItemWidgetState extends State<ContactFormItemWidget> {
                 ),
                 StoreTextFieldWidget(
                   controller: widget._driverNameController,
-                  textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                  textDirection:
+                      serviceLocator<LanguageController>().targetTextDirection,
                   focusNode: widget._driverNameFocusNode,
                   textInputAction: TextInputAction.next,
                   keyboardType: TextInputType.text,
-                  onFieldSubmitted: (_) => fieldFocusChange(context, widget._driverNameFocusNode, widget._driverContactNumberFocusNode),
+                  onFieldSubmitted: (_) => fieldFocusChange(
+                      context,
+                      widget._driverNameFocusNode,
+                      widget._driverContactNumberFocusNode),
                   decoration: InputDecoration(
                     hintText: 'Enter driver name',
                     labelText: 'Driver Name',
@@ -104,17 +119,23 @@ class _ContactFormItemWidgetState extends State<ContactFormItemWidget> {
                       return null;
                     }
                   },
-                  onChanged: (value) => widget.storeOwnDeliveryPartnerEntity.driverName = value ?? '',
-                  onSaved: (value) => widget.storeOwnDeliveryPartnerEntity.driverName = value ?? '',
+                  onChanged: (value) => widget
+                      .storeOwnDeliveryPartnerEntity.driverName = value ?? '',
+                  onSaved: (value) => widget
+                      .storeOwnDeliveryPartnerEntity.driverName = value ?? '',
                 ),
                 const AnimatedGap(8, duration: Duration(milliseconds: 500)),
                 StoreTextFieldWidget(
                   controller: widget._driverContactNumberController,
-                  textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                  textDirection:
+                      serviceLocator<LanguageController>().targetTextDirection,
                   focusNode: widget._driverContactNumberFocusNode,
                   textInputAction: TextInputAction.next,
                   keyboardType: TextInputType.text,
-                  onFieldSubmitted: (_) => fieldFocusChange(context, widget._driverContactNumberFocusNode, widget._drivingLicenseNumberFocusNode),
+                  onFieldSubmitted: (_) => fieldFocusChange(
+                      context,
+                      widget._driverContactNumberFocusNode,
+                      widget._drivingLicenseNumberFocusNode),
                   decoration: InputDecoration(
                     hintText: 'Enter driver contact number',
                     labelText: 'Driver Contact Number',
@@ -131,13 +152,16 @@ class _ContactFormItemWidgetState extends State<ContactFormItemWidget> {
                       return null;
                     }
                   },
-                  onChanged: (value) => widget.storeOwnDeliveryPartnerEntity.driverMobileNumber = value ?? '',
-                  onSaved: (value) => widget.storeOwnDeliveryPartnerEntity.driverMobileNumber = value ?? '',
+                  onChanged: (value) => widget.storeOwnDeliveryPartnerEntity
+                      .driverMobileNumber = value ?? '',
+                  onSaved: (value) => widget.storeOwnDeliveryPartnerEntity
+                      .driverMobileNumber = value ?? '',
                 ),
                 const AnimatedGap(8, duration: Duration(milliseconds: 500)),
                 StoreTextFieldWidget(
                   controller: widget._driverContactNumberController,
-                  textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                  textDirection:
+                      serviceLocator<LanguageController>().targetTextDirection,
                   focusNode: widget._drivingLicenseNumberFocusNode,
                   textInputAction: TextInputAction.done,
                   keyboardType: TextInputType.text,
@@ -158,8 +182,10 @@ class _ContactFormItemWidgetState extends State<ContactFormItemWidget> {
                       return null;
                     }
                   },
-                  onChanged: (value) => widget.storeOwnDeliveryPartnerEntity.drivingLicenseNumber = value ?? '',
-                  onSaved: (value) => widget.storeOwnDeliveryPartnerEntity.drivingLicenseNumber = value ?? '',
+                  onChanged: (value) => widget.storeOwnDeliveryPartnerEntity
+                      .drivingLicenseNumber = value ?? '',
+                  onSaved: (value) => widget.storeOwnDeliveryPartnerEntity
+                      .drivingLicenseNumber = value ?? '',
                 ),
                 const AnimatedGap(12, duration: Duration(milliseconds: 500)),
               ],

@@ -1,13 +1,15 @@
 part of 'package:homemakers_merchant/app/features/store/index.dart';
 
-class StoreLocalDbRepository<Store extends StoreEntity> implements BaseStoreLocalDbRepository<StoreEntity> {
+class StoreLocalDbRepository<Store extends StoreEntity>
+    implements BaseStoreLocalDbRepository<StoreEntity> {
   // Completer is used for transforming synchronous code into asynchronous code.
   Future<Database> get _db async => AppDatabase.instance.database;
 
   StoreRef<int, Map<String, dynamic>> get _store => AppDatabase.instance.store;
 
   @override
-  Future<Either<RepositoryBaseFailure, StoreEntity>> add(StoreEntity entity) async {
+  Future<Either<RepositoryBaseFailure, StoreEntity>> add(
+      StoreEntity entity) async {
     final result = await tryCatch<StoreEntity>(() async {
       final int recordID = await _store.add(await _db, entity.toMap());
       //final StoreEntity recordStoreEntity = entity.copyWith(storeID: recordID.toString());
@@ -63,7 +65,8 @@ class StoreLocalDbRepository<Store extends StoreEntity> implements BaseStoreLoca
   }
 
   @override
-  Future<Either<RepositoryBaseFailure, bool>> deleteById(UniqueId uniqueId) async {
+  Future<Either<RepositoryBaseFailure, bool>> deleteById(
+      UniqueId uniqueId) async {
     final result = await tryCatch<bool>(() async {
       final value = await _store.record(uniqueId.value).get(await _db);
       if (value != null) {
@@ -99,7 +102,8 @@ class StoreLocalDbRepository<Store extends StoreEntity> implements BaseStoreLoca
   }
 
   @override
-  Future<Either<RepositoryBaseFailure, StoreEntity?>> getById(UniqueId id) async {
+  Future<Either<RepositoryBaseFailure, StoreEntity?>> getById(
+      UniqueId id) async {
     final result = await tryCatch<StoreEntity?>(() async {
       final value = await _store.record(id.value).get(await _db);
       if (value != null) {
@@ -111,7 +115,8 @@ class StoreLocalDbRepository<Store extends StoreEntity> implements BaseStoreLoca
   }
 
   @override
-  Future<Either<RepositoryBaseFailure, StoreEntity>> update(StoreEntity entity, UniqueId uniqueId) async {
+  Future<Either<RepositoryBaseFailure, StoreEntity>> update(
+      StoreEntity entity, UniqueId uniqueId) async {
     final result = await tryCatch<StoreEntity>(() async {
       final int key = uniqueId.value;
       final value = await _store.record(key).get(await _db);
@@ -134,41 +139,57 @@ class StoreLocalDbRepository<Store extends StoreEntity> implements BaseStoreLoca
 
   @override
   Future<Either<RepositoryBaseFailure, StoreEntity>> upsert(
-      {UniqueId? id, String? token, required StoreEntity entity, bool checkIfUserLoggedIn = false}) async {
+      {UniqueId? id,
+      String? token,
+      required StoreEntity entity,
+      bool checkIfUserLoggedIn = false}) async {
     final result = await tryCatch<StoreEntity>(() async {
       final int key = entity.storeID;
       final value = await _store.record(key).get(await _db);
-      final result = await _store.record(key).put(await _db, entity.toMap(), merge: (value != null) || false);
+      final result = await _store
+          .record(key)
+          .put(await _db, entity.toMap(), merge: (value != null) || false);
       return StoreEntity.fromMap(result);
     });
     return result;
   }
 
   @override
-  Future<Either<RepositoryBaseFailure, bool>> deleteByIdAndEntity(UniqueId uniqueId, StoreEntity entity) {
+  Future<Either<RepositoryBaseFailure, bool>> deleteByIdAndEntity(
+      UniqueId uniqueId, StoreEntity entity) {
     // TODO(prasant): implement deleteByIdAndEntity
     throw UnimplementedError();
   }
 
   @override
-  Future<Either<RepositoryBaseFailure, StoreEntity>> getByIdAndEntity(UniqueId uniqueId, StoreEntity entity) {
+  Future<Either<RepositoryBaseFailure, StoreEntity>> getByIdAndEntity(
+      UniqueId uniqueId, StoreEntity entity) {
     // TODO(prasant): implement getByIdAndEntity
     throw UnimplementedError();
   }
 
   @override
-  Future<Either<RepositoryBaseFailure, StoreEntity>> updateByIdAndEntity(UniqueId uniqueId, StoreEntity entity) {
+  Future<Either<RepositoryBaseFailure, StoreEntity>> updateByIdAndEntity(
+      UniqueId uniqueId, StoreEntity entity) {
     // TODO(prasant): implement updateByIdAndEntity
     throw UnimplementedError();
   }
 
-  Future<Map<String, RecordSnapshot<int, Map<String, Object?>>>> getStoreByIds(DatabaseClient db, List<int> ids) async {
-    var snapshots = await _store.find(db, finder: Finder(filter: Filter.or(ids.map((e) => Filter.equals('storeID', e)).toList())));
-    return <String, RecordSnapshot<int, Map<String, Object?>>>{for (var snapshot in snapshots) snapshot.value['storeID']!.toString(): snapshot};
+  Future<Map<String, RecordSnapshot<int, Map<String, Object?>>>> getStoreByIds(
+      DatabaseClient db, List<int> ids) async {
+    var snapshots = await _store.find(db,
+        finder: Finder(
+            filter: Filter.or(
+                ids.map((e) => Filter.equals('storeID', e)).toList())));
+    return <String, RecordSnapshot<int, Map<String, Object?>>>{
+      for (var snapshot in snapshots)
+        snapshot.value['storeID']!.toString(): snapshot
+    };
   }
 
   @override
-  Future<Either<RepositoryBaseFailure, List<StoreEntity>>> getAllWithPagination({
+  Future<Either<RepositoryBaseFailure, List<StoreEntity>>>
+      getAllWithPagination({
     int pageKey = 1,
     int pageSize = 10,
     String? searchText,
@@ -187,7 +208,10 @@ class StoreLocalDbRepository<Store extends StoreEntity> implements BaseStoreLoca
           offset: pageKey,
         );
         // If
-        if (searchText.isNotNull || filter.isNotNull || sorting.isNotNull && (startTimeStamp.isNotNull || endTimeStamp.isNotNull)) {
+        if (searchText.isNotNull ||
+            filter.isNotNull ||
+            sorting.isNotNull &&
+                (startTimeStamp.isNotNull || endTimeStamp.isNotNull)) {
           var regExp = RegExp(searchText ?? '', caseSensitive: false);
           var filterRegExp = RegExp(filter ?? '', caseSensitive: false);
           var sortingRegExp = RegExp(sorting ?? '', caseSensitive: false);
@@ -246,15 +270,19 @@ class StoreLocalDbRepository<Store extends StoreEntity> implements BaseStoreLoca
                     'addons.@.title',
                     filterRegExp,
                   ),
-                  Filter.greaterThanOrEquals('storeOpeningTime', startTimeStamp ?? 0),
-                  Filter.lessThanOrEquals('storeClosingTime', endTimeStamp ?? 0),
+                  Filter.greaterThanOrEquals(
+                      'storeOpeningTime', startTimeStamp ?? 0),
+                  Filter.lessThanOrEquals(
+                      'storeClosingTime', endTimeStamp ?? 0),
                 ]),
               ],
             ),
           );
         }
         // Else If
-        else if (searchText.isNotNull || filter.isNotNull || sorting.isNotNull) {
+        else if (searchText.isNotNull ||
+            filter.isNotNull ||
+            sorting.isNotNull) {
           var regExp = RegExp(searchText ?? '', caseSensitive: false);
           var filterRegExp = RegExp(filter ?? '', caseSensitive: false);
           var sortingRegExp = RegExp(sorting ?? '', caseSensitive: false);
@@ -357,10 +385,13 @@ class StoreLocalDbRepository<Store extends StoreEntity> implements BaseStoreLoca
         final allOrderList = r.toList();
         final newList = entities.toList();
         var convertOrderToMapObject = newList.map((e) => e.toMap()).toList();
-        final bool equalityStatus = unOrdDeepEq(allOrderList.toSet().toList(), newList.toSet().toList());
+        final bool equalityStatus = unOrdDeepEq(
+            allOrderList.toSet().toList(), newList.toSet().toList());
 
         await db.transaction((transaction) async {
-          var storeIDs = convertOrderToMapObject.map((map) => map['storeID'] as int).toList();
+          var storeIDs = convertOrderToMapObject
+              .map((map) => map['storeID'] as int)
+              .toList();
           var map = await getStoreByIds(db, storeIDs);
           // Watch for deleted item
           var keysToDelete = (await _store.findKeys(transaction)).toList();
@@ -372,7 +403,8 @@ class StoreLocalDbRepository<Store extends StoreEntity> implements BaseStoreLoca
               // Remove from deletion list
               keysToDelete.remove(key);
               // Don't update if no change
-              if (const DeepCollectionEquality().equals(snapshot.value, order)) {
+              if (const DeepCollectionEquality()
+                  .equals(snapshot.value, order)) {
                 // no changes
                 continue;
               } else {
@@ -400,7 +432,9 @@ class StoreLocalDbRepository<Store extends StoreEntity> implements BaseStoreLoca
   }
 }
 
-class StoreBindingWithUserLocalDbRepository<T extends StoreEntity, R extends AppUserEntity> implements Binding<List<StoreEntity>, AppUserEntity> {
+class StoreBindingWithUserLocalDbRepository<T extends StoreEntity,
+        R extends AppUserEntity>
+    implements Binding<List<StoreEntity>, AppUserEntity> {
   const StoreBindingWithUserLocalDbRepository({
     required this.storeLocalDbRepository,
     required this.userLocalDbRepository,
@@ -416,7 +450,8 @@ class StoreBindingWithUserLocalDbRepository<T extends StoreEntity, R extends App
   final UserLocalDbRepository<R> userLocalDbRepository;
 
   @override
-  Future<Either<RepositoryBaseFailure, AppUserEntity>> binding(List<StoreEntity> source, AppUserEntity destination) async {
+  Future<Either<RepositoryBaseFailure, AppUserEntity>> binding(
+      List<StoreEntity> source, AppUserEntity destination) async {
     final db = await _db;
     final users = await userLocalDbRepository.getAll();
     if (users.isRight()) {
@@ -435,8 +470,11 @@ class StoreBindingWithUserLocalDbRepository<T extends StoreEntity, R extends App
           final value = await record.get(txn);
           if (value != null) {
             final currentUser = cloneMap(value);
-            currentUser['stores'] = currentUserMap['stores']! as List<StoreEntity>..addAll(source.toList());
-            final result = await record.update(txn, {'stores': currentUser['stores']});
+            currentUser['stores'] = currentUserMap['stores']!
+                as List<StoreEntity>
+              ..addAll(source.toList());
+            final result =
+                await record.update(txn, {'stores': currentUser['stores']});
             if (result != null) {
               return AppUserEntity.fromMap(result);
             } else {
@@ -454,7 +492,8 @@ class StoreBindingWithUserLocalDbRepository<T extends StoreEntity, R extends App
   }
 
   @override
-  Future<Either<RepositoryBaseFailure, AppUserEntity>> unbinding(List<StoreEntity> source, AppUserEntity destination) async {
+  Future<Either<RepositoryBaseFailure, AppUserEntity>> unbinding(
+      List<StoreEntity> source, AppUserEntity destination) async {
     final db = await _db;
     final result = await tryCatch<AppUserEntity>(() async {
       await db.transaction((txn) async {

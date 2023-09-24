@@ -4,7 +4,10 @@ abstract class MenuEvent with AppEquatable {}
 
 // Menu
 class SaveMenu extends MenuEvent {
-  SaveMenu({required this.menuEntity, required this.hasNewMenu, this.currentIndex = -1});
+  SaveMenu(
+      {required this.menuEntity,
+      required this.hasNewMenu,
+      this.currentIndex = -1});
 
   final MenuEntity menuEntity;
   final bool hasNewMenu;
@@ -341,7 +344,14 @@ class PullMenuEntityData extends MenuEvent {
   bool get cacheHash => true;
 
   @override
-  List<Object?> get hashParameters => [menuEntities, hasNewMenu, menuEntity, menuFormStage, menuEntityStatus, menuStateStatus];
+  List<Object?> get hashParameters => [
+        menuEntities,
+        hasNewMenu,
+        menuEntity,
+        menuFormStage,
+        menuEntityStatus,
+        menuStateStatus
+      ];
 }
 
 class NavigateToStorePage extends MenuEvent {
@@ -354,7 +364,8 @@ class NavigateToStorePage extends MenuEvent {
   @override
   bool get cacheHash => true;
   @override
-  List<Object?> get hashParameters => [menuEntities, listOfSelectedMenuEntities];
+  List<Object?> get hashParameters =>
+      [menuEntities, listOfSelectedMenuEntities];
 }
 
 class FetchAllStores extends MenuEvent {
@@ -368,7 +379,8 @@ class FetchAllStores extends MenuEvent {
   bool get cacheHash => true;
 
   @override
-  List<Object?> get hashParameters => [menuEntities, listOfSelectedMenuEntities];
+  List<Object?> get hashParameters =>
+      [menuEntities, listOfSelectedMenuEntities];
 }
 
 class BindMenuWithStores extends MenuEvent {

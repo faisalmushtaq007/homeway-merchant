@@ -35,7 +35,8 @@ import 'flex_theme_light.dart';
 /// ThemeData is created with, thus using the same colors in your custom
 /// sub-themes.
 ThemeData themeDataLight(ThemeController controller) {
-  final ColorScheme colorScheme = flexColorSchemeLight(controller, Colors.black).toScheme;
+  final ColorScheme colorScheme =
+      flexColorSchemeLight(controller, Colors.black).toScheme;
 
   return ThemeData(
     brightness: Brightness.light,
@@ -60,7 +61,9 @@ ThemeData themeDataLight(ThemeController controller) {
     visualDensity: GlobalApp.visualDensity,
     platform: controller.platform,
     useMaterial3: controller.useMaterial3,
-    typography: controller.useMaterial3 ? Typography.material2021(platform: controller.platform) : Typography.material2018(platform: controller.platform),
+    typography: controller.useMaterial3
+        ? Typography.material2021(platform: controller.platform)
+        : Typography.material2018(platform: controller.platform),
     // Add a custom theme extension with light mode code highlight colors.
     extensions: <ThemeExtension<dynamic>>{
       CodeTheme.harmonized(colorScheme.surfaceTint, Brightness.light),

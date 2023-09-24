@@ -13,10 +13,12 @@ class NewBusinessDocumentPage extends StatefulWidget {
   final bool hasEditBusinessDocument;
 
   @override
-  _NewBusinessDocumentPageController createState() => _NewBusinessDocumentPageController();
+  _NewBusinessDocumentPageController createState() =>
+      _NewBusinessDocumentPageController();
 }
 
-class _NewBusinessDocumentPageController extends State<NewBusinessDocumentPage> {
+class _NewBusinessDocumentPageController
+    extends State<NewBusinessDocumentPage> {
   late final ScrollController scrollController;
   late final ScrollController customScrollViewScrollController;
   List<NewBusinessDocumentEntity> allBusinessDocuments = [];
@@ -60,9 +62,11 @@ class _NewBusinessDocumentPageController extends State<NewBusinessDocumentPage> 
       TextEditingController(),
     ];
     if (widget.hasEditBusinessDocument) {
-      allBusinessDocuments = List<NewBusinessDocumentEntity>.from(widget.businessDocumentEntities.toList());
+      allBusinessDocuments = List<NewBusinessDocumentEntity>.from(
+          widget.businessDocumentEntities.toList());
       if (allBusinessDocuments.length >= 2) {
-        textEditingControllers[0].text = allBusinessDocuments[0].documentIdNumber;
+        textEditingControllers[0].text =
+            allBusinessDocuments[0].documentIdNumber;
         allBusinessDocuments.insert(0, widget.businessDocumentEntities[0]);
         allBusinessDocuments.insert(1, widget.businessDocumentEntities[1]);
       } else {
@@ -96,12 +100,13 @@ class _NewBusinessDocumentPageController extends State<NewBusinessDocumentPage> 
       if (allBusinessDocuments.first.documentType == DocumentType.nationalID &&
           !allBusinessDocuments.first.documentIdNumber.isEmptyOrNull) {
         context.read<NewBusinessDocumentBloc>().add(
-          UploadNewBusinessDocument(
+              UploadNewBusinessDocument(
                 currentIndex: widget.currentIndex,
                 hasEditBusinessDocument: widget.hasEditBusinessDocument,
                 businessDocumentUploadedEntity: allBusinessDocuments.first,
                 allBusinessDocuments: allBusinessDocuments.toList(),
-                businessDocumentStatus: BusinessDocumentStatus.saveBusinessDocument,
+                businessDocumentStatus:
+                    BusinessDocumentStatus.saveBusinessDocument,
               ),
             );
         return;
@@ -116,7 +121,8 @@ class _NewBusinessDocumentPageController extends State<NewBusinessDocumentPage> 
     setState(() {});
   }
 
-  void updateIdentityCard(Map<String, dynamic> mapData, CaptureImageEntity captureImageEntity) {
+  void updateIdentityCard(
+      Map<String, dynamic> mapData, CaptureImageEntity captureImageEntity) {
     allBusinessDocuments.insert(
       0,
       NewBusinessDocumentEntity(
@@ -136,13 +142,13 @@ class _NewBusinessDocumentPageController extends State<NewBusinessDocumentPage> 
         width: captureImageEntity.width,
       ),
     );
-    print('localAssetPath ${allBusinessDocuments[0].localAssetPath}, ${allBusinessDocuments[0].documentIdNumber}');
-    setState(() {
-
-    });
+    print(
+        'localAssetPath ${allBusinessDocuments[0].localAssetPath}, ${allBusinessDocuments[0].documentIdNumber}');
+    setState(() {});
   }
 
-  void updateTradeLicenseCard(Map<String, dynamic> mapData, CaptureImageEntity captureImageEntity) {
+  void updateTradeLicenseCard(
+      Map<String, dynamic> mapData, CaptureImageEntity captureImageEntity) {
     allBusinessDocuments.insert(
       1,
       NewBusinessDocumentEntity(
@@ -162,13 +168,12 @@ class _NewBusinessDocumentPageController extends State<NewBusinessDocumentPage> 
         width: captureImageEntity.width,
       ),
     );
-    setState(() {
-
-    });
+    setState(() {});
   }
 
   @override
-  Widget build(BuildContext context) => BlocConsumer<NewBusinessDocumentBloc, NewBusinessDocumentState>(
+  Widget build(BuildContext context) =>
+      BlocConsumer<NewBusinessDocumentBloc, NewBusinessDocumentState>(
         bloc: context.read<NewBusinessDocumentBloc>(),
         key: const Key('new-business-document-bloc-consumer-widget'),
         listenWhen: (previous, current) => previous != current,
@@ -184,14 +189,16 @@ class _NewBusinessDocumentPageController extends State<NewBusinessDocumentPage> 
       );
 }
 
-class _NewBusinessDocumentPageView extends WidgetView<NewBusinessDocumentPage, _NewBusinessDocumentPageController> {
+class _NewBusinessDocumentPageView extends WidgetView<NewBusinessDocumentPage,
+    _NewBusinessDocumentPageController> {
   const _NewBusinessDocumentPageView(super.state);
 
   @override
   Widget build(BuildContext context) {
     final MediaQueryData media = MediaQuery.of(context);
     final double margins = GlobalApp.responsiveInsets(media.size.width);
-    final double topPadding = margins; //media.padding.top + kToolbarHeight + margins; //margins * 1.5;
+    final double topPadding =
+        margins; //media.padding.top + kToolbarHeight + margins; //margins * 1.5;
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: FlexColorScheme.themedSystemNavigationBar(
         context,
@@ -219,12 +226,16 @@ class _NewBusinessDocumentPageView extends WidgetView<NewBusinessDocumentPage, _
               from: context.width / 2 - 60,
               duration: const Duration(milliseconds: 500),
               child: Directionality(
-                textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                textDirection:
+                    serviceLocator<LanguageController>().targetTextDirection,
                 child: PageBody(
                   controller: state.scrollController,
                   constraints: BoxConstraints(
                     minWidth: 1000,
-                    minHeight: media.size.height - (media.padding.top + kToolbarHeight + media.padding.bottom),
+                    minHeight: media.size.height -
+                        (media.padding.top +
+                            kToolbarHeight +
+                            media.padding.bottom),
                   ),
                   padding: EdgeInsetsDirectional.only(
                     top: topPadding,
@@ -255,7 +266,9 @@ class _NewBusinessDocumentPageView extends WidgetView<NewBusinessDocumentPage, _
                                     ),
                                     softWrap: true,
                                     overflow: TextOverflow.ellipsis,
-                                    textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                    textDirection:
+                                        serviceLocator<LanguageController>()
+                                            .targetTextDirection,
                                     maxLines: 2,
                                   ).translate(),
                                 ],
@@ -270,8 +283,11 @@ class _NewBusinessDocumentPageView extends WidgetView<NewBusinessDocumentPage, _
                                     'Please upload a original copy of your National ID and/or Commercial License for your business verification',
                                     softWrap: true,
                                     overflow: TextOverflow.ellipsis,
-                                    style: context.bodyMedium!.copyWith(fontSize: 13),
-                                    textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                    style: context.bodyMedium!
+                                        .copyWith(fontSize: 13),
+                                    textDirection:
+                                        serviceLocator<LanguageController>()
+                                            .targetTextDirection,
                                     maxLines: 3,
                                   ).translate(),
                                 ],
@@ -281,7 +297,9 @@ class _NewBusinessDocumentPageView extends WidgetView<NewBusinessDocumentPage, _
                                 duration: Duration(milliseconds: 100),
                               ),
                               Wrap(
-                                textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                textDirection:
+                                    serviceLocator<LanguageController>()
+                                        .targetTextDirection,
                                 children: [
                                   Text(
                                     'Choose your identity type',
@@ -292,7 +310,9 @@ class _NewBusinessDocumentPageView extends WidgetView<NewBusinessDocumentPage, _
                                     softWrap: true,
                                     overflow: TextOverflow.ellipsis,
                                     maxLines: 1,
-                                    textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                    textDirection:
+                                        serviceLocator<LanguageController>()
+                                            .targetTextDirection,
                                   ).translate(),
                                 ],
                               ),
@@ -306,8 +326,11 @@ class _NewBusinessDocumentPageView extends WidgetView<NewBusinessDocumentPage, _
                                 width: context.width,
                                 child: OverflowBar(
                                   alignment: MainAxisAlignment.start,
-                                  overflowAlignment: OverflowBarAlignment.center,
-                                  textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                  overflowAlignment:
+                                      OverflowBarAlignment.center,
+                                  textDirection:
+                                      serviceLocator<LanguageController>()
+                                          .targetTextDirection,
                                   children: [
                                     RadioGroup(
                                       items: state.identityTypes.toList(),
@@ -315,13 +338,16 @@ class _NewBusinessDocumentPageView extends WidgetView<NewBusinessDocumentPage, _
                                       onChanged: (value) {
                                         state.updateSelectedIdentityType(value);
                                       },
-                                      selectedItem: state.currentSelectedIdentityType,
+                                      selectedItem:
+                                          state.currentSelectedIdentityType,
                                       shrinkWrap: true,
                                       labelBuilder: (ctx, index) {
                                         return Text(
                                           state.identityTypes[index].title,
                                           style: context.labelLarge,
-                                          textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                          textDirection: serviceLocator<
+                                                  LanguageController>()
+                                              .targetTextDirection,
                                         ).translate();
                                       },
                                     ),
@@ -334,11 +360,14 @@ class _NewBusinessDocumentPageView extends WidgetView<NewBusinessDocumentPage, _
                               ),
                               AppTextFieldWidget(
                                 controller: state.textEditingControllers[0],
-                                textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                textDirection:
+                                    serviceLocator<LanguageController>()
+                                        .targetTextDirection,
                                 textInputAction: TextInputAction.done,
                                 keyboardType: TextInputType.text,
                                 decoration: InputDecoration(
-                                  labelText: '${state.currentSelectedIdentityType?.title ?? 'ID Card'} number',
+                                  labelText:
+                                      '${state.currentSelectedIdentityType?.title ?? 'ID Card'} number',
                                   hintText:
                                       'Enter your ${state.currentSelectedIdentityType?.title ?? 'ID Card'} number',
                                   border: OutlineInputBorder(
@@ -353,32 +382,46 @@ class _NewBusinessDocumentPageView extends WidgetView<NewBusinessDocumentPage, _
                                   return null;
                                 },
                               ),
-                              const AnimatedGap(12, duration: Duration(milliseconds: 500)),
+                              const AnimatedGap(12,
+                                  duration: Duration(milliseconds: 500)),
                               NewBusinessDocumentComponentWidget(
-                                key: const Key('upload-document-identity-card-widget'),
-                                documentPlaceHolderImage: 'assets/svg/id_card.svg',
+                                key: const Key(
+                                    'upload-document-identity-card-widget'),
+                                documentPlaceHolderImage:
+                                    'assets/svg/id_card.svg',
                                 animate: false,
                                 currentIndex: 0,
-                                businessDocumentUploadedEntity: (widget.businessDocumentEntities.isNotNullOrEmpty)
+                                businessDocumentUploadedEntity: (widget
+                                        .businessDocumentEntities
+                                        .isNotNullOrEmpty)
                                     ? widget.businessDocumentEntities[0]
                                     : null,
                                 selectedImageMetaData:
-                                    (Map<String, dynamic> metaData, CaptureImageEntity captureImageEntity) {
-                                  state.updateIdentityCard(metaData, captureImageEntity);
+                                    (Map<String, dynamic> metaData,
+                                        CaptureImageEntity captureImageEntity) {
+                                  state.updateIdentityCard(
+                                      metaData, captureImageEntity);
                                   return;
                                 },
                                 documentPlaceHolderWidget: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                                  crossAxisAlignment:
+                                      CrossAxisAlignment.stretch,
                                   mainAxisSize: MainAxisSize.min,
                                   mainAxisAlignment: MainAxisAlignment.center,
-                                  textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                  textDirection:
+                                      serviceLocator<LanguageController>()
+                                          .targetTextDirection,
                                   children: [
                                     Wrap(
-                                      textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                      textDirection:
+                                          serviceLocator<LanguageController>()
+                                              .targetTextDirection,
                                       children: [
                                         Text(
                                           'Upload Photo Identity',
-                                          textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                          textDirection: serviceLocator<
+                                                  LanguageController>()
+                                              .targetTextDirection,
                                           maxLines: 1,
                                           overflow: TextOverflow.ellipsis,
                                           softWrap: true,
@@ -393,11 +436,15 @@ class _NewBusinessDocumentPageView extends WidgetView<NewBusinessDocumentPage, _
                                       duration: Duration(milliseconds: 100),
                                     ),
                                     Wrap(
-                                      textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                      textDirection:
+                                          serviceLocator<LanguageController>()
+                                              .targetTextDirection,
                                       children: [
                                         Text(
                                           'We accept only',
-                                          textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                          textDirection: serviceLocator<
+                                                  LanguageController>()
+                                              .targetTextDirection,
                                           maxLines: 1,
                                           overflow: TextOverflow.ellipsis,
                                           softWrap: true,
@@ -412,11 +459,15 @@ class _NewBusinessDocumentPageView extends WidgetView<NewBusinessDocumentPage, _
                                       duration: Duration(milliseconds: 100),
                                     ),
                                     Wrap(
-                                      textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                      textDirection:
+                                          serviceLocator<LanguageController>()
+                                              .targetTextDirection,
                                       children: [
                                         Text(
                                           'National ID/Iqama, Passport',
-                                          textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                          textDirection: serviceLocator<
+                                                  LanguageController>()
+                                              .targetTextDirection,
                                           maxLines: 1,
                                           overflow: TextOverflow.ellipsis,
                                           softWrap: true,
@@ -440,7 +491,9 @@ class _NewBusinessDocumentPageView extends WidgetView<NewBusinessDocumentPage, _
                                 duration: Duration(milliseconds: 100),
                               ),
                               Wrap(
-                                textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                textDirection:
+                                    serviceLocator<LanguageController>()
+                                        .targetTextDirection,
                                 children: [
                                   Text(
                                     'Trade License ',
@@ -451,7 +504,9 @@ class _NewBusinessDocumentPageView extends WidgetView<NewBusinessDocumentPage, _
                                     softWrap: true,
                                     overflow: TextOverflow.ellipsis,
                                     maxLines: 1,
-                                    textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                    textDirection:
+                                        serviceLocator<LanguageController>()
+                                            .targetTextDirection,
                                   ).translate(),
                                 ],
                               ),
@@ -460,7 +515,9 @@ class _NewBusinessDocumentPageView extends WidgetView<NewBusinessDocumentPage, _
                                 duration: Duration(milliseconds: 100),
                               ),
                               Wrap(
-                                textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                textDirection:
+                                    serviceLocator<LanguageController>()
+                                        .targetTextDirection,
                                 children: [
                                   Text(
                                     'Please make sure that every details of the ID document is visible and name with you',
@@ -471,7 +528,9 @@ class _NewBusinessDocumentPageView extends WidgetView<NewBusinessDocumentPage, _
                                     softWrap: true,
                                     overflow: TextOverflow.ellipsis,
                                     maxLines: 2,
-                                    textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                    textDirection:
+                                        serviceLocator<LanguageController>()
+                                            .targetTextDirection,
                                   ).translate(),
                                 ],
                               ),
@@ -480,31 +539,46 @@ class _NewBusinessDocumentPageView extends WidgetView<NewBusinessDocumentPage, _
                                 duration: Duration(milliseconds: 100),
                               ),
                               NewBusinessDocumentComponentWidget(
-                                key: const Key('upload-document-trade-license-widget'),
-                                documentPlaceHolderImage: 'assets/svg/certificate_1.svg',
+                                key: const Key(
+                                    'upload-document-trade-license-widget'),
+                                documentPlaceHolderImage:
+                                    'assets/svg/certificate_1.svg',
                                 currentIndex: 1,
-                                businessDocumentUploadedEntity: (widget.businessDocumentEntities.isNotNullOrEmpty &&
-                                        widget.businessDocumentEntities.length >= 2)
+                                businessDocumentUploadedEntity: (widget
+                                            .businessDocumentEntities
+                                            .isNotNullOrEmpty &&
+                                        widget.businessDocumentEntities
+                                                .length >=
+                                            2)
                                     ? widget.businessDocumentEntities[1]
                                     : null,
                                 animate: false,
                                 selectedImageMetaData:
-                                    (Map<String, dynamic> metaData, CaptureImageEntity captureImageEntity) {
-                                  state.updateTradeLicenseCard(metaData, captureImageEntity);
+                                    (Map<String, dynamic> metaData,
+                                        CaptureImageEntity captureImageEntity) {
+                                  state.updateTradeLicenseCard(
+                                      metaData, captureImageEntity);
                                   return;
                                 },
                                 documentPlaceHolderWidget: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                                  crossAxisAlignment:
+                                      CrossAxisAlignment.stretch,
                                   mainAxisSize: MainAxisSize.min,
                                   mainAxisAlignment: MainAxisAlignment.center,
-                                  textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                  textDirection:
+                                      serviceLocator<LanguageController>()
+                                          .targetTextDirection,
                                   children: [
                                     Wrap(
-                                      textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                      textDirection:
+                                          serviceLocator<LanguageController>()
+                                              .targetTextDirection,
                                       children: [
                                         Text(
                                           'Upload Trade License',
-                                          textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                          textDirection: serviceLocator<
+                                                  LanguageController>()
+                                              .targetTextDirection,
                                           maxLines: 1,
                                           overflow: TextOverflow.ellipsis,
                                           softWrap: true,
@@ -519,11 +593,15 @@ class _NewBusinessDocumentPageView extends WidgetView<NewBusinessDocumentPage, _
                                       duration: Duration(milliseconds: 100),
                                     ),
                                     Wrap(
-                                      textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                      textDirection:
+                                          serviceLocator<LanguageController>()
+                                              .targetTextDirection,
                                       children: [
                                         Text(
                                           'We accept only',
-                                          textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                          textDirection: serviceLocator<
+                                                  LanguageController>()
+                                              .targetTextDirection,
                                           maxLines: 1,
                                           overflow: TextOverflow.ellipsis,
                                           softWrap: true,
@@ -538,11 +616,15 @@ class _NewBusinessDocumentPageView extends WidgetView<NewBusinessDocumentPage, _
                                       duration: Duration(milliseconds: 100),
                                     ),
                                     Wrap(
-                                      textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                      textDirection:
+                                          serviceLocator<LanguageController>()
+                                              .targetTextDirection,
                                       children: [
                                         Text(
                                           'Trade or Commercial License',
-                                          textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                          textDirection: serviceLocator<
+                                                  LanguageController>()
+                                              .targetTextDirection,
                                           maxLines: 1,
                                           overflow: TextOverflow.ellipsis,
                                           softWrap: true,
@@ -565,12 +647,14 @@ class _NewBusinessDocumentPageView extends WidgetView<NewBusinessDocumentPage, _
                           hasScrollBody: false,
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.stretch,
-                            textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                            textDirection: serviceLocator<LanguageController>()
+                                .targetTextDirection,
                             children: [
                               const Spacer(),
                               Row(
                                 mainAxisSize: MainAxisSize.min,
-                                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceAround,
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
                                   Expanded(
@@ -597,9 +681,12 @@ class _NewBusinessDocumentPageView extends WidgetView<NewBusinessDocumentPage, _
                                       ),
                                       child: Text(
                                         'Prev',
-                                        textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                        textDirection:
+                                            serviceLocator<LanguageController>()
+                                                .targetTextDirection,
                                         style: const TextStyle(
-                                          color: Color.fromRGBO(127, 129, 132, 1.0),
+                                          color: Color.fromRGBO(
+                                              127, 129, 132, 1.0),
                                         ),
                                       ).translate(),
                                     ),
@@ -610,19 +697,35 @@ class _NewBusinessDocumentPageView extends WidgetView<NewBusinessDocumentPage, _
                                   Expanded(
                                     flex: 2,
                                     child: ElevatedButton(
-                                      onPressed: (state.textEditingControllers[0].value.text.trim().isNotEmpty &&
-                                              (!state.allBusinessDocuments.first.localAssetPath.isEmptyOrNull ||
-                                                  state.allBusinessDocuments.first.networkAssetPath.isEmptyOrNull))
+                                      onPressed: (state
+                                                  .textEditingControllers[0]
+                                                  .value
+                                                  .text
+                                                  .trim()
+                                                  .isNotEmpty &&
+                                              (!state
+                                                      .allBusinessDocuments
+                                                      .first
+                                                      .localAssetPath
+                                                      .isEmptyOrNull ||
+                                                  state
+                                                      .allBusinessDocuments
+                                                      .first
+                                                      .networkAssetPath
+                                                      .isEmptyOrNull))
                                           ? state.onUploadPressed
                                           : null,
                                       style: ElevatedButton.styleFrom(
                                         //minimumSize: Size(180, 40),
-                                        disabledBackgroundColor: Color.fromRGBO(255, 219, 208, 1),
+                                        disabledBackgroundColor:
+                                            Color.fromRGBO(255, 219, 208, 1),
                                         disabledForegroundColor: Colors.white,
                                       ),
                                       child: Text(
                                         'Upload',
-                                        textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                        textDirection:
+                                            serviceLocator<LanguageController>()
+                                                .targetTextDirection,
                                       ).translate(),
                                     ),
                                   ),

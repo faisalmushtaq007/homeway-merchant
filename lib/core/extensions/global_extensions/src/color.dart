@@ -29,12 +29,14 @@ extension FancyBrightness on Brightness {
   Color get contrastColor => opposite.color;
 
   /// The [SystemUiOverlayStyle] providing the most contrast on this brightness.
-  SystemUiOverlayStyle get contrastSystemUiOverlayStyle => isDark ? SystemUiOverlayStyle.light : SystemUiOverlayStyle.dark;
+  SystemUiOverlayStyle get contrastSystemUiOverlayStyle =>
+      isDark ? SystemUiOverlayStyle.light : SystemUiOverlayStyle.dark;
 }
 
 extension FancyColor on Color {
   /// Returns the estimated [Brightness] of this color based on its luminance.
-  Brightness get estimatedBrightness => ThemeData.estimateBrightnessForColor(this);
+  Brightness get estimatedBrightness =>
+      ThemeData.estimateBrightnessForColor(this);
 
   /// `true` if the [estimatedBrightness] is [Brightness.dark], `false`
   /// otherwise.
@@ -49,7 +51,8 @@ extension FancyColor on Color {
   Color get contrastColor => estimatedBrightness.contrastColor;
 
   /// The [SystemUiOverlayStyle] providing the most contrast on this color.
-  SystemUiOverlayStyle get contrastSystemUiOverlayStyle => estimatedBrightness.contrastSystemUiOverlayStyle;
+  SystemUiOverlayStyle get contrastSystemUiOverlayStyle =>
+      estimatedBrightness.contrastSystemUiOverlayStyle;
 
   /// `true` if this color is fully opaque, i.e. has an [opacity] of `1.0`.
   bool get isOpaque => alpha == _channelMax;

@@ -49,8 +49,12 @@ extension FlexColorExtensionsEnch on Color {
     if (amount > 100) return Colors.white;
     // HSLColor returns saturation 1 for black, we want 0 instead to be able
     // lighten black color up along the grey scale from black.
-    final HSLColor hsl = this == const Color(0xFF000000) ? HSLColor.fromColor(this).withSaturation(0) : HSLColor.fromColor(this);
-    return hsl.withLightness(math.min(1, math.max(0, hsl.lightness + amount / 100))).toColor();
+    final HSLColor hsl = this == const Color(0xFF000000)
+        ? HSLColor.fromColor(this).withSaturation(0)
+        : HSLColor.fromColor(this);
+    return hsl
+        .withLightness(math.min(1, math.max(0, hsl.lightness + amount / 100)))
+        .toColor();
   }
 
   /// Darkens the color with the given integer percentage amount.
@@ -59,7 +63,9 @@ extension FlexColorExtensionsEnch on Color {
     if (amount <= 0) return this;
     if (amount > 100) return Colors.black;
     final HSLColor hsl = HSLColor.fromColor(this);
-    return hsl.withLightness(math.min(1, math.max(0, hsl.lightness - amount / 100))).toColor();
+    return hsl
+        .withLightness(math.min(1, math.max(0, hsl.lightness - amount / 100)))
+        .toColor();
   }
 
   /// Get the right black or white contrasting onColor for a color.
@@ -70,17 +76,24 @@ extension FlexColorExtensionsEnch on Color {
   /// Use the function to get black/white color typically used for text and
   /// icons when they are placed on a surface/background using `color` as its
   /// background color.
-  Color get onColors => ThemeData.estimateBrightnessForColor(this) == Brightness.light ? Colors.black : Colors.white;
+  Color get onColors =>
+      ThemeData.estimateBrightnessForColor(this) == Brightness.light
+          ? Colors.black
+          : Colors.white;
 
-  bool _isLight(final Color color) => ThemeData.estimateBrightnessForColor(color) == Brightness.light;
+  bool _isLight(final Color color) =>
+      ThemeData.estimateBrightnessForColor(color) == Brightness.light;
 
-  Color getOnColorBy(final Color color, final Color bg) => _isLight(Color.alphaBlend(color, bg)) ? Colors.black : Colors.white;
+  Color getOnColorBy(final Color color, final Color bg) =>
+      _isLight(Color.alphaBlend(color, bg)) ? Colors.black : Colors.white;
 
   /// Returns true if the color's brightness is [Brightness.light], else false.
-  bool get isLight => ThemeData.estimateBrightnessForColor(this) == Brightness.light;
+  bool get isLight =>
+      ThemeData.estimateBrightnessForColor(this) == Brightness.light;
 
   /// Returns true if the color's brightness is [Brightness.dark], else false.
-  bool get isDark => ThemeData.estimateBrightnessForColor(this) == Brightness.dark;
+  bool get isDark =>
+      ThemeData.estimateBrightnessForColor(this) == Brightness.dark;
 
   /// Blend in the given input Color with a percentage of alpha.
   ///
@@ -207,7 +220,8 @@ extension FlexStringExtensions on String {
     hexColor = hexColor.padLeft(6, '0');
     hexColor = hexColor.padLeft(8, 'F');
     final int length = hexColor.length;
-    return Color(int.tryParse('0x${hexColor.substring(length - 8, length)}') ?? 0xFF000000);
+    return Color(int.tryParse('0x${hexColor.substring(length - 8, length)}') ??
+        0xFF000000);
   }
 
   /// Capitalize the first letter in a string.
@@ -225,11 +239,16 @@ extension FlexStringExtensions on String {
   }
 
   // Return true if the color is light, meaning it needs dark text for contrast.
-  static bool isLight(final Color color) => ThemeData.estimateBrightnessForColor(color) == Brightness.light;
+  static bool isLight(final Color color) =>
+      ThemeData.estimateBrightnessForColor(color) == Brightness.light;
 
   // Return true if the color is dark, meaning it needs light text for contrast.
-  static bool isDark(final Color color) => ThemeData.estimateBrightnessForColor(color) == Brightness.dark;
+  static bool isDark(final Color color) =>
+      ThemeData.estimateBrightnessForColor(color) == Brightness.dark;
 
   // On color used when a theme color property does not have a theme onColor.
-  Color onColor(final Color color, final Color background) => isLight(Color.alphaBlend(color, background)) ? Colors.black : Colors.white;
+  Color onColor(final Color color, final Color background) =>
+      isLight(Color.alphaBlend(color, background))
+          ? Colors.black
+          : Colors.white;
 }

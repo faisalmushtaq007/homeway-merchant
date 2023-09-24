@@ -1,7 +1,6 @@
 ///Flutter package imports
 import 'package:flutter/material.dart';
 
-
 ///Local import
 import 'package:homemakers_merchant/app/features/analysis/presentation/pages/model/model.dart';
 

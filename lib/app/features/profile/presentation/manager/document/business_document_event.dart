@@ -128,7 +128,8 @@ class BusinessDocumentEvent with _$BusinessDocumentEvent {
   factory BusinessDocumentEvent.selectDocumentSourceType({
     @Default(DocumentType.tradeLicence) DocumentType documentType,
     @Default(ImageSource.camera) ImageSource imageSource,
-    @Default(DocumentPickerSource.camera) DocumentPickerSource documentPickerSource,
+    @Default(DocumentPickerSource.camera)
+    DocumentPickerSource documentPickerSource,
   }) = SelectDocumentSourceType;
 
   factory BusinessDocumentEvent.closeMediaPicker({
@@ -181,7 +182,8 @@ class BusinessDocumentEvent with _$BusinessDocumentEvent {
 
   factory BusinessDocumentEvent.saveBusinessDocument({
     @Default([]) List<NewBusinessDocumentEntity> allBusinessDocuments,
-    @Default(BusinessDocumentStatus.none) BusinessDocumentStatus businessDocumentStatus,
+    @Default(BusinessDocumentStatus.none)
+    BusinessDocumentStatus businessDocumentStatus,
     NewBusinessDocumentEntity? businessDocumentUploadedEntity,
     @Default(false) bool hasEditBusinessDocument,
     @Default(-1) int currentIndex,
@@ -189,7 +191,8 @@ class BusinessDocumentEvent with _$BusinessDocumentEvent {
 
   factory BusinessDocumentEvent.getBusinessDocument({
     @Default([]) List<NewBusinessDocumentEntity> allBusinessDocuments,
-    @Default(BusinessDocumentStatus.none) BusinessDocumentStatus businessDocumentStatus,
+    @Default(BusinessDocumentStatus.none)
+    BusinessDocumentStatus businessDocumentStatus,
     @Default(-1) int documentID,
     NewBusinessDocumentEntity? businessDocumentUploadedEntity,
     @Default(-1) int currentIndex,
@@ -197,7 +200,8 @@ class BusinessDocumentEvent with _$BusinessDocumentEvent {
 
   factory BusinessDocumentEvent.getAllBusinessDocument({
     @Default([]) List<NewBusinessDocumentEntity> allBusinessDocuments,
-    @Default(BusinessDocumentStatus.none) BusinessDocumentStatus businessDocumentStatus,
+    @Default(BusinessDocumentStatus.none)
+    BusinessDocumentStatus businessDocumentStatus,
     @Default(1) int pageKey,
     @Default(10) int pageSize,
     @Default('') String searchItem,
@@ -205,7 +209,8 @@ class BusinessDocumentEvent with _$BusinessDocumentEvent {
 
   factory BusinessDocumentEvent.deleteBusinessDocument({
     @Default([]) List<NewBusinessDocumentEntity> allBusinessDocuments,
-    @Default(BusinessDocumentStatus.none) BusinessDocumentStatus businessDocumentStatus,
+    @Default(BusinessDocumentStatus.none)
+    BusinessDocumentStatus businessDocumentStatus,
     @Default(-1) int documentID,
     NewBusinessDocumentEntity? businessDocumentUploadedEntity,
     @Default(-1) int currentIndex,
@@ -213,7 +218,8 @@ class BusinessDocumentEvent with _$BusinessDocumentEvent {
 
   factory BusinessDocumentEvent.deleteAllBusinessDocument({
     @Default([]) List<NewBusinessDocumentEntity> allBusinessDocuments,
-    @Default(BusinessDocumentStatus.none) BusinessDocumentStatus businessDocumentStatus,
+    @Default(BusinessDocumentStatus.none)
+    BusinessDocumentStatus businessDocumentStatus,
     @Default(-1) int documentID,
     NewBusinessDocumentEntity? businessDocumentUploadedEntity,
   }) = DeleteAllBusinessDocument;

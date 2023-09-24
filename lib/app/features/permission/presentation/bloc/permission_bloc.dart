@@ -28,7 +28,8 @@ class PermissionBloc extends Bloc<PermissionEvent, PermissionState> {
   ) async {
     try {
       var permissions = <Permission, PermissionStatus>{};
-      if (await event.permission.isGranted || await event.permission.isLimited) {
+      if (await event.permission.isGranted ||
+          await event.permission.isLimited) {
         permissions[event.permission] = PermissionStatus.granted;
         //
         if (permissions[event.permission] == PermissionStatus.granted) {
@@ -46,7 +47,8 @@ class PermissionBloc extends Bloc<PermissionEvent, PermissionState> {
         }
       } else {
         final requestStatus = await event.permission.request();
-        if (requestStatus == PermissionStatus.granted || requestStatus == PermissionStatus.limited) {
+        if (requestStatus == PermissionStatus.granted ||
+            requestStatus == PermissionStatus.limited) {
           //
           add(RequestPermissionEvent(
             event.permission,
@@ -55,14 +57,16 @@ class PermissionBloc extends Bloc<PermissionEvent, PermissionState> {
           //
           emit(
             const PermissionStateDenied(
-              message: 'Permission is denied by you. Please grant the permission either re-request the permssion or from the app settings.',
+              message:
+                  'Permission is denied by you. Please grant the permission either re-request the permssion or from the app settings.',
             ),
           );
         } else {
           // Open setting
           emit(
             const PermissionStatePermanentlyDenied(
-              message: 'Permission is permanently denied by you. Please grant the permission from app settings.',
+              message:
+                  'Permission is permanently denied by you. Please grant the permission from app settings.',
             ),
           );
           await AppSettings.openAppSettings();
@@ -114,7 +118,8 @@ class PermissionBloc extends Bloc<PermissionEvent, PermissionState> {
           // Location permission is permanently denied
           emit(
             const PermissionStatePermanentlyDenied(
-              message: 'Location permission is permanently denied by you. Please grant the permission from app settings.',
+              message:
+                  'Location permission is permanently denied by you. Please grant the permission from app settings.',
             ),
           );
           await AppSettings.openAppSettings(type: AppSettingsType.location);
@@ -151,7 +156,8 @@ class PermissionBloc extends Bloc<PermissionEvent, PermissionState> {
     } else {
       emit(
         const PermissionServiceNotEnableByUser(
-          error: 'Location service is not enabled by you, please enable it and grant the location permission',
+          error:
+              'Location service is not enabled by you, please enable it and grant the location permission',
         ),
       );
     }

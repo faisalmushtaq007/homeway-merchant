@@ -115,7 +115,8 @@ class MenuExceptionState extends MenuState {
   bool get cacheHash => true;
 
   @override
-  List<Object?> get hashParameters => [message, stackTrace, exception, menuStateStatus];
+  List<Object?> get hashParameters =>
+      [message, stackTrace, exception, menuStateStatus];
 }
 
 class DeleteMenuState extends MenuState {
@@ -196,7 +197,8 @@ class GetAllMenuState extends MenuState {
   bool get cacheHash => true;
 
   @override
-  List<Object?> get hashParameters => [menuEntities, menuStateStatus, pageKey, pageSize, searchItem];
+  List<Object?> get hashParameters =>
+      [menuEntities, menuStateStatus, pageKey, pageSize, searchItem];
 }
 
 class GetEmptyMenuState extends MenuState {
@@ -655,7 +657,8 @@ class NavigateToStorePageState extends MenuState {
   bool get cacheHash => true;
 
   @override
-  List<Object?> get hashParameters => [menuEntities, listOfSelectedMenuEntities];
+  List<Object?> get hashParameters =>
+      [menuEntities, listOfSelectedMenuEntities];
 }
 
 class FetchAllStoresState extends MenuState {

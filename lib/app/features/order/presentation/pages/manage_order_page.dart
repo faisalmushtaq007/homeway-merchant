@@ -102,7 +102,8 @@ class _ManageOrderPageController extends State<ManageOrderPage> {
                   ),
                   addonsId: 4,
                   price: 2,
-                  addonsImage: 'https://img.freepik.com/premium-photo/gulab-jamun-indian-dessert-topped-with-pistachio_136354-1769.jpg',
+                  addonsImage:
+                      'https://img.freepik.com/premium-photo/gulab-jamun-indian-dessert-topped-with-pistachio_136354-1769.jpg',
                 ),
               ],
               tasteType: 'Pungent',
@@ -130,8 +131,10 @@ class _ManageOrderPageController extends State<ManageOrderPage> {
       ),
       OrderEntity(
         orderID: 3,
-        orderDateTime: DateTime.now().subtract(const Duration(days: 1, hours: 12, minutes: 30)),
-        orderDeliveryDateTime: DateTime.now().subtract(const Duration(days: 1, hours: 12, minutes: 45)),
+        orderDateTime: DateTime.now()
+            .subtract(const Duration(days: 1, hours: 12, minutes: 30)),
+        orderDeliveryDateTime: DateTime.now()
+            .subtract(const Duration(days: 1, hours: 12, minutes: 45)),
         userInfo: UserInfo(
           userName: 'Nilu',
           deliveryAddress: DeliveryAddress(),
@@ -175,7 +178,8 @@ class _ManageOrderPageController extends State<ManageOrderPage> {
                   ),
                   addonsId: 4,
                   price: 2,
-                  addonsImage: 'https://img.freepik.com/premium-photo/gulab-jamun-indian-dessert-topped-with-pistachio_136354-1769.jpg',
+                  addonsImage:
+                      'https://img.freepik.com/premium-photo/gulab-jamun-indian-dessert-topped-with-pistachio_136354-1769.jpg',
                 ),
               ],
               tasteType: 'Pungent',
@@ -196,7 +200,8 @@ class _ManageOrderPageController extends State<ManageOrderPage> {
           mode: 'PAID',
           amount: 22,
           paymentID: 11,
-          paymentDateTime: DateTime.now().subtract(const Duration(days: 1, hours: 12, minutes: 30)),
+          paymentDateTime: DateTime.now()
+              .subtract(const Duration(days: 1, hours: 12, minutes: 30)),
           deliveryAmount: 2,
           serviceAmount: 2,
         ),
@@ -204,7 +209,8 @@ class _ManageOrderPageController extends State<ManageOrderPage> {
       OrderEntity(
         orderID: 4,
         orderDateTime: DateTime.now().subtract(const Duration(minutes: 30)),
-        orderDeliveryDateTime: DateTime.now().subtract(const Duration(minutes: 45)),
+        orderDeliveryDateTime:
+            DateTime.now().subtract(const Duration(minutes: 45)),
         userInfo: UserInfo(
           userName: 'Shivam',
           deliveryAddress: DeliveryAddress(),
@@ -240,7 +246,8 @@ class _ManageOrderPageController extends State<ManageOrderPage> {
                   ),
                   addonsId: 4,
                   price: 2,
-                  addonsImage: 'https://img.freepik.com/premium-photo/gulab-jamun-indian-dessert-topped-with-pistachio_136354-1769.jpg',
+                  addonsImage:
+                      'https://img.freepik.com/premium-photo/gulab-jamun-indian-dessert-topped-with-pistachio_136354-1769.jpg',
                 ),
               ],
               tasteType: 'Pungent',
@@ -269,7 +276,8 @@ class _ManageOrderPageController extends State<ManageOrderPage> {
       OrderEntity(
         orderID: 8,
         orderDateTime: DateTime.now().subtract(const Duration(hours: 1)),
-        orderDeliveryDateTime: DateTime.now().subtract(const Duration(hours: 1, minutes: 15)),
+        orderDeliveryDateTime:
+            DateTime.now().subtract(const Duration(hours: 1, minutes: 15)),
         userInfo: UserInfo(
           userName: 'Ashutosh',
           deliveryAddress: DeliveryAddress(),
@@ -283,7 +291,8 @@ class _ManageOrderPageController extends State<ManageOrderPage> {
               quantity: 1,
               menuID: 21,
               menuName: 'Cheese Pizza',
-              menuImage: 'https://img.freepik.com/free-photo/crispy-mixed-pizza-with-olives-sausage_140725-3095.jpg',
+              menuImage:
+                  'https://img.freepik.com/free-photo/crispy-mixed-pizza-with-olives-sausage_140725-3095.jpg',
               addons: [
                 Addon(
                   addonsName: 'Salad',
@@ -304,7 +313,8 @@ class _ManageOrderPageController extends State<ManageOrderPage> {
                   ),
                   addonsId: 4,
                   price: 2,
-                  addonsImage: 'https://img.freepik.com/premium-photo/gulab-jamun-indian-dessert-topped-with-pistachio_136354-1769.jpg',
+                  addonsImage:
+                      'https://img.freepik.com/premium-photo/gulab-jamun-indian-dessert-topped-with-pistachio_136354-1769.jpg',
                 ),
               ],
               tasteType: 'Pungent',
@@ -327,7 +337,8 @@ class _ManageOrderPageController extends State<ManageOrderPage> {
           driverAddress: AddressBean(
             latitude: 23.86,
             longitude: 45.27,
-            displayAddressName: '12 King Fahd Rd, Al Islamiah, Jeddah, Jeddah,57513,Saudi Arabia',
+            displayAddressName:
+                '12 King Fahd Rd, Al Islamiah, Jeddah, Jeddah,57513,Saudi Arabia',
           ),
         ),
         payment: Payment(
@@ -342,7 +353,8 @@ class _ManageOrderPageController extends State<ManageOrderPage> {
       OrderEntity(
         orderID: 9,
         orderDateTime: DateTime.now().subtract(const Duration(hours: 2)),
-        orderDeliveryDateTime: DateTime.now().subtract(const Duration(hours: 2, minutes: 30)),
+        orderDeliveryDateTime:
+            DateTime.now().subtract(const Duration(hours: 2, minutes: 30)),
         userInfo: UserInfo(
           userName: 'Ashutosh',
           deliveryAddress: DeliveryAddress(),
@@ -356,7 +368,8 @@ class _ManageOrderPageController extends State<ManageOrderPage> {
               quantity: 1,
               menuID: 21,
               menuName: 'Cheese Pizza',
-              menuImage: 'https://img.freepik.com/free-photo/crispy-mixed-pizza-with-olives-sausage_140725-3095.jpg',
+              menuImage:
+                  'https://img.freepik.com/free-photo/crispy-mixed-pizza-with-olives-sausage_140725-3095.jpg',
               addons: [
                 Addon(
                   addonsName: 'Salad',
@@ -377,7 +390,8 @@ class _ManageOrderPageController extends State<ManageOrderPage> {
                   ),
                   addonsId: 4,
                   price: 2,
-                  addonsImage: 'https://img.freepik.com/premium-photo/gulab-jamun-indian-dessert-topped-with-pistachio_136354-1769.jpg',
+                  addonsImage:
+                      'https://img.freepik.com/premium-photo/gulab-jamun-indian-dessert-topped-with-pistachio_136354-1769.jpg',
                 ),
               ],
               tasteType: 'Pungent',
@@ -400,7 +414,8 @@ class _ManageOrderPageController extends State<ManageOrderPage> {
           driverAddress: AddressBean(
             latitude: 23.56,
             longitude: 45.67,
-            displayAddressName: '11 Sayed Al Shouhada, Al Masani, Al Munawwarah,Buraydah,42313,Saudi Arabia',
+            displayAddressName:
+                '11 Sayed Al Shouhada, Al Masani, Al Munawwarah,Buraydah,42313,Saudi Arabia',
           ),
         ),
         payment: Payment(
@@ -421,7 +436,8 @@ class _ManageOrderPageController extends State<ManageOrderPage> {
       localDb: (data, meta) {
         appLog.d('Saved all orders to local ${data?.length}');
       },
-      error: (dataSourceFailure, reason, error, networkException, stackTrace, exception, extra) {
+      error: (dataSourceFailure, reason, error, networkException, stackTrace,
+          exception, extra) {
         appLog.d('Saved all orders to error $reason');
       },
     );
@@ -442,14 +458,16 @@ class _ManageOrderPageController extends State<ManageOrderPage> {
   Widget build(BuildContext context) => _ManageOrderPageView(this);
 }
 
-class _ManageOrderPageView extends WidgetView<ManageOrderPage, _ManageOrderPageController> {
+class _ManageOrderPageView
+    extends WidgetView<ManageOrderPage, _ManageOrderPageController> {
   const _ManageOrderPageView(super.state);
 
   @override
   Widget build(BuildContext context) {
     final MediaQueryData media = MediaQuery.of(context);
     final double margins = GlobalApp.responsiveInsets(media.size.width);
-    final double topPadding = margins; //media.padding.top + kToolbarHeight + margins; //margins * 1.5;
+    final double topPadding =
+        margins; //media.padding.top + kToolbarHeight + margins; //margins * 1.5;
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: FlexColorScheme.themedSystemNavigationBar(
         context,
@@ -467,7 +485,8 @@ class _ManageOrderPageView extends WidgetView<ManageOrderPage, _ManageOrderPageC
               actions: [
                 IconButton(
                   onPressed: () async {
-                    final notification = await context.push(Routes.NOTIFICATIONS);
+                    final notification =
+                        await context.push(Routes.NOTIFICATIONS);
                     return;
                   },
                   icon: Badge(
@@ -480,10 +499,12 @@ class _ManageOrderPageView extends WidgetView<ManageOrderPage, _ManageOrderPageC
                     textColor: Colors.yellow,
                     label: Text(
                       '10',
-                      style: context.labelSmall!.copyWith(color: context.colorScheme.onPrimary),
+                      style: context.labelSmall!
+                          .copyWith(color: context.colorScheme.onPrimary),
                       //Color.fromRGBO(251, 219, 11, 1)
                     ),
-                    child: Icon(Icons.notifications, color: context.colorScheme.primary),
+                    child: Icon(Icons.notifications,
+                        color: context.colorScheme.primary),
                   ),
                 ),
                 const Padding(
@@ -501,12 +522,16 @@ class _ManageOrderPageView extends WidgetView<ManageOrderPage, _ManageOrderPageC
               from: context.width / 2 - 60,
               duration: const Duration(milliseconds: 500),
               child: Directionality(
-                textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                textDirection:
+                    serviceLocator<LanguageController>().targetTextDirection,
                 child: PageBody(
                   controller: state.scrollController,
                   constraints: BoxConstraints(
                     minWidth: 1000,
-                    minHeight: media.size.height - (media.padding.top + kToolbarHeight + media.padding.bottom),
+                    minHeight: media.size.height -
+                        (media.padding.top +
+                            kToolbarHeight +
+                            media.padding.bottom),
                   ),
                   padding: EdgeInsetsDirectional.only(
                     top: topPadding,
@@ -545,7 +570,8 @@ class _ManageOrderPageView extends WidgetView<ManageOrderPage, _ManageOrderPageC
                       SliverFillRemaining(
                         fillOverscroll: true,
                         hasScrollBody: true,
-                        child: switch (serviceLocator<ManageOrderController>().currentOrderIndex) {
+                        child: switch (serviceLocator<ManageOrderController>()
+                            .currentOrderIndex) {
                           0 => const AllOrderPages(
                               key: Key('manage-order-all-orders-widget'),
                             ),

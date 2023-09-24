@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:homemakers_merchant/app/features/chat/domain/entities/chat_types_entity.dart' as types;
+import 'package:homemakers_merchant/app/features/chat/domain/entities/chat_types_entity.dart'
+    as types;
 import 'package:homemakers_merchant/app/features/chat/presentation/pages/chat_ui/src/util.dart';
 import 'package:homemakers_merchant/app/features/chat/presentation/pages/chat_ui/src/widgets/state/inherited_chat_theme.dart';
 import 'package:homemakers_merchant/app/features/chat/presentation/pages/chat_ui/src/widgets/state/inherited_l10n.dart';
@@ -63,7 +64,8 @@ class FileMessage extends StatelessWidget {
                           image: 'assets/image/icon-document.png',
                           filterQuality: FilterQuality.high,
                           borderRadius: BorderRadiusDirectional.circular(10),
-                          imageType: findImageType('assets/image/icon-document.png'),
+                          imageType:
+                              findImageType('assets/image/icon-document.png'),
                           imageShape: ImageShape.rectangle,
                           color: context.colorScheme.primary,
                           boxFit: BoxFit.cover,
@@ -90,10 +92,15 @@ class FileMessage extends StatelessWidget {
                     Text(
                       message.name,
                       style: user.id == message.author.id
-                          ? InheritedChatTheme.of(context).theme.sentMessageBodyTextStyle
-                          : InheritedChatTheme.of(context).theme.receivedMessageBodyTextStyle,
+                          ? InheritedChatTheme.of(context)
+                              .theme
+                              .sentMessageBodyTextStyle
+                          : InheritedChatTheme.of(context)
+                              .theme
+                              .receivedMessageBodyTextStyle,
                       textWidthBasis: TextWidthBasis.longestLine,
-                      textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                      textDirection: serviceLocator<LanguageController>()
+                          .targetTextDirection,
                     ),
                     Container(
                       margin: const EdgeInsets.only(
@@ -102,9 +109,14 @@ class FileMessage extends StatelessWidget {
                       child: Text(
                         formatBytes(message.size.truncate()),
                         style: user.id == message.author.id
-                            ? InheritedChatTheme.of(context).theme.sentMessageCaptionTextStyle
-                            : InheritedChatTheme.of(context).theme.receivedMessageCaptionTextStyle,
-                        textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                            ? InheritedChatTheme.of(context)
+                                .theme
+                                .sentMessageCaptionTextStyle
+                            : InheritedChatTheme.of(context)
+                                .theme
+                                .receivedMessageCaptionTextStyle,
+                        textDirection: serviceLocator<LanguageController>()
+                            .targetTextDirection,
                       ),
                     ),
                   ],

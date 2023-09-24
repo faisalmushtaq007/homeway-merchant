@@ -8,7 +8,7 @@ class IndicatorAnimatedWidget extends StatelessWidget {
     required double height,
     required Color color,
     required this.dotBorderRadius,
-  })   : _padding = padding,
+  })  : _padding = padding,
         _width = width,
         _height = height,
         _color = color,

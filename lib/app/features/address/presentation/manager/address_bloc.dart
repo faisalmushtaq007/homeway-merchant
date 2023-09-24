@@ -47,13 +47,16 @@ class AddressBloc extends Bloc<AddressEvent, AddressState> {
     //on<SaveAllAddress>(_saveAllAddress);
   }
 
-  FutureOr<void> _saveAddress(SaveAddress event, Emitter<AddressState> emit) async {
+  FutureOr<void> _saveAddress(
+      SaveAddress event, Emitter<AddressState> emit) async {
     try {
       DataSourceState<AddressModel> result;
       if (!event.hasNewAddress) {
-        result = await serviceLocator<EditAddressUseCase>()(id: event.addressEntity.addressID, input: event.addressEntity);
+        result = await serviceLocator<EditAddressUseCase>()(
+            id: event.addressEntity.addressID, input: event.addressEntity);
       } else {
-        result = await serviceLocator<SaveAddressUseCase>()(event.addressEntity);
+        result =
+            await serviceLocator<SaveAddressUseCase>()(event.addressEntity);
       }
       result.when(
         remote: (data, meta) {
@@ -74,7 +77,8 @@ class AddressBloc extends Bloc<AddressEvent, AddressState> {
             ),
           );
         },
-        error: (dataSourceFailure, reason, error, networkException, stackTrace, exception, extra) {
+        error: (dataSourceFailure, reason, error, networkException, stackTrace,
+            exception, extra) {
           appLog.d('Address bloc save error $reason');
           emit(
             AddressExceptionState(
@@ -91,7 +95,8 @@ class AddressBloc extends Bloc<AddressEvent, AddressState> {
       appLog.e('Address bloc save exception $e');
       emit(
         AddressExceptionState(
-          message: 'Something went wrong during saving your store details, please try again',
+          message:
+              'Something went wrong during saving your store details, please try again',
           //exception: e as Exception,
           stackTrace: s,
           addressStatus: AddressStatus.saveAddress,
@@ -100,9 +105,11 @@ class AddressBloc extends Bloc<AddressEvent, AddressState> {
     }
   }
 
-  FutureOr<void> _getAddress(GetAddressByID event, Emitter<AddressState> emit) async {
+  FutureOr<void> _getAddress(
+      GetAddressByID event, Emitter<AddressState> emit) async {
     try {
-      final DataSourceState<AddressModel> result = await serviceLocator<GetAddressUseCase>()(
+      final DataSourceState<AddressModel> result =
+          await serviceLocator<GetAddressUseCase>()(
         input: event.addressEntity,
         id: event.addressID,
       );
@@ -129,7 +136,8 @@ class AddressBloc extends Bloc<AddressEvent, AddressState> {
             ),
           );
         },
-        error: (dataSourceFailure, reason, error, networkException, stackTrace, exception, extra) {
+        error: (dataSourceFailure, reason, error, networkException, stackTrace,
+            exception, extra) {
           appLog.d('Address bloc edit error $reason');
           emit(
             AddressExceptionState(
@@ -145,7 +153,8 @@ class AddressBloc extends Bloc<AddressEvent, AddressState> {
       appLog.e('Address bloc get exception $e');
       emit(
         AddressExceptionState(
-          message: 'Something went wrong during getting your store details, please try again',
+          message:
+              'Something went wrong during getting your store details, please try again',
           //exception: e as Exception,
           stackTrace: s,
           addressStatus: AddressStatus.getAddress,
@@ -154,9 +163,11 @@ class AddressBloc extends Bloc<AddressEvent, AddressState> {
     }
   }
 
-  FutureOr<void> _deleteAddress(RemoveAddressByID event, Emitter<AddressState> emit) async {
+  FutureOr<void> _deleteAddress(
+      RemoveAddressByID event, Emitter<AddressState> emit) async {
     try {
-      final DataSourceState<bool> result = await serviceLocator<DeleteAddressUseCase>()(
+      final DataSourceState<bool> result =
+          await serviceLocator<DeleteAddressUseCase>()(
         input: event.addressEntity,
         id: event.addressID,
       );
@@ -185,7 +196,8 @@ class AddressBloc extends Bloc<AddressEvent, AddressState> {
             ),
           );
         },
-        error: (dataSourceFailure, reason, error, networkException, stackTrace, exception, extra) {
+        error: (dataSourceFailure, reason, error, networkException, stackTrace,
+            exception, extra) {
           appLog.d('Address bloc delete error $reason');
           emit(
             AddressExceptionState(
@@ -201,7 +213,8 @@ class AddressBloc extends Bloc<AddressEvent, AddressState> {
       appLog.e('Address bloc delete exception $e');
       emit(
         AddressExceptionState(
-          message: 'Something went wrong during getting your store details, please try again',
+          message:
+              'Something went wrong during getting your store details, please try again',
           //exception: e as Exception,
           stackTrace: s,
           addressStatus: AddressStatus.deleteAddress,
@@ -210,12 +223,14 @@ class AddressBloc extends Bloc<AddressEvent, AddressState> {
     }
   }
 
-  FutureOr<void> _getAllAddress(GetAllAddress event, Emitter<AddressState> emit) async {
+  FutureOr<void> _getAllAddress(
+      GetAllAddress event, Emitter<AddressState> emit) async {
     try {
       emit(const AddressLoadingState(
         message: 'Please wait while we are fetching your profile...',
       ));
-      final DataSourceState<List<AddressModel>> result = await serviceLocator<GetAllAddressUseCase>()();
+      final DataSourceState<List<AddressModel>> result =
+          await serviceLocator<GetAllAddressUseCase>()();
       result.when(
         remote: (data, meta) {
           appLog.d('Address bloc get all remote');
@@ -251,7 +266,8 @@ class AddressBloc extends Bloc<AddressEvent, AddressState> {
             );
           }
         },
-        error: (dataSourceFailure, reason, error, networkException, stackTrace, exception, extra) {
+        error: (dataSourceFailure, reason, error, networkException, stackTrace,
+            exception, extra) {
           appLog.d('Address bloc get all error $reason');
           emit(
             AddressExceptionState(
@@ -267,7 +283,8 @@ class AddressBloc extends Bloc<AddressEvent, AddressState> {
       appLog.e('Address bloc get all $e');
       emit(
         AddressExceptionState(
-          message: 'Something went wrong during getting your all stores, please try again',
+          message:
+              'Something went wrong during getting your all stores, please try again',
           //exception: e as Exception,
           stackTrace: s,
           addressStatus: AddressStatus.getAllAddress,
@@ -276,9 +293,11 @@ class AddressBloc extends Bloc<AddressEvent, AddressState> {
     }
   }
 
-  FutureOr<void> _deleteAllAddress(RemoveAllAddress event, Emitter<AddressState> emit) async {
+  FutureOr<void> _deleteAllAddress(
+      RemoveAllAddress event, Emitter<AddressState> emit) async {
     try {
-      final DataSourceState<bool> result = await serviceLocator<DeleteAllAddressUseCase>()();
+      final DataSourceState<bool> result =
+          await serviceLocator<DeleteAllAddressUseCase>()();
       result.when(
         remote: (data, meta) {
           appLog.d('Address bloc delete all remote $data');
@@ -298,7 +317,8 @@ class AddressBloc extends Bloc<AddressEvent, AddressState> {
             ),
           );
         },
-        error: (dataSourceFailure, reason, error, networkException, stackTrace, exception, extra) {
+        error: (dataSourceFailure, reason, error, networkException, stackTrace,
+            exception, extra) {
           appLog.d('Address bloc delete all error $reason');
           emit(
             AddressExceptionState(
@@ -314,7 +334,8 @@ class AddressBloc extends Bloc<AddressEvent, AddressState> {
       appLog.e('Address bloc delete all exception $e');
       emit(
         AddressExceptionState(
-          message: 'Something went wrong during getting your store details, please try again',
+          message:
+              'Something went wrong during getting your store details, please try again',
           //exception: e as Exception,
           stackTrace: s,
           addressStatus: AddressStatus.deleteAllAddress,
@@ -323,11 +344,15 @@ class AddressBloc extends Bloc<AddressEvent, AddressState> {
     }
   }
 
-  FutureOr<void> _getAllAddressPagination(GetAllAddressPagination event, Emitter<AddressState> emit) async {
+  FutureOr<void> _getAllAddressPagination(
+      GetAllAddressPagination event, Emitter<AddressState> emit) async {
     appLog.i('Get all address bloc get all fetching');
     try {
-      emit(const GetAllLoadingAddressPaginationState(isLoading: true, message: 'Please wait while we are fetching all address...'));
-      final DataSourceState<List<AddressModel>> result = await serviceLocator<GetAllAddressPaginationUseCase>()(
+      emit(const GetAllLoadingAddressPaginationState(
+          isLoading: true,
+          message: 'Please wait while we are fetching all address...'));
+      final DataSourceState<List<AddressModel>> result =
+          await serviceLocator<GetAllAddressPaginationUseCase>()(
         pageKey: event.pageKey,
         pageSize: event.pageSize,
         searchText: event.searchText,
@@ -399,7 +424,8 @@ class AddressBloc extends Bloc<AddressEvent, AddressState> {
             );
           }
         },
-        error: (dataSourceFailure, reason, error, networkException, stackTrace, exception, extra) {
+        error: (dataSourceFailure, reason, error, networkException, stackTrace,
+            exception, extra) {
           appLog.d('Get all address bloc get all error $reason');
           emit(
             GetAllExceptionAddressPaginationState(
@@ -414,7 +440,8 @@ class AddressBloc extends Bloc<AddressEvent, AddressState> {
       appLog.e('Get all address bloc get all $e');
       emit(
         GetAllExceptionAddressPaginationState(
-          message: 'Something went wrong during getting all address, please try again',
+          message:
+              'Something went wrong during getting all address, please try again',
           //exception: e as Exception,
           stackTrace: s,
         ),
@@ -422,11 +449,15 @@ class AddressBloc extends Bloc<AddressEvent, AddressState> {
     }
   }
 
-  FutureOr<void> _selectAllAddress(SelectAllAddress event, Emitter<AddressState> emit) {}
+  FutureOr<void> _selectAllAddress(
+      SelectAllAddress event, Emitter<AddressState> emit) {}
 
-  FutureOr<void> _selectDefaultAddress(SelectDefaultAddress event, Emitter<AddressState> emit) {}
+  FutureOr<void> _selectDefaultAddress(
+      SelectDefaultAddress event, Emitter<AddressState> emit) {}
 
-  FutureOr<void> _confirmationOnDefaultAddress(ConfirmationOnDefaultAddress event, Emitter<AddressState> emit) {}
+  FutureOr<void> _confirmationOnDefaultAddress(
+      ConfirmationOnDefaultAddress event, Emitter<AddressState> emit) {}
 
-  FutureOr<void> _selectCurrentAddress(SelectCurrentAddress event, Emitter<AddressState> emit) {}
+  FutureOr<void> _selectCurrentAddress(
+      SelectCurrentAddress event, Emitter<AddressState> emit) {}
 }

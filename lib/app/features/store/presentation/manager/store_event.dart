@@ -221,7 +221,8 @@ class BindDriverWithStores extends StoreEvent {
   });
 
   final List<StoreOwnDeliveryPartnersInfo> listOfStoreOwnDeliveryPartners;
-  final List<StoreOwnDeliveryPartnersInfo> listOfSelectedStoreOwnDeliveryPartners;
+  final List<StoreOwnDeliveryPartnersInfo>
+      listOfSelectedStoreOwnDeliveryPartners;
   final List<StoreEntity> storeEntities;
   final List<StoreEntity> listOfSelectedStoreEntities;
   final StoreStateStage storeStateStatus;
@@ -255,7 +256,8 @@ class UnBindDriverWithStores extends StoreEvent {
   });
 
   final List<StoreOwnDeliveryPartnersInfo> listOfStoreOwnDeliveryPartners;
-  final List<StoreOwnDeliveryPartnersInfo> listOfSelectedStoreOwnDeliveryPartners;
+  final List<StoreOwnDeliveryPartnersInfo>
+      listOfSelectedStoreOwnDeliveryPartners;
   final List<StoreEntity> storeEntities;
   final List<StoreEntity> listOfSelectedStoreEntities;
   final StoreStateStage storeStateStatus;
@@ -290,7 +292,8 @@ class BindDriverWithUser extends StoreEvent {
   final String message;
   final BindingStage bindingStage;
   final List<StoreOwnDeliveryPartnersInfo> listOfStoreOwnDeliveryPartners;
-  final List<StoreOwnDeliveryPartnersInfo> listOfSelectedStoreOwnDeliveryPartners;
+  final List<StoreOwnDeliveryPartnersInfo>
+      listOfSelectedStoreOwnDeliveryPartners;
 
   @override
   bool get cacheHash => true;
@@ -336,7 +339,8 @@ class BindStoreWithUser extends StoreEvent {
 class ReturnToStorePage extends StoreEvent {
   ReturnToStorePage({
     this.message = '',
-    this.listOfStoreOwnDeliveryPartners = const <StoreOwnDeliveryPartnersInfo>[],
+    this.listOfStoreOwnDeliveryPartners =
+        const <StoreOwnDeliveryPartnersInfo>[],
   });
   final String message;
   final List<StoreOwnDeliveryPartnersInfo> listOfStoreOwnDeliveryPartners;
@@ -359,7 +363,8 @@ class SelectDriversForStores extends StoreEvent {
       this.selectItemUseCase = SelectItemUseCase.bindingWithOther});
 
   final List<StoreOwnDeliveryPartnersInfo> listOfStoreOwnDeliveryPartners;
-  final List<StoreOwnDeliveryPartnersInfo> listOfSelectedStoreOwnDeliveryPartners;
+  final List<StoreOwnDeliveryPartnersInfo>
+      listOfSelectedStoreOwnDeliveryPartners;
 
   final String message;
   final SelectItemUseCase selectItemUseCase;

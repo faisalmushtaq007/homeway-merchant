@@ -13,7 +13,10 @@ class AddressInitial extends AddressState {
 }
 
 class SaveAddressState extends AddressState {
-  const SaveAddressState({required this.addressEntity, required this.hasNewAddress, this.currentIndex = -1});
+  const SaveAddressState(
+      {required this.addressEntity,
+      required this.hasNewAddress,
+      this.currentIndex = -1});
 
   final AddressModel addressEntity;
   final bool hasNewAddress;
@@ -43,7 +46,8 @@ class RemoveAddressByIDState extends AddressState {
   final bool hasRemove;
 
   @override
-  List<Object?> get props => [addressEntity, index, addressEntities, addressID, hasRemove];
+  List<Object?> get props =>
+      [addressEntity, index, addressEntities, addressID, hasRemove];
 }
 
 class RemoveAllAddressState extends AddressState {
@@ -100,7 +104,8 @@ class GetAllAddressState extends AddressState {
   final String searchItem;
 
   @override
-  List<Object?> get props => [addressEntities, addressStatus, pageKey, pageSize, searchItem];
+  List<Object?> get props =>
+      [addressEntities, addressStatus, pageKey, pageSize, searchItem];
 }
 
 class SelectAllAddressState extends AddressState {

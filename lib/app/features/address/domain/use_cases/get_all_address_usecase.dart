@@ -1,6 +1,7 @@
 part of 'package:homemakers_merchant/app/features/address/index.dart';
 
-class GetAllAddressUseCase extends UseCase<DataSourceState<List<AddressModel>>> {
+class GetAllAddressUseCase
+    extends UseCase<DataSourceState<List<AddressModel>>> {
   GetAllAddressUseCase({
     required this.userAddressRepository,
   });

@@ -21,12 +21,17 @@ class WrapText extends StatefulWidget {
       this.selectionColor,
       this.minFontSize,
       this.maxFontSize}) {
-    assert(textStyle.fontSize != null, "The textStyle object must have a defined fontSize attribute.");
+    assert(textStyle.fontSize != null,
+        "The textStyle object must have a defined fontSize attribute.");
 
-    assert(breakWordCharacter!.length == 1, "The break character must be a string that only contains one character.");
+    assert(breakWordCharacter!.length == 1,
+        "The break character must be a string that only contains one character.");
 
     if (smartSizeMode) {
-      assert(minFontSize != null && maxFontSize != null && minFontSize! <= maxFontSize!,
+      assert(
+          minFontSize != null &&
+              maxFontSize != null &&
+              minFontSize! <= maxFontSize!,
           "When use smart size mode, the params maxSize and minSize are mandatory, an minSize shout be less or equal than maxSize.");
     }
   }
@@ -87,7 +92,8 @@ class _WrapTextState extends State<WrapText> {
 
   void _optimizeTextStyle() {
     int optimizedFontSize = _findMostOptimizedFontSize();
-    _textStyle = widget.textStyle.copyWith(fontSize: optimizedFontSize.toDouble());
+    _textStyle =
+        widget.textStyle.copyWith(fontSize: optimizedFontSize.toDouble());
   }
 
   int _findMostOptimizedFontSize() {
@@ -100,9 +106,11 @@ class _WrapTextState extends State<WrapText> {
     for (int i = widget.minFontSize!; i <= widget.maxFontSize!; i++) {
       copyOfTextStyle = widget.textStyle.copyWith(fontSize: i.toDouble());
 
-      resultString = _processTextWrapEndOfLineCharacter(widget.data, copyOfTextStyle, widget.breakWordCharacter!)!;
+      resultString = _processTextWrapEndOfLineCharacter(
+          widget.data, copyOfTextStyle, widget.breakWordCharacter!)!;
 
-      countBreakCharacters = widget.breakWordCharacter!.allMatches(resultString).length;
+      countBreakCharacters =
+          widget.breakWordCharacter!.allMatches(resultString).length;
 
       if (minStepCharacters == null) {
         minStepCharacters = countBreakCharacters;
@@ -119,7 +127,8 @@ class _WrapTextState extends State<WrapText> {
     return mostOptimizedTextSize;
   }
 
-  String? _processTextWrapEndOfLineCharacter(String originalString, TextStyle style, String stepChar) {
+  String? _processTextWrapEndOfLineCharacter(
+      String originalString, TextStyle style, String stepChar) {
     List<int> originalStringUnicodeUnits = originalString.codeUnits;
     List<int> copyStringUnicodeUnits = [];
     List<int> resultStringChars = [];
@@ -149,7 +158,9 @@ class _WrapTextState extends State<WrapText> {
     letterSpacing ??= 0;
 
     for (int i = 0; i < copyStringUnicodeUnits.length; i++) {
-      nextStepLineWidth = actualLineWidth + _calculateCharWidth(copyStringUnicodeUnits[i], style) + letterSpacing;
+      nextStepLineWidth = actualLineWidth +
+          _calculateCharWidth(copyStringUnicodeUnits[i], style) +
+          letterSpacing;
 
       /**
        * if current character is a NULL character, then is a user string end of line
@@ -192,7 +203,10 @@ class _WrapTextState extends State<WrapText> {
          * but if previous of the previous character if anyother character,
          * then a line break is occurring that cuts into a word, put stepCharacter.
          */
-        resultStringChars[resultIndex - 1] = (resultStringChars[resultIndex - 2] == SPACE_CODE_UNIT) ? SPACE_CODE_UNIT : stepUnicodeChar;
+        resultStringChars[resultIndex - 1] =
+            (resultStringChars[resultIndex - 2] == SPACE_CODE_UNIT)
+                ? SPACE_CODE_UNIT
+                : stepUnicodeChar;
 
         ///add end of line character
 
@@ -214,9 +228,12 @@ class _WrapTextState extends State<WrapText> {
         ///Add current character
         resultStringChars.add(copyStringUnicodeUnits[i]);
         resultIndex++;
-        actualLineWidth += _calculateCharWidth(copyStringUnicodeUnits[i], style);
+        actualLineWidth +=
+            _calculateCharWidth(copyStringUnicodeUnits[i], style);
       } else {
-        if (i > 0 && copyStringUnicodeUnits[i - 1] == END_OF_LINE_CODE_UNIT && copyStringUnicodeUnits[i] == SPACE_CODE_UNIT) {
+        if (i > 0 &&
+            copyStringUnicodeUnits[i - 1] == END_OF_LINE_CODE_UNIT &&
+            copyStringUnicodeUnits[i] == SPACE_CODE_UNIT) {
           continue;
         }
 
@@ -234,9 +251,11 @@ class _WrapTextState extends State<WrapText> {
       return _charWidths[unicodeChar]!;
     }
 
-    final TextPainter textPainter =
-        TextPainter(text: TextSpan(text: String.fromCharCode(unicodeChar), style: style), maxLines: 1, textDirection: TextDirection.ltr)
-          ..layout(minWidth: 0, maxWidth: double.infinity);
+    final TextPainter textPainter = TextPainter(
+        text: TextSpan(text: String.fromCharCode(unicodeChar), style: style),
+        maxLines: 1,
+        textDirection: TextDirection.ltr)
+      ..layout(minWidth: 0, maxWidth: double.infinity);
 
     _charWidths[unicodeChar] = textPainter.size.width;
 
@@ -245,7 +264,8 @@ class _WrapTextState extends State<WrapText> {
 
   @override
   Widget build(BuildContext context) {
-    return LayoutBuilder(builder: (BuildContext context, BoxConstraints constraints) {
+    return LayoutBuilder(
+        builder: (BuildContext context, BoxConstraints constraints) {
       ///only recalculate text style if change maxWidth of constraints
       if (_actualMaxWidth != constraints.maxWidth) {
         _actualMaxWidth = constraints.maxWidth;
@@ -254,7 +274,9 @@ class _WrapTextState extends State<WrapText> {
         }
       }
 
-      return Text(_processTextWrapEndOfLineCharacter(widget.data, _textStyle!, widget.breakWordCharacter!)!,
+      return Text(
+          _processTextWrapEndOfLineCharacter(
+              widget.data, _textStyle!, widget.breakWordCharacter!)!,
           style: _textStyle,
           strutStyle: widget.strutStyle,
           textAlign: widget.textAlign,

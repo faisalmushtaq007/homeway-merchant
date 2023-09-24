@@ -10,7 +10,9 @@ class RateAndReviewCardWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final String imagePath = rateAndReviewEntity.userImage.isNotEmpty ? rateAndReviewEntity.userImage : 'assets/svg/mail.svg';
+    final String imagePath = rateAndReviewEntity.userImage.isNotEmpty
+        ? rateAndReviewEntity.userImage
+        : 'assets/svg/mail.svg';
     const minLeadingWidth = 40.0;
     const radius = 40.0;
     final TextSpan textSpan = TextSpan(
@@ -19,7 +21,8 @@ class RateAndReviewCardWidget extends StatelessWidget {
       children: <TextSpan>[],
     );
     return Card(
-      shape: RoundedRectangleBorder(borderRadius: BorderRadiusDirectional.circular(10)),
+      shape: RoundedRectangleBorder(
+          borderRadius: BorderRadiusDirectional.circular(10)),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         textDirection: serviceLocator<LanguageController>().targetTextDirection,
@@ -27,7 +30,8 @@ class RateAndReviewCardWidget extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           ListTile(
-            shape: RoundedRectangleBorder(borderRadius: BorderRadiusDirectional.circular(10)),
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadiusDirectional.circular(10)),
             leading: SizedBox(
               width: minLeadingWidth,
               child: ImageHelper(
@@ -71,32 +75,39 @@ class RateAndReviewCardWidget extends StatelessWidget {
                   color: Colors.white,
                   fontSize: 16,
                 ),
-                placeholderBackgroundColor: context.colorScheme.primary.withOpacity(0.0),
+                placeholderBackgroundColor:
+                    context.colorScheme.primary.withOpacity(0.0),
               ),
             ),
             minLeadingWidth: minLeadingWidth,
             title: Column(
               mainAxisSize: MainAxisSize.min,
-              textDirection: serviceLocator<LanguageController>().targetTextDirection,
+              textDirection:
+                  serviceLocator<LanguageController>().targetTextDirection,
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Wrap(
-                  textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                  textDirection:
+                      serviceLocator<LanguageController>().targetTextDirection,
                   children: [
                     Text(
                       rateAndReviewEntity.userName,
                       style: context.titleMedium!.copyWith(
                         fontWeight: FontWeight.w600,
-                        color: rateAndReviewEntity.flag == 0 ? null : Colors.grey[500],
+                        color: rateAndReviewEntity.flag == 0
+                            ? null
+                            : Colors.grey[500],
                       ),
-                      textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                      textDirection: serviceLocator<LanguageController>()
+                          .targetTextDirection,
                     ).translate(),
                   ],
                 ),
                 //const AnimatedGap(2, duration: Duration(milliseconds: 200)),
                 Wrap(
-                  textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                  textDirection:
+                      serviceLocator<LanguageController>().targetTextDirection,
                   children: [
                     Text(
                       'OrderID: ${rateAndReviewEntity.body.ratingOrderDetails?.orderID.toString() ?? ''}',
@@ -104,7 +115,8 @@ class RateAndReviewCardWidget extends StatelessWidget {
                       style: context.bodyMedium!.copyWith(
                         color: Colors.grey[700],
                       ),
-                      textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                      textDirection: serviceLocator<LanguageController>()
+                          .targetTextDirection,
                     ).translate(),
                   ],
                 ),
@@ -112,7 +124,8 @@ class RateAndReviewCardWidget extends StatelessWidget {
               ],
             ),
             subtitle: Wrap(
-              textDirection: serviceLocator<LanguageController>().targetTextDirection,
+              textDirection:
+                  serviceLocator<LanguageController>().targetTextDirection,
               children: [
                 Text(
                   rateAndReviewEntity.body.ratingOrderDetails?.menuName ?? '',
@@ -121,7 +134,8 @@ class RateAndReviewCardWidget extends StatelessWidget {
                     //color: rateAndReviewEntity.flag == 0 ? null : Colors.grey[400],
                     fontWeight: FontWeight.w600,
                   ),
-                  textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                  textDirection:
+                      serviceLocator<LanguageController>().targetTextDirection,
                 ).translate(),
               ],
             ),
@@ -131,7 +145,8 @@ class RateAndReviewCardWidget extends StatelessWidget {
                   width: constraints.maxWidth / 5.5,
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
-                    textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                    textDirection: serviceLocator<LanguageController>()
+                        .targetTextDirection,
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
@@ -141,7 +156,8 @@ class RateAndReviewCardWidget extends StatelessWidget {
                             DateTimeFormat.relative(
                               DateTime.now().subtract(
                                 DateTime.now().difference(
-                                  DateTime.fromMillisecondsSinceEpoch(rateAndReviewEntity.timestamp * 1000),
+                                  DateTime.fromMillisecondsSinceEpoch(
+                                      rateAndReviewEntity.timestamp * 1000),
                                 ),
                               ),
                               appendIfAfter: 'ago',
@@ -152,16 +168,20 @@ class RateAndReviewCardWidget extends StatelessWidget {
                               fontWeight: FontWeight.w600,
                             ),
                             textAlign: TextAlign.end,
-                            textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                            textDirection: serviceLocator<LanguageController>()
+                                .targetTextDirection,
                           ).translate(),
                         ],
                       ),
-                      const AnimatedGap(6, duration: Duration(milliseconds: 200)),
+                      const AnimatedGap(6,
+                          duration: Duration(milliseconds: 200)),
                       rateAndReviewEntity.flag == 0
                           ? Container(
                               width: 40.0,
                               height: 20.0,
-                              decoration: BoxDecoration(color: Theme.of(context).primaryColor, borderRadius: BorderRadius.circular(30.0)),
+                              decoration: BoxDecoration(
+                                  color: Theme.of(context).primaryColor,
+                                  borderRadius: BorderRadius.circular(30.0)),
                               alignment: Alignment.center,
                               child: Text(
                                 "NEW",
@@ -170,7 +190,9 @@ class RateAndReviewCardWidget extends StatelessWidget {
                                   fontSize: 12.0,
                                   fontWeight: FontWeight.bold,
                                 ),
-                                textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                textDirection:
+                                    serviceLocator<LanguageController>()
+                                        .targetTextDirection,
                               ).translate(),
                             )
                           : const Offstage(),
@@ -193,7 +215,8 @@ class RateAndReviewCardWidget extends StatelessWidget {
                   mainAxisSize: MainAxisSize.min,
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.center,
-                  textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                  textDirection:
+                      serviceLocator<LanguageController>().targetTextDirection,
                   children: [
                     RatingBar.readOnly(
                       filledIcon: Icons.star,
@@ -209,7 +232,8 @@ class RateAndReviewCardWidget extends StatelessWidget {
                       duration: Duration(milliseconds: 200),
                     ),
                     Container(
-                      padding: const EdgeInsetsDirectional.symmetric(vertical: 2, horizontal: 8),
+                      padding: const EdgeInsetsDirectional.symmetric(
+                          vertical: 2, horizontal: 8),
                       margin: const EdgeInsetsDirectional.only(end: 8),
                       child: Text(
                         "${rateAndReviewEntity.body.rating.toStringAsPrecision(2)}/${5.toStringAsPrecision(2)}",

@@ -32,7 +32,8 @@ abstract interface class AuthenticationRepository {
 
   Future<DataSourceState<List<AppUserEntity>>> getAllAppUser();
 
-  Future<DataSourceState<AppUserEntity?>> getCurrentAppUser({AppUserEntity? entity});
+  Future<DataSourceState<AppUserEntity?>> getCurrentAppUser(
+      {AppUserEntity? entity});
 
   Future<DataSourceState<List<AppUserEntity>>> getAllUsersPagination({
     int pageKey = 0,

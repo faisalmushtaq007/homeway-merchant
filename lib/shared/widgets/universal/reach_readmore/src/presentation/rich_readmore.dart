@@ -97,7 +97,8 @@ class _RichReadMoreTextState extends State<RichReadMoreText> {
     super.initState();
     textAlign = widget.settings.textAlign ?? TextAlign.start;
     textSpanHelper = TextSpanHelper();
-    actionText = textSpanHelper.updateActionText(isExpanded: _readMore, onTap: _onTapLink, settings: widget.settings);
+    actionText = textSpanHelper.updateActionText(
+        isExpanded: _readMore, onTap: _onTapLink, settings: widget.settings);
   }
 
   void _onTapLink() {
@@ -114,7 +115,8 @@ class _RichReadMoreTextState extends State<RichReadMoreText> {
   @override
   void setState(VoidCallback fn) {
     super.setState(fn);
-    actionText = textSpanHelper.updateActionText(isExpanded: _readMore, onTap: _onTapLink, settings: widget.settings);
+    actionText = textSpanHelper.updateActionText(
+        isExpanded: _readMore, onTap: _onTapLink, settings: widget.settings);
   }
 
   @override
@@ -135,7 +137,9 @@ class _RichReadMoreTextState extends State<RichReadMoreText> {
               textAlign: textAlign,
               textDirection: widget.settings.textDirection ?? TextDirection.rtl,
               textScaleFactor: widget.settings.textScaleFactor ?? 1.0,
-              maxLines: widget.settings is LineModeSettings ? (widget.settings as LineModeSettings).trimLines : null,
+              maxLines: widget.settings is LineModeSettings
+                  ? (widget.settings as LineModeSettings).trimLines
+                  : null,
               locale: widget.settings.locale,
             );
             textPainter.layout(minWidth: 0, maxWidth: maxWidth);
@@ -143,7 +147,8 @@ class _RichReadMoreTextState extends State<RichReadMoreText> {
 
             // Layout and measure text
             textPainter.text = widget.data;
-            textPainter.layout(minWidth: constraints.minWidth, maxWidth: maxWidth);
+            textPainter.layout(
+                minWidth: constraints.minWidth, maxWidth: maxWidth);
             final textSize = textPainter.size;
 
             int endIndex;
@@ -153,7 +158,9 @@ class _RichReadMoreTextState extends State<RichReadMoreText> {
             } else if (actionTextSize.width < maxWidth) {
               final readMoreSize = actionTextSize.width;
               final pos = textPainter.getPositionForOffset(Offset(
-                widget.settings.textDirection == TextDirection.rtl ? readMoreSize : textSize.width - readMoreSize,
+                widget.settings.textDirection == TextDirection.rtl
+                    ? readMoreSize
+                    : textSize.width - readMoreSize,
                 textSize.height,
               ));
               endIndex = textPainter.getOffsetBefore(pos.offset) ?? 0;

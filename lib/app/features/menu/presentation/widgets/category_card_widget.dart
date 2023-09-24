@@ -103,8 +103,10 @@ class _EmailContentState extends State<EmailContent> {
 
   TextStyle? get contentTextStyle => switch (widget) {
         EmailContent(isThreaded: true) => _textTheme.bodyLarge,
-        EmailContent(isSelected: true) => _textTheme.bodyMedium?.copyWith(color: _colorScheme.onPrimaryContainer),
-        _ => _textTheme.bodyMedium?.copyWith(color: _colorScheme.onSurfaceVariant),
+        EmailContent(isSelected: true) => _textTheme.bodyMedium
+            ?.copyWith(color: _colorScheme.onPrimaryContainer),
+        _ =>
+          _textTheme.bodyMedium?.copyWith(color: _colorScheme.onSurfaceVariant),
       };
 
   @override
@@ -133,16 +135,20 @@ class _EmailContentState extends State<EmailContent> {
                         overflow: TextOverflow.fade,
                         maxLines: 1,
                         style: widget.isSelected
-                            ? _textTheme.labelMedium?.copyWith(color: _colorScheme.onSecondaryContainer)
-                            : _textTheme.labelMedium?.copyWith(color: _colorScheme.onSurface),
+                            ? _textTheme.labelMedium?.copyWith(
+                                color: _colorScheme.onSecondaryContainer)
+                            : _textTheme.labelMedium
+                                ?.copyWith(color: _colorScheme.onSurface),
                       ),
                       Text(
                         'Last Active',
                         overflow: TextOverflow.fade,
                         maxLines: 1,
                         style: widget.isSelected
-                            ? _textTheme.labelMedium?.copyWith(color: _colorScheme.onSecondaryContainer)
-                            : _textTheme.labelMedium?.copyWith(color: _colorScheme.onSurfaceVariant),
+                            ? _textTheme.labelMedium?.copyWith(
+                                color: _colorScheme.onSecondaryContainer)
+                            : _textTheme.labelMedium?.copyWith(
+                                color: _colorScheme.onSurfaceVariant),
                       ),
                     ],
                   ),
@@ -213,13 +219,15 @@ class _EmailHeadlineState extends State<EmailHeadline> {
                       widget.category.title,
                       maxLines: 1,
                       overflow: TextOverflow.fade,
-                      style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w400),
+                      style: const TextStyle(
+                          fontSize: 18, fontWeight: FontWeight.w400),
                     ),
                     Text(
                       '${widget.category.subCategory.length} SubCategory',
                       maxLines: 1,
                       overflow: TextOverflow.fade,
-                      style: _textTheme.labelMedium?.copyWith(fontWeight: FontWeight.w500),
+                      style: _textTheme.labelMedium
+                          ?.copyWith(fontWeight: FontWeight.w500),
                     ),
                   ],
                 ),
@@ -251,7 +259,8 @@ class _EmailReplyOptionsState extends State<EmailReplyOptions> {
             Expanded(
               child: TextButton(
                 style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all(_colorScheme.onInverseSurface),
+                  backgroundColor:
+                      MaterialStateProperty.all(_colorScheme.onInverseSurface),
                 ),
                 onPressed: () {},
                 child: Text(

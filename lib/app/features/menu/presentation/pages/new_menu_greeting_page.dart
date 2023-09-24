@@ -7,7 +7,8 @@ class NewMenuGreetingPage extends StatefulWidget {
   });
   final MenuEntity menuEntity;
   @override
-  _NewMenuGreetingPageController createState() => _NewMenuGreetingPageController();
+  _NewMenuGreetingPageController createState() =>
+      _NewMenuGreetingPageController();
 }
 
 class _NewMenuGreetingPageController extends State<NewMenuGreetingPage> {
@@ -35,14 +36,16 @@ class _NewMenuGreetingPageController extends State<NewMenuGreetingPage> {
   Widget build(BuildContext context) => _NewMenuGreetingPageView(this);
 }
 
-class _NewMenuGreetingPageView extends WidgetView<NewMenuGreetingPage, _NewMenuGreetingPageController> {
+class _NewMenuGreetingPageView
+    extends WidgetView<NewMenuGreetingPage, _NewMenuGreetingPageController> {
   const _NewMenuGreetingPageView(super.state);
 
   @override
   Widget build(BuildContext context) {
     final MediaQueryData media = MediaQuery.of(context);
     final double margins = GlobalApp.responsiveInsets(media.size.width);
-    final double topPadding = margins; //media.padding.top + kToolbarHeight + margins; //margins * 1.5;
+    final double topPadding =
+        margins; //media.padding.top + kToolbarHeight + margins; //margins * 1.5;
     final double bottomPadding = media.padding.bottom + margins;
     final double width = media.size.width;
     final ThemeData theme = Theme.of(context);
@@ -103,7 +106,9 @@ class _NewMenuGreetingPageView extends WidgetView<NewMenuGreetingPage, _NewMenuG
                           Center(
                             child: Text(
                               'Hurray! New Menu',
-                              textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                              textDirection:
+                                  serviceLocator<LanguageController>()
+                                      .targetTextDirection,
                               textAlign: TextAlign.center,
                               style: context.headlineMedium!.copyWith(
                                 color: const Color.fromRGBO(69, 201, 125, 1),
@@ -121,7 +126,9 @@ class _NewMenuGreetingPageView extends WidgetView<NewMenuGreetingPage, _NewMenuG
                           Center(
                             child: Text(
                               '${widget.menuEntity.menuName}',
-                              textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                              textDirection:
+                                  serviceLocator<LanguageController>()
+                                      .targetTextDirection,
                               textAlign: TextAlign.center,
                               style: context.headlineMedium!.copyWith(
                                 color: const Color.fromRGBO(69, 201, 125, 1),
@@ -141,7 +148,9 @@ class _NewMenuGreetingPageView extends WidgetView<NewMenuGreetingPage, _NewMenuG
                               children: [
                                 Text(
                                   'Your menu has been created successfully',
-                                  textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                  textDirection:
+                                      serviceLocator<LanguageController>()
+                                          .targetTextDirection,
                                   textAlign: TextAlign.center,
                                   style: context.titleLarge!.copyWith(
                                     fontSize: 20,
@@ -162,7 +171,9 @@ class _NewMenuGreetingPageView extends WidgetView<NewMenuGreetingPage, _NewMenuG
                               children: [
                                 Text(
                                   'Your menu is under verification process',
-                                  textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                  textDirection:
+                                      serviceLocator<LanguageController>()
+                                          .targetTextDirection,
                                   textAlign: TextAlign.center,
                                   style: context.bodyMedium!.copyWith(
                                     fontSize: 14,
@@ -179,12 +190,16 @@ class _NewMenuGreetingPageView extends WidgetView<NewMenuGreetingPage, _NewMenuG
                           ),
                           Center(
                             child: Wrap(
-                              textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                              textDirection:
+                                  serviceLocator<LanguageController>()
+                                      .targetTextDirection,
                               children: [
                                 Icon(Icons.restaurant_menu),
                                 Text(
                                   'Menu ID #HMW-MENU-${widget.menuEntity.menuId}',
-                                  textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                  textDirection:
+                                      serviceLocator<LanguageController>()
+                                          .targetTextDirection,
                                   textAlign: TextAlign.center,
                                   style: context.titleMedium!.copyWith(
                                     fontSize: 18,
@@ -203,12 +218,15 @@ class _NewMenuGreetingPageView extends WidgetView<NewMenuGreetingPage, _NewMenuG
                         ],
                       ),
                       PositionedDirectional(
-                        bottom: kBottomNavigationBarHeight + bottomPadding + margins * 6.5,
+                        bottom: kBottomNavigationBarHeight +
+                            bottomPadding +
+                            margins * 6.5,
                         start: 0,
                         end: 0,
                         child: Center(
                           child: Wrap(
-                            textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                            textDirection: serviceLocator<LanguageController>()
+                                .targetTextDirection,
                             children: [
                               Icon(Icons.share),
                               const SizedBox(
@@ -216,7 +234,9 @@ class _NewMenuGreetingPageView extends WidgetView<NewMenuGreetingPage, _NewMenuG
                               ),
                               Text(
                                 'Share your store on social media',
-                                textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                textDirection:
+                                    serviceLocator<LanguageController>()
+                                        .targetTextDirection,
                                 textAlign: TextAlign.center,
                                 style: context.titleMedium!.copyWith(
                                   fontSize: 18,
@@ -228,7 +248,9 @@ class _NewMenuGreetingPageView extends WidgetView<NewMenuGreetingPage, _NewMenuG
                         ),
                       ),
                       PositionedDirectional(
-                        bottom: kBottomNavigationBarHeight + bottomPadding - margins,
+                        bottom: kBottomNavigationBarHeight +
+                            bottomPadding -
+                            margins,
                         start: 0,
                         end: 0,
                         child: ElevatedButton(
@@ -240,11 +262,14 @@ class _NewMenuGreetingPageView extends WidgetView<NewMenuGreetingPage, _NewMenuG
                           ),
                           child: Text(
                             'Go to Dashboard',
-                            style: TextStyle(color: Color.fromRGBO(42, 45, 50, 1)),
-                            textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                            style:
+                                TextStyle(color: Color.fromRGBO(42, 45, 50, 1)),
+                            textDirection: serviceLocator<LanguageController>()
+                                .targetTextDirection,
                           ).translate(),
                           onPressed: () {
-                            context.pushReplacement(Routes.PRIMARY_DASHBOARD_PAGE);
+                            context
+                                .pushReplacement(Routes.PRIMARY_DASHBOARD_PAGE);
                             return;
                           },
                         ),
@@ -262,8 +287,10 @@ class _NewMenuGreetingPageView extends WidgetView<NewMenuGreetingPage, _NewMenuG
                           ),
                           child: Text(
                             'All Menus',
-                            style: TextStyle(color: Color.fromRGBO(42, 45, 50, 1)),
-                            textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                            style:
+                                TextStyle(color: Color.fromRGBO(42, 45, 50, 1)),
+                            textDirection: serviceLocator<LanguageController>()
+                                .targetTextDirection,
                           ).translate(),
                           onPressed: () {
                             context.pushReplacement(Routes.ALL_MENU_PAGE);
@@ -278,7 +305,8 @@ class _NewMenuGreetingPageView extends WidgetView<NewMenuGreetingPage, _NewMenuG
                         child: ElevatedButton(
                           child: Text(
                             'Add Food Menu',
-                            textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                            textDirection: serviceLocator<LanguageController>()
+                                .targetTextDirection,
                           ).translate(),
                           onPressed: () {
                             context.pushReplacement(

@@ -23,10 +23,12 @@ class UploadedDocumentChildWidget extends StatefulWidget {
   final ValueChanged<String>? onSubmitted;
 
   @override
-  State<UploadedDocumentChildWidget> createState() => _UploadedDocumentChildWidgetState();
+  State<UploadedDocumentChildWidget> createState() =>
+      _UploadedDocumentChildWidgetState();
 }
 
-class _UploadedDocumentChildWidgetState extends State<UploadedDocumentChildWidget> {
+class _UploadedDocumentChildWidgetState
+    extends State<UploadedDocumentChildWidget> {
   List<BusinessDocumentAssetsEntity> allBusinessDocumentAssets = [];
   List<Widget> allBusinessDocumentAssetsWidgets = [];
   ScrollController scrollController = ScrollController();
@@ -34,7 +36,8 @@ class _UploadedDocumentChildWidgetState extends State<UploadedDocumentChildWidge
 
   @override
   void initState() {
-    textEditingController = widget.textEditingController ?? TextEditingController();
+    textEditingController =
+        widget.textEditingController ?? TextEditingController();
     allBusinessDocumentAssets = [];
     allBusinessDocumentAssets.clear();
     allBusinessDocumentAssetsWidgets = [];
@@ -80,7 +83,9 @@ class _UploadedDocumentChildWidgetState extends State<UploadedDocumentChildWidge
                 sizeFraction: 0.7,
                 curve: Curves.easeInOut,
                 animation: animation,
-                child: index == 0 && widget.hasEnableTextField ? _buildTextFieldItem(assets, index) : _buildItem(assets, index),
+                child: index == 0 && widget.hasEnableTextField
+                    ? _buildTextFieldItem(assets, index)
+                    : _buildItem(assets, index),
               );
             },
             updateItemBuilder: (context, animation, assets) {
@@ -92,7 +97,8 @@ class _UploadedDocumentChildWidgetState extends State<UploadedDocumentChildWidge
               );
             },
             removeItemBuilder: (context, animation, oldAssets) {
-              appLog.d('updateItemBuilder child: ${oldAssets.assetOriginalName}');
+              appLog
+                  .d('updateItemBuilder child: ${oldAssets.assetOriginalName}');
               return FadeTransition(
                 //key: ObjectKey(oldAssets),
                 opacity: animation,
@@ -152,7 +158,8 @@ class _UploadedDocumentChildWidgetState extends State<UploadedDocumentChildWidge
               controller: textEditingController,
               keyboardType: TextInputType.text,
               textInputAction: TextInputAction.done,
-              textDirection: serviceLocator<LanguageController>().targetTextDirection,
+              textDirection:
+                  serviceLocator<LanguageController>().targetTextDirection,
               decoration: InputDecoration(
                 labelText: widget.labelOfTextField,
                 alignLabelWithHint: true,
@@ -164,7 +171,8 @@ class _UploadedDocumentChildWidgetState extends State<UploadedDocumentChildWidge
                 context.read<BusinessDocumentBloc>().add(
                       TradeLicenseNumberOnChanged(
                         textEditingController: textEditingController,
-                        currentUpdatedValue: textEditingController.value.text.trim(),
+                        currentUpdatedValue:
+                            textEditingController.value.text.trim(),
                         index: index,
                       ),
                     );

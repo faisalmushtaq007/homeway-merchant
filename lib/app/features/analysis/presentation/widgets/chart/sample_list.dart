@@ -2,8 +2,6 @@ import 'package:flutter/foundation.dart';
 import 'package:homemakers_merchant/app/features/analysis/presentation/widgets/chart/stacked_bar_100_chart.dart';
 import 'package:homemakers_merchant/app/features/analysis/presentation/widgets/chart/stacked_column_100_chart.dart';
 
-
-
 /// Contains the output widget of sample
 /// appropriate key and output widget mapped
 Map<String, Function> getSampleWidget() {

@@ -11,8 +11,9 @@ class _OrderAnalysisController extends State<OrderAnalysis> {
   late final ScrollController scrollController;
   late final ScrollController customScrollViewScrollController;
   String activeLocale = 'en_US';
-  final Map<String, moment.MomentLocalization> locales =
-      moment.MomentLocalizations.locales.map((key, value) => MapEntry(key, value()));
+  final Map<String, moment.MomentLocalization> locales = moment
+      .MomentLocalizations.locales
+      .map((key, value) => MapEntry(key, value()));
   List<Widget> transactionWidgets = [];
   List<OrderAnalysisByPeriodType> transactionTypes = [];
   int currentIndex = 0;
@@ -23,11 +24,15 @@ class _OrderAnalysisController extends State<OrderAnalysis> {
     super.initState();
     scrollController = ScrollController();
     customScrollViewScrollController = ScrollController();
-    activeLocale = serviceLocator<LanguageController>().targetAppLanguage.value.toString();
+    activeLocale =
+        serviceLocator<LanguageController>().targetAppLanguage.value.toString();
     transactionTypes = [
-      OrderAnalysisByPeriodType(typeName: 'Today', typeID: 0, hasSelected: false),
-      OrderAnalysisByPeriodType(typeName: 'This Week', typeID: 1, hasSelected: false),
-      OrderAnalysisByPeriodType(typeName: 'By Month', typeID: 2, hasSelected: false),
+      OrderAnalysisByPeriodType(
+          typeName: 'Today', typeID: 0, hasSelected: false),
+      OrderAnalysisByPeriodType(
+          typeName: 'This Week', typeID: 1, hasSelected: false),
+      OrderAnalysisByPeriodType(
+          typeName: 'By Month', typeID: 2, hasSelected: false),
     ];
     transactionWidgets = [
       TodayOrderAnalysis(
@@ -85,16 +90,19 @@ class _OrderAnalysisController extends State<OrderAnalysis> {
   Widget build(BuildContext context) => _OrderAnalysisView(this);
 }
 
-class _OrderAnalysisView extends WidgetView<OrderAnalysis, _OrderAnalysisController> {
+class _OrderAnalysisView
+    extends WidgetView<OrderAnalysis, _OrderAnalysisController> {
   const _OrderAnalysisView(super.state);
 
   @override
   Widget build(BuildContext context) {
     final MediaQueryData media = MediaQuery.of(context);
     final double margins = GlobalApp.responsiveInsets(media.size.width);
-    final double topPadding = margins; //media.padding.top + kToolbarHeight + margins; //margins * 1.5;
+    final double topPadding =
+        margins; //media.padding.top + kToolbarHeight + margins; //margins * 1.5;
     final double bottomPadding = margins;
-    moment.Moment.setGlobalLocalization(moment.MomentLocalizations.byLocale(state.activeLocale)!);
+    moment.Moment.setGlobalLocalization(
+        moment.MomentLocalizations.byLocale(state.activeLocale)!);
 
     final moment.Moment now = moment.Moment.now();
 
@@ -128,18 +136,21 @@ class _OrderAnalysisView extends WidgetView<OrderAnalysis, _OrderAnalysisControl
                     textColor: Colors.yellow,
                     label: Text(
                       '10',
-                      style: context.labelSmall!.copyWith(color: context.colorScheme.onPrimary),
+                      style: context.labelSmall!
+                          .copyWith(color: context.colorScheme.onPrimary),
                       //Color.fromRGBO(251, 219, 11, 1)
                     ),
                     child: Icon(
                       Icons.notifications,
                       color: context.colorScheme.primary,
-                      textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                      textDirection: serviceLocator<LanguageController>()
+                          .targetTextDirection,
                     ),
                   ),
                 ),
                 Directionality(
-                  textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                  textDirection:
+                      serviceLocator<LanguageController>().targetTextDirection,
                   child: const LanguageSelectionWidget(),
                 ),
               ],
@@ -153,12 +164,16 @@ class _OrderAnalysisView extends WidgetView<OrderAnalysis, _OrderAnalysisControl
               from: context.width / 2 - 60,
               duration: const Duration(milliseconds: 500),
               child: Directionality(
-                textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                textDirection:
+                    serviceLocator<LanguageController>().targetTextDirection,
                 child: PageBody(
                   controller: state.scrollController,
                   constraints: BoxConstraints(
                     minWidth: 1000,
-                    minHeight: media.size.height - (media.padding.top + kToolbarHeight + media.padding.bottom),
+                    minHeight: media.size.height -
+                        (media.padding.top +
+                            kToolbarHeight +
+                            media.padding.bottom),
                   ),
                   padding: EdgeInsetsDirectional.only(
                     //top: topPadding,
@@ -187,9 +202,12 @@ class _OrderAnalysisView extends WidgetView<OrderAnalysis, _OrderAnalysisControl
                                   controller: state.scrollController,
                                   padding: EdgeInsetsDirectional.zero,
                                   mainAxisSize: MainAxisSize.min,
-                                  textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                  textDirection:
+                                      serviceLocator<LanguageController>()
+                                          .targetTextDirection,
                                   physics: const BouncingScrollPhysics(),
-                                  constraintsBuilder: (constraints) => BoxConstraints(
+                                  constraintsBuilder: (constraints) =>
+                                      BoxConstraints(
                                     minWidth: constraints.maxWidth,
                                   ),
                                   flexible: false,
@@ -198,33 +216,58 @@ class _OrderAnalysisView extends WidgetView<OrderAnalysis, _OrderAnalysisControl
                                       (index) => StatefulBuilder(
                                             builder: (context, setState) {
                                               return Padding(
-                                                padding: const EdgeInsetsDirectional.only(start: 8, end: 8.0),
+                                                padding:
+                                                    const EdgeInsetsDirectional
+                                                        .only(
+                                                        start: 8, end: 8.0),
                                                 child: ElevatedButton(
                                                   key: ValueKey(index),
-                                                  style: ElevatedButton.styleFrom(
-                                                    shape: RoundedRectangleBorder(
-                                                      borderRadius: BorderRadiusDirectional.circular(10),
+                                                  style:
+                                                      ElevatedButton.styleFrom(
+                                                    shape:
+                                                        RoundedRectangleBorder(
+                                                      borderRadius:
+                                                          BorderRadiusDirectional
+                                                              .circular(10),
                                                     ),
                                                     minimumSize: Size(74, 42),
                                                     maximumSize: Size(104, 42),
                                                     //fixedSize: Size(104, 42),
-                                                    backgroundColor: (state.currentIndex == index)
-                                                        ? flexExt.FlexStringExtensions('#2C73D2').toColor
-                                                        : flexExt.FlexStringExtensions('#D4E5ED').toColor,
+                                                    backgroundColor: (state
+                                                                .currentIndex ==
+                                                            index)
+                                                        ? flexExt
+                                                                .FlexStringExtensions(
+                                                                    '#2C73D2')
+                                                            .toColor
+                                                        : flexExt
+                                                                .FlexStringExtensions(
+                                                                    '#D4E5ED')
+                                                            .toColor,
                                                     //disabledBackgroundColor: '#B0A8B9'.toColor,
                                                   ),
                                                   onPressed: () {
-                                                    state.updateCurrentIndex(index);
+                                                    state.updateCurrentIndex(
+                                                        index);
                                                   },
                                                   child: Text(
-                                                    state.transactionTypes[index].typeName,
+                                                    state
+                                                        .transactionTypes[index]
+                                                        .typeName,
                                                     maxLines: 1,
-                                                    overflow: TextOverflow.ellipsis,
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
                                                     softWrap: true,
                                                     textAlign: TextAlign.center,
-                                                    style: context.bodyMedium!.copyWith(
-                                                        color:
-                                                            state.currentIndex == index ? Colors.white : Colors.black),
+                                                    style: context.bodyMedium!
+                                                        .copyWith(
+                                                            color:
+                                                                state.currentIndex ==
+                                                                        index
+                                                                    ? Colors
+                                                                        .white
+                                                                    : Colors
+                                                                        .black),
                                                   ),
                                                 ),
                                               );
@@ -233,10 +276,12 @@ class _OrderAnalysisView extends WidgetView<OrderAnalysis, _OrderAnalysisControl
                                 ),
                               ),
                             ),
-                            const AnimatedGap(12, duration: Duration(milliseconds: 200)),
+                            const AnimatedGap(12,
+                                duration: Duration(milliseconds: 200)),
                             PageStorage(
                               bucket: state._transactionBucket,
-                              child: state.transactionWidgets[state.currentIndex],
+                              child:
+                                  state.transactionWidgets[state.currentIndex],
                             ),
                           ],
                         ),

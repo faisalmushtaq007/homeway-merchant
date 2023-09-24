@@ -2,7 +2,8 @@ import 'package:json_annotation/json_annotation.dart';
 import 'package:meta/meta.dart';
 
 import 'package:homemakers_merchant/app/features/chat/domain/entities/src/message.dart';
-import 'package:homemakers_merchant/app/features/chat/domain/entities/src/chat_user.dart' show ChatUser;
+import 'package:homemakers_merchant/app/features/chat/domain/entities/src/chat_user.dart'
+    show ChatUser;
 import 'package:homemakers_merchant/app/features/chat/domain/entities/src/messages/partial_file.dart';
 
 part 'file_message.g.dart';
@@ -53,7 +54,8 @@ abstract class FileMessage extends Message {
   }) = _FileMessage;
 
   /// Creates a file message from a map (decoded JSON).
-  factory FileMessage.fromJson(Map<String, dynamic> json) => _$FileMessageFromJson(json);
+  factory FileMessage.fromJson(Map<String, dynamic> json) =>
+      _$FileMessageFromJson(json);
 
   /// Creates a full file message from a partial one.
   factory FileMessage.fromPartial({
@@ -201,13 +203,18 @@ class _FileMessage extends FileMessage {
         createdAt: createdAt == _Unset ? this.createdAt : createdAt as int?,
         id: id ?? this.id,
         isLoading: isLoading == _Unset ? this.isLoading : isLoading as bool?,
-        metadata: metadata == _Unset ? this.metadata : metadata as Map<String, dynamic>?,
+        metadata: metadata == _Unset
+            ? this.metadata
+            : metadata as Map<String, dynamic>?,
         mimeType: mimeType == _Unset ? this.mimeType : mimeType as String?,
         name: name ?? this.name,
         remoteId: remoteId == _Unset ? this.remoteId : remoteId as String?,
-        repliedMessage: repliedMessage == _Unset ? this.repliedMessage : repliedMessage as Message?,
+        repliedMessage: repliedMessage == _Unset
+            ? this.repliedMessage
+            : repliedMessage as Message?,
         roomId: roomId == _Unset ? this.roomId : roomId as String?,
-        showStatus: showStatus == _Unset ? this.showStatus : showStatus as bool?,
+        showStatus:
+            showStatus == _Unset ? this.showStatus : showStatus as bool?,
         size: size ?? this.size,
         status: status == _Unset ? this.status : status as Status?,
         updatedAt: updatedAt == _Unset ? this.updatedAt : updatedAt as int?,

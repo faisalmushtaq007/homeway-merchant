@@ -27,9 +27,10 @@ class UploadNewBusinessDocumentState extends NewBusinessDocumentState {
     this.businessDocumentUploadedEntity,
     this.status = UploadBusinessDocumentStatus.initial,
     this.hasNewUploadBusinessDocument = false,
-    this.allBusinessDocuments=const [],
-    this.hasEditBusinessDocument=false,
-    this.currentIndex=-1,this.businessDocumentStatus=BusinessDocumentStatus.none,
+    this.allBusinessDocuments = const [],
+    this.hasEditBusinessDocument = false,
+    this.currentIndex = -1,
+    this.businessDocumentStatus = BusinessDocumentStatus.none,
   });
 
   final UploadBusinessDocumentStatus status;
@@ -41,7 +42,8 @@ class UploadNewBusinessDocumentState extends NewBusinessDocumentState {
   final int currentIndex;
 
   @override
-  List<Object?> get props => [hasNewUploadBusinessDocument, status, businessDocumentUploadedEntity];
+  List<Object?> get props =>
+      [hasNewUploadBusinessDocument, status, businessDocumentUploadedEntity];
 }
 
 class DeleteNewBusinessDocumentState extends NewBusinessDocumentState {
@@ -227,4 +229,3 @@ class NewBusinessDocumentEmptyState extends NewBusinessDocumentState {
         startTimeStamp,
       ];
 }
-

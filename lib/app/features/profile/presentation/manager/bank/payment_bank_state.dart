@@ -24,7 +24,8 @@ class SavePaymentBankState extends PaymentBankState {
   final PaymentBankStatus paymentBankStatus;
 
   @override
-  List<Object?> get props => [paymentBankEntity, hasEditPaymentBank, currentIndex, paymentBankStatus];
+  List<Object?> get props =>
+      [paymentBankEntity, hasEditPaymentBank, currentIndex, paymentBankStatus];
 }
 
 class GetPaymentBankState extends PaymentBankState {
@@ -111,7 +112,8 @@ class NavigateToAddressPageState extends PaymentBankState {
   final PaymentBankStatus paymentBankStatus;
 
   @override
-  List<Object?> get props => [paymentBankEntity, businessTypeEntity, paymentBankStatus];
+  List<Object?> get props =>
+      [paymentBankEntity, businessTypeEntity, paymentBankStatus];
 }
 
 class DeleteAllPaymentBankState extends PaymentBankState {
@@ -130,7 +132,8 @@ class DeleteAllPaymentBankState extends PaymentBankState {
   final PaymentBankStatus paymentBankStatus;
 
   @override
-  List<Object?> get props => [paymentBankEntity, paymentBankID, paymentBankStatus];
+  List<Object?> get props =>
+      [paymentBankEntity, paymentBankID, paymentBankStatus];
 }
 
 class GetAllPaymentBankState extends PaymentBankState {
@@ -216,7 +219,10 @@ class PaymentBankExceptionState extends PaymentBankState {
 }
 
 class PaymentBankLoadingState extends PaymentBankState {
-  const PaymentBankLoadingState({this.message = '', this.paymentBankStatus = PaymentBankStatus.loadingForPaymentBank, this.isLoading = true});
+  const PaymentBankLoadingState(
+      {this.message = '',
+      this.paymentBankStatus = PaymentBankStatus.loadingForPaymentBank,
+      this.isLoading = true});
 
   final bool isLoading;
   final PaymentBankStatus paymentBankStatus;
@@ -227,7 +233,10 @@ class PaymentBankLoadingState extends PaymentBankState {
 }
 
 class PaymentBankProcessingState extends PaymentBankState {
-  const PaymentBankProcessingState({this.message = '', this.paymentBankStatus = PaymentBankStatus.loadingForPaymentBank, this.isProcessing = true});
+  const PaymentBankProcessingState(
+      {this.message = '',
+      this.paymentBankStatus = PaymentBankStatus.loadingForPaymentBank,
+      this.isProcessing = true});
 
   final bool isProcessing;
   final PaymentBankStatus paymentBankStatus;
@@ -237,10 +246,11 @@ class PaymentBankProcessingState extends PaymentBankState {
   List<Object?> get props => throw UnimplementedError();
 }
 
-class NavigateToNextPageState extends PaymentBankState{
-  const NavigateToNextPageState({required this.appUserEntity,});
-  final  AppUserEntity appUserEntity;
+class NavigateToNextPageState extends PaymentBankState {
+  const NavigateToNextPageState({
+    required this.appUserEntity,
+  });
+  final AppUserEntity appUserEntity;
   @override
   List<Object?> get props => [appUserEntity];
 }
-

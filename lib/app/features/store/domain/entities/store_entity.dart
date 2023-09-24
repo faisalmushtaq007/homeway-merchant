@@ -27,7 +27,7 @@ class StoreEntity extends INetworkModel<StoreEntity> with AppEquatable {
     this.orders = const [],
     this.hasStoreOpened = true,
     this.hasReadyToPickupOrder = true,
-    this.storeCategories=const[],
+    this.storeCategories = const [],
   });
 
   factory StoreEntity.fromMap(Map<String, dynamic> map) {
@@ -47,7 +47,8 @@ class StoreEntity extends INetworkModel<StoreEntity> with AppEquatable {
               .map((e) => StoreAvailableFoodPreparationType.fromMap(e))
               .toList()
               .cast<StoreAvailableFoodPreparationType>(),
-      hasStoreOwnDeliveryPartners: map['hasStoreOwnDeliveryPartners']??false as bool,
+      hasStoreOwnDeliveryPartners:
+          map['hasStoreOwnDeliveryPartners'] ?? false as bool,
       storeOwnDeliveryPartnersInfo: map['storeOwnDeliveryPartnersInfo']
           .map((e) => StoreOwnDeliveryPartnersInfo.fromMap(e))
           .toList()
@@ -70,7 +71,7 @@ class StoreEntity extends INetworkModel<StoreEntity> with AppEquatable {
           .map((e) => MenuEntity.fromMap(e))
           .toList()
           .cast<MenuEntity>(),
-      hasNewStore: map['hasNewStore']??true as bool,
+      hasNewStore: map['hasNewStore'] ?? true as bool,
       ratingAndReviewEntity: (map['ratingAndReviewEntity'] != null)
           ? RatingAndReviewEntity.fromMap(map['ratingAndReviewEntity'])
           : RatingAndReviewEntity(),
@@ -149,7 +150,7 @@ class StoreEntity extends INetworkModel<StoreEntity> with AppEquatable {
         orders,
         hasReadyToPickupOrder,
         hasStoreOpened,
-    storeCategories,
+        storeCategories,
       ];
 
   StoreEntity copyWith({
@@ -216,7 +217,7 @@ class StoreEntity extends INetworkModel<StoreEntity> with AppEquatable {
       hasStoreOpened: hasStoreOpened ?? this.hasStoreOpened,
       hasReadyToPickupOrder:
           hasReadyToPickupOrder ?? this.hasReadyToPickupOrder,
-        storeCategories:storeCategories??this.storeCategories,
+      storeCategories: storeCategories ?? this.storeCategories,
     );
   }
 
@@ -253,7 +254,7 @@ class StoreEntity extends INetworkModel<StoreEntity> with AppEquatable {
       'orders': this.orders.map((e) => e.toMap()).toList(),
       'hasStoreOpened': hasStoreOpened,
       'hasReadyToPickupOrder': hasReadyToPickupOrder,
-      'storeCategories':storeCategories.map((e) => e.toMap()).toList(),
+      'storeCategories': storeCategories.map((e) => e.toMap()).toList(),
     };
   }
 
@@ -263,7 +264,7 @@ class StoreEntity extends INetworkModel<StoreEntity> with AppEquatable {
   }
 
   @override
-  Map<String, dynamic>? toJson() =>toMap();
+  Map<String, dynamic>? toJson() => toMap();
 }
 
 class StoreAvailableFoodTypes with AppEquatable {

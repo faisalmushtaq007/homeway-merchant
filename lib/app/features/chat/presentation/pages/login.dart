@@ -27,12 +27,15 @@ class LoginFirebaseUser {
           "typ": "JWT"
         },
         issuer: "prasant10050@gmail.com",
-        audience: Audience(["https://identitytoolkit.googleapis.com/google.identity.identitytoolkit.v1.IdentityToolkit"]),
+        audience: Audience([
+          "https://identitytoolkit.googleapis.com/google.identity.identitytoolkit.v1.IdentityToolkit"
+        ]),
         subject: "prasant10050@gmail.com",
         jwtId: "1234567890");
 
     // Sign it
-    final privatePem = await rootBundle.loadString('assets/secrets/rsa_private.pem');
+    final privatePem =
+        await rootBundle.loadString('assets/secrets/rsa_private.pem');
     //final pem = File('secrets/rsa_private.pem').readAsStringSync();
     final key = RSAPrivateKey(privatePem);
 
@@ -46,7 +49,8 @@ class LoginFirebaseUser {
     try {
       // Verify a token
 
-      final publicPem = await rootBundle.loadString('assets/secrets/rsa_public.pem');
+      final publicPem =
+          await rootBundle.loadString('assets/secrets/rsa_public.pem');
       //final publicKey = RSAKeyParser().parse(publicPem) as RSAPublicKey;
       //final pem = File('secrets/rsa_public.pem').readAsStringSync();
       final key = RSAPublicKey(publicPem);
@@ -63,7 +67,8 @@ class LoginFirebaseUser {
 
   Future<UserCredential?> loginWithFirebaseCustomToken(String token) async {
     try {
-      final userCredential = await FirebaseAuth.instance.signInWithCustomToken(token);
+      final userCredential =
+          await FirebaseAuth.instance.signInWithCustomToken(token);
       print("Sign-in successful.");
       return userCredential;
     } on FirebaseAuthException catch (e) {
@@ -94,7 +99,8 @@ class LoginFirebaseUser {
       final faker = Faker();
       String _firstName = faker.person.firstName();
       String _lastName = faker.person.lastName();
-      String _email = '${_firstName.toLowerCase()}.${_lastName.toLowerCase()}@${faker.internet.domainName()}';
+      String _email =
+          '${_firstName.toLowerCase()}.${_lastName.toLowerCase()}@${faker.internet.domainName()}';
       // Get Token
       final fcmToken = await FirebaseMessaging.instance.getToken();
       //todo(Prasant): To be notified whenever the token is updated, subscribe to the onTokenRefresh stream:

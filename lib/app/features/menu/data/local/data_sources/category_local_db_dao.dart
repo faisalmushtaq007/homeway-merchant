@@ -1,10 +1,12 @@
 part of 'package:homemakers_merchant/app/features/menu/index.dart';
 
-class CategoryLocalDbRepository<Extras extends Category> implements BaseCategoryLocalDbRepository<Category> {
+class CategoryLocalDbRepository<Extras extends Category>
+    implements BaseCategoryLocalDbRepository<Category> {
   // Completer is used for transforming synchronous code into asynchronous code.
   Future<Database> get _db async => AppDatabase.instance.database;
 
-  StoreRef<int, Map<String, dynamic>> get _category => AppDatabase.instance.category;
+  StoreRef<int, Map<String, dynamic>> get _category =>
+      AppDatabase.instance.category;
 
   Function unOrdDeepEq = const DeepCollectionEquality.unordered().equals;
 
@@ -13,11 +15,13 @@ class CategoryLocalDbRepository<Extras extends Category> implements BaseCategory
     final result = await tryCatch<Category>(() async {
       final int recordID = await _category.add(await _db, entity.toMap());
       //final Category recordCategory = entity.copyWith(storeID: recordID.toString());
-      await update(entity.copyWith(categoryId: recordID.toString()), UniqueId(recordID));
+      await update(
+          entity.copyWith(categoryId: recordID.toString()), UniqueId(recordID));
       final value = await _category.record(recordID).get(await _db);
       if (value != null) {
         final categoryEntity = Category.fromMap(value);
-        final category = categoryEntity.copyWith(categoryId: recordID.toString());
+        final category =
+            categoryEntity.copyWith(categoryId: recordID.toString());
         return category;
       } else {
         final category = entity.copyWith(categoryId: recordID.toString());
@@ -60,7 +64,8 @@ class CategoryLocalDbRepository<Extras extends Category> implements BaseCategory
   }
 
   @override
-  Future<Either<RepositoryBaseFailure, bool>> deleteById(UniqueId uniqueId) async {
+  Future<Either<RepositoryBaseFailure, bool>> deleteById(
+      UniqueId uniqueId) async {
     final result = await tryCatch<bool>(() async {
       final value = await _category.record(uniqueId.value).get(await _db);
       if (value != null) {
@@ -104,7 +109,8 @@ class CategoryLocalDbRepository<Extras extends Category> implements BaseCategory
   }
 
   @override
-  Future<Either<RepositoryBaseFailure, Category>> update(Category entity, UniqueId uniqueId) async {
+  Future<Either<RepositoryBaseFailure, Category>> update(
+      Category entity, UniqueId uniqueId) async {
     final result = await tryCatch<Category>(() async {
       final int key = uniqueId.value;
       final value = await _category.record(key).get(await _db);
@@ -126,41 +132,58 @@ class CategoryLocalDbRepository<Extras extends Category> implements BaseCategory
   }
 
   @override
-  Future<Either<RepositoryBaseFailure, Category>> upsert({UniqueId? id, String? token, required Category entity, bool checkIfUserLoggedIn = false}) async {
+  Future<Either<RepositoryBaseFailure, Category>> upsert(
+      {UniqueId? id,
+      String? token,
+      required Category entity,
+      bool checkIfUserLoggedIn = false}) async {
     final result = await tryCatch<Category>(() async {
       final int key = int.parse(entity.categoryId);
       final value = await _category.record(key).get(await _db);
-      final result = await _category.record(key).put(await _db, entity.toMap(), merge: (value != null) || false);
+      final result = await _category
+          .record(key)
+          .put(await _db, entity.toMap(), merge: (value != null) || false);
       return Category.fromMap(result);
     });
     return result;
   }
 
   @override
-  Future<Either<RepositoryBaseFailure, bool>> deleteByIdAndEntity(UniqueId uniqueId, Category entity) {
+  Future<Either<RepositoryBaseFailure, bool>> deleteByIdAndEntity(
+      UniqueId uniqueId, Category entity) {
     // TODO(prasant): implement deleteByIdAndEntity
     throw UnimplementedError();
   }
 
   @override
-  Future<Either<RepositoryBaseFailure, Category>> getByIdAndEntity(UniqueId uniqueId, Category entity) {
+  Future<Either<RepositoryBaseFailure, Category>> getByIdAndEntity(
+      UniqueId uniqueId, Category entity) {
     // TODO(prasant): implement getByIdAndEntity
     throw UnimplementedError();
   }
 
   @override
-  Future<Either<RepositoryBaseFailure, Category>> updateByIdAndEntity(UniqueId uniqueId, Category entity) {
+  Future<Either<RepositoryBaseFailure, Category>> updateByIdAndEntity(
+      UniqueId uniqueId, Category entity) {
     // TODO(prasant): implement updateByIdAndEntity
     throw UnimplementedError();
   }
 
-  Future<Map<String, RecordSnapshot<int, Map<String, Object?>>>> getCategoryByIds(DatabaseClient db, List<int> ids) async {
-    var snapshots = await _category.find(db, finder: Finder(filter: Filter.or(ids.map((e) => Filter.equals('categoryId', e)).toList())));
-    return <String, RecordSnapshot<int, Map<String, Object?>>>{for (var snapshot in snapshots) snapshot.value['categoryId']!.toString(): snapshot};
+  Future<Map<String, RecordSnapshot<int, Map<String, Object?>>>>
+      getCategoryByIds(DatabaseClient db, List<int> ids) async {
+    var snapshots = await _category.find(db,
+        finder: Finder(
+            filter: Filter.or(
+                ids.map((e) => Filter.equals('categoryId', e)).toList())));
+    return <String, RecordSnapshot<int, Map<String, Object?>>>{
+      for (var snapshot in snapshots)
+        snapshot.value['categoryId']!.toString(): snapshot
+    };
   }
 
   @override
-  Future<Either<RepositoryBaseFailure, List<Category>>> saveAll({required List<Category> entities, bool hasUpdateAll = false}) async {
+  Future<Either<RepositoryBaseFailure, List<Category>>> saveAll(
+      {required List<Category> entities, bool hasUpdateAll = false}) async {
     final result = await tryCatch<List<Category>>(() async {
       final db = await _db;
 
@@ -171,10 +194,13 @@ class CategoryLocalDbRepository<Extras extends Category> implements BaseCategory
         final allOrderList = r.toList();
         final newList = entities.toList();
         var convertOrderToMapObject = newList.map((e) => e.toMap()).toList();
-        final bool equalityStatus = unOrdDeepEq(allOrderList.toSet().toList(), newList.toSet().toList());
+        final bool equalityStatus = unOrdDeepEq(
+            allOrderList.toSet().toList(), newList.toSet().toList());
 
         await db.transaction((transaction) async {
-          var categoryIds = convertOrderToMapObject.map((map) => map['categoryId'] as int).toList();
+          var categoryIds = convertOrderToMapObject
+              .map((map) => map['categoryId'] as int)
+              .toList();
           var map = await getCategoryByIds(db, categoryIds);
           // Watch for deleted item
           var keysToDelete = (await _category.findKeys(transaction)).toList();
@@ -186,7 +212,8 @@ class CategoryLocalDbRepository<Extras extends Category> implements BaseCategory
               // Remove from deletion list
               keysToDelete.remove(key);
               // Don't update if no change
-              if (const DeepCollectionEquality().equals(snapshot.value, order)) {
+              if (const DeepCollectionEquality()
+                  .equals(snapshot.value, order)) {
                 // no changes
                 continue;
               } else {
@@ -245,9 +272,12 @@ class CategoryLocalDbRepository<Extras extends Category> implements BaseCategory
             mainCategory.isNotNull ||
             searchText.isNotNull ||
             filter.isNotNull ||
-            sorting.isNotNull && (startTimeStamp.isNotNull || endTimeStamp.isNotNull)) {
-          var mainCategoryRegExp = RegExp(mainCategory?.title ?? '', caseSensitive: false);
-          var subCategoryRegExp = RegExp(subCategory?.title ?? '', caseSensitive: false);
+            sorting.isNotNull &&
+                (startTimeStamp.isNotNull || endTimeStamp.isNotNull)) {
+          var mainCategoryRegExp =
+              RegExp(mainCategory?.title ?? '', caseSensitive: false);
+          var subCategoryRegExp =
+              RegExp(subCategory?.title ?? '', caseSensitive: false);
           var regExp = RegExp(searchText ?? '', caseSensitive: false);
           var filterRegExp = RegExp(filter ?? '', caseSensitive: false);
           var sortingRegExp = RegExp(sorting ?? '', caseSensitive: false);
@@ -287,7 +317,9 @@ class CategoryLocalDbRepository<Extras extends Category> implements BaseCategory
           );
         }
         // Else If
-        else if (searchText.isNotNull || filter.isNotNull || sorting.isNotNull) {
+        else if (searchText.isNotNull ||
+            filter.isNotNull ||
+            sorting.isNotNull) {
           var regExp = RegExp(searchText ?? '', caseSensitive: false);
           var filterRegExp = RegExp(filter ?? '', caseSensitive: false);
           var sortingRegExp = RegExp(sorting ?? '', caseSensitive: false);

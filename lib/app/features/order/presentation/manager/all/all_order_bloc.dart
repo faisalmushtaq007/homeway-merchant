@@ -18,11 +18,24 @@ class AllOrderBloc extends Bloc<AllOrderEvent, AllOrderState> {
     on<GetAllOrders>(getAllOrder);
   }
 
-  FutureOr<void> getAllOrder(GetAllOrders event, Emitter<AllOrderState> emit) async {
+  FutureOr<void> getAllOrder(
+      GetAllOrders event, Emitter<AllOrderState> emit) async {
     try {
-      emit(const GetAllLoadingOrderState(isLoading: true, message: 'Please wait while we are fetching all orders...'));
-      final DataSourceState<List<OrderEntity>> result = await serviceLocator<GetAllOrderUseCase>()(
-        (event.pageKey, event.pageSize, event.searchText, event.orderType, event.filter, event.sorting, event.startTimeStamp, event.endTimeStamp),
+      emit(const GetAllLoadingOrderState(
+          isLoading: true,
+          message: 'Please wait while we are fetching all orders...'));
+      final DataSourceState<List<OrderEntity>> result =
+          await serviceLocator<GetAllOrderUseCase>()(
+        (
+          event.pageKey,
+          event.pageSize,
+          event.searchText,
+          event.orderType,
+          event.filter,
+          event.sorting,
+          event.startTimeStamp,
+          event.endTimeStamp
+        ),
       );
       result.when(
         remote: (data, meta) {
@@ -91,7 +104,8 @@ class AllOrderBloc extends Bloc<AllOrderEvent, AllOrderState> {
             );
           }
         },
-        error: (dataSourceFailure, reason, error, networkException, stackTrace, exception, extra) {
+        error: (dataSourceFailure, reason, error, networkException, stackTrace,
+            exception, extra) {
           appLog.d('Get all order bloc get all error $reason');
           emit(
             GetAllExceptionOrderState(
@@ -106,7 +120,8 @@ class AllOrderBloc extends Bloc<AllOrderEvent, AllOrderState> {
       appLog.e('Store bloc get all $e');
       emit(
         GetAllExceptionOrderState(
-          message: 'Something went wrong during getting all orders, please try again',
+          message:
+              'Something went wrong during getting all orders, please try again',
           //exception: e as Exception,
           stackTrace: s,
         ),

@@ -1,12 +1,15 @@
 part of 'package:homemakers_merchant/app/features/address/index.dart';
 
-class AddressLocalDbRepository<T extends AddressModel> implements BaseAddressBankLocalDbRepository<AddressModel> {
+class AddressLocalDbRepository<T extends AddressModel>
+    implements BaseAddressBankLocalDbRepository<AddressModel> {
   Future<Database> get _db async => AppDatabase.instance.database;
 
-  StoreRef<int, Map<String, dynamic>> get _address => AppDatabase.instance.address;
+  StoreRef<int, Map<String, dynamic>> get _address =>
+      AppDatabase.instance.address;
 
   @override
-  Future<Either<RepositoryBaseFailure, AddressModel>> add(AddressModel entity) async {
+  Future<Either<RepositoryBaseFailure, AddressModel>> add(
+      AddressModel entity) async {
     final result = await tryCatch<AddressModel>(() async {
       final int recordID = await _address.add(await _db, entity.toMap());
       //final AddressModel recordAddressModel = entity.copyWith(storeID: recordID.toString());
@@ -25,7 +28,8 @@ class AddressLocalDbRepository<T extends AddressModel> implements BaseAddressBan
   }
 
   @override
-  Future<Either<RepositoryBaseFailure, bool>> delete(AddressModel entity) async {
+  Future<Either<RepositoryBaseFailure, bool>> delete(
+      AddressModel entity) async {
     final result = await tryCatch<bool>(() async {
       final int key = entity.addressID;
       final finder = Finder(filter: Filter.byKey(key));
@@ -62,7 +66,8 @@ class AddressLocalDbRepository<T extends AddressModel> implements BaseAddressBan
   }
 
   @override
-  Future<Either<RepositoryBaseFailure, bool>> deleteById(UniqueId uniqueId) async {
+  Future<Either<RepositoryBaseFailure, bool>> deleteById(
+      UniqueId uniqueId) async {
     final result = await tryCatch<bool>(() async {
       final value = await _address.record(uniqueId.value).get(await _db);
       if (value != null) {
@@ -77,7 +82,8 @@ class AddressLocalDbRepository<T extends AddressModel> implements BaseAddressBan
   }
 
   @override
-  Future<Either<RepositoryBaseFailure, bool>> deleteByIdAndEntity(UniqueId uniqueId, AddressModel entity) async {
+  Future<Either<RepositoryBaseFailure, bool>> deleteByIdAndEntity(
+      UniqueId uniqueId, AddressModel entity) async {
     // TODO(prasant): implement deleteByIdAndEntity
     throw UnimplementedError();
   }
@@ -102,7 +108,8 @@ class AddressLocalDbRepository<T extends AddressModel> implements BaseAddressBan
   }
 
   @override
-  Future<Either<RepositoryBaseFailure, AddressModel?>> getById(UniqueId id) async {
+  Future<Either<RepositoryBaseFailure, AddressModel?>> getById(
+      UniqueId id) async {
     final result = await tryCatch<AddressModel?>(() async {
       final value = await _address.record(id.value).get(await _db);
       if (value != null) {
@@ -114,13 +121,15 @@ class AddressLocalDbRepository<T extends AddressModel> implements BaseAddressBan
   }
 
   @override
-  Future<Either<RepositoryBaseFailure, AddressModel>> getByIdAndEntity(UniqueId uniqueId, AddressModel entity) async {
+  Future<Either<RepositoryBaseFailure, AddressModel>> getByIdAndEntity(
+      UniqueId uniqueId, AddressModel entity) async {
     // TODO(prasant): implement getByIdAndEntity
     throw UnimplementedError();
   }
 
   @override
-  Future<Either<RepositoryBaseFailure, AddressModel>> update(AddressModel entity, UniqueId uniqueId) async {
+  Future<Either<RepositoryBaseFailure, AddressModel>> update(
+      AddressModel entity, UniqueId uniqueId) async {
     final result = await tryCatch<AddressModel>(() async {
       final int key = uniqueId.value;
       final value = await _address.record(key).get(await _db);
@@ -142,7 +151,8 @@ class AddressLocalDbRepository<T extends AddressModel> implements BaseAddressBan
   }
 
   @override
-  Future<Either<RepositoryBaseFailure, AddressModel>> updateByIdAndEntity(UniqueId uniqueId, AddressModel entity) async {
+  Future<Either<RepositoryBaseFailure, AddressModel>> updateByIdAndEntity(
+      UniqueId uniqueId, AddressModel entity) async {
     // TODO(prasant): implement updateByIdAndEntity
     throw UnimplementedError();
   }
@@ -157,14 +167,17 @@ class AddressLocalDbRepository<T extends AddressModel> implements BaseAddressBan
     final result = await tryCatch<AddressModel>(() async {
       final int key = entity.addressID;
       final value = await _address.record(key).get(await _db);
-      final result = await _address.record(key).put(await _db, entity.toMap(), merge: (value != null) || false);
+      final result = await _address
+          .record(key)
+          .put(await _db, entity.toMap(), merge: (value != null) || false);
       return AddressModel.fromJson(result);
     });
     return result;
   }
 
   @override
-  Future<Either<RepositoryBaseFailure, List<AddressModel>>> getAllWithPagination({
+  Future<Either<RepositoryBaseFailure, List<AddressModel>>>
+      getAllWithPagination({
     int pageKey = 1,
     int pageSize = 10,
     String? searchText,
@@ -184,7 +197,10 @@ class AddressLocalDbRepository<T extends AddressModel> implements BaseAddressBan
           offset: pageKey,
         );
         // If
-        if (searchText.isNotNull || filter.isNotNull || sorting.isNotNull && (startTimeStamp.isNotNull || endTimeStamp.isNotNull)) {
+        if (searchText.isNotNull ||
+            filter.isNotNull ||
+            sorting.isNotNull &&
+                (startTimeStamp.isNotNull || endTimeStamp.isNotNull)) {
           var regExp = RegExp(searchText ?? '', caseSensitive: false);
           var filterRegExp = RegExp(filter ?? '', caseSensitive: false);
           var sortingRegExp = RegExp(sorting ?? '', caseSensitive: false);
@@ -264,7 +280,9 @@ class AddressLocalDbRepository<T extends AddressModel> implements BaseAddressBan
           );
         }
         // Else If
-        else if (searchText.isNotNull || filter.isNotNull || sorting.isNotNull) {
+        else if (searchText.isNotNull ||
+            filter.isNotNull ||
+            sorting.isNotNull) {
           var regExp = RegExp(searchText ?? '', caseSensitive: false);
           var filterRegExp = RegExp(filter ?? '', caseSensitive: false);
           var sortingRegExp = RegExp(sorting ?? '', caseSensitive: false);
@@ -318,13 +336,21 @@ class AddressLocalDbRepository<T extends AddressModel> implements BaseAddressBan
     return result;
   }
 
-  Future<Map<String, RecordSnapshot<int, Map<String, Object?>>>> getCategoryByIds(DatabaseClient db, List<int> ids) async {
-    var snapshots = await _address.find(db, finder: Finder(filter: Filter.or(ids.map((e) => Filter.equals('addressID', e)).toList())));
-    return <String, RecordSnapshot<int, Map<String, Object?>>>{for (var snapshot in snapshots) snapshot.value['addressID']!.toString(): snapshot};
+  Future<Map<String, RecordSnapshot<int, Map<String, Object?>>>>
+      getCategoryByIds(DatabaseClient db, List<int> ids) async {
+    var snapshots = await _address.find(db,
+        finder: Finder(
+            filter: Filter.or(
+                ids.map((e) => Filter.equals('addressID', e)).toList())));
+    return <String, RecordSnapshot<int, Map<String, Object?>>>{
+      for (var snapshot in snapshots)
+        snapshot.value['addressID']!.toString(): snapshot
+    };
   }
 
   @override
-  Future<Either<RepositoryBaseFailure, List<AddressModel>>> saveAll({required List<AddressModel> entities, bool hasUpdateAll = false}) async {
+  Future<Either<RepositoryBaseFailure, List<AddressModel>>> saveAll(
+      {required List<AddressModel> entities, bool hasUpdateAll = false}) async {
     final result = await tryCatch<List<AddressModel>>(() async {
       final db = await _db;
 
@@ -335,10 +361,13 @@ class AddressLocalDbRepository<T extends AddressModel> implements BaseAddressBan
         final allOrderList = r.toList();
         final newList = entities.toList();
         var convertOrderToMapObject = newList.map((e) => e.toMap()).toList();
-        final bool equalityStatus = unOrdDeepEq(allOrderList.toSet().toList(), newList.toSet().toList());
+        final bool equalityStatus = unOrdDeepEq(
+            allOrderList.toSet().toList(), newList.toSet().toList());
 
         await db.transaction((transaction) async {
-          var addressIds = convertOrderToMapObject.map((map) => map['addressID'] as int).toList();
+          var addressIds = convertOrderToMapObject
+              .map((map) => map['addressID'] as int)
+              .toList();
           var map = await getCategoryByIds(db, addressIds);
           // Watch for deleted item
           var keysToDelete = (await _address.findKeys(transaction)).toList();
@@ -350,7 +379,8 @@ class AddressLocalDbRepository<T extends AddressModel> implements BaseAddressBan
               // Remove from deletion list
               keysToDelete.remove(key);
               // Don't update if no change
-              if (const DeepCollectionEquality().equals(snapshot.value, order)) {
+              if (const DeepCollectionEquality()
+                  .equals(snapshot.value, order)) {
                 // no changes
                 continue;
               } else {

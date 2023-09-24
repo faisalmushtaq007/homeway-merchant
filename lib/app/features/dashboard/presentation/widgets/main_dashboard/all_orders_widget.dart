@@ -68,7 +68,8 @@ class _AllOrderWidgetController extends State<AllOrderWidget> {
   Widget build(BuildContext context) => _AllOrderWidgetView(this);
 }
 
-class _AllOrderWidgetView extends WidgetView<AllOrderWidget, _AllOrderWidgetController> {
+class _AllOrderWidgetView
+    extends WidgetView<AllOrderWidget, _AllOrderWidgetController> {
   const _AllOrderWidgetView(super.state);
 
   @override
@@ -129,7 +130,8 @@ class _AllOrderWidgetView extends WidgetView<AllOrderWidget, _AllOrderWidgetCont
                         title: 'Total',
                         subTitle: '90',
                         titleTextColor: context.colorScheme.onPrimaryContainer,
-                        subTitleTextColor: context.colorScheme.onPrimaryContainer,
+                        subTitleTextColor:
+                            context.colorScheme.onPrimaryContainer,
                       ),
                     ),
                     const AnimatedGap(8, duration: Duration(milliseconds: 200)),
@@ -149,13 +151,15 @@ class _AllOrderWidgetView extends WidgetView<AllOrderWidget, _AllOrderWidgetCont
                             mainAxisAlignment: MainAxisAlignment.start,
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              AnimatedGap(8, duration: Duration(milliseconds: 200)),
+                              AnimatedGap(8,
+                                  duration: Duration(milliseconds: 200)),
                               VerticalDivider(
                                 thickness: 0.75,
                                 indent: 6,
                                 endIndent: 6,
                               ),
-                              AnimatedGap(8, duration: Duration(milliseconds: 200)),
+                              AnimatedGap(8,
+                                  duration: Duration(milliseconds: 200)),
                             ],
                           );
                         },
