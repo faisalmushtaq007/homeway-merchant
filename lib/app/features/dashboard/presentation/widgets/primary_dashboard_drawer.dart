@@ -5,21 +5,24 @@ class PrimaryDashboardDrawer extends StatefulWidget {
     super.key,
     this.isMainDrawerPage = true,
   });
+
   final bool isMainDrawerPage;
 
   @override
-  _PrimaryDashboardDrawerController createState() =>
-      _PrimaryDashboardDrawerController();
+  _PrimaryDashboardDrawerController createState() => _PrimaryDashboardDrawerController();
 }
 
 class _PrimaryDashboardDrawerController extends State<PrimaryDashboardDrawer> {
   List<DrawerEntity> drawerEntities = [];
+  late AppUserEntity appUserEntity;
 
   @override
   void initState() {
     super.initState();
+    appUserEntity = serviceLocator<AppUserEntity>();
     drawerEntities = [];
     drawerEntities.clear();
+    context.read<BusinessProfileBloc>().add(const GetAllAppUserProfilePagination(pageKey: 0, pageSize: 10));
     if (mounted) {
       initializeDrawerMenu(context);
     }
@@ -305,11 +308,18 @@ class _PrimaryDashboardDrawerController extends State<PrimaryDashboardDrawer> {
   }
 
   @override
-  Widget build(BuildContext context) => _PrimaryDashboardDrawerView(this);
+  Widget build(BuildContext context) => BlocBuilder<BusinessProfileBloc, BusinessProfileState>(
+        builder: (context, businessProfileState) {
+          if (businessProfileState is GetAllAppUserProfileEmptyState) {
+          } else if (businessProfileState is GetAllAppUserProfilePaginationState) {
+            appUserEntity = businessProfileState.appUserEntities.last;
+          }
+          return _PrimaryDashboardDrawerView(this);
+        },
+      );
 }
 
-class _PrimaryDashboardDrawerView extends WidgetView<PrimaryDashboardDrawer,
-    _PrimaryDashboardDrawerController> {
+class _PrimaryDashboardDrawerView extends WidgetView<PrimaryDashboardDrawer, _PrimaryDashboardDrawerController> {
   const _PrimaryDashboardDrawerView(super.state);
 
   @override
@@ -326,26 +336,32 @@ class _PrimaryDashboardDrawerView extends WidgetView<PrimaryDashboardDrawer,
               child: UserAccountsDrawerHeader(
                 //decoration: BoxDecoration(color: Colors.green),
                 accountName: Text(
-                  "Thomas Shelby",
-                  style: context.titleLarge!.copyWith(),
-                  textDirection:
-                      serviceLocator<LanguageController>().targetTextDirection,
+                  state.appUserEntity.businessProfile?.userName ?? '',
+                  style: context.titleLarge!.copyWith(color: context.colorScheme.background,fontWeight: FontWeight.w900,),
+                  textDirection: serviceLocator<LanguageController>().targetTextDirection,
                 ).translate(),
-                accountEmail: Text("thomashomeservice@gmail.com"),
-                currentAccountPictureSize: Size.square(50),
+                accountEmail: Text(
+                  state.appUserEntity.businessProfile?.businessName ?? state.appUserEntity.businessProfile?.businessEmailAddress ?? '',
+                 style: context.titleMedium!.copyWith(
+                    fontWeight: FontWeight.w500,
+                   color: context.colorScheme.background,
+                  ),
+                ).translate(),
+                currentAccountPictureSize: Size.square(45),
                 currentAccountPicture: CircleAvatar(
                   backgroundColor: Colors.white70,
                   child: Text(
-                    "T",
+                    state.appUserEntity.businessProfile.isNull &&
+                            state.appUserEntity.businessProfile!.userName.isEmptyOrNull
+                        ? ''
+                        : state.appUserEntity.businessProfile!.userName![0].toUpperCase(),
                     style: context.titleMedium!.copyWith(),
-                    textDirection: serviceLocator<LanguageController>()
-                        .targetTextDirection,
+                    textDirection: serviceLocator<LanguageController>().targetTextDirection,
                   ).translate(), //Text
                 ), //circleAvatar
               ), //UserAccountDrawerHeader
             ),
-            for (final DrawerEntity drawerEntity in state.drawerEntities)
-              buildDrawerTiles(context, drawerEntity),
+            for (final DrawerEntity drawerEntity in state.drawerEntities) buildDrawerTiles(context, drawerEntity),
           ],
         ),
       ),
@@ -364,12 +380,10 @@ class _PrimaryDashboardDrawerView extends WidgetView<PrimaryDashboardDrawer,
         expandedCrossAxisAlignment: drawerEntity.expandedCrossAxisAlignment,
         title: Text(
           drawerEntity.drawerName,
-          textDirection:
-              serviceLocator<LanguageController>().targetTextDirection,
+          textDirection: serviceLocator<LanguageController>().targetTextDirection,
         ).translate(),
         children: drawerEntity.children
-            .map<Widget>(
-                (DrawerEntity entity) => buildDrawerTiles(context, entity))
+            .map<Widget>((DrawerEntity entity) => buildDrawerTiles(context, entity))
             .toList()
             .cast<Widget>(),
       ),
@@ -378,8 +392,7 @@ class _PrimaryDashboardDrawerView extends WidgetView<PrimaryDashboardDrawer,
         onTap: drawerEntity.onPressed,
         title: Text(
           drawerEntity.drawerName,
-          textDirection:
-              serviceLocator<LanguageController>().targetTextDirection,
+          textDirection: serviceLocator<LanguageController>().targetTextDirection,
         ).translate(),
       ),
     );

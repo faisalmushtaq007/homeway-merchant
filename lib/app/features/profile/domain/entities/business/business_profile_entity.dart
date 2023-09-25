@@ -15,38 +15,38 @@ class BusinessProfileEntity with AppEquatable {
     this.phoneNumberWithoutDialCode = '',
     this.newBusinessDocumentEntity,
     this.allBusinessDocuments = const [],
+    this.profileImageEntity,
   });
 
   factory BusinessProfileEntity.fromMap(Map<String, dynamic> map) {
     return BusinessProfileEntity(
-        businessProfileID: map['businessProfileID'] ?? -1 as int,
-        userName: map['userName'] ?? '',
-        businessPhoneNumber: map['businessPhoneNumber'] ?? '',
-        businessAddress: (map['businessAddress'] != null)
-            ? AddressModel.fromJson(map['businessAddress'])
-            : AddressModel(),
-        businessEmailAddress: map['businessEmailAddress'] ?? '' as String,
-        businessName: map['businessName'] ?? '' as String,
-        businessTypeEntity: map['businessTypeEntity'] != null
-            ? BusinessTypeEntity.fromMap(map['businessTypeEntity'])
-            : BusinessTypeEntity(),
-        businessDocumentUploadedEntity:
-            map['businessDocumentUploadedEntity'] != null
-                ? BusinessDocumentUploadedEntity.fromMap(
-                    map['businessDocumentUploadedEntity'])
-                : BusinessDocumentUploadedEntity(),
-        isoCode: map['isoCode'] ?? 'SA',
-        countryDialCode: map['country_dial_code'] ?? '+966',
-        phoneNumberWithoutDialCode: map['phoneNumberWithoutDialCode'] ?? '',
-        newBusinessDocumentEntity: (map['businessDocumentEntity'] != null)
-            ? NewBusinessDocumentEntity.fromMap(map['businessDocumentEntity'])
-            : NewBusinessDocumentEntity(),
-        allBusinessDocuments: (map['allBusinessDocuments'] != null)
-            ? map['allBusinessDocuments']
-                .map((e) => NewBusinessDocumentEntity.fromMap(e))
-                .toList()
-                .cast<NewBusinessDocumentEntity>()
-            : <NewBusinessDocumentEntity>[]);
+      businessProfileID: map['businessProfileID'] ?? -1,
+      userName: map['userName'] ?? '',
+      businessPhoneNumber: map['businessPhoneNumber'] ?? '',
+      businessAddress:
+          (map['businessAddress'] != null) ? AddressModel.fromJson(map['businessAddress']) : AddressModel(),
+      businessEmailAddress: map['businessEmailAddress'] ?? '',
+      businessName: map['businessName'] ?? '',
+      businessTypeEntity: map['businessTypeEntity'] != null
+          ? BusinessTypeEntity.fromMap(map['businessTypeEntity'])
+          : BusinessTypeEntity(),
+      businessDocumentUploadedEntity: map['businessDocumentUploadedEntity'] != null
+          ? BusinessDocumentUploadedEntity.fromMap(map['businessDocumentUploadedEntity'])
+          : BusinessDocumentUploadedEntity(),
+      isoCode: map['isoCode'] ?? 'SA',
+      countryDialCode: map['country_dial_code'] ?? '+966',
+      phoneNumberWithoutDialCode: map['phoneNumberWithoutDialCode'] ?? '',
+      newBusinessDocumentEntity: (map['businessDocumentEntity'] != null)
+          ? NewBusinessDocumentEntity.fromMap(map['businessDocumentEntity'])
+          : NewBusinessDocumentEntity(),
+      allBusinessDocuments: (map['allBusinessDocuments'] != null)
+          ? map['allBusinessDocuments']
+              .map((e) => NewBusinessDocumentEntity.fromMap(e))
+              .toList()
+              .cast<NewBusinessDocumentEntity>()
+          : <NewBusinessDocumentEntity>[],
+        //profileImageEntity:map['profileImage']!=null?CaptureImageEntity.fromMap(map['profileImage']):null,
+    );
   }
 
   final int businessProfileID;
@@ -62,31 +62,26 @@ class BusinessProfileEntity with AppEquatable {
   final String phoneNumberWithoutDialCode;
   final NewBusinessDocumentEntity? newBusinessDocumentEntity;
   final List<NewBusinessDocumentEntity> allBusinessDocuments;
+  final CaptureImageEntity? profileImageEntity;
 
   Map<String, dynamic> toMap() {
     return {
       'businessProfileID': businessProfileID,
       'userName': userName,
       'businessPhoneNumber': businessPhoneNumber,
-      'businessAddress': (businessAddress.isNotNull)
-          ? businessAddress?.toMap()
-          : AddressModel().toMap(),
+      'businessAddress': (businessAddress.isNotNull) ? businessAddress?.toMap() : AddressModel().toMap(),
       'businessEmailAddress': businessEmailAddress,
       'businessName': businessName,
-      'businessTypeEntity': (businessTypeEntity.isNotNull)
-          ? businessTypeEntity?.toMap()
-          : BusinessTypeEntity().toMap(),
-      'businessDocumentUploadedEntity':
-          (businessDocumentUploadedEntity.isNotNull)
-              ? businessDocumentUploadedEntity?.toMap()
-              : BusinessDocumentUploadedEntity().toMap(),
+      'businessTypeEntity': (businessTypeEntity.isNotNull) ? businessTypeEntity?.toMap() : BusinessTypeEntity().toMap(),
+      'businessDocumentUploadedEntity': (businessDocumentUploadedEntity.isNotNull)
+          ? businessDocumentUploadedEntity?.toMap()
+          : BusinessDocumentUploadedEntity().toMap(),
       'isoCode': isoCode ?? 'SA',
       'country_dial_code': countryDialCode ?? '+966',
       'phoneNumberWithoutDialCode': phoneNumberWithoutDialCode ?? '',
-      'newBusinessDocumentEntity': newBusinessDocumentEntity?.toMap() ??
-          NewBusinessDocumentEntity().toMap(),
-      'allBusinessDocuments':
-          allBusinessDocuments ?? <NewBusinessDocumentEntity>[],
+      'newBusinessDocumentEntity': newBusinessDocumentEntity?.toMap() ?? NewBusinessDocumentEntity().toMap(),
+      'allBusinessDocuments': allBusinessDocuments ?? <NewBusinessDocumentEntity>[],
+      //'profileImage':profileImageEntity?.toMap()??CaptureImageEntity().toMap()
     };
   }
 
@@ -103,7 +98,7 @@ class BusinessProfileEntity with AppEquatable {
       BusinessDocumentUploadedEntity? businessDocumentUploadedEntity,
       String? phoneNumberWithoutDialCode,
       NewBusinessDocumentEntity? newBusinessDocumentEntity,
-      List<NewBusinessDocumentEntity>? allBusinessDocuments}) {
+      List<NewBusinessDocumentEntity>? allBusinessDocuments,CaptureImageEntity? profileImageEntity,}) {
     return BusinessProfileEntity(
       businessProfileID: businessProfileID ?? this.businessProfileID,
       userName: userName ?? this.userName,
@@ -114,13 +109,11 @@ class BusinessProfileEntity with AppEquatable {
       countryDialCode: countryDialCode ?? this.countryDialCode,
       isoCode: isoCode ?? this.isoCode,
       businessTypeEntity: businessTypeEntity ?? this.businessTypeEntity,
-      businessDocumentUploadedEntity:
-          businessDocumentUploadedEntity ?? this.businessDocumentUploadedEntity,
-      phoneNumberWithoutDialCode:
-          phoneNumberWithoutDialCode ?? this.phoneNumberWithoutDialCode,
-      newBusinessDocumentEntity:
-          newBusinessDocumentEntity ?? this.newBusinessDocumentEntity,
+      businessDocumentUploadedEntity: businessDocumentUploadedEntity ?? this.businessDocumentUploadedEntity,
+      phoneNumberWithoutDialCode: phoneNumberWithoutDialCode ?? this.phoneNumberWithoutDialCode,
+      newBusinessDocumentEntity: newBusinessDocumentEntity ?? this.newBusinessDocumentEntity,
       allBusinessDocuments: allBusinessDocuments ?? this.allBusinessDocuments,
+        profileImageEntity:profileImageEntity??this.profileImageEntity,
     );
   }
 
@@ -142,5 +135,6 @@ class BusinessProfileEntity with AppEquatable {
         phoneNumberWithoutDialCode,
         newBusinessDocumentEntity,
         allBusinessDocuments,
+    profileImageEntity,
       ];
 }

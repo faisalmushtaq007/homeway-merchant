@@ -1068,8 +1068,8 @@
         "cancel": 90
       },
       "rush_hours": {
-        "fromTime": "16:38",
-        "toTime": "17:44"
+        "fromTime": "16:00",
+        "toTime": "17:00"
       },
       "rush_date": {
         "fromDateTime": "2023-09-21T07:36:41.418Z",
