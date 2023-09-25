@@ -270,7 +270,6 @@ class _PhoneNumberVerificationPageState
                               ).translate(),
                             ],
                           ),
-
                           const AnimatedGap(12,
                               duration: Duration(milliseconds: 500)),
                           Wrap(

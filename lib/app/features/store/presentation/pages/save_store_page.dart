@@ -471,10 +471,8 @@ class _SaveStorePageState extends State<SaveStorePage> {
                   serviceLocator<LanguageController>().targetTextDirection,
             ),
             actions: const [
-              Padding(
-                padding: EdgeInsetsDirectional.symmetric(horizontal: 14),
-                child: LanguageSelectionWidget(),
-              ),
+              NotificationIconWidget(),
+              LanguageSelectionWidget(),
             ],
           ),
           body: BlocListener<StoreBloc, StoreState>(

@@ -50,7 +50,6 @@ class _AllSavedAddressPageController extends State<AllSavedAddressPage> {
       _pagingController.itemList = [];
     }*/
     int sectionNumber = pageKey ~/ pageSize;
-    print('Loading section $sectionNumber');
     try {
       context.read<AddressBloc>().add(
             GetAllAddressPagination(
@@ -65,7 +64,7 @@ class _AllSavedAddressPageController extends State<AllSavedAddressPage> {
       return;
     } catch (error) {
       _pagingController.error = error;
-      print(error);
+      debugPrint(error);
     }
   }
 

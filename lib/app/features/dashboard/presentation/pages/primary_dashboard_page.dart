@@ -92,6 +92,20 @@ class _PrimaryDashboardPageController extends State<PrimaryDashboardPage> {
         hasEntityStored: false,
       ),
     );
+    primaryDashboardMenuEntities.add(
+      PrimaryDashboardEntity(
+        title: 'My Address',
+        titleID: 5,
+        onPressed: () async {
+          final navigateToMenuPage = await context.push(Routes.ALL_SAVED_ADDRESS_LIST);
+          return;
+        },
+        leading: const Icon(
+          Icons.location_history,
+        ),
+        hasEntityStored: false,
+      ),
+    );
     initData();
   }
 
@@ -174,6 +188,31 @@ class _PrimaryDashboardPageView extends WidgetView<PrimaryDashboardPage, _Primar
     final double width = media.size.width;
     final ThemeData theme = Theme.of(context);
 
+    DateTime now = DateTime.now();
+    var timeNow = int.parse(DateFormat('kk').format(now));
+    TimeOfDay day = TimeOfDay.now();
+    final int hour = TimeOfDay.now().hour;
+    var message = '';
+    var imageName = '';
+    switch(day.period){
+      case DayPeriod.am: {
+        if (hour>=0 && hour <= 12) {
+          message = 'Good Morning';
+        } else if ((hour > 12) && (hour <= 16)) {
+          message = 'Good Afernoon';
+        }else{
+          message = 'Good Morning';
+        }
+      }
+      break;
+      case DayPeriod.pm: {
+        if ((timeNow > 16) && (timeNow < 20)) {
+          message = 'Good Evening';
+        } else {
+          message = 'Good Night';
+        }
+      }
+    }
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: FlexColorScheme.themedSystemNavigationBar(
         context,
@@ -189,10 +228,8 @@ class _PrimaryDashboardPageView extends WidgetView<PrimaryDashboardPage, _Primar
               title: const Text('Dashboard'),
               titleSpacing: 4,
               actions: const [
-                Padding(
-                  padding: EdgeInsetsDirectional.symmetric(horizontal: 14),
-                  child: LanguageSelectionWidget(),
-                ),
+                NotificationIconWidget(),
+                LanguageSelectionWidget(),
               ],
             ),
             drawer: const PrimaryDashboardDrawer(
@@ -230,7 +267,98 @@ class _PrimaryDashboardPageView extends WidgetView<PrimaryDashboardPage, _Primar
                           SliverList(
                             delegate: SliverChildListDelegate(
                               [
-                                Wrap(
+                                const AnimatedGap(
+                                  8,
+                                  duration: Duration(milliseconds: 500),
+                                ),
+                                Row(
+                                  children: [
+                                    Expanded(
+                                      child: Column(
+                                        children: [
+                                          Wrap(
+                                            textDirection: serviceLocator<LanguageController>()
+                                                .targetTextDirection,
+                                            children: [
+                                              Text(
+                                                'Hi, ',
+                                                textDirection:
+                                                serviceLocator<LanguageController>()
+                                                    .targetTextDirection,
+                                                style: context.headlineLarge!.copyWith(
+                                                  fontWeight: FontWeight.bold,
+                                                  height: 0.9,
+                                                  fontSize: 30,
+                                                  color: Color.fromRGBO(255, 125, 113, 1),
+                                                ),
+                                              ).translate(),
+                                              Text(
+                                                "${(state.appUserEntity.isNotNull && state.appUserEntity!.businessProfile.isNotNull && !state.appUserEntity!.businessProfile!.userName.isEmptyOrNull) ? state.appUserEntity!.businessProfile!.userName : 'Hello User'}",
+                                                style: context.headlineLarge!.copyWith(
+                                                  fontWeight: FontWeight.bold,
+                                                  height: 0.9,
+                                                  fontSize: 30,
+                                                  color: Color.fromRGBO(255, 125, 113, 1),
+                                                ),
+                                                textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                                softWrap: true,
+                                                maxLines: 3,
+                                                overflow: TextOverflow.ellipsis,
+                                              ).translate(),
+                                            ],
+                                          ),
+                                          const AnimatedGap(6,
+                                              duration: Duration(milliseconds: 500)),
+                                          Wrap(
+                                            textDirection: serviceLocator<LanguageController>()
+                                                .targetTextDirection,
+                                            children: [
+                                              Text(
+                                                message,
+                                                textDirection:
+                                                serviceLocator<LanguageController>()
+                                                    .targetTextDirection,
+                                                style: GoogleFonts.raleway(
+                                                  textStyle: context.bodyLarge!.copyWith(
+                                                    fontWeight: FontWeight.bold,
+                                                    fontStyle: FontStyle.italic,
+                                                    height: 0.9,
+                                                  ),
+                                                ),
+                                              ).translate(),
+                                            ],
+                                          ),
+                                        ],
+                                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                                        mainAxisAlignment: MainAxisAlignment.center,
+                                      ),
+                                    ),
+                                    Wrap(
+                                      textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                      alignment: WrapAlignment.center,
+                                      children: [
+                                        CircleAvatar(
+                                          radius: 26,
+                                          backgroundColor: context.colorScheme.primaryContainer,
+                                          child: Text(
+                                            (state.appUserEntity.businessProfile.isNull &&
+                                                state.appUserEntity.businessProfile!.userName.isEmptyOrNull)
+                                                ? ''
+                                                : state.appUserEntity.businessProfile!.userName.toCharArray()[0].toUpperCase() ?? '',
+                                            style: context.titleLarge!.copyWith(),
+                                            textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                          ).translate(), //Text
+                                        ), //circleA
+                                      ],
+                                    ),
+                                  ],
+                                ),
+
+                                const AnimatedGap(
+                                  24,
+                                  duration: Duration(milliseconds: 500),
+                                ),
+                                /*Wrap(
                                   textDirection: serviceLocator<LanguageController>().targetTextDirection,
                                   alignment: WrapAlignment.center,
                                   children: [
@@ -284,7 +412,7 @@ class _PrimaryDashboardPageView extends WidgetView<PrimaryDashboardPage, _Primar
                                 const AnimatedGap(
                                   16,
                                   duration: Duration(milliseconds: 500),
-                                ),
+                                ),*/
                                 Wrap(
                                   textDirection: serviceLocator<LanguageController>().targetTextDirection,
                                   alignment: WrapAlignment.center,
@@ -308,10 +436,43 @@ class _PrimaryDashboardPageView extends WidgetView<PrimaryDashboardPage, _Primar
                                   25,
                                   duration: Duration(milliseconds: 500),
                                 ),
+
+                                StaggeredGrid.count(
+                                  crossAxisCount: 4,
+                                  mainAxisSpacing: 4,
+                                  crossAxisSpacing: 4,
+                                  children: state.primaryDashboardMenuEntities.map((e) => StaggeredGridTile.count(
+                                    crossAxisCellCount: 2,
+                                    mainAxisCellCount: 2,
+                                    child: PrimaryDashboardMenuCard(
+                                      key: ObjectKey(e),
+                                      primaryDashboardMenuEntity: e,
+                                      hasGridViewParent: true,
+                                    ),
+                                  )).toList().cast<Widget>(),
+                                  /*children:  [
+                                    StaggeredGridTile.count(
+                                      crossAxisCellCount: 2,
+                                      mainAxisCellCount: 2,
+                                      child: Offstage(),
+                                    ),
+                                    StaggeredGridTile.count(
+                                      crossAxisCellCount: 2,
+                                      mainAxisCellCount: 2,
+                                      child: Offstage(),
+                                    ),
+                                    StaggeredGridTile.count(
+                                      crossAxisCellCount: 2,
+                                      mainAxisCellCount: 2,
+                                      child: Offstage(),
+                                    ),
+
+                                  ],*/
+                                )
                               ],
                             ),
                           ),
-                          SliverFillRemaining(
+                          /*SliverFillRemaining(
                             child: ListView.builder(
                               shrinkWrap: true,
                               //physics: const ClampingScrollPhysics(),
@@ -323,7 +484,7 @@ class _PrimaryDashboardPageView extends WidgetView<PrimaryDashboardPage, _Primar
                                 );
                               },
                             ),
-                          ),
+                          ),*/
                         ],
                       ),
                     );

@@ -50,11 +50,11 @@ class BusinessProfileEntity with AppEquatable {
   }
 
   final int businessProfileID;
-  final String? userName;
-  final String? businessPhoneNumber;
+  final String userName;
+  final String businessPhoneNumber;
   final AddressModel? businessAddress;
-  final String? businessEmailAddress;
-  final String? businessName;
+  final String businessEmailAddress;
+  final String businessName;
   final String countryDialCode;
   final String isoCode;
   final BusinessTypeEntity? businessTypeEntity;
