@@ -6,10 +6,20 @@ class AppSearchInputSliverWidget extends StatefulWidget {
     this.onChanged,
     this.debounceTime,
     this.isEnabled = true,
+    this.height=48,
+    this.margin=EdgeInsetsDirectional.zero,
+    this.padding=EdgeInsetsDirectional.zero,
+    this.hintText='Search',
+    this.contentPadding=const EdgeInsetsDirectional.symmetric(horizontal: 0,vertical: 12),
   });
   final ValueChanged<String>? onChanged;
   final Duration? debounceTime;
   final bool isEnabled;
+  final double height;
+  final EdgeInsetsGeometry margin;
+  final EdgeInsetsGeometry padding;
+  final String hintText;
+  final EdgeInsetsGeometry contentPadding;
   @override
   _AppSearchInputSliverWidgetController createState() =>
       _AppSearchInputSliverWidgetController();
@@ -63,23 +73,23 @@ class _AppSearchInputSliverWidgetView extends WidgetView<
           : CrossFadeState.showSecond,
       duration: const Duration(milliseconds: 200),
       firstChild: Container(
-        height: 56,
-        padding: const EdgeInsetsDirectional.symmetric(
+        height: widget.height,
+        padding: widget.padding,
+        /*padding: const EdgeInsetsDirectional.symmetric(
           horizontal: 0,
           vertical: 4,
-        ),
-        margin: const EdgeInsetsDirectional.only(
-          bottom: 8,
-        ),
+        ),*/
+        margin: widget.margin,
         child: Row(
           children: [
             Expanded(
               child: TextField(
-                decoration: const InputDecoration(
-                  prefixIcon: Icon(
+                decoration: InputDecoration(
+                  contentPadding: widget.contentPadding,
+                  prefixIcon: const Icon(
                     Icons.search,
                   ),
-                  labelText: 'Search',
+                  hintText: widget.hintText,
                 ),
                 onChanged: state._textChangeStreamController.add,
               ),

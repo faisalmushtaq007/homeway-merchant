@@ -208,19 +208,30 @@ class GetByIDAddons extends MenuEvent {
 
 class GetAllAddons extends MenuEvent {
   GetAllAddons({
-    this.pageKey = 1,
+    this.pageKey = 0,
     this.pageSize = 10,
     this.searchItem,
+    this.endTimeStamp,
+    this.filter,
+    this.sorting,
+    this.startTimeStamp,
   });
   final int pageKey;
   final int pageSize;
   final String? searchItem;
+  final String? filter;
+  final String? sorting;
+  final Timestamp? startTimeStamp;
+  final Timestamp? endTimeStamp;
 
   @override
   bool get cacheHash => true;
 
   @override
-  List<Object?> get hashParameters => [pageKey, pageSize, searchItem];
+  List<Object?> get hashParameters => [pageKey, pageSize, searchItem,endTimeStamp,
+    filter,
+    sorting,
+    startTimeStamp,];
 }
 
 class SelectAddons extends MenuEvent {

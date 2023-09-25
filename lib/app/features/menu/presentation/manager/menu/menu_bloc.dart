@@ -1175,6 +1175,7 @@ class MenuBloc extends Bloc<MenuEvent, MenuState> {
   FutureOr<void> _getAllAddonsPagination(
       GetAllAddonsPagination event, Emitter<MenuState> emit) async {
     try {
+      appLog.d('Get all addons bloc ${event.pageKey}, ${event.pageSize}, ${event.searchText}');
       emit(GetAllLoadingAddonsPaginationState(
           isLoading: true,
           message: 'Please wait while we are fetching all addons...'));

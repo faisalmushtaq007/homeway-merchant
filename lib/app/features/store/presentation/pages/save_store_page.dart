@@ -570,7 +570,7 @@ class _SaveStorePageState extends State<SaveStorePage> {
                 builder: (context, permissionState) {
                   return Container(
                     constraints: BoxConstraints(
-                      minWidth: double.infinity,
+                      minWidth: 1000,
                       minHeight: media.size.height,
                     ),
                     child: Form(

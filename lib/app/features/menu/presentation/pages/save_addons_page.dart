@@ -197,10 +197,8 @@ class _SaveAddonsPageView
                   serviceLocator<LanguageController>().targetTextDirection,
             ),
             actions: const [
-              Padding(
-                padding: EdgeInsetsDirectional.symmetric(horizontal: 14),
-                child: LanguageSelectionWidget(),
-              ),
+              NotificationIconWidget(),
+              LanguageSelectionWidget(),
             ],
           ),
           body: SlideInLeft(
@@ -238,7 +236,7 @@ class _SaveAddonsPageView
                             milliseconds: 500,
                           ),
                           decoration: BoxDecoration(
-                            color: Colors.white,
+                            color: context.colorScheme.background,
                             borderRadius: BorderRadiusDirectional.circular(10),
                             boxShadow: const [
                               BoxShadow(
@@ -308,7 +306,7 @@ class _SaveAddonsPageView
                                 ),
                                 absorbing: false,
                               ),
-                              Wrap(
+                              /*Wrap(
                                 alignment: WrapAlignment.center,
                                 crossAxisAlignment: WrapCrossAlignment.center,
                                 children: [
@@ -326,7 +324,7 @@ class _SaveAddonsPageView
                                     ).translate(),
                                   ),
                                 ],
-                              ),
+                              ),*/
                               //const AnimatedGap(12, duration: Duration(milliseconds: 500)),
                               Expanded(
                                 flex: 3,

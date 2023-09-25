@@ -38,7 +38,6 @@ class _AllMenuPageController extends State<AllMenuPage> {
     widgetState = WidgetState<MenuEntity>.loading(context: context);
     scrollController = ScrollController();
     innerScrollController = ScrollController();
-
     super.initState();
     /*if (mounted) {
       widgetState = WidgetState<MenuEntity>.loading(
@@ -264,10 +263,8 @@ class _AllMenuPageView extends WidgetView<AllMenuPage, _AllMenuPageController> {
           appBar: AppBar(
             title: const Text('All Menus'),
             actions: const [
-              Padding(
-                padding: EdgeInsetsDirectional.symmetric(horizontal: 14),
-                child: LanguageSelectionWidget(),
-              ),
+              NotificationIconWidget(),
+              LanguageSelectionWidget(),
             ],
           ),
           floatingActionButton: AnimatedOpacity(
@@ -318,7 +315,7 @@ class _AllMenuPageView extends WidgetView<AllMenuPage, _AllMenuPageController> {
                 child: SingleChildScrollView(
                   child: Container(
                     constraints: BoxConstraints(
-                      minWidth: double.infinity,
+                      minWidth: 1000,
                       maxHeight: media.size.height -
                           (media.padding.top +
                               kToolbarHeight +

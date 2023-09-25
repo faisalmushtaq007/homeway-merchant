@@ -36,11 +36,22 @@ class _AddonsCardState extends State<AddonsCard> {
 
   @override
   Widget build(BuildContext context) {
-    return CheckboxListTile(
-      title: Text(addonsEntity.title),
-      controlAffinity: ListTileControlAffinity.leading,
-      value: widget.selectedAllAddons.contains(addonsEntity),
-      onChanged: widget.onChangedAddons,
+    return Card(
+      child: CheckboxListTile(
+        title: Wrap(
+          children: [
+            Text(addonsEntity.title,maxLines: 2,overflow: TextOverflow.ellipsis,softWrap: true,style: context.titleMedium!.copyWith(),).translate(),
+          ],
+        ),
+        subtitle: Wrap(
+          children: [
+            Text('${addonsEntity.quantity} ${addonsEntity.unit} | ${addonsEntity.defaultPrice} ${addonsEntity.currency}',maxLines: 2,overflow: TextOverflow.ellipsis,softWrap: true,style: context.labelMedium!.copyWith(),),
+          ],
+        ),
+        controlAffinity: ListTileControlAffinity.leading,
+        value: widget.selectedAllAddons.contains(addonsEntity),
+        onChanged: widget.onChangedAddons,
+      ),
     );
   }
 }
