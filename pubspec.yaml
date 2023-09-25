@@ -122,10 +122,7 @@ dependencies:
       url: 'https://github.com/prasant10050/multi_image_crop.git'
       ref: master
   network_manager:
-    git:
-      url: 'git@bitbucket.org:prasant72/homemakers_commons.git'
-      ref: master
-      path: network_manager
+    path: ./homemakers_commons/network_manager
   new_image_crop:
     git:
       url: 'https://github.com/prasant10050/image_crop_rotate_flip.git'

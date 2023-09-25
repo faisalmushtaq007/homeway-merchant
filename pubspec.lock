@@ -343,10 +343,10 @@ packages:
     dependency: transitive
     description:
       name: code_builder
-      sha256: "315a598c7fbe77f22de1c9da7cfd6fd21816312f16ffa124453b4fc679e540f1"
+      sha256: "1be9be30396d7e4c0db42c35ea6ccd7cc6a1e19916b5dc64d6ac216b5544d677"
       url: "https://pub.dev"
     source: hosted
-    version: "4.6.0"
+    version: "4.7.0"
   collection:
     dependency: "direct main"
     description:
@@ -1167,10 +1167,10 @@ packages:
     dependency: transitive
     description:
       name: geolocator_apple
-      sha256: "2c0187c84ca04fdb4e2b32a775dbe97448622a53f1c9ecb26d8b6b0df6e72b65"
+      sha256: ab90ae811c42ec2f6021e01eca71df00dee6ff1e69d2c2dafd4daeb0b793f73d
       url: "https://pub.dev"
     source: hosted
-    version: "2.3.1"
+    version: "2.3.2"
   geolocator_platform_interface:
     dependency: transitive
     description:
@@ -1455,10 +1455,10 @@ packages:
     dependency: "direct main"
     description:
       name: image
-      sha256: "6e703d5e2f8c63fb31a77753915c1ec8baebde8088844e0d29f71b8f0b108888"
+      sha256: "93d1141eb65fe62414d5492de96ca2bff97eba0ca9218a89ad407a6f201fcadf"
       url: "https://pub.dev"
     source: hosted
-    version: "4.1.0"
+    version: "4.1.2"
   image_crop:
     dependency: transitive
     description:
@@ -1820,11 +1820,9 @@ packages:
   network_manager:
     dependency: "direct main"
     description:
-      path: network_manager
-      ref: master
-      resolved-ref: "4709e2e096581ed67cd2ebbda52ad5529c7fcc87"
-      url: "git@bitbucket.org:prasant72/homemakers_commons.git"
-    source: git
+      path: "homemakers_commons/network_manager"
+      relative: true
+    source: path
     version: "0.1.2+1"
   new_image_crop:
     dependency: "direct main"
