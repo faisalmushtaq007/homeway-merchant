@@ -297,6 +297,7 @@ class _AllSavedAddressPageView
                               children: [
                                 const AnimatedGap(6,
                                     duration: Duration(milliseconds: 500)),
+                                //
                                 /*IntrinsicHeight(
                                   child: Row(
                                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -309,9 +310,13 @@ class _AllSavedAddressPageView
                                           sherlockCompletion: SherlockCompletion(where: 'by', elements: state.addressEntities.map((e) => e.toMap()).toList()),
                                           sherlockCompletionMinResults: 1,
                                           onSearch: (input, sherlock) {
-                                            */ /*setState(() {
+                                            */
+                                //
+                                /*setState(() {
                                                         state._results = sherlock.search(input: input);
-                                                      });*/ /*
+                                                      });*/
+                                //
+                                /*
                                           },
                                           completionsBuilder: (context, completions) => SherlockCompletionsBuilder(
                                             completions: completions,
@@ -366,6 +371,7 @@ class _AllSavedAddressPageView
                                   ),
                                 ),
                                 const AnimatedGap(6, duration: Duration(milliseconds: 500)),*/
+                                //
                                 ListTile(
                                   dense: true,
                                   title: IntrinsicHeight(

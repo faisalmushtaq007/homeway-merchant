@@ -502,6 +502,36 @@ class _AllMenuPageView extends WidgetView<AllMenuPage, _AllMenuPageController> {
                               );
                             },
                             allData: (context, child, message, data) {
+                              return CustomScrollView(
+                                controller: state.innerScrollController,
+                                slivers: [
+                                  PagedSliverList<int, MenuEntity>(
+                                    key: const Key(
+                                        'address-list-pagedSliverList-widget'),
+                                    pagingController: state._pagingController,
+                                    builderDelegate:
+                                    PagedChildBuilderDelegate<
+                                        MenuEntity>(
+                                      animateTransitions: true,
+                                      itemBuilder: (context, item, index) =>
+                                          MenuCardWidget(
+                                            key: ValueKey(index),
+                                            menuEntity: item,
+                                            currentIndex: index,
+                                            listOfAllMenuEntities:
+                                            state.listOfAllMenus.toList(),
+                                            onSelectionChanged: (List<MenuEntity>
+                                            listOfAllMenuEntities) {
+                                              state.onSelectionChanged(
+                                                  listOfAllMenuEntities.toList());
+                                            },
+                                            listOfAllSelectedMenuEntities:
+                                            state.listOfAllSelectedMenus.toList(),
+                                          ),
+                                    ),
+                                  ),
+                                ],
+                              );
                               return ListView.separated(
                                 itemBuilder: (context, index) {
                                   return MenuCardWidget(
