@@ -201,9 +201,9 @@ class AddressLocalDbRepository<T extends AddressModel>
             filter.isNotNull ||
             sorting.isNotNull &&
                 (startTimeStamp.isNotNull || endTimeStamp.isNotNull)) {
-          var regExp = RegExp(searchText ?? '', caseSensitive: false);
-          var filterRegExp = RegExp(filter ?? '', caseSensitive: false);
-          var sortingRegExp = RegExp(sorting ?? '', caseSensitive: false);
+          var regExp = RegExp('^${searchText?.toLowerCase() ?? ''}\$', caseSensitive: false);
+          var filterRegExp = RegExp('^${filter?.toLowerCase() ?? ''}\$', caseSensitive: false);
+          var sortingRegExp = RegExp('^${sorting?.toLowerCase() ?? ''}\$', caseSensitive: false);
           finder = Finder(
             limit: pageSize,
             offset: pageKey,
@@ -283,9 +283,9 @@ class AddressLocalDbRepository<T extends AddressModel>
         else if (searchText.isNotNull ||
             filter.isNotNull ||
             sorting.isNotNull) {
-          var regExp = RegExp(searchText ?? '', caseSensitive: false);
-          var filterRegExp = RegExp(filter ?? '', caseSensitive: false);
-          var sortingRegExp = RegExp(sorting ?? '', caseSensitive: false);
+          var regExp = RegExp('^${searchText?.toLowerCase() ?? ''}\$', caseSensitive: false);
+          var filterRegExp = RegExp('^${filter?.toLowerCase() ?? ''}\$', caseSensitive: false);
+          var sortingRegExp = RegExp('^${sorting?.toLowerCase() ?? ''}\$', caseSensitive: false);
           finder = Finder(
             /*sortOrders: [
           SortOrder('orderDateTime'),

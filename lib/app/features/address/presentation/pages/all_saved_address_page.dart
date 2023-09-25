@@ -64,7 +64,7 @@ class _AllSavedAddressPageController extends State<AllSavedAddressPage> {
       return;
     } catch (error) {
       _pagingController.error = error;
-      debugPrint(error);
+      debugPrint(error.toString());
     }
   }
 
@@ -74,10 +74,11 @@ class _AllSavedAddressPageController extends State<AllSavedAddressPage> {
     _pagingController.removePageRequestListener((pageKey) {});
     _pagingController.removeStatusListener((status) {});
     _pagingController.dispose();
-    scrollController.dispose();
-    innerScrollController.dispose();
+
     addressEntities = [];
     addressEntities.clear();
+    scrollController.dispose();
+    innerScrollController.dispose();
     super.dispose();
   }
 

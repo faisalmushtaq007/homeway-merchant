@@ -274,13 +274,11 @@ class CategoryLocalDbRepository<Extras extends Category>
             filter.isNotNull ||
             sorting.isNotNull &&
                 (startTimeStamp.isNotNull || endTimeStamp.isNotNull)) {
-          var mainCategoryRegExp =
-              RegExp(mainCategory?.title ?? '', caseSensitive: false);
-          var subCategoryRegExp =
-              RegExp(subCategory?.title ?? '', caseSensitive: false);
-          var regExp = RegExp(searchText ?? '', caseSensitive: false);
-          var filterRegExp = RegExp(filter ?? '', caseSensitive: false);
-          var sortingRegExp = RegExp(sorting ?? '', caseSensitive: false);
+          var mainCategoryRegExp = RegExp('^${mainCategory?.title.toLowerCase() ?? ''}\$', caseSensitive: false);
+          var subCategoryRegExp = RegExp('^${subCategory?.title.toLowerCase() ?? ''}\$', caseSensitive: false);
+          var regExp = RegExp('^${searchText?.toLowerCase() ?? ''}\$', caseSensitive: false);
+          var filterRegExp = RegExp('^${filter?.toLowerCase() ?? ''}\$', caseSensitive: false);
+          var sortingRegExp = RegExp('^${sorting?.toLowerCase() ?? ''}\$', caseSensitive: false);
           finder = Finder(
             limit: pageSize,
             offset: pageKey,
@@ -320,9 +318,9 @@ class CategoryLocalDbRepository<Extras extends Category>
         else if (searchText.isNotNull ||
             filter.isNotNull ||
             sorting.isNotNull) {
-          var regExp = RegExp(searchText ?? '', caseSensitive: false);
-          var filterRegExp = RegExp(filter ?? '', caseSensitive: false);
-          var sortingRegExp = RegExp(sorting ?? '', caseSensitive: false);
+          var regExp = RegExp('^${searchText?.toLowerCase() ?? ''}\$', caseSensitive: false);
+          var filterRegExp = RegExp('^${filter?.toLowerCase() ?? ''}\$', caseSensitive: false);
+          var sortingRegExp = RegExp('^${sorting?.toLowerCase() ?? ''}\$', caseSensitive: false);
           finder = Finder(
             /*sortOrders: [
           SortOrder('orderDateTime'),

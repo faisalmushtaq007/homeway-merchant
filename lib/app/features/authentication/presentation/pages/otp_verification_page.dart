@@ -279,7 +279,7 @@ class _OTPVerificationPageState extends State<OTPVerificationPage> {
                       extra: {
                         'businessProfileEntity': BusinessProfileEntity(
                           businessPhoneNumber:
-                              otpVerificationState.appUserEntity?.phoneNumber,
+                              otpVerificationState.appUserEntity?.phoneNumber??'',
                           countryDialCode: otpVerificationState
                                   .appUserEntity?.country_dial_code ??
                               '+966',
@@ -302,7 +302,7 @@ class _OTPVerificationPageState extends State<OTPVerificationPage> {
                       extra: {
                         'businessProfileEntity': BusinessProfileEntity(
                           businessPhoneNumber:
-                              otpVerificationState.appUserEntity?.phoneNumber,
+                              otpVerificationState.appUserEntity?.phoneNumber??'',
                           countryDialCode: otpVerificationState
                                   .appUserEntity?.country_dial_code ??
                               '+966',

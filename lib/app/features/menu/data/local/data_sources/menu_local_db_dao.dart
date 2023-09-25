@@ -276,9 +276,9 @@ class MenuLocalDbRepository<Menu extends MenuEntity>
             filter.isNotNull ||
             sorting.isNotNull &&
                 (startTimeStamp.isNotNull || endTimeStamp.isNotNull)) {
-          var regExp = RegExp(searchText ?? '', caseSensitive: false);
-          var filterRegExp = RegExp(filter ?? '', caseSensitive: false);
-          var sortingRegExp = RegExp(sorting ?? '', caseSensitive: false);
+          var regExp = RegExp('^${searchText?.toLowerCase() ?? ''}\$', caseSensitive: false);
+          var filterRegExp = RegExp('^${filter?.toLowerCase() ?? ''}\$', caseSensitive: false);
+          var sortingRegExp = RegExp('^${sorting?.toLowerCase() ?? ''}\$', caseSensitive: false);
           finder = Finder(
             limit: pageSize,
             offset: pageKey,
@@ -364,9 +364,9 @@ class MenuLocalDbRepository<Menu extends MenuEntity>
         else if (searchText.isNotNull ||
             filter.isNotNull ||
             sorting.isNotNull) {
-          var regExp = RegExp(searchText ?? '', caseSensitive: false);
-          var filterRegExp = RegExp(filter ?? '', caseSensitive: false);
-          var sortingRegExp = RegExp(sorting ?? '', caseSensitive: false);
+          var regExp = RegExp('^${searchText?.toLowerCase() ?? ''}\$', caseSensitive: false);
+          var filterRegExp = RegExp('^${filter?.toLowerCase() ?? ''}\$', caseSensitive: false);
+          var sortingRegExp = RegExp('^${sorting?.toLowerCase() ?? ''}\$', caseSensitive: false);
           finder = Finder(
             limit: pageSize,
             offset: pageKey,
@@ -457,9 +457,9 @@ class MenuLocalDbRepository<Menu extends MenuEntity>
         );
         // Making a List<Category> out of List<RecordSnapshot>
         return recordSnapshots.map((snapshot) {
-          final orders = Category.fromMap(snapshot.value).copyWith(
+          final orders = MenuEntity.fromMap(snapshot.value).copyWith(
             // An ID is a key of a record from the database.
-            categoryId: snapshot.key.toString(),
+            menuId: snapshot.key,
           );
           return orders;
         }).toList();
