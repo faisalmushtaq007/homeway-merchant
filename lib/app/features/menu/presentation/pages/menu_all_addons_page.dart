@@ -188,6 +188,20 @@ class _MenuAllAddonsPageController extends State<MenuAllAddonsPage> {
                   message: menuState.message,
                 );
               }
+            case GetAllLoadingAddonsPaginationState():
+              {
+                widgetState = WidgetState<Addons>.loading(
+                  context: context,
+                  message: menuState.message,
+                );
+              }
+            case GetAllProcessingAddonsPaginationState():
+              {
+                widgetState = WidgetState<Addons>.processing(
+                  context: context,
+                  message: menuState.message,
+                );
+              }
             case GetAllExceptionAddonsPaginationState():
               {
                 widgetState = WidgetState<Addons>.error(
@@ -566,6 +580,12 @@ class _MenuAllAddonsPageView
                                   (context, child, message, isLoading) {
                                 return const DataLoadingWidget(
                                   key: Key('addons-loading-widget'),
+                                );
+                              },
+                              processing:
+                                  (context, child, message, isLoading) {
+                                return const DataLoadingWidget(
+                                  key: Key('addons-processing-widget'),
                                 );
                               },
                               allData: (context, child, message, data) {
