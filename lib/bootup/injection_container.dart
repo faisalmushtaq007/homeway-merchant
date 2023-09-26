@@ -265,6 +265,11 @@ void _setUpUseCases() {
       storeRepository: serviceLocator(),
     ),
   );
+  serviceLocator.registerLazySingleton<SaveAllStoreUseCase>(
+        () => SaveAllStoreUseCase(
+      storeRepository: serviceLocator(),
+    ),
+  );
   serviceLocator.registerLazySingleton<EditStoreUseCase>(
     () => EditStoreUseCase(
       storeRepository: serviceLocator(),
@@ -277,6 +282,11 @@ void _setUpUseCases() {
   );
   serviceLocator.registerLazySingleton<GetAllStoreUseCase>(
     () => GetAllStoreUseCase(
+      storeRepository: serviceLocator(),
+    ),
+  );
+  serviceLocator.registerLazySingleton<GetAllStorePaginationUseCase>(
+        () => GetAllStorePaginationUseCase(
       storeRepository: serviceLocator(),
     ),
   );
@@ -296,6 +306,11 @@ void _setUpUseCases() {
       storeRepository: serviceLocator(),
     ),
   );
+  serviceLocator.registerLazySingleton<SaveAllDriverUseCase>(
+        () => SaveAllDriverUseCase(
+      storeRepository: serviceLocator(),
+    ),
+  );
   serviceLocator.registerLazySingleton<EditDriverUseCase>(
     () => EditDriverUseCase(
       storeRepository: serviceLocator(),
@@ -308,6 +323,11 @@ void _setUpUseCases() {
   );
   serviceLocator.registerLazySingleton<GetAllDriverUseCase>(
     () => GetAllDriverUseCase(
+      storeRepository: serviceLocator(),
+    ),
+  );
+  serviceLocator.registerLazySingleton<GetAllDriverPaginationUseCase>(
+        () => GetAllDriverPaginationUseCase(
       storeRepository: serviceLocator(),
     ),
   );

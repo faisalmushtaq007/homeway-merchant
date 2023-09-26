@@ -335,7 +335,14 @@ class _AllStoresPageState extends State<AllStoresPage> {
                                                 LanguageController>()
                                                 .targetTextDirection,
                                             children: [
-                                              Expanded(
+                                              Expanded(child:  AppSearchInputSliverWidget(
+                                                key: const Key('all-store-search-field-widget'),
+                                                onChanged: _updateSearchTerm,
+                                                height: 48,
+                                                hintText: 'Search Addons',
+
+                                              ),),
+                                              /*Expanded(
                                                 child: AppTextFieldWidget(
                                                   controller:
                                                   searchTextEditingController,
@@ -357,12 +364,12 @@ class _AllStoresPageState extends State<AllStoresPage> {
                                                     isDense: true,
                                                   ),
                                                 ),
-                                              ),
+                                              ),*/
                                               const AnimatedGap(12,
                                                   duration: Duration(
                                                       milliseconds: 500)),
                                               SizedBox(
-                                                height: 52,
+                                                height: 46,
                                                 child: OutlinedButton(
                                                   onPressed: () {},
                                                   style: OutlinedButton.styleFrom(
