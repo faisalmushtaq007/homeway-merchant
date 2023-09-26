@@ -217,10 +217,10 @@ class UserBusinessDocumentLocalDbRepository<T extends NewBusinessDocumentEntity>
           offset: pageKey,
         );
         // If
-        if (searchText.isNotNull ||
+        if ((searchText.isNotNull ||
             filter.isNotNull ||
-            sorting.isNotNull &&
-                (startTimeStamp.isNotNull || endTimeStamp.isNotNull)) {
+            sorting.isNotNull && (searchText!.isNotEmpty || filter!.isNotEmpty || sorting!.isNotEmpty)) &&
+            (startTimeStamp.isNotNull || endTimeStamp.isNotNull)) {
           var regExp = RegExp('^${searchText?.toLowerCase() ?? ''}\$', caseSensitive: false);
           var filterRegExp = RegExp('^${filter?.toLowerCase() ?? ''}\$', caseSensitive: false);
           var sortingRegExp = RegExp('^${sorting?.toLowerCase() ?? ''}\$', caseSensitive: false);
@@ -253,7 +253,13 @@ class UserBusinessDocumentLocalDbRepository<T extends NewBusinessDocumentEntity>
         // Else If
         else if (searchText.isNotNull ||
             filter.isNotNull ||
-            sorting.isNotNull) {
+            sorting.isNotNull && (searchText!.isNotEmpty || filter!.isNotEmpty || sorting!.isNotEmpty)) {
+          if (searchText!.isEmpty) {
+            finder = Finder(
+              limit: pageSize,
+              offset: pageKey,
+            );
+          } else {
           var regExp = RegExp('^${searchText?.toLowerCase() ?? ''}\$', caseSensitive: false);
           var filterRegExp = RegExp('^${filter?.toLowerCase() ?? ''}\$', caseSensitive: false);
           var sortingRegExp = RegExp('^${sorting?.toLowerCase() ?? ''}\$', caseSensitive: false);
@@ -281,7 +287,7 @@ class UserBusinessDocumentLocalDbRepository<T extends NewBusinessDocumentEntity>
                 ]),
               ],
             ),
-          );
+          );}
         }
         // Else
         else {

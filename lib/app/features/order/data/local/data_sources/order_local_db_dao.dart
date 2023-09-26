@@ -248,7 +248,7 @@ class OrderLocalDbRepository<T extends OrderEntity>
 
   @override
   Future<Either<RepositoryBaseFailure, List<OrderEntity>>> getAllCancelOrder({
-    int pageKey = 1,
+    int pageKey = 0,
     int pageSize = 10,
     String? searchText,
     OrderType orderType = OrderType.cancel,
@@ -263,7 +263,7 @@ class OrderLocalDbRepository<T extends OrderEntity>
 
   @override
   Future<Either<RepositoryBaseFailure, List<OrderEntity>>> getAllDeliveryOrder({
-    int pageKey = 1,
+    int pageKey = 0,
     int pageSize = 10,
     String? searchText,
     OrderType orderType = OrderType.deliver,
@@ -278,7 +278,7 @@ class OrderLocalDbRepository<T extends OrderEntity>
 
   @override
   Future<Either<RepositoryBaseFailure, List<OrderEntity>>> getAllNewOrder({
-    int pageKey = 1,
+    int pageKey = 0,
     int pageSize = 10,
     String? searchText,
     OrderType orderType = OrderType.newOrder,
@@ -294,7 +294,7 @@ class OrderLocalDbRepository<T extends OrderEntity>
   @override
   Future<Either<RepositoryBaseFailure, List<OrderEntity>>>
       getAllOnProcessOrder({
-    int pageKey = 1,
+    int pageKey = 0,
     int pageSize = 10,
     String? searchText,
     OrderType orderType = OrderType.onProcess,
@@ -309,7 +309,7 @@ class OrderLocalDbRepository<T extends OrderEntity>
 
   @override
   Future<Either<RepositoryBaseFailure, List<OrderEntity>>> getAllOrder({
-    int pageKey = 1,
+    int pageKey = 0,
     int pageSize = 10,
     String? searchText,
     OrderType orderType = OrderType.all,
@@ -430,7 +430,7 @@ class OrderLocalDbRepository<T extends OrderEntity>
 
   @override
   Future<Either<RepositoryBaseFailure, List<OrderEntity>>> getAllRecentOrder({
-    int pageKey = 1,
+    int pageKey = 0,
     int pageSize = 10,
     String? searchText,
     OrderType orderType = OrderType.recent,
@@ -445,7 +445,7 @@ class OrderLocalDbRepository<T extends OrderEntity>
 
   @override
   Future<Either<RepositoryBaseFailure, List<OrderEntity>>> getAllScheduleOrder(
-      {int pageKey = 1,
+      {int pageKey = 0,
       int pageSize = 10,
       String? searchText,
       OrderType orderType = OrderType.schedule,

@@ -172,7 +172,7 @@ class StoreLocalDbRepository<Store extends StoreEntity> implements BaseStoreLoca
 
   @override
   Future<Either<RepositoryBaseFailure, List<StoreEntity>>> getAllWithPagination({
-    int pageKey = 1,
+    int pageKey = 0,
     int pageSize = 10,
     String? searchText,
     Map<String, dynamic> extras = const <String, dynamic>{},

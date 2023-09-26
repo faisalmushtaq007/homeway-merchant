@@ -257,7 +257,7 @@ abstract class GetAllWithPagination<EntityType>
   ///
   /// Will return empty array if no entities found.
   Future<Either<RepositoryBaseFailure, List<EntityType>>> getAllWithPagination({
-    int pageKey = 1,
+    int pageKey = 0,
     int pageSize = 10,
     String? searchText,
     Map<String, dynamic> extras = const <String, dynamic>{},

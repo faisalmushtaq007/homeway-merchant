@@ -11,7 +11,7 @@ class GetAllStorePaginationUseCase extends PaginationQueryAllUseCaseIORecord<Sto
   @override
   Future<DataSourceState<List<StoreEntity>>> call(
       {int pageKey = 0,
-      int pageSize = 20,
+      int pageSize = 10,
       String? searchText,
       StoreEntity? entity,
       String? filtering,

@@ -20,7 +20,7 @@ class GetAllCategoryUseCase extends CategoryQueryAllUseCaseIORecord<
   @override
   Future<DataSourceState<List<Category>>> call({
     int pageKey = 0,
-    int pageSize = 20,
+    int pageSize = 10,
     String? searchText,
     Category? category,
     Category? subCategory,

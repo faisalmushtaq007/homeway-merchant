@@ -168,47 +168,47 @@ class UserLocalDbRepository<User extends AppUserEntity> implements BaseUserLocal
                 Filter.equals(
                   'hasCurrentUser',
                   true,
-                  anyInList: true,
+                  
                 ),
                 Filter.equals(
                   'phoneNumberWithoutDialCode',
                   entity?.phoneNumberWithoutDialCode ?? '',
-                  anyInList: true,
+                  
                 ),
                 Filter.equals(
                   'phoneNumber',
                   entity?.phoneNumber ?? '',
-                  anyInList: true,
+                  
                 ),
                 Filter.equals(
                   'access_token',
                   byToken,
-                  anyInList: true,
+                  
                 ),
                 Filter.equals(
                   'access_token',
                   entity?.access_token ?? '',
-                  anyInList: true,
+                  
                 ),
                 Filter.equals(
                   'uid',
                   byID,
-                  anyInList: true,
+                  
                 ),
                 Filter.equals(
                   'uid',
                   entity?.uid ?? entity?.userID,
-                  anyInList: true,
+                  
                 ),
                 Filter.equals(
                   'userID',
                   byID,
-                  anyInList: true,
+                  
                 ),
                 Filter.equals(
                   'userID',
                   entity?.uid ?? entity?.userID,
-                  anyInList: true,
+                  
                 ),
               ]),
             ),
@@ -263,95 +263,122 @@ class UserLocalDbRepository<User extends AppUserEntity> implements BaseUserLocal
           offset: pageKey,
         );
         // If
-        if (searchText.isNotNull || filter.isNotNull) {
-          var regExp = RegExp('^${searchText?.toLowerCase() ?? ''}\$', caseSensitive: false);
-          var filterRegExp = RegExp('^${filter?.toLowerCase() ?? ''}\$', caseSensitive: false);
-          var sortingRegExp = RegExp('^${sorting?.toLowerCase() ?? ''}\$', caseSensitive: false);
-          finder = Finder(
-            limit: pageSize,
-            offset: pageKey,
-            filter: Filter.and(
-              [
-                Filter.or(
-                  [
-                    Filter.equals(
-                      'hasCurrentUser',
-                      true,
-                      anyInList: true,
-                    ),
-                    Filter.equals(
-                      'phoneNumberWithoutDialCode',
-                      entity.phoneNumberWithoutDialCode ?? '',
-                      anyInList: true,
-                    ),
-                    Filter.equals(
-                      'phoneNumber',
-                      entity.phoneNumber ?? '',
-                      anyInList: true,
-                    ),
-                    Filter.equals(
-                      'access_token',
-                      entity.token,
-                      anyInList: true,
-                    ),
-                    Filter.equals(
-                      'access_token',
-                      entity.access_token ?? '',
-                      anyInList: true,
-                    ),
-                    Filter.equals(
-                      'uid',
-                      entity.uid,
-                      anyInList: true,
-                    ),
-                    Filter.equals(
-                      'uid',
-                      entity.uid ?? entity.userID,
-                      anyInList: true,
-                    ),
-                    Filter.equals(
-                      'userID',
-                      entity.userID,
-                      anyInList: true,
-                    ),
-                    Filter.equals(
-                      'userID',
-                      entity.uid ?? entity.userID,
-                      anyInList: true,
-                    ),
-                    Filter.matchesRegExp(
-                      'access_token',
-                      regExp,
-                    ),
-                    Filter.matchesRegExp(
-                      'uid',
-                      regExp,
-                    ),
-                    Filter.matchesRegExp(
-                      'userID',
-                      regExp,
-                    ),
-                    Filter.matchesRegExp(
-                      'phoneNumber',
-                      regExp,
-                    ),
-                    Filter.matchesRegExp(
-                      'phoneNumberWithoutDialCode',
-                      regExp,
-                    ),
-                    Filter.matchesRegExp(
-                      'hasCurrentUser',
-                      filterRegExp,
-                    ),
-                    Filter.matchesRegExp(
-                      'phoneNumber',
-                      filterRegExp,
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          );
+        if (searchText.isNotNull ||
+            filter.isNotNull ||
+            sorting.isNotNull && (searchText!.isNotEmpty || filter!.isNotEmpty || sorting!.isNotEmpty)) {
+          if (searchText!.isEmpty) {
+            finder = Finder(
+              limit: pageSize,
+              offset: pageKey,
+            );
+          } else {
+            var regExp = RegExp('^${searchText?.toLowerCase() ?? ''}\$', caseSensitive: false);
+            var filterRegExp = RegExp('^${filter?.toLowerCase() ?? ''}\$', caseSensitive: false);
+            var sortingRegExp = RegExp('^${sorting?.toLowerCase() ?? ''}\$', caseSensitive: false);
+            finder = Finder(
+              limit: pageSize,
+              offset: pageKey,
+              filter: Filter.and(
+                [
+                  Filter.or(
+                    [
+                      Filter.equals(
+                        'hasCurrentUser',
+                        true,
+                      ),
+                      //Filter.matches('phoneNumberWithoutDialCode', '^${searchText}'),
+                      //Filter.matches('phoneNumberWithoutDialCode', '${searchText}\$'),
+                      Filter.matches('phoneNumberWithoutDialCode', searchText),
+                      Filter.matches('userID', entity.phoneNumberWithoutDialCode),
+                      Filter.equals(
+                        'phoneNumberWithoutDialCode',
+                        entity.phoneNumberWithoutDialCode ?? '',
+                      ),
+                      //Filter.matches('phoneNumber', '^${searchText}'),
+                      //Filter.matches('phoneNumber', '${searchText}\$'),
+                      Filter.matches('phoneNumber', searchText),
+                      Filter.matches('userID', entity.phoneNumber),
+                      Filter.equals(
+                        'phoneNumber',
+                        entity.phoneNumber ?? '',
+                      ),
+                      //Filter.matches('phoneNumber', '^${searchText}'),
+                      //Filter.matches('phoneNumber', '${searchText}\$'),
+                      Filter.matches('access_token', searchText),
+                      Filter.matches('userID', entity.token),
+                      Filter.matches('userID', entity.access_token),
+                      Filter.equals(
+                        'access_token',
+                        entity.token,
+                        
+                      ),
+                      Filter.equals(
+                        'access_token',
+                        entity.access_token ?? '',
+                        
+                      ),
+                      //Filter.matches('phoneNumber', '^${searchText}'),
+                      //Filter.matches('phoneNumber', '${searchText}\$'),
+                      Filter.matches('uid', searchText),
+                      Filter.matches('userID', entity.uid),
+                      Filter.equals(
+                        'uid',
+                        entity.uid,
+                        
+                      ),
+                      Filter.equals(
+                        'uid',
+                        entity.uid ?? entity.userID,
+                        
+                      ),
+                      //Filter.matches('phoneNumber', '^${searchText}'),
+                      //Filter.matches('phoneNumber', '${searchText}\$'),
+                      Filter.matches('userID', searchText),
+                      Filter.matches('userID', '${entity.userID}'),
+                      Filter.equals(
+                        'userID',
+                        entity.userID,
+                        
+                      ),
+                      Filter.equals(
+                        'userID',
+                        entity.uid ?? entity.userID,
+                        
+                      ),
+                      Filter.matchesRegExp(
+                        'access_token',
+                        regExp,
+                      ),
+                      Filter.matchesRegExp(
+                        'uid',
+                        regExp,
+                      ),
+                      Filter.matchesRegExp(
+                        'userID',
+                        regExp,
+                      ),
+                      Filter.matchesRegExp(
+                        'phoneNumber',
+                        regExp,
+                      ),
+                      Filter.matchesRegExp(
+                        'phoneNumberWithoutDialCode',
+                        regExp,
+                      ),
+                      Filter.matchesRegExp(
+                        'hasCurrentUser',
+                        filterRegExp,
+                      ),
+                      Filter.matchesRegExp(
+                        'phoneNumber',
+                        filterRegExp,
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            );
+          }
         }
 
         // Else
@@ -393,10 +420,6 @@ class UserLocalDbRepository<User extends AppUserEntity> implements BaseUserLocal
         var userProfileIDs = convertOrderToMapObject.map((map) => map['userID'] as int).toList();
         var map = await getUserProfileEntityByIds(db, userProfileIDs);
         // Watch for deleted item
-        appLog.d('Map Data');
-        map.forEach((key, value) {
-          appLog.d('message: ${key}, ${value.value}');
-        });
         var keysToDelete = (await _user.findKeys(transaction)).toList();
         for (var order in convertOrderToMapObject) {
           appLog.d('Order Data ${order}');

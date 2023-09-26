@@ -25,7 +25,7 @@ abstract class GetAllOrder<EntityType>
   ///
   /// Will return empty array if no entities found.
   Future<Either<RepositoryBaseFailure, List<EntityType>>> getAllOrder({
-    int pageKey = 1,
+    int pageKey = 0,
     int pageSize = 10,
     String? searchText,
     OrderType orderType = OrderType.recent,
@@ -42,7 +42,7 @@ abstract class GetAllRecentOrder<EntityType>
   ///
   /// Will return empty array if no entities found.
   Future<Either<RepositoryBaseFailure, List<EntityType>>> getAllRecentOrder({
-    int pageKey = 1,
+    int pageKey = 0,
     int pageSize = 10,
     String? searchText,
     OrderType orderType = OrderType.recent,
@@ -59,7 +59,7 @@ abstract class GetAllOnProcessOrder<EntityType>
   ///
   /// Will return empty array if no entities found.
   Future<Either<RepositoryBaseFailure, List<EntityType>>> getAllOnProcessOrder({
-    int pageKey = 1,
+    int pageKey = 0,
     int pageSize = 10,
     String? searchText,
     OrderType orderType = OrderType.onProcess,
@@ -76,7 +76,7 @@ abstract class GetAllNewOrder<EntityType>
   ///
   /// Will return empty array if no entities found.
   Future<Either<RepositoryBaseFailure, List<EntityType>>> getAllNewOrder({
-    int pageKey = 1,
+    int pageKey = 0,
     int pageSize = 10,
     String? searchText,
     OrderType orderType = OrderType.newOrder,
@@ -93,7 +93,7 @@ abstract class GetAllCancelOrder<EntityType>
   ///
   /// Will return empty array if no entities found.
   Future<Either<RepositoryBaseFailure, List<EntityType>>> getAllCancelOrder({
-    int pageKey = 1,
+    int pageKey = 0,
     int pageSize = 10,
     String? searchText,
     OrderType orderType = OrderType.cancel,
@@ -110,7 +110,7 @@ abstract class GetAllDeliveryOrder<EntityType>
   ///
   /// Will return empty array if no entities found.
   Future<Either<RepositoryBaseFailure, List<EntityType>>> getAllDeliveryOrder({
-    int pageKey = 1,
+    int pageKey = 0,
     int pageSize = 10,
     String? searchText,
     OrderType orderType = OrderType.deliver,
@@ -127,7 +127,7 @@ abstract class GetAllScheduleOrder<EntityType>
   ///
   /// Will return empty array if no entities found.
   Future<Either<RepositoryBaseFailure, List<EntityType>>> getAllScheduleOrder({
-    int pageKey = 1,
+    int pageKey = 0,
     int pageSize = 10,
     String? searchText,
     OrderType orderType = OrderType.schedule,

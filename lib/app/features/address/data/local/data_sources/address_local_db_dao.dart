@@ -166,7 +166,7 @@ class AddressLocalDbRepository<T extends AddressModel> implements BaseAddressBan
 
   @override
   Future<Either<RepositoryBaseFailure, List<AddressModel>>> getAllWithPagination({
-    int pageKey = 1,
+    int pageKey = 0,
     int pageSize = 10,
     String? searchText,
     Map<String, dynamic> extras = const <String, dynamic>{},

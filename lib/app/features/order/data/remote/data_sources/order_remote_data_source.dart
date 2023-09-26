@@ -25,7 +25,7 @@ class OrderRemoteDataSource implements OrderDataSource {
 
   @override
   Future<ApiResultState<List<OrderEntity>>> getAllCancelOrder({
-    int pageKey = 1,
+    int pageKey = 0,
     int pageSize = 10,
     String? searchText,
     OrderType orderType = OrderType.cancel,
@@ -40,7 +40,7 @@ class OrderRemoteDataSource implements OrderDataSource {
 
   @override
   Future<ApiResultState<List<OrderEntity>>> getAllDeliverOrder({
-    int pageKey = 1,
+    int pageKey = 0,
     int pageSize = 10,
     String? searchText,
     OrderType orderType = OrderType.deliver,
@@ -55,7 +55,7 @@ class OrderRemoteDataSource implements OrderDataSource {
 
   @override
   Future<ApiResultState<List<OrderEntity>>> getAllNewOrder({
-    int pageKey = 1,
+    int pageKey = 0,
     int pageSize = 10,
     String? searchText,
     OrderType orderType = OrderType.newOrder,
@@ -70,7 +70,7 @@ class OrderRemoteDataSource implements OrderDataSource {
 
   @override
   Future<ApiResultState<List<OrderEntity>>> getAllOnProcessOrder({
-    int pageKey = 1,
+    int pageKey = 0,
     int pageSize = 10,
     String? searchText,
     OrderType orderType = OrderType.onProcess,
@@ -85,7 +85,7 @@ class OrderRemoteDataSource implements OrderDataSource {
 
   @override
   Future<ApiResultState<List<OrderEntity>>> getAllOnScheduleOrder(
-      {int pageKey = 1,
+      {int pageKey = 0,
       int pageSize = 10,
       String? searchText,
       OrderType orderType = OrderType.onProcess,
@@ -101,7 +101,7 @@ class OrderRemoteDataSource implements OrderDataSource {
   Future<ApiResultState<List<OrderEntity>>> getAllOrder({
     String? filter,
     String? sorting,
-    int pageKey = 1,
+    int pageKey = 0,
     int pageSize = 10,
     String? searchText,
     OrderType orderType = OrderType.none,
@@ -114,7 +114,7 @@ class OrderRemoteDataSource implements OrderDataSource {
 
   @override
   Future<ApiResultState<List<OrderEntity>>> getAllRecentOrder({
-    int pageKey = 1,
+    int pageKey = 0,
     int pageSize = 10,
     String? searchText,
     OrderType orderType = OrderType.recent,

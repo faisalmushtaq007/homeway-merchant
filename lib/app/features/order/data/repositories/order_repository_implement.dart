@@ -205,7 +205,7 @@ class OrderRepositoryImplement implements OrderRepository {
 
   @override
   Future<DataSourceState<List<OrderEntity>>> getAllOrder({
-    int pageKey = 1,
+    int pageKey = 0,
     int pageSize = 10,
     String? searchText,
     OrderType orderType = OrderType.none,
@@ -486,7 +486,7 @@ class OrderRepositoryImplement implements OrderRepository {
 
   @override
   Future<DataSourceState<List<OrderEntity>>> getAllCancelOrder({
-    int pageKey = 1,
+    int pageKey = 0,
     int pageSize = 10,
     String? searchText,
     OrderType orderType = OrderType.cancel,
@@ -501,7 +501,7 @@ class OrderRepositoryImplement implements OrderRepository {
 
   @override
   Future<DataSourceState<List<OrderEntity>>> getAllDeliverOrder({
-    int pageKey = 1,
+    int pageKey = 0,
     int pageSize = 10,
     String? searchText,
     OrderType orderType = OrderType.deliver,
@@ -516,7 +516,7 @@ class OrderRepositoryImplement implements OrderRepository {
 
   @override
   Future<DataSourceState<List<OrderEntity>>> getAllNewOrder({
-    int pageKey = 1,
+    int pageKey = 0,
     int pageSize = 10,
     String? searchText,
     OrderType orderType = OrderType.newOrder,
@@ -531,7 +531,7 @@ class OrderRepositoryImplement implements OrderRepository {
 
   @override
   Future<DataSourceState<List<OrderEntity>>> getAllOnProcessOrder({
-    int pageKey = 1,
+    int pageKey = 0,
     int pageSize = 10,
     String? searchText,
     OrderType orderType = OrderType.onProcess,
@@ -546,7 +546,7 @@ class OrderRepositoryImplement implements OrderRepository {
 
   @override
   Future<DataSourceState<List<OrderEntity>>> getAllOnScheduleOrder({
-    int pageKey = 1,
+    int pageKey = 0,
     int pageSize = 10,
     String? searchText,
     OrderType orderType = OrderType.onProcess,
@@ -561,7 +561,7 @@ class OrderRepositoryImplement implements OrderRepository {
 
   @override
   Future<DataSourceState<List<OrderEntity>>> getAllRecentOrder({
-    int pageKey = 1,
+    int pageKey = 0,
     int pageSize = 10,
     String? searchText,
     OrderType orderType = OrderType.recent,

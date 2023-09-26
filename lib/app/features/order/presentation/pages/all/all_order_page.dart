@@ -12,7 +12,7 @@ class _AllOrderPagesController extends State<AllOrderPages> {
   WidgetState<OrderEntity> widgetState = const WidgetState<OrderEntity>.none();
 
   // Pagination
-  int pageSize = 20;
+  int pageSize = 10;
   int pageKey = 0;
   String? searchText;
   String? sorting;
@@ -52,7 +52,7 @@ class _AllOrderPagesController extends State<AllOrderPages> {
   }
 
   Future<void> _fetchPage(int pageKey,
-      {int pageSize = 20,
+      {int pageSize = 10,
       String? searchItem,
       String? filter,
       String? sort}) async {

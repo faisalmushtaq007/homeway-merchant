@@ -200,7 +200,7 @@ class UserBusinessProfileLocalDbRepository<T extends BusinessProfileEntity>
   @override
   Future<Either<RepositoryBaseFailure, List<BusinessProfileEntity>>>
       getAllWithPagination({
-    int pageKey = 1,
+    int pageKey = 0,
     int pageSize = 10,
     String? searchText,
     Map<String, dynamic> extras = const <String, dynamic>{},
@@ -218,10 +218,10 @@ class UserBusinessProfileLocalDbRepository<T extends BusinessProfileEntity>
           offset: pageKey,
         );
         // If
-        if (searchText.isNotNull ||
+        if ((searchText.isNotNull ||
             filter.isNotNull ||
-            sorting.isNotNull &&
-                (startTimeStamp.isNotNull || endTimeStamp.isNotNull)) {
+            sorting.isNotNull && (searchText!.isNotEmpty || filter!.isNotEmpty || sorting!.isNotEmpty)) &&
+            (startTimeStamp.isNotNull || endTimeStamp.isNotNull)){
           var regExp = RegExp('^${searchText?.toLowerCase() ?? ''}\$', caseSensitive: false);
           var filterRegExp = RegExp('^${filter?.toLowerCase() ?? ''}\$', caseSensitive: false);
           var sortingRegExp = RegExp('^${sorting?.toLowerCase() ?? ''}\$', caseSensitive: false);
@@ -265,7 +265,13 @@ class UserBusinessProfileLocalDbRepository<T extends BusinessProfileEntity>
         // Else If
         else if (searchText.isNotNull ||
             filter.isNotNull ||
-            sorting.isNotNull) {
+            sorting.isNotNull && (searchText!.isNotEmpty || filter!.isNotEmpty || sorting!.isNotEmpty)) {
+          if (searchText!.isEmpty) {
+            finder = Finder(
+              limit: pageSize,
+              offset: pageKey,
+            );
+          } else {
           var regExp = RegExp('^${searchText?.toLowerCase() ?? ''}\$', caseSensitive: false);
           var filterRegExp = RegExp('^${filter?.toLowerCase() ?? ''}\$', caseSensitive: false);
           var sortingRegExp = RegExp('^${sorting?.toLowerCase() ?? ''}\$', caseSensitive: false);
@@ -304,7 +310,7 @@ class UserBusinessProfileLocalDbRepository<T extends BusinessProfileEntity>
                 ]),
               ],
             ),
-          );
+          );}
         }
         // Else
         else {

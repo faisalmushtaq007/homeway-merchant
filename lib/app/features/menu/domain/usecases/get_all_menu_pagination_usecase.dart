@@ -19,7 +19,7 @@ class GetAllMenuPaginationUseCase extends PaginationQueryAllUseCaseIORecord<
   @override
   Future<DataSourceState<List<MenuEntity>>> call(
       {int pageKey = 0,
-      int pageSize = 20,
+      int pageSize = 10,
       String? searchText,
       MenuEntity? entity,
       String? filtering,

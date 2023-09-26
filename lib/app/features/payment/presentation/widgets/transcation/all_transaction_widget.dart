@@ -19,7 +19,7 @@ class _AllTranscationsWidgetController extends State<AllTranscationsWidget> {
       const WidgetState<TranscationEntity>.none();
 
   // Pagination
-  int pageSize = 20;
+  int pageSize = 10;
   int pageKey = 0;
   String? searchText;
   String? sorting;
