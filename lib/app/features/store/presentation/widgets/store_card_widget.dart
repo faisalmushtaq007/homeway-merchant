@@ -288,7 +288,7 @@ class _StoreCardState extends State<StoreCard> {
         children: [
           Text(
             widget.storeEntity.storeName,
-            style: context.titleMedium!.copyWith(fontWeight: FontWeight.w600),
+            style: context.titleMedium!.copyWith(fontWeight: FontWeight.w500),
             textDirection:
                 serviceLocator<LanguageController>().targetTextDirection,
             maxLines: 3,

@@ -262,10 +262,16 @@ class CategoryLocalDbRepository<Extras extends Category> implements BaseCategory
             filter: Filter.and(
               [
                 Filter.or([
+                  Filter.matches('title', '^${searchText}'),
+                  Filter.matches('title', '${searchText}\$'),
+                  Filter.matches('title', '${searchText}'),
                   Filter.matchesRegExp(
                     'title',
                     mainCategoryRegExp,
                   ),
+                  Filter.matches('subCategory.@.title', '^${searchText}',anyInList: true,),
+                  Filter.matches('subCategory.@.title', '${searchText}\$',anyInList: true,),
+                  Filter.matches('subCategory.@.title', '${searchText}',anyInList: true,),
                   Filter.matchesRegExp(
                     'subCategory.@.title',
                     subCategoryRegExp,

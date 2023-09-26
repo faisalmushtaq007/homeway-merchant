@@ -283,31 +283,49 @@ class MenuLocalDbRepository<Menu extends MenuEntity>
             filter: Filter.and(
               [
                 Filter.or([
+                  Filter.matches('menuName', '^${searchText}',anyInList: true,),
+                  Filter.matches('menuName', '${searchText}\$',anyInList: true,),
+                  Filter.matches('menuName', '${searchText}',anyInList: true,),
                   Filter.matchesRegExp(
                     'menuName',
                     regExp,
                     anyInList: true,
                   ),
+                  Filter.matches('menuCategories.@.title', '^${searchText}',anyInList: true,),
+                  Filter.matches('menuCategories.@.title', '${searchText}\$',anyInList: true,),
+                  Filter.matches('menuCategories.@.title', '${searchText}',anyInList: true,),
                   Filter.matchesRegExp(
                     'menuCategories.@.title',
                     regExp,
                     anyInList: true,
                   ),
+                  Filter.matches('ingredients.@.title', '^${searchText}',anyInList: true,),
+                  Filter.matches('ingredients.@.title', '${searchText}\$',anyInList: true,),
+                  Filter.matches('ingredients.@.title', '${searchText}',anyInList: true,),
                   Filter.matchesRegExp(
                     'ingredients.@.title',
                     regExp,
                     anyInList: true,
                   ),
+                  Filter.matches('storeAvailableFoodTypes.@.title', '^${searchText}',anyInList: true,),
+                  Filter.matches('storeAvailableFoodTypes.@.title', '${searchText}\$',anyInList: true,),
+                  Filter.matches('storeAvailableFoodTypes.@.title', '${searchText}',anyInList: true,),
                   Filter.matchesRegExp(
                     'storeAvailableFoodTypes.@.title',
                     regExp,
                     anyInList: true,
                   ),
+                  Filter.matches('storeAvailableFoodPreparationType.@.title', '^${searchText}',anyInList: true,),
+                  Filter.matches('storeAvailableFoodPreparationType.@.title', '${searchText}\$',anyInList: true,),
+                  Filter.matches('storeAvailableFoodPreparationType.@.title', '${searchText}',anyInList: true,),
                   Filter.matchesRegExp(
                     'storeAvailableFoodPreparationType.@.title',
                     regExp,
                     anyInList: true,
                   ),
+                  Filter.matches('addons.@.title', '^${searchText}',anyInList: true,),
+                  Filter.matches('addons.@.title', '${searchText}\$',anyInList: true,),
+                  Filter.matches('addons.@.title', '${searchText}',anyInList: true,),
                   Filter.matchesRegExp(
                     'addons.@.title',
                     regExp,
@@ -349,10 +367,6 @@ class MenuLocalDbRepository<Menu extends MenuEntity>
                     filterRegExp,
                     anyInList: true,
                   ),
-                  Filter.greaterThanOrEquals(
-                      'menuAvailableFromTime', startTimeStamp ?? 0),
-                  Filter.lessThanOrEquals(
-                      'menuAvailableToTime', endTimeStamp ?? 0),
                 ]),
               ],
             ),
@@ -375,31 +389,49 @@ class MenuLocalDbRepository<Menu extends MenuEntity>
             filter: Filter.and(
               [
                 Filter.or([
+                  Filter.matches('menuName', '^${searchText}',anyInList: true,),
+                  Filter.matches('menuName', '${searchText}\$',anyInList: true,),
+                  Filter.matches('menuName', '${searchText}',anyInList: true,),
                   Filter.matchesRegExp(
                     'menuName',
                     regExp,
                     anyInList: true,
                   ),
+                  Filter.matches('menuCategories.@.title', '^${searchText}',anyInList: true,),
+                  Filter.matches('menuCategories.@.title', '${searchText}\$',anyInList: true,),
+                  Filter.matches('menuCategories.@.title', '${searchText}',anyInList: true,),
                   Filter.matchesRegExp(
                     'menuCategories.@.title',
                     regExp,
                     anyInList: true,
                   ),
+                  Filter.matches('ingredients.@.title', '^${searchText}',anyInList: true,),
+                  Filter.matches('ingredients.@.title', '${searchText}\$',anyInList: true,),
+                  Filter.matches('ingredients.@.title', '${searchText}',anyInList: true,),
                   Filter.matchesRegExp(
                     'ingredients.@.title',
                     regExp,
                     anyInList: true,
                   ),
+                  Filter.matches('storeAvailableFoodTypes.@.title', '^${searchText}',anyInList: true,),
+                  Filter.matches('storeAvailableFoodTypes.@.title', '${searchText}\$',anyInList: true,),
+                  Filter.matches('storeAvailableFoodTypes.@.title', '${searchText}',anyInList: true,),
                   Filter.matchesRegExp(
                     'storeAvailableFoodTypes.@.title',
                     regExp,
                     anyInList: true,
                   ),
+                  Filter.matches('storeAvailableFoodPreparationType.@.title', '^${searchText}',anyInList: true,),
+                  Filter.matches('storeAvailableFoodPreparationType.@.title', '${searchText}\$',anyInList: true,),
+                  Filter.matches('storeAvailableFoodPreparationType.@.title', '${searchText}',anyInList: true,),
                   Filter.matchesRegExp(
                     'storeAvailableFoodPreparationType.@.title',
                     regExp,
                     anyInList: true,
                   ),
+                  Filter.matches('addons.@.title', '^${searchText}',anyInList: true,),
+                  Filter.matches('addons.@.title', '${searchText}\$',anyInList: true,),
+                  Filter.matches('addons.@.title', '${searchText}',anyInList: true,),
                   Filter.matchesRegExp(
                     'addons.@.title',
                     regExp,

@@ -339,7 +339,7 @@ class _AllStoresPageState extends State<AllStoresPage> {
                                                 key: const Key('all-store-search-field-widget'),
                                                 onChanged: _updateSearchTerm,
                                                 height: 48,
-                                                hintText: 'Search Addons',
+                                                hintText: 'Search Store',
 
                                               ),),
                                               /*Expanded(
@@ -435,7 +435,7 @@ class _AllStoresPageState extends State<AllStoresPage> {
                                                         top: 4,
                                                         bottom: 4),
                                                     child: Text(
-                                                      '${storeEntities.length}',
+                                                      '${_pagingController.value.itemList?.length??0}',
                                                       textDirection: serviceLocator<
                                                           LanguageController>()
                                                           .targetTextDirection,

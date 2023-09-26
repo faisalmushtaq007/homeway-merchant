@@ -249,6 +249,9 @@ class AddonsLocalDbRepository<Extras extends Addons> implements BaseAddonsLocalD
               [
                 Filter.or(
                   [
+                    Filter.matches('title', '^${searchText}'),
+                    Filter.matches('title', '${searchText}\$'),
+                    Filter.matches('title', '${searchText}'),
                     Filter.matchesRegExp(
                       'title',
                       regExp,
@@ -294,6 +297,12 @@ class AddonsLocalDbRepository<Extras extends Addons> implements BaseAddonsLocalD
               offset: pageKey,
               filter: Filter.or(
                 [
+                  Filter.matches('title', '^${searchText}',anyInList: true,),
+                  Filter.matches('title', '${searchText}\$',anyInList: true,),
+                  Filter.matches('title', '${searchText}',anyInList: true,),
+                  Filter.matches('description', '^${searchText}',anyInList: true,),
+                  Filter.matches('description', '${searchText}\$',anyInList: true,),
+                  Filter.matches('description', '${searchText}',anyInList: true,),
                   Filter.matchesRegExp(
                     'title',
                     regExp,

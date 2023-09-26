@@ -222,6 +222,18 @@ class StoreOwnDeliveryPartnersLocalDbRepository<
             filter: Filter.and(
               [
                 Filter.or([
+                  Filter.matches('driverName', '^${searchText}'),
+                  Filter.matches('driverName', '${searchText}\$'),
+                  Filter.matches('driverName', '${searchText}'),
+                  Filter.matches('driverMobileNumber', '^${searchText}'),
+                  Filter.matches('driverMobileNumber', '${searchText}\$'),
+                  Filter.matches('driverMobileNumber', '${searchText}'),
+                  Filter.matches('drivingLicenseNumber', '^${searchText}'),
+                  Filter.matches('drivingLicenseNumber', '${searchText}\$'),
+                  Filter.matches('drivingLicenseNumber', '${searchText}'),
+                  Filter.matches('driverID', '^${searchText}'),
+                  Filter.matches('driverID', '${searchText}\$'),
+                  Filter.matches('driverID', '${searchText}'),
                   Filter.matchesRegExp(
                     'driverName',
                     regExp,
@@ -261,6 +273,18 @@ class StoreOwnDeliveryPartnersLocalDbRepository<
             filter: Filter.and(
               [
                 Filter.or([
+                  Filter.matches('driverName', '^${searchText}',anyInList: true,),
+                  Filter.matches('driverName', '${searchText}\$',anyInList: true,),
+                  Filter.matches('driverName', '${searchText}',anyInList: true,),
+                  Filter.matches('driverMobileNumber', '^${searchText}',anyInList: true,),
+                  Filter.matches('driverMobileNumber', '${searchText}\$',anyInList: true,),
+                  Filter.matches('driverMobileNumber', '${searchText}',anyInList: true,),
+                  Filter.matches('drivingLicenseNumber', '^${searchText}',anyInList: true,),
+                  Filter.matches('drivingLicenseNumber', '${searchText}\$',anyInList: true,),
+                  Filter.matches('drivingLicenseNumber', '${searchText}',anyInList: true,),
+                  Filter.matches('driverID', '^${searchText}',anyInList: true,),
+                  Filter.matches('driverID', '${searchText}\$',anyInList: true,),
+                  Filter.matches('driverID', '${searchText}',anyInList: true,),
                   Filter.matchesRegExp(
                     'driverName',
                     regExp,
