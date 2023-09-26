@@ -151,7 +151,7 @@ class SelectCurrentAddress extends AddressEvent {
 
 class GetAllAddressPagination extends AddressEvent {
   const GetAllAddressPagination({
-    this.pageKey = 1,
+    this.pageKey = 0,
     this.searchText,
     this.pageSize = 10,
     this.endTimeStamp,

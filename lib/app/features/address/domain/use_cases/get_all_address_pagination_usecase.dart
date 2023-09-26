@@ -19,7 +19,7 @@ class GetAllAddressPaginationUseCase extends AddressQueryAllUseCaseIORecord<
   @override
   Future<DataSourceState<List<AddressModel>>> call(
       {int pageKey = 0,
-      int pageSize = 20,
+      int pageSize = 10,
       String? searchText,
       AddressModel? addressEntity,
       String? filtering,

@@ -55,7 +55,7 @@ class _AllSavedAddressPageController extends State<AllSavedAddressPage> {
             GetAllAddressPagination(
               pageKey: pageKey,
               pageSize: pageSize,
-              searchText: searchItem,
+              searchText: searchText??searchItem,
               filter: filtering ?? filter,
               sorting: sorting ?? sort,
             ),
@@ -114,6 +114,19 @@ class _AllSavedAddressPageController extends State<AllSavedAddressPage> {
     });
   }
 
+  Future<void> _updateSearchTerm(String searchTerm) async {
+    searchText = searchTerm;
+    if (_pagingController.value
+        .itemList ==
+        null ||
+        _pagingController.value.itemList
+            .isEmptyOrNull) {
+      await _fetchPage(0,searchItem: searchTerm,);
+    } else {
+      _pagingController.refresh();
+    }
+  }
+
   @override
   Widget build(BuildContext context) => BlocListener<AddressBloc, AddressState>(
         key: const Key('all-address-bloc-listener'),
@@ -153,6 +166,20 @@ class _AllSavedAddressPageController extends State<AllSavedAddressPage> {
             case GetAllEmptyAddressPaginationState():
               {
                 widgetState = WidgetState<AddressModel>.empty(
+                  context: context,
+                  message: addressListenerState.message,
+                );
+              }
+            case GetAllLoadingAddressPaginationState():
+              {
+                widgetState = WidgetState<AddressModel>.loading(
+                  context: context,
+                  message: addressListenerState.message,
+                );
+              }
+            case GetAllProcessingAddressPaginationState():
+              {
+                widgetState = WidgetState<AddressModel>.processing(
                   context: context,
                   message: addressListenerState.message,
                 );
@@ -298,59 +325,21 @@ class _AllSavedAddressPageView
                                 const AnimatedGap(6,
                                     duration: Duration(milliseconds: 500)),
                                 //
-                                /*IntrinsicHeight(
+                                IntrinsicHeight(
                                   child: Row(
                                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                     textDirection: serviceLocator<LanguageController>().targetTextDirection,
                                     children: [
-                                      Expanded(
-                                        child: SherlockSearchBar(
-                                          //isFullScreen: true,
-                                          sherlock: Sherlock(elements: state.addressEntities.map((e) => e.toMap()).toList()),
-                                          sherlockCompletion: SherlockCompletion(where: 'by', elements: state.addressEntities.map((e) => e.toMap()).toList()),
-                                          sherlockCompletionMinResults: 1,
-                                          onSearch: (input, sherlock) {
-                                            */
-                                //
-                                /*setState(() {
-                                                        state._results = sherlock.search(input: input);
-                                                      });*/
-                                //
-                                /*
-                                          },
-                                          completionsBuilder: (context, completions) => SherlockCompletionsBuilder(
-                                            completions: completions,
-                                            buildCompletion: (completion) => Padding(
-                                              padding: const EdgeInsets.all(8),
-                                              child: Row(
-                                                children: [
-                                                  Text(
-                                                    completion,
-                                                    style: const TextStyle(fontSize: 14),
-                                                  ),
-                                                  const Spacer(),
-                                                  const Icon(Icons.check),
-                                                  const Icon(Icons.close)
-                                                ],
-                                              ),
-                                            ),
-                                          ),
-                                          padding: const EdgeInsetsDirectional.symmetric(horizontal: 16.0),
-                                          constraints: const BoxConstraints(minWidth: 360.0, maxWidth: 800.0, minHeight: 48.0),
-                                          viewConstraints: const BoxConstraints(minWidth: 360.0, minHeight: 240.0),
-                                          viewShape: RoundedRectangleBorder(
-                                            borderRadius: BorderRadiusDirectional.circular(12),
-                                          ),
-                                          isFullScreen: false,
-                                          shape: RoundedRectangleBorder(
-                                            borderRadius: BorderRadiusDirectional.circular(12),
-                                          ),
-                                          elevation: 1,
-                                        ),
-                                      ),
+                                      Expanded(child:  AppSearchInputSliverWidget(
+                                        key: const Key('all-address-search-field-widget'),
+                                        onChanged: state._updateSearchTerm,
+                                        height: 48,
+                                        hintText: 'Search Address',
+
+                                      ),),
                                       const AnimatedGap(12, duration: Duration(milliseconds: 500)),
                                       SizedBox(
-                                        height: 52,
+                                        height: 46,
                                         child: OutlinedButton(
                                           onPressed: () {},
                                           style: OutlinedButton.styleFrom(
@@ -370,7 +359,7 @@ class _AllSavedAddressPageView
                                     ],
                                   ),
                                 ),
-                                const AnimatedGap(6, duration: Duration(milliseconds: 500)),*/
+                                const AnimatedGap(6, duration: Duration(milliseconds: 500)),
                                 //
                                 ListTile(
                                   dense: true,
@@ -406,7 +395,7 @@ class _AllSavedAddressPageView
                                                 top: 4,
                                                 bottom: 4),
                                             child: Text(
-                                              '${state.addressEntities.length}',
+                                              '${state._pagingController.value.itemList?.length??0}',
                                               textDirection: serviceLocator<
                                                       LanguageController>()
                                                   .targetTextDirection,
@@ -436,26 +425,16 @@ class _AllSavedAddressPageView
                           ),
                           Expanded(
                             child: state.widgetState.maybeWhen(
-                              empty: (context, child, message, data) => Center(
-                                key: const Key('get-all-address-empty-widget'),
-                                child: Text(
-                                  'No address available or added by you',
-                                  style: context.labelLarge,
-                                  textDirection:
-                                      serviceLocator<LanguageController>()
-                                          .targetTextDirection,
-                                ).translate(),
+                              empty: (context, child, message, data) => const NoItemAvailableWidget(
+                                key: Key('all-address-empty-widget'),
+                                textMessage: 'No address available or added by you',
                               ),
-                              loading: (context, child, message, isLoading) {
-                                return const Center(
-                                  key: Key('get-all-address-center-widget'),
-                                  child: SizedBox(
-                                    width: 48,
-                                    height: 48,
-                                    child: CircularProgressIndicator(),
-                                  ),
-                                );
-                              },
+                              loading: (context, child, message, isLoading)=>const DataLoadingWidget(
+                                key: Key('all-menu-loading-widget'),
+                              ),
+                              processing: (context, child, message, isLoading) => const DataLoadingWidget(
+                                key: Key('all-menu-processing-widget'),
+                              ),
                               allData: (context, child, message, data) {
                                 return CustomScrollView(
                                   controller: state.innerScrollController,
@@ -505,18 +484,16 @@ class _AllSavedAddressPageView
                                 );
                               },
                               none: () {
-                                return Center(
-                                  child: Text(
-                                    'No address available or added by you',
-                                    style: context.labelLarge,
-                                    textDirection:
-                                        serviceLocator<LanguageController>()
-                                            .targetTextDirection,
-                                  ).translate(),
+                                return const NoItemAvailableWidget(
+                                  key: Key('all-address-none-widget'),
+                                  textMessage: 'No address available or added by you',
                                 );
                               },
                               orElse: () {
-                                return const SizedBox();
+                                return const NoItemAvailableWidget(
+                                  key: Key('all-menu-else-widget'),
+                                  textMessage: 'No address available or added by you',
+                                );
                               },
                             ),
                           ),

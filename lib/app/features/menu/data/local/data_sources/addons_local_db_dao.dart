@@ -297,12 +297,12 @@ class AddonsLocalDbRepository<Extras extends Addons> implements BaseAddonsLocalD
               offset: pageKey,
               filter: Filter.or(
                 [
-                  Filter.matches('title', '^${searchText}',anyInList: true,),
-                  Filter.matches('title', '${searchText}\$',anyInList: true,),
-                  Filter.matches('title', '${searchText}',anyInList: true,),
-                  Filter.matches('description', '^${searchText}',anyInList: true,),
-                  Filter.matches('description', '${searchText}\$',anyInList: true,),
-                  Filter.matches('description', '${searchText}',anyInList: true,),
+                  Filter.matches('title', '^${searchText}'),
+                  Filter.matches('title', '${searchText}\$'),
+                  Filter.matches('title', '${searchText}'),
+                  Filter.matches('description', '^${searchText}'),
+                  Filter.matches('description', '${searchText}\$'),
+                  Filter.matches('description', '${searchText}'),
                   Filter.matchesRegExp(
                     'title',
                     regExp,
