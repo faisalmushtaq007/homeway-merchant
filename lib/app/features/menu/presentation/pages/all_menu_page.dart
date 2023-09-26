@@ -91,7 +91,7 @@ class _AllMenuPageController extends State<AllMenuPage> {
         GetAllMenuPagination(
           pageKey: pageKey,
           pageSize: pageSize,
-          searchText: searchItem,
+          searchText: searchText??searchItem,
           filter: filtering ?? filter,
           sorting: sorting ?? sort,
         ),
@@ -201,8 +201,22 @@ class _AllMenuPageController extends State<AllMenuPage> {
                   reason: menuListenerState.message,
                 );
               }
+            case GetAllLoadingMenuPaginationState():
+              {
+                widgetState = WidgetState<MenuEntity>.loading(
+                  context: context,
+                  message: menuListenerState.message,
+                );
+              }
+            case GetAllProcessingMenuPaginationState():
+              {
+                widgetState = WidgetState<MenuEntity>.processing(
+                  context: context,
+                  message: menuListenerState.message,
+                );
+              }
             case _:
-              appLog.d('Default case: all address page bloc listener');
+              appLog.d('Default case: all menu page bloc listener');
           }
         },
         child: BlocBuilder<MenuBloc, MenuState>(
@@ -519,7 +533,7 @@ class _AllMenuPageView extends WidgetView<AllMenuPage, _AllMenuPageController> {
                                 slivers: [
                                   PagedSliverList<int, MenuEntity>(
                                     key: const Key(
-                                        'address-list-pagedSliverList-widget'),
+                                        'menu-list-pagedSliverList-widget'),
                                     pagingController: state._pagingController,
                                     builderDelegate:
                                     PagedChildBuilderDelegate<

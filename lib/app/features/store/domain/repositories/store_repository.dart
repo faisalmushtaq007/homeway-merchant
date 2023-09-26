@@ -74,4 +74,34 @@ abstract interface class StoreRepository {
     required List<StoreEntity> source,
     required AppUserEntity destination,
   });
+
+  Future<DataSourceState<List<StoreOwnDeliveryPartnersInfo>>> getAllDriverPagination({
+    int pageKey = 0,
+    int pageSize = 10,
+    String? searchText,
+    StoreOwnDeliveryPartnersInfo? driverEntity,
+    String? filtering,
+    String? sorting,
+    Timestamp? startTime,
+    Timestamp? endTime,
+  });
+  Future<DataSourceState<List<StoreEntity>>> getAllStorePagination({
+    int pageKey = 0,
+    int pageSize = 10,
+    String? searchText,
+    StoreEntity? storeEntity,
+    String? filtering,
+    String? sorting,
+    Timestamp? startTime,
+    Timestamp? endTime,
+  });
+
+  Future<DataSourceState<List<StoreOwnDeliveryPartnersInfo>>> saveAllDriver({
+    required List<StoreOwnDeliveryPartnersInfo> drivers,
+    bool hasUpdateAll = false,
+  });
+  Future<DataSourceState<List<StoreEntity>>> saveAllStore({
+    required List<StoreEntity> stores,
+    bool hasUpdateAll = false,
+  });
 }

@@ -12,27 +12,21 @@ class StoreRepositoryImplement implements StoreRepository {
 
   final StoreDataSource remoteDataSource;
   final StoreLocalDbRepository<StoreEntity> storeLocalDataSource;
-  final StoreOwnDeliveryPartnersLocalDbRepository<StoreOwnDeliveryPartnersInfo>
-      driverLocalDataSource;
-  final StoreBindingWithUserLocalDbRepository<StoreEntity, AppUserEntity>
-      storeBindingWithUserLocalDataSource;
-  final StoreOwnDriverBindingWithStoreLocalDbRepository<
-      StoreOwnDeliveryPartnersInfo,
-      StoreEntity> storeOwnDriverBindingWithStoreLocalDataSource;
-  final StoreOwnDriverBindingWithCurrentUserLocalDbRepository<
-      StoreOwnDeliveryPartnersInfo,
-      AppUserEntity> storeOwnDriverBindingWithCurrentUserLocalDataSource;
+  final StoreOwnDeliveryPartnersLocalDbRepository<StoreOwnDeliveryPartnersInfo> driverLocalDataSource;
+  final StoreBindingWithUserLocalDbRepository<StoreEntity, AppUserEntity> storeBindingWithUserLocalDataSource;
+  final StoreOwnDriverBindingWithStoreLocalDbRepository<StoreOwnDeliveryPartnersInfo, StoreEntity>
+      storeOwnDriverBindingWithStoreLocalDataSource;
+  final StoreOwnDriverBindingWithCurrentUserLocalDbRepository<StoreOwnDeliveryPartnersInfo, AppUserEntity>
+      storeOwnDriverBindingWithCurrentUserLocalDataSource;
 
   @override
   Future<DataSourceState<bool>> deleteAllStore() async {
     try {
-      var connectivity =
-          serviceLocator<ConnectivityService>().getCurrentInternetStatus();
+      var connectivity = serviceLocator<ConnectivityService>().getCurrentInternetStatus();
       if (connectivity.$2 == InternetConnectivityState.internet) {
         // Local DB
         // Save to local
-        final Either<RepositoryBaseFailure, bool> result =
-            await storeLocalDataSource.deleteAll();
+        final Either<RepositoryBaseFailure, bool> result = await storeLocalDataSource.deleteAll();
         // Return result
         return result.fold((l) {
           final RepositoryFailure failure = l as RepositoryFailure;
@@ -49,8 +43,7 @@ class StoreRepositoryImplement implements StoreRepository {
       } else {
         // Remote
         // Save to server
-        final ApiResultState<bool> result =
-            await remoteDataSource.deleteAllStore();
+        final ApiResultState<bool> result = await remoteDataSource.deleteAllStore();
         // Return result
         return result.when(
           success: (data) {
@@ -89,13 +82,11 @@ class StoreRepositoryImplement implements StoreRepository {
     StoreEntity? storeEntity,
   }) async {
     try {
-      var connectivity =
-          serviceLocator<ConnectivityService>().getCurrentInternetStatus();
+      var connectivity = serviceLocator<ConnectivityService>().getCurrentInternetStatus();
       if (connectivity.$2 == InternetConnectivityState.internet) {
         // Local DB
         // Save to local
-        final Either<RepositoryBaseFailure, bool> result =
-            await storeLocalDataSource.deleteById(UniqueId(storeID));
+        final Either<RepositoryBaseFailure, bool> result = await storeLocalDataSource.deleteById(UniqueId(storeID));
         // Return result
         return result.fold((l) {
           final RepositoryFailure failure = l as RepositoryFailure;
@@ -112,8 +103,8 @@ class StoreRepositoryImplement implements StoreRepository {
       } else {
         // Remote
         // Save to server
-        final ApiResultState<bool> result = await remoteDataSource.deleteStore(
-            storeID: storeID, storeEntity: storeEntity);
+        final ApiResultState<bool> result =
+            await remoteDataSource.deleteStore(storeID: storeID, storeEntity: storeEntity);
         // Return result
         return result.when(
           success: (data) {
@@ -152,8 +143,7 @@ class StoreRepositoryImplement implements StoreRepository {
     required int storeID,
   }) async {
     try {
-      var connectivity =
-          serviceLocator<ConnectivityService>().getCurrentInternetStatus();
+      var connectivity = serviceLocator<ConnectivityService>().getCurrentInternetStatus();
       if (connectivity.$2 == InternetConnectivityState.internet) {
         // Local DB
         // Save to local
@@ -175,8 +165,7 @@ class StoreRepositoryImplement implements StoreRepository {
       } else {
         // Remote
         // Save to server
-        final ApiResultState<StoreEntity> result =
-            await remoteDataSource.editStore(storeEntity: storeEntity);
+        final ApiResultState<StoreEntity> result = await remoteDataSource.editStore(storeEntity: storeEntity);
         // Return result
         return result.when(
           success: (data) {
@@ -212,13 +201,11 @@ class StoreRepositoryImplement implements StoreRepository {
   @override
   Future<DataSourceState<List<StoreEntity>>> getAllStore() async {
     /*try {*/
-    var connectivity =
-        serviceLocator<ConnectivityService>().getCurrentInternetStatus();
+    var connectivity = serviceLocator<ConnectivityService>().getCurrentInternetStatus();
     if (connectivity.$2 == InternetConnectivityState.internet) {
       // Local DB
       // Save to local
-      final Either<RepositoryBaseFailure, List<StoreEntity>> result =
-          await storeLocalDataSource.getAll();
+      final Either<RepositoryBaseFailure, List<StoreEntity>> result = await storeLocalDataSource.getAll();
       // Return result
       return result.fold((l) {
         final RepositoryFailure failure = l as RepositoryFailure;
@@ -235,8 +222,7 @@ class StoreRepositoryImplement implements StoreRepository {
     } else {
       // Remote
       // Save to server
-      final ApiResultState<List<StoreEntity>> result =
-          await remoteDataSource.getAllStore();
+      final ApiResultState<List<StoreEntity>> result = await remoteDataSource.getAllStore();
       // Return result
       return result.when(
         success: (data) {
@@ -270,11 +256,9 @@ class StoreRepositoryImplement implements StoreRepository {
   }
 
   @override
-  Future<DataSourceState<StoreEntity>> getStore(
-      {required int storeID, StoreEntity? storeEntity}) async {
+  Future<DataSourceState<StoreEntity>> getStore({required int storeID, StoreEntity? storeEntity}) async {
     try {
-      var connectivity =
-          serviceLocator<ConnectivityService>().getCurrentInternetStatus();
+      var connectivity = serviceLocator<ConnectivityService>().getCurrentInternetStatus();
       if (connectivity.$2 == InternetConnectivityState.internet) {
         // Local DB
         // Save to local
@@ -296,8 +280,7 @@ class StoreRepositoryImplement implements StoreRepository {
       } else {
         // Remote
         // Save to server
-        final ApiResultState<StoreEntity> result =
-            await remoteDataSource.getStore(
+        final ApiResultState<StoreEntity> result = await remoteDataSource.getStore(
           storeEntity: storeEntity,
           storeID: storeID,
         );
@@ -334,16 +317,13 @@ class StoreRepositoryImplement implements StoreRepository {
   }
 
   @override
-  Future<DataSourceState<StoreEntity>> saveStore(
-      {required StoreEntity storeEntity}) async {
+  Future<DataSourceState<StoreEntity>> saveStore({required StoreEntity storeEntity}) async {
     try {
-      var connectivity =
-          serviceLocator<ConnectivityService>().getCurrentInternetStatus();
+      var connectivity = serviceLocator<ConnectivityService>().getCurrentInternetStatus();
       if (connectivity.$2 == InternetConnectivityState.internet) {
         // Local DB
         // Save to local
-        final Either<RepositoryBaseFailure, StoreEntity> result =
-            await storeLocalDataSource.add(storeEntity);
+        final Either<RepositoryBaseFailure, StoreEntity> result = await storeLocalDataSource.add(storeEntity);
         // Return result
         return result.fold((l) {
           final RepositoryFailure failure = l as RepositoryFailure;
@@ -360,8 +340,7 @@ class StoreRepositoryImplement implements StoreRepository {
       } else {
         // Remote
         // Save to server
-        final ApiResultState<StoreEntity> result =
-            await remoteDataSource.saveStore(storeEntity: storeEntity);
+        final ApiResultState<StoreEntity> result = await remoteDataSource.saveStore(storeEntity: storeEntity);
         // Return result
         return result.when(
           success: (data) {
@@ -397,17 +376,14 @@ class StoreRepositoryImplement implements StoreRepository {
   // Driver
   @override
   Future<DataSourceState<List<StoreEntity>>> bindDriverWithStores(
-      {required List<StoreOwnDeliveryPartnersInfo> source,
-      required List<StoreEntity> destination}) async {
+      {required List<StoreOwnDeliveryPartnersInfo> source, required List<StoreEntity> destination}) async {
     try {
-      var connectivity =
-          serviceLocator<ConnectivityService>().getCurrentInternetStatus();
+      var connectivity = serviceLocator<ConnectivityService>().getCurrentInternetStatus();
       if (connectivity.$2 == InternetConnectivityState.internet) {
         // Local DB
         // Save to local
         final Either<RepositoryBaseFailure, List<StoreEntity>> result =
-            await storeOwnDriverBindingWithStoreLocalDataSource.binding(
-                source, destination);
+            await storeOwnDriverBindingWithStoreLocalDataSource.binding(source, destination);
         // Return result
         return result.fold((l) {
           final RepositoryFailure failure = l as RepositoryFailure;
@@ -424,8 +400,7 @@ class StoreRepositoryImplement implements StoreRepository {
       } else {
         // Remote
         // Save to server
-        final ApiResultState<List<StoreEntity>> result =
-            await remoteDataSource.bindDriverWithStores(
+        final ApiResultState<List<StoreEntity>> result = await remoteDataSource.bindDriverWithStores(
           source: source,
           destination: destination,
         );
@@ -464,13 +439,11 @@ class StoreRepositoryImplement implements StoreRepository {
   @override
   Future<DataSourceState<bool>> deleteAllDriver() async {
     try {
-      var connectivity =
-          serviceLocator<ConnectivityService>().getCurrentInternetStatus();
+      var connectivity = serviceLocator<ConnectivityService>().getCurrentInternetStatus();
       if (connectivity.$2 == InternetConnectivityState.internet) {
         // Local DB
         // Save to local
-        final Either<RepositoryBaseFailure, bool> result =
-            await driverLocalDataSource.deleteAll();
+        final Either<RepositoryBaseFailure, bool> result = await driverLocalDataSource.deleteAll();
         // Return result
         return result.fold((l) {
           final RepositoryFailure failure = l as RepositoryFailure;
@@ -487,8 +460,7 @@ class StoreRepositoryImplement implements StoreRepository {
       } else {
         // Remote
         // Save to server
-        final ApiResultState<bool> result =
-            await remoteDataSource.deleteAllDriver();
+        final ApiResultState<bool> result = await remoteDataSource.deleteAllDriver();
         // Return result
         return result.when(
           success: (data) {
@@ -523,16 +495,13 @@ class StoreRepositoryImplement implements StoreRepository {
 
   @override
   Future<DataSourceState<bool>> deleteDriver(
-      {required int driverID,
-      StoreOwnDeliveryPartnersInfo? storeOwnDeliveryPartnersInfo}) async {
+      {required int driverID, StoreOwnDeliveryPartnersInfo? storeOwnDeliveryPartnersInfo}) async {
     try {
-      var connectivity =
-          serviceLocator<ConnectivityService>().getCurrentInternetStatus();
+      var connectivity = serviceLocator<ConnectivityService>().getCurrentInternetStatus();
       if (connectivity.$2 == InternetConnectivityState.internet) {
         // Local DB
         // Save to local
-        final Either<RepositoryBaseFailure, bool> result =
-            await driverLocalDataSource.deleteById(UniqueId(driverID));
+        final Either<RepositoryBaseFailure, bool> result = await driverLocalDataSource.deleteById(UniqueId(driverID));
         // Return result
         return result.fold((l) {
           final RepositoryFailure failure = l as RepositoryFailure;
@@ -587,17 +556,14 @@ class StoreRepositoryImplement implements StoreRepository {
 
   @override
   Future<DataSourceState<StoreOwnDeliveryPartnersInfo>> editDriver(
-      {required StoreOwnDeliveryPartnersInfo storeOwnDeliveryPartnersInfo,
-      required int driverID}) async {
+      {required StoreOwnDeliveryPartnersInfo storeOwnDeliveryPartnersInfo, required int driverID}) async {
     try {
-      var connectivity =
-          serviceLocator<ConnectivityService>().getCurrentInternetStatus();
+      var connectivity = serviceLocator<ConnectivityService>().getCurrentInternetStatus();
       if (connectivity.$2 == InternetConnectivityState.internet) {
         // Local DB
         // Save to local
-        final Either<RepositoryBaseFailure, StoreOwnDeliveryPartnersInfo>
-            result = await driverLocalDataSource.update(
-                storeOwnDeliveryPartnersInfo, UniqueId(driverID));
+        final Either<RepositoryBaseFailure, StoreOwnDeliveryPartnersInfo> result =
+            await driverLocalDataSource.update(storeOwnDeliveryPartnersInfo, UniqueId(driverID));
         // Return result
         return result.fold((l) {
           final RepositoryFailure failure = l as RepositoryFailure;
@@ -614,8 +580,7 @@ class StoreRepositoryImplement implements StoreRepository {
       } else {
         // Remote
         // Save to server
-        final ApiResultState<StoreOwnDeliveryPartnersInfo> result =
-            await remoteDataSource.editDriver(
+        final ApiResultState<StoreOwnDeliveryPartnersInfo> result = await remoteDataSource.editDriver(
           storeOwnDeliveryPartnersInfo: storeOwnDeliveryPartnersInfo,
           driverID: driverID,
         );
@@ -652,16 +617,14 @@ class StoreRepositoryImplement implements StoreRepository {
   }
 
   @override
-  Future<DataSourceState<List<StoreOwnDeliveryPartnersInfo>>>
-      getAllDriver() async {
+  Future<DataSourceState<List<StoreOwnDeliveryPartnersInfo>>> getAllDriver() async {
     try {
-      var connectivity =
-          serviceLocator<ConnectivityService>().getCurrentInternetStatus();
+      var connectivity = serviceLocator<ConnectivityService>().getCurrentInternetStatus();
       if (connectivity.$2 == InternetConnectivityState.internet) {
         // Local DB
         // Save to local
-        final Either<RepositoryBaseFailure, List<StoreOwnDeliveryPartnersInfo>>
-            result = await driverLocalDataSource.getAll();
+        final Either<RepositoryBaseFailure, List<StoreOwnDeliveryPartnersInfo>> result =
+            await driverLocalDataSource.getAll();
         // Return result
         return result.fold((l) {
           final RepositoryFailure failure = l as RepositoryFailure;
@@ -673,14 +636,12 @@ class StoreRepositoryImplement implements StoreRepository {
           );
         }, (r) {
           appLog.d('Get all driver local : ${r.length}');
-          return DataSourceState<List<StoreOwnDeliveryPartnersInfo>>.localDb(
-              data: r);
+          return DataSourceState<List<StoreOwnDeliveryPartnersInfo>>.localDb(data: r);
         });
       } else {
         // Remote
         // Save to server
-        final ApiResultState<List<StoreOwnDeliveryPartnersInfo>> result =
-            await remoteDataSource.getAllDriver();
+        final ApiResultState<List<StoreOwnDeliveryPartnersInfo>> result = await remoteDataSource.getAllDriver();
         // Return result
         return result.when(
           success: (data) {
@@ -715,16 +676,14 @@ class StoreRepositoryImplement implements StoreRepository {
 
   @override
   Future<DataSourceState<StoreOwnDeliveryPartnersInfo>> getDriver(
-      {required int driverID,
-      StoreOwnDeliveryPartnersInfo? storeOwnDeliveryPartnersInfo}) async {
+      {required int driverID, StoreOwnDeliveryPartnersInfo? storeOwnDeliveryPartnersInfo}) async {
     try {
-      var connectivity =
-          serviceLocator<ConnectivityService>().getCurrentInternetStatus();
+      var connectivity = serviceLocator<ConnectivityService>().getCurrentInternetStatus();
       if (connectivity.$2 == InternetConnectivityState.internet) {
         // Local DB
         // Save to local
-        final Either<RepositoryBaseFailure, StoreOwnDeliveryPartnersInfo?>
-            result = await driverLocalDataSource.getById(UniqueId(driverID));
+        final Either<RepositoryBaseFailure, StoreOwnDeliveryPartnersInfo?> result =
+            await driverLocalDataSource.getById(UniqueId(driverID));
         // Return result
         return result.fold((l) {
           final RepositoryFailure failure = l as RepositoryFailure;
@@ -741,8 +700,7 @@ class StoreRepositoryImplement implements StoreRepository {
       } else {
         // Remote
         // Save to server
-        final ApiResultState<StoreOwnDeliveryPartnersInfo> result =
-            await remoteDataSource.getDriver(
+        final ApiResultState<StoreOwnDeliveryPartnersInfo> result = await remoteDataSource.getDriver(
           storeOwnDeliveryPartnersInfo: storeOwnDeliveryPartnersInfo,
           driverID: driverID,
         );
@@ -780,16 +738,13 @@ class StoreRepositoryImplement implements StoreRepository {
 
   @override
   Future<DataSourceState<StoreOwnDeliveryPartnersInfo>> saveDriver(
-      {required StoreOwnDeliveryPartnersInfo
-          storeOwnDeliveryPartnersInfo}) async {
+      {required StoreOwnDeliveryPartnersInfo storeOwnDeliveryPartnersInfo}) async {
     try {
-      var connectivity =
-          serviceLocator<ConnectivityService>().getCurrentInternetStatus();
+      var connectivity = serviceLocator<ConnectivityService>().getCurrentInternetStatus();
       if (connectivity.$2 == InternetConnectivityState.internet) {
         // Local DB
         // Save to local
-        final Either<RepositoryBaseFailure, StoreOwnDeliveryPartnersInfo>
-            result =
+        final Either<RepositoryBaseFailure, StoreOwnDeliveryPartnersInfo> result =
             await driverLocalDataSource.add(storeOwnDeliveryPartnersInfo);
         // Return result
         return result.fold((l) {
@@ -808,8 +763,7 @@ class StoreRepositoryImplement implements StoreRepository {
         // Remote
         // Save to server
         final ApiResultState<StoreOwnDeliveryPartnersInfo> result =
-            await remoteDataSource.saveDriver(
-                storeOwnDeliveryPartnersInfo: storeOwnDeliveryPartnersInfo);
+            await remoteDataSource.saveDriver(storeOwnDeliveryPartnersInfo: storeOwnDeliveryPartnersInfo);
         // Return result
         return result.when(
           success: (data) {
@@ -844,22 +798,18 @@ class StoreRepositoryImplement implements StoreRepository {
 
   @override
   Future<DataSourceState<List<StoreEntity>>> unBindDriverWithStores(
-      {required List<StoreOwnDeliveryPartnersInfo> source,
-      required List<StoreEntity> destination}) async {
+      {required List<StoreOwnDeliveryPartnersInfo> source, required List<StoreEntity> destination}) async {
     try {
-      var connectivity =
-          serviceLocator<ConnectivityService>().getCurrentInternetStatus();
+      var connectivity = serviceLocator<ConnectivityService>().getCurrentInternetStatus();
       if (connectivity.$2 == InternetConnectivityState.internet) {
         // Local DB
         // Save to local
         final Either<RepositoryBaseFailure, List<StoreEntity>> result =
-            await storeOwnDriverBindingWithStoreLocalDataSource.unbinding(
-                source, destination);
+            await storeOwnDriverBindingWithStoreLocalDataSource.unbinding(source, destination);
         // Return result
         return result.fold((l) {
           final RepositoryFailure failure = l as RepositoryFailure;
-          appLog
-              .d('UnBinding driver with store local error ${failure.message}');
+          appLog.d('UnBinding driver with store local error ${failure.message}');
           return DataSourceState<List<StoreEntity>>.error(
             reason: failure.message,
             dataSourceFailure: DataSourceFailure.local,
@@ -872,8 +822,7 @@ class StoreRepositoryImplement implements StoreRepository {
       } else {
         // Remote
         // Save to server
-        final ApiResultState<List<StoreEntity>> result =
-            await remoteDataSource.unBindDriverWithStores(
+        final ApiResultState<List<StoreEntity>> result = await remoteDataSource.unBindDriverWithStores(
           source: source,
           destination: destination,
         );
@@ -911,17 +860,14 @@ class StoreRepositoryImplement implements StoreRepository {
 
   @override
   Future<DataSourceState<AppUserEntity>> bindDriverWithUser(
-      {required List<StoreOwnDeliveryPartnersInfo> source,
-      required AppUserEntity destination}) async {
+      {required List<StoreOwnDeliveryPartnersInfo> source, required AppUserEntity destination}) async {
     try {
-      var connectivity =
-          serviceLocator<ConnectivityService>().getCurrentInternetStatus();
+      var connectivity = serviceLocator<ConnectivityService>().getCurrentInternetStatus();
       if (connectivity.$2 == InternetConnectivityState.internet) {
         // Local DB
         // Save to local
         final Either<RepositoryBaseFailure, AppUserEntity> result =
-            await storeOwnDriverBindingWithCurrentUserLocalDataSource.binding(
-                source, destination);
+            await storeOwnDriverBindingWithCurrentUserLocalDataSource.binding(source, destination);
         // Return result
         return result.fold((l) {
           final RepositoryFailure failure = l as RepositoryFailure;
@@ -938,8 +884,7 @@ class StoreRepositoryImplement implements StoreRepository {
       } else {
         // Remote
         // Save to server
-        final ApiResultState<AppUserEntity> result =
-            await remoteDataSource.bindDriverWithUser(
+        final ApiResultState<AppUserEntity> result = await remoteDataSource.bindDriverWithUser(
           source: source,
           destination: destination,
         );
@@ -977,17 +922,14 @@ class StoreRepositoryImplement implements StoreRepository {
 
   @override
   Future<DataSourceState<AppUserEntity>> bindStoreWithUser(
-      {required List<StoreEntity> source,
-      required AppUserEntity destination}) async {
+      {required List<StoreEntity> source, required AppUserEntity destination}) async {
     try {
-      var connectivity =
-          serviceLocator<ConnectivityService>().getCurrentInternetStatus();
+      var connectivity = serviceLocator<ConnectivityService>().getCurrentInternetStatus();
       if (connectivity.$2 == InternetConnectivityState.internet) {
         // Local DB
         // Save to local
         final Either<RepositoryBaseFailure, AppUserEntity> result =
-            await storeBindingWithUserLocalDataSource.binding(
-                source, destination);
+            await storeBindingWithUserLocalDataSource.binding(source, destination);
         // Return result
         return result.fold((l) {
           final RepositoryFailure failure = l as RepositoryFailure;
@@ -1004,8 +946,7 @@ class StoreRepositoryImplement implements StoreRepository {
       } else {
         // Remote
         // Save to server
-        final ApiResultState<AppUserEntity> result =
-            await remoteDataSource.bindStoreWithUser(
+        final ApiResultState<AppUserEntity> result = await remoteDataSource.bindStoreWithUser(
           source: source,
           destination: destination,
         );
@@ -1043,10 +984,8 @@ class StoreRepositoryImplement implements StoreRepository {
 
   @override
   Future<DataSourceState<AppUserEntity>> unBindDriverWithUser(
-      {required List<StoreOwnDeliveryPartnersInfo> source,
-      required AppUserEntity destination}) {
-    var connectivity =
-        serviceLocator<ConnectivityService>().getCurrentInternetStatus();
+      {required List<StoreOwnDeliveryPartnersInfo> source, required AppUserEntity destination}) {
+    var connectivity = serviceLocator<ConnectivityService>().getCurrentInternetStatus();
     if (connectivity.$2 == InternetConnectivityState.internet) {
     } else {}
     throw UnimplementedError();
@@ -1055,11 +994,320 @@ class StoreRepositoryImplement implements StoreRepository {
   @override
   Future<DataSourceState<AppUserEntity>> unBindStoreWithUser(
       {required List<StoreEntity> source, required AppUserEntity destination}) {
-    var connectivity =
-        serviceLocator<ConnectivityService>().getCurrentInternetStatus();
+    var connectivity = serviceLocator<ConnectivityService>().getCurrentInternetStatus();
     if (connectivity.$2 == InternetConnectivityState.internet) {
     } else {}
     throw UnimplementedError();
+  }
+
+  @override
+  Future<DataSourceState<List<StoreOwnDeliveryPartnersInfo>>> getAllDriverPagination({
+    int pageKey = 0,
+    int pageSize = 10,
+    String? searchText,
+    StoreOwnDeliveryPartnersInfo? driverEntity,
+    String? filtering,
+    String? sorting,
+    Timestamp? startTime,
+    Timestamp? endTime,
+  }) async {
+    try {
+      final connectivity =
+      serviceLocator<ConnectivityService>().getCurrentInternetStatus();
+      if (connectivity.$2 == InternetConnectivityState.internet) {
+        // Local DB
+        // Save to local
+        final Either<RepositoryBaseFailure, List<StoreOwnDeliveryPartnersInfo>> result =
+        await driverLocalDataSource.getAllWithPagination(
+          filter: filtering,
+          sorting: sorting,
+          searchText: searchText,
+          pageSize: pageSize,
+          pageKey: pageKey,
+          endTimeStamp: endTime,
+          startTimeStamp: startTime,
+        );
+        // Return result
+        return result.fold((l) {
+          final RepositoryFailure failure = l as RepositoryFailure;
+          appLog.d('Get all StoreOwnDeliveryPartnersInfo local error ${failure.message}');
+          return DataSourceState<List<StoreOwnDeliveryPartnersInfo>>.error(
+            reason: failure.message,
+            dataSourceFailure: DataSourceFailure.local,
+            stackTrace: failure.stacktrace,
+          );
+        }, (r) {
+          appLog.d('Get all StoreOwnDeliveryPartnersInfo local : ${r.length}');
+          return DataSourceState<List<StoreOwnDeliveryPartnersInfo>>.localDb(data: r);
+        });
+      } else {
+        // Remote
+        // Save to server
+        final ApiResultState<List<StoreOwnDeliveryPartnersInfo>> result =
+        await remoteDataSource.getAllDriversPagination(
+          filtering: filtering,
+          sorting: sorting,
+          searchText: searchText,
+          pageSize: pageSize,
+          pageKey: pageKey,
+          drivers: driverEntity,
+          endTime: endTime,
+          startTime: startTime,
+        );
+        // Return result
+        return result.when(
+          success: (data) {
+            appLog.d('Get all StoreOwnDeliveryPartnersInfo from remote');
+            return DataSourceState<List<StoreOwnDeliveryPartnersInfo>>.remote(
+              data: data.toList(),
+            );
+          },
+          failure: (reason, error, exception, stackTrace) {
+            appLog.d('Get all StoreOwnDeliveryPartnersInfo remote error $reason');
+            return DataSourceState<List<StoreOwnDeliveryPartnersInfo>>.error(
+              reason: reason,
+              dataSourceFailure: DataSourceFailure.remote,
+              stackTrace: stackTrace,
+              error: error,
+              networkException: exception,
+            );
+          },
+        );
+      }
+    } catch (e, s) {
+      appLog.e('Get all StoreOwnDeliveryPartnersInfo exception $e');
+      return DataSourceState<List<StoreOwnDeliveryPartnersInfo>>.error(
+        reason: e.toString(),
+        dataSourceFailure: DataSourceFailure.local,
+        stackTrace: s,
+        error: e,
+        exception: e as Exception,
+      );
+    }
+  }
+
+  @override
+  Future<DataSourceState<List<StoreEntity>>> getAllStorePagination({
+    int pageKey = 0,
+    int pageSize = 10,
+    String? searchText,
+    StoreEntity? storeEntity,
+    String? filtering,
+    String? sorting,
+    Timestamp? startTime,
+    Timestamp? endTime,
+  }) async {
+    try {
+      final connectivity =
+      serviceLocator<ConnectivityService>().getCurrentInternetStatus();
+      if (connectivity.$2 == InternetConnectivityState.internet) {
+        // Local DB
+        // Save to local
+        final Either<RepositoryBaseFailure, List<StoreEntity>> result =
+        await storeLocalDataSource.getAllWithPagination(
+          filter: filtering,
+          sorting: sorting,
+          searchText: searchText,
+          pageSize: pageSize,
+          pageKey: pageKey,
+          endTimeStamp: endTime,
+          startTimeStamp: startTime,
+        );
+        // Return result
+        return result.fold((l) {
+          final RepositoryFailure failure = l as RepositoryFailure;
+          appLog.d('Get all StoreEntity local error ${failure.message}');
+          return DataSourceState<List<StoreEntity>>.error(
+            reason: failure.message,
+            dataSourceFailure: DataSourceFailure.local,
+            stackTrace: failure.stacktrace,
+          );
+        }, (r) {
+          appLog.d('Get all StoreEntity local : ${r.length}');
+          return DataSourceState<List<StoreEntity>>.localDb(data: r);
+        });
+      } else {
+        // Remote
+        // Save to server
+        final ApiResultState<List<StoreEntity>> result =
+        await remoteDataSource.getAllStorePagination(
+          filtering: filtering,
+          sorting: sorting,
+          searchText: searchText,
+          pageSize: pageSize,
+          pageKey: pageKey,
+          stores: storeEntity,
+          endTime: endTime,
+          startTime: startTime,
+        );
+        // Return result
+        return result.when(
+          success: (data) {
+            appLog.d('Get all StoreEntity from remote');
+            return DataSourceState<List<StoreEntity>>.remote(
+              data: data.toList(),
+            );
+          },
+          failure: (reason, error, exception, stackTrace) {
+            appLog.d('Get all StoreEntity remote error $reason');
+            return DataSourceState<List<StoreEntity>>.error(
+              reason: reason,
+              dataSourceFailure: DataSourceFailure.remote,
+              stackTrace: stackTrace,
+              error: error,
+              networkException: exception,
+            );
+          },
+        );
+      }
+    } catch (e, s) {
+      appLog.e('Get all StoreEntity exception $e');
+      return DataSourceState<List<StoreEntity>>.error(
+        reason: e.toString(),
+        dataSourceFailure: DataSourceFailure.local,
+        stackTrace: s,
+        error: e,
+        exception: e as Exception,
+      );
+    }
+  }
+
+  @override
+  Future<DataSourceState<List<StoreOwnDeliveryPartnersInfo>>> saveAllDriver({
+    required List<StoreOwnDeliveryPartnersInfo> drivers,
+    bool hasUpdateAll = false,
+  }) async {
+    try {
+      final connectivity =
+      serviceLocator<ConnectivityService>().getCurrentInternetStatus();
+      if (connectivity.$2 == InternetConnectivityState.internet) {
+        // Local DB
+        // Save to local
+        final Either<RepositoryBaseFailure, List<StoreOwnDeliveryPartnersInfo>> result =
+        await driverLocalDataSource.saveAll(
+          entities: drivers.toList(),
+          hasUpdateAll: hasUpdateAll,
+        );
+        // Return result
+        return result.fold((l) {
+          final RepositoryFailure failure = l as RepositoryFailure;
+          appLog.d('Save all StoreOwnDeliveryPartnersInfo local error ${failure.message}');
+          return DataSourceState<List<StoreOwnDeliveryPartnersInfo>>.error(
+            reason: failure.message,
+            dataSourceFailure: DataSourceFailure.local,
+            stackTrace: failure.stacktrace,
+          );
+        }, (r) {
+          appLog.d('Save all StoreOwnDeliveryPartnersInfo to local : ${r?.length},');
+          return DataSourceState<List<StoreOwnDeliveryPartnersInfo>>.localDb(data: r);
+        });
+      } else {
+        // Remote
+        // Save to server
+        final ApiResultState<List<StoreOwnDeliveryPartnersInfo>> result =
+        await remoteDataSource.saveAllDriver(
+          drivers: drivers.toList(),
+          hasUpdateAll: hasUpdateAll,
+        );
+        // Return result
+        return result.when(
+          success: (data) {
+            appLog.d('Save all StoreOwnDeliveryPartnersInfo to remote');
+            return DataSourceState<List<StoreOwnDeliveryPartnersInfo>>.remote(
+              data: data,
+            );
+          },
+          failure: (reason, error, exception, stackTrace) {
+            appLog.d('Save all StoreOwnDeliveryPartnersInfo remote error $reason');
+            return DataSourceState<List<StoreOwnDeliveryPartnersInfo>>.error(
+              reason: reason,
+              dataSourceFailure: DataSourceFailure.remote,
+              stackTrace: stackTrace,
+              error: error,
+              networkException: exception,
+            );
+          },
+        );
+      }
+    } catch (e, s) {
+      appLog.d('Save all StoreOwnDeliveryPartnersInfo exception $e');
+      return DataSourceState<List<StoreOwnDeliveryPartnersInfo>>.error(
+        reason: e.toString(),
+        dataSourceFailure: DataSourceFailure.local,
+        stackTrace: s,
+        error: e,
+        exception: e as Exception,
+      );
+    }
+  }
+
+  @override
+  Future<DataSourceState<List<StoreEntity>>> saveAllStore({
+    required List<StoreEntity> stores,
+    bool hasUpdateAll = false,
+  }) async {
+    try {
+      final connectivity =
+      serviceLocator<ConnectivityService>().getCurrentInternetStatus();
+      if (connectivity.$2 == InternetConnectivityState.internet) {
+        // Local DB
+        // Save to local
+        final Either<RepositoryBaseFailure, List<StoreEntity>> result =
+        await storeLocalDataSource.saveAll(
+          entities: stores,
+          hasUpdateAll: hasUpdateAll,
+        );
+        // Return result
+        return result.fold((l) {
+          final RepositoryFailure failure = l as RepositoryFailure;
+          appLog.d('Save all StoreEntity local error ${failure.message}');
+          return DataSourceState<List<StoreEntity>>.error(
+            reason: failure.message,
+            dataSourceFailure: DataSourceFailure.local,
+            stackTrace: failure.stacktrace,
+          );
+        }, (r) {
+          appLog.d('Save all StoreEntity to local : ${r?.length},');
+          return DataSourceState<List<StoreEntity>>.localDb(data: r);
+        });
+      } else {
+        // Remote
+        // Save to server
+        final ApiResultState<List<StoreEntity>> result =
+        await remoteDataSource.saveAllStore(
+          stores: stores.toList(),
+          hasUpdateAll: hasUpdateAll,
+        );
+        // Return result
+        return result.when(
+          success: (data) {
+            appLog.d('Save all StoreEntity to remote');
+            return DataSourceState<List<StoreEntity>>.remote(
+              data: data,
+            );
+          },
+          failure: (reason, error, exception, stackTrace) {
+            appLog.d('Save all StoreEntity remote error $reason');
+            return DataSourceState<List<StoreEntity>>.error(
+              reason: reason,
+              dataSourceFailure: DataSourceFailure.remote,
+              stackTrace: stackTrace,
+              error: error,
+              networkException: exception,
+            );
+          },
+        );
+      }
+    } catch (e, s) {
+      appLog.d('Save all StoreEntity exception $e');
+      return DataSourceState<List<StoreEntity>>.error(
+        reason: e.toString(),
+        dataSourceFailure: DataSourceFailure.local,
+        stackTrace: s,
+        error: e,
+        exception: e as Exception,
+      );
+    }
   }
 
 // Driver

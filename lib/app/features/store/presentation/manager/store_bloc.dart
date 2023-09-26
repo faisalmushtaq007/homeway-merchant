@@ -13,6 +13,7 @@ import 'package:homemakers_merchant/shared/states/data_source_state.dart';
 import 'package:homemakers_merchant/utils/app_equatable/app_equatable.dart';
 import 'package:homemakers_merchant/utils/app_log.dart';
 import 'package:new_image_crop/extensions/template_extension.dart';
+import 'package:sembast/timestamp.dart';
 
 part 'store_event.dart';
 part 'store_state.dart';
@@ -86,6 +87,14 @@ class StoreBloc extends Bloc<StoreEvent, StoreState> {
     );
     on<SelectDriversForStores>(
       _selectDriversForStores,
+      transformer: sequential(),
+    );
+    on<GetAllDriversPagination>(
+      _getAllDriversPagination,
+      transformer: sequential(),
+    );
+    on<GetAllStoresPagination>(
+      _getAllStoresPagination,
       transformer: sequential(),
     );
   }
@@ -1074,6 +1083,213 @@ class StoreBloc extends Bloc<StoreEvent, StoreState> {
           //exception: e as Exception,
           stackTrace: s,
           bindDriverToStoreStage: BindingStage.bindingDriverWithStore,
+        ),
+      );
+    }
+  }
+
+  FutureOr<void> _getAllDriversPagination(GetAllDriversPagination event, Emitter<StoreState> emit) async {
+    try {
+      appLog.d('Get all drivers bloc ${event.pageKey}, ${event.pageSize}, ${event.searchText}');
+      emit(GetAllLoadingDriversPaginationState(
+          isLoading: true,
+          message: 'Please wait while we are fetching all drivers...'));
+      final DataSourceState<List<StoreOwnDeliveryPartnersInfo>> result =
+      await serviceLocator<GetAllDriverPaginationUseCase>()(
+        pageKey: event.pageKey,
+        pageSize: event.pageSize,
+        searchText: event.searchText,
+        filtering: event.filter,
+        sorting: event.sorting,
+        startTime: event.startTimeStamp,
+        endTime: event.endTimeStamp,
+      );
+      result.when(
+        remote: (data, meta) {
+          appLog.d('Get all drivers bloc get all remote');
+          if (data == null || data.isEmpty) {
+            emit(
+              GetAllEmptyDriversPaginationState(
+                message: 'All drivers is empty',
+                driverEntities: [],
+                endTimeStamp: event.endTimeStamp,
+                startTimeStamp: event.startTimeStamp,
+                pageKey: event.pageKey,
+                pageSize: event.pageSize,
+                searchText: event.searchText,
+                sorting: event.sorting,
+                filter: event.filter,
+              ),
+            );
+          } else {
+            emit(
+              GetAllDriversPaginationState(
+                driverEntities: data.toList(),
+                endTimeStamp: event.endTimeStamp,
+                startTimeStamp: event.startTimeStamp,
+                pageKey: event.pageKey,
+                pageSize: event.pageSize,
+                searchText: event.searchText,
+                sorting: event.sorting,
+                filter: event.filter,
+              ),
+            );
+          }
+        },
+        localDb: (data, meta) {
+          appLog.d('Get all drivers bloc get all local');
+          if (data == null || data.isEmpty) {
+            emit(
+              GetAllEmptyDriversPaginationState(
+                message: 'All drivers is empty',
+                driverEntities: [],
+                endTimeStamp: event.endTimeStamp,
+                startTimeStamp: event.startTimeStamp,
+                pageKey: event.pageKey,
+                pageSize: event.pageSize,
+                searchText: event.searchText,
+                sorting: event.sorting,
+                filter: event.filter,
+              ),
+            );
+          } else {
+            emit(
+              GetAllDriversPaginationState(
+                driverEntities: data.toList(),
+                endTimeStamp: event.endTimeStamp,
+                startTimeStamp: event.startTimeStamp,
+                pageKey: event.pageKey,
+                pageSize: event.pageSize,
+                searchText: event.searchText,
+                sorting: event.sorting,
+                filter: event.filter,
+              ),
+            );
+          }
+        },
+        error: (dataSourceFailure, reason, error, networkException, stackTrace,
+            exception, extra) {
+          appLog.d('Get all drivers bloc get all error $reason');
+          emit(
+            GetAllExceptionDriversPaginationState(
+              message: reason,
+              //exception: e as Exception,
+              stackTrace: stackTrace,
+            ),
+          );
+        },
+      );
+    } catch (e, s) {
+      appLog.e('Get all drivers bloc get all $e');
+      emit(
+        GetAllExceptionDriversPaginationState(
+          message:
+          'Something went wrong during getting all drivers, please try again',
+          //exception: e as Exception,
+          stackTrace: s,
+        ),
+      );
+    }
+  }
+
+  FutureOr<void> _getAllStoresPagination(GetAllStoresPagination event, Emitter<StoreState> emit) async {
+    try {
+      emit(GetAllLoadingStorePaginationState(
+          isLoading: true,
+          message: 'Please wait while we are fetching all store...'));
+      final DataSourceState<List<StoreEntity>> result =
+      await serviceLocator<GetAllStorePaginationUseCase>()(
+        pageKey: event.pageKey,
+        pageSize: event.pageSize,
+        searchText: event.searchText,
+        filtering: event.filter,
+        sorting: event.sorting,
+        startTime: event.startTimeStamp,
+        endTime: event.endTimeStamp,
+      );
+      result.when(
+        remote: (data, meta) {
+          appLog.d('Get all store bloc get all remote');
+          if (data == null || data.isEmpty) {
+            emit(
+              GetAllEmptyStorePaginationState(
+                message: 'All store is empty',
+                storeEntities: [],
+                endTimeStamp: event.endTimeStamp,
+                startTimeStamp: event.startTimeStamp,
+                pageKey: event.pageKey,
+                pageSize: event.pageSize,
+                searchText: event.searchText,
+                sorting: event.sorting,
+                filter: event.filter,
+              ),
+            );
+          } else {
+            emit(
+              GetAllStorePaginationState(
+                storeEntities: data.toList(),
+                endTimeStamp: event.endTimeStamp,
+                startTimeStamp: event.startTimeStamp,
+                pageKey: event.pageKey,
+                pageSize: event.pageSize,
+                searchText: event.searchText,
+                sorting: event.sorting,
+                filter: event.filter,
+              ),
+            );
+          }
+        },
+        localDb: (data, meta) {
+          appLog.d('Get all store bloc get all local');
+          if (data == null || data.isEmpty) {
+            emit(
+              GetAllEmptyStorePaginationState(
+                message: 'All store is empty',
+                storeEntities: [],
+                endTimeStamp: event.endTimeStamp,
+                startTimeStamp: event.startTimeStamp,
+                pageKey: event.pageKey,
+                pageSize: event.pageSize,
+                searchText: event.searchText,
+                sorting: event.sorting,
+                filter: event.filter,
+              ),
+            );
+          } else {
+            emit(
+              GetAllStorePaginationState(
+                storeEntities: data.toList(),
+                endTimeStamp: event.endTimeStamp,
+                startTimeStamp: event.startTimeStamp,
+                pageKey: event.pageKey,
+                pageSize: event.pageSize,
+                searchText: event.searchText,
+                sorting: event.sorting,
+                filter: event.filter,
+              ),
+            );
+          }
+        },
+        error: (dataSourceFailure, reason, error, networkException, stackTrace,
+            exception, extra) {
+          appLog.d('Get all store bloc get all error $reason');
+          emit(
+            GetAllExceptionStorePaginationState(
+              message: reason,
+              //exception: e as Exception,
+              stackTrace: stackTrace,
+            ),
+          );
+        },
+      );
+    } catch (e, s) {
+      appLog.e('Get all store bloc get all $e');
+      emit(
+        GetAllExceptionStorePaginationState(
+          message:
+          'Something went wrong during getting all store, please try again',
+          //exception: e as Exception,
+          stackTrace: s,
         ),
       );
     }

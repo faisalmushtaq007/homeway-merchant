@@ -787,3 +787,330 @@ class SelectDriversForStoresState extends StoreState {
         message,
       ];
 }
+
+// Get All Store Pagination State
+class GetAllStorePaginationState extends StoreState {
+  GetAllStorePaginationState({
+    this.pageKey = 1,
+    this.searchText,
+    this.pageSize = 10,
+    this.endTimeStamp,
+    this.filter,
+    this.sorting,
+    this.startTimeStamp,
+    this.storeStateStage = StoreStateStage.getAllStoresPagination,
+    this.storeEntities = const [],
+  });
+
+  final int pageKey;
+  final int pageSize;
+  final String? searchText;
+  final String? filter;
+  final String? sorting;
+  final Timestamp? startTimeStamp;
+  final Timestamp? endTimeStamp;
+  final StoreStateStage storeStateStage;
+  final List<StoreEntity> storeEntities;
+
+  @override
+  List<Object?> get hashParameters => [
+    storeStateStage,
+    pageKey,
+    searchText,
+    pageSize,
+    endTimeStamp,
+    filter,
+    sorting,
+    startTimeStamp,
+    storeEntities,
+  ];
+
+  @override
+  bool get cacheHash => false;
+}
+
+class GetAllLoadingStorePaginationState extends StoreState {
+  GetAllLoadingStorePaginationState({
+    required this.isLoading,
+    required this.message,
+  });
+
+  final bool isLoading;
+  final String message;
+
+  @override
+  List<Object?> get hashParameters => [
+    isLoading,
+    message,
+  ];
+
+  @override
+  bool get cacheHash => false;
+}
+
+class GetAllProcessingStorePaginationState extends StoreState {
+  GetAllProcessingStorePaginationState({
+    required this.isProcessing,
+    required this.message,
+  });
+
+  final bool isProcessing;
+  final String message;
+
+  @override
+  List<Object?> get hashParameters => [
+    isProcessing,
+    message,
+  ];
+
+  @override
+  bool get cacheHash => false;
+}
+
+class GetAllFailedStorePaginationState extends StoreState {
+  GetAllFailedStorePaginationState({
+    required this.message,
+  });
+
+  final String message;
+
+  @override
+  List<Object?> get hashParameters => [
+    message,
+  ];
+
+  @override
+  bool get cacheHash => false;
+}
+
+class GetAllExceptionStorePaginationState extends StoreState {
+  GetAllExceptionStorePaginationState({
+    required this.message,
+    this.stackTrace,
+    this.exception,
+    this.storeStateStage = StoreStateStage.getAllStoresPagination,
+  });
+
+  final StoreStateStage storeStateStage;
+  final String message;
+  final StackTrace? stackTrace;
+  final Exception? exception;
+
+  @override
+  List<Object?> get hashParameters => [
+    message,
+    stackTrace,
+    exception,
+    storeStateStage,
+  ];
+
+  @override
+  bool get cacheHash => false;
+}
+
+class GetAllEmptyStorePaginationState extends StoreState {
+  GetAllEmptyStorePaginationState({
+    this.storeEntities = const [],
+    this.message = '',
+    this.storeStateStage = StoreStateStage.getAllStoresPagination,
+    this.pageKey = 1,
+    this.searchText,
+    this.pageSize = 10,
+    this.endTimeStamp,
+    this.filter,
+    this.sorting,
+    this.startTimeStamp,
+  });
+
+  final List<StoreEntity> storeEntities;
+  final String message;
+  final StoreStateStage storeStateStage;
+  final int pageKey;
+  final int pageSize;
+  final String? searchText;
+  final String? filter;
+  final String? sorting;
+  final Timestamp? startTimeStamp;
+  final Timestamp? endTimeStamp;
+
+  @override
+  List<Object?> get hashParameters => [
+    message,
+    storeEntities,
+    pageKey,
+    searchText,
+    pageSize,
+    endTimeStamp,
+    filter,
+    sorting,
+    startTimeStamp,
+    storeStateStage,
+  ];
+
+  @override
+  bool get cacheHash => false;
+}
+
+// Get All Drivers Pagination
+class GetAllDriversPaginationState extends StoreState {
+  GetAllDriversPaginationState({
+    this.pageKey = 1,
+    this.searchText,
+    this.pageSize = 10,
+    this.endTimeStamp,
+    this.filter,
+    this.sorting,
+    this.startTimeStamp,
+    this.driverStateStage = DriverStateStage.getAllDriversPagination,
+    this.driverEntities = const [],
+  });
+
+  final int pageKey;
+  final int pageSize;
+  final String? searchText;
+  final String? filter;
+  final String? sorting;
+  final Timestamp? startTimeStamp;
+  final Timestamp? endTimeStamp;
+  final DriverStateStage driverStateStage;
+  final List<StoreOwnDeliveryPartnersInfo> driverEntities;
+
+  @override
+  List<Object?> get hashParameters => [
+    driverStateStage,
+    pageKey,
+    searchText,
+    pageSize,
+    endTimeStamp,
+    filter,
+    sorting,
+    startTimeStamp,
+    driverEntities,
+  ];
+
+  @override
+  bool get cacheHash => false;
+}
+
+class GetAllLoadingDriversPaginationState extends StoreState {
+  GetAllLoadingDriversPaginationState({
+    required this.isLoading,
+    required this.message,
+  });
+
+  final bool isLoading;
+  final String message;
+
+  @override
+  List<Object?> get hashParameters => [
+    isLoading,
+    message,
+  ];
+
+  @override
+  bool get cacheHash => false;
+}
+
+class GetAllProcessingDriversPaginationState extends StoreState {
+  GetAllProcessingDriversPaginationState({
+    required this.isProcessing,
+    required this.message,
+  });
+
+  final bool isProcessing;
+  final String message;
+
+  @override
+  List<Object?> get hashParameters => [
+    isProcessing,
+    message,
+  ];
+
+  @override
+  bool get cacheHash => false;
+}
+
+class GetAllFailedDriversPaginationState extends StoreState {
+  GetAllFailedDriversPaginationState({
+    required this.message,
+  });
+
+  final String message;
+
+  @override
+  List<Object?> get hashParameters => [
+    message,
+  ];
+
+  @override
+  bool get cacheHash => false;
+}
+
+class GetAllExceptionDriversPaginationState extends StoreState {
+  GetAllExceptionDriversPaginationState({
+    required this.message,
+    this.stackTrace,
+    this.exception,
+    this.driverStateStage = DriverStateStage.getAllDriversPagination,
+  });
+
+  final DriverStateStage driverStateStage;
+  final String message;
+  final StackTrace? stackTrace;
+  final Exception? exception;
+
+  @override
+  List<Object?> get hashParameters => [
+    message,
+    stackTrace,
+    exception,
+    driverStateStage,
+  ];
+
+  @override
+  bool get cacheHash => false;
+}
+
+class GetAllEmptyDriversPaginationState extends StoreState {
+  GetAllEmptyDriversPaginationState({
+    this.driverEntities = const [],
+    this.message = '',
+    this.driverStateStage = DriverStateStage.getAllDriversPagination,
+    this.pageKey = 1,
+    this.searchText,
+    this.pageSize = 10,
+    this.endTimeStamp,
+    this.filter,
+    this.sorting,
+    this.startTimeStamp,
+  });
+
+  final List<StoreOwnDeliveryPartnersInfo> driverEntities;
+  final String message;
+  final DriverStateStage driverStateStage;
+  final int pageKey;
+  final int pageSize;
+  final String? searchText;
+  final String? filter;
+  final String? sorting;
+  final Timestamp? startTimeStamp;
+  final Timestamp? endTimeStamp;
+
+  @override
+  List<Object?> get hashParameters => [
+    message,
+    driverEntities,
+    pageKey,
+    searchText,
+    pageSize,
+    endTimeStamp,
+    filter,
+    sorting,
+    startTimeStamp,
+    driverStateStage,
+  ];
+
+  @override
+  bool get cacheHash => false;
+}
+

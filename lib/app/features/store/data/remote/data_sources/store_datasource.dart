@@ -68,4 +68,34 @@ abstract interface class StoreDataSource {
 
   Future<ApiResultState<AppUserEntity>> unBindStoreWithUser(
       {required List<StoreEntity> source, required AppUserEntity destination});
+
+  Future<ApiResultState<List<StoreEntity>>> saveAllStore({
+    required List<StoreEntity> stores,
+    bool hasUpdateAll = false,
+  });
+  Future<ApiResultState<List<StoreOwnDeliveryPartnersInfo>>> saveAllDriver({
+    required List<StoreOwnDeliveryPartnersInfo> drivers,
+    bool hasUpdateAll = false,
+  });
+
+  Future<ApiResultState<List<StoreOwnDeliveryPartnersInfo>>> getAllDriversPagination({
+    int pageKey = 0,
+    int pageSize = 10,
+    String? searchText,
+    StoreOwnDeliveryPartnersInfo? drivers,
+    String? filtering,
+    String? sorting,
+    Timestamp? startTime,
+    Timestamp? endTime,
+  });
+  Future<ApiResultState<List<StoreEntity>>> getAllStorePagination({
+    int pageKey = 0,
+    int pageSize = 10,
+    String? searchText,
+    StoreEntity? stores,
+    String? filtering,
+    String? sorting,
+    Timestamp? startTime,
+    Timestamp? endTime,
+  });
 }

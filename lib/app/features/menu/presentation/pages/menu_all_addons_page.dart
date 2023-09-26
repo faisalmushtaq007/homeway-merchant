@@ -217,7 +217,7 @@ class _MenuAllAddonsPageController extends State<MenuAllAddonsPage> {
                 );
               }
             case _:
-              appLog.d('Default case: all address page bloc listener');
+              appLog.d('Default case: all addons page bloc listener');
           }
           /*if (menuState is GetAllAddonsState) {
             //_menuAvailableAddons = List<Addons>.from(addonsState.addonsEntities.toList());

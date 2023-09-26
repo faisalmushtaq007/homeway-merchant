@@ -24,6 +24,7 @@ enum StoreStateStage {
   exception,
   empty,
   bindingWithUser,
+  getAllStoresPagination,
   ;
 
   @override
@@ -52,6 +53,7 @@ enum DriverStateStage {
   none,
   bindingWithStore,
   bindingWithUser,
+  getAllDriversPagination,
   ;
 
   @override

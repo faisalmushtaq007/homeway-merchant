@@ -208,13 +208,11 @@ class StoreLocalDbRepository<Store extends StoreEntity>
           offset: pageKey,
         );
         // If
-        if (searchText.isNotNull ||
-            filter.isNotNull ||
-            sorting.isNotNull &&
+        if ((searchText.isNotNull || filter.isNotNull || sorting.isNotNull && (searchText!.isNotEmpty || filter!.isNotEmpty || sorting!.isNotEmpty)) &&
                 (startTimeStamp.isNotNull || endTimeStamp.isNotNull)) {
-          var regExp = RegExp('^${searchText?.toLowerCase() ?? ''}\$', caseSensitive: false);
-          var filterRegExp = RegExp('^${filter?.toLowerCase() ?? ''}\$', caseSensitive: false);
-          var sortingRegExp = RegExp('^${sorting?.toLowerCase() ?? ''}\$', caseSensitive: false);
+          var regExp = RegExp('^${searchText ?? ''}\$', caseSensitive: false);
+          var filterRegExp = RegExp('^${filter ?? ''}\$', caseSensitive: false);
+          var sortingRegExp = RegExp('^${sorting ?? ''}\$', caseSensitive: false);
           finder = Finder(
             limit: pageSize,
             offset: pageKey,
@@ -224,54 +222,66 @@ class StoreLocalDbRepository<Store extends StoreEntity>
                   Filter.matchesRegExp(
                     'storeName',
                     regExp,
+                    anyInList: true,
                   ),
                   Filter.matchesRegExp(
                     'menuEntities.@.menuName',
                     regExp,
+                    anyInList: true,
                   ),
                   Filter.matchesRegExp(
                     'storeAvailableFoodTypes.@.title',
                     regExp,
+                    anyInList: true,
                   ),
                   Filter.matchesRegExp(
                     'storeAvailableFoodPreparationType.@.title',
                     regExp,
+                    anyInList: true,
                   ),
                   Filter.matchesRegExp(
                     'addons.@.title',
                     regExp,
+                    anyInList: true,
                   ),
                   // Filter
                   Filter.matchesRegExp(
                     'hasStoreOwnDeliveryPartners',
                     filterRegExp,
+                    anyInList: true,
                   ),
                   Filter.matchesRegExp(
                     'hasNewStore',
                     filterRegExp,
+                    anyInList: true,
                   ),
                   Filter.matchesRegExp(
                     'hasStoreOpened',
                     filterRegExp,
+                    anyInList: true,
                   ),
                   Filter.matchesRegExp(
                     'hasReadyToPickupOrder',
                     filterRegExp,
+                    anyInList: true,
                   ),
                   Filter.matchesRegExp(
                     'hasMenuAvailable',
                     filterRegExp,
+                    anyInList: true,
                   ),
                   Filter.matchesRegExp(
                     'hasReadyToPickupOrder',
                     filterRegExp,
+                    anyInList: true,
                   ),
                   Filter.matchesRegExp(
                     'addons.@.title',
                     filterRegExp,
+                    anyInList: true,
                   ),
                   Filter.greaterThanOrEquals(
-                      'storeOpeningTime', startTimeStamp ?? 0),
+                      'storeOpeningTime', startTimeStamp ?? 0,),
                   Filter.lessThanOrEquals(
                       'storeClosingTime', endTimeStamp ?? 0),
                 ]),
@@ -280,12 +290,16 @@ class StoreLocalDbRepository<Store extends StoreEntity>
           );
         }
         // Else If
-        else if (searchText.isNotNull ||
-            filter.isNotNull ||
-            sorting.isNotNull) {
-          var regExp = RegExp('^${searchText?.toLowerCase() ?? ''}\$', caseSensitive: false);
-          var filterRegExp = RegExp('^${filter?.toLowerCase() ?? ''}\$', caseSensitive: false);
-          var sortingRegExp = RegExp('^${sorting?.toLowerCase() ?? ''}\$', caseSensitive: false);
+        else if (searchText.isNotNull || filter.isNotNull || sorting.isNotNull && (searchText!.isNotEmpty || filter!.isNotEmpty || sorting!.isNotEmpty)) {
+          if(searchText!.isEmpty){
+            finder = Finder(
+              limit: pageSize,
+              offset: pageKey,
+            );
+          }else {
+          var regExp = RegExp('^${searchText ?? ''}\$', caseSensitive: false);
+          var filterRegExp = RegExp('^${filter ?? ''}\$', caseSensitive: false);
+          var sortingRegExp = RegExp('^${sorting ?? ''}\$', caseSensitive: false);
           finder = Finder(
             limit: pageSize,
             offset: pageKey,
@@ -295,56 +309,57 @@ class StoreLocalDbRepository<Store extends StoreEntity>
                   Filter.matchesRegExp(
                     'storeName',
                     regExp,
+                    anyInList: true,
                   ),
                   Filter.matchesRegExp(
                     'menuEntities.@.menuName',
-                    regExp,
+                    regExp,anyInList: true,
                   ),
                   Filter.matchesRegExp(
                     'storeAvailableFoodTypes.@.title',
-                    regExp,
+                    regExp,anyInList: true,
                   ),
                   Filter.matchesRegExp(
                     'storeAvailableFoodPreparationType.@.title',
-                    regExp,
+                    regExp,anyInList: true,
                   ),
                   Filter.matchesRegExp(
                     'addons.@.title',
-                    regExp,
+                    regExp,anyInList: true,
                   ),
                   // Filter
                   Filter.matchesRegExp(
                     'hasStoreOwnDeliveryPartners',
-                    filterRegExp,
+                    filterRegExp,anyInList: true,
                   ),
                   Filter.matchesRegExp(
                     'hasNewStore',
-                    filterRegExp,
+                    filterRegExp,anyInList: true,
                   ),
                   Filter.matchesRegExp(
                     'hasStoreOpened',
-                    filterRegExp,
+                    filterRegExp,anyInList: true,
                   ),
                   Filter.matchesRegExp(
                     'hasReadyToPickupOrder',
-                    filterRegExp,
+                    filterRegExp,anyInList: true,
                   ),
                   Filter.matchesRegExp(
                     'hasMenuAvailable',
-                    filterRegExp,
+                    filterRegExp,anyInList: true,
                   ),
                   Filter.matchesRegExp(
                     'hasReadyToPickupOrder',
-                    filterRegExp,
+                    filterRegExp,anyInList: true,
                   ),
                   Filter.matchesRegExp(
                     'addons.@.title',
-                    filterRegExp,
+                    filterRegExp,anyInList: true,
                   ),
                 ]),
               ],
             ),
-          );
+          );}
         }
         // Else
         else {

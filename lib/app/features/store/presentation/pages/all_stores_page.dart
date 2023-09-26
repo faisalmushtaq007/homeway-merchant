@@ -5,6 +5,7 @@ class AllStoresPage extends StatefulWidget {
     super.key,
     this.selectItemUseCase = SelectItemUseCase.none,
   });
+
   final SelectItemUseCase selectItemUseCase;
 
   @override
@@ -19,17 +20,28 @@ class _AllStoresPageState extends State<AllStoresPage> {
   ResultState<StoreEntity> resultState = const ResultState.empty();
   WidgetState<StoreEntity> widgetState = const WidgetState<StoreEntity>.none();
   final TextEditingController searchTextEditingController =
-      TextEditingController();
+  TextEditingController();
+  int pageSize = 10;
+  int pageKey = 0;
+  String? searchText;
+  String? sorting;
+  String? filtering;
+  late final PagingController<int, StoreEntity> _pagingController;
 
   @override
   void initState() {
-    super.initState();
+    _pagingController = PagingController(firstPageKey: 0);
+    storeEntities = [];
+    storeEntities.clear();
+    _refreshAddressList();
+    widgetState = WidgetState<StoreEntity>.loading(context: context);
+
     scrollController = ScrollController();
     innerScrollController = ScrollController();
     listViewBuilderScrollController = ScrollController();
-    storeEntities = [];
-    storeEntities.clear();
-    context.read<StoreBloc>().add(GetAllStore());
+
+    //context.read<StoreBloc>().add(GetAllStore());
+    super.initState();
     initStoreList();
   }
 
@@ -37,10 +49,83 @@ class _AllStoresPageState extends State<AllStoresPage> {
 
   @override
   void dispose() {
+    _pagingController.removeListener(() {});
+    _pagingController.removePageRequestListener((pageKey) {});
+    _pagingController.removeStatusListener((status) {});
+    _pagingController.dispose();
+    storeEntities = [];
+    storeEntities.clear();
     scrollController.dispose();
     innerScrollController.dispose();
     listViewBuilderScrollController.dispose();
     super.dispose();
+  }
+
+  Future<void> _fetchPage(int pageKey,
+      {int pageSize = 10,
+        String? searchItem,
+        String? filter,
+        String? sort}) async {
+    /*if (pageKey == 0) {
+      _pagingController.itemList = [];
+    }*/
+    int sectionNumber = pageKey ~/ pageSize;
+    try {
+      context.read<StoreBloc>().add(
+        GetAllStoresPagination(
+          pageKey: pageKey,
+          pageSize: pageSize,
+          searchText: searchText??searchItem,
+          filter: filtering ?? filter,
+          sorting: sorting ?? sort,
+        ),
+      );
+      appLog.i('Fetch Menu');
+      return;
+    } catch (error) {
+      _pagingController.error = error;
+      debugPrint(error.toString());
+    }
+  }
+
+  void _refreshAddressList() {
+    //_pagingController.refresh();
+    _pagingController.nextPageKey = 0;
+    _fetchPage(0);
+    _pagingController.addPageRequestListener((pageKey) {
+      this.pageKey = pageKey;
+      appLog.d('Page key addPageRequestListener ${pageKey}');
+      _fetchPage(pageKey);
+    });
+
+    _pagingController.addStatusListener((status) {
+      if (status == PagingStatus.subsequentPageError) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: const Text(
+              'Something went wrong while fetching a all orders.',
+            ),
+            action: SnackBarAction(
+              label: 'Retry',
+              onPressed: () => _pagingController.retryLastFailedRequest(),
+            ),
+          ),
+        );
+      }
+    });
+  }
+
+  Future<void> _updateSearchTerm(String searchTerm) async {
+    searchText = searchTerm;
+    if (_pagingController.value
+        .itemList ==
+        null ||
+        _pagingController.value.itemList
+            .isEmptyOrNull) {
+      await _fetchPage(0, searchItem: searchTerm,);
+    } else {
+      _pagingController.refresh();
+    }
   }
 
   @override
@@ -66,15 +151,13 @@ class _AllStoresPageState extends State<AllStoresPage> {
           appBar: AppBar(
             automaticallyImplyLeading: true,
             title: Text(
-              'All stores',
+              'All Stores',
               textDirection:
-                  serviceLocator<LanguageController>().targetTextDirection,
+              serviceLocator<LanguageController>().targetTextDirection,
             ),
             actions: const [
-              Padding(
-                padding: EdgeInsetsDirectional.symmetric(horizontal: 14),
-                child: LanguageSelectionWidget(),
-              ),
+              NotificationIconWidget(),
+              LanguageSelectionWidget(),
             ],
           ),
           body: SlideInLeft(
@@ -84,326 +167,423 @@ class _AllStoresPageState extends State<AllStoresPage> {
             child: PageBody(
               controller: scrollController,
               constraints: BoxConstraints(
-                minWidth: double.infinity,
+                minWidth: 1000,
                 minHeight: media.size.height,
               ),
               padding: EdgeInsetsDirectional.only(
                 top: margins,
-                bottom: bottomPadding,
+                //bottom: bottomPadding,
                 start: margins * 2.5,
                 end: margins * 2.5,
               ),
-              child: BlocBuilder<PermissionBloc, PermissionState>(
-                bloc: context.read<PermissionBloc>(),
-                buildWhen: (previous, current) => previous != current,
-                builder: (context, state) {
-                  return Container(
-                    width: double.infinity,
-                    constraints: BoxConstraints(
-                      minWidth: double.infinity,
-                      minHeight: media.size.height,
-                    ),
-                    child: Stack(
-                      children: [
-                        BlocBuilder<StoreBloc, StoreState>(
-                          key: const Key('get-all-store-blocbuilder-widget'),
-                          bloc: context.watch<StoreBloc>(),
-                          builder: (context, state) {
-                            switch (state) {
-                              case GetAllStoreState():
-                                {
-                                  storeEntities = List<StoreEntity>.from(
-                                      state.storeEntities.toList());
-                                  widgetState =
-                                      WidgetState<StoreEntity>.allData(
-                                    context: context,
-                                  );
-                                }
+              child: BlocListener<StoreBloc, StoreState>(
+                bloc: context.read<StoreBloc>(),
+                listener: (context, storeListenerState) {
+                  switch (storeListenerState) {
+                    case GetAllStorePaginationState():
+                      {
+                        try {
+                          final isLastPage =
+                              storeListenerState.storeEntities.length < pageSize;
+                          if (isLastPage) {
+                            _pagingController.appendLastPage(
+                                storeListenerState.storeEntities.toList());
+                          } else {
+                            final nextPageKey = storeListenerState.pageKey +
+                                storeListenerState.storeEntities.length;
+                            //final nextPageKey = addressState.pageKey + 1;
+                            _pagingController.appendPage(
+                                storeListenerState.storeEntities.toList(),
+                                nextPageKey);
+                          }
+                          widgetState = WidgetState<StoreEntity>.allData(
+                            context: context,
+                            data: _pagingController.value.itemList ?? [],
+                          );
+                          storeEntities = _pagingController.value.itemList ?? [];
+                        } catch (error) {
+                          _pagingController.error = error;
+                          widgetState = WidgetState<StoreEntity>.error(
+                            context: context,
+                            reason: _pagingController.error,
+                          );
+                        }
+                      }
+                    case GetAllEmptyStorePaginationState():
+                      {
+                        widgetState = WidgetState<StoreEntity>.empty(
+                          context: context,
+                          message: storeListenerState.message,
+                        );
+                      }
+                    case GetAllExceptionStorePaginationState():
+                      {
+                        widgetState = WidgetState<StoreEntity>.error(
+                          context: context,
+                          reason: storeListenerState.message,
+                        );
+                      }
+                    case GetAllFailedStorePaginationState():
+                      {
+                        widgetState = WidgetState<StoreEntity>.error(
+                          context: context,
+                          reason: storeListenerState.message,
+                        );
+                      }
+                    case GetAllLoadingStorePaginationState():
+                      {
+                        widgetState = WidgetState<StoreEntity>.loading(
+                          context: context,
+                          message: storeListenerState.message,
+                        );
+                      }
+                    case GetAllProcessingStorePaginationState():
+                      {
+                        widgetState = WidgetState<StoreEntity>.processing(
+                          context: context,
+                          message: storeListenerState.message,
+                        );
+                      }
+                    case _:
+                      appLog.d('Default case: all stores page bloc listener');
+                  }
+                },
+                child: BlocBuilder<PermissionBloc, PermissionState>(
+                  bloc: context.read<PermissionBloc>(),
+                  buildWhen: (previous, current) => previous != current,
+                  builder: (context, state) {
+                    return Container(
+                      width: double.infinity,
+                      constraints: BoxConstraints(
+                        minWidth: double.infinity,
+                        minHeight: media.size.height,
+                      ),
+                      child: Stack(
+                        children: [
+                          BlocBuilder<StoreBloc, StoreState>(
+                            key: const Key('get-all-store-blocbuilder-widget'),
+                            bloc: context.read<StoreBloc>(),
+                            builder: (context, state) {
+                              switch (state) {
+                                case GetAllStoreState():
+                                  {
+                                    storeEntities = List<StoreEntity>.from(
+                                        state.storeEntities.toList());
+                                    widgetState =
+                                    WidgetState<StoreEntity>.allData(
+                                      context: context,
+                                    );
+                                  }
                               //case GetEmptyStoreState(:final error):
-                              case GetEmptyStoreState():
-                                {
-                                  storeEntities = [];
-                                  storeEntities.clear();
-                                  widgetState = WidgetState<StoreEntity>.empty(
-                                    context: context,
-                                    message: state.message,
-                                  );
-                                }
-                              case StoreLoadingState():
-                                {
-                                  widgetState =
-                                      WidgetState<StoreEntity>.loading(
-                                    context: context,
-                                    isLoading: state.isLoading,
-                                    message: state.message,
-                                  );
-                                }
-                              case SaveStoreState():
-                                {
-                                  storeEntities.add(state.storeEntity);
-                                  widgetState =
-                                      WidgetState<StoreEntity>.allData(
-                                    context: context,
-                                  );
-                                }
-                              case _:
-                                appLog.d('Default case: all store page');
-                            }
-                            return Column(
-                              mainAxisSize: MainAxisSize.min,
-                              mainAxisAlignment: storeEntities.isEmpty
-                                  ? MainAxisAlignment.center
-                                  : MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.stretch,
-                              textDirection:
-                                  serviceLocator<LanguageController>()
-                                      .targetTextDirection,
-                              children: [
-                                AnimatedCrossFade(
-                                  firstChild: Column(
-                                    mainAxisSize: MainAxisSize.min,
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.stretch,
-                                    textDirection:
-                                        serviceLocator<LanguageController>()
-                                            .targetTextDirection,
-                                    children: [
-                                      const AnimatedGap(6,
-                                          duration:
-                                              Duration(milliseconds: 500)),
-                                      IntrinsicHeight(
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          textDirection: serviceLocator<
-                                                  LanguageController>()
-                                              .targetTextDirection,
-                                          children: [
-                                            Expanded(
-                                              child: AppTextFieldWidget(
-                                                controller:
-                                                    searchTextEditingController,
-                                                textDirection: serviceLocator<
-                                                        LanguageController>()
-                                                    .targetTextDirection,
-                                                textInputAction:
-                                                    TextInputAction.done,
-                                                keyboardType:
-                                                    TextInputType.text,
-                                                decoration: InputDecoration(
-                                                  labelText: 'Search',
-                                                  hintText: 'Search store',
-                                                  border: OutlineInputBorder(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            10),
-                                                  ),
-                                                  isDense: true,
-                                                ),
-                                              ),
-                                            ),
-                                            const AnimatedGap(12,
-                                                duration: Duration(
-                                                    milliseconds: 500)),
-                                            SizedBox(
-                                              height: 52,
-                                              child: OutlinedButton(
-                                                onPressed: () {},
-                                                style: OutlinedButton.styleFrom(
-                                                  shape: RoundedRectangleBorder(
-                                                    borderRadius:
-                                                        BorderRadiusDirectional
-                                                            .circular(10),
-                                                  ),
-                                                  side: const BorderSide(
-                                                      color: Color.fromRGBO(
-                                                          238, 238, 238, 1)),
-                                                  backgroundColor: Colors.white,
-                                                ),
-                                                child: Icon(
-                                                  Icons.filter_list,
-                                                  textDirection: serviceLocator<
-                                                          LanguageController>()
-                                                      .targetTextDirection,
-                                                  color: context.primaryColor,
-                                                ),
-                                              ),
-                                            )
-                                          ],
-                                        ),
-                                      ),
-                                      const AnimatedGap(6,
-                                          duration:
-                                              Duration(milliseconds: 500)),
-                                      ListTile(
-                                        dense: true,
-                                        title: IntrinsicHeight(
+                                case GetEmptyStoreState():
+                                  {
+                                    storeEntities = [];
+                                    storeEntities.clear();
+                                    widgetState = WidgetState<StoreEntity>.empty(
+                                      context: context,
+                                      message: state.message,
+                                    );
+                                  }
+                                case StoreLoadingState():
+                                  {
+                                    widgetState =
+                                    WidgetState<StoreEntity>.loading(
+                                      context: context,
+                                      isLoading: state.isLoading,
+                                      message: state.message,
+                                    );
+                                  }
+                                case SaveStoreState():
+                                  {
+                                    storeEntities.add(state.storeEntity);
+                                    widgetState =
+                                    WidgetState<StoreEntity>.allData(
+                                      context: context,
+                                    );
+                                  }
+                                case _:
+                                  appLog.d('Default case: all store page');
+                              }
+                              return Column(
+                                mainAxisSize: MainAxisSize.min,
+                                mainAxisAlignment: storeEntities.isEmpty
+                                    ? MainAxisAlignment.center
+                                    : MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.stretch,
+                                textDirection:
+                                serviceLocator<LanguageController>()
+                                    .targetTextDirection,
+                                children: [
+                                  AnimatedCrossFade(
+                                    firstChild: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      mainAxisAlignment: MainAxisAlignment.start,
+                                      crossAxisAlignment:
+                                      CrossAxisAlignment.stretch,
+                                      textDirection:
+                                      serviceLocator<LanguageController>()
+                                          .targetTextDirection,
+                                      children: [
+                                        const AnimatedGap(6,
+                                            duration:
+                                            Duration(milliseconds: 500)),
+                                        IntrinsicHeight(
                                           child: Row(
+                                            mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
                                             textDirection: serviceLocator<
-                                                    LanguageController>()
+                                                LanguageController>()
                                                 .targetTextDirection,
                                             children: [
-                                              Text(
-                                                'Your Stores',
-                                                style: context.labelLarge!
-                                                    .copyWith(
-                                                        fontWeight:
-                                                            FontWeight.w500,
-                                                        fontSize: 18),
-                                                textDirection: serviceLocator<
-                                                        LanguageController>()
-                                                    .targetTextDirection,
-                                              ),
-                                              const AnimatedGap(3,
-                                                  duration: Duration(
-                                                      milliseconds: 500)),
-                                              Card(
-                                                shape: RoundedRectangleBorder(
-                                                  borderRadius:
-                                                      BorderRadiusDirectional
-                                                          .circular(20),
-                                                ),
-                                                child: Padding(
-                                                  padding:
-                                                      const EdgeInsetsDirectional
-                                                          .only(
-                                                          start: 12.0,
-                                                          end: 12,
-                                                          top: 4,
-                                                          bottom: 4),
-                                                  child: Text(
-                                                    '${storeEntities.length}',
-                                                    textDirection: serviceLocator<
-                                                            LanguageController>()
-                                                        .targetTextDirection,
+                                              Expanded(
+                                                child: AppTextFieldWidget(
+                                                  controller:
+                                                  searchTextEditingController,
+                                                  textDirection: serviceLocator<
+                                                      LanguageController>()
+                                                      .targetTextDirection,
+                                                  textInputAction:
+                                                  TextInputAction.done,
+                                                  keyboardType:
+                                                  TextInputType.text,
+                                                  decoration: InputDecoration(
+                                                    labelText: 'Search',
+                                                    hintText: 'Search store',
+                                                    border: OutlineInputBorder(
+                                                      borderRadius:
+                                                      BorderRadius.circular(
+                                                          10),
+                                                    ),
+                                                    isDense: true,
                                                   ),
                                                 ),
                                               ),
+                                              const AnimatedGap(12,
+                                                  duration: Duration(
+                                                      milliseconds: 500)),
+                                              SizedBox(
+                                                height: 52,
+                                                child: OutlinedButton(
+                                                  onPressed: () {},
+                                                  style: OutlinedButton.styleFrom(
+                                                    shape: RoundedRectangleBorder(
+                                                      borderRadius:
+                                                      BorderRadiusDirectional
+                                                          .circular(10),
+                                                    ),
+                                                    side: const BorderSide(
+                                                        color: Color.fromRGBO(
+                                                            238, 238, 238, 1)),
+                                                    backgroundColor: Colors.white,
+                                                  ),
+                                                  child: Icon(
+                                                    Icons.filter_list,
+                                                    textDirection: serviceLocator<
+                                                        LanguageController>()
+                                                        .targetTextDirection,
+                                                    color: context.primaryColor,
+                                                  ),
+                                                ),
+                                              )
                                             ],
                                           ),
                                         ),
-                                        visualDensity: VisualDensity(
-                                            horizontal: -4, vertical: -4),
-                                        horizontalTitleGap: 0,
-                                        minLeadingWidth: 0,
-                                        contentPadding:
-                                            EdgeInsetsDirectional.symmetric(
-                                                horizontal: 2),
+                                        const AnimatedGap(6,
+                                            duration:
+                                            Duration(milliseconds: 500)),
+                                        ListTile(
+                                          dense: true,
+                                          title: IntrinsicHeight(
+                                            child: Row(
+                                              textDirection: serviceLocator<
+                                                  LanguageController>()
+                                                  .targetTextDirection,
+                                              children: [
+                                                Text(
+                                                  'Your Stores',
+                                                  style: context.labelLarge!
+                                                      .copyWith(
+                                                      fontWeight:
+                                                      FontWeight.w500,
+                                                      fontSize: 18),
+                                                  textDirection: serviceLocator<
+                                                      LanguageController>()
+                                                      .targetTextDirection,
+                                                ),
+                                                const AnimatedGap(3,
+                                                    duration: Duration(
+                                                        milliseconds: 500)),
+                                                Card(
+                                                  shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                    BorderRadiusDirectional
+                                                        .circular(20),
+                                                  ),
+                                                  child: Padding(
+                                                    padding:
+                                                    const EdgeInsetsDirectional
+                                                        .only(
+                                                        start: 12.0,
+                                                        end: 12,
+                                                        top: 4,
+                                                        bottom: 4),
+                                                    child: Text(
+                                                      '${storeEntities.length}',
+                                                      textDirection: serviceLocator<
+                                                          LanguageController>()
+                                                          .targetTextDirection,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                          visualDensity: VisualDensity(
+                                              horizontal: -4, vertical: -4),
+                                          horizontalTitleGap: 0,
+                                          minLeadingWidth: 0,
+                                          contentPadding:
+                                          EdgeInsetsDirectional.symmetric(
+                                              horizontal: 2),
+                                        ),
+                                        const AnimatedGap(6,
+                                            duration:
+                                            Duration(milliseconds: 500)),
+                                      ],
+                                    ),
+                                    secondChild: const Offstage(),
+                                    duration: const Duration(milliseconds: 500),
+                                    crossFadeState: (storeEntities.isNotEmpty)
+                                        ? CrossFadeState.showFirst
+                                        : CrossFadeState.showSecond,
+                                  ),
+                                  Expanded(
+                                    flex: 2,
+                                    child: widgetState.maybeWhen(
+                                      empty: (context, child, message, data) =>
+                                          Center(
+                                            key: const Key(
+                                                'get-all-store-empty-widget'),
+                                            child: Text(
+                                              'No store available or added by you',
+                                              style: context.labelLarge,
+                                              textDirection:
+                                              serviceLocator<LanguageController>()
+                                                  .targetTextDirection,
+                                            ).translate(),
+                                          ),
+                                      loading:
+                                          (context, child, message, isLoading) {
+                                        return const Center(
+                                          key: Key('get-all-store-center-widget'),
+                                          child: SizedBox(
+                                            width: 48,
+                                            height: 48,
+                                            child: CircularProgressIndicator(),
+                                          ),
+                                        );
+                                      },
+                                      allData: (context, child, message, data) {
+                                        return CustomScrollView(
+                                          controller: innerScrollController,
+                                          slivers: [
+                                            PagedSliverList<int, StoreEntity>(
+                                              key: const Key(
+                                                  'store-list-pagedSliverList-widget'),
+                                              pagingController: _pagingController,
+                                              builderDelegate:
+                                              PagedChildBuilderDelegate<
+                                                  StoreEntity>(
+                                                animateTransitions: true,
+                                                itemBuilder: (context, item, index) =>
+                                                    StoreCard(
+                                                      key: ValueKey(index),
+                                                      storeEntity: storeEntities[index],
+                                                      listOfAllStoreEntities:
+                                                      storeEntities.toList(),
+                                                      currentIndex: index,
+                                                    ),
+                                              ),
+                                            ),
+                                          ],
+                                        );
+
+                                        return ListView.separated(
+                                          itemBuilder: (context, index) {
+                                            return StoreCard(
+                                              key: ValueKey(index),
+                                              storeEntity: storeEntities[index],
+                                              listOfAllStoreEntities:
+                                              storeEntities.toList(),
+                                              currentIndex: index,
+                                            );
+                                          },
+                                          itemCount: storeEntities.length,
+                                          separatorBuilder: (context, index) {
+                                            return const Divider(
+                                                thickness: 0.25,
+                                                color: Color.fromRGBO(
+                                                    127, 129, 132, 1));
+                                          },
+                                        );
+                                      },
+                                      none: () {
+                                        return Center(
+                                          child: Text(
+                                            'No store available or added by you',
+                                            style: context.labelLarge,
+                                            textDirection: serviceLocator<
+                                                LanguageController>()
+                                                .targetTextDirection,
+                                          ).translate(),
+                                        );
+                                      },
+                                      orElse: () {
+                                        return const SizedBox();
+                                      },
+                                    ),
+                                  ),
+                                  Row(
+                                    children: [
+                                      Expanded(
+                                        child: ElevatedButton(
+                                          onPressed: () async {
+                                            final navigateToSaveStorePage =
+                                            await context.push(
+                                              Routes.SAVE_STORE_PAGE,
+                                              extra: {
+                                                'storeEntity': null,
+                                                'haveNewStore': true,
+                                                'currentIndex': -1,
+                                              },
+                                            );
+                                            if (!mounted) {
+                                              return;
+                                            }
+                                            context
+                                                .read<StoreBloc>()
+                                                .add(GetAllStore());
+                                            return;
+                                          },
+                                          child: Text(
+                                            'Add Store',
+                                            textDirection: serviceLocator<
+                                                LanguageController>()
+                                                .targetTextDirection,
+                                          ).translate(),
+                                        ),
                                       ),
-                                      const AnimatedGap(6,
-                                          duration:
-                                              Duration(milliseconds: 500)),
                                     ],
                                   ),
-                                  secondChild: const Offstage(),
-                                  duration: const Duration(milliseconds: 500),
-                                  crossFadeState: (storeEntities.isNotEmpty)
-                                      ? CrossFadeState.showFirst
-                                      : CrossFadeState.showSecond,
-                                ),
-                                Expanded(
-                                  flex: 2,
-                                  child: widgetState.maybeWhen(
-                                    empty: (context, child, message, data) =>
-                                        Center(
-                                      key: const Key(
-                                          'get-all-store-empty-widget'),
-                                      child: Text(
-                                        'No store available or added by you',
-                                        style: context.labelLarge,
-                                        textDirection:
-                                            serviceLocator<LanguageController>()
-                                                .targetTextDirection,
-                                      ).translate(),
-                                    ),
-                                    loading:
-                                        (context, child, message, isLoading) {
-                                      return const Center(
-                                        key: Key('get-all-store-center-widget'),
-                                        child: SizedBox(
-                                          width: 48,
-                                          height: 48,
-                                          child: CircularProgressIndicator(),
-                                        ),
-                                      );
-                                    },
-                                    allData: (context, child, message, data) {
-                                      return ListView.separated(
-                                        itemBuilder: (context, index) {
-                                          return StoreCard(
-                                            key: ValueKey(index),
-                                            storeEntity: storeEntities[index],
-                                            listOfAllStoreEntities:
-                                                storeEntities.toList(),
-                                            currentIndex: index,
-                                          );
-                                        },
-                                        itemCount: storeEntities.length,
-                                        separatorBuilder: (context, index) {
-                                          return const Divider(
-                                              thickness: 0.25,
-                                              color: Color.fromRGBO(
-                                                  127, 129, 132, 1));
-                                        },
-                                      );
-                                    },
-                                    none: () {
-                                      return Center(
-                                        child: Text(
-                                          'No store available or added by you',
-                                          style: context.labelLarge,
-                                          textDirection: serviceLocator<
-                                                  LanguageController>()
-                                              .targetTextDirection,
-                                        ).translate(),
-                                      );
-                                    },
-                                    orElse: () {
-                                      return const SizedBox();
-                                    },
-                                  ),
-                                ),
-                                Row(
-                                  children: [
-                                    Expanded(
-                                      child: ElevatedButton(
-                                        onPressed: () async {
-                                          final navigateToSaveStorePage =
-                                              await context.push(
-                                            Routes.SAVE_STORE_PAGE,
-                                            extra: {
-                                              'storeEntity': null,
-                                              'haveNewStore': true,
-                                              'currentIndex': -1,
-                                            },
-                                          );
-                                          if (!mounted) {
-                                            return;
-                                          }
-                                          context
-                                              .read<StoreBloc>()
-                                              .add(GetAllStore());
-                                          return;
-                                        },
-                                        child: Text(
-                                          'Add Store',
-                                          textDirection: serviceLocator<
-                                                  LanguageController>()
-                                              .targetTextDirection,
-                                        ).translate(),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            );
-                          },
-                        ),
-                      ],
-                    ),
-                  );
-                },
+                                ],
+                              );
+                            },
+                          ),
+                        ],
+                      ),
+                    );
+                  },
+                ),
               ),
             ),
           ),
