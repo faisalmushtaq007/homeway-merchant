@@ -277,7 +277,6 @@ class AddonsLocalDbRepository<Extras extends Addons> implements BaseAddonsLocalD
         }
         // Else If
         else if (searchText.isNotNull || filter.isNotNull || sorting.isNotNull && (searchText!.isNotEmpty || filter!.isNotEmpty || sorting!.isNotEmpty)) {
-          appLog.d('Addons pagination else-if block');
           if(searchText!.isEmpty){
             finder = Finder(
               limit: pageSize,

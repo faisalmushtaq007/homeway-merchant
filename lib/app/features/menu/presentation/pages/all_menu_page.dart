@@ -131,6 +131,19 @@ class _AllMenuPageController extends State<AllMenuPage> {
     });
   }
 
+  Future<void> _updateSearchTerm(String searchTerm) async {
+    searchText = searchTerm;
+    if (_pagingController.value
+        .itemList ==
+        null ||
+        _pagingController.value.itemList
+            .isEmptyOrNull) {
+      await _fetchPage(0,searchItem: searchTerm,);
+    } else {
+      _pagingController.refresh();
+    }
+  }
+
   @override
   Widget build(BuildContext context) =>
       BlocListener<MenuBloc, MenuState>(
@@ -352,7 +365,14 @@ class _AllMenuPageView extends WidgetView<AllMenuPage, _AllMenuPageController> {
                                   serviceLocator<LanguageController>()
                                       .targetTextDirection,
                                   children: [
-                                    Expanded(
+                                    Expanded(child:  AppSearchInputSliverWidget(
+                                      key: const Key('all-menu-search-field-widget'),
+                                      onChanged: state._updateSearchTerm,
+                                      height: 48,
+                                      hintText: 'Search Addons',
+
+                                    ),),
+                                   /* Expanded(
                                       child: AppTextFieldWidget(
                                         controller:
                                         state.searchTextEditingController,
@@ -371,11 +391,11 @@ class _AllMenuPageView extends WidgetView<AllMenuPage, _AllMenuPageController> {
                                           isDense: true,
                                         ),
                                       ),
-                                    ),
+                                    ),*/
                                     const AnimatedGap(12,
                                         duration: Duration(milliseconds: 500)),
                                     SizedBox(
-                                      height: 52,
+                                      height: 46,
                                       child: OutlinedButton(
                                         onPressed: () {},
                                         style: OutlinedButton.styleFrom(
@@ -444,7 +464,7 @@ class _AllMenuPageView extends WidgetView<AllMenuPage, _AllMenuPageController> {
                                               top: 4,
                                               bottom: 4),
                                           child: Text(
-                                            '${state.listOfAllMenus.length}',
+                                            '${state._pagingController.value.itemList?.length??0}',
                                             textDirection: serviceLocator<
                                                 LanguageController>()
                                                 .targetTextDirection,
@@ -477,25 +497,20 @@ class _AllMenuPageView extends WidgetView<AllMenuPage, _AllMenuPageController> {
                         ),
                         Expanded(
                           child: state.widgetState.maybeWhen(
-                            empty: (context, child, message, data) =>
-                                Center(
-                                  key: const Key('get-all-menu-empty-widget'),
-                                  child: Text(
-                                    'No menu available or added by you',
-                                    style: context.labelLarge,
-                                    textDirection:
-                                    serviceLocator<LanguageController>()
-                                        .targetTextDirection,
-                                  ).translate(),
-                                ),
-                            loading: (context, child, message, isLoading) {
-                              return const Center(
-                                key: Key('get-all-menu-center-widget'),
-                                child: SizedBox(
-                                  width: 48,
-                                  height: 48,
-                                  child: CircularProgressIndicator(),
-                                ),
+                            empty: (context, child, message, data) =>const NoItemAvailableWidget(
+                              key: Key('all-menu-empty-widget'),
+                              textMessage: 'No menu available or added by you',
+                            ),
+                            loading:
+                                (context, child, message, isLoading) {
+                              return const DataLoadingWidget(
+                                key: Key('all-menu-loading-widget'),
+                              );
+                            },
+                            processing:
+                                (context, child, message, isLoading) {
+                              return const DataLoadingWidget(
+                                key: Key('all-menu-processing-widget'),
                               );
                             },
                             allData: (context, child, message, data) {
@@ -529,44 +544,19 @@ class _AllMenuPageView extends WidgetView<AllMenuPage, _AllMenuPageController> {
                                   ),
                                 ],
                               );
-                              return ListView.separated(
-                                itemBuilder: (context, index) {
-                                  return MenuCardWidget(
-                                    key: ValueKey(index),
-                                    menuEntity: state.listOfAllMenus[index],
-                                    currentIndex: index,
-                                    listOfAllMenuEntities:
-                                    state.listOfAllMenus.toList(),
-                                    onSelectionChanged: (List<MenuEntity>
-                                    listOfAllMenuEntities) {
-                                      state.onSelectionChanged(
-                                          listOfAllMenuEntities.toList());
-                                    },
-                                    listOfAllSelectedMenuEntities:
-                                    state.listOfAllSelectedMenus.toList(),
-                                  );
-                                },
-                                itemCount: state.listOfAllMenus.length,
-                                separatorBuilder: (context, index) {
-                                  return const Divider(
-                                      thickness: 0.25,
-                                      color: Color.fromRGBO(127, 129, 132, 1));
-                                },
-                              );
+
                             },
                             none: () {
-                              return Center(
-                                child: Text(
-                                  'No menu available or added by you',
-                                  style: context.labelLarge,
-                                  textDirection:
-                                  serviceLocator<LanguageController>()
-                                      .targetTextDirection,
-                                ).translate(),
+                              return const NoItemAvailableWidget(
+                                key: Key('all-menu-none-widget'),
+                                textMessage: 'No menu available or added by you',
                               );
                             },
                             orElse: () {
-                              return const SizedBox();
+                              return const NoItemAvailableWidget(
+                                key: Key('all-menu-else-widget'),
+                                textMessage: 'No menu available or added by you',
+                              );
                             },
                           ),
                         ),

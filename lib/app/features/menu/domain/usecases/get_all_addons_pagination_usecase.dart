@@ -19,7 +19,7 @@ class GetAllAddonsPaginationUseCase extends PaginationQueryAllUseCaseIORecord<
   @override
   Future<DataSourceState<List<Addons>>> call(
       {int pageKey = 0,
-      int pageSize = 20,
+      int pageSize = 10,
       String? searchText,
       Addons? entity,
       String? filtering,

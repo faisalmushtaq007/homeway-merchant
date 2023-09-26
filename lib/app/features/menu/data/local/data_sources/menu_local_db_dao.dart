@@ -272,13 +272,11 @@ class MenuLocalDbRepository<Menu extends MenuEntity>
           offset: pageKey,
         );
         // If
-        if (searchText.isNotNull ||
-            filter.isNotNull ||
-            sorting.isNotNull &&
+        if ((searchText.isNotNull || filter.isNotNull || sorting.isNotNull && (searchText!.isNotEmpty || filter!.isNotEmpty || sorting!.isNotEmpty)) &&
                 (startTimeStamp.isNotNull || endTimeStamp.isNotNull)) {
-          var regExp = RegExp('^${searchText?.toLowerCase() ?? ''}\$', caseSensitive: false);
-          var filterRegExp = RegExp('^${filter?.toLowerCase() ?? ''}\$', caseSensitive: false);
-          var sortingRegExp = RegExp('^${sorting?.toLowerCase() ?? ''}\$', caseSensitive: false);
+          var regExp = RegExp('^${searchText ?? ''}\$', caseSensitive: false);
+          var filterRegExp = RegExp('^${filter ?? ''}\$', caseSensitive: false);
+          var sortingRegExp = RegExp('^${sorting ?? ''}\$', caseSensitive: false);
           finder = Finder(
             limit: pageSize,
             offset: pageKey,
@@ -361,12 +359,16 @@ class MenuLocalDbRepository<Menu extends MenuEntity>
           );
         }
         // Else If
-        else if (searchText.isNotNull ||
-            filter.isNotNull ||
-            sorting.isNotNull) {
-          var regExp = RegExp('^${searchText?.toLowerCase() ?? ''}\$', caseSensitive: false);
-          var filterRegExp = RegExp('^${filter?.toLowerCase() ?? ''}\$', caseSensitive: false);
-          var sortingRegExp = RegExp('^${sorting?.toLowerCase() ?? ''}\$', caseSensitive: false);
+        else if (searchText.isNotNull || filter.isNotNull || sorting.isNotNull && (searchText!.isNotEmpty || filter!.isNotEmpty || sorting!.isNotEmpty)) {
+          if(searchText!.isEmpty){
+            finder = Finder(
+              limit: pageSize,
+              offset: pageKey,
+            );
+          }else {
+          var regExp = RegExp('^${searchText ?? ''}\$', caseSensitive: false);
+          var filterRegExp = RegExp('^${filter ?? ''}\$', caseSensitive: false);
+          var sortingRegExp = RegExp('^${sorting ?? ''}\$', caseSensitive: false);
           finder = Finder(
             limit: pageSize,
             offset: pageKey,
@@ -442,7 +444,7 @@ class MenuLocalDbRepository<Menu extends MenuEntity>
                 ]),
               ],
             ),
-          );
+          );}
         }
         // Else
         else {

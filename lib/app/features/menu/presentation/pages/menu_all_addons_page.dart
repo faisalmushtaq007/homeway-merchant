@@ -645,23 +645,6 @@ class _MenuAllAddonsPageView
                                   key: Key('addons-else-widget'),
                                   textMessage: 'No addons available or added by you',
                                 );
-                                return Column(
-                                  mainAxisAlignment:
-                                  MainAxisAlignment.center,
-                                  crossAxisAlignment:
-                                  CrossAxisAlignment.center,
-                                  children: [
-                                    Center(
-                                      child: Text(
-                                        'No addons available or added by you',
-                                        style: context.labelLarge,
-                                        textDirection: serviceLocator<
-                                            LanguageController>()
-                                            .targetTextDirection,
-                                      ).translate(),
-                                    ),
-                                  ],
-                                );
                               },
                             ),
                           ),
