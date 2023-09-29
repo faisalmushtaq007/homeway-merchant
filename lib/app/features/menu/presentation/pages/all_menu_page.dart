@@ -595,9 +595,6 @@ class _AllMenuPageView extends WidgetView<AllMenuPage, _AllMenuPageController> {
                                   if (!state.mounted) {
                                     return;
                                   }
-                                  if (!state.mounted) {
-                                    return;
-                                  }
                                   //context.read<AddressBloc>().add(const GetAllAddress());
                                   if (state._pagingController.value
                                       .itemList ==

@@ -41,7 +41,7 @@ class AppRouter {
 
   AppRouter._();
 
-  static const String INITIAL = Routes.ALL_SAVED_ADDRESS_LIST;
+  static const String INITIAL = Routes.SPLASH;
 
   static final GoRouter _router = GoRouter(
     debugLogDiagnostics: true,

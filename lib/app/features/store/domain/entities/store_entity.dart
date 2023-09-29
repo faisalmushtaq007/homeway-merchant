@@ -514,7 +514,7 @@ class StoreOwnDeliveryPartnersInfo with AppEquatable {
       'phoneNumberWithoutDialCode': phoneNumberWithoutDialCode ?? '',
       'driverLicenseDocument': (driverLicenseDocument != null)
           ? this.driverLicenseDocument
-          : NewBusinessDocumentEntity(),
+          : NewBusinessDocumentEntity().toMap(),
     };
   }
 

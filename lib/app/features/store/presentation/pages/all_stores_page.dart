@@ -21,6 +21,7 @@ class _AllStoresPageState extends State<AllStoresPage> {
   WidgetState<StoreEntity> widgetState = const WidgetState<StoreEntity>.none();
   final TextEditingController searchTextEditingController =
   TextEditingController();
+  // Pagination
   int pageSize = 10;
   int pageKey = 0;
   String? searchText;
@@ -80,7 +81,7 @@ class _AllStoresPageState extends State<AllStoresPage> {
           sorting: sorting ?? sort,
         ),
       );
-      appLog.i('Fetch Menu');
+      appLog.i('Fetch Store');
       return;
     } catch (error) {
       _pagingController.error = error;

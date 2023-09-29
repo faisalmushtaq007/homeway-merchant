@@ -31,11 +31,17 @@ class _BindDriverWithStoreController extends State<BindDriverWithStore> {
   WidgetState<StoreEntity> widgetState = const WidgetState<StoreEntity>.none();
   bool? haveSelectAllStores = false;
 
+  // Pagination
+  int pageSize = 10;
+  int pageKey = 0;
+  String? searchText;
+  String? sorting;
+  String? filtering;
+  late final PagingController<int, StoreEntity> _pagingController;
+
   @override
   void initState() {
-    super.initState();
-    scrollController = ScrollController();
-    innerScrollController = ScrollController();
+    _pagingController = PagingController(firstPageKey: 0);
     listOfAllStoreOwnDeliveryPartners = [];
     listOfAllStoreOwnDeliveryPartners.clear();
     listOfAllSelectedStoreOwnDeliveryPartners = [];
@@ -44,8 +50,14 @@ class _BindDriverWithStoreController extends State<BindDriverWithStore> {
     listOfAllStores.clear();
     listOfAllSelectedStores = [];
     listOfAllSelectedStores.clear();
+    _refreshAddressList();
+    widgetState = WidgetState<StoreEntity>.loading(context: context);
+    scrollController = ScrollController();
+    innerScrollController = ScrollController();
+    super.initState();
+
     initLoadSelectedDrivers();
-    context.read<StoreBloc>().add(GetAllStore());
+    //context.read<StoreBloc>().add(GetAllStore());
   }
 
   @override
@@ -66,9 +78,11 @@ class _BindDriverWithStoreController extends State<BindDriverWithStore> {
 
   @override
   void dispose() {
-    scrollController.dispose();
-    innerScrollController.dispose();
-    searchTextEditingController.dispose();
+    _pagingController.removeListener(() {});
+    _pagingController.removePageRequestListener((pageKey) {});
+    _pagingController.removeStatusListener((status) {});
+    _pagingController.dispose();
+
     listOfAllStoreOwnDeliveryPartners = [];
     listOfAllStoreOwnDeliveryPartners.clear();
     listOfAllSelectedStoreOwnDeliveryPartners = [];
@@ -77,6 +91,9 @@ class _BindDriverWithStoreController extends State<BindDriverWithStore> {
     listOfAllStores.clear();
     listOfAllSelectedStores = [];
     listOfAllSelectedStores.clear();
+    searchTextEditingController.dispose();
+    scrollController.dispose();
+    innerScrollController.dispose();
     super.dispose();
   }
 
@@ -96,6 +113,73 @@ class _BindDriverWithStoreController extends State<BindDriverWithStore> {
       listOfAllSelectedStores.clear();
     }
     setState(() {});
+  }
+
+  Future<void> _fetchPage(int pageKey,
+      {int pageSize = 10,
+        String? searchItem,
+        String? filter,
+        String? sort}) async {
+    /*if (pageKey == 0) {
+      _pagingController.itemList = [];
+    }*/
+    int sectionNumber = pageKey ~/ pageSize;
+    try {
+      context.read<StoreBloc>().add(
+        GetAllStoresPagination(
+          pageKey: pageKey,
+          pageSize: pageSize,
+          searchText: searchText??searchItem,
+          filter: filtering ?? filter,
+          sorting: sorting ?? sort,
+        ),
+      );
+      appLog.i('Fetch Store');
+      return;
+    } catch (error) {
+      _pagingController.error = error;
+      debugPrint(error.toString());
+    }
+  }
+
+  void _refreshAddressList() {
+    //_pagingController.refresh();
+    _pagingController.nextPageKey = 0;
+    _fetchPage(0);
+    _pagingController.addPageRequestListener((pageKey) {
+      this.pageKey = pageKey;
+      appLog.d('Page key addPageRequestListener ${pageKey}');
+      _fetchPage(pageKey);
+    });
+
+    _pagingController.addStatusListener((status) {
+      if (status == PagingStatus.subsequentPageError) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: const Text(
+              'Something went wrong while fetching a all orders.',
+            ),
+            action: SnackBarAction(
+              label: 'Retry',
+              onPressed: () => _pagingController.retryLastFailedRequest(),
+            ),
+          ),
+        );
+      }
+    });
+  }
+
+  Future<void> _updateSearchTerm(String searchTerm) async {
+    searchText = searchTerm;
+    if (_pagingController.value
+        .itemList ==
+        null ||
+        _pagingController.value.itemList
+            .isEmptyOrNull) {
+      await _fetchPage(0, searchItem: searchTerm,);
+    } else {
+      _pagingController.refresh();
+    }
   }
 
   @override
@@ -118,6 +202,7 @@ class _BindDriverWithStoreController extends State<BindDriverWithStore> {
                       'allStore': state.listOfSelectedStoreEntities.toList(),
                     },
                   );
+
                 }
                 return;
               }
@@ -139,6 +224,70 @@ class _BindDriverWithStoreController extends State<BindDriverWithStore> {
                   );
                 }
                 return;
+              }
+            case GetAllStorePaginationState():
+              {
+                try {
+                  final isLastPage =
+                      state.storeEntities.length < pageSize;
+                  if (isLastPage) {
+                    _pagingController.appendLastPage(
+                        state.storeEntities.toList());
+                  } else {
+                    final nextPageKey = state.pageKey +
+                        state.storeEntities.length;
+                    //final nextPageKey = addressState.pageKey + 1;
+                    _pagingController.appendPage(
+                        state.storeEntities.toList(),
+                        nextPageKey);
+                  }
+                  widgetState = WidgetState<StoreEntity>.allData(
+                    context: context,
+                    data: _pagingController.value.itemList ?? [],
+                  );
+                  listOfAllStores = _pagingController.value.itemList ?? [];
+                } catch (error) {
+                  _pagingController.error = error;
+                  widgetState = WidgetState<StoreEntity>.error(
+                    context: context,
+                    reason: _pagingController.error,
+                  );
+                }
+              }
+            case GetAllEmptyStorePaginationState():
+              {
+                widgetState = WidgetState<StoreEntity>.empty(
+                  context: context,
+                  message: state.message,
+                );
+              }
+            case GetAllExceptionStorePaginationState():
+              {
+                widgetState = WidgetState<StoreEntity>.error(
+                  context: context,
+                  reason: state.message,
+                );
+              }
+            case GetAllFailedStorePaginationState():
+              {
+                widgetState = WidgetState<StoreEntity>.error(
+                  context: context,
+                  reason: state.message,
+                );
+              }
+            case GetAllLoadingStorePaginationState():
+              {
+                widgetState = WidgetState<StoreEntity>.loading(
+                  context: context,
+                  message: state.message,
+                );
+              }
+            case GetAllProcessingStorePaginationState():
+              {
+                widgetState = WidgetState<StoreEntity>.processing(
+                  context: context,
+                  message: state.message,
+                );
               }
             case _:
               appLog.d('Default case: all bloc listener bind menu page');
@@ -207,10 +356,8 @@ class _BindDriverWithStoreView
           appBar: AppBar(
             title: const Text('All Stores'),
             actions: const [
-              Padding(
-                padding: EdgeInsetsDirectional.symmetric(horizontal: 14),
-                child: LanguageSelectionWidget(),
-              ),
+              NotificationIconWidget(),
+              LanguageSelectionWidget(),
             ],
           ),
           /*floatingActionButton: AnimatedOpacity(
@@ -286,7 +433,14 @@ class _BindDriverWithStoreView
                                     serviceLocator<LanguageController>()
                                         .targetTextDirection,
                                 children: [
-                                  Expanded(
+                                  Expanded(child:  AppSearchInputSliverWidget(
+                                    key: const Key('bind-driver-all-store-search-field-widget'),
+                                    onChanged: state._updateSearchTerm,
+                                    height: 48,
+                                    hintText: 'Search Store',
+
+                                  ),),
+                                 /* Expanded(
                                     child: AppTextFieldWidget(
                                       controller:
                                           state.searchTextEditingController,
@@ -305,11 +459,11 @@ class _BindDriverWithStoreView
                                         isDense: true,
                                       ),
                                     ),
-                                  ),
+                                  ),*/
                                   const AnimatedGap(12,
                                       duration: Duration(milliseconds: 500)),
                                   SizedBox(
-                                    height: 52,
+                                    height: 46,
                                     child: OutlinedButton(
                                       onPressed: () {},
                                       style: OutlinedButton.styleFrom(
@@ -377,7 +531,7 @@ class _BindDriverWithStoreView
                                                 top: 4,
                                                 bottom: 4),
                                         child: Text(
-                                          '${state.listOfAllStores.length}',
+                                          '${state._pagingController.value.itemList?.length??0}',
                                           textDirection: serviceLocator<
                                                   LanguageController>()
                                               .targetTextDirection,
@@ -433,29 +587,65 @@ class _BindDriverWithStoreView
                       Expanded(
                         flex: 2,
                         child: state.widgetState.maybeWhen(
-                          empty: (context, child, message, data) => Center(
-                            key: const Key(
-                                'get-all-bind-drivers-with-store-empty-widget'),
-                            child: Text(
-                              'No store available or added by you',
-                              style: context.labelLarge,
-                              textDirection:
-                                  serviceLocator<LanguageController>()
-                                      .targetTextDirection,
-                            ).translate(),
+                          empty: (context, child, message, data) =>const NoItemAvailableWidget(
+                            key: Key('get-all-bind-drivers-with-store-empty-widget'),
+                            textMessage: 'No stores available or added by you',
                           ),
-                          loading: (context, child, message, isLoading) {
-                            return const Center(
-                              key: Key(
-                                  'get-all-bind-drivers-with-store-center-widget'),
-                              child: SizedBox(
-                                width: 48,
-                                height: 48,
-                                child: CircularProgressIndicator(),
-                              ),
+                          loading:
+                              (context, child, message, isLoading) {
+                            return const DataLoadingWidget(
+                              key: Key('get-all-bind-drivers-with-store-loading-widget'),
+                            );
+                          },
+                          processing:
+                              (context, child, message, isLoading) {
+                            return const DataLoadingWidget(
+                              key: Key('get-all-bind-drivers-with-store-processing-widget'),
+                            );
+                          },
+                          none: () {
+                            return const NoItemAvailableWidget(
+                              key: Key('get-all-bind-drivers-with-store-none-widget'),
+                              textMessage: 'No stores available or added by you',
+                            );
+                          },
+                          orElse: () {
+                            return const NoItemAvailableWidget(
+                              key: Key('get-all-bind-drivers-with-store-else-widget'),
+                              textMessage: 'No stores available or added by you',
                             );
                           },
                           allData: (context, child, message, data) {
+                            return CustomScrollView(
+                              controller: state.innerScrollController,
+                              slivers: [
+                                PagedSliverList<int, StoreEntity>(
+                                  key: const Key(
+                                      'store-list-pagedSliverList-widget'),
+                                  pagingController: state._pagingController,
+                                  builderDelegate:
+                                  PagedChildBuilderDelegate<
+                                      StoreEntity>(
+                                    animateTransitions: true,
+                                    itemBuilder: (context, item, index) =>
+                                        BindStoreCardWidget(
+                                          key: ValueKey(index),
+                                          currentIndex: index,
+                                          onSelectionChanged: (List<StoreEntity>
+                                          listOfAllStoreEntities) {
+                                            state.onSelectionChanged(
+                                                listOfAllStoreEntities.toList());
+                                          },
+                                          listOfAllSelectedStoreEntities:
+                                          state.listOfAllSelectedStores.toList(),
+                                          listOfAllStoreEntities:
+                                          state.listOfAllStores.toList(),
+                                          storeEntity: state.listOfAllStores[index],
+                                        ),
+                                  ),
+                                ),
+                              ],
+                            );
                             return ListView.separated(
                               itemBuilder: (context, index) {
                                 return BindStoreCardWidget(
@@ -480,20 +670,6 @@ class _BindDriverWithStoreView
                                     color: Color.fromRGBO(127, 129, 132, 1));
                               },
                             );
-                          },
-                          none: () {
-                            return Center(
-                              child: Text(
-                                'No stores available or added by you',
-                                style: context.labelLarge,
-                                textDirection:
-                                    serviceLocator<LanguageController>()
-                                        .targetTextDirection,
-                              ).translate(),
-                            );
-                          },
-                          orElse: () {
-                            return const SizedBox();
                           },
                         ),
                       ),

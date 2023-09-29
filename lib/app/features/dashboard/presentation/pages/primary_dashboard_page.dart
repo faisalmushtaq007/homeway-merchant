@@ -196,21 +196,22 @@ class _PrimaryDashboardPageView extends WidgetView<PrimaryDashboardPage, _Primar
     var imageName = '';
     switch(day.period){
       case DayPeriod.am: {
-        if (hour>=0 && hour <= 12) {
+        if (hour>=0 && hour < 12) {
           message = 'Good Morning';
-        } else if ((hour > 12) && (hour <= 16)) {
+        } else if ((hour >= 12) && (hour <= 16)) {
           message = 'Good Afernoon';
         }else{
           message = 'Good Morning';
         }
+        break;
       }
-      break;
       case DayPeriod.pm: {
-        if ((timeNow > 16) && (timeNow < 20)) {
+        if ((hour >= 16) && (hour <= 20)) {
           message = 'Good Evening';
         } else {
           message = 'Good Night';
         }
+        break;
       }
     }
     return AnnotatedRegion<SystemUiOverlayStyle>(
