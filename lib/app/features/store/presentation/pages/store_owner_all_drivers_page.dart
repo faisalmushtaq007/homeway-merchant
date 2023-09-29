@@ -23,17 +23,94 @@ class _StoreOwnerAllDriversController extends State<StoreOwnerAllDrivers> {
   WidgetState<StoreOwnDeliveryPartnersInfo> widgetState =
       const WidgetState<StoreOwnDeliveryPartnersInfo>.none();
   bool? haveSelectAllMenus = false;
+  // Pagination
+  int pageSize = 10;
+  int pageKey = 0;
+  String? searchText;
+  String? sorting;
+  String? filtering;
+  late final PagingController<int, StoreOwnDeliveryPartnersInfo> _pagingController;
 
   @override
   void initState() {
-    super.initState();
-    scrollController = ScrollController();
-    innerScrollController = ScrollController();
+    _pagingController = PagingController(firstPageKey: 0);
     listOfAllDrivers = [];
     listOfAllDrivers.clear();
     listOfAllSelectedDrivers = [];
     listOfAllSelectedDrivers.clear();
-    context.read<StoreBloc>().add(GetAllDriver());
+    _refreshAddressList();
+    widgetState = WidgetState<StoreOwnDeliveryPartnersInfo>.loading(context: context);
+    scrollController = ScrollController();
+    innerScrollController = ScrollController();
+    super.initState();
+    //context.read<StoreBloc>().add(GetAllDriver());
+  }
+
+  Future<void> _fetchPage(int pageKey,
+      {int pageSize = 10,
+        String? searchItem,
+        String? filter,
+        String? sort}) async {
+    /*if (pageKey == 0) {
+      _pagingController.itemList = [];
+    }*/
+    int sectionNumber = pageKey ~/ pageSize;
+    try {
+      context.read<StoreBloc>().add(
+        GetAllDriversPagination(
+          pageKey: pageKey,
+          pageSize: pageSize,
+          searchText: searchText??searchItem,
+          filter: filtering ?? filter,
+          sorting: sorting ?? sort,
+        ),
+      );
+      appLog.i('Fetch Store');
+      return;
+    } catch (error) {
+      _pagingController.error = error;
+      debugPrint(error.toString());
+    }
+  }
+
+  void _refreshAddressList() {
+    //_pagingController.refresh();
+    _pagingController.nextPageKey = 0;
+    _fetchPage(0);
+    _pagingController.addPageRequestListener((pageKey) {
+      this.pageKey = pageKey;
+      appLog.d('Page key addPageRequestListener ${pageKey}');
+      _fetchPage(pageKey);
+    });
+
+    _pagingController.addStatusListener((status) {
+      if (status == PagingStatus.subsequentPageError) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: const Text(
+              'Something went wrong while fetching a all orders.',
+            ),
+            action: SnackBarAction(
+              label: 'Retry',
+              onPressed: () => _pagingController.retryLastFailedRequest(),
+            ),
+          ),
+        );
+      }
+    });
+  }
+
+  Future<void> _updateSearchTerm(String searchTerm) async {
+    searchText = searchTerm;
+    if (_pagingController.value
+        .itemList ==
+        null ||
+        _pagingController.value.itemList
+            .isEmptyOrNull) {
+      await _fetchPage(0, searchItem: searchTerm,);
+    } else {
+      _pagingController.refresh();
+    }
   }
 
   @override
@@ -50,13 +127,18 @@ class _StoreOwnerAllDriversController extends State<StoreOwnerAllDrivers> {
 
   @override
   void dispose() {
-    scrollController.dispose();
-    innerScrollController.dispose();
+    _pagingController.removeListener(() {});
+    _pagingController.removePageRequestListener((pageKey) {});
+    _pagingController.removeStatusListener((status) {});
+    _pagingController.dispose();
     searchTextEditingController.dispose();
     listOfAllDrivers = [];
     listOfAllDrivers.clear();
     listOfAllSelectedDrivers = [];
     listOfAllSelectedDrivers.clear();
+    innerScrollController.dispose();
+    scrollController.dispose();
+    
     super.dispose();
   }
 
@@ -99,7 +181,21 @@ class _StoreOwnerAllDriversController extends State<StoreOwnerAllDrivers> {
                 if (!mounted) {
                   return;
                 }
-                context.read<MenuBloc>().add(GetAllMenu());
+                //context.read<AddressBloc>().add(const GetAllAddress());
+                if (_pagingController.value
+                    .itemList ==
+                    null ||
+                    _pagingController.value.itemList
+                        .isEmptyOrNull) {
+                  appLog.d(
+                      'state._pagingController.value.itemList null');
+                  await _fetchPage(0);
+                } else {
+                  appLog.d(
+                      'state._pagingController.value.itemList not null');
+                  _pagingController.refresh();
+                }
+                return;
               }
             case ReturnToStorePageState():
               {
@@ -107,6 +203,70 @@ class _StoreOwnerAllDriversController extends State<StoreOwnerAllDrivers> {
                   context
                       .pop(storeState.listOfStoreOwnDeliveryPartners.toList());
                 }
+              }
+            case GetAllDriversPaginationState():
+              {
+                try {
+                  final isLastPage =
+                      storeState.driverEntities.length < pageSize;
+                  if (isLastPage) {
+                    _pagingController.appendLastPage(
+                        storeState.driverEntities.toList());
+                  } else {
+                    final nextPageKey = storeState.pageKey +
+                        storeState.driverEntities.length;
+                    //final nextPageKey = addressState.pageKey + 1;
+                    _pagingController.appendPage(
+                        storeState.driverEntities.toList(),
+                        nextPageKey);
+                  }
+                  widgetState = WidgetState<StoreOwnDeliveryPartnersInfo>.allData(
+                    context: context,
+                    data: _pagingController.value.itemList ?? [],
+                  );
+                  listOfAllDrivers = _pagingController.value.itemList ?? [];
+                } catch (error) {
+                  _pagingController.error = error;
+                  widgetState = WidgetState<StoreOwnDeliveryPartnersInfo>.error(
+                    context: context,
+                    reason: _pagingController.error,
+                  );
+                }
+              }
+            case GetAllEmptyDriversPaginationState():
+              {
+                widgetState = WidgetState<StoreOwnDeliveryPartnersInfo>.empty(
+                  context: context,
+                  message: storeState.message,
+                );
+              }
+            case GetAllExceptionDriversPaginationState():
+              {
+                widgetState = WidgetState<StoreOwnDeliveryPartnersInfo>.error(
+                  context: context,
+                  reason: storeState.message,
+                );
+              }
+            case GetAllFailedDriversPaginationState():
+              {
+                widgetState = WidgetState<StoreOwnDeliveryPartnersInfo>.error(
+                  context: context,
+                  reason: storeState.message,
+                );
+              }
+            case GetAllLoadingDriversPaginationState():
+              {
+                widgetState = WidgetState<StoreOwnDeliveryPartnersInfo>.loading(
+                  context: context,
+                  message: storeState.message,
+                );
+              }
+            case GetAllProcessingDriversPaginationState():
+              {
+                widgetState = WidgetState<StoreOwnDeliveryPartnersInfo>.processing(
+                  context: context,
+                  message: storeState.message,
+                );
               }
             case _:
               appLog.d('Default case: BlocListener all driver page');
@@ -201,10 +361,8 @@ class _StoreOwnerAllDriversView
                   serviceLocator<LanguageController>().targetTextDirection,
             ),
             actions: const [
-              Padding(
-                padding: EdgeInsetsDirectional.symmetric(horizontal: 14),
-                child: LanguageSelectionWidget(),
-              ),
+              NotificationIconWidget(),
+              LanguageSelectionWidget(),
             ],
           ),
           floatingActionButton: AnimatedOpacity(
@@ -310,7 +468,14 @@ class _StoreOwnerAllDriversView
                             textDirection: serviceLocator<LanguageController>()
                                 .targetTextDirection,
                             children: [
-                              Expanded(
+                              Expanded(child:  AppSearchInputSliverWidget(
+                                key: const Key('all-drivers-search-field-widget'),
+                                onChanged: state._updateSearchTerm,
+                                height: 48,
+                                hintText: 'Search Store',
+
+                              ),),
+                              /*Expanded(
                                 child: AppTextFieldWidget(
                                   controller: state.searchTextEditingController,
                                   textDirection:
@@ -327,11 +492,11 @@ class _StoreOwnerAllDriversView
                                     isDense: true,
                                   ),
                                 ),
-                              ),
+                              ),*/
                               const AnimatedGap(12,
                                   duration: Duration(milliseconds: 500)),
                               SizedBox(
-                                height: 52,
+                                height: 46,
                                 child: OutlinedButton(
                                   onPressed: () {},
                                   style: OutlinedButton.styleFrom(
@@ -395,7 +560,7 @@ class _StoreOwnerAllDriversView
                                         top: 4,
                                         bottom: 4),
                                     child: Text(
-                                      '${state.listOfAllDrivers.length}',
+                                      '${state._pagingController.value.itemList?.length??0}',
                                       textDirection:
                                           serviceLocator<LanguageController>()
                                               .targetTextDirection,
@@ -460,26 +625,68 @@ class _StoreOwnerAllDriversView
                   Expanded(
                     flex: 2,
                     child: state.widgetState.maybeWhen(
-                      empty: (context, child, message, data) => Center(
-                        key: const Key('get-all-driver-empty-widget'),
-                        child: Text(
-                          'No driver available or added by you',
-                          style: context.labelLarge,
-                          textDirection: serviceLocator<LanguageController>()
-                              .targetTextDirection,
-                        ).translate(),
+                      empty: (context, child, message, data) =>const NoItemAvailableWidget(
+                        key: Key('all-driver-empty-widget'),
+                        textMessage: 'No driver available or added by you',
                       ),
-                      loading: (context, child, message, isLoading) {
-                        return const Center(
-                          key: Key('get-all-drivers-center-widget'),
-                          child: SizedBox(
-                            width: 48,
-                            height: 48,
-                            child: CircularProgressIndicator(),
-                          ),
+                      loading:
+                          (context, child, message, isLoading) {
+                        return const DataLoadingWidget(
+                          key: Key('all-driver-loading-widget'),
                         );
                       },
+                      processing:
+                          (context, child, message, isLoading) {
+                        return const DataLoadingWidget(
+                          key: Key('all-driver-processing-widget'),
+                        );
+                      },
+                      none: () {
+                        return const NoItemAvailableWidget(
+                          key: Key('all-driver-none-widget'),
+                          textMessage: 'No driver available or added by you',
+                        );
+                      },
+                      orElse: () {
+                        return const NoItemAvailableWidget(
+                          key: Key('all-driver-else-widget'),
+                          textMessage: 'No driver available or added by you',
+                        );
+                      },
+
                       allData: (context, child, message, data) {
+                        return CustomScrollView(
+                          controller: state.innerScrollController,
+                          slivers: [
+                            PagedSliverList<int, StoreOwnDeliveryPartnersInfo>(
+                              key: const Key(
+                                  'driver-list-pagedSliverList-widget'),
+                              pagingController: state._pagingController,
+                              builderDelegate:
+                              PagedChildBuilderDelegate<
+                                  StoreOwnDeliveryPartnersInfo>(
+                                animateTransitions: true,
+                                itemBuilder: (context, item, index) =>
+                                    DriverCard(
+                                      key: ValueKey(index),
+                                      storeOwnDeliveryPartnerEntity: item,
+                                      listOfAllStoreOwnDeliveryPartnerEntities:
+                                      state.listOfAllDrivers.toList(),
+                                      currentIndex: index,
+                                      onSelectionChanged: (List<
+                                          StoreOwnDeliveryPartnersInfo>
+                                      listOfAllStoreOwnDeliveryPartnerEntities) {
+                                        state.onSelectionChanged(
+                                            listOfAllStoreOwnDeliveryPartnerEntities
+                                                .toList());
+                                      },
+                                      listOfAllSelectedStoreOwnDeliveryPartnerEntities:
+                                      state.listOfAllSelectedDrivers.toList(),
+                                    ),
+                              ),
+                            ),
+                          ],
+                        );
                         return ListView.separated(
                           itemBuilder: (context, index) {
                             return DriverCard(
@@ -508,26 +715,14 @@ class _StoreOwnerAllDriversView
                           },
                         );
                       },
-                      none: () {
-                        return Center(
-                          child: Text(
-                            'No drivers available or added by you',
-                            style: context.labelLarge,
-                            textDirection: serviceLocator<LanguageController>()
-                                .targetTextDirection,
-                          ).translate(),
-                        );
-                      },
-                      orElse: () {
-                        return const SizedBox();
-                      },
+
                     ),
                   ),
                   Row(
                     children: [
                       Expanded(
                         child: ElevatedButton(
-                          onPressed: () {
+                          onPressed: () async {
                             context.push(
                               Routes.SAVE_DRIVER_PAGE,
                               extra: {
@@ -536,6 +731,23 @@ class _StoreOwnerAllDriversView
                                 'currentIndex': -1,
                               },
                             );
+                            if (!state.mounted) {
+                              return;
+                            }
+                            //context.read<AddressBloc>().add(const GetAllAddress());
+                            if (state._pagingController.value
+                                .itemList ==
+                                null ||
+                                state._pagingController.value.itemList
+                                    .isEmptyOrNull) {
+                              appLog.d(
+                                  'state._pagingController.value.itemList null');
+                              await state._fetchPage(0);
+                            } else {
+                              appLog.d(
+                                  'state._pagingController.value.itemList not null');
+                              state._pagingController.refresh();
+                            }
                             return;
                           },
                           child: Text(

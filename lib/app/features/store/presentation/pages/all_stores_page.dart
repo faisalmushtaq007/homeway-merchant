@@ -568,9 +568,23 @@ class _AllStoresPageState extends State<AllStoresPage> {
                                             if (!mounted) {
                                               return;
                                             }
-                                            context
-                                                .read<StoreBloc>()
-                                                .add(GetAllStore());
+                                            if (!mounted) {
+                                              return;
+                                            }
+                                            //context.read<AddressBloc>().add(const GetAllAddress());
+                                            if (_pagingController.value
+                                                .itemList ==
+                                                null ||
+                                                _pagingController.value.itemList
+                                                    .isEmptyOrNull) {
+                                              appLog.d(
+                                                  'state._pagingController.value.itemList null');
+                                              await _fetchPage(0);
+                                            } else {
+                                              appLog.d(
+                                                  'state._pagingController.value.itemList not null');
+                                              _pagingController.refresh();
+                                            }
                                             return;
                                           },
                                           child: Text(

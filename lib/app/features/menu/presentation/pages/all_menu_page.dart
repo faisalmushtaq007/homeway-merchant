@@ -558,7 +558,6 @@ class _AllMenuPageView extends WidgetView<AllMenuPage, _AllMenuPageController> {
                                   ),
                                 ],
                               );
-
                             },
                             none: () {
                               return const NoItemAvailableWidget(
