@@ -1,7 +1,6 @@
 part of 'package:homemakers_merchant/app/features/profile/index.dart';
 
-class NewBusinessDocumentEntity
-    extends INetworkModel<NewBusinessDocumentEntity> {
+class NewBusinessDocumentEntity extends INetworkModel<NewBusinessDocumentEntity> with EquatableMixin {
   NewBusinessDocumentEntity({
     this.documentID = -1,
     this.documentIdNumber = '',
@@ -23,20 +22,19 @@ class NewBusinessDocumentEntity
     return NewBusinessDocumentEntity(
       documentID: map['documentID'] ?? -1,
       documentIdNumber: map['documentIdNumber'] ?? '',
-      documentType: (map['documentType'] != null)
-          ? DocumentType.values.byName(map['documentType'])
-          : DocumentType.other,
+      documentType:
+          (map['documentType'] != null) ? DocumentType.values.byName(map['documentType']) : DocumentType.other,
       base64: map['base64'] ?? '',
       metaInfo: map['metaInfo'] ?? <String, dynamic>{},
       mimeType: map['mimeType'] ?? 'image/png',
       localAssetPath: map['localAssetPath'] ?? '',
       networkAssetPath: map['networkAssetPath'] ?? '',
       fileName: map['fileName'] as String,
-      fileNameWithExtension: map['fileNameWithExtension'] ?? '' as String,
-      fileExtension: map['fileExtension'] ?? '' as String,
-      captureDocumentID: map['captureDocumentID'] ?? '' as String,
-      height: map['height'] ?? 0.0 as double,
-      width: map['width'] ?? 0.0 as double,
+      fileNameWithExtension: map['fileNameWithExtension'] ?? '',
+      fileExtension: map['fileExtension'] ?? '',
+      captureDocumentID: map['captureDocumentID'] ?? '',
+      height: map['height'] ?? 0.0,
+      width: map['width'] ?? 0.0,
     );
   }
 
@@ -49,9 +47,9 @@ class NewBusinessDocumentEntity
   final String mimeType;
   final String localAssetPath;
   final String networkAssetPath;
-  String fileName;
-  String fileNameWithExtension;
-  String fileExtension;
+  final String fileName;
+  final String fileNameWithExtension;
+  final String fileExtension;
   final double height;
   final double width;
 
@@ -73,8 +71,7 @@ class NewBusinessDocumentEntity
       };
 
   @override
-  NewBusinessDocumentEntity fromJson(Map<String, dynamic> json) =>
-      NewBusinessDocumentEntity.fromMap(json);
+  NewBusinessDocumentEntity fromJson(Map<String, dynamic> json) => NewBusinessDocumentEntity.fromMap(json);
 
   @override
   Map<String, dynamic>? toJson() => toMap();
@@ -105,12 +102,29 @@ class NewBusinessDocumentEntity
       localAssetPath: localAssetPath ?? this.localAssetPath,
       networkAssetPath: networkAssetPath ?? this.networkAssetPath,
       fileName: fileName ?? this.fileName,
-      fileNameWithExtension:
-          fileNameWithExtension ?? this.fileNameWithExtension,
+      fileNameWithExtension: fileNameWithExtension ?? this.fileNameWithExtension,
       fileExtension: fileExtension ?? this.fileExtension,
       captureDocumentID: captureDocumentID ?? this.captureDocumentID,
       width: width ?? this.width,
       height: height ?? this.height,
     );
   }
+
+  @override
+  List<Object?> get props => [
+        documentID,
+        documentIdNumber,
+        documentType.name,
+        base64,
+        metaInfo,
+        mimeType,
+        networkAssetPath,
+        localAssetPath,
+        fileName,
+        fileNameWithExtension,
+        fileExtension,
+        captureDocumentID,
+        height,
+        width,
+      ];
 }

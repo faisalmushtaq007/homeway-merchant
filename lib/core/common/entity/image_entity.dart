@@ -1,9 +1,9 @@
+import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:homemakers_merchant/shared/widgets/universal/image_loader/image_helper.dart';
-import 'package:homemakers_merchant/utils/app_equatable/src/app_equatable.dart';
 
-class ImageEntity with AppEquatable {
-  ImageEntity({
+class ImageEntity extends Equatable {
+  const ImageEntity({
     this.imageType = ImageType.network,
     this.imagePath = '',
     this.icon,
@@ -58,10 +58,7 @@ class ImageEntity with AppEquatable {
   }
 
   @override
-  bool get cacheHash => true;
-
-  @override
-  List<Object?> get hashParameters => [
+  List<Object?> get props => [
         imageType,
         imagePath,
         icon,

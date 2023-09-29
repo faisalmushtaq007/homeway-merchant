@@ -223,35 +223,35 @@ class StoreEntity extends INetworkModel<StoreEntity> with AppEquatable {
 
   Map<String, dynamic> toMap() {
     return {
-      'storeName': this.storeName,
-      'storeAddress': this.storeAddress?.toMap() ?? AddressModel().toJson(),
-      'storeImagePath': this.storeImagePath,
-      'storeImageMetaData': this.storeImageMetaData,
+      'storeName': storeName,
+      'storeAddress': storeAddress?.toMap() ?? AddressModel().toJson(),
+      'storeImagePath': storeImagePath,
+      'storeImageMetaData': storeImageMetaData,
       'storeAvailableFoodTypes':
-          this.storeAvailableFoodTypes.map((e) => e.toMap()).toList(),
+          storeAvailableFoodTypes.map((e) => e.toMap()).toList(),
       'storeAvailableFoodPreparationType':
-          this.storeAvailableFoodPreparationType.map((e) => e.toMap()).toList(),
-      'hasStoreOwnDeliveryPartners': this.hasStoreOwnDeliveryPartners,
+          storeAvailableFoodPreparationType.map((e) => e.toMap()).toList(),
+      'hasStoreOwnDeliveryPartners': hasStoreOwnDeliveryPartners,
       'storeOwnDeliveryPartnersInfo':
-          this.storeOwnDeliveryPartnersInfo.map((e) => e.toMap()).toList(),
-      'storeMaximumFoodDeliveryTime': this.storeMaximumFoodDeliveryTime,
-      'storeMaximumFoodDeliveryRadius': this.storeMaximumFoodDeliveryRadius,
+          storeOwnDeliveryPartnersInfo.map((e) => e.toMap()).toList(),
+      'storeMaximumFoodDeliveryTime': storeMaximumFoodDeliveryTime,
+      'storeMaximumFoodDeliveryRadius': storeMaximumFoodDeliveryRadius,
       'storeAcceptedPaymentModes':
-          this.storeAcceptedPaymentModes.map((e) => e.toMap()).toList(),
-      'storeWorkingDays': this.storeWorkingDays.map((e) => e.toMap()).toList(),
-      'storeOpeningTime': this.storeOpeningTime,
-      'storeClosingTime': this.storeClosingTime,
-      'storeID': this.storeID,
-      'menuEntities': this.menuEntities.map((e) => e.toMap()).toList(),
-      'hasNewStore': this.hasNewStore,
+          storeAcceptedPaymentModes.map((e) => e.toMap()).toList(),
+      'storeWorkingDays': storeWorkingDays.map((e) => e.toMap()).toList(),
+      'storeOpeningTime': storeOpeningTime,
+      'storeClosingTime': storeClosingTime,
+      'storeID': storeID,
+      'menuEntities': menuEntities.map((e) => e.toMap()).toList(),
+      'hasNewStore': hasNewStore,
       'ratingAndReviewEntity': (ratingAndReviewEntity.isNotNull)
-          ? this.ratingAndReviewEntity?.toMap()
+          ? ratingAndReviewEntity?.toMap()
           : RatingAndReviewEntity().toMap(),
-      'iso_code': this.isoCode ?? 'SA',
-      'country_dial_code': this.countryDialCode ?? '+966',
-      'phoneNumberWithoutDialCode': this.phoneNumberWithoutDialCode ?? '',
+      'iso_code': isoCode ?? 'SA',
+      'country_dial_code': countryDialCode ?? '+966',
+      'phoneNumberWithoutDialCode': phoneNumberWithoutDialCode ?? '',
       'storePhoneNumber': storePhoneNumber,
-      'orders': this.orders.map((e) => e.toMap()).toList(),
+      'orders': orders.map((e) => e.toMap()).toList(),
       'hasStoreOpened': hasStoreOpened,
       'hasReadyToPickupOrder': hasReadyToPickupOrder,
       'storeCategories': storeCategories.map((e) => e.toMap()).toList(),
@@ -294,9 +294,9 @@ class StoreAvailableFoodTypes with AppEquatable {
 
   Map<String, dynamic> toMap() {
     return {
-      'title': this.title,
-      'id': this.id,
-      'hasSelected': this.hasSelected,
+      'title': title,
+      'id': id,
+      'hasSelected': hasSelected,
     };
   }
 
@@ -306,8 +306,8 @@ class StoreAvailableFoodTypes with AppEquatable {
     bool? hasSelected,
   }) {
     return StoreAvailableFoodTypes(
-      title: titleOfStoreAvailableFoodTypes ?? this.title,
-      id: storeAvailableFoodTypesID ?? this.id,
+      title: titleOfStoreAvailableFoodTypes ?? title,
+      id: storeAvailableFoodTypesID ?? id,
       hasSelected: hasSelected ?? this.hasSelected,
     );
   }
@@ -340,9 +340,9 @@ class StoreAvailableFoodPreparationType with AppEquatable {
 
   Map<String, dynamic> toMap() {
     return {
-      'title': this.title,
-      'id': this.id,
-      'hasSelected': this.hasSelected,
+      'title': title,
+      'id': id,
+      'hasSelected': hasSelected,
     };
   }
 
@@ -352,8 +352,8 @@ class StoreAvailableFoodPreparationType with AppEquatable {
     bool? hasSelected,
   }) {
     return StoreAvailableFoodPreparationType(
-      title: titleOfStoreAvailableFoodTypes ?? this.title,
-      id: storeAvailableFoodTypesID ?? this.id,
+      title: titleOfStoreAvailableFoodTypes ?? title,
+      id: storeAvailableFoodTypesID ?? id,
       hasSelected: hasSelected ?? this.hasSelected,
     );
   }
@@ -393,9 +393,9 @@ class StoreAcceptedPaymentModes with AppEquatable {
 
   Map<String, dynamic> toMap() {
     return {
-      'title': this.title,
-      'id': this.id,
-      'hasSelected': this.hasSelected,
+      'title': title,
+      'id': id,
+      'hasSelected': hasSelected,
     };
   }
 
@@ -405,24 +405,24 @@ class StoreAcceptedPaymentModes with AppEquatable {
       Icon? icon,
       bool? hasSelected}) {
     return StoreAcceptedPaymentModes(
-      title: titleOfStoreAvailableFoodTypes ?? this.title,
-      id: storeAvailableFoodTypesID ?? this.id,
+      title: titleOfStoreAvailableFoodTypes ?? title,
+      id: storeAvailableFoodTypesID ?? id,
       icon: icon ?? this.icon,
       hasSelected: hasSelected ?? this.hasSelected,
     );
   }
 }
 
-class StoreOwnDeliveryPartnersInfo with AppEquatable {
-  StoreOwnDeliveryPartnersInfo({
+class StoreOwnDeliveryPartnersInfo extends Equatable {
+  const StoreOwnDeliveryPartnersInfo({
     this.driverID = -1,
     this.driverName = '',
     this.driverMobileNumber = '',
     this.drivingLicenseNumber = '',
-    this.vehicleInfo,
+    this.vehicleInfo=const VehicleInfo(),
     this.hasOnline = true,
-    this.ratingAndReviewEntity,
-    this.imageEntity,
+    this.ratingAndReviewEntity=const RatingAndReviewEntity(),
+    this.imageEntity=const ImageEntity(),
     this.hasDriverImage = false,
     this.deliveryMode = '',
     this.isoCode = 'SA',
@@ -439,7 +439,7 @@ class StoreOwnDeliveryPartnersInfo with AppEquatable {
       drivingLicenseNumber: map['drivingLicenseNumber'] as String,
       vehicleInfo: (map['vehicleInfo'] != null)
           ? VehicleInfo.fromMap(map['vehicleInfo'])
-          : VehicleInfo(),
+          : const VehicleInfo(),
       hasOnline: map['hasOnline'] as bool,
       ratingAndReviewEntity: (map['ratingAndReviewEntity'] != null)
           ? RatingAndReviewEntity.fromMap(map['ratingAndReviewEntity'])
@@ -447,37 +447,34 @@ class StoreOwnDeliveryPartnersInfo with AppEquatable {
       hasDriverImage: map['hasDriverImage'] as bool,
       imageEntity: (map['imageEntity'] != null)
           ? ImageEntity.fromMap(map['imageEntity'])
-          : ImageEntity(),
+          : const ImageEntity(),
       deliveryMode: (map['deliveryMode'] != null) ? map['deliveryMode'] : '',
       isoCode: map['isoCode'] ?? 'SA',
       countryDialCode: map['country_dial_code'] ?? '+966',
       phoneNumberWithoutDialCode: map['phoneNumberWithoutDialCode'] ?? '',
       driverLicenseDocument: map['driverLicenseDocument'] != null
-          ? map['driverLicenseDocument']
+          ?NewBusinessDocumentEntity.fromMap(map['driverLicenseDocument'])
           : NewBusinessDocumentEntity(),
     );
   }
 
-  int driverID;
-  String driverName;
-  String driverMobileNumber;
-  String drivingLicenseNumber;
-  VehicleInfo? vehicleInfo = VehicleInfo();
-  bool hasOnline;
-  RatingAndReviewEntity? ratingAndReviewEntity = RatingAndReviewEntity();
-  ImageEntity? imageEntity = ImageEntity();
-  bool hasDriverImage;
-  String deliveryMode;
-  String countryDialCode;
-  String isoCode;
-  String phoneNumberWithoutDialCode;
-  NewBusinessDocumentEntity? driverLicenseDocument;
+  final int driverID;
+  final String driverName;
+  final String driverMobileNumber;
+  final String drivingLicenseNumber;
+  final VehicleInfo vehicleInfo;
+  final bool hasOnline;
+  final RatingAndReviewEntity ratingAndReviewEntity;
+  final ImageEntity imageEntity;
+  final bool hasDriverImage;
+  final String deliveryMode;
+  final String countryDialCode;
+  final String isoCode;
+  final String phoneNumberWithoutDialCode;
+  final NewBusinessDocumentEntity? driverLicenseDocument;
 
   @override
-  bool get cacheHash => true;
-
-  @override
-  List<Object?> get hashParameters => [
+  List<Object?> get props => [
         driverID,
         driverMobileNumber,
         driverName,
@@ -496,24 +493,24 @@ class StoreOwnDeliveryPartnersInfo with AppEquatable {
 
   Map<String, dynamic> toMap() {
     return {
-      'driverName': this.driverName,
-      'driverMobileNumber': this.driverMobileNumber,
-      'drivingLicenseNumber': this.drivingLicenseNumber,
-      'vehicleInfo': this.vehicleInfo?.toMap() ?? VehicleInfo().toMap(),
-      'driverID': this.driverID,
-      'hasOnline': this.hasOnline,
-      'ratingAndReviewEntity': this.ratingAndReviewEntity?.toMap() ??
+      'driverName': driverName,
+      'driverMobileNumber': driverMobileNumber,
+      'drivingLicenseNumber': drivingLicenseNumber,
+      'vehicleInfo': vehicleInfo?.toMap() ?? VehicleInfo().toMap(),
+      'driverID': driverID,
+      'hasOnline': hasOnline,
+      'ratingAndReviewEntity': ratingAndReviewEntity?.toMap() ??
           RatingAndReviewEntity().toMap(),
-      'hasDriverImage': this.hasDriverImage,
+      'hasDriverImage': hasDriverImage,
       'imageEntity': (imageEntity != null)
-          ? this.imageEntity?.toMap()
+          ? imageEntity?.toMap()
           : ImageEntity().toMap(),
       'deliveryMode': deliveryMode,
       'isoCode': isoCode ?? 'SA',
       'country_dial_code': countryDialCode ?? '+966',
       'phoneNumberWithoutDialCode': phoneNumberWithoutDialCode ?? '',
       'driverLicenseDocument': (driverLicenseDocument != null)
-          ? this.driverLicenseDocument
+          ? driverLicenseDocument?.toMap()
           : NewBusinessDocumentEntity().toMap(),
     };
   }
@@ -557,8 +554,8 @@ class StoreOwnDeliveryPartnersInfo with AppEquatable {
   }
 }
 
-class VehicleInfo with AppEquatable {
-  VehicleInfo({
+class VehicleInfo extends Equatable {
+  const VehicleInfo({
     this.vehicleID = '',
     this.vehicleType = '',
     this.vehicleNumber = '',
@@ -574,16 +571,13 @@ class VehicleInfo with AppEquatable {
     );
   }
 
-  String vehicleID;
-  String vehicleType;
-  String vehicleNumber;
-  String vehicleIconPath;
+  final String vehicleID;
+  final String vehicleType;
+  final String vehicleNumber;
+  final String vehicleIconPath;
 
   @override
-  bool get cacheHash => true;
-
-  @override
-  List<Object?> get hashParameters => [
+  List<Object?> get props => [
         vehicleID,
         vehicleType,
         vehicleNumber,
@@ -592,10 +586,10 @@ class VehicleInfo with AppEquatable {
 
   Map<String, dynamic> toMap() {
     return {
-      'vehicleID': this.vehicleID,
-      'vehicleType': this.vehicleType,
-      'vehicleNumber': this.vehicleNumber,
-      'vehicleIconPath': this.vehicleIconPath,
+      'vehicleID': vehicleID,
+      'vehicleType': vehicleType,
+      'vehicleNumber': vehicleNumber,
+      'vehicleIconPath': vehicleIconPath,
     };
   }
 
@@ -663,14 +657,14 @@ class StoreWorkingDayAndTime with AppEquatable {
 
   Map<String, dynamic> toMap() {
     return {
-      'title': this.day,
-      'id': this.id,
-      'hasSelected': this.hasSelected,
-      'closingTime': Timestamp.fromDateTime(this.closingTime ?? DateTime.now())
+      'title': day,
+      'id': id,
+      'hasSelected': hasSelected,
+      'closingTime': Timestamp.fromDateTime(closingTime ?? DateTime.now())
           .millisecondsSinceEpoch,
-      'openingTime': Timestamp.fromDateTime(this.openingTime ?? DateTime.now())
+      'openingTime': Timestamp.fromDateTime(openingTime ?? DateTime.now())
           .millisecondsSinceEpoch,
-      'shortName': this.shortName,
+      'shortName': shortName,
     };
   }
 
@@ -683,8 +677,8 @@ class StoreWorkingDayAndTime with AppEquatable {
     String? shortName,
   }) {
     return StoreWorkingDayAndTime(
-      day: titleOfStoreAvailableFoodTypes ?? this.day,
-      id: storeAvailableFoodTypesID ?? this.id,
+      day: titleOfStoreAvailableFoodTypes ?? day,
+      id: storeAvailableFoodTypesID ?? id,
       hasSelected: hasSelected ?? this.hasSelected,
       closingTime: closingTime ?? this.closingTime,
       openingTime: openingTime ?? this.openingTime,

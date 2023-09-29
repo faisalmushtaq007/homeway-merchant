@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:collection/collection.dart';
 import 'package:cross_file/cross_file.dart';
 import 'package:cross_file/cross_file.dart';
+import 'package:equatable/equatable.dart';
 import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flex_color_scheme/flex_color_scheme.dart';
@@ -175,9 +176,7 @@ part 'package:homemakers_merchant/app/features/store/presentation/pages/store_ow
 part 'package:homemakers_merchant/app/features/store/presentation/pages/store_preview_page.dart';
 part 'package:homemakers_merchant/app/features/store/presentation/pages/subpages/driver/bind_driver_with_store.dart';
 part 'package:homemakers_merchant/app/features/store/presentation/pages/subpages/driver/bind_driver_with_store_greeting_page.dart';
-part 'package:homemakers_merchant/app/features/store/presentation/pages/subpages/driver/contact_form_item_widget.dart';
 part 'package:homemakers_merchant/app/features/store/presentation/pages/subpages/driver/empty_state.dart';
-part 'package:homemakers_merchant/app/features/store/presentation/pages/subpages/driver/multi_contact_form_widget.dart';
 part 'package:homemakers_merchant/app/features/store/presentation/pages/subpages/driver/save_driver_page.dart';
 part 'package:homemakers_merchant/app/features/store/presentation/widgets/bind_store_card_widget.dart';
 part 'package:homemakers_merchant/app/features/store/presentation/widgets/driver_card_widget.dart';

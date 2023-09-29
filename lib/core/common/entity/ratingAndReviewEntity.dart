@@ -1,7 +1,7 @@
-import 'package:homemakers_merchant/utils/app_equatable/app_equatable.dart';
+import 'package:equatable/equatable.dart';
 
-class RatingAndReviewEntity with AppEquatable {
-  RatingAndReviewEntity({
+class RatingAndReviewEntity extends Equatable {
+  const RatingAndReviewEntity({
     this.rating = 0.0,
     this.numberOfReviews = 0,
     this.customerReview = '',
@@ -16,10 +16,10 @@ class RatingAndReviewEntity with AppEquatable {
       ratingId: map['ratingId'] as String,
     );
   }
-  double rating;
-  int numberOfReviews;
-  String customerReview;
-  String ratingId;
+  final double rating;
+  final int numberOfReviews;
+  final String customerReview;
+  final String ratingId;
 
   @override
   String toString() {
@@ -50,8 +50,5 @@ class RatingAndReviewEntity with AppEquatable {
   }
 
   @override
-  bool get cacheHash => true;
-
-  @override
-  List<Object?> get hashParameters => [rating, numberOfReviews, customerReview];
+  List<Object?> get props => [rating, numberOfReviews, customerReview];
 }
