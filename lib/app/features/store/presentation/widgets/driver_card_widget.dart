@@ -8,6 +8,7 @@ class DriverCard extends StatefulWidget {
     required this.listOfAllStoreOwnDeliveryPartnerEntities,
     required this.listOfAllSelectedStoreOwnDeliveryPartnerEntities,
     required this.onSelectionChanged,
+    required this.refreshDriverList,
   });
 
   final StoreOwnDeliveryPartnersInfo storeOwnDeliveryPartnerEntity;
@@ -17,6 +18,7 @@ class DriverCard extends StatefulWidget {
   final List<StoreOwnDeliveryPartnersInfo>
       listOfAllSelectedStoreOwnDeliveryPartnerEntities;
   final Function(List<StoreOwnDeliveryPartnersInfo>) onSelectionChanged;
+  final Function() refreshDriverList;
 
   @override
   State<DriverCard> createState() => _DriverCardState();
@@ -80,11 +82,10 @@ class _DriverCardState extends State<DriverCard> {
     return PopupMenuItem(
       value: position,
       onTap: () async {
-        switch (_popupStoreItemIndex) {
+        switch (position) {
           case 0:
             {
-              final navigateToStoreDetailsPage =
-                  await context.push(Routes.STORE_DETAILS_PAGE);
+              //final navigateToStoreDetailsPage = await context.push(Routes.STORE_DETAILS_PAGE);
             }
           case 1:
             {}
@@ -148,7 +149,16 @@ class _DriverCardState extends State<DriverCard> {
                 if (!mounted) {
                   return;
                 }
-                serviceLocator<AppUserEntity>().drivers.removeAt(currentIndex);
+                await serviceLocator<DeleteDriverUseCase>()(
+                  id: widget.storeOwnDeliveryPartnerEntity.driverID,
+                  input: widget.storeOwnDeliveryPartnerEntity,
+                );
+                await Future.delayed(const Duration(milliseconds: 500), () {});
+                widget.refreshDriverList();
+                setState(() {
+
+                });
+                //serviceLocator<AppUserEntity>().drivers.removeAt(currentIndex);
               }
               return;
             }
@@ -164,14 +174,18 @@ class _DriverCardState extends State<DriverCard> {
           ),
           const AnimatedGap(8, duration: Duration(milliseconds: 500)),
           Expanded(
-            child: Text(
-              title,
-              style: context.labelLarge!.copyWith(
-                color: Color.fromRGBO(42, 45, 50, 1),
-                fontSize: 16,
-              ),
-              textDirection:
-                  serviceLocator<LanguageController>().targetTextDirection,
+            child: Wrap(
+              children: [
+                Text(
+                  title,
+                  style: context.labelLarge!.copyWith(
+                    //color: Color.fromRGBO(42, 45, 50, 1),
+                    fontSize: 16,
+                  ),
+                  textDirection:
+                      serviceLocator<LanguageController>().targetTextDirection,
+                ),
+              ],
             ),
           ),
         ],
@@ -187,98 +201,113 @@ class _DriverCardState extends State<DriverCard> {
 
   @override
   Widget build(BuildContext context) {
-    return ListTile(
-      leading: ImageHelper(
-        image: (widget.storeOwnDeliveryPartnerEntity.imageEntity != null &&
-                widget.storeOwnDeliveryPartnerEntity.imageEntity!.imagePath
-                    .isNotEmpty)
-            ? widget.storeOwnDeliveryPartnerEntity.imageEntity?.imagePath ?? ''
-            : (widget.storeOwnDeliveryPartnerEntity.hasOnline)
-                ? 'assets/svg/online_driver.svg'
-                : 'assets/svg/offline_driver.svg',
-        // Quality levels for image sampling in [ImageFilter] and [Shader] objects that sample
-        filterQuality: FilterQuality.high,
-        // border radius only work with [ImageShape.rounded]
-        borderRadius: BorderRadiusDirectional.circular(30),
-        // alignment of image
-        //alignment: Alignment.center,
-        // indicates where image will be loaded from, types are [network, asset,file]
-        imageType: (widget.storeOwnDeliveryPartnerEntity.imageEntity != null &&
-                widget.storeOwnDeliveryPartnerEntity.imageEntity!.imagePath
-                    .isNotEmpty)
-            ? ImageType.network
-            : ImageType.text,
-        // indicates what shape you would like to be with image [rectangle, oval,circle or none]
-        imageShape: ImageShape.rectangle,
-        // image default box fit
-        boxFit: BoxFit.fill,
-        width: context.width / 8,
-        height: context.width / 8,
-        defaultErrorBuilderColor: Colors.blueGrey,
-        errorBuilder: const Icon(
-          Icons.image_not_supported,
-          size: 10000,
+    return Card(
+      margin: const EdgeInsetsDirectional.only(bottom: 8),
+      child: ListTile(
+        leading: ImageHelper(
+          image: (widget.storeOwnDeliveryPartnerEntity.imageEntity != null &&
+                  widget.storeOwnDeliveryPartnerEntity.imageEntity!.imagePath
+                      .isNotEmpty)
+              ? widget.storeOwnDeliveryPartnerEntity.imageEntity?.imagePath ?? ''
+              : (widget.storeOwnDeliveryPartnerEntity.hasOnline)
+                  ? 'assets/svg/online_driver.svg'
+                  : 'assets/svg/offline_driver.svg',
+          // Quality levels for image sampling in [ImageFilter] and [Shader] objects that sample
+          filterQuality: FilterQuality.high,
+          // border radius only work with [ImageShape.rounded]
+          borderRadius: BorderRadiusDirectional.circular(30),
+          // alignment of image
+          //alignment: Alignment.center,
+          // indicates where image will be loaded from, types are [network, asset,file]
+          imageType: (widget.storeOwnDeliveryPartnerEntity.imageEntity != null &&
+                  widget.storeOwnDeliveryPartnerEntity.imageEntity!.imagePath
+                      .isNotEmpty)
+              ? ImageType.network
+              : ImageType.text,
+          // indicates what shape you would like to be with image [rectangle, oval,circle or none]
+          imageShape: ImageShape.rectangle,
+          // image default box fit
+          boxFit: BoxFit.fill,
+          width: context.width / 8,
+          height: context.width / 8,
+          defaultErrorBuilderColor: Colors.blueGrey,
+          errorBuilder: const Icon(
+            Icons.image_not_supported,
+            size: 10000,
+          ),
+          // loader builder widget, default as icon if null
+          loaderBuilder: const CircularProgressIndicator(),
+          matchTextDirection: true,
+          placeholderText: widget.storeOwnDeliveryPartnerEntity.driverName,
+          placeholderTextStyle: context.labelLarge!.copyWith(
+            color: Colors.white,
+            fontSize: 16,
+          ),
+          placeholderBackgroundColor:
+          context.colorScheme.primary.withOpacity(0.5),
         ),
-        // loader builder widget, default as icon if null
-        loaderBuilder: const CircularProgressIndicator(),
-        matchTextDirection: true,
-        placeholderText: widget.storeOwnDeliveryPartnerEntity.driverName,
-        placeholderTextStyle: context.labelLarge!.copyWith(
-          color: Colors.white,
-          fontSize: 16,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadiusDirectional.circular(10),
+          //side: BorderSide(color: Color.fromRGBO(127, 129, 132, 1)),
         ),
-        placeholderBackgroundColor:
-        context.colorScheme.primary.withOpacity(0.5),
-      ),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadiusDirectional.circular(10),
-        //side: BorderSide(color: Color.fromRGBO(127, 129, 132, 1)),
-      ),
-      title: Text(
-        widget.storeOwnDeliveryPartnerEntity.driverName,
-        style: context.titleMedium!.copyWith(),
-        textDirection: serviceLocator<LanguageController>().targetTextDirection,
-        maxLines: 1,
-        softWrap: true,
-        overflow: TextOverflow.ellipsis,
-      ),
-      subtitle: Text(
-        widget.storeOwnDeliveryPartnerEntity.vehicleInfo?.vehicleType ?? '',
-        //style: const TextStyle(color: Color.fromRGBO(127, 129, 132, 1)),
-        textDirection: serviceLocator<LanguageController>().targetTextDirection,
-        maxLines: 1,
-        softWrap: true,
-        overflow: TextOverflow.ellipsis,
-      ),
-      dense: true,
-      minLeadingWidth: 20,
-      onTap: () {
-        setState(() {
-          widget.listOfAllSelectedStoreOwnDeliveryPartnerEntities
-                  .contains(widget.storeOwnDeliveryPartnerEntity)
-              ? widget.listOfAllSelectedStoreOwnDeliveryPartnerEntities
-                  .remove(widget.storeOwnDeliveryPartnerEntity)
-              : widget.listOfAllSelectedStoreOwnDeliveryPartnerEntities
-                  .add(widget.storeOwnDeliveryPartnerEntity);
-          widget.onSelectionChanged
-              ?.call(widget.listOfAllSelectedStoreOwnDeliveryPartnerEntities);
-        });
-      },
-      selected: widget.listOfAllSelectedStoreOwnDeliveryPartnerEntities
-          .contains(widget.storeOwnDeliveryPartnerEntity),
-      trailing: (widget.listOfAllSelectedStoreOwnDeliveryPartnerEntities
-              .contains(widget.storeOwnDeliveryPartnerEntity))
-          ? const Icon(
-              Icons.check,
-              color: Color.fromRGBO(69, 201, 125, 1),
-            )
-          : _buildPopupMenuButton(
-              widget.currentIndex,
-              widget.storeOwnDeliveryPartnerEntity,
+        title: Wrap(
+          children: [
+            Text(
+              widget.storeOwnDeliveryPartnerEntity.driverName,
+              style: context.titleMedium!.copyWith(),
+              textDirection: serviceLocator<LanguageController>().targetTextDirection,
+              maxLines: 2,
+              softWrap: true,
+              overflow: TextOverflow.ellipsis,
             ),
-      selectedColor: const Color.fromRGBO(215, 243, 227, 1),
-      selectedTileColor: const Color.fromRGBO(215, 243, 227, 1),
-      tileColor: context.colorScheme.background,
+          ],
+        ),
+        subtitle: Row(
+          children: [
+            Wrap(
+              children: [
+                Text(
+                  '${widget.storeOwnDeliveryPartnerEntity.vehicleInfo?.vehicleType} | ${widget.storeOwnDeliveryPartnerEntity.vehicleInfo?.vehicleNumber}' ?? '',
+                  //style: const TextStyle(color: Color.fromRGBO(127, 129, 132, 1)),
+                  textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                  maxLines: 1,
+                  softWrap: true,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ],
+            ),
+          ],
+        ),
+        dense: true,
+        minLeadingWidth: 20,
+        onTap: () {
+          setState(() {
+            widget.listOfAllSelectedStoreOwnDeliveryPartnerEntities
+                    .contains(widget.storeOwnDeliveryPartnerEntity)
+                ? widget.listOfAllSelectedStoreOwnDeliveryPartnerEntities
+                    .remove(widget.storeOwnDeliveryPartnerEntity)
+                : widget.listOfAllSelectedStoreOwnDeliveryPartnerEntities
+                    .add(widget.storeOwnDeliveryPartnerEntity);
+            widget.onSelectionChanged
+                ?.call(widget.listOfAllSelectedStoreOwnDeliveryPartnerEntities);
+          });
+        },
+        selected: widget.listOfAllSelectedStoreOwnDeliveryPartnerEntities
+            .contains(widget.storeOwnDeliveryPartnerEntity),
+        trailing: (widget.listOfAllSelectedStoreOwnDeliveryPartnerEntities
+                .contains(widget.storeOwnDeliveryPartnerEntity))
+            ? const Icon(
+                Icons.check,
+                color: Color.fromRGBO(69, 201, 125, 1),
+              )
+            : _buildPopupMenuButton(
+                widget.currentIndex,
+                widget.storeOwnDeliveryPartnerEntity,
+              ),
+        selectedColor: const Color.fromRGBO(215, 243, 227, 1),
+        selectedTileColor: const Color.fromRGBO(215, 243, 227, 1),
+        tileColor: context.colorScheme.background,
+      ),
     );
   }
 }

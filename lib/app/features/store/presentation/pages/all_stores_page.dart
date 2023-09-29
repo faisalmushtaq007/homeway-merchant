@@ -510,30 +510,15 @@ class _AllStoresPageState extends State<AllStoresPage> {
                                                       listOfAllStoreEntities:
                                                       storeEntities.toList(),
                                                       currentIndex: index,
+                                                      refreshStoreList: () {
+                                                        return _updateSearchTerm(searchText??'');
+                                                      },
                                                     ),
                                               ),
                                             ),
                                           ],
                                         );
 
-                                        return ListView.separated(
-                                          itemBuilder: (context, index) {
-                                            return StoreCard(
-                                              key: ValueKey(index),
-                                              storeEntity: storeEntities[index],
-                                              listOfAllStoreEntities:
-                                              storeEntities.toList(),
-                                              currentIndex: index,
-                                            );
-                                          },
-                                          itemCount: storeEntities.length,
-                                          separatorBuilder: (context, index) {
-                                            return const Divider(
-                                                thickness: 0.25,
-                                                color: Color.fromRGBO(
-                                                    127, 129, 132, 1));
-                                          },
-                                        );
                                       },
                                       none: () {
                                         return Center(

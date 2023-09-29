@@ -113,6 +113,7 @@ class _StoreOwnerAllDriversController extends State<StoreOwnerAllDrivers> {
     }
   }
 
+
   @override
   void setState(VoidCallback fn) {
     if (mounted) {
@@ -618,7 +619,7 @@ class _StoreOwnerAllDriversView
                     ),
                     secondChild: const Offstage(),
                     duration: const Duration(milliseconds: 500),
-                    crossFadeState: (state.listOfAllDrivers.isNotEmpty)
+                    crossFadeState: (state._pagingController.value.itemList?.isNotNullOrEmpty??state.listOfAllDrivers.isNotEmpty)
                         ? CrossFadeState.showFirst
                         : CrossFadeState.showSecond,
                   ),
@@ -682,37 +683,13 @@ class _StoreOwnerAllDriversView
                                       },
                                       listOfAllSelectedStoreOwnDeliveryPartnerEntities:
                                       state.listOfAllSelectedDrivers.toList(),
+                                      refreshDriverList: () {
+                                        return state._updateSearchTerm(state.searchText??'');
+                                      },
                                     ),
                               ),
                             ),
                           ],
-                        );
-                        return ListView.separated(
-                          itemBuilder: (context, index) {
-                            return DriverCard(
-                              key: ValueKey(index),
-                              storeOwnDeliveryPartnerEntity:
-                                  state.listOfAllDrivers[index],
-                              listOfAllStoreOwnDeliveryPartnerEntities:
-                                  state.listOfAllDrivers.toList(),
-                              currentIndex: index,
-                              onSelectionChanged: (List<
-                                      StoreOwnDeliveryPartnersInfo>
-                                  listOfAllStoreOwnDeliveryPartnerEntities) {
-                                state.onSelectionChanged(
-                                    listOfAllStoreOwnDeliveryPartnerEntities
-                                        .toList());
-                              },
-                              listOfAllSelectedStoreOwnDeliveryPartnerEntities:
-                                  state.listOfAllSelectedDrivers.toList(),
-                            );
-                          },
-                          itemCount: state.listOfAllDrivers.length,
-                          separatorBuilder: (context, index) {
-                            return const Divider(
-                                thickness: 0.25,
-                                color: Color.fromRGBO(127, 129, 132, 1));
-                          },
                         );
                       },
 

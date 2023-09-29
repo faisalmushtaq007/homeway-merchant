@@ -12,6 +12,8 @@ class SaveDriverPage extends StatefulWidget {
   final StoreOwnDeliveryPartnersInfo? storeOwnDeliveryPartnersInfo;
   final int currentIndex;
 
+
+
   @override
   _SaveDriverPageController createState() => _SaveDriverPageController();
 }
@@ -800,10 +802,7 @@ class _SaveDriverPageView
                                                 .listOfSelectedVehicleTypeInfo[
                                                     0]
                                                 .vehicleType,
-                                            vehicleNumber: state
-                                                .listOfSelectedVehicleTypeInfo[
-                                                    0]
-                                                .vehicleNumber,
+                                            vehicleNumber: state.driverVehicleNumberTextEditingController.value.text.trim(),
                                           ),
                                           hasDriverImage:
                                               state.userImagePath.isNotEmpty
@@ -854,10 +853,7 @@ class _SaveDriverPageView
                                                 .listOfSelectedVehicleTypeInfo[
                                                     0]
                                                 .vehicleType,
-                                            vehicleNumber: state
-                                                .listOfSelectedVehicleTypeInfo[
-                                                    0]
-                                                .vehicleNumber,
+                                            vehicleNumber: state.driverVehicleNumberTextEditingController.value.text.trim(),
                                           ),
                                           hasDriverImage:
                                               state.userImagePath.isNotEmpty
