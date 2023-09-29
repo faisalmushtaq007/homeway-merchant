@@ -228,7 +228,7 @@ class _DriverCardState extends State<DriverCard> {
           fontSize: 16,
         ),
         placeholderBackgroundColor:
-            context.colorScheme.primary.withOpacity(0.5),
+        context.colorScheme.primary.withOpacity(0.5),
       ),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadiusDirectional.circular(10),
@@ -236,8 +236,7 @@ class _DriverCardState extends State<DriverCard> {
       ),
       title: Text(
         widget.storeOwnDeliveryPartnerEntity.driverName,
-        style: context.titleMedium!
-            .copyWith(color: const Color.fromRGBO(31, 31, 31, 1)),
+        style: context.titleMedium!.copyWith(),
         textDirection: serviceLocator<LanguageController>().targetTextDirection,
         maxLines: 1,
         softWrap: true,
@@ -245,7 +244,7 @@ class _DriverCardState extends State<DriverCard> {
       ),
       subtitle: Text(
         widget.storeOwnDeliveryPartnerEntity.vehicleInfo?.vehicleType ?? '',
-        style: const TextStyle(color: Color.fromRGBO(127, 129, 132, 1)),
+        //style: const TextStyle(color: Color.fromRGBO(127, 129, 132, 1)),
         textDirection: serviceLocator<LanguageController>().targetTextDirection,
         maxLines: 1,
         softWrap: true,
@@ -279,7 +278,7 @@ class _DriverCardState extends State<DriverCard> {
             ),
       selectedColor: const Color.fromRGBO(215, 243, 227, 1),
       selectedTileColor: const Color.fromRGBO(215, 243, 227, 1),
-      tileColor: Colors.white,
+      tileColor: context.colorScheme.background,
     );
   }
 }
