@@ -86,7 +86,7 @@ class _AddressCardWidgetController extends State<AddressCardWidget> {
     return PopupMenuItem(
       value: position,
       onTap: () async {
-        switch (_popupStoreItemIndex) {
+        switch (position) {
           case 0:
             {
               final mapAddressDetails = await context.push(
@@ -194,9 +194,12 @@ class _AddressCardWidgetController extends State<AddressCardWidget> {
             child: Text(
               title,
               style: context.labelLarge!.copyWith(),
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              softWrap: true,
               textDirection:
                   serviceLocator<LanguageController>().targetTextDirection,
-            ),
+            ).translate(),
           ),
         ],
       ),

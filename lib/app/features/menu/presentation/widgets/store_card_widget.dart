@@ -162,12 +162,13 @@ class _StoreCardWidgetState extends State<StoreCardWidget> {
             child: Text(
               title,
               style: context.labelLarge!.copyWith(
-                color: Color.fromRGBO(42, 45, 50, 1),
-                fontSize: 16,
               ),
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              softWrap: true,
               textDirection:
                   serviceLocator<LanguageController>().targetTextDirection,
-            ),
+            ).translate(),
           ),
         ],
       ),

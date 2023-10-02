@@ -170,7 +170,7 @@ class _StoreCardState extends State<StoreCard> {
                   id: widget.storeEntity.storeID,
                   input: widget.storeEntity,
                 );
-                serviceLocator<AppUserEntity>().stores.removeAt(widget.currentIndex);
+                serviceLocator<AppUserEntity>().stores.removeAt(currentIndex);
                 await Future.delayed(const Duration(milliseconds: 500), () {});
                 if (!mounted) {
                   return;
@@ -199,13 +199,13 @@ class _StoreCardState extends State<StoreCard> {
             child: Text(
               title,
               style: context.labelLarge!.copyWith(
-                fontSize: 16,
+
               ),
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
               softWrap: true,
               textDirection: serviceLocator<LanguageController>().targetTextDirection,
-            ),
+            ).translate(),
           ),
         ],
       ),
@@ -316,7 +316,7 @@ class _StoreCardState extends State<StoreCard> {
         ],
       ),
       //dense: true,
-      minLeadingWidth: 20,
+      //minLeadingWidth: 20,
       onTap: () async {
         //final navigateToStoreDetailPage=await context.push(Routes.ALL_STORES_PAGE);
       },

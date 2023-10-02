@@ -10,3 +10,4 @@ class DeleteAllDriverUseCase extends UseCase<DataSourceState<bool>> {
     return storeRepository.deleteAllDriver();
   }
 }
+

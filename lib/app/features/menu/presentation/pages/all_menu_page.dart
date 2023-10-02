@@ -553,6 +553,9 @@ class _AllMenuPageView extends WidgetView<AllMenuPage, _AllMenuPageController> {
                                             },
                                             listOfAllSelectedMenuEntities:
                                             state.listOfAllSelectedMenus.toList(),
+                                            refreshMenuList: () {
+                                              return state._updateSearchTerm(state.searchText??'');
+                                            },
                                           ),
                                     ),
                                   ),

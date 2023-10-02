@@ -8,6 +8,7 @@ class MenuCardWidget extends StatefulWidget {
     required this.listOfAllMenuEntities,
     required this.onSelectionChanged,
     required this.listOfAllSelectedMenuEntities,
+    required this.refreshMenuList,
   });
 
   final MenuEntity menuEntity;
@@ -15,6 +16,7 @@ class MenuCardWidget extends StatefulWidget {
   final List<MenuEntity> listOfAllMenuEntities;
   final List<MenuEntity> listOfAllSelectedMenuEntities;
   final Function(List<MenuEntity>) onSelectionChanged;
+  final Function() refreshMenuList;
 
   @override
   _MenuCardWidgetState createState() => _MenuCardWidgetState();
@@ -77,7 +79,7 @@ class _MenuCardWidgetState extends State<MenuCardWidget> {
     return PopupMenuItem(
       value: position,
       onTap: () async {
-        switch (_popupMenuItemIndex) {
+        switch (position) {
           case 0:
             {
               final navigateToMenuDetailsPage = await context.push(
@@ -91,7 +93,11 @@ class _MenuCardWidgetState extends State<MenuCardWidget> {
               if (!mounted) {
                 return;
               }
-              context.read<MenuBloc>().add(GetAllMenu());
+              await Future.delayed(const Duration(milliseconds: 500), () {});
+              widget.refreshMenuList();
+              setState(() {
+
+              });
             }
           case 1:
             {}
@@ -154,10 +160,10 @@ class _MenuCardWidgetState extends State<MenuCardWidget> {
                 }
                 serviceLocator<List<MenuEntity>>().removeAt(currentIndex);
                 await Future.delayed(const Duration(milliseconds: 500), () {});
-                if (!mounted) {
-                  return;
-                }
-                context.read<MenuBloc>().add(GetAllMenu());
+                widget.refreshMenuList();
+                setState(() {
+
+                });
               }
               return;
             }
@@ -176,12 +182,12 @@ class _MenuCardWidgetState extends State<MenuCardWidget> {
             child: Text(
               title,
               style: context.labelLarge!.copyWith(
-                color: Color.fromRGBO(42, 45, 50, 1),
-                fontSize: 16,
               ),
-              textDirection:
-                  serviceLocator<LanguageController>().targetTextDirection,
-            ),
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              softWrap: true,
+              textDirection: serviceLocator<LanguageController>().targetTextDirection,
+            ).translate(),
           ),
         ],
       ),
@@ -249,23 +255,22 @@ class _MenuCardWidgetState extends State<MenuCardWidget> {
       ),
       title: Text(
         widget.menuEntity.menuName,
-        style: context.titleMedium!
-            .copyWith(color: const Color.fromRGBO(31, 31, 31, 1)),
+        style: context.titleMedium!.copyWith(fontWeight: FontWeight.w500),
         textDirection: serviceLocator<LanguageController>().targetTextDirection,
-        maxLines: 1,
+        maxLines: 3,
         softWrap: true,
         overflow: TextOverflow.ellipsis,
       ),
       subtitle: Text(
-        widget.menuEntity.menuCategories[0].title,
-        style: const TextStyle(color: Color.fromRGBO(127, 129, 132, 1)),
+        '${widget.menuEntity.menuCategories[0].title} | ${widget.menuEntity.menuCategories[0].subCategory[0].title}',
+        //style: const TextStyle(color: Color.fromRGBO(127, 129, 132, 1)),
         textDirection: serviceLocator<LanguageController>().targetTextDirection,
-        maxLines: 1,
+        maxLines: 3,
         softWrap: true,
         overflow: TextOverflow.ellipsis,
       ),
-      dense: true,
-      minLeadingWidth: 20,
+      //dense: true,
+      //minLeadingWidth: 20,
       onTap: () {
         setState(() {
           widget.listOfAllSelectedMenuEntities.contains(widget.menuEntity)
@@ -288,7 +293,7 @@ class _MenuCardWidgetState extends State<MenuCardWidget> {
                 ),
       selectedColor: const Color.fromRGBO(215, 243, 227, 1),
       selectedTileColor: const Color.fromRGBO(215, 243, 227, 1),
-      tileColor: Colors.white,
+      tileColor: context.colorScheme.background,
     );
   }
 }

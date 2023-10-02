@@ -179,12 +179,14 @@ class _DriverCardState extends State<DriverCard> {
                 Text(
                   title,
                   style: context.labelLarge!.copyWith(
-                    //color: Color.fromRGBO(42, 45, 50, 1),
-                    fontSize: 16,
+
                   ),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  softWrap: true,
                   textDirection:
                       serviceLocator<LanguageController>().targetTextDirection,
-                ),
+                ).translate(),
               ],
             ),
           ),
@@ -278,8 +280,8 @@ class _DriverCardState extends State<DriverCard> {
             ),
           ],
         ),
-        dense: true,
-        minLeadingWidth: 20,
+        //dense: true,
+        //minLeadingWidth: 20,
         onTap: () {
           setState(() {
             widget.listOfAllSelectedStoreOwnDeliveryPartnerEntities

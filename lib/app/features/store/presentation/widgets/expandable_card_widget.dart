@@ -99,6 +99,7 @@ class _StoreExpandedCardWidgetController<T, S>
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisSize: MainAxisSize.min,
+              textDirection: serviceLocator<LanguageController>().targetTextDirection,
               children: [
                 Text(
                   widget.expandableCardInfo.storeEntity.storeWorkingDays[index]
@@ -107,9 +108,11 @@ class _StoreExpandedCardWidgetController<T, S>
                     fontWeight: FontWeight.bold,
                     color: const Color.fromRGBO(69, 201, 125, 1),
                   ),
-                ),
+                  textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                ).translate(),
                 const AnimatedGap(4, duration: Duration(milliseconds: 200)),
                 Row(
+                  textDirection: serviceLocator<LanguageController>().targetTextDirection,
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Text(
@@ -117,19 +120,22 @@ class _StoreExpandedCardWidgetController<T, S>
                       style: context.labelMedium!.copyWith(
                         fontWeight: FontWeight.w500,
                       ),
-                    ),
+                      textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                    ).translate(),
                     Text(
                       '-',
                       style: context.labelMedium!.copyWith(
                         fontWeight: FontWeight.w500,
                       ),
-                    ),
+                      textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                    ).translate(),
                     Text(
                       widget.expandableCardInfo.storeEntity.storeClosingTime,
                       style: context.labelMedium!.copyWith(
                         fontWeight: FontWeight.w500,
                       ),
-                    ),
+                      textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                    ).translate(),
                   ],
                 ),
               ],
@@ -166,7 +172,8 @@ class _StoreExpandedCardWidgetController<T, S>
                   label: Text(
                     widget.expandableCardInfo.storeEntity
                         .storeAvailableFoodTypes[index].title,
-                  ),
+                    textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                  ).translate(),
                   backgroundColor: Colors.white,
                   elevation: 6.0,
                   shadowColor: Colors.grey[60],
@@ -190,7 +197,8 @@ class _StoreExpandedCardWidgetController<T, S>
           style: context.titleMedium!.copyWith(
             fontWeight: FontWeight.w600,
           ),
-        ),
+          textDirection: serviceLocator<LanguageController>().targetTextDirection,
+        ).translate(),
         Flexible(
           key: const Key('expandable-card-preparation-type'),
           child: ListView.builder(
@@ -211,7 +219,8 @@ class _StoreExpandedCardWidgetController<T, S>
                   label: Text(
                     widget.expandableCardInfo.storeEntity
                         .storeAvailableFoodPreparationType[index].title,
-                  ),
+                    textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                  ).translate(),
                   backgroundColor: Colors.white,
                   elevation: 6.0,
                   shadowColor: Colors.grey[60],
@@ -290,7 +299,8 @@ class _StoreExpandedCardWidgetController<T, S>
                   style: context.titleMedium!.copyWith(
                     fontWeight: FontWeight.bold,
                   ),
-                ),
+                  textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                ).translate(),
                 const AnimatedGap(4, duration: Duration(milliseconds: 200)),
                 Text(
                   widget.expandableCardInfo.storeEntity
@@ -298,7 +308,8 @@ class _StoreExpandedCardWidgetController<T, S>
                   style: context.labelMedium!.copyWith(
                     fontWeight: FontWeight.w500,
                   ),
-                ),
+                  textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                ).translate(),
                 const AnimatedGap(4, duration: Duration(milliseconds: 200)),
                 Chip(
                   //labelPadding: const EdgeInsetsDirectional.all(2),
@@ -314,7 +325,8 @@ class _StoreExpandedCardWidgetController<T, S>
                       fontWeight: FontWeight.w600,
                       fontSize: 16,
                     ),
-                  ),
+                    textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                  ).translate(),
                   backgroundColor: const Color.fromRGBO(69, 201, 125, 1),
                   elevation: 0.0,
                   padding: const EdgeInsetsDirectional.all(8),
@@ -434,7 +446,8 @@ class _StoreExpandedCardWidgetController<T, S>
                                 ),
                                 maxLines: 2,
                                 textAlign: TextAlign.center,
-                              ),
+                                textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                              ).translate(),
                             ),
                           ),
                         ),
@@ -456,7 +469,8 @@ class _StoreExpandedCardWidgetController<T, S>
                                   fontWeight: FontWeight.w600,
                                   fontSize: 16,
                                 ),
-                              ),
+                                textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                              ).translate(),
                               backgroundColor:
                                   const Color.fromRGBO(69, 201, 125, 1),
                               elevation: 0.0,
@@ -511,7 +525,8 @@ class _StoreExpandedCardWidgetController<T, S>
             label: Text(
               widget.expandableCardInfo.storeEntity
                   .storeAcceptedPaymentModes[index].title,
-            ),
+              textDirection: serviceLocator<LanguageController>().targetTextDirection,
+            ).translate(),
             //shadowColor: Colors.grey[60],
             backgroundColor: Colors.white,
             elevation: 6.0,
@@ -562,10 +577,12 @@ class _StoreExpandedCardWidgetView<T, S> extends WidgetView<
             style: context.titleMedium!.copyWith(
               fontWeight: FontWeight.w600,
             ),
-          ),
+            textDirection: serviceLocator<LanguageController>().targetTextDirection,
+          ).translate(),
           subtitle: Text(
             widget.expandableCardInfo.subTitle,
-          ),
+            textDirection: serviceLocator<LanguageController>().targetTextDirection,
+          ).translate(),
           controller: state.controller,
           children: [
             state.widgetState.maybeWhen(

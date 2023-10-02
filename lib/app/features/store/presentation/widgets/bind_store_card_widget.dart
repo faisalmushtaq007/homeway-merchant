@@ -77,7 +77,7 @@ class _BindStoreCardWidgetState extends State<BindStoreCardWidget> {
     return PopupMenuItem(
       value: position,
       onTap: () async {
-        switch (_popupStoreItemIndex) {
+        switch (position) {
           case 0:
             {}
           case 1:
@@ -158,12 +158,13 @@ class _BindStoreCardWidgetState extends State<BindStoreCardWidget> {
             child: Text(
               title,
               style: context.labelLarge!.copyWith(
-                color: Color.fromRGBO(42, 45, 50, 1),
-                fontSize: 16,
               ),
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              softWrap: true,
               textDirection:
                   serviceLocator<LanguageController>().targetTextDirection,
-            ),
+            ).translate(),
           ),
         ],
       ),
@@ -243,8 +244,8 @@ class _BindStoreCardWidgetState extends State<BindStoreCardWidget> {
         softWrap: true,
         overflow: TextOverflow.ellipsis,
       ),
-      dense: true,
-      minLeadingWidth: 20,
+      //dense: true,
+      //minLeadingWidth: 20,
       onTap: () {
         setState(() {
           widget.listOfAllSelectedStoreEntities.contains(widget.storeEntity)

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:homemakers_merchant/config/translation/extension/text_extension.dart';
 import 'package:homemakers_merchant/core/extensions/app_extension.dart';
 import 'package:homemakers_merchant/shared/widgets/universal/animated_gap/gap.dart';
 
@@ -39,7 +40,7 @@ class StoreOrderCardWidget extends StatelessWidget {
             color: storeOrderInfo.subTitleTextColor,
             fontWeight: FontWeight.w500,
           ),
-        ),
+        ).translate(),
         const AnimatedGap(3, duration: Duration(milliseconds: 100)),
         Wrap(
           alignment: WrapAlignment.center,
@@ -50,7 +51,7 @@ class StoreOrderCardWidget extends StatelessWidget {
               style: context.titleMedium!.copyWith(
                   color: storeOrderInfo.subTitleTextColor,
                   fontWeight: FontWeight.w600),
-            ),
+            ).translate(),
             Visibility(
               visible: storeOrderInfo.hasOpenUrl,
               child: const AnimatedGap(
