@@ -38,8 +38,11 @@ class StoreOrderCardWidget extends StatelessWidget {
           storeOrderInfo.title,
           style: context.titleMedium!.copyWith(
             color: storeOrderInfo.subTitleTextColor,
-            fontWeight: FontWeight.w500,
+            fontWeight: FontWeight.w600,
           ),
+          maxLines: 3,
+          softWrap: true,
+          overflow: TextOverflow.ellipsis,
         ).translate(),
         const AnimatedGap(3, duration: Duration(milliseconds: 100)),
         Wrap(
@@ -48,9 +51,13 @@ class StoreOrderCardWidget extends StatelessWidget {
           children: [
             Text(
               storeOrderInfo.subTitle,
-              style: context.titleMedium!.copyWith(
-                  color: storeOrderInfo.subTitleTextColor,
-                  fontWeight: FontWeight.w600),
+              style: context.labelMedium!.copyWith(
+                color: storeOrderInfo.subTitleTextColor,
+                fontWeight: FontWeight.w500,
+              ),
+              maxLines: 2,
+              softWrap: true,
+              overflow: TextOverflow.ellipsis,
             ).translate(),
             Visibility(
               visible: storeOrderInfo.hasOpenUrl,

@@ -37,6 +37,7 @@ import 'package:homemakers_merchant/shared/widgets/universal/animate_do/animate_
 import 'package:homemakers_merchant/shared/widgets/universal/animated_gap/gap.dart';
 import 'package:homemakers_merchant/shared/widgets/universal/conditional_rendering/flutter_conditional_rendering.dart';
 import 'package:homemakers_merchant/shared/widgets/universal/constrained_scrollable_views/constrained_scrollable_views.dart';
+import 'package:homemakers_merchant/shared/widgets/universal/digonal_decoration/diagonal_decoration.dart';
 import 'package:homemakers_merchant/shared/widgets/universal/double_tap_exit/double_tap_to_exit.dart';
 import 'package:homemakers_merchant/shared/widgets/universal/image_loader/image_helper.dart';
 import 'package:homemakers_merchant/shared/widgets/universal/infinity_scroll_pagination/infinite_scroll_pagination.dart';

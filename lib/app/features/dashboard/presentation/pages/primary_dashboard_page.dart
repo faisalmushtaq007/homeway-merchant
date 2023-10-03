@@ -334,23 +334,30 @@ class _PrimaryDashboardPageView extends WidgetView<PrimaryDashboardPage, _Primar
                                         mainAxisAlignment: MainAxisAlignment.center,
                                       ),
                                     ),
-                                    Wrap(
-                                      textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                                      alignment: WrapAlignment.center,
-                                      children: [
-                                        CircleAvatar(
-                                          radius: 26,
-                                          backgroundColor: context.colorScheme.primaryContainer,
-                                          child: Text(
-                                            (state.appUserEntity.businessProfile.isNull &&
-                                                state.appUserEntity.businessProfile!.userName.isEmptyOrNull)
-                                                ? ''
-                                                : state.appUserEntity.businessProfile!.userName.toCharArray()[0].toUpperCase() ?? '',
-                                            style: context.titleLarge!.copyWith(),
-                                            textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                                          ).translate(), //Text
-                                        ), //circleA
-                                      ],
+                                    AnimatedCrossFade(
+                                      duration: const Duration(milliseconds: 500),
+                                      crossFadeState:  (state.appUserEntity.businessProfile.isNull &&
+                                          state.appUserEntity.businessProfile!.userName.isEmptyOrNull && state.appUserEntity.businessProfile!.userName[0].isEmptyOrNull)
+                                          ?CrossFadeState.showFirst:CrossFadeState.showSecond,
+                                      firstChild: const Offstage(),
+                                      secondChild: Wrap(
+                                        textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                        alignment: WrapAlignment.center,
+                                        children: [
+                                          CircleAvatar(
+                                            radius: 26,
+                                            backgroundColor: context.colorScheme.primaryContainer,
+                                            child: Text(
+                                              (state.appUserEntity.businessProfile.isNull &&
+                                                  state.appUserEntity.businessProfile!.userName.isEmptyOrNull && state.appUserEntity.businessProfile!.userName[0].isEmptyOrNull)
+                                                  ? ''
+                                                  : (state.appUserEntity.businessProfile!.userName.length>0 && state.appUserEntity.businessProfile!.userName[0].isNotEmpty)?state.appUserEntity.businessProfile!.userName[0].toUpperCase(): '',
+                                              style: context.titleLarge!.copyWith(),
+                                              textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                            ).translate(), //Text
+                                          ), //circleA
+                                        ],
+                                      ),
                                     ),
                                   ],
                                 ),

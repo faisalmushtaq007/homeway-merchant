@@ -1,9 +1,9 @@
-// Copyright 2022 The Flutter Authors. All rights reserved.
-// Use of this source code is governed by a BSD-style license that can be
-// found in the LICENSE file.
 
 import 'package:flutter/material.dart';
 import 'package:homemakers_merchant/app/features/menu/index.dart';
+import 'package:homemakers_merchant/bootup/injection_container.dart';
+import 'package:homemakers_merchant/config/translation/extension/text_extension.dart';
+import 'package:homemakers_merchant/config/translation/language_controller.dart';
 
 enum EmailType {
   preview,
@@ -209,26 +209,30 @@ class _EmailHeadlineState extends State<EmailHeadline> {
           child: Row(
             mainAxisSize: MainAxisSize.max,
             crossAxisAlignment: CrossAxisAlignment.center,
+            textDirection: serviceLocator<LanguageController>().targetTextDirection,
             children: [
               Expanded(
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.start,
+                  textDirection: serviceLocator<LanguageController>().targetTextDirection,
                   children: [
                     Text(
                       widget.category.title,
                       maxLines: 1,
+                      softWrap: true,
                       overflow: TextOverflow.fade,
                       style: const TextStyle(
                           fontSize: 18, fontWeight: FontWeight.w400),
-                    ),
+                    ).translate(),
                     Text(
                       '${widget.category.subCategory.length} SubCategory',
                       maxLines: 1,
+                      softWrap: true,
                       overflow: TextOverflow.fade,
                       style: _textTheme.labelMedium
                           ?.copyWith(fontWeight: FontWeight.w500),
-                    ),
+                    ).translate(),
                   ],
                 ),
               ),

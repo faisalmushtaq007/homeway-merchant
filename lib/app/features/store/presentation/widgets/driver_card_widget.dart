@@ -256,12 +256,12 @@ class _DriverCardState extends State<DriverCard> {
           children: [
             Text(
               widget.storeOwnDeliveryPartnerEntity.driverName,
-              style: context.titleMedium!.copyWith(),
+              style: context.titleMedium!.copyWith(fontWeight: FontWeight.w500),
               textDirection: serviceLocator<LanguageController>().targetTextDirection,
               maxLines: 2,
               softWrap: true,
               overflow: TextOverflow.ellipsis,
-            ),
+            ).translate(),
           ],
         ),
         subtitle: Row(
@@ -270,12 +270,12 @@ class _DriverCardState extends State<DriverCard> {
               children: [
                 Text(
                   '${widget.storeOwnDeliveryPartnerEntity.vehicleInfo?.vehicleType} | ${widget.storeOwnDeliveryPartnerEntity.vehicleInfo?.vehicleNumber}' ?? '',
-                  //style: const TextStyle(color: Color.fromRGBO(127, 129, 132, 1)),
+                  style:context.labelMedium!.copyWith(fontWeight: FontWeight.w400),
                   textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                  maxLines: 1,
+                  maxLines: 2,
                   softWrap: true,
                   overflow: TextOverflow.ellipsis,
-                ),
+                ).translate(),
               ],
             ),
           ],

@@ -216,8 +216,10 @@ class _PrimaryDashboardDrawerController extends State<PrimaryDashboardDrawer> {
         drawerID: 6,
         drawerName: 'Analysis and Monitoring',
         leading: const Icon(Icons.analytics),
-        onPressed: () {
-          return Navigator.of(context).pop();
+        onPressed: () async{
+          Navigator.of(context).pop();
+          final result = await context.push(Routes.ORDER_ANALYSIS_PAGE);
+          return;
         },
       ),
       DrawerEntity(
@@ -261,16 +263,30 @@ class _PrimaryDashboardDrawerController extends State<PrimaryDashboardDrawer> {
             drawerID: 82,
             drawerName: 'Privacy and Policy',
             leading: const Icon(Icons.privacy_tip_sharp),
-            onPressed: () {
-              return Navigator.of(context).pop();
+            onPressed: () async{
+              Navigator.of(context).pop();
+              await context.push(Routes.PRIVACY_AND_POLICY);
+              return;
             },
           ),
           DrawerEntity(
             drawerID: 83,
+            drawerName: 'Terms & Conditions',
+            leading: const Icon(Icons.privacy_tip_sharp),
+            onPressed: () async{
+              Navigator.of(context).pop();
+              await context.push(Routes.TERMS_AND_CONDITIONS);
+              return;
+            },
+          ),
+          DrawerEntity(
+            drawerID: 84,
             drawerName: 'Chat with us',
             leading: const Icon(Icons.chat),
-            onPressed: () {
-              return Navigator.of(context).pop();
+            onPressed: () async{
+              Navigator.of(context).pop();
+              await context.push(Routes.ROOM_PAGE);
+              return;
             },
           ),
         ],
@@ -281,6 +297,16 @@ class _PrimaryDashboardDrawerController extends State<PrimaryDashboardDrawer> {
         leading: const Icon(Icons.logout),
         onPressed: () {
           return Navigator.of(context).pop();
+        },
+      ),
+      DrawerEntity(
+        drawerID: 11,
+        drawerName: 'About Us',
+        leading: const Icon(Icons.person),
+        onPressed: () async{
+          Navigator.of(context).pop();
+          await context.push(Routes.ABOUT_US);
+          return;
         },
       ),
     ];
@@ -330,13 +356,12 @@ class _PrimaryDashboardDrawerView extends WidgetView<PrimaryDashboardDrawer, _Pr
         child: ListView(
           children: [
             DrawerHeader(
-              decoration: BoxDecoration(
-                  //color: Colors.green,
-                  ), //BoxDecoration
               child: UserAccountsDrawerHeader(
-                //decoration: BoxDecoration(color: Colors.green),
                 accountName: Text(
-                  state.appUserEntity.businessProfile?.userName ?? '',
+                  (state.appUserEntity.businessProfile.isNull &&
+                      state.appUserEntity.businessProfile!.userName.isEmptyOrNull && state.appUserEntity.businessProfile!.userName[0].isEmptyOrNull)
+                      ? ''
+                      : (state.appUserEntity.businessProfile!.userName.length>0 && state.appUserEntity.businessProfile!.userName[0].isNotEmpty)?state.appUserEntity.businessProfile!.userName: '',
                   style: context.titleLarge!.copyWith(color: context.colorScheme.background,fontWeight: FontWeight.w900,),
                   textDirection: serviceLocator<LanguageController>().targetTextDirection,
                 ).translate(),
@@ -351,10 +376,10 @@ class _PrimaryDashboardDrawerView extends WidgetView<PrimaryDashboardDrawer, _Pr
                 currentAccountPicture: CircleAvatar(
                   backgroundColor: Colors.white70,
                   child: Text(
-                    state.appUserEntity.businessProfile.isNull &&
-                            state.appUserEntity.businessProfile!.userName.isEmptyOrNull
+                    (state.appUserEntity.businessProfile.isNull &&
+                        state.appUserEntity.businessProfile!.userName.isEmptyOrNull && state.appUserEntity.businessProfile!.userName[0].isEmptyOrNull)
                         ? ''
-                        : state.appUserEntity.businessProfile!.userName![0].toUpperCase(),
+                        : (state.appUserEntity.businessProfile!.userName.length>0 && state.appUserEntity.businessProfile!.userName[0].isNotEmpty)?state.appUserEntity.businessProfile!.userName[0].toUpperCase(): '',
                     style: context.titleMedium!.copyWith(),
                     textDirection: serviceLocator<LanguageController>().targetTextDirection,
                   ).translate(), //Text

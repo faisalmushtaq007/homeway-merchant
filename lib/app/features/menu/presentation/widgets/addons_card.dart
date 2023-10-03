@@ -40,12 +40,24 @@ class _AddonsCardState extends State<AddonsCard> {
       child: CheckboxListTile(
         title: Wrap(
           children: [
-            Text(addonsEntity.title,maxLines: 2,overflow: TextOverflow.ellipsis,softWrap: true,style: context.titleMedium!.copyWith(),).translate(),
+            Text(
+              addonsEntity.title,
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+              softWrap: true,
+              style: context.titleMedium!.copyWith(),
+            ).translate(),
           ],
         ),
         subtitle: Wrap(
           children: [
-            Text('${addonsEntity.quantity} ${addonsEntity.unit} | ${addonsEntity.defaultPrice} ${addonsEntity.currency}',maxLines: 2,overflow: TextOverflow.ellipsis,softWrap: true,style: context.labelMedium!.copyWith(),),
+            Text(
+              '${addonsEntity.quantity} ${addonsEntity.unit} | ${addonsEntity.defaultPrice} ${addonsEntity.currency}',
+              maxLines: 2,
+              style:context.labelMedium!.copyWith(fontWeight: FontWeight.w400),
+              overflow: TextOverflow.ellipsis,
+              softWrap: true,
+            ).translate(),
           ],
         ),
         controlAffinity: ListTileControlAffinity.leading,

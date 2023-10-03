@@ -69,10 +69,10 @@ class _BindDriverWithStoreController extends State<BindDriverWithStore> {
 
   void initLoadSelectedDrivers() {
     listOfAllStoreOwnDeliveryPartners = List<StoreOwnDeliveryPartnersInfo>.from(
-        widget.listOfAllStoreOwnDeliveryPartners.toList());
+        widget.listOfAllStoreOwnDeliveryPartners.toList(),);
     listOfAllSelectedStoreOwnDeliveryPartners =
         List<StoreOwnDeliveryPartnersInfo>.from(
-            widget.listOfAllSelectedStoreOwnDeliveryPartners.toList());
+            widget.listOfAllSelectedStoreOwnDeliveryPartners.toList(),);
     setState(() {});
   }
 
@@ -119,7 +119,7 @@ class _BindDriverWithStoreController extends State<BindDriverWithStore> {
       {int pageSize = 10,
         String? searchItem,
         String? filter,
-        String? sort}) async {
+        String? sort,}) async {
     /*if (pageKey == 0) {
       _pagingController.itemList = [];
     }*/
@@ -232,14 +232,14 @@ class _BindDriverWithStoreController extends State<BindDriverWithStore> {
                       state.storeEntities.length < pageSize;
                   if (isLastPage) {
                     _pagingController.appendLastPage(
-                        state.storeEntities.toList());
+                        state.storeEntities.toList(),);
                   } else {
                     final nextPageKey = state.pageKey +
                         state.storeEntities.length;
                     //final nextPageKey = addressState.pageKey + 1;
                     _pagingController.appendPage(
                         state.storeEntities.toList(),
-                        nextPageKey);
+                        nextPageKey,);
                   }
                   widgetState = WidgetState<StoreEntity>.allData(
                     context: context,
@@ -407,7 +407,7 @@ class _BindDriverWithStoreView
                   padding: EdgeInsetsDirectional.only(
                       top: topPadding,
                       start: margins * 2.5,
-                      end: margins * 2.5),
+                      end: margins * 2.5,),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     mainAxisSize: MainAxisSize.min,
@@ -424,7 +424,7 @@ class _BindDriverWithStoreView
                               .targetTextDirection,
                           children: [
                             const AnimatedGap(6,
-                                duration: Duration(milliseconds: 100)),
+                                duration: Duration(milliseconds: 100),),
                             IntrinsicHeight(
                               child: Row(
                                 mainAxisAlignment:
@@ -461,7 +461,7 @@ class _BindDriverWithStoreView
                                     ),
                                   ),*/
                                   const AnimatedGap(12,
-                                      duration: Duration(milliseconds: 500)),
+                                      duration: Duration(milliseconds: 500),),
                                   SizedBox(
                                     height: 46,
                                     child: OutlinedButton(
@@ -470,11 +470,11 @@ class _BindDriverWithStoreView
                                         shape: RoundedRectangleBorder(
                                           borderRadius:
                                               BorderRadiusDirectional.circular(
-                                                  10),
+                                                  10,),
                                         ),
                                         side: const BorderSide(
                                             color: Color.fromRGBO(
-                                                238, 238, 238, 1)),
+                                                238, 238, 238, 1,),),
                                         backgroundColor: Colors.white,
                                       ),
                                       child: Icon(
@@ -485,12 +485,12 @@ class _BindDriverWithStoreView
                                         color: context.primaryColor,
                                       ),
                                     ),
-                                  )
+                                  ),
                                 ],
                               ),
                             ),
                             const AnimatedGap(6,
-                                duration: Duration(milliseconds: 100)),
+                                duration: Duration(milliseconds: 100),),
                             CheckboxListTile(
                               value: state.haveSelectAllStores,
                               onChanged: (value) {
@@ -498,10 +498,10 @@ class _BindDriverWithStoreView
                               },
                               tristate: true,
                               visualDensity: const VisualDensity(
-                                  horizontal: -4, vertical: -4),
+                                  horizontal: -4, vertical: -4,),
                               contentPadding:
                                   const EdgeInsetsDirectional.symmetric(
-                                      horizontal: 0),
+                                      horizontal: 0,),
                               //dense: true,
                               title: IntrinsicHeight(
                                 child: Row(
@@ -516,12 +516,12 @@ class _BindDriverWithStoreView
                                               .targetTextDirection,
                                     ),
                                     const AnimatedGap(3,
-                                        duration: Duration(milliseconds: 100)),
+                                        duration: Duration(milliseconds: 100),),
                                     Card(
                                       shape: RoundedRectangleBorder(
                                         borderRadius:
                                             BorderRadiusDirectional.circular(
-                                                20),
+                                                20,),
                                       ),
                                       child: Padding(
                                         padding:
@@ -529,7 +529,7 @@ class _BindDriverWithStoreView
                                                 start: 12.0,
                                                 end: 12,
                                                 top: 4,
-                                                bottom: 4),
+                                                bottom: 4,),
                                         child: Text(
                                           '${state._pagingController.value.itemList?.length??0}',
                                           textDirection: serviceLocator<
@@ -539,7 +539,7 @@ class _BindDriverWithStoreView
                                       ),
                                     ),
                                     const AnimatedGap(12,
-                                        duration: Duration(milliseconds: 100)),
+                                        duration: Duration(milliseconds: 100),),
                                     const Spacer(flex: 2),
                                     Text(
                                       'Select All',
@@ -552,7 +552,7 @@ class _BindDriverWithStoreView
                               ),
                             ),
                             const AnimatedGap(12,
-                                duration: Duration(milliseconds: 100)),
+                                duration: Duration(milliseconds: 100),),
                             Text(
                               'Select Store',
                               style: context.titleMedium!.copyWith(
@@ -563,7 +563,7 @@ class _BindDriverWithStoreView
                                       .targetTextDirection,
                             ),
                             const AnimatedGap(12,
-                                duration: Duration(milliseconds: 100)),
+                                duration: Duration(milliseconds: 100),),
                             Text(
                               'For your Driver',
                               style: context.labelMedium!.copyWith(
@@ -583,7 +583,7 @@ class _BindDriverWithStoreView
                             : CrossFadeState.showSecond,
                       ),
                       const AnimatedGap(12,
-                          duration: Duration(milliseconds: 300)),
+                          duration: Duration(milliseconds: 300),),
                       Expanded(
                         flex: 2,
                         child: state.widgetState.maybeWhen(
@@ -621,7 +621,7 @@ class _BindDriverWithStoreView
                               slivers: [
                                 PagedSliverList<int, StoreEntity>(
                                   key: const Key(
-                                      'store-list-pagedSliverList-widget'),
+                                      'store-list-pagedSliverList-widget',),
                                   pagingController: state._pagingController,
                                   builderDelegate:
                                   PagedChildBuilderDelegate<
@@ -632,49 +632,28 @@ class _BindDriverWithStoreView
                                           key: ValueKey(index),
                                           currentIndex: index,
                                           onSelectionChanged: (List<StoreEntity>
-                                          listOfAllStoreEntities) {
+                                          listOfAllStoreEntities,) {
                                             state.onSelectionChanged(
-                                                listOfAllStoreEntities.toList());
+                                                listOfAllStoreEntities.toList(),);
                                           },
                                           listOfAllSelectedStoreEntities:
                                           state.listOfAllSelectedStores.toList(),
                                           listOfAllStoreEntities:
                                           state.listOfAllStores.toList(),
                                           storeEntity: state.listOfAllStores[index],
+                                          refreshStoreList: () {
+                                            return state._updateSearchTerm(state.searchText??'');
+                                          },
                                         ),
                                   ),
                                 ),
                               ],
                             );
-                            return ListView.separated(
-                              itemBuilder: (context, index) {
-                                return BindStoreCardWidget(
-                                  key: ValueKey(index),
-                                  currentIndex: index,
-                                  onSelectionChanged: (List<StoreEntity>
-                                      listOfAllStoreEntities) {
-                                    state.onSelectionChanged(
-                                        listOfAllStoreEntities.toList());
-                                  },
-                                  listOfAllSelectedStoreEntities:
-                                      state.listOfAllSelectedStores.toList(),
-                                  listOfAllStoreEntities:
-                                      state.listOfAllStores.toList(),
-                                  storeEntity: state.listOfAllStores[index],
-                                );
-                              },
-                              itemCount: state.listOfAllStores.length,
-                              separatorBuilder: (context, index) {
-                                return const Divider(
-                                    thickness: 0.25,
-                                    color: Color.fromRGBO(127, 129, 132, 1));
-                              },
-                            );
                           },
                         ),
                       ),
                       const AnimatedGap(12,
-                          duration: Duration(milliseconds: 500)),
+                          duration: Duration(milliseconds: 500),),
                       Row(
                         textDirection: serviceLocator<LanguageController>()
                             .targetTextDirection,
@@ -712,7 +691,7 @@ class _BindDriverWithStoreView
                               child: Text(
                                 'Remove',
                                 style: const TextStyle(
-                                    color: Color.fromRGBO(42, 45, 50, 1)),
+                                    color: Color.fromRGBO(42, 45, 50, 1),),
                                 textDirection:
                                     serviceLocator<LanguageController>()
                                         .targetTextDirection,

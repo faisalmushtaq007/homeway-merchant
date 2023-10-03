@@ -184,6 +184,8 @@ extension StringExtensions on String? {
   /// Return a bool if the string is null or empty
   bool get isEmptyOrNull => this == null || this!.isEmpty;
 
+  bool get isEmptyAndNull => this == null && this!.isEmpty;
+
   ///  Replace part of string after the first occurrence of given delimiter with the [replacement] string.
   ///  If the string does not contain the delimiter, returns [defaultValue] which defaults to the original string.
   String? replaceAfter(String delimiter, String replacement,
