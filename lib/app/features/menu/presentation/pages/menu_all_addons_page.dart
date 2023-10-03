@@ -420,60 +420,7 @@ class _MenuAllAddonsPageView
                                         hintText: 'Search Addons',
 
                                       ),),
-                                      /*Expanded(
-                                        child: SherlockSearchBar(
-                                          //isFullScreen: true,
-                                          sherlock: Sherlock(
-                                              elements: state._menuAvailableAddons.map((e) => e.toMap()).toList()),
-                                          sherlockCompletion: SherlockCompletion(
-                                              where: 'by',
-                                              elements: state._menuAvailableAddons.map((e) => e.toMap()).toList()),
-                                          sherlockCompletionMinResults: 1,
-                                          onSearch: (input, sherlock) {
-                                            *//*setState(() {
-                                                                  state._results = sherlock.search(input: input);
-                                                                });*//*
-                                          },
-                                          completionsBuilder: (context, completions) => SherlockCompletionsBuilder(
-                                            completions: completions,
-                                            buildCompletion: (completion) => Padding(
-                                              padding: const EdgeInsets.all(8),
-                                              child: Row(
-                                                children: [
-                                                  Text(
-                                                    completion,
-                                                    style: const TextStyle(fontSize: 14),
-                                                  ),
-                                                  const Spacer(),
-                                                  const Icon(Icons.check),
-                                                  const Icon(Icons.close),
-                                                ],
-                                              ),
-                                            ),
-                                          ),
-                                          padding: const EdgeInsetsDirectional.symmetric(horizontal: 16.0),
-                                          constraints:
-                                              const BoxConstraints(minWidth: 360.0, maxWidth: 800.0, minHeight: 48.0),
-                                          viewConstraints: BoxConstraints(
-                                            minWidth: 360 - (margins * 5),
-                                            minHeight: 150.0,
-                                            maxHeight: context.height / 2 -
-                                                (context.mediaQueryViewInsets.bottom +
-                                                    margins +
-                                                    media.padding.top +
-                                                    kToolbarHeight +
-                                                    media.padding.bottom),
-                                          ),
-                                          viewShape: RoundedRectangleBorder(
-                                            borderRadius: BorderRadiusDirectional.circular(12),
-                                          ),
-                                          isFullScreen: false,
-                                          shape: RoundedRectangleBorder(
-                                            borderRadius: BorderRadiusDirectional.circular(12),
-                                          ),
-                                          elevation: 1,
-                                        ),
-                                      ),*/
+
                                       const AnimatedGap(12,
                                           duration:
                                               Duration(milliseconds: 500)),
@@ -565,7 +512,7 @@ class _MenuAllAddonsPageView
                             secondChild: const Offstage(),
                             duration: const Duration(milliseconds: 500),
                             crossFadeState:
-                                (state._menuAvailableAddons.isNotEmpty)
+                                (state._pagingController.value.itemList.isNotNullOrEmpty)
                                     ? CrossFadeState.showFirst
                                     : CrossFadeState.showSecond,
                           ),

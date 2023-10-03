@@ -191,7 +191,9 @@ class _BindStoreCardWidgetState extends State<BindStoreCardWidget> {
   @override
   Widget build(BuildContext context) {
     return Card(
+      margin: const EdgeInsetsDirectional.only(bottom: 8),
       child: ListTile(
+        key: ObjectKey(widget.storeEntity),
         leading: ImageHelper(
           image: widget.storeEntity.storeImagePath,
           // image scale
@@ -203,7 +205,7 @@ class _BindStoreCardWidgetState extends State<BindStoreCardWidget> {
           // alignment of image
           //alignment: Alignment.center,
           // indicates where image will be loaded from, types are [network, asset,file]
-          imageType: findImageType(widget.storeEntity.storeImagePath),
+          imageType:findImageType(widget.storeEntity.storeImagePath),
           // indicates what shape you would like to be with image [rectangle, oval,circle or none]
           imageShape: ImageShape.rectangle,
           // image default box fit
@@ -232,8 +234,7 @@ class _BindStoreCardWidgetState extends State<BindStoreCardWidget> {
             color: Colors.white,
             fontSize: 16,
           ),
-          placeholderBackgroundColor:
-              context.colorScheme.primary.withOpacity(0.5),
+          placeholderBackgroundColor: context.colorScheme.primary.withOpacity(0.5),
         ),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadiusDirectional.circular(10),

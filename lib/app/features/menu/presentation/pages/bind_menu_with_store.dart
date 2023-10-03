@@ -68,7 +68,7 @@ class _BindMenuWithStoreController extends State<BindMenuWithStore> {
     listOfAllMenus = List<MenuEntity>.from(widget.listOfAllMenus.toList());
     listOfAllSelectedMenus =
     List<MenuEntity>.from(widget.listOfAllSelectedMenus.toList());
-    setState(() {});
+    //setState(() {});
   }
 
   @override
@@ -181,7 +181,8 @@ class _BindMenuWithStoreController extends State<BindMenuWithStore> {
   @override
   Widget build(BuildContext context) =>
       BlocListener<StoreBloc, StoreState>(
-        bloc: context.read<StoreBloc>(),
+        key: const Key('bind-menu-get-all-store-bloc-listener'),
+        bloc: context.watch<StoreBloc>(),
           listener: (context, storeListenerState) {
             switch (storeListenerState) {
               case GetAllStorePaginationState():
@@ -212,6 +213,7 @@ class _BindMenuWithStoreController extends State<BindMenuWithStore> {
                       reason: _pagingController.error,
                     );
                   }
+                  return;
                 }
               case GetAllEmptyStorePaginationState():
                 {
@@ -219,6 +221,7 @@ class _BindMenuWithStoreController extends State<BindMenuWithStore> {
                     context: context,
                     message: storeListenerState.message,
                   );
+                  return;
                 }
               case GetAllExceptionStorePaginationState():
                 {
@@ -226,6 +229,7 @@ class _BindMenuWithStoreController extends State<BindMenuWithStore> {
                     context: context,
                     reason: storeListenerState.message,
                   );
+                  return;
                 }
               case GetAllFailedStorePaginationState():
                 {
@@ -233,6 +237,7 @@ class _BindMenuWithStoreController extends State<BindMenuWithStore> {
                     context: context,
                     reason: storeListenerState.message,
                   );
+                  return;
                 }
               case GetAllLoadingStorePaginationState():
                 {
@@ -240,6 +245,7 @@ class _BindMenuWithStoreController extends State<BindMenuWithStore> {
                     context: context,
                     message: storeListenerState.message,
                   );
+                  return;
                 }
               case GetAllProcessingStorePaginationState():
                 {
@@ -247,9 +253,10 @@ class _BindMenuWithStoreController extends State<BindMenuWithStore> {
                     context: context,
                     message: storeListenerState.message,
                   );
+                  return;
                 }
               case _:
-                appLog.d('Default case: all stores page bloc listener');
+                appLog.d('Default case: bind all stores page bloc listener');
             }
           },
         child: BlocListener<MenuBloc, MenuState>(
@@ -366,21 +373,10 @@ class _BindMenuWithStoreView extends WidgetView<BindMenuWithStore, _BindMenuWith
               child: FloatingActionButton(
                 backgroundColor: const Color.fromRGBO(69, 201, 125, 1.0),
                 onPressed: () async {
-                  if (state.listOfAllSelectedMenus.isEmpty &&
-                      state.listOfAllSelectedStores.isEmpty) {
-                    return;
-                  } else {
-                    context.go(
-                      Routes.BIND_MENU_WITH_STORE_GREETING_PAGE,
-                      extra: {
-                        'allMenu': state.listOfAllSelectedMenus.toList(),
-                        'allStore': state.listOfAllSelectedStores.toList(),
-                      },
-                    );
-                  }
+                  return;
                 },
-                child: const Icon(
-                  Icons.check,
+                child: Text(
+                  '${state.listOfAllSelectedStores.length}'
                 ),
               ),
             ),
@@ -428,24 +424,6 @@ class _BindMenuWithStoreView extends WidgetView<BindMenuWithStore, _BindMenuWith
                               height: 48,
                               hintText: 'Search Store',
                             ),),
-                            /*Expanded(
-                              child: AppTextFieldWidget(
-                                controller: state.searchTextEditingController,
-                                textDirection:
-                                serviceLocator<LanguageController>()
-                                    .targetTextDirection,
-                                textInputAction: TextInputAction.done,
-                                keyboardType: TextInputType.text,
-                                decoration: InputDecoration(
-                                  labelText: 'Search',
-                                  hintText: 'Search store',
-                                  border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(10),
-                                  ),
-                                  isDense: true,
-                                ),
-                              ),
-                            ),*/
                             const AnimatedGap(12,
                                 duration: Duration(milliseconds: 500)),
                             SizedBox(
@@ -555,7 +533,7 @@ class _BindMenuWithStoreView extends WidgetView<BindMenuWithStore, _BindMenuWith
                           empty: (context, child, message, data) =>
                               Center(
                                 key: const Key(
-                                    'get-all-store-empty-widget'),
+                                    'bind-get-all-store-empty-widget'),
                                 child: Text(
                                   'No store available or added by you',
                                   style: context.labelLarge,
@@ -567,7 +545,7 @@ class _BindMenuWithStoreView extends WidgetView<BindMenuWithStore, _BindMenuWith
                           loading:
                               (context, child, message, isLoading) {
                             return const Center(
-                              key: Key('get-all-store-center-widget'),
+                              key: Key('bind-get-all-store-center-widget'),
                               child: SizedBox(
                                 width: 48,
                                 height: 48,
@@ -581,7 +559,7 @@ class _BindMenuWithStoreView extends WidgetView<BindMenuWithStore, _BindMenuWith
                               slivers: [
                                 PagedSliverList<int, StoreEntity>(
                                   key: const Key(
-                                      'store-list-pagedSliverList-widget'),
+                                      'bind-store-list-pagedSliverList-widget'),
                                   pagingController: state._pagingController,
                                   builderDelegate:
                                   PagedChildBuilderDelegate<
@@ -616,18 +594,16 @@ class _BindMenuWithStoreView extends WidgetView<BindMenuWithStore, _BindMenuWith
 
                           },
                           none: () {
-                            return Center(
-                              child: Text(
-                                'No store available or added by you',
-                                style: context.labelLarge,
-                                textDirection: serviceLocator<
-                                    LanguageController>()
-                                    .targetTextDirection,
-                              ).translate(),
+                            return const NoItemAvailableWidget(
+                              key: Key('bind-get-all-store-none-widget'),
+                              textMessage: 'No store available or added by you',
                             );
                           },
                           orElse: () {
-                            return const SizedBox();
+                            return const NoItemAvailableWidget(
+                              key: Key('bind-get-all-store-else-widget'),
+                              textMessage: 'No store available or added by you',
+                            );
                           },
                         ),
                       ),

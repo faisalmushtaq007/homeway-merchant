@@ -203,7 +203,9 @@ class _MenuCardWidgetState extends State<MenuCardWidget> {
   @override
   Widget build(BuildContext context) {
     return Card(
+      margin: const EdgeInsetsDirectional.only(bottom: 8),
       child: ListTile(
+        key: ObjectKey(widget.menuEntity),
         leading: ImageHelper(
           image: widget.menuEntity.menuImages[0].assetPath,
           // image scale

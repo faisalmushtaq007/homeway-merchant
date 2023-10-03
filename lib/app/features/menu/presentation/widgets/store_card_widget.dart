@@ -195,7 +195,9 @@ class _StoreCardWidgetState extends State<StoreCardWidget> {
   @override
   Widget build(BuildContext context) {
     return Card(
+      margin: const EdgeInsetsDirectional.only(bottom: 8),
       child: ListTile(
+        key: ObjectKey(widget.storeEntity),
         leading: ImageHelper(
           image: widget.storeEntity.storeImagePath,
           // image scale
@@ -207,7 +209,7 @@ class _StoreCardWidgetState extends State<StoreCardWidget> {
           // alignment of image
           //alignment: Alignment.center,
           // indicates where image will be loaded from, types are [network, asset,file]
-          imageType: ImageType.network,
+          imageType:findImageType(widget.storeEntity.storeImagePath),
           // indicates what shape you would like to be with image [rectangle, oval,circle or none]
           imageShape: ImageShape.rectangle,
           // image default box fit
@@ -231,6 +233,12 @@ class _StoreCardWidgetState extends State<StoreCardWidget> {
           // loader builder widget, default as icon if null
           loaderBuilder: const CircularProgressIndicator(),
           matchTextDirection: true,
+          placeholderText: widget.storeEntity.storeName,
+          placeholderTextStyle: context.labelLarge!.copyWith(
+            color: Colors.white,
+            fontSize: 16,
+          ),
+          placeholderBackgroundColor: context.colorScheme.primary.withOpacity(0.5),
         ),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadiusDirectional.circular(10),
@@ -247,7 +255,7 @@ class _StoreCardWidgetState extends State<StoreCardWidget> {
         ).translate(),
         subtitle: Text(
           widget.storeEntity.storeAddress?.address?.area ?? '',
-          //style: const TextStyle(color: Color.fromRGBO(127, 129, 132, 1)),
+          style:context.labelMedium!.copyWith(fontWeight: FontWeight.w400),
           textDirection: serviceLocator<LanguageController>().targetTextDirection,
           maxLines: 3,
           softWrap: true,

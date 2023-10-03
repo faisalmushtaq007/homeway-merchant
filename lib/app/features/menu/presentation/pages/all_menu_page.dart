@@ -505,7 +505,7 @@ class _AllMenuPageView extends WidgetView<AllMenuPage, _AllMenuPageController> {
                           ),
                           secondChild: const Offstage(),
                           duration: const Duration(milliseconds: 500),
-                          crossFadeState: (state.listOfAllMenus.isNotEmpty)
+                          crossFadeState: (state._pagingController.value.itemList.isNotNullOrEmpty)
                               ? CrossFadeState.showFirst
                               : CrossFadeState.showSecond,
                         ),

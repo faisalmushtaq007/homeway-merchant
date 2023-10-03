@@ -245,7 +245,9 @@ class _StoreCardState extends State<StoreCard> {
   @override
   Widget build(BuildContext context) {
     return Card(
+      margin: const EdgeInsetsDirectional.only(bottom: 8),
       child: ListTile(
+        key: ObjectKey(widget.storeEntity),
         leading: ImageHelper(
           image: widget.storeEntity.storeImagePath,
           // image scale

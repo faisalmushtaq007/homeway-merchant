@@ -477,126 +477,120 @@ class _ManageOrderPageView
       ),
       child: Directionality(
         textDirection: serviceLocator<LanguageController>().targetTextDirection,
-        child: DoubleTapToExit(
-          child: Scaffold(
-            appBar: AppBar(
-              title: const Text('Manage Orders'),
-              centerTitle: false,
-              actions: [
-                IconButton(
-                  onPressed: () async {
-                    final notification =
-                        await context.push(Routes.NOTIFICATIONS);
-                    return;
-                  },
-                  icon: Badge(
-                    alignment: AlignmentDirectional.topEnd,
-                    //padding: EdgeInsets.all(4),
-                    backgroundColor: context.colorScheme.secondary,
-                    isLabelVisible: true,
-                    largeSize: 16,
-                    textStyle: const TextStyle(fontSize: 14),
-                    textColor: Colors.yellow,
-                    label: Text(
-                      '10',
-                      style: context.labelSmall!
-                          .copyWith(color: context.colorScheme.onPrimary),
-                      //Color.fromRGBO(251, 219, 11, 1)
+        child: Scaffold(
+          appBar: AppBar(
+            title: const Text('Manage Orders'),
+            centerTitle: false,
+            actions: [
+              IconButton(
+                onPressed: () async {
+                  final notification =
+                      await context.push(Routes.NOTIFICATIONS);
+                  return;
+                },
+                icon: Badge(
+                  alignment: AlignmentDirectional.topEnd,
+                  //padding: EdgeInsets.all(4),
+                  backgroundColor: context.colorScheme.secondary,
+                  isLabelVisible: true,
+                  largeSize: 16,
+                  textStyle: const TextStyle(fontSize: 14),
+                  textColor: Colors.yellow,
+                  label: Text(
+                    '10',
+                    style: context.labelSmall!
+                        .copyWith(color: context.colorScheme.onPrimary),
+                    //Color.fromRGBO(251, 219, 11, 1)
+                  ),
+                  child: Icon(Icons.notifications,
+                      color: context.colorScheme.primary),
+                ),
+              ),
+              const Padding(
+                padding: EdgeInsetsDirectional.only(end: 8),
+                child: LanguageSelectionWidget(),
+              ),
+            ],
+          ),
+          body: SlideInLeft(
+            key: const Key('manage-order-slideinleft-widget'),
+            from: context.width / 2 - 60,
+            duration: const Duration(milliseconds: 500),
+            child: Directionality(
+              textDirection:
+                  serviceLocator<LanguageController>().targetTextDirection,
+              child: PageBody(
+                controller: state.scrollController,
+                constraints: BoxConstraints(
+                  minWidth: 1000,
+                  minHeight: media.size.height -
+                      (media.padding.top +
+                          kToolbarHeight +
+                          media.padding.bottom),
+                ),
+                padding: EdgeInsetsDirectional.only(
+                  top: topPadding,
+                  //bottom: bottomPadding,
+                  start: margins * 2.5,
+                  end: margins * 2.5,
+                ),
+                child: CustomScrollView(
+                  controller: state.customScrollViewScrollController,
+                  slivers: [
+                    SliverList(
+                      delegate: SliverChildListDelegate(
+                        [
+                          /*const AnimatedGap(
+                            12,
+                            duration: Duration(milliseconds: 100),
+                          ),
+                          const ManageOrderHeadlineWidget(
+                            key: Key('manage-order-headline-widget'),
+                          ),
+                          const AnimatedGap(
+                            12,
+                            duration: Duration(milliseconds: 100),
+                          ),*/
+                          OrderTypeWidget(
+                            key: const Key('manage-order-type-widget'),
+                            onChanged: state.onChangeOrderType,
+                          ),
+                          const AnimatedGap(
+                            8,
+                            duration: Duration(milliseconds: 100),
+                          ),
+                        ],
+                      ),
                     ),
-                    child: Icon(Icons.notifications,
-                        color: context.colorScheme.primary),
-                  ),
-                ),
-                const Padding(
-                  padding: EdgeInsetsDirectional.only(end: 8),
-                  child: LanguageSelectionWidget(),
-                ),
-              ],
-            ),
-            drawer: const PrimaryDashboardDrawer(
-              key: const Key('manage-order-main-dashboard-drawer'),
-              isMainDrawerPage: false,
-            ),
-            body: SlideInLeft(
-              key: const Key('manage-order-slideinleft-widget'),
-              from: context.width / 2 - 60,
-              duration: const Duration(milliseconds: 500),
-              child: Directionality(
-                textDirection:
-                    serviceLocator<LanguageController>().targetTextDirection,
-                child: PageBody(
-                  controller: state.scrollController,
-                  constraints: BoxConstraints(
-                    minWidth: 1000,
-                    minHeight: media.size.height -
-                        (media.padding.top +
-                            kToolbarHeight +
-                            media.padding.bottom),
-                  ),
-                  padding: EdgeInsetsDirectional.only(
-                    top: topPadding,
-                    //bottom: bottomPadding,
-                    start: margins * 2.5,
-                    end: margins * 2.5,
-                  ),
-                  child: CustomScrollView(
-                    controller: state.customScrollViewScrollController,
-                    slivers: [
-                      SliverList(
-                        delegate: SliverChildListDelegate(
-                          [
-                            /*const AnimatedGap(
-                              12,
-                              duration: Duration(milliseconds: 100),
-                            ),
-                            const ManageOrderHeadlineWidget(
-                              key: Key('manage-order-headline-widget'),
-                            ),
-                            const AnimatedGap(
-                              12,
-                              duration: Duration(milliseconds: 100),
-                            ),*/
-                            OrderTypeWidget(
-                              key: const Key('manage-order-type-widget'),
-                              onChanged: state.onChangeOrderType,
-                            ),
-                            const AnimatedGap(
-                              8,
-                              duration: Duration(milliseconds: 100),
-                            ),
-                          ],
-                        ),
-                      ),
-                      SliverFillRemaining(
-                        fillOverscroll: true,
-                        hasScrollBody: true,
-                        child: switch (serviceLocator<ManageOrderController>()
-                            .currentOrderIndex) {
-                          0 => const AllOrderPages(
-                              key: Key('manage-order-all-orders-widget'),
-                            ),
-                          1 => const AllNewOrderPage(
-                              key: Key('manage-order-new-orders-widget'),
-                            ),
-                          2 => const AllScheduleOrderPage(
-                              key: Key('manage-order-schedule-orders-widget'),
-                            ),
-                          3 => const AllOnProcessOrderPage(
-                              key: Key('manage-order-onprocess-orders-widget'),
-                            ),
-                          4 => const AllDeliverOrderPage(
-                              key: Key('manage-order-deliver-orders-widget'),
-                            ),
-                          5 => const AllCancelOrderPage(
-                              key: Key('manage-order-cancel-orders-widget'),
-                            ),
-                          _ => const AllNewOrderPage(
-                              key: Key('manage-order-all-orders-widget'),
-                            ),
-                        },
-                      ),
-                    ],
-                  ),
+                    SliverFillRemaining(
+                      fillOverscroll: true,
+                      hasScrollBody: true,
+                      child: switch (serviceLocator<ManageOrderController>()
+                          .currentOrderIndex) {
+                        0 => const AllOrderPages(
+                            key: Key('manage-order-all-orders-widget'),
+                          ),
+                        1 => const AllNewOrderPage(
+                            key: Key('manage-order-new-orders-widget'),
+                          ),
+                        2 => const AllScheduleOrderPage(
+                            key: Key('manage-order-schedule-orders-widget'),
+                          ),
+                        3 => const AllOnProcessOrderPage(
+                            key: Key('manage-order-onprocess-orders-widget'),
+                          ),
+                        4 => const AllDeliverOrderPage(
+                            key: Key('manage-order-deliver-orders-widget'),
+                          ),
+                        5 => const AllCancelOrderPage(
+                            key: Key('manage-order-cancel-orders-widget'),
+                          ),
+                        _ => const AllNewOrderPage(
+                            key: Key('manage-order-all-orders-widget'),
+                          ),
+                      },
+                    ),
+                  ],
                 ),
               ),
             ),

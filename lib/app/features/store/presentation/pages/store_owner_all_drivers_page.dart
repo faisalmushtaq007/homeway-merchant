@@ -476,24 +476,7 @@ class _StoreOwnerAllDriversView
                                 hintText: 'Search Store',
 
                               ),),
-                              /*Expanded(
-                                child: AppTextFieldWidget(
-                                  controller: state.searchTextEditingController,
-                                  textDirection:
-                                      serviceLocator<LanguageController>()
-                                          .targetTextDirection,
-                                  textInputAction: TextInputAction.done,
-                                  keyboardType: TextInputType.text,
-                                  decoration: InputDecoration(
-                                    labelText: 'Search',
-                                    hintText: 'Search driver',
-                                    border: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(10),
-                                    ),
-                                    isDense: true,
-                                  ),
-                                ),
-                              ),*/
+
                               const AnimatedGap(12,
                                   duration: Duration(milliseconds: 500)),
                               SizedBox(

@@ -55,7 +55,7 @@ class _PrimaryDashboardDrawerController extends State<PrimaryDashboardDrawer> {
             leading: const Icon(Icons.person),
             onPressed: () async {
               Navigator.of(context).pop();
-              await context.push(Routes.ALL_SAVED_ADDRESS_LIST);
+              final result=await context.push(Routes.ALL_SAVED_ADDRESS_LIST);
               return;
             },
           ),
@@ -81,7 +81,7 @@ class _PrimaryDashboardDrawerController extends State<PrimaryDashboardDrawer> {
             leading: const Icon(Icons.notifications),
             onPressed: () async {
               Navigator.of(context).pop();
-              await context.push(Routes.NOTIFICATIONS);
+              final result=await context.push(Routes.NOTIFICATIONS);
               return;
             },
           ),
@@ -91,7 +91,7 @@ class _PrimaryDashboardDrawerController extends State<PrimaryDashboardDrawer> {
             leading: const Icon(Icons.rate_review),
             onPressed: () async {
               Navigator.of(context).pop();
-              await context.push(Routes.RATE_AND_REVIEW_PAGE);
+              final result=await context.push(Routes.RATE_AND_REVIEW_PAGE);
               return;
             },
           ),
@@ -110,10 +110,12 @@ class _PrimaryDashboardDrawerController extends State<PrimaryDashboardDrawer> {
         children: [
           DrawerEntity(
             drawerID: 10,
-            drawerName: 'New Orders',
+            drawerName: 'Manage Orders',
             leading: const Icon(Icons.book),
-            onPressed: () {
-              return Navigator.of(context).pop();
+            onPressed: () async{
+              Navigator.of(context).pop();
+              final result=await context.push(Routes.MANAGE_ORDER_PAGE);
+              return;
             },
           ),
           DrawerEntity(
@@ -148,7 +150,7 @@ class _PrimaryDashboardDrawerController extends State<PrimaryDashboardDrawer> {
         leading: const Icon(Icons.store),
         onPressed: () async {
           Navigator.of(context).pop();
-          await context.push(Routes.ALL_STORES_PAGE);
+          final result=await context.push(Routes.ALL_STORES_PAGE);
           return;
         },
       ),
@@ -158,7 +160,7 @@ class _PrimaryDashboardDrawerController extends State<PrimaryDashboardDrawer> {
         leading: const Icon(Icons.restaurant_menu),
         onPressed: () async {
           Navigator.of(context).pop();
-          await context.push(Routes.ALL_MENU_PAGE);
+          final result=await context.push(Routes.ALL_MENU_PAGE);
           return;
         },
       ),
@@ -169,7 +171,7 @@ class _PrimaryDashboardDrawerController extends State<PrimaryDashboardDrawer> {
         controller: ExpansionTileController(),
         onPressed: () async {
           Navigator.of(context).pop();
-          await context.push(Routes.ALL_DRIVER_PAGE);
+          final result=await context.push(Routes.ALL_DRIVER_PAGE);
           return;
         },
       ),
@@ -247,7 +249,7 @@ class _PrimaryDashboardDrawerController extends State<PrimaryDashboardDrawer> {
             leading: const Icon(Icons.help),
             onPressed: () async {
               Navigator.of(context).pop();
-              await context.push(Routes.FAQ_PAGE);
+              final result=await context.push(Routes.FAQ_PAGE);
               return;
             },
           ),
@@ -265,7 +267,7 @@ class _PrimaryDashboardDrawerController extends State<PrimaryDashboardDrawer> {
             leading: const Icon(Icons.privacy_tip_sharp),
             onPressed: () async{
               Navigator.of(context).pop();
-              await context.push(Routes.PRIVACY_AND_POLICY);
+              final result=await context.push(Routes.PRIVACY_AND_POLICY);
               return;
             },
           ),
@@ -275,7 +277,7 @@ class _PrimaryDashboardDrawerController extends State<PrimaryDashboardDrawer> {
             leading: const Icon(Icons.privacy_tip_sharp),
             onPressed: () async{
               Navigator.of(context).pop();
-              await context.push(Routes.TERMS_AND_CONDITIONS);
+              final result=await context.push(Routes.TERMS_AND_CONDITIONS);
               return;
             },
           ),
@@ -285,7 +287,7 @@ class _PrimaryDashboardDrawerController extends State<PrimaryDashboardDrawer> {
             leading: const Icon(Icons.chat),
             onPressed: () async{
               Navigator.of(context).pop();
-              await context.push(Routes.ROOM_PAGE);
+              final result=await context.push(Routes.ROOM_PAGE);
               return;
             },
           ),

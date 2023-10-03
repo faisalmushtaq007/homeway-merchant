@@ -461,7 +461,7 @@ class _AllStoresPageState extends State<AllStoresPage> {
                                     ),
                                     secondChild: const Offstage(),
                                     duration: const Duration(milliseconds: 500),
-                                    crossFadeState: (storeEntities.isNotEmpty)
+                                    crossFadeState: (_pagingController.value.itemList.isNotNullOrEmpty)
                                         ? CrossFadeState.showFirst
                                         : CrossFadeState.showSecond,
                                   ),
@@ -521,18 +521,16 @@ class _AllStoresPageState extends State<AllStoresPage> {
 
                                       },
                                       none: () {
-                                        return Center(
-                                          child: Text(
-                                            'No store available or added by you',
-                                            style: context.labelLarge,
-                                            textDirection: serviceLocator<
-                                                LanguageController>()
-                                                .targetTextDirection,
-                                          ).translate(),
+                                        return const NoItemAvailableWidget(
+                                          key: Key('get-all-store-none-widget'),
+                                          textMessage: 'No store available or added by you',
                                         );
                                       },
                                       orElse: () {
-                                        return const SizedBox();
+                                        return const NoItemAvailableWidget(
+                                          key: Key('get-all-store-else-widget'),
+                                          textMessage: 'No store available or added by you',
+                                        );
                                       },
                                     ),
                                   ),

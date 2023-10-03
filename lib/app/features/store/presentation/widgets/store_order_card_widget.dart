@@ -40,7 +40,7 @@ class StoreOrderCardWidget extends StatelessWidget {
             color: storeOrderInfo.subTitleTextColor,
             fontWeight: FontWeight.w600,
           ),
-          maxLines: 3,
+          maxLines: 1,
           softWrap: true,
           overflow: TextOverflow.ellipsis,
         ).translate(),
@@ -51,11 +51,11 @@ class StoreOrderCardWidget extends StatelessWidget {
           children: [
             Text(
               storeOrderInfo.subTitle,
-              style: context.labelMedium!.copyWith(
+              style: context.titleSmall!.copyWith(
                 color: storeOrderInfo.subTitleTextColor,
-                fontWeight: FontWeight.w500,
+                fontWeight: FontWeight.w600,
               ),
-              maxLines: 2,
+              maxLines: 1,
               softWrap: true,
               overflow: TextOverflow.ellipsis,
             ).translate(),

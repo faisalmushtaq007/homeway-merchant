@@ -1,17 +1,14 @@
 part of 'package:homemakers_merchant/app/features/order/index.dart';
 
-class OrderLocalDbRepository<T extends OrderEntity>
-    implements BaseOrderLocalDbRepository<OrderEntity> {
+class OrderLocalDbRepository<T extends OrderEntity> implements BaseOrderLocalDbRepository<OrderEntity> {
   Future<Database> get _db async => AppDatabase.instance.database;
 
-  StoreRef<int, Map<String, dynamic>> get _order =>
-      AppDatabase.instance.notification;
+  StoreRef<int, Map<String, dynamic>> get _order => AppDatabase.instance.notification;
 
   Function unOrdDeepEq = const DeepCollectionEquality.unordered().equals;
 
   @override
-  Future<Either<RepositoryBaseFailure, OrderEntity>> add(
-      OrderEntity entity) async {
+  Future<Either<RepositoryBaseFailure, OrderEntity>> add(OrderEntity entity) async {
     final result = await tryCatch<OrderEntity>(() async {
       final int recordID = await _order.add(await _db, entity.toMap());
       //final StoreEntity recordStoreEntity = entity.copyWith(storeID: recordID.toString());
@@ -67,8 +64,7 @@ class OrderLocalDbRepository<T extends OrderEntity>
   }
 
   @override
-  Future<Either<RepositoryBaseFailure, bool>> deleteById(
-      UniqueId uniqueId) async {
+  Future<Either<RepositoryBaseFailure, bool>> deleteById(UniqueId uniqueId) async {
     final result = await tryCatch<bool>(() async {
       final value = await _order.record(uniqueId.value).get(await _db);
       if (value != null) {
@@ -83,8 +79,7 @@ class OrderLocalDbRepository<T extends OrderEntity>
   }
 
   @override
-  Future<Either<RepositoryBaseFailure, bool>> deleteByIdAndEntity(
-      UniqueId uniqueId, OrderEntity entity) async {
+  Future<Either<RepositoryBaseFailure, bool>> deleteByIdAndEntity(UniqueId uniqueId, OrderEntity entity) async {
     // TODO(prasant): implement deleteByIdAndEntity
     throw UnimplementedError();
   }
@@ -109,8 +104,7 @@ class OrderLocalDbRepository<T extends OrderEntity>
   }
 
   @override
-  Future<Either<RepositoryBaseFailure, OrderEntity?>> getById(
-      UniqueId id) async {
+  Future<Either<RepositoryBaseFailure, OrderEntity?>> getById(UniqueId id) async {
     final result = await tryCatch<OrderEntity?>(() async {
       final value = await _order.record(id.value).get(await _db);
       if (value != null) {
@@ -122,15 +116,13 @@ class OrderLocalDbRepository<T extends OrderEntity>
   }
 
   @override
-  Future<Either<RepositoryBaseFailure, OrderEntity>> getByIdAndEntity(
-      UniqueId uniqueId, OrderEntity entity) async {
+  Future<Either<RepositoryBaseFailure, OrderEntity>> getByIdAndEntity(UniqueId uniqueId, OrderEntity entity) async {
     // TODO(prasant): implement getByIdAndEntity
     throw UnimplementedError();
   }
 
   @override
-  Future<Either<RepositoryBaseFailure, OrderEntity>> update(
-      OrderEntity entity, UniqueId uniqueId) async {
+  Future<Either<RepositoryBaseFailure, OrderEntity>> update(OrderEntity entity, UniqueId uniqueId) async {
     final result = await tryCatch<OrderEntity>(() async {
       final int key = uniqueId.value;
       final value = await _order.record(key).get(await _db);
@@ -152,38 +144,29 @@ class OrderLocalDbRepository<T extends OrderEntity>
   }
 
   @override
-  Future<Either<RepositoryBaseFailure, OrderEntity>> updateByIdAndEntity(
-      UniqueId uniqueId, OrderEntity entity) async {
+  Future<Either<RepositoryBaseFailure, OrderEntity>> updateByIdAndEntity(UniqueId uniqueId, OrderEntity entity) async {
     // TODO(prasant): implement updateByIdAndEntity
     throw UnimplementedError();
   }
 
   @override
   Future<Either<RepositoryBaseFailure, OrderEntity>> upsert(
-      {UniqueId? id,
-      String? token,
-      required OrderEntity entity,
-      bool checkIfUserLoggedIn = false}) async {
+      {UniqueId? id, String? token, required OrderEntity entity, bool checkIfUserLoggedIn = false}) async {
     final result = await tryCatch<OrderEntity>(() async {
       final int key = entity.orderID;
       final value = await _order.record(key).get(await _db);
-      final result = await _order
-          .record(key)
-          .put(await _db, entity.toJson(), merge: (value != null) || false);
+      final result = await _order.record(key).put(await _db, entity.toJson(), merge: (value != null) || false);
       return OrderEntity.fromMap(result);
     });
     return result;
   }
 
-  Future<Map<String, RecordSnapshot<int, Map<String, Object?>>>>
-      getProductsByIds(DatabaseClient db, List<int> ids) async {
-    var snapshots = await _order.find(db,
-        finder: Finder(
-            filter: Filter.or(
-                ids.map((e) => Filter.equals('orderID', e)).toList())));
+  Future<Map<String, RecordSnapshot<int, Map<String, Object?>>>> getProductsByIds(
+      DatabaseClient db, List<int> ids) async {
+    var snapshots =
+        await _order.find(db, finder: Finder(filter: Filter.or(ids.map((e) => Filter.equals('orderID', e)).toList())));
     return <String, RecordSnapshot<int, Map<String, Object?>>>{
-      for (var snapshot in snapshots)
-        snapshot.value['orderID']!.toString(): snapshot
+      for (var snapshot in snapshots) snapshot.value['orderID']!.toString(): snapshot
     };
   }
 
@@ -200,13 +183,10 @@ class OrderLocalDbRepository<T extends OrderEntity>
         final allOrderList = r.toList();
         final newList = entities.toList();
         var convertOrderToMapObject = newList.map((e) => e.toJson()).toList();
-        final bool equalityStatus = unOrdDeepEq(
-            allOrderList.toSet().toList(), newList.toSet().toList());
+        final bool equalityStatus = unOrdDeepEq(allOrderList.toSet().toList(), newList.toSet().toList());
 
         await db.transaction((transaction) async {
-          var orderIds = convertOrderToMapObject
-              .map((map) => map['orderID'] as int)
-              .toList();
+          var orderIds = convertOrderToMapObject.map((map) => map['orderID'] as int).toList();
           var map = await getProductsByIds(db, orderIds);
           // Watch for deleted item
           var keysToDelete = (await _order.findKeys(transaction)).toList();
@@ -218,8 +198,7 @@ class OrderLocalDbRepository<T extends OrderEntity>
               // Remove from deletion list
               keysToDelete.remove(key);
               // Don't update if no change
-              if (const DeepCollectionEquality()
-                  .equals(snapshot.value, order)) {
+              if (const DeepCollectionEquality().equals(snapshot.value, order)) {
                 // no changes
                 continue;
               } else {
@@ -292,8 +271,7 @@ class OrderLocalDbRepository<T extends OrderEntity>
   }
 
   @override
-  Future<Either<RepositoryBaseFailure, List<OrderEntity>>>
-      getAllOnProcessOrder({
+  Future<Either<RepositoryBaseFailure, List<OrderEntity>>> getAllOnProcessOrder({
     int pageKey = 0,
     int pageSize = 10,
     String? searchText,
@@ -332,13 +310,13 @@ class OrderLocalDbRepository<T extends OrderEntity>
           offset: pageKey,
         );
         // If
-        if (searchText.isNotNull ||
-            filter.isNotNull ||
-            sorting.isNotNull &&
-                (startTimeStamp.isNotNull || endTimeStamp.isNotNull)) {
-          var regExp = RegExp('^${searchText?.toLowerCase() ?? ''}\$', caseSensitive: false);
-          var filterRegExp = RegExp('^${filter?.toLowerCase() ?? ''}\$', caseSensitive: false);
-          var sortingRegExp = RegExp('^${sorting?.toLowerCase() ?? ''}\$', caseSensitive: false);
+        if ((searchText.isNotNull ||
+                filter.isNotNull ||
+                sorting.isNotNull && (searchText!.isNotEmpty || filter!.isNotEmpty || sorting!.isNotEmpty)) &&
+            (startTimeStamp.isNotNull || endTimeStamp.isNotNull)) {
+          var regExp = RegExp('^${searchText ?? ''}\$', caseSensitive: false);
+          var filterRegExp = RegExp('^${filter ?? ''}\$', caseSensitive: false);
+          var sortingRegExp = RegExp('^${sorting ?? ''}\$', caseSensitive: false);
           finder = Finder(
             /* sortOrders: [
               SortOrder('orderDateTime'),
@@ -348,6 +326,12 @@ class OrderLocalDbRepository<T extends OrderEntity>
             filter: Filter.and(
               [
                 Filter.or([
+                  Filter.matches('store.storeName', '^${searchText}'),
+                  Filter.matches('store.storeName', '${searchText}\$'),
+                  Filter.matches('store.storeName', '${searchText}'),
+                  Filter.matches('store.storeName.menu.@.menuName', '^${searchText}'),
+                  Filter.matches('store.storeName.menu.@.menuName', '${searchText}\$'),
+                  Filter.matches('store.storeName.menu.@.menuName', '${searchText}'),
                   Filter.matchesRegExp(
                     'store.storeName',
                     regExp,
@@ -374,35 +358,48 @@ class OrderLocalDbRepository<T extends OrderEntity>
         // Else If
         else if (searchText.isNotNull ||
             filter.isNotNull ||
-            sorting.isNotNull) {
-          var regExp = RegExp('^${searchText?.toLowerCase() ?? ''}\$', caseSensitive: false);
-          var filterRegExp = RegExp('^${filter?.toLowerCase() ?? ''}\$', caseSensitive: false);
-          var sortingRegExp = RegExp('^${sorting?.toLowerCase() ?? ''}\$', caseSensitive: false);
-          finder = Finder(
-            /*sortOrders: [
+            sorting.isNotNull && (searchText!.isNotEmpty || filter!.isNotEmpty || sorting!.isNotEmpty)) {
+          if (searchText!.isEmpty) {
+            finder = Finder(
+              limit: pageSize,
+              offset: pageKey,
+            );
+          } else {
+            var regExp = RegExp('^${searchText ?? ''}\$', caseSensitive: false);
+            var filterRegExp = RegExp('^${filter ?? ''}\$', caseSensitive: false);
+            var sortingRegExp = RegExp('^${sorting ?? ''}\$', caseSensitive: false);
+            finder = Finder(
+              /*sortOrders: [
               SortOrder('orderDateTime'),
             ],*/
-            limit: pageSize,
-            offset: pageKey,
-            filter: Filter.or([
-              Filter.matchesRegExp(
-                'store.storeName',
-                regExp,
-              ),
-              Filter.matchesRegExp(
-                'store.storeName.menu.@.menuName',
-                regExp,
-              ),
-              Filter.matchesRegExp(
-                'store.storeName',
-                filterRegExp,
-              ),
-              Filter.matchesRegExp(
-                'store.storeName.menu.@.menuName',
-                filterRegExp,
-              ),
-            ]),
-          );
+              limit: pageSize,
+              offset: pageKey,
+              filter: Filter.or([
+                Filter.matches('store.storeName', '^${searchText}'),
+                Filter.matches('store.storeName', '${searchText}\$'),
+                Filter.matches('store.storeName', '${searchText}'),
+                Filter.matches('store.storeName.menu.@.menuName', '^${searchText}'),
+                Filter.matches('store.storeName.menu.@.menuName', '${searchText}\$'),
+                Filter.matches('store.storeName.menu.@.menuName', '${searchText}'),
+                Filter.matchesRegExp(
+                  'store.storeName',
+                  regExp,
+                ),
+                Filter.matchesRegExp(
+                  'store.storeName.menu.@.menuName',
+                  regExp,
+                ),
+                Filter.matchesRegExp(
+                  'store.storeName',
+                  filterRegExp,
+                ),
+                Filter.matchesRegExp(
+                  'store.storeName.menu.@.menuName',
+                  filterRegExp,
+                ),
+              ]),
+            );
+          }
         }
         // Else
         else {

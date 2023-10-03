@@ -360,7 +360,7 @@ class _BindDriverWithStoreView
               LanguageSelectionWidget(),
             ],
           ),
-          /*floatingActionButton: AnimatedOpacity(
+          floatingActionButton: AnimatedOpacity(
             opacity: (state.listOfAllSelectedStoreOwnDeliveryPartners.isEmpty && state.listOfAllSelectedStores.isEmpty) ? 0.0 : 1.0,
             duration: const Duration(milliseconds: 500),
             child: Padding(
@@ -368,24 +368,14 @@ class _BindDriverWithStoreView
               child: FloatingActionButton(
                 backgroundColor: const Color.fromRGBO(69, 201, 125, 1.0),
                 onPressed: () async {
-                  if (state.listOfAllSelectedStoreOwnDeliveryPartners.isEmpty && state.listOfAllSelectedStores.isEmpty) {
-                    return;
-                  } else {
-                    context.go(
-                      Routes.BIND_DRIVER_WITH_STORE_GREETING_PAGE,
-                      extra: {
-                        'allDriver': state.listOfAllSelectedStoreOwnDeliveryPartners.toList(),
-                        'allStore': state.listOfAllSelectedStores.toList(),
-                      },
-                    );
-                  }
+                  return;
                 },
-                child: const Icon(
-                  Icons.check,
+                child:  Text(
+                 '${state.listOfAllSelectedStores.length}',
                 ),
               ),
             ),
-          ),*/
+          ),
           body: Directionality(
             textDirection:
                 serviceLocator<LanguageController>().targetTextDirection,
@@ -440,26 +430,6 @@ class _BindDriverWithStoreView
                                     hintText: 'Search Store',
 
                                   ),),
-                                 /* Expanded(
-                                    child: AppTextFieldWidget(
-                                      controller:
-                                          state.searchTextEditingController,
-                                      textDirection:
-                                          serviceLocator<LanguageController>()
-                                              .targetTextDirection,
-                                      textInputAction: TextInputAction.done,
-                                      keyboardType: TextInputType.text,
-                                      decoration: InputDecoration(
-                                        labelText: 'Search',
-                                        hintText: 'Search driver',
-                                        border: OutlineInputBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(10),
-                                        ),
-                                        isDense: true,
-                                      ),
-                                    ),
-                                  ),*/
                                   const AnimatedGap(12,
                                       duration: Duration(milliseconds: 500),),
                                   SizedBox(
@@ -578,7 +548,7 @@ class _BindDriverWithStoreView
                         ),
                         secondChild: const Offstage(),
                         duration: const Duration(milliseconds: 500),
-                        crossFadeState: (state.listOfAllStores.isNotEmpty)
+                        crossFadeState: (state._pagingController.value.itemList.isNotNullOrEmpty)
                             ? CrossFadeState.showFirst
                             : CrossFadeState.showSecond,
                       ),
