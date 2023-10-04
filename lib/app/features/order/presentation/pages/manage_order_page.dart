@@ -19,6 +19,8 @@ class _ManageOrderPageController extends State<ManageOrderPage> {
     scrollController = ScrollController();
     customScrollViewScrollController = ScrollController();
     // set default index of order is zero
+    // Todo(prasant): Remove Temp saved order details
+    AppStartConfig.shared.saveAllTempOrderData();
     onChangeOrderType(0);
   }
 
@@ -26,8 +28,6 @@ class _ManageOrderPageController extends State<ManageOrderPage> {
   void didChangeDependencies() {
     super.didChangeDependencies();
   }
-
-
 
   @override
   void dispose() {

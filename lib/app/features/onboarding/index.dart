@@ -1,1 +1,33 @@
+import 'dart:async';
+import 'dart:ui' as ui;
 
+import 'package:flex_color_scheme/flex_color_scheme.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:go_router/go_router.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:homemakers_merchant/app/features/authentication/index.dart';
+import 'package:homemakers_merchant/app/features/onboarding/presentation/pages/splash_page.dart';
+import 'package:homemakers_merchant/app/features/profile/index.dart';
+import 'package:homemakers_merchant/base/widget_view.dart';
+import 'package:homemakers_merchant/bootup/injection_container.dart';
+import 'package:homemakers_merchant/config/translation/extension/text_extension.dart';
+import 'package:homemakers_merchant/config/translation/language_controller.dart';
+import 'package:homemakers_merchant/core/constants/global_app_constants.dart';
+import 'package:homemakers_merchant/core/extensions/app_extension.dart';
+import 'package:homemakers_merchant/core/extensions/global_extensions/list_ext.dart';
+import 'package:homemakers_merchant/shared/router/app_pages.dart';
+import 'package:homemakers_merchant/shared/widgets/app/app_logo.dart';
+import 'package:homemakers_merchant/shared/widgets/app/flutter_svg_provider.dart';
+import 'package:homemakers_merchant/shared/widgets/app/page_body.dart';
+import 'package:homemakers_merchant/shared/widgets/universal/animate_do/animate_do.dart';
+import 'package:homemakers_merchant/shared/widgets/universal/animated_gap/gap.dart';
+import 'package:homemakers_merchant/shared/widgets/universal/another_flutter_splash_screen/another_flutter_splash_screen.dart';
+import 'package:homemakers_merchant/shared/widgets/universal/async_builder/async_builder.dart';
+import 'package:homemakers_merchant/shared/widgets/universal/constrained_scrollable_views/constrained_scrollable_views.dart';
+import 'package:homemakers_merchant/utils/app_log.dart';
+import 'package:lottie/lottie.dart';
+
+part 'package:homemakers_merchant/app/features/onboarding/presentation/pages/initial_splash_screen_page.dart';

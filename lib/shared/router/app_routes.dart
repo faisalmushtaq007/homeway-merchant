@@ -106,6 +106,7 @@ abstract class Routes {
   static const String CHAT_USER_PAGE = _Paths.CHAT_USER_PAGE;
   static const String NEW_MAP_PAGE = _Paths.NEW_MAP_PAGE;
   static const String ORDER_ANALYSIS_PAGE = _Paths.ORDER_ANALYSIS_PAGE;
+  static const String INITIAL_SPLASH_PAGE = _Paths.INITIAL_SPLASH_PAGE;
 }
 
 abstract class _Paths {
@@ -206,4 +207,6 @@ abstract class _Paths {
   static const String CHAT_USER_PAGE = '/chat-user';
   static const String NEW_MAP_PAGE = '/map-page';
   static const String ORDER_ANALYSIS_PAGE = '/order-analysis';
+  static const String INITIAL_SPLASH_PAGE = '/initial_page';
+
 }

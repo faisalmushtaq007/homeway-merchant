@@ -6,6 +6,7 @@ import 'package:geocoder_buddy/geocoder_buddy.dart';
 import 'package:go_router/go_router.dart';
 import 'package:homemakers_merchant/app/features/address/index.dart';
 import 'package:homemakers_merchant/app/features/analysis/index.dart';
+import 'package:homemakers_merchant/app/features/authentication/index.dart';
 import 'package:homemakers_merchant/app/features/authentication/presentation/pages/about_us.dart';
 import 'package:homemakers_merchant/app/features/authentication/presentation/pages/login_page.dart';
 import 'package:homemakers_merchant/app/features/authentication/presentation/pages/otp_verification_page.dart';
@@ -19,6 +20,7 @@ import 'package:homemakers_merchant/app/features/dashboard/index.dart';
 import 'package:homemakers_merchant/app/features/faq/index.dart';
 import 'package:homemakers_merchant/app/features/menu/index.dart';
 import 'package:homemakers_merchant/app/features/notification/index.dart';
+import 'package:homemakers_merchant/app/features/onboarding/index.dart';
 import 'package:homemakers_merchant/app/features/onboarding/presentation/pages/onboarding_page.dart';
 import 'package:homemakers_merchant/app/features/onboarding/presentation/pages/splash_page.dart';
 import 'package:homemakers_merchant/app/features/order/index.dart';
@@ -28,6 +30,7 @@ import 'package:homemakers_merchant/app/features/rate_review/index.dart';
 import 'package:homemakers_merchant/app/features/store/index.dart';
 import 'package:homemakers_merchant/bootup/injection_container.dart';
 import 'package:homemakers_merchant/core/common/enum/generic_enum.dart';
+import 'package:homemakers_merchant/core/extensions/global_extensions/list_ext.dart';
 import 'package:homemakers_merchant/utils/app_log.dart';
 
 part 'app_routes.dart';
@@ -41,13 +44,17 @@ class AppRouter {
 
   AppRouter._();
 
-  static const String INITIAL = Routes.PRIMARY_DASHBOARD_PAGE;
+  static const String INITIAL = Routes.INITIAL_SPLASH_PAGE;
 
   static final GoRouter _router = GoRouter(
     debugLogDiagnostics: true,
     initialLocation: INITIAL,
     navigatorKey: rootNavigatorKey,
     routes: [
+      GoRoute(
+        path: Routes.INITIAL_SPLASH_PAGE,
+        builder: (context, state) => const InitialSplashScreenPage(),
+      ),
       GoRoute(
         path: Routes.SPLASH,
         builder: (context, state) => const SplashPage(),
@@ -616,42 +623,10 @@ class AppRouter {
         },
       ),
     ],
-    /*redirect: (context, state) {
-      bool hasCurrentUserLoggedIn = userModelController.userModel.hasCurrentUser;
-      if (hasCurrentUserLoggedIn) {
-        final int index = userModelController.userModel.currentUserStage + 1;
-        switch (index) {
-          case 1:
-            {
-              return Routes.CREATE_BUSINESS_PROFILE_PAGE;
-            }
-          case 2:
-            {
-              return Routes.CONFIRM_BUSINESS_TYPE_PAGE;
-            }
-          case 3:
-            {
-              return Routes.BANK_INFORMATION_PAGE;
-            }
-          case 4:
-            {
-              return Routes.DOCUMENT_LIST_PAGE;
-            }
-          case 5:
-            {
-              return Routes.PRIMARY_DASHBOARD_PAGE;
-            }
-          case _:
-            {
-              return state.matchedLocation;
-            }
-        }
-      } else {
-        return state.matchedLocation;
-      }
-    },*/
-    refreshListenable: serviceLocator<UserModelStorageController>(),
+
   );
 
   static GoRouter get router => _router;
+
+
 }

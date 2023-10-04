@@ -96,6 +96,7 @@ class NewBusinessDocumentBloc
           if (data.isNotNullOrEmpty) {
             await updateUserProfile(data!.toList());
           }
+          await Future.delayed(const Duration(milliseconds: 500), () {});
           emit(
             UploadNewBusinessDocumentState(
               allBusinessDocuments: data ?? event.allBusinessDocuments.toList(),
@@ -108,6 +109,7 @@ class NewBusinessDocumentBloc
           if (data.isNotNullOrEmpty) {
             await updateUserProfile(data!.toList());
           }
+          await Future.delayed(const Duration(milliseconds: 500), () {});
           emit(
             UploadNewBusinessDocumentState(
               allBusinessDocuments: data ?? event.allBusinessDocuments.toList(),

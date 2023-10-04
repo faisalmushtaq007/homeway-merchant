@@ -4,6 +4,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_displaymode/flutter_displaymode.dart';
 import 'package:homemakers_merchant/app/features/address/index.dart';
 import 'package:homemakers_merchant/app/features/order/index.dart';
+import 'package:homemakers_merchant/app/features/profile/index.dart';
 import 'package:homemakers_merchant/bootup/injection_container.dart';
 import 'package:homemakers_merchant/config/translation/language_controller.dart';
 import 'package:homemakers_merchant/config/translation/translate_api.dart';
@@ -501,6 +502,7 @@ class AppStartConfig {
     },);
 
   }
+
 }
 
 class AppImageCache extends WidgetsFlutterBinding {
