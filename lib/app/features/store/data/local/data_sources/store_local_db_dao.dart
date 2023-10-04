@@ -67,10 +67,10 @@ class StoreLocalDbRepository<Store extends StoreEntity> implements BaseStoreLoca
     final result = await tryCatch<bool>(() async {
       final value = await _store.record(uniqueId.value).get(await _db);
       if (value != null) {
-        final int count = await _store.delete(
+        final int? count = await _store.record(uniqueId.value).delete(
           await _db,
         );
-        if (count >= 0) {
+        if (count!=null && count >= 0) {
           return true;
         } else {
           return false;

@@ -70,10 +70,14 @@ class RateAndReviewLocalDbRepository<T extends RateAndReviewEntity>
     final result = await tryCatch<bool>(() async {
       final value = await rateAndReview.record(uniqueId.value).get(await _db);
       if (value != null) {
-        int counter = await rateAndReview.delete(
+        int? count = await rateAndReview.record(uniqueId.value).delete(
           await _db,
         );
-        return true;
+        if (count!=null && count >= 0) {
+          return true;
+        } else {
+          return false;
+        }
       }
       return false;
     });

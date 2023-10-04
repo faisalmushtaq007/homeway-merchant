@@ -62,7 +62,7 @@ class AddonsLocalDbRepository<Extras extends Addons> implements BaseAddonsLocalD
     final result = await tryCatch<bool>(() async {
       final value = await _addons.record(uniqueId.value).get(await _db);
       if (value != null) {
-        await _addons.delete(
+        await _addons.record(uniqueId.value).delete(
           await _db,
         );
         return true;

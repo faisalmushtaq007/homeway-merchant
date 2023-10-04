@@ -66,7 +66,7 @@ class AddressLocalDbRepository<T extends AddressModel> implements BaseAddressBan
     final result = await tryCatch<bool>(() async {
       final value = await _address.record(uniqueId.value).get(await _db);
       if (value != null) {
-        await _address.delete(
+        await _address.record(uniqueId.value).delete(
           await _db,
         );
         return true;

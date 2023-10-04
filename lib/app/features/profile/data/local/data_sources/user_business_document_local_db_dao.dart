@@ -77,10 +77,14 @@ class UserBusinessDocumentLocalDbRepository<T extends NewBusinessDocumentEntity>
       final value =
           await _businessDocument.record(uniqueId.value).get(await _db);
       if (value != null) {
-        int counter = await _businessDocument.delete(
+        int? count = await _businessDocument.record(uniqueId.value).delete(
           await _db,
         );
-        return true;
+        if (count!=null && count >= 0) {
+          return true;
+        } else {
+          return false;
+        }
       }
       return false;
     });

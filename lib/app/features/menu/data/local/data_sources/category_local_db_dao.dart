@@ -64,7 +64,7 @@ class CategoryLocalDbRepository<Extras extends Category> implements BaseCategory
     final result = await tryCatch<bool>(() async {
       final value = await _category.record(uniqueId.value).get(await _db);
       if (value != null) {
-        await _category.delete(
+        await _category.record(uniqueId.value).delete(
           await _db,
         );
         return true;

@@ -69,7 +69,7 @@ class StoreOwnDeliveryPartnersLocalDbRepository<
     final result = await tryCatch<bool>(() async {
       final value = await _driver.record(uniqueId.value).get(await _db);
       if (value != null) {
-        await _driver.delete(
+        await _driver.record(uniqueId.value).delete(
           await _db,
         );
         return true;

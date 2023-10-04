@@ -78,10 +78,14 @@ class UserBusinessProfileLocalDbRepository<T extends BusinessProfileEntity>
       final value =
           await _businessProfile.record(uniqueId.value).get(await _db);
       if (value != null) {
-        int counter = await _businessProfile.delete(
+        int? count = await _businessProfile.record(uniqueId.value).delete(
           await _db,
         );
-        return true;
+        if (count!=null && count >= 0) {
+          return true;
+        } else {
+          return false;
+        }
       }
       return false;
     });

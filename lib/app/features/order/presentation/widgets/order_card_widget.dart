@@ -193,16 +193,12 @@ class _OrderCardWidgetView
                               textDirection:
                                   serviceLocator<LanguageController>()
                                       .targetTextDirection,
-                              child: WrapText(
+                              child: Text(
                                 'Order ID: HMW-${widget.orderEntity.orderID} ',
-                                breakWordCharacter: '-',
-                                smartSizeMode: false,
-                                asyncMode: true,
-                                minFontSize: 12,
-                                maxFontSize: 14,
-                                textStyle: context.bodySmall!
-                                    .copyWith(fontWeight: FontWeight.w600),
+                                style: context.labelLarge!
+                                    .copyWith(fontWeight: FontWeight.w600,color: Colors.white.onColor,),
                                 maxLines: 1,
+                                softWrap: true,
                                 overflow: TextOverflow.ellipsis,
                               ),
                             ),
@@ -213,6 +209,7 @@ class _OrderCardWidgetView
                               textDirection:
                                   serviceLocator<LanguageController>()
                                       .targetTextDirection,
+                              crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
                                 Icon(
                                   Icons.access_time,
@@ -225,19 +222,22 @@ class _OrderCardWidgetView
                                   textDirection:
                                       serviceLocator<LanguageController>()
                                           .targetTextDirection,
-                                  child: WrapText(
-                                    dateTimeFormatToString(
-                                            widget.orderEntity.orderDateTime) ??
-                                        '',
-                                    breakWordCharacter: '-',
-                                    smartSizeMode: false,
-                                    asyncMode: true,
-                                    minFontSize: 12,
-                                    maxFontSize: 14,
-                                    textStyle: context.labelSmall!
-                                        .copyWith(fontWeight: FontWeight.w500),
-                                    maxLines: 1,
-                                    overflow: TextOverflow.ellipsis,
+                                  child: Wrap(
+                                    textDirection:
+                                    serviceLocator<LanguageController>()
+                                        .targetTextDirection,
+                                    children: [
+                                      Text(
+                                        dateTimeFormatToString(
+                                                widget.orderEntity.orderDateTime) ??
+                                            '',
+                                        style: context.labelMedium!
+                                            .copyWith(fontWeight: FontWeight.w500,color: Colors.white.onColor,),
+                                        maxLines: 1,
+                                        softWrap: true,
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                    ],
                                   ),
                                 ),
                                 const Spacer(),

@@ -15,12 +15,15 @@ class _OrderTypeWidgetController extends State<OrderTypeWidget> {
   List<OrderTypeInfo> listOfOrderTypeInfo = [];
   OrderTypeInfo? selectedOrderTypeInfo;
   int selectedIndex = 0;
+  late final ScrollController scrollController;
+  int currentIndex = 0;
 
   @override
   void initState() {
     super.initState();
     listOfOrderTypeInfo = [];
     listOfOrderTypeInfo.clear();
+    scrollController = ScrollController();
     initListOfOrderTypeInfo();
     selectOrderTypeInfo(selectedIndex);
   }
@@ -89,6 +92,87 @@ class _OrderTypeWidgetView
 
   @override
   Widget build(BuildContext context) {
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(10),
+      child: Container(
+        height: 65,
+        width: context.width,
+        color: Colors.grey.shade200,
+        child: ScrollableRow(
+          controller: state.scrollController,
+          padding: EdgeInsetsDirectional.zero,
+          mainAxisSize: MainAxisSize.min,
+          textDirection:
+          serviceLocator<LanguageController>()
+              .targetTextDirection,
+          physics: const BouncingScrollPhysics(),
+          constraintsBuilder: (constraints) =>
+              BoxConstraints(
+                minWidth: constraints.maxWidth,
+              ),
+          flexible: false,
+          children: List.generate(
+              state.listOfOrderTypeInfo.length,
+                  (index) => StatefulBuilder(
+                builder: (context, setState) {
+                  return Padding(
+                    padding:
+                    const EdgeInsetsDirectional
+                        .only(start: 8, end: 8.0),
+                    child: ElevatedButton(
+                      key: ValueKey(index),
+                      style: ElevatedButton.styleFrom(
+                        shape: RoundedRectangleBorder(
+                          borderRadius:
+                          BorderRadiusDirectional
+                              .circular(10),
+                        ),
+                        minimumSize: Size(74, 42),
+                        maximumSize: Size(104, 42),
+                        //fixedSize: Size(104, 42),
+                        backgroundColor:
+                        (state.currentIndex ==
+                            index)
+                            ? flexExt.FlexStringExtensions('#2C73D2').toColor
+                            : flexExt.FlexStringExtensions('#D4E5ED').toColor,
+                        //disabledBackgroundColor: '#B0A8B9'.toColor,
+                      ),
+                      onPressed: () {
+                        state.selectOrderTypeInfo(index);
+                      },
+                      child: Text.rich(
+                        TextSpan(
+                          text: '${state.listOfOrderTypeInfo[index].title} ',
+                          children: const [
+                            TextSpan(
+                              text: '3',
+                              style: TextStyle(
+                                fontWeight: FontWeight.w600,
+                              ),
+                            )
+                          ],
+                        ),
+                        maxLines: 1,
+                        overflow:
+                        TextOverflow.ellipsis,
+                        softWrap: true,
+                        textAlign: TextAlign.center,
+                        style: context.bodyMedium!
+                            .copyWith(
+                            color:
+                            state.currentIndex ==
+                                index
+                                ? Colors.white
+                                : Colors
+                                .black,),
+                      ),
+                    ),
+                  );
+                },
+              )),
+        ),
+      ),
+    );
     return SizedBox(
       child: SingleChildScrollView(
         scrollDirection: Axis.horizontal,

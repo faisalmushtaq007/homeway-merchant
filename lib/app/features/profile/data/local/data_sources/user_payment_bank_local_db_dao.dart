@@ -73,10 +73,14 @@ class UserPaymentBankLocalDbRepository<T extends PaymentBankEntity>
     final result = await tryCatch<bool>(() async {
       final value = await _paymentBank.record(uniqueId.value).get(await _db);
       if (value != null) {
-        int counter = await _paymentBank.delete(
+        int? count = await _paymentBank.record(uniqueId.value).delete(
           await _db,
         );
-        return true;
+        if (count!=null && count >= 0) {
+          return true;
+        } else {
+          return false;
+        }
       }
       return false;
     });
