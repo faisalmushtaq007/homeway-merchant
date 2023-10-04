@@ -1,6 +1,6 @@
 part of 'package:homemakers_merchant/app/features/order/index.dart';
 
-class OrderEntity extends INetworkModel<OrderEntity> with AppEquatable {
+class OrderEntity extends INetworkModel<OrderEntity> with EquatableMixin {
   OrderEntity({
     required this.orderDateTime,
     required this.userInfo,
@@ -119,10 +119,7 @@ class OrderEntity extends INetworkModel<OrderEntity> with AppEquatable {
   }
 
   @override
-  bool get cacheHash => true;
-
-  @override
-  List<Object?> get hashParameters => [
+  List<Object?> get props => [
         orderDateTime,
         orderType,
         userInfo,

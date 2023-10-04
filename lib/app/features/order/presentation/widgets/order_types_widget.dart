@@ -79,7 +79,7 @@ class _OrderTypeWidgetController extends State<OrderTypeWidget> {
     listOfOrderTypeInfo[index].copyWith(hasSelected: true);
     selectedOrderTypeInfo = listOfOrderTypeInfo[index];
     widget.onChanged(index);
-    //setState(() {});
+    setState(() {});
   }
 
   @override
@@ -113,8 +113,8 @@ class _OrderTypeWidgetView
           flexible: false,
           children: List.generate(
               state.listOfOrderTypeInfo.length,
-                  (index) => StatefulBuilder(
-                builder: (context, setState) {
+                  (index) => Builder(
+                builder: (context) {
                   return Padding(
                     padding:
                     const EdgeInsetsDirectional

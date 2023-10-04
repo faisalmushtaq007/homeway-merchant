@@ -388,7 +388,9 @@ class Assets {
       'assets/dummy_today_sales_analysis.json';
   static const String dummyTranscationData =
       'assets/dummy_transcation_data.json';
-  static const String dummyWeeklyAnalysis = 'assets/dummy_weekly_old_analysis.json';
+  static const String dummyWeeklyAnalysis = 'assets/dummy_weekly_analysis.json';
+  static const String dummyWeeklyOldAnalysis =
+      'assets/dummy_weekly_old_analysis.json';
   static const $AssetsImageGen image = $AssetsImageGen();
   static const $AssetsLottieGen lottie = $AssetsLottieGen();
   static const $AssetsSvgGen svg = $AssetsSvgGen();
@@ -400,7 +402,8 @@ class Assets {
         dummyTodayOrderAnalysis,
         dummyTodaySalesAnalysis,
         dummyTranscationData,
-        dummyWeeklyAnalysis
+        dummyWeeklyAnalysis,
+        dummyWeeklyOldAnalysis
       ];
 }
 

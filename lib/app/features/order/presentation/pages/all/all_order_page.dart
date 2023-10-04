@@ -320,8 +320,8 @@ class _AllOrderPagesView
               ],
             ),
             secondChild: const Offstage(),
-            duration: const Duration(milliseconds: 500),
-            crossFadeState: (state._pagingController.value.itemList.isNotNullOrEmpty)
+            duration: const Duration(milliseconds: 300),
+            crossFadeState: (state._pagingController.value.itemList.isNotNullOrEmpty && state._allAvailableOrders.length>0)
                 ? CrossFadeState.showFirst
                 : CrossFadeState.showSecond,
           ),
