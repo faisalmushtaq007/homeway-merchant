@@ -19,7 +19,6 @@ class _ManageOrderPageController extends State<ManageOrderPage> {
     scrollController = ScrollController();
     customScrollViewScrollController = ScrollController();
     // set default index of order is zero
-
     onChangeOrderType(0);
   }
 
@@ -150,30 +149,34 @@ class _ManageOrderPageView
                     SliverFillRemaining(
                       fillOverscroll: true,
                       hasScrollBody: true,
-                      child: switch (serviceLocator<ManageOrderController>()
-                          .currentOrderIndex) {
-                        0 => const AllOrderPages(
-                            key: Key('manage-order-all-orders-widget'),
-                          ),
-                        1 => const AllNewOrderPage(
-                            key: Key('manage-order-new-orders-widget'),
-                          ),
-                        2 => const AllScheduleOrderPage(
-                            key: Key('manage-order-schedule-orders-widget'),
-                          ),
-                        3 => const AllOnProcessOrderPage(
-                            key: Key('manage-order-onprocess-orders-widget'),
-                          ),
-                        4 => const AllDeliverOrderPage(
-                            key: Key('manage-order-deliver-orders-widget'),
-                          ),
-                        5 => const AllCancelOrderPage(
-                            key: Key('manage-order-cancel-orders-widget'),
-                          ),
-                        _ => const AllNewOrderPage(
-                            key: Key('manage-order-all-orders-widget'),
-                          ),
-                      },
+                      child: Builder(
+                        builder: (context) {
+                          return switch (serviceLocator<ManageOrderController>()
+                              .currentOrderIndex) {
+                            0 => const AllOrderPages(
+                                key: Key('manage-order-all-orders-widget'),
+                              ),
+                            1 => const AllNewOrderPage(
+                                key: Key('manage-order-new-orders-widget'),
+                              ),
+                            2 => const AllScheduleOrderPage(
+                                key: Key('manage-order-schedule-orders-widget'),
+                              ),
+                            3 => const AllOnProcessOrderPage(
+                                key: Key('manage-order-onprocess-orders-widget'),
+                              ),
+                            4 => const AllDeliverOrderPage(
+                                key: Key('manage-order-deliver-orders-widget'),
+                              ),
+                            5 => const AllCancelOrderPage(
+                                key: Key('manage-order-cancel-orders-widget'),
+                              ),
+                            _ => const AllNewOrderPage(
+                                key: Key('manage-order-all-orders-widget'),
+                              ),
+                          };
+                        },
+                      ),
                     ),
                   ],
                 ),

@@ -16,7 +16,6 @@ class _OrderTypeWidgetController extends State<OrderTypeWidget> {
   OrderTypeInfo? selectedOrderTypeInfo;
   int selectedIndex = 0;
   late final ScrollController scrollController;
-  int currentIndex = 0;
 
   @override
   void initState() {
@@ -131,7 +130,7 @@ class _OrderTypeWidgetView
                         maximumSize: Size(104, 42),
                         //fixedSize: Size(104, 42),
                         backgroundColor:
-                        (state.currentIndex ==
+                        (state.selectedIndex ==
                             index)
                             ? flexExt.FlexStringExtensions('#2C73D2').toColor
                             : flexExt.FlexStringExtensions('#D4E5ED').toColor,
@@ -160,7 +159,7 @@ class _OrderTypeWidgetView
                         style: context.bodyMedium!
                             .copyWith(
                             color:
-                            state.currentIndex ==
+                            state.selectedIndex ==
                                 index
                                 ? Colors.white
                                 : Colors

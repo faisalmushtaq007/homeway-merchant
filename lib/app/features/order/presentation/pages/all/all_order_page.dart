@@ -26,6 +26,7 @@ class _AllOrderPagesController extends State<AllOrderPages> {
     _allAvailableOrders = [];
     _allAvailableOrders.clear();
     _refreshOrdersList();
+    widgetState = WidgetState<OrderEntity>.loading(context: context);
     listViewBuilderScrollController = ScrollController();
     super.initState();
   }
@@ -177,7 +178,12 @@ class _AllOrderPagesController extends State<AllOrderPages> {
                 );
               }
             case GetAllProcessingOrderState():
-              {}
+              {
+                widgetState = WidgetState<OrderEntity>.processing(
+                  context: context,
+                  message: allOrderState.message,
+                );
+              }
           }
         },
         child: _AllOrderPagesView(this),
@@ -194,136 +200,130 @@ class _AllOrderPagesView
     final double margins = GlobalApp.responsiveInsets(media.size.width);
     final double topPadding =
         margins; //media.padding.top + kToolbarHeight + margins; //margins * 1.5;
+    appLog.d("All order size ${((state._pagingController.value.itemList!=null && state._pagingController.value.itemList!.isNotNullOrEmpty)|| state._allAvailableOrders.isNotEmpty)}, ${state._allAvailableOrders.length}, ${state._pagingController.value.itemList}");
     return CustomScrollView(
       controller: state.listViewBuilderScrollController,
       slivers: [
         SliverToBoxAdapter(
-          child: AnimatedCrossFade(
-            firstChild: Column(
-              mainAxisSize: MainAxisSize.min,
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              textDirection:
-              serviceLocator<LanguageController>().targetTextDirection,
-              children: [
-                const AnimatedGap(6, duration: Duration(milliseconds: 500)),
-                IntrinsicHeight(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            textDirection:
+            serviceLocator<LanguageController>().targetTextDirection,
+            children: [
+              const AnimatedGap(12, duration: Duration(milliseconds: 300)),
+              IntrinsicHeight(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  textDirection: serviceLocator<LanguageController>()
+                      .targetTextDirection,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Expanded(child:  AppSearchInputSliverWidget(
+                      key: const Key('all-orders-search-field-widget'),
+                      onChanged: state._updateSearchTerm,
+                      height: 48,
+                      hintText: 'Search Store',
+
+                    ),),
+                    const AnimatedGap(12,
+                        duration: Duration(milliseconds: 300)),
+                    SizedBox(
+                      height: 46,
+                      child: OutlinedButton(
+                        onPressed: () {},
+                        style: OutlinedButton.styleFrom(
+                          shape: RoundedRectangleBorder(
+                            borderRadius:
+                            BorderRadiusDirectional.circular(10),
+                          ),
+                          side: const BorderSide(
+                              color: Color.fromRGBO(238, 238, 238, 1)),
+                          backgroundColor: Colors.white,
+                        ),
+                        child: Icon(
+                          Icons.filter_list,
+                          textDirection:
+                          serviceLocator<LanguageController>()
+                              .targetTextDirection,
+                          color: context.primaryColor,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              const AnimatedGap(12, duration: Duration(milliseconds: 300)),
+              ListTile(
+                dense: true,
+                title: IntrinsicHeight(
                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     textDirection: serviceLocator<LanguageController>()
                         .targetTextDirection,
-                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Expanded(child:  AppSearchInputSliverWidget(
-                        key: const Key('all-orders-search-field-widget'),
-                        onChanged: state._updateSearchTerm,
-                        height: 48,
-                        hintText: 'Search Store',
-
-                      ),),
-                      const AnimatedGap(12,
+                      Text(
+                        'All Orders',
+                        style: context.labelMedium!.copyWith(
+                            fontWeight: FontWeight.w600, fontSize: 18),
+                        textDirection:
+                        serviceLocator<LanguageController>()
+                            .targetTextDirection,
+                      ),
+                      const AnimatedGap(3,
                           duration: Duration(milliseconds: 500)),
-                      SizedBox(
-                        height: 46,
-                        child: OutlinedButton(
-                          onPressed: () {},
-                          style: OutlinedButton.styleFrom(
-                            shape: RoundedRectangleBorder(
-                              borderRadius:
-                              BorderRadiusDirectional.circular(10),
-                            ),
-                            side: const BorderSide(
-                                color: Color.fromRGBO(238, 238, 238, 1)),
-                            backgroundColor: Colors.white,
-                          ),
-                          child: Icon(
-                            Icons.filter_list,
+                      Card(
+                        shape: RoundedRectangleBorder(
+                          borderRadius:
+                          BorderRadiusDirectional.circular(20),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsetsDirectional.only(
+                              start: 12.0, end: 12, top: 4, bottom: 4),
+                          child: Text(
+                            '${state._pagingController.value.itemList?.length??0}',
                             textDirection:
                             serviceLocator<LanguageController>()
                                 .targetTextDirection,
-                            color: context.primaryColor,
+                          ),
+                        ),
+                      ),
+                      Spacer(),
+                      ConstrainedBox(
+                        constraints:
+                        BoxConstraints(maxWidth: context.width / 3),
+                        child: AllStoreDialogWidget(
+                          key: const Key('all-order-store-dialog-widget'),
+                          onChanged: (value) {},
+                          icon: Icons.arrow_drop_down,
+                          decoration: BoxDecoration(
+                            borderRadius:
+                            BorderRadiusDirectional.circular(6),
+                            color: Colors.white,
+                            border: Border.all(
+                              color: Color.fromRGBO(127, 129, 132, 1),
+                            ),
+                          ),
+                          padding: EdgeInsetsDirectional.only(
+                            start: 8,
+                            end: 2,
+                            top: 4,
+                            bottom: 4,
                           ),
                         ),
                       ),
                     ],
                   ),
                 ),
-                const AnimatedGap(6, duration: Duration(milliseconds: 500)),
-                ListTile(
-                  dense: true,
-                  title: IntrinsicHeight(
-                    child: Row(
-                      textDirection: serviceLocator<LanguageController>()
-                          .targetTextDirection,
-                      children: [
-                        Text(
-                          'All Orders',
-                          style: context.labelMedium!.copyWith(
-                              fontWeight: FontWeight.w600, fontSize: 18),
-                          textDirection:
-                          serviceLocator<LanguageController>()
-                              .targetTextDirection,
-                        ),
-                        const AnimatedGap(3,
-                            duration: Duration(milliseconds: 500)),
-                        Card(
-                          shape: RoundedRectangleBorder(
-                            borderRadius:
-                            BorderRadiusDirectional.circular(20),
-                          ),
-                          child: Padding(
-                            padding: const EdgeInsetsDirectional.only(
-                                start: 12.0, end: 12, top: 4, bottom: 4),
-                            child: Text(
-                              '${state._allAvailableOrders.length}',
-                              textDirection:
-                              serviceLocator<LanguageController>()
-                                  .targetTextDirection,
-                            ),
-                          ),
-                        ),
-                        Spacer(),
-                        ConstrainedBox(
-                          constraints:
-                          BoxConstraints(maxWidth: context.width / 3),
-                          child: AllStoreDialogWidget(
-                            key: const Key('all-order-store-dialog-widget'),
-                            onChanged: (value) {},
-                            icon: Icons.arrow_drop_down,
-                            decoration: BoxDecoration(
-                              borderRadius:
-                              BorderRadiusDirectional.circular(6),
-                              color: Colors.white,
-                              border: Border.all(
-                                color: Color.fromRGBO(127, 129, 132, 1),
-                              ),
-                            ),
-                            padding: EdgeInsetsDirectional.only(
-                              start: 8,
-                              end: 2,
-                              top: 4,
-                              bottom: 4,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  visualDensity:
-                  const VisualDensity(horizontal: -4, vertical: -4),
-                  horizontalTitleGap: 0,
-                  minLeadingWidth: 0,
-                  contentPadding:
-                  const EdgeInsetsDirectional.symmetric(horizontal: 2),
-                ),
-                const AnimatedGap(6, duration: Duration(milliseconds: 500)),
-              ],
-            ),
-            secondChild: const Offstage(),
-            duration: const Duration(milliseconds: 300),
-            crossFadeState: (state._pagingController.value.itemList.isNotNullOrEmpty && state._allAvailableOrders.length>0)
-                ? CrossFadeState.showFirst
-                : CrossFadeState.showSecond,
+                visualDensity:
+                const VisualDensity(horizontal: -4, vertical: -4),
+                horizontalTitleGap: 0,
+                minLeadingWidth: 0,
+                contentPadding:
+                const EdgeInsetsDirectional.symmetric(horizontal: 2),
+              ),
+              const AnimatedGap(12, duration: Duration(milliseconds: 500)),
+            ],
           ),
         ),
         PagedSliverList(
