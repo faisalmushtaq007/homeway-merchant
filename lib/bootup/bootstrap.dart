@@ -148,6 +148,8 @@ Future<void> bootstrap(FutureOr<dynamic> Function() builder) async {
         themeController: serviceLocator<ThemeController>(),
       ),
     );
+    // Todo(prasant): Remove Temp saved order details
+    AppStartConfig.shared.saveAllTempOrderData();
     // Remove splash screen when bootstrap is complete
     FlutterNativeSplash.remove();
   });

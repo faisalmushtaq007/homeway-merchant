@@ -45,9 +45,7 @@ class _SplashPageViewController extends State<SplashPage>
 
   @override
   void initState() {
-    /*unawaited(() async {
-      await initialRoute();
-    }.call());*/
+
     super.initState();
     scrollController = ScrollController();
     _animationController = AnimationController(
@@ -61,71 +59,6 @@ class _SplashPageViewController extends State<SplashPage>
       ),
     );
     _animationController.forward();
-  }
-
-  Future<void> initialRoute() async {
-    AppUserEntity cacheUserEntity = serviceLocator<UserModelStorageController>().userModel;
-    if(cacheUserEntity.userID==-1){
-      final getCurrentUserResult = await serviceLocator<GetAllAppUserPaginationUseCase>()(
-        pageSize: 10,
-        pageKey: 0,
-        entity: AppUserEntity(hasCurrentUser: true,),
-      );
-      await getCurrentUserResult.when(
-        remote: (data, meta) {
-          if (data.isNotNullOrEmpty) {
-            serviceLocator<AppUserEntity>().updateEntity(data!.last);
-            setState(() {});
-            appLog.d('Remote User Info ${data!.last.toMap()}');
-          }
-        },
-        localDb: (data, meta) {
-          if (data.isNotNullOrEmpty) {
-            serviceLocator<AppUserEntity>().updateEntity(data!.last);
-            setState(() {});
-            appLog.d('Local User Info ${data!.last.toMap()}');
-          }
-        },
-        error: (dataSourceFailure, reason, error, networkException, stackTrace, exception, extra) {
-          appLog.d('Error $reason');
-        },
-      );
-      cacheUserEntity=serviceLocator<AppUserEntity>();
-    }
-    bool hasCurrentUserLoggedIn = cacheUserEntity.hasCurrentUser;
-    appLog.d('Current Status ${hasCurrentUserLoggedIn}, ${cacheUserEntity.currentUserStage}');
-    if (hasCurrentUserLoggedIn) {
-      if(!mounted){
-        return;
-      }
-      final int index = cacheUserEntity.currentUserStage + 1;
-      switch (index) {
-        case 1:
-          {
-            return context.pushReplacement(Routes.CREATE_BUSINESS_PROFILE_PAGE);
-          }
-        case 2:
-          {
-            return context.pushReplacement(Routes.CONFIRM_BUSINESS_TYPE_PAGE);
-          }
-        case 3:
-          {
-            return context.pushReplacement(Routes.BANK_INFORMATION_PAGE);
-          }
-        case 4:
-          {
-            return context.pushReplacement(Routes.NEW_DOCUMENT_LIST_PAGE);
-          }
-        case 5:
-          {
-            return context.pushReplacement(Routes.PRIMARY_DASHBOARD_PAGE);
-          }
-        case _:
-          {
-            return context.pushReplacement(Routes.MAIN_DASHBOARD_PAGE);
-          }
-      }
-    }
   }
 
   @override

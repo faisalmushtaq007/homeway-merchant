@@ -17,8 +17,7 @@ class GetAllOrderUseCase extends OrderQueryAllUseCaseIORecord<
   final OrderRepository orderRepository;
 
   @override
-  Future<DataSourceState<List<OrderEntity>>> call(
-      (
+  Future<DataSourceState<List<OrderEntity>>> call((
         int pageKey,
         int pageSize,
         String? searchText,
@@ -26,8 +25,7 @@ class GetAllOrderUseCase extends OrderQueryAllUseCaseIORecord<
         String? filtering,
         String? sorting,
         Timestamp? startTimeStamp,
-        Timestamp? endTimeStamp,
-      ) record) {
+        Timestamp? endTimeStamp, ) record) {
     return orderRepository.getAllOrder(
       pageKey: record.$1,
       pageSize: record.$2,

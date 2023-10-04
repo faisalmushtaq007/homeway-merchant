@@ -76,7 +76,7 @@ class AppStartConfig {
   }
 
   Future<void> saveAllTempOrderData() async {
-    final getAllOrderResult = await serviceLocator<GetAllOrderUseCase>()(serviceLocator());
+    final getAllOrderResult = await serviceLocator<GetAllOrderUseCase>()((0, 10,null,OrderType.all,null,null,null,null));
     await getAllOrderResult.when(remote: (data, meta) {
 
     }, localDb: (data, meta) async {

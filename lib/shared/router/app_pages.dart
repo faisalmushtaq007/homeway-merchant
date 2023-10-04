@@ -628,5 +628,4 @@ class AppRouter {
 
   static GoRouter get router => _router;
 
-
 }
