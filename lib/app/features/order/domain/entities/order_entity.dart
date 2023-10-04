@@ -134,8 +134,8 @@ class OrderEntity extends INetworkModel<OrderEntity> with EquatableMixin {
       ];
 }
 
-class Payment {
-  Payment({
+class Payment extends Equatable{
+  const Payment({
     this.mode = '',
     this.amount = 0.0,
     this.paymentID = -1,
@@ -184,10 +184,13 @@ class Payment {
         'paymentDateTime':
             Timestamp.fromDateTime(paymentDateTime).millisecondsSinceEpoch,
       };
+
+  @override
+  List<Object?> get props => [mode,amount,paymentID,currency,deliveryAmount,discountAmount,serviceAmount,tax,paymentDateTime,];
 }
 
-class Store {
-  Store({
+class Store extends Equatable{
+  const Store({
     required this.location,
     this.storeName = '',
     this.storeID = -1,
@@ -224,10 +227,13 @@ class Store {
         'orderMenuImage': orderMenuImage,
         'orderMenuName': orderMenuName,
       };
+
+  @override
+  List<Object?> get props => [storeName,location,storeID,menu,orderMenuImage,orderMenuName,];
 }
 
-class AddressLocation {
-  AddressLocation({
+class AddressLocation extends Equatable{
+  const AddressLocation({
     this.lng = 0.0,
     this.lat = 0.0,
   });
@@ -245,10 +251,13 @@ class AddressLocation {
         'lng': lng,
         'lat': lat,
       };
+
+  @override
+  List<Object?> get props => [lng,lat,];
 }
 
-class Menu {
-  Menu({
+class Menu extends Equatable{
+  const Menu({
     this.quantity = 1,
     this.unit = '',
     this.numberOfServingPerson = 1,
@@ -329,9 +338,30 @@ class Menu {
         'currency': currency,
         'isInstantMenu': isInstantMenu,
       };
+
+  @override
+  List<Object?> get props => [
+    quantity,
+    unit ,
+    numberOfServingPerson ,
+    addons ,
+    instruction ,
+    menuID ,
+    menuName ,
+    menuImage ,
+    tasteLevel ,
+    tasteType ,
+    menuCategory ,
+    menuSubCategory ,
+    orderPortion,
+    price ,
+    discountPrice ,
+    currency ,
+    isInstantMenu ,
+  ];
 }
 
-class OrderPortion {
+class OrderPortion extends Equatable{
   const OrderPortion({
     this.portionSize = 0.0,
     this.portionUnit = '',
@@ -353,10 +383,13 @@ class OrderPortion {
       'portionUnit': portionUnit,
     };
   }
+
+  @override
+  List<Object?> get props => [portionSize,portionUnit];
 }
 
-class Addon {
-  Addon({
+class Addon extends Equatable{
+  const Addon({
     this.addonsImage = '',
     this.quantity = 1,
     this.addonsName = '',
@@ -399,10 +432,22 @@ class Addon {
         'discountPrice': discountPrice,
         'currency': currency,
       };
+
+  @override
+  List<Object?> get props => [
+    addonsImage,
+    quantity,
+    addonsName,
+    addonsId ,
+    orderPortion,
+    price ,
+    discountPrice ,
+    currency,
+  ];
 }
 
-class UserInfo {
-  UserInfo({
+class UserInfo extends Equatable{
+  const UserInfo({
     required this.deliveryAddress,
     this.lng = 0.0,
     this.contactNumber = '',
@@ -441,10 +486,21 @@ class UserInfo {
         'lat': lat,
         'completeAddress': completeAddress,
       };
+
+  @override
+  List<Object?> get props => [
+    deliveryAddress,
+    lng,
+    contactNumber,
+    userName,
+    userId ,
+    lat ,
+    completeAddress ,
+  ];
 }
 
-class DeliveryAddress {
-  DeliveryAddress({
+class DeliveryAddress extends Equatable{
+  const DeliveryAddress({
     this.contactPerson = '',
     this.lng = 0.0,
     this.contactNumber = '',
@@ -474,4 +530,13 @@ class DeliveryAddress {
         'completeAddress': completeAddress,
         'contactPerson': contactPerson,
       };
+
+  @override
+  List<Object?> get props => [
+    contactPerson,
+    lng,
+    contactNumber,
+    lat,
+    completeAddress,
+  ];
 }
