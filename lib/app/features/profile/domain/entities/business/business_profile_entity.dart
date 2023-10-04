@@ -80,7 +80,8 @@ class BusinessProfileEntity with AppEquatable {
       'country_dial_code': countryDialCode ?? '+966',
       'phoneNumberWithoutDialCode': phoneNumberWithoutDialCode ?? '',
       'newBusinessDocumentEntity': newBusinessDocumentEntity?.toMap() ?? NewBusinessDocumentEntity().toMap(),
-      'allBusinessDocuments': allBusinessDocuments ?? <NewBusinessDocumentEntity>[],
+      'allBusinessDocuments':(allBusinessDocuments.isNotNullOrEmpty)
+          ? this.allBusinessDocuments.map((e) => e.toMap()).toList()  : <NewBusinessDocumentEntity>[],
       //'profileImage':profileImageEntity?.toMap()??CaptureImageEntity().toMap()
     };
   }

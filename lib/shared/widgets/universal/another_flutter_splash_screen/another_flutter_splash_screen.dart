@@ -314,15 +314,14 @@ class _FlutterSplashScreenState extends State<FlutterSplashScreen> {
     });
 
     Future.delayed(widget.duration, () {
-      widget.onEnd?.call();
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-          builder: (BuildContext context) {
-            return widget.defaultNextScreen ?? Container();
-          },
-        ),
-      );
+      try {
+        widget.onEnd?.call();
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(builder: (context) => widget.defaultNextScreen ?? Container()),
+        );
+      } catch (e) {
+        print(e);
+      }
     });
   }
 
