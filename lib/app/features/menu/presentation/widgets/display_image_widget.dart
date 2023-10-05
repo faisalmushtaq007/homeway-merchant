@@ -20,6 +20,8 @@ class DisplayImage extends StatelessWidget {
   final double circularRadius;
   final double borderRadius;
   final double? bottom;
+  final Color? backgroundColor;
+  final double innerCircularRadius;
 
   // Constructor
   const DisplayImage({
@@ -33,8 +35,10 @@ class DisplayImage extends StatelessWidget {
     this.top,
     this.end,
     this.circularRadius = 36,
+    this.innerCircularRadius=32,
     this.borderRadius = 20,
     this.bottom,
+    this.backgroundColor,
   }) : super(key: key);
 
   @override
@@ -73,9 +77,10 @@ class DisplayImage extends StatelessWidget {
         },
         child: CircleAvatar(
           radius: circularRadius,
-          backgroundColor: Colors.white,
+          backgroundColor: backgroundColor??Colors.white,
           child: CircleAvatar(
             backgroundColor: const Color.fromRGBO(238, 238, 238, 1),
+            radius: innerCircularRadius,
             //backgroundImage: hasIconImage ? null : image as ImageProvider,
             child: (!hasIconImage)
                 ? ImageHelper(
@@ -102,9 +107,8 @@ class DisplayImage extends StatelessWidget {
                         textDirection: serviceLocator<LanguageController>()
                             .targetTextDirection,
                         Icons.restaurant_menu,
-                        size: 24.0,
+                        size: 24,
                       ),
-            radius: 32,
           ),
         ),
       ),

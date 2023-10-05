@@ -3,6 +3,8 @@ import 'package:homemakers_merchant/bootup/injection_container.dart';
 import 'package:homemakers_merchant/config/translation/extension/text_extension.dart';
 import 'package:homemakers_merchant/config/translation/language_controller.dart';
 import 'package:homemakers_merchant/core/extensions/app_extension.dart';
+import 'package:homemakers_merchant/core/extensions/global_extensions/src/object.dart';
+import 'package:homemakers_merchant/shared/widgets/universal/animated_gap/src/widgets/animated_gap.dart';
 
 class BigUserCard extends StatelessWidget {
 
@@ -15,6 +17,8 @@ class BigUserCard extends StatelessWidget {
     this.userMoreInfo,
     this.margin,
     this.userProfileImageWidget,
+    this.customProfileImageWidget,
+    this.subTitle='',
   });
   final Color? backgroundColor;
   final Color? settingColor;
@@ -22,10 +26,12 @@ class BigUserCard extends StatelessWidget {
   final Color? backgroundMotifColor;
   final Widget? cardActionWidget;
   final String? userName;
+  final String? subTitle;
   final Widget? userMoreInfo;
   final ImageProvider? userProfilePic;
   final EdgeInsetsGeometry? margin;
   final Widget? userProfileImageWidget;
+  final Widget? customProfileImageWidget;
 
   @override
   Widget build(BuildContext context) {
@@ -70,11 +76,16 @@ class BigUserCard extends StatelessWidget {
                     children: [
                       // User profile
                       Expanded(
-                        child: CircleAvatar(
-                          radius: context.width/9,
-                          backgroundImage: userProfilePic,
-                          backgroundColor: Colors.transparent,
-                          child: userProfileImageWidget,
+                        child: AnimatedCrossFade(
+                          duration: const Duration(milliseconds: 500),
+                          crossFadeState: (customProfileImageWidget.isNotNull)?CrossFadeState.showFirst:CrossFadeState.showSecond,
+                          firstChild: customProfileImageWidget??const Offstage(),
+                          secondChild: CircleAvatar(
+                            radius: context.width/9,
+                            backgroundImage: userProfilePic,
+                            backgroundColor: Colors.transparent,
+                            child: userProfileImageWidget,
+                          ),
                         ),
                       ),
                       Expanded(
@@ -100,6 +111,34 @@ class BigUserCard extends StatelessWidget {
                                   textDirection: serviceLocator<LanguageController>().targetTextDirection,
                                 ).translate(),
                               ],
+                            ),
+                            AnimatedCrossFade(
+                              firstChild: const Offstage(),
+                              crossFadeState: subTitle.isNotNull?CrossFadeState.showSecond:CrossFadeState.showFirst,
+                              duration: const Duration(milliseconds: 400),
+                              secondChild: Column(
+                                textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                children: [
+                                  const AnimatedGap(4, duration: const Duration(milliseconds: 400),),
+                                  Wrap(
+                                    children: [
+                                      Text(
+                                        subTitle??'',
+                                        style: context.titleLarge!.copyWith(
+                                          fontWeight: FontWeight.w500,
+                                          //fontSize: context.width / 15,
+                                          //height: 0.9,
+                                          color: Colors.white,
+                                        ),
+                                        softWrap: true,
+                                        maxLines: 2,
+                                        overflow: TextOverflow.ellipsis,
+                                        textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                      ).translate(),
+                                    ],
+                                  ),
+                                ],
+                              ),
                             ),
                             if (userMoreInfo != null) ...[
                               userMoreInfo!,

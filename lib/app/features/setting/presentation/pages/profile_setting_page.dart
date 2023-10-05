@@ -8,6 +8,7 @@ class _ProfileSettingPageController extends State<ProfileSettingPage> {
   late final ScrollController scrollController;
   late final ScrollController customScrollViewScrollController;
   late AppUserEntity appUserEntity;
+  String userImagePath = '';
 
   @override
   void initState() {
@@ -22,6 +23,11 @@ class _ProfileSettingPageController extends State<ProfileSettingPage> {
     scrollController.dispose();
     customScrollViewScrollController.dispose();
     super.dispose();
+  }
+
+  void updateUserProfileImage(String profileImage) {
+    userImagePath = profileImage;
+    setState(() {});
   }
 
   @override
@@ -149,6 +155,31 @@ class _ProfileSettingPageView extends WidgetView<ProfileSettingPage, _ProfileSet
                                 color: Colors.white,
                                 fontSize: 16,
                               ),
+                            ),
+                            subTitle: "${(state.appUserEntity.isNotNull && state.appUserEntity!.businessProfile.isNotNull && !state.appUserEntity!.businessProfile!.businessName.isEmptyOrNull) ? state.appUserEntity!.businessProfile!.businessName : ''}",
+                            customProfileImageWidget: DisplayImage(
+                              imagePath: state.userImagePath,
+                              onPressed: () async {
+                                final result = await UploadImageUtils()
+                                    .selectImagePicker(context);
+                                if (result.imagePath.isNotEmpty) {
+                                  state.updateUserProfileImage(
+                                    result.metaData['filePath'],
+                                  );
+                                } else {}
+                              },
+                              hasIconImage:
+                              state.userImagePath.isEmpty ? true : false,
+                              hasEditButton:
+                              state.userImagePath.isEmpty ? false : true,
+                              hasCustomIcon:
+                              state.userImagePath.isEmpty ? true : false,
+                              customIcon: Icon(Icons.camera_alt),
+                              circularRadius: 40,
+                              borderRadius: 40,
+                              end: -2,
+                              bottom: 1,
+                              innerCircularRadius: state.userImagePath.isEmpty ? 32 : 40,
                             ),
                             cardActionWidget: SettingsItem(
                               icons: Icons.edit,
