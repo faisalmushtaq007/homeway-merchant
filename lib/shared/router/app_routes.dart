@@ -107,6 +107,7 @@ abstract class Routes {
   static const String NEW_MAP_PAGE = _Paths.NEW_MAP_PAGE;
   static const String ORDER_ANALYSIS_PAGE = _Paths.ORDER_ANALYSIS_PAGE;
   static const String INITIAL_SPLASH_PAGE = _Paths.INITIAL_SPLASH_PAGE;
+  static const String PROFILE_SETTING_PAGE = _Paths.PROFILE_SETTING_PAGE;
 }
 
 abstract class _Paths {
@@ -208,5 +209,5 @@ abstract class _Paths {
   static const String NEW_MAP_PAGE = '/map-page';
   static const String ORDER_ANALYSIS_PAGE = '/order-analysis';
   static const String INITIAL_SPLASH_PAGE = '/initial_page';
-
+  static const String PROFILE_SETTING_PAGE = '/profile_setting_page';
 }

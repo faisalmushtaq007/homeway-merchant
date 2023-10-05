@@ -45,8 +45,10 @@ class _PrimaryDashboardDrawerController extends State<PrimaryDashboardDrawer> {
             drawerID: 01,
             drawerName: 'My Profile',
             leading: const Icon(Icons.person),
-            onPressed: () {
-              return Navigator.of(context).pop();
+            onPressed: () async{
+              Navigator.of(context).pop();
+              final result=await context.push(Routes.PROFILE_SETTING_PAGE);
+              return;
             },
           ),
           DrawerEntity(

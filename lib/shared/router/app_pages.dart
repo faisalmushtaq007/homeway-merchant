@@ -27,6 +27,7 @@ import 'package:homemakers_merchant/app/features/order/index.dart';
 import 'package:homemakers_merchant/app/features/payment/index.dart';
 import 'package:homemakers_merchant/app/features/profile/index.dart';
 import 'package:homemakers_merchant/app/features/rate_review/index.dart';
+import 'package:homemakers_merchant/app/features/setting/index.dart';
 import 'package:homemakers_merchant/app/features/store/index.dart';
 import 'package:homemakers_merchant/bootup/injection_container.dart';
 import 'package:homemakers_merchant/core/common/enum/generic_enum.dart';
@@ -44,7 +45,7 @@ class AppRouter {
 
   AppRouter._();
 
-  static const String INITIAL = Routes.INITIAL_SPLASH_PAGE;
+  static const String INITIAL = Routes.PRIMARY_DASHBOARD_PAGE;
 
   static final GoRouter _router = GoRouter(
     debugLogDiagnostics: true,
@@ -622,6 +623,15 @@ class AppRouter {
           return OrderAnalysis();
         },
       ),
+      GoRoute(
+        path: Routes.PROFILE_SETTING_PAGE,
+        builder: (context, state) {
+          final Map<String, dynamic>? args =
+          state.extra as Map<String, dynamic>?;
+          return ProfileSettingPage();
+        },
+      ),
+
     ],
 
   );

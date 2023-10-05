@@ -45,7 +45,7 @@ class BusinessProfileEntity with AppEquatable {
               .toList()
               .cast<NewBusinessDocumentEntity>()
           : <NewBusinessDocumentEntity>[],
-        //profileImageEntity:map['profileImage']!=null?CaptureImageEntity.fromMap(map['profileImage']):null,
+        profileImageEntity:map['profileImage']!=null?CaptureImageEntity.fromMap(map['profileImage']):null,
     );
   }
 
@@ -82,7 +82,7 @@ class BusinessProfileEntity with AppEquatable {
       'newBusinessDocumentEntity': newBusinessDocumentEntity?.toMap() ?? NewBusinessDocumentEntity().toMap(),
       'allBusinessDocuments':(allBusinessDocuments.isNotNullOrEmpty)
           ? this.allBusinessDocuments.map((e) => e.toMap()).toList()  : <NewBusinessDocumentEntity>[],
-      //'profileImage':profileImageEntity?.toMap()??CaptureImageEntity().toMap()
+      'profileImage':profileImageEntity?.toMap()??CaptureImageEntity().toMap()
     };
   }
 

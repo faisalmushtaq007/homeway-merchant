@@ -1,0 +1,316 @@
+part of 'package:homemakers_merchant/app/features/setting/index.dart';
+class ProfileSettingPage extends StatefulWidget {
+  const ProfileSettingPage({super.key});
+  @override
+  _ProfileSettingPageController createState() => _ProfileSettingPageController();
+}
+class _ProfileSettingPageController extends State<ProfileSettingPage> {
+  late final ScrollController scrollController;
+  late final ScrollController customScrollViewScrollController;
+  late AppUserEntity appUserEntity;
+
+  @override
+  void initState() {
+    appUserEntity=serviceLocator<AppUserEntity>();
+    super.initState();
+    scrollController = ScrollController();
+    customScrollViewScrollController = ScrollController();
+  }
+
+  @override
+  void dispose() {
+    scrollController.dispose();
+    customScrollViewScrollController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) => _ProfileSettingPageView(this);
+}
+class _ProfileSettingPageView extends WidgetView<ProfileSettingPage, _ProfileSettingPageController> {
+  const _ProfileSettingPageView(super.state);
+
+  @override
+  Widget build(BuildContext context) {
+    final MediaQueryData media = MediaQuery.of(context);
+    final double margins = GlobalApp.responsiveInsets(media.size.width);
+    final double topPadding =
+        margins; //media.padding.top + kToolbarHeight + margins; //margins * 1.5;
+    return AnnotatedRegion<SystemUiOverlayStyle>(
+      value: FlexColorScheme.themedSystemNavigationBar(
+        context,
+        useDivider: false,
+        opacity: 0.60,
+        noAppBar: true,
+      ),
+      child: Directionality(
+        textDirection: serviceLocator<LanguageController>().targetTextDirection,
+        child: Scaffold(
+          appBar: AppBar(
+            title: const Text('My Profile'),
+            centerTitle: false,
+            titleSpacing: 0,
+            actions: [
+              IconButton(
+                onPressed: () async {
+                  final notification = await context.push(Routes.NOTIFICATIONS);
+                  return;
+                },
+                icon: Badge(
+                  alignment: AlignmentDirectional.topEnd,
+                  //padding: EdgeInsets.all(4),
+                  backgroundColor: context.colorScheme.secondary,
+                  isLabelVisible: true,
+                  largeSize: 16,
+                  textStyle: const TextStyle(fontSize: 14),
+                  textColor: Colors.yellow,
+                  label: Text(
+                    '10',
+                    style: context.labelSmall!
+                        .copyWith(color: context.colorScheme.onPrimary),
+                    //Color.fromRGBO(251, 219, 11, 1)
+                  ),
+                  child: Icon(Icons.notifications,
+                      color: context.colorScheme.primary),
+                ),
+              ),
+              const Padding(
+                padding: EdgeInsetsDirectional.only(end: 8),
+                child: LanguageSelectionWidget(),
+              ),
+            ],
+          ),
+          /*drawer: const PrimaryDashboardDrawer(
+            key: const Key('transaction-page-drawer'),
+            isMainDrawerPage: false,
+          ),*/
+          body: FadeInDown(
+            key: const Key('profile-setting-page-slideinleft-widget'),
+            from: context.width / 2 - 60,
+            duration: const Duration(milliseconds: 500),
+            child: Directionality(
+              textDirection:
+              serviceLocator<LanguageController>().targetTextDirection,
+              child: PageBody(
+                controller: state.scrollController,
+                constraints: BoxConstraints(
+                  minWidth: 1000,
+                  minHeight: media.size.height -
+                      (media.padding.top +
+                          kToolbarHeight +
+                          media.padding.bottom),
+                ),
+                padding: EdgeInsetsDirectional.only(
+                  top: topPadding,
+                  //bottom: bottomPadding,
+                  start: margins * 2.5,
+                  end: margins * 2.5,
+                ),
+                child: CustomScrollView(
+                  controller: state.customScrollViewScrollController,
+                  shrinkWrap: true,
+                  slivers: [
+                    SliverList(
+                      delegate: SliverChildListDelegate(
+                        [
+                          const AnimatedGap(6,
+                              duration: Duration(milliseconds: 200)),
+                          BigUserCard(
+                            backgroundColor: Colors.red,
+                            userName: "${(state.appUserEntity.isNotNull && state.appUserEntity!.businessProfile.isNotNull && !state.appUserEntity!.businessProfile!.userName.isEmptyOrNull) ? state.appUserEntity!.businessProfile!.userName : 'Hello User'}",
+                            //userProfilePic: AssetImage("assets/image/app_logo_light.jpg"),
+                            userProfileImageWidget: ImageHelper(
+                              image: (state.appUserEntity.businessProfile.isNull && state.appUserEntity.businessProfile!.profileImageEntity.isNull)
+                                  ? 'assets/svg/user_avatar.svg'
+                                  : state.appUserEntity.businessProfile?.profileImageEntity?.originalFilePath??'assets/svg/user_avatar.svg',
+                              filterQuality: FilterQuality.high,
+                              borderRadius:
+                              BorderRadiusDirectional.circular(10),
+                              imageType: findImageType(
+                                  (state.appUserEntity.businessProfile.isNull && state.appUserEntity.businessProfile!.profileImageEntity.isNull)
+                                      ? 'assets/svg/user_avatar.svg'
+                                      : state.appUserEntity.businessProfile?.profileImageEntity?.originalFilePath??'assets/svg/user_avatar.svg'),
+                              imageShape: ImageShape.rectangle,
+                              boxFit: BoxFit.cover,
+                              defaultErrorBuilderColor: Colors.blueGrey,
+                              errorBuilder: const Icon(
+                                Icons.image_not_supported,
+                                size: 10000,
+                              ),
+                              height: context.width/4.75,
+                              width: context.width/4.75,
+                              loaderBuilder:
+                              const CircularProgressIndicator(),
+                              matchTextDirection: true,
+                              placeholderText:
+                              "${(state.appUserEntity.isNotNull && state.appUserEntity!.businessProfile.isNotNull && !state.appUserEntity!.businessProfile!.userName.isEmptyOrNull) ? state.appUserEntity!.businessProfile!.userName : 'Hello User'}",
+                              placeholderTextStyle:
+                              context.labelLarge!.copyWith(
+                                color: Colors.white,
+                                fontSize: 16,
+                              ),
+                            ),
+                            cardActionWidget: SettingsItem(
+                              icons: Icons.edit,
+                              iconStyle: IconStyle(
+                                withBackground: true,
+                                borderRadius: 50,
+                                backgroundColor: Colors.yellow[600],
+                              ),
+                              title: "Modify",
+                              subtitle: "Tap to change your data",
+                              onTap: () {
+                                print("OK");
+                              },
+                            ),
+                          ),
+                          SettingsGroup(
+                            //settingsGroupTitle: "Profile",
+                            items: [
+                              SettingsItem(
+                                onTap: () {},
+                                icons: Icons.account_balance,
+                                title: "Bank Details",
+                                iconStyle: IconStyle(
+                                  iconsColor: Colors.white,
+                                  withBackground: true,
+                                  backgroundColor: context.colorScheme.primary,
+                                ),
+                              ),
+
+                              SettingsItem(
+                                onTap: () {},
+                                icons: CupertinoIcons.cloud_upload,
+                                title: "Documents",
+                                iconStyle: IconStyle(
+                                  iconsColor: Colors.white,
+                                  withBackground: true,
+                                  backgroundColor: context.colorScheme.primary,
+                                ),
+                              ),
+                              SettingsItem(
+                                onTap: () {},
+                                icons: CupertinoIcons.repeat,
+                                title: "Change Phone Number",
+                                iconStyle: IconStyle(
+                                  iconsColor: Colors.white,
+                                  withBackground: true,
+                                  backgroundColor: context.colorScheme.secondary,
+                                ),
+                              ),
+
+                              SettingsItem(
+                                onTap: () {},
+                                icons: CupertinoIcons.repeat,
+                                title: "Change email",
+                                iconStyle: IconStyle(
+                                  iconsColor: Colors.white,
+                                  withBackground: true,
+                                  backgroundColor: context.colorScheme.secondary,
+                                ),
+                              ),
+                            ],
+                          ),
+                          SettingsGroup(
+                            items: [
+                              SettingsItem(
+                                onTap: () {},
+                                icons:Icons.notifications,
+                                iconStyle: IconStyle(),
+                                title: 'Notification',
+                                subtitle: "Set your notification",
+                                titleMaxLine: 1,
+                                subtitleMaxLine: 1,
+                              ),
+                              SettingsItem(
+                                onTap: () {},
+                                icons: Icons.fingerprint,
+                                iconStyle: IconStyle(
+                                  iconsColor: Colors.white,
+                                  withBackground: true,
+                                  backgroundColor: Colors.red,
+                                ),
+                                title: 'Privacy',
+                                subtitle: "Improve your privacy",
+                              ),
+                              SettingsItem(
+                                onTap: () {},
+                                icons: Icons.dark_mode_rounded,
+                                iconStyle: IconStyle(
+                                  iconsColor: Colors.white,
+                                  withBackground: true,
+                                  backgroundColor: Colors.red,
+                                ),
+                                title: 'Dark mode',
+                                subtitle: "Automatic",
+                                trailing: Switch.adaptive(
+                                  value: false,
+                                  onChanged: (value) {},
+                                ),
+                              ),
+                            ],
+                          ),
+                          SettingsGroup(
+                            items: [
+                              SettingsItem(
+                                onTap: () {},
+                                icons: Icons.help,
+                                iconStyle: IconStyle(
+                                  backgroundColor: Colors.purple,
+                                ),
+                                title: 'Help & Support',
+                                subtitle: "Chat with us",
+                              ),
+                            ],
+                          ),
+                          SettingsGroup(
+                            items: [
+                              SettingsItem(
+                                onTap: () {},
+                                icons: Icons.info_rounded,
+                                iconStyle: IconStyle(
+                                  backgroundColor: Colors.purple,
+                                ),
+                                title: 'About',
+                                subtitle: "About the HomeWay App",
+                              ),
+                            ],
+                          ),
+
+                          // You can add a settings title
+                          SettingsGroup(
+                            settingsGroupTitle: "Account",
+                            items: [
+                              /*SettingsItem(
+                                onTap: () {},
+                                icons: CupertinoIcons.delete_solid,
+                                title: "Delete account",
+                                titleStyle: TextStyle(
+                                  color: Colors.red,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),*/
+                              SettingsItem(
+                                onTap: () {},
+                                icons: Icons.exit_to_app_rounded,
+                                title: "Sign Out",
+                                titleStyle: TextStyle(
+                                  color: Colors.red,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
