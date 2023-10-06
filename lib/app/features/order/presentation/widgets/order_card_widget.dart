@@ -15,6 +15,17 @@ class OrderCardWidget extends StatefulWidget {
 }
 
 class _OrderCardWidgetController extends State<OrderCardWidget> {
+  List<Menu> menus = <Menu>[];
+  late OrderMenuDataSource menuDataSource;
+
+  @override
+  void initState() {
+    super.initState();
+    menus = widget.orderEntity.store.menu.toList();
+    menuDataSource = OrderMenuDataSource(menuData: menus);
+  }
+
+
   Widget bottomWidget(int index, {required OrderEntity orderEntity}) {
     return switch (
         OrderStatus.values.byName(OrderStatus.values[index].toString())) {
@@ -137,6 +148,44 @@ class _OrderCardWidgetController extends State<OrderCardWidget> {
         ),
       _ => const Offstage(),
     };
+  }
+
+  Widget orderMenuTable(){
+    return SfDataGrid(
+      source: menuDataSource,
+      columnWidthMode: ColumnWidthMode.fill,
+      columns: <GridColumn>[
+        GridColumn(
+            columnName: 'name',
+            label: Container(
+                padding: EdgeInsets.all(8.0),
+                alignment: Alignment.center,
+                child: Text('Name'))),
+        GridColumn(
+            columnName: 'qty',
+            label: Container(
+                padding: EdgeInsets.all(8.0),
+                alignment: Alignment.center,
+                child: Text(
+                  'QTY',
+                  overflow: TextOverflow.ellipsis,
+                ))),
+        GridColumn(
+            columnName: 'portion',
+            label: Container(
+                padding: EdgeInsets.all(16.0),
+                alignment: Alignment.center,
+                child: Text(
+                  'Portion',
+                ))),
+        /*GridColumn(
+            columnName: 'price',
+            label: Container(
+                padding: EdgeInsets.all(8.0),
+                alignment: Alignment.center,
+                child: Text('Price'))),*/
+      ],
+    );
   }
 
   @override
@@ -279,6 +328,10 @@ class _OrderCardWidgetView
               ),
               const AnimatedGap(4, duration: Duration(milliseconds: 100)),
               Flexible(
+                flex: 1,
+                child: state.orderMenuTable(),
+              ),
+              /*Flexible(
                 flex: 3,
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
@@ -423,7 +476,7 @@ class _OrderCardWidgetView
                               ),
                               const AnimatedGap(2,
                                   duration: Duration(milliseconds: 100)),
-                              /*Directionality(
+                              *//*Directionality(
                                 textDirection: serviceLocator<LanguageController>().targetTextDirection,
                                 child: WrapText(
                                   'OrderID: HMW-${orderEntity.orderID}',
@@ -437,7 +490,7 @@ class _OrderCardWidgetView
                                   overflow: TextOverflow.ellipsis,
                                 ),
                               ),
-                              const AnimatedGap(2, duration: Duration(milliseconds: 100)),*/
+                              const AnimatedGap(2, duration: Duration(milliseconds: 100)),*//*
                               Directionality(
                                 textDirection:
                                     serviceLocator<LanguageController>()
@@ -581,7 +634,8 @@ class _OrderCardWidgetView
                     ),
                   ],
                 ),
-              ),
+              ),*/
+
               const AnimatedGap(12, duration: Duration(milliseconds: 100)),
               const Divider(
                 thickness: 0.75,
@@ -697,5 +751,40 @@ class _OrderCardWidgetView
   String dateTimeFormatToString(DateTime dateTime) {
     //dt
     return dateTime.toMoment().format('MMM, DD YYYY, hh:mm A').toString();
+  }
+}
+
+// An object to set the employee collection data source to the datagrid. This
+// is used to map the employee data to the datagrid widget.
+class OrderMenuDataSource extends DataGridSource {
+  /// Creates the employee data source class with required details.
+  OrderMenuDataSource({required List<Menu> menuData}) {
+    _menuData = menuData
+        .map<DataGridRow>((e) => DataGridRow(cells: [
+      
+      DataGridCell<String>(columnName: 'name', value: e.menuName),
+      DataGridCell<int>(
+          columnName: 'qty', value: e.quantity),
+      DataGridCell<String>(columnName: 'portion', value: '${e.orderPortion?.portionSize} ${e.orderPortion?.portionUnit}'),
+      /*DataGridCell<double>(columnName: 'price', value: e.price),*/
+    ]))
+        .toList();
+  }
+
+  List<DataGridRow> _menuData = [];
+
+  @override
+  List<DataGridRow> get rows => _menuData;
+
+  @override
+  DataGridRowAdapter buildRow(DataGridRow row) {
+    return DataGridRowAdapter(
+        cells: row.getCells().map<Widget>((e) {
+          return Container(
+            alignment: Alignment.center,
+            padding: EdgeInsets.all(8.0),
+            child: Text(e.value.toString()),
+          );
+        }).toList());
   }
 }

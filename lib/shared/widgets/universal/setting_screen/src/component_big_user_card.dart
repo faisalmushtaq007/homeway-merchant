@@ -119,7 +119,7 @@ class BigUserCard extends StatelessWidget {
                               secondChild: Column(
                                 textDirection: serviceLocator<LanguageController>().targetTextDirection,
                                 children: [
-                                  const AnimatedGap(4, duration: const Duration(milliseconds: 400),),
+                                  const AnimatedGap(4, duration: Duration(milliseconds: 400),),
                                   Wrap(
                                     children: [
                                       Text(

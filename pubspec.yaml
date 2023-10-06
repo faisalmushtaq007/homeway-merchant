@@ -160,6 +160,7 @@ dependencies:
       ref: main
   sliver_tools: ^0.2.12
   syncfusion_flutter_charts: ^23.1.36
+  syncfusion_flutter_datagrid: ^23.1.39
   syncfusion_localizations: ^23.1.36
   synchronized: ^3.1.0
   timelines:
