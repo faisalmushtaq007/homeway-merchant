@@ -9,7 +9,7 @@ class OrderTimeLineCardWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     moment.Moment.setGlobalLocalization(
-        moment.MomentLocalizations.byLocale(activeLocale)!);
+        moment.MomentLocalizations.byLocale(serviceLocator<LanguageController>().targetAppLanguage.value.toString())!);
     final moment.Moment now = moment.Moment.now();
     return Card(
       margin: EdgeInsetsDirectional.zero,

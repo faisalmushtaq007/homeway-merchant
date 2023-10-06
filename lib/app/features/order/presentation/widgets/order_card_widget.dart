@@ -144,61 +144,66 @@ class _OrderCardWidgetController extends State<OrderCardWidget> {
   }
 
   Widget orderMenuTable() {
-    return SfDataGrid(
-      source: menuDataSource,
-      columnWidthMode: ColumnWidthMode.fill,
-      showVerticalScrollbar: false,
-      verticalScrollPhysics: const NeverScrollableScrollPhysics(),
-      shrinkWrapRows: true,
-      //shrinkWrapColumns: true,
-      onQueryRowHeight: (details) {
-        return details.getIntrinsicRowHeight(details.rowIndex);
-      },
-      columns: <GridColumn>[
-        GridColumn(
-          columnName: 'name',
-          columnWidthMode: ColumnWidthMode.auto,
-          label: Container(
-            //padding: EdgeInsets.all(8.0),
-            alignment: AlignmentDirectional.center,
-            child:  Wrap(
-              children: [
-                Text('Name',overflow: TextOverflow.ellipsis,textDirection: serviceLocator<LanguageController>().targetTextDirection,softWrap: true,maxLines: 1,).translate(),
-              ],
-            ),
-          ),
-        ),
-        GridColumn(
-          columnName: 'qty',
-          label: Container(
-            //padding: EdgeInsets.all(8.0),
-            alignment: Alignment.center,
-            child: Wrap(
-              children: [
-                Text('QTY',overflow: TextOverflow.ellipsis,textDirection: serviceLocator<LanguageController>().targetTextDirection,softWrap: true,maxLines: 1,).translate(),
-              ],
-            ),
-          ),
-        ),
-        GridColumn(
-          columnName: 'portion',
-          label: Container(
-            padding: EdgeInsetsDirectional.symmetric(),
-            alignment: AlignmentDirectional.center,
-            child: Wrap(
-              children: [
-                Text('Portion',overflow: TextOverflow.ellipsis,textDirection: serviceLocator<LanguageController>().targetTextDirection,softWrap: true,maxLines: 1,).translate(),
-              ],
-            ),
-          ),
-        ),
-        /*GridColumn(
-            columnName: 'price',
+    return SfDataGridTheme(
+      data: SfDataGridThemeData(
+
+      ),
+      child: SfDataGrid(
+        source: menuDataSource,
+        columnWidthMode: ColumnWidthMode.fill,
+        showVerticalScrollbar: false,
+        verticalScrollPhysics: const NeverScrollableScrollPhysics(),
+        shrinkWrapRows: true,
+        //shrinkWrapColumns: true,
+        onQueryRowHeight: (details) {
+          return details.getIntrinsicRowHeight(details.rowIndex);
+        },
+        columns: <GridColumn>[
+          GridColumn(
+            columnName: 'name',
+            columnWidthMode: ColumnWidthMode.auto,
             label: Container(
-                padding: EdgeInsets.all(8.0),
-                alignment: Alignment.center,
-                child: Text('Price'))),*/
-      ],
+              padding: const EdgeInsetsDirectional.only(start:6.0),
+              alignment: AlignmentDirectional.centerStart,
+              child:  Wrap(
+                children: [
+                  Text('Name',overflow: TextOverflow.ellipsis,textDirection: serviceLocator<LanguageController>().targetTextDirection,softWrap: true,maxLines: 1,).translate(),
+                ],
+              ),
+            ),
+          ),
+          GridColumn(
+            columnName: 'qty',
+            label: Container(
+              //padding: EdgeInsets.all(8.0),
+              alignment: Alignment.center,
+              child: Wrap(
+                children: [
+                  Text('QTY',overflow: TextOverflow.ellipsis,textDirection: serviceLocator<LanguageController>().targetTextDirection,softWrap: true,maxLines: 1,).translate(),
+                ],
+              ),
+            ),
+          ),
+          GridColumn(
+            columnName: 'portion',
+            label: Container(
+              //padding: EdgeInsetsDirectional.symmetric(),
+              alignment: AlignmentDirectional.center,
+              child: Wrap(
+                children: [
+                  Text('Portion',overflow: TextOverflow.ellipsis,textDirection: serviceLocator<LanguageController>().targetTextDirection,softWrap: true,maxLines: 1,).translate(),
+                ],
+              ),
+            ),
+          ),
+          /*GridColumn(
+              columnName: 'price',
+              label: Container(
+                  padding: EdgeInsets.all(8.0),
+                  alignment: Alignment.center,
+                  child: Text('Price'))),*/
+        ],
+      ),
     );
   }
 
@@ -211,12 +216,16 @@ class _OrderCardWidgetView extends WidgetView<OrderCardWidget, _OrderCardWidgetC
 
   @override
   Widget build(BuildContext context) {
+    moment.Moment.setGlobalLocalization(
+        moment.MomentLocalizations.byLocale(serviceLocator<LanguageController>().targetAppLanguage.value.toString())!);
+    final moment.Moment now = moment.Moment.now();
     return AbsorbPointer(
       absorbing: false,
       child: InkWell(
         onTap: () {},
         child: Card(
           margin: const EdgeInsetsDirectional.only(bottom: 16),
+          color: context.colorScheme.background,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             mainAxisSize: MainAxisSize.min,
@@ -227,98 +236,124 @@ class _OrderCardWidgetView extends WidgetView<OrderCardWidget, _OrderCardWidgetC
                   padding: const EdgeInsetsDirectional.only(
                     start: 12,
                     end: 12,
+                    top: 8,bottom: 8
                   ),
                   decoration: const BoxDecoration(
                     //color: context.colorScheme.secondaryContainer,
-                    color: Color.fromRGBO(238, 238, 238, 1),
+                    color: Color.fromRGBO(224, 235, 242, 1),
                     borderRadius: BorderRadiusDirectional.only(
                       topStart: Radius.circular(10),
                       topEnd: Radius.circular(10),
                     ),
                   ),
-                  child: Row(
+                  child: Column(
                     mainAxisSize: MainAxisSize.min,
                     textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          mainAxisSize: MainAxisSize.min,
-                          textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                          children: [
-                            const AnimatedGap(8, duration: Duration(milliseconds: 100)),
-                            Directionality(
-                              textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                              child: Text(
-                                'Order ID: HMW-${widget.orderEntity.orderID} ',
-                                style: context.labelLarge!.copyWith(
-                                  fontWeight: FontWeight.w600,
-                                  color: Colors.white.onColor,
-                                ),
-                                maxLines: 1,
-                                softWrap: true,
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                            ),
-                            const AnimatedGap(3, duration: Duration(milliseconds: 100)),
-                            Row(
+                      Row(
+                        mainAxisSize: MainAxisSize.min,
+                        textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Expanded(
+                            child:  Column(
                               mainAxisSize: MainAxisSize.min,
                               textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                              crossAxisAlignment: CrossAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Icon(
-                                  Icons.access_time,
-                                  size: 14,
-                                  color: Colors.white.onColor,
-                                ),
-                                const AnimatedGap(3, duration: Duration(milliseconds: 100)),
                                 Directionality(
                                   textDirection: serviceLocator<LanguageController>().targetTextDirection,
                                   child: Wrap(
-                                    textDirection: serviceLocator<LanguageController>().targetTextDirection,
                                     children: [
                                       Text(
-                                        dateTimeFormatToString(widget.orderEntity.orderDateTime) ?? '',
-                                        style: context.labelMedium!.copyWith(
-                                          fontWeight: FontWeight.w500,
+                                        '${widget.orderEntity.store.storeName} ',
+                                        style: context.titleMedium!.copyWith(
+                                          fontWeight: FontWeight.w600,
                                           color: Colors.white.onColor,
                                         ),
-                                        maxLines: 1,
+                                        maxLines: 3,
                                         softWrap: true,
                                         overflow: TextOverflow.ellipsis,
                                       ),
                                     ],
                                   ),
                                 ),
-                                const Spacer(),
+                                Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Directionality(
+                                      textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                      child: Wrap(
+                                        textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                        children: [
+                                          Text(
+                                            'Delivery: ${now
+                                                .subtract(now.difference(
+                                                widget.orderEntity.orderDeliveryDateTime))
+                                                .calendar() ?? ''}',
+                                            style: context.titleSmall!.copyWith(
+                                              fontWeight: FontWeight.w500,
+                                              color: Colors.white.onColor,
+                                            ),
+                                            maxLines: 1,
+                                            softWrap: true,
+                                            overflow: TextOverflow.ellipsis,
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
                               ],
                             ),
-                            const AnimatedGap(8, duration: Duration(milliseconds: 100)),
-                          ],
-                        ),
-                      ),
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        mainAxisSize: MainAxisSize.min,
-                        textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                        children: [
-                          Directionality(
+                          ),
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            mainAxisSize: MainAxisSize.min,
                             textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                            child: WrapText(
-                              'Instant',
-                              breakWordCharacter: '-',
-                              smartSizeMode: false,
-                              asyncMode: true,
-                              minFontSize: 13,
-                              maxFontSize: 14,
-                              textStyle: context.labelSmall!
-                                  .copyWith(color: context.colorScheme.primary, fontWeight: FontWeight.w600),
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                            ),
+                            children: [
+                              Directionality(
+                                textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                child: Wrap(
+                                  children: [
+                                    Text(
+                                      'OrderID: ${widget.orderEntity.orderID} ',
+                                      style: context.titleMedium!.copyWith(
+                                        fontWeight: FontWeight.w600,
+                                        color: Colors.white.onColor,
+                                      ),
+                                      maxLines: 1,
+                                      softWrap: true,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              Directionality(
+                                textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                child: Wrap(
+                                  children: [
+                                    Text(
+                                      '${OrderStatus
+                                    .values[widget.orderEntity.orderStatus]
+                                    .title}',
+                                      style: context.labelSmall!
+                                          .copyWith(color: context.colorScheme.primary, fontWeight: FontWeight.w600),
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
                           ),
                         ],
                       ),
+
                     ],
                   ),
                 ),
@@ -770,6 +805,7 @@ class OrderMenuDataSource extends DataGridSource {
   DataGridRowAdapter buildRow(DataGridRow row) {
 
     return DataGridRowAdapter(
+      //color: context.colorScheme.background,
       cells: row.getCells().map<Widget>((e) {
         TextStyle? getTextStyle() {
           if (e.columnName == 'name') {
@@ -782,15 +818,22 @@ class OrderMenuDataSource extends DataGridSource {
           if (e.columnName == 'name') {
             return AlignmentDirectional.centerStart;
           }else if (e.columnName == 'portion') {
-            return AlignmentDirectional.centerEnd;
+            return AlignmentDirectional.center;
           } else {
             return AlignmentDirectional.center;
+          }
+        }
+        EdgeInsetsGeometry? getPadding() {
+          if (e.columnName == 'name') {
+            return const EdgeInsetsDirectional.only(start: 6);
+          }else{
+            return null;
           }
         }
         return Container(
           key: ObjectKey(e),
           alignment: getAlignmentGeometry(),
-          //padding: EdgeInsets.all(8.0),
+          padding: getPadding(),
           child: Wrap(
             children: [
               Text(
