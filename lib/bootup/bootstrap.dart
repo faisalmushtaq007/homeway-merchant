@@ -131,16 +131,6 @@ Future<void> bootstrap(FutureOr<dynamic> Function() builder) async {
     }*/
     FirebaseChatCore.instance.accessDataOfflineConfigureCache();
 
-    //final ThemeService themeService = ThemeServicePrefs();
-    //final ThemeService themeService = ThemeServiceHive('app_color_scheme_box');
-    // Initialize the theme service.
-    //await themeService.init();
-    // Create a ThemeController that uses the ThemeService.
-    //final ThemeController themeController = ThemeController(themeService);
-    // Load preferred theme settings, while the app is loading, before MaterialApp
-    // is created, this prevents a theme change when the app is first displayed.
-    //await themeController.loadAll();
-    // Only use Google fonts via asset provided fonts.
     GoogleFonts.config.allowRuntimeFetching = true;
     GoRouter.optionURLReflectsImperativeAPIs = true;
     runApp(

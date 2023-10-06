@@ -321,9 +321,8 @@ class _ProfileSettingPageView extends WidgetView<ProfileSettingPage, _ProfileSet
                                 title: 'Dark mode',
                                 subtitle: 'Automatic',
                                 trailing: ThemeModeSwitch(
-                                  onChanged: (value) {
-                                    return state.onThemeChanged(value);
-                                  },
+                                  key: const Key('theme-change-profile-setting-widget'),
+                                  onChanged: state.onThemeChanged,
                                   themeMode: serviceLocator<ThemeController>().themeMode,
                                 ),
                                 /*trailing: Switch.adaptive(

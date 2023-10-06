@@ -1,9 +1,8 @@
+import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:homemakers_merchant/utils/app_equatable/app_equatable.dart';
-import 'package:homemakers_merchant/utils/app_log.dart';
 
-class DrawerEntity with AppEquatable {
+class DrawerEntity extends Equatable {
   DrawerEntity({
     required this.drawerID,
     required this.drawerName,
@@ -16,6 +15,8 @@ class DrawerEntity with AppEquatable {
     this.leading,
     this.controller,
     this.expandedCrossAxisAlignment,
+    this.trailing,
+    this.hasSwitchThemeMode=false,
   }) {
     if (hasExpanded) {
       assert(controller != null, 'ExpansionTileController should not be null');
@@ -48,12 +49,11 @@ class DrawerEntity with AppEquatable {
   final Widget? leading;
   final ExpansionTileController? controller;
   final CrossAxisAlignment? expandedCrossAxisAlignment;
+  final Widget? trailing;
+  final bool hasSwitchThemeMode;
 
   @override
-  bool get cacheHash => true;
-
-  @override
-  List<Object?> get hashParameters => [
+  List<Object?> get props => [
         drawerID,
         drawerName,
         icon,
@@ -65,6 +65,8 @@ class DrawerEntity with AppEquatable {
         leading,
         controller,
         expandedCrossAxisAlignment,
+    trailing,
+    hasSwitchThemeMode,
       ];
 
   Map<String, dynamic> toMap() {
@@ -92,6 +94,8 @@ class DrawerEntity with AppEquatable {
     Widget? leading,
     ExpansionTileController? controller,
     CrossAxisAlignment? expandedCrossAxisAlignment,
+    Widget? trailing,
+    bool? hasSwitchThemeMode,
   }) {
     return DrawerEntity(
       drawerID: drawerID ?? this.drawerID,
@@ -106,6 +110,8 @@ class DrawerEntity with AppEquatable {
       controller: controller ?? this.controller,
       expandedCrossAxisAlignment:
           expandedCrossAxisAlignment ?? this.expandedCrossAxisAlignment,
+        trailing:trailing??this.trailing,
+        hasSwitchThemeMode:hasSwitchThemeMode??this.hasSwitchThemeMode,
     );
   }
 }

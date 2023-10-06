@@ -27,6 +27,12 @@ class _PrimaryDashboardDrawerController extends State<PrimaryDashboardDrawer> {
       initializeDrawerMenu(context);
     }
   }
+  void onThemeChanged(ThemeMode value){
+    serviceLocator<ThemeController>().setThemeMode(value);
+    setState(() {
+
+    });
+  }
 
   void initializeDrawerMenu(BuildContext context) {
     drawerEntities = [
@@ -68,6 +74,8 @@ class _PrimaryDashboardDrawerController extends State<PrimaryDashboardDrawer> {
             onPressed: () {
               return Navigator.of(context).pop();
             },
+            hasSwitchThemeMode: true,
+
           ),
           DrawerEntity(
             drawerID: 03,
@@ -423,6 +431,22 @@ class _PrimaryDashboardDrawerView extends WidgetView<PrimaryDashboardDrawer, _Pr
           drawerEntity.drawerName,
           textDirection: serviceLocator<LanguageController>().targetTextDirection,
         ).translate(),
+
+        trailing: StatefulBuilder(
+          builder: (context,setState) {
+            Widget? trailing;
+            if(drawerEntity.hasSwitchThemeMode) {
+              trailing= ThemeModeSwitch(
+                key: const Key('theme-change-drawer-widget'),
+                onChanged: state.onThemeChanged,
+                themeMode: serviceLocator<ThemeController>().themeMode,
+              );
+            }else{
+              trailing=nil;
+            }
+            return trailing;
+          },
+        ),
       ),
     );
   }

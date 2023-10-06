@@ -674,7 +674,7 @@ class _BankInformationPageState extends State<BankInformationPage>
                                             onFieldSubmitted: (_) => _fieldFocusChange(
                                                 context,
                                                 _confirmAccountNumberControllerFocusNode,
-                                                _accountHolderNameControllerFocusNode),
+                                                _ibanNumberControllerFocusNode),
                                           ),
                                         );
                                       },
