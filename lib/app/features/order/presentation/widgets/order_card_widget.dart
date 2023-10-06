@@ -25,10 +25,8 @@ class _OrderCardWidgetController extends State<OrderCardWidget> {
     menuDataSource = OrderMenuDataSource(menuData: menus);
   }
 
-
   Widget bottomWidget(int index, {required OrderEntity orderEntity}) {
-    return switch (
-        OrderStatus.values.byName(OrderStatus.values[index].toString())) {
+    return switch (OrderStatus.values.byName(OrderStatus.values[index].toString())) {
       OrderStatus.newOrder => Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
@@ -52,8 +50,7 @@ class _OrderCardWidgetController extends State<OrderCardWidget> {
                   style: const TextStyle(color: Color.fromRGBO(42, 45, 50, 1)),
                   overflow: TextOverflow.ellipsis,
                   maxLines: 1,
-                  textDirection:
-                      serviceLocator<LanguageController>().targetTextDirection,
+                  textDirection: serviceLocator<LanguageController>().targetTextDirection,
                 ).translate(),
               ),
             ),
@@ -73,8 +70,7 @@ class _OrderCardWidgetController extends State<OrderCardWidget> {
                   'Accept',
                   overflow: TextOverflow.ellipsis,
                   maxLines: 1,
-                  textDirection:
-                      serviceLocator<LanguageController>().targetTextDirection,
+                  textDirection: serviceLocator<LanguageController>().targetTextDirection,
                 ).translate(),
               ),
             ),
@@ -103,8 +99,7 @@ class _OrderCardWidgetController extends State<OrderCardWidget> {
                   style: const TextStyle(color: Color.fromRGBO(42, 45, 50, 1)),
                   overflow: TextOverflow.ellipsis,
                   maxLines: 1,
-                  textDirection:
-                      serviceLocator<LanguageController>().targetTextDirection,
+                  textDirection: serviceLocator<LanguageController>().targetTextDirection,
                 ).translate(),
               ),
             ),
@@ -124,8 +119,7 @@ class _OrderCardWidgetController extends State<OrderCardWidget> {
                   'Move to Ready',
                   overflow: TextOverflow.ellipsis,
                   maxLines: 1,
-                  textDirection:
-                      serviceLocator<LanguageController>().targetTextDirection,
+                  textDirection: serviceLocator<LanguageController>().targetTextDirection,
                 ).translate(),
               ),
             ),
@@ -134,8 +128,7 @@ class _OrderCardWidgetController extends State<OrderCardWidget> {
       OrderStatus.readyToPickup || OrderStatus.onTheWay => Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.start,
-          textDirection:
-              serviceLocator<LanguageController>().targetTextDirection,
+          textDirection: serviceLocator<LanguageController>().targetTextDirection,
           mainAxisSize: MainAxisSize.min,
           children: [
             Expanded(
@@ -150,34 +143,55 @@ class _OrderCardWidgetController extends State<OrderCardWidget> {
     };
   }
 
-  Widget orderMenuTable(){
+  Widget orderMenuTable() {
     return SfDataGrid(
       source: menuDataSource,
       columnWidthMode: ColumnWidthMode.fill,
+      showVerticalScrollbar: false,
+      verticalScrollPhysics: const NeverScrollableScrollPhysics(),
+      shrinkWrapRows: true,
+      //shrinkWrapColumns: true,
+      onQueryRowHeight: (details) {
+        return details.getIntrinsicRowHeight(details.rowIndex);
+      },
       columns: <GridColumn>[
         GridColumn(
-            columnName: 'name',
-            label: Container(
-                padding: EdgeInsets.all(8.0),
-                alignment: Alignment.center,
-                child: Text('Name'))),
+          columnName: 'name',
+          columnWidthMode: ColumnWidthMode.auto,
+          label: Container(
+            //padding: EdgeInsets.all(8.0),
+            alignment: AlignmentDirectional.center,
+            child:  Wrap(
+              children: [
+                Text('Name',overflow: TextOverflow.ellipsis,textDirection: serviceLocator<LanguageController>().targetTextDirection,softWrap: true,maxLines: 1,).translate(),
+              ],
+            ),
+          ),
+        ),
         GridColumn(
-            columnName: 'qty',
-            label: Container(
-                padding: EdgeInsets.all(8.0),
-                alignment: Alignment.center,
-                child: Text(
-                  'QTY',
-                  overflow: TextOverflow.ellipsis,
-                ))),
+          columnName: 'qty',
+          label: Container(
+            //padding: EdgeInsets.all(8.0),
+            alignment: Alignment.center,
+            child: Wrap(
+              children: [
+                Text('QTY',overflow: TextOverflow.ellipsis,textDirection: serviceLocator<LanguageController>().targetTextDirection,softWrap: true,maxLines: 1,).translate(),
+              ],
+            ),
+          ),
+        ),
         GridColumn(
-            columnName: 'portion',
-            label: Container(
-                padding: EdgeInsets.all(16.0),
-                alignment: Alignment.center,
-                child: Text(
-                  'Portion',
-                ))),
+          columnName: 'portion',
+          label: Container(
+            padding: EdgeInsetsDirectional.symmetric(),
+            alignment: AlignmentDirectional.center,
+            child: Wrap(
+              children: [
+                Text('Portion',overflow: TextOverflow.ellipsis,textDirection: serviceLocator<LanguageController>().targetTextDirection,softWrap: true,maxLines: 1,).translate(),
+              ],
+            ),
+          ),
+        ),
         /*GridColumn(
             columnName: 'price',
             label: Container(
@@ -192,8 +206,7 @@ class _OrderCardWidgetController extends State<OrderCardWidget> {
   Widget build(BuildContext context) => _OrderCardWidgetView(this);
 }
 
-class _OrderCardWidgetView
-    extends WidgetView<OrderCardWidget, _OrderCardWidgetController> {
+class _OrderCardWidgetView extends WidgetView<OrderCardWidget, _OrderCardWidgetController> {
   const _OrderCardWidgetView(super.state);
 
   @override
@@ -207,8 +220,7 @@ class _OrderCardWidgetView
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             mainAxisSize: MainAxisSize.min,
-            textDirection:
-                serviceLocator<LanguageController>().targetTextDirection,
+            textDirection: serviceLocator<LanguageController>().targetTextDirection,
             children: [
               Flexible(
                 child: Container(
@@ -226,38 +238,32 @@ class _OrderCardWidgetView
                   ),
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
-                    textDirection: serviceLocator<LanguageController>()
-                        .targetTextDirection,
+                    textDirection: serviceLocator<LanguageController>().targetTextDirection,
                     children: [
                       Expanded(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.stretch,
                           mainAxisSize: MainAxisSize.min,
-                          textDirection: serviceLocator<LanguageController>()
-                              .targetTextDirection,
+                          textDirection: serviceLocator<LanguageController>().targetTextDirection,
                           children: [
-                            const AnimatedGap(8,
-                                duration: Duration(milliseconds: 100)),
+                            const AnimatedGap(8, duration: Duration(milliseconds: 100)),
                             Directionality(
-                              textDirection:
-                                  serviceLocator<LanguageController>()
-                                      .targetTextDirection,
+                              textDirection: serviceLocator<LanguageController>().targetTextDirection,
                               child: Text(
                                 'Order ID: HMW-${widget.orderEntity.orderID} ',
-                                style: context.labelLarge!
-                                    .copyWith(fontWeight: FontWeight.w600,color: Colors.white.onColor,),
+                                style: context.labelLarge!.copyWith(
+                                  fontWeight: FontWeight.w600,
+                                  color: Colors.white.onColor,
+                                ),
                                 maxLines: 1,
                                 softWrap: true,
                                 overflow: TextOverflow.ellipsis,
                               ),
                             ),
-                            const AnimatedGap(3,
-                                duration: Duration(milliseconds: 100)),
+                            const AnimatedGap(3, duration: Duration(milliseconds: 100)),
                             Row(
                               mainAxisSize: MainAxisSize.min,
-                              textDirection:
-                                  serviceLocator<LanguageController>()
-                                      .targetTextDirection,
+                              textDirection: serviceLocator<LanguageController>().targetTextDirection,
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
                                 Icon(
@@ -265,23 +271,18 @@ class _OrderCardWidgetView
                                   size: 14,
                                   color: Colors.white.onColor,
                                 ),
-                                const AnimatedGap(3,
-                                    duration: Duration(milliseconds: 100)),
+                                const AnimatedGap(3, duration: Duration(milliseconds: 100)),
                                 Directionality(
-                                  textDirection:
-                                      serviceLocator<LanguageController>()
-                                          .targetTextDirection,
+                                  textDirection: serviceLocator<LanguageController>().targetTextDirection,
                                   child: Wrap(
-                                    textDirection:
-                                    serviceLocator<LanguageController>()
-                                        .targetTextDirection,
+                                    textDirection: serviceLocator<LanguageController>().targetTextDirection,
                                     children: [
                                       Text(
-                                        dateTimeFormatToString(
-                                                widget.orderEntity.orderDateTime) ??
-                                            '',
-                                        style: context.labelMedium!
-                                            .copyWith(fontWeight: FontWeight.w500,color: Colors.white.onColor,),
+                                        dateTimeFormatToString(widget.orderEntity.orderDateTime) ?? '',
+                                        style: context.labelMedium!.copyWith(
+                                          fontWeight: FontWeight.w500,
+                                          color: Colors.white.onColor,
+                                        ),
                                         maxLines: 1,
                                         softWrap: true,
                                         overflow: TextOverflow.ellipsis,
@@ -292,20 +293,17 @@ class _OrderCardWidgetView
                                 const Spacer(),
                               ],
                             ),
-                            const AnimatedGap(8,
-                                duration: Duration(milliseconds: 100)),
+                            const AnimatedGap(8, duration: Duration(milliseconds: 100)),
                           ],
                         ),
                       ),
                       Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         mainAxisSize: MainAxisSize.min,
-                        textDirection: serviceLocator<LanguageController>()
-                            .targetTextDirection,
+                        textDirection: serviceLocator<LanguageController>().targetTextDirection,
                         children: [
                           Directionality(
-                            textDirection: serviceLocator<LanguageController>()
-                                .targetTextDirection,
+                            textDirection: serviceLocator<LanguageController>().targetTextDirection,
                             child: WrapText(
                               'Instant',
                               breakWordCharacter: '-',
@@ -313,9 +311,8 @@ class _OrderCardWidgetView
                               asyncMode: true,
                               minFontSize: 13,
                               maxFontSize: 14,
-                              textStyle: context.labelSmall!.copyWith(
-                                  color: context.colorScheme.primary,
-                                  fontWeight: FontWeight.w600),
+                              textStyle: context.labelSmall!
+                                  .copyWith(color: context.colorScheme.primary, fontWeight: FontWeight.w600),
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
                             ),
@@ -326,7 +323,7 @@ class _OrderCardWidgetView
                   ),
                 ),
               ),
-              const AnimatedGap(4, duration: Duration(milliseconds: 100)),
+              //const AnimatedGap(6, duration: Duration(milliseconds: 100)),
               Flexible(
                 flex: 1,
                 child: state.orderMenuTable(),
@@ -476,7 +473,7 @@ class _OrderCardWidgetView
                               ),
                               const AnimatedGap(2,
                                   duration: Duration(milliseconds: 100)),
-                              *//*Directionality(
+                              */ /*Directionality(
                                 textDirection: serviceLocator<LanguageController>().targetTextDirection,
                                 child: WrapText(
                                   'OrderID: HMW-${orderEntity.orderID}',
@@ -490,7 +487,7 @@ class _OrderCardWidgetView
                                   overflow: TextOverflow.ellipsis,
                                 ),
                               ),
-                              const AnimatedGap(2, duration: Duration(milliseconds: 100)),*//*
+                              const AnimatedGap(2, duration: Duration(milliseconds: 100)),*/ /*
                               Directionality(
                                 textDirection:
                                     serviceLocator<LanguageController>()
@@ -636,10 +633,12 @@ class _OrderCardWidgetView
                 ),
               ),*/
 
-              const AnimatedGap(12, duration: Duration(milliseconds: 100)),
+
               const Divider(
                 thickness: 0.75,
+                height: 0,
               ),
+              const AnimatedGap(6, duration: Duration(milliseconds: 100)),
               Flexible(
                 child: Container(
                   padding: const EdgeInsetsDirectional.only(
@@ -648,20 +647,16 @@ class _OrderCardWidgetView
                   ),
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
-                    textDirection: serviceLocator<LanguageController>()
-                        .targetTextDirection,
+                    textDirection: serviceLocator<LanguageController>().targetTextDirection,
                     children: [
                       Expanded(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.stretch,
                           mainAxisSize: MainAxisSize.min,
-                          textDirection: serviceLocator<LanguageController>()
-                              .targetTextDirection,
+                          textDirection: serviceLocator<LanguageController>().targetTextDirection,
                           children: [
                             Directionality(
-                              textDirection:
-                                  serviceLocator<LanguageController>()
-                                      .targetTextDirection,
+                              textDirection: serviceLocator<LanguageController>().targetTextDirection,
                               child: WrapText(
                                 widget.orderEntity.userInfo.userName,
                                 breakWordCharacter: '-',
@@ -669,18 +664,14 @@ class _OrderCardWidgetView
                                 asyncMode: true,
                                 minFontSize: 14,
                                 maxFontSize: 16,
-                                textStyle: context.labelMedium!
-                                    .copyWith(fontWeight: FontWeight.w600),
+                                textStyle: context.labelMedium!.copyWith(fontWeight: FontWeight.w600),
                                 maxLines: 2,
                                 overflow: TextOverflow.ellipsis,
                               ),
                             ),
-                            const AnimatedGap(4,
-                                duration: Duration(milliseconds: 100)),
+                            const AnimatedGap(4, duration: Duration(milliseconds: 100)),
                             Directionality(
-                              textDirection:
-                                  serviceLocator<LanguageController>()
-                                      .targetTextDirection,
+                              textDirection: serviceLocator<LanguageController>().targetTextDirection,
                               child: WrapText(
                                 'Mohammed Ali Al-Ahmed, 8228 Imam Ali Road, Riyadh 12345-6789, Kingdom Of Saudi Arabia',
                                 breakWordCharacter: '-',
@@ -688,8 +679,7 @@ class _OrderCardWidgetView
                                 asyncMode: true,
                                 minFontSize: 13,
                                 maxFontSize: 15,
-                                textStyle: context.labelMedium!
-                                    .copyWith(fontWeight: FontWeight.w500),
+                                textStyle: context.labelMedium!.copyWith(fontWeight: FontWeight.w500),
                                 maxLines: 2,
                                 overflow: TextOverflow.ellipsis,
                               ),
@@ -698,8 +688,7 @@ class _OrderCardWidgetView
                         ),
                       ),
                       Directionality(
-                        textDirection: serviceLocator<LanguageController>()
-                            .targetTextDirection,
+                        textDirection: serviceLocator<LanguageController>().targetTextDirection,
                         child: WrapText(
                           '3 Km',
                           breakWordCharacter: '-',
@@ -707,8 +696,7 @@ class _OrderCardWidgetView
                           asyncMode: true,
                           minFontSize: 12,
                           maxFontSize: 14,
-                          textStyle: context.labelMedium!
-                              .copyWith(fontWeight: FontWeight.w600),
+                          textStyle: context.labelMedium!.copyWith(fontWeight: FontWeight.w600),
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                         ),
@@ -720,8 +708,7 @@ class _OrderCardWidgetView
               const AnimatedGap(8, duration: Duration(milliseconds: 100)),
               Flexible(
                 child: Container(
-                  child: state.bottomWidget(widget.orderEntity.orderStatus,
-                      orderEntity: widget.orderEntity),
+                  child: state.bottomWidget(widget.orderEntity.orderStatus, orderEntity: widget.orderEntity),
                 ),
               ),
             ],
@@ -732,18 +719,13 @@ class _OrderCardWidgetView
   }
 
   double leftPositionValue(int index) {
-    return switch (
-        OrderStatus.values.byName(OrderStatus.values[index].toString())) {
+    return switch (OrderStatus.values.byName(OrderStatus.values[index].toString())) {
       OrderStatus.newOrder => 22.0,
       OrderStatus.delivered => 26.0,
       OrderStatus.preparing => 22.0,
       OrderStatus.onTheWay => 20.0,
       OrderStatus.readyToPickup => 31.0,
-      OrderStatus.cancel ||
-      OrderStatus.cancelByUser ||
-      OrderStatus.cancelBySystem ||
-      OrderStatus.cancelByYou =>
-        31.0,
+      OrderStatus.cancel || OrderStatus.cancelByUser || OrderStatus.cancelBySystem || OrderStatus.cancelByYou => 31.0,
       _ => 24.0,
     };
   }
@@ -760,14 +742,22 @@ class OrderMenuDataSource extends DataGridSource {
   /// Creates the employee data source class with required details.
   OrderMenuDataSource({required List<Menu> menuData}) {
     _menuData = menuData
-        .map<DataGridRow>((e) => DataGridRow(cells: [
-      
-      DataGridCell<String>(columnName: 'name', value: e.menuName),
-      DataGridCell<int>(
-          columnName: 'qty', value: e.quantity),
-      DataGridCell<String>(columnName: 'portion', value: '${e.orderPortion?.portionSize} ${e.orderPortion?.portionUnit}'),
-      /*DataGridCell<double>(columnName: 'price', value: e.price),*/
-    ]))
+        .map<DataGridRow>(
+          (e) => DataGridRow(
+            cells: [
+              DataGridCell<String>(
+                columnName: 'name',
+                value: e.menuName,
+              ),
+              DataGridCell<int>(columnName: 'qty', value: e.quantity),
+              DataGridCell<String>(
+                columnName: 'portion',
+                value: '${e.orderPortion?.portionSize} ${e.orderPortion?.portionUnit}',
+              ),
+              /*DataGridCell<double>(columnName: 'price', value: e.price),*/
+            ],
+          ),
+        )
         .toList();
   }
 
@@ -778,13 +768,43 @@ class OrderMenuDataSource extends DataGridSource {
 
   @override
   DataGridRowAdapter buildRow(DataGridRow row) {
+
     return DataGridRowAdapter(
-        cells: row.getCells().map<Widget>((e) {
-          return Container(
-            alignment: Alignment.center,
-            padding: EdgeInsets.all(8.0),
-            child: Text(e.value.toString()),
-          );
-        }).toList());
+      cells: row.getCells().map<Widget>((e) {
+        TextStyle? getTextStyle() {
+          if (e.columnName == 'name') {
+            return const TextStyle(fontWeight: FontWeight.w600);
+          } else {
+            return null;
+          }
+        }
+        AlignmentGeometry? getAlignmentGeometry() {
+          if (e.columnName == 'name') {
+            return AlignmentDirectional.centerStart;
+          }else if (e.columnName == 'portion') {
+            return AlignmentDirectional.centerEnd;
+          } else {
+            return AlignmentDirectional.center;
+          }
+        }
+        return Container(
+          key: ObjectKey(e),
+          alignment: getAlignmentGeometry(),
+          //padding: EdgeInsets.all(8.0),
+          child: Wrap(
+            children: [
+              Text(
+                e.value.toString(),
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+                softWrap: true,
+                style: getTextStyle(),
+                textDirection: serviceLocator<LanguageController>().targetTextDirection,
+              ).translate(),
+            ],
+          ),
+        );
+      }).toList(),
+    );
   }
 }

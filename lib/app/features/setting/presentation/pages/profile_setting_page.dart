@@ -9,6 +9,7 @@ class _ProfileSettingPageController extends State<ProfileSettingPage> {
   late final ScrollController customScrollViewScrollController;
   late AppUserEntity appUserEntity;
   String userImagePath = '';
+  bool hasSelectedDarkTheme=false;
 
   @override
   void initState() {
@@ -28,6 +29,18 @@ class _ProfileSettingPageController extends State<ProfileSettingPage> {
   void updateUserProfileImage(String profileImage) {
     userImagePath = profileImage;
     setState(() {});
+  }
+
+  void switchToDarkTheme({bool value=false}){
+    hasSelectedDarkTheme=value;
+    setState(() {});
+  }
+
+  void onThemeChanged(ThemeMode value){
+    serviceLocator<ThemeController>().setThemeMode(value);
+    setState(() {
+
+    });
   }
 
   @override
@@ -66,7 +79,6 @@ class _ProfileSettingPageView extends WidgetView<ProfileSettingPage, _ProfileSet
                   alignment: AlignmentDirectional.topEnd,
                   //padding: EdgeInsets.all(4),
                   backgroundColor: context.colorScheme.secondary,
-                  isLabelVisible: true,
                   largeSize: 16,
                   textStyle: const TextStyle(fontSize: 14),
                   textColor: Colors.yellow,
@@ -143,8 +155,8 @@ class _ProfileSettingPageView extends WidgetView<ProfileSettingPage, _ProfileSet
                                 Icons.image_not_supported,
                                 size: 10000,
                               ),
-                              height: context.width/4.75,
-                              width: context.width/4.75,
+                              height: context.width/5,
+                              width: context.width/5,
                               loaderBuilder:
                               const CircularProgressIndicator(),
                               matchTextDirection: true,
@@ -174,24 +186,25 @@ class _ProfileSettingPageView extends WidgetView<ProfileSettingPage, _ProfileSet
                               state.userImagePath.isEmpty ? false : true,
                               hasCustomIcon:
                               state.userImagePath.isEmpty ? true : false,
-                              customIcon: Icon(Icons.camera_alt),
-                              circularRadius: 40,
-                              borderRadius: 40,
+                              customIcon: const Icon(Icons.camera_alt),
+                              circularRadius: 36,
+                              borderRadius: 36,
                               end: -2,
                               bottom: 1,
                               innerCircularRadius: state.userImagePath.isEmpty ? 32 : 40,
                             ),
                             cardActionWidget: SettingsItem(
+                              hasDense: true,
                               icons: Icons.edit,
                               iconStyle: IconStyle(
-                                withBackground: true,
                                 borderRadius: 50,
                                 backgroundColor: Colors.yellow[600],
                               ),
-                              title: "Modify",
-                              subtitle: "Tap to change your data",
+                              title: 'Modify',
+                              titleStyle: context.titleMedium!.copyWith(),
+                              subtitle: 'Tap to change your data',
                               onTap: () {
-                                print("OK");
+                                print('OK');
                               },
                             ),
                           ),
@@ -200,11 +213,17 @@ class _ProfileSettingPageView extends WidgetView<ProfileSettingPage, _ProfileSet
                             items: [
                               SettingsItem(
                                 onTap: () {},
-                                icons: Icons.account_balance,
-                                title: "Bank Details",
+                                icons: FontAwesomeIcons.addressBook,
+                                title: 'Address Book',
                                 iconStyle: IconStyle(
-                                  iconsColor: Colors.white,
-                                  withBackground: true,
+                                  backgroundColor: context.colorScheme.tertiary,
+                                ),
+                              ),
+                              SettingsItem(
+                                onTap: () {},
+                                icons: Icons.account_balance,
+                                title: 'Payments',
+                                iconStyle: IconStyle(
                                   backgroundColor: context.colorScheme.primary,
                                 ),
                               ),
@@ -212,32 +231,63 @@ class _ProfileSettingPageView extends WidgetView<ProfileSettingPage, _ProfileSet
                               SettingsItem(
                                 onTap: () {},
                                 icons: CupertinoIcons.cloud_upload,
-                                title: "Documents",
+                                title: 'Documents',
                                 iconStyle: IconStyle(
-                                  iconsColor: Colors.white,
-                                  withBackground: true,
                                   backgroundColor: context.colorScheme.primary,
                                 ),
                               ),
                               SettingsItem(
                                 onTap: () {},
                                 icons: CupertinoIcons.repeat,
-                                title: "Change Phone Number",
+                                title: 'Change Phone Number',
                                 iconStyle: IconStyle(
-                                  iconsColor: Colors.white,
-                                  withBackground: true,
-                                  backgroundColor: context.colorScheme.secondary,
+                                  backgroundColor: context.colorScheme.error,
                                 ),
                               ),
 
                               SettingsItem(
                                 onTap: () {},
                                 icons: CupertinoIcons.repeat,
-                                title: "Change email",
+                                title: 'Change email',
                                 iconStyle: IconStyle(
-                                  iconsColor: Colors.white,
-                                  withBackground: true,
-                                  backgroundColor: context.colorScheme.secondary,
+                                  backgroundColor: context.colorScheme.error,
+                                ),
+                              ),
+                            ],
+                          ),
+                          SettingsGroup(
+                            settingsGroupTitle: 'Business',
+                            items: [
+                              SettingsItem(
+                                onTap: () {},
+                                icons: FontAwesomeIcons.bagShopping,
+                                title: 'Your Orders',
+                                iconStyle: IconStyle(
+                                  backgroundColor: context.colorScheme.tertiary,
+                                ),
+                              ),
+                              SettingsItem(
+                                onTap: () {},
+                                icons: FontAwesomeIcons.store,
+                                title: 'Your Stores',
+                                iconStyle: IconStyle(
+                                  backgroundColor: context.colorScheme.primary,
+                                ),
+                              ),
+                              SettingsItem(
+                                onTap: () {},
+                                icons: FontAwesomeIcons.burger,
+                                title: 'Your Menu',
+                                iconStyle: IconStyle(
+                                  backgroundColor: context.colorScheme.primary,
+                                ),
+                              ),
+                              SettingsItem(
+                                onTap: () {},
+                                icons: FontAwesomeIcons.users,
+                                title: 'Your Drivers',
+                                iconStyle: IconStyle(
+                                  backgroundColor: context.colorScheme.tertiary,
                                 ),
                               ),
                             ],
@@ -247,37 +297,41 @@ class _ProfileSettingPageView extends WidgetView<ProfileSettingPage, _ProfileSet
                               SettingsItem(
                                 onTap: () {},
                                 icons:Icons.notifications,
-                                iconStyle: IconStyle(),
+                                iconStyle: const IconStyle(),
                                 title: 'Notification',
-                                subtitle: "Set your notification",
+                                subtitle: 'Set your notification',
                                 titleMaxLine: 1,
                                 subtitleMaxLine: 1,
                               ),
                               SettingsItem(
                                 onTap: () {},
                                 icons: Icons.fingerprint,
-                                iconStyle: IconStyle(
-                                  iconsColor: Colors.white,
-                                  withBackground: true,
+                                iconStyle: const IconStyle(
                                   backgroundColor: Colors.red,
                                 ),
                                 title: 'Privacy',
-                                subtitle: "Improve your privacy",
+                                subtitle: 'Improve your privacy',
                               ),
                               SettingsItem(
                                 onTap: () {},
                                 icons: Icons.dark_mode_rounded,
-                                iconStyle: IconStyle(
-                                  iconsColor: Colors.white,
-                                  withBackground: true,
+                                iconStyle: const IconStyle(
                                   backgroundColor: Colors.red,
                                 ),
                                 title: 'Dark mode',
-                                subtitle: "Automatic",
-                                trailing: Switch.adaptive(
-                                  value: false,
-                                  onChanged: (value) {},
+                                subtitle: 'Automatic',
+                                trailing: ThemeModeSwitch(
+                                  onChanged: (value) {
+                                    return state.onThemeChanged(value);
+                                  },
+                                  themeMode: serviceLocator<ThemeController>().themeMode,
                                 ),
+                                /*trailing: Switch.adaptive(
+                                  value: state.hasSelectedDarkTheme,
+                                  onChanged: (value) {
+                                    return state.switchToDarkTheme(value:value);
+                                  },
+                                ),*/
                               ),
                             ],
                           ),
@@ -286,11 +340,11 @@ class _ProfileSettingPageView extends WidgetView<ProfileSettingPage, _ProfileSet
                               SettingsItem(
                                 onTap: () {},
                                 icons: Icons.help,
-                                iconStyle: IconStyle(
+                                iconStyle: const IconStyle(
                                   backgroundColor: Colors.purple,
                                 ),
                                 title: 'Help & Support',
-                                subtitle: "Chat with us",
+                                subtitle: 'Chat with us',
                               ),
                             ],
                           ),
@@ -299,33 +353,32 @@ class _ProfileSettingPageView extends WidgetView<ProfileSettingPage, _ProfileSet
                               SettingsItem(
                                 onTap: () {},
                                 icons: Icons.info_rounded,
-                                iconStyle: IconStyle(
+                                iconStyle: const IconStyle(
                                   backgroundColor: Colors.purple,
                                 ),
                                 title: 'About',
-                                subtitle: "About the HomeWay App",
+                                subtitle: 'About the HomeWay App',
                               ),
                             ],
                           ),
 
                           // You can add a settings title
                           SettingsGroup(
-                            settingsGroupTitle: "Account",
+                            settingsGroupTitle: 'Account',
                             items: [
-                              /*SettingsItem(
+                              SettingsItem(
                                 onTap: () {},
-                                icons: CupertinoIcons.delete_solid,
-                                title: "Delete account",
-                                titleStyle: TextStyle(
-                                  color: Colors.red,
-                                  fontWeight: FontWeight.bold,
+                                icons: CupertinoIcons.star_circle_fill,
+                                title: 'Your Rating',
+                                iconStyle: IconStyle(
+                                  backgroundColor: context.colorScheme.error,
                                 ),
-                              ),*/
+                              ),
                               SettingsItem(
                                 onTap: () {},
                                 icons: Icons.exit_to_app_rounded,
-                                title: "Sign Out",
-                                titleStyle: TextStyle(
+                                title: 'Sign Out',
+                                titleStyle: const TextStyle(
                                   color: Colors.red,
                                   fontWeight: FontWeight.bold,
                                 ),

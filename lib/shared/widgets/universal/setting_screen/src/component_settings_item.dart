@@ -20,7 +20,7 @@ class SettingsItem extends StatelessWidget {
       this.onTap,
       this.titleMaxLine,
       this.subtitleMaxLine,
-      this.overflow = TextOverflow.ellipsis});
+      this.overflow = TextOverflow.ellipsis,this.hasDense});
   final IconData icons;
   final IconStyle? iconStyle;
   final String title;
@@ -33,6 +33,7 @@ class SettingsItem extends StatelessWidget {
   final int? titleMaxLine;
   final int? subtitleMaxLine;
   final TextOverflow? overflow;
+  final bool? hasDense;
 
   @override
   Widget build(BuildContext context) {
@@ -42,6 +43,7 @@ class SettingsItem extends StatelessWidget {
         borderRadius: BorderRadius.circular(15),
         child: ListTile(
           onTap: onTap,
+          dense: hasDense,
           leading: (iconStyle != null && iconStyle!.withBackground!)
               ? Container(
                   decoration: BoxDecoration(

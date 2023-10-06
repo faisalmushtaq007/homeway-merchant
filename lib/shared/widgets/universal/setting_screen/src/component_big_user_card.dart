@@ -99,7 +99,7 @@ class BigUserCard extends StatelessWidget {
                               children: [
                                 Text(
                                   userName!,
-                                  style: context.headlineSmall!.copyWith(
+                                  style: context.titleLarge!.copyWith(
                                     fontWeight: FontWeight.bold,
                                     //fontSize: context.width / 15,
                                     height: 0.9,
@@ -124,7 +124,7 @@ class BigUserCard extends StatelessWidget {
                                     children: [
                                       Text(
                                         subTitle??'',
-                                        style: context.titleLarge!.copyWith(
+                                        style: context.titleMedium!.copyWith(
                                           fontWeight: FontWeight.w500,
                                           //fontSize: context.width / 15,
                                           //height: 0.9,

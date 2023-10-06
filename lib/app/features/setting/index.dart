@@ -18,6 +18,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
 /*import 'package:google_ml_kit/google_ml_kit.dart';*/
 import 'package:hive/hive.dart';
@@ -80,6 +81,8 @@ import 'package:homemakers_merchant/shared/widgets/universal/one_context/one_con
 import 'package:homemakers_merchant/shared/widgets/universal/phone_number_text_field/phone_form_field_bloc.dart';
 import 'package:homemakers_merchant/shared/widgets/universal/phone_number_text_field/phonenumber_form_field_widget.dart';
 import 'package:homemakers_merchant/shared/widgets/universal/setting_screen/settings_screen.dart';
+import 'package:homemakers_merchant/shared/widgets/universal/theme_mode_switch.dart';
+import 'package:homemakers_merchant/theme/theme_controller.dart';
 import 'package:homemakers_merchant/utils/app_data_dir/app_data_dir.dart';
 import 'package:homemakers_merchant/utils/app_equatable/src/app_equatable.dart';
 import 'package:homemakers_merchant/utils/app_log.dart';

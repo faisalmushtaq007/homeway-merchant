@@ -23,11 +23,6 @@ class _ManageOrderPageController extends State<ManageOrderPage> {
   }
 
   @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-  }
-
-  @override
   void dispose() {
     scrollController.dispose();
     customScrollViewScrollController.dispose();
