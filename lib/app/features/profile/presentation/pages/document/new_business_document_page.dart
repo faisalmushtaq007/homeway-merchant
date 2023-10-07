@@ -6,11 +6,13 @@ class NewBusinessDocumentPage extends StatefulWidget {
     this.currentIndex = -1,
     this.hasEditBusinessDocument = false,
     this.businessDocumentEntities = const [],
+    this.selectionUseCase=SelectionUseCase.saveAndNext,
   });
 
   final int currentIndex;
   final List<NewBusinessDocumentEntity> businessDocumentEntities;
   final bool hasEditBusinessDocument;
+  final SelectionUseCase selectionUseCase;
 
   @override
   _NewBusinessDocumentPageController createState() =>

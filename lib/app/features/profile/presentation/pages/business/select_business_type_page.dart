@@ -7,12 +7,14 @@ class ConfirmBusinessTypePage extends StatefulWidget {
     this.hasEditBusinessProfile = false,
     this.businessProfileEntity,
     this.businessTypeEntity,
+    this.selectionUseCase=SelectionUseCase.saveAndNext,
   });
 
   final BusinessProfileEntity? businessProfileEntity;
   final bool hasEditBusinessProfile;
   final int currentIndex;
   final BusinessTypeEntity? businessTypeEntity;
+  final SelectionUseCase selectionUseCase;
 
   @override
   _ConfirmBusinessTypePageController createState() =>

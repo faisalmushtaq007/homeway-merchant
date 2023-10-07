@@ -40,6 +40,20 @@ enum SelectItemUseCase {
   none,
 }
 
+enum SelectionUseCase {
+  bindingWithOther,
+  onlySelect,
+  selectAndReturn,
+  selectAndNext,
+  saveAndNext,
+  saveAndReturn,
+  deleteAndNext,
+  deleteAndReturn,
+  updateAndNext,
+  updateAndReturn,
+  none,
+}
+
 enum OrderStateStatus {
   none,
   save,

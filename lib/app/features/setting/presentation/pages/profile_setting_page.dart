@@ -203,8 +203,13 @@ class _ProfileSettingPageView extends WidgetView<ProfileSettingPage, _ProfileSet
                               title: 'Modify',
                               titleStyle: context.titleMedium!.copyWith(),
                               subtitle: 'Tap to change your data',
-                              onTap: () {
-                                print('OK');
+                              onTap: () async{
+                                final result=await context.push(Routes.CREATE_BUSINESS_PROFILE_PAGE,extra: {
+                                  'businessProfileEntity':serviceLocator<AppUserEntity>().businessProfile,
+                                  'hasEditBusinessProfile':true,
+                                  'currentIndex':0,
+                                });
+                                return;
                               },
                             ),
                           ),
@@ -212,7 +217,10 @@ class _ProfileSettingPageView extends WidgetView<ProfileSettingPage, _ProfileSet
                             //settingsGroupTitle: "Profile",
                             items: [
                               SettingsItem(
-                                onTap: () {},
+                                onTap: () async{
+                                  final result=await context.push(Routes.ALL_SAVED_ADDRESS_LIST);
+                                  return;
+                                },
                                 icons: FontAwesomeIcons.addressBook,
                                 title: 'Address Book',
                                 iconStyle: IconStyle(
@@ -220,7 +228,10 @@ class _ProfileSettingPageView extends WidgetView<ProfileSettingPage, _ProfileSet
                                 ),
                               ),
                               SettingsItem(
-                                onTap: () {},
+                                onTap: () async{
+                                  final result=await context.push(Routes.BANK_INFORMATION_PAGE);
+                                  return;
+                                },
                                 icons: Icons.account_balance,
                                 title: 'Payments',
                                 iconStyle: IconStyle(
@@ -229,7 +240,10 @@ class _ProfileSettingPageView extends WidgetView<ProfileSettingPage, _ProfileSet
                               ),
 
                               SettingsItem(
-                                onTap: () {},
+                                onTap: () async{
+                                  final result=await context.push(Routes.NEW_DOCUMENT_LIST_PAGE);
+                                  return;
+                                },
                                 icons: CupertinoIcons.cloud_upload,
                                 title: 'Documents',
                                 iconStyle: IconStyle(
@@ -245,21 +259,24 @@ class _ProfileSettingPageView extends WidgetView<ProfileSettingPage, _ProfileSet
                                 ),
                               ),
 
-                              SettingsItem(
+                             /* SettingsItem(
                                 onTap: () {},
                                 icons: CupertinoIcons.repeat,
                                 title: 'Change email',
                                 iconStyle: IconStyle(
                                   backgroundColor: context.colorScheme.error,
                                 ),
-                              ),
+                              ),*/
                             ],
                           ),
                           SettingsGroup(
                             settingsGroupTitle: 'Business',
                             items: [
                               SettingsItem(
-                                onTap: () {},
+                                onTap: () async{
+                                  final result=await context.push(Routes.MANAGE_ORDER_PAGE);
+                                  return;
+                                },
                                 icons: FontAwesomeIcons.bagShopping,
                                 title: 'Your Orders',
                                 iconStyle: IconStyle(
@@ -267,7 +284,10 @@ class _ProfileSettingPageView extends WidgetView<ProfileSettingPage, _ProfileSet
                                 ),
                               ),
                               SettingsItem(
-                                onTap: () {},
+                                onTap: () async{
+                                  final result=await context.push(Routes.ALL_STORES_PAGE);
+                                  return;
+                                },
                                 icons: FontAwesomeIcons.store,
                                 title: 'Your Stores',
                                 iconStyle: IconStyle(
@@ -275,7 +295,10 @@ class _ProfileSettingPageView extends WidgetView<ProfileSettingPage, _ProfileSet
                                 ),
                               ),
                               SettingsItem(
-                                onTap: () {},
+                                onTap: () async{
+                                  final result=await context.push(Routes.ALL_MENU_PAGE);
+                                  return;
+                                },
                                 icons: FontAwesomeIcons.burger,
                                 title: 'Your Menu',
                                 iconStyle: IconStyle(
@@ -283,7 +306,10 @@ class _ProfileSettingPageView extends WidgetView<ProfileSettingPage, _ProfileSet
                                 ),
                               ),
                               SettingsItem(
-                                onTap: () {},
+                                onTap: () async{
+                                  final result=await context.push(Routes.ALL_DRIVER_PAGE);
+                                  return;
+                                },
                                 icons: FontAwesomeIcons.users,
                                 title: 'Your Drivers',
                                 iconStyle: IconStyle(
@@ -295,7 +321,10 @@ class _ProfileSettingPageView extends WidgetView<ProfileSettingPage, _ProfileSet
                           SettingsGroup(
                             items: [
                               SettingsItem(
-                                onTap: () {},
+                                onTap: () async{
+                                  final result=await context.push(Routes.NOTIFICATIONS);
+                                  return;
+                                },
                                 icons:Icons.notifications,
                                 iconStyle: const IconStyle(),
                                 title: 'Notification',
@@ -304,7 +333,10 @@ class _ProfileSettingPageView extends WidgetView<ProfileSettingPage, _ProfileSet
                                 subtitleMaxLine: 1,
                               ),
                               SettingsItem(
-                                onTap: () {},
+                                onTap: () async{
+                                  final result=await context.push(Routes.PRIVACY_AND_POLICY);
+                                  return;
+                                },
                                 icons: Icons.fingerprint,
                                 iconStyle: const IconStyle(
                                   backgroundColor: Colors.red,
@@ -350,7 +382,10 @@ class _ProfileSettingPageView extends WidgetView<ProfileSettingPage, _ProfileSet
                           SettingsGroup(
                             items: [
                               SettingsItem(
-                                onTap: () {},
+                                onTap: () async{
+                                  final result=await context.push(Routes.ABOUT_US);
+                                  return;
+                                },
                                 icons: Icons.info_rounded,
                                 iconStyle: const IconStyle(
                                   backgroundColor: Colors.purple,
@@ -366,7 +401,10 @@ class _ProfileSettingPageView extends WidgetView<ProfileSettingPage, _ProfileSet
                             settingsGroupTitle: 'Account',
                             items: [
                               SettingsItem(
-                                onTap: () {},
+                                onTap: () async{
+                                  final result=await context.push(Routes.RATE_AND_REVIEW_PAGE);
+                                  return;
+                                },
                                 icons: CupertinoIcons.star_circle_fill,
                                 title: 'Your Rating',
                                 iconStyle: IconStyle(

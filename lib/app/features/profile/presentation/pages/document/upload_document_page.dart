@@ -1,10 +1,14 @@
 part of 'package:homemakers_merchant/app/features/profile/index.dart';
 
 class UploadDocumentPage extends StatefulWidget {
-  const UploadDocumentPage(
-      {this.documentType = DocumentType.tradeLicence, super.key});
+  const UploadDocumentPage({
+    this.documentType = DocumentType.tradeLicence,
+    super.key,
+    this.selectionUseCase = SelectionUseCase.saveAndNext,
+  });
 
   final DocumentType documentType;
+  final SelectionUseCase selectionUseCase;
 
   @override
   State<UploadDocumentPage> createState() => _UploadDocumentPageState();
@@ -26,8 +30,7 @@ class _UploadDocumentPageState extends State<UploadDocumentPage> {
   File? pickedSourceFile;
   ImageSource? type;
   XFile? pickedXSourceFile;
-  DocumentPickerSourceStatus documentPickerSourceStatus =
-      DocumentPickerSourceStatus.none;
+  DocumentPickerSourceStatus documentPickerSourceStatus = DocumentPickerSourceStatus.none;
 
   bool _cropping = false;
   Uint8List? selectedFileInBytes;
@@ -60,9 +63,7 @@ class _UploadDocumentPageState extends State<UploadDocumentPage> {
     dottedColor: Colors.white,
     // Configure the color of the outer portion of the viewfinder
     editorMaskColorHandler: (context, isTouching) {
-      return isTouching
-          ? Colors.black.withOpacity(0.3)
-          : Colors.black.withOpacity(0.7);
+      return isTouching ? Colors.black.withOpacity(0.3) : Colors.black.withOpacity(0.7);
       // return Colors.black;
     },
   );
@@ -85,8 +86,7 @@ class _UploadDocumentPageState extends State<UploadDocumentPage> {
   Widget build(BuildContext context) {
     final MediaQueryData media = MediaQuery.of(context);
     final double margins = GlobalApp.responsiveInsets(media.size.width);
-    final double topPadding =
-        margins; //media.padding.top + kToolbarHeight + margins; //margins * 1.5;
+    final double topPadding = margins; //media.padding.top + kToolbarHeight + margins; //margins * 1.5;
     final double bottomPadding = media.padding.bottom + margins;
     final double width = media.size.width;
     final ThemeData theme = Theme.of(context);
@@ -119,8 +119,7 @@ class _UploadDocumentPageState extends State<UploadDocumentPage> {
                 return;
               },
               style: ElevatedButton.styleFrom(),
-              icon: const Icon(Icons.done,
-                  color: Color.fromRGBO(69, 201, 125, 1)),
+              icon: const Icon(Icons.done, color: Color.fromRGBO(69, 201, 125, 1)),
             ),
           ],
         ),
@@ -133,8 +132,7 @@ class _UploadDocumentPageState extends State<UploadDocumentPage> {
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
         body: Directionality(
-          textDirection:
-              serviceLocator<LanguageController>().targetTextDirection,
+          textDirection: serviceLocator<LanguageController>().targetTextDirection,
           child: PageBody(
             controller: scrollController,
             constraints: BoxConstraints(
@@ -146,8 +144,7 @@ class _UploadDocumentPageState extends State<UploadDocumentPage> {
               bloc: context.read<PermissionBloc>(),
               //buildWhen: (previous, current) => previous != current,
               builder: (context, state) {
-                return BlocListener<BusinessDocumentBloc,
-                    BusinessDocumentState>(
+                return BlocListener<BusinessDocumentBloc, BusinessDocumentState>(
                   listenWhen: (previous, current) => previous != current,
                   bloc: context.read<BusinessDocumentBloc>(),
                   listener: (context, state) {
@@ -174,14 +171,10 @@ class _UploadDocumentPageState extends State<UploadDocumentPage> {
                                     data: theme,
                                     child: Dialog(
                                       // The background color
-                                      shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadiusDirectional.circular(
-                                                  6)),
+                                      shape: RoundedRectangleBorder(borderRadius: BorderRadiusDirectional.circular(6)),
 
                                       child: Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                            vertical: 8),
+                                        padding: const EdgeInsets.symmetric(vertical: 8),
                                         child: Column(
                                           mainAxisSize: MainAxisSize.min,
                                           children: [
@@ -189,32 +182,27 @@ class _UploadDocumentPageState extends State<UploadDocumentPage> {
                                             const CircularProgressIndicator(),
                                             const AnimatedGap(
                                               8,
-                                              duration:
-                                                  Duration(milliseconds: 200),
+                                              duration: Duration(milliseconds: 200),
                                             ),
                                             // Some text
                                             Wrap(
                                               children: [
                                                 Text(
                                                   'Please wait while we are processing...',
-                                                  style: context.labelMedium!
-                                                      .copyWith(
+                                                  style: context.labelMedium!.copyWith(
                                                     fontWeight: FontWeight.w500,
                                                   ),
-                                                  textDirection: serviceLocator<
-                                                          LanguageController>()
-                                                      .targetTextDirection,
+                                                  textDirection:
+                                                      serviceLocator<LanguageController>().targetTextDirection,
                                                   softWrap: true,
-                                                  overflow:
-                                                      TextOverflow.ellipsis,
+                                                  overflow: TextOverflow.ellipsis,
                                                   maxLines: 2,
                                                 ),
                                               ],
                                             ),
                                             const AnimatedGap(
                                               4,
-                                              duration:
-                                                  Duration(milliseconds: 200),
+                                              duration: Duration(milliseconds: 200),
                                             ),
                                           ],
                                         ),
@@ -249,8 +237,7 @@ class _UploadDocumentPageState extends State<UploadDocumentPage> {
                       },
                     );
                   },
-                  child:
-                      BlocBuilder<BusinessDocumentBloc, BusinessDocumentState>(
+                  child: BlocBuilder<BusinessDocumentBloc, BusinessDocumentState>(
                     //buildWhen: (previous, current) => previous != current,
                     key: const Key('upload-business-document-bloc-builder-key'),
                     bloc: BlocProvider.of<BusinessDocumentBloc>(context),
@@ -261,8 +248,7 @@ class _UploadDocumentPageState extends State<UploadDocumentPage> {
                           documentPickerSource = value.documentPickerSource;
                         },
                         captureImageFromCameraProcessingState: (value) {
-                          documentPickerSourceStatus =
-                              DocumentPickerSourceStatus.pickingUp;
+                          documentPickerSourceStatus = DocumentPickerSourceStatus.pickingUp;
                         },
                         captureImageFromCameraSuccessState: (value) {
                           controller = ImageEditorController();
@@ -270,19 +256,14 @@ class _UploadDocumentPageState extends State<UploadDocumentPage> {
                           pickedXSourceFile = value.pickedFile;
                           selectedFileInBytes = value.uint8list;
                           fileMetaInfo = value.metaData;
-                          if (selectedFileInBytes != null &&
-                              (pickedSourceFile != null ||
-                                  pickedXSourceFile != null)) {
-                            documentPickerSourceStatus =
-                                DocumentPickerSourceStatus.pickedUp;
+                          if (selectedFileInBytes != null && (pickedSourceFile != null || pickedXSourceFile != null)) {
+                            documentPickerSourceStatus = DocumentPickerSourceStatus.pickedUp;
                           } else {
-                            documentPickerSourceStatus =
-                                DocumentPickerSourceStatus.notPickedUp;
+                            documentPickerSourceStatus = DocumentPickerSourceStatus.notPickedUp;
                           }
                         },
                         selectImageFromGalleryProcessingState: (value) {
-                          documentPickerSourceStatus =
-                              DocumentPickerSourceStatus.pickingUp;
+                          documentPickerSourceStatus = DocumentPickerSourceStatus.pickingUp;
                         },
                         selectImageFromGallerySuccessState: (value) {
                           controller = ImageEditorController();
@@ -291,23 +272,17 @@ class _UploadDocumentPageState extends State<UploadDocumentPage> {
                           pickedXSourceFile = value.pickedFile;
                           selectedFileInBytes = value.uint8list;
                           fileMetaInfo = value.metaData;
-                          if (selectedFileInBytes != null &&
-                              (pickedSourceFile != null ||
-                                  pickedXSourceFile != null)) {
-                            documentPickerSourceStatus =
-                                DocumentPickerSourceStatus.pickedUp;
+                          if (selectedFileInBytes != null && (pickedSourceFile != null || pickedXSourceFile != null)) {
+                            documentPickerSourceStatus = DocumentPickerSourceStatus.pickedUp;
                           } else {
-                            documentPickerSourceStatus =
-                                DocumentPickerSourceStatus.notPickedUp;
+                            documentPickerSourceStatus = DocumentPickerSourceStatus.notPickedUp;
                           }
                         },
                         captureImageFromCameraFailedState: (value) {
-                          documentPickerSourceStatus =
-                              DocumentPickerSourceStatus.notPickedUp;
+                          documentPickerSourceStatus = DocumentPickerSourceStatus.notPickedUp;
                         },
                         selectImageFromGalleryFailedState: (value) {
-                          documentPickerSourceStatus =
-                              DocumentPickerSourceStatus.notPickedUp;
+                          documentPickerSourceStatus = DocumentPickerSourceStatus.notPickedUp;
                         },
                         cropState: (value) {},
                         flipState: (value) {
@@ -325,8 +300,7 @@ class _UploadDocumentPageState extends State<UploadDocumentPage> {
                         },
                         saveCropDocumentSuccessState: (value) {
                           controller = ImageEditorController();
-                          documentPickerSourceStatus =
-                              DocumentPickerSourceStatus.notPickedUp;
+                          documentPickerSourceStatus = DocumentPickerSourceStatus.notPickedUp;
                           pickedSourceFile = null;
                           pickedXSourceFile = null;
                         },
@@ -342,8 +316,7 @@ class _UploadDocumentPageState extends State<UploadDocumentPage> {
                           controller: scrollController,
                           shrinkWrap: true,
                           children: [
-                            _currentPickerStatus(
-                                documentPickerSourceStatus, context),
+                            _currentPickerStatus(documentPickerSourceStatus, context),
                           ],
                         ),
                       );
@@ -358,9 +331,7 @@ class _UploadDocumentPageState extends State<UploadDocumentPage> {
     );
   }
 
-  Widget _currentPickerStatus(
-      DocumentPickerSourceStatus documentPickerSourceStatus,
-      BuildContext context) {
+  Widget _currentPickerStatus(DocumentPickerSourceStatus documentPickerSourceStatus, BuildContext context) {
     switch (documentPickerSourceStatus) {
       case DocumentPickerSourceStatus.none ||
             DocumentPickerSourceStatus.notPickedUp ||
@@ -374,8 +345,7 @@ class _UploadDocumentPageState extends State<UploadDocumentPage> {
             mainAxisSize: MainAxisSize.min,
             children: [
               Container(
-                constraints: BoxConstraints(
-                    maxHeight: context.height / 1.75, minWidth: context.width),
+                constraints: BoxConstraints(maxHeight: context.height / 1.75, minWidth: context.width),
                 child: ImageEditorPlane(
                   imageData: selectedFileInBytes!.buffer.asByteData(),
                   controller: controller,
@@ -403,8 +373,7 @@ class _UploadDocumentPageState extends State<UploadDocumentPage> {
               const AnimatedGap(10, duration: Duration(milliseconds: 500)),
               DecoratedBox(
                 decoration: BoxDecoration(
-                  border:
-                      Border.all(color: const Color.fromRGBO(200, 201, 202, 1)),
+                  border: Border.all(color: const Color.fromRGBO(200, 201, 202, 1)),
                   borderRadius: BorderRadiusDirectional.circular(8),
                 ),
                 child: ScrollableRow(
@@ -415,8 +384,7 @@ class _UploadDocumentPageState extends State<UploadDocumentPage> {
                   ),
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.center,
-                  textDirection:
-                      serviceLocator<LanguageController>().targetTextDirection,
+                  textDirection: serviceLocator<LanguageController>().targetTextDirection,
                   children: [
                     TextButton(
                       onPressed: () {
@@ -434,8 +402,7 @@ class _UploadDocumentPageState extends State<UploadDocumentPage> {
                           const Icon(Icons.rotate_left),
                           Text(
                             'Left',
-                            textDirection: serviceLocator<LanguageController>()
-                                .targetTextDirection,
+                            textDirection: serviceLocator<LanguageController>().targetTextDirection,
                           ),
                         ],
                       ),
@@ -467,8 +434,7 @@ class _UploadDocumentPageState extends State<UploadDocumentPage> {
                           const Icon(Icons.rotate_right),
                           Text(
                             'Right',
-                            textDirection: serviceLocator<LanguageController>()
-                                .targetTextDirection,
+                            textDirection: serviceLocator<LanguageController>().targetTextDirection,
                           ),
                         ],
                       ),
@@ -501,8 +467,7 @@ class _UploadDocumentPageState extends State<UploadDocumentPage> {
                           ),
                           Text(
                             'Flip',
-                            textDirection: serviceLocator<LanguageController>()
-                                .targetTextDirection,
+                            textDirection: serviceLocator<LanguageController>().targetTextDirection,
                           ),
                         ],
                       ),
@@ -519,8 +484,7 @@ class _UploadDocumentPageState extends State<UploadDocumentPage> {
                       ),
                     ),
                     TextButton(
-                      style:
-                          TextButton.styleFrom(minimumSize: const Size(40, 36)),
+                      style: TextButton.styleFrom(minimumSize: const Size(40, 36)),
                       onPressed: () {
                         controller.upsideDown();
                         return;
@@ -532,8 +496,7 @@ class _UploadDocumentPageState extends State<UploadDocumentPage> {
                           const Icon(Icons.flip),
                           Text(
                             'Flip',
-                            textDirection: serviceLocator<LanguageController>()
-                                .targetTextDirection,
+                            textDirection: serviceLocator<LanguageController>().targetTextDirection,
                           ),
                         ],
                       ),
@@ -567,8 +530,7 @@ class _UploadDocumentPageState extends State<UploadDocumentPage> {
                           const Icon(Icons.restore),
                           Text(
                             'Reset',
-                            textDirection: serviceLocator<LanguageController>()
-                                .targetTextDirection,
+                            textDirection: serviceLocator<LanguageController>().targetTextDirection,
                           ),
                         ],
                       ),
@@ -616,8 +578,7 @@ class _UploadDocumentPageState extends State<UploadDocumentPage> {
               padding: const EdgeInsetsDirectional.all(16),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
-                textDirection:
-                    serviceLocator<LanguageController>().targetTextDirection,
+                textDirection: serviceLocator<LanguageController>().targetTextDirection,
                 children: [
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -625,8 +586,7 @@ class _UploadDocumentPageState extends State<UploadDocumentPage> {
                     children: [
                       Text(
                         'Select document source',
-                        textDirection: serviceLocator<LanguageController>()
-                            .targetTextDirection,
+                        textDirection: serviceLocator<LanguageController>().targetTextDirection,
                         style: context.titleLarge,
                       ).translate(),
                       SizedBox(
@@ -660,16 +620,14 @@ class _UploadDocumentPageState extends State<UploadDocumentPage> {
                     itemCount: GlobalApp.defaultDocumentPickerSource.length - 2,
                     itemBuilder: (context, index) {
                       return Directionality(
-                        textDirection: serviceLocator<LanguageController>()
-                            .targetTextDirection,
+                        textDirection: serviceLocator<LanguageController>().targetTextDirection,
                         child: ListTile(
                           onTap: () async {
                             // Select source
                             context.read<BusinessDocumentBloc>().add(
                                   SelectDocumentSourceType(
                                     documentType: widget.documentType,
-                                    documentPickerSource: GlobalApp
-                                        .defaultDocumentPickerSource[index],
+                                    documentPickerSource: GlobalApp.defaultDocumentPickerSource[index],
                                   ),
                                 );
                             // Close the source confirmation
@@ -682,18 +640,13 @@ class _UploadDocumentPageState extends State<UploadDocumentPage> {
 
                             // Close bottom sheet
                           },
-                          leading:
-                              GlobalApp.defaultDocumentPickerSource[index].icon,
+                          leading: GlobalApp.defaultDocumentPickerSource[index].icon,
                           title: Text(
-                            GlobalApp.defaultDocumentPickerSource[index]
-                                .documentPickerName,
-                            textDirection: serviceLocator<LanguageController>()
-                                .targetTextDirection,
+                            GlobalApp.defaultDocumentPickerSource[index].documentPickerName,
+                            textDirection: serviceLocator<LanguageController>().targetTextDirection,
                             style: context.labelLarge,
                           ),
-                          trailing: GlobalApp
-                                      .defaultDocumentPickerSource[index] ==
-                                  documentPickerSource
+                          trailing: GlobalApp.defaultDocumentPickerSource[index] == documentPickerSource
                               ? Icon(
                                   Icons.check_circle_rounded,
                                   color: Theme.of(context).primaryColorLight,
@@ -701,22 +654,16 @@ class _UploadDocumentPageState extends State<UploadDocumentPage> {
                               : null,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadiusDirectional.circular(10),
-                            side: GlobalApp
-                                        .defaultDocumentPickerSource[index] ==
-                                    documentPickerSource
+                            side: GlobalApp.defaultDocumentPickerSource[index] == documentPickerSource
                                 ? BorderSide(
                                     color: Theme.of(context).primaryColorLight,
                                     width: 1.5,
                                   )
                                 : BorderSide(color: Colors.grey[300]!),
                           ),
-                          tileColor:
-                              GlobalApp.defaultDocumentPickerSource[index] ==
-                                      documentPickerSource
-                                  ? Theme.of(context)
-                                      .primaryColorLight
-                                      .withOpacity(0.05)
-                                  : null,
+                          tileColor: GlobalApp.defaultDocumentPickerSource[index] == documentPickerSource
+                              ? Theme.of(context).primaryColorLight.withOpacity(0.05)
+                              : null,
                         ),
                       );
                     },
@@ -734,10 +681,7 @@ class _UploadDocumentPageState extends State<UploadDocumentPage> {
   }
 
   void _showScreenShotOfCropImageDialog(
-      {required BuildContext context,
-      required ByteData byteData,
-      ui.Image? image,
-      Size? size}) {
+      {required BuildContext context, required ByteData byteData, ui.Image? image, Size? size}) {
     showConfirmationDialog(
       context: context,
       barrierDismissible: true,
@@ -791,8 +735,7 @@ class _UploadDocumentPageState extends State<UploadDocumentPage> {
               maxHeight: constraints.maxHeight,
             ),
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            textDirection:
-                serviceLocator<LanguageController>().targetTextDirection,
+            textDirection: serviceLocator<LanguageController>().targetTextDirection,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               Flexible(
@@ -812,16 +755,13 @@ class _UploadDocumentPageState extends State<UploadDocumentPage> {
                           crossAxisAlignment: CrossAxisAlignment.center,
                           mainAxisSize: MainAxisSize.min,
                           mainAxisAlignment: MainAxisAlignment.center,
-                          textDirection: serviceLocator<LanguageController>()
-                              .targetTextDirection,
+                          textDirection: serviceLocator<LanguageController>().targetTextDirection,
                           children: [
                             ImageHelper(
                               image: 'assets/svg/unknown.svg',
                               filterQuality: FilterQuality.high,
-                              borderRadius:
-                                  BorderRadiusDirectional.circular(10),
-                              imageType:
-                                  findImageType('assets/svg/unknown.svg'),
+                              borderRadius: BorderRadiusDirectional.circular(10),
+                              imageType: findImageType('assets/svg/unknown.svg'),
                               imageShape: ImageShape.rectangle,
                               boxFit: BoxFit.cover,
                               height: context.width / 5,
@@ -833,15 +773,12 @@ class _UploadDocumentPageState extends State<UploadDocumentPage> {
                               ),
                               loaderBuilder: const CircularProgressIndicator(),
                             ),
-                            const AnimatedGap(6,
-                                duration: Duration(milliseconds: 200)),
+                            const AnimatedGap(6, duration: Duration(milliseconds: 200)),
                             Wrap(
                               children: [
                                 Text(
                                   'Something went wrong, please select another asset',
-                                  textDirection:
-                                      serviceLocator<LanguageController>()
-                                          .targetTextDirection,
+                                  textDirection: serviceLocator<LanguageController>().targetTextDirection,
                                   overflow: TextOverflow.ellipsis,
                                   maxLines: 2,
                                   softWrap: true,
@@ -873,8 +810,7 @@ class _UploadDocumentPageState extends State<UploadDocumentPage> {
                 softWrap: true,
                 textAlign: TextAlign.center,
                 //overflow: TextOverflow.ellipsis,
-                textDirection:
-                    serviceLocator<LanguageController>().targetTextDirection,
+                textDirection: serviceLocator<LanguageController>().targetTextDirection,
               ),
               const AnimatedGap(4, duration: Duration(milliseconds: 200)),
             ],

@@ -6,11 +6,13 @@ class BankInformationPage extends StatefulWidget {
     this.paymentBankEntity,
     this.hasEditBankInformation = false,
     this.currentIndex = -1,
+    this.selectionUseCase=SelectionUseCase.saveAndNext,
   });
 
   final bool hasEditBankInformation;
   final PaymentBankEntity? paymentBankEntity;
   final int currentIndex;
+  final SelectionUseCase selectionUseCase;
 
   @override
   State<BankInformationPage> createState() => _BankInformationPageState();
