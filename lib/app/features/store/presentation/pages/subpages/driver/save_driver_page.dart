@@ -12,8 +12,6 @@ class SaveDriverPage extends StatefulWidget {
   final StoreOwnDeliveryPartnersInfo? storeOwnDeliveryPartnersInfo;
   final int currentIndex;
 
-
-
   @override
   _SaveDriverPageController createState() => _SaveDriverPageController();
 }
@@ -23,8 +21,7 @@ class _SaveDriverPageController extends State<SaveDriverPage> {
   late final ScrollController innerScrollController;
   late final ScrollController listViewBuilderScrollController;
 
-  static final GlobalKey<FormState> SaveDriverFormKey =
-      GlobalKey<FormState>(debugLabel: 'save-driver--formkey');
+  static final GlobalKey<FormState> SaveDriverFormKey = GlobalKey<FormState>(debugLabel: 'save-driver--formkey');
   List<FocusNode> focusList = [
     FocusNode(),
     FocusNode(),
@@ -32,18 +29,12 @@ class _SaveDriverPageController extends State<SaveDriverPage> {
     FocusNode(),
     FocusNode(),
   ];
-  final TextEditingController driverNameTextEditingController =
-      TextEditingController();
-  final TextEditingController driverContactNumberTextEditingController =
-      TextEditingController();
-  final TextEditingController drivingLicenseNumberTextEditingController =
-      TextEditingController();
-  final TextEditingController driverVehicleNumberTextEditingController =
-      TextEditingController();
-  final TextEditingController driverDeliveryTypeNumberTextEditingController =
-      TextEditingController();
-  final TextEditingController addonsUnitTextEditingController =
-      TextEditingController();
+  final TextEditingController driverNameTextEditingController = TextEditingController();
+  final TextEditingController driverContactNumberTextEditingController = TextEditingController();
+  final TextEditingController drivingLicenseNumberTextEditingController = TextEditingController();
+  final TextEditingController driverVehicleNumberTextEditingController = TextEditingController();
+  final TextEditingController driverDeliveryTypeNumberTextEditingController = TextEditingController();
+  final TextEditingController addonsUnitTextEditingController = TextEditingController();
   List<StoreOwnDeliveryPartnersInfo> listOfStoreOwnDeliveryPartners = [];
   List<StoreOwnDeliveryPartnersInfo> listOfSelectedStoreOwnDeliveryPartner = [];
   List<VehicleInfo> listOfVehicleTypeInfo = [];
@@ -56,10 +47,8 @@ class _SaveDriverPageController extends State<SaveDriverPage> {
   String userEnteredPhoneNumber = '';
   PhoneNumber? phoneNumber;
   late PhoneController phoneNumberController;
-  PhoneNumberVerification phoneNumberVerification =
-      PhoneNumberVerification.none;
-  ValueNotifier<PhoneNumberVerification> valueNotifierPhoneNumberVerification =
-      ValueNotifier<PhoneNumberVerification>(
+  PhoneNumberVerification phoneNumberVerification = PhoneNumberVerification.none;
+  ValueNotifier<PhoneNumberVerification> valueNotifierPhoneNumberVerification = ValueNotifier<PhoneNumberVerification>(
     PhoneNumberVerification.none,
   );
   String userImagePath = '';
@@ -121,13 +110,11 @@ class _SaveDriverPageController extends State<SaveDriverPage> {
   }
 
   void initVehicleTypeInfo() {
-    listOfVehicleTypeInfo =
-        List<VehicleInfo>.from(localDriverVehicleType.toList());
+    listOfVehicleTypeInfo = List<VehicleInfo>.from(localDriverVehicleType.toList());
   }
 
   void onSelectionChangedVehicleType(List<VehicleInfo> selectedMenuPortions) {
-    listOfSelectedVehicleTypeInfo =
-        List<VehicleInfo>.from(selectedMenuPortions.toList());
+    listOfSelectedVehicleTypeInfo = List<VehicleInfo>.from(selectedMenuPortions.toList());
     setState(() {});
     return;
   }
@@ -140,8 +127,7 @@ class _SaveDriverPageController extends State<SaveDriverPage> {
     PhoneNumber? phoneNumbers,
   ) {
     phoneNumber = phoneNumbers;
-    userEnteredPhoneNumber =
-        '+${phoneNumbers?.countryCode} ${phoneNumbers?.getFormattedNsn().trim()}';
+    userEnteredPhoneNumber = '+${phoneNumbers?.countryCode} ${phoneNumbers?.getFormattedNsn().trim()}';
     String countryDialCode = '+${phoneNumbers?.countryCode ?? '+966'}';
     String country = phoneNumbers?.isoCode.name ?? 'SA';
     driverContactNumberTextEditingController.text = userEnteredPhoneNumber;
@@ -158,19 +144,16 @@ class _SaveDriverPageController extends State<SaveDriverPage> {
     phoneNumberController = phoneNumberControllers;
     if (phoneValidation != null && phoneValidation!.isNotEmpty) {
       phoneNumberVerification = PhoneNumberVerification.invalid;
-      valueNotifierPhoneNumberVerification.value =
-          PhoneNumberVerification.invalid;
+      valueNotifierPhoneNumberVerification.value = PhoneNumberVerification.invalid;
     } else {
       if (phoneValidation == null &&
           phoneNumberControllers.value != null &&
           phoneNumberControllers.value!.getFormattedNsn().trim().isNotEmpty) {
         phoneNumberVerification = PhoneNumberVerification.valid;
-        valueNotifierPhoneNumberVerification.value =
-            PhoneNumberVerification.valid;
+        valueNotifierPhoneNumberVerification.value = PhoneNumberVerification.valid;
       } else {
         phoneNumberVerification = PhoneNumberVerification.none;
-        valueNotifierPhoneNumberVerification.value =
-            PhoneNumberVerification.none;
+        valueNotifierPhoneNumberVerification.value = PhoneNumberVerification.none;
       }
     }
     //setState(() {});
@@ -198,33 +181,25 @@ class _SaveDriverPageController extends State<SaveDriverPage> {
     StoreOwnDeliveryPartnersInfo? storeOwnDeliveryPartnersInfo,
   ) {
     if (storeOwnDeliveryPartnersInfo.isNotNull) {
-      drivingLicenseNumberTextEditingController.text =
-          storeOwnDeliveryPartnersInfo?.drivingLicenseNumber ?? '';
-      driverNameTextEditingController.text =
-          storeOwnDeliveryPartnersInfo?.driverName ?? '';
-      driverContactNumberTextEditingController.text =
-          storeOwnDeliveryPartnersInfo?.driverMobileNumber ?? '';
+      drivingLicenseNumberTextEditingController.text = storeOwnDeliveryPartnersInfo?.drivingLicenseNumber ?? '';
+      driverNameTextEditingController.text = storeOwnDeliveryPartnersInfo?.driverName ?? '';
+      driverContactNumberTextEditingController.text = storeOwnDeliveryPartnersInfo?.driverMobileNumber ?? '';
 
-      driverDeliveryTypeNumberTextEditingController.text =
-          storeOwnDeliveryPartnersInfo?.deliveryMode ?? '';
+      driverDeliveryTypeNumberTextEditingController.text = storeOwnDeliveryPartnersInfo?.deliveryMode ?? '';
       if (storeOwnDeliveryPartnersInfo?.vehicleInfo != null) {
         listOfInitialSelectedVehicleTypeInfo = [
           storeOwnDeliveryPartnersInfo!.vehicleInfo!,
         ];
-        driverVehicleNumberTextEditingController.text =
-            storeOwnDeliveryPartnersInfo?.vehicleInfo?.vehicleNumber ?? '';
+        driverVehicleNumberTextEditingController.text = storeOwnDeliveryPartnersInfo?.vehicleInfo?.vehicleNumber ?? '';
       }
       phoneNumber = PhoneNumber(
-        isoCode: IsoCode.values
-            .byName(storeOwnDeliveryPartnersInfo?.isoCode ?? 'SA'),
+        isoCode: IsoCode.values.byName(storeOwnDeliveryPartnersInfo?.isoCode ?? 'SA'),
         nsn: storeOwnDeliveryPartnersInfo?.phoneNumberWithoutDialCode ?? '',
       );
       phoneNumberController = PhoneController(phoneNumber);
       phoneNumberController.value = phoneNumber;
-      userEnteredPhoneNumber =
-          storeOwnDeliveryPartnersInfo?.driverMobileNumber ?? '';
-      defaultCountry =
-          IsoCode.values.byName(storeOwnDeliveryPartnersInfo?.isoCode ?? 'SA');
+      userEnteredPhoneNumber = storeOwnDeliveryPartnersInfo?.driverMobileNumber ?? '';
+      defaultCountry = IsoCode.values.byName(storeOwnDeliveryPartnersInfo?.isoCode ?? 'SA');
     }
   }
 
@@ -238,8 +213,7 @@ class _SaveDriverPageController extends State<SaveDriverPage> {
       captureDocumentID: captureImageEntity.captureDocumentID,
       mimeType: captureImageEntity.mimeType,
       networkAssetPath: captureImageEntity.networkUrl,
-      documentIdNumber:
-          drivingLicenseNumberTextEditingController.value.text.trim(),
+      documentIdNumber: drivingLicenseNumberTextEditingController.value.text.trim(),
       localAssetPath: captureImageEntity.croppedFilePath.isEmptyOrNull
           ? captureImageEntity.originalFilePath
           : captureImageEntity.croppedFilePath,
@@ -262,12 +236,14 @@ class _SaveDriverPageController extends State<SaveDriverPage> {
                 context.pushReplacement(
                   Routes.NEW_DRIVER_GREETING_PAGE,
                   extra: {
-                    'storeOwnDeliveryPartnerEntity':
-                        driverListenerState.storeOwnDeliveryPartnerEntity,
+                    'storeOwnDeliveryPartnerEntity': driverListenerState.storeOwnDeliveryPartnerEntity,
                     'haveNewDriver': driverListenerState.hasNewDriver,
                   },
                 );
               }
+            case GetDriverState():{
+              initStoreOwnDeliveryPartners(driverListenerState.storeOwnDeliveryPartnerEntity);
+            }
             case _:
               debugPrint('default');
           }
@@ -288,16 +264,14 @@ class _SaveDriverPageController extends State<SaveDriverPage> {
       );
 }
 
-class _SaveDriverPageView
-    extends WidgetView<SaveDriverPage, _SaveDriverPageController> {
+class _SaveDriverPageView extends WidgetView<SaveDriverPage, _SaveDriverPageController> {
   const _SaveDriverPageView(super.state);
 
   @override
   Widget build(BuildContext context) {
     final MediaQueryData media = MediaQuery.of(context);
     final double margins = GlobalApp.responsiveInsets(media.size.width);
-    final double topPadding =
-        margins; //media.padding.top + kToolbarHeight + margins; //margins * 1.5;
+    final double topPadding = margins; //media.padding.top + kToolbarHeight + margins; //margins * 1.5;
     final double bottomPadding = media.padding.bottom + margins;
     final double width = media.size.width;
     final ThemeData theme = Theme.of(context);
@@ -315,8 +289,7 @@ class _SaveDriverPageView
           appBar: AppBar(
             title: Text(
               'Driver',
-              textDirection:
-                  serviceLocator<LanguageController>().targetTextDirection,
+              textDirection: serviceLocator<LanguageController>().targetTextDirection,
             ),
             actions: const [
               Padding(
@@ -355,26 +328,20 @@ class _SaveDriverPageView
                             height: 60,
                             width: 60,
                             decoration: BoxDecoration(
-                                shape: BoxShape.rectangle,
-                                borderRadius:
-                                    BorderRadiusDirectional.circular(6)),
+                                shape: BoxShape.rectangle, borderRadius: BorderRadiusDirectional.circular(6)),
                             child: DisplayImage(
                               imagePath: state.userImagePath,
                               onPressed: () async {
-                                final result = await UploadImageUtils()
-                                    .selectImagePicker(context);
+                                final result = await UploadImageUtils().selectImagePicker(context);
                                 if (result.imagePath.isNotEmpty) {
                                   state.updateUserProfileImage(
                                     result.imagePath,
                                   );
                                 } else {}
                               },
-                              hasIconImage:
-                                  state.userImagePath.isEmpty ? true : false,
-                              hasEditButton:
-                                  state.userImagePath.isEmpty ? false : true,
-                              hasCustomIcon:
-                                  state.userImagePath.isEmpty ? true : false,
+                              hasIconImage: state.userImagePath.isEmpty ? true : false,
+                              hasEditButton: state.userImagePath.isEmpty ? false : true,
+                              hasCustomIcon: state.userImagePath.isEmpty ? true : false,
                               customIcon: Icon(Icons.camera_alt),
                               circularRadius: 40,
                               borderRadius: 10,
@@ -396,9 +363,7 @@ class _SaveDriverPageView
                                 overflow: TextOverflow.ellipsis,
                                 softWrap: true,
                                 style: context.labelMedium!.copyWith(),
-                                textDirection:
-                                    serviceLocator<LanguageController>()
-                                        .targetTextDirection,
+                                textDirection: serviceLocator<LanguageController>().targetTextDirection,
                               ),
                             ],
                           ),
@@ -412,15 +377,13 @@ class _SaveDriverPageView
                           ),
                           AppTextFieldWidget(
                             controller: state.driverNameTextEditingController,
-                            textDirection: serviceLocator<LanguageController>()
-                                .targetTextDirection,
+                            textDirection: serviceLocator<LanguageController>().targetTextDirection,
                             //focusNode: state.focusList[0],
                             textInputAction: TextInputAction.next,
                             //onFieldSubmitted: (_) => fieldFocusChange(context, state.focusList[0], state.focusList[1]),
                             keyboardType: TextInputType.name,
                             inputFormatters: [
-                              FilteringTextInputFormatter.allow(
-                                  RegExp('[a-z A-Z ]')),
+                              FilteringTextInputFormatter.allow(RegExp('[a-z A-Z ]')),
                               FilteringTextInputFormatter.deny('  ')
                             ],
                             decoration: InputDecoration(
@@ -443,8 +406,7 @@ class _SaveDriverPageView
                             duration: Duration(milliseconds: 500),
                           ),
                           Directionality(
-                            textDirection: serviceLocator<LanguageController>()
-                                .targetTextDirection,
+                            textDirection: serviceLocator<LanguageController>().targetTextDirection,
                             child: PhoneNumberFieldWidget(
                               key: const Key('driver-phone-number-widget'),
                               isCountryChipPersistent: false,
@@ -472,11 +434,9 @@ class _SaveDriverPageView
                               onPhoneNumberChanged: state.onPhoneNumberChanged,
                               phoneNumberValidator: state.phoneNumberValidator,
                               onPhoneNumberSaved: state.onPhoneNumberSaved,
-                              phoneNumberValidationChanged:
-                                  state.phoneNumberValidationChanged,
+                              phoneNumberValidationChanged: state.phoneNumberValidationChanged,
                               haveStateManagement: false,
-                              keyboardType:
-                                  const TextInputType.numberWithOptions(),
+                              keyboardType: const TextInputType.numberWithOptions(),
                             ),
                           ),
                           const AnimatedGap(
@@ -484,14 +444,11 @@ class _SaveDriverPageView
                             duration: Duration(milliseconds: 500),
                           ),
                           AppTextFieldWidget(
-                            controller:
-                                state.drivingLicenseNumberTextEditingController,
-                            textDirection: serviceLocator<LanguageController>()
-                                .targetTextDirection,
+                            controller: state.drivingLicenseNumberTextEditingController,
+                            textDirection: serviceLocator<LanguageController>().targetTextDirection,
                             //focusNode: state.focusList[2],
                             textInputAction: TextInputAction.next,
-                            keyboardType:
-                                const TextInputType.numberWithOptions(),
+                            keyboardType: const TextInputType.numberWithOptions(),
                             decoration: InputDecoration(
                               labelText: 'Driving License Number',
                               hintText: 'Enter driving license number',
@@ -516,14 +473,9 @@ class _SaveDriverPageView
                             documentPlaceHolderImage: 'assets/svg/id_card.svg',
                             animate: false,
                             currentIndex: 0,
-                            businessDocumentUploadedEntity: (widget
-                                        .storeOwnDeliveryPartnersInfo
-                                        .isNotNull &&
-                                    widget.storeOwnDeliveryPartnersInfo
-                                            ?.driverLicenseDocument !=
-                                        null)
-                                ? widget.storeOwnDeliveryPartnersInfo
-                                    ?.driverLicenseDocument
+                            businessDocumentUploadedEntity: (widget.storeOwnDeliveryPartnersInfo.isNotNull &&
+                                    widget.storeOwnDeliveryPartnersInfo?.driverLicenseDocument != null)
+                                ? widget.storeOwnDeliveryPartnersInfo?.driverLicenseDocument
                                 : null,
                             selectedImageMetaData: (
                               Map<String, dynamic> metaData,
@@ -539,20 +491,14 @@ class _SaveDriverPageView
                               crossAxisAlignment: CrossAxisAlignment.stretch,
                               mainAxisSize: MainAxisSize.min,
                               mainAxisAlignment: MainAxisAlignment.center,
-                              textDirection:
-                                  serviceLocator<LanguageController>()
-                                      .targetTextDirection,
+                              textDirection: serviceLocator<LanguageController>().targetTextDirection,
                               children: [
                                 Wrap(
-                                  textDirection:
-                                      serviceLocator<LanguageController>()
-                                          .targetTextDirection,
+                                  textDirection: serviceLocator<LanguageController>().targetTextDirection,
                                   children: [
                                     Text(
                                       'Upload License',
-                                      textDirection:
-                                          serviceLocator<LanguageController>()
-                                              .targetTextDirection,
+                                      textDirection: serviceLocator<LanguageController>().targetTextDirection,
                                       maxLines: 1,
                                       overflow: TextOverflow.ellipsis,
                                       softWrap: true,
@@ -567,15 +513,11 @@ class _SaveDriverPageView
                                   duration: Duration(milliseconds: 100),
                                 ),
                                 Wrap(
-                                  textDirection:
-                                      serviceLocator<LanguageController>()
-                                          .targetTextDirection,
+                                  textDirection: serviceLocator<LanguageController>().targetTextDirection,
                                   children: [
                                     Text(
                                       'We accept only',
-                                      textDirection:
-                                          serviceLocator<LanguageController>()
-                                              .targetTextDirection,
+                                      textDirection: serviceLocator<LanguageController>().targetTextDirection,
                                       maxLines: 1,
                                       overflow: TextOverflow.ellipsis,
                                       softWrap: true,
@@ -590,15 +532,11 @@ class _SaveDriverPageView
                                   duration: Duration(milliseconds: 100),
                                 ),
                                 Wrap(
-                                  textDirection:
-                                      serviceLocator<LanguageController>()
-                                          .targetTextDirection,
+                                  textDirection: serviceLocator<LanguageController>().targetTextDirection,
                                   children: [
                                     Text(
                                       'Driving License',
-                                      textDirection:
-                                          serviceLocator<LanguageController>()
-                                              .targetTextDirection,
+                                      textDirection: serviceLocator<LanguageController>().targetTextDirection,
                                       maxLines: 1,
                                       overflow: TextOverflow.ellipsis,
                                       softWrap: true,
@@ -626,9 +564,7 @@ class _SaveDriverPageView
                                   fontWeight: FontWeight.w600,
                                   fontSize: 20,
                                 ),
-                                textDirection:
-                                    serviceLocator<LanguageController>()
-                                        .targetTextDirection,
+                                textDirection: serviceLocator<LanguageController>().targetTextDirection,
                               ).translate(),
                               const AnimatedGap(
                                 4,
@@ -637,9 +573,7 @@ class _SaveDriverPageView
                               Text(
                                 'Select the vehicle type of your own driver',
                                 style: context.labelMedium,
-                                textDirection:
-                                    serviceLocator<LanguageController>()
-                                        .targetTextDirection,
+                                textDirection: serviceLocator<LanguageController>().targetTextDirection,
                               ).translate(),
                             ],
                           ),
@@ -651,13 +585,9 @@ class _SaveDriverPageView
                             key: const Key(
                               'store-own-partner-vehicle-type-formfield',
                             ),
-                            onSelectionChanged:
-                                state.onSelectionChangedVehicleType,
-                            availableVehicleInfoList:
-                                state.listOfVehicleTypeInfo.toList(),
-                            initialVehicleInfoList: state
-                                .listOfInitialSelectedVehicleTypeInfo
-                                .toList(),
+                            onSelectionChanged: state.onSelectionChangedVehicleType,
+                            availableVehicleInfoList: state.listOfVehicleTypeInfo.toList(),
+                            initialVehicleInfoList: state.listOfInitialSelectedVehicleTypeInfo.toList(),
                             onSaved: (newValue) {},
                             isSingleSelect: true,
                             validator: (value) {
@@ -673,10 +603,8 @@ class _SaveDriverPageView
                             duration: Duration(milliseconds: 500),
                           ),
                           AppTextFieldWidget(
-                            controller:
-                                state.driverVehicleNumberTextEditingController,
-                            textDirection: serviceLocator<LanguageController>()
-                                .targetTextDirection,
+                            controller: state.driverVehicleNumberTextEditingController,
+                            textDirection: serviceLocator<LanguageController>().targetTextDirection,
                             //focusNode: state.focusList[2],
                             textInputAction: TextInputAction.done,
                             keyboardType: TextInputType.text,
@@ -703,11 +631,9 @@ class _SaveDriverPageView
                             duration: Duration(milliseconds: 500),
                           ),
                           AppTextFieldWidget(
-                            controller: state
-                                .driverDeliveryTypeNumberTextEditingController,
+                            controller: state.driverDeliveryTypeNumberTextEditingController,
                             readOnly: true,
-                            textDirection: serviceLocator<LanguageController>()
-                                .targetTextDirection,
+                            textDirection: serviceLocator<LanguageController>().targetTextDirection,
                             textInputAction: TextInputAction.next,
                             keyboardType: TextInputType.text,
                             decoration: InputDecoration(
@@ -719,8 +645,7 @@ class _SaveDriverPageView
                               isDense: true,
                               suffixIcon: IconButton(
                                 onPressed: () async {
-                                  final result =
-                                      await selectDeliveryCategory(context);
+                                  final result = await selectDeliveryCategory(context);
 
                                   if (result != null) {
                                     state.updateDriverDeliveryType(result);
@@ -739,8 +664,7 @@ class _SaveDriverPageView
                               return null;
                             },
                             onTap: () async {
-                              final result =
-                                  await selectDeliveryCategory(context);
+                              final result = await selectDeliveryCategory(context);
                               if (result != null) {
                                 state.updateDriverDeliveryType(result);
                               }
@@ -765,127 +689,65 @@ class _SaveDriverPageView
                                 child: ElevatedButton(
                                   onPressed: () {
                                     // Form validate and save
-                                    if (_SaveDriverPageController
-                                        .SaveDriverFormKey.currentState!
-                                        .validate()) {
-                                      _SaveDriverPageController
-                                          .SaveDriverFormKey.currentState!
-                                          .save();
-                                      StoreOwnDeliveryPartnersInfo
-                                          storeOwnDeliveryPartnerEntity;
+                                    if (_SaveDriverPageController.SaveDriverFormKey.currentState!.validate()) {
+                                      _SaveDriverPageController.SaveDriverFormKey.currentState!.save();
+                                      StoreOwnDeliveryPartnersInfo storeOwnDeliveryPartnerEntity;
                                       // Existing driver
-                                      if (widget
-                                              .haveStoreOwnNewDeliveryPartnersInfo &&
-                                          widget.storeOwnDeliveryPartnersInfo !=
-                                              null) {
-                                        storeOwnDeliveryPartnerEntity = widget
-                                            .storeOwnDeliveryPartnersInfo!
-                                            .copyWith(
-                                          driverMobileNumber:
-                                              state.userEnteredPhoneNumber,
-                                          drivingLicenseNumber: state
-                                              .drivingLicenseNumberTextEditingController
-                                              .value
-                                              .text
-                                              .trim(),
-                                          driverName: state
-                                              .driverNameTextEditingController
-                                              .value
-                                              .text
-                                              .trim(),
+                                      if (widget.haveStoreOwnNewDeliveryPartnersInfo &&
+                                          widget.storeOwnDeliveryPartnersInfo != null) {
+                                        storeOwnDeliveryPartnerEntity = widget.storeOwnDeliveryPartnersInfo!.copyWith(
+                                          driverMobileNumber: state.userEnteredPhoneNumber,
+                                          drivingLicenseNumber:
+                                              state.drivingLicenseNumberTextEditingController.value.text.trim(),
+                                          driverName: state.driverNameTextEditingController.value.text.trim(),
                                           vehicleInfo: VehicleInfo(
-                                            vehicleID: state
-                                                .listOfSelectedVehicleTypeInfo[
-                                                    0]
-                                                .vehicleID,
-                                            vehicleType: state
-                                                .listOfSelectedVehicleTypeInfo[
-                                                    0]
-                                                .vehicleType,
-                                            vehicleNumber: state.driverVehicleNumberTextEditingController.value.text.trim(),
+                                            vehicleID: state.listOfSelectedVehicleTypeInfo[0].vehicleID,
+                                            vehicleType: state.listOfSelectedVehicleTypeInfo[0].vehicleType,
+                                            vehicleNumber:
+                                                state.driverVehicleNumberTextEditingController.value.text.trim(),
                                           ),
-                                          hasDriverImage:
-                                              state.userImagePath.isNotEmpty
-                                                  ? true
-                                                  : false,
+                                          hasDriverImage: state.userImagePath.isNotEmpty ? true : false,
                                           imageEntity: ImageEntity(
                                             imagePath: state.userImagePath,
                                           ),
-                                          deliveryMode: state
-                                              .driverDeliveryTypeNumberTextEditingController
-                                              .value
-                                              .text
-                                              .trim(),
-                                          phoneNumberWithoutDialCode:
-                                              state.phoneNumber?.nsn ?? '',
-                                          countryDialCode:
-                                              state.phoneNumber?.countryCode ??
-                                                  '+966',
-                                          isoCode:
-                                              state.phoneNumber?.isoCode.name ??
-                                                  'SA',
-                                          driverLicenseDocument:
-                                              state.newBusinessDocumentEntity,
+                                          deliveryMode:
+                                              state.driverDeliveryTypeNumberTextEditingController.value.text.trim(),
+                                          phoneNumberWithoutDialCode: state.phoneNumber?.nsn ?? '',
+                                          countryDialCode: state.phoneNumber?.countryCode ?? '+966',
+                                          isoCode: state.phoneNumber?.isoCode.name ?? 'SA',
+                                          driverLicenseDocument: state.newBusinessDocumentEntity,
                                         );
                                       }
                                       // New driver
                                       else {
-                                        storeOwnDeliveryPartnerEntity =
-                                            StoreOwnDeliveryPartnersInfo(
-                                          driverMobileNumber:
-                                              state.userEnteredPhoneNumber,
-                                          drivingLicenseNumber: state
-                                              .drivingLicenseNumberTextEditingController
-                                              .value
-                                              .text
-                                              .trim(),
-                                          driverName: state
-                                              .driverNameTextEditingController
-                                              .value
-                                              .text
-                                              .trim(),
+                                        storeOwnDeliveryPartnerEntity = StoreOwnDeliveryPartnersInfo(
+                                          driverMobileNumber: state.userEnteredPhoneNumber,
+                                          drivingLicenseNumber:
+                                              state.drivingLicenseNumberTextEditingController.value.text.trim(),
+                                          driverName: state.driverNameTextEditingController.value.text.trim(),
                                           vehicleInfo: VehicleInfo(
-                                            vehicleID: state
-                                                .listOfSelectedVehicleTypeInfo[
-                                                    0]
-                                                .vehicleID,
-                                            vehicleType: state
-                                                .listOfSelectedVehicleTypeInfo[
-                                                    0]
-                                                .vehicleType,
-                                            vehicleNumber: state.driverVehicleNumberTextEditingController.value.text.trim(),
+                                            vehicleID: state.listOfSelectedVehicleTypeInfo[0].vehicleID,
+                                            vehicleType: state.listOfSelectedVehicleTypeInfo[0].vehicleType,
+                                            vehicleNumber:
+                                                state.driverVehicleNumberTextEditingController.value.text.trim(),
                                           ),
-                                          hasDriverImage:
-                                              state.userImagePath.isNotEmpty
-                                                  ? true
-                                                  : false,
+                                          hasDriverImage: state.userImagePath.isNotEmpty ? true : false,
                                           imageEntity: ImageEntity(
                                             imagePath: state.userImagePath,
                                           ),
-                                          deliveryMode: state
-                                              .driverDeliveryTypeNumberTextEditingController
-                                              .value
-                                              .text
-                                              .trim(),
-                                          phoneNumberWithoutDialCode:
-                                              state.phoneNumber?.nsn ?? '',
-                                          countryDialCode:
-                                              state.phoneNumber?.countryCode ??
-                                                  '+966',
-                                          isoCode:
-                                              state.phoneNumber?.isoCode.name ??
-                                                  'SA',
-                                          driverLicenseDocument:
-                                              state.newBusinessDocumentEntity,
+                                          deliveryMode:
+                                              state.driverDeliveryTypeNumberTextEditingController.value.text.trim(),
+                                          phoneNumberWithoutDialCode: state.phoneNumber?.nsn ?? '',
+                                          countryDialCode: state.phoneNumber?.countryCode ?? '+966',
+                                          isoCode: state.phoneNumber?.isoCode.name ?? 'SA',
+                                          driverLicenseDocument: state.newBusinessDocumentEntity,
                                         );
                                       }
                                       // Execute save action
                                       context.read<StoreBloc>().add(
                                             SaveDriver(
-                                              haveNewDriver: widget
-                                                  .haveStoreOwnNewDeliveryPartnersInfo,
-                                              storeOwnDeliveryPartnerEntity:
-                                                  storeOwnDeliveryPartnerEntity,
+                                              haveNewDriver: widget.haveStoreOwnNewDeliveryPartnersInfo,
+                                              storeOwnDeliveryPartnerEntity: storeOwnDeliveryPartnerEntity,
                                             ),
                                           );
                                       return;
@@ -893,14 +755,11 @@ class _SaveDriverPageView
                                     return;
                                   },
                                   style: ElevatedButton.styleFrom(
-                                    backgroundColor:
-                                        const Color.fromRGBO(69, 201, 125, 1),
+                                    backgroundColor: const Color.fromRGBO(69, 201, 125, 1),
                                   ),
                                   child: Text(
                                     'Save Driver',
-                                    textDirection:
-                                        serviceLocator<LanguageController>()
-                                            .targetTextDirection,
+                                    textDirection: serviceLocator<LanguageController>().targetTextDirection,
                                   ).translate(),
                                 ),
                               ),
@@ -948,8 +807,7 @@ class _SaveDriverPageView
               child: ListView.builder(
                 padding: EdgeInsetsDirectional.zero,
                 itemCount: driverDeliveryType.length,
-                itemBuilder: (context, index) =>
-                    _allDriverDeliveryTypes(context, index, setState),
+                itemBuilder: (context, index) => _allDriverDeliveryTypes(context, index, setState),
                 shrinkWrap: true,
               ),
             );
@@ -968,9 +826,7 @@ class _SaveDriverPageView
     return DecoratedBox(
       decoration: BoxDecoration(
         border: Border(
-          top: (index == 0)
-              ? BorderSide(color: Theme.of(context).dividerColor)
-              : BorderSide.none,
+          top: (index == 0) ? BorderSide(color: Theme.of(context).dividerColor) : BorderSide.none,
           bottom: BorderSide(color: Theme.of(context).dividerColor),
         ),
       ),
@@ -982,8 +838,7 @@ class _SaveDriverPageView
         visualDensity: const VisualDensity(vertical: -1, horizontal: 0),
         title: Text(
           driverDeliveryType[index],
-          textDirection:
-              serviceLocator<LanguageController>().targetTextDirection,
+          textDirection: serviceLocator<LanguageController>().targetTextDirection,
         ),
         onTap: () {
           innerSetState(() {});

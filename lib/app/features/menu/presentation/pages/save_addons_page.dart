@@ -29,8 +29,7 @@ class _SaveAddonsPageController extends State<SaveAddonsPage> {
   late final ScrollController innerScrollController;
   late final ScrollController listViewBuilderScrollController;
 
-  static final GlobalKey<FormState> saveAddonsFormKey =
-      GlobalKey<FormState>(debugLabel: 'save_addons-formkey');
+  static final GlobalKey<FormState> saveAddonsFormKey = GlobalKey<FormState>(debugLabel: 'save_addons-formkey');
   List<FocusNode> focusList = [
     FocusNode(),
     FocusNode(),
@@ -43,16 +42,11 @@ class _SaveAddonsPageController extends State<SaveAddonsPage> {
     FocusNode(),
     FocusNode()
   ];
-  final TextEditingController addonsNameTextEditingController =
-      TextEditingController();
-  final TextEditingController addonsDescriptionTextEditingController =
-      TextEditingController();
-  final TextEditingController addonsPriceTextEditingController =
-      TextEditingController();
-  final TextEditingController addonsQuantityTextEditingController =
-      TextEditingController();
-  final TextEditingController addonsUnitTextEditingController =
-      TextEditingController();
+  final TextEditingController addonsNameTextEditingController = TextEditingController();
+  final TextEditingController addonsDescriptionTextEditingController = TextEditingController();
+  final TextEditingController addonsPriceTextEditingController = TextEditingController();
+  final TextEditingController addonsQuantityTextEditingController = TextEditingController();
+  final TextEditingController addonsUnitTextEditingController = TextEditingController();
   List<MenuPortion> _menuPortions = [];
   List<MenuPortion> _selectedMenuPortions = [];
   String currency = 'SAR';
@@ -68,6 +62,7 @@ class _SaveAddonsPageController extends State<SaveAddonsPage> {
     _menuPortions = [];
     _selectedMenuPortions = [];
     initMenuPortions();
+    initAddonsData(widget.addons);
   }
 
   @override
@@ -79,9 +74,6 @@ class _SaveAddonsPageController extends State<SaveAddonsPage> {
 
   @override
   void dispose() {
-    scrollController.dispose();
-    innerScrollController.dispose();
-    listViewBuilderScrollController.dispose();
     addonsPriceTextEditingController.dispose();
     addonsNameTextEditingController.dispose();
     addonsDescriptionTextEditingController.dispose();
@@ -90,11 +82,24 @@ class _SaveAddonsPageController extends State<SaveAddonsPage> {
     _menuPortions = [];
     _selectedMenuPortions = [];
     focusList.asMap().forEach((key, value) => value.dispose());
+    listViewBuilderScrollController.dispose();
+    innerScrollController.dispose();
+    scrollController.dispose();
     super.dispose();
   }
 
   void initMenuPortions() {
     _menuPortions = List<MenuPortion>.from(localMenuPortions.toList());
+  }
+
+  void initAddonsData(Addons? addons) {
+    if (addons.isNotNull) {
+      addonsPriceTextEditingController.text = addons?.finalPrice ?? 0.0;
+      addonsNameTextEditingController.text = addons?.title ?? '';
+      addonsDescriptionTextEditingController.text = addons?.description ?? '';
+      addonsQuantityTextEditingController.text = addons?.quantity ?? 0.0;
+      addonsUnitTextEditingController.text = addons?.unit ?? '';
+    }
   }
 
   void onSelectionChangedPortion(List<MenuPortion> selectedMenuPortions) {
@@ -143,18 +148,11 @@ class _SaveAddonsPageController extends State<SaveAddonsPage> {
             switch (addonsState) {
               case SelectAddonsMaxPortionState():
                 {
-                  _selectedMenuPortions = List<MenuPortion>.from(
-                      addonsState.selectedMenuPortions.toList());
-                  addonsQuantityTextEditingController.text = addonsState
-                      .selectedMenuPortions.first.quantity
-                      .toString();
-                  addonsPriceTextEditingController.text = addonsState
-                      .selectedMenuPortions.first.finalPrice
-                      .toString();
-                  addonsUnitTextEditingController.text =
-                      addonsState.selectedMenuPortions.first.unit.toString();
-                  currency = addonsState.selectedMenuPortions.first.currency
-                      .toString();
+                  _selectedMenuPortions = List<MenuPortion>.from(addonsState.selectedMenuPortions.toList());
+                  addonsQuantityTextEditingController.text = addonsState.selectedMenuPortions.first.quantity.toString();
+                  addonsPriceTextEditingController.text = addonsState.selectedMenuPortions.first.finalPrice.toString();
+                  addonsUnitTextEditingController.text = addonsState.selectedMenuPortions.first.unit.toString();
+                  currency = addonsState.selectedMenuPortions.first.currency.toString();
                   unit = addonsState.selectedMenuPortions.first.unit.toString();
                 }
               case _:
@@ -166,16 +164,14 @@ class _SaveAddonsPageController extends State<SaveAddonsPage> {
       );
 }
 
-class _SaveAddonsPageView
-    extends WidgetView<SaveAddonsPage, _SaveAddonsPageController> {
+class _SaveAddonsPageView extends WidgetView<SaveAddonsPage, _SaveAddonsPageController> {
   const _SaveAddonsPageView(super.state);
 
   @override
   Widget build(BuildContext context) {
     final MediaQueryData media = MediaQuery.of(context);
     final double margins = GlobalApp.responsiveInsets(media.size.width);
-    final double topPadding =
-        margins; //media.padding.top + kToolbarHeight + margins; //margins * 1.5;
+    final double topPadding = margins; //media.padding.top + kToolbarHeight + margins; //margins * 1.5;
     final double bottomPadding = media.padding.bottom + margins;
     final double width = media.size.width;
     final ThemeData theme = Theme.of(context);
@@ -193,8 +189,7 @@ class _SaveAddonsPageView
           appBar: AppBar(
             title: Text(
               'Addons',
-              textDirection:
-                  serviceLocator<LanguageController>().targetTextDirection,
+              textDirection: serviceLocator<LanguageController>().targetTextDirection,
             ),
             actions: const [
               NotificationIconWidget(),
@@ -218,8 +213,7 @@ class _SaveAddonsPageView
                   SliverList(
                     delegate: SliverChildListDelegate(
                       [
-                        const AnimatedGap(50,
-                            duration: Duration(milliseconds: 500)),
+                        const AnimatedGap(50, duration: Duration(milliseconds: 500)),
                         AnimatedContainer(
                           height: context.height * 0.7,
                           margin: EdgeInsetsDirectional.only(
@@ -265,30 +259,19 @@ class _SaveAddonsPageView
                                       clipBehavior: Clip.none,
                                       children: [
                                         AnimatedPositioned(
-                                          duration:
-                                              const Duration(milliseconds: 300),
+                                          duration: const Duration(milliseconds: 300),
                                           top: -54,
                                           child: DisplayImage(
                                             imagePath: state.addonsImagePath,
                                             onPressed: () async {
-                                              final result =
-                                                  await UploadImageUtils()
-                                                      .selectImagePicker(
-                                                          context);
+                                              final result = await UploadImageUtils().selectImagePicker(context);
                                               if (result.imagePath.isNotEmpty) {
-                                                state.updateAddonsProfileImage(
-                                                    result.imagePath);
+                                                state.updateAddonsProfileImage(result.imagePath);
                                               } else {}
                                             },
-                                            hasIconImage:
-                                                state.addonsImagePath.isEmpty
-                                                    ? true
-                                                    : false,
+                                            hasIconImage: state.addonsImagePath.isEmpty ? true : false,
                                             hasEditButton: false,
-                                            hasCustomIcon:
-                                                state.addonsImagePath.isEmpty
-                                                    ? true
-                                                    : false,
+                                            hasCustomIcon: state.addonsImagePath.isEmpty ? true : false,
                                             customIcon: Icon(Icons.camera_alt),
                                           ),
                                         ),
@@ -296,11 +279,9 @@ class _SaveAddonsPageView
                                     ),
                                   ),
                                   onTap: () async {
-                                    final result = await UploadImageUtils()
-                                        .selectImagePicker(context);
+                                    final result = await UploadImageUtils().selectImagePicker(context);
                                     if (result.imagePath.isNotEmpty) {
-                                      state.updateAddonsProfileImage(
-                                          result.imagePath);
+                                      state.updateAddonsProfileImage(result.imagePath);
                                     } else {}
                                   },
                                 ),
@@ -329,42 +310,30 @@ class _SaveAddonsPageView
                               Expanded(
                                 flex: 3,
                                 child: Form(
-                                  key: _SaveAddonsPageController
-                                      .saveAddonsFormKey,
+                                  key: _SaveAddonsPageController.saveAddonsFormKey,
                                   child: ListView(
-                                    controller:
-                                        state.listViewBuilderScrollController,
+                                    controller: state.listViewBuilderScrollController,
                                     physics: const ClampingScrollPhysics(),
                                     //shrinkWrap: true,
                                     children: [
-                                      const AnimatedGap(12,
-                                          duration:
-                                              Duration(milliseconds: 500)),
+                                      const AnimatedGap(12, duration: Duration(milliseconds: 500)),
                                       AppTextFieldWidget(
-                                        controller: state
-                                            .addonsNameTextEditingController,
-                                        textDirection:
-                                            serviceLocator<LanguageController>()
-                                                .targetTextDirection,
+                                        controller: state.addonsNameTextEditingController,
+                                        textDirection: serviceLocator<LanguageController>().targetTextDirection,
                                         focusNode: state.focusList[0],
                                         textInputAction: TextInputAction.next,
                                         onFieldSubmitted: (_) =>
-                                            fieldFocusChange(
-                                                context,
-                                                state.focusList[0],
-                                                state.focusList[1]),
+                                            fieldFocusChange(context, state.focusList[0], state.focusList[1]),
                                         keyboardType: TextInputType.name,
                                         inputFormatters: [
-                                          FilteringTextInputFormatter.allow(
-                                              RegExp('[a-z A-Z ]')),
+                                          FilteringTextInputFormatter.allow(RegExp('[a-z A-Z ]')),
                                           FilteringTextInputFormatter.deny('  ')
                                         ],
                                         decoration: InputDecoration(
                                           labelText: 'Addons name',
                                           hintText: 'Enter addons name',
                                           border: OutlineInputBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(10),
+                                            borderRadius: BorderRadius.circular(10),
                                           ),
                                           isDense: true,
                                         ),
@@ -375,41 +344,29 @@ class _SaveAddonsPageView
                                           return null;
                                         },
                                       ),
-                                      const AnimatedGap(12,
-                                          duration:
-                                              Duration(milliseconds: 500)),
+                                      const AnimatedGap(12, duration: Duration(milliseconds: 500)),
                                       AppTextFieldWidget(
-                                        controller: state
-                                            .addonsDescriptionTextEditingController,
-                                        textDirection:
-                                            serviceLocator<LanguageController>()
-                                                .targetTextDirection,
+                                        controller: state.addonsDescriptionTextEditingController,
+                                        textDirection: serviceLocator<LanguageController>().targetTextDirection,
                                         focusNode: state.focusList[1],
                                         textInputAction: TextInputAction.next,
                                         onFieldSubmitted: (_) =>
-                                            fieldFocusChange(
-                                                context,
-                                                state.focusList[1],
-                                                state.focusList[2]),
+                                            fieldFocusChange(context, state.focusList[1], state.focusList[2]),
                                         keyboardType: TextInputType.text,
                                         maxLines: 3,
                                         decoration: InputDecoration(
                                           labelText: 'Addons Description',
                                           hintText: 'Enter addons description',
                                           border: OutlineInputBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(10),
+                                            borderRadius: BorderRadius.circular(10),
                                           ),
                                           isDense: true,
                                         ),
                                       ),
-                                      const AnimatedGap(12,
-                                          duration:
-                                              Duration(milliseconds: 500)),
+                                      const AnimatedGap(12, duration: Duration(milliseconds: 500)),
                                       Column(
                                         mainAxisSize: MainAxisSize.min,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.stretch,
+                                        crossAxisAlignment: CrossAxisAlignment.stretch,
                                         children: [
                                           Text(
                                             'Portion the size of addons',
@@ -417,123 +374,80 @@ class _SaveAddonsPageView
                                               fontWeight: FontWeight.w600,
                                               fontSize: 20,
                                             ),
-                                            textDirection: serviceLocator<
-                                                    LanguageController>()
-                                                .targetTextDirection,
+                                            textDirection: serviceLocator<LanguageController>().targetTextDirection,
                                           ).translate(),
-                                          const AnimatedGap(4,
-                                              duration:
-                                                  Duration(milliseconds: 500)),
+                                          const AnimatedGap(4, duration: Duration(milliseconds: 500)),
                                           Text(
                                             'Select the addons serving size or quantity availability',
                                             style: context.labelMedium,
-                                            textDirection: serviceLocator<
-                                                    LanguageController>()
-                                                .targetTextDirection,
+                                            textDirection: serviceLocator<LanguageController>().targetTextDirection,
                                           ).translate(),
                                         ],
                                       ),
-                                      const AnimatedGap(6,
-                                          duration:
-                                              Duration(milliseconds: 500)),
+                                      const AnimatedGap(6, duration: Duration(milliseconds: 500)),
                                       MultiSelectMenuPortionFormField(
-                                        key: const Key(
-                                            'menu-addons-multiSelectAvailableMenuPortions-formfield'),
-                                        onSelectionChanged:
-                                            state.onSelectionChangedPortion,
-                                        availableMenuPortionList:
-                                            state._menuPortions.toList(),
+                                        key: const Key('menu-addons-multiSelectAvailableMenuPortions-formfield'),
+                                        onSelectionChanged: state.onSelectionChangedPortion,
+                                        availableMenuPortionList: state._menuPortions.toList(),
                                         initialSelectedMenuPortionList: [],
                                         onSaved: (newValue) {},
                                         isSingleSelect: true,
                                       ),
-                                      const AnimatedGap(12,
-                                          duration:
-                                              Duration(milliseconds: 500)),
+                                      const AnimatedGap(12, duration: Duration(milliseconds: 500)),
                                       IntrinsicHeight(
                                         child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.start,
+                                          mainAxisAlignment: MainAxisAlignment.start,
                                           mainAxisSize: MainAxisSize.min,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.center,
+                                          crossAxisAlignment: CrossAxisAlignment.center,
                                           children: [
                                             Expanded(
                                               child: AppTextFieldWidget(
-                                                controller: state
-                                                    .addonsQuantityTextEditingController,
-                                                textDirection: serviceLocator<
-                                                        LanguageController>()
-                                                    .targetTextDirection,
+                                                controller: state.addonsQuantityTextEditingController,
+                                                textDirection: serviceLocator<LanguageController>().targetTextDirection,
                                                 focusNode: state.focusList[2],
-                                                textInputAction:
-                                                    TextInputAction.next,
+                                                textInputAction: TextInputAction.next,
                                                 onFieldSubmitted: (_) =>
-                                                    fieldFocusChange(
-                                                        context,
-                                                        state.focusList[2],
-                                                        state.focusList[3]),
-                                                keyboardType:
-                                                    const TextInputType
-                                                        .numberWithOptions(
+                                                    fieldFocusChange(context, state.focusList[2], state.focusList[3]),
+                                                keyboardType: const TextInputType.numberWithOptions(
                                                   decimal: true,
                                                 ),
                                                 decoration: InputDecoration(
                                                   labelText: 'Quantity',
-                                                  hintText:
-                                                      'Enter addons quantity',
+                                                  hintText: 'Enter addons quantity',
                                                   border: OutlineInputBorder(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            10),
+                                                    borderRadius: BorderRadius.circular(10),
                                                   ),
                                                   isDense: true,
                                                 ),
                                                 validator: (value) {
-                                                  if (value == null ||
-                                                      value.isEmpty) {
+                                                  if (value == null || value.isEmpty) {
                                                     return 'Enter addons quantity';
                                                   }
                                                   return null;
                                                 },
                                               ),
                                             ),
-                                            const AnimatedGap(24,
-                                                duration: Duration(
-                                                    milliseconds: 500)),
+                                            const AnimatedGap(24, duration: Duration(milliseconds: 500)),
                                             Expanded(
                                               child: AppTextFieldWidget(
-                                                controller: state
-                                                    .addonsUnitTextEditingController,
-                                                textDirection: serviceLocator<
-                                                        LanguageController>()
-                                                    .targetTextDirection,
-                                                textCapitalization:
-                                                    TextCapitalization.words,
+                                                controller: state.addonsUnitTextEditingController,
+                                                textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                                textCapitalization: TextCapitalization.words,
                                                 focusNode: state.focusList[3],
-                                                textInputAction:
-                                                    TextInputAction.next,
+                                                textInputAction: TextInputAction.next,
                                                 onFieldSubmitted: (_) =>
-                                                    fieldFocusChange(
-                                                        context,
-                                                        state.focusList[3],
-                                                        state.focusList[4]),
-                                                keyboardType:
-                                                    TextInputType.name,
+                                                    fieldFocusChange(context, state.focusList[3], state.focusList[4]),
+                                                keyboardType: TextInputType.name,
                                                 decoration: InputDecoration(
                                                   labelText: 'Units',
-                                                  hintText:
-                                                      'Enter addons units',
+                                                  hintText: 'Enter addons units',
                                                   border: OutlineInputBorder(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            10),
+                                                    borderRadius: BorderRadius.circular(10),
                                                   ),
                                                   isDense: true,
                                                 ),
                                                 validator: (value) {
-                                                  if (value == null ||
-                                                      value.isEmpty) {
+                                                  if (value == null || value.isEmpty) {
                                                     return 'Enter addons units';
                                                   }
                                                   return null;
@@ -543,27 +457,20 @@ class _SaveAddonsPageView
                                           ],
                                         ),
                                       ),
-                                      const AnimatedGap(12,
-                                          duration:
-                                              Duration(milliseconds: 500)),
+                                      const AnimatedGap(12, duration: Duration(milliseconds: 500)),
                                       AppTextFieldWidget(
-                                        controller: state
-                                            .addonsPriceTextEditingController,
-                                        textDirection:
-                                            serviceLocator<LanguageController>()
-                                                .targetTextDirection,
+                                        controller: state.addonsPriceTextEditingController,
+                                        textDirection: serviceLocator<LanguageController>().targetTextDirection,
                                         focusNode: state.focusList[4],
                                         textInputAction: TextInputAction.done,
-                                        keyboardType: const TextInputType
-                                            .numberWithOptions(
+                                        keyboardType: const TextInputType.numberWithOptions(
                                           decimal: true,
                                         ),
                                         decoration: InputDecoration(
                                           labelText: 'Addons Price',
                                           hintText: 'Enter addons price',
                                           border: OutlineInputBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(10),
+                                            borderRadius: BorderRadius.circular(10),
                                           ),
                                           isDense: true,
                                           suffixText: state.currency,
@@ -579,98 +486,50 @@ class _SaveAddonsPageView
                                   ),
                                 ),
                               ),
-                              const AnimatedGap(6,
-                                  duration: Duration(milliseconds: 500)),
+                              const AnimatedGap(6, duration: Duration(milliseconds: 500)),
                             ],
                           ),
                         ),
-                        const AnimatedGap(12,
-                            duration: Duration(milliseconds: 500)),
+                        const AnimatedGap(12, duration: Duration(milliseconds: 500)),
                         Padding(
-                          padding: EdgeInsetsDirectional.symmetric(
-                              horizontal: margins * 1.5),
+                          padding: EdgeInsetsDirectional.symmetric(horizontal: margins * 1.5),
                           child: ElevatedButton(
                             onPressed: () {
-                              if (_SaveAddonsPageController
-                                  .saveAddonsFormKey.currentState!
-                                  .validate()) {
-                                _SaveAddonsPageController
-                                    .saveAddonsFormKey.currentState!
-                                    .save();
+                              if (_SaveAddonsPageController.saveAddonsFormKey.currentState!.validate()) {
+                                _SaveAddonsPageController.saveAddonsFormKey.currentState!.save();
                                 Addons addonsEntity;
-                                if (widget.haveOwnAddons &&
-                                    !widget.haveNewAddons &&
-                                    widget.addons != null) {
+                                if (widget.haveOwnAddons && !widget.haveNewAddons && widget.addons != null) {
                                   addonsEntity = widget.addons!.copyWith(
-                                    title: state.addonsNameTextEditingController
-                                        .value.text
-                                        .trim(),
-                                    description: state
-                                        .addonsDescriptionTextEditingController
-                                        .value
-                                        .text
-                                        .trim(),
-                                    quantity: double.parse(state
-                                        .addonsQuantityTextEditingController
-                                        .value
-                                        .text
-                                        .trim()),
+                                    title: state.addonsNameTextEditingController.value.text.trim(),
+                                    description: state.addonsDescriptionTextEditingController.value.text.trim(),
+                                    quantity: double.parse(state.addonsQuantityTextEditingController.value.text.trim()),
                                     defaultPrice: 0.0,
-                                    finalPrice: double.parse(state
-                                        .addonsPriceTextEditingController
-                                        .value
-                                        .text
-                                        .trim()),
+                                    finalPrice: double.parse(state.addonsPriceTextEditingController.value.text.trim()),
                                     discountedPrice: 0.0,
-                                    unit: state.addonsUnitTextEditingController
-                                        .value.text
-                                        .trim(),
+                                    unit: state.addonsUnitTextEditingController.value.text.trim(),
                                     currency: state.currency,
                                     addonsImage: MenuImage(
                                       assetPath: state.addonsImagePath,
                                     ),
-                                    hasOwnAddons:
-                                        state.addonsImagePath.isNotEmpty
-                                            ? true
-                                            : false,
+                                    hasOwnAddons: state.addonsImagePath.isNotEmpty ? true : false,
                                   );
                                   context.read<MenuBloc>().add(
                                         SaveAddons(
                                           addonsEntity: addonsEntity,
                                         ),
                                       );
-                                } else if (widget.haveOwnAddons &&
-                                    widget.haveNewAddons) {
+                                } else if (widget.haveOwnAddons && widget.haveNewAddons) {
                                   addonsEntity = Addons(
-                                    title: state.addonsNameTextEditingController
-                                        .value.text
-                                        .trim(),
-                                    description: state
-                                        .addonsDescriptionTextEditingController
-                                        .value
-                                        .text
-                                        .trim(),
-                                    quantity: double.parse(state
-                                        .addonsQuantityTextEditingController
-                                        .value
-                                        .text
-                                        .trim()),
-                                    finalPrice: double.parse(state
-                                        .addonsPriceTextEditingController
-                                        .value
-                                        .text
-                                        .trim()),
-                                    unit: state.addonsUnitTextEditingController
-                                        .value.text
-                                        .trim(),
+                                    title: state.addonsNameTextEditingController.value.text.trim(),
+                                    description: state.addonsDescriptionTextEditingController.value.text.trim(),
+                                    quantity: double.parse(state.addonsQuantityTextEditingController.value.text.trim()),
+                                    finalPrice: double.parse(state.addonsPriceTextEditingController.value.text.trim()),
+                                    unit: state.addonsUnitTextEditingController.value.text.trim(),
                                     currency: state.currency,
                                     addonsImage: MenuImage(
                                       assetPath: state.addonsImagePath,
                                     ),
-                                    hasOwnAddons:
-                                        state.addonsImagePath.isNotEmpty
-                                            ? true
-                                            : false,
+                                    hasOwnAddons: state.addonsImagePath.isNotEmpty ? true : false,
                                   );
                                   context.read<MenuBloc>().add(
                                         SaveAddons(
@@ -684,14 +543,11 @@ class _SaveAddonsPageView
                               return;
                             },
                             style: ElevatedButton.styleFrom(
-                              backgroundColor:
-                                  const Color.fromRGBO(69, 201, 125, 1),
+                              backgroundColor: const Color.fromRGBO(69, 201, 125, 1),
                             ),
                             child: Text(
                               'Save Addons',
-                              textDirection:
-                                  serviceLocator<LanguageController>()
-                                      .targetTextDirection,
+                              textDirection: serviceLocator<LanguageController>().targetTextDirection,
                             ).translate(),
                           ),
                         ),
