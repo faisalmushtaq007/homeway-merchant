@@ -7,7 +7,7 @@ class BusinessInformationPage extends StatefulWidget {
     this.hasEditBusinessProfile = false,
     this.businessProfileEntity,
     this.businessTypeEntity,
-    this.selectionUseCase=SelectionUseCase.saveAndNext,
+    this.selectionUseCase = SelectionUseCase.saveAndNext,
   });
 
   final BusinessProfileEntity? businessProfileEntity;
@@ -213,6 +213,7 @@ class _BusinessInformationPageState extends State<BusinessInformationPage> with 
         textDirection: serviceLocator<LanguageController>().targetTextDirection,
         child: DoubleTapToExit(
           key: const Key('business-information-doubleTap'),
+          hasEnable: !(widget.selectionUseCase==SelectionUseCase.updateAndReturn || widget.selectionUseCase==SelectionUseCase.saveAndReturn)&&true,
           child: BlocListener<PermissionBloc, PermissionState>(
             key: const Key(
               'business-profile-permission-bloc-listener-key',
@@ -227,7 +228,6 @@ class _BusinessInformationPageState extends State<BusinessInformationPage> with 
               appBar: AppBar(
                 title: const Text('Business Profile'),
                 actions: [
-
                   const LanguageSelectionWidget(),
                 ],
               ),
@@ -296,6 +296,7 @@ class _BusinessInformationPageState extends State<BusinessInformationPage> with 
                                               'currentIndex': state.currentIndex,
                                               'businessTypeEntity': state.businessProfileEntity.businessTypeEntity ??
                                                   BusinessTypeEntity(),
+                                              'selectionUseCase': widget.selectionUseCase,
                                             },
                                           );
                                         }
@@ -340,7 +341,6 @@ class _BusinessInformationPageState extends State<BusinessInformationPage> with 
                                       crossAxisAlignment: CrossAxisAlignment.stretch,
                                       textDirection: serviceLocator<LanguageController>().targetTextDirection,
                                       children: [
-
                                         const AnimatedGap(
                                           8,
                                           duration: Duration(
@@ -414,15 +414,14 @@ class _BusinessInformationPageState extends State<BusinessInformationPage> with 
                                                 'Please enter a valid business name',
                                               ),
                                             ),
-                                             Stream.fromFuture(
-                                                AppTranslator.instance.translate(
-                                                  ''
-                                                 // _businessNameController.value.text.trim(),
-                                                ),
-                                              ),
+                                            Stream.fromFuture(
+                                              AppTranslator.instance.translate(''
+                                                  // _businessNameController.value.text.trim(),
+                                                  ),
+                                            ),
                                             Stream.fromFuture(
                                               AppTranslator.instance.translate(
-                                               'The name of your core business that will appear on HomeWay App.',
+                                                'The name of your core business that will appear on HomeWay App.',
                                               ),
                                             ),
                                             Stream.fromFuture(
@@ -456,13 +455,11 @@ class _BusinessInformationPageState extends State<BusinessInformationPage> with 
                                                   suffixIcon: Tooltip(
                                                     triggerMode: TooltipTriggerMode.tap,
                                                     onTriggered: () {
-                                                      final dynamic tooltip =
-                                                          toolTipKey.currentState;
+                                                      final dynamic tooltip = toolTipKey.currentState;
                                                       tooltip?.ensureTooltipVisible();
                                                     },
                                                     key: toolTipKey,
-                                                    
-                                                    richMessage:  TextSpan(
+                                                    richMessage: TextSpan(
                                                       text: '${snapshot[3]}',
                                                       children: <InlineSpan>[
                                                         TextSpan(
@@ -514,10 +511,10 @@ class _BusinessInformationPageState extends State<BusinessInformationPage> with 
                                               ),
                                             ),
                                             Stream.fromFuture(
-                                                AppTranslator.instance.translate(
-                                                  '',
-                                                ),
+                                              AppTranslator.instance.translate(
+                                                '',
                                               ),
+                                            ),
                                             Stream.fromFuture(
                                               AppTranslator.instance.translate(
                                                 'A primary email address is required for business.',
@@ -549,12 +546,11 @@ class _BusinessInformationPageState extends State<BusinessInformationPage> with 
                                                   suffixIcon: Tooltip(
                                                     triggerMode: TooltipTriggerMode.tap,
                                                     onTriggered: () {
-                                                      final dynamic tooltip =
-                                                          emailAddressToolTipKey.currentState;
+                                                      final dynamic tooltip = emailAddressToolTipKey.currentState;
                                                       tooltip?.ensureTooltipVisible();
                                                     },
                                                     key: emailAddressToolTipKey,
-                                                    richMessage:  TextSpan(
+                                                    richMessage: TextSpan(
                                                       text: '${snapshot[4]}',
                                                       children: <InlineSpan>[
                                                         TextSpan(
@@ -584,7 +580,6 @@ class _BusinessInformationPageState extends State<BusinessInformationPage> with 
                                             );
                                           },
                                         ),
-
                                         const AnimatedGap(
                                           12,
                                           duration: Duration(
@@ -654,7 +649,7 @@ class _BusinessInformationPageState extends State<BusinessInformationPage> with 
                                                     ],
                                                     initialStreamValue: [
                                                       'Business phone number',
-                                                      phoneValidation??'',
+                                                      phoneValidation ?? '',
                                                       'A primary phone number is required for business.',
                                                       'This number for our Operation team to use to reach your business',
                                                     ],
@@ -686,7 +681,6 @@ class _BusinessInformationPageState extends State<BusinessInformationPage> with 
                                                                 tooltip?.ensureTooltipVisible();
                                                               },
                                                               key: phoneNumberToolTipKey,
-                                                              
                                                               richMessage: TextSpan(
                                                                 text: '${snapshot[2]}',
                                                                 children: <InlineSpan>[
@@ -742,11 +736,10 @@ class _BusinessInformationPageState extends State<BusinessInformationPage> with 
                                               AppTranslator.instance.translate('Please enter an address'),
                                             ),
                                             Stream.fromFuture(
-                                                AppTranslator.instance.translate(
-                                                  '',
-                                                ),
+                                              AppTranslator.instance.translate(
+                                                '',
                                               ),
-
+                                            ),
                                           ],
                                           initialStreamValue: const ['Business address', 'Please enter an address', ''],
                                           builder: (context, snapshot) {
@@ -839,8 +832,7 @@ class _BusinessInformationPageState extends State<BusinessInformationPage> with 
                                               style: context.labelMedium!.copyWith(
                                                 fontWeight: FontWeight.w400,
                                               ),
-                                              textDirection:
-                                              serviceLocator<LanguageController>().targetTextDirection,
+                                              textDirection: serviceLocator<LanguageController>().targetTextDirection,
                                               overflow: TextOverflow.ellipsis,
                                               maxLines: 4,
                                               softWrap: true,

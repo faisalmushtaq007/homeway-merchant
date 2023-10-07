@@ -5,7 +5,7 @@ abstract class PaymentBankEvent extends Equatable {
 }
 
 class SavePaymentBank extends PaymentBankEvent {
-  SavePaymentBank(
+  const SavePaymentBank(
       {required this.paymentBankEntity,
       this.hasEditPaymentBank = false,
       this.currentIndex = -1});

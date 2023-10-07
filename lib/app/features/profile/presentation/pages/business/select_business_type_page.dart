@@ -147,6 +147,7 @@ class _ConfirmBusinessTypePageView extends WidgetView<ConfirmBusinessTypePage,
         textDirection: serviceLocator<LanguageController>().targetTextDirection,
         child: DoubleTapToExit(
           key: const Key('business-type-doubleTap'),
+          hasEnable: !(widget.selectionUseCase==SelectionUseCase.updateAndReturn || widget.selectionUseCase==SelectionUseCase.saveAndReturn)&&true,
           child: Scaffold(
             appBar: AppBar(
               title: const Text('Business Type'),
@@ -178,10 +179,13 @@ class _ConfirmBusinessTypePageView extends WidgetView<ConfirmBusinessTypePage,
                   listener: (context, businessState) {
                     if (businessState is SaveBusinessProfileState &&
                         businessState.hasSaveBusinessType) {
-                      context.pushReplacement(
-                        Routes.BANK_INFORMATION_PAGE,
-                      );
-                      return;
+                      if(widget.selectionUseCase==SelectionUseCase.updateAndReturn || widget.selectionUseCase==SelectionUseCase.saveAndReturn){
+                        return context.pop();
+                      }else {
+                        return context.pushReplacement(
+                          Routes.BANK_INFORMATION_PAGE,
+                        );
+                      }
                     }
                   },
                   child: BlocBuilder<PermissionBloc, PermissionState>(

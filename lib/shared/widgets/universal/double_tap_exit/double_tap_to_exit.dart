@@ -15,13 +15,14 @@ import 'package:flutter/services.dart';
 
 class DoubleTapToExit extends StatefulWidget {
   const DoubleTapToExit({
-    super.key,
-    required this.child,
+    required this.child, super.key,
     this.snackBar,
+    this.hasEnable=true,
   });
 
   final Widget child;
   final SnackBar? snackBar;
+  final bool hasEnable;
 
   @override
   State<DoubleTapToExit> createState() => _DoubleTapToExitState();
@@ -34,24 +35,28 @@ class _DoubleTapToExitState extends State<DoubleTapToExit> {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async {
-        DateTime now = DateTime.now();
-        if (currentBackPressTime == null ||
-            now.difference(currentBackPressTime!) >
-                const Duration(seconds: 2)) {
-          currentBackPressTime = now;
-          if (widget.snackBar != null) {
-            ScaffoldMessenger.of(context).showSnackBar(widget.snackBar!);
-          } else {
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                content: Text('Tap again to exit!'),
-              ),
-            );
+        if(widget.hasEnable) {
+          DateTime now = DateTime.now();
+          if (currentBackPressTime == null ||
+              now.difference(currentBackPressTime!) >
+                  const Duration(seconds: 2)) {
+            currentBackPressTime = now;
+            if (widget.snackBar != null) {
+              ScaffoldMessenger.of(context).showSnackBar(widget.snackBar!);
+            } else {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                  content: Text('Tap again to exit!'),
+                ),
+              );
+            }
+            return Future.value(false);
           }
-          return Future.value(false);
+          SystemNavigator.pop();
+          return Future.value(true);
+        }else{
+          return Future.value(true);
         }
-        SystemNavigator.pop();
-        return Future.value(true);
       },
       child: widget.child,
     );
