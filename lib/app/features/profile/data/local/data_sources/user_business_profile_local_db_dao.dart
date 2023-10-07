@@ -152,7 +152,7 @@ class UserBusinessProfileLocalDbRepository<T extends BusinessProfileEntity>
               entity.toMap(),
             );
         if (result != null) {
-          return BusinessProfileEntity.fromMap(result);
+          return BusinessProfileEntity.fromMap(result).copyWith(businessProfileID: result['businessProfileID']);
         } else {
           return upsert(id: uniqueId, entity: entity);
         }
@@ -183,7 +183,7 @@ class UserBusinessProfileLocalDbRepository<T extends BusinessProfileEntity>
       final result = await _businessProfile
           .record(key)
           .put(await _db, entity.toMap(), merge: (value != null) || false);
-      return BusinessProfileEntity.fromMap(result);
+      return BusinessProfileEntity.fromMap(result).copyWith(businessProfileID: result['businessProfileID']);
     });
     return result;
   }

@@ -78,7 +78,7 @@ class _BankInformationPageState extends State<BankInformationPage> with SingleTi
     if (widget.hasEditBankInformation) {
       context.read<PaymentBankBloc>().add(
             GetPaymentBank(
-              paymentBankID: widget.paymentBankEntity?.paymentBankID??-1,
+              paymentBankID: widget.paymentBankEntity?.paymentBankID ?? -1,
               paymentBankEntity: widget.paymentBankEntity,
               index: widget.currentIndex,
             ),
@@ -123,7 +123,9 @@ class _BankInformationPageState extends State<BankInformationPage> with SingleTi
         textDirection: serviceLocator<LanguageController>().targetTextDirection,
         child: DoubleTapToExit(
           key: const Key('bank-information-doubleTap'),
-          hasEnable: !(widget.selectionUseCase==SelectionUseCase.updateAndReturn || widget.selectionUseCase==SelectionUseCase.saveAndReturn)&&true,
+          hasEnable: !(widget.selectionUseCase == SelectionUseCase.updateAndReturn ||
+                  widget.selectionUseCase == SelectionUseCase.saveAndReturn) &&
+              true,
           child: Scaffold(
             resizeToAvoidBottomInset: true,
             appBar: AppBar(
@@ -161,18 +163,19 @@ class _BankInformationPageState extends State<BankInformationPage> with SingleTi
                         buildWhen: (previous, current) => previous != current,
                         listener: (context, state) {
                           if (state is NavigateToNextPageState) {
-                            if(widget.selectionUseCase==SelectionUseCase.updateAndReturn || widget.selectionUseCase==SelectionUseCase.saveAndReturn){
+                            if (widget.selectionUseCase == SelectionUseCase.updateAndReturn ||
+                                widget.selectionUseCase == SelectionUseCase.saveAndReturn) {
                               return context.pop();
-                            }else {
+                            } else {
                               return context.pushReplacement(Routes.NEW_DOCUMENT_LIST_PAGE);
                             }
                           }
-                          if(state is GetPaymentBankState){
-                            _bankNameController.text =state.paymentBankEntity?.bankName??'';
-                             _accountNumberController.text=state.paymentBankEntity?.accountNumber??'';
-                             _confirmAccountNumberController.text=state.paymentBankEntity?.accountNumber??'';
-                             _accountHolderNameController.text=state.paymentBankEntity?.bankHolderName??'';
-                             _ibanNumberController.text=state.paymentBankEntity?.ibanNumber??'';
+                          if (state is GetPaymentBankState) {
+                            _bankNameController.text = state.paymentBankEntity?.bankName ?? '';
+                            _accountNumberController.text = state.paymentBankEntity?.accountNumber ?? '';
+                            _confirmAccountNumberController.text = state.paymentBankEntity?.accountNumber ?? '';
+                            _accountHolderNameController.text = state.paymentBankEntity?.bankHolderName ?? '';
+                            _ibanNumberController.text = state.paymentBankEntity?.ibanNumber ?? '';
                           }
                         },
                         builder: (context, state) {
@@ -829,33 +832,29 @@ class _BankInformationPageState extends State<BankInformationPage> with SingleTi
                                                   },
                                                 );
                                                 if (result != null && result) {
-                                                  await Future.delayed(
-                                                    const Duration(
-                                                      milliseconds: 500,
-                                                    ),
-                                                    () {},
-                                                  );
+                                                  await Future.delayed(const Duration(milliseconds: 500,), () {},);
                                                   if (!mounted) {
                                                     return;
                                                   }
                                                   PaymentBankEntity paymentBankEntity;
                                                   if (widget.hasEditBankInformation &&
                                                       widget.paymentBankEntity != null) {
-                                                    widget.paymentBankEntity?.copyWith(
+                                                    paymentBankEntity = widget.paymentBankEntity!.copyWith(
                                                       ibanNumber: ibanNumber,
                                                       bankHolderName: accountHolderName,
                                                       accountNumber: confirmAccountNumber,
                                                       bankName: bankName,
-                                                      acceptPaymentMode: AcceptPaymentMode.cash,
+                                                      acceptPaymentMode: AcceptPaymentMode.online,
+                                                    );
+                                                  } else {
+                                                    paymentBankEntity = PaymentBankEntity(
+                                                      accountNumber: confirmAccountNumber,
+                                                      bankHolderName: accountHolderName,
+                                                      bankName: bankName,
+                                                      ibanNumber: ibanNumber,
+                                                      acceptPaymentMode: AcceptPaymentMode.online,
                                                     );
                                                   }
-                                                  paymentBankEntity = PaymentBankEntity(
-                                                    accountNumber: confirmAccountNumber,
-                                                    bankHolderName: accountHolderName,
-                                                    bankName: bankName,
-                                                    ibanNumber: ibanNumber,
-                                                    acceptPaymentMode: AcceptPaymentMode.cash,
-                                                  );
                                                   serviceLocator<AppUserEntity>().currentProfileStatus =
                                                       CurrentProfileStatus.paymentDetailSaved;
                                                   if (!mounted) {

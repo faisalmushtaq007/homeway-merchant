@@ -12,10 +12,11 @@ import 'package:homemakers_merchant/utils/app_equatable/app_equatable.dart';
 import 'package:homemakers_merchant/utils/app_log.dart';
 
 part 'payment_bank_event.dart';
+
 part 'payment_bank_state.dart';
 
 class PaymentBankBloc extends Bloc<PaymentBankEvent, PaymentBankState> {
-  PaymentBankBloc() : super(PaymentBankInitial()) {
+  PaymentBankBloc() : super(const PaymentBankInitial()) {
     on<SavePaymentBank>(_savePaymentBank);
     on<GetPaymentBank>(_getPaymentBank);
     on<DeletePaymentBank>(_deletePaymentBank);
@@ -23,23 +24,31 @@ class PaymentBankBloc extends Bloc<PaymentBankEvent, PaymentBankState> {
     on<DeleteAllPaymentBank>(_deleteAllPaymentBank);
   }
 
-  FutureOr<void> _savePaymentBank(
-      SavePaymentBank event, Emitter<PaymentBankState> emit) async {
+  FutureOr<void> _savePaymentBank(SavePaymentBank event, Emitter<PaymentBankState> emit) async {
     try {
       DataSourceState<PaymentBankEntity> result;
+      appLog.d(
+          'Payment Bank bloc currentStage,${serviceLocator<AppUserEntity>().currentUserStage}, ${event.hasEditPaymentBank}');
+      int currentStage = 3;
+      // Existing information
       if (event.hasEditPaymentBank) {
+        currentStage = serviceLocator<AppUserEntity>().currentUserStage;
+        appLog.d('Payment Bank bloc 1. currentStage $currentStage');
         result = await serviceLocator<EditPaymentBankUseCase>()(
-            id: event.paymentBankEntity.paymentBankID,
-            input: event.paymentBankEntity);
-      } else {
-        result = await serviceLocator<SavePaymentBankUseCase>()(
-            event.paymentBankEntity);
+            id: event.paymentBankEntity.paymentBankID, input: event.paymentBankEntity);
       }
+      // New Information
+      else {
+        appLog.d('Payment Bank bloc 2. currentStage $currentStage');
+        currentStage = 3;
+        result = await serviceLocator<SavePaymentBankUseCase>()(event.paymentBankEntity);
+      }
+      appLog.d('Payment Bank bloc currentStage $currentStage');
       await result.when(
         remote: (data, meta) async {
-          appLog.d('Payment Bank bloc save remote ${data?.toMap()}');
+          appLog.d('Payment Bank bloc save remote ${data?.paymentBankID}');
           if (data.isNotNull) {
-            await updateUserProfile(data!);
+            await updateUserProfile(data!, currentUserStage: currentStage);
           }
           await Future.delayed(const Duration(milliseconds: 500), () {});
           emit(
@@ -49,13 +58,12 @@ class PaymentBankBloc extends Bloc<PaymentBankEvent, PaymentBankState> {
             ),
           );
           await Future.delayed(const Duration(milliseconds: 500), () {});
-          emit(NavigateToNextPageState(
-              appUserEntity: serviceLocator<AppUserEntity>()));
+          emit(NavigateToNextPageState(appUserEntity: serviceLocator<AppUserEntity>()));
         },
         localDb: (data, meta) async {
-          appLog.d('Payment Bank bloc save local ${data?.toMap()}');
+          appLog.d('Payment Bank bloc save local ${data?.paymentBankID}');
           if (data.isNotNull) {
-            await updateUserProfile(data!);
+            await updateUserProfile(data!, currentUserStage: currentStage);
           }
           await Future.delayed(const Duration(milliseconds: 500), () {});
           emit(
@@ -65,11 +73,9 @@ class PaymentBankBloc extends Bloc<PaymentBankEvent, PaymentBankState> {
             ),
           );
           await Future.delayed(const Duration(milliseconds: 500), () {});
-          emit(NavigateToNextPageState(
-              appUserEntity: serviceLocator<AppUserEntity>()));
+          emit(NavigateToNextPageState(appUserEntity: serviceLocator<AppUserEntity>()));
         },
-        error: (dataSourceFailure, reason, error, networkException, stackTrace,
-            exception, extra) {
+        error: (dataSourceFailure, reason, error, networkException, stackTrace, exception, extra) {
           appLog.d('Payment Bank bloc save error $reason');
           emit(
             PaymentBankExceptionState(
@@ -86,8 +92,7 @@ class PaymentBankBloc extends Bloc<PaymentBankEvent, PaymentBankState> {
       appLog.e('Payment Bank bloc save exception $e');
       emit(
         PaymentBankExceptionState(
-          message:
-              'Something went wrong during saving your store details, please try again',
+          message: 'Something went wrong during saving your store details, please try again',
           //exception: e as Exception,
           stackTrace: s,
           paymentBankStatus: PaymentBankStatus.savePaymentBank,
@@ -96,57 +101,49 @@ class PaymentBankBloc extends Bloc<PaymentBankEvent, PaymentBankState> {
     }
   }
 
-  Future<void> updateUserProfile(PaymentBankEntity paymentBankData) async {
-    final getCurrentUserResult =
-        await serviceLocator<GetAllAppUserPaginationUseCase>()();
+  Future<void> updateUserProfile(PaymentBankEntity paymentBankData, {int currentUserStage = 3}) async {
+    final getCurrentUserResult = await serviceLocator<GetAllAppUserPaginationUseCase>()();
     await getCurrentUserResult.when(
       remote: (data, meta) {},
       localDb: (data, meta) async {
         if (data.isNotNullOrEmpty) {
           appLog.d('Bank GetAllAppUserPaginationUseCase is not null');
-          data!.forEach((element) {
-            appLog.d('${element.toMap()}');
-          });
-          final AppUserEntity cacheAppUserEntity = data.last.copyWith(
+          final AppUserEntity cacheAppUserEntity = data!.last.copyWith(
             userID: data.last.userID,
             paymentBankEntity: paymentBankData,
             hasMultiplePaymentBanks: false,
             paymentBankEntities: <PaymentBankEntity>[],
-            currentUserStage: 3,
+            currentUserStage: currentUserStage,
           );
           final editUserResult = await serviceLocator<SaveAllAppUserUseCase>()(
             [cacheAppUserEntity],
           );
           editUserResult.when(
             remote: (data, meta) {
-              appLog.d(
-                  'Update current user with business profile save remote ${data?.last.toMap()}');
+              appLog
+                  .d('Update current user with business profile save remote ${data?.last.toMap()['currentUserStage']}');
             },
             localDb: (data, meta) {
-              appLog.d(
-                  'Update current user with business profile save local ${data?.last.toMap()}');
+              appLog
+                  .d('Update current user with business profile save local ${data?.last.toMap()['currentUserStage']}');
               if (data != null) {
                 var cachedAppUserEntity = serviceLocator<AppUserEntity>()
-                  ..currentUserStage = 3
+                  ..currentUserStage = currentUserStage
                   ..paymentBankEntity = paymentBankData
                   ..hasMultiplePaymentBanks = false
                   ..paymentBankEntities = <PaymentBankEntity>[];
-                serviceLocator<UserModelStorageController>()
-                    .setUserModel(cachedAppUserEntity);
+                serviceLocator<UserModelStorageController>().setUserModel(cachedAppUserEntity);
               }
             },
-            error: (dataSourceFailure, reason, error, networkException,
-                stackTrace, exception, extra) {
-              appLog.d(
-                  'Update current user with business profile exception $error');
+            error: (dataSourceFailure, reason, error, networkException, stackTrace, exception, extra) {
+              appLog.d('Update current user with business profile exception $error');
             },
           );
         } else {
           appLog.d('Bank GetAllAppUserPaginationUseCase is null');
         }
       },
-      error: (dataSourceFailure, reason, error, networkException, stackTrace,
-          exception, extra) {
+      error: (dataSourceFailure, reason, error, networkException, stackTrace, exception, extra) {
         appLog.d('Bank updateUserProfile $reason ');
       },
     );
@@ -154,17 +151,15 @@ class PaymentBankBloc extends Bloc<PaymentBankEvent, PaymentBankState> {
     return;
   }
 
-  FutureOr<void> _getPaymentBank(
-      GetPaymentBank event, Emitter<PaymentBankState> emit) async {
+  FutureOr<void> _getPaymentBank(GetPaymentBank event, Emitter<PaymentBankState> emit) async {
     try {
-      final DataSourceState<PaymentBankEntity> result =
-          await serviceLocator<GetPaymentBankUseCase>()(
+      final DataSourceState<PaymentBankEntity> result = await serviceLocator<GetPaymentBankUseCase>()(
         input: event.paymentBankEntity,
         id: event.paymentBankID,
       );
       result.when(
         remote: (data, meta) {
-          appLog.d('Payment Bank bloc edit remote ${data?.toMap()}');
+          appLog.d('Payment Bank bloc edit remote ${data?.paymentBankID}');
           emit(
             GetPaymentBankState(
               paymentBankEntity: data ?? event.paymentBankEntity,
@@ -175,7 +170,7 @@ class PaymentBankBloc extends Bloc<PaymentBankEvent, PaymentBankState> {
           );
         },
         localDb: (data, meta) {
-          appLog.d('Payment Bank bloc edit local ${data?.toMap()}');
+          appLog.d('Payment Bank bloc edit local ${data?.paymentBankID}');
           emit(
             GetPaymentBankState(
               paymentBankEntity: data ?? event.paymentBankEntity,
@@ -185,8 +180,7 @@ class PaymentBankBloc extends Bloc<PaymentBankEvent, PaymentBankState> {
             ),
           );
         },
-        error: (dataSourceFailure, reason, error, networkException, stackTrace,
-            exception, extra) {
+        error: (dataSourceFailure, reason, error, networkException, stackTrace, exception, extra) {
           appLog.d('Payment Bank bloc edit error $reason');
           emit(
             PaymentBankExceptionState(
@@ -202,8 +196,7 @@ class PaymentBankBloc extends Bloc<PaymentBankEvent, PaymentBankState> {
       appLog.e('Payment Bank bloc get exception $e');
       emit(
         PaymentBankExceptionState(
-          message:
-              'Something went wrong during getting your store details, please try again',
+          message: 'Something went wrong during getting your store details, please try again',
           //exception: e as Exception,
           stackTrace: s,
           paymentBankStatus: PaymentBankStatus.getPaymentBank,
@@ -212,11 +205,9 @@ class PaymentBankBloc extends Bloc<PaymentBankEvent, PaymentBankState> {
     }
   }
 
-  FutureOr<void> _deletePaymentBank(
-      DeletePaymentBank event, Emitter<PaymentBankState> emit) async {
+  FutureOr<void> _deletePaymentBank(DeletePaymentBank event, Emitter<PaymentBankState> emit) async {
     try {
-      final DataSourceState<bool> result =
-          await serviceLocator<DeletePaymentBankUseCase>()(
+      final DataSourceState<bool> result = await serviceLocator<DeletePaymentBankUseCase>()(
         input: event.paymentBankEntity,
         id: event.paymentBankID,
       );
@@ -245,8 +236,7 @@ class PaymentBankBloc extends Bloc<PaymentBankEvent, PaymentBankState> {
             ),
           );
         },
-        error: (dataSourceFailure, reason, error, networkException, stackTrace,
-            exception, extra) {
+        error: (dataSourceFailure, reason, error, networkException, stackTrace, exception, extra) {
           appLog.d('Payment Bank bloc delete error $reason');
           emit(
             PaymentBankExceptionState(
@@ -262,8 +252,7 @@ class PaymentBankBloc extends Bloc<PaymentBankEvent, PaymentBankState> {
       appLog.e('Payment Bank bloc delete exception $e');
       emit(
         PaymentBankExceptionState(
-          message:
-              'Something went wrong during getting your store details, please try again',
+          message: 'Something went wrong during getting your store details, please try again',
           //exception: e as Exception,
           stackTrace: s,
           paymentBankStatus: PaymentBankStatus.deletePaymentBank,
@@ -272,19 +261,16 @@ class PaymentBankBloc extends Bloc<PaymentBankEvent, PaymentBankState> {
     }
   }
 
-  FutureOr<void> _getAllPaymentBank(
-      GetAllPaymentBank event, Emitter<PaymentBankState> emit) async {
+  FutureOr<void> _getAllPaymentBank(GetAllPaymentBank event, Emitter<PaymentBankState> emit) async {
     try {
-      emit(PaymentBankLoadingState(
-          message: 'Please wait while we are fetching your profile...'));
-      final DataSourceState<List<PaymentBankEntity>> result =
-          await serviceLocator<GetAllPaymentBankUseCase>()();
+      emit(const PaymentBankLoadingState(message: 'Please wait while we are fetching your profile...'));
+      final DataSourceState<List<PaymentBankEntity>> result = await serviceLocator<GetAllPaymentBankUseCase>()();
       result.when(
         remote: (data, meta) {
           appLog.d('Payment Bank bloc get all remote');
           if (data == null || data.isEmpty) {
             emit(
-              PaymentBankEmptyState(
+              const PaymentBankEmptyState(
                 message: 'Payment Bank is empty',
                 paymentBankEntities: [],
                 paymentBankStatus: PaymentBankStatus.getAllPaymentBank,
@@ -302,7 +288,7 @@ class PaymentBankBloc extends Bloc<PaymentBankEvent, PaymentBankState> {
           appLog.d('Payment Bank bloc get all local');
           if (data == null || data.isEmpty) {
             emit(
-              PaymentBankEmptyState(
+              const PaymentBankEmptyState(
                 message: 'Payment Bank is empty',
                 paymentBankEntities: [],
                 paymentBankStatus: PaymentBankStatus.getAllPaymentBank,
@@ -316,8 +302,7 @@ class PaymentBankBloc extends Bloc<PaymentBankEvent, PaymentBankState> {
             );
           }
         },
-        error: (dataSourceFailure, reason, error, networkException, stackTrace,
-            exception, extra) {
+        error: (dataSourceFailure, reason, error, networkException, stackTrace, exception, extra) {
           appLog.d('Payment Bank bloc get all error $reason');
           emit(
             PaymentBankExceptionState(
@@ -333,8 +318,7 @@ class PaymentBankBloc extends Bloc<PaymentBankEvent, PaymentBankState> {
       appLog.e('Payment Bank bloc get all $e');
       emit(
         PaymentBankExceptionState(
-          message:
-              'Something went wrong during getting your all stores, please try again',
+          message: 'Something went wrong during getting your all stores, please try again',
           //exception: e as Exception,
           stackTrace: s,
           paymentBankStatus: PaymentBankStatus.getAllPaymentBank,
@@ -343,11 +327,9 @@ class PaymentBankBloc extends Bloc<PaymentBankEvent, PaymentBankState> {
     }
   }
 
-  FutureOr<void> _deleteAllPaymentBank(
-      DeleteAllPaymentBank event, Emitter<PaymentBankState> emit) async {
+  FutureOr<void> _deleteAllPaymentBank(DeleteAllPaymentBank event, Emitter<PaymentBankState> emit) async {
     try {
-      final DataSourceState<bool> result =
-          await serviceLocator<DeleteAllPaymentBankUseCase>()();
+      final DataSourceState<bool> result = await serviceLocator<DeleteAllPaymentBankUseCase>()();
       result.when(
         remote: (data, meta) {
           appLog.d('Payment Bank bloc delete all remote $data');
@@ -367,8 +349,7 @@ class PaymentBankBloc extends Bloc<PaymentBankEvent, PaymentBankState> {
             ),
           );
         },
-        error: (dataSourceFailure, reason, error, networkException, stackTrace,
-            exception, extra) {
+        error: (dataSourceFailure, reason, error, networkException, stackTrace, exception, extra) {
           appLog.d('Payment Bank bloc delete all error $reason');
           emit(
             PaymentBankExceptionState(
@@ -384,8 +365,7 @@ class PaymentBankBloc extends Bloc<PaymentBankEvent, PaymentBankState> {
       appLog.e('Payment Bank bloc delete all exception $e');
       emit(
         PaymentBankExceptionState(
-          message:
-              'Something went wrong during getting your store details, please try again',
+          message: 'Something went wrong during getting your store details, please try again',
           //exception: e as Exception,
           stackTrace: s,
           paymentBankStatus: PaymentBankStatus.deleteAllPaymentBank,

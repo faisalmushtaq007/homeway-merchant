@@ -630,10 +630,8 @@ class BusinessDocumentBloc
       localDb: (data, meta) async {
         if (data.isNotNullOrEmpty) {
           appLog.d('Document GetAllAppUserPaginationUseCase is not null');
-          data!.forEach((element) {
-            appLog.d('${element.toMap()}');
-          });
-          final AppUserEntity cacheAppUserEntity = data.last.copyWith(
+
+          final AppUserEntity cacheAppUserEntity = data!.last.copyWith(
             userID: data.last.userID,
             businessProfile: data.last.businessProfile
                 ?.copyWith(allBusinessDocuments: allBusinessDocuments),

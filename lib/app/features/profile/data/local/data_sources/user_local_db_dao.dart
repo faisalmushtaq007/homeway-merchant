@@ -105,7 +105,7 @@ class UserLocalDbRepository<User extends AppUserEntity> implements BaseUserLocal
               entity.toMap(),
             );
         if (result != null) {
-          return AppUserEntity.fromMap(result);
+          return AppUserEntity.fromMap(result).copyWith(userID: result['userID']);
         } else {
           return upsert(id: uniqueId, entity: entity);
         }
@@ -123,7 +123,7 @@ class UserLocalDbRepository<User extends AppUserEntity> implements BaseUserLocal
       final int key = entity.userID;
       final value = await _user.record(key).get(await _db);
       final result = await _user.record(key).put(await _db, entity.toMap(), merge: (value != null) || false);
-      return AppUserEntity.fromMap(result);
+      return AppUserEntity.fromMap(result).copyWith(userID: result['userID']);
     });
     return result;
   }
@@ -422,7 +422,7 @@ class UserLocalDbRepository<User extends AppUserEntity> implements BaseUserLocal
         // Watch for deleted item
         var keysToDelete = (await _user.findKeys(transaction)).toList();
         for (var order in convertOrderToMapObject) {
-          appLog.d('Order Data ${order}');
+          appLog.d('Order Data ${order['userID']}');
           var snapshot = map[order['userID'].toString()];
           if (snapshot != null) {
             // The record current key

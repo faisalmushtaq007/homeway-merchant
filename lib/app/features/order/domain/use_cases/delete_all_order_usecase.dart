@@ -10,6 +10,5 @@ class DeleteAllOrderUseCase
   @override
   Future<DataSourceState<bool>?> call({OrderType? input = OrderType.none}) {
     return orderRepository.deleteAllOrder(orderType: input!);
-    throw UnimplementedError();
   }
 }

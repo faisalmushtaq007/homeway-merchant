@@ -25,7 +25,7 @@ class NewBusinessDocumentBloc
   }
 
   FutureOr<void> _uploadNewBusinessDocument(UploadNewBusinessDocument event,
-      Emitter<NewBusinessDocumentState> emit) async {
+      Emitter<NewBusinessDocumentState> emit,) async {
     /*try {
       DataSourceState<NewBusinessDocumentEntity> result;
       if (!event.hasNewUploadBusinessDocument) {
@@ -87,14 +87,20 @@ class NewBusinessDocumentBloc
       );
     }*/
     try {
+      int currentStage=4;
       final DataSourceState<List<NewBusinessDocumentEntity>> results =
           await serviceLocator<SaveAllDocumentUseCase>()(
-              event.allBusinessDocuments.toList());
+              event.allBusinessDocuments.toList(),);
+      if(event.hasEditBusinessDocument){
+        currentStage=serviceLocator<AppUserEntity>().currentUserStage;
+      }else{
+        currentStage=4;
+      }
       await results.when(
         remote: (data, meta) async {
           appLog.d('Business Document bloc save remote ${data?.length}');
           if (data.isNotNullOrEmpty) {
-            await updateUserProfile(data!.toList());
+            await updateUserProfile(data!.toList(),currentUserStage:currentStage,);
           }
           await Future.delayed(const Duration(milliseconds: 500), () {});
           emit(
@@ -107,7 +113,7 @@ class NewBusinessDocumentBloc
         localDb: (data, meta) async {
           appLog.d('Business Document bloc save local ${data?.length}');
           if (data.isNotNullOrEmpty) {
-            await updateUserProfile(data!.toList());
+            await updateUserProfile(data!.toList(),currentUserStage: currentStage);
           }
           await Future.delayed(const Duration(milliseconds: 500), () {});
           emit(
@@ -118,7 +124,7 @@ class NewBusinessDocumentBloc
           );
         },
         error: (dataSourceFailure, reason, error, networkException, stackTrace,
-            exception, extra) {
+            exception, extra,) {
           appLog.d('Business Document bloc save error $reason');
           emit(
             NewBusinessDocumentExceptionState(
@@ -147,7 +153,7 @@ class NewBusinessDocumentBloc
   }
 
   Future<void> updateUserProfile(
-      List<NewBusinessDocumentEntity> allBusinessDocuments) async {
+      List<NewBusinessDocumentEntity> allBusinessDocuments,{int currentUserStage=4,}) async {
     final getCurrentUserResult =
         await serviceLocator<GetAllAppUserPaginationUseCase>()();
     await getCurrentUserResult.when(
@@ -155,14 +161,12 @@ class NewBusinessDocumentBloc
       localDb: (data, meta) async {
         if (data.isNotNullOrEmpty) {
           appLog.d('Document GetAllAppUserPaginationUseCase is not null');
-          data!.forEach((element) {
-            appLog.d('${element.toMap()}');
-          });
-          final AppUserEntity cacheAppUserEntity = data.last.copyWith(
+
+          final AppUserEntity cacheAppUserEntity = data!.last.copyWith(
             userID: data.last.userID,
             businessProfile: data.last.businessProfile
                 ?.copyWith(allBusinessDocuments: allBusinessDocuments),
-            currentUserStage: 4,
+            currentUserStage: currentUserStage,
           );
           final editUserResult = await serviceLocator<SaveAllAppUserUseCase>()(
             [cacheAppUserEntity],
@@ -170,14 +174,14 @@ class NewBusinessDocumentBloc
           editUserResult.when(
             remote: (data, meta) {
               appLog.d(
-                  'Update current user with business profile save remote ${data?.last.toMap()}');
+                  'Update current user with business profile save remote ${data?.last.toMap()}',);
             },
             localDb: (data, meta) {
               appLog.d(
-                  'Update current user with business profile save local ${data?.last.toMap()}');
+                  'Update current user with business profile save local ${data?.last.toMap()}',);
               if (data != null) {
                 var cachedAppUserEntity = serviceLocator<AppUserEntity>()
-                  ..currentUserStage = 4
+                  ..currentUserStage = currentUserStage
                   ..businessProfile = data.last.businessProfile
                       ?.copyWith(allBusinessDocuments: allBusinessDocuments);
                 serviceLocator<UserModelStorageController>()
@@ -185,9 +189,9 @@ class NewBusinessDocumentBloc
               }
             },
             error: (dataSourceFailure, reason, error, networkException,
-                stackTrace, exception, extra) {
+                stackTrace, exception, extra,) {
               appLog.d(
-                  'Update current user with business profile exception $error');
+                  'Update current user with business profile exception $error',);
             },
           );
         } else {
@@ -195,7 +199,7 @@ class NewBusinessDocumentBloc
         }
       },
       error: (dataSourceFailure, reason, error, networkException, stackTrace,
-          exception, extra) {
+          exception, extra,) {
         appLog.d('Document updateUserProfile $reason ');
       },
     );
@@ -204,7 +208,7 @@ class NewBusinessDocumentBloc
 
   FutureOr<void> _getNewUploadBusinessDocument(
       GetNewUploadBusinessDocument event,
-      Emitter<NewBusinessDocumentState> emit) async {
+      Emitter<NewBusinessDocumentState> emit,) async {
     try {
       final DataSourceState<NewBusinessDocumentEntity> result =
           await serviceLocator<GetDocumentUseCase>()(
@@ -233,7 +237,7 @@ class NewBusinessDocumentBloc
           );
         },
         error: (dataSourceFailure, reason, error, networkException, stackTrace,
-            exception, extra) {
+            exception, extra,) {
           appLog.d('NewBusinessDocument  bloc edit error $reason');
           emit(
             NewBusinessDocumentExceptionState(
@@ -261,10 +265,10 @@ class NewBusinessDocumentBloc
 
   FutureOr<void> _getAllNewUploadBusinessDocument(
       GetAllNewUploadBusinessDocument event,
-      Emitter<NewBusinessDocumentState> emit) async {
+      Emitter<NewBusinessDocumentState> emit,) async {
     try {
       emit(NewBusinessDocumentLoadingState(
-          message: 'Please wait while we are fetching your profile...'));
+          message: 'Please wait while we are fetching your profile...',),);
       final DataSourceState<List<NewBusinessDocumentEntity>> result =
           await serviceLocator<GetAllDocumentUseCase>()();
       result.when(
@@ -305,7 +309,7 @@ class NewBusinessDocumentBloc
           }
         },
         error: (dataSourceFailure, reason, error, networkException, stackTrace,
-            exception, extra) {
+            exception, extra,) {
           appLog.d('NewBusinessDocument  bloc get all error $reason');
           emit(
             NewBusinessDocumentExceptionState(
@@ -333,7 +337,7 @@ class NewBusinessDocumentBloc
 
   FutureOr<void> _deleteNewUploadBusinessDocument(
       DeleteNewUploadBusinessDocument event,
-      Emitter<NewBusinessDocumentState> emit) async {
+      Emitter<NewBusinessDocumentState> emit,) async {
     try {
       final DataSourceState<bool> result =
           await serviceLocator<DeleteDocumentUseCase>()(
@@ -360,7 +364,7 @@ class NewBusinessDocumentBloc
           );
         },
         error: (dataSourceFailure, reason, error, networkException, stackTrace,
-            exception, extra) {
+            exception, extra,) {
           appLog.d('NewBusinessDocument  bloc delete error $reason');
           emit(
             NewBusinessDocumentExceptionState(
@@ -388,7 +392,7 @@ class NewBusinessDocumentBloc
 
   FutureOr<void> _deleteAllNewUploadBusinessDocument(
       DeleteAllNewUploadBusinessDocument event,
-      Emitter<NewBusinessDocumentState> emit) async {
+      Emitter<NewBusinessDocumentState> emit,) async {
     try {
       final DataSourceState<bool> result =
           await serviceLocator<DeleteAllDocumentUseCase>()();
@@ -412,7 +416,7 @@ class NewBusinessDocumentBloc
           );
         },
         error: (dataSourceFailure, reason, error, networkException, stackTrace,
-            exception, extra) {
+            exception, extra,) {
           appLog.d('NewBusinessDocument  bloc delete all error $reason');
           emit(
             NewBusinessDocumentExceptionState(

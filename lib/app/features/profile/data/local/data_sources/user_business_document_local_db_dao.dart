@@ -152,7 +152,7 @@ class UserBusinessDocumentLocalDbRepository<T extends NewBusinessDocumentEntity>
               entity.toMap(),
             );
         if (result != null) {
-          return NewBusinessDocumentEntity.fromMap(result);
+          return NewBusinessDocumentEntity.fromMap(result).copyWith(documentID: result['documentID']);
         } else {
           return upsert(id: uniqueId, entity: entity);
         }
@@ -183,7 +183,7 @@ class UserBusinessDocumentLocalDbRepository<T extends NewBusinessDocumentEntity>
       final result = await _businessDocument
           .record(key)
           .put(await _db, entity.toMap(), merge: (value != null) || false);
-      return NewBusinessDocumentEntity.fromMap(result);
+      return NewBusinessDocumentEntity.fromMap(result).copyWith(documentID: result['documentID']);
     });
     return result;
   }

@@ -9,7 +9,7 @@ enum AcceptPaymentMode {
     acceptPaymentModeID: 1,
     acceptPaymentModeName: 'Card',
   ),
-  netBankin(
+  netBanking(
     acceptPaymentModeID: 2,
     acceptPaymentModeName: 'Net Banking',
   ),
@@ -24,6 +24,10 @@ enum AcceptPaymentMode {
   none(
     acceptPaymentModeID: 5,
     acceptPaymentModeName: '-',
+  ),
+  online(
+    acceptPaymentModeID: 6,
+    acceptPaymentModeName: 'Online',
   ),
   ;
 

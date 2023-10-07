@@ -13,13 +13,11 @@ class UserPaymentBankLocalDbRepository<T extends PaymentBankEntity>
     final result = await tryCatch<PaymentBankEntity>(() async {
       final int recordID = await _paymentBank.add(await _db, entity.toMap());
       //final PaymentBankEntity recordPaymentBankEntity = entity.copyWith(storeID: recordID.toString());
-      await update(
-          entity.copyWith(paymentBankID: recordID), UniqueId(recordID));
+      await update(entity.copyWith(paymentBankID: recordID), UniqueId(recordID));
       final value = await _paymentBank.record(recordID).get(await _db);
       if (value != null) {
         final storedPaymentBankEntity = PaymentBankEntity.fromMap(value);
-        final storeEntity =
-            storedPaymentBankEntity.copyWith(paymentBankID: recordID);
+        final storeEntity = storedPaymentBankEntity.copyWith(paymentBankID: recordID);
         return storeEntity;
       } else {
         final storeEntity = entity.copyWith(paymentBankID: recordID);
@@ -146,7 +144,8 @@ class UserPaymentBankLocalDbRepository<T extends PaymentBankEntity>
               entity.toMap(),
             );
         if (result != null) {
-          return PaymentBankEntity.fromMap(result);
+          appLog.d('Result ${result}');
+          return PaymentBankEntity.fromMap(result).copyWith(paymentBankID: result['paymentBankID']);
         } else {
           return upsert(id: uniqueId, entity: entity);
         }
@@ -176,7 +175,8 @@ class UserPaymentBankLocalDbRepository<T extends PaymentBankEntity>
       final result = await _paymentBank
           .record(key)
           .put(await _db, entity.toMap(), merge: (value != null) || false);
-      return PaymentBankEntity.fromMap(result);
+      appLog.d('Result upsert ${result}');
+      return PaymentBankEntity.fromMap(result).copyWith(paymentBankID: result['paymentBankID']);
     });
     return result;
   }

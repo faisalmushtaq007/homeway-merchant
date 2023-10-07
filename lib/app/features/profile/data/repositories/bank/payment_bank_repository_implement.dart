@@ -7,20 +7,16 @@ class PaymentBankRepositoryImplement implements UserPaymentBankRepository {
   });
 
   final ProfileDataSource remoteDataSource;
-  final UserPaymentBankLocalDbRepository<PaymentBankEntity>
-      paymentBankLocalDataSource;
+  final UserPaymentBankLocalDbRepository<PaymentBankEntity> paymentBankLocalDataSource;
 
   @override
-  Future<DataSourceState<bool>> deleteAllPaymentBank(
-      {AppUserEntity? appUserEntity}) async {
+  Future<DataSourceState<bool>> deleteAllPaymentBank({AppUserEntity? appUserEntity}) async {
     try {
-      final connectivity =
-          serviceLocator<ConnectivityService>().getCurrentInternetStatus();
+      final connectivity = serviceLocator<ConnectivityService>().getCurrentInternetStatus();
       if (connectivity.$2 == InternetConnectivityState.internet) {
         // Local DB
         // Save to local
-        final Either<RepositoryBaseFailure, bool> result =
-            await paymentBankLocalDataSource.deleteAll();
+        final Either<RepositoryBaseFailure, bool> result = await paymentBankLocalDataSource.deleteAll();
         // Return result
         return result.fold((l) {
           final RepositoryFailure failure = l as RepositoryFailure;
@@ -37,8 +33,7 @@ class PaymentBankRepositoryImplement implements UserPaymentBankRepository {
       } else {
         // Remote
         // Save to server
-        final ApiResultState<bool> result =
-            await remoteDataSource.deleteAllPaymentBank();
+        final ApiResultState<bool> result = await remoteDataSource.deleteAllPaymentBank();
         // Return result
         return result.when(
           success: (data) {
@@ -78,14 +73,12 @@ class PaymentBankRepositoryImplement implements UserPaymentBankRepository {
     AppUserEntity? appUserEntity,
   }) async {
     try {
-      final connectivity =
-          serviceLocator<ConnectivityService>().getCurrentInternetStatus();
+      final connectivity = serviceLocator<ConnectivityService>().getCurrentInternetStatus();
       if (connectivity.$2 == InternetConnectivityState.internet) {
         // Local DB
         // Save to local
         final Either<RepositoryBaseFailure, bool> result =
-            await paymentBankLocalDataSource
-                .deleteById(UniqueId(paymentBankID));
+            await paymentBankLocalDataSource.deleteById(UniqueId(paymentBankID));
         // Return result
         return result.fold((l) {
           final RepositoryFailure failure = l as RepositoryFailure;
@@ -102,8 +95,7 @@ class PaymentBankRepositoryImplement implements UserPaymentBankRepository {
       } else {
         // Remote
         // Save to server
-        final ApiResultState<bool> result =
-            await remoteDataSource.deletePaymentBank(
+        final ApiResultState<bool> result = await remoteDataSource.deletePaymentBank(
           paymentBankID: paymentBankID,
           paymentBankEntity: paymentBankEntity,
           appUserEntity: appUserEntity,
@@ -147,14 +139,12 @@ class PaymentBankRepositoryImplement implements UserPaymentBankRepository {
     AppUserEntity? appUserEntity,
   }) async {
     try {
-      final connectivity =
-          serviceLocator<ConnectivityService>().getCurrentInternetStatus();
+      final connectivity = serviceLocator<ConnectivityService>().getCurrentInternetStatus();
       if (connectivity.$2 == InternetConnectivityState.internet) {
         // Local DB
         // Save to local
         final Either<RepositoryBaseFailure, PaymentBankEntity> result =
-            await paymentBankLocalDataSource.update(
-                paymentBankEntity, UniqueId(paymentBankID));
+            await paymentBankLocalDataSource.update(paymentBankEntity, UniqueId(paymentBankID));
         // Return result
         return result.fold((l) {
           final RepositoryFailure failure = l as RepositoryFailure;
@@ -171,8 +161,7 @@ class PaymentBankRepositoryImplement implements UserPaymentBankRepository {
       } else {
         // Remote
         // Save to server
-        final ApiResultState<PaymentBankEntity> result =
-            await remoteDataSource.editPaymentBank(
+        final ApiResultState<PaymentBankEntity> result = await remoteDataSource.editPaymentBank(
           paymentBankID: paymentBankID,
           paymentBankEntity: paymentBankEntity,
           appUserEntity: appUserEntity,
@@ -210,16 +199,13 @@ class PaymentBankRepositoryImplement implements UserPaymentBankRepository {
   }
 
   @override
-  Future<DataSourceState<List<PaymentBankEntity>>> getAllPaymentBank(
-      {AppUserEntity? appUserEntity}) async {
+  Future<DataSourceState<List<PaymentBankEntity>>> getAllPaymentBank({AppUserEntity? appUserEntity}) async {
     try {
-      final connectivity =
-          serviceLocator<ConnectivityService>().getCurrentInternetStatus();
+      final connectivity = serviceLocator<ConnectivityService>().getCurrentInternetStatus();
       if (connectivity.$2 == InternetConnectivityState.internet) {
         // Local DB
         // Save to local
-        final Either<RepositoryBaseFailure, List<PaymentBankEntity>> result =
-            await paymentBankLocalDataSource.getAll();
+        final Either<RepositoryBaseFailure, List<PaymentBankEntity>> result = await paymentBankLocalDataSource.getAll();
         // Return result
         return result.fold((l) {
           final RepositoryFailure failure = l as RepositoryFailure;
@@ -236,8 +222,7 @@ class PaymentBankRepositoryImplement implements UserPaymentBankRepository {
       } else {
         // Remote
         // Save to server
-        final ApiResultState<List<PaymentBankEntity>> result =
-            await remoteDataSource.getAllPaymentBank();
+        final ApiResultState<List<PaymentBankEntity>> result = await remoteDataSource.getAllPaymentBank();
         // Return result
         return result.when(
           success: (data) {
@@ -277,8 +262,7 @@ class PaymentBankRepositoryImplement implements UserPaymentBankRepository {
     PaymentBankEntity? paymentBankEntity,
   }) async {
     try {
-      final connectivity =
-          serviceLocator<ConnectivityService>().getCurrentInternetStatus();
+      final connectivity = serviceLocator<ConnectivityService>().getCurrentInternetStatus();
       if (connectivity.$2 == InternetConnectivityState.internet) {
         // Local DB
         // Save to local
@@ -300,8 +284,7 @@ class PaymentBankRepositoryImplement implements UserPaymentBankRepository {
       } else {
         // Remote
         // Save to server
-        final ApiResultState<PaymentBankEntity> result =
-            await remoteDataSource.getPaymentBank(
+        final ApiResultState<PaymentBankEntity> result = await remoteDataSource.getPaymentBank(
           paymentBankID: paymentBankID,
           paymentBankEntity: paymentBankEntity,
           appUserEntity: appUserEntity,
@@ -344,8 +327,7 @@ class PaymentBankRepositoryImplement implements UserPaymentBankRepository {
     AppUserEntity? appUserEntity,
   }) async {
     try {
-      final connectivity =
-          serviceLocator<ConnectivityService>().getCurrentInternetStatus();
+      final connectivity = serviceLocator<ConnectivityService>().getCurrentInternetStatus();
       if (connectivity.$2 == InternetConnectivityState.internet) {
         // Local DB
         // Save to local
@@ -367,8 +349,7 @@ class PaymentBankRepositoryImplement implements UserPaymentBankRepository {
       } else {
         // Remote
         // Save to server
-        final ApiResultState<PaymentBankEntity> result =
-            await remoteDataSource.savePaymentBank(
+        final ApiResultState<PaymentBankEntity> result = await remoteDataSource.savePaymentBank(
           paymentBankEntity: paymentBankEntity,
         );
         // Return result
@@ -404,8 +385,7 @@ class PaymentBankRepositoryImplement implements UserPaymentBankRepository {
   }
 
   @override
-  Future<DataSourceState<List<PaymentBankEntity>>>
-      getAllPaymentBanksPagination({
+  Future<DataSourceState<List<PaymentBankEntity>>> getAllPaymentBanksPagination({
     int pageKey = 0,
     int pageSize = 10,
     String? searchText,
@@ -416,8 +396,7 @@ class PaymentBankRepositoryImplement implements UserPaymentBankRepository {
     Timestamp? endTime,
   }) async {
     try {
-      final connectivity =
-          serviceLocator<ConnectivityService>().getCurrentInternetStatus();
+      final connectivity = serviceLocator<ConnectivityService>().getCurrentInternetStatus();
       if (connectivity.$2 == InternetConnectivityState.internet) {
         // Local DB
         // Save to local
@@ -448,8 +427,7 @@ class PaymentBankRepositoryImplement implements UserPaymentBankRepository {
       } else {
         // Remote
         // Save to server
-        final ApiResultState<List<PaymentBankEntity>> result =
-            await remoteDataSource.getAllPaymentBanksPagination(
+        final ApiResultState<List<PaymentBankEntity>> result = await remoteDataSource.getAllPaymentBanksPagination(
           filtering: filtering,
           sorting: sorting,
           searchText: searchText,
@@ -496,13 +474,11 @@ class PaymentBankRepositoryImplement implements UserPaymentBankRepository {
     bool hasUpdateAll = false,
   }) async {
     try {
-      final connectivity =
-          serviceLocator<ConnectivityService>().getCurrentInternetStatus();
+      final connectivity = serviceLocator<ConnectivityService>().getCurrentInternetStatus();
       if (connectivity.$2 == InternetConnectivityState.internet) {
         // Local DB
         // Save to local
-        final Either<RepositoryBaseFailure, List<PaymentBankEntity>> result =
-            await paymentBankLocalDataSource.saveAll(
+        final Either<RepositoryBaseFailure, List<PaymentBankEntity>> result = await paymentBankLocalDataSource.saveAll(
           entities: paymentBanks,
           hasUpdateAll: hasUpdateAll,
         );
@@ -522,8 +498,7 @@ class PaymentBankRepositoryImplement implements UserPaymentBankRepository {
       } else {
         // Remote
         // Save to server
-        final ApiResultState<List<PaymentBankEntity>> result =
-            await remoteDataSource.saveAllPaymentBanks(
+        final ApiResultState<List<PaymentBankEntity>> result = await remoteDataSource.saveAllPaymentBanks(
           paymentBanks: paymentBanks,
           hasUpdateAll: hasUpdateAll,
         );

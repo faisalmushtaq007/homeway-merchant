@@ -270,13 +270,13 @@ class OrderRepositoryImplement implements OrderRepository {
         );
       }
     } catch (e, s) {
-      appLog.e('Get all order exception $e');
+      appLog.e('Get all order exception ${e.toString()}');
       return DataSourceState<List<OrderEntity>>.error(
         reason: e.toString(),
         dataSourceFailure: DataSourceFailure.local,
         stackTrace: s,
         error: e,
-        exception: e as Exception,
+        //exception: e as Exception,
       );
     }
   }

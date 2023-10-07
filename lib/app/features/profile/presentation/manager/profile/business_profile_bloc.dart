@@ -36,19 +36,22 @@ class BusinessProfileBloc
       SaveBusinessProfile event, Emitter<BusinessProfileState> emit) async {
     /*try {*/
     DataSourceState<BusinessProfileEntity> result;
+    int currentStage=event.hasSaveBusinessType ? 2 : 1;
     if (event.hasEditBusinessProfile || event.hasSaveBusinessType) {
+      currentStage=serviceLocator<AppUserEntity>().currentUserStage;
       result = await serviceLocator<EditBusinessProfileUseCase>()(
           id: event.businessProfileEntity.businessProfileID,
           input: event.businessProfileEntity);
     } else {
+      currentStage=event.hasSaveBusinessType ? 2 : 1;
       result = await serviceLocator<SaveBusinessProfileUseCase>()(
           event.businessProfileEntity);
     }
     await result.when(
       remote: (data, meta) async {
-        appLog.d('Profile bloc save remote ${data?.toMap()}');
+        appLog.d('Profile bloc save remote ${data?.businessProfileID}');
         if (data != null) {
-          await updateUserProfile(data, event.hasSaveBusinessType ? 2 : 1);
+          await updateUserProfile(data, currentStage);
         }
         await Future.delayed(const Duration(milliseconds: 500), () {});
         emit(
@@ -61,9 +64,9 @@ class BusinessProfileBloc
         );
       },
       localDb: (data, meta) async {
-        appLog.d('Profile bloc save local ${data?.toMap()}');
+        appLog.d('Profile bloc save local ${data?.businessProfileID}');
         if (data != null) {
-          await updateUserProfile(data, event.hasSaveBusinessType ? 2 : 1);
+          await updateUserProfile(data, currentStage);
         }
         await Future.delayed(const Duration(milliseconds: 500), () {});
         emit(
@@ -109,10 +112,8 @@ class BusinessProfileBloc
       localDb: (data, meta) async {
         if (data.isNotNullOrEmpty) {
           appLog.d('Profile GetAllAppUserPaginationUseCase is not null');
-          data!.forEach((element) {
-            appLog.d('${element.toMap()}');
-          });
-          final AppUserEntity cacheAppUserEntity = data.last.copyWith(
+
+          final AppUserEntity cacheAppUserEntity = data!.last.copyWith(
             userID: data.last.userID,
             businessProfile: businessProfileEntity,
             currentUserStage: stage,
@@ -180,7 +181,7 @@ class BusinessProfileBloc
       );
       result.when(
         remote: (data, meta) {
-          appLog.d('Profile bloc edit remote ${data?.toMap()}');
+          appLog.d('Profile bloc edit remote ${data?.businessProfileID}');
           emit(
             GetBusinessProfileState(
               businessProfileEntity: data ?? event.businessProfileEntity,
@@ -191,7 +192,7 @@ class BusinessProfileBloc
           );
         },
         localDb: (data, meta) {
-          appLog.d('Profile bloc edit local ${data?.toMap()}');
+          appLog.d('Profile bloc edit local ${data?.businessProfileID}');
           emit(
             GetBusinessProfileState(
               businessProfileEntity: data ?? event.businessProfileEntity,
@@ -444,13 +445,13 @@ class BusinessProfileBloc
       );
       result.when(
         remote: (data, meta) {
-          appLog.d('Profile bloc getCurrentUser remote ${data?.toMap()}');
+          appLog.d('Profile bloc getCurrentUser remote ${data?.userID}');
           emit(
             GetCurrentUserProfileState(appUserEntity: data),
           );
         },
         localDb: (data, meta) {
-          appLog.d('Profile bloc getCurrentUser local ${data?.toMap()}');
+          appLog.d('Profile bloc getCurrentUser local ${data?.userID}');
           emit(
             GetCurrentUserProfileState(appUserEntity: data),
           );
