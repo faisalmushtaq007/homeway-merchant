@@ -25,11 +25,11 @@ class _BankInformationPageState extends State<BankInformationPage> with SingleTi
   late Animation<double> _animation;
 
   final _bankInformationFormKey = GlobalKey<FormState>();
-  TextEditingController _bankNameController = TextEditingController();
-  TextEditingController _accountNumberController = TextEditingController();
-  TextEditingController _confirmAccountNumberController = TextEditingController();
-  TextEditingController _accountHolderNameController = TextEditingController();
-  TextEditingController _ibanNumberController = TextEditingController();
+  final TextEditingController _bankNameController = TextEditingController();
+  final TextEditingController _accountNumberController = TextEditingController();
+  final TextEditingController _confirmAccountNumberController = TextEditingController();
+  final TextEditingController _accountHolderNameController = TextEditingController();
+  final TextEditingController _ibanNumberController = TextEditingController();
   List<BankInfoTile> listOfBankInfoTiles = [];
   late FocusNode _bankNameControllerFocusNode;
   late FocusNode _accountHolderNameControllerFocusNode;
@@ -166,6 +166,13 @@ class _BankInformationPageState extends State<BankInformationPage> with SingleTi
                             }else {
                               return context.pushReplacement(Routes.NEW_DOCUMENT_LIST_PAGE);
                             }
+                          }
+                          if(state is GetPaymentBankState){
+                            _bankNameController.text =state.paymentBankEntity?.bankName??'';
+                             _accountNumberController.text=state.paymentBankEntity?.accountNumber??'';
+                             _confirmAccountNumberController.text=state.paymentBankEntity?.accountNumber??'';
+                             _accountHolderNameController.text=state.paymentBankEntity?.bankHolderName??'';
+                             _ibanNumberController.text=state.paymentBankEntity?.ibanNumber??'';
                           }
                         },
                         builder: (context, state) {
