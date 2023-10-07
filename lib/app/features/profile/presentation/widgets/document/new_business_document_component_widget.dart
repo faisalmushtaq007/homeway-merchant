@@ -14,6 +14,7 @@ class NewBusinessDocumentComponentWidget extends StatefulWidget {
     this.documentType = DocumentType.other,
     this.customCloseButton,
     required this.selectedImageMetaData,
+    this.selectionUseCase = SelectionUseCase.saveAndNext,
   });
 
   final int currentIndex;
@@ -29,6 +30,7 @@ class NewBusinessDocumentComponentWidget extends StatefulWidget {
   final void Function(
           Map<String, dynamic> metaData, CaptureImageEntity captureImageEntity)
       selectedImageMetaData;
+  final SelectionUseCase selectionUseCase;
 
   @override
   _NewBusinessDocumentComponentWidgetController createState() =>
@@ -92,6 +94,7 @@ class _NewBusinessDocumentComponentWidgetController
       extra: jsonEncode(
         {
           'documentType': documentType.name,
+          'selectionUseCase':widget.selectionUseCase.name,
         },
       ),
     );

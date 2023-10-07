@@ -433,6 +433,7 @@ class _NewBusinessDocumentPageView extends WidgetView<NewBusinessDocumentPage, _
                                   ],
                                 ),
                                 documentType: DocumentType.nationalID,
+                                selectionUseCase: widget.selectionUseCase,
                               ),
                               const AnimatedGap(
                                 4,
@@ -558,7 +559,8 @@ class _NewBusinessDocumentPageView extends WidgetView<NewBusinessDocumentPage, _
                                     ),
                                   ],
                                 ),
-                                documentType: DocumentType.nationalID,
+                                documentType: DocumentType.tradeLicence,
+                                selectionUseCase: widget.selectionUseCase,
                               ),
                               const Divider(thickness: 0.8),
                             ],
@@ -595,7 +597,7 @@ class _NewBusinessDocumentPageView extends WidgetView<NewBusinessDocumentPage, _
                                             165,
                                             166,
                                             168,
-                                            1.0,
+                                            1,
                                           ),
                                         ),
                                       ),
@@ -603,7 +605,7 @@ class _NewBusinessDocumentPageView extends WidgetView<NewBusinessDocumentPage, _
                                         'Prev',
                                         textDirection: serviceLocator<LanguageController>().targetTextDirection,
                                         style: const TextStyle(
-                                          color: Color.fromRGBO(127, 129, 132, 1.0),
+                                          color: Color.fromRGBO(127, 129, 132, 1),
                                         ),
                                       ).translate(),
                                     ),
@@ -616,12 +618,12 @@ class _NewBusinessDocumentPageView extends WidgetView<NewBusinessDocumentPage, _
                                     child: ElevatedButton(
                                       onPressed: (state.textEditingControllers[0].value.text.trim().isNotEmpty &&
                                               (!state.allBusinessDocuments.first.localAssetPath.isEmptyOrNull ||
-                                                  state.allBusinessDocuments.first.networkAssetPath.isEmptyOrNull))
+                                                  !state.allBusinessDocuments.first.networkAssetPath.isEmptyOrNull))
                                           ? state.onUploadPressed
                                           : null,
                                       style: ElevatedButton.styleFrom(
                                         //minimumSize: Size(180, 40),
-                                        disabledBackgroundColor: Color.fromRGBO(255, 219, 208, 1),
+                                        disabledBackgroundColor: const Color.fromRGBO(255, 219, 208, 1),
                                         disabledForegroundColor: Colors.white,
                                       ),
                                       child: Text(

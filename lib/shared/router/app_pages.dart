@@ -131,13 +131,23 @@ class AppRouter {
       GoRoute(
         path: Routes.UPLOAD_DOCUMENT_PAGE,
         builder: (context, state) {
-          final Map<String, dynamic>? args = state.extra as Map<String, dynamic>?;
-          return UploadDocumentPage(
-            documentType: DocumentType.values.byName(
-              jsonDecode(state.extra! as String)['documentType'],
-            ),
-            selectionUseCase:args?['selectionUseCase'] ?? SelectionUseCase.saveAndNext,
-          );
+          String documentType='other';
+          String selectionUseCase='saveAndNext';
+          if(state.extra!=null){
+            documentType=jsonDecode(state.extra! as String)['documentType']??'other';
+            selectionUseCase=jsonDecode(state.extra! as String)['selectionUseCase']??'saveAndNext';
+            return UploadDocumentPage(
+              documentType: DocumentType.values.byName(documentType,),
+              selectionUseCase:SelectionUseCase.values.byName(selectionUseCase),
+            );
+          }else{
+            return UploadDocumentPage(
+              documentType: DocumentType.values.byName(
+                jsonDecode(state.extra! as String)['documentType'],
+              ),
+            );
+
+          }
         },
       ),
       GoRoute(
