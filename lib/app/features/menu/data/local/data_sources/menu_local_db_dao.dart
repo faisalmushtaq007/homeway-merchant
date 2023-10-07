@@ -136,7 +136,7 @@ class MenuLocalDbRepository<Menu extends MenuEntity>
               entity.toMap(),
             );
         if (result != null) {
-          return MenuEntity.fromMap(result);
+          return MenuEntity.fromMap(result).copyWith(menuId: result['menuId']);
         } else {
           return upsert(id: uniqueId, entity: entity);
         }
@@ -159,7 +159,7 @@ class MenuLocalDbRepository<Menu extends MenuEntity>
       final result = await _menu
           .record(key)
           .put(await _db, entity.toMap(), merge: (value != null) || false);
-      return MenuEntity.fromMap(result);
+      return MenuEntity.fromMap(result).copyWith(menuId: result['menuId']);
     });
     return result;
   }

@@ -136,7 +136,7 @@ class OrderLocalDbRepository<T extends OrderEntity> implements BaseOrderLocalDbR
               entity.toJson(),
             );
         if (result != null) {
-          return OrderEntity.fromMap(result);
+          return OrderEntity.fromMap(result).copyWith(orderID: result['orderID']);
         } else {
           return upsert(id: uniqueId, entity: entity);
         }
@@ -160,7 +160,7 @@ class OrderLocalDbRepository<T extends OrderEntity> implements BaseOrderLocalDbR
       final int key = entity.orderID;
       final value = await _order.record(key).get(await _db);
       final result = await _order.record(key).put(await _db, entity.toJson(), merge: (value != null) || false);
-      return OrderEntity.fromMap(result);
+      return OrderEntity.fromMap(result).copyWith(orderID: result['orderID']);
     });
     return result;
   }

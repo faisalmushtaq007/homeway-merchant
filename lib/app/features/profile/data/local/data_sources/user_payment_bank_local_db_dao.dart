@@ -144,7 +144,6 @@ class UserPaymentBankLocalDbRepository<T extends PaymentBankEntity>
               entity.toMap(),
             );
         if (result != null) {
-          appLog.d('Result ${result}');
           return PaymentBankEntity.fromMap(result).copyWith(paymentBankID: result['paymentBankID']);
         } else {
           return upsert(id: uniqueId, entity: entity);

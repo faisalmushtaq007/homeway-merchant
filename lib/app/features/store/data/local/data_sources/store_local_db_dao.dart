@@ -121,7 +121,7 @@ class StoreLocalDbRepository<Store extends StoreEntity> implements BaseStoreLoca
               entity.toMap(),
             );
         if (result != null) {
-          return StoreEntity.fromMap(result);
+          return StoreEntity.fromMap(result).copyWith(storeID: result['storeID']);
         } else {
           return upsert(id: uniqueId, entity: entity);
         }
@@ -139,7 +139,7 @@ class StoreLocalDbRepository<Store extends StoreEntity> implements BaseStoreLoca
       final int key = entity.storeID;
       final value = await _store.record(key).get(await _db);
       final result = await _store.record(key).put(await _db, entity.toMap(), merge: (value != null) || false);
-      return StoreEntity.fromMap(result);
+      return StoreEntity.fromMap(result).copyWith(storeID: result['storeID']);
     });
     return result;
   }

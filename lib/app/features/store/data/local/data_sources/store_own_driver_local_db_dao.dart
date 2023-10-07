@@ -125,7 +125,7 @@ class StoreOwnDeliveryPartnersLocalDbRepository<
               entity.toMap(),
             );
         if (result != null) {
-          return StoreOwnDeliveryPartnersInfo.fromMap(result);
+          return StoreOwnDeliveryPartnersInfo.fromMap(result).copyWith(driverID: result['driverID']);
         } else {
           return upsert(id: uniqueId, entity: entity);
         }
@@ -149,7 +149,7 @@ class StoreOwnDeliveryPartnersLocalDbRepository<
       final result = await _driver
           .record(key)
           .put(await _db, entity.toMap(), merge: (value != null) || false);
-      return StoreOwnDeliveryPartnersInfo.fromMap(result);
+      return StoreOwnDeliveryPartnersInfo.fromMap(result).copyWith(driverID: result['driverID']);
     });
     return result;
   }

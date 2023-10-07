@@ -144,7 +144,7 @@ class RateAndReviewLocalDbRepository<T extends RateAndReviewEntity>
               entity.toJson(),
             );
         if (result != null) {
-          return RateAndReviewEntity.fromJson(result);
+          return RateAndReviewEntity.fromJson(result).copyWith(ratingID: result['ratingID']);
         } else {
           return upsert(id: uniqueId, entity: entity);
         }
@@ -174,7 +174,7 @@ class RateAndReviewLocalDbRepository<T extends RateAndReviewEntity>
       final result = await rateAndReview
           .record(key)
           .put(await _db, entity.toJson(), merge: (value != null) || false);
-      return RateAndReviewEntity.fromJson(result);
+      return RateAndReviewEntity.fromJson(result).copyWith(ratingID: result['ratingID']);
     });
     return result;
   }

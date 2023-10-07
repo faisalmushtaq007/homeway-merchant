@@ -114,7 +114,7 @@ class CategoryLocalDbRepository<Extras extends Category> implements BaseCategory
               entity.toMap(),
             );
         if (result != null) {
-          return Category.fromMap(result);
+          return Category.fromMap(result).copyWith(categoryId: result['categoryId']);
         } else {
           return upsert(id: uniqueId, entity: entity);
         }
@@ -132,7 +132,7 @@ class CategoryLocalDbRepository<Extras extends Category> implements BaseCategory
       final int key = int.parse(entity.categoryId);
       final value = await _category.record(key).get(await _db);
       final result = await _category.record(key).put(await _db, entity.toMap(), merge: (value != null) || false);
-      return Category.fromMap(result);
+      return Category.fromMap(result).copyWith(categoryId: result['categoryId']);
     });
     return result;
   }

@@ -130,7 +130,7 @@ class AddressLocalDbRepository<T extends AddressModel> implements BaseAddressBan
               entity.toMap(),
             );
         if (result != null) {
-          return AddressModel.fromJson(result);
+          return AddressModel.fromJson(result).copyWith(addressID: result['addressID']);
         } else {
           return upsert(id: uniqueId, entity: entity);
         }
@@ -159,7 +159,7 @@ class AddressLocalDbRepository<T extends AddressModel> implements BaseAddressBan
       final int key = entity.addressID;
       final value = await _address.record(key).get(await _db);
       final result = await _address.record(key).put(await _db, entity.toMap(), merge: (value != null) || false);
-      return AddressModel.fromJson(result);
+      return AddressModel.fromJson(result).copyWith(addressID: result['addressID']);
     });
     return result;
   }
