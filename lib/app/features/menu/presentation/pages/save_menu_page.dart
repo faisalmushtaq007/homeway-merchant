@@ -68,12 +68,10 @@ class _SaveMenuPageController extends State<SaveMenuPage>
       FormPageModel(
         body: Form(
           key: formKeys[0],
-          child: PageStorage(
-            bucket: pageStorageBucketMenuForm1,
-            child: MenuForm1Page(
-              haveNewMenu: widget.haveNewMenu,
-              menuEntity: widget.menuEntity,
-            ),
+          child: MenuForm1Page(
+            haveNewMenu: widget.haveNewMenu,
+            menuEntity: widget.menuEntity,
+            key: const PageStorageKey<String>('menu-form-1'),
           ),
         ),
         formKey: formKeys[0],
@@ -81,12 +79,10 @@ class _SaveMenuPageController extends State<SaveMenuPage>
       FormPageModel(
         body: Form(
           key: formKeys[1],
-          child: PageStorage(
-            bucket: pageStorageBucketMenuForm2,
-            child: MenuForm2Page(
-              haveNewMenu: widget.haveNewMenu,
-              menuEntity: widget.menuEntity,
-            ),
+          child: MenuForm2Page(
+            haveNewMenu: widget.haveNewMenu,
+            menuEntity: widget.menuEntity,
+            key: const PageStorageKey<String>('menu-form-2'),
           ),
         ),
         formKey: formKeys[1],
@@ -94,12 +90,10 @@ class _SaveMenuPageController extends State<SaveMenuPage>
       FormPageModel(
         body: Form(
           key: formKeys[2],
-          child: PageStorage(
-            bucket: pageStorageBucketMenuForm3,
-            child: MenuForm3Page(
-              haveNewMenu: widget.haveNewMenu,
-              menuEntity: widget.menuEntity,
-            ),
+          child: MenuForm3Page(
+            haveNewMenu: widget.haveNewMenu,
+            menuEntity: widget.menuEntity,
+            key: const PageStorageKey<String>('menu-form-3'),
           ),
         ),
         formKey: formKeys[2],
@@ -107,12 +101,10 @@ class _SaveMenuPageController extends State<SaveMenuPage>
       FormPageModel(
         body: Form(
           key: formKeys[3],
-          child: PageStorage(
-            bucket: pageStorageBucketMenuForm4,
-            child: MenuForm4Page(
-              haveNewMenu: widget.haveNewMenu,
-              menuEntity: widget.menuEntity,
-            ),
+          child: MenuForm4Page(
+            haveNewMenu: widget.haveNewMenu,
+            menuEntity: widget.menuEntity,
+            key: const PageStorageKey<String>('menu-form-4'),
           ),
         ),
         formKey: formKeys[3],
@@ -120,12 +112,10 @@ class _SaveMenuPageController extends State<SaveMenuPage>
       FormPageModel(
         body: Form(
           key: formKeys[4],
-          child: PageStorage(
-            bucket: pageStorageBucketMenuForm5,
-            child: MenuForm5Page(
-              haveNewMenu: widget.haveNewMenu,
-              menuEntity: widget.menuEntity,
-            ),
+          child: MenuForm5Page(
+            haveNewMenu: widget.haveNewMenu,
+            menuEntity: widget.menuEntity,
+            key: const PageStorageKey<String>('menu-form-5'),
           ),
         ),
         formKey: formKeys[4],
