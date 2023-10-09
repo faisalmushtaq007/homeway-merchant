@@ -20,6 +20,7 @@ class _SetAddonsPriceWidgetState extends State<SetAddonsPriceWidget> {
   final TextEditingController maximumRetailPriceOfMenuTextEditingController =
       TextEditingController(text: '00.00');
   String portionName = '';
+  String addonsQuantityAndUnit='';
   String sellingMaxRetailPrice = '00.00';
   final formKey = GlobalKey<FormState>();
 
@@ -27,9 +28,11 @@ class _SetAddonsPriceWidgetState extends State<SetAddonsPriceWidget> {
   void initState() {
     maximumRetailPriceOfMenuTextEditingController.text='';
     portionName = '';
+    addonsQuantityAndUnit='';
     sellingMaxRetailPrice = '00.00';
     super.initState();
-    portionName = '${widget.addons.title ?? ''} ${widget.addons.unit ?? ''}';
+    portionName = widget.addons.title ?? '';
+    addonsQuantityAndUnit='${widget.addons.quantity ?? ''} ${widget.addons.unit ?? ''}';
     maximumRetailPriceOfMenuTextEditingController.text =
         widget.addons.defaultPrice.toString() ?? '00.00';
     sellingMaxRetailPrice =
@@ -47,6 +50,7 @@ class _SetAddonsPriceWidgetState extends State<SetAddonsPriceWidget> {
   void dispose() {
     portionName = '';
     sellingMaxRetailPrice = '00.00';
+    addonsQuantityAndUnit='';
     maximumRetailPriceOfMenuTextEditingController.text = '';
     maximumRetailPriceOfMenuTextEditingController.dispose();
     super.dispose();
@@ -68,18 +72,47 @@ class _SetAddonsPriceWidgetState extends State<SetAddonsPriceWidget> {
               Wrap(
                 textDirection:
                     serviceLocator<LanguageController>().targetTextDirection,
-                alignment: WrapAlignment.spaceBetween,
+                alignment: WrapAlignment.start,
                 crossAxisAlignment: WrapCrossAlignment.center,
+                runSpacing: 5,
+                spacing: 5,
                 children: [
                   Text(
-                    '$portionName',
+                    portionName,
                     style: context.bodyMedium!.copyWith(
                       fontWeight: FontWeight.w600,
-                      color: Color.fromRGBO(42, 45, 50, 1.0),
+                      color: const Color.fromRGBO(42, 45, 50, 1),
                     ),
                     textDirection: serviceLocator<LanguageController>()
                         .targetTextDirection,
                   ).translate(),
+                  Card(
+                    color: const Color.fromRGBO(188, 235, 208, 1.0),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadiusDirectional.circular(20),
+                      side: const BorderSide(
+                        color: Color.fromRGBO(69, 201, 125, 1.0),
+                      ),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsetsDirectional.only(
+                        top: 8.0,
+                        bottom: 8,
+                        start: 16,
+                        end: 16,
+                      ),
+                      child: Text(
+                        addonsQuantityAndUnit,
+                        style: context.bodyMedium!.copyWith(
+                          fontWeight: FontWeight.w600,
+                          color: Color.fromRGBO(42, 45, 50, 1.0),
+                        ),
+                        textDirection: serviceLocator<LanguageController>()
+                            .targetTextDirection,
+                      ).translate(),
+                    ),
+                  ),
+
                   /*Directionality(
                     textDirection: serviceLocator<LanguageController>().targetTextDirection,
                     child: RichText(
@@ -109,7 +142,7 @@ class _SetAddonsPriceWidgetState extends State<SetAddonsPriceWidget> {
                     RegExp(r'^(\d+)?\.?\d{0,2}'),
                   ),
                 ],
-                keyboardType: TextInputType.numberWithOptions(decimal: true),
+                keyboardType: const TextInputType.numberWithOptions(decimal: true),
                 decoration: InputDecoration(
                   labelText: 'Price',
                   hintText: '00.00',

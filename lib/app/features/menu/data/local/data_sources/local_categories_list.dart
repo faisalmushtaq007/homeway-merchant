@@ -317,7 +317,7 @@ final localTasteLevel = [
 List<MenuPortion> localMenuPortions = [
   MenuPortion(
     portionID: '0',
-    title: '1',
+    title: '1 Big',
     unit: 'Big',
     defaultPrice: 0.0,
     discountedPrice: 0.0,
@@ -328,7 +328,7 @@ List<MenuPortion> localMenuPortions = [
   ),
   MenuPortion(
     portionID: '1',
-    title: '1',
+    title: '1 Medium',
     unit: 'Medium',
     defaultPrice: 0.0,
     discountedPrice: 0.0,
@@ -339,7 +339,7 @@ List<MenuPortion> localMenuPortions = [
   ),
   MenuPortion(
     portionID: '2',
-    title: '1',
+    title: '1 Small',
     unit: 'Small',
     defaultPrice: 0.0,
     discountedPrice: 0.0,
@@ -350,7 +350,7 @@ List<MenuPortion> localMenuPortions = [
   ),
   MenuPortion(
     portionID: '3',
-    title: '1',
+    title: '1 Cup',
     unit: 'Cup',
     defaultPrice: 0.0,
     discountedPrice: 0.0,
@@ -361,7 +361,7 @@ List<MenuPortion> localMenuPortions = [
   ),
   MenuPortion(
     portionID: '4',
-    title: '1/2',
+    title: '1/2 Cup',
     unit: 'Cup',
     defaultPrice: 0.0,
     discountedPrice: 0.0,
@@ -372,7 +372,7 @@ List<MenuPortion> localMenuPortions = [
   ),
   MenuPortion(
     portionID: '5',
-    title: '1/4',
+    title: '1/4 Cup',
     unit: 'Cup',
     defaultPrice: 0.0,
     discountedPrice: 0.0,
@@ -383,7 +383,7 @@ List<MenuPortion> localMenuPortions = [
   ),
   MenuPortion(
     portionID: '6',
-    title: '1',
+    title: '1 Slice',
     unit: 'Slice',
     defaultPrice: 0.0,
     discountedPrice: 0.0,
@@ -394,7 +394,7 @@ List<MenuPortion> localMenuPortions = [
   ),
   MenuPortion(
     portionID: '7',
-    title: '1',
+    title: '1 Bowl',
     unit: 'Bowl',
     defaultPrice: 0.0,
     discountedPrice: 0.0,
@@ -405,7 +405,7 @@ List<MenuPortion> localMenuPortions = [
   ),
   MenuPortion(
     portionID: '8',
-    title: '1/2',
+    title: '1/2 Bowl',
     unit: 'Bowl',
     defaultPrice: 0.0,
     discountedPrice: 0.0,
@@ -416,7 +416,7 @@ List<MenuPortion> localMenuPortions = [
   ),
   MenuPortion(
     portionID: '9',
-    title: '1/4',
+    title: '1/4 Bowl',
     unit: 'Bowl',
     defaultPrice: 0.0,
     discountedPrice: 0.0,
@@ -427,7 +427,7 @@ List<MenuPortion> localMenuPortions = [
   ),
   MenuPortion(
     portionID: '10',
-    title: '1',
+    title: '1 Palm',
     unit: 'Palm',
     defaultPrice: 0.0,
     discountedPrice: 0.0,
@@ -438,7 +438,7 @@ List<MenuPortion> localMenuPortions = [
   ),
   MenuPortion(
     portionID: '11',
-    title: '1',
+    title: '1 Thumb',
     unit: 'Thumb',
     defaultPrice: 0.0,
     discountedPrice: 0.0,
@@ -449,7 +449,7 @@ List<MenuPortion> localMenuPortions = [
   ),
   MenuPortion(
     portionID: '12',
-    title: '1',
+    title: '1 Fist',
     unit: 'Fist',
     defaultPrice: 0.0,
     discountedPrice: 0.0,

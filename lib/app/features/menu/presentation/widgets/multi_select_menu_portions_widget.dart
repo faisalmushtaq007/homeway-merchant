@@ -153,7 +153,7 @@ class _MultiSelectPortionsChipState extends State<MultiSelectMenuMenuPortion> {
       choices.add(
         ChoiceChip(
           label: Text(
-            '${item.title} ${item.unit}',
+            item.title,
             textDirection:
                 serviceLocator<LanguageController>().targetTextDirection,
           ),
