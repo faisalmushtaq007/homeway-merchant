@@ -94,10 +94,10 @@ class _SaveAddonsPageController extends State<SaveAddonsPage> {
 
   void initAddonsData(Addons? addons) {
     if (addons.isNotNull) {
-      addonsPriceTextEditingController.text = addons?.finalPrice ?? 0.0;
+      addonsPriceTextEditingController.text = (addons?.finalPrice ?? 0.0).toString();
       addonsNameTextEditingController.text = addons?.title ?? '';
       addonsDescriptionTextEditingController.text = addons?.description ?? '';
-      addonsQuantityTextEditingController.text = addons?.quantity ?? 0.0;
+      addonsQuantityTextEditingController.text = (addons?.quantity ?? 0.0).toString();
       addonsUnitTextEditingController.text = addons?.unit ?? '';
     }
   }

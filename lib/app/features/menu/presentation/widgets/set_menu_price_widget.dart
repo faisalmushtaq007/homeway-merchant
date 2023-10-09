@@ -32,8 +32,15 @@ class _SetMenuPriceWidgetState extends State<SetMenuPriceWidget> {
 
   @override
   void initState() {
+    portionName = '';
+    sellingMaxRetailPrice = '00.00';
+    sellingDiscountPrice = '00.00';
+    maximumRetailPriceOfMenuTextEditingController.text='';
+    discountPriceOfMenuTextEditingController='';
     super.initState();
+    appLog.d('Custom Portion Value ${(widget.customPortion==null)},${widget.hasCustomPortion==true}, ${widget.hasCustomPortion}');
     if (widget.hasCustomPortion && widget.customPortion != null) {
+      appLog.d('Custom Portion Value ${widget.customPortion?.title ?? ''}');
       portionName =
           '${widget.customPortion?.title ?? ''} ${widget.customPortion?.unit ?? ''}';
       maximumRetailPriceOfMenuTextEditingController.text =
@@ -62,8 +69,9 @@ class _SetMenuPriceWidgetState extends State<SetMenuPriceWidget> {
 
   @override
   void dispose() {
-    maximumRetailPriceOfMenuTextEditingController.text = '';
-    discountPriceOfMenuTextEditingController.text = '';
+    portionName = '';
+    sellingMaxRetailPrice = '00.00';
+    sellingDiscountPrice = '00.00';
     maximumRetailPriceOfMenuTextEditingController.dispose();
     discountPriceOfMenuTextEditingController.dispose();
     super.dispose();

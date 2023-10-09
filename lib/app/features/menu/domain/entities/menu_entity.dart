@@ -129,13 +129,13 @@ class MenuEntity extends INetworkModel<MenuEntity> with AppEquatable {
   List<TimeOfPeriodWise> timeOfPeriodWise;
   Map<String, dynamic> metaInfoOfMenu;
   List<Nutrients> nutrients;
-  Timing? menuTiming = Timing();
-  TasteType? tasteType = TasteType();
-  Stock? stock = Stock();
-  CustomPortion? customPortion = CustomPortion();
+  Timing? menuTiming;
+  TasteType? tasteType;
+  Stock? stock;
+  CustomPortion? customPortion;
   String menuMinPreparationTime;
   String menuMaxPreparationTime;
-  RatingAndReviewEntity? ratingAndReviewEntity = RatingAndReviewEntity();
+  RatingAndReviewEntity? ratingAndReviewEntity;
   bool hasMenuAvailable;
   bool hasReadyToPickupOrder;
 
