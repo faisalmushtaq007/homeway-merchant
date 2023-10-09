@@ -14,7 +14,7 @@ class SendOtp extends OtpVerificationEvent {
   final bool hasOtpResend;
 
   @override
-  bool get cacheHash => true;
+  bool get cacheHash => false;
 
   @override
   List<Object?> get hashParameters => [
@@ -34,7 +34,7 @@ class VerifyOtp extends OtpVerificationEvent {
   final OtpVerificationStatus otpVerificationStatus;
 
   @override
-  bool get cacheHash => true;
+  bool get cacheHash => false;
 
   @override
   List<Object?> get hashParameters => [
@@ -55,7 +55,7 @@ class OtpTimer extends OtpVerificationEvent {
   int minute;
 
   @override
-  bool get cacheHash => true;
+  bool get cacheHash => false;
 
   @override
   List<Object?> get hashParameters => [
@@ -73,7 +73,7 @@ class GetUserProfile extends OtpVerificationEvent {
   final String userToken;
 
   @override
-  bool get cacheHash => true;
+  bool get cacheHash => false;
 
   @override
   List<Object?> get hashParameters => [

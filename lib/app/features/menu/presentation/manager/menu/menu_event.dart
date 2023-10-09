@@ -14,7 +14,7 @@ class SaveMenu extends MenuEvent {
   final int currentIndex;
 
   @override
-  bool get cacheHash => true;
+  bool get cacheHash => false;
 
   @override
   List<Object?> get hashParameters => [
@@ -38,7 +38,7 @@ class RemoveByIDMenu extends MenuEvent {
   final String menuID;
 
   @override
-  bool get cacheHash => true;
+  bool get cacheHash => false;
 
   @override
   List<Object?> get hashParameters => [
@@ -55,7 +55,7 @@ class RemoveAllMenu extends MenuEvent {
   final List<MenuEntity> menuEntities;
 
   @override
-  bool get cacheHash => true;
+  bool get cacheHash => false;
 
   @override
   List<Object?> get hashParameters => [menuEntities];
@@ -75,7 +75,7 @@ class GetByIDMenu extends MenuEvent {
   final String menuID;
 
   @override
-  bool get cacheHash => true;
+  bool get cacheHash => false;
 
   @override
   List<Object?> get hashParameters => [
@@ -94,7 +94,7 @@ class GetAllMenu extends MenuEvent {
   final String searchItem;
 
   @override
-  bool get cacheHash => true;
+  bool get cacheHash => false;
 
   @override
   List<Object?> get hashParameters => [pageKey, pageSize, searchItem];
@@ -104,7 +104,7 @@ class SelectAllMenu extends MenuEvent {
   SelectAllMenu({this.menuEntities = const []});
   final List<MenuEntity> menuEntities;
   @override
-  bool get cacheHash => true;
+  bool get cacheHash => false;
 
   @override
   List<Object?> get hashParameters => [menuEntities];
@@ -112,7 +112,7 @@ class SelectAllMenu extends MenuEvent {
 
 class AddAddonsOnMenu extends MenuEvent {
   @override
-  bool get cacheHash => true;
+  bool get cacheHash => false;
 
   @override
   List<Object?> get hashParameters => [];
@@ -133,7 +133,7 @@ class SaveAddons extends MenuEvent {
   final bool haveOwnAddons;
 
   @override
-  bool get cacheHash => true;
+  bool get cacheHash => false;
 
   @override
   List<Object?> get hashParameters => [
@@ -158,7 +158,7 @@ class RemoveByIDAddons extends MenuEvent {
   final String addonsID;
 
   @override
-  bool get cacheHash => true;
+  bool get cacheHash => false;
 
   @override
   List<Object?> get hashParameters => [
@@ -175,7 +175,7 @@ class RemoveAllAddons extends MenuEvent {
   final List<Addons> addonsEntities;
 
   @override
-  bool get cacheHash => true;
+  bool get cacheHash => false;
 
   @override
   List<Object?> get hashParameters => [addonsEntities];
@@ -195,7 +195,7 @@ class GetByIDAddons extends MenuEvent {
   final String addonsID;
 
   @override
-  bool get cacheHash => true;
+  bool get cacheHash => false;
 
   @override
   List<Object?> get hashParameters => [
@@ -225,7 +225,7 @@ class GetAllAddons extends MenuEvent {
   final Timestamp? endTimeStamp;
 
   @override
-  bool get cacheHash => true;
+  bool get cacheHash => false;
 
   @override
   List<Object?> get hashParameters => [pageKey, pageSize, searchItem,endTimeStamp,
@@ -250,7 +250,7 @@ class SelectAddons extends MenuEvent {
   final int addonsID;
 
   @override
-  bool get cacheHash => true;
+  bool get cacheHash => false;
 
   @override
   List<Object?> get hashParameters => [
@@ -274,7 +274,7 @@ class SelectAddonsMaxPortion extends MenuEvent {
   final List<MenuPortion> selectedMenuPortions;
 
   @override
-  bool get cacheHash => true;
+  bool get cacheHash => false;
 
   @override
   List<Object?> get hashParameters => [
@@ -294,7 +294,7 @@ class PopToMenuPage extends MenuEvent {
   final bool hasNewAddons;
 
   @override
-  bool get cacheHash => true;
+  bool get cacheHash => false;
 
   @override
   List<Object?> get hashParameters => [
@@ -321,7 +321,7 @@ class PushMenuEntityData extends MenuEvent {
   final MenuStateStatus menuStateStatus;
 
   @override
-  bool get cacheHash => true;
+  bool get cacheHash => false;
 
   @override
   List<Object?> get hashParameters => [
@@ -352,7 +352,7 @@ class PullMenuEntityData extends MenuEvent {
   final MenuStateStatus menuStateStatus;
 
   @override
-  bool get cacheHash => true;
+  bool get cacheHash => false;
 
   @override
   List<Object?> get hashParameters => [
@@ -373,7 +373,7 @@ class NavigateToStorePage extends MenuEvent {
   final List<MenuEntity> menuEntities;
   final List<MenuEntity> listOfSelectedMenuEntities;
   @override
-  bool get cacheHash => true;
+  bool get cacheHash => false;
   @override
   List<Object?> get hashParameters =>
       [menuEntities, listOfSelectedMenuEntities];
@@ -387,7 +387,7 @@ class FetchAllStores extends MenuEvent {
   final List<MenuEntity> menuEntities;
   final List<MenuEntity> listOfSelectedMenuEntities;
   @override
-  bool get cacheHash => true;
+  bool get cacheHash => false;
 
   @override
   List<Object?> get hashParameters =>
@@ -414,7 +414,7 @@ class BindMenuWithStores extends MenuEvent {
   final BindMenuToStoreStage bindMenuToStoreStage;
 
   @override
-  bool get cacheHash => true;
+  bool get cacheHash => false;
 
   @override
   List<Object?> get hashParameters => [
@@ -448,7 +448,7 @@ class UnBindMenuWithStores extends MenuEvent {
   final BindMenuToStoreStage bindMenuToStoreStage;
 
   @override
-  bool get cacheHash => true;
+  bool get cacheHash => false;
 
   @override
   List<Object?> get hashParameters => [
@@ -478,7 +478,7 @@ class BindMenuWithUser extends MenuEvent {
   final BindMenuToUserStage bindMenuToUserStage;
 
   @override
-  bool get cacheHash => true;
+  bool get cacheHash => false;
 
   @override
   List<Object?> get hashParameters => [
@@ -510,7 +510,7 @@ class BindAddonsWithMenu extends MenuEvent {
   final BindAddonsToMenuStage bindAddonsToMenuStage;
 
   @override
-  bool get cacheHash => true;
+  bool get cacheHash => false;
 
   @override
   List<Object?> get hashParameters => [
@@ -540,7 +540,7 @@ class BindAddonsWithUser extends MenuEvent {
   final BindAddonsToUserStage bindAddonsToUserStage;
 
   @override
-  bool get cacheHash => true;
+  bool get cacheHash => false;
 
   @override
   List<Object?> get hashParameters => [

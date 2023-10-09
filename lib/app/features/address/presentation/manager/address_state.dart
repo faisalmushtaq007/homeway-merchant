@@ -6,7 +6,7 @@ abstract class AddressState extends Equatable {
 
 class AddressInitial extends AddressState {
   @override
-  bool get cacheHash => true;
+  bool get cacheHash => false;
 
   @override
   List<Object?> get props => [];

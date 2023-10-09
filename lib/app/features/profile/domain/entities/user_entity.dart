@@ -266,7 +266,7 @@ class AppUserEntity extends INetworkModel<AppUserEntity> with AppEquatable {
   Map<String, dynamic>? toJson() => toMap();
 
   @override
-  bool get cacheHash => true;
+  bool get cacheHash => false;
 
   @override
   List<Object?> get hashParameters => [

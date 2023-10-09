@@ -65,7 +65,7 @@ class PaymentBankEntity with AppEquatable {
   }
 
   @override
-  bool get cacheHash => true;
+  bool get cacheHash => false;
 
   @override
   List<Object?> get hashParameters => [

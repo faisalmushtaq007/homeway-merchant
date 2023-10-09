@@ -57,7 +57,7 @@ class SaveTranslationObject with AppEquatable {
   String? resultText;
 
   @override
-  bool get cacheHash => true;
+  bool get cacheHash => false;
 
   @override
   List<Object?> get hashParameters =>

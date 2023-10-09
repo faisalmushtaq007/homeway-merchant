@@ -389,7 +389,7 @@ class _BankInformationPageState extends State<BankInformationPage> with SingleTi
                                             onFieldSubmitted: (_) => _fieldFocusChange(
                                               context,
                                               _accountHolderNameControllerFocusNode,
-                                              _ibanNumberControllerFocusNode,
+                                              _bankNameControllerFocusNode,
                                             ),
                                           ),
                                         );

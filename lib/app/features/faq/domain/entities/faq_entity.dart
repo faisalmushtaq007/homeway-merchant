@@ -44,7 +44,7 @@ class FaqEntity with AppEquatable {
   }
 
   @override
-  bool get cacheHash => true;
+  bool get cacheHash => false;
 
   @override
   // TODO: implement hashParameters

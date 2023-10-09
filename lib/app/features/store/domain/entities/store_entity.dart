@@ -121,7 +121,7 @@ class StoreEntity extends INetworkModel<StoreEntity> with AppEquatable {
   List<Category> storeCategories;
 
   @override
-  bool get cacheHash => true;
+  bool get cacheHash => false;
 
   @override
   List<Object?> get hashParameters => [
@@ -287,7 +287,7 @@ class StoreAvailableFoodTypes with AppEquatable {
   bool hasSelected;
 
   @override
-  bool get cacheHash => true;
+  bool get cacheHash => false;
 
   @override
   List<Object?> get hashParameters => [title, id, hasSelected];
@@ -333,7 +333,7 @@ class StoreAvailableFoodPreparationType with AppEquatable {
   bool hasSelected;
 
   @override
-  bool get cacheHash => true;
+  bool get cacheHash => false;
 
   @override
   List<Object?> get hashParameters => [title, id, hasSelected];
@@ -381,7 +381,7 @@ class StoreAcceptedPaymentModes with AppEquatable {
   bool hasSelected;
 
   @override
-  bool get cacheHash => true;
+  bool get cacheHash => false;
 
   @override
   List<Object?> get hashParameters => [
@@ -643,7 +643,7 @@ class StoreWorkingDayAndTime with AppEquatable {
   DateTime? closingTime = DateTime.now();
 
   @override
-  bool get cacheHash => true;
+  bool get cacheHash => false;
 
   @override
   List<Object?> get hashParameters => [

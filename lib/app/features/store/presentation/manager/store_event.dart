@@ -14,7 +14,7 @@ class SaveStore extends StoreEvent {
   final int currentIndex;
 
   @override
-  bool get cacheHash => true;
+  bool get cacheHash => false;
 
   @override
   List<Object?> get hashParameters => [
@@ -38,7 +38,7 @@ class DeleteStore extends StoreEvent {
   final String storeID;
 
   @override
-  bool get cacheHash => true;
+  bool get cacheHash => false;
 
   @override
   List<Object?> get hashParameters => [
@@ -55,7 +55,7 @@ class DeleteAllStore extends StoreEvent {
   final List<StoreEntity> storeEntities;
 
   @override
-  bool get cacheHash => true;
+  bool get cacheHash => false;
 
   @override
   List<Object?> get hashParameters => [storeEntities];
@@ -71,7 +71,7 @@ class GetAllStore extends StoreEvent {
   final int pageSize;
   final String searchItem;
   @override
-  bool get cacheHash => true;
+  bool get cacheHash => false;
 
   @override
   List<Object?> get hashParameters => [
@@ -95,7 +95,7 @@ class GetStore extends StoreEvent {
   final String storeID;
 
   @override
-  bool get cacheHash => true;
+  bool get cacheHash => false;
 
   @override
   List<Object?> get hashParameters => [
@@ -119,7 +119,7 @@ class SaveDriver extends StoreEvent {
   final int currentIndex;
 
   @override
-  bool get cacheHash => true;
+  bool get cacheHash => false;
 
   @override
   List<Object?> get hashParameters => [
@@ -143,7 +143,7 @@ class DeleteDriver extends StoreEvent {
   final String driverID;
 
   @override
-  bool get cacheHash => true;
+  bool get cacheHash => false;
 
   @override
   List<Object?> get hashParameters => [
@@ -160,7 +160,7 @@ class DeleteAllDriver extends StoreEvent {
   final List<StoreOwnDeliveryPartnersInfo> storeOwnDeliveryPartnerEntity;
 
   @override
-  bool get cacheHash => true;
+  bool get cacheHash => false;
 
   @override
   List<Object?> get hashParameters => [storeOwnDeliveryPartnerEntity];
@@ -178,7 +178,7 @@ class GetAllDriver extends StoreEvent {
   final String searchItem;
 
   @override
-  bool get cacheHash => true;
+  bool get cacheHash => false;
 
   @override
   List<Object?> get hashParameters => [pageKey, pageSize, searchItem];
@@ -198,7 +198,7 @@ class GetDriver extends StoreEvent {
   final String driverID;
 
   @override
-  bool get cacheHash => true;
+  bool get cacheHash => false;
 
   @override
   List<Object?> get hashParameters => [
@@ -230,7 +230,7 @@ class BindDriverWithStores extends StoreEvent {
   final BindingStage bindDriverToStoreStage;
 
   @override
-  bool get cacheHash => true;
+  bool get cacheHash => false;
 
   @override
   List<Object?> get hashParameters => [
@@ -265,7 +265,7 @@ class UnBindDriverWithStores extends StoreEvent {
   final BindingStage bindDriverToStoreStage;
 
   @override
-  bool get cacheHash => true;
+  bool get cacheHash => false;
 
   @override
   List<Object?> get hashParameters => [
@@ -296,7 +296,7 @@ class BindDriverWithUser extends StoreEvent {
       listOfSelectedStoreOwnDeliveryPartners;
 
   @override
-  bool get cacheHash => true;
+  bool get cacheHash => false;
 
   @override
   List<Object?> get hashParameters => [
@@ -324,7 +324,7 @@ class BindStoreWithUser extends StoreEvent {
   final List<StoreEntity> listOfSelectedStoreEntities;
 
   @override
-  bool get cacheHash => true;
+  bool get cacheHash => false;
 
   @override
   List<Object?> get hashParameters => [
@@ -346,7 +346,7 @@ class ReturnToStorePage extends StoreEvent {
   final List<StoreOwnDeliveryPartnersInfo> listOfStoreOwnDeliveryPartners;
 
   @override
-  bool get cacheHash => true;
+  bool get cacheHash => false;
 
   @override
   List<Object?> get hashParameters => [
@@ -370,7 +370,7 @@ class SelectDriversForStores extends StoreEvent {
   final SelectItemUseCase selectItemUseCase;
 
   @override
-  bool get cacheHash => true;
+  bool get cacheHash => false;
 
   @override
   List<Object?> get hashParameters => [

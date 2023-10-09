@@ -12,7 +12,7 @@ class OnConnectivityEvent extends ConnectivityEvent {
 
   @override
   // TODO(prasant): implement cacheHash
-  bool get cacheHash => true;
+  bool get cacheHash => false;
 
   @override
   // TODO(prasant): implement hashParameters
@@ -28,7 +28,7 @@ class OnNotConnectivityEvent extends ConnectivityEvent {
 
   @override
   // TODO(prasant): implement cacheHash
-  bool get cacheHash => true;
+  bool get cacheHash => false;
 
   @override
   // TODO(prasant): implement hashParameters
@@ -44,7 +44,7 @@ class OnWeakConnectivityEvent extends ConnectivityEvent {
 
   @override
   // TODO(prasant): implement cacheHash
-  bool get cacheHash => true;
+  bool get cacheHash => false;
 
   @override
   // TODO(prasant): implement hashParameters

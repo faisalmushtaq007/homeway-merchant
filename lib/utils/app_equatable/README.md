@@ -19,7 +19,7 @@ class AppEquatableCached with AppEquatable {
 
   @override
   //This is a immutable object, so we want to cache the hash
-  bool get cacheHash => true;
+  bool get cacheHash => false;
 
   @override
   List<Object?> get hashParameters => [value1, value2];

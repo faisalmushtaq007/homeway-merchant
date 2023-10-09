@@ -39,8 +39,8 @@ class _MenuForm2PageState extends State<MenuForm2Page> with AutomaticKeepAliveCl
 
   bool _hasCustomMenuPortionSize = false;
   final TextEditingController _menuPortionNameController = TextEditingController();
-  final TextEditingController _menuPortionValueController = TextEditingController();
   final TextEditingController _menuPortionSizeController = TextEditingController();
+  final TextEditingController _menuPortionMaximumServeController = TextEditingController();
   final TextEditingController _menuPortionUnitController = TextEditingController();
 
   List<StoreWorkingDayAndTime> _menuAvailableDays = [];
@@ -141,8 +141,8 @@ class _MenuForm2PageState extends State<MenuForm2Page> with AutomaticKeepAliveCl
       if (widget.menuEntity!.hasCustomPortion == true && widget.menuEntity!.customPortion.isNotNull) {
         _hasCustomMenuPortionSize = true;
         _menuPortionNameController.text = widget.menuEntity!.customPortion!.title ?? '';
-        _menuPortionValueController.text = widget.menuEntity!.customPortion!.quantity.toString() ?? '';
-        _menuPortionSizeController.text = widget.menuEntity!.customPortion!.maxServingPerson.toString() ?? '';
+        _menuPortionSizeController.text = widget.menuEntity!.customPortion!.quantity.toString() ?? '';
+        _menuPortionMaximumServeController.text = widget.menuEntity!.customPortion!.maxServingPerson.toString() ?? '';
         _menuPortionUnitController.text = widget.menuEntity!.customPortion!.unit ?? '';
       }
 
@@ -342,7 +342,7 @@ class _MenuForm2PageState extends State<MenuForm2Page> with AutomaticKeepAliveCl
                 onSelectionChanged: (List<StoreAvailableFoodPreparationType> selectedPreparationTypes) {
                   _selectedFoodPreparationType = List<StoreAvailableFoodPreparationType>.from(selectedPreparationTypes);
                   setState(() {});
-                  var cacheMenuPreparationType = List<MenuPreparationType>.from(
+                  final cacheMenuPreparationType = List<MenuPreparationType>.from(
                       _selectedFoodPreparationType.map((e) => MenuPreparationType.fromMap(e.toMap())).toList());
                   serviceLocator<MenuEntity>().storeAvailableFoodPreparationType = cacheMenuPreparationType.toList();
                   context.read<MenuBloc>().add(
@@ -365,7 +365,7 @@ class _MenuForm2PageState extends State<MenuForm2Page> with AutomaticKeepAliveCl
                 maxSelection: 1,
                 initialSelectedFoodPreparationTypesList: _initialSelectedFoodPreparationType,
                 onSaved: (newValue) {
-                  var cacheMenuPreparationType = List<MenuPreparationType>.from(
+                  final cacheMenuPreparationType = List<MenuPreparationType>.from(
                       _selectedFoodPreparationType.map((e) => MenuPreparationType.fromMap(e.toMap())).toList());
                   serviceLocator<MenuEntity>().storeAvailableFoodPreparationType = cacheMenuPreparationType.toList();
                   context.read<MenuBloc>().add(
@@ -415,7 +415,7 @@ class _MenuForm2PageState extends State<MenuForm2Page> with AutomaticKeepAliveCl
                 onSelectionChanged: (List<TasteType> selectedTasteTypes) {
                   _selectedTasteType = List<TasteType>.from(selectedTasteTypes);
                   setState(() {});
-                  var cacheTasteType = _selectedTasteType[0];
+                  final cacheTasteType = _selectedTasteType[0];
                   serviceLocator<MenuEntity>().tasteType = cacheTasteType;
                   context.read<MenuBloc>().add(
                         PushMenuEntityData(
@@ -441,7 +441,7 @@ class _MenuForm2PageState extends State<MenuForm2Page> with AutomaticKeepAliveCl
                   setState(() {});
                 },
                 onSaved: (newValue) {
-                  var cacheTasteType = _selectedTasteType[0];
+                  final cacheTasteType = _selectedTasteType[0];
                   serviceLocator<MenuEntity>().tasteType = cacheTasteType;
                   context.read<MenuBloc>().add(
                         PushMenuEntityData(
@@ -596,19 +596,18 @@ class _MenuForm2PageState extends State<MenuForm2Page> with AutomaticKeepAliveCl
                             menuEntityStatus: MenuEntityStatus.push,
                           ),
                         );
-                  }else{
+                  } else {
                     _selectedMenuPortions.clear();
-                        _selectedMenuPortions = [];
-                        serviceLocator<MenuEntity>().menuPortions =
-                            List<MenuPortion>.from(_selectedMenuPortions.toList());
-                        serviceLocator<MenuEntity>().hasCustomPortion = true;
-                        context.read<MenuBloc>().add(
-                              PushMenuEntityData(
-                                menuEntity: serviceLocator<MenuEntity>(),
-                                menuFormStage: MenuFormStage.form2,
-                                menuEntityStatus: MenuEntityStatus.push,
-                              ),
-                            );
+                    _selectedMenuPortions = [];
+                    serviceLocator<MenuEntity>().menuPortions = List<MenuPortion>.from(_selectedMenuPortions.toList());
+                    serviceLocator<MenuEntity>().hasCustomPortion = true;
+                    context.read<MenuBloc>().add(
+                          PushMenuEntityData(
+                            menuEntity: serviceLocator<MenuEntity>(),
+                            menuFormStage: MenuFormStage.form2,
+                            menuEntityStatus: MenuEntityStatus.push,
+                          ),
+                        );
                   }
                 },
               ),
@@ -625,9 +624,9 @@ class _MenuForm2PageState extends State<MenuForm2Page> with AutomaticKeepAliveCl
                   children: [
                     SwitchListTile(
                       onChanged: (value) {
-                        _hasCustomMenuPortionSize = value;
-
-                        setState(() {});
+                        setState(() {
+                          _hasCustomMenuPortionSize = value;
+                        });
                       },
                       value: _hasCustomMenuPortionSize,
                       title: Text(
@@ -685,7 +684,13 @@ class _MenuForm2PageState extends State<MenuForm2Page> with AutomaticKeepAliveCl
                                       },
                                       onChanged: (value) {
                                         if (_hasCustomMenuPortionSize) {
-                                          serviceLocator<MenuEntity>().customPortion?.title = value;
+                                          if (serviceLocator<MenuEntity>().customPortion.isNull) {
+                                            serviceLocator<MenuEntity>().customPortion = CustomPortion(title: value);
+                                          } else {
+                                            final data =
+                                                serviceLocator<MenuEntity>().customPortion?.copyWith(title: value);
+                                            serviceLocator<MenuEntity>().customPortion = data;
+                                          }
                                           serviceLocator<MenuEntity>().hasCustomPortion = true;
                                           context.read<MenuBloc>().add(
                                                 PushMenuEntityData(
@@ -698,8 +703,15 @@ class _MenuForm2PageState extends State<MenuForm2Page> with AutomaticKeepAliveCl
                                       },
                                       onSaved: (newValue) {
                                         if (_hasCustomMenuPortionSize) {
-                                          serviceLocator<MenuEntity>().customPortion?.title =
-                                              _menuPortionNameController.value.text.trim();
+                                          if (serviceLocator<MenuEntity>().customPortion.isNull) {
+                                            serviceLocator<MenuEntity>().customPortion =
+                                                CustomPortion(title: _menuPortionNameController.value.text.trim());
+                                          } else {
+                                            final data = serviceLocator<MenuEntity>()
+                                                .customPortion
+                                                ?.copyWith(title: _menuPortionNameController.value.text.trim());
+                                            serviceLocator<MenuEntity>().customPortion = data;
+                                          }
                                           serviceLocator<MenuEntity>().hasCustomPortion = true;
                                           context.read<MenuBloc>().add(
                                                 PushMenuEntityData(
@@ -726,7 +738,7 @@ class _MenuForm2PageState extends State<MenuForm2Page> with AutomaticKeepAliveCl
                                   Expanded(
                                     flex: 2,
                                     child: StoreTextFieldWidget(
-                                      controller: _menuPortionValueController,
+                                      controller: _menuPortionSizeController,
                                       textDirection: serviceLocator<LanguageController>().targetTextDirection,
                                       focusNode: menuForm2FocusList[1],
                                       textInputAction: TextInputAction.next,
@@ -734,8 +746,8 @@ class _MenuForm2PageState extends State<MenuForm2Page> with AutomaticKeepAliveCl
                                           fieldFocusChange(context, menuForm2FocusList[1], menuForm2FocusList[2]),
                                       keyboardType: const TextInputType.numberWithOptions(),
                                       decoration: InputDecoration(
-                                        labelText: 'Size or Portion value',
-                                        hintText: 'Enter size or portion value',
+                                        labelText: 'Portion value',
+                                        hintText: 'Enter portion value',
                                         border: OutlineInputBorder(
                                           borderRadius: BorderRadius.circular(10),
                                         ),
@@ -744,7 +756,7 @@ class _MenuForm2PageState extends State<MenuForm2Page> with AutomaticKeepAliveCl
                                       validator: (value) {
                                         if (_hasCustomMenuPortionSize) {
                                           if (value == null || value.isEmpty) {
-                                            return 'Please enter size or portion value';
+                                            return 'Please enter portion value';
                                           } else {
                                             return null;
                                           }
@@ -753,8 +765,15 @@ class _MenuForm2PageState extends State<MenuForm2Page> with AutomaticKeepAliveCl
                                       },
                                       onChanged: (value) {
                                         if (_hasCustomMenuPortionSize) {
-                                          serviceLocator<MenuEntity>().customPortion?.quantity =
-                                              double.tryParse(value) ?? 0.0;
+                                          if (serviceLocator<MenuEntity>().customPortion.isNull) {
+                                            serviceLocator<MenuEntity>().customPortion =
+                                                CustomPortion(quantity: double.tryParse(value) ?? 0.0);
+                                          } else {
+                                            final data = serviceLocator<MenuEntity>()
+                                                .customPortion
+                                                ?.copyWith(quantity: double.tryParse(value) ?? 0.0);
+                                            serviceLocator<MenuEntity>().customPortion = data;
+                                          }
                                           serviceLocator<MenuEntity>().hasCustomPortion = true;
                                           context.read<MenuBloc>().add(
                                                 PushMenuEntityData(
@@ -767,8 +786,18 @@ class _MenuForm2PageState extends State<MenuForm2Page> with AutomaticKeepAliveCl
                                       },
                                       onSaved: (newValue) {
                                         if (_hasCustomMenuPortionSize) {
-                                          serviceLocator<MenuEntity>().customPortion?.quantity =
-                                              double.tryParse(_menuPortionValueController.value.text.trim()) ?? 0.0;
+                                          if (serviceLocator<MenuEntity>().customPortion.isNull) {
+                                            serviceLocator<MenuEntity>().customPortion = CustomPortion(
+                                                quantity:
+                                                    double.tryParse(_menuPortionSizeController.value.text.trim()) ??
+                                                        0.0);
+                                          } else {
+                                            final data = serviceLocator<MenuEntity>().customPortion?.copyWith(
+                                                quantity:
+                                                    double.tryParse(_menuPortionSizeController.value.text.trim()) ??
+                                                        0.0);
+                                            serviceLocator<MenuEntity>().customPortion = data;
+                                          }
                                           serviceLocator<MenuEntity>().hasCustomPortion = true;
                                           context.read<MenuBloc>().add(
                                                 PushMenuEntityData(
@@ -812,7 +841,13 @@ class _MenuForm2PageState extends State<MenuForm2Page> with AutomaticKeepAliveCl
                                       },
                                       onChanged: (value) {
                                         if (_hasCustomMenuPortionSize) {
-                                          serviceLocator<MenuEntity>().customPortion?.unit = value;
+                                          if (serviceLocator<MenuEntity>().customPortion.isNull) {
+                                            serviceLocator<MenuEntity>().customPortion = CustomPortion(unit: value);
+                                          } else {
+                                            final data =
+                                                serviceLocator<MenuEntity>().customPortion?.copyWith(unit: value);
+                                            serviceLocator<MenuEntity>().customPortion = data;
+                                          }
                                           serviceLocator<MenuEntity>().hasCustomPortion = true;
                                           context.read<MenuBloc>().add(
                                                 PushMenuEntityData(
@@ -825,8 +860,15 @@ class _MenuForm2PageState extends State<MenuForm2Page> with AutomaticKeepAliveCl
                                       },
                                       onSaved: (newValue) {
                                         if (_hasCustomMenuPortionSize) {
-                                          serviceLocator<MenuEntity>().customPortion?.unit =
-                                              _menuPortionUnitController.value.text.trim();
+                                          if (serviceLocator<MenuEntity>().customPortion.isNull) {
+                                            serviceLocator<MenuEntity>().customPortion =
+                                                CustomPortion(unit: _menuPortionUnitController.value.text.trim());
+                                          } else {
+                                            final data = serviceLocator<MenuEntity>()
+                                                .customPortion
+                                                ?.copyWith(unit: _menuPortionUnitController.value.text.trim());
+                                            serviceLocator<MenuEntity>().customPortion = data;
+                                          }
                                           serviceLocator<MenuEntity>().hasCustomPortion = true;
                                           context.read<MenuBloc>().add(
                                                 PushMenuEntityData(
@@ -851,7 +893,7 @@ class _MenuForm2PageState extends State<MenuForm2Page> with AutomaticKeepAliveCl
                                 children: [
                                   Expanded(
                                     child: StoreTextFieldWidget(
-                                      controller: _menuPortionSizeController,
+                                      controller: _menuPortionMaximumServeController,
                                       textDirection: serviceLocator<LanguageController>().targetTextDirection,
                                       focusNode: menuForm2FocusList[3],
                                       textInputAction: TextInputAction.done,
@@ -876,8 +918,16 @@ class _MenuForm2PageState extends State<MenuForm2Page> with AutomaticKeepAliveCl
                                       },
                                       onChanged: (value) {
                                         if (_hasCustomMenuPortionSize) {
-                                          serviceLocator<MenuEntity>().customPortion?.maxServingPerson =
-                                              int.tryParse(value) ?? 0;
+                                          if (serviceLocator<MenuEntity>().customPortion.isNull) {
+                                            serviceLocator<MenuEntity>().customPortion =
+                                                CustomPortion(maxServingPerson: int.tryParse(value) ?? 0);
+                                          } else {
+                                            final data = serviceLocator<MenuEntity>()
+                                                .customPortion
+                                                ?.copyWith(maxServingPerson: int.tryParse(value) ?? 0);
+                                            serviceLocator<MenuEntity>().customPortion = data;
+                                          }
+
                                           serviceLocator<MenuEntity>().hasCustomPortion = true;
                                           context.read<MenuBloc>().add(
                                                 PushMenuEntityData(
@@ -890,8 +940,18 @@ class _MenuForm2PageState extends State<MenuForm2Page> with AutomaticKeepAliveCl
                                       },
                                       onSaved: (newValue) {
                                         if (_hasCustomMenuPortionSize) {
-                                          serviceLocator<MenuEntity>().customPortion?.maxServingPerson =
-                                              int.tryParse(_menuPortionSizeController.value.text.trim()) ?? 0;
+                                          if (serviceLocator<MenuEntity>().customPortion.isNull) {
+                                            serviceLocator<MenuEntity>().customPortion = CustomPortion(
+                                                maxServingPerson: int.tryParse(
+                                                        _menuPortionMaximumServeController.value.text.trim()) ??
+                                                    0);
+                                          } else {
+                                            final data = serviceLocator<MenuEntity>().customPortion?.copyWith(
+                                                maxServingPerson: int.tryParse(
+                                                        _menuPortionMaximumServeController.value.text.trim()) ??
+                                                    0);
+                                            serviceLocator<MenuEntity>().customPortion = data;
+                                          }
                                           serviceLocator<MenuEntity>().hasCustomPortion = true;
                                           context.read<MenuBloc>().add(
                                                 PushMenuEntityData(
@@ -1029,7 +1089,7 @@ class _MenuForm2PageState extends State<MenuForm2Page> with AutomaticKeepAliveCl
   }
 
   List<Widget> _buildAddonsChoiceList(BuildContext context) {
-    List<Widget> choices = [];
+    final List<Widget> choices = [];
 
     for (var item in _selectedAddons) {
       choices.add(

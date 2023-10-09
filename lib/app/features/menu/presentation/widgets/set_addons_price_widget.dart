@@ -25,6 +25,9 @@ class _SetAddonsPriceWidgetState extends State<SetAddonsPriceWidget> {
 
   @override
   void initState() {
+    maximumRetailPriceOfMenuTextEditingController.text='';
+    portionName = '';
+    sellingMaxRetailPrice = '00.00';
     super.initState();
     portionName = '${widget.addons.title ?? ''} ${widget.addons.unit ?? ''}';
     maximumRetailPriceOfMenuTextEditingController.text =
@@ -42,6 +45,8 @@ class _SetAddonsPriceWidgetState extends State<SetAddonsPriceWidget> {
 
   @override
   void dispose() {
+    portionName = '';
+    sellingMaxRetailPrice = '00.00';
     maximumRetailPriceOfMenuTextEditingController.text = '';
     maximumRetailPriceOfMenuTextEditingController.dispose();
     super.dispose();

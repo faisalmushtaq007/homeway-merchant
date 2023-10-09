@@ -4,7 +4,7 @@ abstract class MenuState with AppEquatable {}
 
 class MenuInitial extends MenuState {
   @override
-  bool get cacheHash => true;
+  bool get cacheHash => false;
 
   @override
   List<Object?> get hashParameters => [];
@@ -24,7 +24,7 @@ class SaveMenuState extends MenuState {
   final int currentIndex;
 
   @override
-  bool get cacheHash => true;
+  bool get cacheHash => false;
 
   @override
   List<Object?> get hashParameters => [
@@ -47,7 +47,7 @@ class MenuLoadingState extends MenuState {
   final MenuStateStatus menuStateStatus;
 
   @override
-  bool get cacheHash => true;
+  bool get cacheHash => false;
 
   @override
   List<Object?> get hashParameters => [
@@ -69,7 +69,7 @@ class MenuProcessingState extends MenuState {
   final MenuStateStatus menuStateStatus;
 
   @override
-  bool get cacheHash => true;
+  bool get cacheHash => false;
 
   @override
   List<Object?> get hashParameters => [
@@ -89,7 +89,7 @@ class MenuFailedState extends MenuState {
   final MenuStateStatus menuStateStatus;
 
   @override
-  bool get cacheHash => true;
+  bool get cacheHash => false;
 
   @override
   List<Object?> get hashParameters => [
@@ -112,7 +112,7 @@ class MenuExceptionState extends MenuState {
   final MenuStateStatus menuStateStatus;
 
   @override
-  bool get cacheHash => true;
+  bool get cacheHash => false;
 
   @override
   List<Object?> get hashParameters =>
@@ -137,7 +137,7 @@ class DeleteMenuState extends MenuState {
   final String message;
 
   @override
-  bool get cacheHash => true;
+  bool get cacheHash => false;
 
   @override
   List<Object?> get hashParameters => [
@@ -164,7 +164,7 @@ class DeleteAllMenuState extends MenuState {
   final String message;
 
   @override
-  bool get cacheHash => true;
+  bool get cacheHash => false;
 
   @override
   List<Object?> get hashParameters => [
@@ -194,7 +194,7 @@ class GetAllMenuState extends MenuState {
   final String searchItem;
 
   @override
-  bool get cacheHash => true;
+  bool get cacheHash => false;
 
   @override
   List<Object?> get hashParameters =>
@@ -213,7 +213,7 @@ class GetEmptyMenuState extends MenuState {
   final MenuStateStatus menuStateStatus;
 
   @override
-  bool get cacheHash => true;
+  bool get cacheHash => false;
 
   @override
   List<Object?> get hashParameters => [
@@ -237,7 +237,7 @@ class GetMenuState extends MenuState {
   final String menuID;
 
   @override
-  bool get cacheHash => true;
+  bool get cacheHash => false;
 
   @override
   List<Object?> get hashParameters => [
@@ -263,7 +263,7 @@ class SaveAddonsState extends MenuState {
   final bool haveOwnAddons;
 
   @override
-  bool get cacheHash => true;
+  bool get cacheHash => false;
 
   @override
   List<Object?> get hashParameters => [
@@ -286,7 +286,7 @@ class AddonsLoadingState extends MenuState {
   final AddonsSelectionUseCase addonsSelectionUseCase;
 
   @override
-  bool get cacheHash => true;
+  bool get cacheHash => false;
 
   @override
   List<Object?> get hashParameters => [
@@ -308,7 +308,7 @@ class AddonsProcessingState extends MenuState {
   final AddonsSelectionUseCase addonsSelectionUseCase;
 
   @override
-  bool get cacheHash => true;
+  bool get cacheHash => false;
 
   @override
   List<Object?> get hashParameters => [
@@ -328,7 +328,7 @@ class AddonsFailedState extends MenuState {
   final AddonsSelectionUseCase addonsSelectionUseCase;
 
   @override
-  bool get cacheHash => true;
+  bool get cacheHash => false;
 
   @override
   List<Object?> get hashParameters => [
@@ -351,7 +351,7 @@ class AddonsExceptionState extends MenuState {
   final AddonsSelectionUseCase addonsSelectionUseCase;
 
   @override
-  bool get cacheHash => true;
+  bool get cacheHash => false;
 
   @override
   List<Object?> get hashParameters => [
@@ -380,7 +380,7 @@ class DeleteAddonsState extends MenuState {
   final String message;
 
   @override
-  bool get cacheHash => true;
+  bool get cacheHash => false;
 
   @override
   List<Object?> get hashParameters => [
@@ -407,7 +407,7 @@ class DeleteAllAddonsState extends MenuState {
   final String message;
 
   @override
-  bool get cacheHash => true;
+  bool get cacheHash => false;
 
   @override
   List<Object?> get hashParameters => [
@@ -432,7 +432,7 @@ class GetAllAddonsState extends MenuState {
   final String searchItem;
 
   @override
-  bool get cacheHash => true;
+  bool get cacheHash => false;
 
   @override
   List<Object?> get hashParameters => [
@@ -455,7 +455,7 @@ class GetEmptyAddonsState extends MenuState {
   final AddonsSelectionUseCase addonsSelectionUseCase;
 
   @override
-  bool get cacheHash => true;
+  bool get cacheHash => false;
 
   @override
   List<Object?> get hashParameters => [
@@ -479,7 +479,7 @@ class GetAddonsState extends MenuState {
   final String addonsID;
 
   @override
-  bool get cacheHash => true;
+  bool get cacheHash => false;
 
   @override
   List<Object?> get hashParameters => [
@@ -506,7 +506,7 @@ class SelectAddonsState extends MenuState {
   final List<Addons> selectedAddonsEntities;
 
   @override
-  bool get cacheHash => true;
+  bool get cacheHash => false;
 
   @override
   List<Object?> get hashParameters => [
@@ -530,7 +530,7 @@ class SelectAddonsMaxPortionState extends MenuState {
   final List<MenuPortion> selectedMenuPortions;
 
   @override
-  bool get cacheHash => true;
+  bool get cacheHash => false;
 
   @override
   List<Object?> get hashParameters => [
@@ -550,7 +550,7 @@ class NavigateToAddonsMenuState extends MenuState {
   final bool hasNewAddons;
 
   @override
-  bool get cacheHash => true;
+  bool get cacheHash => false;
 
   @override
   List<Object?> get hashParameters => [
@@ -569,7 +569,7 @@ class PopToMenuPageState extends MenuState {
   final bool hasNewAddons;
 
   @override
-  bool get cacheHash => true;
+  bool get cacheHash => false;
 
   @override
   List<Object?> get hashParameters => [
@@ -598,7 +598,7 @@ class PushMenuEntityDataState extends MenuState {
   final MenuStateStatus menuStateStatus;
 
   @override
-  bool get cacheHash => true;
+  bool get cacheHash => false;
 
   @override
   List<Object?> get hashParameters => [
@@ -631,7 +631,7 @@ class PullMenuEntityDataState extends MenuState {
   final MenuStateStatus menuStateStatus;
 
   @override
-  bool get cacheHash => true;
+  bool get cacheHash => false;
 
   @override
   List<Object?> get hashParameters => [
@@ -654,7 +654,7 @@ class NavigateToStorePageState extends MenuState {
   final List<MenuEntity> listOfSelectedMenuEntities;
 
   @override
-  bool get cacheHash => true;
+  bool get cacheHash => false;
 
   @override
   List<Object?> get hashParameters =>
@@ -677,7 +677,7 @@ class FetchAllStoresState extends MenuState {
   final String message;
 
   @override
-  bool get cacheHash => true;
+  bool get cacheHash => false;
 
   @override
   List<Object?> get hashParameters => [
@@ -709,7 +709,7 @@ class BindMenuWithStoresState extends MenuState {
   final BindMenuToStoreStage bindMenuToStoreStage;
 
   @override
-  bool get cacheHash => true;
+  bool get cacheHash => false;
 
   @override
   List<Object?> get hashParameters => [
@@ -743,7 +743,7 @@ class UnBindMenuWithStoresState extends MenuState {
   final BindMenuToStoreStage bindMenuToStoreStage;
 
   @override
-  bool get cacheHash => true;
+  bool get cacheHash => false;
 
   @override
   List<Object?> get hashParameters => [
@@ -775,7 +775,7 @@ class BindMenuWithUserState extends MenuState {
   final AppUserEntity appUserEntity;
 
   @override
-  bool get cacheHash => true;
+  bool get cacheHash => false;
 
   @override
   List<Object?> get hashParameters => [
@@ -808,7 +808,7 @@ class BindAddonsWithMenuState extends MenuState {
   final BindAddonsToMenuStage bindAddonsToMenuStage;
 
   @override
-  bool get cacheHash => true;
+  bool get cacheHash => false;
 
   @override
   List<Object?> get hashParameters => [
@@ -840,7 +840,7 @@ class BindAddonsWithUserState extends MenuState {
   final AppUserEntity appUserEntity;
 
   @override
-  bool get cacheHash => true;
+  bool get cacheHash => false;
 
   @override
   List<Object?> get hashParameters => [

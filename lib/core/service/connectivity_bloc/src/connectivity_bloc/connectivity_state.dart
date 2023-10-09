@@ -6,7 +6,7 @@ abstract class ConnectivityState with AppEquatable {}
 class ConnectivityInitialState extends ConnectivityState {
   @override
   // TODO(prasant): implement cacheHash
-  bool get cacheHash => true;
+  bool get cacheHash => false;
 
   @override
   // TODO(prasant): implement hashParameters
@@ -22,7 +22,7 @@ class ConnectivityConnectedState extends ConnectivityState {
 
   @override
   // TODO(prasant): implement cacheHash
-  bool get cacheHash => true;
+  bool get cacheHash => false;
 
   @override
   // TODO(prasant): implement hashParameters
@@ -38,7 +38,7 @@ class ConnectivityDisconnectedState extends ConnectivityState {
 
   @override
   // TODO(prasant): implement cacheHash
-  bool get cacheHash => true;
+  bool get cacheHash => false;
 
   @override
   // TODO(prasant): implement hashParameters
@@ -54,7 +54,7 @@ class ConnectivityWeakConnectedState extends ConnectivityState {
 
   @override
   // TODO(prasant): implement cacheHash
-  bool get cacheHash => true;
+  bool get cacheHash => false;
 
   @override
   // TODO(prasant): implement hashParameters

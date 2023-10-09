@@ -40,7 +40,7 @@ class Language with AppEquatable {
       'Language($value, $text, $sourceLanguage, $image, $languageDownloadStatus, $textDirection)';
 
   @override
-  bool get cacheHash => true;
+  bool get cacheHash => false;
 
   @override
   List<Object?> get hashParameters => [

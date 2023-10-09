@@ -22,7 +22,7 @@ class SaveStoreState extends StoreState {
   final int currentIndex;
 
   @override
-  bool get cacheHash => true;
+  bool get cacheHash => false;
 
   @override
   List<Object?> get hashParameters => [
@@ -44,7 +44,7 @@ class StoreLoadingState extends StoreState {
   final StoreStateStage storeStateStage;
 
   @override
-  bool get cacheHash => true;
+  bool get cacheHash => false;
 
   @override
   List<Object?> get hashParameters => [
@@ -66,7 +66,7 @@ class StoreProcessingState extends StoreState {
   final StoreStateStage storeStateStage;
 
   @override
-  bool get cacheHash => true;
+  bool get cacheHash => false;
 
   @override
   List<Object?> get hashParameters => [
@@ -86,7 +86,7 @@ class StoreFailedState extends StoreState {
   final StoreStateStage storeStateStage;
 
   @override
-  bool get cacheHash => true;
+  bool get cacheHash => false;
 
   @override
   List<Object?> get hashParameters => [
@@ -109,7 +109,7 @@ class StoreExceptionState extends StoreState {
   final StoreStateStage storeStateStage;
 
   @override
-  bool get cacheHash => true;
+  bool get cacheHash => false;
 
   @override
   List<Object?> get hashParameters => [
@@ -136,7 +136,7 @@ class DeleteStoreState extends StoreState {
   final bool hasDelete;
 
   @override
-  bool get cacheHash => true;
+  bool get cacheHash => false;
 
   @override
   List<Object?> get hashParameters => [
@@ -158,7 +158,7 @@ class DeleteAllStoreState extends StoreState {
   final bool hasDeleteAll;
 
   @override
-  bool get cacheHash => true;
+  bool get cacheHash => false;
 
   @override
   List<Object?> get hashParameters => [storeEntities, hasDeleteAll];
@@ -174,7 +174,7 @@ class GetAllStoreState extends StoreState {
   final StoreStateStage storeStateStage;
 
   @override
-  bool get cacheHash => true;
+  bool get cacheHash => false;
 
   @override
   List<Object?> get hashParameters => [
@@ -195,7 +195,7 @@ class GetEmptyStoreState extends StoreState {
   final StoreStateStage storeStateStage;
 
   @override
-  bool get cacheHash => true;
+  bool get cacheHash => false;
 
   @override
   List<Object?> get hashParameters => [
@@ -221,7 +221,7 @@ class GetStoreState extends StoreState {
   final StoreStateStage storeStateStage;
 
   @override
-  bool get cacheHash => true;
+  bool get cacheHash => false;
 
   @override
   List<Object?> get hashParameters => [
@@ -248,7 +248,7 @@ class SaveDriverState extends StoreState {
   final int currentIndex;
 
   @override
-  bool get cacheHash => true;
+  bool get cacheHash => false;
 
   @override
   List<Object?> get hashParameters => [
@@ -271,7 +271,7 @@ class NavigateToNewDriverGreetingPageState extends StoreState {
   final DriverStateStage driverStateStage;
 
   @override
-  bool get cacheHash => true;
+  bool get cacheHash => false;
 
   @override
   List<Object?> get hashParameters => [
@@ -299,7 +299,7 @@ class DeleteDriverState extends StoreState {
   final bool hasDelete;
 
   @override
-  bool get cacheHash => true;
+  bool get cacheHash => false;
 
   @override
   List<Object?> get hashParameters => [
@@ -326,7 +326,7 @@ class DeleteAllDriverState extends StoreState {
   final String message;
 
   @override
-  bool get cacheHash => true;
+  bool get cacheHash => false;
 
   @override
   List<Object?> get hashParameters => [
@@ -347,7 +347,7 @@ class GetAllDriverState extends StoreState {
   final DriverStateStage driverStateStage;
 
   @override
-  bool get cacheHash => true;
+  bool get cacheHash => false;
 
   @override
   List<Object?> get hashParameters => [
@@ -372,7 +372,7 @@ class GetDriverState extends StoreState {
   final DriverStateStage driverStateStage;
 
   @override
-  bool get cacheHash => true;
+  bool get cacheHash => false;
 
   @override
   List<Object?> get hashParameters => [
@@ -396,7 +396,7 @@ class DriverLoadingState extends StoreState {
   final DriverStateStage driverStateStage;
 
   @override
-  bool get cacheHash => true;
+  bool get cacheHash => false;
 
   @override
   List<Object?> get hashParameters => [
@@ -418,7 +418,7 @@ class DriverProcessingState extends StoreState {
   final DriverStateStage driverStateStage;
 
   @override
-  bool get cacheHash => true;
+  bool get cacheHash => false;
 
   @override
   List<Object?> get hashParameters => [
@@ -438,7 +438,7 @@ class DriverFailedState extends StoreState {
   final DriverStateStage driverStateStage;
 
   @override
-  bool get cacheHash => true;
+  bool get cacheHash => false;
 
   @override
   List<Object?> get hashParameters => [
@@ -461,7 +461,7 @@ class DriverExceptionState extends StoreState {
   final DriverStateStage driverStateStage;
 
   @override
-  bool get cacheHash => true;
+  bool get cacheHash => false;
 
   @override
   List<Object?> get hashParameters => [
@@ -486,7 +486,7 @@ class DriverEmptyState extends StoreState {
   final List<StoreOwnDeliveryPartnersInfo> storeOwnDeliveryPartnerEntities;
 
   @override
-  bool get cacheHash => true;
+  bool get cacheHash => false;
 
   @override
   List<Object?> get hashParameters => [
@@ -518,7 +518,7 @@ class BindDriverWithStoresState extends StoreState {
   final BindingStage bindDriverToStoreStage;
 
   @override
-  bool get cacheHash => true;
+  bool get cacheHash => false;
 
   @override
   List<Object?> get hashParameters => [
@@ -553,7 +553,7 @@ class UnBindDriverWithStoresState extends StoreState {
   final BindingStage bindDriverToStoreStage;
 
   @override
-  bool get cacheHash => true;
+  bool get cacheHash => false;
 
   @override
   List<Object?> get hashParameters => [
@@ -579,7 +579,7 @@ class BindProcessingState extends StoreState {
   final BindingStage bindDriverToStoreStage;
 
   @override
-  bool get cacheHash => true;
+  bool get cacheHash => false;
 
   @override
   List<Object?> get hashParameters => [
@@ -603,7 +603,7 @@ class BindExceptionState extends StoreState {
   final Exception? exception;
 
   @override
-  bool get cacheHash => true;
+  bool get cacheHash => false;
 
   @override
   List<Object?> get hashParameters => [
@@ -626,7 +626,7 @@ class BindLoadingState extends StoreState {
   final BindingStage bindDriverToStoreStage;
 
   @override
-  bool get cacheHash => true;
+  bool get cacheHash => false;
 
   @override
   List<Object?> get hashParameters => [
@@ -650,7 +650,7 @@ class BindEmptyState extends StoreState {
   final List<StoreOwnDeliveryPartnersInfo> storeOwnDeliveryPartnerEntities;
 
   @override
-  bool get cacheHash => true;
+  bool get cacheHash => false;
 
   @override
   List<Object?> get hashParameters => [
@@ -671,7 +671,7 @@ class BindFailedState extends StoreState {
   final BindingStage bindDriverToStoreStage;
 
   @override
-  bool get cacheHash => true;
+  bool get cacheHash => false;
 
   @override
   List<Object?> get hashParameters => [
@@ -699,7 +699,7 @@ class BindDriverWithUserState extends StoreState {
   final AppUserEntity appUserEntity;
 
   @override
-  bool get cacheHash => true;
+  bool get cacheHash => false;
 
   @override
   List<Object?> get hashParameters => [
@@ -730,7 +730,7 @@ class BindStoreWithUserState extends StoreState {
   final AppUserEntity appUserEntity;
 
   @override
-  bool get cacheHash => true;
+  bool get cacheHash => false;
 
   @override
   List<Object?> get hashParameters => [
@@ -753,7 +753,7 @@ class ReturnToStorePageState extends StoreState {
   final List<StoreOwnDeliveryPartnersInfo> listOfStoreOwnDeliveryPartners;
 
   @override
-  bool get cacheHash => true;
+  bool get cacheHash => false;
 
   @override
   List<Object?> get hashParameters => [
@@ -777,7 +777,7 @@ class SelectDriversForStoresState extends StoreState {
   final SelectItemUseCase selectItemUseCase;
 
   @override
-  bool get cacheHash => true;
+  bool get cacheHash => false;
 
   @override
   List<Object?> get hashParameters => [

@@ -103,7 +103,7 @@ class MenuEntity extends INetworkModel<MenuEntity> with AppEquatable {
       menuMaxPreparationTime: map['menuMaxPreparationTime'] as String,
       ratingAndReviewEntity: (map['ratingAndReviewEntity'] != null)
           ? RatingAndReviewEntity.fromMap(map['ratingAndReviewEntity'])
-          : RatingAndReviewEntity(),
+          : const RatingAndReviewEntity(),
       hasMenuAvailable: map['hasMenuAvailable'] ?? true,
       hasReadyToPickupOrder: map['hasReadyToPickupOrder'] ?? true,
     );
@@ -140,7 +140,7 @@ class MenuEntity extends INetworkModel<MenuEntity> with AppEquatable {
   bool hasReadyToPickupOrder;
 
   @override
-  bool get cacheHash => true;
+  bool get cacheHash => false;
 
   @override
   List<Object?> get hashParameters => [
@@ -177,39 +177,39 @@ class MenuEntity extends INetworkModel<MenuEntity> with AppEquatable {
 
   Map<String, dynamic> toMap() {
     return {
-      'menuId': this.menuId,
-      'menuImages': this.menuImages.map((e) => e.toMap()).toList(),
-      'menuName': this.menuName,
-      'menuDescription': this.menuDescription,
-      'menuCategories': this.menuCategories.map((e) => e.toMap()).toList(),
-      'ingredients': this.ingredients.map((e) => e.toMap()).toList(),
+      'menuId': menuId,
+      'menuImages': menuImages.map((e) => e.toMap()).toList(),
+      'menuName': menuName,
+      'menuDescription': menuDescription,
+      'menuCategories': menuCategories.map((e) => e.toMap()).toList(),
+      'ingredients': ingredients.map((e) => e.toMap()).toList(),
       'storeAvailableFoodTypes':
-          this.storeAvailableFoodTypes.map((e) => e.toMap()).toList(),
+          storeAvailableFoodTypes.map((e) => e.toMap()).toList(),
       'storeAvailableFoodPreparationType':
-          this.storeAvailableFoodPreparationType.map((e) => e.toMap()).toList(),
-      'menuPortions': this.menuPortions.map((e) => e.toMap()).toList(),
-      'hasCustomPortion': this.hasCustomPortion ?? false,
-      'customPortions': this.customPortions.map((e) => e.toMap()).toList(),
-      'addons': this.addons.map((e) => e.toMap()).toList(),
-      'menuAvailableFromTime': this.menuAvailableFromTime,
-      'menuAvailableToTime': this.menuAvailableToTime,
+          storeAvailableFoodPreparationType.map((e) => e.toMap()).toList(),
+      'menuPortions': menuPortions.map((e) => e.toMap()).toList(),
+      'hasCustomPortion': hasCustomPortion ?? false,
+      'customPortions': customPortions.map((e) => e.toMap()).toList(),
+      'addons': addons.map((e) => e.toMap()).toList(),
+      'menuAvailableFromTime': menuAvailableFromTime,
+      'menuAvailableToTime': menuAvailableToTime,
       'menuAvailableInDays':
-          this.menuAvailableInDays.map((e) => e.toMap()).toList(),
-      'minStockAvailable': this.minStockAvailable,
-      'maxStockAvailable': this.maxStockAvailable,
-      'timeOfPeriodWise': this.timeOfPeriodWise.map((e) => e.toMap()).toList(),
-      'metaInfoOfMenu': this.metaInfoOfMenu,
-      'nutrients': this.nutrients.map((e) => e.toMap()).toList(),
-      'menuTiming': this.menuTiming?.toMap() ?? Timing().toMap(),
-      'tasteType': this.tasteType?.toMap() ?? TasteType().toMap(),
-      'stock': this.stock?.toMap() ?? Stock().toMap(),
-      'customPortion': this.customPortion?.toMap() ?? CustomPortion().toMap(),
-      'menuMinPreparationTime': this.menuMinPreparationTime,
-      'menuMaxPreparationTime': this.menuMaxPreparationTime,
-      'ratingAndReviewEntity': this.ratingAndReviewEntity?.toMap() ??
-          RatingAndReviewEntity().toMap(),
-      'hasMenuAvailable': this.hasMenuAvailable ?? true,
-      'hasReadyToPickupOrder': this.hasReadyToPickupOrder ?? true,
+          menuAvailableInDays.map((e) => e.toMap()).toList(),
+      'minStockAvailable': minStockAvailable,
+      'maxStockAvailable': maxStockAvailable,
+      'timeOfPeriodWise': timeOfPeriodWise.map((e) => e.toMap()).toList(),
+      'metaInfoOfMenu': metaInfoOfMenu,
+      'nutrients': nutrients.map((e) => e.toMap()).toList(),
+      'menuTiming': menuTiming?.toMap() ?? Timing().toMap(),
+      'tasteType': tasteType?.toMap() ?? TasteType().toMap(),
+      'stock': stock?.toMap() ?? Stock().toMap(),
+      'customPortion': customPortion?.toMap() ?? CustomPortion().toMap(),
+      'menuMinPreparationTime': menuMinPreparationTime,
+      'menuMaxPreparationTime': menuMaxPreparationTime,
+      'ratingAndReviewEntity': ratingAndReviewEntity?.toMap() ??
+          const RatingAndReviewEntity().toMap(),
+      'hasMenuAvailable': hasMenuAvailable ?? true,
+      'hasReadyToPickupOrder': hasReadyToPickupOrder ?? true,
     };
   }
 
@@ -327,7 +327,7 @@ class MenuImage with AppEquatable {
   AssetsUploadStatus assetsUploadStatus;
 
   @override
-  bool get cacheHash => true;
+  bool get cacheHash => false;
 
   @override
   List<Object?> get hashParameters => [
@@ -342,13 +342,13 @@ class MenuImage with AppEquatable {
 
   Map<String, dynamic> toMap() {
     return {
-      'imageId': this.imageId,
-      'assetPath': this.assetPath,
-      'metaInfo': this.metaInfo,
-      'assetExtension': this.assetExtension,
-      'hasBase64': this.hasBase64,
-      'valueOfBase64': this.valueOfBase64 ?? '',
-      'assetsUploadStatus': this.assetsUploadStatus.name,
+      'imageId': imageId,
+      'assetPath': assetPath,
+      'metaInfo': metaInfo,
+      'assetExtension': assetExtension,
+      'hasBase64': hasBase64,
+      'valueOfBase64': valueOfBase64 ?? '',
+      'assetsUploadStatus': assetsUploadStatus.name,
     };
   }
 
@@ -399,7 +399,7 @@ class Ingredients with AppEquatable {
   Map<String, dynamic> metaInfo;
 
   @override
-  bool get cacheHash => true;
+  bool get cacheHash => false;
 
   @override
   List<Object?> get hashParameters => [
@@ -412,11 +412,11 @@ class Ingredients with AppEquatable {
 
   Map<String, dynamic> toMap() {
     return {
-      'ingredientsId': this.ingredientsId,
-      'title': this.title,
-      'hasSelected': this.hasSelected,
-      'value': this.value,
-      'metaInfo': this.metaInfo,
+      'ingredientsId': ingredientsId,
+      'title': title,
+      'hasSelected': hasSelected,
+      'value': value,
+      'metaInfo': metaInfo,
     };
   }
 
@@ -466,7 +466,7 @@ class Nutrients with AppEquatable {
   Map<String, dynamic> metaInfo;
 
   @override
-  bool get cacheHash => true;
+  bool get cacheHash => false;
 
   @override
   List<Object?> get hashParameters => [
@@ -480,12 +480,12 @@ class Nutrients with AppEquatable {
 
   Map<String, dynamic> toMap() {
     return {
-      'nutrientsId': this.nutrientsId,
-      'title': this.title,
-      'hasSelected': this.hasSelected,
-      'value': this.value,
-      'unit': this.unit,
-      'metaInfo': this.metaInfo,
+      'nutrientsId': nutrientsId,
+      'title': title,
+      'hasSelected': hasSelected,
+      'value': value,
+      'unit': unit,
+      'metaInfo': metaInfo,
     };
   }
 
@@ -528,16 +528,16 @@ class MenuType with AppEquatable {
   bool hasSelected;
 
   @override
-  bool get cacheHash => true;
+  bool get cacheHash => false;
 
   @override
   List<Object?> get hashParameters => [title, id, hasSelected];
 
   Map<String, dynamic> toMap() {
     return {
-      'title': this.title,
-      'id': this.id,
-      'hasSelected': this.hasSelected,
+      'title': title,
+      'id': id,
+      'hasSelected': hasSelected,
     };
   }
 
@@ -547,8 +547,8 @@ class MenuType with AppEquatable {
     bool? hasSelected,
   }) {
     return MenuType(
-      title: titleOfStoreAvailableFoodTypes ?? this.title,
-      id: storeAvailableFoodTypesID ?? this.id,
+      title: titleOfStoreAvailableFoodTypes ?? title,
+      id: storeAvailableFoodTypesID ?? id,
       hasSelected: hasSelected ?? this.hasSelected,
     );
   }
@@ -574,16 +574,16 @@ class MenuPreparationType with AppEquatable {
   bool hasSelected;
 
   @override
-  bool get cacheHash => true;
+  bool get cacheHash => false;
 
   @override
   List<Object?> get hashParameters => [title, id, hasSelected];
 
   Map<String, dynamic> toMap() {
     return {
-      'title': this.title,
-      'id': this.id,
-      'hasSelected': this.hasSelected,
+      'title': title,
+      'id': id,
+      'hasSelected': hasSelected,
     };
   }
 
@@ -593,8 +593,8 @@ class MenuPreparationType with AppEquatable {
     bool? hasSelected,
   }) {
     return MenuPreparationType(
-      title: titleOfStoreAvailableFoodTypes ?? this.title,
-      id: storeAvailableFoodTypesID ?? this.id,
+      title: titleOfStoreAvailableFoodTypes ?? title,
+      id: storeAvailableFoodTypesID ?? id,
       hasSelected: hasSelected ?? this.hasSelected,
     );
   }
@@ -629,7 +629,7 @@ class TasteType with AppEquatable {
   List<TasteLevel> tasteLevel;
 
   @override
-  bool get cacheHash => true;
+  bool get cacheHash => false;
 
   @override
   List<Object?> get hashParameters => [
@@ -642,11 +642,11 @@ class TasteType with AppEquatable {
 
   Map<String, dynamic> toMap() {
     return {
-      'tasteTypeId': this.tasteTypeId,
-      'title': this.title,
-      'hasSelected': this.hasSelected,
-      'tasteLevel': this.tasteLevel.map((e) => e.toMap()).toList(),
-      'hasTasteLevel': this.hasTasteLevel,
+      'tasteTypeId': tasteTypeId,
+      'title': title,
+      'hasSelected': hasSelected,
+      'tasteLevel': tasteLevel.map((e) => e.toMap()).toList(),
+      'hasTasteLevel': hasTasteLevel,
     };
   }
 
@@ -687,7 +687,7 @@ class TasteLevel with AppEquatable {
   bool hasSelected;
 
   @override
-  bool get cacheHash => true;
+  bool get cacheHash => false;
 
   @override
   List<Object?> get hashParameters => [
@@ -698,9 +698,9 @@ class TasteLevel with AppEquatable {
 
   Map<String, dynamic> toMap() {
     return {
-      'tasteLevelId': this.tasteLevelId,
-      'title': this.title,
-      'hasSelected': this.hasSelected,
+      'tasteLevelId': tasteLevelId,
+      'title': title,
+      'hasSelected': hasSelected,
     };
   }
 
@@ -761,7 +761,7 @@ class MenuPortion with AppEquatable {
   String description;
 
   @override
-  bool get cacheHash => true;
+  bool get cacheHash => false;
 
   @override
   List<Object?> get hashParameters => [
@@ -780,17 +780,17 @@ class MenuPortion with AppEquatable {
 
   Map<String, dynamic> toMap() {
     return {
-      'portionID': this.portionID,
-      'title': this.title,
-      'quantity': this.quantity,
-      'maxServingPerson': this.maxServingPerson,
-      'defaultPrice': this.defaultPrice,
-      'finalPrice': this.finalPrice,
-      'discountedPrice': this.discountedPrice,
-      'hasSelected': this.hasSelected,
-      'unit': this.unit,
-      'currency': this.currency,
-      'description': this.description,
+      'portionID': portionID,
+      'title': title,
+      'quantity': quantity,
+      'maxServingPerson': maxServingPerson,
+      'defaultPrice': defaultPrice,
+      'finalPrice': finalPrice,
+      'discountedPrice': discountedPrice,
+      'hasSelected': hasSelected,
+      'unit': unit,
+      'currency': currency,
+      'description': description,
     };
   }
 
@@ -870,7 +870,7 @@ class CustomPortion with AppEquatable {
   String description;
 
   @override
-  bool get cacheHash => true;
+  bool get cacheHash => false;
 
   @override
   List<Object?> get hashParameters => [
@@ -890,18 +890,18 @@ class CustomPortion with AppEquatable {
 
   Map<String, dynamic> toMap() {
     return {
-      'customPortionID': this.customPortionID,
-      'title': this.title,
-      'maxServingPerson': this.maxServingPerson,
-      'quantity': this.quantity,
-      'defaultPrice': this.defaultPrice,
-      'finalPrice': this.finalPrice,
-      'discountedPrice': this.discountedPrice,
-      'otherInfo': this.otherInfo,
-      'hasSelected': this.hasSelected,
-      'unit': this.unit,
-      'currency': this.currency,
-      'description': this.description,
+      'customPortionID': customPortionID,
+      'title': title,
+      'maxServingPerson': maxServingPerson,
+      'quantity': quantity,
+      'defaultPrice': defaultPrice,
+      'finalPrice': finalPrice,
+      'discountedPrice': discountedPrice,
+      'otherInfo': otherInfo,
+      'hasSelected': hasSelected,
+      'unit': unit,
+      'currency': currency,
+      'description': description,
     };
   }
 
@@ -985,7 +985,7 @@ class Addons with AppEquatable {
   bool hasOwnAddons;
 
   @override
-  bool get cacheHash => true;
+  bool get cacheHash => false;
 
   @override
   List<Object?> get hashParameters => [
@@ -1005,18 +1005,18 @@ class Addons with AppEquatable {
 
   Map<String, dynamic> toMap() {
     return {
-      'addonsID': this.addonsID,
-      'title': this.title,
-      'quantity': this.quantity,
-      'defaultPrice': this.defaultPrice,
-      'finalPrice': this.finalPrice,
-      'discountedPrice': this.discountedPrice,
-      'hasSelected': this.hasSelected,
-      'unit': this.unit,
-      'addonsImage': this.addonsImage?.toMap() ?? MenuImage().toMap(),
-      'currency': this.currency,
-      'description': this.description,
-      'hasOwnAddons': this.hasOwnAddons,
+      'addonsID': addonsID,
+      'title': title,
+      'quantity': quantity,
+      'defaultPrice': defaultPrice,
+      'finalPrice': finalPrice,
+      'discountedPrice': discountedPrice,
+      'hasSelected': hasSelected,
+      'unit': unit,
+      'addonsImage': addonsImage?.toMap() ?? MenuImage().toMap(),
+      'currency': currency,
+      'description': description,
+      'hasOwnAddons': hasOwnAddons,
     };
   }
 
@@ -1087,7 +1087,7 @@ class MenuAvailableDayAndTime with AppEquatable {
   DateTime? closingTime = DateTime.now();
 
   @override
-  bool get cacheHash => true;
+  bool get cacheHash => false;
 
   @override
   List<Object?> get hashParameters => [
@@ -1101,14 +1101,14 @@ class MenuAvailableDayAndTime with AppEquatable {
 
   Map<String, dynamic> toMap() {
     return {
-      'title': this.day,
-      'id': this.id,
-      'hasSelected': this.hasSelected,
-      'closingTime': Timestamp.fromDateTime(this.closingTime ?? DateTime.now())
+      'title': day,
+      'id': id,
+      'hasSelected': hasSelected,
+      'closingTime': Timestamp.fromDateTime(closingTime ?? DateTime.now())
           .millisecondsSinceEpoch,
-      'openingTime': Timestamp.fromDateTime(this.openingTime ?? DateTime.now())
+      'openingTime': Timestamp.fromDateTime(openingTime ?? DateTime.now())
           .millisecondsSinceEpoch,
-      'shortName': this.shortName,
+      'shortName': shortName,
     };
   }
 
@@ -1121,8 +1121,8 @@ class MenuAvailableDayAndTime with AppEquatable {
     String? shortName,
   }) {
     return MenuAvailableDayAndTime(
-      day: titleOfStoreAvailableFoodTypes ?? this.day,
-      id: storeAvailableFoodTypesID ?? this.id,
+      day: titleOfStoreAvailableFoodTypes ?? day,
+      id: storeAvailableFoodTypesID ?? id,
       hasSelected: hasSelected ?? this.hasSelected,
       closingTime: closingTime ?? this.closingTime,
       openingTime: openingTime ?? this.openingTime,
@@ -1151,7 +1151,7 @@ class TimeOfPeriodWise with AppEquatable {
   bool hasSelected;
 
   @override
-  bool get cacheHash => true;
+  bool get cacheHash => false;
 
   @override
   List<Object?> get hashParameters => [
@@ -1162,9 +1162,9 @@ class TimeOfPeriodWise with AppEquatable {
 
   Map<String, dynamic> toMap() {
     return {
-      'timeOfPeriodWiseId': this.timeOfPeriodWiseId,
-      'title': this.title,
-      'hasSelected': this.hasSelected,
+      'timeOfPeriodWiseId': timeOfPeriodWiseId,
+      'title': title,
+      'hasSelected': hasSelected,
     };
   }
 
@@ -1207,7 +1207,7 @@ class Timing with AppEquatable {
   String maxDeliveryTiming;
 
   @override
-  bool get cacheHash => true;
+  bool get cacheHash => false;
 
   @override
   List<Object?> get hashParameters => [
@@ -1220,11 +1220,11 @@ class Timing with AppEquatable {
 
   Map<String, dynamic> toMap() {
     return {
-      'timingID': this.timingID,
-      'minPreparingTime': this.minPreparingTime,
-      'maxPreparingTime': this.maxPreparingTime,
-      'minDeliveryTime': this.minDeliveryTime,
-      'maxDeliveryTiming': this.maxDeliveryTiming,
+      'timingID': timingID,
+      'minPreparingTime': minPreparingTime,
+      'maxPreparingTime': maxPreparingTime,
+      'minDeliveryTime': minDeliveryTime,
+      'maxDeliveryTiming': maxDeliveryTiming,
     };
   }
 
@@ -1290,12 +1290,12 @@ class Category extends INetworkModel<Category> with AppEquatable {
 
   Map<String, dynamic> toMap() {
     return {
-      'categoryId': this.categoryId,
-      'title': this.title,
-      'hasSelected': this.hasSelected,
-      'subCategory': this.subCategory.map((e) => e.toMap()).toList(),
-      'categoryImage': this.categoryImage,
-      'metaInfo': this.metaInfo,
+      'categoryId': categoryId,
+      'title': title,
+      'hasSelected': hasSelected,
+      'subCategory': subCategory.map((e) => e.toMap()).toList(),
+      'categoryImage': categoryImage,
+      'metaInfo': metaInfo,
     };
   }
 
@@ -1342,7 +1342,7 @@ class Stock with AppEquatable {
   int maxStockQuantity;
 
   @override
-  bool get cacheHash => true;
+  bool get cacheHash => false;
 
   @override
   List<Object?> get hashParameters => [
@@ -1353,9 +1353,9 @@ class Stock with AppEquatable {
 
   Map<String, dynamic> toMap() {
     return {
-      'stockID': this.stockID,
-      'minStockQuantity': this.minStockQuantity,
-      'maxStockQuantity': this.maxStockQuantity,
+      'stockID': stockID,
+      'minStockQuantity': minStockQuantity,
+      'maxStockQuantity': maxStockQuantity,
     };
   }
 

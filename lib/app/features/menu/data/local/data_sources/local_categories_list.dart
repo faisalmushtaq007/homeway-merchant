@@ -317,8 +317,8 @@ final localTasteLevel = [
 List<MenuPortion> localMenuPortions = [
   MenuPortion(
     portionID: '0',
-    title: 'Big',
-    unit: '',
+    title: '1',
+    unit: 'Big',
     defaultPrice: 0.0,
     discountedPrice: 0.0,
     finalPrice: 0.0,
@@ -328,8 +328,8 @@ List<MenuPortion> localMenuPortions = [
   ),
   MenuPortion(
     portionID: '1',
-    title: 'Medium',
-    unit: '',
+    title: '1',
+    unit: 'Medium',
     defaultPrice: 0.0,
     discountedPrice: 0.0,
     finalPrice: 0.0,
@@ -339,8 +339,8 @@ List<MenuPortion> localMenuPortions = [
   ),
   MenuPortion(
     portionID: '2',
-    title: 'Small',
-    unit: '',
+    title: '1',
+    unit: 'Small',
     defaultPrice: 0.0,
     discountedPrice: 0.0,
     finalPrice: 0.0,
