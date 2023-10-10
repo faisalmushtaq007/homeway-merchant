@@ -115,7 +115,7 @@ class _DateTimeFieldPlatformState extends State<DateTimeFieldPlatform> {
 
   @override
   void dispose() {
-    _controller.dispose();
+    //_controller.dispose();
     super.dispose();
   }
 
