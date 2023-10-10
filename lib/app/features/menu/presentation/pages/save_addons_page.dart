@@ -203,7 +203,7 @@ class _SaveAddonsPageView extends WidgetView<SaveAddonsPage, _SaveAddonsPageCont
             child: PageBody(
               controller: state.scrollController,
               constraints: BoxConstraints(
-                minWidth: double.infinity,
+                minWidth: 1000,
                 minHeight: media.size.height,
               ),
               child: CustomScrollView(

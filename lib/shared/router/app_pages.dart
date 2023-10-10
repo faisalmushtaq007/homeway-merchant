@@ -269,6 +269,17 @@ class AppRouter {
         },
       ),
       GoRoute(
+        path: Routes.REFORM_SAVE_MENU_PAGE,
+        builder: (context, state) {
+          final Map<String, dynamic>? args = state.extra as Map<String, dynamic>?;
+          return ReFormSaveMenuPage(
+            menuEntity: args?['menuEntity'] as MenuEntity?,
+            haveNewMenu: args?['haveNewMenu'] ?? true as bool,
+            currentIndex: args?['currentIndex'] ?? -1 as int,
+          );
+        },
+      ),
+      GoRoute(
         path: Routes.NEW_MENU_GREETING_PAGE,
         builder: (context, state) => NewMenuGreetingPage(menuEntity: state.extra! as MenuEntity),
       ),

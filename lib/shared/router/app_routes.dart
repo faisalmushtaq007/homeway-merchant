@@ -66,6 +66,7 @@ abstract class Routes {
       _Paths.CONFIRM_BUSINESS_TYPE_PAGE;
   static const String ALL_MENU_PAGE = _Paths.ALL_MENU_PAGE;
   static const String SAVE_MENU_PAGE = _Paths.SAVE_MENU_PAGE;
+  static const String REFORM_SAVE_MENU_PAGE = _Paths.REFORM_SAVE_MENU_PAGE;
   static const String NEW_MENU_GREETING_PAGE = _Paths.NEW_MENU_GREETING_PAGE;
   static const String MENU_DESCRIPTION_PAGE = _Paths.MENU_DESCRIPTION_PAGE;
   static const String MENU_FORM1_PAGE = _Paths.MENU_FORM1_PAGE;
@@ -171,6 +172,7 @@ abstract class _Paths {
   static const String CONFIRM_BUSINESS_TYPE_PAGE = '/confirm-business-type';
   static const String ALL_MENU_PAGE = '/all-menu';
   static const String SAVE_MENU_PAGE = '/save-menu';
+  static const String REFORM_SAVE_MENU_PAGE = '/new-save-menu';
   static const String NEW_MENU_GREETING_PAGE = '/new-menu-greeting';
   static const String MENU_DESCRIPTION_PAGE = '/menu-description';
   static const String MENU_FORM1_PAGE = '/menu-form-1';
