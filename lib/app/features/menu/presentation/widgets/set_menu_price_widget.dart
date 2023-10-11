@@ -256,16 +256,9 @@ class _SetMenuPriceWidgetState extends State<SetMenuPriceWidget> {
                     setCacheMenuEntityDiscountPriceFunction(context, value);
                   }
                   widget.discountPriceValueChanged!(double.parse(value));
-                  setState(() {});
+                  //setState(() {});
                 },
-                onSaved: (newValue) {
-                  if(widget.hasGlobalMenuEntity) {
-                    setDiscountPriceFunction(context, discountPriceOfMenuTextEditingController.value.text.trim());
-                  }else{
-                    setCacheMenuEntityDiscountPriceFunction(context, discountPriceOfMenuTextEditingController.value.text.trim());
-                  }
-                  return;
-                },
+
               ),
               //const AnimatedGap(8, duration: Duration(milliseconds: 500)),
               const Divider(
@@ -392,6 +385,7 @@ class _SetMenuPriceWidgetState extends State<SetMenuPriceWidget> {
         widget.menuEntityChanged!(widget.menuEntity.copyWith());
       }
     }
+    //setState(() { });
     return;
   }
 
@@ -418,6 +412,7 @@ class _SetMenuPriceWidgetState extends State<SetMenuPriceWidget> {
         widget.menuEntityChanged!(widget.menuEntity.copyWith());
       }
     }
+    //setState(() { });
     return;
   }
 }

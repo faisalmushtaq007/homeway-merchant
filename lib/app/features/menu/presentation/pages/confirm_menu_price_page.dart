@@ -2,11 +2,13 @@ part of 'package:homemakers_merchant/app/features/menu/index.dart';
 
 class ConfirmMenuPricePage extends StatefulWidget {
   const ConfirmMenuPricePage({
-    required this.menuEntity, super.key,
+    required this.menuEntity,
+    super.key,
     this.haveNewMenu = true,
     this.currentIndex = -1,
     this.selectionUseCase = SelectionUseCase.selectAndNext,
   });
+
   final bool haveNewMenu;
   final MenuEntity menuEntity;
   final int currentIndex;
@@ -26,26 +28,32 @@ class _ConfirmMenuPricePageController extends State<ConfirmMenuPricePage> {
   CustomPortion? customPortion;
   bool hasCustomPortion = false;
 
-  double _basePriceOfItems=0.0;
-  double _discountPriceOfItems=0.0;
-  double _finalPriceOfItems=0.0;
+  double _basePriceOfItems = 0.0;
+  double _discountPriceOfItems = 0.0;
+  double _finalPriceOfItems = 0.0;
 
   double get basePriceOfItems => _basePriceOfItems;
+
   set basePriceOfItems(double value) {
     _basePriceOfItems += value;
   }
+
   void setBasePriceOfItems(double value) {
     _basePriceOfItems += value;
   }
+
   double get discountPriceOfItems => _discountPriceOfItems;
+
   set discountPriceOfItems(double value) {
     _discountPriceOfItems += value;
   }
+
   void setDiscountPriceOfItems(double value) {
     _discountPriceOfItems += value;
   }
 
   double get finalPriceOfItems => _finalPriceOfItems;
+
   set finalPriceOfItems(double value) {
     _finalPriceOfItems = value;
   }
@@ -53,7 +61,7 @@ class _ConfirmMenuPricePageController extends State<ConfirmMenuPricePage> {
   @override
   void initState() {
     listOfMenuPortions = [];
-    menuEntity=widget.menuEntity;
+    menuEntity = widget.menuEntity;
 
     super.initState();
 
@@ -90,14 +98,14 @@ class _ConfirmMenuPricePageController extends State<ConfirmMenuPricePage> {
     setState(() {});
   }
 
-  void menuEntityChanged(MenuEntity cacheMenuEntity){
+  void menuEntityChanged(MenuEntity cacheMenuEntity) {
     menuEntity.copyWith(
       addons: cacheMenuEntity.addons.toList(),
       customPortion: cacheMenuEntity.customPortion,
       customPortions: cacheMenuEntity.customPortions,
       menuPortions: cacheMenuEntity.menuPortions.toList(),
     );
-    setState(() { });
+    setState(() {});
   }
 
   Future<void> onSaveAndNext() async {
@@ -124,11 +132,11 @@ class _ConfirmMenuPricePageController extends State<ConfirmMenuPricePage> {
           switch (menuState) {
             case NavigateToMenuImagePage():
               {
-                final result = await context.push(Routes.UPLOAD_MENU_IMAGE_PAGE,extra: {
-                  'menuEntity':menuState.menuEntity,
-                  'haveNewMenu':widget.haveNewMenu,
-                  'currentIndex':widget.currentIndex,
-                  'selectionUseCase':widget.selectionUseCase,
+                final result = await context.push(Routes.UPLOAD_MENU_IMAGE_PAGE, extra: {
+                  'menuEntity': menuState.menuEntity,
+                  'haveNewMenu': widget.haveNewMenu,
+                  'currentIndex': widget.currentIndex,
+                  'selectionUseCase': widget.selectionUseCase,
                 });
               }
           }
@@ -147,8 +155,6 @@ class _ConfirmMenuPricePageController extends State<ConfirmMenuPricePage> {
           },
         ),
       );
-
-
 }
 
 class _ConfirmMenuPricePageView extends WidgetView<ConfirmMenuPricePage, _ConfirmMenuPricePageController> {
@@ -360,10 +366,9 @@ class _ConfirmMenuPricePageView extends WidgetView<ConfirmMenuPricePage, _Confir
                                             ),
                                           ),
                                           secondChild: const Offstage(),
-                                          crossFadeState:
-                                              (state.listOfAddons.isNotEmpty)
-                                                  ? CrossFadeState.showFirst
-                                                  : CrossFadeState.showSecond,
+                                          crossFadeState: (state.listOfAddons.isNotEmpty)
+                                              ? CrossFadeState.showFirst
+                                              : CrossFadeState.showSecond,
                                           duration: const Duration(milliseconds: 500),
                                         ),
                                       ),
@@ -384,27 +389,27 @@ class _ConfirmMenuPricePageView extends WidgetView<ConfirmMenuPricePage, _Confir
                           textDirection: serviceLocator<LanguageController>().targetTextDirection,
                           children: [
                             const Spacer(),
-                            Directionality(
-                    textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                    child: RichText(
-                      text: TextSpan(
-                        style: context.bodyMedium!.copyWith(),
-                        children: <TextSpan>[
-                           TextSpan(
-                            text: 'Selling price ',
-                            style: context.labelMedium!.copyWith(),
-                          ),
-                          TextSpan(
-                            text: 'SAR ${state.basePriceOfItems-state.discountPriceOfItems}',
-                            style: context.bodyMedium!.copyWith(
-                              fontWeight: FontWeight.w600,
+                            /*Directionality(
+                              textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                              child: RichText(
+                                text: TextSpan(
+                                  style: context.bodyMedium!.copyWith(),
+                                  children: <TextSpan>[
+                                    TextSpan(
+                                      text: 'Selling price ',
+                                      style: context.labelMedium!.copyWith(),
+                                    ),
+                                    TextSpan(
+                                      text: 'SAR ${fetchFinalPrice(state.basePriceOfItems,state.discountPriceOfItems)}',
+                                      style: context.bodyMedium!.copyWith(
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
                             ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                            const AnimatedGap(12, duration: Duration(milliseconds: 500)),
+                            const AnimatedGap(12, duration: Duration(milliseconds: 500)),*/
                             Row(
                               mainAxisSize: MainAxisSize.min,
                               mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -439,5 +444,12 @@ class _ConfirmMenuPricePageView extends WidgetView<ConfirmMenuPricePage, _Confir
         ),
       ),
     );
+  }
+  double fetchFinalPrice(double basePriceOfItems,double discountPriceOfItems){
+    if(basePriceOfItems==discountPriceOfItems){
+      return basePriceOfItems;
+    }else{
+      return discountPriceOfItems;
+    }
   }
 }

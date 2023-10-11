@@ -169,21 +169,7 @@ class _SetAddonsPriceWidgetState extends State<SetAddonsPriceWidget> {
                     setCacheMenuAddonsMaxRetailPriceFunction(context, value);
                   }
                   widget.basePriceValueChanged!(double.parse(value));
-                  setState(() {});
-                },
-                onSaved: (newValue) {
-                  if (widget.hasGlobalMenuEntity) {
-                    setAddonsMaxRetailPriceFunction(
-                      context,
-                      maximumRetailPriceOfMenuTextEditingController.value.text.trim(),
-                    );
-                  } else {
-                    setCacheMenuAddonsMaxRetailPriceFunction(
-                      context,
-                      maximumRetailPriceOfMenuTextEditingController.value.text.trim(),
-                    );
-                  }
-                  return;
+                  //setState(() {});
                 },
               ),
               const Divider(
