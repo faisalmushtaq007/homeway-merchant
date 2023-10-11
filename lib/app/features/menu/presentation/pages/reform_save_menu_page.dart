@@ -361,7 +361,7 @@ class _ReFormSaveMenuPageController extends State<ReFormSaveMenuPage>
       selectedCategory= selectedCategory?.copyWith(subCategory: List<Category>.from([subCategory]));
       menuEntity.menuCategories = [selectedCategory!];
     }
-    return;
+    setState(() {});
   }
   void updateSelectedFoodPreparationType(List<StoreAvailableFoodPreparationType> selectedPreparationTypes) {
     _selectedFoodPreparationType =
@@ -370,13 +370,207 @@ class _ReFormSaveMenuPageController extends State<ReFormSaveMenuPage>
         .map((e) => MenuPreparationType.fromMap(e.toMap()))
         .toList());
     menuEntity.storeAvailableFoodPreparationType = cacheMenuPreparationType.toList();
+    setState(() {});
   }
 
   void menuTasteTypeSelection(List<TasteType> selectedTasteTypes) {
     _selectedTasteType = List<TasteType>.from(selectedTasteTypes);
-    //setState(() {});
     final cacheTasteType = _selectedTasteType[0];
     menuEntity.tasteType = cacheTasteType;
+    setState(() {});
+  }
+
+  void setMenuMaxStockValue() {
+    menuEntity.maxStockAvailable = int.tryParse(_menuMaxStockQuantityController.value.text.trim()) ?? 0;
+    setState(() {});
+  }
+
+  void setMenuMinStockValue() {
+    menuEntity.minStockAvailable = int.tryParse(_menuMinStockQuantityController.value.text.trim()) ?? 0;
+    setState(() {});
+  }
+
+  void menuMaxPreparationTimeSave() {
+    menuEntity.menuMaxPreparationTime = _menuMaxPreparationTimeController.value.text.trim();
+  }
+
+  Future<void> menuMaxPreparationTimeSelection() async {
+    final String? timing = await selectTiming(context);
+    if (timing != null) {
+      _menuMaxPreparationTimeController.text = timing ?? '';
+      menuEntity.menuTiming=_menuPreparationTiming?.copyWith(
+        maxPreparingTime: _menuMaxPreparationTimeController.value.text.trim(),
+      );
+      setState(() {});
+    }
+  }
+
+  void menuMinPreparationTimeSave() {
+    menuEntity.menuMinPreparationTime = _menuMinPreparationTimeController.value.text.trim();
+    setState(() {});
+  }
+
+  Future<void> menuMinPreparationTimeSelection() async {
+    final String? timing = await selectTiming(context);
+    if (timing != null) {
+      _menuMinPreparationTimeController.text = timing ?? '';
+      menuEntity.menuTiming=_menuPreparationTiming?.copyWith(
+        minPreparingTime: _menuMinPreparationTimeController.value.text.trim(),
+      );
+      setState(() {});
+    }
+  }
+
+  void menuAvailableClosingTimeSelection() {
+    menuEntity.menuAvailableToTime = _menuClosingTimeController.value.text.trim();
+    setState(() {});
+  }
+
+  void menuAvailableOpeningTimeSelection() {
+    menuEntity.menuAvailableFromTime = _menuOpeningTimeController.value.text.trim();
+    setState(() {});
+  }
+
+  void menuAvailableDaysSelection(List<StoreWorkingDayAndTime> selectedWorkingDays, ) {
+
+    _selectedWorkingDays = List<StoreWorkingDayAndTime>.from(selectedWorkingDays);
+    var cacheMenuAvailableDayAndTime = List<MenuAvailableDayAndTime>.from(_selectedWorkingDays
+        .map((e) => MenuAvailableDayAndTime.fromMap(e.toMap()))
+        .toList());
+    menuEntity.menuAvailableInDays =
+        cacheMenuAvailableDayAndTime.toList();
+    setState(() {});
+
+  }
+
+  Future<void> navigateToAddonsSelection() async {
+
+    final List<Addons>? addons =
+    await context.push<List<Addons>>(Routes.ALL_ADDONS_PAGE);
+    if (addons != null && addons.isNotEmpty) {
+      _selectedAddons = List<Addons>.from(addons.toList());
+      setState(() {});
+    }
+
+  }
+
+  void addonSelection(List<Addons> selectedAddons, ) {
+
+    _selectedAddons = List<Addons>.from(selectedAddons);
+    menuEntity.addons = _selectedAddons.toList();
+    setState(() {});
+
+  }
+
+  void setCustomPortionMaximumServe() {
+
+    if (_hasCustomMenuPortionSize) {
+      if (menuEntity.customPortion.isNull) {
+        menuEntity.customPortion = CustomPortion(
+            maxServingPerson: int.tryParse(_menuPortionMaximumServeController.value.text
+                .trim()) ??
+                0);
+      } else {
+        final data = menuEntity
+            .customPortion
+            ?.copyWith(
+            maxServingPerson: int.tryParse(_menuPortionMaximumServeController
+                .value
+                .text
+                .trim()) ??
+                0);
+        menuEntity.customPortion = data;
+      }
+      menuEntity.hasCustomPortion = true;
+      setState(() {});
+    }
+
+  }
+
+  void setCustomPortionUnit() {
+
+    if (_hasCustomMenuPortionSize) {
+      if (menuEntity.customPortion.isNull) {
+        menuEntity.customPortion = CustomPortion(
+            unit:
+            _menuPortionUnitController.value.text.trim());
+      } else {
+        final data = menuEntity
+            .customPortion
+            ?.copyWith(
+            unit: _menuPortionUnitController.value.text
+                .trim());
+        menuEntity.customPortion = data;
+      }
+      menuEntity.hasCustomPortion = true;
+      setState(() { });
+    }
+
+  }
+
+  void setCustomPortionSize() {
+    if (_hasCustomMenuPortionSize) {
+      if (menuEntity.customPortion.isNull) {
+        menuEntity.customPortion = CustomPortion(
+            quantity: double.tryParse(_menuPortionSizeController.value.text
+                .trim()) ??
+                0.0);
+      } else {
+        final data = menuEntity
+            .customPortion
+            ?.copyWith(
+            quantity: double.tryParse(_menuPortionSizeController.value.text
+                .trim()) ??
+                0.0);
+        menuEntity.customPortion = data;
+      }
+      menuEntity.hasCustomPortion = true;
+      setState(() { });
+    }
+
+  }
+
+  void setCustomPortionName() {
+
+    if (_hasCustomMenuPortionSize) {
+      if (menuEntity.customPortion.isNull) {
+        menuEntity.customPortion = CustomPortion(
+            title:
+            _menuPortionNameController.value.text.trim());
+      } else {
+        final data = menuEntity
+            .customPortion
+            ?.copyWith(
+            title: _menuPortionNameController.value.text
+                .trim());
+        menuEntity.customPortion = data;
+      }
+      menuEntity.hasCustomPortion = true;
+     setState(() { });
+    }
+
+  }
+
+  void setCustomMenuSelection(bool value) {
+    _hasCustomMenuPortionSize = value;
+    setState(() {});
+  }
+
+  void multiSelectionMenuPortion(List<MenuPortion> selectedMenuPortions, ) {
+    _selectedMenuPortions = List<MenuPortion>.from(selectedMenuPortions);
+    if (!_hasCustomMenuPortionSize) {
+      menuEntity.menuPortions =
+      List<MenuPortion>.from(_selectedMenuPortions.toList());
+      menuEntity.hasCustomPortion = false;
+    }
+    setState(() {});
+  }
+
+  void menuTasteLevelSelection(List<TasteLevel> selectedTasteLevel, ) {
+    _selectedTasteLevel = List<TasteLevel>.from(selectedTasteLevel);
+    menuEntity.tasteType?.tasteLevel =
+    List<TasteLevel>.from(_selectedTasteLevel.toList());
+    setState(() {});
   }
 
   Future<String?> selectTiming(
@@ -437,13 +631,93 @@ class _ReFormSaveMenuPageController extends State<ReFormSaveMenuPage>
     );
   }
 
+  String? stockMinQuantityValidation(String? value) {
+
+    String? validate= ValidatorGroup<String>([
+      const RequiredValidator<String>(errorMessage: 'Enter minimum stock quantity'),
+      if(_menuMaxStockQuantityController.value.text.isNotEmpty)
+        CustomValidator<String>(
+          validator: (value) {
+            final maximumStockValue = int.parse(_menuMaxStockQuantityController.value.text
+                .trim()
+                .replaceAll(RegExp(r'[^0-9]'), ''));
+            final minimumStockValue = int.parse(_menuMinStockQuantityController.value.text
+                .trim()
+                .replaceAll(RegExp(r'[^0-9]'), ''));
+            if (minimumStockValue > maximumStockValue) {
+              return 'Enter valid minimum quantity';
+            }
+            return null;
+          },
+        ),
+    ]).validate(value);
+    setState(() {});
+    return validate;
+  }
+
+  String? stockMaxQuantityValidation(String? value) {
+    String? validate=ValidatorGroup<String>([
+      const RequiredValidator<String>(errorMessage: 'Enter maximum stock quantity'),
+      if(_menuMinStockQuantityController.value.text.isNotEmpty)
+      CustomValidator<String>(
+        validator: (value) {
+          final maximumStockValue = int.parse(
+              _menuMaxStockQuantityController.value.text
+              .trim()
+              .replaceAll(RegExp(r'[^0-9]'), ''));
+          final minimumStockValue = int.parse(_menuMinStockQuantityController.value.text
+              .trim()
+              .replaceAll(RegExp(r'[^0-9]'), ''));
+          if (maximumStockValue < minimumStockValue) {
+            return 'Enter valid maximum quantity';
+          }
+          return null;
+        },
+      ),
+    ]).validate(value);
+    setState(() {});
+    return validate;
+  }
+
   Future<void> onSaveAndNext() async {
     if (formKey.currentState!.validate()) {
-
       formKey.currentState!.save();
       if(!widget.haveNewMenu && widget.menuEntity!=null){
-        menuEntity=widget.menuEntity!.copyWith();
+        menuEntity.copyWith(
+          menuId: widget.menuEntity!.menuId,
+          hasCustomPortion: _hasCustomMenuPortionSize,
+          maxStockAvailable: int.tryParse(_menuMaxStockQuantityController.value.text.trim()) ?? 0,
+          menuAvailableFromTime: _menuOpeningTimeController.value.text.trim(),
+          menuAvailableToTime: _menuClosingTimeController.value.text.trim(),
+          menuDescription: menuDescriptionTextEditingController.value.text.trim(),
+          menuMaxPreparationTime: _menuMaxPreparationTimeController.value.text.trim(),
+          menuMinPreparationTime: _menuMinPreparationTimeController.value.text.trim(),
+          menuName: menuNameTextEditingController.value.text.trim(),
+          minStockAvailable: int.tryParse(_menuMinStockQuantityController.value.text.trim()) ?? 0,
+          stock: Stock(
+            maxStockQuantity: int.tryParse(_menuMaxStockQuantityController.value.text.trim()) ?? 0,
+            minStockQuantity: int.tryParse(_menuMinStockQuantityController.value.text.trim()) ?? 0,
+          ),
+        );
       }
+      else{
+
+      menuEntity.copyWith(
+        hasCustomPortion: _hasCustomMenuPortionSize,
+        maxStockAvailable: int.tryParse(_menuMaxStockQuantityController.value.text.trim()) ?? 0,
+        menuAvailableFromTime: _menuOpeningTimeController.value.text.trim(),
+        menuAvailableToTime: _menuClosingTimeController.value.text.trim(),
+        menuDescription: menuDescriptionTextEditingController.value.text.trim(),
+        menuMaxPreparationTime: _menuMaxPreparationTimeController.value.text.trim(),
+        menuMinPreparationTime: _menuMinPreparationTimeController.value.text.trim(),
+        menuName: menuNameTextEditingController.value.text.trim(),
+        minStockAvailable: int.tryParse(_menuMinStockQuantityController.value.text.trim()) ?? 0,
+        stock: Stock(
+          maxStockQuantity: int.tryParse(_menuMaxStockQuantityController.value.text.trim()) ?? 0,
+              minStockQuantity: int.tryParse(_menuMinStockQuantityController.value.text.trim()) ?? 0,
+        ),
+      );
+    }
       context.read<MenuBloc>().add(
         PushMenuEntityData(
           menuEntity: menuEntity,
@@ -526,75 +800,97 @@ class _ReFormSaveMenuPageView extends WidgetView<ReFormSaveMenuPage, _ReFormSave
                         SliverList(
                           delegate: SliverChildListDelegate(
                             [
-                              const AnimatedGap(
-                                6,
-                                duration: Duration(milliseconds: 100),
-                              ),
-                              AppTextFieldWidget(
-                                key: const Key('reform-menuCategory-textfield-widget'),
-                                controller: state.menuCategoryTextEditingController,
-                                readOnly: true,
-                                textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                                focusNode: state.focusList[0],
-                                textInputAction: TextInputAction.next,
-                                onFieldSubmitted: (_) =>
-                                    fieldFocusChange(context, state.focusList[0], state.focusList[1]),
-                                keyboardType: TextInputType.text,
-                                decoration: InputDecoration(
-                                  labelText: 'Menu category',
-                                  hintText: 'Select your menu category',
-                                  border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(10),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.stretch,
+                                children: [
+                                  const AnimatedGap(
+                                    6,
+                                    duration: Duration(milliseconds: 100),
                                   ),
-                                  isDense: true,
-                                  suffixIcon: IconButton(
-                                    onPressed: () async {
+                                  AppTextFieldWidget(
+                                    key: const Key('reform-menuCategory-textfield-widget'),
+                                    controller: state.menuCategoryTextEditingController,
+                                    readOnly: true,
+                                    textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                    focusNode: state.focusList[0],
+                                    textInputAction: TextInputAction.next,
+                                    onFieldSubmitted: (_) =>
+                                        fieldFocusChange(context, state.focusList[0], state.focusList[1]),
+                                    keyboardType: TextInputType.text,
+                                    decoration: InputDecoration(
+                                      labelText: 'Menu category',
+                                      hintText: 'Select your menu category',
+                                      border: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(10),
+                                      ),
+                                      isDense: true,
+                                      suffixIcon: IconButton(
+                                        onPressed: () async {
+                                          //await selectMenuCategory(context);
+                                          final result = await context.push<List<Category?>>(
+                                            Routes.MAIN_CATEGORY_PAGE,
+                                          );
+                                          if (result != null && result[0] != null && result[1] != null) {
+                                            state.updateCategoryAndSubCategory(result[0]!, result[1]);
+                                          }
+                                          return;
+                                        },
+                                        icon: const Icon(
+                                          Icons.arrow_drop_down,
+                                        ),
+                                      ),
+                                    ),
+                                    validator: (value) {
+                                      if (value == null || value.isEmpty) {
+                                        return 'Select menu category';
+                                      }
+                                      return null;
+                                    },
+                                    onTap: () async {
                                       //await selectMenuCategory(context);
-                                      final result = await context.push<List<Category?>>(
-                                        Routes.MAIN_CATEGORY_PAGE,
-                                      );
+                                      final result = await context.push<List<Category?>>(Routes.MAIN_CATEGORY_PAGE);
                                       if (result != null && result[0] != null && result[1] != null) {
                                         state.updateCategoryAndSubCategory(result[0]!, result[1]);
                                       }
                                       return;
                                     },
-                                    icon: const Icon(
-                                      Icons.arrow_drop_down,
+                                  ),
+                                  const AnimatedGap(12, duration: Duration(milliseconds: 500)),
+                                  AppTextFieldWidget(
+                                    key: const Key('reform-menuSubCategory-textfield-widget'),
+                                    controller: state.menuSubCategoryTextEditingController,
+                                    readOnly: true,
+                                    textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                    textInputAction: TextInputAction.next,
+                                    keyboardType: TextInputType.text,
+                                    decoration: InputDecoration(
+                                      labelText: 'Menu sub-category',
+                                      hintText: 'Select your menu sub-category',
+                                      border: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(10),
+                                      ),
+                                      isDense: true,
+                                      suffixIcon: IconButton(
+                                        onPressed: () async {
+                                          //await selectMenuCategory(context);
+                                          final result = await context.push<List<Category?>>(Routes.MAIN_CATEGORY_PAGE);
+                                          if (result != null && result[0] != null && result[1] != null) {
+                                            //updateCategoryAndSubCategory(result[0]!, result[1]);
+                                          }
+                                          return;
+                                        },
+                                        icon: const Icon(
+                                          Icons.arrow_drop_down,
+                                        ),
+                                      ),
                                     ),
-                                  ),
-                                ),
-                                validator: (value) {
-                                  if (value == null || value.isEmpty) {
-                                    return 'Select menu category';
-                                  }
-                                  return null;
-                                },
-                                onTap: () async {
-                                  //await selectMenuCategory(context);
-                                  final result = await context.push<List<Category?>>(Routes.MAIN_CATEGORY_PAGE);
-                                  if (result != null && result[0] != null && result[1] != null) {
-                                    state.updateCategoryAndSubCategory(result[0]!, result[1]);
-                                  }
-                                  return;
-                                },
-                              ),
-                              const AnimatedGap(12, duration: Duration(milliseconds: 500)),
-                              AppTextFieldWidget(
-                                key: const Key('reform-menuSubCategory-textfield-widget'),
-                                controller: state.menuSubCategoryTextEditingController,
-                                readOnly: true,
-                                textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                                textInputAction: TextInputAction.next,
-                                keyboardType: TextInputType.text,
-                                decoration: InputDecoration(
-                                  labelText: 'Menu sub-category',
-                                  hintText: 'Select your menu sub-category',
-                                  border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(10),
-                                  ),
-                                  isDense: true,
-                                  suffixIcon: IconButton(
-                                    onPressed: () async {
+                                    validator: (value) {
+                                      if (value == null || value.isEmpty) {
+                                        return 'Select menu sub category';
+                                      }
+                                      return null;
+                                    },
+                                    onTap: () async {
                                       //await selectMenuCategory(context);
                                       final result = await context.push<List<Category?>>(Routes.MAIN_CATEGORY_PAGE);
                                       if (result != null && result[0] != null && result[1] != null) {
@@ -602,952 +898,876 @@ class _ReFormSaveMenuPageView extends WidgetView<ReFormSaveMenuPage, _ReFormSave
                                       }
                                       return;
                                     },
-                                    icon: const Icon(
-                                      Icons.arrow_drop_down,
-                                    ),
-                                  ),
-                                ),
-                                validator: (value) {
-                                  if (value == null || value.isEmpty) {
-                                    return 'Select menu sub category';
-                                  }
-                                  return null;
-                                },
-                                onTap: () async {
-                                  //await selectMenuCategory(context);
-                                  final result = await context.push<List<Category?>>(Routes.MAIN_CATEGORY_PAGE);
-                                  if (result != null && result[0] != null && result[1] != null) {
-                                    //updateCategoryAndSubCategory(result[0]!, result[1]);
-                                  }
-                                  return;
-                                },
-                              ),
-                              const AnimatedGap(12, duration: Duration(milliseconds: 500)),
-                              AppTextFieldWidget(
-                                key: const Key('reform-menu-name-textfield-widget'),
-                                controller: state.menuNameTextEditingController,
-                                textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                                focusNode: state.focusList[1],
-                                textInputAction: TextInputAction.next,
-                                onFieldSubmitted: (_) =>
-                                    fieldFocusChange(context, state.focusList[1], state.focusList[2]),
-                                keyboardType: TextInputType.name,
-                                inputFormatters: [
-                                  FilteringTextInputFormatter.allow(RegExp('[a-z A-Z ]')),
-                                  FilteringTextInputFormatter.deny('  ')
-                                ],
-                                decoration: InputDecoration(
-                                  labelText: 'Menu name',
-                                  hintText: 'Enter your menu name',
-                                  border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(10),
-                                  ),
-                                  isDense: true,
-                                ),
-                                maxLines: 2,
-                                validator: (value) {
-                                  if (value == null || value.isEmpty) {
-                                    return 'Enter menu name';
-                                  }
-                                  return null;
-                                },
-
-                              ),
-                              const AnimatedGap(12, duration: Duration(milliseconds: 500)),
-                              AppTextFieldWidget(
-                                key: const Key('reform-menu-description-textfield-widget'),
-                                controller: state.menuDescriptionTextEditingController,
-                                textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                                focusNode: state.focusList[2],
-                                textInputAction: TextInputAction.done,
-                                keyboardType: TextInputType.text,
-                                maxLines: 5,
-                                decoration: InputDecoration(
-                                  labelText: 'Menu description',
-                                  hintText: 'Enter either the description or about the ingredients of the menu.',
-                                  border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(10),
-                                  ),
-                                  isDense: true,
-                                ),
-                                validator: (value) {
-                                  if (value == null || value.isEmpty) {
-                                    return 'Enter menu description';
-                                  }
-                                  return null;
-                                },
-                              ),
-                              const Divider(thickness: 0.8),
-                              Column(
-                                mainAxisSize: MainAxisSize.min,
-                                crossAxisAlignment: CrossAxisAlignment.stretch,
-                                textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                                children: [
-                                  Wrap(
-                                    textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                                    children: [
-                                      Text(
-                                        'Food preparation method',
-                                        style: context.titleLarge!.copyWith(
-                                          fontWeight: FontWeight.w600,
-                                          fontSize: 20,
-                                        ),
-                                        textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                                      ).translate(),
-                                    ],
-                                  ),
-                                  const AnimatedGap(4, duration: Duration(milliseconds: 500)),
-                                  Wrap(
-                                    textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                                    children: [
-                                      Text(
-                                        'Choose the cooking methods of your menu',
-                                        style: context.labelMedium,
-                                        textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                                      ).translate(),
-                                    ],
-                                  ),
-                                ],
-                              ),
-                              const AnimatedGap(6, duration: Duration(milliseconds: 500)),
-                              MultiSelectAvailableFoodPreparationTypesFormField(
-                                key: const Key('reform-menu-multiSelectAvailableFoodPreparationTypes-formfield'),
-                                onSelectionChanged: state.updateSelectedFoodPreparationType,
-                                availableFoodPreparationTypesList: state._menuAvailableFoodCookingType.toList(),
-                                validator: (value) {
-                                  if (value == null || value.length == 0) {
-                                    return 'Select one or more food preparation type';
-                                  } else {
-                                    return null;
-                                  }
-                                },
-                                isSingleSelect: true,
-                                maxSelection: 1,
-                                initialSelectedFoodPreparationTypesList: state._initialSelectedFoodPreparationType,
-                              ),
-                              const Divider(),
-                              Column(
-                                mainAxisSize: MainAxisSize.min,
-                                crossAxisAlignment: CrossAxisAlignment.stretch,
-                                textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                                children: [
-                                  Wrap(
-                                    textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                                    children: [
-                                      Text(
-                                        'Taste type',
-                                        style: context.titleLarge!.copyWith(
-                                          fontWeight: FontWeight.w600,
-                                          fontSize: 20,
-                                        ),
-                                        textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                                      ).translate(),
-                                    ],
-                                  ),
-                                  const AnimatedGap(4, duration: Duration(milliseconds: 500)),
-                                  Wrap(
-                                    textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                                    children: [
-                                      Text(
-                                        'Select the food taste type of your menu',
-                                        style: context.labelMedium,
-                                        textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                                      ).translate(),
-                                    ],
-                                  ),
-                                ],
-                              ),
-                              const AnimatedGap(6, duration: Duration(milliseconds: 500)),
-                              MultiSelectTasteTypeFormField(
-                                key: const Key('reform-menu-multiSelectTasteType-formfield'),
-                                onSelectionChanged: state.menuTasteTypeSelection,
-                                availableTasteTypeList: state._menuTasteType.toList(),
-                                validator: (value) {
-                                  if (value == null || value.length == 0) {
-                                    return 'Select one or more taste type';
-                                  } else {
-                                    return null;
-                                  }
-                                },
-                                initialSelectedTasteTypeList: state._initialSelectedTasteType,
-                                maxSelection: 1,
-                                isSingleSelect: true,
-                                onMaxSelected: (List<TasteType> selectedTasteTypes) {
-                                  state._selectedTasteType = List<TasteType>.from(selectedTasteTypes);
-                                  //setState(() {});
-                                },
-                              ),
-                              const AnimatedGap(12, duration: Duration(milliseconds: 500)),
-                              Column(
-                                mainAxisSize: MainAxisSize.min,
-                                crossAxisAlignment: CrossAxisAlignment.stretch,
-                                textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                                children: [
-                                  Wrap(
-                                    textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                                    children: [
-                                      Text(
-                                        'Taste level',
-                                        style: context.titleLarge!.copyWith(
-                                          fontWeight: FontWeight.w600,
-                                          fontSize: 20,
-                                        ),
-                                        textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                                      ).translate(),
-                                    ],
-                                  ),
-                                  const AnimatedGap(4, duration: Duration(milliseconds: 500)),
-                                  Wrap(
-                                    textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                                    children: [
-                                      Text(
-                                        'Select the taste level of your menu',
-                                        style: context.labelMedium,
-                                        textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                                      ).translate(),
-                                    ],
-                                  ),
-                                ],
-                              ),
-                              const AnimatedGap(6, duration: Duration(milliseconds: 500)),
-                              MultiSelectTasteLevelFormField(
-                                key: const Key('reform-menu-multiSelectAvailableTasteLevel-formfield'),
-                                onSelectionChanged: (List<TasteLevel> selectedTasteLevel) {
-                                  menuTasteLevelSelection(selectedTasteLevel, context);
-                                },
-                                availableTasteLevelList: state._menuTasteLevel.toList(),
-                                validator: (value) {
-                                  if (value == null || value.length == 0) {
-                                    return 'Select one or more taste level';
-                                  } else {
-                                    return null;
-                                  }
-                                },
-                                maxSelection: 1,
-                                isSingleSelect: true,
-                                initialSelectedTasteLevelList: state._initialSelectedTasteLevel,
-                              ),
-                              const Divider(),
-                              Column(
-                                mainAxisSize: MainAxisSize.min,
-                                crossAxisAlignment: CrossAxisAlignment.stretch,
-                                textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                                children: [
-                                  Wrap(
-                                    textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                                    children: [
-                                      Text(
-                                        'Portion size of menu',
-                                        style: context.titleLarge!.copyWith(
-                                          fontWeight: FontWeight.w600,
-                                          fontSize: 20,
-                                        ),
-                                        textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                                      ).translate(),
-                                    ],
-                                  ),
-                                  const AnimatedGap(4, duration: Duration(milliseconds: 500)),
-                                  Wrap(
-                                    textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                                    children: [
-                                      Text(
-                                        'Select the menu serving size or quantity availability',
-                                        style: context.labelMedium,
-                                        textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                                      ).translate(),
-                                    ],
-                                  ),
-                                ],
-                              ),
-                              const AnimatedGap(6, duration: Duration(milliseconds: 500)),
-                              MultiSelectMenuPortionFormField(
-                                key: const Key('reform-menu-multiSelectAvailableMenuPortions-formfield'),
-                                onSelectionChanged: (List<MenuPortion> selectedMenuPortions) {
-                                  multiSelectionMenuPortion(selectedMenuPortions, context);
-                                },
-                                availableMenuPortionList: state._menuPortions.toList(),
-                                validator: (value) {
-                                  if (!state._hasCustomMenuPortionSize) {
-                                    if (value == null || value.isEmpty) {
-                                      return 'Select one or more portions';
-                                    } else {
-                                      return null;
-                                    }
-                                  }
-                                  return null;
-                                },
-                                initialSelectedMenuPortionList: state._initialSelectedMenuPortions,
-                              ),
-                              Card(
-                                key: const Key('reform-custom-portion-widget'),
-                                margin: const EdgeInsetsDirectional.only(start: 0, end: 0, top: 4, bottom: 4),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadiusDirectional.circular(10),
-                                ),
-                                child: Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                                  textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                                  children: [
-                                    SwitchListTile(
-                                      onChanged: (value) {
-                                        customMenuSelection(value);
-                                        //setState(() {});
-                                      },
-                                      value: state._hasCustomMenuPortionSize,
-                                      title: Text(
-                                        'Select your own portion size',
-                                        style: context.titleMedium!.copyWith(fontWeight: FontWeight.w500),
-                                        textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                                      ).translate(),
-                                      isThreeLine: false,
-                                      dense: true,
-                                      controlAffinity: ListTileControlAffinity.leading,
-                                      visualDensity: const VisualDensity(horizontal: -4, vertical: 0),
-                                    ),
-                                    AnimatedCrossFade(
-                                      firstChild: const SizedBox.shrink(),
-                                      secondChild: Padding(
-                                        padding: const EdgeInsetsDirectional.fromSTEB(8, 2, 8, 12),
-                                        child: Column(
-                                          mainAxisSize: MainAxisSize.min,
-                                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                                          textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                                          children: [
-                                            const AnimatedGap(8, duration: Duration(milliseconds: 500)),
-                                            IntrinsicHeight(
-                                              child: Row(
-                                                mainAxisSize: MainAxisSize.min,
-                                                crossAxisAlignment: CrossAxisAlignment.center,
-                                                textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                                                children: [
-                                                  Expanded(
-                                                    child: AppTextFieldWidget(
-                                                      controller: state._menuPortionNameController,
-                                                      textDirection:
-                                                          serviceLocator<LanguageController>().targetTextDirection,
-                                                      focusNode: state.focusList[2],
-                                                      onFieldSubmitted: (_) => fieldFocusChange(
-                                                          context, state.focusList[2], state.focusList[3]),
-                                                      textInputAction: TextInputAction.next,
-                                                      keyboardType: TextInputType.text,
-                                                      decoration: InputDecoration(
-                                                        labelText: 'Your Portion name',
-                                                        hintText: 'Enter your portion name',
-                                                        border: OutlineInputBorder(
-                                                          borderRadius: BorderRadius.circular(10),
-                                                        ),
-                                                        isDense: true,
-                                                      ),
-                                                      validator: (value) {
-                                                        if (state._hasCustomMenuPortionSize) {
-                                                          if (value == null || value.isEmpty) {
-                                                            return 'Please enter your portion name';
-                                                          } else {
-                                                            return null;
-                                                          }
-                                                        }
-                                                        return null;
-                                                      },
-                                                      onSaved: (newValue) {
-                                                        setCustomePortionName(context);
-                                                      },
-                                                    ),
-                                                  ),
-                                                  //
-                                                ],
-                                              ),
-                                            ),
-                                            const AnimatedGap(12, duration: Duration(milliseconds: 500)),
-                                            IntrinsicHeight(
-                                              child: Row(
-                                                mainAxisSize: MainAxisSize.min,
-                                                crossAxisAlignment: CrossAxisAlignment.center,
-                                                textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                                                children: [
-                                                  Expanded(
-                                                    flex: 2,
-                                                    child: AppTextFieldWidget(
-                                                      controller: state._menuPortionSizeController,
-                                                      textDirection:
-                                                          serviceLocator<LanguageController>().targetTextDirection,
-                                                      focusNode: state.focusList[3],
-                                                      textInputAction: TextInputAction.next,
-                                                      onFieldSubmitted: (_) => fieldFocusChange(
-                                                          context, state.focusList[3], state.focusList[4]),
-                                                      keyboardType: const TextInputType.numberWithOptions(),
-                                                      decoration: InputDecoration(
-                                                        labelText: 'Portion value',
-                                                        hintText: 'Enter portion value',
-                                                        border: OutlineInputBorder(
-                                                          borderRadius: BorderRadius.circular(10),
-                                                        ),
-                                                        isDense: true,
-                                                      ),
-                                                      validator: (value) {
-                                                        if (state._hasCustomMenuPortionSize) {
-                                                          if (value == null || value.isEmpty) {
-                                                            return 'Please enter portion value';
-                                                          } else {
-                                                            return null;
-                                                          }
-                                                        }
-                                                        return null;
-                                                      },
-                                                      onSaved: (newValue) {
-                                                        setCustomPortionSize(context);
-                                                      },
-                                                    ),
-                                                  ),
-                                                  const AnimatedGap(18, duration: Duration(milliseconds: 500)),
-                                                  Expanded(
-                                                    child: AppTextFieldWidget(
-                                                      controller: state._menuPortionUnitController,
-                                                      textDirection:
-                                                          serviceLocator<LanguageController>().targetTextDirection,
-                                                      focusNode: state.focusList[4],
-                                                      textInputAction: TextInputAction.next,
-                                                      onFieldSubmitted: (_) => fieldFocusChange(
-                                                          context, state.focusList[4], state.focusList[5]),
-                                                      keyboardType: TextInputType.text,
-                                                      textCapitalization: TextCapitalization.words,
-                                                      decoration: InputDecoration(
-                                                        labelText: 'Unit',
-                                                        hintText: 'Enter unit of menu',
-                                                        border: OutlineInputBorder(
-                                                          borderRadius: BorderRadius.circular(10),
-                                                        ),
-                                                        isDense: true,
-                                                      ),
-                                                      validator: (value) {
-                                                        if (state._hasCustomMenuPortionSize) {
-                                                          if (value == null || value.isEmpty) {
-                                                            return 'Please enter unit of menu';
-                                                          } else {
-                                                            return null;
-                                                          }
-                                                        }
-                                                        return null;
-                                                      },
-                                                      onSaved: (newValue) {
-                                                        setCustomPortionUnit(context);
-                                                      },
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                            const AnimatedGap(12, duration: Duration(milliseconds: 500)),
-                                            IntrinsicHeight(
-                                              child: Row(
-                                                mainAxisSize: MainAxisSize.min,
-                                                crossAxisAlignment: CrossAxisAlignment.center,
-                                                textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                                                children: [
-                                                  Expanded(
-                                                    child: AppTextFieldWidget(
-                                                      controller: state._menuPortionMaximumServeController,
-                                                      textDirection:
-                                                          serviceLocator<LanguageController>().targetTextDirection,
-                                                      focusNode: state.focusList[5],
-                                                      textInputAction: TextInputAction.done,
-                                                      keyboardType: const TextInputType.numberWithOptions(),
-                                                      decoration: InputDecoration(
-                                                        labelText: 'Maximum Serving Persons',
-                                                        hintText: 'Enter maximum serving persons',
-                                                        border: OutlineInputBorder(
-                                                          borderRadius: BorderRadius.circular(10),
-                                                        ),
-                                                        isDense: true,
-                                                      ),
-                                                      validator: (value) {
-                                                        if (state._hasCustomMenuPortionSize) {
-                                                          if (value == null || value.isEmpty) {
-                                                            return 'Please enter maximum serving persons';
-                                                          } else {
-                                                            return null;
-                                                          }
-                                                        }
-                                                        return null;
-                                                      },
-
-                                                      onSaved: (newValue) {
-                                                        setCustomPortionMaximumServe(context);
-                                                      },
-                                                    ),
-                                                  ),
-                                                  //
-                                                ],
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                      crossFadeState: (state._hasCustomMenuPortionSize == true)
-                                          ? CrossFadeState.showSecond
-                                          : CrossFadeState.showFirst,
-                                      duration: const Duration(milliseconds: 500),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              const AnimatedGap(12, duration: Duration(milliseconds: 500)),
-                              Column(
-                                mainAxisSize: MainAxisSize.min,
-                                crossAxisAlignment: CrossAxisAlignment.stretch,
-                                textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                                children: [
-                                  Wrap(
-                                    textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                                    children: [
-                                      Text(
-                                        'Extras',
-                                        style: context.titleLarge!.copyWith(
-                                          fontWeight: FontWeight.w600,
-                                          fontSize: 20,
-                                        ),
-                                        textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                                      ).translate(),
-                                    ],
-                                  ),
-                                  const AnimatedGap(2, duration: Duration(milliseconds: 500)),
-                                  Wrap(
-                                    textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                                    children: [
-                                      Text(
-                                        'Add customization options add to your menu item',
-                                        style: context.labelMedium,
-                                        textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                                      ).translate(),
-                                    ],
-                                  ),
-                                  const AnimatedGap(8, duration: Duration(milliseconds: 500)),
-                                  AnimatedCrossFade(
-                                    duration: const Duration(milliseconds: 500),
-                                    crossFadeState: (state._selectedAddons.isNotEmpty)
-                                        ? CrossFadeState.showFirst
-                                        : CrossFadeState.showSecond,
-                                    firstChild: MultiSelectAddonsFormField(
-                                      key: const Key('reform-menu-multiSelectAvailableMenuAddons-formfield'),
-                                      onSelectionChanged: (List<Addons> selectedAddons) {
-                                        return addonSelection(selectedAddons, context);
-                                      },
-                                      availableAddonsList: state._selectedAddons.toList(),
-                                      initialSelectedAddonsList: state._initialSelectedAddons,
-                                    ),
-                                    secondChild: const Offstage(),
                                   ),
                                   const AnimatedGap(12, duration: Duration(milliseconds: 500)),
-                                  ElevatedButton.icon(
-                                    style: ElevatedButton.styleFrom(
-                                      //visualDensity: VisualDensity(vertical: -1, horizontal: 0),
-                                      shape: const RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.all(
-                                          Radius.circular(10),
-                                        ),
+                                  AppTextFieldWidget(
+                                    key: const Key('reform-menu-name-textfield-widget'),
+                                    controller: state.menuNameTextEditingController,
+                                    textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                    focusNode: state.focusList[1],
+                                    textInputAction: TextInputAction.next,
+                                    onFieldSubmitted: (_) =>
+                                        fieldFocusChange(context, state.focusList[1], state.focusList[2]),
+                                    keyboardType: TextInputType.name,
+                                    inputFormatters: [
+                                      FilteringTextInputFormatter.allow(RegExp('[a-z A-Z ]')),
+                                      FilteringTextInputFormatter.deny('  ')
+                                    ],
+                                    decoration: InputDecoration(
+                                      labelText: 'Menu name',
+                                      hintText: 'Enter your menu name',
+                                      border: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(10),
                                       ),
-                                      backgroundColor: const Color.fromRGBO(238, 238, 238, 1.0),
+                                      isDense: true,
                                     ),
-                                    icon: const Icon(
-                                      Icons.add,
-                                      color: Color.fromRGBO(42, 45, 48, 1.0),
-                                    ),
-                                    label: Text(
-                                      'Add Addons Menu',
-                                      style: const TextStyle(
-                                        color: Color.fromRGBO(42, 45, 50, 1.0),
-                                      ),
-                                      textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                                    ).translate(),
-                                    onPressed: () async {
-                                      await navigateToAddonsSelection(context);
-                                      return;
+                                    maxLines: 2,
+                                    validator: (value) {
+                                      if (value == null || value.isEmpty) {
+                                        return 'Enter menu name';
+                                      }
+                                      return null;
                                     },
-                                  )
-                                ],
-                              ),
-                              const Divider(thickness: 0.8),
-                              Column(
-                                mainAxisSize: MainAxisSize.min,
-                                crossAxisAlignment: CrossAxisAlignment.stretch,
-                                textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                                children: [
-                                  Wrap(
-                                    textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                                    children: [
-                                      Text(
-                                        'Menu availability',
-                                        style: context.titleLarge!.copyWith(
-                                          fontWeight: FontWeight.w600,
-                                          fontSize: 20,
-                                        ),
-                                        textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                                      ).translate(),
-                                    ],
+
                                   ),
-                                  const AnimatedGap(2, duration: Duration(milliseconds: 500)),
-                                  Wrap(
+                                  const AnimatedGap(12, duration: Duration(milliseconds: 500)),
+                                  AppTextFieldWidget(
+                                    key: const Key('reform-menu-description-textfield-widget'),
+                                    controller: state.menuDescriptionTextEditingController,
                                     textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                                    children: [
-                                      Text(
-                                        'Select menu availability day(s) and time',
-                                        style: context.labelMedium,
-                                        textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                                      ).translate(),
-                                    ],
-                                  ),
-                                ],
-                              ),
-                              const AnimatedGap(12, duration: Duration(milliseconds: 500)),
-                              Text(
-                                'Select days',
-                                textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                                style: context.titleMedium!.copyWith(
-                                  fontWeight: FontWeight.w600,
-                                  fontSize: 14,
-                                ),
-                              ).translate(),
-                              const AnimatedGap(6, duration: Duration(milliseconds: 500)),
-                              MultiSelectAvailableWorkingDaysFormField(
-                                key: const Key('reform-menu-working-days-widget'),
-                                onSelectionChanged: (List<StoreWorkingDayAndTime> selectedWorkingDays) {
-                                  menuAvailableDaysSelection(selectedWorkingDays, context);
-                                },
-                                availableWorkingDaysList: state._menuAvailableDays.toList(),
-                                validator: (value) {
-                                  return ValidatorGroup<List<StoreWorkingDayAndTime>>([
-                                    const RequiredValidator<List<StoreWorkingDayAndTime>>(
-                                        errorMessage: 'Select valid time'),
-                                    CustomValidator<List<StoreWorkingDayAndTime>>(
-                                      validator: (value) {
-                                        if (value == null || value.isEmpty) {
-                                          return 'Select one or more days';
-                                        }
-                                        return null;
-                                      },
+                                    focusNode: state.focusList[2],
+                                    textInputAction: TextInputAction.done,
+                                    keyboardType: TextInputType.text,
+                                    maxLines: 5,
+                                    decoration: InputDecoration(
+                                      labelText: 'Menu description',
+                                      hintText: 'Enter either the description or about the ingredients of the menu.',
+                                      border: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(10),
+                                      ),
+                                      isDense: true,
                                     ),
-                                  ]).validate(value);
-                                },
-                                initialSelectedAvailableWorkingDaysList: [],
-                              ),
-                              const AnimatedGap(12, duration: Duration(milliseconds: 500)),
-                              Wrap(
-                                textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                                children: [
+                                    validator: (value) {
+                                      if (value == null || value.isEmpty) {
+                                        return 'Enter menu description';
+                                      }
+                                      return null;
+                                    },
+                                  ),
+                                  const Divider(thickness: 0.8),
+                                  Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                                    textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                    children: [
+                                      Wrap(
+                                        textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                        children: [
+                                          Text(
+                                            'Food preparation method',
+                                            style: context.titleLarge!.copyWith(
+                                              fontWeight: FontWeight.w600,
+                                              fontSize: 20,
+                                            ),
+                                            textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                          ).translate(),
+                                        ],
+                                      ),
+                                      const AnimatedGap(4, duration: Duration(milliseconds: 500)),
+                                      Wrap(
+                                        textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                        children: [
+                                          Text(
+                                            'Choose the cooking methods of your menu',
+                                            style: context.labelMedium,
+                                            textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                          ).translate(),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                  const AnimatedGap(6, duration: Duration(milliseconds: 500)),
+                                  MultiSelectAvailableFoodPreparationTypesFormField(
+                                    key: const Key('reform-menu-multiSelectAvailableFoodPreparationTypes-formfield'),
+                                    onSelectionChanged: state.updateSelectedFoodPreparationType,
+                                    availableFoodPreparationTypesList: state._menuAvailableFoodCookingType.toList(),
+                                    validator: (value) {
+                                      if (value == null || value.length == 0) {
+                                        return 'Select one or more food preparation type';
+                                      } else {
+                                        return null;
+                                      }
+                                    },
+                                    isSingleSelect: true,
+                                    maxSelection: 1,
+                                    initialSelectedFoodPreparationTypesList: state._initialSelectedFoodPreparationType,
+                                  ),
+                                  const Divider(),
+                                  Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                                    textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                    children: [
+                                      Wrap(
+                                        textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                        children: [
+                                          Text(
+                                            'Taste type',
+                                            style: context.titleLarge!.copyWith(
+                                              fontWeight: FontWeight.w600,
+                                              fontSize: 20,
+                                            ),
+                                            textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                          ).translate(),
+                                        ],
+                                      ),
+                                      const AnimatedGap(4, duration: Duration(milliseconds: 500)),
+                                      Wrap(
+                                        textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                        children: [
+                                          Text(
+                                            'Select the food taste type of your menu',
+                                            style: context.labelMedium,
+                                            textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                          ).translate(),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                  const AnimatedGap(6, duration: Duration(milliseconds: 500)),
+                                  MultiSelectTasteTypeFormField(
+                                    key: const Key('reform-menu-multiSelectTasteType-formfield'),
+                                    onSelectionChanged: state.menuTasteTypeSelection,
+                                    availableTasteTypeList: state._menuTasteType.toList(),
+                                    validator: (value) {
+                                      if (value == null || value.length == 0) {
+                                        return 'Select one or more taste type';
+                                      } else {
+                                        return null;
+                                      }
+                                    },
+                                    initialSelectedTasteTypeList: state._initialSelectedTasteType,
+                                    maxSelection: 1,
+                                    isSingleSelect: true,
+                                    onMaxSelected: (List<TasteType> selectedTasteTypes) {
+                                      state._selectedTasteType = List<TasteType>.from(selectedTasteTypes);
+                                      //setState(() {});
+                                    },
+                                  ),
+                                  const AnimatedGap(12, duration: Duration(milliseconds: 500)),
+                                  Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                                    textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                    children: [
+                                      Wrap(
+                                        textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                        children: [
+                                          Text(
+                                            'Taste level',
+                                            style: context.titleLarge!.copyWith(
+                                              fontWeight: FontWeight.w600,
+                                              fontSize: 20,
+                                            ),
+                                            textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                          ).translate(),
+                                        ],
+                                      ),
+                                      const AnimatedGap(4, duration: Duration(milliseconds: 500)),
+                                      Wrap(
+                                        textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                        children: [
+                                          Text(
+                                            'Select the taste level of your menu',
+                                            style: context.labelMedium,
+                                            textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                          ).translate(),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                  const AnimatedGap(6, duration: Duration(milliseconds: 500)),
+                                  MultiSelectTasteLevelFormField(
+                                    key: const Key('reform-menu-multiSelectAvailableTasteLevel-formfield'),
+                                    onSelectionChanged: state.menuTasteLevelSelection,
+                                    availableTasteLevelList: state._menuTasteLevel.toList(),
+                                    validator: (value) {
+                                      if (value == null || value.length == 0) {
+                                        return 'Select one or more taste level';
+                                      } else {
+                                        return null;
+                                      }
+                                    },
+                                    maxSelection: 1,
+                                    isSingleSelect: true,
+                                    initialSelectedTasteLevelList: state._initialSelectedTasteLevel,
+                                  ),
+                                  const Divider(),
+                                  Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                                    textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                    children: [
+                                      Wrap(
+                                        textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                        children: [
+                                          Text(
+                                            'Portion size of menu',
+                                            style: context.titleLarge!.copyWith(
+                                              fontWeight: FontWeight.w600,
+                                              fontSize: 20,
+                                            ),
+                                            textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                          ).translate(),
+                                        ],
+                                      ),
+                                      const AnimatedGap(4, duration: Duration(milliseconds: 500)),
+                                      Wrap(
+                                        textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                        children: [
+                                          Text(
+                                            'Select the menu serving size or quantity availability',
+                                            style: context.labelMedium,
+                                            textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                          ).translate(),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                  const AnimatedGap(6, duration: Duration(milliseconds: 500)),
+                                  MultiSelectMenuPortionFormField(
+                                    key: const Key('reform-menu-multiSelectAvailableMenuPortions-formfield'),
+                                    onSelectionChanged: state.multiSelectionMenuPortion,
+                                    availableMenuPortionList: state._menuPortions.toList(),
+                                    validator: (value) {
+                                      if (!state._hasCustomMenuPortionSize) {
+                                        if (value == null || value.isEmpty) {
+                                          return 'Select one or more portions';
+                                        } else {
+                                          return null;
+                                        }
+                                      }
+                                      return null;
+                                    },
+                                    initialSelectedMenuPortionList: state._initialSelectedMenuPortions,
+                                  ),
+                                  Card(
+                                    key: const Key('reform-custom-portion-widget'),
+                                    margin: const EdgeInsetsDirectional.only(start: 0, end: 0, top: 4, bottom: 4),
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadiusDirectional.circular(10),
+                                    ),
+                                    child: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      mainAxisAlignment: MainAxisAlignment.start,
+                                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                                      textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                      children: [
+                                        SwitchListTile(
+                                          onChanged: state.setCustomMenuSelection,
+                                          value: state._hasCustomMenuPortionSize,
+                                          title: Text(
+                                            'Select your own portion size',
+                                            style: context.titleMedium!.copyWith(fontWeight: FontWeight.w500),
+                                            textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                          ).translate(),
+                                          isThreeLine: false,
+                                          dense: true,
+                                          controlAffinity: ListTileControlAffinity.leading,
+                                          visualDensity: const VisualDensity(horizontal: -4, vertical: 0),
+                                        ),
+                                        AnimatedCrossFade(
+                                          firstChild: const SizedBox.shrink(),
+                                          secondChild: Padding(
+                                            padding: const EdgeInsetsDirectional.fromSTEB(8, 2, 8, 12),
+                                            child: Column(
+                                              mainAxisSize: MainAxisSize.min,
+                                              crossAxisAlignment: CrossAxisAlignment.stretch,
+                                              textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                              children: [
+                                                const AnimatedGap(8, duration: Duration(milliseconds: 500)),
+                                                IntrinsicHeight(
+                                                  child: Row(
+                                                    mainAxisSize: MainAxisSize.min,
+                                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                                    textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                                    children: [
+                                                      Expanded(
+                                                        child: AppTextFieldWidget(
+                                                          controller: state._menuPortionNameController,
+                                                          textDirection:
+                                                          serviceLocator<LanguageController>().targetTextDirection,
+                                                          focusNode: state.focusList[2],
+                                                          onFieldSubmitted: (_) => fieldFocusChange(
+                                                              context, state.focusList[2], state.focusList[3]),
+                                                          textInputAction: TextInputAction.next,
+                                                          keyboardType: TextInputType.text,
+                                                          decoration: InputDecoration(
+                                                            labelText: 'Your Portion name',
+                                                            hintText: 'Enter your portion name',
+                                                            border: OutlineInputBorder(
+                                                              borderRadius: BorderRadius.circular(10),
+                                                            ),
+                                                            isDense: true,
+                                                          ),
+                                                          validator: (value) {
+                                                            if (state._hasCustomMenuPortionSize) {
+                                                              if (value == null || value.isEmpty) {
+                                                                return 'Please enter your portion name';
+                                                              } else {
+                                                                return null;
+                                                              }
+                                                            }
+                                                            return null;
+                                                          },
+                                                          onSaved: (newValue) {
+                                                            return state.setCustomPortionName();
+                                                          },
+                                                        ),
+                                                      ),
+                                                      //
+                                                    ],
+                                                  ),
+                                                ),
+                                                const AnimatedGap(12, duration: Duration(milliseconds: 500)),
+                                                IntrinsicHeight(
+                                                  child: Row(
+                                                    mainAxisSize: MainAxisSize.min,
+                                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                                    textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                                    children: [
+                                                      Expanded(
+                                                        flex: 2,
+                                                        child: AppTextFieldWidget(
+                                                          controller: state._menuPortionSizeController,
+                                                          textDirection:
+                                                          serviceLocator<LanguageController>().targetTextDirection,
+                                                          focusNode: state.focusList[3],
+                                                          textInputAction: TextInputAction.next,
+                                                          onFieldSubmitted: (_) => fieldFocusChange(
+                                                              context, state.focusList[3], state.focusList[4]),
+                                                          keyboardType: const TextInputType.numberWithOptions(),
+                                                          decoration: InputDecoration(
+                                                            labelText: 'Portion value',
+                                                            hintText: 'Enter portion value',
+                                                            border: OutlineInputBorder(
+                                                              borderRadius: BorderRadius.circular(10),
+                                                            ),
+                                                            isDense: true,
+                                                          ),
+                                                          validator: (value) {
+                                                            if (state._hasCustomMenuPortionSize) {
+                                                              if (value == null || value.isEmpty) {
+                                                                return 'Please enter portion value';
+                                                              } else {
+                                                                return null;
+                                                              }
+                                                            }
+                                                            return null;
+                                                          },
+                                                          onSaved: (newValue) {
+                                                            state.setCustomPortionSize();
+                                                          },
+                                                        ),
+                                                      ),
+                                                      const AnimatedGap(18, duration: Duration(milliseconds: 500)),
+                                                      Expanded(
+                                                        child: AppTextFieldWidget(
+                                                          controller: state._menuPortionUnitController,
+                                                          textDirection:
+                                                          serviceLocator<LanguageController>().targetTextDirection,
+                                                          focusNode: state.focusList[4],
+                                                          textInputAction: TextInputAction.next,
+                                                          onFieldSubmitted: (_) => fieldFocusChange(
+                                                              context, state.focusList[4], state.focusList[5]),
+                                                          keyboardType: TextInputType.text,
+                                                          textCapitalization: TextCapitalization.words,
+                                                          decoration: InputDecoration(
+                                                            labelText: 'Unit',
+                                                            hintText: 'Enter unit of menu',
+                                                            border: OutlineInputBorder(
+                                                              borderRadius: BorderRadius.circular(10),
+                                                            ),
+                                                            isDense: true,
+                                                          ),
+                                                          validator: (value) {
+                                                            if (state._hasCustomMenuPortionSize) {
+                                                              if (value == null || value.isEmpty) {
+                                                                return 'Please enter unit of menu';
+                                                              } else {
+                                                                return null;
+                                                              }
+                                                            }
+                                                            return null;
+                                                          },
+                                                          onSaved: (newValue) {
+                                                            state.setCustomPortionUnit();
+                                                          },
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                                const AnimatedGap(12, duration: Duration(milliseconds: 500)),
+                                                IntrinsicHeight(
+                                                  child: Row(
+                                                    mainAxisSize: MainAxisSize.min,
+                                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                                    textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                                    children: [
+                                                      Expanded(
+                                                        child: AppTextFieldWidget(
+                                                          controller: state._menuPortionMaximumServeController,
+                                                          textDirection:
+                                                          serviceLocator<LanguageController>().targetTextDirection,
+                                                          focusNode: state.focusList[5],
+                                                          textInputAction: TextInputAction.done,
+                                                          keyboardType: const TextInputType.numberWithOptions(),
+                                                          decoration: InputDecoration(
+                                                            labelText: 'Maximum Serving Persons',
+                                                            hintText: 'Enter maximum serving persons',
+                                                            border: OutlineInputBorder(
+                                                              borderRadius: BorderRadius.circular(10),
+                                                            ),
+                                                            isDense: true,
+                                                          ),
+                                                          validator: (value) {
+                                                            if (state._hasCustomMenuPortionSize) {
+                                                              if (value == null || value.isEmpty) {
+                                                                return 'Please enter maximum serving persons';
+                                                              } else {
+                                                                return null;
+                                                              }
+                                                            }
+                                                            return null;
+                                                          },
+
+                                                          onSaved: (newValue) {
+                                                            state.setCustomPortionMaximumServe();
+                                                          },
+                                                        ),
+                                                      ),
+                                                      //
+                                                    ],
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                          crossFadeState: (state._hasCustomMenuPortionSize == true)
+                                              ? CrossFadeState.showSecond
+                                              : CrossFadeState.showFirst,
+                                          duration: const Duration(milliseconds: 500),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  const AnimatedGap(12, duration: Duration(milliseconds: 500)),
+                                  Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                                    textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                    children: [
+                                      Wrap(
+                                        textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                        children: [
+                                          Text(
+                                            'Extras',
+                                            style: context.titleLarge!.copyWith(
+                                              fontWeight: FontWeight.w600,
+                                              fontSize: 20,
+                                            ),
+                                            textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                          ).translate(),
+                                        ],
+                                      ),
+                                      const AnimatedGap(2, duration: Duration(milliseconds: 500)),
+                                      Wrap(
+                                        textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                        children: [
+                                          Text(
+                                            'Add customization options add to your menu item',
+                                            style: context.labelMedium,
+                                            textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                          ).translate(),
+                                        ],
+                                      ),
+                                      const AnimatedGap(8, duration: Duration(milliseconds: 500)),
+                                      AnimatedCrossFade(
+                                        duration: const Duration(milliseconds: 500),
+                                        crossFadeState: (state._selectedAddons.isNotEmpty)
+                                            ? CrossFadeState.showFirst
+                                            : CrossFadeState.showSecond,
+                                        firstChild: MultiSelectAddonsFormField(
+                                          key: const Key('reform-menu-multiSelectAvailableMenuAddons-formfield'),
+                                          onSelectionChanged: state.addonSelection,
+                                          availableAddonsList: state._selectedAddons.toList(),
+                                          initialSelectedAddonsList: state._initialSelectedAddons,
+                                        ),
+                                        secondChild: const Offstage(),
+                                      ),
+                                      const AnimatedGap(12, duration: Duration(milliseconds: 500)),
+                                      ElevatedButton.icon(
+                                        style: ElevatedButton.styleFrom(
+                                          //visualDensity: VisualDensity(vertical: -1, horizontal: 0),
+                                          shape: const RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.all(
+                                              Radius.circular(10),
+                                            ),
+                                          ),
+                                          backgroundColor: const Color.fromRGBO(238, 238, 238, 1.0),
+                                        ),
+                                        icon: const Icon(
+                                          Icons.add,
+                                          color: Color.fromRGBO(42, 45, 48, 1.0),
+                                        ),
+                                        label: Text(
+                                          'Add Addons Menu',
+                                          style: const TextStyle(
+                                            color: Color.fromRGBO(42, 45, 50, 1.0),
+                                          ),
+                                          textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                        ).translate(),
+                                        onPressed: state.navigateToAddonsSelection,
+                                      )
+                                    ],
+                                  ),
+                                  const Divider(thickness: 0.8),
+                                  Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                                    textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                    children: [
+                                      Wrap(
+                                        textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                        children: [
+                                          Text(
+                                            'Menu availability',
+                                            style: context.titleLarge!.copyWith(
+                                              fontWeight: FontWeight.w600,
+                                              fontSize: 20,
+                                            ),
+                                            textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                          ).translate(),
+                                        ],
+                                      ),
+                                      const AnimatedGap(2, duration: Duration(milliseconds: 500)),
+                                      Wrap(
+                                        textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                        children: [
+                                          Text(
+                                            'Select menu availability day(s) and time',
+                                            style: context.labelMedium,
+                                            textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                          ).translate(),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                  const AnimatedGap(12, duration: Duration(milliseconds: 500)),
                                   Text(
-                                    'Select menu availability in time',
+                                    'Select days',
                                     textDirection: serviceLocator<LanguageController>().targetTextDirection,
                                     style: context.titleMedium!.copyWith(
                                       fontWeight: FontWeight.w600,
                                       fontSize: 14,
                                     ),
                                   ).translate(),
-                                ],
-                              ),
-                              const AnimatedGap(12, duration: Duration(milliseconds: 500)),
-                               Row(
-                                mainAxisSize: MainAxisSize.min,
-                                textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                                children: [
-                                  Expanded(
-                                    child: DateTimeFieldPlatform(
-                                      key: const Key('reform-menu-available-from-time-widget'),
-                                      mode: DateMode.time,
-                                      maximumDate: DateTime.now().add(const Duration(hours: 2)),
-                                      minimumDate: DateTime.now().subtract(const Duration(hours: 2)),
-                                      controller: state._menuOpeningTimeController,
-                                      decoration: InputDecoration(
-                                        labelText: 'From',
-                                        hintText: 'Select from time',
-                                        border: OutlineInputBorder(
-                                          borderRadius: BorderRadius.circular(10),
+                                  const AnimatedGap(6, duration: Duration(milliseconds: 500)),
+                                  MultiSelectAvailableWorkingDaysFormField(
+                                    key: const Key('reform-menu-working-days-widget'),
+                                    onSelectionChanged: state.menuAvailableDaysSelection,
+                                    availableWorkingDaysList: state._menuAvailableDays.toList(),
+                                    validator: (value) {
+                                      return ValidatorGroup<List<StoreWorkingDayAndTime>>([
+                                        const RequiredValidator<List<StoreWorkingDayAndTime>>(
+                                            errorMessage: 'Select valid time'),
+                                        CustomValidator<List<StoreWorkingDayAndTime>>(
+                                          validator: (value) {
+                                            if (value == null || value.isEmpty) {
+                                              return 'Select one or more days';
+                                            }
+                                            return null;
+                                          },
                                         ),
-                                        suffixIcon: const Icon(
-                                          Icons.arrow_drop_down,
-                                        ),
-                                        isDense: true,
-                                        contentPadding:
-                                            const EdgeInsetsDirectional.symmetric(vertical: 8, horizontal: 12),
-                                      ),
-                                      validator: (value) {
-                                        return ValidatorGroup<String>([
-                                          const RequiredValidator<String>(errorMessage: 'Select valid time'),
-                                          CustomValidator<String>(
-                                            validator: (value) {
-                                              if (compareOpenAndCloseTime(
-                                                  openingTime: state._menuOpeningTimeController.value.text.trim(),
-                                                  closingTime: state._menuClosingTimeController.value.text.trim())) {
-                                                return 'Select valid time';
-                                              }
-                                              return null;
-                                            },
-                                          ),
-                                        ]).validate(value);
-                                      },
-                                      onSaved: (newValue) {
-                                        menuAvailableOpeningTimeSelection(context);
-                                      },
-                                    ),
+                                      ]).validate(value);
+                                    },
+                                    initialSelectedAvailableWorkingDaysList: [],
                                   ),
-                                  const AnimatedGap(16, duration: Duration(milliseconds: 500)),
-                                  Expanded(
-                                    child: DateTimeFieldPlatform(
-                                      key: const Key('menu-available-to-time-widget'),
-                                      mode: DateMode.time,
-                                      maximumDate: DateTime.now().add(const Duration(hours: 2)),
-                                      minimumDate: DateTime.now().subtract(const Duration(hours: 2)),
-                                      controller: state._menuClosingTimeController,
-                                      decoration: InputDecoration(
-                                        labelText: 'To',
-                                        hintText: 'Select to time',
-                                        border: OutlineInputBorder(
-                                          borderRadius: BorderRadius.circular(10),
-                                        ),
-                                        suffixIcon: const Icon(
-                                          Icons.arrow_drop_down,
-                                        ),
-                                        isDense: true,
-                                        contentPadding:
-                                            const EdgeInsetsDirectional.symmetric(vertical: 8, horizontal: 12),
-                                      ),
-                                      validator: (value) {
-                                        return ValidatorGroup<String>([
-                                          const RequiredValidator<String>(errorMessage: 'Select valid time'),
-                                          CustomValidator<String>(
-                                            validator: (value) {
-                                              if (compareOpenAndCloseTime(
-                                                  openingTime: state._menuOpeningTimeController.value.text.trim(),
-                                                  closingTime: state._menuClosingTimeController.value.text.trim())) {
-                                                return 'Select valid time';
-                                              }
-                                              return null;
-                                            },
-                                          ),
-                                        ]).validate(value);
-                                      },
-                                      onSaved: (newValue) {
-                                        menuAvailableClosingTimeSelection(context);
-                                      },
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              const Divider(),
-                              Column(
-                                textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                                mainAxisSize: MainAxisSize.min,
-                                crossAxisAlignment: CrossAxisAlignment.stretch,
-                                children: [
+                                  const AnimatedGap(12, duration: Duration(milliseconds: 500)),
                                   Wrap(
                                     textDirection: serviceLocator<LanguageController>().targetTextDirection,
                                     children: [
                                       Text(
-                                        'Menu preparation time',
+                                        'Select menu availability in time',
+                                        textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                        style: context.titleMedium!.copyWith(
+                                          fontWeight: FontWeight.w600,
+                                          fontSize: 14,
+                                        ),
+                                      ).translate(),
+                                    ],
+                                  ),
+                                  const AnimatedGap(12, duration: Duration(milliseconds: 500)),
+                                  Row(
+                                    mainAxisSize: MainAxisSize.min,
+                                    textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                    children: [
+                                      Expanded(
+                                        child: DateTimeFieldPlatform(
+                                          key: const Key('reform-menu-available-from-time-widget'),
+                                          mode: DateMode.time,
+                                          maximumDate: DateTime.now().add(const Duration(hours: 2)),
+                                          minimumDate: DateTime.now().subtract(const Duration(hours: 2)),
+                                          controller: state._menuOpeningTimeController,
+                                          decoration: InputDecoration(
+                                            labelText: 'From',
+                                            hintText: 'Select from time',
+                                            border: OutlineInputBorder(
+                                              borderRadius: BorderRadius.circular(10),
+                                            ),
+                                            suffixIcon: const Icon(
+                                              Icons.arrow_drop_down,
+                                            ),
+                                            isDense: true,
+                                            contentPadding:
+                                            const EdgeInsetsDirectional.symmetric(vertical: 8, horizontal: 12),
+                                          ),
+                                          validator: (value) {
+                                            return ValidatorGroup<String>([
+                                              const RequiredValidator<String>(errorMessage: 'Select valid time'),
+                                              CustomValidator<String>(
+                                                validator: (value) {
+                                                  if (compareOpenAndCloseTime(
+                                                      openingTime: state._menuOpeningTimeController.value.text.trim(),
+                                                      closingTime: state._menuClosingTimeController.value.text.trim())) {
+                                                    return 'Select valid time';
+                                                  }
+                                                  return null;
+                                                },
+                                              ),
+                                            ]).validate(value);
+                                          },
+                                          onSaved: (newValue) {
+                                            state.menuAvailableOpeningTimeSelection();
+                                          },
+                                        ),
+                                      ),
+                                      const AnimatedGap(16, duration: Duration(milliseconds: 500)),
+                                      Expanded(
+                                        child: DateTimeFieldPlatform(
+                                          key: const Key('menu-available-to-time-widget'),
+                                          mode: DateMode.time,
+                                          maximumDate: DateTime.now().add(const Duration(hours: 2)),
+                                          minimumDate: DateTime.now().subtract(const Duration(hours: 2)),
+                                          controller: state._menuClosingTimeController,
+                                          decoration: InputDecoration(
+                                            labelText: 'To',
+                                            hintText: 'Select to time',
+                                            border: OutlineInputBorder(
+                                              borderRadius: BorderRadius.circular(10),
+                                            ),
+                                            suffixIcon: const Icon(
+                                              Icons.arrow_drop_down,
+                                            ),
+                                            isDense: true,
+                                            contentPadding:
+                                            const EdgeInsetsDirectional.symmetric(vertical: 8, horizontal: 12),
+                                          ),
+                                          validator: (value) {
+                                            return ValidatorGroup<String>([
+                                              const RequiredValidator<String>(errorMessage: 'Select valid time'),
+                                              CustomValidator<String>(
+                                                validator: (value) {
+                                                  if (compareOpenAndCloseTime(
+                                                      openingTime: state._menuOpeningTimeController.value.text.trim(),
+                                                      closingTime: state._menuClosingTimeController.value.text.trim())) {
+                                                    return 'Select valid time';
+                                                  }
+                                                  return null;
+                                                },
+                                              ),
+                                            ]).validate(value);
+                                          },
+                                          onSaved: (newValue) {
+                                            state.menuAvailableClosingTimeSelection();
+                                          },
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  const Divider(),
+                                  Column(
+                                    textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                    mainAxisSize: MainAxisSize.min,
+                                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                                    children: [
+                                      Wrap(
+                                        textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                        children: [
+                                          Text(
+                                            'Menu preparation time',
+                                            style: context.titleLarge!.copyWith(
+                                              fontWeight: FontWeight.w600,
+                                              fontSize: 20,
+                                            ),
+                                            textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                          ).translate(),
+                                        ],
+                                      ),
+                                      const AnimatedGap(2, duration: Duration(milliseconds: 500)),
+                                      Wrap(
+                                        textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                        children: [
+                                          Text(
+                                            'Select menu preparation or cooking time',
+                                            style: context.labelMedium,
+                                            textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                          ).translate(),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                  const AnimatedGap(8, duration: Duration(milliseconds: 500)),
+                                  MenuPreparationTimeWidget(
+                                    key: const Key('reform-menu-preparation-minimum-time'),
+                                    title: 'Minimum time',
+                                    controller: state._menuMinPreparationTimeController,
+                                    suffixIcon: IconButton(
+                                      onPressed: state.menuMinPreparationTimeSelection,
+                                      icon: const Icon(
+                                        Icons.arrow_drop_down,
+                                      ),
+                                    ),
+                                    validator: (value) {
+                                      return ValidatorGroup<String>([
+                                        const RequiredValidator<String>(errorMessage: 'Select minimum preparation time'),
+                                        CustomValidator<String>(
+                                          validator: (value) {
+                                            //final intInStr = RegExp(r'\d+');
+                                            final maximumTime = int.parse(state._menuMaxPreparationTimeController.value.text
+                                                .trim()
+                                                .replaceAll(RegExp(r'[^0-9]'), ''));
+                                            final minimumTime = int.parse(state._menuMinPreparationTimeController.value.text
+                                                .trim()
+                                                .replaceAll(RegExp(r'[^0-9]'), ''));
+                                            if (minimumTime > maximumTime) {
+                                              return 'Select valid minimum preparation time';
+                                            }
+                                            return null;
+                                          },
+                                        ),
+                                      ]).validate(value);
+                                    },
+
+                                    onSaved: (newValue) {
+                                      state.menuMinPreparationTimeSave();
+                                    },
+                                  ),
+                                  const AnimatedGap(12, duration: Duration(milliseconds: 500)),
+                                  MenuPreparationTimeWidget(
+                                    key: const Key('reform-menu-preparation-maximum-time'),
+                                    title: 'Maximum time',
+                                    controller: state._menuMaxPreparationTimeController,
+                                    suffixIcon: IconButton(
+                                      onPressed: state.menuMaxPreparationTimeSelection,
+                                      icon: const Icon(
+                                        Icons.arrow_drop_down,
+                                      ),
+                                    ),
+                                    validator: (value) {
+                                      return ValidatorGroup<String>([
+                                        const RequiredValidator<String>(errorMessage: 'Select maximum preparation time'),
+                                        CustomValidator<String>(
+                                          validator: (value) {
+                                            final maximumTime = int.parse(state._menuMaxPreparationTimeController.value.text
+                                                .trim()
+                                                .replaceAll(RegExp(r'[^0-9]'), ''));
+                                            final minimumTime = int.parse(state._menuMinPreparationTimeController.value.text
+                                                .trim()
+                                                .replaceAll(RegExp(r'[^0-9]'), ''));
+                                            if (maximumTime < minimumTime) {
+                                              return 'Select valid maximum preparation time';
+                                            }
+                                            return null;
+                                          },
+                                        ),
+                                      ]).validate(value);
+                                    },
+
+                                    onSaved: (newValue) {
+                                      state.menuMaxPreparationTimeSave();
+                                    },
+                                  ),
+                                  const Divider(),
+                                  Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                                    textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                    children: [
+                                      Text(
+                                        'Stocks',
                                         style: context.titleLarge!.copyWith(
                                           fontWeight: FontWeight.w600,
                                           fontSize: 20,
                                         ),
                                         textDirection: serviceLocator<LanguageController>().targetTextDirection,
                                       ).translate(),
-                                    ],
-                                  ),
-                                  const AnimatedGap(2, duration: Duration(milliseconds: 500)),
-                                  Wrap(
-                                    textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                                    children: [
+                                      const AnimatedGap(2, duration: Duration(milliseconds: 500)),
                                       Text(
-                                        'Select menu preparation or cooking time',
+                                        'Select menu minimum and maximum stock',
                                         style: context.labelMedium,
                                         textDirection: serviceLocator<LanguageController>().targetTextDirection,
                                       ).translate(),
                                     ],
                                   ),
-                                ],
-                              ),
-                              const AnimatedGap(8, duration: Duration(milliseconds: 500)),
-                              MenuPreparationTimeWidget(
-                                key: const Key('reform-menu-preparation-minimum-time'),
-                                title: 'Minimum time',
-                                controller: state._menuMinPreparationTimeController,
-                                suffixIcon: IconButton(
-                                  onPressed: () async {
-                                    await menuMinPreparationTimeSelection(context);
-                                  },
-                                  icon: const Icon(
-                                    Icons.arrow_drop_down,
-                                  ),
-                                ),
-                                validator: (value) {
-                                  return ValidatorGroup<String>([
-                                    const RequiredValidator<String>(errorMessage: 'Select minimum preparation time'),
-                                    CustomValidator<String>(
-                                      validator: (value) {
-                                        //final intInStr = RegExp(r'\d+');
-                                        final maximumTime = int.parse(state._menuMaxPreparationTimeController.value.text
-                                            .trim()
-                                            .replaceAll(RegExp(r'[^0-9]'), ''));
-                                        final minimumTime = int.parse(state._menuMinPreparationTimeController.value.text
-                                            .trim()
-                                            .replaceAll(RegExp(r'[^0-9]'), ''));
-                                        if (minimumTime > maximumTime) {
-                                          return 'Select valid minimum preparation time';
-                                        }
-                                        return null;
-                                      },
-                                    ),
-                                  ]).validate(value);
-                                },
-
-                                onSaved: (newValue) {
-                                  menuMinPreparationTimeSave(context);
-                                },
-                              ),
-                              const AnimatedGap(12, duration: Duration(milliseconds: 500)),
-                              MenuPreparationTimeWidget(
-                                key: const Key('reform-menu-preparation-maximum-time'),
-                                title: 'Maximum time',
-                                controller: state._menuMaxPreparationTimeController,
-                                suffixIcon: IconButton(
-                                  onPressed: () async {
-                                    await menuMaxPreparationTimeSelection(context);
-                                  },
-                                  icon: const Icon(
-                                    Icons.arrow_drop_down,
-                                  ),
-                                ),
-                                validator: (value) {
-                                  return ValidatorGroup<String>([
-                                    const RequiredValidator<String>(errorMessage: 'Select maximum preparation time'),
-                                    CustomValidator<String>(
-                                      validator: (value) {
-                                        final maximumTime = int.parse(state._menuMaxPreparationTimeController.value.text
-                                            .trim()
-                                            .replaceAll(RegExp(r'[^0-9]'), ''));
-                                        final minimumTime = int.parse(state._menuMinPreparationTimeController.value.text
-                                            .trim()
-                                            .replaceAll(RegExp(r'[^0-9]'), ''));
-                                        if (maximumTime < minimumTime) {
-                                          return 'Select valid maximum preparation time';
-                                        }
-                                        return null;
-                                      },
-                                    ),
-                                  ]).validate(value);
-                                },
-
-                                onSaved: (newValue) {
-                                  menuMaxPreparationTimeSsave(context);
-                                },
-                              ),
-                              const Divider(),
-                              Column(
-                                mainAxisSize: MainAxisSize.min,
-                                crossAxisAlignment: CrossAxisAlignment.stretch,
-                                textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                                children: [
-                                  Text(
-                                    'Stocks',
-                                    style: context.titleLarge!.copyWith(
-                                      fontWeight: FontWeight.w600,
-                                      fontSize: 20,
-                                    ),
+                                  const AnimatedGap(12, duration: Duration(milliseconds: 500)),
+                                  AppTextFieldWidget(
+                                    key: const Key('reform-menu-min-stock-widget'),
+                                    controller: state._menuMinStockQuantityController,
                                     textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                                  ).translate(),
-                                  const AnimatedGap(2, duration: Duration(milliseconds: 500)),
-                                  Text(
-                                    'Select menu minimum and maximum stock',
-                                    style: context.labelMedium,
+                                    focusNode: state.focusList[6],
+                                    textInputAction: TextInputAction.next,
+                                    onFieldSubmitted: (_) =>
+                                        fieldFocusChange(context, state.focusList[6], state.focusList[7]),
+                                    keyboardType: const TextInputType.numberWithOptions(),
+                                    decoration: InputDecoration(
+                                      labelText: 'Minimum Quantity',
+                                      hintText: 'Enter minimum stock quantity',
+                                      border: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(10),
+                                      ),
+                                      isDense: true,
+                                    ),
+                                    validator: state.stockMinQuantityValidation,
+                                    onSaved: (newValue) {
+                                      state.setMenuMinStockValue();
+                                    },
+                                  ),
+                                  const AnimatedGap(12, duration: Duration(milliseconds: 500)),
+                                  AppTextFieldWidget(
+                                    key: const Key('reform-menu-max-stock-widget'),
+                                    controller: state._menuMaxStockQuantityController,
                                     textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                                  ).translate(),
+                                    focusNode: state.focusList[7],
+                                    textInputAction: TextInputAction.done,
+                                    keyboardType: const TextInputType.numberWithOptions(),
+                                    decoration: InputDecoration(
+                                      labelText: 'Maximum Quantity',
+                                      hintText: 'Enter maximum stock quantity',
+                                      border: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(10),
+                                      ),
+                                      isDense: true,
+                                    ),
+                                    validator: state.stockMaxQuantityValidation,
+                                    onSaved: (newValue) {
+                                      state.setMenuMaxStockValue();
+                                    },
+                                  ),
+                                  const Divider(thickness: 0.8),
                                 ],
-                              ),
-                              const AnimatedGap(12, duration: Duration(milliseconds: 500)),
-                              AppTextFieldWidget(
-                                key: const Key('reform-menu-min-stock-widget'),
-                                controller: state._menuMinStockQuantityController,
-                                textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                                focusNode: state.focusList[6],
-                                textInputAction: TextInputAction.next,
-                                onFieldSubmitted: (_) =>
-                                    fieldFocusChange(context, state.focusList[6], state.focusList[7]),
-                                keyboardType: const TextInputType.numberWithOptions(),
-                                decoration: InputDecoration(
-                                  labelText: 'Minimum Quantity',
-                                  hintText: 'Enter minimum stock quantity',
-                                  border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(10),
-                                  ),
-                                  isDense: true,
-                                ),
-                                validator: (value) {
-                                  return ValidatorGroup<String>([
-                                    const RequiredValidator<String>(errorMessage: 'Enter minimum stock quantity'),
-                                    CustomValidator<String>(
-                                      validator: (value) {
-                                        final maximumStockValue = int.parse(state
-                                            ._menuMaxStockQuantityController.value.text
-                                            .trim()
-                                            .replaceAll(RegExp(r'[^0-9]'), ''));
-                                        final minimumStockValue = int.parse(state
-                                            ._menuMinStockQuantityController.value.text
-                                            .trim()
-                                            .replaceAll(RegExp(r'[^0-9]'), ''));
-                                        if (minimumStockValue > maximumStockValue) {
-                                          return 'Enter valid minimum quantity';
-                                        }
-                                        return null;
-                                      },
-                                    ),
-                                  ]).validate(value);
-                                },
-                                onSaved: (newValue) {
-                                  setMenuMinStockValue(context);
-                                },
-                              ),
-                              const AnimatedGap(12, duration: Duration(milliseconds: 500)),
-                              AppTextFieldWidget(
-                                key: const Key('reform-menu-max-stock-widget'),
-                                controller: state._menuMaxStockQuantityController,
-                                textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                                focusNode: state.focusList[7],
-                                textInputAction: TextInputAction.done,
-                                keyboardType: const TextInputType.numberWithOptions(),
-                                decoration: InputDecoration(
-                                  labelText: 'Maximum Quantity',
-                                  hintText: 'Enter maximum stock quantity',
-                                  border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(10),
-                                  ),
-                                  isDense: true,
-                                ),
-                                validator: (value) {
-                                  return ValidatorGroup<String>([
-                                    const RequiredValidator<String>(errorMessage: 'Enter maximum stock quantity'),
-                                    CustomValidator<String>(
-                                      validator: (value) {
-                                        final maximumStockValue = int.parse(state
-                                            ._menuMaxStockQuantityController.value.text
-                                            .trim()
-                                            .replaceAll(RegExp(r'[^0-9]'), ''));
-                                        final minimumStockValue = int.parse(state
-                                            ._menuMinStockQuantityController.value.text
-                                            .trim()
-                                            .replaceAll(RegExp(r'[^0-9]'), ''));
-                                        if (maximumStockValue < minimumStockValue) {
-                                          return 'Enter valid maximum quantity';
-                                        }
-                                        return null;
-                                      },
-                                    ),
-                                  ]).validate(value);
-                                },
-
-                                onSaved: (newValue) {
-                                  setMenuMaxStockValue(context);
-                                },
-                              ),
-                              const Divider(thickness: 0.8),
+                              )
                             ],
                           ),
                         ),
@@ -1595,314 +1815,4 @@ class _ReFormSaveMenuPageView extends WidgetView<ReFormSaveMenuPage, _ReFormSave
       ),
     );
   }
-
-  void setMenuMaxStockValue(BuildContext context) {
-
-    serviceLocator<MenuEntity>().maxStockAvailable =
-        int.tryParse(state._menuMaxStockQuantityController.value.text.trim()) ?? 0;
-    context.read<MenuBloc>().add(
-          PushMenuEntityData(
-            menuEntity: serviceLocator<MenuEntity>(),
-            menuFormStage: MenuFormStage.form3,
-            menuEntityStatus: MenuEntityStatus.push,
-          ),
-        );
-
-  }
-
-  void setMenuMinStockValue(BuildContext context) {
-
-    serviceLocator<MenuEntity>().minStockAvailable =
-        int.tryParse(state._menuMinStockQuantityController.value.text.trim()) ?? 0;
-    context.read<MenuBloc>().add(
-          PushMenuEntityData(
-            menuEntity: serviceLocator<MenuEntity>(),
-            menuFormStage: MenuFormStage.form3,
-            menuEntityStatus: MenuEntityStatus.push,
-          ),
-        );
-
-  }
-
-  void menuMaxPreparationTimeSsave(BuildContext context) {
-
-    serviceLocator<MenuEntity>().menuMaxPreparationTime =
-        state._menuMaxPreparationTimeController.value.text.trim();
-    context.read<MenuBloc>().add(
-          PushMenuEntityData(
-            menuEntity: serviceLocator<MenuEntity>(),
-            menuFormStage: MenuFormStage.form3,
-            menuEntityStatus: MenuEntityStatus.push,
-          ),
-        );
-
-  }
-
-  Future<void> menuMaxPreparationTimeSelection(BuildContext context) async {
-
-    final String? timing = await state.selectTiming(context);
-    if (timing != null) {
-      state._menuMaxPreparationTimeController.text = timing ?? '';
-      final cacheMenuTiming = state._menuPreparationTiming?.copyWith(
-        minPreparingTime: state._menuMaxPreparationTimeController.value.text.trim(),
-      );
-      //setState(() {});
-    }
-
-  }
-
-  void menuMinPreparationTimeSave(BuildContext context) {
-
-    serviceLocator<MenuEntity>().menuMinPreparationTime =
-        state._menuMinPreparationTimeController.value.text.trim();
-    context.read<MenuBloc>().add(
-          PushMenuEntityData(
-            menuEntity: serviceLocator<MenuEntity>(),
-            menuFormStage: MenuFormStage.form3,
-            menuEntityStatus: MenuEntityStatus.push,
-          ),
-        );
-
-  }
-
-  Future<void> menuMinPreparationTimeSelection(BuildContext context) async {
-
-    final String? timing = await state.selectTiming(context);
-    if (timing != null) {
-      state._menuMinPreparationTimeController.text = timing ?? '';
-      final cacheMenuTiming = state._menuPreparationTiming?.copyWith(
-        minPreparingTime: state._menuMinPreparationTimeController.value.text.trim(),
-      );
-      //setState(() {});
-    }
-
-  }
-
-  void menuAvailableClosingTimeSelection(BuildContext context) {
-
-    serviceLocator<MenuEntity>().menuAvailableToTime =
-        state._menuClosingTimeController.value.text.trim();
-    context.read<MenuBloc>().add(
-          PushMenuEntityData(
-            menuEntity: serviceLocator<MenuEntity>(),
-            menuFormStage: MenuFormStage.form3,
-            menuEntityStatus: MenuEntityStatus.push,
-          ),
-        );
-
-  }
-
-  void menuAvailableOpeningTimeSelection(BuildContext context) {
-
-    serviceLocator<MenuEntity>().menuAvailableFromTime =
-        state._menuOpeningTimeController.value.text.trim();
-    context.read<MenuBloc>().add(
-          PushMenuEntityData(
-            menuEntity: serviceLocator<MenuEntity>(),
-            menuFormStage: MenuFormStage.form3,
-            menuEntityStatus: MenuEntityStatus.push,
-          ),
-        );
-
-  }
-
-  void menuAvailableDaysSelection(List<StoreWorkingDayAndTime> selectedWorkingDays, BuildContext context) {
-
-    state._selectedWorkingDays = List<StoreWorkingDayAndTime>.from(selectedWorkingDays);
-    var cacheMenuAvailableDayAndTime = List<MenuAvailableDayAndTime>.from(state
-        ._selectedWorkingDays
-        .map((e) => MenuAvailableDayAndTime.fromMap(e.toMap()))
-        .toList());
-    serviceLocator<MenuEntity>().menuAvailableInDays =
-        cacheMenuAvailableDayAndTime.toList();
-    //setState(() {});
-    context.read<MenuBloc>().add(
-          PushMenuEntityData(
-            menuEntity: serviceLocator<MenuEntity>(),
-            menuFormStage: MenuFormStage.form3,
-            menuEntityStatus: MenuEntityStatus.push,
-          ),
-        );
-
-  }
-
-  Future<void> navigateToAddonsSelection(BuildContext context) async {
-
-    final List<Addons>? addons =
-        await context.push<List<Addons>>(Routes.ALL_ADDONS_PAGE);
-    if (addons != null && addons.isNotEmpty) {
-      state._selectedAddons = List<Addons>.from(addons.toList());
-      //setState(() {});
-    }
-
-  }
-
-  void addonSelection(List<Addons> selectedAddons, BuildContext context) {
-
-    state._selectedAddons = List<Addons>.from(selectedAddons);
-    //setState(() {});
-    serviceLocator<MenuEntity>().addons = state._selectedAddons.toList();
-    context.read<MenuBloc>().add(
-          PushMenuEntityData(
-            menuEntity: serviceLocator<MenuEntity>(),
-            menuFormStage: MenuFormStage.form2,
-            menuEntityStatus: MenuEntityStatus.push,
-          ),
-        );
-
-  }
-
-  void setCustomPortionMaximumServe(BuildContext context) {
-
-    if (state._hasCustomMenuPortionSize) {
-      if (serviceLocator<MenuEntity>().customPortion.isNull) {
-        serviceLocator<MenuEntity>().customPortion = CustomPortion(
-            maxServingPerson: int.tryParse(state
-                    ._menuPortionMaximumServeController.value.text
-                    .trim()) ??
-                0);
-      } else {
-        final data = serviceLocator<MenuEntity>()
-            .customPortion
-            ?.copyWith(
-                maxServingPerson: int.tryParse(state
-                        ._menuPortionMaximumServeController
-                        .value
-                        .text
-                        .trim()) ??
-                    0);
-        serviceLocator<MenuEntity>().customPortion = data;
-      }
-      serviceLocator<MenuEntity>().hasCustomPortion = true;
-      context.read<MenuBloc>().add(
-            PushMenuEntityData(
-              menuEntity: serviceLocator<MenuEntity>(),
-              menuFormStage: MenuFormStage.form2,
-              menuEntityStatus: MenuEntityStatus.push,
-            ),
-          );
-    }
-
-  }
-
-  void setCustomPortionUnit(BuildContext context) {
-
-    if (state._hasCustomMenuPortionSize) {
-      if (serviceLocator<MenuEntity>().customPortion.isNull) {
-        serviceLocator<MenuEntity>().customPortion = CustomPortion(
-            unit:
-                state._menuPortionUnitController.value.text.trim());
-      } else {
-        final data = serviceLocator<MenuEntity>()
-            .customPortion
-            ?.copyWith(
-                unit: state._menuPortionUnitController.value.text
-                    .trim());
-        serviceLocator<MenuEntity>().customPortion = data;
-      }
-      serviceLocator<MenuEntity>().hasCustomPortion = true;
-      context.read<MenuBloc>().add(
-            PushMenuEntityData(
-              menuEntity: serviceLocator<MenuEntity>(),
-              menuFormStage: MenuFormStage.form2,
-              menuEntityStatus: MenuEntityStatus.push,
-            ),
-          );
-    }
-
-  }
-
-  void setCustomPortionSize(BuildContext context) {
-    if (state._hasCustomMenuPortionSize) {
-      if (serviceLocator<MenuEntity>().customPortion.isNull) {
-        serviceLocator<MenuEntity>().customPortion = CustomPortion(
-            quantity: double.tryParse(state
-                    ._menuPortionSizeController.value.text
-                    .trim()) ??
-                0.0);
-      } else {
-        final data = serviceLocator<MenuEntity>()
-            .customPortion
-            ?.copyWith(
-                quantity: double.tryParse(state
-                        ._menuPortionSizeController.value.text
-                        .trim()) ??
-                    0.0);
-        serviceLocator<MenuEntity>().customPortion = data;
-      }
-      serviceLocator<MenuEntity>().hasCustomPortion = true;
-      context.read<MenuBloc>().add(
-            PushMenuEntityData(
-              menuEntity: serviceLocator<MenuEntity>(),
-              menuFormStage: MenuFormStage.form2,
-              menuEntityStatus: MenuEntityStatus.push,
-            ),
-          );
-    }
-
-  }
-
-  void setCustomePortionName(BuildContext context) {
-
-    if (state._hasCustomMenuPortionSize) {
-      if (serviceLocator<MenuEntity>().customPortion.isNull) {
-        serviceLocator<MenuEntity>().customPortion = CustomPortion(
-            title:
-                state._menuPortionNameController.value.text.trim());
-      } else {
-        final data = serviceLocator<MenuEntity>()
-            .customPortion
-            ?.copyWith(
-                title: state._menuPortionNameController.value.text
-                    .trim());
-        serviceLocator<MenuEntity>().customPortion = data;
-      }
-      serviceLocator<MenuEntity>().hasCustomPortion = true;
-      context.read<MenuBloc>().add(
-            PushMenuEntityData(
-              menuEntity: serviceLocator<MenuEntity>(),
-              menuFormStage: MenuFormStage.form2,
-              menuEntityStatus: MenuEntityStatus.push,
-            ),
-          );
-    }
-
-  }
-
-  void customMenuSelection(bool value) {
-    state._hasCustomMenuPortionSize = value;
-    //setState(() {});
-  }
-
-  void multiSelectionMenuPortion(List<MenuPortion> selectedMenuPortions, BuildContext context) {
-     state._selectedMenuPortions = List<MenuPortion>.from(selectedMenuPortions);
-    if (!state._hasCustomMenuPortionSize) {
-      serviceLocator<MenuEntity>().menuPortions =
-          List<MenuPortion>.from(state._selectedMenuPortions.toList());
-      serviceLocator<MenuEntity>().hasCustomPortion = false;
-      context.read<MenuBloc>().add(
-            PushMenuEntityData(
-              menuEntity: serviceLocator<MenuEntity>(),
-              menuFormStage: MenuFormStage.form2,
-              menuEntityStatus: MenuEntityStatus.push,
-            ),
-          );
-    }
-    //setState(() {});
-  }
-
-  void menuTasteLevelSelection(List<TasteLevel> selectedTasteLevel, BuildContext context) {
-    state._selectedTasteLevel = List<TasteLevel>.from(selectedTasteLevel);
-    //setState(() {});
-    serviceLocator<MenuEntity>().tasteType?.tasteLevel =
-        List<TasteLevel>.from(state._selectedTasteLevel.toList());
-    context.read<MenuBloc>().add(
-          PushMenuEntityData(
-            menuEntity: serviceLocator<MenuEntity>(),
-            menuFormStage: MenuFormStage.form2,
-            menuEntityStatus: MenuEntityStatus.push,
-          ),
-        );
-  }
-
 }
