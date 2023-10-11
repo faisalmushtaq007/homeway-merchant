@@ -1,12 +1,13 @@
 part of 'package:homemakers_merchant/app/features/menu/index.dart';
 
 class ReFormSaveMenuPage extends StatefulWidget {
-  const ReFormSaveMenuPage(
-      {super.key,
-      this.haveNewMenu = true,
-      this.menuEntity,
-      this.currentIndex = -1,
-      this.selectionUseCase = SelectionUseCase.selectAndNext});
+  const ReFormSaveMenuPage({
+    super.key,
+    this.haveNewMenu = true,
+    this.menuEntity,
+    this.currentIndex = -1,
+    this.selectionUseCase = SelectionUseCase.selectAndNext,
+  });
 
   final bool haveNewMenu;
   final MenuEntity? menuEntity;
@@ -52,7 +53,7 @@ class _ReFormSaveMenuPageController extends State<ReFormSaveMenuPage>
   List<StoreAvailableFoodPreparationType> _menuAvailableFoodCookingType = [];
   List<StoreAvailableFoodPreparationType> _selectedFoodPreparationType = [];
   List<StoreAvailableFoodPreparationType> _initialSelectedFoodPreparationType = [];
-  List<MenuPreparationType> cacheMenuPreparationType=[];
+  List<MenuPreparationType> cacheMenuPreparationType = [];
 
   List<StoreWorkingDayAndTime> _menuAvailableDays = [];
   List<StoreWorkingDayAndTime> _selectedWorkingDays = [];
@@ -95,7 +96,7 @@ class _ReFormSaveMenuPageController extends State<ReFormSaveMenuPage>
 
   @override
   void initState() {
-    menuEntity=MenuEntity();
+    menuEntity = MenuEntity();
     super.initState();
     WidgetsBinding.instance.addObserver(this);
     focusList = [
@@ -141,7 +142,7 @@ class _ReFormSaveMenuPageController extends State<ReFormSaveMenuPage>
     _selectedAddons.clear();
     _allAddons.clear();
     selectedAddonsWidgets.clear();
-    cacheMenuPreparationType=[];
+    cacheMenuPreparationType = [];
 
     //Initial Data
     _initialSelectedFoodPreparationType = [];
@@ -192,7 +193,7 @@ class _ReFormSaveMenuPageController extends State<ReFormSaveMenuPage>
     _menuPortions = [];
     //
     _selectedFoodTypes = [];
-    cacheMenuPreparationType=[];
+    cacheMenuPreparationType = [];
     _selectedFoodPreparationType = [];
     _selectedWorkingDays = [];
     _selectedTasteType = [];
@@ -220,7 +221,10 @@ class _ReFormSaveMenuPageController extends State<ReFormSaveMenuPage>
   void didChangeMetrics() {
     super.didChangeMetrics();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      isKeyboardOpen = MediaQuery.of(context).viewInsets.bottom > 0;
+      isKeyboardOpen = MediaQuery
+          .of(context)
+          .viewInsets
+          .bottom > 0;
     });
   }
 
@@ -241,8 +245,6 @@ class _ReFormSaveMenuPageController extends State<ReFormSaveMenuPage>
       super.setState(fn);
     }
   }
-
-
 
   void initData() {
     if (!widget.haveNewMenu && widget.menuEntity.isNotNull) {
@@ -319,7 +321,7 @@ class _ReFormSaveMenuPageController extends State<ReFormSaveMenuPage>
 
   void initializeMenuAvailableFoodCookingType() {
     _menuAvailableFoodCookingType =
-        List<StoreAvailableFoodPreparationType>.from(localStoreAvailableFoodPreparationType.toList());
+    List<StoreAvailableFoodPreparationType>.from(localStoreAvailableFoodPreparationType.toList());
   }
 
   void initializeMenuAvailableFoodTypes() {
@@ -358,17 +360,16 @@ class _ReFormSaveMenuPageController extends State<ReFormSaveMenuPage>
     if (subCategory != null) {
       selectedSubCategory = subCategory;
       menuSubCategoryTextEditingController.text = subCategory.title ?? '';
-      selectedCategory= selectedCategory?.copyWith(subCategory: List<Category>.from([subCategory]));
+      selectedCategory = selectedCategory?.copyWith(subCategory: List<Category>.from([subCategory]));
       menuEntity.menuCategories = [selectedCategory!];
     }
     setState(() {});
   }
+
   void updateSelectedFoodPreparationType(List<StoreAvailableFoodPreparationType> selectedPreparationTypes) {
-    _selectedFoodPreparationType =
-    List<StoreAvailableFoodPreparationType>.from(selectedPreparationTypes);
-    cacheMenuPreparationType = List<MenuPreparationType>.from(_selectedFoodPreparationType
-        .map((e) => MenuPreparationType.fromMap(e.toMap()))
-        .toList());
+    _selectedFoodPreparationType = List<StoreAvailableFoodPreparationType>.from(selectedPreparationTypes);
+    cacheMenuPreparationType = List<MenuPreparationType>.from(
+        _selectedFoodPreparationType.map((e) => MenuPreparationType.fromMap(e.toMap())).toList());
     menuEntity.storeAvailableFoodPreparationType = cacheMenuPreparationType.toList();
     setState(() {});
   }
@@ -398,7 +399,7 @@ class _ReFormSaveMenuPageController extends State<ReFormSaveMenuPage>
     final String? timing = await selectTiming(context);
     if (timing != null) {
       _menuMaxPreparationTimeController.text = timing ?? '';
-      menuEntity.menuTiming=_menuPreparationTiming?.copyWith(
+      menuEntity.menuTiming = _menuPreparationTiming?.copyWith(
         maxPreparingTime: _menuMaxPreparationTimeController.value.text.trim(),
       );
       setState(() {});
@@ -414,7 +415,7 @@ class _ReFormSaveMenuPageController extends State<ReFormSaveMenuPage>
     final String? timing = await selectTiming(context);
     if (timing != null) {
       _menuMinPreparationTimeController.text = timing ?? '';
-      menuEntity.menuTiming=_menuPreparationTiming?.copyWith(
+      menuEntity.menuTiming = _menuPreparationTiming?.copyWith(
         minPreparingTime: _menuMinPreparationTimeController.value.text.trim(),
       );
       setState(() {});
@@ -431,124 +432,83 @@ class _ReFormSaveMenuPageController extends State<ReFormSaveMenuPage>
     setState(() {});
   }
 
-  void menuAvailableDaysSelection(List<StoreWorkingDayAndTime> selectedWorkingDays, ) {
-
+  void menuAvailableDaysSelection(List<StoreWorkingDayAndTime> selectedWorkingDays,) {
     _selectedWorkingDays = List<StoreWorkingDayAndTime>.from(selectedWorkingDays);
-    var cacheMenuAvailableDayAndTime = List<MenuAvailableDayAndTime>.from(_selectedWorkingDays
-        .map((e) => MenuAvailableDayAndTime.fromMap(e.toMap()))
-        .toList());
-    menuEntity.menuAvailableInDays =
-        cacheMenuAvailableDayAndTime.toList();
+    var cacheMenuAvailableDayAndTime = List<MenuAvailableDayAndTime>.from(
+        _selectedWorkingDays.map((e) => MenuAvailableDayAndTime.fromMap(e.toMap())).toList());
+    menuEntity.menuAvailableInDays = cacheMenuAvailableDayAndTime.toList();
     setState(() {});
-
   }
 
   Future<void> navigateToAddonsSelection() async {
-
-    final List<Addons>? addons =
-    await context.push<List<Addons>>(Routes.ALL_ADDONS_PAGE);
+    final List<Addons>? addons = await context.push<List<Addons>>(Routes.ALL_ADDONS_PAGE);
     if (addons != null && addons.isNotEmpty) {
       _selectedAddons = List<Addons>.from(addons.toList());
-      setState(() {});
     }
-
+    menuEntity.addons = _selectedAddons.toList();
+    setState(() {});
   }
 
-  void addonSelection(List<Addons> selectedAddons, ) {
-
+  void addonSelection(List<Addons> selectedAddons,) {
     _selectedAddons = List<Addons>.from(selectedAddons);
     menuEntity.addons = _selectedAddons.toList();
     setState(() {});
-
   }
 
   void setCustomPortionMaximumServe() {
-
     if (_hasCustomMenuPortionSize) {
       if (menuEntity.customPortion.isNull) {
-        menuEntity.customPortion = CustomPortion(
-            maxServingPerson: int.tryParse(_menuPortionMaximumServeController.value.text
-                .trim()) ??
-                0);
+        menuEntity.customPortion =
+            CustomPortion(maxServingPerson: int.tryParse(_menuPortionMaximumServeController.value.text.trim()) ?? 0);
       } else {
-        final data = menuEntity
-            .customPortion
-            ?.copyWith(
-            maxServingPerson: int.tryParse(_menuPortionMaximumServeController
-                .value
-                .text
-                .trim()) ??
-                0);
+        final data = menuEntity.customPortion
+            ?.copyWith(maxServingPerson: int.tryParse(_menuPortionMaximumServeController.value.text.trim()) ?? 0);
         menuEntity.customPortion = data;
       }
       menuEntity.hasCustomPortion = true;
       setState(() {});
     }
-
   }
 
   void setCustomPortionUnit() {
-
     if (_hasCustomMenuPortionSize) {
       if (menuEntity.customPortion.isNull) {
-        menuEntity.customPortion = CustomPortion(
-            unit:
-            _menuPortionUnitController.value.text.trim());
+        menuEntity.customPortion = CustomPortion(unit: _menuPortionUnitController.value.text.trim());
       } else {
-        final data = menuEntity
-            .customPortion
-            ?.copyWith(
-            unit: _menuPortionUnitController.value.text
-                .trim());
+        final data = menuEntity.customPortion?.copyWith(unit: _menuPortionUnitController.value.text.trim());
         menuEntity.customPortion = data;
       }
       menuEntity.hasCustomPortion = true;
-      setState(() { });
+      setState(() {});
     }
-
   }
 
   void setCustomPortionSize() {
     if (_hasCustomMenuPortionSize) {
       if (menuEntity.customPortion.isNull) {
-        menuEntity.customPortion = CustomPortion(
-            quantity: double.tryParse(_menuPortionSizeController.value.text
-                .trim()) ??
-                0.0);
+        menuEntity.customPortion =
+            CustomPortion(quantity: double.tryParse(_menuPortionSizeController.value.text.trim()) ?? 0.0);
       } else {
-        final data = menuEntity
-            .customPortion
-            ?.copyWith(
-            quantity: double.tryParse(_menuPortionSizeController.value.text
-                .trim()) ??
-                0.0);
+        final data = menuEntity.customPortion
+            ?.copyWith(quantity: double.tryParse(_menuPortionSizeController.value.text.trim()) ?? 0.0);
         menuEntity.customPortion = data;
       }
       menuEntity.hasCustomPortion = true;
-      setState(() { });
+      setState(() {});
     }
-
   }
 
   void setCustomPortionName() {
-
     if (_hasCustomMenuPortionSize) {
       if (menuEntity.customPortion.isNull) {
-        menuEntity.customPortion = CustomPortion(
-            title:
-            _menuPortionNameController.value.text.trim());
+        menuEntity.customPortion = CustomPortion(title: _menuPortionNameController.value.text.trim());
       } else {
-        final data = menuEntity
-            .customPortion
-            ?.copyWith(
-            title: _menuPortionNameController.value.text
-                .trim());
+        final data = menuEntity.customPortion?.copyWith(title: _menuPortionNameController.value.text.trim());
         menuEntity.customPortion = data;
       }
       menuEntity.hasCustomPortion = true;
-     setState(() { });
+      setState(() {});
     }
-
   }
 
   void setCustomMenuSelection(bool value) {
@@ -556,26 +516,22 @@ class _ReFormSaveMenuPageController extends State<ReFormSaveMenuPage>
     setState(() {});
   }
 
-  void multiSelectionMenuPortion(List<MenuPortion> selectedMenuPortions, ) {
+  void multiSelectionMenuPortion(List<MenuPortion> selectedMenuPortions,) {
     _selectedMenuPortions = List<MenuPortion>.from(selectedMenuPortions);
     if (!_hasCustomMenuPortionSize) {
-      menuEntity.menuPortions =
-      List<MenuPortion>.from(_selectedMenuPortions.toList());
+      menuEntity.menuPortions = List<MenuPortion>.from(_selectedMenuPortions.toList());
       menuEntity.hasCustomPortion = false;
     }
     setState(() {});
   }
 
-  void menuTasteLevelSelection(List<TasteLevel> selectedTasteLevel, ) {
+  void menuTasteLevelSelection(List<TasteLevel> selectedTasteLevel,) {
     _selectedTasteLevel = List<TasteLevel>.from(selectedTasteLevel);
-    menuEntity.tasteType?.tasteLevel =
-    List<TasteLevel>.from(_selectedTasteLevel.toList());
+    menuEntity.tasteType?.tasteLevel = List<TasteLevel>.from(_selectedTasteLevel.toList());
     setState(() {});
   }
 
-  Future<String?> selectTiming(
-    BuildContext context,
-  ) async {
+  Future<String?> selectTiming(BuildContext context,) async {
     final String? timing = await showConfirmationDialog<String>(
       context: context,
       barrierDismissible: true,
@@ -609,8 +565,12 @@ class _ReFormSaveMenuPageController extends State<ReFormSaveMenuPage>
     return DecoratedBox(
       decoration: BoxDecoration(
         border: Border(
-            top: (index == 0) ? BorderSide(color: Theme.of(context).dividerColor) : BorderSide.none,
-            bottom: BorderSide(color: Theme.of(context).dividerColor)),
+            top: (index == 0) ? BorderSide(color: Theme
+                .of(context)
+                .dividerColor) : BorderSide.none,
+            bottom: BorderSide(color: Theme
+                .of(context)
+                .dividerColor)),
       ),
       child: ListTile(
         dense: true,
@@ -632,18 +592,15 @@ class _ReFormSaveMenuPageController extends State<ReFormSaveMenuPage>
   }
 
   String? stockMinQuantityValidation(String? value) {
-
-    String? validate= ValidatorGroup<String>([
+    String? validate = ValidatorGroup<String>([
       const RequiredValidator<String>(errorMessage: 'Enter minimum stock quantity'),
-      if(_menuMaxStockQuantityController.value.text.isNotEmpty)
+      if (_menuMaxStockQuantityController.value.text.isNotEmpty)
         CustomValidator<String>(
           validator: (value) {
-            final maximumStockValue = int.parse(_menuMaxStockQuantityController.value.text
-                .trim()
-                .replaceAll(RegExp(r'[^0-9]'), ''));
-            final minimumStockValue = int.parse(_menuMinStockQuantityController.value.text
-                .trim()
-                .replaceAll(RegExp(r'[^0-9]'), ''));
+            final maximumStockValue =
+            int.parse(_menuMaxStockQuantityController.value.text.trim().replaceAll(RegExp(r'[^0-9]'), ''));
+            final minimumStockValue =
+            int.parse(_menuMinStockQuantityController.value.text.trim().replaceAll(RegExp(r'[^0-9]'), ''));
             if (minimumStockValue > maximumStockValue) {
               return 'Enter valid minimum quantity';
             }
@@ -656,24 +613,21 @@ class _ReFormSaveMenuPageController extends State<ReFormSaveMenuPage>
   }
 
   String? stockMaxQuantityValidation(String? value) {
-    String? validate=ValidatorGroup<String>([
+    String? validate = ValidatorGroup<String>([
       const RequiredValidator<String>(errorMessage: 'Enter maximum stock quantity'),
-      if(_menuMinStockQuantityController.value.text.isNotEmpty)
-      CustomValidator<String>(
-        validator: (value) {
-          final maximumStockValue = int.parse(
-              _menuMaxStockQuantityController.value.text
-              .trim()
-              .replaceAll(RegExp(r'[^0-9]'), ''));
-          final minimumStockValue = int.parse(_menuMinStockQuantityController.value.text
-              .trim()
-              .replaceAll(RegExp(r'[^0-9]'), ''));
-          if (maximumStockValue < minimumStockValue) {
-            return 'Enter valid maximum quantity';
-          }
-          return null;
-        },
-      ),
+      if (_menuMinStockQuantityController.value.text.isNotEmpty)
+        CustomValidator<String>(
+          validator: (value) {
+            final maximumStockValue =
+            int.parse(_menuMaxStockQuantityController.value.text.trim().replaceAll(RegExp(r'[^0-9]'), ''));
+            final minimumStockValue =
+            int.parse(_menuMinStockQuantityController.value.text.trim().replaceAll(RegExp(r'[^0-9]'), ''));
+            if (maximumStockValue < minimumStockValue) {
+              return 'Enter valid maximum quantity';
+            }
+            return null;
+          },
+        ),
     ]).validate(value);
     setState(() {});
     return validate;
@@ -682,7 +636,7 @@ class _ReFormSaveMenuPageController extends State<ReFormSaveMenuPage>
   Future<void> onSaveAndNext() async {
     if (formKey.currentState!.validate()) {
       formKey.currentState!.save();
-      if(!widget.haveNewMenu && widget.menuEntity!=null){
+      if (!widget.haveNewMenu && widget.menuEntity != null) {
         menuEntity.copyWith(
           menuId: widget.menuEntity!.menuId,
           hasCustomPortion: _hasCustomMenuPortionSize,
@@ -699,33 +653,31 @@ class _ReFormSaveMenuPageController extends State<ReFormSaveMenuPage>
             minStockQuantity: int.tryParse(_menuMinStockQuantityController.value.text.trim()) ?? 0,
           ),
         );
+      } else {
+        menuEntity.copyWith(
+          hasCustomPortion: _hasCustomMenuPortionSize,
+          maxStockAvailable: int.tryParse(_menuMaxStockQuantityController.value.text.trim()) ?? 0,
+          menuAvailableFromTime: _menuOpeningTimeController.value.text.trim(),
+          menuAvailableToTime: _menuClosingTimeController.value.text.trim(),
+          menuDescription: menuDescriptionTextEditingController.value.text.trim(),
+          menuMaxPreparationTime: _menuMaxPreparationTimeController.value.text.trim(),
+          menuMinPreparationTime: _menuMinPreparationTimeController.value.text.trim(),
+          menuName: menuNameTextEditingController.value.text.trim(),
+          minStockAvailable: int.tryParse(_menuMinStockQuantityController.value.text.trim()) ?? 0,
+          stock: Stock(
+            maxStockQuantity: int.tryParse(_menuMaxStockQuantityController.value.text.trim()) ?? 0,
+            minStockQuantity: int.tryParse(_menuMinStockQuantityController.value.text.trim()) ?? 0,
+          ),
+        );
       }
-      else{
-
-      menuEntity.copyWith(
-        hasCustomPortion: _hasCustomMenuPortionSize,
-        maxStockAvailable: int.tryParse(_menuMaxStockQuantityController.value.text.trim()) ?? 0,
-        menuAvailableFromTime: _menuOpeningTimeController.value.text.trim(),
-        menuAvailableToTime: _menuClosingTimeController.value.text.trim(),
-        menuDescription: menuDescriptionTextEditingController.value.text.trim(),
-        menuMaxPreparationTime: _menuMaxPreparationTimeController.value.text.trim(),
-        menuMinPreparationTime: _menuMinPreparationTimeController.value.text.trim(),
-        menuName: menuNameTextEditingController.value.text.trim(),
-        minStockAvailable: int.tryParse(_menuMinStockQuantityController.value.text.trim()) ?? 0,
-        stock: Stock(
-          maxStockQuantity: int.tryParse(_menuMaxStockQuantityController.value.text.trim()) ?? 0,
-              minStockQuantity: int.tryParse(_menuMinStockQuantityController.value.text.trim()) ?? 0,
-        ),
-      );
-    }
       appLog.d(menuEntity.toMap());
-      /*context.read<MenuBloc>().add(
+      context.read<MenuBloc>().add(
         PushMenuEntityData(
           menuEntity: menuEntity,
           menuFormStage: MenuFormStage.form1,
           menuEntityStatus: MenuEntityStatus.push,
         ),
-      );*/
+      );
       return;
     }
     return;
@@ -734,7 +686,32 @@ class _ReFormSaveMenuPageController extends State<ReFormSaveMenuPage>
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    return _ReFormSaveMenuPageView(this);
+    return BlocListener<MenuBloc, MenuState>(
+      bloc: context.read<MenuBloc>(),
+      listener: (context, menuState) async {
+        switch (menuState) {
+          case NavigateToMenuPricePage():
+            {
+              final result = await context.push(Routes.MENU_PRICE_PAGE,extra: {
+                'menuEntity':menuState.menuEntity,
+                'haveNewMenu':widget.haveNewMenu,
+                'currentIndex':widget.currentIndex,
+              'selectionUseCase':widget.selectionUseCase,
+              },);
+            }
+        }
+      },
+      child: BlocBuilder<MenuBloc, MenuState>(
+        builder: (context, menuBuilderState) {
+          switch(menuBuilderState){
+            case PushMenuEntityDataState():{
+              menuEntity = menuBuilderState.menuEntity;
+            }
+          }
+          return _ReFormSaveMenuPageView(this);
+        },
+      ),
+    );
   }
 
   @override
@@ -761,7 +738,7 @@ class _ReFormSaveMenuPageView extends WidgetView<ReFormSaveMenuPage, _ReFormSave
         child: DoubleTapToExit(
           key: const Key('reform-save-menu-doubleTap'),
           hasEnable: !(widget.selectionUseCase == SelectionUseCase.updateAndReturn ||
-                  widget.selectionUseCase == SelectionUseCase.saveAndReturn) &&
+              widget.selectionUseCase == SelectionUseCase.saveAndReturn) &&
               true,
           child: Scaffold(
             appBar: AppBar(
@@ -929,10 +906,8 @@ class _ReFormSaveMenuPageView extends WidgetView<ReFormSaveMenuPage, _ReFormSave
                                       }
                                       return null;
                                     },
-
                                   ),
                                   const AnimatedGap(12, duration: Duration(milliseconds: 500)),
-
                                   AppTextFieldWidget(
                                     key: const Key('reform-menu-description-textfield-widget'),
                                     controller: state.menuDescriptionTextEditingController,
@@ -1198,7 +1173,8 @@ class _ReFormSaveMenuPageView extends WidgetView<ReFormSaveMenuPage, _ReFormSave
                                                   child: Row(
                                                     mainAxisSize: MainAxisSize.min,
                                                     crossAxisAlignment: CrossAxisAlignment.center,
-                                                    textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                                    textDirection:
+                                                    serviceLocator<LanguageController>().targetTextDirection,
                                                     children: [
                                                       Expanded(
                                                         child: AppTextFieldWidget(
@@ -1206,8 +1182,9 @@ class _ReFormSaveMenuPageView extends WidgetView<ReFormSaveMenuPage, _ReFormSave
                                                           textDirection:
                                                           serviceLocator<LanguageController>().targetTextDirection,
                                                           focusNode: state.focusList[3],
-                                                          onFieldSubmitted: (_) => fieldFocusChange(
-                                                              context, state.focusList[3], state.focusList[4]),
+                                                          onFieldSubmitted: (_) =>
+                                                              fieldFocusChange(
+                                                                  context, state.focusList[3], state.focusList[4]),
                                                           textInputAction: TextInputAction.next,
                                                           keyboardType: TextInputType.text,
                                                           decoration: InputDecoration(
@@ -1242,7 +1219,8 @@ class _ReFormSaveMenuPageView extends WidgetView<ReFormSaveMenuPage, _ReFormSave
                                                   child: Row(
                                                     mainAxisSize: MainAxisSize.min,
                                                     crossAxisAlignment: CrossAxisAlignment.center,
-                                                    textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                                    textDirection:
+                                                    serviceLocator<LanguageController>().targetTextDirection,
                                                     children: [
                                                       Expanded(
                                                         flex: 2,
@@ -1252,8 +1230,9 @@ class _ReFormSaveMenuPageView extends WidgetView<ReFormSaveMenuPage, _ReFormSave
                                                           serviceLocator<LanguageController>().targetTextDirection,
                                                           focusNode: state.focusList[4],
                                                           textInputAction: TextInputAction.next,
-                                                          onFieldSubmitted: (_) => fieldFocusChange(
-                                                              context, state.focusList[4], state.focusList[5]),
+                                                          onFieldSubmitted: (_) =>
+                                                              fieldFocusChange(
+                                                                  context, state.focusList[4], state.focusList[5]),
                                                           keyboardType: const TextInputType.numberWithOptions(),
                                                           decoration: InputDecoration(
                                                             labelText: 'Portion value',
@@ -1286,8 +1265,9 @@ class _ReFormSaveMenuPageView extends WidgetView<ReFormSaveMenuPage, _ReFormSave
                                                           serviceLocator<LanguageController>().targetTextDirection,
                                                           focusNode: state.focusList[5],
                                                           textInputAction: TextInputAction.next,
-                                                          onFieldSubmitted: (_) => fieldFocusChange(
-                                                              context, state.focusList[5], state.focusList[6]),
+                                                          onFieldSubmitted: (_) =>
+                                                              fieldFocusChange(
+                                                                  context, state.focusList[5], state.focusList[6]),
                                                           keyboardType: TextInputType.text,
                                                           textCapitalization: TextCapitalization.words,
                                                           decoration: InputDecoration(
@@ -1321,7 +1301,8 @@ class _ReFormSaveMenuPageView extends WidgetView<ReFormSaveMenuPage, _ReFormSave
                                                   child: Row(
                                                     mainAxisSize: MainAxisSize.min,
                                                     crossAxisAlignment: CrossAxisAlignment.center,
-                                                    textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                                    textDirection:
+                                                    serviceLocator<LanguageController>().targetTextDirection,
                                                     children: [
                                                       Expanded(
                                                         child: AppTextFieldWidget(
@@ -1349,7 +1330,6 @@ class _ReFormSaveMenuPageView extends WidgetView<ReFormSaveMenuPage, _ReFormSave
                                                             }
                                                             return null;
                                                           },
-
                                                           onSaved: (newValue) {
                                                             state.setCustomPortionMaximumServe();
                                                           },
@@ -1548,7 +1528,8 @@ class _ReFormSaveMenuPageView extends WidgetView<ReFormSaveMenuPage, _ReFormSave
                                                 validator: (value) {
                                                   if (compareOpenAndCloseTime(
                                                       openingTime: state._menuOpeningTimeController.value.text.trim(),
-                                                      closingTime: state._menuClosingTimeController.value.text.trim())) {
+                                                      closingTime:
+                                                      state._menuClosingTimeController.value.text.trim())) {
                                                     return 'Select valid time';
                                                   }
                                                   return null;
@@ -1589,7 +1570,8 @@ class _ReFormSaveMenuPageView extends WidgetView<ReFormSaveMenuPage, _ReFormSave
                                                 validator: (value) {
                                                   if (compareOpenAndCloseTime(
                                                       openingTime: state._menuOpeningTimeController.value.text.trim(),
-                                                      closingTime: state._menuClosingTimeController.value.text.trim())) {
+                                                      closingTime:
+                                                      state._menuClosingTimeController.value.text.trim())) {
                                                     return 'Select valid time';
                                                   }
                                                   return null;
@@ -1649,14 +1631,17 @@ class _ReFormSaveMenuPageView extends WidgetView<ReFormSaveMenuPage, _ReFormSave
                                     ),
                                     validator: (value) {
                                       return ValidatorGroup<String>([
-                                        const RequiredValidator<String>(errorMessage: 'Select minimum preparation time'),
+                                        const RequiredValidator<String>(
+                                            errorMessage: 'Select minimum preparation time'),
                                         CustomValidator<String>(
                                           validator: (value) {
                                             //final intInStr = RegExp(r'\d+');
-                                            final maximumTime = int.parse(state._menuMaxPreparationTimeController.value.text
+                                            final maximumTime = int.parse(state
+                                                ._menuMaxPreparationTimeController.value.text
                                                 .trim()
                                                 .replaceAll(RegExp(r'[^0-9]'), ''));
-                                            final minimumTime = int.parse(state._menuMinPreparationTimeController.value.text
+                                            final minimumTime = int.parse(state
+                                                ._menuMinPreparationTimeController.value.text
                                                 .trim()
                                                 .replaceAll(RegExp(r'[^0-9]'), ''));
                                             if (minimumTime > maximumTime) {
@@ -1667,7 +1652,6 @@ class _ReFormSaveMenuPageView extends WidgetView<ReFormSaveMenuPage, _ReFormSave
                                         ),
                                       ]).validate(value);
                                     },
-
                                     onSaved: (newValue) {
                                       state.menuMinPreparationTimeSave();
                                     },
@@ -1685,13 +1669,16 @@ class _ReFormSaveMenuPageView extends WidgetView<ReFormSaveMenuPage, _ReFormSave
                                     ),
                                     validator: (value) {
                                       return ValidatorGroup<String>([
-                                        const RequiredValidator<String>(errorMessage: 'Select maximum preparation time'),
+                                        const RequiredValidator<String>(
+                                            errorMessage: 'Select maximum preparation time'),
                                         CustomValidator<String>(
                                           validator: (value) {
-                                            final maximumTime = int.parse(state._menuMaxPreparationTimeController.value.text
+                                            final maximumTime = int.parse(state
+                                                ._menuMaxPreparationTimeController.value.text
                                                 .trim()
                                                 .replaceAll(RegExp(r'[^0-9]'), ''));
-                                            final minimumTime = int.parse(state._menuMinPreparationTimeController.value.text
+                                            final minimumTime = int.parse(state
+                                                ._menuMinPreparationTimeController.value.text
                                                 .trim()
                                                 .replaceAll(RegExp(r'[^0-9]'), ''));
                                             if (maximumTime < minimumTime) {
@@ -1702,7 +1689,6 @@ class _ReFormSaveMenuPageView extends WidgetView<ReFormSaveMenuPage, _ReFormSave
                                         ),
                                       ]).validate(value);
                                     },
-
                                     onSaved: (newValue) {
                                       state.menuMaxPreparationTimeSave();
                                     },

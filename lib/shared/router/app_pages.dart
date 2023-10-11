@@ -276,6 +276,7 @@ class AppRouter {
             menuEntity: args?['menuEntity'] as MenuEntity?,
             haveNewMenu: args?['haveNewMenu'] ?? true as bool,
             currentIndex: args?['currentIndex'] ?? -1 as int,
+            selectionUseCase: args?['selectionUseCase'] ?? SelectionUseCase.saveAndNext,
           );
         },
       ),
@@ -306,6 +307,30 @@ class AppRouter {
       GoRoute(
         path: Routes.MENU_FORM5_PAGE,
         builder: (context, state) => const MenuForm5Page(),
+      ),
+      GoRoute(
+        path: Routes.MENU_PRICE_PAGE,
+        builder: (context, state) {
+          final Map<String, dynamic>? args = state.extra as Map<String, dynamic>?;
+          return ConfirmMenuPricePage(
+            selectionUseCase: args?['selectionUseCase'] ?? SelectionUseCase.saveAndNext,
+            menuEntity: args?['menuEntity'] ?? MenuEntity(),
+            haveNewMenu: args?['haveNewMenu'] ?? true,
+            currentIndex: args?['currentIndex'] ?? -1,
+          );
+        },
+      ),
+      GoRoute(
+        path: Routes.UPLOAD_MENU_IMAGE_PAGE,
+        builder: (context, state) {
+          final Map<String, dynamic>? args = state.extra as Map<String, dynamic>?;
+          return UploadMenuImagePage(
+            selectionUseCase: args?['selectionUseCase'] ?? SelectionUseCase.saveAndNext,
+            menuEntity: args?['menuEntity'] ?? MenuEntity(),
+            haveNewMenu: args?['haveNewMenu'] ?? true,
+            currentIndex: args?['currentIndex'] ?? -1,
+          );
+        },
       ),
       GoRoute(
         path: Routes.ALL_ADDONS_PAGE,

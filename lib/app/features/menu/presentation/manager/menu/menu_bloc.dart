@@ -338,11 +338,12 @@ class MenuBloc extends Bloc<MenuEvent, MenuState> {
       //await Future.delayed(const Duration(milliseconds: 500), () {});
       debugPrint('MenuBloc ${DateTime.now().hour}:${DateTime.now().minute}--> ${cacheMenuEntity.toMap()}');
       debugPrint('=======>');*/
+
       appLog.d(
           'PushMenuEntityData ${DateTime.now().hour}:${DateTime.now().minute}--> ${event.menuEntity.toMap()}');
       emit(
         PushMenuEntityDataState(
-          menuEntity: event.menuEntity ?? serviceLocator<MenuEntity>(),
+          menuEntity: event.menuEntity,
           message: 'Success',
           hasNewMenu: event.hasNewMenu,
           menuEntityStatus: event.menuEntityStatus,
@@ -351,6 +352,30 @@ class MenuBloc extends Bloc<MenuEvent, MenuState> {
           menuStateStatus: event.menuStateStatus,
         ),
       );
+      await Future.delayed(const Duration(milliseconds: 300),(){});
+      if(event.menuFormStage==MenuFormStage.form1){
+        emit(
+          NavigateToMenuPricePage(
+            menuEntity: event.menuEntity,
+            message: 'Success',
+            hasNewMenu: event.hasNewMenu,
+            menuFormStage: event.menuFormStage,
+            menuStateStatus: event.menuStateStatus,
+          ),
+        );
+      }else if(event.menuFormStage==MenuFormStage.form2){
+        emit(
+          NavigateToMenuImagePage(
+            menuEntity: event.menuEntity,
+            message: 'Success',
+            hasNewMenu: event.hasNewMenu,
+            menuFormStage: event.menuFormStage,
+            menuStateStatus: event.menuStateStatus,
+          ),
+        );
+      }else if(event.menuFormStage==MenuFormStage.form3){
+
+      }
     } catch (e) {
       emit(
         PushMenuEntityDataState(

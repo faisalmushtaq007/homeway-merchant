@@ -139,6 +139,8 @@ part 'package:homemakers_merchant/app/features/menu/presentation/pages/menu_deta
 part 'package:homemakers_merchant/app/features/menu/presentation/pages/new_addons_greeting_page.dart';
 part 'package:homemakers_merchant/app/features/menu/presentation/pages/new_menu_greeting_page.dart';
 part 'package:homemakers_merchant/app/features/menu/presentation/pages/reform_save_menu_page.dart';
+part 'package:homemakers_merchant/app/features/menu/presentation/pages/confirm_menu_price_page.dart';
+part 'package:homemakers_merchant/app/features/menu/presentation/pages/upload_menu_image_page.dart';
 part 'package:homemakers_merchant/app/features/menu/presentation/pages/save_addons_page.dart';
 part 'package:homemakers_merchant/app/features/menu/presentation/pages/save_menu_page.dart';
 part 'package:homemakers_merchant/app/features/menu/presentation/pages/subpages/menu_form1_page.dart';

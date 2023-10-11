@@ -608,7 +608,62 @@ class PushMenuEntityDataState extends MenuState {
         menuFormStage,
         menuEntityStatus,
         menuStateStatus,
+    message,
       ];
+}
+
+class NavigateToMenuPricePage extends MenuState {
+  NavigateToMenuPricePage({
+    required this.menuEntity,
+    this.hasNewMenu = true,
+    this.message = '',
+    this.menuFormStage = MenuFormStage.none,
+    this.menuStateStatus = MenuStateStatus.none,
+  });
+
+  final bool hasNewMenu;
+  final MenuEntity menuEntity;
+  final String message;
+  final MenuFormStage menuFormStage;
+  final MenuStateStatus menuStateStatus;
+
+  @override
+  bool get cacheHash => false;
+
+  @override
+  List<Object?> get hashParameters => [
+    hasNewMenu,
+    menuEntity,
+    menuFormStage,
+    menuStateStatus,
+  ];
+}
+
+class NavigateToMenuImagePage extends MenuState {
+  NavigateToMenuImagePage({
+    required this.menuEntity,
+    this.hasNewMenu = true,
+    this.message = '',
+    this.menuFormStage = MenuFormStage.none,
+    this.menuStateStatus = MenuStateStatus.none,
+  });
+
+  final bool hasNewMenu;
+  final MenuEntity menuEntity;
+  final String message;
+  final MenuFormStage menuFormStage;
+  final MenuStateStatus menuStateStatus;
+
+  @override
+  bool get cacheHash => false;
+
+  @override
+  List<Object?> get hashParameters => [
+    hasNewMenu,
+    menuEntity,
+    menuFormStage,
+    menuStateStatus,
+  ];
 }
 
 class PullMenuEntityDataState extends MenuState {

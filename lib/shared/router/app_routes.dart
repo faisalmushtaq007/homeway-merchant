@@ -67,6 +67,8 @@ abstract class Routes {
   static const String ALL_MENU_PAGE = _Paths.ALL_MENU_PAGE;
   static const String SAVE_MENU_PAGE = _Paths.SAVE_MENU_PAGE;
   static const String REFORM_SAVE_MENU_PAGE = _Paths.REFORM_SAVE_MENU_PAGE;
+  static const String MENU_PRICE_PAGE = _Paths.MENU_PRICE_PAGE;
+  static const String UPLOAD_MENU_IMAGE_PAGE = _Paths.UPLOAD_MENU_IMAGE_PAGE;
   static const String NEW_MENU_GREETING_PAGE = _Paths.NEW_MENU_GREETING_PAGE;
   static const String MENU_DESCRIPTION_PAGE = _Paths.MENU_DESCRIPTION_PAGE;
   static const String MENU_FORM1_PAGE = _Paths.MENU_FORM1_PAGE;
@@ -210,6 +212,8 @@ abstract class _Paths {
   static const String CHAT_USER_PAGE = '/chat-user';
   static const String NEW_MAP_PAGE = '/map-page';
   static const String ORDER_ANALYSIS_PAGE = '/order-analysis';
-  static const String INITIAL_SPLASH_PAGE = '/initial_page';
-  static const String PROFILE_SETTING_PAGE = '/profile_setting_page';
+  static const String INITIAL_SPLASH_PAGE = '/initial-page';
+  static const String PROFILE_SETTING_PAGE = '/profile-setting-page';
+  static const String MENU_PRICE_PAGE = '/menu-price-page';
+  static const String UPLOAD_MENU_IMAGE_PAGE = '/upload-menu-image-page';
 }
