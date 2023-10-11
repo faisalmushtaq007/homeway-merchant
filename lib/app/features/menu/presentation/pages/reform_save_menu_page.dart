@@ -718,13 +718,14 @@ class _ReFormSaveMenuPageController extends State<ReFormSaveMenuPage>
         ),
       );
     }
-      context.read<MenuBloc>().add(
+      appLog.d(menuEntity.toMap());
+      /*context.read<MenuBloc>().add(
         PushMenuEntityData(
           menuEntity: menuEntity,
           menuFormStage: MenuFormStage.form1,
           menuEntityStatus: MenuEntityStatus.push,
         ),
-      );
+      );*/
       return;
     }
     return;
@@ -931,6 +932,7 @@ class _ReFormSaveMenuPageView extends WidgetView<ReFormSaveMenuPage, _ReFormSave
 
                                   ),
                                   const AnimatedGap(12, duration: Duration(milliseconds: 500)),
+
                                   AppTextFieldWidget(
                                     key: const Key('reform-menu-description-textfield-widget'),
                                     controller: state.menuDescriptionTextEditingController,
@@ -939,6 +941,11 @@ class _ReFormSaveMenuPageView extends WidgetView<ReFormSaveMenuPage, _ReFormSave
                                     textInputAction: TextInputAction.done,
                                     keyboardType: TextInputType.text,
                                     maxLines: 5,
+                                    inputFormatters: [
+                                      //FilteringTextInputFormatter.allow(RegExp('[a-z A-Z ]')),
+                                      FilteringTextInputFormatter.deny('  ')
+                                    ],
+                                    readOnly: false,
                                     decoration: InputDecoration(
                                       labelText: 'Menu description',
                                       hintText: 'Enter either the description or about the ingredients of the menu.',
@@ -946,6 +953,7 @@ class _ReFormSaveMenuPageView extends WidgetView<ReFormSaveMenuPage, _ReFormSave
                                         borderRadius: BorderRadius.circular(10),
                                       ),
                                       isDense: true,
+                                      enabled: true,
                                     ),
                                     validator: (value) {
                                       if (value == null || value.isEmpty) {
@@ -1197,9 +1205,9 @@ class _ReFormSaveMenuPageView extends WidgetView<ReFormSaveMenuPage, _ReFormSave
                                                           controller: state._menuPortionNameController,
                                                           textDirection:
                                                           serviceLocator<LanguageController>().targetTextDirection,
-                                                          focusNode: state.focusList[2],
+                                                          focusNode: state.focusList[3],
                                                           onFieldSubmitted: (_) => fieldFocusChange(
-                                                              context, state.focusList[2], state.focusList[3]),
+                                                              context, state.focusList[3], state.focusList[4]),
                                                           textInputAction: TextInputAction.next,
                                                           keyboardType: TextInputType.text,
                                                           decoration: InputDecoration(
@@ -1242,10 +1250,10 @@ class _ReFormSaveMenuPageView extends WidgetView<ReFormSaveMenuPage, _ReFormSave
                                                           controller: state._menuPortionSizeController,
                                                           textDirection:
                                                           serviceLocator<LanguageController>().targetTextDirection,
-                                                          focusNode: state.focusList[3],
+                                                          focusNode: state.focusList[4],
                                                           textInputAction: TextInputAction.next,
                                                           onFieldSubmitted: (_) => fieldFocusChange(
-                                                              context, state.focusList[3], state.focusList[4]),
+                                                              context, state.focusList[4], state.focusList[5]),
                                                           keyboardType: const TextInputType.numberWithOptions(),
                                                           decoration: InputDecoration(
                                                             labelText: 'Portion value',
@@ -1276,10 +1284,10 @@ class _ReFormSaveMenuPageView extends WidgetView<ReFormSaveMenuPage, _ReFormSave
                                                           controller: state._menuPortionUnitController,
                                                           textDirection:
                                                           serviceLocator<LanguageController>().targetTextDirection,
-                                                          focusNode: state.focusList[4],
+                                                          focusNode: state.focusList[5],
                                                           textInputAction: TextInputAction.next,
                                                           onFieldSubmitted: (_) => fieldFocusChange(
-                                                              context, state.focusList[4], state.focusList[5]),
+                                                              context, state.focusList[5], state.focusList[6]),
                                                           keyboardType: TextInputType.text,
                                                           textCapitalization: TextCapitalization.words,
                                                           decoration: InputDecoration(
@@ -1320,7 +1328,7 @@ class _ReFormSaveMenuPageView extends WidgetView<ReFormSaveMenuPage, _ReFormSave
                                                           controller: state._menuPortionMaximumServeController,
                                                           textDirection:
                                                           serviceLocator<LanguageController>().targetTextDirection,
-                                                          focusNode: state.focusList[5],
+                                                          focusNode: state.focusList[6],
                                                           textInputAction: TextInputAction.done,
                                                           keyboardType: const TextInputType.numberWithOptions(),
                                                           decoration: InputDecoration(

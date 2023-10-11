@@ -37,7 +37,7 @@ final localStoreAvailableFoodTypes = [
 ];
 
 final localStoreWorkingDays = [
-  StoreWorkingDayAndTime(day: 'Monday', id: 0, shortName: 'Sun'),
+  StoreWorkingDayAndTime(day: 'Sunday', id: 0, shortName: 'Sun'),
   StoreWorkingDayAndTime(day: 'Monday', id: 1, shortName: 'Mon'),
   StoreWorkingDayAndTime(day: 'Tuesday', id: 2, shortName: 'Tue'),
   StoreWorkingDayAndTime(day: 'Wednesday', id: 3, shortName: 'Wed'),
