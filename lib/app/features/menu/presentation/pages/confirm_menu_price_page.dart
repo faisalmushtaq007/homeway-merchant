@@ -26,6 +26,30 @@ class _ConfirmMenuPricePageController extends State<ConfirmMenuPricePage> {
   CustomPortion? customPortion;
   bool hasCustomPortion = false;
 
+  double _basePriceOfItems=0.0;
+  double _discountPriceOfItems=0.0;
+  double _finalPriceOfItems=0.0;
+
+  double get basePriceOfItems => _basePriceOfItems;
+  set basePriceOfItems(double value) {
+    _basePriceOfItems += value;
+  }
+  void setBasePriceOfItems(double value) {
+    _basePriceOfItems += value;
+  }
+  double get discountPriceOfItems => _discountPriceOfItems;
+  set discountPriceOfItems(double value) {
+    _discountPriceOfItems += value;
+  }
+  void setDiscountPriceOfItems(double value) {
+    _discountPriceOfItems += value;
+  }
+
+  double get finalPriceOfItems => _finalPriceOfItems;
+  set finalPriceOfItems(double value) {
+    _finalPriceOfItems = value;
+  }
+
   @override
   void initState() {
     listOfMenuPortions = [];
@@ -64,6 +88,16 @@ class _ConfirmMenuPricePageController extends State<ConfirmMenuPricePage> {
       listOfAddons = List<Addons>.from(menuEntity.addons.toList());
     }
     setState(() {});
+  }
+
+  void menuEntityChanged(MenuEntity cacheMenuEntity){
+    menuEntity.copyWith(
+      addons: cacheMenuEntity.addons.toList(),
+      customPortion: cacheMenuEntity.customPortion,
+      customPortions: cacheMenuEntity.customPortions,
+      menuPortions: cacheMenuEntity.menuPortions.toList(),
+    );
+    setState(() { });
   }
 
   Future<void> onSaveAndNext() async {
@@ -113,6 +147,8 @@ class _ConfirmMenuPricePageController extends State<ConfirmMenuPricePage> {
           },
         ),
       );
+
+
 }
 
 class _ConfirmMenuPricePageView extends WidgetView<ConfirmMenuPricePage, _ConfirmMenuPricePageController> {
@@ -216,6 +252,11 @@ class _ConfirmMenuPricePageView extends WidgetView<ConfirmMenuPricePage, _Confir
                                                   listOfMenuPortions: state.listOfMenuPortions,
                                                   key: ValueKey(index),
                                                   menuPortion: item,
+                                                  basePriceValueChanged: state.setBasePriceOfItems,
+                                                  discountPriceValueChanged: state.setDiscountPriceOfItems,
+                                                  menuEntity: state.menuEntity,
+                                                  hasGlobalMenuEntity: false,
+                                                  menuEntityChanged: state.menuEntityChanged,
                                                 );
                                               }).toList(),
                                             ),
@@ -237,6 +278,11 @@ class _ConfirmMenuPricePageView extends WidgetView<ConfirmMenuPricePage, _Confir
                                     hasCustomPortion: true,
                                     customPortion: state.customPortion,
                                     key: const Key('set-custom-price-widget'),
+                                    menuEntity: state.menuEntity,
+                                    basePriceValueChanged: state.setBasePriceOfItems,
+                                    discountPriceValueChanged: state.setDiscountPriceOfItems,
+                                    hasGlobalMenuEntity: false,
+                                    menuEntityChanged: state.menuEntityChanged,
                                   ),
                                   secondChild: const Offstage(),
                                   crossFadeState:
@@ -304,13 +350,18 @@ class _ConfirmMenuPricePageView extends WidgetView<ConfirmMenuPricePage, _Confir
                                                   listOfAddons: state.listOfAddons,
                                                   key: ValueKey(index),
                                                   addons: item,
+                                                  basePriceValueChanged: state.setBasePriceOfItems,
+                                                  discountPriceValueChanged: state.setDiscountPriceOfItems,
+                                                  menuEntity: state.menuEntity,
+                                                  hasGlobalMenuEntity: false,
+                                                  menuEntityChanged: state.menuEntityChanged,
                                                 );
                                               }).toList(),
                                             ),
                                           ),
                                           secondChild: const Offstage(),
                                           crossFadeState:
-                                              (!state.hasCustomPortion && state.listOfMenuPortions.isNotEmpty)
+                                              (state.listOfAddons.isNotEmpty)
                                                   ? CrossFadeState.showFirst
                                                   : CrossFadeState.showSecond,
                                           duration: const Duration(milliseconds: 500),
@@ -333,6 +384,27 @@ class _ConfirmMenuPricePageView extends WidgetView<ConfirmMenuPricePage, _Confir
                           textDirection: serviceLocator<LanguageController>().targetTextDirection,
                           children: [
                             const Spacer(),
+                            Directionality(
+                    textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                    child: RichText(
+                      text: TextSpan(
+                        style: context.bodyMedium!.copyWith(),
+                        children: <TextSpan>[
+                           TextSpan(
+                            text: 'Selling price ',
+                            style: context.labelMedium!.copyWith(),
+                          ),
+                          TextSpan(
+                            text: 'SAR ${state.basePriceOfItems-state.discountPriceOfItems}',
+                            style: context.bodyMedium!.copyWith(
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                            const AnimatedGap(12, duration: Duration(milliseconds: 500)),
                             Row(
                               mainAxisSize: MainAxisSize.min,
                               mainAxisAlignment: MainAxisAlignment.spaceAround,

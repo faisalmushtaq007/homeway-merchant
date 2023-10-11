@@ -166,6 +166,7 @@ class _MenuForm4PageState extends State<MenuForm4Page>
                                         key: PageStorageKey(
                                             'set-menu-price-${listOfMenuPortions[index].title}_${index}'),
                                         menuPortion: listOfMenuPortions[index],
+                                        menuEntity: serviceLocator<MenuEntity>(),
                                       );
                                     },
                                     childCount: listOfMenuPortions.length,
@@ -191,6 +192,7 @@ class _MenuForm4PageState extends State<MenuForm4Page>
                     hasCustomPortion: true,
                     customPortion: customPortion,
                     key: const Key('set-custom-price-widget'),
+                    menuEntity: serviceLocator<MenuEntity>(),
                   ),
                   secondChild: const Offstage(),
                   crossFadeState: hasCustomPortion
@@ -274,6 +276,7 @@ class _MenuForm4PageState extends State<MenuForm4Page>
                                         key: PageStorageKey(
                                             'set-addons-price-${listOfAddons[index].title}_${index}'),
                                         addons: listOfAddons[index],
+                                        menuEntity: serviceLocator<MenuEntity>(),
                                       );
                                     },
                                     childCount: listOfAddons.length,

@@ -8,6 +8,11 @@ class SetMenuPriceWidget extends StatefulWidget {
     this.menuPortion,
     this.hasCustomPortion = false,
     this.listOfMenuPortions = const [],
+    this.basePriceValueChanged,
+    this.discountPriceValueChanged,
+    this.hasGlobalMenuEntity=true,
+    required this.menuEntity,
+    this.menuEntityChanged,
   });
 
   final MenuPortion? menuPortion;
@@ -15,6 +20,11 @@ class SetMenuPriceWidget extends StatefulWidget {
   final bool hasCustomPortion;
   final int? currentIndex;
   final List<MenuPortion> listOfMenuPortions;
+  final ValueChanged<double>? basePriceValueChanged;
+  final ValueChanged<double>? discountPriceValueChanged;
+  final bool hasGlobalMenuEntity;
+  final MenuEntity menuEntity;
+  final ValueChanged<MenuEntity>? menuEntityChanged;
 
   @override
   _SetMenuPriceWidgetState createState() => _SetMenuPriceWidgetState();
@@ -95,7 +105,9 @@ class _SetMenuPriceWidgetState extends State<SetMenuPriceWidget> {
                 children: [
                   AnimatedCrossFade(
                     duration: const Duration(milliseconds: 300),
-                    crossFadeState: (widget.hasCustomPortion && widget.customPortion != null)?CrossFadeState.showFirst:CrossFadeState.showSecond,
+                    crossFadeState: (widget.hasCustomPortion && widget.customPortion != null)
+                        ? CrossFadeState.showFirst
+                        : CrossFadeState.showSecond,
                     firstChild: Row(
                       children: [
                         Text(
@@ -111,16 +123,16 @@ class _SetMenuPriceWidgetState extends State<SetMenuPriceWidget> {
                         ).translate(),
                         Card(
                           //key: const Key('custom-menu-portion-card'),
-                          color: const Color.fromRGBO(188, 235, 208, 1.0),
+                          color: const Color.fromRGBO(188, 235, 208, 1),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadiusDirectional.circular(20),
                             side: const BorderSide(
-                              color: Color.fromRGBO(69, 201, 125, 1.0),
+                              color: Color.fromRGBO(69, 201, 125, 1),
                             ),
                           ),
                           child: Padding(
                             padding: const EdgeInsetsDirectional.only(
-                              top: 8.0,
+                              top: 8,
                               bottom: 8,
                               start: 16,
                               end: 16,
@@ -129,27 +141,26 @@ class _SetMenuPriceWidgetState extends State<SetMenuPriceWidget> {
                               portionName,
                               style: context.bodyMedium!.copyWith(
                                 fontWeight: FontWeight.w600,
-                                color: Color.fromRGBO(42, 45, 50, 1.0),
+                                color: const Color.fromRGBO(42, 45, 50, 1),
                               ),
                               textDirection: serviceLocator<LanguageController>().targetTextDirection,
                             ).translate(),
                           ),
                         ),
-
                       ],
                     ),
                     secondChild: Card(
                       //key: const Key('menu-portion-card'),
-                      color: const Color.fromRGBO(188, 235, 208, 1.0),
+                      color: const Color.fromRGBO(188, 235, 208, 1),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadiusDirectional.circular(20),
                         side: const BorderSide(
-                          color: Color.fromRGBO(69, 201, 125, 1.0),
+                          color: Color.fromRGBO(69, 201, 125, 1),
                         ),
                       ),
                       child: Padding(
                         padding: const EdgeInsetsDirectional.only(
-                          top: 8.0,
+                          top: 8,
                           bottom: 8,
                           start: 16,
                           end: 16,
@@ -158,33 +169,14 @@ class _SetMenuPriceWidgetState extends State<SetMenuPriceWidget> {
                           portionName,
                           style: context.bodyMedium!.copyWith(
                             fontWeight: FontWeight.w600,
-                            color: Color.fromRGBO(42, 45, 50, 1.0),
+                            color: const Color.fromRGBO(42, 45, 50, 1),
                           ),
                           textDirection: serviceLocator<LanguageController>().targetTextDirection,
                         ).translate(),
                       ),
                     ),
                   ),
-                  /*Directionality(
-                    textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                    child: RichText(
-                      text: TextSpan(
-                        style: context.bodyMedium!.copyWith(),
-                        children: <TextSpan>[
-                          *//*TextSpan(
-                            text: 'Selling price ',
-                            style: context.labelMedium!.copyWith(),
-                          ),*//*
-                          TextSpan(
-                            text: 'SAR ${sellingMaxRetailPrice}',
-                            style: context.bodyMedium!.copyWith(
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),*/
+
                 ],
               ),
               const AnimatedGap(12, duration: Duration(milliseconds: 500)),
@@ -197,7 +189,7 @@ class _SetMenuPriceWidgetState extends State<SetMenuPriceWidget> {
                     RegExp(r'^(\d+)?\.?\d{0,2}'),
                   ),
                 ],
-                keyboardType: TextInputType.numberWithOptions(decimal: true),
+                keyboardType: const TextInputType.numberWithOptions(decimal: true),
                 decoration: InputDecoration(
                   labelText: 'Base Price',
                   hintText: '00.00',
@@ -216,7 +208,12 @@ class _SetMenuPriceWidgetState extends State<SetMenuPriceWidget> {
                 },
                 onChanged: (value) {
                   sellingMaxRetailPrice = value;
-                  setMaxRetailPriceFunction(context, value);
+                  if(widget.hasGlobalMenuEntity) {
+                    setMaxRetailPriceFunction(context, value);
+                  }else{
+                    setCacheMenuEntityMaxRetailPriceFunction(context,value);
+                  }
+                  widget.basePriceValueChanged!(double.parse(value));
                   setState(() {});
                 },
                 onSaved: (newValue) {
@@ -234,7 +231,7 @@ class _SetMenuPriceWidgetState extends State<SetMenuPriceWidget> {
                     RegExp(r'^(\d+)?\.?\d{0,2}'),
                   ),
                 ],
-                keyboardType: TextInputType.numberWithOptions(decimal: true),
+                keyboardType: const TextInputType.numberWithOptions(decimal: true),
                 decoration: InputDecoration(
                   labelText: 'Discount Price',
                   hintText: '00.00',
@@ -253,11 +250,20 @@ class _SetMenuPriceWidgetState extends State<SetMenuPriceWidget> {
                 },
                 onChanged: (value) {
                   sellingDiscountPrice = value;
-                  setDiscountPriceFunction(context, value);
+                  if(widget.hasGlobalMenuEntity) {
+                    setDiscountPriceFunction(context, value);
+                  }else{
+                    setCacheMenuEntityDiscountPriceFunction(context, value);
+                  }
+                  widget.discountPriceValueChanged!(double.parse(value));
                   setState(() {});
                 },
                 onSaved: (newValue) {
-                  setDiscountPriceFunction(context, discountPriceOfMenuTextEditingController.value.text.trim());
+                  if(widget.hasGlobalMenuEntity) {
+                    setDiscountPriceFunction(context, discountPriceOfMenuTextEditingController.value.text.trim());
+                  }else{
+                    setCacheMenuEntityDiscountPriceFunction(context, discountPriceOfMenuTextEditingController.value.text.trim());
+                  }
                   return;
                 },
               ),
@@ -349,8 +355,7 @@ class _SetMenuPriceWidgetState extends State<SetMenuPriceWidget> {
       widget.menuPortion?.discountedPrice = double.tryParse(newValue) ?? 0.0;
       if (widget.currentIndex != null) {
         widget.listOfMenuPortions[widget.currentIndex!].discountedPrice = double.tryParse(newValue) ?? 0.0;
-        serviceLocator<MenuEntity>().menuPortions[widget.currentIndex!].discountedPrice =
-            double.tryParse(maximumRetailPriceOfMenuTextEditingController.value.text.trim()) ?? 0.0;
+        serviceLocator<MenuEntity>().menuPortions[widget.currentIndex!].discountedPrice = double.tryParse(maximumRetailPriceOfMenuTextEditingController.value.text.trim()) ?? 0.0;
         context.read<MenuBloc>().add(
               PushMenuEntityData(
                 menuEntity: serviceLocator<MenuEntity>(),
@@ -358,6 +363,59 @@ class _SetMenuPriceWidgetState extends State<SetMenuPriceWidget> {
                 menuEntityStatus: MenuEntityStatus.push,
               ),
             );
+      }
+    }
+    return;
+  }
+
+  void setCacheMenuEntityMaxRetailPriceFunction(BuildContext context, String newValue) {
+    if (widget.hasCustomPortion) {
+      final cacheCustomPortion = widget.menuEntity.customPortion;
+      if (cacheCustomPortion != null) {
+        // copy value
+        widget.menuEntity.customPortion?.copyWith(
+          defaultPrice: double.tryParse(newValue) ?? 0.0,
+        );
+        widget.menuEntityChanged!(widget.menuEntity.copyWith());
+      } else {
+        // new value
+        widget.menuEntity.customPortion?.defaultPrice = double.tryParse(newValue) ?? 0.0;
+        widget.menuEntityChanged!(widget.menuEntity.copyWith());
+      }
+    } else {
+      final cacheMenuPortion = widget.menuEntity.menuPortions;
+      widget.menuPortion?.defaultPrice = double.tryParse(newValue) ?? 0.0;
+      if (widget.currentIndex != null) {
+        widget.listOfMenuPortions[widget.currentIndex!].defaultPrice = double.tryParse(newValue) ?? 0.0;
+        widget.menuEntity.menuPortions[widget.currentIndex!].defaultPrice =
+            double.tryParse(maximumRetailPriceOfMenuTextEditingController.value.text.trim()) ?? 0.0;
+        widget.menuEntityChanged!(widget.menuEntity.copyWith());
+      }
+    }
+    return;
+  }
+
+  void setCacheMenuEntityDiscountPriceFunction(BuildContext context, String newValue) {
+    if (widget.hasCustomPortion) {
+      final cacheCustomPortion = widget.menuEntity.customPortion;
+      if (cacheCustomPortion != null) {
+        // copy value
+        widget.menuEntity.customPortion?.copyWith(
+          discountedPrice: double.tryParse(newValue) ?? 0.0,
+        );
+        widget.menuEntityChanged!(widget.menuEntity.copyWith());
+      } else {
+        // new value
+        widget.menuEntity.customPortion?.discountedPrice = double.tryParse(newValue) ?? 0.0;
+        widget.menuEntityChanged!(widget.menuEntity.copyWith());
+      }
+    } else {
+      final cacheMenuPortion = widget.menuEntity.menuPortions;
+      widget.menuPortion?.discountedPrice = double.tryParse(newValue) ?? 0.0;
+      if (widget.currentIndex != null) {
+        widget.listOfMenuPortions[widget.currentIndex!].discountedPrice = double.tryParse(newValue) ?? 0.0;
+        widget.menuEntity.menuPortions[widget.currentIndex!].discountedPrice = double.tryParse(maximumRetailPriceOfMenuTextEditingController.value.text.trim()) ?? 0.0;
+        widget.menuEntityChanged!(widget.menuEntity.copyWith());
       }
     }
     return;

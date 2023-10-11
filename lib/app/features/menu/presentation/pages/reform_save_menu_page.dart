@@ -1720,10 +1720,10 @@ class _ReFormSaveMenuPageView extends WidgetView<ReFormSaveMenuPage, _ReFormSave
                                     key: const Key('reform-menu-min-stock-widget'),
                                     controller: state._menuMinStockQuantityController,
                                     textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                                    focusNode: state.focusList[6],
+                                    focusNode: state.focusList[7],
                                     textInputAction: TextInputAction.next,
                                     onFieldSubmitted: (_) =>
-                                        fieldFocusChange(context, state.focusList[6], state.focusList[7]),
+                                        fieldFocusChange(context, state.focusList[7], state.focusList[8]),
                                     keyboardType: const TextInputType.numberWithOptions(),
                                     decoration: InputDecoration(
                                       labelText: 'Minimum Quantity',
@@ -1743,7 +1743,7 @@ class _ReFormSaveMenuPageView extends WidgetView<ReFormSaveMenuPage, _ReFormSave
                                     key: const Key('reform-menu-max-stock-widget'),
                                     controller: state._menuMaxStockQuantityController,
                                     textDirection: serviceLocator<LanguageController>().targetTextDirection,
-                                    focusNode: state.focusList[7],
+                                    focusNode: state.focusList[8],
                                     textInputAction: TextInputAction.done,
                                     keyboardType: const TextInputType.numberWithOptions(),
                                     decoration: InputDecoration(
