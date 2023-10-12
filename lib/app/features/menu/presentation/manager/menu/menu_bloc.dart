@@ -343,7 +343,7 @@ class MenuBloc extends Bloc<MenuEvent, MenuState> {
           'PushMenuEntityData ${DateTime.now().hour}:${DateTime.now().minute}--> ${event.menuEntity.toMap()}');
       emit(
         PushMenuEntityDataState(
-          menuEntity: event.menuEntity,
+          menuEntity: event.menuEntity.copyWith(),
           message: 'Success',
           hasNewMenu: event.hasNewMenu,
           menuEntityStatus: event.menuEntityStatus,
@@ -356,7 +356,7 @@ class MenuBloc extends Bloc<MenuEvent, MenuState> {
       if(event.menuFormStage==MenuFormStage.form1){
         emit(
           NavigateToMenuPricePage(
-            menuEntity: event.menuEntity,
+            menuEntity: event.menuEntity.copyWith(),
             message: 'Success',
             hasNewMenu: event.hasNewMenu,
             menuFormStage: event.menuFormStage,
@@ -366,7 +366,7 @@ class MenuBloc extends Bloc<MenuEvent, MenuState> {
       }else if(event.menuFormStage==MenuFormStage.form2){
         emit(
           NavigateToMenuImagePage(
-            menuEntity: event.menuEntity,
+            menuEntity: event.menuEntity.copyWith(),
             message: 'Success',
             hasNewMenu: event.hasNewMenu,
             menuFormStage: event.menuFormStage,

@@ -61,7 +61,7 @@ class _ConfirmMenuPricePageController extends State<ConfirmMenuPricePage> {
   @override
   void initState() {
     listOfMenuPortions = [];
-    menuEntity = widget.menuEntity;
+    menuEntity = widget.menuEntity.copyWith();
 
     super.initState();
 

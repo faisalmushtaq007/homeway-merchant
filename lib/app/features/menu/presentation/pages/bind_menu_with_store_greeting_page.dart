@@ -250,7 +250,7 @@ class _BindMenuWithStoreGreetingPageView extends WidgetView<
                           ).translate(),
                           onPressed: () async {
                             context.pushReplacement(
-                              Routes.SAVE_MENU_PAGE,
+                              Routes.REFORM_SAVE_MENU_PAGE,
                               extra: {
                                 'menuEntity': null,
                                 'haveNewMenu': true,

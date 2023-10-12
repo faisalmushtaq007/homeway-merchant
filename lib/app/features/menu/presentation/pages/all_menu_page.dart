@@ -587,7 +587,7 @@ class _AllMenuPageView extends WidgetView<AllMenuPage, _AllMenuPageController> {
                                 onPressed: () async {
                                   final navigateToSaveMenuPage =
                                   await context.push(
-                                    Routes.SAVE_MENU_PAGE,
+                                    Routes.REFORM_SAVE_MENU_PAGE,
                                     extra: {
                                       'menuEntity': null,
                                       'haveNewMenu': true,

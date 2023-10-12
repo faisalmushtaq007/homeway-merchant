@@ -67,7 +67,7 @@ class _InitialSplashScreenPageController extends State<InitialSplashScreenPage> 
           }
         case 5:
           {
-            routeName=  Routes.REFORM_SAVE_MENU_PAGE;
+            routeName=  Routes.PRIMARY_DASHBOARD_PAGE;
           }
         case _:
           {
