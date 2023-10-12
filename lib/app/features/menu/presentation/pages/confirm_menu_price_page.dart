@@ -111,11 +111,10 @@ class _ConfirmMenuPricePageController extends State<ConfirmMenuPricePage> {
   Future<void> onSaveAndNext() async {
     if (formKey.currentState!.validate()) {
       formKey.currentState!.save();
-      menuEntity.copyWith();
       appLog.d(menuEntity.toMap());
       context.read<MenuBloc>().add(
             PushMenuEntityData(
-              menuEntity: menuEntity,
+              menuEntity: menuEntity.copyWith(),
               menuFormStage: MenuFormStage.form2,
               menuEntityStatus: MenuEntityStatus.push,
             ),

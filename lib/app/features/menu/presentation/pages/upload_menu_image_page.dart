@@ -194,15 +194,13 @@ class _UploadMenuImagePageController extends State<UploadMenuImagePage> {
   Future<void> onSaveAndNext() async {
     if (formKey.currentState!.validate()) {
       formKey.currentState!.save();
-      menuEntity.copyWith();
       appLog.d(menuEntity.toMap());
       context.read<MenuBloc>().add(
-            PushMenuEntityData(
-              menuEntity: menuEntity,
-              menuFormStage: MenuFormStage.form2,
-              menuEntityStatus: MenuEntityStatus.push,
-            ),
-          );
+        SaveMenu(
+          menuEntity: menuEntity.copyWith(),
+          hasNewMenu: widget.haveNewMenu,
+        ),
+      );
       return;
     }
     return;
@@ -211,7 +209,16 @@ class _UploadMenuImagePageController extends State<UploadMenuImagePage> {
   @override
   Widget build(BuildContext context) => BlocListener<MenuBloc, MenuState>(
         bloc: context.read<MenuBloc>(),
-        listener: (context, menuState) {},
+        listener: (context, menuState) {
+          switch(menuState){
+            case SaveMenuState():
+              {
+                context.go(Routes.NEW_MENU_GREETING_PAGE,
+                    extra: menuState.menuEntity,);
+                return;
+              }
+          }
+        },
         child: BlocBuilder<MenuBloc, MenuState>(
           bloc: context.read<MenuBloc>(),
           builder: (context, menuBuilderState) {
@@ -509,7 +516,7 @@ class _UploadMenuImagePageView extends WidgetView<UploadMenuImagePage, _UploadMe
                                       disabledForegroundColor: Colors.white,
                                     ),
                                     child: Text(
-                                      'Save & Next',
+                                      'Save',
                                       textDirection: serviceLocator<LanguageController>().targetTextDirection,
                                     ).translate(),
                                   ),

@@ -383,7 +383,7 @@ class _AllMenuPageView extends WidgetView<AllMenuPage, _AllMenuPageController> {
                                       key: const Key('all-menu-search-field-widget'),
                                       onChanged: state._updateSearchTerm,
                                       height: 48,
-                                      hintText: 'Search Addons',
+                                      hintText: 'Search Menus',
 
                                     ),),
                                    /* Expanded(
