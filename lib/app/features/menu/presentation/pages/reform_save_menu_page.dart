@@ -381,6 +381,15 @@ class _ReFormSaveMenuPageController extends State<ReFormSaveMenuPage>
     setState(() {});
   }
 
+  void setMenuNameValue(String value) {
+    menuEntity.menuName = menuNameTextEditingController.value.text.trim();
+    setState(() {});
+  }
+  void setMenuDescriptionValue(String value) {
+    menuEntity.menuDescription = menuDescriptionTextEditingController.value.text.trim();
+    setState(() {});
+  }
+
   void setMenuMaxStockValue() {
     menuEntity.maxStockAvailable = int.tryParse(_menuMaxStockQuantityController.value.text.trim()) ?? 0;
     setState(() {});
@@ -906,6 +915,7 @@ class _ReFormSaveMenuPageView extends WidgetView<ReFormSaveMenuPage, _ReFormSave
                                       }
                                       return null;
                                     },
+                                    onChanged: state.setMenuNameValue,
                                   ),
                                   const AnimatedGap(12, duration: Duration(milliseconds: 500)),
                                   AppTextFieldWidget(
@@ -936,6 +946,7 @@ class _ReFormSaveMenuPageView extends WidgetView<ReFormSaveMenuPage, _ReFormSave
                                       }
                                       return null;
                                     },
+                                    onChanged: state.setMenuDescriptionValue,
                                   ),
                                   const Divider(thickness: 0.8),
                                   Column(

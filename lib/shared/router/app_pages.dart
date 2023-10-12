@@ -258,7 +258,7 @@ class AppRouter {
         },
       ),
       GoRoute(
-        path: Routes.REFORM_SAVE_MENU_PAGE,
+        path: Routes.SAVE_MENU_PAGE,
         builder: (context, state) {
           final Map<String, dynamic>? args = state.extra as Map<String, dynamic>?;
           return SaveMenuPage(

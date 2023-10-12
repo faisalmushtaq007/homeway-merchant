@@ -198,22 +198,26 @@ class _PrimaryDashboardPageView extends WidgetView<PrimaryDashboardPage, _Primar
       case DayPeriod.am: {
         if (hour>=0 && hour < 4) {
           message = 'Good Night';
+          break;
         } else if ((hour >= 4) && (hour <12)) {
           message = 'Good Morning';
+          break;
         }else{
           message = 'Good Morning';
+          break;
         }
-        break;
       }
       case DayPeriod.pm: {
         if ((hour >= 12) && (hour < 16)) {
           message = 'Good Afernoon';
+          break;
         }if ((hour >= 16) && (hour <= 20)) {
           message = 'Good Evening';
+          break;
         }else {
           message = 'Good Night';
+          break;
         }
-        break;
       }
     }
     return AnnotatedRegion<SystemUiOverlayStyle>(
