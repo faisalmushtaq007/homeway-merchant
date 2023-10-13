@@ -1,8 +1,7 @@
 part of 'package:homemakers_merchant/app/features/menu/index.dart';
 
 class MenuComponentWidget extends StatefulWidget {
-  const MenuComponentWidget(
-      {required this.menuEntity, this.height = 180, super.key});
+  const MenuComponentWidget({required this.menuEntity, this.height = 180, super.key});
 
   final MenuEntity menuEntity;
   final double height;
@@ -33,6 +32,7 @@ class _MenuComponentWidgetState extends State<MenuComponentWidget> {
   List<MenuComponent> menuComponents = [];
   List<Addons> listOfAddons = [];
   List<Category> selectedCategory = [];
+  final double iconSize = 24;
 
   @override
   void initState() {
@@ -60,15 +60,12 @@ class _MenuComponentWidgetState extends State<MenuComponentWidget> {
     menuMaxPreparationTime = '';
     selectedCategory = [];
     // Initialize
-    menuAvailableFoodTypes =
-        List.from(widget.menuEntity.storeAvailableFoodTypes.toList());
-    menuAvailableFoodPreparationType =
-        List.from(widget.menuEntity.storeAvailableFoodPreparationType.toList());
+    menuAvailableFoodTypes = List.from(widget.menuEntity.storeAvailableFoodTypes.toList());
+    menuAvailableFoodPreparationType = List.from(widget.menuEntity.storeAvailableFoodPreparationType.toList());
     tasteType = widget.menuEntity.tasteType;
     listOfAddons = List.from(widget.menuEntity.addons.toList());
     addonsEntities = List.from(widget.menuEntity.addons.toList());
-    menuAvailableInDays =
-        List.from(widget.menuEntity.menuAvailableInDays.toList());
+    menuAvailableInDays = List.from(widget.menuEntity.menuAvailableInDays.toList());
     hasCustomPortion = widget.menuEntity.hasCustomPortion;
     customPortions = List.from(widget.menuEntity.customPortions.toList());
     menuPortions = List.from(widget.menuEntity.menuPortions.toList());
@@ -104,7 +101,8 @@ class _MenuComponentWidgetState extends State<MenuComponentWidget> {
         icon: Icon(
           Icons.restaurant_menu,
           color: context.colorScheme.primary,
-          size: 20,
+          size: iconSize,
+          textDirection: serviceLocator<LanguageController>().targetTextDirection,
         ),
         data: [],
         secondaryData: [],
@@ -113,11 +111,14 @@ class _MenuComponentWidgetState extends State<MenuComponentWidget> {
     menuComponents.insert(
       1,
       MenuComponent<TasteType, TasteLevel>(
-        title: 'Taste Type',
-        icon: FaIcon(
-          FontAwesomeIcons.pepperHot,
-          color: context.colorScheme.primary,
-          size: 20,
+        title: 'Tastes',
+        icon: SvgPicture.asset(
+          'assets/svg/taste_level.svg',
+          //color: Colors.red,
+          semanticsLabel: 'Taste',
+          width: iconSize,
+          height: iconSize,
+          matchTextDirection: true,
         ),
         data: [],
         secondaryData: [],
@@ -127,10 +128,13 @@ class _MenuComponentWidgetState extends State<MenuComponentWidget> {
       2,
       MenuComponent<TasteType, TasteLevel>(
         title: 'Portion of Dish',
-        icon: FaIcon(
-          FontAwesomeIcons.pepperHot,
-          color: context.colorScheme.primary,
-          size: 20,
+        icon: SvgPicture.asset(
+          'assets/svg/portion.svg',
+          //color: Colors.red,
+          semanticsLabel: 'Portion',
+          width: iconSize,
+          height: iconSize,
+          matchTextDirection: true,
         ),
         data: [],
         secondaryData: [],
@@ -140,10 +144,13 @@ class _MenuComponentWidgetState extends State<MenuComponentWidget> {
       3,
       MenuComponent<TasteType, TasteLevel>(
         title: 'Extra Includes',
-        icon: FaIcon(
-          FontAwesomeIcons.pepperHot,
-          color: context.colorScheme.primary,
-          size: 20,
+        icon: SvgPicture.asset(
+          'assets/svg/packing.svg',
+          //color: Colors.red,
+          semanticsLabel: 'Extras',
+          width: iconSize,
+          height: iconSize,
+          matchTextDirection: true,
         ),
         data: [],
         secondaryData: [],
@@ -152,11 +159,14 @@ class _MenuComponentWidgetState extends State<MenuComponentWidget> {
     menuComponents.insert(
       4,
       MenuComponent<TasteType, TasteLevel>(
-        title: 'Menu Availability',
-        icon: FaIcon(
-          FontAwesomeIcons.pepperHot,
-          color: context.colorScheme.primary,
-          size: 20,
+        title: 'Availability',
+        icon: SvgPicture.asset(
+          'assets/svg/brunch.svg',
+          //color: Colors.red,
+          semanticsLabel: 'Availability',
+          width: iconSize,
+          height: iconSize,
+          matchTextDirection: true,
         ),
         data: [],
         secondaryData: [],
@@ -166,10 +176,13 @@ class _MenuComponentWidgetState extends State<MenuComponentWidget> {
       5,
       MenuComponent<TasteType, TasteLevel>(
         title: 'Preparation Time',
-        icon: FaIcon(
-          FontAwesomeIcons.pepperHot,
-          color: context.colorScheme.primary,
-          size: 20,
+        icon: SvgPicture.asset(
+          'assets/svg/meal.svg',
+          //color: Colors.red,
+          semanticsLabel: 'Preparation Time',
+          width: iconSize,
+          height: iconSize,
+          matchTextDirection: true,
         ),
         data: [],
         secondaryData: [],
@@ -185,8 +198,8 @@ class _MenuComponentWidgetState extends State<MenuComponentWidget> {
         width: context.width,
         height: context.width / 2,
         padding: EdgeInsetsDirectional.zero,
+        //decoration: BoxDecoration(color: context.colorScheme.surface),
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -195,35 +208,31 @@ class _MenuComponentWidgetState extends State<MenuComponentWidget> {
                 scrollDirection: Axis.horizontal,
                 padding: EdgeInsetsDirectional.zero,
                 shrinkWrap: true,
+                physics: const ClampingScrollPhysics(),
                 itemBuilder: (context, index) {
                   return SizedBox(
-                    width: context.width / 2.15,
+                    width: context.width / 2.05,
                     child: Card(
                       key: ValueKey(index),
-                      margin: const EdgeInsetsDirectional.only(
-                          bottom: 0, end: 8, top: 0),
+                      margin: const EdgeInsetsDirectional.only(end: 8),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadiusDirectional.circular(6),
                       ),
                       elevation: 0,
-                      color: const Color.fromRGBO(242, 242, 242, 1),
+                      //color: const Color.fromRGBO(242, 242, 242, 1),
                       child: Padding(
                         padding: EdgeInsetsDirectional.zero,
                         child: Column(
-                          textDirection: serviceLocator<LanguageController>()
-                              .targetTextDirection,
+                          textDirection: serviceLocator<LanguageController>().targetTextDirection,
                           crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.start,
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            const AnimatedGap(6,
-                                duration: Duration(milliseconds: 200)),
+                            const AnimatedGap(6, duration: Duration(milliseconds: 200)),
                             Center(
                               child: CircleAvatar(
                                 backgroundColor: Colors.white,
                                 radius: 24,
-                                child:
-                                    Center(child: menuComponents[index].icon),
+                                child: Center(child: menuComponents[index].icon),
                               ),
                             ),
                             const AnimatedGap(
@@ -235,17 +244,14 @@ class _MenuComponentWidgetState extends State<MenuComponentWidget> {
                             Center(
                               child: Text(
                                 menuComponents[index].title,
-                                textDirection:
-                                    serviceLocator<LanguageController>()
-                                        .targetTextDirection,
+                                textDirection: serviceLocator<LanguageController>().targetTextDirection,
                                 style: context.labelMedium!.copyWith(
                                   fontWeight: FontWeight.w600,
                                   fontSize: 15,
                                 ),
-                              ),
+                              ).translate(),
                             ),
-                            const AnimatedGap(4,
-                                duration: Duration(milliseconds: 200)),
+                            const AnimatedGap(4, duration: Duration(milliseconds: 200)),
                             Flexible(
                               child: loadWidgets(context, index).maybeWhen(
                                 orElse: () {
@@ -320,11 +326,9 @@ class _MenuComponentWidgetState extends State<MenuComponentWidget> {
     //selectedCategory
     selectedCategory.asMap().forEach((key, value) {
       menuTypes.add(value.title);
-      appLog.d('subCategory 0 ${value.subCategory.length}');
+
       if (value.subCategory.isNotNullOrEmpty) {
-        appLog.d('subCategory');
         value.subCategory.asMap().forEach((key, subCategoryValue) {
-          appLog.d('subCategory 1 ${subCategoryValue.title}');
           menuTypes.add(subCategoryValue.title);
         });
       }
@@ -439,40 +443,23 @@ class WrapAndMoreWidget extends StatelessWidget {
         return Container(
           height: constraints.maxHeight,
           width: constraints.maxWidth,
-          padding: const EdgeInsetsDirectional.only(
-              start: 12, end: 8, bottom: 0, top: 2),
-          child: WrapAndMore(
-            //maxLine: 2,
-            spacing: 4,
-            maxRow: menuTypes.length > 4 ? 4 : 5,
-            runSpacing: 4,
-            key: wrapAndMoreKey,
-            //direction: Axis.vertical,
-            overflowWidget: (restChildrenCount) {
-              return Row(
-                children: [
-                  Text(
-                    '+ $restChildrenCount more',
-                    style: TextStyle(color: Colors.grey),
-                  ),
-                ],
-              );
-            },
-            children: List.generate(
+          padding: const EdgeInsetsDirectional.only(start: 8, end: 8, top: 2),
+          child: Flex(
+            direction: Axis.vertical,
+            children: List<Widget>.generate(
               menuTypes.length,
               (index) => SizedBox(
-                width: context.width / 2.15,
+                width: context.width / 2.05,
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.start,
                   mainAxisSize: MainAxisSize.min,
-                  textDirection:
-                      serviceLocator<LanguageController>().targetTextDirection,
+                  textDirection: serviceLocator<LanguageController>().targetTextDirection,
                   children: [
-                    const Icon(
+                    Icon(
                       Icons.check,
                       color: Color.fromRGBO(69, 201, 125, 1),
-                      size: 20,
+                      textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                      size: 18,
                     ),
                     const AnimatedGap(6, duration: Duration(milliseconds: 200)),
                     /*Flexible(
@@ -490,7 +477,13 @@ class WrapAndMoreWidget extends StatelessWidget {
                     Flexible(
                       child: Wrap(
                         children: [
-                          Text(menuTypes[index]),
+                          Text(
+                            menuTypes[index],
+                            textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                            softWrap: true,
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 2,
+                          ),
                         ],
                       ),
                     ),
@@ -499,6 +492,62 @@ class WrapAndMoreWidget extends StatelessWidget {
               ),
             ),
           ),
+          /*child: WrapAndMore(
+            //maxLine: 2,
+            spacing: 3,
+            maxRow: 6,
+            runSpacing: 3,
+            key: wrapAndMoreKey,
+            //direction: Axis.vertical,
+            overflowWidget: (restChildrenCount) {
+              return Row(
+                children: [
+                  Text(
+                    '+ $restChildrenCount more',
+                    style: TextStyle(color: Colors.grey),
+                  ),
+                ],
+              );
+            },
+            children: List.generate(
+              menuTypes.length,
+              (index) => SizedBox(
+                width: context.width / 2.05,
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisSize: MainAxisSize.min,
+                  textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                  children: [
+                    const Icon(
+                      Icons.check,
+                      color: Color.fromRGBO(69, 201, 125, 1),
+                      size: 18,
+                    ),
+                    const AnimatedGap(6, duration: Duration(milliseconds: 200)),
+                    */ /*Flexible(
+                      child: WrapText(
+                        menuTypes[index],
+                        breakWordCharacter: '-',
+                        smartSizeMode: true,
+                        asyncMode: true,
+                        minFontSize: 12,
+                        maxFontSize: 13,
+                        textStyle: context.bodyMedium!.copyWith(fontSize: 12),
+                      ),
+                    ),*/ /*
+
+                    Flexible(
+                      child: Wrap(
+                        children: [
+                          Text(menuTypes[index]),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),*/
         );
       },
     );

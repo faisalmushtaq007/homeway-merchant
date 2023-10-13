@@ -139,7 +139,7 @@ class _StoreDetailsPageView
                             Wrap(
                               children: [
                                 WrapText(
-                                  '${state.menuEntity.menuDescription}',
+                                  state.menuEntity.menuDescription,
                                   breakWordCharacter: '-',
                                   smartSizeMode: false,
                                   asyncMode: true,

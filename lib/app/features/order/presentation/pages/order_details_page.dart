@@ -379,308 +379,306 @@ class _OrderDetailPageView
       ),
       child: Directionality(
         textDirection: serviceLocator<LanguageController>().targetTextDirection,
-        child: DoubleTapToExit(
-          child: Scaffold(
-            appBar: AppBar(
-              title: const Text('Order Details'),
-              centerTitle: false,
-              titleSpacing: 0,
-              actions: [
-                IconButton(
-                  onPressed: () {
-                    final notification = context.push(Routes.NOTIFICATIONS);
-                    return;
-                  },
-                  icon: Badge(
-                    alignment: AlignmentDirectional.topEnd,
-                    //padding: EdgeInsets.all(4),
-                    backgroundColor: context.colorScheme.secondary,
-                    largeSize: 16,
-                    textStyle: const TextStyle(fontSize: 14),
-                    textColor: Colors.yellow,
-                    label: Text(
-                      '10',
-                      style: context.labelSmall!
-                          .copyWith(color: context.colorScheme.onPrimary),
-                      //Color.fromRGBO(251, 219, 11, 1)
-                    ),
-                    child: Icon(
-                      Icons.notifications,
-                      color: context.colorScheme.primary,
-                      textDirection: serviceLocator<LanguageController>()
-                          .targetTextDirection,
-                    ),
+        child: Scaffold(
+          appBar: AppBar(
+            title: const Text('Order Details'),
+            centerTitle: false,
+            titleSpacing: 0,
+            actions: [
+              IconButton(
+                onPressed: () {
+                  final notification = context.push(Routes.NOTIFICATIONS);
+                  return;
+                },
+                icon: Badge(
+                  alignment: AlignmentDirectional.topEnd,
+                  //padding: EdgeInsets.all(4),
+                  backgroundColor: context.colorScheme.secondary,
+                  largeSize: 16,
+                  textStyle: const TextStyle(fontSize: 14),
+                  textColor: Colors.yellow,
+                  label: Text(
+                    '10',
+                    style: context.labelSmall!
+                        .copyWith(color: context.colorScheme.onPrimary),
+                    //Color.fromRGBO(251, 219, 11, 1)
+                  ),
+                  child: Icon(
+                    Icons.notifications,
+                    color: context.colorScheme.primary,
+                    textDirection: serviceLocator<LanguageController>()
+                        .targetTextDirection,
                   ),
                 ),
-                Directionality(
-                  textDirection:
-                      serviceLocator<LanguageController>().targetTextDirection,
-                  child: IconButton(
-                    onPressed: () {},
-                    icon: Icon(
-                      Icons.help,
-                      color: context.colorScheme.primary,
-                      textDirection: serviceLocator<LanguageController>()
-                          .targetTextDirection,
-                    ),
-                  ),
-                ),
-                const Padding(
-                  padding: EdgeInsetsDirectional.only(end: 8),
-                  child: LanguageSelectionWidget(),
-                ),
-              ],
-            ),
-            drawer: const PrimaryDashboardDrawer(
-              key: const Key('order-details-dashboard-drawer'),
-              isMainDrawerPage: false,
-            ),
-            body: SlideInLeft(
-              key: const Key('order-details-page-slideinleft-widget'),
-              from: context.width / 2 - 60,
-              duration: const Duration(milliseconds: 500),
-              child: Directionality(
+              ),
+              Directionality(
                 textDirection:
                     serviceLocator<LanguageController>().targetTextDirection,
-                child: PageBody(
-                  controller: state.scrollController,
-                  constraints: BoxConstraints(
-                    minWidth: 1000,
-                    minHeight: media.size.height -
-                        (media.padding.top +
-                            kToolbarHeight +
-                            media.padding.bottom),
+                child: IconButton(
+                  onPressed: () {},
+                  icon: Icon(
+                    Icons.help,
+                    color: context.colorScheme.primary,
+                    textDirection: serviceLocator<LanguageController>()
+                        .targetTextDirection,
                   ),
-                  padding: EdgeInsetsDirectional.only(
-                    //top: topPadding,
-                    //bottom: bottomPadding,
-                    start: margins * 2.5,
-                    end: margins * 2.5,
-                  ),
-                  child: CustomScrollView(
-                    controller: state.customScrollViewScrollController,
-                    shrinkWrap: true,
-                    slivers: [
-                      SliverList(
-                        delegate: SliverChildListDelegate(
-                          [
-                            ListTile(
-                              title: Directionality(
-                                textDirection:
-                                    serviceLocator<LanguageController>()
-                                        .targetTextDirection,
-                                child: WrapText(
-                                  state.orderEntity.store.storeName,
-                                  breakWordCharacter: '-',
-                                  smartSizeMode: false,
-                                  asyncMode: true,
-                                  minFontSize: 12,
-                                  maxFontSize: 14,
-                                  textStyle: context.titleMedium!.copyWith(
-                                    fontWeight: FontWeight.w500,
-                                    color: context.colorScheme.primary,
-                                  ),
-                                  maxLines: 2,
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                              ),
-                              subtitle: Directionality(
-                                textDirection:
-                                    serviceLocator<LanguageController>()
-                                        .targetTextDirection,
-                                child: WrapText(
-                                  'Order ID: HMW-${state.orderEntity.orderID}',
-                                  breakWordCharacter: '-',
-                                  smartSizeMode: false,
-                                  asyncMode: true,
-                                  minFontSize: 12,
-                                  maxFontSize: 14,
-                                  textStyle: context.labelLarge!
-                                      .copyWith(fontWeight: FontWeight.w500),
-                                  maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                              ),
-                              trailing: ClipRRect(
-                                borderRadius:
-                                    BorderRadiusDirectional.circular(24),
-                                child: Container(
-                                  padding:
-                                      const EdgeInsetsDirectional.symmetric(
-                                          horizontal: 8, vertical: 4),
-                                  decoration: BoxDecoration(
-                                    color:
-                                        const Color.fromRGBO(251, 219, 11, 1),
-                                    borderRadius:
-                                        BorderRadiusDirectional.circular(24),
-                                    border: Border.all(
-                                      color:
-                                          const Color.fromRGBO(243, 188, 88, 1),
-                                    ),
-                                  ),
-                                  child: Directionality(
-                                    textDirection:
-                                        serviceLocator<LanguageController>()
-                                            .targetTextDirection,
-                                    child: WrapText(
-                                      state.orderEntity.payment.mode,
-                                      breakWordCharacter: '-',
-                                      smartSizeMode: false,
-                                      asyncMode: true,
-                                      minFontSize: 12,
-                                      maxFontSize: 13,
-                                      textStyle: context.bodySmall!.copyWith(
-                                        fontWeight: FontWeight.w600,
-                                      ),
-                                      maxLines: 1,
-                                      overflow: TextOverflow.ellipsis,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              horizontalTitleGap: 0,
-                              visualDensity:
-                                  const VisualDensity(horizontal: -4),
-                              minLeadingWidth: 0,
-                              contentPadding: EdgeInsetsDirectional.zero,
-                            ),
-                            /*const AnimatedGap(
-                              6,
-                              duration: Duration(milliseconds: 100),
-                            ),*/
-
-                            OrderTimeLineCardWidget(
-                              key: const Key(
-                                  'order-details-timeline-card-widget'),
-                              orderEntity: state.orderEntity,
-                              activeLocale: state.activeLocale,
-                            ),
-                            const AnimatedGap(
-                              12,
-                              duration: Duration(milliseconds: 100),
-                            ),
-                            Wrap(
-                              children: [
-                                OrderTimelineTrackingWidget(
-                                  key: const Key(
-                                      'order-details-timeline--tracking-card-widget'),
-                                  orderEntity: state.orderEntity,
-                                  activeLocale: state.activeLocale,
-                                ),
-                              ],
-                            ),
-                            const AnimatedGap(
-                              12,
-                              duration: Duration(milliseconds: 100),
-                            ),
-                            Directionality(
+                ),
+              ),
+              const Padding(
+                padding: EdgeInsetsDirectional.only(end: 8),
+                child: LanguageSelectionWidget(),
+              ),
+            ],
+          ),
+          drawer: const PrimaryDashboardDrawer(
+            key: const Key('order-details-dashboard-drawer'),
+            isMainDrawerPage: false,
+          ),
+          body: SlideInLeft(
+            key: const Key('order-details-page-slideinleft-widget'),
+            from: context.width / 2 - 60,
+            duration: const Duration(milliseconds: 500),
+            child: Directionality(
+              textDirection:
+                  serviceLocator<LanguageController>().targetTextDirection,
+              child: PageBody(
+                controller: state.scrollController,
+                constraints: BoxConstraints(
+                  minWidth: 1000,
+                  minHeight: media.size.height -
+                      (media.padding.top +
+                          kToolbarHeight +
+                          media.padding.bottom),
+                ),
+                padding: EdgeInsetsDirectional.only(
+                  //top: topPadding,
+                  //bottom: bottomPadding,
+                  start: margins * 2.5,
+                  end: margins * 2.5,
+                ),
+                child: CustomScrollView(
+                  controller: state.customScrollViewScrollController,
+                  shrinkWrap: true,
+                  slivers: [
+                    SliverList(
+                      delegate: SliverChildListDelegate(
+                        [
+                          ListTile(
+                            title: Directionality(
                               textDirection:
                                   serviceLocator<LanguageController>()
                                       .targetTextDirection,
-                              child: Wrap(
-                                textDirection:
-                                    serviceLocator<LanguageController>()
-                                        .targetTextDirection,
-                                children: [
-                                  Text(
-                                    'Ordered Menu',
-                                    style: context.bodyLarge!.copyWith(
+                              child: WrapText(
+                                state.orderEntity.store.storeName,
+                                breakWordCharacter: '-',
+                                smartSizeMode: false,
+                                asyncMode: true,
+                                minFontSize: 12,
+                                maxFontSize: 14,
+                                textStyle: context.titleMedium!.copyWith(
+                                  fontWeight: FontWeight.w500,
+                                  color: context.colorScheme.primary,
+                                ),
+                                maxLines: 2,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ),
+                            subtitle: Directionality(
+                              textDirection:
+                                  serviceLocator<LanguageController>()
+                                      .targetTextDirection,
+                              child: WrapText(
+                                'Order ID: HMW-${state.orderEntity.orderID}',
+                                breakWordCharacter: '-',
+                                smartSizeMode: false,
+                                asyncMode: true,
+                                minFontSize: 12,
+                                maxFontSize: 14,
+                                textStyle: context.labelLarge!
+                                    .copyWith(fontWeight: FontWeight.w500),
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ),
+                            trailing: ClipRRect(
+                              borderRadius:
+                                  BorderRadiusDirectional.circular(24),
+                              child: Container(
+                                padding:
+                                    const EdgeInsetsDirectional.symmetric(
+                                        horizontal: 8, vertical: 4),
+                                decoration: BoxDecoration(
+                                  color:
+                                      const Color.fromRGBO(251, 219, 11, 1),
+                                  borderRadius:
+                                      BorderRadiusDirectional.circular(24),
+                                  border: Border.all(
+                                    color:
+                                        const Color.fromRGBO(243, 188, 88, 1),
+                                  ),
+                                ),
+                                child: Directionality(
+                                  textDirection:
+                                      serviceLocator<LanguageController>()
+                                          .targetTextDirection,
+                                  child: WrapText(
+                                    state.orderEntity.payment.mode,
+                                    breakWordCharacter: '-',
+                                    smartSizeMode: false,
+                                    asyncMode: true,
+                                    minFontSize: 12,
+                                    maxFontSize: 13,
+                                    textStyle: context.bodySmall!.copyWith(
                                       fontWeight: FontWeight.w600,
-                                      //color: context.colorScheme.primary,
                                     ),
-                                    maxLines: 3,
-                                    softWrap: true,
+                                    maxLines: 1,
                                     overflow: TextOverflow.ellipsis,
                                   ),
-                                ],
+                                ),
                               ),
                             ),
-                            const AnimatedGap(
-                              6,
-                              duration: Duration(milliseconds: 100),
-                            ),
-                            Wrap(
-                              //direction: Axis.vertical,
+                            horizontalTitleGap: 0,
+                            visualDensity:
+                                const VisualDensity(horizontal: -4),
+                            minLeadingWidth: 0,
+                            contentPadding: EdgeInsetsDirectional.zero,
+                          ),
+                          /*const AnimatedGap(
+                            6,
+                            duration: Duration(milliseconds: 100),
+                          ),*/
+
+                          OrderTimeLineCardWidget(
+                            key: const Key(
+                                'order-details-timeline-card-widget'),
+                            orderEntity: state.orderEntity,
+                            activeLocale: state.activeLocale,
+                          ),
+                          const AnimatedGap(
+                            12,
+                            duration: Duration(milliseconds: 100),
+                          ),
+                          Wrap(
+                            children: [
+                              OrderTimelineTrackingWidget(
+                                key: const Key(
+                                    'order-details-timeline--tracking-card-widget'),
+                                orderEntity: state.orderEntity,
+                                activeLocale: state.activeLocale,
+                              ),
+                            ],
+                          ),
+                          const AnimatedGap(
+                            12,
+                            duration: Duration(milliseconds: 100),
+                          ),
+                          Directionality(
+                            textDirection:
+                                serviceLocator<LanguageController>()
+                                    .targetTextDirection,
+                            child: Wrap(
                               textDirection:
                                   serviceLocator<LanguageController>()
                                       .targetTextDirection,
                               children: [
-                                OrderMenuDetailsWidget(
-                                  key: const Key(
-                                      'order-details-menu-details-widget'),
-                                  orderEntity: state.orderEntity,
-                                  subTotalOnChange: (value) {},
+                                Text(
+                                  'Ordered Menu',
+                                  style: context.bodyLarge!.copyWith(
+                                    fontWeight: FontWeight.w600,
+                                    //color: context.colorScheme.primary,
+                                  ),
+                                  maxLines: 3,
+                                  softWrap: true,
+                                  overflow: TextOverflow.ellipsis,
                                 ),
                               ],
                             ),
-                            const AnimatedGap(
-                              12,
-                              duration: Duration(milliseconds: 100),
-                            ),
-                            OrderDeliveryInfoWidget(
+                          ),
+                          const AnimatedGap(
+                            6,
+                            duration: Duration(milliseconds: 100),
+                          ),
+                          Wrap(
+                            //direction: Axis.vertical,
+                            textDirection:
+                                serviceLocator<LanguageController>()
+                                    .targetTextDirection,
+                            children: [
+                              OrderMenuDetailsWidget(
                                 key: const Key(
-                                    'order-details-customer-info-widget'),
-                                orderEntity: state.orderEntity),
-                            const AnimatedGap(
-                              12,
-                              duration: Duration(milliseconds: 100),
-                            ),
-                            Text(
-                              'Assigned Delivery Executive',
-                              style: context.bodyMedium!.copyWith(
-                                fontWeight: FontWeight.w600,
+                                    'order-details-menu-details-widget'),
+                                orderEntity: state.orderEntity,
+                                subTotalOnChange: (value) {},
                               ),
-                              textDirection:
-                                  serviceLocator<LanguageController>()
-                                      .targetTextDirection,
-                              overflow: TextOverflow.ellipsis,
-                              softWrap: true,
-                              maxLines: 1,
-                            ),
-                            const AnimatedGap(
-                              6,
-                              duration: Duration(milliseconds: 100),
-                            ),
-                            AssignDriverWidget(
+                            ],
+                          ),
+                          const AnimatedGap(
+                            12,
+                            duration: Duration(milliseconds: 100),
+                          ),
+                          OrderDeliveryInfoWidget(
                               key: const Key(
-                                  'order-details-assign-driver-widget'),
-                              orderEntity: state.orderEntity,
+                                  'order-details-customer-info-widget'),
+                              orderEntity: state.orderEntity),
+                          const AnimatedGap(
+                            12,
+                            duration: Duration(milliseconds: 100),
+                          ),
+                          Text(
+                            'Assigned Delivery Executive',
+                            style: context.bodyMedium!.copyWith(
+                              fontWeight: FontWeight.w600,
                             ),
-                            const AnimatedGap(
-                              12,
-                              duration: Duration(milliseconds: 100),
+                            textDirection:
+                                serviceLocator<LanguageController>()
+                                    .targetTextDirection,
+                            overflow: TextOverflow.ellipsis,
+                            softWrap: true,
+                            maxLines: 1,
+                          ),
+                          const AnimatedGap(
+                            6,
+                            duration: Duration(milliseconds: 100),
+                          ),
+                          AssignDriverWidget(
+                            key: const Key(
+                                'order-details-assign-driver-widget'),
+                            orderEntity: state.orderEntity,
+                          ),
+                          const AnimatedGap(
+                            12,
+                            duration: Duration(milliseconds: 100),
+                          ),
+                          Text(
+                            'Payment Summary',
+                            style: context.bodyMedium!.copyWith(
+                              fontWeight: FontWeight.w600,
                             ),
-                            Text(
-                              'Payment Summary',
-                              style: context.bodyMedium!.copyWith(
-                                fontWeight: FontWeight.w600,
-                              ),
-                              textDirection:
-                                  serviceLocator<LanguageController>()
-                                      .targetTextDirection,
-                              overflow: TextOverflow.ellipsis,
-                              softWrap: true,
-                              maxLines: 1,
-                            ),
-                            const AnimatedGap(
-                              6,
-                              duration: Duration(milliseconds: 100),
-                            ),
-                            OrderPaymentSummary(
-                              key: const Key(
-                                  'order-details-payment-summary-widget'),
-                              orderEntity: state.orderEntity,
-                            ),
-                            const AnimatedGap(
-                              12,
-                              duration: Duration(milliseconds: 100),
-                            ),
-                            state.bottomWidget(state.orderEntity.orderStatus),
-                          ],
-                        ),
+                            textDirection:
+                                serviceLocator<LanguageController>()
+                                    .targetTextDirection,
+                            overflow: TextOverflow.ellipsis,
+                            softWrap: true,
+                            maxLines: 1,
+                          ),
+                          const AnimatedGap(
+                            6,
+                            duration: Duration(milliseconds: 100),
+                          ),
+                          OrderPaymentSummary(
+                            key: const Key(
+                                'order-details-payment-summary-widget'),
+                            orderEntity: state.orderEntity,
+                          ),
+                          const AnimatedGap(
+                            12,
+                            duration: Duration(milliseconds: 100),
+                          ),
+                          state.bottomWidget(state.orderEntity.orderStatus),
+                        ],
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ),
             ),
