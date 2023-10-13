@@ -1820,10 +1820,10 @@ packages:
   network_manager:
     dependency: "direct main"
     description:
-      path: "homemakers_commons/network_manager"
+      path: network_manager
       relative: true
     source: path
-    version: "0.1.2+1"
+    version: "0.1.0+1"
   new_image_crop:
     dependency: "direct main"
     description:
