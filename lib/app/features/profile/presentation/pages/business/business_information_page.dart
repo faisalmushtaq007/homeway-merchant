@@ -314,17 +314,17 @@ class _BusinessInformationPageState extends State<BusinessInformationPage> with 
                                           addressModel = businessProfileEntity?.businessAddress;
                                           _emailController.text = businessProfileEntity?.businessEmailAddress ?? '';
                                           _businessNameController.text = businessProfileEntity?.businessName ?? '';
-                                          userEnteredPhoneNumber = businessProfileEntity?.businessPhoneNumber ??
+                                          userEnteredPhoneNumber = businessProfileEntity?.phoneNumberWithoutDialCode ??
                                               '+${initialPhoneNumberValue.countryCode} ${initialPhoneNumberValue.getFormattedNsn().trim()}';
                                           initialPhoneNumberValue = PhoneNumber(
                                             isoCode:
                                                 IsoCode.values.byName(state.businessProfileEntity?.isoCode ?? 'SA'),
-                                            nsn: state.businessProfileEntity?.businessPhoneNumber ?? '',
+                                            nsn: state.businessProfileEntity?.phoneNumberWithoutDialCode ?? '',
                                           );
                                           controller.value = PhoneNumber(
                                             isoCode:
                                                 IsoCode.values.byName(state.businessProfileEntity?.isoCode ?? 'SA'),
-                                            nsn: state.businessProfileEntity?.businessPhoneNumber ?? '',
+                                            nsn: state.businessProfileEntity?.phoneNumberWithoutDialCode ?? '',
                                           );
                                           defaultCountry =
                                               IsoCode.values.byName(state.businessProfileEntity?.isoCode ?? 'SA');
@@ -590,126 +590,98 @@ class _BusinessInformationPageState extends State<BusinessInformationPage> with 
                                           mainAxisSize: MainAxisSize.min,
                                           children: [
                                             Flexible(
-                                              child: BlocBuilder<PhoneFormFieldBloc, PhoneNumberFormFieldState>(
-                                                bloc: context.read<PhoneFormFieldBloc>(),
-                                                buildWhen: (previous, current) => previous != current,
-                                                builder: (context, state) {
-                                                  state.maybeWhen(
-                                                    orElse: () {},
-                                                    validate: (
-                                                      isAllowEmpty,
-                                                      mobileOnly,
-                                                      phoneNumberInputValidator,
-                                                      phoneValidation,
-                                                      phoneController,
-                                                      phoneNumber,
-                                                      phoneNumberVerification,
-                                                      userEnteredPhoneNumber,
-                                                      countryDialCode,
-                                                      country,
-                                                    ) {
-                                                      if (phoneNumber != null) {
-                                                        initialPhoneNumberValue = phoneNumber;
-                                                      }
-                                                      controller = phoneController;
-                                                      this.phoneNumberVerification = phoneNumberVerification;
-                                                      this.userEnteredPhoneNumber = userEnteredPhoneNumber;
-                                                    },
-                                                  );
-                                                  return MultiStreamBuilder(
-                                                    key: const Key(
-                                                      'business-phone-number-textFormField-key',
-                                                    ),
-                                                    buildWhen: (
-                                                      previousDataList,
-                                                      latestDataList,
+                                              child: MultiStreamBuilder(
+                                                key: const Key(
+                                                  'business-phone-number-textFormField-key',
+                                                ),
+                                                buildWhen: (
+                                                    previousDataList,
+                                                    latestDataList,
                                                     ) =>
-                                                        previousDataList != latestDataList,
-                                                    streams: [
-                                                      Stream.fromFuture(
-                                                        AppTranslator.instance.translate(
-                                                          'Business phone number',
-                                                        ),
-                                                      ),
-                                                      Stream.fromFuture(
-                                                        AppTranslator.instance.translate(
-                                                          '',
-                                                        ),
-                                                      ),
-                                                      Stream.fromFuture(
-                                                        AppTranslator.instance.translate(
-                                                          'A primary phone number is required for business.',
-                                                        ),
-                                                      ),
-                                                      Stream.fromFuture(
-                                                        AppTranslator.instance.translate(
-                                                          'This number for our Operation team to use to reach your business',
-                                                        ),
-                                                      ),
-                                                    ],
-                                                    initialStreamValue: [
+                                                previousDataList != latestDataList,
+                                                streams: [
+                                                  Stream.fromFuture(
+                                                    AppTranslator.instance.translate(
                                                       'Business phone number',
-                                                      phoneValidation ?? '',
+                                                    ),
+                                                  ),
+                                                  Stream.fromFuture(
+                                                    AppTranslator.instance.translate(
+                                                      '',
+                                                    ),
+                                                  ),
+                                                  Stream.fromFuture(
+                                                    AppTranslator.instance.translate(
                                                       'A primary phone number is required for business.',
+                                                    ),
+                                                  ),
+                                                  Stream.fromFuture(
+                                                    AppTranslator.instance.translate(
                                                       'This number for our Operation team to use to reach your business',
-                                                    ],
-                                                    builder: (context, snapshot) {
-                                                      return Directionality(
-                                                        textDirection:
-                                                            serviceLocator<LanguageController>().targetTextDirection,
-                                                        child: PhoneNumberFieldWidget(
-                                                          key: const Key(
-                                                            'user-business-phone-number-widget-key',
-                                                          ),
-                                                          isCountryChipPersistent: false,
-                                                          outlineBorder: true,
-                                                          shouldFormat: true,
-                                                          useRtl: false,
-                                                          withLabel: true,
-                                                          enabled: false,
-                                                          decoration: InputDecoration(
-                                                            labelText: snapshot[0],
-                                                            alignLabelWithHint: true,
-                                                            //hintText: 'Mobile number',
-                                                            errorText: phoneValidation,
-                                                            isDense: true,
-                                                            suffixIcon: Tooltip(
-                                                              triggerMode: TooltipTriggerMode.tap,
-                                                              onTriggered: () {
-                                                                final dynamic tooltip =
-                                                                    phoneNumberToolTipKey.currentState;
-                                                                tooltip?.ensureTooltipVisible();
-                                                              },
-                                                              key: phoneNumberToolTipKey,
-                                                              richMessage: TextSpan(
-                                                                text: '${snapshot[2]}',
-                                                                children: <InlineSpan>[
-                                                                  TextSpan(
-                                                                    text: '${snapshot[3]}',
-                                                                    style: const TextStyle(fontWeight: FontWeight.w500),
-                                                                  ),
-                                                                ],
+                                                    ),
+                                                  ),
+                                                ],
+                                                initialStreamValue: [
+                                                  'Business phone number',
+                                                  phoneValidation ?? '',
+                                                  'A primary phone number is required for business.',
+                                                  'This number for our Operation team to use to reach your business',
+                                                ],
+                                                builder: (context, snapshot) {
+                                                  return Directionality(
+                                                    textDirection:
+                                                    serviceLocator<LanguageController>().targetTextDirection,
+                                                    child: PhoneNumberFieldWidget(
+                                                      key: const Key(
+                                                        'user-business-phone-number-widget-key',
+                                                      ),
+                                                      isCountryChipPersistent: false,
+                                                      outlineBorder: true,
+                                                      shouldFormat: true,
+                                                      useRtl: false,
+                                                      withLabel: true,
+                                                      enabled: false,
+                                                      decoration: InputDecoration(
+                                                        labelText: snapshot[0],
+                                                        alignLabelWithHint: true,
+                                                        //hintText: 'Mobile number',
+                                                        errorText: phoneValidation,
+                                                        isDense: true,
+                                                        suffixIcon: Tooltip(
+                                                          triggerMode: TooltipTriggerMode.tap,
+                                                          onTriggered: () {
+                                                            final dynamic tooltip =
+                                                                phoneNumberToolTipKey.currentState;
+                                                            tooltip?.ensureTooltipVisible();
+                                                          },
+                                                          key: phoneNumberToolTipKey,
+                                                          richMessage: TextSpan(
+                                                            text: '${snapshot[2]}',
+                                                            children: <InlineSpan>[
+                                                              TextSpan(
+                                                                text: '${snapshot[3]}',
+                                                                style: const TextStyle(fontWeight: FontWeight.w500),
                                                               ),
-                                                              child: const Icon(
-                                                                Icons.info,
-                                                                size: 22,
-                                                              ),
-                                                            ),
+                                                            ],
                                                           ),
-                                                          isAllowEmpty: false,
-                                                          autofocus: false,
-                                                          style: context.bodyLarge,
-                                                          showFlagInInput: false,
-                                                          countryCodeStyle: context.bodyLarge,
-                                                          initialPhoneNumberValue: initialPhoneNumberValue,
-                                                          onPhoneNumberChanged: onPhoneNumberChanged,
-                                                          //phoneNumberValidationChanged: phoneNumberValidationChanged,
-                                                          haveStateManagement: false,
-                                                          keyboardType: const TextInputType.numberWithOptions(),
-                                                          textInputAction: TextInputAction.done,
+                                                          child: const Icon(
+                                                            Icons.info,
+                                                            size: 22,
+                                                          ),
                                                         ),
-                                                      );
-                                                    },
+                                                      ),
+                                                      isAllowEmpty: false,
+                                                      autofocus: false,
+                                                      style: context.bodyLarge,
+                                                      showFlagInInput: false,
+                                                      countryCodeStyle: context.bodyLarge,
+                                                      initialPhoneNumberValue: initialPhoneNumberValue,
+                                                      onPhoneNumberChanged: onPhoneNumberChanged,
+                                                      //phoneNumberValidationChanged: phoneNumberValidationChanged,
+                                                      haveStateManagement: false,
+                                                      keyboardType: const TextInputType.numberWithOptions(),
+                                                      textInputAction: TextInputAction.done,
+                                                    ),
                                                   );
                                                 },
                                               ),

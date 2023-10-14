@@ -111,6 +111,7 @@ abstract class Routes {
   static const String ORDER_ANALYSIS_PAGE = _Paths.ORDER_ANALYSIS_PAGE;
   static const String INITIAL_SPLASH_PAGE = _Paths.INITIAL_SPLASH_PAGE;
   static const String PROFILE_SETTING_PAGE = _Paths.PROFILE_SETTING_PAGE;
+  static const String CHANGE_PHONE_NUMBER_PAGE=_Paths.CHANGE_PHONE_NUMBER_PAGE;
 }
 
 abstract class _Paths {
@@ -216,4 +217,5 @@ abstract class _Paths {
   static const String PROFILE_SETTING_PAGE = '/profile-setting-page';
   static const String MENU_PRICE_PAGE = '/menu-price-page';
   static const String UPLOAD_MENU_IMAGE_PAGE = '/upload-menu-image-page';
+  static const String CHANGE_PHONE_NUMBER_PAGE = '/change-phone-number-page';
 }

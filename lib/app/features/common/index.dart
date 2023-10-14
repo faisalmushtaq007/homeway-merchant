@@ -1,11 +1,14 @@
 import 'dart:async';
 
+import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:homemakers_merchant/app/features/address/index.dart';
 import 'package:homemakers_merchant/app/features/menu/index.dart';
 import 'package:homemakers_merchant/app/features/notification/index.dart';
 import 'package:homemakers_merchant/app/features/order/index.dart';
 import 'package:homemakers_merchant/app/features/profile/index.dart';
+import 'package:homemakers_merchant/app/features/profile/presentation/manager/profile/business_profile_bloc.dart';
 import 'package:homemakers_merchant/app/features/rate_review/index.dart';
 import 'package:homemakers_merchant/app/features/store/index.dart';
 import 'package:homemakers_merchant/base/base_usecase.dart';
@@ -13,21 +16,30 @@ import 'package:homemakers_merchant/base/widget_view.dart';
 import 'package:homemakers_merchant/bootup/injection_container.dart';
 import 'package:homemakers_merchant/config/translation/extension/text_extension.dart';
 import 'package:homemakers_merchant/config/translation/language_controller.dart';
+import 'package:homemakers_merchant/config/translation/widgets/language_selection_widget.dart';
+import 'package:homemakers_merchant/core/common/enum/phone_number_verification_enum.dart';
+import 'package:homemakers_merchant/core/constants/global_app_constants.dart';
 import 'package:homemakers_merchant/core/extensions/app_extension.dart';
 import 'package:homemakers_merchant/core/extensions/global_extensions/dart_extensions.dart';
 import 'package:homemakers_merchant/core/extensions/global_extensions/src/object.dart';
 import 'package:homemakers_merchant/core/local/database/base/repository_failure.dart';
 import 'package:homemakers_merchant/shared/states/data_source_state.dart';
+import 'package:homemakers_merchant/shared/widgets/app/page_body.dart';
+import 'package:homemakers_merchant/shared/widgets/universal/animate_do/animate_do.dart';
 import 'package:homemakers_merchant/shared/widgets/universal/animated_gap/gap.dart';
 import 'package:homemakers_merchant/shared/widgets/universal/async_builder/async_builder.dart';
 import 'package:homemakers_merchant/shared/widgets/universal/nil/src/nil.dart';
+import 'package:homemakers_merchant/shared/widgets/universal/phone_number_text_field/phonenumber_form_field_widget.dart';
 import 'package:homemakers_merchant/utils/app_log.dart';
 import 'package:homemakers_merchant/utils/functional/functional.dart';
+import 'package:phone_form_field/phone_form_field.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:sembast/timestamp.dart';
 
 part 'package:homemakers_merchant/app/features/common/presentation/pages/all_store_dialog_widget.dart';
+part 'package:homemakers_merchant/app/features/common/presentation/pages/change_phone_number.dart';
 part 'package:homemakers_merchant/app/features/common/domain/repositories/common_repository.dart';
+part 'package:homemakers_merchant/app/features/common/domain/repositories/change_phonenumber_interface.dart';
 part 'package:homemakers_merchant/app/features/common/presentation/widgets/app_search_input_sliver.dart';
 part 'package:homemakers_merchant/app/features/common/presentation/widgets/no_item_available_widget.dart';
 part 'package:homemakers_merchant/app/features/common/presentation/widgets/data_loading_widget.dart';
@@ -38,3 +50,5 @@ part 'package:homemakers_merchant/app/features/common/domain/use_cases/get_curre
 
 // Repository
 part 'package:homemakers_merchant/app/features/common/data/repositories/common_repository_implement.dart';
+part 'package:homemakers_merchant/app/features/common/common/enum/change_phone_number_enum.dart';
+part 'package:homemakers_merchant/app/features/common/presentation/manager/change_phone_number_context.dart';

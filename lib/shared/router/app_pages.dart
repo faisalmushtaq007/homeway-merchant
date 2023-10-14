@@ -15,6 +15,7 @@ import 'package:homemakers_merchant/app/features/authentication/presentation/pag
 import 'package:homemakers_merchant/app/features/authentication/presentation/pages/terms_and_conditions_view.dart';
 import 'package:homemakers_merchant/app/features/chat/domain/entities/chat_types_entity.dart' as types;
 import 'package:homemakers_merchant/app/features/chat/index.dart';
+import 'package:homemakers_merchant/app/features/common/index.dart';
 import 'package:homemakers_merchant/app/features/dashboard/index.dart';
 import 'package:homemakers_merchant/app/features/faq/index.dart';
 import 'package:homemakers_merchant/app/features/menu/index.dart';
@@ -529,35 +530,35 @@ class AppRouter {
         path: Routes.MAIN_CATEGORY_PAGE,
         builder: (context, state) {
           final Map<String, dynamic>? args = state.extra as Map<String, dynamic>?;
-          return MainCategoryPage();
+          return const MainCategoryPage();
         },
       ),
       GoRoute(
         path: Routes.WALLET_DASHBOARD_PAGE,
         builder: (context, state) {
           final Map<String, dynamic>? args = state.extra as Map<String, dynamic>?;
-          return WalletDashboardPage();
+          return const WalletDashboardPage();
         },
       ),
       GoRoute(
         path: Routes.ALL_TRANSCATIONS_PAGE,
         builder: (context, state) {
           final Map<String, dynamic>? args = state.extra as Map<String, dynamic>?;
-          return TransactionsPage();
+          return const TransactionsPage();
         },
       ),
       GoRoute(
         path: Routes.WITHDRAWAL_PAGE,
         builder: (context, state) {
           final Map<String, dynamic>? args = state.extra as Map<String, dynamic>?;
-          return WithdrawalPage();
+          return const WithdrawalPage();
         },
       ),
       GoRoute(
         path: Routes.WITHDRAWAL_FORM_PAGE,
         builder: (context, state) {
           final Map<String, dynamic>? args = state.extra as Map<String, dynamic>?;
-          return WithdrawalFormPage();
+          return const WithdrawalFormPage();
         },
       ),
       GoRoute(
@@ -573,37 +574,51 @@ class AppRouter {
         path: Routes.ROOM_PAGE,
         builder: (context, state) {
           final Map<String, dynamic>? args = state.extra as Map<String, dynamic>?;
-          return RoomsPage();
+          return const RoomsPage();
         },
       ),
       GoRoute(
         path: Routes.CHAT_USER_PAGE,
         builder: (context, state) {
           final Map<String, dynamic>? args = state.extra as Map<String, dynamic>?;
-          return UsersPage();
+          return const UsersPage();
         },
       ),
       GoRoute(
         path: Routes.NEW_MAP_PAGE,
         builder: (context, state) {
           final Map<String, dynamic>? args = state.extra as Map<String, dynamic>?;
-          return NewMapPage();
+          return const NewMapPage();
         },
       ),
       GoRoute(
         path: Routes.ORDER_ANALYSIS_PAGE,
         builder: (context, state) {
           final Map<String, dynamic>? args = state.extra as Map<String, dynamic>?;
-          return OrderAnalysis();
+          return const OrderAnalysis();
         },
       ),
       GoRoute(
         path: Routes.PROFILE_SETTING_PAGE,
         builder: (context, state) {
           final Map<String, dynamic>? args = state.extra as Map<String, dynamic>?;
-          return ProfileSettingPage();
+          return const ProfileSettingPage();
         },
       ),
+      GoRoute(
+        path: Routes.CHANGE_PHONE_NUMBER_PAGE,
+        builder: (context, state) {
+          final Map<String, dynamic>? args = state.extra as Map<String, dynamic>?;
+          return ChangePhoneNumberPage(
+            changePhoneNumberPurpose: args?['changePhoneNumberPurpose']?? ChangePhoneNumberPurpose.profile,
+              phoneNumberWithoutDialCode:args?['phoneNumber']??'',
+              country:args?['country']??'',
+              dialCode:args?['dialCode']??'',
+              id:args?['id']??-1
+          );
+        },
+      ),
+
     ],
   );
 

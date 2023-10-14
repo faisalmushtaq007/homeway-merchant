@@ -67,7 +67,7 @@ class _InitialSplashScreenPageController extends State<InitialSplashScreenPage> 
           }
         case 5:
           {
-            routeName=  Routes.PRIMARY_DASHBOARD_PAGE;
+            routeName=  Routes.CHANGE_PHONE_NUMBER_PAGE;
           }
         case _:
           {

@@ -233,12 +233,12 @@ class UserLocalDbRepository<User extends AppUserEntity> implements BaseUserLocal
     return result;
   }
 
-  Future<Map<String, RecordSnapshot<int, Map<String, Object?>>>> getUserProfileEntityByIds(
+  Future<Map<int, RecordSnapshot<int, Map<String, Object?>>>> getUserProfileEntityByIds(
       DatabaseClient db, List<int> ids) async {
     var snapshots =
         await _user.find(db, finder: Finder(filter: Filter.or(ids.map((e) => Filter.equals('userID', e)).toList())));
-    return <String, RecordSnapshot<int, Map<String, Object?>>>{
-      for (var snapshot in snapshots) snapshot.value['userID']!.toString(): snapshot
+    return <int, RecordSnapshot<int, Map<String, Object?>>>{
+      for (var snapshot in snapshots) snapshot.value['userID']! as int: snapshot
     };
   }
 
@@ -414,29 +414,29 @@ class UserLocalDbRepository<User extends AppUserEntity> implements BaseUserLocal
       final db = await _db;
       //final allOrderList = r.toList();
       final newList = entities.toList();
-      var convertOrderToMapObject = newList.map((e) => e.toMap()).toList();
+      var convertOrderToMapObject = newList.map((e) => e.toMap()).toList().toSet().toList();
       //final bool equalityStatus = unOrdDeepEq(allOrderList.toSet().toList(), newList.toSet().toList());
       await db.transaction((transaction) async {
-        var userProfileIDs = convertOrderToMapObject.map((map) => map['userID'] as int).toList();
+        var userProfileIDs = convertOrderToMapObject.map((map) => map['userID'] as int).toList().toSet().toList();
         var map = await getUserProfileEntityByIds(db, userProfileIDs);
         // Watch for deleted item
-        var keysToDelete = (await _user.findKeys(transaction)).toList();
+        var keysToDelete = (await _user.findKeys(transaction)).toList().toSet().toList();
         for (var order in convertOrderToMapObject) {
           appLog.d('Order Data ${order['userID']}');
-          var snapshot = map[order['userID'].toString()];
+          var snapshot = map[order['userID'] as int];
           if (snapshot != null) {
             // The record current key
             var key = snapshot.key;
             // Remove from deletion list
             keysToDelete.remove(key);
             // Don't update if no change
-            if (const DeepCollectionEquality().equals(snapshot.value, order)) {
+            if (unOrdDeepEq(snapshot.value, order)==true) {
               // no changes
               continue;
             } else {
               // Update product
               appLog.d('Update User ${order['userID']}');
-              await _user.record(key).update(transaction, order);
+              await _user.record(key).put(transaction, order,merge: true);
             }
           } else {
             // Add missing product
@@ -447,7 +447,7 @@ class UserLocalDbRepository<User extends AppUserEntity> implements BaseUserLocal
         // Delete the one not present any more
         await _user.records(keysToDelete).delete(transaction);
       });
-
+      await Future.delayed(const Duration(milliseconds: 300),(){});
       final result = await getAllWithPagination(pageKey: 0, pageSize: 1);
       if (result.isRight()) {
         return result.right.toList();
