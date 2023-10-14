@@ -2,9 +2,7 @@ part of 'package:homemakers_merchant/app/features/order/index.dart';
 
 class OrderCardWidget extends StatefulWidget {
   const OrderCardWidget({
-    super.key,
-    required this.index,
-    required this.orderEntity,
+    required this.index, required this.orderEntity, super.key,
   });
 
   final int index;
@@ -145,9 +143,7 @@ class _OrderCardWidgetController extends State<OrderCardWidget> {
 
   Widget orderMenuTable() {
     return SfDataGridTheme(
-      data: SfDataGridThemeData(
-
-      ),
+      data: SfDataGridThemeData(),
       child: SfDataGrid(
         source: menuDataSource,
         columnWidthMode: ColumnWidthMode.fill,
@@ -163,11 +159,17 @@ class _OrderCardWidgetController extends State<OrderCardWidget> {
             columnName: 'name',
             columnWidthMode: ColumnWidthMode.auto,
             label: Container(
-              padding: const EdgeInsetsDirectional.only(start:6.0),
+              padding: const EdgeInsetsDirectional.only(start: 6.0),
               alignment: AlignmentDirectional.centerStart,
-              child:  Wrap(
+              child: Wrap(
                 children: [
-                  Text('Name',overflow: TextOverflow.ellipsis,textDirection: serviceLocator<LanguageController>().targetTextDirection,softWrap: true,maxLines: 1,).translate(),
+                  Text(
+                    'Name',
+                    overflow: TextOverflow.ellipsis,
+                    textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                    softWrap: true,
+                    maxLines: 1,
+                  ).translate(),
                 ],
               ),
             ),
@@ -179,7 +181,13 @@ class _OrderCardWidgetController extends State<OrderCardWidget> {
               alignment: Alignment.center,
               child: Wrap(
                 children: [
-                  Text('QTY',overflow: TextOverflow.ellipsis,textDirection: serviceLocator<LanguageController>().targetTextDirection,softWrap: true,maxLines: 1,).translate(),
+                  Text(
+                    'QTY',
+                    overflow: TextOverflow.ellipsis,
+                    textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                    softWrap: true,
+                    maxLines: 1,
+                  ).translate(),
                 ],
               ),
             ),
@@ -191,7 +199,13 @@ class _OrderCardWidgetController extends State<OrderCardWidget> {
               alignment: AlignmentDirectional.center,
               child: Wrap(
                 children: [
-                  Text('Portion',overflow: TextOverflow.ellipsis,textDirection: serviceLocator<LanguageController>().targetTextDirection,softWrap: true,maxLines: 1,).translate(),
+                  Text(
+                    'Portion',
+                    overflow: TextOverflow.ellipsis,
+                    textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                    softWrap: true,
+                    maxLines: 1,
+                  ).translate(),
                 ],
               ),
             ),
@@ -222,7 +236,15 @@ class _OrderCardWidgetView extends WidgetView<OrderCardWidget, _OrderCardWidgetC
     return AbsorbPointer(
       absorbing: false,
       child: InkWell(
-        onTap: () {},
+        onTap: () {
+          final result = context.push(
+            Routes.ORDER_DETAILS,
+            extra: {
+              'orderEntity':widget.orderEntity,
+              'orderID':widget.index,
+            }
+          );
+        },
         child: Card(
           margin: const EdgeInsetsDirectional.only(bottom: 16),
           color: context.colorScheme.background,
@@ -233,11 +255,7 @@ class _OrderCardWidgetView extends WidgetView<OrderCardWidget, _OrderCardWidgetC
             children: [
               Flexible(
                 child: Container(
-                  padding: const EdgeInsetsDirectional.only(
-                    start: 12,
-                    end: 12,
-                    top: 8,bottom: 8
-                  ),
+                  padding: const EdgeInsetsDirectional.only(start: 12, end: 12, top: 8, bottom: 8),
                   decoration: const BoxDecoration(
                     //color: context.colorScheme.secondaryContainer,
                     color: Color.fromRGBO(224, 235, 242, 1),
@@ -257,7 +275,7 @@ class _OrderCardWidgetView extends WidgetView<OrderCardWidget, _OrderCardWidgetC
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           Expanded(
-                            child:  Column(
+                            child: Column(
                               mainAxisSize: MainAxisSize.min,
                               textDirection: serviceLocator<LanguageController>().targetTextDirection,
                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -290,10 +308,7 @@ class _OrderCardWidgetView extends WidgetView<OrderCardWidget, _OrderCardWidgetC
                                         textDirection: serviceLocator<LanguageController>().targetTextDirection,
                                         children: [
                                           Text(
-                                            'Delivery: ${now
-                                                .subtract(now.difference(
-                                                widget.orderEntity.orderDeliveryDateTime))
-                                                .calendar() ?? ''}',
+                                            'Delivery: ${now.subtract(now.difference(widget.orderEntity.orderDeliveryDateTime)).calendar() ?? ''}',
                                             style: context.titleSmall!.copyWith(
                                               fontWeight: FontWeight.w500,
                                               color: Colors.white.onColor,
@@ -338,9 +353,7 @@ class _OrderCardWidgetView extends WidgetView<OrderCardWidget, _OrderCardWidgetC
                                 child: Wrap(
                                   children: [
                                     Text(
-                                      '${OrderStatus
-                                    .values[widget.orderEntity.orderStatus]
-                                    .title}',
+                                      '${OrderStatus.values[widget.orderEntity.orderStatus].title}',
                                       style: context.labelSmall!
                                           .copyWith(color: context.colorScheme.primary, fontWeight: FontWeight.w600),
                                       maxLines: 1,
@@ -353,7 +366,6 @@ class _OrderCardWidgetView extends WidgetView<OrderCardWidget, _OrderCardWidgetC
                           ),
                         ],
                       ),
-
                     ],
                   ),
                 ),
@@ -668,7 +680,6 @@ class _OrderCardWidgetView extends WidgetView<OrderCardWidget, _OrderCardWidgetC
                 ),
               ),*/
 
-
               const Divider(
                 thickness: 0.75,
                 height: 0,
@@ -803,7 +814,6 @@ class OrderMenuDataSource extends DataGridSource {
 
   @override
   DataGridRowAdapter buildRow(DataGridRow row) {
-
     return DataGridRowAdapter(
       //color: context.colorScheme.background,
       cells: row.getCells().map<Widget>((e) {
@@ -814,22 +824,25 @@ class OrderMenuDataSource extends DataGridSource {
             return null;
           }
         }
+
         AlignmentGeometry? getAlignmentGeometry() {
           if (e.columnName == 'name') {
             return AlignmentDirectional.centerStart;
-          }else if (e.columnName == 'portion') {
+          } else if (e.columnName == 'portion') {
             return AlignmentDirectional.center;
           } else {
             return AlignmentDirectional.center;
           }
         }
+
         EdgeInsetsGeometry? getPadding() {
           if (e.columnName == 'name') {
             return const EdgeInsetsDirectional.only(start: 6);
-          }else{
+          } else {
             return null;
           }
         }
+
         return Container(
           key: ObjectKey(e),
           alignment: getAlignmentGeometry(),

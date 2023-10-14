@@ -76,11 +76,12 @@ class AppStartConfig {
   }
 
   Future<void> saveAllTempOrderData() async {
+    //final deleteAll=await serviceLocator<DeleteAllOrderUseCase>()();
     final getAllOrderResult = await serviceLocator<GetAllOrderUseCase>()((0, 10,null,OrderType.all,null,null,null,null));
     await getAllOrderResult.when(remote: (data, meta) {
 
     }, localDb: (data, meta) async {
-      if(data.isNotNull && data!.length>0){
+      if(data.isNotNull && data!.isNotEmpty){
         appLog.d('Get all orders length $data!.length');
       }else{
         final data = <OrderEntity>[

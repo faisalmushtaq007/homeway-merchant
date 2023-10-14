@@ -51,7 +51,7 @@ class _AllOrderPagesController extends State<AllOrderPages> {
           orderType: OrderType.all,
         ),
       );
-      appLog.i('Fetch Store');
+      appLog.i('Fetch Order');
       return;
     } catch (error) {
       _pagingController.error = error;
@@ -62,10 +62,9 @@ class _AllOrderPagesController extends State<AllOrderPages> {
   void _refreshOrdersList() {
     //_pagingController.refresh();
     _pagingController.nextPageKey = 0;
-    _fetchPage(0);
+    //_fetchPage(0);
     _pagingController.addPageRequestListener((pageKey) {
       this.pageKey = pageKey;
-      appLog.d('Page key addPageRequestListener ${pageKey}');
       _fetchPage(pageKey);
     });
 
@@ -127,20 +126,20 @@ class _AllOrderPagesController extends State<AllOrderPages> {
                       allOrderState.orderEntities.length < pageSize;
                   if (isLastPage) {
                     _pagingController.appendLastPage(
-                        allOrderState.orderEntities.toList());
+                        allOrderState.orderEntities.toList().toSet().toList(),);
                   } else {
                     final nextPageKey = allOrderState.pageKey +
                         allOrderState.orderEntities.length;
                     //final nextPageKey = addressState.pageKey + 1;
                     _pagingController.appendPage(
-                        allOrderState.orderEntities.toList(),
+                        allOrderState.orderEntities.toList().toSet().toList(),
                         nextPageKey);
                   }
                   widgetState = WidgetState<OrderEntity>.allData(
                     context: context,
                     data: _pagingController.value.itemList ?? [],
                   );
-                  _allAvailableOrders = _pagingController.value.itemList ?? [];
+                  _allAvailableOrders = _pagingController.value.itemList?.toList().toSet().toList() ?? [];
                 } catch (error) {
                   _pagingController.error = error;
                   widgetState = WidgetState<OrderEntity>.error(

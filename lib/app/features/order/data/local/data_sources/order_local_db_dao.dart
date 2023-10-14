@@ -165,12 +165,12 @@ class OrderLocalDbRepository<T extends OrderEntity> implements BaseOrderLocalDbR
     return result;
   }
 
-  Future<Map<String, RecordSnapshot<int, Map<String, Object?>>>> getProductsByIds(
+  Future<Map<int, RecordSnapshot<int, Map<String, Object?>>>> getProductsByIds(
       DatabaseClient db, List<int> ids) async {
     var snapshots =
-        await _order.find(db, finder: Finder(filter: Filter.or(ids.map((e) => Filter.equals('orderID', e)).toList())));
-    return <String, RecordSnapshot<int, Map<String, Object?>>>{
-      for (var snapshot in snapshots) snapshot.value['orderID']!.toString(): snapshot
+        await _order.find(db, finder: Finder(filter: Filter.or(ids.map((e) => Filter.equals('orderID', e)).toList().toSet().toList())));
+    return <int, RecordSnapshot<int, Map<String, Object?>>>{
+      for (var snapshot in snapshots) snapshot.value['orderID']! as int: snapshot
     };
   }
 
@@ -186,23 +186,23 @@ class OrderLocalDbRepository<T extends OrderEntity> implements BaseOrderLocalDbR
       }, (r) async {
         final allOrderList = r.toList();
         final newList = entities.toList();
-        var convertOrderToMapObject = newList.map((e) => e.toJson()).toList();
+        var convertOrderToMapObject = newList.map((e) => e.toJson()).toList().toSet().toList();
         final bool equalityStatus = unOrdDeepEq(allOrderList.toSet().toList(), newList.toSet().toList());
 
         await db.transaction((transaction) async {
-          var orderIds = convertOrderToMapObject.map((map) => map['orderID'] as int).toList();
+          var orderIds = convertOrderToMapObject.map((map) => map['orderID'] as int).toList().toSet().toList();
           var map = await getProductsByIds(db, orderIds);
           // Watch for deleted item
-          var keysToDelete = (await _order.findKeys(transaction)).toList();
+          var keysToDelete = (await _order.findKeys(transaction)).toList().toSet().toList();
           for (var order in convertOrderToMapObject) {
-            var snapshot = map[order['orderID'].toString()];
+            var snapshot = map[order['orderID'] as int];
             if (snapshot != null) {
               // The record current key
               var key = snapshot.key;
               // Remove from deletion list
               keysToDelete.remove(key);
               // Don't update if no change
-              if (const DeepCollectionEquality().equals(snapshot.value, order)) {
+              if (unOrdDeepEq(snapshot.value, order)==true) {
                 // no changes
                 continue;
               } else {
@@ -217,7 +217,7 @@ class OrderLocalDbRepository<T extends OrderEntity> implements BaseOrderLocalDbR
           // Delete the one not present any more
           await _order.records(keysToDelete).delete(transaction);
         });
-
+        await Future.delayed(const Duration(milliseconds: 500),(){});
         final result = await getAllOrder();
         if (result.isRight()) {
           return result.right.toList();
@@ -302,7 +302,6 @@ class OrderLocalDbRepository<T extends OrderEntity> implements BaseOrderLocalDbR
   }) async {
     final result = await tryCatch<List<OrderEntity>>(() async {
       final db = await _db;
-
       var orderTypeRegExp = RegExp(orderType.name, caseSensitive: false);
       return await db.transaction((transaction) async {
         // Finder object can also sort data.

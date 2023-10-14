@@ -430,10 +430,6 @@ class _OrderDetailPageView
               ),
             ],
           ),
-          drawer: const PrimaryDashboardDrawer(
-            key: const Key('order-details-dashboard-drawer'),
-            isMainDrawerPage: false,
-          ),
           body: SlideInLeft(
             key: const Key('order-details-page-slideinleft-widget'),
             from: context.width / 2 - 60,
