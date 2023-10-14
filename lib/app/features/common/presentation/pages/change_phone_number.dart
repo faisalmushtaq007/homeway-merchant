@@ -68,7 +68,7 @@ class _ChangePhoneNumberPageController extends State<ChangePhoneNumberPage> {
 
     existingPhoneNumber = PhoneNumber(
       isoCode: IsoCode.values.asNameMap().values.byName(country),
-      nsn: '547533381', //widget.phoneNumberWithoutDialCode,
+      nsn: widget.phoneNumberWithoutDialCode,
     );
     existingPhoneNumberController = PhoneController(
       existingPhoneNumber,

@@ -136,24 +136,22 @@ class _ProfileSettingPageView extends WidgetView<ProfileSettingPage, _ProfileSet
                           BigUserCard(
                             backgroundColor: Colors.red,
                             userName:
-                            "${(state.appUserEntity.isNotNull && state.appUserEntity!.businessProfile.isNotNull &&
-                                !state.appUserEntity!.businessProfile!.userName.isEmptyOrNull) ? state.appUserEntity!
-                                .businessProfile!.userName : 'Hello User'}",
+                                "${(state.appUserEntity.isNotNull && state.appUserEntity!.businessProfile.isNotNull && !state.appUserEntity!.businessProfile!.userName.isEmptyOrNull) ? state.appUserEntity!.businessProfile!.userName : 'Hello User'}",
                             //userProfilePic: AssetImage("assets/image/app_logo_light.jpg"),
                             userProfileImageWidget: ImageHelper(
                               image: (state.appUserEntity.businessProfile.isNull &&
-                                  state.appUserEntity.businessProfile!.profileImageEntity.isNull)
+                                      state.appUserEntity.businessProfile!.profileImageEntity.isNull)
                                   ? 'assets/svg/user_avatar.svg'
                                   : state.appUserEntity.businessProfile?.profileImageEntity?.originalFilePath ??
-                                  'assets/svg/user_avatar.svg',
+                                      'assets/svg/user_avatar.svg',
                               filterQuality: FilterQuality.high,
                               borderRadius: BorderRadiusDirectional.circular(10),
                               imageType: findImageType(
                                 (state.appUserEntity.businessProfile.isNull &&
-                                    state.appUserEntity.businessProfile!.profileImageEntity.isNull)
+                                        state.appUserEntity.businessProfile!.profileImageEntity.isNull)
                                     ? 'assets/svg/user_avatar.svg'
                                     : state.appUserEntity.businessProfile?.profileImageEntity?.originalFilePath ??
-                                    'assets/svg/user_avatar.svg',
+                                        'assets/svg/user_avatar.svg',
                               ),
                               imageShape: ImageShape.rectangle,
                               boxFit: BoxFit.cover,
@@ -167,18 +165,14 @@ class _ProfileSettingPageView extends WidgetView<ProfileSettingPage, _ProfileSet
                               loaderBuilder: const CircularProgressIndicator(),
                               matchTextDirection: true,
                               placeholderText:
-                              "${(state.appUserEntity.isNotNull && state.appUserEntity!.businessProfile.isNotNull &&
-                                  !state.appUserEntity!.businessProfile!.userName.isEmptyOrNull) ? state.appUserEntity!
-                                  .businessProfile!.userName : 'Hello User'}",
+                                  "${(state.appUserEntity.isNotNull && state.appUserEntity!.businessProfile.isNotNull && !state.appUserEntity!.businessProfile!.userName.isEmptyOrNull) ? state.appUserEntity!.businessProfile!.userName : 'Hello User'}",
                               placeholderTextStyle: context.labelLarge!.copyWith(
                                 color: Colors.white,
                                 fontSize: 16,
                               ),
                             ),
                             subTitle:
-                            "${(state.appUserEntity.isNotNull && state.appUserEntity!.businessProfile.isNotNull &&
-                                !state.appUserEntity!.businessProfile!.businessName.isEmptyOrNull) ? state
-                                .appUserEntity!.businessProfile!.businessName : ''}",
+                                "${(state.appUserEntity.isNotNull && state.appUserEntity!.businessProfile.isNotNull && !state.appUserEntity!.businessProfile!.businessName.isEmptyOrNull) ? state.appUserEntity!.businessProfile!.businessName : ''}",
                             customProfileImageWidget: DisplayImage(
                               imagePath: state.userImagePath,
                               onPressed: () async {
@@ -228,7 +222,7 @@ class _ProfileSettingPageView extends WidgetView<ProfileSettingPage, _ProfileSet
                             items: [
                               SettingsItem(
                                 onTap: () async {
-                                  final result = await context.push(Routes.ALL_SAVED_ADDRESS_LIST,extra: {
+                                  final result = await context.push(Routes.ALL_SAVED_ADDRESS_LIST, extra: {
                                     'selectItemUseCase': SelectItemUseCase.none,
                                   });
                                   return;
@@ -241,12 +235,15 @@ class _ProfileSettingPageView extends WidgetView<ProfileSettingPage, _ProfileSet
                               ),
                               SettingsItem(
                                 onTap: () async {
-                                  final result = await context.push(Routes.BANK_INFORMATION_PAGE, extra: {
-                                    'paymentBankEntity': serviceLocator<AppUserEntity>().paymentBankEntity,
-                                    'hasEditBankInformation': true,
-                                    'currentIndex': 0,
-                                    'selectionUseCase': SelectionUseCase.updateAndReturn,
-                                  },);
+                                  final result = await context.push(
+                                    Routes.BANK_INFORMATION_PAGE,
+                                    extra: {
+                                      'paymentBankEntity': serviceLocator<AppUserEntity>().paymentBankEntity,
+                                      'hasEditBankInformation': true,
+                                      'currentIndex': 0,
+                                      'selectionUseCase': SelectionUseCase.updateAndReturn,
+                                    },
+                                  );
                                   return;
                                 },
                                 icons: Icons.account_balance,
@@ -257,12 +254,19 @@ class _ProfileSettingPageView extends WidgetView<ProfileSettingPage, _ProfileSet
                               ),
                               SettingsItem(
                                 onTap: () async {
-                                  final result = await context.push(Routes.NEW_DOCUMENT_LIST_PAGE, extra: {
-                                  'businessDocumentUploadedEntities': serviceLocator<AppUserEntity>().businessProfile?.allBusinessDocuments.toList()??[],
-                                  'hasEditBusinessDocument': true,
-                                  'currentIndex': 0,
-                                  'selectionUseCase': SelectionUseCase.updateAndReturn,
-                                  },);
+                                  final result = await context.push(
+                                    Routes.NEW_DOCUMENT_LIST_PAGE,
+                                    extra: {
+                                      'businessDocumentUploadedEntities': serviceLocator<AppUserEntity>()
+                                              .businessProfile
+                                              ?.allBusinessDocuments
+                                              .toList() ??
+                                          [],
+                                      'hasEditBusinessDocument': true,
+                                      'currentIndex': 0,
+                                      'selectionUseCase': SelectionUseCase.updateAndReturn,
+                                    },
+                                  );
                                   return;
                                 },
                                 icons: CupertinoIcons.cloud_upload,
@@ -272,7 +276,19 @@ class _ProfileSettingPageView extends WidgetView<ProfileSettingPage, _ProfileSet
                                 ),
                               ),
                               SettingsItem(
-                                onTap: () {},
+                                onTap: () async {
+                                  final phoneNumberChangeResult = await context.push(
+                                    Routes.CHANGE_PHONE_NUMBER_PAGE,
+                                    extra: {
+                                      'changePhoneNumberPurpose': ChangePhoneNumberPurpose.profile,
+                                      'phoneNumber':
+                                          serviceLocator<AppUserEntity>().businessProfile?.phoneNumberWithoutDialCode,
+                                      'country': serviceLocator<AppUserEntity>().businessProfile?.isoCode,
+                                      'dialCode': serviceLocator<AppUserEntity>().businessProfile?.countryDialCode,
+                                      'id': serviceLocator<AppUserEntity>().userID,
+                                    },
+                                  );
+                                },
                                 icons: CupertinoIcons.repeat,
                                 title: 'Change Phone Number',
                                 iconStyle: IconStyle(
