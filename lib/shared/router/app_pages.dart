@@ -6,9 +6,7 @@ import 'package:geocoder_buddy/geocoder_buddy.dart';
 import 'package:go_router/go_router.dart';
 import 'package:homemakers_merchant/app/features/address/index.dart';
 import 'package:homemakers_merchant/app/features/analysis/index.dart';
-import 'package:homemakers_merchant/app/features/authentication/index.dart';
 import 'package:homemakers_merchant/app/features/authentication/presentation/pages/about_us.dart';
-import 'package:homemakers_merchant/app/features/authentication/presentation/pages/login_page.dart';
 import 'package:homemakers_merchant/app/features/authentication/presentation/pages/otp_verification_page.dart';
 import 'package:homemakers_merchant/app/features/authentication/presentation/pages/phone_number_verification_page.dart';
 import 'package:homemakers_merchant/app/features/authentication/presentation/pages/privacy_and_policy_view.dart';
@@ -31,8 +29,6 @@ import 'package:homemakers_merchant/app/features/setting/index.dart';
 import 'package:homemakers_merchant/app/features/store/index.dart';
 import 'package:homemakers_merchant/bootup/injection_container.dart';
 import 'package:homemakers_merchant/core/common/enum/generic_enum.dart';
-import 'package:homemakers_merchant/core/extensions/global_extensions/list_ext.dart';
-import 'package:homemakers_merchant/utils/app_log.dart';
 
 part 'app_routes.dart';
 
@@ -132,22 +128,23 @@ class AppRouter {
       GoRoute(
         path: Routes.UPLOAD_DOCUMENT_PAGE,
         builder: (context, state) {
-          String documentType='other';
-          String selectionUseCase='saveAndNext';
-          if(state.extra!=null){
-            documentType=jsonDecode(state.extra! as String)['documentType']??'other';
-            selectionUseCase=jsonDecode(state.extra! as String)['selectionUseCase']??'saveAndNext';
+          String documentType = 'other';
+          String selectionUseCase = 'saveAndNext';
+          if (state.extra != null) {
+            documentType = jsonDecode(state.extra! as String)['documentType'] ?? 'other';
+            selectionUseCase = jsonDecode(state.extra! as String)['selectionUseCase'] ?? 'saveAndNext';
             return UploadDocumentPage(
-              documentType: DocumentType.values.byName(documentType,),
-              selectionUseCase:SelectionUseCase.values.byName(selectionUseCase),
+              documentType: DocumentType.values.byName(
+                documentType,
+              ),
+              selectionUseCase: SelectionUseCase.values.byName(selectionUseCase),
             );
-          }else{
+          } else {
             return UploadDocumentPage(
               documentType: DocumentType.values.byName(
                 jsonDecode(state.extra! as String)['documentType'],
               ),
             );
-
           }
         },
       ),
@@ -175,7 +172,7 @@ class AppRouter {
               paymentBankEntity: args?['paymentBankEntity'] as PaymentBankEntity?,
               hasEditBankInformation: args?['hasEditBankInformation'] ?? false as bool,
               currentIndex: args?['currentIndex'] ?? -1 as int,
-              selectionUseCase:args?['selectionUseCase'] ?? SelectionUseCase.saveAndNext,
+              selectionUseCase: args?['selectionUseCase'] ?? SelectionUseCase.saveAndNext,
             );
           }),
       GoRoute(
@@ -245,7 +242,7 @@ class AppRouter {
             hasEditBusinessProfile: args?['hasEditBusinessProfile'] ?? false as bool,
             currentIndex: args?['currentIndex'] ?? -1 as int,
             businessTypeEntity: args?['businessTypeEntity'] as BusinessTypeEntity?,
-            selectionUseCase:args?['selectionUseCase'] ?? SelectionUseCase.saveAndNext,
+            selectionUseCase: args?['selectionUseCase'] ?? SelectionUseCase.saveAndNext,
           );
         },
       ),
@@ -610,15 +607,29 @@ class AppRouter {
         builder: (context, state) {
           final Map<String, dynamic>? args = state.extra as Map<String, dynamic>?;
           return ChangePhoneNumberPage(
-            changePhoneNumberPurpose: args?['changePhoneNumberPurpose']?? ChangePhoneNumberPurpose.profile,
-              phoneNumberWithoutDialCode:args?['phoneNumber']??'',
-              country:args?['country']??'',
-              dialCode:args?['dialCode']??'',
-              id:args?['id']??-1
+              changePhoneNumberPurpose: args?['changePhoneNumberPurpose'] ?? ChangePhoneNumberPurpose.profile,
+              phoneNumberWithoutDialCode: args?['phoneNumber'] ?? '',
+              country: args?['country'] ?? '',
+              dialCode: args?['dialCode'] ?? '',
+              id: args?['id'] ?? -1);
+        },
+      ),
+      GoRoute(
+        path: Routes.COMMON_OTP_VERIFICATION_PAGE,
+        builder: (context, state) {
+          final Map<String, dynamic>? args = state.extra as Map<String, dynamic>?;
+          return CommonOtpVerification(
+            userNewEnteredPhoneNumber: args?['newPhoneNumber'] ?? '',
+            userExistingEnteredPhoneNumber: args?['existingPhoneNumber'] ?? '',
+            userExistingEnteredPhoneNumberWithoutDialCode: args?['existingPhoneNumberWithoutDialCode'] ?? '',
+            userNewEnteredPhoneNumberWithoutDialCode: args?['newPhoneNumberWithoutDialCode'] ?? '',
+            country: args?['country'] ?? '',
+            dialCode: args?['dialCode'] ?? '',
+            id: args?['id'] ?? -1,
           );
         },
       ),
-
+      //
     ],
   );
 

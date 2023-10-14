@@ -112,6 +112,7 @@ abstract class Routes {
   static const String INITIAL_SPLASH_PAGE = _Paths.INITIAL_SPLASH_PAGE;
   static const String PROFILE_SETTING_PAGE = _Paths.PROFILE_SETTING_PAGE;
   static const String CHANGE_PHONE_NUMBER_PAGE=_Paths.CHANGE_PHONE_NUMBER_PAGE;
+  static const String COMMON_OTP_VERIFICATION_PAGE=_Paths.COMMON_OTP_VERIFICATION_PAGE;
 }
 
 abstract class _Paths {
@@ -218,4 +219,5 @@ abstract class _Paths {
   static const String MENU_PRICE_PAGE = '/menu-price-page';
   static const String UPLOAD_MENU_IMAGE_PAGE = '/upload-menu-image-page';
   static const String CHANGE_PHONE_NUMBER_PAGE = '/change-phone-number-page';
+  static const String COMMON_OTP_VERIFICATION_PAGE = '/common-otp-verification-page';
 }

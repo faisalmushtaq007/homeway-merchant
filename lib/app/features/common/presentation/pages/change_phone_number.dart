@@ -4,10 +4,10 @@ class ChangePhoneNumberPage extends StatefulWidget {
   const ChangePhoneNumberPage({
     super.key,
     this.changePhoneNumberPurpose = ChangePhoneNumberPurpose.profile,
-    this.phoneNumberWithoutDialCode='',
-    this.country='SA',
-    this.dialCode='+91',
-    this.id=-1,
+    this.phoneNumberWithoutDialCode = '',
+    this.country = 'SA',
+    this.dialCode = '+91',
+    this.id = -1,
   });
 
   final ChangePhoneNumberPurpose changePhoneNumberPurpose;
@@ -15,6 +15,7 @@ class ChangePhoneNumberPage extends StatefulWidget {
   final String dialCode;
   final String country;
   final int id;
+
   @override
   _ChangePhoneNumberPageController createState() => _ChangePhoneNumberPageController();
 }
@@ -23,15 +24,10 @@ class _ChangePhoneNumberPageController extends State<ChangePhoneNumberPage> {
   late final ScrollController scrollController;
   late final ScrollController _screenScrollController;
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+
   late FocusNode existingPhoneNumberFocusNode;
   late FocusNode newPhoneNumberFocusNode;
-  List<FocusNode> focusList = [
-    FocusNode(),
-    FocusNode(),
-    FocusNode(),
-    FocusNode(),
-    FocusNode(),
-  ];
+
   final TextEditingController existingPhoneNumberTextEditingController = TextEditingController();
   final TextEditingController newPhoneNumberTextEditingController = TextEditingController();
 
@@ -48,14 +44,15 @@ class _ChangePhoneNumberPageController extends State<ChangePhoneNumberPage> {
   late PhoneNumber? existingPhoneNumber;
   late PhoneController existingPhoneNumberController;
 
-  PhoneNumberVerification phoneNumberVerification = PhoneNumberVerification.none;
+  PhoneNumberVerification phoneNumberVerification = PhoneNumberVerification.valid;
   ValueNotifier<PhoneNumberVerification> valueNotifierPhoneNumberVerification = ValueNotifier<PhoneNumberVerification>(
-    PhoneNumberVerification.none,
+    PhoneNumberVerification.valid,
   );
 
-  PhoneNumberVerification existingPhoneNumberVerification = PhoneNumberVerification.valid;
-  ValueNotifier<PhoneNumberVerification> valueNotifierExistingPhoneNumberVerification = ValueNotifier<PhoneNumberVerification>(
-    PhoneNumberVerification.valid,
+  PhoneNumberVerification existingPhoneNumberVerification = PhoneNumberVerification.none;
+  ValueNotifier<PhoneNumberVerification> valueNotifierExistingPhoneNumberVerification =
+      ValueNotifier<PhoneNumberVerification>(
+    PhoneNumberVerification.none,
   );
 
   final isoCodeNameMap = IsoCode.values.asNameMap();
@@ -71,12 +68,12 @@ class _ChangePhoneNumberPageController extends State<ChangePhoneNumberPage> {
 
     existingPhoneNumber = PhoneNumber(
       isoCode: IsoCode.values.asNameMap().values.byName(country),
-      nsn: '547533381',//widget.phoneNumberWithoutDialCode,
+      nsn: '547533381', //widget.phoneNumberWithoutDialCode,
     );
     existingPhoneNumberController = PhoneController(
       existingPhoneNumber,
     );
-    existingPhoneNumberController.value=existingPhoneNumber;
+    existingPhoneNumberController.value = existingPhoneNumber;
 
     phoneNumber = PhoneNumber(
       isoCode: IsoCode.values.asNameMap().values.byName(country),
@@ -85,7 +82,7 @@ class _ChangePhoneNumberPageController extends State<ChangePhoneNumberPage> {
     phoneNumberController = PhoneController(
       phoneNumber,
     );
-    phoneNumberController.value=phoneNumber;
+    phoneNumberController.value = phoneNumber;
     defaultCountry = IsoCode.values.byName(country);
   }
 
@@ -108,8 +105,8 @@ class _ChangePhoneNumberPageController extends State<ChangePhoneNumberPage> {
   }
 
   void onExistingPhoneNumberChanged(
-      PhoneNumber? phoneNumbers,
-      ) {
+    PhoneNumber? phoneNumbers,
+  ) {
     existingPhoneNumber = phoneNumbers;
     userExistingEnteredPhoneNumber = '+${phoneNumbers?.countryCode} ${phoneNumbers?.getFormattedNsn().trim()}';
     String countryDialCode = '+${phoneNumbers?.countryCode ?? '+966'}';
@@ -119,10 +116,10 @@ class _ChangePhoneNumberPageController extends State<ChangePhoneNumberPage> {
   }
 
   void existingPhoneNumberValidationChanged(
-      String? value,
-      PhoneNumber? phoneNumbers,
-      PhoneController phoneNumberControllers,
-      ) {
+    String? value,
+    PhoneNumber? phoneNumbers,
+    PhoneController phoneNumberControllers,
+  ) {
     existingPhoneNumberValidation = value;
     existingPhoneNumber = phoneNumbers;
     existingPhoneNumberController = phoneNumberControllers;
@@ -144,8 +141,8 @@ class _ChangePhoneNumberPageController extends State<ChangePhoneNumberPage> {
   }
 
   void onPhoneNumberChanged(
-      PhoneNumber? phoneNumbers,
-      ) {
+    PhoneNumber? phoneNumbers,
+  ) {
     phoneNumber = phoneNumbers;
     userNewEnteredPhoneNumber = '+${phoneNumbers?.countryCode} ${phoneNumbers?.getFormattedNsn().trim()}';
     String countryDialCode = '+${phoneNumbers?.countryCode ?? '+966'}';
@@ -155,10 +152,10 @@ class _ChangePhoneNumberPageController extends State<ChangePhoneNumberPage> {
   }
 
   void phoneNumberValidationChanged(
-      String? value,
-      PhoneNumber? phoneNumbers,
-      PhoneController phoneNumberControllers,
-      ) {
+    String? value,
+    PhoneNumber? phoneNumbers,
+    PhoneController phoneNumberControllers,
+  ) {
     phoneNumberValidation = value;
     phoneNumber = phoneNumbers;
     phoneNumberController = phoneNumberControllers;
@@ -188,6 +185,18 @@ class _ChangePhoneNumberPageController extends State<ChangePhoneNumberPage> {
   Future<void> onSaveAndNext() async {
     if (formKey.currentState!.validate()) {
       formKey.currentState!.save();
+      final otpResult = await context.push(
+        Routes.COMMON_OTP_VERIFICATION_PAGE,
+        extra: {
+          'newPhoneNumber':'${dialCode} ${phoneNumber?.getFormattedNsn().trim()}',
+          'existingPhoneNumber':'${widget.dialCode} ${existingPhoneNumber?.getFormattedNsn().trim()}',
+          'existingPhoneNumberWithoutDialCode':existingPhoneNumber?.getFormattedNsn().trim(),
+          'newPhoneNumberWithoutDialCode':existingPhoneNumber?.getFormattedNsn().trim(),
+          'country':country,
+          'dialCode':dialCode,
+          'id':widget.id,
+        },
+      );
       return;
     }
     return;
@@ -259,14 +268,19 @@ class _ChangePhoneNumberPageView extends WidgetView<ChangePhoneNumberPage, _Chan
                               textDirection: serviceLocator<LanguageController>().targetTextDirection,
                               children: [
                                 const AnimatedGap(8, duration: Duration(milliseconds: 500)),
+                                const Align(
+                                  alignment: AlignmentDirectional.topStart,
+                                  child: AppLogo(),
+                                ),
+                                const AnimatedGap(16, duration: Duration(milliseconds: 500)),
                                 Wrap(
                                   textDirection: serviceLocator<LanguageController>().targetTextDirection,
                                   children: [
                                     Text(
                                       'Change your phone number',
                                       style: context.headlineSmall!.copyWith(
-                                        //color: const Color.fromRGBO(127, 129, 132, 1),
-                                      ),
+                                          //color: const Color.fromRGBO(127, 129, 132, 1),
+                                          ),
                                       textDirection: serviceLocator<LanguageController>().targetTextDirection,
                                       maxLines: 1,
                                       softWrap: true,
