@@ -23,28 +23,19 @@ class _NewMapPageController extends State<NewMapPage>
       width: 20,
       height: 20,
       point: latlng2.LatLng(51.5, -0.09),
-      builder: (ctx) => Container(
-        key: const Key('blue'),
-        child: const FlutterLogo(),
-      ),
+      child: FlutterLogo(key: ValueKey('blue')),
     ),
     mapBox.Marker(
       width: 20,
       height: 20,
       point: latlng2.LatLng(53.3498, -6.2603),
-      builder: (ctx) => const FlutterLogo(
-        key: Key('green'),
-        textColor: Colors.green,
-      ),
+      child: FlutterLogo(key: ValueKey('green')),
     ),
     mapBox.Marker(
       width: 20,
       height: 20,
       point: latlng2.LatLng(48.8566, 2.3522),
-      builder: (ctx) => Container(
-        key: const Key('purple'),
-        child: const FlutterLogo(textColor: Colors.purple),
-      ),
+      child: FlutterLogo(key: ValueKey('purple')),
     ),
   ];
 

@@ -3,9 +3,9 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>564821867293-qj14ngeun3ps623ihfovsloe1lsjia4e.apps.googleusercontent.com</string>
+	<string>564821867293-eloqhcbn6386lsd7lsps3847tli5o5ps.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.564821867293-qj14ngeun3ps623ihfovsloe1lsjia4e</string>
+	<string>com.googleusercontent.apps.564821867293-eloqhcbn6386lsd7lsps3847tli5o5ps</string>
 	<key>ANDROID_CLIENT_ID</key>
 	<string>564821867293-g5pmkrkhicsfl2do8pfp68lf9ei5e4rg.apps.googleusercontent.com</string>
 	<key>API_KEY</key>
@@ -15,7 +15,7 @@
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.homemakers.homemakersMerchant.RunnerTests</string>
+	<string>com.homemakers.merchant.dev</string>
 	<key>PROJECT_ID</key>
 	<string>homeway-e4577</string>
 	<key>STORAGE_BUCKET</key>
@@ -31,7 +31,7 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:564821867293:ios:e8bc12a064b256ef4dfff4</string>
+	<string>1:564821867293:ios:3bcfb98c0b906d594dfff4</string>
 	<key>DATABASE_URL</key>
 	<string>https://homeway-e4577-default-rtdb.asia-southeast1.firebasedatabase.app</string>
 </dict>

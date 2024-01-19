@@ -51,13 +51,19 @@ class AddressBloc extends Bloc<AddressEvent, AddressState> {
       SaveAddress event, Emitter<AddressState> emit) async {
     try {
       DataSourceState<AddressModel> result;
+
+      //
       if (!event.hasNewAddress) {
         result = await serviceLocator<EditAddressUseCase>()(
             id: event.addressEntity.addressID, input: event.addressEntity);
-      } else {
+      }
+      //
+      else {
         result =
             await serviceLocator<SaveAddressUseCase>()(event.addressEntity);
       }
+
+      //
       result.when(
         remote: (data, meta) {
           appLog.d('Address bloc save remote ${data?.toMap()}');

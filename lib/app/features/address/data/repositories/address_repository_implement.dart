@@ -344,6 +344,7 @@ class AddressRepositoryImplement implements UserAddressRepository {
     try {
       final connectivity =
           serviceLocator<ConnectivityService>().getCurrentInternetStatus();
+
       if (connectivity.$2 == InternetConnectivityState.internet) {
         // Local DB
         // Save to local
@@ -363,7 +364,9 @@ class AddressRepositoryImplement implements UserAddressRepository {
               'Save address to local : ${r.addressID}, ${r.address?.area ?? 'No Address'}');
           return DataSourceState<AddressModel>.localDb(data: r);
         });
-      } else {
+      }
+
+      else {
         // Remote
         // Save to server
         final ApiResultState<AddressModel> result =
@@ -390,6 +393,7 @@ class AddressRepositoryImplement implements UserAddressRepository {
           },
         );
       }
+
     } catch (e, s) {
       appLog.d('Save address exception $e');
       return DataSourceState<AddressModel>.error(

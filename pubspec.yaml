@@ -23,7 +23,7 @@ dependencies:
   back_button_interceptor: ^6.0.2
   bloc: ^8.1.2
   bloc_concurrency: ^0.2.2
-  cached_network_image: ^3.2.3
+  cached_network_image: ^3.3.1
   cloud_firestore: ^4.8.3
   collection: ^1.17.1
   connectivity_plus: ^4.0.2
@@ -35,13 +35,17 @@ dependencies:
   equatable: ^2.0.5
   faker: ^2.1.0
   file_picker: ^5.5.0
-  file_saver: ^0.2.7
+  file_saver:
+    git:
+      url: 'https://github.com/adrianvintu/file_saver.git'
+      ref: main
   file_selector: ^1.0.1
   firebase_analytics: ^10.4.5
   firebase_auth: ^4.9.0
   firebase_core: ^2.15.1
   firebase_messaging: ^14.6.7
   firebase_storage: ^11.2.6
+  firebase_ui_localizations: ^1.10.1
   flex_color_scheme: ^7.3.1
   flex_seed_scheme: ^1.4.0
   flutter:
@@ -150,6 +154,7 @@ dependencies:
       url: 'https://github.com/prasant10050/Flutter_Pinput.git'
       ref: master
   provider: ^6.0.5
+  quiver: ^3.2.1
   responsive_framework: ^1.1.0
   rxdart: ^0.27.7
   saver_gallery: ^2.0.1
@@ -201,6 +206,7 @@ dependency_overrides:
   http: ^1.0.0
   source_span: 1.9.1
   dom_tools: ^2.1.0
+  logger: 2.0.1
   markdown: ^4.0.1
   #meta: 1.7.0
   #image: ^3.1.3

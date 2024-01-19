@@ -87,14 +87,9 @@ class RetryImage extends ImageProvider<Object> {
 
   @override
   // ignore: deprecated_member_use
-  ImageStreamCompleter load(Object key, DecoderCallback decode) {
+  ImageStreamCompleter loadImage(Object key, ImageDecoderCallback decode) {
     // ignore: deprecated_member_use
-    return _commonLoad(() => imageProvider.load(key, decode));
-  }
-
-  @override
-  ImageStreamCompleter loadBuffer(Object key, DecoderBufferCallback decode) {
-    return _commonLoad(() => imageProvider.loadBuffer(key, decode));
+    return _commonLoad(() => imageProvider.loadImage(key, decode));
   }
 
   @override

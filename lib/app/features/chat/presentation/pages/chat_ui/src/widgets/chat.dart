@@ -1,12 +1,8 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
-import 'package:photo_view/photo_view.dart' show PhotoViewComputedScale;
 import 'package:homemakers_merchant/app/features/chat/domain/entities/chat_types_entity.dart'
     as types;
-import 'package:scroll_to_index/scroll_to_index.dart';
-
 import 'package:homemakers_merchant/app/features/chat/presentation/pages/chat_ui/src/chat_l10n.dart';
 import 'package:homemakers_merchant/app/features/chat/presentation/pages/chat_ui/src/chat_theme.dart';
 import 'package:homemakers_merchant/app/features/chat/presentation/pages/chat_ui/src/conditional/conditional.dart';
@@ -30,6 +26,9 @@ import 'package:homemakers_merchant/app/features/chat/presentation/pages/chat_ui
 import 'package:homemakers_merchant/app/features/chat/presentation/pages/chat_ui/src/widgets/unread_header.dart';
 import 'package:homemakers_merchant/bootup/injection_container.dart';
 import 'package:homemakers_merchant/config/translation/language_controller.dart';
+import 'package:intl/intl.dart';
+import 'package:photo_view/photo_view.dart' show PhotoViewComputedScale;
+import 'package:scroll_to_index/scroll_to_index.dart';
 
 /// Entry widget, represents the complete chat. If you wrap it in [SafeArea] and
 /// it should be full screen, set [SafeArea]'s `bottom` to `false`.

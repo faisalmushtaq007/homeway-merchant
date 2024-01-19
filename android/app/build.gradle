@@ -34,14 +34,24 @@ apply plugin: 'com.google.gms.google-services'
 
 
 android {
-    namespace 'com.homemakers.merchant'
+    namespace "com.homemakers.merchant"
+    // Conditional for compatibility with AGP <4.2.
+    if (project.android.hasProperty("namespace")) {
+        namespace "com.homemakers.merchant"
+    }
+    // Conditional for compatibility with AGP <4.2.
+    if (project.android.hasProperty("testNamespace")) {
+        testNamespace "com.homemakers.merchant"
+    }
+
     buildFeatures {
         aidl true
 
         buildConfig true
     }
 
-    compileSdkVersion flutter.compileSdkVersion
+    compileSdkVersion 33
+    ndkVersion "25.1.8937393"
     //compileSdkVersion localProperties.getProperty('compileSdkVersion')
 
     compileOptions {
@@ -65,7 +75,7 @@ android {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
         applicationId "com.homemakers.merchant"
         minSdkVersion localProperties.getProperty('minSdkVersion')
-        //compileSdkVersion localProperties.getProperty('compileSdkVersion')
+        compileSdkVersion localProperties.getProperty('compileSdkVersion')
         targetSdkVersion localProperties.getProperty('targetSdkVersion')
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
@@ -127,7 +137,7 @@ flutter {
 
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-    implementation platform('com.google.firebase:firebase-bom:32.0.0')
+    implementation platform('com.google.firebase:firebase-bom:32.7.0')
     implementation 'com.google.firebase:firebase-analytics'
     implementation 'com.google.firebase:firebase-messaging'
     implementation 'com.google.firebase:firebase-analytics-ktx'

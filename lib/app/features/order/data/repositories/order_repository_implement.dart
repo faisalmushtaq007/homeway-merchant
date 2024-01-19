@@ -33,7 +33,8 @@ class OrderRepositoryImplement implements OrderRepository {
           appLog.d('Delete all order to local : $r,');
           return DataSourceState<bool>.localDb(data: r);
         });
-      } else {
+      }
+      else {
         // Remote
         // Save to server
         final ApiResultState<bool> result =

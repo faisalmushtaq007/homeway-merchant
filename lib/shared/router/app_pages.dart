@@ -39,7 +39,7 @@ class AppRouter {
 
   AppRouter._();
 
-  static const String INITIAL = Routes.INITIAL_SPLASH_PAGE;
+  static const String INITIAL = Routes.MAIN_DASHBOARD_PAGE;
 
   static final GoRouter _router = GoRouter(
     debugLogDiagnostics: true,

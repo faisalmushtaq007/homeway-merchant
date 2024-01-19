@@ -138,7 +138,7 @@ class WeeklyOverAllAnalysisGridWidget extends StatelessWidget {
                   CartesianChartAnnotation(
                     widget: Container(
                       child: Text(overAllAnalysisData?.totalOrders.total.toString() ?? '0'),
-                    ),
+                    ), x: null, y: null,
                   )
                 ],
                 series: <BarSeries<ChartSampleData, String>>[
