@@ -1,4 +1,6 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flex_color_scheme/flex_color_scheme.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -57,6 +59,10 @@ class _PhoneNumberVerificationPageState
   );
   bool mobileOnly = true;
 
+  // If set to true, the app will request notification permissions to use
+// silent verification for SMS MFA instead of Recaptcha.
+  static const withSilentVerificationSMSMFA = true;
+
   @override
   void initState() {
     scrollController = ScrollController();
@@ -71,6 +77,10 @@ class _PhoneNumberVerificationPageState
       ),
     );
     _animationController.forward();
+    if (withSilentVerificationSMSMFA && !kIsWeb) {
+      FirebaseMessaging messaging = FirebaseMessaging.instance;
+      messaging.requestPermission();
+    }
     super.initState();
   }
 

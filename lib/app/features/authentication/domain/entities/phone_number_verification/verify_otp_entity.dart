@@ -11,6 +11,7 @@ class VerifyOtpEntity extends INetworkModel<VerifyOtpEntity> {
     this.isoCode = 'SA',
     this.phoneNumberWithoutFormat = '',
     this.phoneNumberWithFormat = '',
+    this.verificationId = '',
   });
 
   factory VerifyOtpEntity.fromJson(Map<String, dynamic> json) =>
@@ -25,6 +26,7 @@ class VerifyOtpEntity extends INetworkModel<VerifyOtpEntity> {
         phoneNumberWithoutFormat:
             json['phoneNumberWithoutFormat'] ?? '' as String,
         phoneNumberWithFormat: json['phoneNumberWithFormat'] ?? '' as String,
+        verificationId: json['verificationId'],
       );
 
   String mobile;
@@ -36,6 +38,7 @@ class VerifyOtpEntity extends INetworkModel<VerifyOtpEntity> {
   String isoCode;
   String phoneNumberWithFormat;
   String phoneNumberWithoutFormat;
+  String verificationId;
 
   @override
   VerifyOtpEntity fromJson(Map<String, dynamic> json) {
@@ -50,6 +53,7 @@ class VerifyOtpEntity extends INetworkModel<VerifyOtpEntity> {
         'db': db,
         'user_type': user_type,
         'isoCode': isoCode,
+        'verificationId': verificationId,
       };
 
   @override

@@ -6,6 +6,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:homemakers_merchant/shared/widgets/universal/async_button/async_button.dart';
 import 'package:homemakers_merchant/shared/widgets/universal/phone_number_text_field/phone_form_field_bloc.dart';
 import 'package:homemakers_merchant/utils/app_log.dart';
+import 'package:homeway_firebase/homeway_firebase.dart';
 import 'package:phone_form_field/phone_form_field.dart';
 
 part 'package:homemakers_merchant/app/features/authentication/common/phone_number_verification_enum.dart';
@@ -20,6 +21,7 @@ class PhoneNumberVerificationBloc
     extends Bloc<PhoneNumberVerificationEvent, PhoneNumberVerificationState> {
   PhoneNumberVerificationBloc({
     required this.phoneFormFieldBloc,
+    required this.firebaseAuthentication,
   }) : super(const PhoneNumberVerificationState.initial()) {
     on<PhoneNumberChanged>(
       _phoneNumberChangedEvent,
@@ -36,6 +38,10 @@ class PhoneNumberVerificationBloc
   }
 
   final PhoneFormFieldBloc phoneFormFieldBloc;
+  final FirebaseAuthenticationRepository firebaseAuthentication;
+
+  FutureOr<void> _initialize(
+      _Started event, Emitter<PhoneNumberVerificationState> emit) {}
 
   FutureOr<void> _phoneNumberChangedEvent(
       PhoneNumberChanged event, Emitter<PhoneNumberVerificationState> emit) {
@@ -67,6 +73,7 @@ class PhoneNumberVerificationBloc
   FutureOr<void> _verifyPhoneNumber(
       VerifyPhoneNumber event, Emitter<PhoneNumberVerificationState> emit) {
     // Handle api call and otp sent request
+    
     emit(
       PhoneNumberVerificationState.success(
         phoneController: event.phoneController,

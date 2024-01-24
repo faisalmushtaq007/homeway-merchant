@@ -8,4 +8,5 @@ linter:
     argument_type_not_assignable: false
     public_member_api_docs: false
     omit_local_variable_types: false
+    directives_ordering:
 

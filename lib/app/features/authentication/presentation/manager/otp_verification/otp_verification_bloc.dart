@@ -11,6 +11,7 @@ import 'package:homemakers_merchant/core/extensions/global_extensions/src/object
 import 'package:homemakers_merchant/shared/states/result_state.dart';
 import 'package:homemakers_merchant/utils/app_equatable/app_equatable.dart';
 import 'package:homemakers_merchant/utils/app_log.dart';
+import 'package:homeway_firebase/homeway_firebase.dart';
 import 'package:meta/meta.dart';
 
 part 'otp_verification_event.dart';
@@ -22,6 +23,9 @@ class OtpVerificationBloc
   OtpVerificationBloc({
     required this.sendOtpUseCase,
     required this.verifyOtpUseCase,
+    required this.firebaseAuthentication,
+    required this.sendFirebaseOtpUseCase,
+    required this.verifyFirebaseOtpUseCase,
   }) : super(OtpVerificationInitial()) {
     on<SendOtp>(_sendOTP);
     on<VerifyOtp>(_verifyOtp);
@@ -30,6 +34,10 @@ class OtpVerificationBloc
 
   final SendOtpUseCase sendOtpUseCase;
   final VerifyOtpUseCase verifyOtpUseCase;
+
+  final SendFirebaseOtpUseCase sendFirebaseOtpUseCase;
+  final VerifyFirebaseOtpUseCase verifyFirebaseOtpUseCase;
+  final FirebaseAuthenticationRepository firebaseAuthentication;
 
   FutureOr<void> _sendOTP(
       SendOtp event, Emitter<OtpVerificationState> emit) async {
@@ -41,8 +49,10 @@ class OtpVerificationBloc
         ),
       );
       if (!event.sendOtpEntity.mobile.isEmptyOrNull) {
-        final ResultState<SendOtpResponseModel> resultState =
-            await sendOtpUseCase(event.sendOtpEntity);
+        // Request send otp use case
+        final ResultState<SendOtpFirebaseResponseModel> resultState =
+            await sendFirebaseOtpUseCase(event.sendOtpEntity);
+
         emit(
           SendOtpProcessingState(
             sendOtpEntity: event.sendOtpEntity,
@@ -119,7 +129,7 @@ class OtpVerificationBloc
   FutureOr<void> _verifyOtp(
       VerifyOtp event, Emitter<OtpVerificationState> emit) async {
     try {
-      VerifyOtpResponseModel verifyOtpResponseModel = VerifyOtpResponseModel();
+      VerifyOtpFirebaseResponseModel? verifyOtpResponseModel;
       emit(
         VerifyOtpProcessingState(
           verifyOtpEntity: event.verifyOtpEntity,
@@ -128,8 +138,10 @@ class OtpVerificationBloc
       );
       if (!event.verifyOtpEntity.mobile.isEmptyOrNull &&
           event.verifyOtpEntity.otp != null) {
-        final ResultState<VerifyOtpResponseModel> resultState =
-            await verifyOtpUseCase(event.verifyOtpEntity);
+        // Verify otp use case
+        final ResultState<VerifyOtpFirebaseResponseModel> resultState =
+            await verifyFirebaseOtpUseCase(event.verifyOtpEntity);
+
         emit(
           VerifyOtpProcessingState(
             verifyOtpEntity: event.verifyOtpEntity,
@@ -152,6 +164,9 @@ class OtpVerificationBloc
             appLog
                 .d('Wait for processing, uploading and fetching current user');
             AppUserEntity saveUserEntity = AppUserEntity();
+            // Firebase token
+            final firebaseToken =
+                await verifyOtpResponseModel?.firebaseUserData?.getIdToken();
             final saveUserEntityResult =
                 await serviceLocator<SaveAllAppUserUseCase>()([
               AppUserEntity(
@@ -159,8 +174,8 @@ class OtpVerificationBloc
                 country_dial_code: event.verifyOtpEntity.country_dial_code,
                 phoneNumber: event.verifyOtpEntity.phoneNumberWithFormat,
                 hasCurrentUser: true,
-                uid: verifyOtpResponseModel.uid ?? '',
-                access_token: verifyOtpResponseModel.access_token ?? '',
+                uid: verifyOtpResponseModel?.firebaseUserId ?? '',
+                access_token: firebaseToken ?? '',
                 currentUserStage: 0,
                 phoneNumberWithoutDialCode:
                     event.verifyOtpEntity.phoneNumberWithoutFormat,
@@ -235,8 +250,8 @@ class OtpVerificationBloc
                 country_dial_code: event.verifyOtpEntity.country_dial_code,
                 phoneNumber: event.verifyOtpEntity.phoneNumberWithFormat,
                 hasCurrentUser: true,
-                uid: verifyOtpResponseModel.uid ?? '',
-                access_token: verifyOtpResponseModel.access_token ?? '',
+                uid: '',
+                access_token: '',
                 currentUserStage: 0,
                 phoneNumberWithoutDialCode:
                     event.verifyOtpEntity.phoneNumberWithoutFormat,

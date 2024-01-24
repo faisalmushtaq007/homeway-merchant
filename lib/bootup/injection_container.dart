@@ -47,12 +47,14 @@ import 'package:homemakers_merchant/theme/theme_controller.dart';
 import 'package:homemakers_merchant/theme/theme_service.dart';
 import 'package:homemakers_merchant/theme/theme_service_hive.dart';
 import 'package:homemakers_merchant/utils/universal_platform/src/universal_platform.dart';
+import 'package:homeway_firebase/homeway_firebase.dart';
 import 'package:network_manager/network_manager.dart';
 
 GetIt serviceLocator = GetIt.instance;
 
 Future<void> setupGetIt() async {
   serviceLocator.allowReassignment = true;
+  _setupFirebase();
   await AppDatabase.instance.database;
   _setupGetIt();
   _setUpModel();
@@ -61,6 +63,7 @@ Future<void> setupGetIt() async {
   _setUpRepository();
   _setUpUseCases();
   _setUpStateManagement();
+  _registerAuthenticationFeature();
   return;
 }
 
@@ -266,7 +269,7 @@ void _setUpUseCases() {
     ),
   );
   serviceLocator.registerLazySingleton<SaveAllStoreUseCase>(
-        () => SaveAllStoreUseCase(
+    () => SaveAllStoreUseCase(
       storeRepository: serviceLocator(),
     ),
   );
@@ -286,7 +289,7 @@ void _setUpUseCases() {
     ),
   );
   serviceLocator.registerLazySingleton<GetAllStorePaginationUseCase>(
-        () => GetAllStorePaginationUseCase(
+    () => GetAllStorePaginationUseCase(
       storeRepository: serviceLocator(),
     ),
   );
@@ -307,7 +310,7 @@ void _setUpUseCases() {
     ),
   );
   serviceLocator.registerLazySingleton<SaveAllDriverUseCase>(
-        () => SaveAllDriverUseCase(
+    () => SaveAllDriverUseCase(
       storeRepository: serviceLocator(),
     ),
   );
@@ -327,7 +330,7 @@ void _setUpUseCases() {
     ),
   );
   serviceLocator.registerLazySingleton<GetAllDriverPaginationUseCase>(
-        () => GetAllDriverPaginationUseCase(
+    () => GetAllDriverPaginationUseCase(
       storeRepository: serviceLocator(),
     ),
   );
@@ -1119,17 +1122,29 @@ void _setUpRepository() {
 void _setUpStateManagement() {
   serviceLocator.registerFactory<ConnectivityBloc>(ConnectivityBloc.new);
   serviceLocator.registerFactory<PhoneFormFieldBloc>(PhoneFormFieldBloc.new);
+
+  // PhoneNumberVerificationBloc
   serviceLocator.registerFactory<PhoneNumberVerificationBloc>(
     () => PhoneNumberVerificationBloc(
       phoneFormFieldBloc: serviceLocator(),
+      firebaseAuthentication:
+          serviceLocator<FirebaseAuthenticationRepository>(),
     ),
   );
+
+  // OtpVerificationBloc
   serviceLocator.registerFactory<OtpVerificationBloc>(
     () => OtpVerificationBloc(
       sendOtpUseCase: serviceLocator(),
       verifyOtpUseCase: serviceLocator(),
+      firebaseAuthentication:
+          serviceLocator<FirebaseAuthenticationRepository>(),
+      sendFirebaseOtpUseCase: serviceLocator<SendFirebaseOtpUseCase>(),
+      verifyFirebaseOtpUseCase: serviceLocator<VerifyFirebaseOtpUseCase>(),
     ),
   );
+
+  // PermissionBloc
   serviceLocator.registerFactory<PermissionBloc>(PermissionBloc.new);
   // Document Bloc
   serviceLocator
@@ -1142,7 +1157,9 @@ void _setUpStateManagement() {
   // Menu Bloc
   serviceLocator.registerFactory<MenuBloc>(() => MenuBloc());
   // Store Bloc
-  serviceLocator.registerFactory<StoreBloc>(() => StoreBloc());
+  serviceLocator.registerFactory<StoreBloc>(() => StoreBloc(
+
+  ));
   // Address Bloc
   serviceLocator.registerFactory<AddressBloc>(() => AddressBloc());
   //WalletBloc
@@ -1158,4 +1175,12 @@ void _setUpStateManagement() {
   serviceLocator.registerFactory<NewBusinessDocumentBloc>(
       () => NewBusinessDocumentBloc());
   serviceLocator.registerFactory<OrderAnalysisBloc>(() => OrderAnalysisBloc());
+}
+
+void _setupFirebase() {
+  HomewayFirebase.register();
+  //serviceLocator<Home>
+}
+void _registerAuthenticationFeature(){
+  AuthenticationInjector.register();
 }

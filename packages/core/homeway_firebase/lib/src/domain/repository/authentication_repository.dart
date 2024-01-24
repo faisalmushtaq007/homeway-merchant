@@ -1,8 +1,12 @@
+import 'dart:async';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
-import 'package:homemakers_merchant/app/features/authentication/data/service/type_definitions.dart';
+import 'package:homeway_firebase/src/domain/type_definitions.dart';
 
-abstract class FirebaseAuthentication {
+part 'package:homeway_firebase/src/data/repository/authentication_repository_impl.dart';
+
+abstract class FirebaseAuthenticationRepository {
   Future<User?> getFirebaseUser();
 
   Future<void> signOut();
@@ -48,9 +52,56 @@ abstract class FirebaseAuthentication {
     VoidCallback? onCodeSent,
     OnLoginFailed? onLoginFailed,
     OnError? onError,
+    OnLoginSuccess? onLoginSuccess,
   });
 
   Stream<User?> get user;
 
   User? get currentUser;
+
+  FirebaseAuth get firebaseAuth;
+
+  void initialize({
+    required OnLoginSuccess? onLoginSuccess,
+    required OnLoginFailed? onLoginFailed,
+    required OnError? onError,
+    required VoidCallback? onCodeSent,
+    required bool signOutOnSuccessfulVerification,
+    required RecaptchaVerifier? recaptchaVerifierForWeb,
+    required Duration autoRetrievalTimeOutDuration,
+    required Duration otpExpirationDuration,
+    required bool linkWithExistingUser,
+  });
+
+  ConfirmationResult? _webConfirmationResult;
+
+  /// {@macro recaptchaVerifierForWeb}
+  RecaptchaVerifier? _recaptchaVerifierForWeb;
+
+  /// The [_forceResendingToken] obtained from [codeSent]
+  /// callback to force re-sending another verification SMS before the
+  /// auto-retrieval timeout.
+  int? _forceResendingToken;
+
+  /// Timer object for SMS auto-retrieval.
+  Timer? _otpAutoRetrievalTimer;
+
+  /// Timer object for OTP expiration.
+  Timer? _otpExpirationTimer;
+
+  /// Whether OTP to the given phoneNumber is sent or not.
+  bool codeSent = false;
+
+  /// Whether OTP is being sent to the given phoneNumber.
+  bool get isSendingCode => !codeSent;
+
+  /// Whether the current platform is web or not;
+  bool get isWeb => kIsWeb;
+
+  /// The phone auth verification ID.
+  String? verificationID;
+
+  late bool signOutOnSuccessfulVerification;
+
+  late bool linkWithExistingUser;
 }

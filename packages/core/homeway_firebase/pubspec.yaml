@@ -1,0 +1,29 @@
+name: homeway_firebase
+description: HomeMakers firebase service
+version: 0.1.0+1
+publish_to: none
+
+environment:
+  sdk: ">=3.0.0 <4.0.0"
+  flutter: ">=3.10.0"
+
+dependencies:
+  collection: ^1.18.0
+  firebase_auth: ^4.16.0
+  firebase_core: ^2.24.2
+  firebase_core_web: ^2.10.0
+  firebase_database: ^10.4.0
+  firebase_messaging: ^14.7.10
+  firebase_remote_config: ^4.3.8
+  firebase_storage: ^11.6.0
+  firebase_ui_localizations: ^1.10.1
+  flutter:
+    sdk: flutter
+  get_it: ^7.6.7
+  get_it_mixin: ^4.2.2
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  mocktail: ^1.0.0
+  very_good_analysis: ^5.1.0

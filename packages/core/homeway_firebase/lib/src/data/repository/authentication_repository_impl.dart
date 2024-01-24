@@ -1,31 +1,28 @@
-import 'dart:async';
 
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/foundation.dart';
-import 'package:homemakers_merchant/app/features/authentication/data/service/type_definitions.dart';
-import 'package:homemakers_merchant/app/features/authentication/domain/service/firebase_authentication.dart';
 
-class FirebaseAuthenticationImpl implements FirebaseAuthentication {
+part of 'package:homeway_firebase/src/domain/repository/authentication_repository.dart';
+
+class FirebaseAuthenticationRepositoryImpl implements FirebaseAuthenticationRepository {
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
   static const kAutoRetrievalTimeOutDuration = Duration(minutes: 1);
 
   /// Web confirmation result for OTP.
-  ConfirmationResult? webConfirmationResult;
+  ConfirmationResult? _webConfirmationResult;
 
   /// {@macro recaptchaVerifierForWeb}
-  RecaptchaVerifier? recaptchaVerifierForWeb;
+  RecaptchaVerifier? _recaptchaVerifierForWeb;
 
   /// The [_forceResendingToken] obtained from [codeSent]
   /// callback to force re-sending another verification SMS before the
   /// auto-retrieval timeout.
-  int? forceResendingToken;
+  int? _forceResendingToken;
 
   /// Timer object for SMS auto-retrieval.
-  Timer? otpAutoRetrievalTimer;
+  Timer? _otpAutoRetrievalTimer;
 
   /// Timer object for OTP expiration.
-  Timer? otpExpirationTimer;
+  Timer? _otpExpirationTimer;
 
   /// Whether OTP to the given phoneNumber is sent or not.
   bool codeSent = false;
@@ -43,6 +40,76 @@ class FirebaseAuthenticationImpl implements FirebaseAuthentication {
 
   late bool linkWithExistingUser;
 
+  /// {@macro onCodeSent}
+  VoidCallback? _onCodeSent;
+
+  /// {@macro onLoginSuccess}
+  OnLoginSuccess? _onLoginSuccess;
+
+  /// {@macro onLoginFailed}
+  OnLoginFailed? _onLoginFailed;
+
+  OnError? _onError;
+
+  static Duration _autoRetrievalTimeOutDuration = kAutoRetrievalTimeOutDuration;
+
+  /// {@macro otpExpirationDuration}
+  static Duration _otpExpirationDuration = kAutoRetrievalTimeOutDuration;
+
+  /// [otpExpirationTimeLeft] can be used to display a reverse countdown, starting from
+  /// [_otpExpirationDuration.inSeconds]s till 0, and can show the resend
+  /// button, to let user request a new OTP.
+  Duration get otpExpirationTimeLeft {
+    final otpTickDuration = Duration(
+      seconds: (_otpExpirationTimer?.tick ?? 0),
+    );
+    return _otpExpirationDuration - otpTickDuration;
+  }
+
+  /// [autoRetrievalTimeLeft] can be used to display a reverse countdown, starting from
+  /// [_autoRetrievalTimeOutDuration.inSeconds]s till 0, and can show the
+  /// the listening for OTP view, and also the time left.
+  ///
+  /// After this timer is exhausted, the device no longer tries to auto-fetch
+  /// the OTP, and requires user to manually enter it.
+  Duration get autoRetrievalTimeLeft {
+    final otpTickDuration = Duration(
+      seconds: (_otpAutoRetrievalTimer?.tick ?? 0),
+    );
+    return _autoRetrievalTimeOutDuration - otpTickDuration;
+  }
+
+  /// Whether the otp has expired or not.
+  bool get isOtpExpired => !(_otpExpirationTimer?.isActive ?? false);
+
+  /// Whether the otp retrieval timer is active or not.
+  bool get isListeningForOtpAutoRetrieve =>
+      _otpAutoRetrievalTimer?.isActive ?? false;
+
+  /// Set callbacks and other data. (only for internal use)
+  @override
+  void initialize({
+    required OnLoginSuccess? onLoginSuccess,
+    required OnLoginFailed? onLoginFailed,
+    required OnError? onError,
+    required VoidCallback? onCodeSent,
+    required bool signOutOnSuccessfulVerification,
+    required RecaptchaVerifier? recaptchaVerifierForWeb,
+    required Duration autoRetrievalTimeOutDuration,
+    required Duration otpExpirationDuration,
+    required bool linkWithExistingUser,
+  }) {
+    signOutOnSuccessfulVerification = signOutOnSuccessfulVerification;
+    _onLoginSuccess = onLoginSuccess;
+    _onLoginFailed = onLoginFailed;
+    _onError = onError;
+    _onCodeSent = onCodeSent;
+    linkWithExistingUser = linkWithExistingUser;
+    _autoRetrievalTimeOutDuration = autoRetrievalTimeOutDuration;
+    _otpExpirationDuration = otpExpirationDuration;
+    if (kIsWeb) _recaptchaVerifierForWeb = recaptchaVerifierForWeb;
+  }
+
   @override
   Future<User?> getFirebaseUser() async {
     return _auth.currentUser;
@@ -55,16 +122,20 @@ class FirebaseAuthenticationImpl implements FirebaseAuthentication {
     VoidCallback? onCodeSent,
     OnLoginFailed? onLoginFailed,
     OnError? onError,
+    OnLoginSuccess? onLoginSuccess,
   }) async {
     if ((!kIsWeb && (verificationID == null && otpVerificationId.isEmpty)) ||
-        (kIsWeb && webConfirmationResult == null)) return false;
+        (kIsWeb && _webConfirmationResult == null)) return false;
 
     try {
       if (kIsWeb) {
-        final userCredential = await webConfirmationResult!.confirm(otpCode);
+        final userCredential = await _webConfirmationResult!.confirm(otpCode);
         return await _loginUser(
           userCredential: userCredential,
           autoVerified: false,
+          onLoginFailed: onLoginFailed,
+          onError: onError,
+          onLoginSuccess: onLoginSuccess,
         );
       } else {
         final credential = PhoneAuthProvider.credential(
@@ -74,6 +145,9 @@ class FirebaseAuthenticationImpl implements FirebaseAuthentication {
         return await _loginUser(
           authCredential: credential,
           autoVerified: false,
+          onLoginFailed: onLoginFailed,
+          onError: onError,
+          onLoginSuccess: onLoginSuccess,
         );
       }
     } on FirebaseAuthException catch (e, s) {
@@ -121,7 +195,7 @@ class FirebaseAuthenticationImpl implements FirebaseAuthentication {
 
     codeSentCallback(String verificationId, int? resendToken) async{
       verificationID = verificationId;
-      forceResendingToken = forceResendingToken;
+      _forceResendingToken = _forceResendingToken;
       codeSent = true;
       onCodeSent?.call();
       if (codeSendCompleter != null && !codeSendCompleter.isCompleted) {
@@ -138,9 +212,9 @@ class FirebaseAuthenticationImpl implements FirebaseAuthentication {
 
     try {
       if (kIsWeb) {
-        webConfirmationResult = await _auth.signInWithPhoneNumber(
+        _webConfirmationResult = await _auth.signInWithPhoneNumber(
           mobileNumber,
-          recaptchaVerifierForWeb,
+          _recaptchaVerifierForWeb,
         );
         codeSent = true;
         onCodeSent?.call();
@@ -246,5 +320,32 @@ class FirebaseAuthenticationImpl implements FirebaseAuthentication {
       onError?.call(e, s);
       return false;
     }
+  }
+
+  @override
+  FirebaseAuth get firebaseAuth => _auth;
+
+  // Clear all data
+  void clear() {
+    if (kIsWeb) {
+      _recaptchaVerifierForWeb?.clear();
+      _recaptchaVerifierForWeb = null;
+    }
+    codeSent = false;
+    _webConfirmationResult = null;
+    _onLoginSuccess = null;
+    _onLoginFailed = null;
+    _onError = null;
+    _onCodeSent = null;
+    signOutOnSuccessfulVerification = false;
+    // _forceResendingToken = null;
+    _otpExpirationTimer?.cancel();
+    _otpExpirationTimer = null;
+    _otpAutoRetrievalTimer?.cancel();
+    _otpAutoRetrievalTimer = null;
+    linkWithExistingUser = false;
+    _autoRetrievalTimeOutDuration = kAutoRetrievalTimeOutDuration;
+    _otpExpirationDuration = kAutoRetrievalTimeOutDuration;
+    verificationID = null;
   }
 }
