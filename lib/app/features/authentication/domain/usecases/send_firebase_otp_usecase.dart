@@ -14,14 +14,14 @@ class SendFirebaseOtpUseCase extends UseCaseIO<SendOtpEntity,
     Object? error;
     StackTrace? stacktrace;
     hasOtpCodeSent = await firebaseAuthenticationRepository.sendOtp(
-      mobileNumber: input.phoneNumberWithoutFormat,
+      mobileNumber: input.phoneNumberWithFormat,
       dialCode: input.country_dial_code,
       countryCode: input.isoCode,
       onLoginFailed: (firebaseException, stackTrace) {
         hasOtpCodeSent = false;
         stacktrace = stackTrace;
         error = firebaseException;
-        message = firebaseException.message?.toString()??'';
+        message = firebaseException.message?.toString() ?? '';
       },
       onError: (object, stackTrace) {
         hasOtpCodeSent = false;
@@ -34,6 +34,8 @@ class SendFirebaseOtpUseCase extends UseCaseIO<SendOtpEntity,
       },
     );
     if (hasOtpCodeSent) {
+      print(
+          'SenOtp VerificationID ${firebaseAuthenticationRepository.verificationID}, ${firebaseAuthenticationRepository.codeSent},');
       final sendOtpFirebaseResponseModel = SendOtpFirebaseResponseModel(
         hasOtpCodeSent: firebaseAuthenticationRepository.codeSent,
         verificationId: firebaseAuthenticationRepository.verificationID,

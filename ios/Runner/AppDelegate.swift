@@ -1,6 +1,9 @@
 import UIKit
 import Flutter
 import flutter_background_executor
+import Cocoa
+import FlutterMacOS
+import Firebase
 
 @UIApplicationMain
 @objc class AppDelegate: FlutterAppDelegate {
@@ -22,4 +25,11 @@ import flutter_background_executor
     GeneratedPluginRegistrant.register(with: self)
     return super.application(application, didFinishLaunchingWithOptions: launchOptions)
   }
+
+  // Debug actiavte
+  override func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
+      let providerFactory = AppCheckDebugProviderFactory()
+      AppCheck.setAppCheckProviderFactory(providerFactory)
+      return true
+    }
 }

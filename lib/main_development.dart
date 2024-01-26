@@ -2,8 +2,10 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter/widgets.dart';
 import 'package:homemakers_merchant/bootup/bootstrap.dart';
 import 'package:homeway_firebase/firebase_options_dev.dart';
+import 'package:firebase_app_check/firebase_app_check.dart';
 
 RootIsolateToken rootIsolateToken = RootIsolateToken.instance!;
 Future<void> main() async {
@@ -15,9 +17,23 @@ Future<void> main() async {
   });
   await bootstrap(
     () async {
-      return Firebase.initializeApp(
+      WidgetsFlutterBinding.ensureInitialized();
+      const kWebRecaptchaSiteKey = '6LfvnlwpAAAAAIy6kpOxkVOAQUQAxfBysW8tkGDo';
+      //await Firebase.initializeApp();
+      await Firebase.initializeApp(
         options: DefaultFirebaseOptions.currentPlatform,
       );
+      await FirebaseAppCheck.instance.activate(
+        androidProvider: AndroidProvider.debug,
+        appleProvider: AppleProvider.debug,
+        webProvider: ReCaptchaV3Provider(kWebRecaptchaSiteKey),
+      );
+      final appCheck = FirebaseAppCheck.instance;
+      await appCheck.activate(
+        webProvider: ReCaptchaV3Provider(kWebRecaptchaSiteKey),
+      );
+      //await appCheck.getToken(true);
+      return;
     },
   );
 }

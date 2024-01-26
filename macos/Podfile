@@ -1,7 +1,19 @@
-platform :osx, '10.14'
+platform :osx, '10.15'
 
 # CocoaPods analytics sends network stats synchronously affecting flutter build latency.
 ENV['COCOAPODS_DISABLE_STATS'] = 'true'
+
+pod 'Firebase/AppCheck', :modular_headers => true
+pod 'Firebase', :modular_headers => true
+pod 'FirebaseCore', :modular_headers => true
+pod 'GoogleUtilities', :modular_headers => true
+pod 'FirebaseAuthInterop', :modular_headers => true
+pod 'FirebaseMessagingInterop', :modular_headers => true
+pod 'FirebaseCoreExtension', :modular_headers => true
+pod 'FirebaseAppCheckInterop', :modular_headers => true
+pod 'GTMSessionFetcher', :modular_headers => true
+pod 'FirebaseCoreInternal', :modular_headers => true
+pod 'FirebaseAppCheck', :modular_headers => true
 
 project 'Runner', {
   'Debug' => :debug,

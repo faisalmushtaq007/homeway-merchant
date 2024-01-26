@@ -5,4 +5,5 @@ import io.flutter.embedding.engine.FlutterEngine;
 //import io.flutter.plugins.firebase.core.FirebaseCorePlugin;
 
 class MainActivity: FlutterActivity() {
+
 }

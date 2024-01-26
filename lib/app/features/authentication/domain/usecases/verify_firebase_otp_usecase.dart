@@ -15,7 +15,7 @@ class VerifyFirebaseOtpUseCase extends UseCaseIO<VerifyOtpEntity,
     StackTrace? stacktrace;
     UserCredential? userCredentials;
     var otpAutoVerified = false;
-
+    print('VerificationID ${input.verificationId}');
     hasOtpCodeVerified = await firebaseAuthenticationRepository.verifyOtp(
       otpCode: input.otp.toString(),
       onLoginFailed: (firebaseException, stackTrace) {
@@ -39,6 +39,7 @@ class VerifyFirebaseOtpUseCase extends UseCaseIO<VerifyOtpEntity,
       },
     );
     if (hasOtpCodeVerified) {
+      print('User ${firebaseAuthenticationRepository.currentUser?.uid}');
       final verifyOtpFirebaseResponseModel = VerifyOtpFirebaseResponseModel(
         hasOtpCodeVerified: hasOtpCodeVerified,
         firebaseUserData: firebaseAuthenticationRepository.currentUser,
