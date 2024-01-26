@@ -38,7 +38,7 @@ class VerifyFirebaseOtpUseCase extends UseCaseIO<VerifyOtpEntity,
         otpAutoVerified = autoVerified;
       },
     );
-    if (hasOtpCodeVerified) {
+    if (error!=null) {
       print('User ${firebaseAuthenticationRepository.currentUser?.uid}');
       final verifyOtpFirebaseResponseModel = VerifyOtpFirebaseResponseModel(
         hasOtpCodeVerified: hasOtpCodeVerified,

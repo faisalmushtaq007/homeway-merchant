@@ -23,15 +23,28 @@ Future<void> main() async {
       await Firebase.initializeApp(
         options: DefaultFirebaseOptions.currentPlatform,
       );
-      await FirebaseAppCheck.instance.activate(
-        androidProvider: AndroidProvider.debug,
-        appleProvider: AppleProvider.debug,
-        webProvider: ReCaptchaV3Provider(kWebRecaptchaSiteKey),
-      );
-      final appCheck = FirebaseAppCheck.instance;
-      await appCheck.activate(
-        webProvider: ReCaptchaV3Provider(kWebRecaptchaSiteKey),
-      );
+      if(!kDebugMode){
+        await FirebaseAppCheck.instance.activate(
+          androidProvider: AndroidProvider.playIntegrity,
+          appleProvider: AppleProvider.appAttest,
+          webProvider: ReCaptchaV3Provider(kWebRecaptchaSiteKey),
+        );
+        final appCheck = FirebaseAppCheck.instance;
+        await appCheck.activate(
+          webProvider: ReCaptchaV3Provider(kWebRecaptchaSiteKey),
+        );
+      }else{
+        await FirebaseAppCheck.instance.activate(
+          androidProvider: AndroidProvider.debug,
+          appleProvider: AppleProvider.debug,
+          webProvider: ReCaptchaV3Provider(kWebRecaptchaSiteKey),
+        );
+        final appCheck = FirebaseAppCheck.instance;
+        await appCheck.activate(
+          webProvider: ReCaptchaV3Provider(kWebRecaptchaSiteKey),
+        );
+      }
+
       //await appCheck.getToken(true);
       return;
     },
