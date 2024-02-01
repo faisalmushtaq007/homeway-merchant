@@ -3,23 +3,23 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>564821867293-qj14ngeun3ps623ihfovsloe1lsjia4e.apps.googleusercontent.com</string>
+	<string>297962461340-fj97dlnav5v0jn1gbma8vrsb0sn3oora.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.564821867293-qj14ngeun3ps623ihfovsloe1lsjia4e</string>
+	<string>com.googleusercontent.apps.297962461340-fj97dlnav5v0jn1gbma8vrsb0sn3oora</string>
 	<key>ANDROID_CLIENT_ID</key>
-	<string>564821867293-g5pmkrkhicsfl2do8pfp68lf9ei5e4rg.apps.googleusercontent.com</string>
+	<string>297962461340-acb3m42ioomun5ofuv6ghcfq8blt63ad.apps.googleusercontent.com</string>
 	<key>API_KEY</key>
-	<string>AIzaSyCDirtZbG39mMswEYwdP4oqqkVjFv3KI5E</string>
+	<string>AIzaSyBxwx8hQ4DwQgB8UD56erF7UDs_Pkgvrag</string>
 	<key>GCM_SENDER_ID</key>
-	<string>564821867293</string>
+	<string>297962461340</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
 	<string>com.homemakers.homemakersMerchant.RunnerTests</string>
 	<key>PROJECT_ID</key>
-	<string>homeway-e4577</string>
+	<string>homemakers-merchant-prod</string>
 	<key>STORAGE_BUCKET</key>
-	<string>homeway-e4577.appspot.com</string>
+	<string>homemakers-merchant-prod.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
 	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -31,8 +31,8 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:564821867293:ios:e8bc12a064b256ef4dfff4</string>
+	<string>1:297962461340:ios:89aa3a97538dccdb907559</string>
 	<key>DATABASE_URL</key>
-	<string>https://homeway-e4577-default-rtdb.asia-southeast1.firebasedatabase.app</string>
+	<string>https://homemakers-merchant-prod-default-rtdb.europe-west1.firebasedatabase.app</string>
 </dict>
 </plist>

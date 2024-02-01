@@ -19,8 +19,8 @@ class VerifyOtpEntity extends INetworkModel<VerifyOtpEntity> {
         mobile: json['mobile'] ?? '' as String,
         user_type: json['user_type'] ?? 'merchant' as String,
         country_dial_code: json['country_dial_code'] ?? '' as String,
-        otp: json['otp'] ?? -1 as int,
-        password: json['password'] ?? '' as int,
+        otp: json['otp'] ?? '' as String,
+        password: json['password'] ?? '' as String,
         db: json['db'] ?? 'odoo16home' as String,
         isoCode: json['isoCode'] as String,
         phoneNumberWithoutFormat:
@@ -31,8 +31,8 @@ class VerifyOtpEntity extends INetworkModel<VerifyOtpEntity> {
 
   String mobile;
   String country_dial_code;
-  int otp;
-  int password;
+  String otp;
+  String password;
   String db;
   String user_type;
   String isoCode;

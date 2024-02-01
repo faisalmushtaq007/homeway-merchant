@@ -27,6 +27,10 @@ import 'package:homemakers_merchant/shared/widgets/universal/constrained_scrolla
 import 'package:homemakers_merchant/utils/app_log.dart';
 import 'package:pinput/pinput.dart';
 
+// If set to true, the app will request notification permissions to use
+// silent verification for SMS MFA instead of Recaptcha.
+const withSilentVerificationSMSMFA = true;
+
 class OTPVerificationPage extends StatefulWidget {
   const OTPVerificationPage({
     required this.phoneNumber,
@@ -552,16 +556,12 @@ class _OTPVerificationPageState extends State<OTPVerificationPage> {
                                                         .phoneNumberWithoutFormat,
                                                     country_dial_code:
                                                         widget.countryDialCode,
-                                                    otp: int.parse(
-                                                      otpController.value.text
-                                                          .trim(),
-                                                    ),
+                                                    otp: otpController.value.text
+                                                        .trim(),
                                                     // Todo(prasant): Check password and db property from backend developer
                                                     db: '',
-                                                    password: int.parse(
-                                                      otpController.value.text
-                                                          .trim(),
-                                                    ),
+                                                    password:otpController.value.text
+                                                        .trim(),
                                                     isoCode: widget.isoCode,
                                                     phoneNumberWithFormat:
                                                         widget.phoneNumber,

@@ -34,7 +34,7 @@ Future<void> main() async {
           webProvider: ReCaptchaV3Provider(kWebRecaptchaSiteKey),
         );
       }else{
-        await FirebaseAppCheck.instance.activate(
+        /*await FirebaseAppCheck.instance.activate(
           androidProvider: AndroidProvider.debug,
           appleProvider: AppleProvider.debug,
           webProvider: ReCaptchaV3Provider(kWebRecaptchaSiteKey),
@@ -42,7 +42,7 @@ Future<void> main() async {
         final appCheck = FirebaseAppCheck.instance;
         await appCheck.activate(
           webProvider: ReCaptchaV3Provider(kWebRecaptchaSiteKey),
-        );
+        );*/
       }
 
       //await appCheck.getToken(true);
