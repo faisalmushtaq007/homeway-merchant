@@ -66,9 +66,9 @@ class MenuLocalDbRepository<Menu extends MenuEntity>
       final value = await _menu.record(uniqueId.value).get(await _db);
       if (value != null) {
         int? count = await _menu.record(uniqueId.value).delete(
-          await _db,
-        );
-        if (count!=null && count >= 0) {
+              await _db,
+            );
+        if (count != null && count >= 0) {
           return true;
         } else {
           return false;
@@ -276,11 +276,17 @@ class MenuLocalDbRepository<Menu extends MenuEntity>
           offset: pageKey,
         );
         // If
-        if ((searchText.isNotNull || filter.isNotNull || sorting.isNotNull && (searchText!.isNotEmpty || filter!.isNotEmpty || sorting!.isNotEmpty)) &&
-                (startTimeStamp.isNotNull || endTimeStamp.isNotNull)) {
+        if ((searchText.isNotNull ||
+                filter.isNotNull ||
+                sorting.isNotNull &&
+                    (searchText!.isNotEmpty ||
+                        filter!.isNotEmpty ||
+                        sorting!.isNotEmpty)) &&
+            (startTimeStamp.isNotNull || endTimeStamp.isNotNull)) {
           var regExp = RegExp('^${searchText ?? ''}\$', caseSensitive: false);
           var filterRegExp = RegExp('^${filter ?? ''}\$', caseSensitive: false);
-          var sortingRegExp = RegExp('^${sorting ?? ''}\$', caseSensitive: false);
+          var sortingRegExp =
+              RegExp('^${sorting ?? ''}\$', caseSensitive: false);
           finder = Finder(
             limit: pageSize,
             offset: pageKey,
@@ -311,17 +317,23 @@ class MenuLocalDbRepository<Menu extends MenuEntity>
                     regExp,
                     anyInList: true,
                   ),
-                  Filter.matches('storeAvailableFoodTypes.@.title', '^${searchText}'),
-                  Filter.matches('storeAvailableFoodTypes.@.title', '${searchText}\$'),
-                  Filter.matches('storeAvailableFoodTypes.@.title', '${searchText}'),
+                  Filter.matches(
+                      'storeAvailableFoodTypes.@.title', '^${searchText}'),
+                  Filter.matches(
+                      'storeAvailableFoodTypes.@.title', '${searchText}\$'),
+                  Filter.matches(
+                      'storeAvailableFoodTypes.@.title', '${searchText}'),
                   Filter.matchesRegExp(
                     'storeAvailableFoodTypes.@.title',
                     regExp,
                     anyInList: true,
                   ),
-                  Filter.matches('storeAvailableFoodPreparationType.@.title', '^${searchText}'),
-                  Filter.matches('storeAvailableFoodPreparationType.@.title', '${searchText}\$'),
-                  Filter.matches('storeAvailableFoodPreparationType.@.title', '${searchText}'),
+                  Filter.matches('storeAvailableFoodPreparationType.@.title',
+                      '^${searchText}'),
+                  Filter.matches('storeAvailableFoodPreparationType.@.title',
+                      '${searchText}\$'),
+                  Filter.matches('storeAvailableFoodPreparationType.@.title',
+                      '${searchText}'),
                   Filter.matchesRegExp(
                     'storeAvailableFoodPreparationType.@.title',
                     regExp,
@@ -377,110 +389,124 @@ class MenuLocalDbRepository<Menu extends MenuEntity>
           );
         }
         // Else If
-        else if (searchText.isNotNull || filter.isNotNull || sorting.isNotNull && (searchText!.isNotEmpty || filter!.isNotEmpty || sorting!.isNotEmpty)) {
-          if(searchText!.isEmpty){
+        else if (searchText.isNotNull ||
+            filter.isNotNull ||
+            sorting.isNotNull &&
+                (searchText!.isNotEmpty ||
+                    filter!.isNotEmpty ||
+                    sorting!.isNotEmpty)) {
+          if (searchText!.isEmpty) {
             finder = Finder(
               limit: pageSize,
               offset: pageKey,
             );
-          }else {
-          var regExp = RegExp('^${searchText ?? ''}\$', caseSensitive: false);
-          var filterRegExp = RegExp('^${filter ?? ''}\$', caseSensitive: false);
-          var sortingRegExp = RegExp('^${sorting ?? ''}\$', caseSensitive: false);
-          finder = Finder(
-            limit: pageSize,
-            offset: pageKey,
-            filter: Filter.and(
-              [
-                Filter.or([
-                  Filter.matches('menuName', '^${searchText}'),
-                  Filter.matches('menuName', '${searchText}\$'),
-                  Filter.matches('menuName', '${searchText}'),
-                  Filter.matchesRegExp(
-                    'menuName',
-                    regExp,
-                    anyInList: true,
-                  ),
-                  Filter.matches('menuCategories.@.title', '^${searchText}'),
-                  Filter.matches('menuCategories.@.title', '${searchText}\$'),
-                  Filter.matches('menuCategories.@.title', '${searchText}'),
-                  Filter.matchesRegExp(
-                    'menuCategories.@.title',
-                    regExp,
-                    anyInList: true,
-                  ),
-                  Filter.matches('ingredients.@.title', '^${searchText}'),
-                  Filter.matches('ingredients.@.title', '${searchText}\$'),
-                  Filter.matches('ingredients.@.title', '${searchText}'),
-                  Filter.matchesRegExp(
-                    'ingredients.@.title',
-                    regExp,
-                    anyInList: true,
-                  ),
-                  Filter.matches('storeAvailableFoodTypes.@.title', '^${searchText}'),
-                  Filter.matches('storeAvailableFoodTypes.@.title', '${searchText}\$'),
-                  Filter.matches('storeAvailableFoodTypes.@.title', '${searchText}'),
-                  Filter.matchesRegExp(
-                    'storeAvailableFoodTypes.@.title',
-                    regExp,
-                    anyInList: true,
-                  ),
-                  Filter.matches('storeAvailableFoodPreparationType.@.title', '^${searchText}'),
-                  Filter.matches('storeAvailableFoodPreparationType.@.title', '${searchText}\$'),
-                  Filter.matches('storeAvailableFoodPreparationType.@.title', '${searchText}'),
-                  Filter.matchesRegExp(
-                    'storeAvailableFoodPreparationType.@.title',
-                    regExp,
-                    anyInList: true,
-                  ),
-                  Filter.matches('addons.@.title', '^${searchText}'),
-                  Filter.matches('addons.@.title', '${searchText}\$'),
-                  Filter.matches('addons.@.title', '${searchText}'),
-                  Filter.matchesRegExp(
-                    'addons.@.title',
-                    regExp,
-                    anyInList: true,
-                  ),
-                  // Filter
-                  Filter.matchesRegExp(
-                    'menuName',
-                    filterRegExp,
-                    anyInList: true,
-                  ),
-                  Filter.matchesRegExp(
-                    'menuCategories.@.title',
-                    filterRegExp,
-                    anyInList: true,
-                  ),
-                  Filter.matchesRegExp(
-                    'ingredients.@.title',
-                    filterRegExp,
-                    anyInList: true,
-                  ),
-                  Filter.matchesRegExp(
-                    'storeAvailableFoodTypes.@.title',
-                    filterRegExp,
-                    anyInList: true,
-                  ),
-                  Filter.matchesRegExp(
-                    'hasMenuAvailable',
-                    filterRegExp,
-                    anyInList: true,
-                  ),
-                  Filter.matchesRegExp(
-                    'hasReadyToPickupOrder',
-                    filterRegExp,
-                    anyInList: true,
-                  ),
-                  Filter.matchesRegExp(
-                    'addons.@.title',
-                    filterRegExp,
-                    anyInList: true,
-                  ),
-                ]),
-              ],
-            ),
-          );}
+          } else {
+            var regExp = RegExp('^${searchText ?? ''}\$', caseSensitive: false);
+            var filterRegExp =
+                RegExp('^${filter ?? ''}\$', caseSensitive: false);
+            var sortingRegExp =
+                RegExp('^${sorting ?? ''}\$', caseSensitive: false);
+            finder = Finder(
+              limit: pageSize,
+              offset: pageKey,
+              filter: Filter.and(
+                [
+                  Filter.or([
+                    Filter.matches('menuName', '^${searchText}'),
+                    Filter.matches('menuName', '${searchText}\$'),
+                    Filter.matches('menuName', '${searchText}'),
+                    Filter.matchesRegExp(
+                      'menuName',
+                      regExp,
+                      anyInList: true,
+                    ),
+                    Filter.matches('menuCategories.@.title', '^${searchText}'),
+                    Filter.matches('menuCategories.@.title', '${searchText}\$'),
+                    Filter.matches('menuCategories.@.title', '${searchText}'),
+                    Filter.matchesRegExp(
+                      'menuCategories.@.title',
+                      regExp,
+                      anyInList: true,
+                    ),
+                    Filter.matches('ingredients.@.title', '^${searchText}'),
+                    Filter.matches('ingredients.@.title', '${searchText}\$'),
+                    Filter.matches('ingredients.@.title', '${searchText}'),
+                    Filter.matchesRegExp(
+                      'ingredients.@.title',
+                      regExp,
+                      anyInList: true,
+                    ),
+                    Filter.matches(
+                        'storeAvailableFoodTypes.@.title', '^${searchText}'),
+                    Filter.matches(
+                        'storeAvailableFoodTypes.@.title', '${searchText}\$'),
+                    Filter.matches(
+                        'storeAvailableFoodTypes.@.title', '${searchText}'),
+                    Filter.matchesRegExp(
+                      'storeAvailableFoodTypes.@.title',
+                      regExp,
+                      anyInList: true,
+                    ),
+                    Filter.matches('storeAvailableFoodPreparationType.@.title',
+                        '^${searchText}'),
+                    Filter.matches('storeAvailableFoodPreparationType.@.title',
+                        '${searchText}\$'),
+                    Filter.matches('storeAvailableFoodPreparationType.@.title',
+                        '${searchText}'),
+                    Filter.matchesRegExp(
+                      'storeAvailableFoodPreparationType.@.title',
+                      regExp,
+                      anyInList: true,
+                    ),
+                    Filter.matches('addons.@.title', '^${searchText}'),
+                    Filter.matches('addons.@.title', '${searchText}\$'),
+                    Filter.matches('addons.@.title', '${searchText}'),
+                    Filter.matchesRegExp(
+                      'addons.@.title',
+                      regExp,
+                      anyInList: true,
+                    ),
+                    // Filter
+                    Filter.matchesRegExp(
+                      'menuName',
+                      filterRegExp,
+                      anyInList: true,
+                    ),
+                    Filter.matchesRegExp(
+                      'menuCategories.@.title',
+                      filterRegExp,
+                      anyInList: true,
+                    ),
+                    Filter.matchesRegExp(
+                      'ingredients.@.title',
+                      filterRegExp,
+                      anyInList: true,
+                    ),
+                    Filter.matchesRegExp(
+                      'storeAvailableFoodTypes.@.title',
+                      filterRegExp,
+                      anyInList: true,
+                    ),
+                    Filter.matchesRegExp(
+                      'hasMenuAvailable',
+                      filterRegExp,
+                      anyInList: true,
+                    ),
+                    Filter.matchesRegExp(
+                      'hasReadyToPickupOrder',
+                      filterRegExp,
+                      anyInList: true,
+                    ),
+                    Filter.matchesRegExp(
+                      'addons.@.title',
+                      filterRegExp,
+                      anyInList: true,
+                    ),
+                  ]),
+                ],
+              ),
+            );
+          }
         }
         // Else
         else {

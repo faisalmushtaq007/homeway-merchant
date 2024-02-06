@@ -24,7 +24,7 @@ class _BindMenuWithStoreController extends State<BindMenuWithStore> {
   List<StoreEntity> listOfAllStores = [];
   List<StoreEntity> listOfAllSelectedStores = [];
   final TextEditingController searchTextEditingController =
-  TextEditingController();
+      TextEditingController();
   WidgetState<StoreEntity> widgetState = const WidgetState<StoreEntity>.none();
   bool? haveSelectAllStores = false;
 
@@ -67,7 +67,7 @@ class _BindMenuWithStoreController extends State<BindMenuWithStore> {
   void initLoadSelectedMenu() {
     listOfAllMenus = List<MenuEntity>.from(widget.listOfAllMenus.toList());
     listOfAllSelectedMenus =
-    List<MenuEntity>.from(widget.listOfAllSelectedMenus.toList());
+        List<MenuEntity>.from(widget.listOfAllSelectedMenus.toList());
     //setState(() {});
   }
 
@@ -96,7 +96,7 @@ class _BindMenuWithStoreController extends State<BindMenuWithStore> {
   void onSelectionChanged(List<StoreEntity> listOfStoreEntities) {
     setState(() {
       listOfAllSelectedStores =
-      List<StoreEntity>.from(listOfStoreEntities.toList());
+          List<StoreEntity>.from(listOfStoreEntities.toList());
     });
   }
 
@@ -113,23 +113,23 @@ class _BindMenuWithStoreController extends State<BindMenuWithStore> {
 
   Future<void> _fetchPage(int pageKey,
       {int pageSize = 10,
-        String? searchItem,
-        String? filter,
-        String? sort}) async {
+      String? searchItem,
+      String? filter,
+      String? sort}) async {
     /*if (pageKey == 0) {
       _pagingController.itemList = [];
     }*/
     int sectionNumber = pageKey ~/ pageSize;
     try {
       context.read<StoreBloc>().add(
-        GetAllStoresPagination(
-          pageKey: pageKey,
-          pageSize: pageSize,
-          searchText: searchText ?? searchItem,
-          filter: filtering ?? filter,
-          sorting: sorting ?? sort,
-        ),
-      );
+            GetAllStoresPagination(
+              pageKey: pageKey,
+              pageSize: pageSize,
+              searchText: searchText ?? searchItem,
+              filter: filtering ?? filter,
+              sorting: sorting ?? sort,
+            ),
+          );
       appLog.i('Fetch Store');
       return;
     } catch (error) {
@@ -167,98 +167,96 @@ class _BindMenuWithStoreController extends State<BindMenuWithStore> {
 
   Future<void> _updateSearchTerm(String searchTerm) async {
     searchText = searchTerm;
-    if (_pagingController.value
-        .itemList ==
-        null ||
-        _pagingController.value.itemList
-            .isEmptyOrNull) {
-      await _fetchPage(0, searchItem: searchTerm,);
+    if (_pagingController.value.itemList == null ||
+        _pagingController.value.itemList.isEmptyOrNull) {
+      await _fetchPage(
+        0,
+        searchItem: searchTerm,
+      );
     } else {
       _pagingController.refresh();
     }
   }
 
   @override
-  Widget build(BuildContext context) =>
-      BlocListener<StoreBloc, StoreState>(
+  Widget build(BuildContext context) => BlocListener<StoreBloc, StoreState>(
         key: const Key('bind-menu-get-all-store-bloc-listener'),
         bloc: context.watch<StoreBloc>(),
-          listener: (context, storeListenerState) {
-            switch (storeListenerState) {
-              case GetAllStorePaginationState():
-                {
-                  try {
-                    final isLastPage =
-                        storeListenerState.storeEntities.length < pageSize;
-                    if (isLastPage) {
-                      _pagingController.appendLastPage(
-                          storeListenerState.storeEntities.toList());
-                    } else {
-                      final nextPageKey = storeListenerState.pageKey +
-                          storeListenerState.storeEntities.length;
-                      //final nextPageKey = addressState.pageKey + 1;
-                      _pagingController.appendPage(
-                          storeListenerState.storeEntities.toList(),
-                          nextPageKey);
-                    }
-                    widgetState = WidgetState<StoreEntity>.allData(
-                      context: context,
-                      data: _pagingController.value.itemList ?? [],
-                    );
-                    listOfAllStores  = _pagingController.value.itemList ?? [];
-                  } catch (error) {
-                    _pagingController.error = error;
-                    widgetState = WidgetState<StoreEntity>.error(
-                      context: context,
-                      reason: _pagingController.error,
-                    );
+        listener: (context, storeListenerState) {
+          switch (storeListenerState) {
+            case GetAllStorePaginationState():
+              {
+                try {
+                  final isLastPage =
+                      storeListenerState.storeEntities.length < pageSize;
+                  if (isLastPage) {
+                    _pagingController.appendLastPage(
+                        storeListenerState.storeEntities.toList());
+                  } else {
+                    final nextPageKey = storeListenerState.pageKey +
+                        storeListenerState.storeEntities.length;
+                    //final nextPageKey = addressState.pageKey + 1;
+                    _pagingController.appendPage(
+                        storeListenerState.storeEntities.toList(), nextPageKey);
                   }
-                  return;
-                }
-              case GetAllEmptyStorePaginationState():
-                {
-                  widgetState = WidgetState<StoreEntity>.empty(
+                  widgetState = WidgetState<StoreEntity>.allData(
                     context: context,
-                    message: storeListenerState.message,
+                    data: _pagingController.value.itemList ?? [],
                   );
-                  return;
-                }
-              case GetAllExceptionStorePaginationState():
-                {
+                  listOfAllStores = _pagingController.value.itemList ?? [];
+                } catch (error) {
+                  _pagingController.error = error;
                   widgetState = WidgetState<StoreEntity>.error(
                     context: context,
-                    reason: storeListenerState.message,
+                    reason: _pagingController.error,
                   );
-                  return;
                 }
-              case GetAllFailedStorePaginationState():
-                {
-                  widgetState = WidgetState<StoreEntity>.error(
-                    context: context,
-                    reason: storeListenerState.message,
-                  );
-                  return;
-                }
-              case GetAllLoadingStorePaginationState():
-                {
-                  widgetState = WidgetState<StoreEntity>.loading(
-                    context: context,
-                    message: storeListenerState.message,
-                  );
-                  return;
-                }
-              case GetAllProcessingStorePaginationState():
-                {
-                  widgetState = WidgetState<StoreEntity>.processing(
-                    context: context,
-                    message: storeListenerState.message,
-                  );
-                  return;
-                }
-              case _:
-                appLog.d('Default case: bind all stores page bloc listener');
-            }
-          },
+                return;
+              }
+            case GetAllEmptyStorePaginationState():
+              {
+                widgetState = WidgetState<StoreEntity>.empty(
+                  context: context,
+                  message: storeListenerState.message,
+                );
+                return;
+              }
+            case GetAllExceptionStorePaginationState():
+              {
+                widgetState = WidgetState<StoreEntity>.error(
+                  context: context,
+                  reason: storeListenerState.message,
+                );
+                return;
+              }
+            case GetAllFailedStorePaginationState():
+              {
+                widgetState = WidgetState<StoreEntity>.error(
+                  context: context,
+                  reason: storeListenerState.message,
+                );
+                return;
+              }
+            case GetAllLoadingStorePaginationState():
+              {
+                widgetState = WidgetState<StoreEntity>.loading(
+                  context: context,
+                  message: storeListenerState.message,
+                );
+                return;
+              }
+            case GetAllProcessingStorePaginationState():
+              {
+                widgetState = WidgetState<StoreEntity>.processing(
+                  context: context,
+                  message: storeListenerState.message,
+                );
+                return;
+              }
+            case _:
+              appLog.d('Default case: bind all stores page bloc listener');
+          }
+        },
         child: BlocListener<MenuBloc, MenuState>(
           key: const Key('bind-menu-with-store-page-bloc-listener-widget'),
           bloc: context.watch<MenuBloc>(),
@@ -318,7 +316,7 @@ class _BindMenuWithStoreController extends State<BindMenuWithStore> {
                 case FetchAllStoresState():
                   {
                     listOfAllStores =
-                    List<StoreEntity>.from(state.storeEntities.toList());
+                        List<StoreEntity>.from(state.storeEntities.toList());
                     widgetState = WidgetState<StoreEntity>.allData(
                       context: context,
                     );
@@ -333,7 +331,8 @@ class _BindMenuWithStoreController extends State<BindMenuWithStore> {
       );
 }
 
-class _BindMenuWithStoreView extends WidgetView<BindMenuWithStore, _BindMenuWithStoreController> {
+class _BindMenuWithStoreView
+    extends WidgetView<BindMenuWithStore, _BindMenuWithStoreController> {
   const _BindMenuWithStoreView(super.state);
 
   @override
@@ -364,7 +363,7 @@ class _BindMenuWithStoreView extends WidgetView<BindMenuWithStore, _BindMenuWith
           ),
           floatingActionButton: AnimatedOpacity(
             opacity: (state.listOfAllSelectedMenus.isEmpty &&
-                state.listOfAllSelectedStores.isEmpty)
+                    state.listOfAllSelectedStores.isEmpty)
                 ? 0.0
                 : 1.0,
             duration: const Duration(milliseconds: 500),
@@ -375,15 +374,13 @@ class _BindMenuWithStoreView extends WidgetView<BindMenuWithStore, _BindMenuWith
                 onPressed: () async {
                   return;
                 },
-                child: Text(
-                  '${state.listOfAllSelectedStores.length}'
-                ),
+                child: Text('${state.listOfAllSelectedStores.length}'),
               ),
             ),
           ),
           body: Directionality(
             textDirection:
-            serviceLocator<LanguageController>().targetTextDirection,
+                serviceLocator<LanguageController>().targetTextDirection,
             child: SlideInLeft(
               key: const Key('bind-menu-with-store-slideinleft-widget'),
               delay: const Duration(milliseconds: 500),
@@ -418,12 +415,15 @@ class _BindMenuWithStoreView extends WidgetView<BindMenuWithStore, _BindMenuWith
                           textDirection: serviceLocator<LanguageController>()
                               .targetTextDirection,
                           children: [
-                            Expanded(child:  AppSearchInputSliverWidget(
-                              key: const Key('bind-all-store-search-field-widget'),
-                              onChanged: state._updateSearchTerm,
-                              height: 48,
-                              hintText: 'Search Store',
-                            ),),
+                            Expanded(
+                              child: AppSearchInputSliverWidget(
+                                key: const Key(
+                                    'bind-all-store-search-field-widget'),
+                                onChanged: state._updateSearchTerm,
+                                height: 48,
+                                hintText: 'Search Store',
+                              ),
+                            ),
                             const AnimatedGap(12,
                                 duration: Duration(milliseconds: 500)),
                             SizedBox(
@@ -433,7 +433,7 @@ class _BindMenuWithStoreView extends WidgetView<BindMenuWithStore, _BindMenuWith
                                 style: OutlinedButton.styleFrom(
                                   shape: RoundedRectangleBorder(
                                     borderRadius:
-                                    BorderRadiusDirectional.circular(10),
+                                        BorderRadiusDirectional.circular(10),
                                   ),
                                   side: const BorderSide(
                                       color: Color.fromRGBO(238, 238, 238, 1)),
@@ -442,8 +442,8 @@ class _BindMenuWithStoreView extends WidgetView<BindMenuWithStore, _BindMenuWith
                                 child: Icon(
                                   Icons.filter_list,
                                   textDirection:
-                                  serviceLocator<LanguageController>()
-                                      .targetTextDirection,
+                                      serviceLocator<LanguageController>()
+                                          .targetTextDirection,
                                   color: context.primaryColor,
                                 ),
                               ),
@@ -460,7 +460,7 @@ class _BindMenuWithStoreView extends WidgetView<BindMenuWithStore, _BindMenuWith
                         },
                         tristate: true,
                         visualDensity:
-                        const VisualDensity(horizontal: -4, vertical: -4),
+                            const VisualDensity(horizontal: -4, vertical: -4),
                         contentPadding: const EdgeInsetsDirectional.symmetric(
                             horizontal: 0),
                         //dense: true,
@@ -470,24 +470,24 @@ class _BindMenuWithStoreView extends WidgetView<BindMenuWithStore, _BindMenuWith
                               Text(
                                 'Your Stores',
                                 textDirection:
-                                serviceLocator<LanguageController>()
-                                    .targetTextDirection,
+                                    serviceLocator<LanguageController>()
+                                        .targetTextDirection,
                               ),
                               const AnimatedGap(3,
                                   duration: Duration(milliseconds: 500)),
                               Card(
                                 shape: RoundedRectangleBorder(
                                   borderRadius:
-                                  BorderRadiusDirectional.circular(20),
+                                      BorderRadiusDirectional.circular(20),
                                 ),
                                 child: Padding(
                                   padding: const EdgeInsetsDirectional.only(
                                       start: 12.0, end: 12, top: 4, bottom: 4),
                                   child: Text(
-                                    '${state._pagingController.value.itemList?.length??0}',
+                                    '${state._pagingController.value.itemList?.length ?? 0}',
                                     textDirection:
-                                    serviceLocator<LanguageController>()
-                                        .targetTextDirection,
+                                        serviceLocator<LanguageController>()
+                                            .targetTextDirection,
                                   ),
                                 ),
                               ),
@@ -497,8 +497,8 @@ class _BindMenuWithStoreView extends WidgetView<BindMenuWithStore, _BindMenuWith
                               Text(
                                 'Select All',
                                 textDirection:
-                                serviceLocator<LanguageController>()
-                                    .targetTextDirection,
+                                    serviceLocator<LanguageController>()
+                                        .targetTextDirection,
                               ),
                             ],
                           ),
@@ -530,20 +530,17 @@ class _BindMenuWithStoreView extends WidgetView<BindMenuWithStore, _BindMenuWith
                       Expanded(
                         flex: 3,
                         child: state.widgetState.maybeWhen(
-                          empty: (context, child, message, data) =>
-                              Center(
-                                key: const Key(
-                                    'bind-get-all-store-empty-widget'),
-                                child: Text(
-                                  'No store available or added by you',
-                                  style: context.labelLarge,
-                                  textDirection:
+                          empty: (context, child, message, data) => Center(
+                            key: const Key('bind-get-all-store-empty-widget'),
+                            child: Text(
+                              'No store available or added by you',
+                              style: context.labelLarge,
+                              textDirection:
                                   serviceLocator<LanguageController>()
                                       .targetTextDirection,
-                                ).translate(),
-                              ),
-                          loading:
-                              (context, child, message, isLoading) {
+                            ).translate(),
+                          ),
+                          loading: (context, child, message, isLoading) {
                             return const Center(
                               key: Key('bind-get-all-store-center-widget'),
                               child: SizedBox(
@@ -561,37 +558,40 @@ class _BindMenuWithStoreView extends WidgetView<BindMenuWithStore, _BindMenuWith
                                   key: const Key(
                                       'bind-store-list-pagedSliverList-widget'),
                                   pagingController: state._pagingController,
-                                  builderDelegate:
-                                  PagedChildBuilderDelegate<
-                                      StoreEntity>(
-                                    animateTransitions: true,
-                                    itemBuilder: (context, item, index) =>
-                                        StoreCardWidget(
-                                          key: ValueKey(index),
-                                          currentIndex: index,
-                                          listOfAllMenuEntities:
-                                          state.listOfAllMenus.toList(),
-                                          onSelectionChanged:
-                                              (List<StoreEntity> listOfAllStoreEntities) {
-                                            state.onSelectionChanged(
-                                                listOfAllStoreEntities.toList());
-                                          },
-                                          listOfAllSelectedMenuEntities:
-                                          state.listOfAllSelectedMenus.toList(),
-                                          listOfAllSelectedStoreEntities:
-                                          state.listOfAllSelectedStores.toList(),
-                                          listOfAllStoreEntities:
-                                          state.listOfAllStores.toList(),
-                                          storeEntity: state.listOfAllStores[index],
-                                          refreshStoreList: () {
-                                            return state._updateSearchTerm(state.searchText??'');
-                                          },
-                                        )
-                                  ),
+                                  builderDelegate: PagedChildBuilderDelegate<
+                                          StoreEntity>(
+                                      animateTransitions: true,
+                                      itemBuilder: (context, item, index) =>
+                                          StoreCardWidget(
+                                            key: ValueKey(index),
+                                            currentIndex: index,
+                                            listOfAllMenuEntities:
+                                                state.listOfAllMenus.toList(),
+                                            onSelectionChanged:
+                                                (List<StoreEntity>
+                                                    listOfAllStoreEntities) {
+                                              state.onSelectionChanged(
+                                                  listOfAllStoreEntities
+                                                      .toList());
+                                            },
+                                            listOfAllSelectedMenuEntities: state
+                                                .listOfAllSelectedMenus
+                                                .toList(),
+                                            listOfAllSelectedStoreEntities:
+                                                state.listOfAllSelectedStores
+                                                    .toList(),
+                                            listOfAllStoreEntities:
+                                                state.listOfAllStores.toList(),
+                                            storeEntity:
+                                                state.listOfAllStores[index],
+                                            refreshStoreList: () {
+                                              return state._updateSearchTerm(
+                                                  state.searchText ?? '');
+                                            },
+                                          )),
                                 ),
                               ],
                             );
-
                           },
                           none: () {
                             return const NoItemAvailableWidget(
@@ -607,7 +607,6 @@ class _BindMenuWithStoreView extends WidgetView<BindMenuWithStore, _BindMenuWith
                           },
                         ),
                       ),
-
                       const AnimatedGap(12,
                           duration: Duration(milliseconds: 500)),
                       Row(
@@ -618,19 +617,19 @@ class _BindMenuWithStoreView extends WidgetView<BindMenuWithStore, _BindMenuWith
                             child: ElevatedButton(
                               onPressed: () {
                                 context.read<MenuBloc>().add(
-                                  UnBindMenuWithStores(
-                                    menuEntities:
-                                    state.listOfAllMenus.toList(),
-                                    listOfSelectedMenuEntities: state
-                                        .listOfAllSelectedMenus
-                                        .toList(),
-                                    listOfSelectedStoreEntities: state
-                                        .listOfAllSelectedStores
-                                        .toList(),
-                                    storeEntities:
-                                    state.listOfAllStores.toList(),
-                                  ),
-                                );
+                                      UnBindMenuWithStores(
+                                        menuEntities:
+                                            state.listOfAllMenus.toList(),
+                                        listOfSelectedMenuEntities: state
+                                            .listOfAllSelectedMenus
+                                            .toList(),
+                                        listOfSelectedStoreEntities: state
+                                            .listOfAllSelectedStores
+                                            .toList(),
+                                        storeEntities:
+                                            state.listOfAllStores.toList(),
+                                      ),
+                                    );
                                 return;
                               },
                               style: ElevatedButton.styleFrom(
@@ -644,8 +643,8 @@ class _BindMenuWithStoreView extends WidgetView<BindMenuWithStore, _BindMenuWith
                                 style: const TextStyle(
                                     color: Color.fromRGBO(42, 45, 50, 1)),
                                 textDirection:
-                                serviceLocator<LanguageController>()
-                                    .targetTextDirection,
+                                    serviceLocator<LanguageController>()
+                                        .targetTextDirection,
                               ).translate(),
                             ),
                           ),
@@ -659,30 +658,30 @@ class _BindMenuWithStoreView extends WidgetView<BindMenuWithStore, _BindMenuWith
                               onPressed: () {
                                 //context.push(Routes.SAVE_MENU_PAGE);
                                 context.read<MenuBloc>().add(
-                                  BindMenuWithStores(
-                                    menuEntities:
-                                    state.listOfAllMenus.toList(),
-                                    listOfSelectedMenuEntities: state
-                                        .listOfAllSelectedMenus
-                                        .toList(),
-                                    listOfSelectedStoreEntities: state
-                                        .listOfAllSelectedStores
-                                        .toList(),
-                                    storeEntities:
-                                    state.listOfAllStores.toList(),
-                                  ),
-                                );
+                                      BindMenuWithStores(
+                                        menuEntities:
+                                            state.listOfAllMenus.toList(),
+                                        listOfSelectedMenuEntities: state
+                                            .listOfAllSelectedMenus
+                                            .toList(),
+                                        listOfSelectedStoreEntities: state
+                                            .listOfAllSelectedStores
+                                            .toList(),
+                                        storeEntities:
+                                            state.listOfAllStores.toList(),
+                                      ),
+                                    );
                                 return;
                               },
                               style: ElevatedButton.styleFrom(
                                 backgroundColor:
-                                const Color.fromRGBO(69, 201, 125, 1),
+                                    const Color.fromRGBO(69, 201, 125, 1),
                               ),
                               child: Text(
                                 'Save',
                                 textDirection:
-                                serviceLocator<LanguageController>()
-                                    .targetTextDirection,
+                                    serviceLocator<LanguageController>()
+                                        .targetTextDirection,
                               ),
                             ),
                           ),

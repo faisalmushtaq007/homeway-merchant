@@ -1,4 +1,3 @@
-
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
@@ -23,7 +22,7 @@ Future<void> main() async {
       await Firebase.initializeApp(
         options: DefaultFirebaseOptions.currentPlatform,
       );
-      if(!kDebugMode){
+      if (!kDebugMode) {
         await FirebaseAppCheck.instance.activate(
           androidProvider: AndroidProvider.playIntegrity,
           appleProvider: AppleProvider.appAttest,
@@ -33,7 +32,7 @@ Future<void> main() async {
         await appCheck.activate(
           webProvider: ReCaptchaV3Provider(kWebRecaptchaSiteKey),
         );
-      }else{
+      } else {
         /*await FirebaseAppCheck.instance.activate(
           androidProvider: AndroidProvider.debug,
           appleProvider: AppleProvider.debug,

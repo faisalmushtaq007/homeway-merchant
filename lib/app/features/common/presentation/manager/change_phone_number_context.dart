@@ -5,7 +5,10 @@ class ChangePhoneNumberContext<T extends Object> {
 
   late IChangePhoneNumber<T> changePhoneNumberImplement;
 
-  void init({required String phoneNumber, required String dialCode, required String countryCode}) {
+  void init(
+      {required String phoneNumber,
+      required String dialCode,
+      required String countryCode}) {
     changePhoneNumberImplement.init(phoneNumber, dialCode, countryCode);
   }
 

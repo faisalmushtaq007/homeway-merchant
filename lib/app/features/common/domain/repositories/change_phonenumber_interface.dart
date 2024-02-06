@@ -10,7 +10,8 @@ abstract class IChangePhoneNumber<T extends Object> {
   Future<void> updatePhoneNumber(T bloc);
 }
 
-class UpdateProfilePhoneNumber implements IChangePhoneNumber<BusinessProfileBloc> {
+class UpdateProfilePhoneNumber
+    implements IChangePhoneNumber<BusinessProfileBloc> {
   @override
   late String countryCode;
 
@@ -34,7 +35,8 @@ class UpdateProfilePhoneNumber implements IChangePhoneNumber<BusinessProfileBloc
 }
 
 class UpdateStorePhoneNumber implements IChangePhoneNumber<StoreBloc> {
-  final ChangePhoneNumberPurpose changePhoneNumberPurpose = ChangePhoneNumberPurpose.store;
+  final ChangePhoneNumberPurpose changePhoneNumberPurpose =
+      ChangePhoneNumberPurpose.store;
 
   @override
   void init(String phoneNumber, String dialCode, String countryCode) {
@@ -59,7 +61,8 @@ class UpdateStorePhoneNumber implements IChangePhoneNumber<StoreBloc> {
 }
 
 class UpdateDriverPhoneNumber implements IChangePhoneNumber<StoreBloc> {
-  final ChangePhoneNumberPurpose changePhoneNumberPurpose = ChangePhoneNumberPurpose.store;
+  final ChangePhoneNumberPurpose changePhoneNumberPurpose =
+      ChangePhoneNumberPurpose.store;
 
   @override
   void init(String phoneNumber, String dialCode, String countryCode) {

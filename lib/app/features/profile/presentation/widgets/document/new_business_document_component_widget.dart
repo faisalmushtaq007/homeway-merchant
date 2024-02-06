@@ -94,7 +94,7 @@ class _NewBusinessDocumentComponentWidgetController
       extra: jsonEncode(
         {
           'documentType': documentType.name,
-          'selectionUseCase':widget.selectionUseCase.name,
+          'selectionUseCase': widget.selectionUseCase.name,
         },
       ),
     );

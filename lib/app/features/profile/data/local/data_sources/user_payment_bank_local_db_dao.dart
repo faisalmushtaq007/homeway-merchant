@@ -13,11 +13,13 @@ class UserPaymentBankLocalDbRepository<T extends PaymentBankEntity>
     final result = await tryCatch<PaymentBankEntity>(() async {
       final int recordID = await _paymentBank.add(await _db, entity.toMap());
       //final PaymentBankEntity recordPaymentBankEntity = entity.copyWith(storeID: recordID.toString());
-      await update(entity.copyWith(paymentBankID: recordID), UniqueId(recordID));
+      await update(
+          entity.copyWith(paymentBankID: recordID), UniqueId(recordID));
       final value = await _paymentBank.record(recordID).get(await _db);
       if (value != null) {
         final storedPaymentBankEntity = PaymentBankEntity.fromMap(value);
-        final storeEntity = storedPaymentBankEntity.copyWith(paymentBankID: recordID);
+        final storeEntity =
+            storedPaymentBankEntity.copyWith(paymentBankID: recordID);
         return storeEntity;
       } else {
         final storeEntity = entity.copyWith(paymentBankID: recordID);
@@ -72,9 +74,9 @@ class UserPaymentBankLocalDbRepository<T extends PaymentBankEntity>
       final value = await _paymentBank.record(uniqueId.value).get(await _db);
       if (value != null) {
         int? count = await _paymentBank.record(uniqueId.value).delete(
-          await _db,
-        );
-        if (count!=null && count >= 0) {
+              await _db,
+            );
+        if (count != null && count >= 0) {
           return true;
         } else {
           return false;
@@ -144,7 +146,8 @@ class UserPaymentBankLocalDbRepository<T extends PaymentBankEntity>
               entity.toMap(),
             );
         if (result != null) {
-          return PaymentBankEntity.fromMap(result).copyWith(paymentBankID: result['paymentBankID']);
+          return PaymentBankEntity.fromMap(result)
+              .copyWith(paymentBankID: result['paymentBankID']);
         } else {
           return upsert(id: uniqueId, entity: entity);
         }
@@ -175,7 +178,8 @@ class UserPaymentBankLocalDbRepository<T extends PaymentBankEntity>
           .record(key)
           .put(await _db, entity.toMap(), merge: (value != null) || false);
       appLog.d('Result upsert ${result}');
-      return PaymentBankEntity.fromMap(result).copyWith(paymentBankID: result['paymentBankID']);
+      return PaymentBankEntity.fromMap(result)
+          .copyWith(paymentBankID: result['paymentBankID']);
     });
     return result;
   }
@@ -214,12 +218,18 @@ class UserPaymentBankLocalDbRepository<T extends PaymentBankEntity>
         );
         // If
         if ((searchText.isNotNull ||
-            filter.isNotNull ||
-            sorting.isNotNull && (searchText!.isNotEmpty || filter!.isNotEmpty || sorting!.isNotEmpty)) &&
-            (startTimeStamp.isNotNull || endTimeStamp.isNotNull)){
-          var regExp = RegExp('^${searchText?.toLowerCase() ?? ''}\$', caseSensitive: false);
-          var filterRegExp = RegExp('^${filter?.toLowerCase() ?? ''}\$', caseSensitive: false);
-          var sortingRegExp = RegExp('^${sorting?.toLowerCase() ?? ''}\$', caseSensitive: false);
+                filter.isNotNull ||
+                sorting.isNotNull &&
+                    (searchText!.isNotEmpty ||
+                        filter!.isNotEmpty ||
+                        sorting!.isNotEmpty)) &&
+            (startTimeStamp.isNotNull || endTimeStamp.isNotNull)) {
+          var regExp = RegExp('^${searchText?.toLowerCase() ?? ''}\$',
+              caseSensitive: false);
+          var filterRegExp =
+              RegExp('^${filter?.toLowerCase() ?? ''}\$', caseSensitive: false);
+          var sortingRegExp = RegExp('^${sorting?.toLowerCase() ?? ''}\$',
+              caseSensitive: false);
           finder = Finder(
             limit: pageSize,
             offset: pageKey,
@@ -254,46 +264,53 @@ class UserPaymentBankLocalDbRepository<T extends PaymentBankEntity>
         // Else If
         else if (searchText.isNotNull ||
             filter.isNotNull ||
-            sorting.isNotNull && (searchText!.isNotEmpty || filter!.isNotEmpty || sorting!.isNotEmpty)) {
+            sorting.isNotNull &&
+                (searchText!.isNotEmpty ||
+                    filter!.isNotEmpty ||
+                    sorting!.isNotEmpty)) {
           if (searchText!.isEmpty) {
             finder = Finder(
               limit: pageSize,
               offset: pageKey,
             );
           } else {
-          var regExp = RegExp('^${searchText?.toLowerCase() ?? ''}\$', caseSensitive: false);
-          var filterRegExp = RegExp('^${filter?.toLowerCase() ?? ''}\$', caseSensitive: false);
-          var sortingRegExp = RegExp('^${sorting?.toLowerCase() ?? ''}\$', caseSensitive: false);
-          finder = Finder(
-            limit: pageSize,
-            offset: pageKey,
-            filter: Filter.and(
-              [
-                Filter.or([
-                  Filter.matchesRegExp(
-                    'bankName',
-                    regExp,
-                    anyInList: true,
-                  ),
-                  Filter.matchesRegExp(
-                    'accountNumber',
-                    regExp,
-                    anyInList: true,
-                  ),
-                  Filter.matchesRegExp(
-                    'ibanNumber',
-                    regExp,
-                    anyInList: true,
-                  ),
-                  Filter.matchesRegExp(
-                    'bankHolderName',
-                    regExp,
-                    anyInList: true,
-                  ),
-                ]),
-              ],
-            ),
-          );}
+            var regExp = RegExp('^${searchText?.toLowerCase() ?? ''}\$',
+                caseSensitive: false);
+            var filterRegExp = RegExp('^${filter?.toLowerCase() ?? ''}\$',
+                caseSensitive: false);
+            var sortingRegExp = RegExp('^${sorting?.toLowerCase() ?? ''}\$',
+                caseSensitive: false);
+            finder = Finder(
+              limit: pageSize,
+              offset: pageKey,
+              filter: Filter.and(
+                [
+                  Filter.or([
+                    Filter.matchesRegExp(
+                      'bankName',
+                      regExp,
+                      anyInList: true,
+                    ),
+                    Filter.matchesRegExp(
+                      'accountNumber',
+                      regExp,
+                      anyInList: true,
+                    ),
+                    Filter.matchesRegExp(
+                      'ibanNumber',
+                      regExp,
+                      anyInList: true,
+                    ),
+                    Filter.matchesRegExp(
+                      'bankHolderName',
+                      regExp,
+                      anyInList: true,
+                    ),
+                  ]),
+                ],
+              ),
+            );
+          }
         }
         // Else
         else {

@@ -249,8 +249,7 @@ class _AppState extends State<App> with GetItStateMixin {
                         // returns to the app after it has been killed while running in the
                         // background.
                         restorationScopeId: 'merchant_app',
-                        localizationsDelegates: const <LocalizationsDelegate<
-                            dynamic>>[
+                        localizationsDelegates: const [
                           ...AppLocalizations.localizationsDelegates,
                           DefaultMaterialLocalizations.delegate,
                           DefaultWidgetsLocalizations.delegate,
@@ -258,8 +257,8 @@ class _AppState extends State<App> with GetItStateMixin {
                           GlobalMaterialLocalizations.delegate,
                           GlobalWidgetsLocalizations.delegate,
                           GlobalCupertinoLocalizations.delegate,
-                          PhoneFieldLocalization.delegate,
-                          SfGlobalLocalizations.delegate
+                          SfGlobalLocalizations.delegate,
+                          ...PhoneFieldLocalization.delegates,
                         ],
                         locale: languageController.targetAppLanguage.value,
                         supportedLocales: AppLocalizations.supportedLocales,

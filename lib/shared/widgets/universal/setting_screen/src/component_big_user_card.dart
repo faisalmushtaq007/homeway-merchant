@@ -7,8 +7,10 @@ import 'package:homemakers_merchant/core/extensions/global_extensions/src/object
 import 'package:homemakers_merchant/shared/widgets/universal/animated_gap/src/widgets/animated_gap.dart';
 
 class BigUserCard extends StatelessWidget {
-
-  const BigUserCard({required this.userName, this.userProfilePic, super.key,
+  const BigUserCard({
+    required this.userName,
+    this.userProfilePic,
+    super.key,
     this.backgroundColor,
     this.settingColor,
     this.cardRadius = 30,
@@ -18,7 +20,7 @@ class BigUserCard extends StatelessWidget {
     this.margin,
     this.userProfileImageWidget,
     this.customProfileImageWidget,
-    this.subTitle='',
+    this.subTitle = '',
   });
   final Color? backgroundColor;
   final Color? settingColor;
@@ -40,14 +42,15 @@ class BigUserCard extends StatelessWidget {
       textDirection: serviceLocator<LanguageController>().targetTextDirection,
       child: Container(
         height: mediaQueryHeight / 4,
-        margin: margin?? const EdgeInsetsDirectional.only(bottom: 20),
+        margin: margin ?? const EdgeInsetsDirectional.only(bottom: 20),
         decoration: BoxDecoration(
           color: backgroundColor ?? Theme.of(context).cardColor,
           borderRadius:
               BorderRadius.circular(double.parse(cardRadius!.toString())),
         ),
         child: Stack(
-          textDirection: serviceLocator<LanguageController>().targetTextDirection,
+          textDirection:
+              serviceLocator<LanguageController>().targetTextDirection,
           children: [
             Align(
               alignment: Alignment.bottomLeft,
@@ -63,25 +66,31 @@ class BigUserCard extends StatelessWidget {
               ),
             ),
             Container(
-              margin: const EdgeInsetsDirectional.symmetric(horizontal: 10,vertical: 10),
+              margin: const EdgeInsetsDirectional.symmetric(
+                  horizontal: 10, vertical: 10),
               child: Column(
                 mainAxisAlignment: (cardActionWidget != null)
                     ? MainAxisAlignment.spaceEvenly
                     : MainAxisAlignment.center,
-                textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                textDirection:
+                    serviceLocator<LanguageController>().targetTextDirection,
                 children: [
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                    textDirection: serviceLocator<LanguageController>()
+                        .targetTextDirection,
                     children: [
                       // User profile
                       Expanded(
                         child: AnimatedCrossFade(
                           duration: const Duration(milliseconds: 500),
-                          crossFadeState: (customProfileImageWidget.isNotNull)?CrossFadeState.showFirst:CrossFadeState.showSecond,
-                          firstChild: customProfileImageWidget??const Offstage(),
+                          crossFadeState: (customProfileImageWidget.isNotNull)
+                              ? CrossFadeState.showFirst
+                              : CrossFadeState.showSecond,
+                          firstChild:
+                              customProfileImageWidget ?? const Offstage(),
                           secondChild: CircleAvatar(
-                            radius: context.width/9,
+                            radius: context.width / 9,
                             backgroundImage: userProfilePic,
                             backgroundColor: Colors.transparent,
                             child: userProfileImageWidget,
@@ -93,7 +102,8 @@ class BigUserCard extends StatelessWidget {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisAlignment: MainAxisAlignment.center,
-                          textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                          textDirection: serviceLocator<LanguageController>()
+                              .targetTextDirection,
                           children: [
                             Wrap(
                               children: [
@@ -108,22 +118,31 @@ class BigUserCard extends StatelessWidget {
                                   softWrap: true,
                                   maxLines: 4,
                                   overflow: TextOverflow.ellipsis,
-                                  textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                  textDirection:
+                                      serviceLocator<LanguageController>()
+                                          .targetTextDirection,
                                 ).translate(),
                               ],
                             ),
                             AnimatedCrossFade(
                               firstChild: const Offstage(),
-                              crossFadeState: subTitle.isNotNull?CrossFadeState.showSecond:CrossFadeState.showFirst,
+                              crossFadeState: subTitle.isNotNull
+                                  ? CrossFadeState.showSecond
+                                  : CrossFadeState.showFirst,
                               duration: const Duration(milliseconds: 400),
                               secondChild: Column(
-                                textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                textDirection:
+                                    serviceLocator<LanguageController>()
+                                        .targetTextDirection,
                                 children: [
-                                  const AnimatedGap(4, duration: Duration(milliseconds: 400),),
+                                  const AnimatedGap(
+                                    4,
+                                    duration: Duration(milliseconds: 400),
+                                  ),
                                   Wrap(
                                     children: [
                                       Text(
-                                        subTitle??'',
+                                        subTitle ?? '',
                                         style: context.titleMedium!.copyWith(
                                           fontWeight: FontWeight.w500,
                                           //fontSize: context.width / 15,
@@ -133,7 +152,9 @@ class BigUserCard extends StatelessWidget {
                                         softWrap: true,
                                         maxLines: 2,
                                         overflow: TextOverflow.ellipsis,
-                                        textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                        textDirection:
+                                            serviceLocator<LanguageController>()
+                                                .targetTextDirection,
                                       ).translate(),
                                     ],
                                   ),

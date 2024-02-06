@@ -814,16 +814,16 @@ class GetAllStorePaginationState extends StoreState {
 
   @override
   List<Object?> get hashParameters => [
-    storeStateStage,
-    pageKey,
-    searchText,
-    pageSize,
-    endTimeStamp,
-    filter,
-    sorting,
-    startTimeStamp,
-    storeEntities,
-  ];
+        storeStateStage,
+        pageKey,
+        searchText,
+        pageSize,
+        endTimeStamp,
+        filter,
+        sorting,
+        startTimeStamp,
+        storeEntities,
+      ];
 
   @override
   bool get cacheHash => false;
@@ -840,9 +840,9 @@ class GetAllLoadingStorePaginationState extends StoreState {
 
   @override
   List<Object?> get hashParameters => [
-    isLoading,
-    message,
-  ];
+        isLoading,
+        message,
+      ];
 
   @override
   bool get cacheHash => false;
@@ -859,9 +859,9 @@ class GetAllProcessingStorePaginationState extends StoreState {
 
   @override
   List<Object?> get hashParameters => [
-    isProcessing,
-    message,
-  ];
+        isProcessing,
+        message,
+      ];
 
   @override
   bool get cacheHash => false;
@@ -876,8 +876,8 @@ class GetAllFailedStorePaginationState extends StoreState {
 
   @override
   List<Object?> get hashParameters => [
-    message,
-  ];
+        message,
+      ];
 
   @override
   bool get cacheHash => false;
@@ -898,11 +898,11 @@ class GetAllExceptionStorePaginationState extends StoreState {
 
   @override
   List<Object?> get hashParameters => [
-    message,
-    stackTrace,
-    exception,
-    storeStateStage,
-  ];
+        message,
+        stackTrace,
+        exception,
+        storeStateStage,
+      ];
 
   @override
   bool get cacheHash => false;
@@ -935,17 +935,17 @@ class GetAllEmptyStorePaginationState extends StoreState {
 
   @override
   List<Object?> get hashParameters => [
-    message,
-    storeEntities,
-    pageKey,
-    searchText,
-    pageSize,
-    endTimeStamp,
-    filter,
-    sorting,
-    startTimeStamp,
-    storeStateStage,
-  ];
+        message,
+        storeEntities,
+        pageKey,
+        searchText,
+        pageSize,
+        endTimeStamp,
+        filter,
+        sorting,
+        startTimeStamp,
+        storeStateStage,
+      ];
 
   @override
   bool get cacheHash => false;
@@ -977,16 +977,16 @@ class GetAllDriversPaginationState extends StoreState {
 
   @override
   List<Object?> get hashParameters => [
-    driverStateStage,
-    pageKey,
-    searchText,
-    pageSize,
-    endTimeStamp,
-    filter,
-    sorting,
-    startTimeStamp,
-    driverEntities,
-  ];
+        driverStateStage,
+        pageKey,
+        searchText,
+        pageSize,
+        endTimeStamp,
+        filter,
+        sorting,
+        startTimeStamp,
+        driverEntities,
+      ];
 
   @override
   bool get cacheHash => false;
@@ -1003,9 +1003,9 @@ class GetAllLoadingDriversPaginationState extends StoreState {
 
   @override
   List<Object?> get hashParameters => [
-    isLoading,
-    message,
-  ];
+        isLoading,
+        message,
+      ];
 
   @override
   bool get cacheHash => false;
@@ -1022,9 +1022,9 @@ class GetAllProcessingDriversPaginationState extends StoreState {
 
   @override
   List<Object?> get hashParameters => [
-    isProcessing,
-    message,
-  ];
+        isProcessing,
+        message,
+      ];
 
   @override
   bool get cacheHash => false;
@@ -1039,8 +1039,8 @@ class GetAllFailedDriversPaginationState extends StoreState {
 
   @override
   List<Object?> get hashParameters => [
-    message,
-  ];
+        message,
+      ];
 
   @override
   bool get cacheHash => false;
@@ -1061,11 +1061,11 @@ class GetAllExceptionDriversPaginationState extends StoreState {
 
   @override
   List<Object?> get hashParameters => [
-    message,
-    stackTrace,
-    exception,
-    driverStateStage,
-  ];
+        message,
+        stackTrace,
+        exception,
+        driverStateStage,
+      ];
 
   @override
   bool get cacheHash => false;
@@ -1098,19 +1098,18 @@ class GetAllEmptyDriversPaginationState extends StoreState {
 
   @override
   List<Object?> get hashParameters => [
-    message,
-    driverEntities,
-    pageKey,
-    searchText,
-    pageSize,
-    endTimeStamp,
-    filter,
-    sorting,
-    startTimeStamp,
-    driverStateStage,
-  ];
+        message,
+        driverEntities,
+        pageKey,
+        searchText,
+        pageSize,
+        endTimeStamp,
+        filter,
+        sorting,
+        startTimeStamp,
+        driverStateStage,
+      ];
 
   @override
   bool get cacheHash => false;
 }
-

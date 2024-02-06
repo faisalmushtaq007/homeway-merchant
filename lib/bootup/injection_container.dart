@@ -219,7 +219,7 @@ void _setUpService() {
       () => NetworkManager<BaseResponseErrorModel>(
         isEnableLogger: true,
         options: BaseOptions(
-          baseUrl: GlobalApp.developmentUrl,
+          baseUrl: GlobalApp.developmentUrl+GlobalApp.merchantApiPath,
         ),
         //This is optional.
         errorModel: BaseResponseErrorModel(),
@@ -1157,9 +1157,7 @@ void _setUpStateManagement() {
   // Menu Bloc
   serviceLocator.registerFactory<MenuBloc>(() => MenuBloc());
   // Store Bloc
-  serviceLocator.registerFactory<StoreBloc>(() => StoreBloc(
-
-  ));
+  serviceLocator.registerFactory<StoreBloc>(() => StoreBloc());
   // Address Bloc
   serviceLocator.registerFactory<AddressBloc>(() => AddressBloc());
   //WalletBloc
@@ -1181,6 +1179,7 @@ void _setupFirebase() {
   HomewayFirebase.register();
   //serviceLocator<Home>
 }
-void _registerAuthenticationFeature(){
+
+void _registerAuthenticationFeature() {
   AuthenticationInjector.register();
 }

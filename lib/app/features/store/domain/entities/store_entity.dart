@@ -419,10 +419,10 @@ class StoreOwnDeliveryPartnersInfo extends Equatable {
     this.driverName = '',
     this.driverMobileNumber = '',
     this.drivingLicenseNumber = '',
-    this.vehicleInfo=const VehicleInfo(),
+    this.vehicleInfo = const VehicleInfo(),
     this.hasOnline = true,
-    this.ratingAndReviewEntity=const RatingAndReviewEntity(),
-    this.imageEntity=const ImageEntity(),
+    this.ratingAndReviewEntity = const RatingAndReviewEntity(),
+    this.imageEntity = const ImageEntity(),
     this.hasDriverImage = false,
     this.deliveryMode = '',
     this.isoCode = 'SA',
@@ -453,7 +453,7 @@ class StoreOwnDeliveryPartnersInfo extends Equatable {
       countryDialCode: map['country_dial_code'] ?? '+966',
       phoneNumberWithoutDialCode: map['phoneNumberWithoutDialCode'] ?? '',
       driverLicenseDocument: map['driverLicenseDocument'] != null
-          ?NewBusinessDocumentEntity.fromMap(map['driverLicenseDocument'])
+          ? NewBusinessDocumentEntity.fromMap(map['driverLicenseDocument'])
           : NewBusinessDocumentEntity(),
     );
   }
@@ -499,12 +499,11 @@ class StoreOwnDeliveryPartnersInfo extends Equatable {
       'vehicleInfo': vehicleInfo?.toMap() ?? VehicleInfo().toMap(),
       'driverID': driverID,
       'hasOnline': hasOnline,
-      'ratingAndReviewEntity': ratingAndReviewEntity?.toMap() ??
-          RatingAndReviewEntity().toMap(),
+      'ratingAndReviewEntity':
+          ratingAndReviewEntity?.toMap() ?? RatingAndReviewEntity().toMap(),
       'hasDriverImage': hasDriverImage,
-      'imageEntity': (imageEntity != null)
-          ? imageEntity?.toMap()
-          : ImageEntity().toMap(),
+      'imageEntity':
+          (imageEntity != null) ? imageEntity?.toMap() : ImageEntity().toMap(),
       'deliveryMode': deliveryMode,
       'isoCode': isoCode ?? 'SA',
       'country_dial_code': countryDialCode ?? '+966',

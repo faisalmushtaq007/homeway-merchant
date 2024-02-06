@@ -35,12 +35,14 @@ class SimpleUserCard extends StatelessWidget {
         height: mediaQueryHeight / 3,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          textDirection: serviceLocator<LanguageController>().targetTextDirection,
+          textDirection:
+              serviceLocator<LanguageController>().targetTextDirection,
           children: [
             GestureDetector(
               onTap: (onTap == null) ? () {} : onTap,
               child: Stack(
-                textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                textDirection:
+                    serviceLocator<LanguageController>().targetTextDirection,
                 children: [
                   ClipRRect(
                     borderRadius: BorderRadius.circular(imageRadius!),
@@ -58,7 +60,8 @@ class SimpleUserCard extends StatelessWidget {
                         : Icon(
                             Icons.camera,
                             color: Colors.transparent,
-                            textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                            textDirection: serviceLocator<LanguageController>()
+                                .targetTextDirection,
                           ),
                   ),
                 ],
@@ -67,7 +70,8 @@ class SimpleUserCard extends StatelessWidget {
             Container(
               margin: const EdgeInsets.only(top: 3),
               child: Wrap(
-                textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                textDirection:
+                    serviceLocator<LanguageController>().targetTextDirection,
                 children: [
                   Text(
                     userName,
@@ -79,7 +83,8 @@ class SimpleUserCard extends StatelessWidget {
                             color: Colors.white,
                           )
                         : textStyle,
-                    textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                    textDirection: serviceLocator<LanguageController>()
+                        .targetTextDirection,
                     overflow: TextOverflow.ellipsis,
                     maxLines: 4,
                     softWrap: true,

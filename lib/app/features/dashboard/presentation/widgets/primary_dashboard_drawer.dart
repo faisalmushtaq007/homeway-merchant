@@ -9,7 +9,8 @@ class PrimaryDashboardDrawer extends StatefulWidget {
   final bool isMainDrawerPage;
 
   @override
-  _PrimaryDashboardDrawerController createState() => _PrimaryDashboardDrawerController();
+  _PrimaryDashboardDrawerController createState() =>
+      _PrimaryDashboardDrawerController();
 }
 
 class _PrimaryDashboardDrawerController extends State<PrimaryDashboardDrawer> {
@@ -22,16 +23,17 @@ class _PrimaryDashboardDrawerController extends State<PrimaryDashboardDrawer> {
     appUserEntity = serviceLocator<AppUserEntity>();
     drawerEntities = [];
     drawerEntities.clear();
-    context.read<BusinessProfileBloc>().add(const GetAllAppUserProfilePagination(pageKey: 0, pageSize: 10));
+    context
+        .read<BusinessProfileBloc>()
+        .add(const GetAllAppUserProfilePagination(pageKey: 0, pageSize: 10));
     if (mounted) {
       initializeDrawerMenu(context);
     }
   }
-  void onThemeChanged(ThemeMode value){
-    serviceLocator<ThemeController>().setThemeMode(value);
-    setState(() {
 
-    });
+  void onThemeChanged(ThemeMode value) {
+    serviceLocator<ThemeController>().setThemeMode(value);
+    setState(() {});
   }
 
   void initializeDrawerMenu(BuildContext context) {
@@ -51,9 +53,9 @@ class _PrimaryDashboardDrawerController extends State<PrimaryDashboardDrawer> {
             drawerID: 01,
             drawerName: 'My Profile',
             leading: const Icon(Icons.person),
-            onPressed: () async{
+            onPressed: () async {
               Navigator.of(context).pop();
-              final result=await context.push(Routes.PROFILE_SETTING_PAGE);
+              final result = await context.push(Routes.PROFILE_SETTING_PAGE);
               return;
             },
           ),
@@ -63,7 +65,7 @@ class _PrimaryDashboardDrawerController extends State<PrimaryDashboardDrawer> {
             leading: const Icon(Icons.person),
             onPressed: () async {
               Navigator.of(context).pop();
-              final result=await context.push(Routes.ALL_SAVED_ADDRESS_LIST);
+              final result = await context.push(Routes.ALL_SAVED_ADDRESS_LIST);
               return;
             },
           ),
@@ -75,7 +77,6 @@ class _PrimaryDashboardDrawerController extends State<PrimaryDashboardDrawer> {
               return Navigator.of(context).pop();
             },
             hasSwitchThemeMode: true,
-
           ),
           DrawerEntity(
             drawerID: 03,
@@ -91,7 +92,7 @@ class _PrimaryDashboardDrawerController extends State<PrimaryDashboardDrawer> {
             leading: const Icon(Icons.notifications),
             onPressed: () async {
               Navigator.of(context).pop();
-              final result=await context.push(Routes.NOTIFICATIONS);
+              final result = await context.push(Routes.NOTIFICATIONS);
               return;
             },
           ),
@@ -101,7 +102,7 @@ class _PrimaryDashboardDrawerController extends State<PrimaryDashboardDrawer> {
             leading: const Icon(Icons.rate_review),
             onPressed: () async {
               Navigator.of(context).pop();
-              final result=await context.push(Routes.RATE_AND_REVIEW_PAGE);
+              final result = await context.push(Routes.RATE_AND_REVIEW_PAGE);
               return;
             },
           ),
@@ -122,9 +123,9 @@ class _PrimaryDashboardDrawerController extends State<PrimaryDashboardDrawer> {
             drawerID: 10,
             drawerName: 'Manage Orders',
             leading: const Icon(Icons.book),
-            onPressed: () async{
+            onPressed: () async {
               Navigator.of(context).pop();
-              final result=await context.push(Routes.MANAGE_ORDER_PAGE);
+              final result = await context.push(Routes.MANAGE_ORDER_PAGE);
               return;
             },
           ),
@@ -160,7 +161,7 @@ class _PrimaryDashboardDrawerController extends State<PrimaryDashboardDrawer> {
         leading: const Icon(Icons.store),
         onPressed: () async {
           Navigator.of(context).pop();
-          final result=await context.push(Routes.ALL_STORES_PAGE);
+          final result = await context.push(Routes.ALL_STORES_PAGE);
           return;
         },
       ),
@@ -170,7 +171,7 @@ class _PrimaryDashboardDrawerController extends State<PrimaryDashboardDrawer> {
         leading: const Icon(Icons.restaurant_menu),
         onPressed: () async {
           Navigator.of(context).pop();
-          final result=await context.push(Routes.ALL_MENU_PAGE);
+          final result = await context.push(Routes.ALL_MENU_PAGE);
           return;
         },
       ),
@@ -181,7 +182,7 @@ class _PrimaryDashboardDrawerController extends State<PrimaryDashboardDrawer> {
         controller: ExpansionTileController(),
         onPressed: () async {
           Navigator.of(context).pop();
-          final result=await context.push(Routes.ALL_DRIVER_PAGE);
+          final result = await context.push(Routes.ALL_DRIVER_PAGE);
           return;
         },
       ),
@@ -228,7 +229,7 @@ class _PrimaryDashboardDrawerController extends State<PrimaryDashboardDrawer> {
         drawerID: 6,
         drawerName: 'Analysis and Monitoring',
         leading: const Icon(Icons.analytics),
-        onPressed: () async{
+        onPressed: () async {
           Navigator.of(context).pop();
           final result = await context.push(Routes.ORDER_ANALYSIS_PAGE);
           return;
@@ -259,7 +260,7 @@ class _PrimaryDashboardDrawerController extends State<PrimaryDashboardDrawer> {
             leading: const Icon(Icons.help),
             onPressed: () async {
               Navigator.of(context).pop();
-              final result=await context.push(Routes.FAQ_PAGE);
+              final result = await context.push(Routes.FAQ_PAGE);
               return;
             },
           ),
@@ -275,9 +276,9 @@ class _PrimaryDashboardDrawerController extends State<PrimaryDashboardDrawer> {
             drawerID: 82,
             drawerName: 'Privacy and Policy',
             leading: const Icon(Icons.privacy_tip_sharp),
-            onPressed: () async{
+            onPressed: () async {
               Navigator.of(context).pop();
-              final result=await context.push(Routes.PRIVACY_AND_POLICY);
+              final result = await context.push(Routes.PRIVACY_AND_POLICY);
               return;
             },
           ),
@@ -285,9 +286,9 @@ class _PrimaryDashboardDrawerController extends State<PrimaryDashboardDrawer> {
             drawerID: 83,
             drawerName: 'Terms & Conditions',
             leading: const Icon(Icons.privacy_tip_sharp),
-            onPressed: () async{
+            onPressed: () async {
               Navigator.of(context).pop();
-              final result=await context.push(Routes.TERMS_AND_CONDITIONS);
+              final result = await context.push(Routes.TERMS_AND_CONDITIONS);
               return;
             },
           ),
@@ -295,9 +296,9 @@ class _PrimaryDashboardDrawerController extends State<PrimaryDashboardDrawer> {
             drawerID: 84,
             drawerName: 'Chat with us',
             leading: const Icon(Icons.chat),
-            onPressed: () async{
+            onPressed: () async {
               Navigator.of(context).pop();
-              final result=await context.push(Routes.ROOM_PAGE);
+              final result = await context.push(Routes.ROOM_PAGE);
               return;
             },
           ),
@@ -315,7 +316,7 @@ class _PrimaryDashboardDrawerController extends State<PrimaryDashboardDrawer> {
         drawerID: 11,
         drawerName: 'About Us',
         leading: const Icon(Icons.person),
-        onPressed: () async{
+        onPressed: () async {
           Navigator.of(context).pop();
           await context.push(Routes.ABOUT_US);
           return;
@@ -346,10 +347,12 @@ class _PrimaryDashboardDrawerController extends State<PrimaryDashboardDrawer> {
   }
 
   @override
-  Widget build(BuildContext context) => BlocBuilder<BusinessProfileBloc, BusinessProfileState>(
+  Widget build(BuildContext context) =>
+      BlocBuilder<BusinessProfileBloc, BusinessProfileState>(
         builder: (context, businessProfileState) {
           if (businessProfileState is GetAllAppUserProfileEmptyState) {
-          } else if (businessProfileState is GetAllAppUserProfilePaginationState) {
+          } else if (businessProfileState
+              is GetAllAppUserProfilePaginationState) {
             appUserEntity = businessProfileState.appUserEntities.last;
           }
           return _PrimaryDashboardDrawerView(this);
@@ -357,7 +360,8 @@ class _PrimaryDashboardDrawerController extends State<PrimaryDashboardDrawer> {
       );
 }
 
-class _PrimaryDashboardDrawerView extends WidgetView<PrimaryDashboardDrawer, _PrimaryDashboardDrawerController> {
+class _PrimaryDashboardDrawerView extends WidgetView<PrimaryDashboardDrawer,
+    _PrimaryDashboardDrawerController> {
   const _PrimaryDashboardDrawerView(super.state);
 
   @override
@@ -371,17 +375,32 @@ class _PrimaryDashboardDrawerView extends WidgetView<PrimaryDashboardDrawer, _Pr
               child: UserAccountsDrawerHeader(
                 accountName: Text(
                   (state.appUserEntity.businessProfile.isNull &&
-                      state.appUserEntity.businessProfile!.userName.isEmptyOrNull && state.appUserEntity.businessProfile!.userName[0].isEmptyOrNull)
+                          state.appUserEntity.businessProfile!.userName
+                              .isEmptyOrNull &&
+                          state.appUserEntity.businessProfile!.userName[0]
+                              .isEmptyOrNull)
                       ? ''
-                      : (state.appUserEntity.businessProfile!.userName.length>0 && state.appUserEntity.businessProfile!.userName[0].isNotEmpty)?state.appUserEntity.businessProfile!.userName: '',
-                  style: context.titleLarge!.copyWith(color: context.colorScheme.background,fontWeight: FontWeight.w900,),
-                  textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                      : (state.appUserEntity.businessProfile!.userName.length >
+                                  0 &&
+                              state.appUserEntity.businessProfile!.userName[0]
+                                  .isNotEmpty)
+                          ? state.appUserEntity.businessProfile!.userName
+                          : '',
+                  style: context.titleLarge!.copyWith(
+                    color: context.colorScheme.background,
+                    fontWeight: FontWeight.w900,
+                  ),
+                  textDirection:
+                      serviceLocator<LanguageController>().targetTextDirection,
                 ).translate(),
                 accountEmail: Text(
-                  state.appUserEntity.businessProfile?.businessName ?? state.appUserEntity.businessProfile?.businessEmailAddress ?? '',
-                 style: context.titleMedium!.copyWith(
+                  state.appUserEntity.businessProfile?.businessName ??
+                      state.appUserEntity.businessProfile
+                          ?.businessEmailAddress ??
+                      '',
+                  style: context.titleMedium!.copyWith(
                     fontWeight: FontWeight.w500,
-                   color: context.colorScheme.background,
+                    color: context.colorScheme.background,
                   ),
                 ).translate(),
                 currentAccountPictureSize: Size.square(45),
@@ -389,16 +408,28 @@ class _PrimaryDashboardDrawerView extends WidgetView<PrimaryDashboardDrawer, _Pr
                   backgroundColor: Colors.white70,
                   child: Text(
                     (state.appUserEntity.businessProfile.isNull &&
-                        state.appUserEntity.businessProfile!.userName.isEmptyOrNull && state.appUserEntity.businessProfile!.userName[0].isEmptyOrNull)
+                            state.appUserEntity.businessProfile!.userName
+                                .isEmptyOrNull &&
+                            state.appUserEntity.businessProfile!.userName[0]
+                                .isEmptyOrNull)
                         ? ''
-                        : (state.appUserEntity.businessProfile!.userName.length>0 && state.appUserEntity.businessProfile!.userName[0].isNotEmpty)?state.appUserEntity.businessProfile!.userName[0].toUpperCase(): '',
+                        : (state.appUserEntity.businessProfile!.userName
+                                        .length >
+                                    0 &&
+                                state.appUserEntity.businessProfile!.userName[0]
+                                    .isNotEmpty)
+                            ? state.appUserEntity.businessProfile!.userName[0]
+                                .toUpperCase()
+                            : '',
                     style: context.titleMedium!.copyWith(),
-                    textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                    textDirection: serviceLocator<LanguageController>()
+                        .targetTextDirection,
                   ).translate(), //Text
                 ), //circleAvatar
               ), //UserAccountDrawerHeader
             ),
-            for (final DrawerEntity drawerEntity in state.drawerEntities) buildDrawerTiles(context, drawerEntity),
+            for (final DrawerEntity drawerEntity in state.drawerEntities)
+              buildDrawerTiles(context, drawerEntity),
           ],
         ),
       ),
@@ -417,10 +448,12 @@ class _PrimaryDashboardDrawerView extends WidgetView<PrimaryDashboardDrawer, _Pr
         expandedCrossAxisAlignment: drawerEntity.expandedCrossAxisAlignment,
         title: Text(
           drawerEntity.drawerName,
-          textDirection: serviceLocator<LanguageController>().targetTextDirection,
+          textDirection:
+              serviceLocator<LanguageController>().targetTextDirection,
         ).translate(),
         children: drawerEntity.children
-            .map<Widget>((DrawerEntity entity) => buildDrawerTiles(context, entity))
+            .map<Widget>(
+                (DrawerEntity entity) => buildDrawerTiles(context, entity))
             .toList()
             .cast<Widget>(),
       ),
@@ -429,20 +462,20 @@ class _PrimaryDashboardDrawerView extends WidgetView<PrimaryDashboardDrawer, _Pr
         onTap: drawerEntity.onPressed,
         title: Text(
           drawerEntity.drawerName,
-          textDirection: serviceLocator<LanguageController>().targetTextDirection,
+          textDirection:
+              serviceLocator<LanguageController>().targetTextDirection,
         ).translate(),
-
         trailing: StatefulBuilder(
-          builder: (context,setState) {
+          builder: (context, setState) {
             Widget? trailing;
-            if(drawerEntity.hasSwitchThemeMode) {
-              trailing= ThemeModeSwitch(
+            if (drawerEntity.hasSwitchThemeMode) {
+              trailing = ThemeModeSwitch(
                 key: const Key('theme-change-drawer-widget'),
                 onChanged: state.onThemeChanged,
                 themeMode: serviceLocator<ThemeController>().themeMode,
               );
-            }else{
-              trailing=nil;
+            } else {
+              trailing = nil;
             }
             return trailing;
           },

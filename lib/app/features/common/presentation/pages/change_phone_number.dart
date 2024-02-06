@@ -17,7 +17,8 @@ class ChangePhoneNumberPage extends StatefulWidget {
   final int id;
 
   @override
-  _ChangePhoneNumberPageController createState() => _ChangePhoneNumberPageController();
+  _ChangePhoneNumberPageController createState() =>
+      _ChangePhoneNumberPageController();
 }
 
 class _ChangePhoneNumberPageController extends State<ChangePhoneNumberPage> {
@@ -28,8 +29,10 @@ class _ChangePhoneNumberPageController extends State<ChangePhoneNumberPage> {
   late FocusNode existingPhoneNumberFocusNode;
   late FocusNode newPhoneNumberFocusNode;
 
-  final TextEditingController existingPhoneNumberTextEditingController = TextEditingController();
-  final TextEditingController newPhoneNumberTextEditingController = TextEditingController();
+  final TextEditingController existingPhoneNumberTextEditingController =
+      TextEditingController();
+  final TextEditingController newPhoneNumberTextEditingController =
+      TextEditingController();
 
   String country = 'SA';
   String dialCode = '+91';
@@ -39,18 +42,22 @@ class _ChangePhoneNumberPageController extends State<ChangePhoneNumberPage> {
   String userNewEnteredPhoneNumber = '';
   String userExistingEnteredPhoneNumber = '';
 
-  late PhoneNumber? phoneNumber;
+  late PhoneNumber phoneNumber;
   late PhoneController phoneNumberController;
-  late PhoneNumber? existingPhoneNumber;
+  late PhoneNumber existingPhoneNumber;
   late PhoneController existingPhoneNumberController;
 
-  PhoneNumberVerification phoneNumberVerification = PhoneNumberVerification.valid;
-  ValueNotifier<PhoneNumberVerification> valueNotifierPhoneNumberVerification = ValueNotifier<PhoneNumberVerification>(
+  PhoneNumberVerification phoneNumberVerification =
+      PhoneNumberVerification.valid;
+  ValueNotifier<PhoneNumberVerification> valueNotifierPhoneNumberVerification =
+      ValueNotifier<PhoneNumberVerification>(
     PhoneNumberVerification.valid,
   );
 
-  PhoneNumberVerification existingPhoneNumberVerification = PhoneNumberVerification.none;
-  ValueNotifier<PhoneNumberVerification> valueNotifierExistingPhoneNumberVerification =
+  PhoneNumberVerification existingPhoneNumberVerification =
+      PhoneNumberVerification.none;
+  ValueNotifier<PhoneNumberVerification>
+      valueNotifierExistingPhoneNumberVerification =
       ValueNotifier<PhoneNumberVerification>(
     PhoneNumberVerification.none,
   );
@@ -71,7 +78,7 @@ class _ChangePhoneNumberPageController extends State<ChangePhoneNumberPage> {
       nsn: widget.phoneNumberWithoutDialCode,
     );
     existingPhoneNumberController = PhoneController(
-      existingPhoneNumber,
+      initialValue: existingPhoneNumber,
     );
     existingPhoneNumberController.value = existingPhoneNumber;
 
@@ -80,9 +87,9 @@ class _ChangePhoneNumberPageController extends State<ChangePhoneNumberPage> {
       nsn: '',
     );
     phoneNumberController = PhoneController(
-      phoneNumber,
+      initialValue: phoneNumber,
     );
-    phoneNumberController.value = phoneNumber;
+    phoneNumberController?.value = phoneNumber;
     defaultCountry = IsoCode.values.byName(country);
   }
 
@@ -107,12 +114,18 @@ class _ChangePhoneNumberPageController extends State<ChangePhoneNumberPage> {
   void onExistingPhoneNumberChanged(
     PhoneNumber? phoneNumbers,
   ) {
-    existingPhoneNumber = phoneNumbers;
-    userExistingEnteredPhoneNumber = '+${phoneNumbers?.countryCode} ${phoneNumbers?.getFormattedNsn().trim()}';
-    String countryDialCode = '+${phoneNumbers?.countryCode ?? '+966'}';
-    String country = phoneNumbers?.isoCode.name ?? 'SA';
-    existingPhoneNumberTextEditingController.text = userExistingEnteredPhoneNumber;
-    //setState(() {});
+    if(phoneNumbers!=null) {
+      existingPhoneNumber = phoneNumbers;
+      userExistingEnteredPhoneNumber =
+      '+${phoneNumbers?.countryCode} ${phoneNumbers?.formatNsn(
+        isoCode: phoneNumbers.isoCode,
+      ).trim()}';
+      String countryDialCode = '+${phoneNumbers?.countryCode ?? '+966'}';
+      String country = phoneNumbers?.isoCode.name ?? 'SA';
+      existingPhoneNumberTextEditingController.text =
+          userExistingEnteredPhoneNumber;
+      //setState(() {});
+    }
   }
 
   void existingPhoneNumberValidationChanged(
@@ -120,35 +133,50 @@ class _ChangePhoneNumberPageController extends State<ChangePhoneNumberPage> {
     PhoneNumber? phoneNumbers,
     PhoneController phoneNumberControllers,
   ) {
-    existingPhoneNumberValidation = value;
-    existingPhoneNumber = phoneNumbers;
-    existingPhoneNumberController = phoneNumberControllers;
-    if (existingPhoneNumberValidation != null && existingPhoneNumberValidation!.isNotEmpty) {
-      existingPhoneNumberVerification = PhoneNumberVerification.invalid;
-      valueNotifierExistingPhoneNumberVerification.value = PhoneNumberVerification.invalid;
-    } else {
-      if (existingPhoneNumberValidation == null &&
-          existingPhoneNumberController.value != null &&
-          existingPhoneNumberController.value!.getFormattedNsn().trim().isNotEmpty) {
-        existingPhoneNumberVerification = PhoneNumberVerification.valid;
-        valueNotifierExistingPhoneNumberVerification.value = PhoneNumberVerification.valid;
+    if(phoneNumbers!=null) {
+      existingPhoneNumberValidation = value;
+      existingPhoneNumber = phoneNumbers;
+      existingPhoneNumberController = phoneNumberControllers;
+      if (existingPhoneNumberValidation != null &&
+          existingPhoneNumberValidation!.isNotEmpty) {
+        existingPhoneNumberVerification = PhoneNumberVerification.invalid;
+        valueNotifierExistingPhoneNumberVerification.value =
+            PhoneNumberVerification.invalid;
       } else {
-        existingPhoneNumberVerification = PhoneNumberVerification.none;
-        valueNotifierExistingPhoneNumberVerification.value = PhoneNumberVerification.none;
+        if (existingPhoneNumberValidation == null &&
+            existingPhoneNumberController.value
+                .formatNsn(
+              isoCode: existingPhoneNumber.isoCode,
+            )
+                .trim()
+                .isNotEmpty) {
+          existingPhoneNumberVerification = PhoneNumberVerification.valid;
+          valueNotifierExistingPhoneNumberVerification.value =
+              PhoneNumberVerification.valid;
+        } else {
+          existingPhoneNumberVerification = PhoneNumberVerification.none;
+          valueNotifierExistingPhoneNumberVerification.value =
+              PhoneNumberVerification.none;
+        }
       }
+      //setState(() {});
     }
-    //setState(() {});
   }
 
   void onPhoneNumberChanged(
     PhoneNumber? phoneNumbers,
   ) {
-    phoneNumber = phoneNumbers;
-    userNewEnteredPhoneNumber = '+${phoneNumbers?.countryCode} ${phoneNumbers?.getFormattedNsn().trim()}';
-    String countryDialCode = '+${phoneNumbers?.countryCode ?? '+966'}';
-    String country = phoneNumbers?.isoCode.name ?? 'SA';
-    newPhoneNumberTextEditingController.text = userNewEnteredPhoneNumber;
-    //setState(() {});
+    if(phoneNumbers!=null) {
+      phoneNumber = phoneNumbers;
+      userNewEnteredPhoneNumber =
+      '+${phoneNumbers?.countryCode} ${phoneNumbers?.formatNsn(
+        isoCode: phoneNumbers.isoCode,
+      ).trim()}';
+      String countryDialCode = '+${phoneNumbers?.countryCode ?? '+966'}';
+      String country = phoneNumbers?.isoCode.name ?? 'SA';
+      newPhoneNumberTextEditingController.text = userNewEnteredPhoneNumber;
+      //setState(() {});
+    }
   }
 
   void phoneNumberValidationChanged(
@@ -156,24 +184,32 @@ class _ChangePhoneNumberPageController extends State<ChangePhoneNumberPage> {
     PhoneNumber? phoneNumbers,
     PhoneController phoneNumberControllers,
   ) {
-    phoneNumberValidation = value;
-    phoneNumber = phoneNumbers;
-    phoneNumberController = phoneNumberControllers;
-    if (phoneNumberValidation != null && phoneNumberValidation!.isNotEmpty) {
-      phoneNumberVerification = PhoneNumberVerification.invalid;
-      valueNotifierPhoneNumberVerification.value = PhoneNumberVerification.invalid;
-    } else {
-      if (phoneNumberValidation == null &&
-          phoneNumberControllers.value != null &&
-          phoneNumberControllers.value!.getFormattedNsn().trim().isNotEmpty) {
-        phoneNumberVerification = PhoneNumberVerification.valid;
-        valueNotifierPhoneNumberVerification.value = PhoneNumberVerification.valid;
+    if(phoneNumbers!=null) {
+      phoneNumberValidation = value;
+      phoneNumber = phoneNumbers;
+      phoneNumberController = phoneNumberControllers;
+      if (phoneNumberValidation != null && phoneNumberValidation!.isNotEmpty) {
+        phoneNumberVerification = PhoneNumberVerification.invalid;
+        valueNotifierPhoneNumberVerification.value =
+            PhoneNumberVerification.invalid;
       } else {
-        phoneNumberVerification = PhoneNumberVerification.none;
-        valueNotifierPhoneNumberVerification.value = PhoneNumberVerification.none;
+        if (phoneNumberValidation == null &&
+            phoneNumberControllers.value != null &&
+            phoneNumberControllers.value!
+                .getFormattedNsn()
+                .trim()
+                .isNotEmpty) {
+          phoneNumberVerification = PhoneNumberVerification.valid;
+          valueNotifierPhoneNumberVerification.value =
+              PhoneNumberVerification.valid;
+        } else {
+          phoneNumberVerification = PhoneNumberVerification.none;
+          valueNotifierPhoneNumberVerification.value =
+              PhoneNumberVerification.none;
+        }
       }
+      //setState(() {});
     }
-    //setState(() {});
   }
 
   void onPhoneNumberSaved(PhoneNumber? value) {}
@@ -188,13 +224,17 @@ class _ChangePhoneNumberPageController extends State<ChangePhoneNumberPage> {
       final otpResult = await context.push(
         Routes.COMMON_OTP_VERIFICATION_PAGE,
         extra: {
-          'newPhoneNumber':'${dialCode} ${phoneNumber?.getFormattedNsn().trim()}',
-          'existingPhoneNumber':'${widget.dialCode} ${existingPhoneNumber?.getFormattedNsn().trim()}',
-          'existingPhoneNumberWithoutDialCode':existingPhoneNumber?.getFormattedNsn().trim(),
-          'newPhoneNumberWithoutDialCode':existingPhoneNumber?.getFormattedNsn().trim(),
-          'country':country,
-          'dialCode':dialCode,
-          'id':widget.id,
+          'newPhoneNumber':
+              '${dialCode} ${phoneNumber?.getFormattedNsn().trim()}',
+          'existingPhoneNumber':
+              '${widget.dialCode} ${existingPhoneNumber?.getFormattedNsn().trim()}',
+          'existingPhoneNumberWithoutDialCode':
+              existingPhoneNumber?.getFormattedNsn().trim(),
+          'newPhoneNumberWithoutDialCode':
+              existingPhoneNumber?.getFormattedNsn().trim(),
+          'country': country,
+          'dialCode': dialCode,
+          'id': widget.id,
         },
       );
       return;
@@ -206,14 +246,16 @@ class _ChangePhoneNumberPageController extends State<ChangePhoneNumberPage> {
   Widget build(BuildContext context) => _ChangePhoneNumberPageView(this);
 }
 
-class _ChangePhoneNumberPageView extends WidgetView<ChangePhoneNumberPage, _ChangePhoneNumberPageController> {
+class _ChangePhoneNumberPageView extends WidgetView<ChangePhoneNumberPage,
+    _ChangePhoneNumberPageController> {
   const _ChangePhoneNumberPageView(super.state);
 
   @override
   Widget build(BuildContext context) {
     final MediaQueryData media = MediaQuery.of(context);
     final double margins = GlobalApp.responsiveInsets(media.size.width);
-    final double topPadding = margins; //media.padding.top + kToolbarHeight + margins; //margins * 1.5;
+    final double topPadding =
+        margins; //media.padding.top + kToolbarHeight + margins; //margins * 1.5;
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: FlexColorScheme.themedSystemNavigationBar(
         context,
@@ -239,12 +281,16 @@ class _ChangePhoneNumberPageView extends WidgetView<ChangePhoneNumberPage, _Chan
             from: context.width / 2 - 60,
             duration: const Duration(milliseconds: 500),
             child: Directionality(
-              textDirection: serviceLocator<LanguageController>().targetTextDirection,
+              textDirection:
+                  serviceLocator<LanguageController>().targetTextDirection,
               child: PageBody(
                 controller: state.scrollController,
                 constraints: BoxConstraints(
                   minWidth: 1000,
-                  minHeight: media.size.height - (media.padding.top + kToolbarHeight + media.padding.bottom),
+                  minHeight: media.size.height -
+                      (media.padding.top +
+                          kToolbarHeight +
+                          media.padding.bottom),
                 ),
                 padding: EdgeInsetsDirectional.only(
                   top: topPadding,
@@ -265,39 +311,52 @@ class _ChangePhoneNumberPageView extends WidgetView<ChangePhoneNumberPage, _Chan
                               //controller: scrollController,
                               mainAxisSize: MainAxisSize.min,
                               crossAxisAlignment: CrossAxisAlignment.stretch,
-                              textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                              textDirection:
+                                  serviceLocator<LanguageController>()
+                                      .targetTextDirection,
                               children: [
-                                const AnimatedGap(8, duration: Duration(milliseconds: 500)),
+                                const AnimatedGap(8,
+                                    duration: Duration(milliseconds: 500)),
                                 const Align(
                                   alignment: AlignmentDirectional.topStart,
                                   child: AppLogo(),
                                 ),
-                                const AnimatedGap(16, duration: Duration(milliseconds: 500)),
+                                const AnimatedGap(16,
+                                    duration: Duration(milliseconds: 500)),
                                 Wrap(
-                                  textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                  textDirection:
+                                      serviceLocator<LanguageController>()
+                                          .targetTextDirection,
                                   children: [
                                     Text(
                                       'Change your phone number',
                                       style: context.headlineSmall!.copyWith(
                                           //color: const Color.fromRGBO(127, 129, 132, 1),
                                           ),
-                                      textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                      textDirection:
+                                          serviceLocator<LanguageController>()
+                                              .targetTextDirection,
                                       maxLines: 1,
                                       softWrap: true,
                                       overflow: TextOverflow.ellipsis,
                                     ).translate(),
                                   ],
                                 ),
-                                const AnimatedGap(8, duration: Duration(milliseconds: 500)),
+                                const AnimatedGap(8,
+                                    duration: Duration(milliseconds: 500)),
                                 Wrap(
-                                  textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                  textDirection:
+                                      serviceLocator<LanguageController>()
+                                          .targetTextDirection,
                                   children: [
                                     Text(
                                       'Make sure your existing and new phone is valid, and it will be verify by OTP',
                                       style: context.bodySmall!.copyWith(
                                           //color: const Color.fromRGBO(127, 129, 132, 1),
                                           ),
-                                      textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                      textDirection:
+                                          serviceLocator<LanguageController>()
+                                              .targetTextDirection,
                                       maxLines: 2,
                                       softWrap: true,
                                       overflow: TextOverflow.ellipsis,
@@ -309,9 +368,12 @@ class _ChangePhoneNumberPageView extends WidgetView<ChangePhoneNumberPage, _Chan
                                   duration: Duration(milliseconds: 500),
                                 ),
                                 Directionality(
-                                  textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                  textDirection:
+                                      serviceLocator<LanguageController>()
+                                          .targetTextDirection,
                                   child: PhoneNumberFieldWidget(
-                                    key: const Key('existing-phone-number-widget'),
+                                    key: const Key(
+                                        'existing-phone-number-widget'),
                                     isCountryChipPersistent: false,
                                     outlineBorder: true,
                                     shouldFormat: true,
@@ -322,7 +384,8 @@ class _ChangePhoneNumberPageView extends WidgetView<ChangePhoneNumberPage, _Chan
                                       labelText: 'Existing mobile number',
                                       //hintText: 'Enter driver number',
                                       alignLabelWithHint: true,
-                                      errorText: state.existingPhoneNumberValidation,
+                                      errorText:
+                                          state.existingPhoneNumberValidation,
                                       /*suffixIcon: PhoneNumberValidateWidget(
                                                     phoneNumberVerification: value,
                                                   ),*/
@@ -333,15 +396,21 @@ class _ChangePhoneNumberPageView extends WidgetView<ChangePhoneNumberPage, _Chan
                                     style: context.bodyLarge,
                                     showFlagInInput: false,
                                     countryCodeStyle: context.bodyLarge,
-                                    initialPhoneNumberValue: state.existingPhoneNumber,
+                                    initialPhoneNumberValue:
+                                        state.existingPhoneNumber,
                                     //validator: state.phoneNumberValidator,
                                     //suffixIcon: PhoneNumberValidateWidget(phoneNumberVerification: value),
-                                    onPhoneNumberChanged: state.onExistingPhoneNumberChanged,
-                                    phoneNumberValidator: state.phoneNumberValidator,
-                                    onPhoneNumberSaved: state.onPhoneNumberSaved,
-                                    phoneNumberValidationChanged: state.existingPhoneNumberValidationChanged,
+                                    onPhoneNumberChanged:
+                                        state.onExistingPhoneNumberChanged,
+                                    phoneNumberValidator:
+                                        state.phoneNumberValidator,
+                                    onPhoneNumberSaved:
+                                        state.onPhoneNumberSaved,
+                                    phoneNumberValidationChanged: state
+                                        .existingPhoneNumberValidationChanged,
                                     haveStateManagement: false,
-                                    keyboardType: const TextInputType.numberWithOptions(),
+                                    keyboardType:
+                                        const TextInputType.numberWithOptions(),
                                     textInputAction: TextInputAction.next,
                                   ),
                                 ),
@@ -350,7 +419,9 @@ class _ChangePhoneNumberPageView extends WidgetView<ChangePhoneNumberPage, _Chan
                                   duration: Duration(milliseconds: 500),
                                 ),
                                 Directionality(
-                                  textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                  textDirection:
+                                      serviceLocator<LanguageController>()
+                                          .targetTextDirection,
                                   child: PhoneNumberFieldWidget(
                                     key: const Key('new-phone-number-widget'),
                                     isCountryChipPersistent: false,
@@ -376,12 +447,17 @@ class _ChangePhoneNumberPageView extends WidgetView<ChangePhoneNumberPage, _Chan
                                     initialPhoneNumberValue: state.phoneNumber,
                                     //validator: state.phoneNumberValidator,
                                     //suffixIcon: PhoneNumberValidateWidget(phoneNumberVerification: value),
-                                    onPhoneNumberChanged: state.onPhoneNumberChanged,
-                                    phoneNumberValidator: state.phoneNumberValidator,
-                                    onPhoneNumberSaved: state.onPhoneNumberSaved,
-                                    phoneNumberValidationChanged: state.phoneNumberValidationChanged,
+                                    onPhoneNumberChanged:
+                                        state.onPhoneNumberChanged,
+                                    phoneNumberValidator:
+                                        state.phoneNumberValidator,
+                                    onPhoneNumberSaved:
+                                        state.onPhoneNumberSaved,
+                                    phoneNumberValidationChanged:
+                                        state.phoneNumberValidationChanged,
                                     haveStateManagement: false,
-                                    keyboardType: const TextInputType.numberWithOptions(),
+                                    keyboardType:
+                                        const TextInputType.numberWithOptions(),
                                     textInputAction: TextInputAction.done,
                                   ),
                                 ),
@@ -399,7 +475,8 @@ class _ChangePhoneNumberPageView extends WidgetView<ChangePhoneNumberPage, _Chan
                         hasScrollBody: false,
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.stretch,
-                          textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                          textDirection: serviceLocator<LanguageController>()
+                              .targetTextDirection,
                           children: [
                             const Spacer(),
                             Row(
@@ -413,12 +490,16 @@ class _ChangePhoneNumberPageView extends WidgetView<ChangePhoneNumberPage, _Chan
                                     onPressed: state.onSaveAndNext,
                                     style: ElevatedButton.styleFrom(
                                       //minimumSize: Size(180, 40),
-                                      disabledBackgroundColor: const Color.fromRGBO(255, 219, 208, 1),
+                                      disabledBackgroundColor:
+                                          const Color.fromRGBO(
+                                              255, 219, 208, 1),
                                       disabledForegroundColor: Colors.white,
                                     ),
                                     child: Text(
                                       'Update & Next',
-                                      textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                      textDirection:
+                                          serviceLocator<LanguageController>()
+                                              .targetTextDirection,
                                     ).translate(),
                                   ),
                                 ),

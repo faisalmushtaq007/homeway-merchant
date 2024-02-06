@@ -41,10 +41,15 @@ class SendOtpEntity extends INetworkModel<SendOtpEntity> {
         'user_type': user_type,
         'isoCode': isoCode,
         'db': db,
-        //'phoneNumberWithoutFormat': phoneNumberWithoutFormat,
-        //'phoneNumberWithFormat': phoneNumberWithFormat,
+        'phoneNumberWithoutFormat': phoneNumberWithoutFormat,
+        'phoneNumberWithFormat': phoneNumberWithFormat,
+        'phone_number': phoneNumberWithoutFormat,
+      };
+
+  Map<String, dynamic> toTwilio() => <String, dynamic>{
+        'phone_number': mobile,
       };
 
   @override
-  Map<String, dynamic> toJson() => toMap();
+  Map<String, dynamic> toJson() => toTwilio();
 }

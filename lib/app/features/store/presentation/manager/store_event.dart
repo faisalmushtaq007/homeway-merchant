@@ -405,14 +405,14 @@ class GetAllDriversPagination extends StoreEvent {
 
   @override
   List<Object?> get hashParameters => [
-    pageKey,
-    searchText,
-    pageSize,
-    endTimeStamp,
-    filter,
-    sorting,
-    startTimeStamp,
-  ];
+        pageKey,
+        searchText,
+        pageSize,
+        endTimeStamp,
+        filter,
+        sorting,
+        startTimeStamp,
+      ];
 }
 
 class GetAllStoresPagination extends StoreEvent {
@@ -439,13 +439,12 @@ class GetAllStoresPagination extends StoreEvent {
 
   @override
   List<Object?> get hashParameters => [
-    pageKey,
-    searchText,
-    pageSize,
-    endTimeStamp,
-    filter,
-    sorting,
-    startTimeStamp,
-  ];
+        pageKey,
+        searchText,
+        pageSize,
+        endTimeStamp,
+        filter,
+        sorting,
+        startTimeStamp,
+      ];
 }
-

@@ -102,73 +102,66 @@ class _OrderTypeWidgetView
           padding: EdgeInsetsDirectional.zero,
           mainAxisSize: MainAxisSize.min,
           textDirection:
-          serviceLocator<LanguageController>()
-              .targetTextDirection,
+              serviceLocator<LanguageController>().targetTextDirection,
           physics: const BouncingScrollPhysics(),
-          constraintsBuilder: (constraints) =>
-              BoxConstraints(
-                minWidth: constraints.maxWidth,
-              ),
+          constraintsBuilder: (constraints) => BoxConstraints(
+            minWidth: constraints.maxWidth,
+          ),
           flexible: false,
           children: List.generate(
               state.listOfOrderTypeInfo.length,
-                  (index) => Builder(
-                builder: (context) {
-                  return Padding(
-                    padding:
-                    const EdgeInsetsDirectional
-                        .only(start: 8, end: 8.0),
-                    child: ElevatedButton(
-                      key: ValueKey(index),
-                      style: ElevatedButton.styleFrom(
-                        shape: RoundedRectangleBorder(
-                          borderRadius:
-                          BorderRadiusDirectional
-                              .circular(10),
-                        ),
-                        minimumSize: Size(74, 42),
-                        maximumSize: Size(104, 42),
-                        //fixedSize: Size(104, 42),
-                        backgroundColor:
-                        (state.selectedIndex ==
-                            index)
-                            ? flexExt.FlexStringExtensions('#2C73D2').toColor
-                            : flexExt.FlexStringExtensions('#D4E5ED').toColor,
-                        //disabledBackgroundColor: '#B0A8B9'.toColor,
-                      ),
-                      onPressed: () {
-                        state.selectOrderTypeInfo(index);
-                      },
-                      child: Text.rich(
-                        TextSpan(
-                          text: '${state.listOfOrderTypeInfo[index].title} ',
-                          children: const [
+              (index) => Builder(
+                    builder: (context) {
+                      return Padding(
+                        padding: const EdgeInsetsDirectional.only(
+                            start: 8, end: 8.0),
+                        child: ElevatedButton(
+                          key: ValueKey(index),
+                          style: ElevatedButton.styleFrom(
+                            shape: RoundedRectangleBorder(
+                              borderRadius:
+                                  BorderRadiusDirectional.circular(10),
+                            ),
+                            minimumSize: Size(74, 42),
+                            maximumSize: Size(104, 42),
+                            //fixedSize: Size(104, 42),
+                            backgroundColor: (state.selectedIndex == index)
+                                ? flexExt.FlexStringExtensions('#2C73D2')
+                                    .toColor
+                                : flexExt.FlexStringExtensions('#D4E5ED')
+                                    .toColor,
+                            //disabledBackgroundColor: '#B0A8B9'.toColor,
+                          ),
+                          onPressed: () {
+                            state.selectOrderTypeInfo(index);
+                          },
+                          child: Text.rich(
                             TextSpan(
-                              text: '3',
-                              style: TextStyle(
-                                fontWeight: FontWeight.w600,
-                              ),
-                            )
-                          ],
+                              text:
+                                  '${state.listOfOrderTypeInfo[index].title} ',
+                              children: const [
+                                TextSpan(
+                                  text: '3',
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                )
+                              ],
+                            ),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            softWrap: true,
+                            textAlign: TextAlign.center,
+                            style: context.bodyMedium!.copyWith(
+                              color: state.selectedIndex == index
+                                  ? Colors.white
+                                  : Colors.black,
+                            ),
+                          ),
                         ),
-                        maxLines: 1,
-                        overflow:
-                        TextOverflow.ellipsis,
-                        softWrap: true,
-                        textAlign: TextAlign.center,
-                        style: context.bodyMedium!
-                            .copyWith(
-                            color:
-                            state.selectedIndex ==
-                                index
-                                ? Colors.white
-                                : Colors
-                                .black,),
-                      ),
-                    ),
-                  );
-                },
-              )),
+                      );
+                    },
+                  )),
         ),
       ),
     );

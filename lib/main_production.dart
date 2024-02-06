@@ -4,7 +4,6 @@ import 'package:flutter/services.dart';
 import 'package:homemakers_merchant/bootup/bootstrap.dart';
 import 'package:homemakers_merchant/firebase_options_dev.dart';
 
-
 RootIsolateToken rootIsolateToken = RootIsolateToken.instance!;
 Future<void> main() async {
   RootIsolateToken rootIsolateToken = RootIsolateToken.instance!;

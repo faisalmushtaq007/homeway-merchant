@@ -152,9 +152,7 @@ class _StoreCardWidgetState extends State<StoreCardWidget> {
                 }
                 await Future.delayed(const Duration(milliseconds: 500), () {});
                 widget.refreshStoreList();
-                setState(() {
-
-                });
+                setState(() {});
               }
               return;
             }
@@ -172,8 +170,7 @@ class _StoreCardWidgetState extends State<StoreCardWidget> {
           Expanded(
             child: Text(
               title,
-              style: context.labelLarge!.copyWith(
-              ),
+              style: context.labelLarge!.copyWith(),
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
               softWrap: true,
@@ -209,7 +206,7 @@ class _StoreCardWidgetState extends State<StoreCardWidget> {
           // alignment of image
           //alignment: Alignment.center,
           // indicates where image will be loaded from, types are [network, asset,file]
-          imageType:findImageType(widget.storeEntity.storeImagePath),
+          imageType: findImageType(widget.storeEntity.storeImagePath),
           // indicates what shape you would like to be with image [rectangle, oval,circle or none]
           imageShape: ImageShape.rectangle,
           // image default box fit
@@ -238,7 +235,8 @@ class _StoreCardWidgetState extends State<StoreCardWidget> {
             color: Colors.white,
             fontSize: 16,
           ),
-          placeholderBackgroundColor: context.colorScheme.primary.withOpacity(0.5),
+          placeholderBackgroundColor:
+              context.colorScheme.primary.withOpacity(0.5),
         ),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadiusDirectional.circular(10),
@@ -246,17 +244,18 @@ class _StoreCardWidgetState extends State<StoreCardWidget> {
         ),
         title: Text(
           widget.storeEntity.storeName,
-          style: context.titleMedium!
-              .copyWith(fontWeight: FontWeight.w500),
-          textDirection: serviceLocator<LanguageController>().targetTextDirection,
+          style: context.titleMedium!.copyWith(fontWeight: FontWeight.w500),
+          textDirection:
+              serviceLocator<LanguageController>().targetTextDirection,
           maxLines: 3,
           softWrap: true,
           overflow: TextOverflow.ellipsis,
         ).translate(),
         subtitle: Text(
           widget.storeEntity.storeAddress?.address?.area ?? '',
-          style:context.labelMedium!.copyWith(fontWeight: FontWeight.w400),
-          textDirection: serviceLocator<LanguageController>().targetTextDirection,
+          style: context.labelMedium!.copyWith(fontWeight: FontWeight.w400),
+          textDirection:
+              serviceLocator<LanguageController>().targetTextDirection,
           maxLines: 3,
           softWrap: true,
           overflow: TextOverflow.ellipsis,
@@ -266,7 +265,8 @@ class _StoreCardWidgetState extends State<StoreCardWidget> {
         onTap: () {
           setState(() {
             widget.listOfAllSelectedStoreEntities.contains(widget.storeEntity)
-                ? widget.listOfAllSelectedStoreEntities.remove(widget.storeEntity)
+                ? widget.listOfAllSelectedStoreEntities
+                    .remove(widget.storeEntity)
                 : widget.listOfAllSelectedStoreEntities.add(widget.storeEntity);
             widget.onSelectionChanged
                 ?.call(widget.listOfAllSelectedStoreEntities);

@@ -6,7 +6,7 @@ class IconStyle {
     this.withBackground = true,
     this.backgroundColor = Colors.blue,
     this.borderRadius = 8,
-  }) ;
+  });
   final Color? iconsColor;
   final bool? withBackground;
   final Color? backgroundColor;

@@ -6,7 +6,7 @@ class BusinessDocumentPage extends StatefulWidget {
     this.currentIndex = -1,
     this.hasEditBusinessDocument = false,
     this.businessDocumentUploadedEntities = const [],
-    this.selectionUseCase=SelectionUseCase.saveAndNext,
+    this.selectionUseCase = SelectionUseCase.saveAndNext,
   });
 
   final int currentIndex;

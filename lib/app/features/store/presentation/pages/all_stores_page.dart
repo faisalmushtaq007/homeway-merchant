@@ -20,7 +20,7 @@ class _AllStoresPageState extends State<AllStoresPage> {
   ResultState<StoreEntity> resultState = const ResultState.empty();
   WidgetState<StoreEntity> widgetState = const WidgetState<StoreEntity>.none();
   final TextEditingController searchTextEditingController =
-  TextEditingController();
+      TextEditingController();
   // Pagination
   int pageSize = 10;
   int pageKey = 0;
@@ -64,23 +64,23 @@ class _AllStoresPageState extends State<AllStoresPage> {
 
   Future<void> _fetchPage(int pageKey,
       {int pageSize = 10,
-        String? searchItem,
-        String? filter,
-        String? sort}) async {
+      String? searchItem,
+      String? filter,
+      String? sort}) async {
     /*if (pageKey == 0) {
       _pagingController.itemList = [];
     }*/
     int sectionNumber = pageKey ~/ pageSize;
     try {
       context.read<StoreBloc>().add(
-        GetAllStoresPagination(
-          pageKey: pageKey,
-          pageSize: pageSize,
-          searchText: searchText??searchItem,
-          filter: filtering ?? filter,
-          sorting: sorting ?? sort,
-        ),
-      );
+            GetAllStoresPagination(
+              pageKey: pageKey,
+              pageSize: pageSize,
+              searchText: searchText ?? searchItem,
+              filter: filtering ?? filter,
+              sorting: sorting ?? sort,
+            ),
+          );
       appLog.i('Fetch Store');
       return;
     } catch (error) {
@@ -118,12 +118,12 @@ class _AllStoresPageState extends State<AllStoresPage> {
 
   Future<void> _updateSearchTerm(String searchTerm) async {
     searchText = searchTerm;
-    if (_pagingController.value
-        .itemList ==
-        null ||
-        _pagingController.value.itemList
-            .isEmptyOrNull) {
-      await _fetchPage(0, searchItem: searchTerm,);
+    if (_pagingController.value.itemList == null ||
+        _pagingController.value.itemList.isEmptyOrNull) {
+      await _fetchPage(
+        0,
+        searchItem: searchTerm,
+      );
     } else {
       _pagingController.refresh();
     }
@@ -154,7 +154,7 @@ class _AllStoresPageState extends State<AllStoresPage> {
             title: Text(
               'All Stores',
               textDirection:
-              serviceLocator<LanguageController>().targetTextDirection,
+                  serviceLocator<LanguageController>().targetTextDirection,
             ),
             actions: const [
               NotificationIconWidget(),
@@ -185,7 +185,8 @@ class _AllStoresPageState extends State<AllStoresPage> {
                       {
                         try {
                           final isLastPage =
-                              storeListenerState.storeEntities.length < pageSize;
+                              storeListenerState.storeEntities.length <
+                                  pageSize;
                           if (isLastPage) {
                             _pagingController.appendLastPage(
                                 storeListenerState.storeEntities.toList());
@@ -201,7 +202,8 @@ class _AllStoresPageState extends State<AllStoresPage> {
                             context: context,
                             data: _pagingController.value.itemList ?? [],
                           );
-                          storeEntities = _pagingController.value.itemList ?? [];
+                          storeEntities =
+                              _pagingController.value.itemList ?? [];
                         } catch (error) {
                           _pagingController.error = error;
                           widgetState = WidgetState<StoreEntity>.error(
@@ -271,16 +273,17 @@ class _AllStoresPageState extends State<AllStoresPage> {
                                     storeEntities = List<StoreEntity>.from(
                                         state.storeEntities.toList());
                                     widgetState =
-                                    WidgetState<StoreEntity>.allData(
+                                        WidgetState<StoreEntity>.allData(
                                       context: context,
                                     );
                                   }
-                              //case GetEmptyStoreState(:final error):
+                                //case GetEmptyStoreState(:final error):
                                 case GetEmptyStoreState():
                                   {
                                     storeEntities = [];
                                     storeEntities.clear();
-                                    widgetState = WidgetState<StoreEntity>.empty(
+                                    widgetState =
+                                        WidgetState<StoreEntity>.empty(
                                       context: context,
                                       message: state.message,
                                     );
@@ -288,7 +291,7 @@ class _AllStoresPageState extends State<AllStoresPage> {
                                 case StoreLoadingState():
                                   {
                                     widgetState =
-                                    WidgetState<StoreEntity>.loading(
+                                        WidgetState<StoreEntity>.loading(
                                       context: context,
                                       isLoading: state.isLoading,
                                       message: state.message,
@@ -298,7 +301,7 @@ class _AllStoresPageState extends State<AllStoresPage> {
                                   {
                                     storeEntities.add(state.storeEntity);
                                     widgetState =
-                                    WidgetState<StoreEntity>.allData(
+                                        WidgetState<StoreEntity>.allData(
                                       context: context,
                                     );
                                   }
@@ -312,37 +315,41 @@ class _AllStoresPageState extends State<AllStoresPage> {
                                     : MainAxisAlignment.start,
                                 crossAxisAlignment: CrossAxisAlignment.stretch,
                                 textDirection:
-                                serviceLocator<LanguageController>()
-                                    .targetTextDirection,
+                                    serviceLocator<LanguageController>()
+                                        .targetTextDirection,
                                 children: [
                                   AnimatedCrossFade(
                                     firstChild: Column(
                                       mainAxisSize: MainAxisSize.min,
-                                      mainAxisAlignment: MainAxisAlignment.start,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
                                       crossAxisAlignment:
-                                      CrossAxisAlignment.stretch,
+                                          CrossAxisAlignment.stretch,
                                       textDirection:
-                                      serviceLocator<LanguageController>()
-                                          .targetTextDirection,
+                                          serviceLocator<LanguageController>()
+                                              .targetTextDirection,
                                       children: [
                                         const AnimatedGap(6,
                                             duration:
-                                            Duration(milliseconds: 500)),
+                                                Duration(milliseconds: 500)),
                                         IntrinsicHeight(
                                           child: Row(
                                             mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
+                                                MainAxisAlignment.spaceBetween,
                                             textDirection: serviceLocator<
-                                                LanguageController>()
+                                                    LanguageController>()
                                                 .targetTextDirection,
                                             children: [
-                                              Expanded(child:  AppSearchInputSliverWidget(
-                                                key: const Key('all-store-search-field-widget'),
-                                                onChanged: _updateSearchTerm,
-                                                height: 48,
-                                                hintText: 'Search Store',
-
-                                              ),),
+                                              Expanded(
+                                                child:
+                                                    AppSearchInputSliverWidget(
+                                                  key: const Key(
+                                                      'all-store-search-field-widget'),
+                                                  onChanged: _updateSearchTerm,
+                                                  height: 48,
+                                                  hintText: 'Search Store',
+                                                ),
+                                              ),
                                               /*Expanded(
                                                 child: AppTextFieldWidget(
                                                   controller:
@@ -373,21 +380,24 @@ class _AllStoresPageState extends State<AllStoresPage> {
                                                 height: 46,
                                                 child: OutlinedButton(
                                                   onPressed: () {},
-                                                  style: OutlinedButton.styleFrom(
-                                                    shape: RoundedRectangleBorder(
+                                                  style:
+                                                      OutlinedButton.styleFrom(
+                                                    shape:
+                                                        RoundedRectangleBorder(
                                                       borderRadius:
-                                                      BorderRadiusDirectional
-                                                          .circular(10),
+                                                          BorderRadiusDirectional
+                                                              .circular(10),
                                                     ),
                                                     side: const BorderSide(
                                                         color: Color.fromRGBO(
                                                             238, 238, 238, 1)),
-                                                    backgroundColor: Colors.white,
+                                                    backgroundColor:
+                                                        Colors.white,
                                                   ),
                                                   child: Icon(
                                                     Icons.filter_list,
                                                     textDirection: serviceLocator<
-                                                        LanguageController>()
+                                                            LanguageController>()
                                                         .targetTextDirection,
                                                     color: context.primaryColor,
                                                   ),
@@ -398,24 +408,24 @@ class _AllStoresPageState extends State<AllStoresPage> {
                                         ),
                                         const AnimatedGap(6,
                                             duration:
-                                            Duration(milliseconds: 500)),
+                                                Duration(milliseconds: 500)),
                                         ListTile(
                                           dense: true,
                                           title: IntrinsicHeight(
                                             child: Row(
                                               textDirection: serviceLocator<
-                                                  LanguageController>()
+                                                      LanguageController>()
                                                   .targetTextDirection,
                                               children: [
                                                 Text(
                                                   'Your Stores',
                                                   style: context.labelLarge!
                                                       .copyWith(
-                                                      fontWeight:
-                                                      FontWeight.w500,
-                                                      fontSize: 18),
+                                                          fontWeight:
+                                                              FontWeight.w500,
+                                                          fontSize: 18),
                                                   textDirection: serviceLocator<
-                                                      LanguageController>()
+                                                          LanguageController>()
                                                       .targetTextDirection,
                                                 ),
                                                 const AnimatedGap(3,
@@ -424,21 +434,21 @@ class _AllStoresPageState extends State<AllStoresPage> {
                                                 Card(
                                                   shape: RoundedRectangleBorder(
                                                     borderRadius:
-                                                    BorderRadiusDirectional
-                                                        .circular(20),
+                                                        BorderRadiusDirectional
+                                                            .circular(20),
                                                   ),
                                                   child: Padding(
                                                     padding:
-                                                    const EdgeInsetsDirectional
-                                                        .only(
-                                                        start: 12.0,
-                                                        end: 12,
-                                                        top: 4,
-                                                        bottom: 4),
+                                                        const EdgeInsetsDirectional
+                                                            .only(
+                                                            start: 12.0,
+                                                            end: 12,
+                                                            top: 4,
+                                                            bottom: 4),
                                                     child: Text(
-                                                      '${_pagingController.value.itemList?.length??0}',
+                                                      '${_pagingController.value.itemList?.length ?? 0}',
                                                       textDirection: serviceLocator<
-                                                          LanguageController>()
+                                                              LanguageController>()
                                                           .targetTextDirection,
                                                     ),
                                                   ),
@@ -451,17 +461,18 @@ class _AllStoresPageState extends State<AllStoresPage> {
                                           horizontalTitleGap: 0,
                                           minLeadingWidth: 0,
                                           contentPadding:
-                                          EdgeInsetsDirectional.symmetric(
-                                              horizontal: 2),
+                                              EdgeInsetsDirectional.symmetric(
+                                                  horizontal: 2),
                                         ),
                                         const AnimatedGap(6,
                                             duration:
-                                            Duration(milliseconds: 500)),
+                                                Duration(milliseconds: 500)),
                                       ],
                                     ),
                                     secondChild: const Offstage(),
                                     duration: const Duration(milliseconds: 500),
-                                    crossFadeState: (_pagingController.value.itemList.isNotNullOrEmpty)
+                                    crossFadeState: (_pagingController
+                                            .value.itemList.isNotNullOrEmpty)
                                         ? CrossFadeState.showFirst
                                         : CrossFadeState.showSecond,
                                   ),
@@ -470,20 +481,21 @@ class _AllStoresPageState extends State<AllStoresPage> {
                                     child: widgetState.maybeWhen(
                                       empty: (context, child, message, data) =>
                                           Center(
-                                            key: const Key(
-                                                'get-all-store-empty-widget'),
-                                            child: Text(
-                                              'No store available or added by you',
-                                              style: context.labelLarge,
-                                              textDirection:
-                                              serviceLocator<LanguageController>()
-                                                  .targetTextDirection,
-                                            ).translate(),
-                                          ),
+                                        key: const Key(
+                                            'get-all-store-empty-widget'),
+                                        child: Text(
+                                          'No store available or added by you',
+                                          style: context.labelLarge,
+                                          textDirection: serviceLocator<
+                                                  LanguageController>()
+                                              .targetTextDirection,
+                                        ).translate(),
+                                      ),
                                       loading:
                                           (context, child, message, isLoading) {
                                         return const Center(
-                                          key: Key('get-all-store-center-widget'),
+                                          key: Key(
+                                              'get-all-store-center-widget'),
                                           child: SizedBox(
                                             width: 48,
                                             height: 48,
@@ -498,38 +510,43 @@ class _AllStoresPageState extends State<AllStoresPage> {
                                             PagedSliverList<int, StoreEntity>(
                                               key: const Key(
                                                   'store-list-pagedSliverList-widget'),
-                                              pagingController: _pagingController,
+                                              pagingController:
+                                                  _pagingController,
                                               builderDelegate:
-                                              PagedChildBuilderDelegate<
-                                                  StoreEntity>(
+                                                  PagedChildBuilderDelegate<
+                                                      StoreEntity>(
                                                 animateTransitions: true,
-                                                itemBuilder: (context, item, index) =>
-                                                    StoreCard(
-                                                      key: ValueKey(index),
-                                                      storeEntity: storeEntities[index],
-                                                      listOfAllStoreEntities:
+                                                itemBuilder:
+                                                    (context, item, index) =>
+                                                        StoreCard(
+                                                  key: ValueKey(index),
+                                                  storeEntity:
+                                                      storeEntities[index],
+                                                  listOfAllStoreEntities:
                                                       storeEntities.toList(),
-                                                      currentIndex: index,
-                                                      refreshStoreList: () {
-                                                        return _updateSearchTerm(searchText??'');
-                                                      },
-                                                    ),
+                                                  currentIndex: index,
+                                                  refreshStoreList: () {
+                                                    return _updateSearchTerm(
+                                                        searchText ?? '');
+                                                  },
+                                                ),
                                               ),
                                             ),
                                           ],
                                         );
-
                                       },
                                       none: () {
                                         return const NoItemAvailableWidget(
                                           key: Key('get-all-store-none-widget'),
-                                          textMessage: 'No store available or added by you',
+                                          textMessage:
+                                              'No store available or added by you',
                                         );
                                       },
                                       orElse: () {
                                         return const NoItemAvailableWidget(
                                           key: Key('get-all-store-else-widget'),
-                                          textMessage: 'No store available or added by you',
+                                          textMessage:
+                                              'No store available or added by you',
                                         );
                                       },
                                     ),
@@ -540,7 +557,7 @@ class _AllStoresPageState extends State<AllStoresPage> {
                                         child: ElevatedButton(
                                           onPressed: () async {
                                             final navigateToSaveStorePage =
-                                            await context.push(
+                                                await context.push(
                                               Routes.SAVE_STORE_PAGE,
                                               extra: {
                                                 'storeEntity': null,
@@ -555,9 +572,9 @@ class _AllStoresPageState extends State<AllStoresPage> {
                                               return;
                                             }
                                             //context.read<AddressBloc>().add(const GetAllAddress());
-                                            if (_pagingController.value
-                                                .itemList ==
-                                                null ||
+                                            if (_pagingController
+                                                        .value.itemList ==
+                                                    null ||
                                                 _pagingController.value.itemList
                                                     .isEmptyOrNull) {
                                               appLog.d(
@@ -573,7 +590,7 @@ class _AllStoresPageState extends State<AllStoresPage> {
                                           child: Text(
                                             'Add Store',
                                             textDirection: serviceLocator<
-                                                LanguageController>()
+                                                    LanguageController>()
                                                 .targetTextDirection,
                                           ).translate(),
                                         ),

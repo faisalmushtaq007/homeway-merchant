@@ -1,8 +1,7 @@
-
-
 part of 'package:homeway_firebase/src/domain/repository/authentication_repository.dart';
 
-class FirebaseAuthenticationRepositoryImpl implements FirebaseAuthenticationRepository {
+class FirebaseAuthenticationRepositoryImpl
+    implements FirebaseAuthenticationRepository {
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
   static const kAutoRetrievalTimeOutDuration = Duration(minutes: 1);
@@ -139,7 +138,7 @@ class FirebaseAuthenticationRepositoryImpl implements FirebaseAuthenticationRepo
         );
       } else {
         final credential = PhoneAuthProvider.credential(
-          verificationId: verificationID??otpVerificationId,
+          verificationId: verificationID ?? otpVerificationId,
           smsCode: otpCode,
         );
         return await _loginUser(
@@ -193,7 +192,7 @@ class FirebaseAuthenticationRepositoryImpl implements FirebaseAuthenticationRepo
       print("TEST_LOG========failure=============>${authException.message}");
     }
 
-    codeSentCallback(String verificationId, int? resendToken) async{
+    codeSentCallback(String verificationId, int? resendToken) async {
       verificationID = verificationId;
       _forceResendingToken = _forceResendingToken;
       codeSent = true;
@@ -245,7 +244,6 @@ class FirebaseAuthenticationRepositoryImpl implements FirebaseAuthenticationRepo
       onError?.call(e, s);
       return false;
     }
-
   }
 
   @override

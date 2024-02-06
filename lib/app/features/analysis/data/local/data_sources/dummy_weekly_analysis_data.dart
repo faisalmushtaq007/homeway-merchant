@@ -8,6 +8,7 @@ Future<WeeklyAnalysisOldEntity> readWeeklyOldAnalysisData() async {
 }
 
 Future<WeeklyAnalysisEntity> readWeeklyAnalysisData() async {
-  final response = await rootBundle.loadString('assets/dummy_weekly_analysis.json');
+  final response =
+      await rootBundle.loadString('assets/dummy_weekly_analysis.json');
   return weeklyAnalysisEntityFromJson(response);
 }

@@ -168,7 +168,7 @@ class _SaveStorePageState extends State<SaveStorePage> {
         nsn: '',
       );
       phoneNumberController = PhoneController(
-        initialPhoneNumberValue,
+        initialValue: initialPhoneNumberValue,
       );
       phoneNumberController.value = initialPhoneNumberValue;
       context.read<StoreBloc>().add(
@@ -187,7 +187,7 @@ class _SaveStorePageState extends State<SaveStorePage> {
               nsn: '',
             );
             phoneNumberController = PhoneController(
-              initialPhoneNumberValue,
+              initialValue:initialPhoneNumberValue,
             );
             phoneNumberController.value = initialPhoneNumberValue;
             userEnteredPhoneNumber =
@@ -500,7 +500,7 @@ class _SaveStorePageState extends State<SaveStorePage> {
                     nsn: userEnteredPhoneNumber,
                   );
                   phoneNumberController = PhoneController(
-                    initialPhoneNumberValue,
+                    initialValue:initialPhoneNumberValue,
                   );
                   phoneNumberController.value = initialPhoneNumberValue;
                   defaultCountry =

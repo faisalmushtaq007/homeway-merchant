@@ -1,7 +1,15 @@
 part of 'package:homemakers_merchant/app/features/store/index.dart';
 
-class GetAllStorePaginationUseCase extends PaginationQueryAllUseCaseIORecord<StoreEntity, int, int, String?, String?,
-    String?, Timestamp?, Timestamp?, DataSourceState<List<StoreEntity>>> {
+class GetAllStorePaginationUseCase extends PaginationQueryAllUseCaseIORecord<
+    StoreEntity,
+    int,
+    int,
+    String?,
+    String?,
+    String?,
+    Timestamp?,
+    Timestamp?,
+    DataSourceState<List<StoreEntity>>> {
   GetAllStorePaginationUseCase({
     required this.storeRepository,
   });

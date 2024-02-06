@@ -500,12 +500,10 @@ class _OrderDetailPageView
                               borderRadius:
                                   BorderRadiusDirectional.circular(24),
                               child: Container(
-                                padding:
-                                    const EdgeInsetsDirectional.symmetric(
-                                        horizontal: 8, vertical: 4),
+                                padding: const EdgeInsetsDirectional.symmetric(
+                                    horizontal: 8, vertical: 4),
                                 decoration: BoxDecoration(
-                                  color:
-                                      const Color.fromRGBO(251, 219, 11, 1),
+                                  color: const Color.fromRGBO(251, 219, 11, 1),
                                   borderRadius:
                                       BorderRadiusDirectional.circular(24),
                                   border: Border.all(
@@ -534,8 +532,7 @@ class _OrderDetailPageView
                               ),
                             ),
                             horizontalTitleGap: 0,
-                            visualDensity:
-                                const VisualDensity(horizontal: -4),
+                            visualDensity: const VisualDensity(horizontal: -4),
                             minLeadingWidth: 0,
                             contentPadding: EdgeInsetsDirectional.zero,
                           ),
@@ -545,8 +542,8 @@ class _OrderDetailPageView
                           ),*/
 
                           OrderTimeLineCardWidget(
-                            key: const Key(
-                                'order-details-timeline-card-widget'),
+                            key:
+                                const Key('order-details-timeline-card-widget'),
                             orderEntity: state.orderEntity,
                             activeLocale: state.activeLocale,
                           ),
@@ -569,9 +566,8 @@ class _OrderDetailPageView
                             duration: Duration(milliseconds: 100),
                           ),
                           Directionality(
-                            textDirection:
-                                serviceLocator<LanguageController>()
-                                    .targetTextDirection,
+                            textDirection: serviceLocator<LanguageController>()
+                                .targetTextDirection,
                             child: Wrap(
                               textDirection:
                                   serviceLocator<LanguageController>()
@@ -596,9 +592,8 @@ class _OrderDetailPageView
                           ),
                           Wrap(
                             //direction: Axis.vertical,
-                            textDirection:
-                                serviceLocator<LanguageController>()
-                                    .targetTextDirection,
+                            textDirection: serviceLocator<LanguageController>()
+                                .targetTextDirection,
                             children: [
                               OrderMenuDetailsWidget(
                                 key: const Key(
@@ -625,9 +620,8 @@ class _OrderDetailPageView
                             style: context.bodyMedium!.copyWith(
                               fontWeight: FontWeight.w600,
                             ),
-                            textDirection:
-                                serviceLocator<LanguageController>()
-                                    .targetTextDirection,
+                            textDirection: serviceLocator<LanguageController>()
+                                .targetTextDirection,
                             overflow: TextOverflow.ellipsis,
                             softWrap: true,
                             maxLines: 1,
@@ -637,8 +631,8 @@ class _OrderDetailPageView
                             duration: Duration(milliseconds: 100),
                           ),
                           AssignDriverWidget(
-                            key: const Key(
-                                'order-details-assign-driver-widget'),
+                            key:
+                                const Key('order-details-assign-driver-widget'),
                             orderEntity: state.orderEntity,
                           ),
                           const AnimatedGap(
@@ -650,9 +644,8 @@ class _OrderDetailPageView
                             style: context.bodyMedium!.copyWith(
                               fontWeight: FontWeight.w600,
                             ),
-                            textDirection:
-                                serviceLocator<LanguageController>()
-                                    .targetTextDirection,
+                            textDirection: serviceLocator<LanguageController>()
+                                .targetTextDirection,
                             overflow: TextOverflow.ellipsis,
                             softWrap: true,
                             maxLines: 1,

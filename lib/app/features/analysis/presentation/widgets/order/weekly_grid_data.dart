@@ -7,7 +7,8 @@ class WeeklyOverAllAnalysisGridWidget extends StatelessWidget {
   });
 
   final WeeklyAnalysisOverAllData? overAllAnalysisData;
-  final TooltipBehavior _customerTooltip = TooltipBehavior(enable: true, format: 'point.x : point.y%');
+  final TooltipBehavior _customerTooltip =
+      TooltipBehavior(enable: true, format: 'point.x : point.y%');
 
   @override
   Widget build(BuildContext context) {
@@ -68,7 +69,6 @@ class WeeklyOverAllAnalysisGridWidget extends StatelessWidget {
             ),
           ),
         ),
-
         StaggeredGridTile.count(
           crossAxisCellCount: 2,
           mainAxisCellCount: 2,
@@ -77,11 +77,19 @@ class WeeklyOverAllAnalysisGridWidget extends StatelessWidget {
               return SfCircularChart(
                 title: ChartTitle(text: 'Customers'),
                 margin: const EdgeInsets.all(5),
-                legend: Legend(isVisible: true, position: LegendPosition.right,isResponsive: true,itemPadding: 8,padding: 5,),
+                legend: Legend(
+                  isVisible: true,
+                  position: LegendPosition.right,
+                  isResponsive: true,
+                  itemPadding: 8,
+                  padding: 5,
+                ),
                 annotations: <CircularChartAnnotation>[
                   CircularChartAnnotation(
                     widget: Container(
-                      child: Text(overAllAnalysisData?.totalCustomers.toString() ?? '0'),
+                      child: Text(
+                          overAllAnalysisData?.totalCustomers.toString() ??
+                              '0'),
                     ),
                   )
                 ],
@@ -94,20 +102,25 @@ class WeeklyOverAllAnalysisGridWidget extends StatelessWidget {
                       ChartSampleData(
                         x: 'Old',
                         y: overAllAnalysisData?.totalOldCustomers ?? 0,
-                        text: overAllAnalysisData?.totalOldCustomers.toString() ?? '0',
+                        text:
+                            overAllAnalysisData?.totalOldCustomers.toString() ??
+                                '0',
                         pointColor: Color.fromRGBO(255, 31, 0, 1),
                       ),
                       ChartSampleData(
                         x: 'New',
                         y: overAllAnalysisData?.totalNewCustomers ?? 0,
-                        text: overAllAnalysisData?.totalNewCustomers.toString() ?? '0',
+                        text:
+                            overAllAnalysisData?.totalNewCustomers.toString() ??
+                                '0',
                         pointColor: Color.fromRGBO(255, 189, 57, 1),
                       ),
                     ],
                     xValueMapper: (ChartSampleData data, _) => data.x as String,
                     yValueMapper: (ChartSampleData data, _) => data.y,
                     dataLabelMapper: (ChartSampleData data, _) => data.text,
-                    pointColorMapper: (ChartSampleData data, _) => data.pointColor,
+                    pointColorMapper: (ChartSampleData data, _) =>
+                        data.pointColor,
                     dataLabelSettings: const DataLabelSettings(isVisible: true),
                   )
                 ],
@@ -133,12 +146,21 @@ class WeeklyOverAllAnalysisGridWidget extends StatelessWidget {
                     axisLine: const AxisLine(width: 0),
                     labelFormat: '{value}',
                     majorTickLines: const MajorTickLines(size: 0)),
-                legend: Legend(isVisible: false,isResponsive: true,itemPadding: 8,padding: 5,),
+                legend: Legend(
+                  isVisible: false,
+                  isResponsive: true,
+                  itemPadding: 8,
+                  padding: 5,
+                ),
                 annotations: <CartesianChartAnnotation>[
                   CartesianChartAnnotation(
                     widget: Container(
-                      child: Text(overAllAnalysisData?.totalOrders.total.toString() ?? '0'),
-                    ), x: null, y: null,
+                      child: Text(
+                          overAllAnalysisData?.totalOrders.total.toString() ??
+                              '0'),
+                    ),
+                    x: null,
+                    y: null,
                   )
                 ],
                 series: <BarSeries<ChartSampleData, String>>[
@@ -150,33 +172,44 @@ class WeeklyOverAllAnalysisGridWidget extends StatelessWidget {
                       ChartSampleData(
                         x: 'Instant',
                         y: overAllAnalysisData?.totalOrders.instant ?? 0,
-                        text: overAllAnalysisData?.totalOrders.instant.toString() ?? '0',
+                        text: overAllAnalysisData?.totalOrders.instant
+                                .toString() ??
+                            '0',
                         pointColor: Color.fromRGBO(63, 136, 197, 1),
                       ),
                       ChartSampleData(
                         x: 'Schedule',
                         y: overAllAnalysisData?.totalOrders.schedule ?? 0,
-                        text: overAllAnalysisData?.totalOrders.schedule.toString() ?? '0',
+                        text: overAllAnalysisData?.totalOrders.schedule
+                                .toString() ??
+                            '0',
                         pointColor: Color.fromRGBO(255, 186, 57, 1),
                       ),
                       ChartSampleData(
                         x: 'Deliver',
                         y: overAllAnalysisData?.totalOrders.deliver ?? 0,
-                        text: overAllAnalysisData?.totalOrders.deliver.toString() ?? '0',
+                        text: overAllAnalysisData?.totalOrders.deliver
+                                .toString() ??
+                            '0',
                         pointColor: Color.fromRGBO(19, 111, 99, 1),
                       ),
                       ChartSampleData(
                         x: 'Cancel',
                         y: overAllAnalysisData?.totalOrders.cancel ?? 0,
-                        text: overAllAnalysisData?.totalOrders.cancel.toString() ?? '0',
+                        text: overAllAnalysisData?.totalOrders.cancel
+                                .toString() ??
+                            '0',
                         pointColor: Color.fromRGBO(208, 0, 0, 1),
                       ),
                     ],
                     xValueMapper: (ChartSampleData data, _) => data.x as String,
                     yValueMapper: (ChartSampleData data, _) => data.y,
                     dataLabelMapper: (ChartSampleData data, _) => data.text,
-                    pointColorMapper: (ChartSampleData data, _) => data.pointColor,
-                    dataLabelSettings: const DataLabelSettings(isVisible: true,),
+                    pointColorMapper: (ChartSampleData data, _) =>
+                        data.pointColor,
+                    dataLabelSettings: const DataLabelSettings(
+                      isVisible: true,
+                    ),
                   )
                 ],
                 tooltipBehavior: _customerTooltip,
@@ -203,7 +236,8 @@ class WeeklyOverAllAnalysisGridWidget extends StatelessWidget {
           child: WeeklyOverAllAnalysisTileWidget(
             index: 1,
             title: 'Rush Hours',
-            subTitle: '${overAllAnalysisData?.rushHours.fromTime ?? 0} - ${overAllAnalysisData?.rushHours.toTime ?? 0}',
+            subTitle:
+                '${overAllAnalysisData?.rushHours.fromTime ?? 0} - ${overAllAnalysisData?.rushHours.toTime ?? 0}',
             gradient: linearGradient(
               Alignment.bottomCenter,
               ['#5038EA', '#C391B3'],
@@ -256,7 +290,8 @@ class WeeklyOverAllAnalysisTileWidget extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
-          textDirection: serviceLocator<LanguageController>().targetTextDirection,
+          textDirection:
+              serviceLocator<LanguageController>().targetTextDirection,
           children: [
             Wrap(
               children: [
@@ -270,11 +305,13 @@ class WeeklyOverAllAnalysisTileWidget extends StatelessWidget {
                     fontWeight: FontWeight.w600,
                     color: Colors.white,
                   ),
-                  textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                  textDirection:
+                      serviceLocator<LanguageController>().targetTextDirection,
                 ).translate(),
               ],
             ),
-            AnimatedGap(mainAxisExtent, duration: const Duration(milliseconds: 500)),
+            AnimatedGap(mainAxisExtent,
+                duration: const Duration(milliseconds: 500)),
             Wrap(
               children: [
                 Text(
@@ -288,7 +325,8 @@ class WeeklyOverAllAnalysisTileWidget extends StatelessWidget {
                     fontSize: 16,
                     color: Colors.white,
                   ),
-                  textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                  textDirection:
+                      serviceLocator<LanguageController>().targetTextDirection,
                 ).translate(),
               ],
             ),

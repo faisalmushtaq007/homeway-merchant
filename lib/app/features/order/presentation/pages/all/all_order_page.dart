@@ -17,7 +17,7 @@ class _AllOrderPagesController extends State<AllOrderPages> {
   String? searchText;
   String? sorting;
   String? filtering;
-  late final PagingController<int, OrderEntity> _pagingController ;
+  late final PagingController<int, OrderEntity> _pagingController;
   List<OrderEntity> _allAvailableOrders = [];
 
   @override
@@ -33,24 +33,24 @@ class _AllOrderPagesController extends State<AllOrderPages> {
 
   Future<void> _fetchPage(int pageKey,
       {int pageSize = 10,
-        String? searchItem,
-        String? filter,
-        String? sort}) async {
+      String? searchItem,
+      String? filter,
+      String? sort}) async {
     /*if (pageKey == 0) {
       _pagingController.itemList = [];
     }*/
     int sectionNumber = pageKey ~/ pageSize;
     try {
       context.read<AllOrderBloc>().add(
-        GetAllOrders(
-          pageKey: pageKey,
-          pageSize: pageSize,
-          searchText: searchText??searchItem,
-          filter: filtering ?? filter,
-          sorting: sorting ?? sort,
-          orderType: OrderType.all,
-        ),
-      );
+            GetAllOrders(
+              pageKey: pageKey,
+              pageSize: pageSize,
+              searchText: searchText ?? searchItem,
+              filter: filtering ?? filter,
+              sorting: sorting ?? sort,
+              orderType: OrderType.all,
+            ),
+          );
       appLog.i('Fetch Order');
       return;
     } catch (error) {
@@ -87,17 +87,16 @@ class _AllOrderPagesController extends State<AllOrderPages> {
 
   Future<void> _updateSearchTerm(String searchTerm) async {
     searchText = searchTerm;
-    if (_pagingController.value
-        .itemList ==
-        null ||
-        _pagingController.value.itemList
-            .isEmptyOrNull) {
-      await _fetchPage(0, searchItem: searchTerm,);
+    if (_pagingController.value.itemList == null ||
+        _pagingController.value.itemList.isEmptyOrNull) {
+      await _fetchPage(
+        0,
+        searchItem: searchTerm,
+      );
     } else {
       _pagingController.refresh();
     }
   }
-
 
   @override
   void dispose() {
@@ -126,7 +125,8 @@ class _AllOrderPagesController extends State<AllOrderPages> {
                       allOrderState.orderEntities.length < pageSize;
                   if (isLastPage) {
                     _pagingController.appendLastPage(
-                        allOrderState.orderEntities.toList().toSet().toList(),);
+                      allOrderState.orderEntities.toList().toSet().toList(),
+                    );
                   } else {
                     final nextPageKey = allOrderState.pageKey +
                         allOrderState.orderEntities.length;
@@ -139,7 +139,11 @@ class _AllOrderPagesController extends State<AllOrderPages> {
                     context: context,
                     data: _pagingController.value.itemList ?? [],
                   );
-                  _allAvailableOrders = _pagingController.value.itemList?.toList().toSet().toList() ?? [];
+                  _allAvailableOrders = _pagingController.value.itemList
+                          ?.toList()
+                          .toSet()
+                          .toList() ??
+                      [];
                 } catch (error) {
                   _pagingController.error = error;
                   widgetState = WidgetState<OrderEntity>.error(
@@ -199,7 +203,8 @@ class _AllOrderPagesView
     final double margins = GlobalApp.responsiveInsets(media.size.width);
     final double topPadding =
         margins; //media.padding.top + kToolbarHeight + margins; //margins * 1.5;
-    appLog.d("All order size ${((state._pagingController.value.itemList!=null && state._pagingController.value.itemList!.isNotNullOrEmpty)|| state._allAvailableOrders.isNotEmpty)}, ${state._allAvailableOrders.length}, ${state._pagingController.value.itemList}");
+    appLog.d(
+        "All order size ${((state._pagingController.value.itemList != null && state._pagingController.value.itemList!.isNotNullOrEmpty) || state._allAvailableOrders.isNotEmpty)}, ${state._allAvailableOrders.length}, ${state._pagingController.value.itemList}");
     return CustomScrollView(
       controller: state.listViewBuilderScrollController,
       slivers: [
@@ -209,23 +214,24 @@ class _AllOrderPagesView
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             textDirection:
-            serviceLocator<LanguageController>().targetTextDirection,
+                serviceLocator<LanguageController>().targetTextDirection,
             children: [
               const AnimatedGap(12, duration: Duration(milliseconds: 300)),
               IntrinsicHeight(
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  textDirection: serviceLocator<LanguageController>()
-                      .targetTextDirection,
+                  textDirection:
+                      serviceLocator<LanguageController>().targetTextDirection,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Expanded(child:  AppSearchInputSliverWidget(
-                      key: const Key('all-orders-search-field-widget'),
-                      onChanged: state._updateSearchTerm,
-                      height: 48,
-                      hintText: 'Search Store',
-
-                    ),),
+                    Expanded(
+                      child: AppSearchInputSliverWidget(
+                        key: const Key('all-orders-search-field-widget'),
+                        onChanged: state._updateSearchTerm,
+                        height: 48,
+                        hintText: 'Search Store',
+                      ),
+                    ),
                     const AnimatedGap(12,
                         duration: Duration(milliseconds: 300)),
                     SizedBox(
@@ -234,8 +240,7 @@ class _AllOrderPagesView
                         onPressed: () {},
                         style: OutlinedButton.styleFrom(
                           shape: RoundedRectangleBorder(
-                            borderRadius:
-                            BorderRadiusDirectional.circular(10),
+                            borderRadius: BorderRadiusDirectional.circular(10),
                           ),
                           side: const BorderSide(
                               color: Color.fromRGBO(238, 238, 238, 1)),
@@ -243,8 +248,7 @@ class _AllOrderPagesView
                         ),
                         child: Icon(
                           Icons.filter_list,
-                          textDirection:
-                          serviceLocator<LanguageController>()
+                          textDirection: serviceLocator<LanguageController>()
                               .targetTextDirection,
                           color: context.primaryColor,
                         ),
@@ -265,24 +269,21 @@ class _AllOrderPagesView
                         'All Orders',
                         style: context.labelMedium!.copyWith(
                             fontWeight: FontWeight.w600, fontSize: 18),
-                        textDirection:
-                        serviceLocator<LanguageController>()
+                        textDirection: serviceLocator<LanguageController>()
                             .targetTextDirection,
                       ),
                       const AnimatedGap(3,
                           duration: Duration(milliseconds: 500)),
                       Card(
                         shape: RoundedRectangleBorder(
-                          borderRadius:
-                          BorderRadiusDirectional.circular(20),
+                          borderRadius: BorderRadiusDirectional.circular(20),
                         ),
                         child: Padding(
                           padding: const EdgeInsetsDirectional.only(
                               start: 12.0, end: 12, top: 4, bottom: 4),
                           child: Text(
-                            '${state._pagingController.value.itemList?.length??0}',
-                            textDirection:
-                            serviceLocator<LanguageController>()
+                            '${state._pagingController.value.itemList?.length ?? 0}',
+                            textDirection: serviceLocator<LanguageController>()
                                 .targetTextDirection,
                           ),
                         ),
@@ -290,14 +291,13 @@ class _AllOrderPagesView
                       Spacer(),
                       ConstrainedBox(
                         constraints:
-                        BoxConstraints(maxWidth: context.width / 3),
+                            BoxConstraints(maxWidth: context.width / 3),
                         child: AllStoreDialogWidget(
                           key: const Key('all-order-store-dialog-widget'),
                           onChanged: (value) {},
                           icon: Icons.arrow_drop_down,
                           decoration: BoxDecoration(
-                            borderRadius:
-                            BorderRadiusDirectional.circular(6),
+                            borderRadius: BorderRadiusDirectional.circular(6),
                             color: Colors.white,
                             border: Border.all(
                               color: Color.fromRGBO(127, 129, 132, 1),
@@ -315,11 +315,11 @@ class _AllOrderPagesView
                   ),
                 ),
                 visualDensity:
-                const VisualDensity(horizontal: -4, vertical: -4),
+                    const VisualDensity(horizontal: -4, vertical: -4),
                 horizontalTitleGap: 0,
                 minLeadingWidth: 0,
                 contentPadding:
-                const EdgeInsetsDirectional.symmetric(horizontal: 2),
+                    const EdgeInsetsDirectional.symmetric(horizontal: 2),
               ),
               const AnimatedGap(12, duration: Duration(milliseconds: 500)),
             ],

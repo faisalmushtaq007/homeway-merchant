@@ -41,11 +41,10 @@ class _SplashPageViewController extends State<SplashPage>
   late final ScrollController scrollController;
   late AnimationController _animationController;
   late Animation<double> _animation;
-  bool hasCurrentUserLoggedIn=false;
+  bool hasCurrentUserLoggedIn = false;
 
   @override
   void initState() {
-
     super.initState();
     scrollController = ScrollController();
     _animationController = AnimationController(
@@ -210,7 +209,6 @@ class _PageView extends WidgetView<SplashPage, _SplashPageViewController> {
                               ),*/
                     const AnimatedGap(56,
                         duration: Duration(milliseconds: 500)),
-
                     ElevatedButton(
                       onPressed: () {
                         context.go(Routes.AUTH_PHONE_NUMBER_VERIFICATION);

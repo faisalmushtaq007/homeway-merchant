@@ -49,9 +49,10 @@ class AuthenticationRemoteDataSource extends AuthenticationDataSource {
         method: RequestType.POST,
         data: sendOtpEntity.toJson((value) => value.toJson()),
       );
-      if (response.data != null) {
+      final result=response.data;
+      if (result != null) {
         return ApiResultState<SendOtpResponseModel>.success(
-          data: response.data!,
+          data: result,
         );
       } else {
         return ApiResultState<SendOtpResponseModel>.failure(
@@ -85,9 +86,10 @@ class AuthenticationRemoteDataSource extends AuthenticationDataSource {
         method: RequestType.POST,
         data: verifyOtpEntity.toJson((value) => value.toJson()),
       );
-      if (response.data != null) {
+      final result=response.data;
+      if (result != null) {
         return ApiResultState<VerifyOtpResponseModel>.success(
-          data: response.data!,
+          data: result,
         );
       } else {
         return ApiResultState<VerifyOtpResponseModel>.failure(

@@ -43,7 +43,7 @@ class _AddressFormPageController extends State<AddressFormPage> {
     nsn: '',
   );
   PhoneController controller = PhoneController(
-    PhoneNumber(
+    initialValue:PhoneNumber(
       isoCode: IsoCode.values.asNameMap().values.byName('SA'),
       nsn: '',
     ),
@@ -97,7 +97,7 @@ class _AddressFormPageController extends State<AddressFormPage> {
       isoCode: isoCodeNameMap.values.byName('SA'),
       nsn: '',
     );
-    controller = PhoneController(initialPhoneNumberValue);
+    controller = PhoneController(initialValue:initialPhoneNumberValue);
     controller.value = initialPhoneNumberValue;
     context.read<PermissionBloc>().add(const RequestLocationPermissionEvent());
     initializeEditableData();
@@ -156,7 +156,7 @@ class _AddressFormPageController extends State<AddressFormPage> {
         '+${phoneNumbers?.countryCode} ${phoneNumbers?.getFormattedNsn().trim()}';
     final String countryDialCode = '+${phoneNumbers?.countryCode ?? '+966'}';
     final String country = phoneNumbers?.isoCode.name ?? 'SA';
-    final result = getValidator(isAllowEmpty: false);
+    final result = getValidator(context:context,isAllowEmpty: false);
     phoneValidation = result?.call(initialPhoneNumberValue);
 
     if (phoneValidation != null && phoneValidation!.isNotEmpty) {
@@ -208,18 +208,18 @@ class _AddressFormPageController extends State<AddressFormPage> {
     //setState(() {});
   }
 
-  PhoneNumberInputValidator? getValidator({bool isAllowEmpty = false}) {
+  PhoneNumberInputValidator? getValidator({required BuildContext context,bool isAllowEmpty = false}) {
     List<PhoneNumberInputValidator> validators = [];
     if (!isAllowEmpty) {
       validators.add(
-        PhoneValidator.required(errorText: "Phone number can't be empty"),
+        PhoneValidator.required(context,errorText: "Phone number can't be empty"),
       );
     }
 
     if (mobileOnly) {
-      validators.add(PhoneValidator.validMobile(allowEmpty: isAllowEmpty));
+      validators.add(PhoneValidator.validMobile(context));
     } else {
-      validators.add(PhoneValidator.valid(allowEmpty: isAllowEmpty));
+      validators.add(PhoneValidator.valid(context));
     }
     //update();
     return validators.isNotEmpty ? PhoneValidator.compose(validators) : null;

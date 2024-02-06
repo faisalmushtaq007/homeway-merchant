@@ -1,10 +1,12 @@
 part of 'package:homemakers_merchant/app/features/menu/index.dart';
 
-class AddonsLocalDbRepository<Extras extends Addons> implements BaseAddonsLocalDbRepository<Addons> {
+class AddonsLocalDbRepository<Extras extends Addons>
+    implements BaseAddonsLocalDbRepository<Addons> {
   // Completer is used for transforming synchronous code into asynchronous code.
   Future<Database> get _db async => AppDatabase.instance.database;
 
-  StoreRef<int, Map<String, dynamic>> get _addons => AppDatabase.instance.addons;
+  StoreRef<int, Map<String, dynamic>> get _addons =>
+      AppDatabase.instance.addons;
 
   @override
   Future<Either<RepositoryBaseFailure, Addons>> add(Addons entity) async {
@@ -58,13 +60,14 @@ class AddonsLocalDbRepository<Extras extends Addons> implements BaseAddonsLocalD
   }
 
   @override
-  Future<Either<RepositoryBaseFailure, bool>> deleteById(UniqueId uniqueId) async {
+  Future<Either<RepositoryBaseFailure, bool>> deleteById(
+      UniqueId uniqueId) async {
     final result = await tryCatch<bool>(() async {
       final value = await _addons.record(uniqueId.value).get(await _db);
       if (value != null) {
         await _addons.record(uniqueId.value).delete(
-          await _db,
-        );
+              await _db,
+            );
         return true;
       }
       return false;
@@ -102,7 +105,8 @@ class AddonsLocalDbRepository<Extras extends Addons> implements BaseAddonsLocalD
   }
 
   @override
-  Future<Either<RepositoryBaseFailure, Addons>> update(Addons entity, UniqueId uniqueId) async {
+  Future<Either<RepositoryBaseFailure, Addons>> update(
+      Addons entity, UniqueId uniqueId) async {
     final result = await tryCatch<Addons>(() async {
       final int key = uniqueId.value;
       final value = await _addons.record(key).get(await _db);
@@ -125,40 +129,51 @@ class AddonsLocalDbRepository<Extras extends Addons> implements BaseAddonsLocalD
 
   @override
   Future<Either<RepositoryBaseFailure, Addons>> upsert(
-      {UniqueId? id, String? token, required Addons entity, bool checkIfUserLoggedIn = false}) async {
+      {UniqueId? id,
+      String? token,
+      required Addons entity,
+      bool checkIfUserLoggedIn = false}) async {
     final result = await tryCatch<Addons>(() async {
       final int key = entity.addonsID;
       final value = await _addons.record(key).get(await _db);
-      final result = await _addons.record(key).put(await _db, entity.toMap(), merge: (value != null) || false);
+      final result = await _addons
+          .record(key)
+          .put(await _db, entity.toMap(), merge: (value != null) || false);
       return Addons.fromMap(result);
     });
     return result;
   }
 
   @override
-  Future<Either<RepositoryBaseFailure, bool>> deleteByIdAndEntity(UniqueId uniqueId, Addons entity) {
+  Future<Either<RepositoryBaseFailure, bool>> deleteByIdAndEntity(
+      UniqueId uniqueId, Addons entity) {
     // TODO(prasant): implement deleteByIdAndEntity
     throw UnimplementedError();
   }
 
   @override
-  Future<Either<RepositoryBaseFailure, Addons>> getByIdAndEntity(UniqueId uniqueId, Addons entity) {
+  Future<Either<RepositoryBaseFailure, Addons>> getByIdAndEntity(
+      UniqueId uniqueId, Addons entity) {
     // TODO(prasant): implement getByIdAndEntity
     throw UnimplementedError();
   }
 
   @override
-  Future<Either<RepositoryBaseFailure, Addons>> updateByIdAndEntity(UniqueId uniqueId, Addons entity) {
+  Future<Either<RepositoryBaseFailure, Addons>> updateByIdAndEntity(
+      UniqueId uniqueId, Addons entity) {
     // TODO(prasant): implement updateByIdAndEntity
     throw UnimplementedError();
   }
 
-  Future<Map<String, RecordSnapshot<int, Map<String, Object?>>>> getCategoryByIds(
-      DatabaseClient db, List<int> ids) async {
+  Future<Map<String, RecordSnapshot<int, Map<String, Object?>>>>
+      getCategoryByIds(DatabaseClient db, List<int> ids) async {
     var snapshots = await _addons.find(db,
-        finder: Finder(filter: Filter.or(ids.map((e) => Filter.equals('addonsID', e)).toList())));
+        finder: Finder(
+            filter: Filter.or(
+                ids.map((e) => Filter.equals('addonsID', e)).toList())));
     return <String, RecordSnapshot<int, Map<String, Object?>>>{
-      for (var snapshot in snapshots) snapshot.value['addonsID']!.toString(): snapshot
+      for (var snapshot in snapshots)
+        snapshot.value['addonsID']!.toString(): snapshot
     };
   }
 
@@ -175,10 +190,13 @@ class AddonsLocalDbRepository<Extras extends Addons> implements BaseAddonsLocalD
         final allOrderList = r.toList();
         final newList = entities.toList();
         var convertOrderToMapObject = newList.map((e) => e.toMap()).toList();
-        final bool equalityStatus = unOrdDeepEq(allOrderList.toSet().toList(), newList.toSet().toList());
+        final bool equalityStatus = unOrdDeepEq(
+            allOrderList.toSet().toList(), newList.toSet().toList());
 
         await db.transaction((transaction) async {
-          var addonsIds = convertOrderToMapObject.map((map) => map['addonsID'] as int).toList();
+          var addonsIds = convertOrderToMapObject
+              .map((map) => map['addonsID'] as int)
+              .toList();
           var map = await getCategoryByIds(db, addonsIds);
           // Watch for deleted item
           var keysToDelete = (await _addons.findKeys(transaction)).toList();
@@ -190,7 +208,8 @@ class AddonsLocalDbRepository<Extras extends Addons> implements BaseAddonsLocalD
               // Remove from deletion list
               keysToDelete.remove(key);
               // Don't update if no change
-              if (const DeepCollectionEquality().equals(snapshot.value, order)) {
+              if (const DeepCollectionEquality()
+                  .equals(snapshot.value, order)) {
                 // no changes
                 continue;
               } else {
@@ -237,11 +256,17 @@ class AddonsLocalDbRepository<Extras extends Addons> implements BaseAddonsLocalD
           offset: pageKey,
         );
         // If
-        if ((searchText.isNotNull || filter.isNotNull || sorting.isNotNull && (searchText!.isNotEmpty || filter!.isNotEmpty || sorting!.isNotEmpty)) &&
+        if ((searchText.isNotNull ||
+                filter.isNotNull ||
+                sorting.isNotNull &&
+                    (searchText!.isNotEmpty ||
+                        filter!.isNotEmpty ||
+                        sorting!.isNotEmpty)) &&
             (startTimeStamp.isNotNull || endTimeStamp.isNotNull)) {
           var regExp = RegExp('^${searchText ?? ''}\$', caseSensitive: false);
-          var filterRegExp = RegExp('^${filter?? ''}\$', caseSensitive: false);
-          var sortingRegExp = RegExp('^${sorting ?? ''}\$', caseSensitive: false);
+          var filterRegExp = RegExp('^${filter ?? ''}\$', caseSensitive: false);
+          var sortingRegExp =
+              RegExp('^${sorting ?? ''}\$', caseSensitive: false);
           finder = Finder(
             limit: pageSize,
             offset: pageKey,
@@ -279,16 +304,23 @@ class AddonsLocalDbRepository<Extras extends Addons> implements BaseAddonsLocalD
           );
         }
         // Else If
-        else if (searchText.isNotNull || filter.isNotNull || sorting.isNotNull && (searchText!.isNotEmpty || filter!.isNotEmpty || sorting!.isNotEmpty)) {
-          if(searchText!.isEmpty){
+        else if (searchText.isNotNull ||
+            filter.isNotNull ||
+            sorting.isNotNull &&
+                (searchText!.isNotEmpty ||
+                    filter!.isNotEmpty ||
+                    sorting!.isNotEmpty)) {
+          if (searchText!.isEmpty) {
             finder = Finder(
               limit: pageSize,
               offset: pageKey,
             );
-          }else {
+          } else {
             var regExp = RegExp('^${searchText ?? ''}\$', caseSensitive: false);
-            var filterRegExp = RegExp('^${filter ?? ''}\$', caseSensitive: false);
-            var sortingRegExp = RegExp('^${sorting ?? ''}\$', caseSensitive: false);
+            var filterRegExp =
+                RegExp('^${filter ?? ''}\$', caseSensitive: false);
+            var sortingRegExp =
+                RegExp('^${sorting ?? ''}\$', caseSensitive: false);
             finder = Finder(
               /*sortOrders: [
           SortOrder('orderDateTime'),
@@ -353,8 +385,8 @@ class AddonsLocalDbRepository<Extras extends Addons> implements BaseAddonsLocalD
   }
 }
 
-class AddonsBindingWithMenuLocalDbDbRepository<T extends Addons, R extends MenuEntity>
-    implements Binding<List<Addons>, List<MenuEntity>> {
+class AddonsBindingWithMenuLocalDbDbRepository<T extends Addons,
+    R extends MenuEntity> implements Binding<List<Addons>, List<MenuEntity>> {
   const AddonsBindingWithMenuLocalDbDbRepository({
     required this.addonsLocalDbRepository,
     required this.menuLocalDbRepository,
@@ -364,7 +396,8 @@ class AddonsBindingWithMenuLocalDbDbRepository<T extends Addons, R extends MenuE
 
   StoreRef<int, Map<String, dynamic>> get _menu => AppDatabase.instance.menu;
 
-  StoreRef<int, Map<String, dynamic>> get _addons => AppDatabase.instance.addons;
+  StoreRef<int, Map<String, dynamic>> get _addons =>
+      AppDatabase.instance.addons;
   final AddonsLocalDbRepository<T> addonsLocalDbRepository;
   final MenuLocalDbRepository<R> menuLocalDbRepository;
 
@@ -384,7 +417,9 @@ class AddonsBindingWithMenuLocalDbDbRepository<T extends Addons, R extends MenuE
           // Modify the store result
           if (!cacheCurrentMenu.isNotNullOrEmpty) {
             cacheCurrentMenu.asMap().forEach((parentMenuKey, parentMenuValue) {
-              destination.asMap().forEach((destinationMenuKey, destinationMenuValue) async {
+              destination
+                  .asMap()
+                  .forEach((destinationMenuKey, destinationMenuValue) async {
                 if (parentMenuValue.menuId == destinationMenuValue.menuId) {
                   // Match
                   final record = _menu.record(destinationMenuValue.menuId);
@@ -394,12 +429,17 @@ class AddonsBindingWithMenuLocalDbDbRepository<T extends Addons, R extends MenuE
                     source.asMap().forEach((addonsKey, addonsValue) async {
                       // Check if the record exists before adding or updating it.
                       // Look of existing record
-                      var finder = Finder(filter: Filter.equals('menus.@.addons', addonsValue.addonsID));
-                      var existing = await _menu.query(finder: finder).getSnapshot(txn);
+                      var finder = Finder(
+                          filter: Filter.equals(
+                              'menus.@.addons', addonsValue.addonsID));
+                      var existing =
+                          await _menu.query(finder: finder).getSnapshot(txn);
                       if (existing == null) {
                         // code not found, add
-                        final data = currentTempMenu['addons']! as List<Addons>..add(addonsValue);
-                        final result = await record.update(txn, {'addons': data.toList()});
+                        final data = currentTempMenu['addons']! as List<Addons>
+                          ..add(addonsValue);
+                        final result =
+                            await record.update(txn, {'addons': data.toList()});
                       } else {
                         // Update existing
                         await existing.ref.update(txn, addonsValue.toMap());
@@ -431,8 +471,8 @@ class AddonsBindingWithMenuLocalDbDbRepository<T extends Addons, R extends MenuE
   }
 }
 
-class AddonsBindingWithCurrentUserLocalDbDbRepository<T extends Addons, R extends AppUserEntity>
-    implements Binding<List<Addons>, AppUserEntity> {
+class AddonsBindingWithCurrentUserLocalDbDbRepository<T extends Addons,
+    R extends AppUserEntity> implements Binding<List<Addons>, AppUserEntity> {
   const AddonsBindingWithCurrentUserLocalDbDbRepository({
     required this.addonsLocalDbRepository,
     required this.userLocalDbRepository,
@@ -440,7 +480,8 @@ class AddonsBindingWithCurrentUserLocalDbDbRepository<T extends Addons, R extend
 
   Future<Database> get _db async => AppDatabase.instance.database;
 
-  StoreRef<int, Map<String, dynamic>> get _addons => AppDatabase.instance.addons;
+  StoreRef<int, Map<String, dynamic>> get _addons =>
+      AppDatabase.instance.addons;
 
   StoreRef<int, Map<String, dynamic>> get _user => AppDatabase.instance.user;
 
@@ -448,7 +489,8 @@ class AddonsBindingWithCurrentUserLocalDbDbRepository<T extends Addons, R extend
   final UserLocalDbRepository<R> userLocalDbRepository;
 
   @override
-  Future<Either<RepositoryBaseFailure, AppUserEntity>> binding(List<Addons> source, AppUserEntity destination) async {
+  Future<Either<RepositoryBaseFailure, AppUserEntity>> binding(
+      List<Addons> source, AppUserEntity destination) async {
     final db = await _db;
     final users = await userLocalDbRepository.getAll();
     if (users.isRight()) {
@@ -467,8 +509,10 @@ class AddonsBindingWithCurrentUserLocalDbDbRepository<T extends Addons, R extend
           final value = await record.get(txn);
           if (value != null) {
             var currentUser = cloneMap(value);
-            currentUser['addons'] = currentUserMap['addons'] as List<Addons>..addAll(source.toList());
-            final result = await record.update(txn, {'addons': currentUser['addons']});
+            currentUser['addons'] = currentUserMap['addons'] as List<Addons>
+              ..addAll(source.toList());
+            final result =
+                await record.update(txn, {'addons': currentUser['addons']});
             if (result != null) {
               return AppUserEntity.fromMap(result);
             } else {
@@ -486,7 +530,8 @@ class AddonsBindingWithCurrentUserLocalDbDbRepository<T extends Addons, R extend
   }
 
   @override
-  Future<Either<RepositoryBaseFailure, AppUserEntity>> unbinding(List<Addons> source, AppUserEntity destination) async {
+  Future<Either<RepositoryBaseFailure, AppUserEntity>> unbinding(
+      List<Addons> source, AppUserEntity destination) async {
     // TODO(prasant): implement unbinding
     throw UnimplementedError();
   }

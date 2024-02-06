@@ -63,8 +63,7 @@ class _ManageOrderPageView
             actions: [
               IconButton(
                 onPressed: () async {
-                  final notification =
-                      await context.push(Routes.NOTIFICATIONS);
+                  final notification = await context.push(Routes.NOTIFICATIONS);
                   return;
                 },
                 icon: Badge(
@@ -158,7 +157,8 @@ class _ManageOrderPageView
                                 key: Key('manage-order-schedule-orders-widget'),
                               ),
                             3 => const AllOnProcessOrderPage(
-                                key: Key('manage-order-onprocess-orders-widget'),
+                                key:
+                                    Key('manage-order-onprocess-orders-widget'),
                               ),
                             4 => const AllDeliverOrderPage(
                                 key: Key('manage-order-deliver-orders-widget'),

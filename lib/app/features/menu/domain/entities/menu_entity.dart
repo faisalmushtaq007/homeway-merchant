@@ -193,8 +193,7 @@ class MenuEntity extends INetworkModel<MenuEntity> with AppEquatable {
       'addons': addons.map((e) => e.toMap()).toList(),
       'menuAvailableFromTime': menuAvailableFromTime,
       'menuAvailableToTime': menuAvailableToTime,
-      'menuAvailableInDays':
-          menuAvailableInDays.map((e) => e.toMap()).toList(),
+      'menuAvailableInDays': menuAvailableInDays.map((e) => e.toMap()).toList(),
       'minStockAvailable': minStockAvailable,
       'maxStockAvailable': maxStockAvailable,
       'timeOfPeriodWise': timeOfPeriodWise.map((e) => e.toMap()).toList(),

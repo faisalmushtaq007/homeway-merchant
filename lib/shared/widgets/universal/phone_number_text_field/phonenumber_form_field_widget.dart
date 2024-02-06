@@ -20,7 +20,7 @@ class PhoneNumberFieldWidget extends StatefulWidget {
     required this.shouldFormat,
     required this.useRtl,
     required this.withLabel,
-    this.selectorNavigator = const CountrySelectorNavigator.searchDelegate(),
+    this.selectorNavigator,
     super.key,
     this.decoration,
     this.validator,
@@ -45,7 +45,7 @@ class PhoneNumberFieldWidget extends StatefulWidget {
     this.initialPhoneNumberValue,
   });
 
-  final CountrySelectorNavigator selectorNavigator;
+  final CountrySelectorNavigator? selectorNavigator;
   final bool withLabel;
   final bool outlineBorder;
   final bool shouldFormat;
@@ -91,15 +91,14 @@ class _PhoneNumberFieldWidgetState extends State<PhoneNumberFieldWidget> {
     nsn: '',
   );
   PhoneController controller = PhoneController(
-    PhoneNumber(
+    initialValue: PhoneNumber(
       isoCode: IsoCode.values.asNameMap().values.byName('SA'),
       nsn: '',
     ),
   );
 
   // Country picker selector mode
-  CountrySelectorNavigator selectorNavigator =
-      const CountrySelectorNavigator.searchDelegate();
+  CountrySelectorNavigator? selectorNavigator;
   final phoneKey = GlobalKey<FormFieldState<PhoneNumber>>();
   bool mobileOnly = true;
   String? phoneValidation;
@@ -116,12 +115,14 @@ class _PhoneNumberFieldWidgetState extends State<PhoneNumberFieldWidget> {
 
   @override
   void initState() {
+    selectorNavigator =
+        widget.selectorNavigator ?? const CountrySelectorNavigator.page();
     initialPhoneNumberValue = widget.initialPhoneNumberValue ??
         PhoneNumber(
           isoCode: isoCodeNameMap.values.byName('SA'),
           nsn: '',
         );
-    controller = PhoneController(initialPhoneNumberValue);
+    controller = PhoneController(initialValue: initialPhoneNumberValue);
     controller.value = initialPhoneNumberValue;
     defaultCountry = isoCodeNameMap.values.byName('SA');
     phoneNumberFocusNode = widget.phoneNumberFocusNode ?? FocusNode();
@@ -142,18 +143,20 @@ class _PhoneNumberFieldWidgetState extends State<PhoneNumberFieldWidget> {
     super.dispose();
   }
 
-  PhoneNumberInputValidator? getValidator({bool isAllowEmpty = false}) {
+  PhoneNumberInputValidator? getValidator(
+      {required BuildContext context, bool isAllowEmpty = false}) {
     List<PhoneNumberInputValidator> validators = [];
     if (!isAllowEmpty) {
       validators.add(
-        PhoneValidator.required(errorText: "Phone number can't be empty"),
+        PhoneValidator.required(context,
+            errorText: "Phone number can't be empty"),
       );
     }
 
     if (mobileOnly) {
-      validators.add(PhoneValidator.validMobile(allowEmpty: isAllowEmpty));
+      validators.add(PhoneValidator.validMobile(context));
     } else {
-      validators.add(PhoneValidator.valid(allowEmpty: isAllowEmpty));
+      validators.add(PhoneValidator.valid(context));
     }
     //update();
     return validators.isNotEmpty ? PhoneValidator.compose(validators) : null;
@@ -275,7 +278,8 @@ class _PhoneNumberFieldWidgetState extends State<PhoneNumberFieldWidget> {
                   autofocus: widget.autofocus,
                   focusNode: phoneNumberFocusNode,
                   autofillHints: const [AutofillHints.telephoneNumber],
-                  countrySelectorNavigator: widget.selectorNavigator,
+                  countrySelectorNavigator: widget.selectorNavigator ??
+                      const CountrySelectorNavigator.page(),
                   defaultCountry: defaultCountry,
                   decoration: widget.decoration?.copyWith(
                         suffixIcon: (!widget.haveStateManagement)
@@ -307,43 +311,7 @@ class _PhoneNumberFieldWidgetState extends State<PhoneNumberFieldWidget> {
                   keyboardType: widget.keyboardType,
                   showFlagInInput: widget.showFlagInInput,
                   validator: (PhoneNumber? phoneNumber) {
-                    final result = widget.validator ??
-                        getValidator(isAllowEmpty: widget.isAllowEmpty);
-                    phoneValidation = result?.call(phoneNumber);
-                    if (widget.haveStateManagement) {
-                      context.read<PhoneFormFieldBloc>().add(
-                            PhoneFormFieldValidate(
-                              phoneNumberInputValidator: result,
-                              phoneValidation: phoneValidation,
-                              phoneController: controller,
-                            ),
-                          );
-                    } else {
-                      if (phoneValidation != null &&
-                          phoneValidation!.isNotEmpty) {
-                        valueNotifierPhoneNumberVerification.value =
-                            PhoneNumberVerification.invalid;
-                      } else {
-                        if (phoneValidation == null &&
-                            controller.value != null &&
-                            controller.value!
-                                .getFormattedNsn()
-                                .trim()
-                                .isNotEmpty) {
-                          valueNotifierPhoneNumberVerification.value =
-                              PhoneNumberVerification.valid;
-                        } else {
-                          valueNotifierPhoneNumberVerification.value =
-                              PhoneNumberVerification.none;
-                        }
-                      }
-                    }
-                    widget.phoneNumberValidationChanged?.call(
-                      phoneValidation,
-                      phoneNumber,
-                      controller,
-                    );
-                    return phoneValidation;
+                    return validatePhoneNumber(phoneNumber, context);
                   },
                   autovalidateMode: widget.autovalidateMode ??
                       AutovalidateMode.onUserInteraction,
@@ -367,6 +335,42 @@ class _PhoneNumberFieldWidgetState extends State<PhoneNumberFieldWidget> {
         );
       },
     );
+  }
+
+  String? validatePhoneNumber(PhoneNumber? phoneNumber, BuildContext context) {
+    final result = widget.validator ??
+        getValidator(context: context, isAllowEmpty: widget.isAllowEmpty);
+    phoneValidation = result?.call(phoneNumber);
+    if (widget.haveStateManagement) {
+      context.read<PhoneFormFieldBloc>().add(
+            PhoneFormFieldValidate(
+              phoneNumberInputValidator: result,
+              phoneValidation: phoneValidation,
+              phoneController: controller,
+            ),
+          );
+    } else {
+      if (phoneValidation != null && phoneValidation!.isNotEmpty) {
+        valueNotifierPhoneNumberVerification.value =
+            PhoneNumberVerification.invalid;
+      } else {
+        if (phoneValidation == null &&
+            controller.value != null &&
+            controller.value!.getFormattedNsn().trim().isNotEmpty) {
+          valueNotifierPhoneNumberVerification.value =
+              PhoneNumberVerification.valid;
+        } else {
+          valueNotifierPhoneNumberVerification.value =
+              PhoneNumberVerification.none;
+        }
+      }
+    }
+    widget.phoneNumberValidationChanged?.call(
+      phoneValidation,
+      phoneNumber,
+      controller,
+    );
+    return phoneValidation;
   }
 }
 

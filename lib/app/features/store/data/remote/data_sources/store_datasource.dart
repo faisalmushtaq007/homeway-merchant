@@ -78,7 +78,8 @@ abstract interface class StoreDataSource {
     bool hasUpdateAll = false,
   });
 
-  Future<ApiResultState<List<StoreOwnDeliveryPartnersInfo>>> getAllDriversPagination({
+  Future<ApiResultState<List<StoreOwnDeliveryPartnersInfo>>>
+      getAllDriversPagination({
     int pageKey = 0,
     int pageSize = 10,
     String? searchText,

@@ -40,7 +40,7 @@ class _MenuForm4PageState extends State<MenuForm4Page>
     customPortion = menuEntity.customPortion;
     if (serviceLocator<MenuEntity>().addons.isNotEmpty) {
       listOfAddons =
-      List<Addons>.from(serviceLocator<MenuEntity>().addons.toList());
+          List<Addons>.from(serviceLocator<MenuEntity>().addons.toList());
     }
     setState(() {});
   }
@@ -48,14 +48,13 @@ class _MenuForm4PageState extends State<MenuForm4Page>
   void loadMenuEntityData(MenuEntity cacheMenuEntity) {
     //menuEntity = serviceLocator<MenuEntity>();
     if (menuEntity.menuPortions.isNotEmpty) {
-      listOfMenuPortions = List<MenuPortion>.from(
-          menuEntity.menuPortions.toList());
+      listOfMenuPortions =
+          List<MenuPortion>.from(menuEntity.menuPortions.toList());
     }
     hasCustomPortion = menuEntity.hasCustomPortion;
     customPortion = menuEntity.customPortion;
     if (menuEntity.addons.isNotEmpty) {
-      listOfAddons =
-      List<Addons>.from(menuEntity.addons.toList());
+      listOfAddons = List<Addons>.from(menuEntity.addons.toList());
     }
     //setState(() {});
   }
@@ -83,12 +82,13 @@ class _MenuForm4PageState extends State<MenuForm4Page>
     return Directionality(
       textDirection: serviceLocator<LanguageController>().targetTextDirection,
       child: BlocListener<MenuBloc, MenuState>(
-        bloc:context.read<MenuBloc>(),
+        bloc: context.read<MenuBloc>(),
         listener: (context, menuState) async {
-          switch(menuState){
-            case NavigateToMenuImagePage():{
-              final result=await context.push(Routes.MENU_FORM5_PAGE);
-            }
+          switch (menuState) {
+            case NavigateToMenuImagePage():
+              {
+                final result = await context.push(Routes.MENU_FORM5_PAGE);
+              }
           }
         },
         child: BlocBuilder<MenuBloc, MenuState>(
@@ -111,14 +111,14 @@ class _MenuForm4PageState extends State<MenuForm4Page>
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.stretch,
               textDirection:
-              serviceLocator<LanguageController>().targetTextDirection,
+                  serviceLocator<LanguageController>().targetTextDirection,
               children: [
                 Flexible(
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     crossAxisAlignment: CrossAxisAlignment.stretch,
-                    textDirection:
-                    serviceLocator<LanguageController>().targetTextDirection,
+                    textDirection: serviceLocator<LanguageController>()
+                        .targetTextDirection,
                     children: [
                       Wrap(
                         textDirection: serviceLocator<LanguageController>()
@@ -135,7 +135,8 @@ class _MenuForm4PageState extends State<MenuForm4Page>
                           ).translate(),
                         ],
                       ),
-                      const AnimatedGap(2, duration: Duration(milliseconds: 500)),
+                      const AnimatedGap(2,
+                          duration: Duration(milliseconds: 500)),
                       Wrap(
                         textDirection: serviceLocator<LanguageController>()
                             .targetTextDirection,
@@ -159,14 +160,15 @@ class _MenuForm4PageState extends State<MenuForm4Page>
                               slivers: [
                                 SliverList(
                                   delegate: SliverChildBuilderDelegate(
-                                        (context, index) {
+                                    (context, index) {
                                       return SetMenuPriceWidget(
                                         currentIndex: index,
                                         listOfMenuPortions: listOfMenuPortions,
                                         key: PageStorageKey(
                                             'set-menu-price-${listOfMenuPortions[index].title}_${index}'),
                                         menuPortion: listOfMenuPortions[index],
-                                        menuEntity: serviceLocator<MenuEntity>(),
+                                        menuEntity:
+                                            serviceLocator<MenuEntity>(),
                                       );
                                     },
                                     childCount: listOfMenuPortions.length,
@@ -176,8 +178,8 @@ class _MenuForm4PageState extends State<MenuForm4Page>
                             ),
                           ),
                           secondChild: const Offstage(),
-                          crossFadeState:
-                          (!hasCustomPortion && listOfMenuPortions.isNotEmpty)
+                          crossFadeState: (!hasCustomPortion &&
+                                  listOfMenuPortions.isNotEmpty)
                               ? CrossFadeState.showFirst
                               : CrossFadeState.showSecond,
                           duration: const Duration(milliseconds: 500),
@@ -227,8 +229,8 @@ class _MenuForm4PageState extends State<MenuForm4Page>
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     crossAxisAlignment: CrossAxisAlignment.stretch,
-                    textDirection:
-                    serviceLocator<LanguageController>().targetTextDirection,
+                    textDirection: serviceLocator<LanguageController>()
+                        .targetTextDirection,
                     children: [
                       Wrap(
                         textDirection: serviceLocator<LanguageController>()
@@ -245,7 +247,8 @@ class _MenuForm4PageState extends State<MenuForm4Page>
                           ).translate(),
                         ],
                       ),
-                      const AnimatedGap(2, duration: Duration(milliseconds: 500)),
+                      const AnimatedGap(2,
+                          duration: Duration(milliseconds: 500)),
                       Wrap(
                         textDirection: serviceLocator<LanguageController>()
                             .targetTextDirection,
@@ -269,14 +272,15 @@ class _MenuForm4PageState extends State<MenuForm4Page>
                               slivers: [
                                 SliverList(
                                   delegate: SliverChildBuilderDelegate(
-                                        (context, index) {
+                                    (context, index) {
                                       return SetAddonsPriceWidget(
                                         currentIndex: index,
                                         listOfAddons: listOfAddons,
                                         key: PageStorageKey(
                                             'set-addons-price-${listOfAddons[index].title}_${index}'),
                                         addons: listOfAddons[index],
-                                        menuEntity: serviceLocator<MenuEntity>(),
+                                        menuEntity:
+                                            serviceLocator<MenuEntity>(),
                                       );
                                     },
                                     childCount: listOfAddons.length,
@@ -286,8 +290,8 @@ class _MenuForm4PageState extends State<MenuForm4Page>
                             ),
                           ),
                           secondChild: const Offstage(),
-                          crossFadeState:
-                          (!hasCustomPortion && listOfMenuPortions.isNotEmpty)
+                          crossFadeState: (!hasCustomPortion &&
+                                  listOfMenuPortions.isNotEmpty)
                               ? CrossFadeState.showFirst
                               : CrossFadeState.showSecond,
                           duration: const Duration(milliseconds: 500),

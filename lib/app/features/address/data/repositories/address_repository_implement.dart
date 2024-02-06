@@ -364,9 +364,7 @@ class AddressRepositoryImplement implements UserAddressRepository {
               'Save address to local : ${r.addressID}, ${r.address?.area ?? 'No Address'}');
           return DataSourceState<AddressModel>.localDb(data: r);
         });
-      }
-
-      else {
+      } else {
         // Remote
         // Save to server
         final ApiResultState<AddressModel> result =
@@ -393,7 +391,6 @@ class AddressRepositoryImplement implements UserAddressRepository {
           },
         );
       }
-
     } catch (e, s) {
       appLog.d('Save address exception $e');
       return DataSourceState<AddressModel>.error(

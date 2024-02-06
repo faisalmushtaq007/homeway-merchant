@@ -15,9 +15,10 @@ import 'package:flutter/services.dart';
 
 class DoubleTapToExit extends StatefulWidget {
   const DoubleTapToExit({
-    required this.child, super.key,
+    required this.child,
+    super.key,
     this.snackBar,
-    this.hasEnable=true,
+    this.hasEnable = true,
   });
 
   final Widget child;
@@ -35,7 +36,7 @@ class _DoubleTapToExitState extends State<DoubleTapToExit> {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async {
-        if(widget.hasEnable) {
+        if (widget.hasEnable) {
           DateTime now = DateTime.now();
           if (currentBackPressTime == null ||
               now.difference(currentBackPressTime!) >
@@ -54,7 +55,7 @@ class _DoubleTapToExitState extends State<DoubleTapToExit> {
           }
           SystemNavigator.pop();
           return Future.value(true);
-        }else{
+        } else {
           return Future.value(true);
         }
       },

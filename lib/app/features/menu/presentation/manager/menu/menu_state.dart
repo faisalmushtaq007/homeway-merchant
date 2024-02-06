@@ -608,7 +608,7 @@ class PushMenuEntityDataState extends MenuState {
         menuFormStage,
         menuEntityStatus,
         menuStateStatus,
-    message,
+        message,
       ];
 }
 
@@ -632,11 +632,11 @@ class NavigateToMenuPricePage extends MenuState {
 
   @override
   List<Object?> get hashParameters => [
-    hasNewMenu,
-    menuEntity,
-    menuFormStage,
-    menuStateStatus,
-  ];
+        hasNewMenu,
+        menuEntity,
+        menuFormStage,
+        menuStateStatus,
+      ];
 }
 
 class NavigateToMenuImagePage extends MenuState {
@@ -659,11 +659,11 @@ class NavigateToMenuImagePage extends MenuState {
 
   @override
   List<Object?> get hashParameters => [
-    hasNewMenu,
-    menuEntity,
-    menuFormStage,
-    menuStateStatus,
-  ];
+        hasNewMenu,
+        menuEntity,
+        menuFormStage,
+        menuStateStatus,
+      ];
 }
 
 class PullMenuEntityDataState extends MenuState {

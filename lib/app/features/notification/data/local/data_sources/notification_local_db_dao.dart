@@ -72,9 +72,9 @@ class NotificationLocalDbRepository<T extends NotificationEntity>
       final value = await _notification.record(uniqueId.value).get(await _db);
       if (value != null) {
         int? count = await _notification.record(uniqueId.value).delete(
-          await _db,
-        );
-        if (count!=null && count >= 0) {
+              await _db,
+            );
+        if (count != null && count >= 0) {
           return true;
         } else {
           return false;
@@ -145,7 +145,8 @@ class NotificationLocalDbRepository<T extends NotificationEntity>
               entity.toJson(),
             );
         if (result != null) {
-          return NotificationEntity.fromJson(result).copyWith(notificationID: result['notificationID']);
+          return NotificationEntity.fromJson(result)
+              .copyWith(notificationID: result['notificationID']);
         } else {
           return upsert(id: uniqueId, entity: entity);
         }
@@ -175,7 +176,8 @@ class NotificationLocalDbRepository<T extends NotificationEntity>
       final result = await _notification
           .record(key)
           .put(await _db, entity.toJson(), merge: (value != null) || false);
-      return NotificationEntity.fromJson(result).copyWith(notificationID: result['notificationID']);
+      return NotificationEntity.fromJson(result)
+          .copyWith(notificationID: result['notificationID']);
     });
     return result;
   }

@@ -79,9 +79,9 @@ class UserBusinessProfileLocalDbRepository<T extends BusinessProfileEntity>
           await _businessProfile.record(uniqueId.value).get(await _db);
       if (value != null) {
         int? count = await _businessProfile.record(uniqueId.value).delete(
-          await _db,
-        );
-        if (count!=null && count >= 0) {
+              await _db,
+            );
+        if (count != null && count >= 0) {
           return true;
         } else {
           return false;
@@ -152,7 +152,8 @@ class UserBusinessProfileLocalDbRepository<T extends BusinessProfileEntity>
               entity.toMap(),
             );
         if (result != null) {
-          return BusinessProfileEntity.fromMap(result).copyWith(businessProfileID: result['businessProfileID']);
+          return BusinessProfileEntity.fromMap(result)
+              .copyWith(businessProfileID: result['businessProfileID']);
         } else {
           return upsert(id: uniqueId, entity: entity);
         }
@@ -183,7 +184,8 @@ class UserBusinessProfileLocalDbRepository<T extends BusinessProfileEntity>
       final result = await _businessProfile
           .record(key)
           .put(await _db, entity.toMap(), merge: (value != null) || false);
-      return BusinessProfileEntity.fromMap(result).copyWith(businessProfileID: result['businessProfileID']);
+      return BusinessProfileEntity.fromMap(result)
+          .copyWith(businessProfileID: result['businessProfileID']);
     });
     return result;
   }
@@ -223,12 +225,18 @@ class UserBusinessProfileLocalDbRepository<T extends BusinessProfileEntity>
         );
         // If
         if ((searchText.isNotNull ||
-            filter.isNotNull ||
-            sorting.isNotNull && (searchText!.isNotEmpty || filter!.isNotEmpty || sorting!.isNotEmpty)) &&
-            (startTimeStamp.isNotNull || endTimeStamp.isNotNull)){
-          var regExp = RegExp('^${searchText?.toLowerCase() ?? ''}\$', caseSensitive: false);
-          var filterRegExp = RegExp('^${filter?.toLowerCase() ?? ''}\$', caseSensitive: false);
-          var sortingRegExp = RegExp('^${sorting?.toLowerCase() ?? ''}\$', caseSensitive: false);
+                filter.isNotNull ||
+                sorting.isNotNull &&
+                    (searchText!.isNotEmpty ||
+                        filter!.isNotEmpty ||
+                        sorting!.isNotEmpty)) &&
+            (startTimeStamp.isNotNull || endTimeStamp.isNotNull)) {
+          var regExp = RegExp('^${searchText?.toLowerCase() ?? ''}\$',
+              caseSensitive: false);
+          var filterRegExp =
+              RegExp('^${filter?.toLowerCase() ?? ''}\$', caseSensitive: false);
+          var sortingRegExp = RegExp('^${sorting?.toLowerCase() ?? ''}\$',
+              caseSensitive: false);
           finder = Finder(
             limit: pageSize,
             offset: pageKey,
@@ -269,52 +277,59 @@ class UserBusinessProfileLocalDbRepository<T extends BusinessProfileEntity>
         // Else If
         else if (searchText.isNotNull ||
             filter.isNotNull ||
-            sorting.isNotNull && (searchText!.isNotEmpty || filter!.isNotEmpty || sorting!.isNotEmpty)) {
+            sorting.isNotNull &&
+                (searchText!.isNotEmpty ||
+                    filter!.isNotEmpty ||
+                    sorting!.isNotEmpty)) {
           if (searchText!.isEmpty) {
             finder = Finder(
               limit: pageSize,
               offset: pageKey,
             );
           } else {
-          var regExp = RegExp('^${searchText?.toLowerCase() ?? ''}\$', caseSensitive: false);
-          var filterRegExp = RegExp('^${filter?.toLowerCase() ?? ''}\$', caseSensitive: false);
-          var sortingRegExp = RegExp('^${sorting?.toLowerCase() ?? ''}\$', caseSensitive: false);
-          finder = Finder(
-            limit: pageSize,
-            offset: pageKey,
-            filter: Filter.and(
-              [
-                Filter.or([
-                  Filter.matchesRegExp(
-                    'userName',
-                    regExp,
-                    anyInList: true,
-                  ),
-                  Filter.matchesRegExp(
-                    'businessPhoneNumber',
-                    regExp,
-                    anyInList: true,
-                  ),
-                  Filter.matchesRegExp(
-                    'businessEmailAddress',
-                    regExp,
-                    anyInList: true,
-                  ),
-                  Filter.matchesRegExp(
-                    'businessName',
-                    regExp,
-                    anyInList: true,
-                  ),
-                  // Filter
-                  Filter.matchesRegExp(
-                    'businessTypeEntity.businessTypeName',
-                    filterRegExp,
-                    anyInList: true,
-                  ),
-                ]),
-              ],
-            ),
-          );}
+            var regExp = RegExp('^${searchText?.toLowerCase() ?? ''}\$',
+                caseSensitive: false);
+            var filterRegExp = RegExp('^${filter?.toLowerCase() ?? ''}\$',
+                caseSensitive: false);
+            var sortingRegExp = RegExp('^${sorting?.toLowerCase() ?? ''}\$',
+                caseSensitive: false);
+            finder = Finder(
+              limit: pageSize,
+              offset: pageKey,
+              filter: Filter.and(
+                [
+                  Filter.or([
+                    Filter.matchesRegExp(
+                      'userName',
+                      regExp,
+                      anyInList: true,
+                    ),
+                    Filter.matchesRegExp(
+                      'businessPhoneNumber',
+                      regExp,
+                      anyInList: true,
+                    ),
+                    Filter.matchesRegExp(
+                      'businessEmailAddress',
+                      regExp,
+                      anyInList: true,
+                    ),
+                    Filter.matchesRegExp(
+                      'businessName',
+                      regExp,
+                      anyInList: true,
+                    ),
+                    // Filter
+                    Filter.matchesRegExp(
+                      'businessTypeEntity.businessTypeName',
+                      filterRegExp,
+                      anyInList: true,
+                    ),
+                  ]),
+                ],
+              ),
+            );
+          }
         }
         // Else
         else {

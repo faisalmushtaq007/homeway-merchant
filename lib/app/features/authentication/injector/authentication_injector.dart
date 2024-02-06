@@ -16,9 +16,9 @@ class AuthenticationInjector {
     );
 
     serviceLocator.registerLazySingleton<VerifyFirebaseOtpUseCase>(
-          () => VerifyFirebaseOtpUseCase(
+      () => VerifyFirebaseOtpUseCase(
         firebaseAuthenticationRepository:
-        serviceLocator<FirebaseAuthenticationRepository>(),
+            serviceLocator<FirebaseAuthenticationRepository>(),
       ),
     );
   }

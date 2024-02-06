@@ -1,0 +1,30 @@
+include: package:very_good_analysis/analysis_options.5.1.0.yaml
+analyzer:
+  exclude:
+    - "**/*.g.dart"
+    - "**/*.freezed.dart"
+  errors:
+    invalid_annotation_target: ignore
+    argument_type_not_assignable: ignore
+    generic_argument_factories: true
+    invalid_assignment: false
+    non_constant_default_value: false
+    const_with_non_constant_argument: false
+    valid_regexps: false
+
+linter:
+  rules:
+    public_member_api_docs: false
+    omit_local_variable_types: false
+    argument_type_not_assignable: false
+    generic_argument_factories: true
+    one_member_abstracts: false
+    library_private_types_in_public_api: false
+    sort_constructors_first: true
+    cascade_invocations: false
+    lines_longer_than_80_chars: false
+    invalid_assignment: false
+    non_constant_default_value: false
+    const_with_non_constant_argument: false
+    const_with_non_const: false
+    directives_ordering:

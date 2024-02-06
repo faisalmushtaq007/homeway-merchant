@@ -49,7 +49,8 @@ class DefaultFirebaseOptions {
     messagingSenderId: '564821867293',
     projectId: 'homeway-e4577',
     authDomain: 'homeway-e4577.firebaseapp.com',
-    databaseURL: 'https://homeway-e4577-default-rtdb.asia-southeast1.firebasedatabase.app',
+    databaseURL:
+        'https://homeway-e4577-default-rtdb.asia-southeast1.firebasedatabase.app',
     storageBucket: 'homeway-e4577.appspot.com',
     measurementId: 'G-YGFBHRMB8X',
   );
@@ -59,10 +60,13 @@ class DefaultFirebaseOptions {
     appId: '1:564821867293:android:9c1bf44aa79e09304dfff4',
     messagingSenderId: '564821867293',
     projectId: 'homeway-e4577',
-    databaseURL: 'https://homeway-e4577-default-rtdb.asia-southeast1.firebasedatabase.app',
+    databaseURL:
+        'https://homeway-e4577-default-rtdb.asia-southeast1.firebasedatabase.app',
     storageBucket: 'homeway-e4577.appspot.com',
-    androidClientId: '564821867293-ld4lkl9vmq0tfjhlpcvc5h8lh8p7thau.apps.googleusercontent.com',
-    iosClientId: '564821867293-eloqhcbn6386lsd7lsps3847tli5o5ps.apps.googleusercontent.com',
+    androidClientId:
+        '564821867293-ld4lkl9vmq0tfjhlpcvc5h8lh8p7thau.apps.googleusercontent.com',
+    iosClientId:
+        '564821867293-eloqhcbn6386lsd7lsps3847tli5o5ps.apps.googleusercontent.com',
     iosBundleId: 'com.homemakers.merchant.dev',
   );
 
@@ -71,12 +75,15 @@ class DefaultFirebaseOptions {
     appId: '1:564821867293:ios:3bcfb98c0b906d594dfff4',
     messagingSenderId: '564821867293',
     projectId: 'homeway-e4577',
-    databaseURL: 'https://homeway-e4577-default-rtdb.asia-southeast1.firebasedatabase.app',
+    databaseURL:
+        'https://homeway-e4577-default-rtdb.asia-southeast1.firebasedatabase.app',
     storageBucket: 'homeway-e4577.appspot.com',
     // 564821867293-ld4lkl9vmq0tfjhlpcvc5h8lh8p7thau.apps.googleusercontent.com - com.homemakers.merchant.dev
     // 564821867293-g5pmkrkhicsfl2do8pfp68lf9ei5e4rg.apps.googleusercontent.com - com.homemakers.merchant
-    androidClientId: '564821867293-ld4lkl9vmq0tfjhlpcvc5h8lh8p7thau.apps.googleusercontent.com',
-    iosClientId: '564821867293-eloqhcbn6386lsd7lsps3847tli5o5ps.apps.googleusercontent.com',
+    androidClientId:
+        '564821867293-ld4lkl9vmq0tfjhlpcvc5h8lh8p7thau.apps.googleusercontent.com',
+    iosClientId:
+        '564821867293-eloqhcbn6386lsd7lsps3847tli5o5ps.apps.googleusercontent.com',
     iosBundleId: 'com.homemakers.merchant.dev',
   );
 
@@ -85,10 +92,13 @@ class DefaultFirebaseOptions {
     appId: '1:564821867293:ios:e8bc12a064b256ef4dfff4',
     messagingSenderId: '564821867293',
     projectId: 'homeway-e4577',
-    databaseURL: 'https://homeway-e4577-default-rtdb.asia-southeast1.firebasedatabase.app',
+    databaseURL:
+        'https://homeway-e4577-default-rtdb.asia-southeast1.firebasedatabase.app',
     storageBucket: 'homeway-e4577.appspot.com',
-    androidClientId: '564821867293-ld4lkl9vmq0tfjhlpcvc5h8lh8p7thau.apps.googleusercontent.com',
-    iosClientId: '564821867293-qj14ngeun3ps623ihfovsloe1lsjia4e.apps.googleusercontent.com',
+    androidClientId:
+        '564821867293-ld4lkl9vmq0tfjhlpcvc5h8lh8p7thau.apps.googleusercontent.com',
+    iosClientId:
+        '564821867293-qj14ngeun3ps623ihfovsloe1lsjia4e.apps.googleusercontent.com',
     iosBundleId: 'com.homemakers.homemakersMerchant.RunnerTests',
   );
 }

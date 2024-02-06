@@ -215,7 +215,8 @@ class PaymentBankExceptionState extends PaymentBankState {
   final Exception? exception;
 
   @override
-  List<Object?> get props => [paymentBankStatus,message,stackTrace,exception];
+  List<Object?> get props =>
+      [paymentBankStatus, message, stackTrace, exception];
 }
 
 class PaymentBankLoadingState extends PaymentBankState {
@@ -229,7 +230,7 @@ class PaymentBankLoadingState extends PaymentBankState {
   final String message;
 
   @override
-  List<Object?> get props => [isLoading,paymentBankStatus,message];
+  List<Object?> get props => [isLoading, paymentBankStatus, message];
 }
 
 class PaymentBankProcessingState extends PaymentBankState {
@@ -243,7 +244,7 @@ class PaymentBankProcessingState extends PaymentBankState {
   final String message;
 
   @override
-  List<Object?> get props => [isProcessing,paymentBankStatus,message];
+  List<Object?> get props => [isProcessing, paymentBankStatus, message];
 }
 
 class NavigateToNextPageState extends PaymentBankState {

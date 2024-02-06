@@ -119,7 +119,8 @@ class _MenuCardWidgetState extends State<MenuCardWidget> {
                     cancelText: 'Cancel',
                     okPressed: () async {
                       debugPrint('Dialog confirmed');
-                      await Future.delayed(const Duration(milliseconds: 300), () {});
+                      await Future.delayed(
+                          const Duration(milliseconds: 300), () {});
                       if (!mounted) {
                         return;
                       }
@@ -127,7 +128,8 @@ class _MenuCardWidgetState extends State<MenuCardWidget> {
                     },
                     cancelPressed: () async {
                       debugPrint('Dialog cancelled');
-                      await Future.delayed(const Duration(milliseconds: 300), () {});
+                      await Future.delayed(
+                          const Duration(milliseconds: 300), () {});
                       if (!mounted) {
                         return;
                       }
@@ -136,11 +138,13 @@ class _MenuCardWidgetState extends State<MenuCardWidget> {
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       crossAxisAlignment: CrossAxisAlignment.stretch,
-                      textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                      textDirection: serviceLocator<LanguageController>()
+                          .targetTextDirection,
                       children: [
                         Text(
                           'Permanently delete this menu. If there is an order for this menu in any of your stores, then it will be deleted only after completing the order, and if you still confirm for delete, then this menu will remain pending and under review. Are you sure you want to delete this menu?',
-                          textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                          textDirection: serviceLocator<LanguageController>()
+                              .targetTextDirection,
                         ),
                       ],
                     ),
@@ -154,12 +158,14 @@ class _MenuCardWidgetState extends State<MenuCardWidget> {
                 }
                 //serviceLocator<List<MenuEntity>>().removeAt(currentIndex);
                 //final result=await serviceLocator<DeleteMenuUseCase>()(input:widget.menuEntity,id:currentIndex);
-                context.read<MenuBloc>().add(RemoveByIDMenu(
-                      index: currentIndex,
-                      menuEntity: widget.menuEntity,
-                      menuEntities: widget.listOfAllMenuEntities,
-                      menuID: widget.menuEntity.menuId.toString(),
-                    ),);
+                context.read<MenuBloc>().add(
+                      RemoveByIDMenu(
+                        index: currentIndex,
+                        menuEntity: widget.menuEntity,
+                        menuEntities: widget.listOfAllMenuEntities,
+                        menuID: widget.menuEntity.menuId.toString(),
+                      ),
+                    );
                 await Future.delayed(const Duration(milliseconds: 500), () {});
                 widget.refreshMenuList();
                 setState(() {});
@@ -184,7 +190,8 @@ class _MenuCardWidgetState extends State<MenuCardWidget> {
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
               softWrap: true,
-              textDirection: serviceLocator<LanguageController>().targetTextDirection,
+              textDirection:
+                  serviceLocator<LanguageController>().targetTextDirection,
             ).translate(),
           ),
         ],
@@ -244,8 +251,11 @@ class _MenuCardWidgetState extends State<MenuCardWidget> {
             color: Colors.white,
             fontSize: 16,
           ),
-          placeholderBackgroundColor: context.colorScheme.primary.withOpacity(0.5),
-          imageType: (widget.menuEntity.menuImages[0].assetPath.isNotEmpty) ? ImageType.network : ImageType.text,
+          placeholderBackgroundColor:
+              context.colorScheme.primary.withOpacity(0.5),
+          imageType: (widget.menuEntity.menuImages[0].assetPath.isNotEmpty)
+              ? ImageType.network
+              : ImageType.text,
         ),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadiusDirectional.circular(10),
@@ -254,7 +264,8 @@ class _MenuCardWidgetState extends State<MenuCardWidget> {
         title: Text(
           widget.menuEntity.menuName,
           style: context.titleMedium!.copyWith(fontWeight: FontWeight.w500),
-          textDirection: serviceLocator<LanguageController>().targetTextDirection,
+          textDirection:
+              serviceLocator<LanguageController>().targetTextDirection,
           maxLines: 3,
           softWrap: true,
           overflow: TextOverflow.ellipsis,
@@ -262,7 +273,8 @@ class _MenuCardWidgetState extends State<MenuCardWidget> {
         subtitle: Text(
           '${widget.menuEntity.menuCategories[0].title} | ${widget.menuEntity.menuCategories[0].subCategory[0].title}',
           style: context.labelMedium!.copyWith(fontWeight: FontWeight.w400),
-          textDirection: serviceLocator<LanguageController>().targetTextDirection,
+          textDirection:
+              serviceLocator<LanguageController>().targetTextDirection,
           maxLines: 3,
           softWrap: true,
           overflow: TextOverflow.ellipsis,
@@ -274,19 +286,22 @@ class _MenuCardWidgetState extends State<MenuCardWidget> {
             widget.listOfAllSelectedMenuEntities.contains(widget.menuEntity)
                 ? widget.listOfAllSelectedMenuEntities.remove(widget.menuEntity)
                 : widget.listOfAllSelectedMenuEntities.add(widget.menuEntity);
-            widget.onSelectionChanged?.call(widget.listOfAllSelectedMenuEntities);
+            widget.onSelectionChanged
+                ?.call(widget.listOfAllSelectedMenuEntities);
           });
         },
-        selected: widget.listOfAllSelectedMenuEntities.contains(widget.menuEntity),
-        trailing: (widget.listOfAllSelectedMenuEntities.contains(widget.menuEntity))
-            ? const Icon(
-                Icons.check,
-                color: Color.fromRGBO(69, 201, 125, 1),
-              )
-            : _buildPopupMenuButton(
-                widget.currentIndex,
-                widget.menuEntity,
-              ),
+        selected:
+            widget.listOfAllSelectedMenuEntities.contains(widget.menuEntity),
+        trailing:
+            (widget.listOfAllSelectedMenuEntities.contains(widget.menuEntity))
+                ? const Icon(
+                    Icons.check,
+                    color: Color.fromRGBO(69, 201, 125, 1),
+                  )
+                : _buildPopupMenuButton(
+                    widget.currentIndex,
+                    widget.menuEntity,
+                  ),
         selectedColor: const Color.fromRGBO(215, 243, 227, 1),
         selectedTileColor: const Color.fromRGBO(215, 243, 227, 1),
         tileColor: context.colorScheme.background,

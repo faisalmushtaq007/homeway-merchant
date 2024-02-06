@@ -4,7 +4,7 @@ import 'package:network_manager/src/interface/INetworkModel.dart';
 /// The `IFormDataModel` interface is used to convert a model into a `FormData` object.
 /// The `IFormDataModel` interface is implemented by the `INetworkModel` interface.
 /// It uses the `toJson` method from the `INetworkModel` interface to convert the model into a Map<String, dynamic>.
-mixin IFormDataModel<T extends INetworkModel> on INetworkModel<T>  {
+mixin IFormDataModel<T extends INetworkModel> on INetworkModel<T> {
   FormData? toFormData() {
     try {
       if (toJson() == null) return null;

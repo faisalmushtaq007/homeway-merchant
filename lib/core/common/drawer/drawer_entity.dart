@@ -16,7 +16,7 @@ class DrawerEntity extends Equatable {
     this.controller,
     this.expandedCrossAxisAlignment,
     this.trailing,
-    this.hasSwitchThemeMode=false,
+    this.hasSwitchThemeMode = false,
   }) {
     if (hasExpanded) {
       assert(controller != null, 'ExpansionTileController should not be null');
@@ -65,8 +65,8 @@ class DrawerEntity extends Equatable {
         leading,
         controller,
         expandedCrossAxisAlignment,
-    trailing,
-    hasSwitchThemeMode,
+        trailing,
+        hasSwitchThemeMode,
       ];
 
   Map<String, dynamic> toMap() {
@@ -110,8 +110,8 @@ class DrawerEntity extends Equatable {
       controller: controller ?? this.controller,
       expandedCrossAxisAlignment:
           expandedCrossAxisAlignment ?? this.expandedCrossAxisAlignment,
-        trailing:trailing??this.trailing,
-        hasSwitchThemeMode:hasSwitchThemeMode??this.hasSwitchThemeMode,
+      trailing: trailing ?? this.trailing,
+      hasSwitchThemeMode: hasSwitchThemeMode ?? this.hasSwitchThemeMode,
     );
   }
 }

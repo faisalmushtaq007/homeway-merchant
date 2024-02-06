@@ -40,7 +40,8 @@ class _LocalFileIO extends IFileManager {
     if (time == null) {
       return false;
     } else {
-      final localModel = LocalModel(model: model, time: DateTime.now().add(time));
+      final localModel =
+          LocalModel(model: model, time: DateTime.now().add(time));
       await _fileManager.writeLocalModelInFile(key, localModel);
       return true;
     }

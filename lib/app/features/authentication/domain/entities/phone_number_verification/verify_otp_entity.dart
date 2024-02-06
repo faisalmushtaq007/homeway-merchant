@@ -56,6 +56,11 @@ class VerifyOtpEntity extends INetworkModel<VerifyOtpEntity> {
         'verificationId': verificationId,
       };
 
+  Map<String, dynamic> toTwilio() => <String, dynamic>{
+        'phone_number': mobile,
+        'otp': otp,
+      };
+
   @override
-  Map<String, dynamic> toJson() => toMap();
+  Map<String, dynamic> toJson() => toTwilio();
 }

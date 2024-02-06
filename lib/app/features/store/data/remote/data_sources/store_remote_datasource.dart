@@ -10,13 +10,15 @@ class StoreRemoteDataSource implements StoreDataSource {
   }
 
   @override
-  Future<ApiResultState<bool>> deleteStore({StoreEntity? storeEntity, required int storeID}) {
+  Future<ApiResultState<bool>> deleteStore(
+      {StoreEntity? storeEntity, required int storeID}) {
     // TODO(prasant): implement deleteStore
     throw UnimplementedError();
   }
 
   @override
-  Future<ApiResultState<StoreEntity>> editStore({required StoreEntity storeEntity}) {
+  Future<ApiResultState<StoreEntity>> editStore(
+      {required StoreEntity storeEntity}) {
     // TODO(prasant): implement editStore
     throw UnimplementedError();
   }
@@ -28,20 +30,23 @@ class StoreRemoteDataSource implements StoreDataSource {
   }
 
   @override
-  Future<ApiResultState<StoreEntity>> getStore({StoreEntity? storeEntity, required int storeID}) {
+  Future<ApiResultState<StoreEntity>> getStore(
+      {StoreEntity? storeEntity, required int storeID}) {
     // TODO(prasant): implement getStore
     throw UnimplementedError();
   }
 
   @override
-  Future<ApiResultState<StoreEntity>> saveStore({required StoreEntity storeEntity}) {
+  Future<ApiResultState<StoreEntity>> saveStore(
+      {required StoreEntity storeEntity}) {
     // TODO(prasant): implement saveStore
     throw UnimplementedError();
   }
 
   @override
   Future<ApiResultState<List<StoreEntity>>> bindDriverWithStores(
-      {required List<StoreOwnDeliveryPartnersInfo> source, required List<StoreEntity> destination}) {
+      {required List<StoreOwnDeliveryPartnersInfo> source,
+      required List<StoreEntity> destination}) {
     // TODO(prasant): implement bindDriverWithStores
     throw UnimplementedError();
   }
@@ -54,14 +59,16 @@ class StoreRemoteDataSource implements StoreDataSource {
 
   @override
   Future<ApiResultState<bool>> deleteDriver(
-      {required int driverID, StoreOwnDeliveryPartnersInfo? storeOwnDeliveryPartnersInfo}) {
+      {required int driverID,
+      StoreOwnDeliveryPartnersInfo? storeOwnDeliveryPartnersInfo}) {
     // TODO(prasant): implement deleteDriver
     throw UnimplementedError();
   }
 
   @override
   Future<ApiResultState<StoreOwnDeliveryPartnersInfo>> editDriver(
-      {required StoreOwnDeliveryPartnersInfo storeOwnDeliveryPartnersInfo, required int driverID}) {
+      {required StoreOwnDeliveryPartnersInfo storeOwnDeliveryPartnersInfo,
+      required int driverID}) {
     // TODO(prasant): implement editDriver
     throw UnimplementedError();
   }
@@ -74,7 +81,8 @@ class StoreRemoteDataSource implements StoreDataSource {
 
   @override
   Future<ApiResultState<StoreOwnDeliveryPartnersInfo>> getDriver(
-      {required int driverID, StoreOwnDeliveryPartnersInfo? storeOwnDeliveryPartnersInfo}) {
+      {required int driverID,
+      StoreOwnDeliveryPartnersInfo? storeOwnDeliveryPartnersInfo}) {
     // TODO(prasant): implement getDriver
     throw UnimplementedError();
   }
@@ -88,14 +96,16 @@ class StoreRemoteDataSource implements StoreDataSource {
 
   @override
   Future<ApiResultState<List<StoreEntity>>> unBindDriverWithStores(
-      {required List<StoreOwnDeliveryPartnersInfo> source, required List<StoreEntity> destination}) {
+      {required List<StoreOwnDeliveryPartnersInfo> source,
+      required List<StoreEntity> destination}) {
     // TODO(prasant): implement unBindDriverWithStores
     throw UnimplementedError();
   }
 
   @override
   Future<ApiResultState<AppUserEntity>> bindDriverWithUser(
-      {required List<StoreOwnDeliveryPartnersInfo> source, required AppUserEntity destination}) {
+      {required List<StoreOwnDeliveryPartnersInfo> source,
+      required AppUserEntity destination}) {
     // TODO: implement bindDriverWithUser
     throw UnimplementedError();
   }
@@ -109,7 +119,8 @@ class StoreRemoteDataSource implements StoreDataSource {
 
   @override
   Future<ApiResultState<AppUserEntity>> unBindDriversWithUser(
-      {required List<StoreOwnDeliveryPartnersInfo> source, required AppUserEntity destination}) {
+      {required List<StoreOwnDeliveryPartnersInfo> source,
+      required AppUserEntity destination}) {
     // TODO: implement unBindDriversWithUser
     throw UnimplementedError();
   }
@@ -122,7 +133,8 @@ class StoreRemoteDataSource implements StoreDataSource {
   }
 
   @override
-  Future<ApiResultState<List<StoreOwnDeliveryPartnersInfo>>> getAllDriversPagination({
+  Future<ApiResultState<List<StoreOwnDeliveryPartnersInfo>>>
+      getAllDriversPagination({
     int pageKey = 0,
     int pageSize = 10,
     String? searchText,

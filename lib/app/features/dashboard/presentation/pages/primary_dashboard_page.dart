@@ -9,7 +9,8 @@ class PrimaryDashboardPage extends StatefulWidget {
   final List<PrimaryDashboardEntity> primaryDashboardMenuEntities;
 
   @override
-  _PrimaryDashboardPageController createState() => _PrimaryDashboardPageController();
+  _PrimaryDashboardPageController createState() =>
+      _PrimaryDashboardPageController();
 }
 
 class _PrimaryDashboardPageController extends State<PrimaryDashboardPage> {
@@ -55,7 +56,8 @@ class _PrimaryDashboardPageController extends State<PrimaryDashboardPage> {
         title: 'My Stores',
         titleID: 2,
         onPressed: () async {
-          final navigateToStorePage = await context.push(Routes.ALL_STORES_PAGE);
+          final navigateToStorePage =
+              await context.push(Routes.ALL_STORES_PAGE);
           return;
         },
         leading: const Icon(
@@ -97,7 +99,8 @@ class _PrimaryDashboardPageController extends State<PrimaryDashboardPage> {
         title: 'My Address',
         titleID: 5,
         onPressed: () async {
-          final navigateToMenuPage = await context.push(Routes.ALL_SAVED_ADDRESS_LIST);
+          final navigateToMenuPage =
+              await context.push(Routes.ALL_SAVED_ADDRESS_LIST);
           return;
         },
         leading: const Icon(
@@ -110,7 +113,9 @@ class _PrimaryDashboardPageController extends State<PrimaryDashboardPage> {
   }
 
   Future<void> initData() async {
-    context.read<BusinessProfileBloc>().add(const GetAllAppUserProfilePagination(pageKey: 0, pageSize: 10));
+    context
+        .read<BusinessProfileBloc>()
+        .add(const GetAllAppUserProfilePagination(pageKey: 0, pageSize: 10));
     final cacheUserEntity = serviceLocator<AppUserEntity>();
     AppUserEntity input = AppUserEntity(
       hasCurrentUser: true,
@@ -125,11 +130,13 @@ class _PrimaryDashboardPageController extends State<PrimaryDashboardPage> {
           : cacheUserEntity.businessProfile?.businessPhoneNumber ?? '',
       uid: cacheUserEntity.userID.toString(),
       access_token: cacheUserEntity.access_token ?? '',
-      phoneNumberWithoutDialCode: !cacheUserEntity.phoneNumberWithoutDialCode.isEmptyOrNull
+      phoneNumberWithoutDialCode: !cacheUserEntity
+              .phoneNumberWithoutDialCode.isEmptyOrNull
           ? cacheUserEntity.phoneNumberWithoutDialCode
           : cacheUserEntity.businessProfile?.phoneNumberWithoutDialCode ?? '',
     );
-    final getCurrentUserResult = await serviceLocator<GetAllAppUserPaginationUseCase>()(
+    final getCurrentUserResult =
+        await serviceLocator<GetAllAppUserPaginationUseCase>()(
       pageSize: 10,
       pageKey: 0,
       entity: input,
@@ -151,7 +158,8 @@ class _PrimaryDashboardPageController extends State<PrimaryDashboardPage> {
           appLog.d('Local User Info ${data.last.toMap()}');
         }
       },
-      error: (dataSourceFailure, reason, error, networkException, stackTrace, exception, extra) {
+      error: (dataSourceFailure, reason, error, networkException, stackTrace,
+          exception, extra) {
         appLog.d('Error $reason');
       },
     );
@@ -165,10 +173,12 @@ class _PrimaryDashboardPageController extends State<PrimaryDashboardPage> {
   }
 
   @override
-  Widget build(BuildContext context) => BlocBuilder<BusinessProfileBloc, BusinessProfileState>(
+  Widget build(BuildContext context) =>
+      BlocBuilder<BusinessProfileBloc, BusinessProfileState>(
         builder: (context, businessProfileState) {
           if (businessProfileState is GetAllAppUserProfileEmptyState) {
-          } else if (businessProfileState is GetAllAppUserProfilePaginationState) {
+          } else if (businessProfileState
+              is GetAllAppUserProfilePaginationState) {
             appUserEntity = businessProfileState.appUserEntities.last;
           }
           return _PrimaryDashboardPageView(this);
@@ -176,14 +186,16 @@ class _PrimaryDashboardPageController extends State<PrimaryDashboardPage> {
       );
 }
 
-class _PrimaryDashboardPageView extends WidgetView<PrimaryDashboardPage, _PrimaryDashboardPageController> {
+class _PrimaryDashboardPageView
+    extends WidgetView<PrimaryDashboardPage, _PrimaryDashboardPageController> {
   const _PrimaryDashboardPageView(super.state);
 
   @override
   Widget build(BuildContext context) {
     final MediaQueryData media = MediaQuery.of(context);
     final double margins = GlobalApp.responsiveInsets(media.size.width);
-    final double topPadding = margins; //media.padding.top + kToolbarHeight + margins; //margins * 1.5;
+    final double topPadding =
+        margins; //media.padding.top + kToolbarHeight + margins; //margins * 1.5;
     final double bottomPadding = media.padding.bottom + margins;
     final double width = media.size.width;
     final ThemeData theme = Theme.of(context);
@@ -194,31 +206,34 @@ class _PrimaryDashboardPageView extends WidgetView<PrimaryDashboardPage, _Primar
     final int hour = TimeOfDay.now().hour;
     var message = '';
     var imageName = '';
-    switch(day.period){
-      case DayPeriod.am: {
-        if (hour>=0 && hour < 4) {
-          message = 'Good Night';
-          break;
-        } else if ((hour >= 4) && (hour <12)) {
-          message = 'Good Morning';
-          break;
-        }else{
-          message = 'Good Morning';
-          break;
+    switch (day.period) {
+      case DayPeriod.am:
+        {
+          if (hour >= 0 && hour < 4) {
+            message = 'Good Night';
+            break;
+          } else if ((hour >= 4) && (hour < 12)) {
+            message = 'Good Morning';
+            break;
+          } else {
+            message = 'Good Morning';
+            break;
+          }
         }
-      }
-      case DayPeriod.pm: {
-        if ((hour >= 12) && (hour < 16)) {
-          message = 'Good Afernoon';
-          break;
-        }if ((hour >= 16) && (hour <= 20)) {
-          message = 'Good Evening';
-          break;
-        }else {
-          message = 'Good Night';
-          break;
+      case DayPeriod.pm:
+        {
+          if ((hour >= 12) && (hour < 16)) {
+            message = 'Good Afernoon';
+            break;
+          }
+          if ((hour >= 16) && (hour <= 20)) {
+            message = 'Good Evening';
+            break;
+          } else {
+            message = 'Good Night';
+            break;
+          }
         }
-      }
     }
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: FlexColorScheme.themedSystemNavigationBar(
@@ -284,30 +299,37 @@ class _PrimaryDashboardPageView extends WidgetView<PrimaryDashboardPage, _Primar
                                       child: Column(
                                         children: [
                                           Wrap(
-                                            textDirection: serviceLocator<LanguageController>()
+                                            textDirection: serviceLocator<
+                                                    LanguageController>()
                                                 .targetTextDirection,
                                             children: [
                                               Text(
                                                 'Hi, ',
-                                                textDirection:
-                                                serviceLocator<LanguageController>()
+                                                textDirection: serviceLocator<
+                                                        LanguageController>()
                                                     .targetTextDirection,
-                                                style: context.headlineLarge!.copyWith(
+                                                style: context.headlineLarge!
+                                                    .copyWith(
                                                   fontWeight: FontWeight.bold,
                                                   height: 0.9,
                                                   fontSize: 30,
-                                                  color: Color.fromRGBO(255, 125, 113, 1),
+                                                  color: Color.fromRGBO(
+                                                      255, 125, 113, 1),
                                                 ),
                                               ).translate(),
                                               Text(
                                                 "${(state.appUserEntity.isNotNull && state.appUserEntity!.businessProfile.isNotNull && !state.appUserEntity!.businessProfile!.userName.isEmptyOrNull) ? state.appUserEntity!.businessProfile!.userName : 'Hello User'}",
-                                                style: context.headlineLarge!.copyWith(
+                                                style: context.headlineLarge!
+                                                    .copyWith(
                                                   fontWeight: FontWeight.bold,
                                                   height: 0.9,
                                                   fontSize: 30,
-                                                  color: Color.fromRGBO(255, 125, 113, 1),
+                                                  color: Color.fromRGBO(
+                                                      255, 125, 113, 1),
                                                 ),
-                                                textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                                textDirection: serviceLocator<
+                                                        LanguageController>()
+                                                    .targetTextDirection,
                                                 softWrap: true,
                                                 maxLines: 3,
                                                 overflow: TextOverflow.ellipsis,
@@ -315,18 +337,21 @@ class _PrimaryDashboardPageView extends WidgetView<PrimaryDashboardPage, _Primar
                                             ],
                                           ),
                                           const AnimatedGap(6,
-                                              duration: Duration(milliseconds: 500)),
+                                              duration:
+                                                  Duration(milliseconds: 500)),
                                           Wrap(
-                                            textDirection: serviceLocator<LanguageController>()
+                                            textDirection: serviceLocator<
+                                                    LanguageController>()
                                                 .targetTextDirection,
                                             children: [
                                               Text(
                                                 message,
-                                                textDirection:
-                                                serviceLocator<LanguageController>()
+                                                textDirection: serviceLocator<
+                                                        LanguageController>()
                                                     .targetTextDirection,
                                                 style: GoogleFonts.raleway(
-                                                  textStyle: context.bodyLarge!.copyWith(
+                                                  textStyle: context.bodyLarge!
+                                                      .copyWith(
                                                     fontWeight: FontWeight.bold,
                                                     fontStyle: FontStyle.italic,
                                                     height: 0.9,
@@ -336,30 +361,78 @@ class _PrimaryDashboardPageView extends WidgetView<PrimaryDashboardPage, _Primar
                                             ],
                                           ),
                                         ],
-                                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.stretch,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
                                       ),
                                     ),
                                     AnimatedCrossFade(
-                                      duration: const Duration(milliseconds: 500),
-                                      crossFadeState:  (state.appUserEntity.businessProfile.isNull &&
-                                          state.appUserEntity.businessProfile!.userName.isEmptyOrNull && state.appUserEntity.businessProfile!.userName[0].isEmptyOrNull)
-                                          ?CrossFadeState.showFirst:CrossFadeState.showSecond,
+                                      duration:
+                                          const Duration(milliseconds: 500),
+                                      crossFadeState: (state.appUserEntity
+                                                  .businessProfile.isNull &&
+                                              state
+                                                  .appUserEntity
+                                                  .businessProfile!
+                                                  .userName
+                                                  .isEmptyOrNull &&
+                                              state
+                                                  .appUserEntity
+                                                  .businessProfile!
+                                                  .userName[0]
+                                                  .isEmptyOrNull)
+                                          ? CrossFadeState.showFirst
+                                          : CrossFadeState.showSecond,
                                       firstChild: const Offstage(),
                                       secondChild: Wrap(
-                                        textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                        textDirection:
+                                            serviceLocator<LanguageController>()
+                                                .targetTextDirection,
                                         alignment: WrapAlignment.center,
                                         children: [
                                           CircleAvatar(
                                             radius: 26,
-                                            backgroundColor: context.colorScheme.primaryContainer,
+                                            backgroundColor: context
+                                                .colorScheme.primaryContainer,
                                             child: Text(
-                                              (state.appUserEntity.businessProfile.isNull &&
-                                                  state.appUserEntity.businessProfile!.userName.isEmptyOrNull && state.appUserEntity.businessProfile!.userName[0].isEmptyOrNull)
+                                              (state
+                                                          .appUserEntity
+                                                          .businessProfile
+                                                          .isNull &&
+                                                      state
+                                                          .appUserEntity
+                                                          .businessProfile!
+                                                          .userName
+                                                          .isEmptyOrNull &&
+                                                      state
+                                                          .appUserEntity
+                                                          .businessProfile!
+                                                          .userName[0]
+                                                          .isEmptyOrNull)
                                                   ? ''
-                                                  : (state.appUserEntity.businessProfile!.userName.length>0 && state.appUserEntity.businessProfile!.userName[0].isNotEmpty)?state.appUserEntity.businessProfile!.userName[0].toUpperCase(): '',
-                                              style: context.titleLarge!.copyWith(),
-                                              textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                                  : (state
+                                                                  .appUserEntity
+                                                                  .businessProfile!
+                                                                  .userName
+                                                                  .length >
+                                                              0 &&
+                                                          state
+                                                              .appUserEntity
+                                                              .businessProfile!
+                                                              .userName[0]
+                                                              .isNotEmpty)
+                                                      ? state
+                                                          .appUserEntity
+                                                          .businessProfile!
+                                                          .userName[0]
+                                                          .toUpperCase()
+                                                      : '',
+                                              style: context.titleLarge!
+                                                  .copyWith(),
+                                              textDirection: serviceLocator<
+                                                      LanguageController>()
+                                                  .targetTextDirection,
                                             ).translate(), //Text
                                           ), //circleA
                                         ],
@@ -367,7 +440,6 @@ class _PrimaryDashboardPageView extends WidgetView<PrimaryDashboardPage, _Primar
                                     ),
                                   ],
                                 ),
-
                                 const AnimatedGap(
                                   24,
                                   duration: Duration(milliseconds: 500),
@@ -428,19 +500,31 @@ class _PrimaryDashboardPageView extends WidgetView<PrimaryDashboardPage, _Primar
                                   duration: Duration(milliseconds: 500),
                                 ),*/
                                 Wrap(
-                                  textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                  textDirection:
+                                      serviceLocator<LanguageController>()
+                                          .targetTextDirection,
                                   alignment: WrapAlignment.center,
                                   children: [
                                     DecoratedBox(
-                                      decoration: const BoxDecoration(color: Color.fromRGBO(252, 240, 218, 1)),
+                                      decoration: const BoxDecoration(
+                                          color:
+                                              Color.fromRGBO(252, 240, 218, 1)),
                                       child: Padding(
-                                        padding: const EdgeInsetsDirectional.only(top: 8, bottom: 8, start: 4, end: 4),
+                                        padding:
+                                            const EdgeInsetsDirectional.only(
+                                                top: 8,
+                                                bottom: 8,
+                                                start: 4,
+                                                end: 4),
                                         child: Text(
                                           'Your business verification is under review process. Thank you so much for being our partner.',
-                                          textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                          textDirection: serviceLocator<
+                                                  LanguageController>()
+                                              .targetTextDirection,
                                           textAlign: TextAlign.center,
-                                          style: context.bodyMedium!
-                                              .copyWith(color: const Color.fromRGBO(207, 138, 10, 1)),
+                                          style: context.bodyMedium!.copyWith(
+                                              color: const Color.fromRGBO(
+                                                  207, 138, 10, 1)),
                                         ).translate(),
                                       ),
                                     ),
@@ -450,20 +534,22 @@ class _PrimaryDashboardPageView extends WidgetView<PrimaryDashboardPage, _Primar
                                   25,
                                   duration: Duration(milliseconds: 500),
                                 ),
-
                                 StaggeredGrid.count(
                                   crossAxisCount: 4,
                                   mainAxisSpacing: 4,
                                   crossAxisSpacing: 4,
-                                  children: state.primaryDashboardMenuEntities.map((e) => StaggeredGridTile.count(
-                                    crossAxisCellCount: 2,
-                                    mainAxisCellCount: 2,
-                                    child: PrimaryDashboardMenuCard(
-                                      key: ObjectKey(e),
-                                      primaryDashboardMenuEntity: e,
-                                      hasGridViewParent: true,
-                                    ),
-                                  )).toList().cast<Widget>(),
+                                  children: state.primaryDashboardMenuEntities
+                                      .map((e) => StaggeredGridTile.count(
+                                            crossAxisCellCount: 2,
+                                            mainAxisCellCount: 2,
+                                            child: PrimaryDashboardMenuCard(
+                                              key: ObjectKey(e),
+                                              primaryDashboardMenuEntity: e,
+                                              hasGridViewParent: true,
+                                            ),
+                                          ))
+                                      .toList()
+                                      .cast<Widget>(),
                                   /*children:  [
                                     StaggeredGridTile.count(
                                       crossAxisCellCount: 2,

@@ -1,5 +1,6 @@
 import 'package:sembast/sembast.dart';
 import 'package:collection/collection.dart';
+
 /// Filter record that contains the same field (i.e. check multiple fields value)
 /// combine filters
 Filter containsMapCombineFilter(Map<String, Object?> map) {
@@ -23,7 +24,6 @@ Filter containsMapCustomFilter(Map<String, Object?> map) {
 }
 
 //var snapshots = await store.find(db,finder: Finder(filter: containsMapCustomFilter({'name': 'Daredevil', 'season': 1, 'episode': 13})));
-
 
 /// Filter record that contains the same field (i.e. check multiple fields value)
 Filter mapEqualsFilter(Map<String, Object?> map) {

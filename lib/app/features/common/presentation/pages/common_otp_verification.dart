@@ -21,7 +21,8 @@ class CommonOtpVerification extends StatefulWidget {
   final int id;
 
   @override
-  _CommonOtpVerificationController createState() => _CommonOtpVerificationController();
+  _CommonOtpVerificationController createState() =>
+      _CommonOtpVerificationController();
 }
 
 class _CommonOtpVerificationController extends State<CommonOtpVerification> {
@@ -30,7 +31,8 @@ class _CommonOtpVerificationController extends State<CommonOtpVerification> {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
   late FocusNode otpFocusNode;
-  final TextEditingController otpTextEditingController = TextEditingController();
+  final TextEditingController otpTextEditingController =
+      TextEditingController();
   String userEnteredPhoneNumber = '';
 
   bool isResendEnabled = false;
@@ -119,7 +121,8 @@ class _CommonOtpVerificationController extends State<CommonOtpVerification> {
 
       // Perform OTP and phone number validation
       bool isOTPValid = validateOTP(otpTextEditingController.text);
-      bool isPhoneNumberValid = validatePhoneNumber(widget.userNewEnteredPhoneNumber);
+      bool isPhoneNumberValid =
+          validatePhoneNumber(widget.userNewEnteredPhoneNumber);
 
       // Update the button state based on validation results
       setState(() {
@@ -168,14 +171,16 @@ class _CommonOtpVerificationController extends State<CommonOtpVerification> {
   Widget build(BuildContext context) => _CommonOtpVerificationView(this);
 }
 
-class _CommonOtpVerificationView extends WidgetView<CommonOtpVerification, _CommonOtpVerificationController> {
+class _CommonOtpVerificationView extends WidgetView<CommonOtpVerification,
+    _CommonOtpVerificationController> {
   const _CommonOtpVerificationView(super.state);
 
   @override
   Widget build(BuildContext context) {
     final MediaQueryData media = MediaQuery.of(context);
     final double margins = GlobalApp.responsiveInsets(media.size.width);
-    final double topPadding = margins; //media.padding.top + kToolbarHeight + margins; //margins * 1.5;
+    final double topPadding =
+        margins; //media.padding.top + kToolbarHeight + margins; //margins * 1.5;
     final ThemeData theme = Theme.of(context);
     const borderColor = Color.fromRGBO(114, 178, 238, 1);
     const errorColor = Color.fromRGBO(255, 234, 238, 1);
@@ -238,12 +243,16 @@ class _CommonOtpVerificationView extends WidgetView<CommonOtpVerification, _Comm
             from: context.width / 2 - 60,
             duration: const Duration(milliseconds: 500),
             child: Directionality(
-              textDirection: serviceLocator<LanguageController>().targetTextDirection,
+              textDirection:
+                  serviceLocator<LanguageController>().targetTextDirection,
               child: PageBody(
                 controller: state.scrollController,
                 constraints: BoxConstraints(
                   minWidth: 1000,
-                  minHeight: media.size.height - (media.padding.top + kToolbarHeight + media.padding.bottom),
+                  minHeight: media.size.height -
+                      (media.padding.top +
+                          kToolbarHeight +
+                          media.padding.bottom),
                 ),
                 padding: EdgeInsetsDirectional.only(
                   top: topPadding,
@@ -264,28 +273,34 @@ class _CommonOtpVerificationView extends WidgetView<CommonOtpVerification, _Comm
                               //controller: scrollController,
                               mainAxisSize: MainAxisSize.min,
                               crossAxisAlignment: CrossAxisAlignment.stretch,
-                              textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                              textDirection:
+                                  serviceLocator<LanguageController>()
+                                      .targetTextDirection,
                               children: [
-                                const AnimatedGap(8, duration: Duration(milliseconds: 500)),
+                                const AnimatedGap(8,
+                                    duration: Duration(milliseconds: 500)),
                                 const Align(
                                   alignment: AlignmentDirectional.topStart,
                                   child: AppLogo(),
                                 ),
-                                const AnimatedGap(16, duration: Duration(milliseconds: 500)),
+                                const AnimatedGap(16,
+                                    duration: Duration(milliseconds: 500)),
                                 SizedBox(
                                   child: Wrap(
                                     alignment: WrapAlignment.start,
-                                    crossAxisAlignment: WrapCrossAlignment.center,
+                                    crossAxisAlignment:
+                                        WrapCrossAlignment.center,
                                     children: [
                                       Text(
                                         'Enter verification code',
                                         style: Theme.of(context)
                                             .textTheme
                                             .headlineMedium!
-                                            .copyWith(fontWeight: FontWeight.w600),
+                                            .copyWith(
+                                                fontWeight: FontWeight.w600),
                                         textDirection:
-                                        serviceLocator<LanguageController>()
-                                            .targetTextDirection,
+                                            serviceLocator<LanguageController>()
+                                                .targetTextDirection,
                                       ),
                                     ],
                                   ),
@@ -295,15 +310,17 @@ class _CommonOtpVerificationView extends WidgetView<CommonOtpVerification, _Comm
                                 SizedBox(
                                   child: Wrap(
                                     alignment: WrapAlignment.start,
-                                    crossAxisAlignment: WrapCrossAlignment.center,
+                                    crossAxisAlignment:
+                                        WrapCrossAlignment.center,
                                     children: [
                                       Text(
                                         "We've sent an OTP code to ${widget.userNewEnteredPhoneNumber}",
-                                        style:
-                                        Theme.of(context).textTheme.labelLarge,
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .labelLarge,
                                         textDirection:
-                                        serviceLocator<LanguageController>()
-                                            .targetTextDirection,
+                                            serviceLocator<LanguageController>()
+                                                .targetTextDirection,
                                       ),
                                     ],
                                   ),
@@ -312,29 +329,32 @@ class _CommonOtpVerificationView extends WidgetView<CommonOtpVerification, _Comm
                                     duration: Duration(milliseconds: 400)),
                                 Directionality(
                                   textDirection:
-                                  serviceLocator<LanguageController>()
-                                      .targetTextDirection,
+                                      serviceLocator<LanguageController>()
+                                          .targetTextDirection,
                                   child: Pinput(
                                     length: 6,
                                     controller: state.otpTextEditingController,
                                     focusNode: state.otpFocusNode,
                                     androidSmsAutofillMethod:
-                                    AndroidSmsAutofillMethod.smsUserConsentApi,
+                                        AndroidSmsAutofillMethod
+                                            .smsUserConsentApi,
                                     listenForMultipleSmsOnAndroid: true,
                                     hapticFeedbackType:
-                                    HapticFeedbackType.lightImpact,
+                                        HapticFeedbackType.lightImpact,
                                     autofocus: true,
                                     defaultPinTheme: defaultPinTheme,
                                     focusedPinTheme: focusedPinTheme,
                                     submittedPinTheme: submittedPinTheme,
                                     errorPinTheme: errorPinTheme,
-                                    forceErrorState:
-                                    state.otpErrorText != null ? true : false,
+                                    forceErrorState: state.otpErrorText != null
+                                        ? true
+                                        : false,
                                     validator: (otpValue) {
                                       if (otpValue == null ||
                                           otpValue.isEmpty ||
                                           !state.validateOTP(otpValue)) {
-                                        state.otpErrorText = 'Enter the OTP code';
+                                        state.otpErrorText =
+                                            'Enter the OTP code';
                                         return 'Enter the OTP code';
                                       } else {
                                         state.otpErrorText = null;
@@ -342,7 +362,7 @@ class _CommonOtpVerificationView extends WidgetView<CommonOtpVerification, _Comm
                                       }
                                     },
                                     pinputAutovalidateMode:
-                                    PinputAutovalidateMode.onSubmit,
+                                        PinputAutovalidateMode.onSubmit,
                                     showCursor: true,
                                     onCompleted: (pin) {
                                       debugPrint('OTP onCompleted: pin');
@@ -364,20 +384,20 @@ class _CommonOtpVerificationView extends WidgetView<CommonOtpVerification, _Comm
                                     'OTP will expire in ${state.countdown} seconds',
                                     style: context.labelLarge!.copyWith(),
                                     textDirection:
-                                    serviceLocator<LanguageController>()
-                                        .targetTextDirection,
+                                        serviceLocator<LanguageController>()
+                                            .targetTextDirection,
                                   ),
                                   secondChild: Wrap(
                                     textDirection:
-                                    serviceLocator<LanguageController>()
-                                        .targetTextDirection,
+                                        serviceLocator<LanguageController>()
+                                            .targetTextDirection,
                                     children: [
                                       Text(
                                         "Didn't received the OTP? ",
                                         style: context.labelLarge!.copyWith(),
                                         textDirection:
-                                        serviceLocator<LanguageController>()
-                                            .targetTextDirection,
+                                            serviceLocator<LanguageController>()
+                                                .targetTextDirection,
                                       ),
                                       InkWell(
                                         onTap: state.isResendEnabled
@@ -388,8 +408,8 @@ class _CommonOtpVerificationView extends WidgetView<CommonOtpVerification, _Comm
                                           style: context.labelLarge!.copyWith(
                                             color: context.primaryColor,
                                           ),
-                                          textDirection:
-                                          serviceLocator<LanguageController>()
+                                          textDirection: serviceLocator<
+                                                  LanguageController>()
                                               .targetTextDirection,
                                         ),
                                       ),
@@ -408,7 +428,8 @@ class _CommonOtpVerificationView extends WidgetView<CommonOtpVerification, _Comm
                         hasScrollBody: false,
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.stretch,
-                          textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                          textDirection: serviceLocator<LanguageController>()
+                              .targetTextDirection,
                           children: [
                             const Spacer(),
                             Row(
@@ -422,12 +443,16 @@ class _CommonOtpVerificationView extends WidgetView<CommonOtpVerification, _Comm
                                     onPressed: state.onSaveAndNext,
                                     style: ElevatedButton.styleFrom(
                                       //minimumSize: Size(180, 40),
-                                      disabledBackgroundColor: const Color.fromRGBO(255, 219, 208, 1),
+                                      disabledBackgroundColor:
+                                          const Color.fromRGBO(
+                                              255, 219, 208, 1),
                                       disabledForegroundColor: Colors.white,
                                     ),
                                     child: Text(
                                       'Verify OTP',
-                                      textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                      textDirection:
+                                          serviceLocator<LanguageController>()
+                                              .targetTextDirection,
                                     ).translate(),
                                   ),
                                 ),

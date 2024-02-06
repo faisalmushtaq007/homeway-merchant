@@ -4,7 +4,8 @@ class ProfileSettingPage extends StatefulWidget {
   const ProfileSettingPage({super.key});
 
   @override
-  _ProfileSettingPageController createState() => _ProfileSettingPageController();
+  _ProfileSettingPageController createState() =>
+      _ProfileSettingPageController();
 }
 
 class _ProfileSettingPageController extends State<ProfileSettingPage> {
@@ -48,14 +49,16 @@ class _ProfileSettingPageController extends State<ProfileSettingPage> {
   Widget build(BuildContext context) => _ProfileSettingPageView(this);
 }
 
-class _ProfileSettingPageView extends WidgetView<ProfileSettingPage, _ProfileSettingPageController> {
+class _ProfileSettingPageView
+    extends WidgetView<ProfileSettingPage, _ProfileSettingPageController> {
   const _ProfileSettingPageView(super.state);
 
   @override
   Widget build(BuildContext context) {
     final MediaQueryData media = MediaQuery.of(context);
     final double margins = GlobalApp.responsiveInsets(media.size.width);
-    final double topPadding = margins; //media.padding.top + kToolbarHeight + margins; //margins * 1.5;
+    final double topPadding =
+        margins; //media.padding.top + kToolbarHeight + margins; //margins * 1.5;
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: FlexColorScheme.themedSystemNavigationBar(
         context,
@@ -85,7 +88,8 @@ class _ProfileSettingPageView extends WidgetView<ProfileSettingPage, _ProfileSet
                   textColor: Colors.yellow,
                   label: Text(
                     '10',
-                    style: context.labelSmall!.copyWith(color: context.colorScheme.onPrimary),
+                    style: context.labelSmall!
+                        .copyWith(color: context.colorScheme.onPrimary),
                     //Color.fromRGBO(251, 219, 11, 1)
                   ),
                   child: Icon(
@@ -109,12 +113,16 @@ class _ProfileSettingPageView extends WidgetView<ProfileSettingPage, _ProfileSet
             from: context.width / 2 - 60,
             duration: const Duration(milliseconds: 500),
             child: Directionality(
-              textDirection: serviceLocator<LanguageController>().targetTextDirection,
+              textDirection:
+                  serviceLocator<LanguageController>().targetTextDirection,
               child: PageBody(
                 controller: state.scrollController,
                 constraints: BoxConstraints(
                   minWidth: 1000,
-                  minHeight: media.size.height - (media.padding.top + kToolbarHeight + media.padding.bottom),
+                  minHeight: media.size.height -
+                      (media.padding.top +
+                          kToolbarHeight +
+                          media.padding.bottom),
                 ),
                 padding: EdgeInsetsDirectional.only(
                   top: topPadding,
@@ -139,18 +147,30 @@ class _ProfileSettingPageView extends WidgetView<ProfileSettingPage, _ProfileSet
                                 "${(state.appUserEntity.isNotNull && state.appUserEntity!.businessProfile.isNotNull && !state.appUserEntity!.businessProfile!.userName.isEmptyOrNull) ? state.appUserEntity!.businessProfile!.userName : 'Hello User'}",
                             //userProfilePic: AssetImage("assets/image/app_logo_light.jpg"),
                             userProfileImageWidget: ImageHelper(
-                              image: (state.appUserEntity.businessProfile.isNull &&
-                                      state.appUserEntity.businessProfile!.profileImageEntity.isNull)
-                                  ? 'assets/svg/user_avatar.svg'
-                                  : state.appUserEntity.businessProfile?.profileImageEntity?.originalFilePath ??
-                                      'assets/svg/user_avatar.svg',
+                              image:
+                                  (state.appUserEntity.businessProfile.isNull &&
+                                          state.appUserEntity.businessProfile!
+                                              .profileImageEntity.isNull)
+                                      ? 'assets/svg/user_avatar.svg'
+                                      : state
+                                              .appUserEntity
+                                              .businessProfile
+                                              ?.profileImageEntity
+                                              ?.originalFilePath ??
+                                          'assets/svg/user_avatar.svg',
                               filterQuality: FilterQuality.high,
-                              borderRadius: BorderRadiusDirectional.circular(10),
+                              borderRadius:
+                                  BorderRadiusDirectional.circular(10),
                               imageType: findImageType(
                                 (state.appUserEntity.businessProfile.isNull &&
-                                        state.appUserEntity.businessProfile!.profileImageEntity.isNull)
+                                        state.appUserEntity.businessProfile!
+                                            .profileImageEntity.isNull)
                                     ? 'assets/svg/user_avatar.svg'
-                                    : state.appUserEntity.businessProfile?.profileImageEntity?.originalFilePath ??
+                                    : state
+                                            .appUserEntity
+                                            .businessProfile
+                                            ?.profileImageEntity
+                                            ?.originalFilePath ??
                                         'assets/svg/user_avatar.svg',
                               ),
                               imageShape: ImageShape.rectangle,
@@ -166,7 +186,8 @@ class _ProfileSettingPageView extends WidgetView<ProfileSettingPage, _ProfileSet
                               matchTextDirection: true,
                               placeholderText:
                                   "${(state.appUserEntity.isNotNull && state.appUserEntity!.businessProfile.isNotNull && !state.appUserEntity!.businessProfile!.userName.isEmptyOrNull) ? state.appUserEntity!.businessProfile!.userName : 'Hello User'}",
-                              placeholderTextStyle: context.labelLarge!.copyWith(
+                              placeholderTextStyle:
+                                  context.labelLarge!.copyWith(
                                 color: Colors.white,
                                 fontSize: 16,
                               ),
@@ -176,22 +197,27 @@ class _ProfileSettingPageView extends WidgetView<ProfileSettingPage, _ProfileSet
                             customProfileImageWidget: DisplayImage(
                               imagePath: state.userImagePath,
                               onPressed: () async {
-                                final result = await UploadImageUtils().selectImagePicker(context);
+                                final result = await UploadImageUtils()
+                                    .selectImagePicker(context);
                                 if (result.imagePath.isNotEmpty) {
                                   state.updateUserProfileImage(
                                     result.metaData['filePath'],
                                   );
                                 } else {}
                               },
-                              hasIconImage: state.userImagePath.isEmpty ? true : false,
-                              hasEditButton: state.userImagePath.isEmpty ? false : true,
-                              hasCustomIcon: state.userImagePath.isEmpty ? true : false,
+                              hasIconImage:
+                                  state.userImagePath.isEmpty ? true : false,
+                              hasEditButton:
+                                  state.userImagePath.isEmpty ? false : true,
+                              hasCustomIcon:
+                                  state.userImagePath.isEmpty ? true : false,
                               customIcon: const Icon(Icons.camera_alt),
                               circularRadius: 36,
                               borderRadius: 36,
                               end: -2,
                               bottom: 1,
-                              innerCircularRadius: state.userImagePath.isEmpty ? 32 : 40,
+                              innerCircularRadius:
+                                  state.userImagePath.isEmpty ? 32 : 40,
                             ),
                             cardActionWidget: SettingsItem(
                               hasDense: true,
@@ -207,10 +233,13 @@ class _ProfileSettingPageView extends WidgetView<ProfileSettingPage, _ProfileSet
                                 final result = await context.push(
                                   Routes.CREATE_BUSINESS_PROFILE_PAGE,
                                   extra: {
-                                    'businessProfileEntity': serviceLocator<AppUserEntity>().businessProfile,
+                                    'businessProfileEntity':
+                                        serviceLocator<AppUserEntity>()
+                                            .businessProfile,
                                     'hasEditBusinessProfile': true,
                                     'currentIndex': 0,
-                                    'selectionUseCase': SelectionUseCase.updateAndReturn,
+                                    'selectionUseCase':
+                                        SelectionUseCase.updateAndReturn,
                                   },
                                 );
                                 return;
@@ -222,9 +251,12 @@ class _ProfileSettingPageView extends WidgetView<ProfileSettingPage, _ProfileSet
                             items: [
                               SettingsItem(
                                 onTap: () async {
-                                  final result = await context.push(Routes.ALL_SAVED_ADDRESS_LIST, extra: {
-                                    'selectItemUseCase': SelectItemUseCase.none,
-                                  });
+                                  final result = await context.push(
+                                      Routes.ALL_SAVED_ADDRESS_LIST,
+                                      extra: {
+                                        'selectItemUseCase':
+                                            SelectItemUseCase.none,
+                                      });
                                   return;
                                 },
                                 icons: FontAwesomeIcons.addressBook,
@@ -238,10 +270,13 @@ class _ProfileSettingPageView extends WidgetView<ProfileSettingPage, _ProfileSet
                                   final result = await context.push(
                                     Routes.BANK_INFORMATION_PAGE,
                                     extra: {
-                                      'paymentBankEntity': serviceLocator<AppUserEntity>().paymentBankEntity,
+                                      'paymentBankEntity':
+                                          serviceLocator<AppUserEntity>()
+                                              .paymentBankEntity,
                                       'hasEditBankInformation': true,
                                       'currentIndex': 0,
-                                      'selectionUseCase': SelectionUseCase.updateAndReturn,
+                                      'selectionUseCase':
+                                          SelectionUseCase.updateAndReturn,
                                     },
                                   );
                                   return;
@@ -257,14 +292,16 @@ class _ProfileSettingPageView extends WidgetView<ProfileSettingPage, _ProfileSet
                                   final result = await context.push(
                                     Routes.NEW_DOCUMENT_LIST_PAGE,
                                     extra: {
-                                      'businessDocumentUploadedEntities': serviceLocator<AppUserEntity>()
-                                              .businessProfile
-                                              ?.allBusinessDocuments
-                                              .toList() ??
-                                          [],
+                                      'businessDocumentUploadedEntities':
+                                          serviceLocator<AppUserEntity>()
+                                                  .businessProfile
+                                                  ?.allBusinessDocuments
+                                                  .toList() ??
+                                              [],
                                       'hasEditBusinessDocument': true,
                                       'currentIndex': 0,
-                                      'selectionUseCase': SelectionUseCase.updateAndReturn,
+                                      'selectionUseCase':
+                                          SelectionUseCase.updateAndReturn,
                                     },
                                   );
                                   return;
@@ -277,15 +314,25 @@ class _ProfileSettingPageView extends WidgetView<ProfileSettingPage, _ProfileSet
                               ),
                               SettingsItem(
                                 onTap: () async {
-                                  final phoneNumberChangeResult = await context.push(
+                                  final phoneNumberChangeResult =
+                                      await context.push(
                                     Routes.CHANGE_PHONE_NUMBER_PAGE,
                                     extra: {
-                                      'changePhoneNumberPurpose': ChangePhoneNumberPurpose.profile,
+                                      'changePhoneNumberPurpose':
+                                          ChangePhoneNumberPurpose.profile,
                                       'phoneNumber':
-                                          serviceLocator<AppUserEntity>().businessProfile?.phoneNumberWithoutDialCode,
-                                      'country': serviceLocator<AppUserEntity>().businessProfile?.isoCode,
-                                      'dialCode': serviceLocator<AppUserEntity>().businessProfile?.countryDialCode,
-                                      'id': serviceLocator<AppUserEntity>().userID,
+                                          serviceLocator<AppUserEntity>()
+                                              .businessProfile
+                                              ?.phoneNumberWithoutDialCode,
+                                      'country': serviceLocator<AppUserEntity>()
+                                          .businessProfile
+                                          ?.isoCode,
+                                      'dialCode':
+                                          serviceLocator<AppUserEntity>()
+                                              .businessProfile
+                                              ?.countryDialCode,
+                                      'id': serviceLocator<AppUserEntity>()
+                                          .userID,
                                     },
                                   );
                                 },
@@ -311,7 +358,8 @@ class _ProfileSettingPageView extends WidgetView<ProfileSettingPage, _ProfileSet
                             items: [
                               SettingsItem(
                                 onTap: () async {
-                                  final result = await context.push(Routes.MANAGE_ORDER_PAGE);
+                                  final result = await context
+                                      .push(Routes.MANAGE_ORDER_PAGE);
                                   return;
                                 },
                                 icons: FontAwesomeIcons.bagShopping,
@@ -322,7 +370,8 @@ class _ProfileSettingPageView extends WidgetView<ProfileSettingPage, _ProfileSet
                               ),
                               SettingsItem(
                                 onTap: () async {
-                                  final result = await context.push(Routes.ALL_STORES_PAGE);
+                                  final result = await context
+                                      .push(Routes.ALL_STORES_PAGE);
                                   return;
                                 },
                                 icons: FontAwesomeIcons.store,
@@ -333,7 +382,8 @@ class _ProfileSettingPageView extends WidgetView<ProfileSettingPage, _ProfileSet
                               ),
                               SettingsItem(
                                 onTap: () async {
-                                  final result = await context.push(Routes.ALL_MENU_PAGE);
+                                  final result =
+                                      await context.push(Routes.ALL_MENU_PAGE);
                                   return;
                                 },
                                 icons: FontAwesomeIcons.burger,
@@ -344,7 +394,8 @@ class _ProfileSettingPageView extends WidgetView<ProfileSettingPage, _ProfileSet
                               ),
                               SettingsItem(
                                 onTap: () async {
-                                  final result = await context.push(Routes.ALL_DRIVER_PAGE);
+                                  final result = await context
+                                      .push(Routes.ALL_DRIVER_PAGE);
                                   return;
                                 },
                                 icons: FontAwesomeIcons.users,
@@ -359,7 +410,8 @@ class _ProfileSettingPageView extends WidgetView<ProfileSettingPage, _ProfileSet
                             items: [
                               SettingsItem(
                                 onTap: () async {
-                                  final result = await context.push(Routes.NOTIFICATIONS);
+                                  final result =
+                                      await context.push(Routes.NOTIFICATIONS);
                                   return;
                                 },
                                 icons: Icons.notifications,
@@ -371,7 +423,8 @@ class _ProfileSettingPageView extends WidgetView<ProfileSettingPage, _ProfileSet
                               ),
                               SettingsItem(
                                 onTap: () async {
-                                  final result = await context.push(Routes.PRIVACY_AND_POLICY);
+                                  final result = await context
+                                      .push(Routes.PRIVACY_AND_POLICY);
                                   return;
                                 },
                                 icons: Icons.fingerprint,
@@ -390,9 +443,11 @@ class _ProfileSettingPageView extends WidgetView<ProfileSettingPage, _ProfileSet
                                 title: 'Dark mode',
                                 subtitle: 'Automatic',
                                 trailing: ThemeModeSwitch(
-                                  key: const Key('theme-change-profile-setting-widget'),
+                                  key: const Key(
+                                      'theme-change-profile-setting-widget'),
                                   onChanged: state.onThemeChanged,
-                                  themeMode: serviceLocator<ThemeController>().themeMode,
+                                  themeMode: serviceLocator<ThemeController>()
+                                      .themeMode,
                                 ),
                                 /*trailing: Switch.adaptive(
                                   value: state.hasSelectedDarkTheme,
@@ -420,7 +475,8 @@ class _ProfileSettingPageView extends WidgetView<ProfileSettingPage, _ProfileSet
                             items: [
                               SettingsItem(
                                 onTap: () async {
-                                  final result = await context.push(Routes.ABOUT_US);
+                                  final result =
+                                      await context.push(Routes.ABOUT_US);
                                   return;
                                 },
                                 icons: Icons.info_rounded,
@@ -439,7 +495,8 @@ class _ProfileSettingPageView extends WidgetView<ProfileSettingPage, _ProfileSet
                             items: [
                               SettingsItem(
                                 onTap: () async {
-                                  final result = await context.push(Routes.RATE_AND_REVIEW_PAGE);
+                                  final result = await context
+                                      .push(Routes.RATE_AND_REVIEW_PAGE);
                                   return;
                                 },
                                 icons: CupertinoIcons.star_circle_fill,

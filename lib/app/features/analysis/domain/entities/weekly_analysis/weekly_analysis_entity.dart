@@ -7,14 +7,14 @@ String weeklyAnalysisEntityToJson(WeeklyAnalysisEntity data) =>
     json.encode(data.toMap());
 
 class WeeklyAnalysisEntity extends Equatable {
-
-  const WeeklyAnalysisEntity({this.result=const WeeklyAnalysisResult()});
+  const WeeklyAnalysisEntity({this.result = const WeeklyAnalysisResult()});
 
   factory WeeklyAnalysisEntity.fromMap(Map<String, dynamic> data) {
     return WeeklyAnalysisEntity(
       result: data['result'] == null
           ? const WeeklyAnalysisResult()
-          : WeeklyAnalysisResult.fromMap(data['result'] as Map<String, dynamic>),
+          : WeeklyAnalysisResult.fromMap(
+              data['result'] as Map<String, dynamic>),
     );
   }
 
@@ -24,7 +24,6 @@ class WeeklyAnalysisEntity extends Equatable {
         'result': result.toMap(),
       };
 
-
   @override
   bool get stringify => true;
 
@@ -33,34 +32,36 @@ class WeeklyAnalysisEntity extends Equatable {
 }
 
 class WeeklyAnalysisResult extends Equatable {
-
   const WeeklyAnalysisResult({
     this.fromDate,
     this.toDate,
-    this.monthValue='',
-    this.yearValue='',
-    this.monthWeek='',
-    this.days=const [],
-    this.overAllData=const WeeklyAnalysisOverAllData(),
+    this.monthValue = '',
+    this.yearValue = '',
+    this.monthWeek = '',
+    this.days = const [],
+    this.overAllData = const WeeklyAnalysisOverAllData(),
   });
 
-  factory WeeklyAnalysisResult.fromMap(Map<String, dynamic> data) => WeeklyAnalysisResult(
-    fromDate: data['fromDate'] == null
-        ? null
-        : DateTime.parse(data['fromDate'] as String),
-    toDate: data['toDate'] == null
-        ? null
-        : DateTime.parse(data['toDate'] as String),
-    monthValue: data['month_value']??'',
-    yearValue: data['year_value']??'',
-    monthWeek: data['month_week']??'',
-    days: (data['days'] as List<dynamic>?)
-        ?.map((e) => AnalysisDay.fromMap(e as Map<String, dynamic>))
-        .toList()??[],
-    overAllData: data['overAllData'] == null
-        ? const WeeklyAnalysisOverAllData()
-        : WeeklyAnalysisOverAllData.fromMap(data['overAllData'] as Map<String, dynamic>),
-  );
+  factory WeeklyAnalysisResult.fromMap(Map<String, dynamic> data) =>
+      WeeklyAnalysisResult(
+        fromDate: data['fromDate'] == null
+            ? null
+            : DateTime.parse(data['fromDate'] as String),
+        toDate: data['toDate'] == null
+            ? null
+            : DateTime.parse(data['toDate'] as String),
+        monthValue: data['month_value'] ?? '',
+        yearValue: data['year_value'] ?? '',
+        monthWeek: data['month_week'] ?? '',
+        days: (data['days'] as List<dynamic>?)
+                ?.map((e) => AnalysisDay.fromMap(e as Map<String, dynamic>))
+                .toList() ??
+            [],
+        overAllData: data['overAllData'] == null
+            ? const WeeklyAnalysisOverAllData()
+            : WeeklyAnalysisOverAllData.fromMap(
+                data['overAllData'] as Map<String, dynamic>),
+      );
 
   final DateTime? fromDate;
   final DateTime? toDate;
@@ -71,14 +72,14 @@ class WeeklyAnalysisResult extends Equatable {
   final WeeklyAnalysisOverAllData overAllData;
 
   Map<String, dynamic> toMap() => {
-    'fromDate': fromDate?.toIso8601String(),
-    'toDate': toDate?.toIso8601String(),
-    'month_value': monthValue,
-    'year_value': yearValue,
-    'month_week': monthWeek,
-    'days': days.map((e) => e.toMap()).toList(),
-    'overAllData': overAllData.toMap(),
-  };
+        'fromDate': fromDate?.toIso8601String(),
+        'toDate': toDate?.toIso8601String(),
+        'month_value': monthValue,
+        'year_value': yearValue,
+        'month_week': monthWeek,
+        'days': days.map((e) => e.toMap()).toList(),
+        'overAllData': overAllData.toMap(),
+      };
 
   @override
   bool get stringify => true;
@@ -98,40 +99,43 @@ class WeeklyAnalysisResult extends Equatable {
 }
 
 class WeeklyAnalysisOverAllData extends Equatable {
-
   const WeeklyAnalysisOverAllData({
-    this.totalEarnings=0,
-    this.totalCustomers=0,
-    this.totalOldCustomers=0,
-    this.totalNewCustomers=0,
-    this.totalStores=0,
-    this.totalOpenStores=0,
-    this.totalClosedStores=0,
-    this.totalOrders=const WeeklyAnalysisTotalOrders(),
-    this.rushHours=const AnalysisRushHours(),
-    this.rushDay='',
-    this.rushDate=const AnalysisRushDate(),
+    this.totalEarnings = 0,
+    this.totalCustomers = 0,
+    this.totalOldCustomers = 0,
+    this.totalNewCustomers = 0,
+    this.totalStores = 0,
+    this.totalOpenStores = 0,
+    this.totalClosedStores = 0,
+    this.totalOrders = const WeeklyAnalysisTotalOrders(),
+    this.rushHours = const AnalysisRushHours(),
+    this.rushDay = '',
+    this.rushDate = const AnalysisRushDate(),
   });
 
-  factory WeeklyAnalysisOverAllData.fromMap(Map<String, dynamic> data) => WeeklyAnalysisOverAllData(
-    totalEarnings: data['total_earnings']??0,
-    totalCustomers: data['total_customers']??0,
-    totalOldCustomers: data['total_old_customers']??0,
-    totalNewCustomers: data['total_new_customers']??0,
-    totalStores: data['total_stores']??0,
-    totalOpenStores: data['total_open_stores']??0,
-    totalClosedStores: data['total_closed_stores']??0,
-    totalOrders: data['total_orders'] == null
-        ? const WeeklyAnalysisTotalOrders()
-        : WeeklyAnalysisTotalOrders.fromMap(data['total_orders'] as Map<String, dynamic>),
-    rushHours: data['rush_hours'] == null
-        ? const AnalysisRushHours()
-        : AnalysisRushHours.fromMap(data['rush_hours'] as Map<String, dynamic>),
-    rushDay: data['rush_day']??'',
-    rushDate: data['rush_date'] == null
-        ? const AnalysisRushDate()
-        : AnalysisRushDate.fromMap(data['rush_date'] as Map<String, dynamic>),
-  );
+  factory WeeklyAnalysisOverAllData.fromMap(Map<String, dynamic> data) =>
+      WeeklyAnalysisOverAllData(
+        totalEarnings: data['total_earnings'] ?? 0,
+        totalCustomers: data['total_customers'] ?? 0,
+        totalOldCustomers: data['total_old_customers'] ?? 0,
+        totalNewCustomers: data['total_new_customers'] ?? 0,
+        totalStores: data['total_stores'] ?? 0,
+        totalOpenStores: data['total_open_stores'] ?? 0,
+        totalClosedStores: data['total_closed_stores'] ?? 0,
+        totalOrders: data['total_orders'] == null
+            ? const WeeklyAnalysisTotalOrders()
+            : WeeklyAnalysisTotalOrders.fromMap(
+                data['total_orders'] as Map<String, dynamic>),
+        rushHours: data['rush_hours'] == null
+            ? const AnalysisRushHours()
+            : AnalysisRushHours.fromMap(
+                data['rush_hours'] as Map<String, dynamic>),
+        rushDay: data['rush_day'] ?? '',
+        rushDate: data['rush_date'] == null
+            ? const AnalysisRushDate()
+            : AnalysisRushDate.fromMap(
+                data['rush_date'] as Map<String, dynamic>),
+      );
 
   final int totalEarnings;
   final int totalCustomers;
@@ -146,18 +150,18 @@ class WeeklyAnalysisOverAllData extends Equatable {
   final AnalysisRushDate rushDate;
 
   Map<String, dynamic> toMap() => {
-    'total_earnings': totalEarnings,
-    'total_customers': totalCustomers,
-    'total_old_customers': totalOldCustomers,
-    'total_new_customers': totalNewCustomers,
-    'total_stores': totalStores,
-    'total_open_stores': totalOpenStores,
-    'total_closed_stores': totalClosedStores,
-    'total_orders': totalOrders.toMap(),
-    'rush_hours': rushHours.toMap(),
-    'rush_day':rushDay,
-    'rush_date':rushDate.toMap(),
-  };
+        'total_earnings': totalEarnings,
+        'total_customers': totalCustomers,
+        'total_old_customers': totalOldCustomers,
+        'total_new_customers': totalNewCustomers,
+        'total_stores': totalStores,
+        'total_open_stores': totalOpenStores,
+        'total_closed_stores': totalClosedStores,
+        'total_orders': totalOrders.toMap(),
+        'rush_hours': rushHours.toMap(),
+        'rush_day': rushDay,
+        'rush_date': rushDate.toMap(),
+      };
 
   @override
   bool get stringify => true;
@@ -174,36 +178,42 @@ class WeeklyAnalysisOverAllData extends Equatable {
       totalClosedStores,
       totalOrders,
       rushHours,
-      rushDate,rushDay,
+      rushDate,
+      rushDay,
     ];
   }
 }
 
 class AnalysisDay extends Equatable {
-
-  const AnalysisDay({this.date, this.stores=const [], this.overAllData=const WeeklyAnalysisOverAllData()});
+  const AnalysisDay(
+      {this.date,
+      this.stores = const [],
+      this.overAllData = const WeeklyAnalysisOverAllData()});
 
   factory AnalysisDay.fromMap(Map<String, dynamic> data) => AnalysisDay(
-    date: data['date'] == null
-        ? null
-        : DateTime.parse(data['date'] as String),
-    stores: (data['stores'] as List<dynamic>?)
-        ?.map((e) => WeeklyAnalysisStore.fromMap(e as Map<String, dynamic>))
-        .toList()??[],
-    overAllData: data['overAllData'] == null
-        ? const WeeklyAnalysisOverAllData()
-        : WeeklyAnalysisOverAllData.fromMap(data['overAllData'] as Map<String, dynamic>),
-  );
+        date: data['date'] == null
+            ? null
+            : DateTime.parse(data['date'] as String),
+        stores: (data['stores'] as List<dynamic>?)
+                ?.map((e) =>
+                    WeeklyAnalysisStore.fromMap(e as Map<String, dynamic>))
+                .toList() ??
+            [],
+        overAllData: data['overAllData'] == null
+            ? const WeeklyAnalysisOverAllData()
+            : WeeklyAnalysisOverAllData.fromMap(
+                data['overAllData'] as Map<String, dynamic>),
+      );
 
   final DateTime? date;
   final List<WeeklyAnalysisStore> stores;
   final WeeklyAnalysisOverAllData overAllData;
 
   Map<String, dynamic> toMap() => {
-    'date': date?.toIso8601String(),
-    'stores': stores.map((e) => e.toMap()).toList(),
-    'overAllData': overAllData.toMap(),
-  };
+        'date': date?.toIso8601String(),
+        'stores': stores.map((e) => e.toMap()).toList(),
+        'overAllData': overAllData.toMap(),
+      };
 
   @override
   bool get stringify => true;
@@ -213,28 +223,31 @@ class AnalysisDay extends Equatable {
 }
 
 class WeeklyAnalysisStore extends Equatable {
-
   const WeeklyAnalysisStore({
-    this.storeID=-1,
-    this.storeName='',
-    this.orders=const WeeklyAnalysisOrders(),
-    this.sales=const WeeklyAnalysisSales(),
-    this.overview=const WeeklyAnalysisOverview(),
+    this.storeID = -1,
+    this.storeName = '',
+    this.orders = const WeeklyAnalysisOrders(),
+    this.sales = const WeeklyAnalysisSales(),
+    this.overview = const WeeklyAnalysisOverview(),
   });
 
-  factory WeeklyAnalysisStore.fromMap(Map<String, dynamic> data) => WeeklyAnalysisStore(
-    storeID: data['storeID']??-1,
-    storeName: data['storeName']??'',
-    orders: data['orders'] == null
-        ? const WeeklyAnalysisOrders()
-        : WeeklyAnalysisOrders.fromMap(data['orders'] as Map<String, dynamic>),
-    sales: data['sales'] == null
-        ? const WeeklyAnalysisSales()
-        : WeeklyAnalysisSales.fromMap(data['sales'] as Map<String, dynamic>),
-    overview: data['overview'] == null
-        ? const WeeklyAnalysisOverview()
-        : WeeklyAnalysisOverview.fromMap(data['overview'] as Map<String, dynamic>),
-  );
+  factory WeeklyAnalysisStore.fromMap(Map<String, dynamic> data) =>
+      WeeklyAnalysisStore(
+        storeID: data['storeID'] ?? -1,
+        storeName: data['storeName'] ?? '',
+        orders: data['orders'] == null
+            ? const WeeklyAnalysisOrders()
+            : WeeklyAnalysisOrders.fromMap(
+                data['orders'] as Map<String, dynamic>),
+        sales: data['sales'] == null
+            ? const WeeklyAnalysisSales()
+            : WeeklyAnalysisSales.fromMap(
+                data['sales'] as Map<String, dynamic>),
+        overview: data['overview'] == null
+            ? const WeeklyAnalysisOverview()
+            : WeeklyAnalysisOverview.fromMap(
+                data['overview'] as Map<String, dynamic>),
+      );
 
   final int storeID;
   final String storeName;
@@ -243,12 +256,12 @@ class WeeklyAnalysisStore extends Equatable {
   final WeeklyAnalysisOverview overview;
 
   Map<String, dynamic> toMap() => {
-    'storeID': storeID,
-    'storeName': storeName,
-    'orders': orders.toMap(),
-    'sales': sales.toMap(),
-    'overview': overview.toMap(),
-  };
+        'storeID': storeID,
+        'storeName': storeName,
+        'orders': orders.toMap(),
+        'sales': sales.toMap(),
+        'overview': overview.toMap(),
+      };
 
   @override
   bool get stringify => true;
@@ -266,23 +279,23 @@ class WeeklyAnalysisStore extends Equatable {
 }
 
 class WeeklyAnalysisOrders extends Equatable {
-
   const WeeklyAnalysisOrders({
-    this.instant=0,
-    this.schedule=0,
-    this.cancel=0,
-    this.delay=0,
-    this.deliver=0,
-    this.totalOrder=0,
+    this.instant = 0,
+    this.schedule = 0,
+    this.cancel = 0,
+    this.delay = 0,
+    this.deliver = 0,
+    this.totalOrder = 0,
   });
 
-  factory WeeklyAnalysisOrders.fromMap(Map<String, dynamic> data) => WeeklyAnalysisOrders(
-        instant: data['instant']??0,
-        schedule: data['schedule']??0,
-        cancel: data['cancel']??0,
-        delay: data['delay']??0,
-        deliver: data['deliver']??0,
-        totalOrder: data['total_order']??0,
+  factory WeeklyAnalysisOrders.fromMap(Map<String, dynamic> data) =>
+      WeeklyAnalysisOrders(
+        instant: data['instant'] ?? 0,
+        schedule: data['schedule'] ?? 0,
+        cancel: data['cancel'] ?? 0,
+        delay: data['delay'] ?? 0,
+        deliver: data['deliver'] ?? 0,
+        totalOrder: data['total_order'] ?? 0,
       );
 
   final int instant;
@@ -318,21 +331,22 @@ class WeeklyAnalysisOrders extends Equatable {
 }
 
 class WeeklyAnalysisOverview extends Equatable {
-
   const WeeklyAnalysisOverview({
-    this.totalCustomers=0,
-    this.totalOldCustomers=0,
-    this.totalNewCustomers=0,
-    this.rushHours=const AnalysisRushHours(),
+    this.totalCustomers = 0,
+    this.totalOldCustomers = 0,
+    this.totalNewCustomers = 0,
+    this.rushHours = const AnalysisRushHours(),
   });
 
-  factory WeeklyAnalysisOverview.fromMap(Map<String, dynamic> data) => WeeklyAnalysisOverview(
-        totalCustomers: data['total_customers']??0,
-        totalOldCustomers: data['total_old_customers']??0,
-        totalNewCustomers: data['total_new_customers']??0,
+  factory WeeklyAnalysisOverview.fromMap(Map<String, dynamic> data) =>
+      WeeklyAnalysisOverview(
+        totalCustomers: data['total_customers'] ?? 0,
+        totalOldCustomers: data['total_old_customers'] ?? 0,
+        totalNewCustomers: data['total_new_customers'] ?? 0,
         rushHours: data['rush_hours'] == null
             ? const AnalysisRushHours()
-            : AnalysisRushHours.fromMap(data['rush_hours'] as Map<String, dynamic>),
+            : AnalysisRushHours.fromMap(
+                data['rush_hours'] as Map<String, dynamic>),
       );
 
   final int totalCustomers;
@@ -362,25 +376,24 @@ class WeeklyAnalysisOverview extends Equatable {
 }
 
 class WeeklyAnalysisSales extends Equatable {
-
   const WeeklyAnalysisSales({
-    this.totalOrders=0,
-    this.netEarning=0,
-    this.cancelOrderAmount=0,
-    this.penaltyAmountBySystem=0,
-    this.refundAmount=0,
-    this.deliverOrderAmount=0,
+    this.totalOrders = 0,
+    this.netEarning = 0,
+    this.cancelOrderAmount = 0,
+    this.penaltyAmountBySystem = 0,
+    this.refundAmount = 0,
+    this.deliverOrderAmount = 0,
   });
 
-  factory WeeklyAnalysisSales.fromMap(Map<String, dynamic> data) => WeeklyAnalysisSales(
-    totalOrders: data['total_orders']??0,
-    netEarning: data['net_earning']??0,
-    cancelOrderAmount: data['cancel_order_amount']??0,
-    penaltyAmountBySystem: data['penalty_amount_by_system']??0,
-    refundAmount: data['refund_amount']??0,
-    deliverOrderAmount: data['deliver_order_amount']??0,
-  );
-
+  factory WeeklyAnalysisSales.fromMap(Map<String, dynamic> data) =>
+      WeeklyAnalysisSales(
+        totalOrders: data['total_orders'] ?? 0,
+        netEarning: data['net_earning'] ?? 0,
+        cancelOrderAmount: data['cancel_order_amount'] ?? 0,
+        penaltyAmountBySystem: data['penalty_amount_by_system'] ?? 0,
+        refundAmount: data['refund_amount'] ?? 0,
+        deliverOrderAmount: data['deliver_order_amount'] ?? 0,
+      );
 
   final int totalOrders;
   final int netEarning;
@@ -390,14 +403,13 @@ class WeeklyAnalysisSales extends Equatable {
   final int deliverOrderAmount;
 
   Map<String, dynamic> toMap() => {
-    'total_orders': totalOrders,
-    'net_earning': netEarning,
-    'cancel_order_amount': cancelOrderAmount,
-    'penalty_amount_by_system': penaltyAmountBySystem,
-    'refund_amount': refundAmount,
-    'deliver_order_amount': deliverOrderAmount,
-  };
-
+        'total_orders': totalOrders,
+        'net_earning': netEarning,
+        'cancel_order_amount': cancelOrderAmount,
+        'penalty_amount_by_system': penaltyAmountBySystem,
+        'refund_amount': refundAmount,
+        'deliver_order_amount': deliverOrderAmount,
+      };
 
   @override
   bool get stringify => true;
@@ -416,10 +428,10 @@ class WeeklyAnalysisSales extends Equatable {
 }
 
 class AnalysisRushDate extends Equatable {
-
   const AnalysisRushDate({this.fromDateTime, this.toDateTime});
 
-  factory AnalysisRushDate.fromMap(Map<String, dynamic> data) => AnalysisRushDate(
+  factory AnalysisRushDate.fromMap(Map<String, dynamic> data) =>
+      AnalysisRushDate(
         fromDateTime: data['fromDateTime'] == null
             ? null
             : DateTime.parse(data['fromDateTime'] as String),
@@ -427,7 +439,6 @@ class AnalysisRushDate extends Equatable {
             ? null
             : DateTime.parse(data['toDateTime'] as String),
       );
-
 
   final DateTime? fromDateTime;
   final DateTime? toDateTime;
@@ -437,7 +448,6 @@ class AnalysisRushDate extends Equatable {
         'toDateTime': toDateTime?.toIso8601String(),
       };
 
-
   @override
   bool get stringify => true;
 
@@ -446,12 +456,12 @@ class AnalysisRushDate extends Equatable {
 }
 
 class AnalysisRushHours extends Equatable {
+  const AnalysisRushHours({this.fromTime = '', this.toTime = ''});
 
-  const AnalysisRushHours({this.fromTime='', this.toTime=''});
-
-  factory AnalysisRushHours.fromMap(Map<String, dynamic> data) => AnalysisRushHours(
-        fromTime: data['fromTime']??'',
-        toTime: data['toTime']??'',
+  factory AnalysisRushHours.fromMap(Map<String, dynamic> data) =>
+      AnalysisRushHours(
+        fromTime: data['fromTime'] ?? '',
+        toTime: data['toTime'] ?? '',
       );
 
   final String fromTime;
@@ -462,7 +472,6 @@ class AnalysisRushHours extends Equatable {
         'toTime': toTime,
       };
 
-
   @override
   bool get stringify => true;
 
@@ -471,21 +480,21 @@ class AnalysisRushHours extends Equatable {
 }
 
 class WeeklyAnalysisTotalOrders extends Equatable {
-
   const WeeklyAnalysisTotalOrders({
-    this.instant=0,
-    this.deliver=0,
-    this.total=0,
-    this.schedule=0,
-    this.cancel=0,
+    this.instant = 0,
+    this.deliver = 0,
+    this.total = 0,
+    this.schedule = 0,
+    this.cancel = 0,
   });
 
-  factory WeeklyAnalysisTotalOrders.fromMap(Map<String, dynamic> data) => WeeklyAnalysisTotalOrders(
-        instant: data['instant']??0,
-        deliver: data['deliver']??0,
-        total: data['total']??0,
-        schedule: data['schedule']??0,
-        cancel: data['cancel']??0,
+  factory WeeklyAnalysisTotalOrders.fromMap(Map<String, dynamic> data) =>
+      WeeklyAnalysisTotalOrders(
+        instant: data['instant'] ?? 0,
+        deliver: data['deliver'] ?? 0,
+        total: data['total'] ?? 0,
+        schedule: data['schedule'] ?? 0,
+        cancel: data['cancel'] ?? 0,
       );
 
   final int instant;
@@ -501,7 +510,6 @@ class WeeklyAnalysisTotalOrders extends Equatable {
         'schedule': schedule,
         'cancel': cancel,
       };
-
 
   @override
   bool get stringify => true;

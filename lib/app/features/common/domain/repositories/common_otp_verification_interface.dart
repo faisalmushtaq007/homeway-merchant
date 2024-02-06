@@ -11,7 +11,8 @@ abstract class ICommonOtpVerification<T extends Object> {
   Future<void> resendOtpPhoneNumber(T bloc);
 }
 
-class OtpVerificationForProfilePhoneNumber implements ICommonOtpVerification<BusinessProfileBloc> {
+class OtpVerificationForProfilePhoneNumber
+    implements ICommonOtpVerification<BusinessProfileBloc> {
   @override
   late String existingPhoneNumber;
 
@@ -34,11 +35,10 @@ class OtpVerificationForProfilePhoneNumber implements ICommonOtpVerification<Bus
     // TODO: implement verifyOtpPhoneNumber
     throw UnimplementedError();
   }
-
-
 }
 
-class OtpVerificationForStorePhoneNumber implements ICommonOtpVerification<StoreBloc> {
+class OtpVerificationForStorePhoneNumber
+    implements ICommonOtpVerification<StoreBloc> {
   @override
   late String existingPhoneNumber;
 
@@ -61,10 +61,10 @@ class OtpVerificationForStorePhoneNumber implements ICommonOtpVerification<Store
     // TODO: implement verifyOtpPhoneNumber
     throw UnimplementedError();
   }
-
 }
 
-class OtpVerificationForDriverPhoneNumber implements ICommonOtpVerification<StoreBloc> {
+class OtpVerificationForDriverPhoneNumber
+    implements ICommonOtpVerification<StoreBloc> {
   @override
   late String existingPhoneNumber;
 
@@ -87,5 +87,4 @@ class OtpVerificationForDriverPhoneNumber implements ICommonOtpVerification<Stor
     // TODO: implement verifyOtpPhoneNumber
     throw UnimplementedError();
   }
-
 }

@@ -4,12 +4,14 @@ import 'dart:io' if (dart.library.html) 'dart:html';
 
 import 'package:dio/dio.dart' as dio;
 import 'package:dio/dio.dart';
-import 'package:dio/src/adapters/io_adapter.dart' if (dart.library.html) 'package:dio/src/adapters/browser_adapter.dart'
+import 'package:dio/src/adapters/io_adapter.dart'
+    if (dart.library.html) 'package:dio/src/adapters/browser_adapter.dart'
     as adapter;
 import 'package:flutter/foundation.dart' show compute;
 import 'package:network_manager/network_manager.dart';
 import 'package:network_manager/src/feature/ssl/io_custom_override.dart'
-    if (dart.library.html) 'package:network_manager/src/feature/ssl/html_custom_override.dart' as ssl;
+    if (dart.library.html) 'package:network_manager/src/feature/ssl/html_custom_override.dart'
+    as ssl;
 import 'package:network_manager/src/injection/injection_container.dart';
 import 'package:network_manager/src/interface/ICallback.dart';
 import 'package:network_manager/src/interface/IFileManager.dart';
@@ -30,7 +32,9 @@ part 'operation/network_wrapper.dart';
 /// Example:
 /// [NetworkManager(isEnableLogger: true, errorModel: UserErrorModel(),]
 /// [options: BaseOptions(baseUrl: "https://jsonplaceholder.typicode.com/"));]
-class NetworkManager<E extends INetworkModel<E>?> with dio.DioMixin implements INetworkManager<E> {
+class NetworkManager<E extends INetworkModel<E>?>
+    with dio.DioMixin
+    implements INetworkManager<E> {
   /// The NetworkManager constructor initializes various properties and sets up interceptors for logging and network requests.
   ///
   /// Args:
@@ -88,7 +92,8 @@ class NetworkManager<E extends INetworkModel<E>?> with dio.DioMixin implements I
   /// [Future<DioException> Function(DioException error, NetworkManager newService)] of retry service request with new instance
   ///
   /// Default value function is null until to define your business.
-  Future<dio.DioException> Function(dio.DioException error, NetworkManager newService)? onRefreshToken;
+  Future<dio.DioException> Function(
+      dio.DioException error, NetworkManager newService)? onRefreshToken;
 
   /// [VoidCallback?] has send error if it has [onRefreshToken] callback after has problem.
   ///
@@ -208,7 +213,8 @@ class NetworkManager<E extends INetworkModel<E>?> with dio.DioMixin implements I
       );
 
       final responseStatusCode = response.statusCode ?? HttpStatus.notFound;
-      if (responseStatusCode >= HttpStatus.ok && responseStatusCode <= HttpStatus.multipleChoices) {
+      if (responseStatusCode >= HttpStatus.ok &&
+          responseStatusCode <= HttpStatus.multipleChoices) {
         var _response0 = response.data;
 
         if ((forceUpdateDecode ?? false) && _response0 is String) {
@@ -218,7 +224,8 @@ class NetworkManager<E extends INetworkModel<E>?> with dio.DioMixin implements I
         await writeCacheAll(expiration, _response0, method);
         return _getResponseResult<T, R>(_response0, parseModel);
       } else {
-        return ResponseModel(error: ErrorModel(description: response.data.toString()));
+        return ResponseModel(
+            error: ErrorModel(description: response.data.toString()));
       }
     } on dio.DioException catch (error) {
       return handleNetworkError<T, R>(
@@ -244,7 +251,8 @@ class NetworkManager<E extends INetworkModel<E>?> with dio.DioMixin implements I
   ) async {
     final response = await dio.Dio().get<List<int>>(
       path,
-      options: Options(followRedirects: false, responseType: ResponseType.bytes),
+      options:
+          Options(followRedirects: false, responseType: ResponseType.bytes),
       onReceiveProgress: callback,
     );
 
@@ -320,7 +328,9 @@ class NetworkManager<E extends INetworkModel<E>?> with dio.DioMixin implements I
 
     return ResponseModel<R, E>(
       data: model,
-      error: model == null ? ErrorModel(description: 'Null is returned after parsing a model $T') : null,
+      error: model == null
+          ? ErrorModel(description: 'Null is returned after parsing a model $T')
+          : null,
     );
   }
 
@@ -332,7 +342,9 @@ class NetworkManager<E extends INetworkModel<E>?> with dio.DioMixin implements I
     );
     var error = ErrorModel<E>(
       description: e.message,
-      statusCode: errorResponse != null ? errorResponse.statusCode : HttpStatus.internalServerError,
+      statusCode: errorResponse != null
+          ? errorResponse.statusCode
+          : HttpStatus.internalServerError,
     );
     if (errorResponse != null) {
       error = _generateErrorModel(error, errorResponse.data);
@@ -356,7 +368,8 @@ class NetworkManager<E extends INetworkModel<E>?> with dio.DioMixin implements I
       if (jsonBody == null || jsonBody is! Map<String, dynamic>) return error;
 
       if (errorModelFromData != null) {
-        generatedError = error.copyWith(model: errorModelFromData?.call(jsonBody));
+        generatedError =
+            error.copyWith(model: errorModelFromData?.call(jsonBody));
       } else {
         generatedError = error.copyWith(model: errorModel!.fromJson(jsonBody));
       }
@@ -366,7 +379,8 @@ class NetworkManager<E extends INetworkModel<E>?> with dio.DioMixin implements I
       final jsonBody = data;
 
       if (errorModelFromData != null) {
-        generatedError = error.copyWith(model: errorModelFromData!.call(jsonBody));
+        generatedError =
+            error.copyWith(model: errorModelFromData!.call(jsonBody));
       } else {
         generatedError = error.copyWith(model: errorModel!.fromJson(jsonBody));
       }

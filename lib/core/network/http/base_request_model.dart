@@ -5,7 +5,7 @@ part 'base_request_model.g.dart';
 @JsonSerializable(explicitToJson: true)
 class BaseRequestModel<T> {
   BaseRequestModel({
-    this.jsonrpc = '2.0',
+    this.correlationId,
     this.data,
   });
   factory BaseRequestModel.fromJson(
@@ -14,10 +14,9 @@ class BaseRequestModel<T> {
   ) =>
       _$BaseRequestModelFromJson(json, fromJsonT);
 
-  @JsonKey(name: 'jsonrpc')
-  final String? jsonrpc;
-  @JsonKey(name: 'params')
   T? data;
+  @JsonKey(name: 'correlationId')
+  final String? correlationId;
 
   Map<String, dynamic> toJson(
     Object Function(T value) toJsonT,

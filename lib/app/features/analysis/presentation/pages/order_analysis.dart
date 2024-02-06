@@ -154,7 +154,6 @@ class _OrderAnalysisView
               ),
             ],
           ),
-
           body: SlideInLeft(
             key: const Key('order-details-page-slideinleft-widget'),
             from: context.width / 2 - 60,
@@ -214,14 +213,11 @@ class _OrderAnalysisView
                                             return Padding(
                                               padding:
                                                   const EdgeInsetsDirectional
-                                                      .only(
-                                                      start: 8, end: 8.0),
+                                                      .only(start: 8, end: 8.0),
                                               child: ElevatedButton(
                                                 key: ValueKey(index),
-                                                style:
-                                                    ElevatedButton.styleFrom(
-                                                  shape:
-                                                      RoundedRectangleBorder(
+                                                style: ElevatedButton.styleFrom(
+                                                  shape: RoundedRectangleBorder(
                                                     borderRadius:
                                                         BorderRadiusDirectional
                                                             .circular(10),
@@ -247,8 +243,7 @@ class _OrderAnalysisView
                                                       index);
                                                 },
                                                 child: Text(
-                                                  state
-                                                      .transactionTypes[index]
+                                                  state.transactionTypes[index]
                                                       .typeName,
                                                   maxLines: 1,
                                                   overflow:
@@ -260,8 +255,7 @@ class _OrderAnalysisView
                                                           color:
                                                               state.currentIndex ==
                                                                       index
-                                                                  ? Colors
-                                                                      .white
+                                                                  ? Colors.white
                                                                   : Colors
                                                                       .black),
                                                 ),
@@ -276,8 +270,7 @@ class _OrderAnalysisView
                               duration: Duration(milliseconds: 200)),
                           PageStorage(
                             bucket: state._transactionBucket,
-                            child:
-                                state.transactionWidgets[state.currentIndex],
+                            child: state.transactionWidgets[state.currentIndex],
                           ),
                         ],
                       ),

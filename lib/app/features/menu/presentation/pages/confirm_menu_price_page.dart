@@ -15,7 +15,8 @@ class ConfirmMenuPricePage extends StatefulWidget {
   final SelectionUseCase selectionUseCase;
 
   @override
-  _ConfirmMenuPricePageController createState() => _ConfirmMenuPricePageController();
+  _ConfirmMenuPricePageController createState() =>
+      _ConfirmMenuPricePageController();
 }
 
 class _ConfirmMenuPricePageController extends State<ConfirmMenuPricePage> {
@@ -88,7 +89,8 @@ class _ConfirmMenuPricePageController extends State<ConfirmMenuPricePage> {
   void loadMenuEntityData(MenuEntity cacheMenuEntity) {
     menuEntity = cacheMenuEntity;
     if (menuEntity.menuPortions.isNotEmpty) {
-      listOfMenuPortions = List<MenuPortion>.from(menuEntity.menuPortions.toList());
+      listOfMenuPortions =
+          List<MenuPortion>.from(menuEntity.menuPortions.toList());
     }
     hasCustomPortion = menuEntity.hasCustomPortion;
     customPortion = menuEntity.customPortion;
@@ -131,7 +133,8 @@ class _ConfirmMenuPricePageController extends State<ConfirmMenuPricePage> {
           switch (menuState) {
             case NavigateToMenuImagePage():
               {
-                final result = await context.push(Routes.UPLOAD_MENU_IMAGE_PAGE, extra: {
+                final result =
+                    await context.push(Routes.UPLOAD_MENU_IMAGE_PAGE, extra: {
                   'menuEntity': menuState.menuEntity,
                   'haveNewMenu': widget.haveNewMenu,
                   'currentIndex': widget.currentIndex,
@@ -156,14 +159,16 @@ class _ConfirmMenuPricePageController extends State<ConfirmMenuPricePage> {
       );
 }
 
-class _ConfirmMenuPricePageView extends WidgetView<ConfirmMenuPricePage, _ConfirmMenuPricePageController> {
+class _ConfirmMenuPricePageView
+    extends WidgetView<ConfirmMenuPricePage, _ConfirmMenuPricePageController> {
   const _ConfirmMenuPricePageView(super.state);
 
   @override
   Widget build(BuildContext context) {
     final MediaQueryData media = MediaQuery.of(context);
     final double margins = GlobalApp.responsiveInsets(media.size.width);
-    final double topPadding = margins; //media.padding.top + kToolbarHeight + margins; //margins * 1.5;
+    final double topPadding =
+        margins; //media.padding.top + kToolbarHeight + margins; //margins * 1.5;
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: FlexColorScheme.themedSystemNavigationBar(
         context,
@@ -189,12 +194,16 @@ class _ConfirmMenuPricePageView extends WidgetView<ConfirmMenuPricePage, _Confir
             from: context.width / 2 - 60,
             duration: const Duration(milliseconds: 500),
             child: Directionality(
-              textDirection: serviceLocator<LanguageController>().targetTextDirection,
+              textDirection:
+                  serviceLocator<LanguageController>().targetTextDirection,
               child: PageBody(
                 controller: state.scrollController,
                 constraints: BoxConstraints(
                   minWidth: 1000,
-                  minHeight: media.size.height - (media.padding.top + kToolbarHeight + media.padding.bottom),
+                  minHeight: media.size.height -
+                      (media.padding.top +
+                          kToolbarHeight +
+                          media.padding.bottom),
                 ),
                 padding: EdgeInsetsDirectional.only(
                   top: topPadding,
@@ -214,16 +223,23 @@ class _ConfirmMenuPricePageView extends WidgetView<ConfirmMenuPricePage, _Confir
                             Column(
                               mainAxisSize: MainAxisSize.min,
                               crossAxisAlignment: CrossAxisAlignment.stretch,
-                              textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                              textDirection:
+                                  serviceLocator<LanguageController>()
+                                      .targetTextDirection,
                               children: [
                                 Flexible(
                                   child: Column(
                                     mainAxisSize: MainAxisSize.min,
-                                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                                    textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.stretch,
+                                    textDirection:
+                                        serviceLocator<LanguageController>()
+                                            .targetTextDirection,
                                     children: [
                                       Wrap(
-                                        textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                        textDirection:
+                                            serviceLocator<LanguageController>()
+                                                .targetTextDirection,
                                         children: [
                                           Text(
                                             'Menu price',
@@ -231,76 +247,100 @@ class _ConfirmMenuPricePageView extends WidgetView<ConfirmMenuPricePage, _Confir
                                               fontWeight: FontWeight.w600,
                                               fontSize: 20,
                                             ),
-                                            textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                            textDirection: serviceLocator<
+                                                    LanguageController>()
+                                                .targetTextDirection,
                                           ).translate(),
                                         ],
                                       ),
-                                      const AnimatedGap(2, duration: Duration(milliseconds: 500)),
+                                      const AnimatedGap(2,
+                                          duration:
+                                              Duration(milliseconds: 500)),
                                       Wrap(
-                                        textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                        textDirection:
+                                            serviceLocator<LanguageController>()
+                                                .targetTextDirection,
                                         children: [
                                           Text(
                                             'Set menu selling price for customer ',
                                             style: context.labelMedium,
-                                            textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                            textDirection: serviceLocator<
+                                                    LanguageController>()
+                                                .targetTextDirection,
                                           ).translate(),
                                         ],
                                       ),
-                                      const AnimatedGap(12, duration: Duration(milliseconds: 500)),
+                                      const AnimatedGap(12,
+                                          duration:
+                                              Duration(milliseconds: 500)),
                                       Flexible(
                                         child: AnimatedCrossFade(
                                           firstChild: SizedBox(
                                             child: Column(
-                                              children: state.listOfMenuPortions.mapIndex((item, index) {
+                                              children: state.listOfMenuPortions
+                                                  .mapIndex((item, index) {
                                                 return SetMenuPriceWidget(
                                                   currentIndex: index,
-                                                  listOfMenuPortions: state.listOfMenuPortions,
+                                                  listOfMenuPortions:
+                                                      state.listOfMenuPortions,
                                                   key: ValueKey(index),
                                                   menuPortion: item,
-                                                  basePriceValueChanged: state.setBasePriceOfItems,
-                                                  discountPriceValueChanged: state.setDiscountPriceOfItems,
+                                                  basePriceValueChanged:
+                                                      state.setBasePriceOfItems,
+                                                  discountPriceValueChanged: state
+                                                      .setDiscountPriceOfItems,
                                                   menuEntity: state.menuEntity,
                                                   hasGlobalMenuEntity: false,
-                                                  menuEntityChanged: state.menuEntityChanged,
+                                                  menuEntityChanged:
+                                                      state.menuEntityChanged,
                                                 );
                                               }).toList(),
                                             ),
                                           ),
                                           secondChild: const Offstage(),
                                           crossFadeState:
-                                              (!state.hasCustomPortion && state.listOfMenuPortions.isNotEmpty)
+                                              (!state.hasCustomPortion &&
+                                                      state.listOfMenuPortions
+                                                          .isNotEmpty)
                                                   ? CrossFadeState.showFirst
                                                   : CrossFadeState.showSecond,
-                                          duration: const Duration(milliseconds: 500),
+                                          duration:
+                                              const Duration(milliseconds: 500),
                                         ),
                                       ),
                                     ],
                                   ),
                                 ),
-                                const AnimatedGap(12, duration: Duration(milliseconds: 500)),
+                                const AnimatedGap(12,
+                                    duration: Duration(milliseconds: 500)),
                                 AnimatedCrossFade(
                                   firstChild: SetMenuPriceWidget(
                                     hasCustomPortion: true,
                                     customPortion: state.customPortion,
                                     key: const Key('set-custom-price-widget'),
                                     menuEntity: state.menuEntity,
-                                    basePriceValueChanged: state.setBasePriceOfItems,
-                                    discountPriceValueChanged: state.setDiscountPriceOfItems,
+                                    basePriceValueChanged:
+                                        state.setBasePriceOfItems,
+                                    discountPriceValueChanged:
+                                        state.setDiscountPriceOfItems,
                                     hasGlobalMenuEntity: false,
                                     menuEntityChanged: state.menuEntityChanged,
                                   ),
                                   secondChild: const Offstage(),
-                                  crossFadeState:
-                                      state.hasCustomPortion ? CrossFadeState.showFirst : CrossFadeState.showSecond,
+                                  crossFadeState: state.hasCustomPortion
+                                      ? CrossFadeState.showFirst
+                                      : CrossFadeState.showSecond,
                                   duration: const Duration(
                                     milliseconds: 500,
                                   ),
                                 ),
                                 AnimatedCrossFade(
-                                  firstChild: const AnimatedGap(12, duration: Duration(milliseconds: 500)),
+                                  firstChild: const AnimatedGap(12,
+                                      duration: Duration(milliseconds: 500)),
                                   secondChild: const Offstage(),
-                                  crossFadeState:
-                                      state.hasCustomPortion ? CrossFadeState.showFirst : CrossFadeState.showSecond,
+                                  crossFadeState: state.hasCustomPortion
+                                      ? CrossFadeState.showFirst
+                                      : CrossFadeState.showSecond,
                                   duration: const Duration(
                                     milliseconds: 500,
                                   ),
@@ -308,8 +348,9 @@ class _ConfirmMenuPricePageView extends WidgetView<ConfirmMenuPricePage, _Confir
                                 AnimatedCrossFade(
                                   firstChild: const Divider(),
                                   secondChild: const Offstage(),
-                                  crossFadeState:
-                                      state.hasCustomPortion ? CrossFadeState.showFirst : CrossFadeState.showSecond,
+                                  crossFadeState: state.hasCustomPortion
+                                      ? CrossFadeState.showFirst
+                                      : CrossFadeState.showSecond,
                                   duration: const Duration(
                                     milliseconds: 500,
                                   ),
@@ -317,11 +358,16 @@ class _ConfirmMenuPricePageView extends WidgetView<ConfirmMenuPricePage, _Confir
                                 Flexible(
                                   child: Column(
                                     mainAxisSize: MainAxisSize.min,
-                                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                                    textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.stretch,
+                                    textDirection:
+                                        serviceLocator<LanguageController>()
+                                            .targetTextDirection,
                                     children: [
                                       Wrap(
-                                        textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                        textDirection:
+                                            serviceLocator<LanguageController>()
+                                                .targetTextDirection,
                                         children: [
                                           Text(
                                             'Extras price',
@@ -329,52 +375,70 @@ class _ConfirmMenuPricePageView extends WidgetView<ConfirmMenuPricePage, _Confir
                                               fontWeight: FontWeight.w600,
                                               fontSize: 20,
                                             ),
-                                            textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                            textDirection: serviceLocator<
+                                                    LanguageController>()
+                                                .targetTextDirection,
                                           ).translate(),
                                         ],
                                       ),
-                                      const AnimatedGap(2, duration: Duration(milliseconds: 500)),
+                                      const AnimatedGap(2,
+                                          duration:
+                                              Duration(milliseconds: 500)),
                                       Wrap(
-                                        textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                        textDirection:
+                                            serviceLocator<LanguageController>()
+                                                .targetTextDirection,
                                         children: [
                                           Text(
                                             'Set extras selling price for customer ',
                                             style: context.labelMedium,
-                                            textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                            textDirection: serviceLocator<
+                                                    LanguageController>()
+                                                .targetTextDirection,
                                           ).translate(),
                                         ],
                                       ),
-                                      const AnimatedGap(12, duration: Duration(milliseconds: 500)),
+                                      const AnimatedGap(12,
+                                          duration:
+                                              Duration(milliseconds: 500)),
                                       Flexible(
                                         child: AnimatedCrossFade(
                                           firstChild: SizedBox(
                                             child: Column(
-                                              children: state.listOfAddons.mapIndex((item, index) {
+                                              children: state.listOfAddons
+                                                  .mapIndex((item, index) {
                                                 return SetAddonsPriceWidget(
                                                   currentIndex: index,
-                                                  listOfAddons: state.listOfAddons,
+                                                  listOfAddons:
+                                                      state.listOfAddons,
                                                   key: ValueKey(index),
                                                   addons: item,
-                                                  basePriceValueChanged: state.setBasePriceOfItems,
-                                                  discountPriceValueChanged: state.setDiscountPriceOfItems,
+                                                  basePriceValueChanged:
+                                                      state.setBasePriceOfItems,
+                                                  discountPriceValueChanged: state
+                                                      .setDiscountPriceOfItems,
                                                   menuEntity: state.menuEntity,
                                                   hasGlobalMenuEntity: false,
-                                                  menuEntityChanged: state.menuEntityChanged,
+                                                  menuEntityChanged:
+                                                      state.menuEntityChanged,
                                                 );
                                               }).toList(),
                                             ),
                                           ),
                                           secondChild: const Offstage(),
-                                          crossFadeState: (state.listOfAddons.isNotEmpty)
-                                              ? CrossFadeState.showFirst
-                                              : CrossFadeState.showSecond,
-                                          duration: const Duration(milliseconds: 500),
+                                          crossFadeState:
+                                              (state.listOfAddons.isNotEmpty)
+                                                  ? CrossFadeState.showFirst
+                                                  : CrossFadeState.showSecond,
+                                          duration:
+                                              const Duration(milliseconds: 500),
                                         ),
                                       ),
                                     ],
                                   ),
                                 ),
-                                const AnimatedGap(12, duration: Duration(milliseconds: 500)),
+                                const AnimatedGap(12,
+                                    duration: Duration(milliseconds: 500)),
                               ],
                             ),
                           ],
@@ -385,7 +449,8 @@ class _ConfirmMenuPricePageView extends WidgetView<ConfirmMenuPricePage, _Confir
                         hasScrollBody: false,
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.stretch,
-                          textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                          textDirection: serviceLocator<LanguageController>()
+                              .targetTextDirection,
                           children: [
                             const Spacer(),
                             /*Directionality(
@@ -420,12 +485,16 @@ class _ConfirmMenuPricePageView extends WidgetView<ConfirmMenuPricePage, _Confir
                                     onPressed: state.onSaveAndNext,
                                     style: ElevatedButton.styleFrom(
                                       //minimumSize: Size(180, 40),
-                                      disabledBackgroundColor: const Color.fromRGBO(255, 219, 208, 1),
+                                      disabledBackgroundColor:
+                                          const Color.fromRGBO(
+                                              255, 219, 208, 1),
                                       disabledForegroundColor: Colors.white,
                                     ),
                                     child: Text(
                                       'Save & Next',
-                                      textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                      textDirection:
+                                          serviceLocator<LanguageController>()
+                                              .targetTextDirection,
                                     ).translate(),
                                   ),
                                 ),
@@ -444,10 +513,11 @@ class _ConfirmMenuPricePageView extends WidgetView<ConfirmMenuPricePage, _Confir
       ),
     );
   }
-  double fetchFinalPrice(double basePriceOfItems,double discountPriceOfItems){
-    if(basePriceOfItems==discountPriceOfItems){
+
+  double fetchFinalPrice(double basePriceOfItems, double discountPriceOfItems) {
+    if (basePriceOfItems == discountPriceOfItems) {
       return basePriceOfItems;
-    }else{
+    } else {
       return discountPriceOfItems;
     }
   }

@@ -4,7 +4,8 @@ import 'package:logger/logger.dart';
 @immutable
 class CustomLogger {
   CustomLogger({
-    required this.data, this.isEnabled = false,
+    required this.data,
+    this.isEnabled = false,
   }) {
     _printError(data);
   }

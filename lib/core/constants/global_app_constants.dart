@@ -256,4 +256,6 @@ class GlobalApp {
     DocumentPickerSource.folder,
     DocumentPickerSource.none,
   ];
+  static const String merchantApiPath = ' /merchant/api/v1/';
+
 }

@@ -1,6 +1,7 @@
 part of 'package:homemakers_merchant/app/features/common/index.dart';
+
 class DataLoadingWidget extends StatelessWidget {
-  const DataLoadingWidget({super.key,this.textMessage,this.textMessageStyle});
+  const DataLoadingWidget({super.key, this.textMessage, this.textMessageStyle});
   final String? textMessage;
   final TextStyle? textMessageStyle;
 
@@ -15,11 +16,10 @@ class DataLoadingWidget extends StatelessWidget {
         const AnimatedGap(6, duration: Duration(milliseconds: 300)),
         Center(
           child: Text(
-            textMessage??'Please wait while fetching result...',
-            style: textMessageStyle??context.labelLarge,
-            textDirection: serviceLocator<
-                LanguageController>()
-                .targetTextDirection,
+            textMessage ?? 'Please wait while fetching result...',
+            style: textMessageStyle ?? context.labelLarge,
+            textDirection:
+                serviceLocator<LanguageController>().targetTextDirection,
           ).translate(),
         ),
       ],

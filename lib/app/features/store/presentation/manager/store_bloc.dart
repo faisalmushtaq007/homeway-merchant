@@ -1088,14 +1088,16 @@ class StoreBloc extends Bloc<StoreEvent, StoreState> {
     }
   }
 
-  FutureOr<void> _getAllDriversPagination(GetAllDriversPagination event, Emitter<StoreState> emit) async {
+  FutureOr<void> _getAllDriversPagination(
+      GetAllDriversPagination event, Emitter<StoreState> emit) async {
     try {
-      appLog.d('Get all drivers bloc ${event.pageKey}, ${event.pageSize}, ${event.searchText}');
+      appLog.d(
+          'Get all drivers bloc ${event.pageKey}, ${event.pageSize}, ${event.searchText}');
       emit(GetAllLoadingDriversPaginationState(
           isLoading: true,
           message: 'Please wait while we are fetching all drivers...'));
       final DataSourceState<List<StoreOwnDeliveryPartnersInfo>> result =
-      await serviceLocator<GetAllDriverPaginationUseCase>()(
+          await serviceLocator<GetAllDriverPaginationUseCase>()(
         pageKey: event.pageKey,
         pageSize: event.pageSize,
         searchText: event.searchText,
@@ -1184,7 +1186,7 @@ class StoreBloc extends Bloc<StoreEvent, StoreState> {
       emit(
         GetAllExceptionDriversPaginationState(
           message:
-          'Something went wrong during getting all drivers, please try again',
+              'Something went wrong during getting all drivers, please try again',
           //exception: e as Exception,
           stackTrace: s,
         ),
@@ -1192,13 +1194,14 @@ class StoreBloc extends Bloc<StoreEvent, StoreState> {
     }
   }
 
-  FutureOr<void> _getAllStoresPagination(GetAllStoresPagination event, Emitter<StoreState> emit) async {
+  FutureOr<void> _getAllStoresPagination(
+      GetAllStoresPagination event, Emitter<StoreState> emit) async {
     try {
       emit(GetAllLoadingStorePaginationState(
           isLoading: true,
           message: 'Please wait while we are fetching all store...'));
       final DataSourceState<List<StoreEntity>> result =
-      await serviceLocator<GetAllStorePaginationUseCase>()(
+          await serviceLocator<GetAllStorePaginationUseCase>()(
         pageKey: event.pageKey,
         pageSize: event.pageSize,
         searchText: event.searchText,
@@ -1287,7 +1290,7 @@ class StoreBloc extends Bloc<StoreEvent, StoreState> {
       emit(
         GetAllExceptionStorePaginationState(
           message:
-          'Something went wrong during getting all store, please try again',
+              'Something went wrong during getting all store, please try again',
           //exception: e as Exception,
           stackTrace: s,
         ),

@@ -1,6 +1,8 @@
 part of 'package:homemakers_merchant/app/features/common/index.dart';
+
 class NoItemAvailableWidget extends StatelessWidget {
-  const NoItemAvailableWidget({super.key,this.textMessage,this.textMessageStyle});
+  const NoItemAvailableWidget(
+      {super.key, this.textMessage, this.textMessageStyle});
   final String? textMessage;
   final TextStyle? textMessageStyle;
 
@@ -11,11 +13,10 @@ class NoItemAvailableWidget extends StatelessWidget {
       children: [
         Center(
           child: Text(
-            textMessage??'No items available or added by you',
-            style: textMessageStyle??context.labelLarge,
-            textDirection: serviceLocator<
-                LanguageController>()
-                .targetTextDirection,
+            textMessage ?? 'No items available or added by you',
+            style: textMessageStyle ?? context.labelLarge,
+            textDirection:
+                serviceLocator<LanguageController>().targetTextDirection,
           ).translate(),
         ),
       ],

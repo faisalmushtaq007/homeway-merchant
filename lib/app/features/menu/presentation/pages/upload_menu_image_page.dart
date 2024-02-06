@@ -2,7 +2,8 @@ part of 'package:homemakers_merchant/app/features/menu/index.dart';
 
 class UploadMenuImagePage extends StatefulWidget {
   const UploadMenuImagePage({
-    required this.menuEntity, super.key,
+    required this.menuEntity,
+    super.key,
     this.haveNewMenu = true,
     this.currentIndex = -1,
     this.selectionUseCase = SelectionUseCase.selectAndNext,
@@ -13,7 +14,8 @@ class UploadMenuImagePage extends StatefulWidget {
   final SelectionUseCase selectionUseCase;
 
   @override
-  _UploadMenuImagePageController createState() => _UploadMenuImagePageController();
+  _UploadMenuImagePageController createState() =>
+      _UploadMenuImagePageController();
 }
 
 class _UploadMenuImagePageController extends State<UploadMenuImagePage> {
@@ -29,7 +31,7 @@ class _UploadMenuImagePageController extends State<UploadMenuImagePage> {
 
   @override
   void initState() {
-    menuEntity=widget.menuEntity;
+    menuEntity = widget.menuEntity;
     super.initState();
     scrollController = ScrollController();
     _screenScrollController = ScrollController();
@@ -101,19 +103,24 @@ class _UploadMenuImagePageController extends State<UploadMenuImagePage> {
       String? assetNetworkUrl = result[7] as String?;
       final int timeStamp = DateTime.now().millisecondsSinceEpoch;
       var tempName = 'homeway_document_image_$timeStamp';
-      var fileNameWithExtension = path.basename(xCroppedDocumentFile?.path ?? croppedDocumentFile?.path ?? tempName);
-      var fileNameWithoutExtension =
-          path.basenameWithoutExtension(xCroppedDocumentFile?.path ?? croppedDocumentFile?.path ?? tempName);
-      String fileExtension = path.extension(xCroppedDocumentFile?.path ?? croppedDocumentFile?.path ?? '.png');
-      String croppedFilePath =
-          (xCroppedDocumentFile.path.isEmpty) ? xCroppedDocumentFile.path : croppedDocumentFile.path;
+      var fileNameWithExtension = path.basename(
+          xCroppedDocumentFile?.path ?? croppedDocumentFile?.path ?? tempName);
+      var fileNameWithoutExtension = path.basenameWithoutExtension(
+          xCroppedDocumentFile?.path ?? croppedDocumentFile?.path ?? tempName);
+      String fileExtension = path.extension(
+          xCroppedDocumentFile?.path ?? croppedDocumentFile?.path ?? '.png');
+      String croppedFilePath = (xCroppedDocumentFile.path.isEmpty)
+          ? xCroppedDocumentFile.path
+          : croppedDocumentFile.path;
       final fileReadAsBytes = await file.readAsBytes();
       final xFileReadAsBytes = await xFile.readAsBytes();
       final fileReadAsString = base64Encode(fileReadAsBytes);
       final xFileReadAsString = base64Encode(xFileReadAsBytes);
       final uuid = const Uuid().v4();
-      final String mimeType = xCroppedDocumentFile.mimeType ?? xFile.mimeType ?? 'image/png';
-      var decodedImage = await decodeImageFromList(xFileReadAsBytes ?? fileReadAsBytes);
+      final String mimeType =
+          xCroppedDocumentFile.mimeType ?? xFile.mimeType ?? 'image/png';
+      var decodedImage =
+          await decodeImageFromList(xFileReadAsBytes ?? fileReadAsBytes);
       double height = decodedImage.height.toDouble();
       double width = decodedImage.width.toDouble();
 
@@ -134,13 +141,18 @@ class _UploadMenuImagePageController extends State<UploadMenuImagePage> {
         'fileReadAsString': fileReadAsString,
         'xFileReadAsString': xFileReadAsString,
         'documentType': DocumentType.other.name,
-        'blob': (xFileReadAsBytes.isNotNullOrEmpty) ? Blob(xFileReadAsBytes) : Blob(fileReadAsBytes),
-        'base64': (xFileReadAsString.isNotEmpty) ? xFileReadAsString : fileReadAsString,
+        'blob': (xFileReadAsBytes.isNotNullOrEmpty)
+            ? Blob(xFileReadAsBytes)
+            : Blob(fileReadAsBytes),
+        'base64': (xFileReadAsString.isNotEmpty)
+            ? xFileReadAsString
+            : fileReadAsString,
         'mimeType': mimeType,
         'height': height,
         'width': width,
       };
-      final CaptureImageEntity captureImageEntity = CaptureImageEntity.fromMap(metaData);
+      final CaptureImageEntity captureImageEntity =
+          CaptureImageEntity.fromMap(metaData);
       selectedMenuImage = croppedFilePath;
       menuEntity.menuImages = [
         MenuImage(
@@ -166,7 +178,8 @@ class _UploadMenuImagePageController extends State<UploadMenuImagePage> {
 
   void menuImageCarouselSelection(int index) {
     selectedMenuImage = listOfMenuRemoteImages[index];
-    final nameOfurl = Uri.parse(listOfMenuRemoteImages[index]).path.split("/").last;
+    final nameOfurl =
+        Uri.parse(listOfMenuRemoteImages[index]).path.split("/").last;
     final File file = File(listOfMenuRemoteImages[index]);
     final filename = path.basename(file.path);
     final nameWithoutExtension = path.basenameWithoutExtension(file.path);
@@ -196,11 +209,11 @@ class _UploadMenuImagePageController extends State<UploadMenuImagePage> {
       formKey.currentState!.save();
       appLog.d(menuEntity.toMap());
       context.read<MenuBloc>().add(
-        SaveMenu(
-          menuEntity: menuEntity.copyWith(),
-          hasNewMenu: widget.haveNewMenu,
-        ),
-      );
+            SaveMenu(
+              menuEntity: menuEntity.copyWith(),
+              hasNewMenu: widget.haveNewMenu,
+            ),
+          );
       return;
     }
     return;
@@ -210,11 +223,13 @@ class _UploadMenuImagePageController extends State<UploadMenuImagePage> {
   Widget build(BuildContext context) => BlocListener<MenuBloc, MenuState>(
         bloc: context.read<MenuBloc>(),
         listener: (context, menuState) {
-          switch(menuState){
+          switch (menuState) {
             case SaveMenuState():
               {
-                context.go(Routes.NEW_MENU_GREETING_PAGE,
-                    extra: menuState.menuEntity,);
+                context.go(
+                  Routes.NEW_MENU_GREETING_PAGE,
+                  extra: menuState.menuEntity,
+                );
                 return;
               }
           }
@@ -234,14 +249,16 @@ class _UploadMenuImagePageController extends State<UploadMenuImagePage> {
       );
 }
 
-class _UploadMenuImagePageView extends WidgetView<UploadMenuImagePage, _UploadMenuImagePageController> {
+class _UploadMenuImagePageView
+    extends WidgetView<UploadMenuImagePage, _UploadMenuImagePageController> {
   const _UploadMenuImagePageView(super.state);
 
   @override
   Widget build(BuildContext context) {
     final MediaQueryData media = MediaQuery.of(context);
     final double margins = GlobalApp.responsiveInsets(media.size.width);
-    final double topPadding = margins; //media.padding.top + kToolbarHeight + margins; //margins * 1.5;
+    final double topPadding =
+        margins; //media.padding.top + kToolbarHeight + margins; //margins * 1.5;
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: FlexColorScheme.themedSystemNavigationBar(
         context,
@@ -267,12 +284,16 @@ class _UploadMenuImagePageView extends WidgetView<UploadMenuImagePage, _UploadMe
             from: context.width / 2 - 60,
             duration: const Duration(milliseconds: 500),
             child: Directionality(
-              textDirection: serviceLocator<LanguageController>().targetTextDirection,
+              textDirection:
+                  serviceLocator<LanguageController>().targetTextDirection,
               child: PageBody(
                 controller: state.scrollController,
                 constraints: BoxConstraints(
                   minWidth: 1000,
-                  minHeight: media.size.height - (media.padding.top + kToolbarHeight + media.padding.bottom),
+                  minHeight: media.size.height -
+                      (media.padding.top +
+                          kToolbarHeight +
+                          media.padding.bottom),
                 ),
                 padding: EdgeInsetsDirectional.only(
                   top: topPadding,
@@ -293,15 +314,22 @@ class _UploadMenuImagePageView extends WidgetView<UploadMenuImagePage, _UploadMe
                               //controller: scrollController,
                               mainAxisSize: MainAxisSize.min,
                               crossAxisAlignment: CrossAxisAlignment.stretch,
-                              textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                              textDirection:
+                                  serviceLocator<LanguageController>()
+                                      .targetTextDirection,
                               children: [
                                 Column(
                                   mainAxisSize: MainAxisSize.min,
-                                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                                  textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                  crossAxisAlignment:
+                                      CrossAxisAlignment.stretch,
+                                  textDirection:
+                                      serviceLocator<LanguageController>()
+                                          .targetTextDirection,
                                   children: [
                                     Wrap(
-                                      textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                      textDirection:
+                                          serviceLocator<LanguageController>()
+                                              .targetTextDirection,
                                       children: [
                                         Text(
                                           'Menu Image',
@@ -309,18 +337,25 @@ class _UploadMenuImagePageView extends WidgetView<UploadMenuImagePage, _UploadMe
                                             fontWeight: FontWeight.w600,
                                             fontSize: 20,
                                           ),
-                                          textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                          textDirection: serviceLocator<
+                                                  LanguageController>()
+                                              .targetTextDirection,
                                         ).translate(),
                                       ],
                                     ),
-                                    const AnimatedGap(2, duration: Duration(milliseconds: 500)),
+                                    const AnimatedGap(2,
+                                        duration: Duration(milliseconds: 500)),
                                     Wrap(
-                                      textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                      textDirection:
+                                          serviceLocator<LanguageController>()
+                                              .targetTextDirection,
                                       children: [
                                         Text(
                                           'Upload your menu image or select menu theme image',
                                           style: context.labelMedium,
-                                          textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                          textDirection: serviceLocator<
+                                                  LanguageController>()
+                                              .targetTextDirection,
                                           maxLines: 2,
                                           softWrap: true,
                                         ).translate(),
@@ -328,19 +363,25 @@ class _UploadMenuImagePageView extends WidgetView<UploadMenuImagePage, _UploadMe
                                     ),
                                   ],
                                 ),
-                                const AnimatedGap(12, duration: Duration(milliseconds: 500)),
-                                if (state.listOfMenuRemoteImages.isNotEmpty && state.selectedMenuImage.isNotEmpty)
+                                const AnimatedGap(12,
+                                    duration: Duration(milliseconds: 500)),
+                                if (state.listOfMenuRemoteImages.isNotEmpty &&
+                                    state.selectedMenuImage.isNotEmpty)
                                   Center(
                                     child: Container(
                                       width: 150,
                                       height: 150,
                                       decoration: BoxDecoration(
-                                        borderRadius: BorderRadiusDirectional.circular(10),
+                                        borderRadius:
+                                            BorderRadiusDirectional.circular(
+                                                10),
                                         border: Border.all(
                                           width: 0.5,
-                                          color: const Color.fromRGBO(238, 238, 238, 1),
+                                          color: const Color.fromRGBO(
+                                              238, 238, 238, 1),
                                         ),
-                                        color: const Color.fromRGBO(238, 238, 238, 1),
+                                        color: const Color.fromRGBO(
+                                            238, 238, 238, 1),
                                       ),
                                       child: Stack(
                                         children: [
@@ -349,25 +390,31 @@ class _UploadMenuImagePageView extends WidgetView<UploadMenuImagePage, _UploadMe
                                             child: ImageHelper(
                                               image: state.selectedMenuImage,
                                               filterQuality: FilterQuality.high,
-                                              borderRadius: BorderRadiusDirectional.circular(10),
-                                              imageType: findImageType(state.selectedMenuImage),
+                                              borderRadius:
+                                                  BorderRadiusDirectional
+                                                      .circular(10),
+                                              imageType: findImageType(
+                                                  state.selectedMenuImage),
                                               imageShape: ImageShape.rectangle,
                                               width: 150,
                                               height: 150,
                                               boxFit: BoxFit.cover,
-                                              defaultErrorBuilderColor: Colors.blueGrey,
+                                              defaultErrorBuilderColor:
+                                                  Colors.blueGrey,
                                               errorBuilder: const Icon(
                                                 Icons.image_not_supported,
                                                 size: 10000,
                                               ),
                                               // loader builder widget, default as icon if null
-                                              loaderBuilder: const CircularProgressIndicator(),
+                                              loaderBuilder:
+                                                  const CircularProgressIndicator(),
                                               matchTextDirection: true,
                                             ),
                                           ),
                                           GestureDetector(
                                             onTap: () async {
-                                              return await state.uploadMenuImage(context);
+                                              return await state
+                                                  .uploadMenuImage(context);
                                             },
                                             child: Align(
                                               alignment: Alignment.topRight,
@@ -377,21 +424,27 @@ class _UploadMenuImagePageView extends WidgetView<UploadMenuImagePage, _UploadMe
                                                   color: Colors.white70,
                                                   boxShadow: [
                                                     BoxShadow(
-                                                      color: Colors.black.withOpacity(0.2),
+                                                      color: Colors.black
+                                                          .withOpacity(0.2),
                                                       spreadRadius: 2,
-                                                      offset: const Offset(0, 2),
+                                                      offset:
+                                                          const Offset(0, 2),
                                                       blurRadius: 2,
                                                     )
                                                   ],
                                                 ),
                                                 child: Padding(
-                                                  padding: EdgeInsetsDirectional.all(6),
+                                                  padding:
+                                                      EdgeInsetsDirectional.all(
+                                                          6),
                                                   child: Icon(
                                                     Icons.edit,
-                                                    color: context.colorScheme.primary,
+                                                    color: context
+                                                        .colorScheme.primary,
                                                     size: 18,
-                                                    textDirection:
-                                                        serviceLocator<LanguageController>().targetTextDirection,
+                                                    textDirection: serviceLocator<
+                                                            LanguageController>()
+                                                        .targetTextDirection,
                                                   ),
                                                 ),
                                               ),
@@ -404,43 +457,56 @@ class _UploadMenuImagePageView extends WidgetView<UploadMenuImagePage, _UploadMe
                                 else
                                   GestureDetector(
                                     onTap: () async {
-                                      return await state.uploadMenuImage(context);
+                                      return await state
+                                          .uploadMenuImage(context);
                                     },
                                     child: Center(
                                       child: Container(
                                         width: 150,
                                         height: 150,
                                         decoration: BoxDecoration(
-                                          borderRadius: BorderRadiusDirectional.circular(10),
+                                          borderRadius:
+                                              BorderRadiusDirectional.circular(
+                                                  10),
                                           border: const BorderDirectional(
                                             start: BorderSide(
                                               width: 0.5,
-                                              color: Color.fromRGBO(238, 238, 238, 1),
+                                              color: Color.fromRGBO(
+                                                  238, 238, 238, 1),
                                             ),
                                             end: BorderSide(
                                               width: 0.5,
-                                              color: Color.fromRGBO(238, 238, 238, 1),
+                                              color: Color.fromRGBO(
+                                                  238, 238, 238, 1),
                                             ),
                                             top: BorderSide(
                                               width: 0.5,
-                                              color: Color.fromRGBO(238, 238, 238, 1),
+                                              color: Color.fromRGBO(
+                                                  238, 238, 238, 1),
                                             ),
                                             bottom: BorderSide(
                                               width: 0.5,
-                                              color: Color.fromRGBO(238, 238, 238, 1),
+                                              color: Color.fromRGBO(
+                                                  238, 238, 238, 1),
                                             ),
                                           ),
-                                          color: const Color.fromRGBO(238, 238, 238, 1),
+                                          color: const Color.fromRGBO(
+                                              238, 238, 238, 1),
                                         ),
                                         child: Column(
-                                          mainAxisAlignment: MainAxisAlignment.center,
-                                          crossAxisAlignment: CrossAxisAlignment.center,
-                                          textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          textDirection: serviceLocator<
+                                                  LanguageController>()
+                                              .targetTextDirection,
                                           children: [
                                             const Icon(
                                               Icons.camera_alt,
                                               size: 40,
-                                              color: Color.fromRGBO(201, 201, 203, 1),
+                                              color: Color.fromRGBO(
+                                                  201, 201, 203, 1),
                                             ),
                                             const SizedBox(height: 15),
                                             Text(
@@ -451,23 +517,30 @@ class _UploadMenuImagePageView extends WidgetView<UploadMenuImagePage, _UploadMe
                                               ),
                                               softWrap: true,
                                               textAlign: TextAlign.center,
-                                              textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                              textDirection: serviceLocator<
+                                                      LanguageController>()
+                                                  .targetTextDirection,
                                             ).translate(),
                                           ],
                                         ),
                                       ),
                                     ),
                                   ),
-                                const AnimatedGap(12, duration: Duration(milliseconds: 500)),
+                                const AnimatedGap(12,
+                                    duration: Duration(milliseconds: 500)),
                                 Wrap(
-                                  textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                  textDirection:
+                                      serviceLocator<LanguageController>()
+                                          .targetTextDirection,
                                   children: [
                                     Text(
                                       'Make sure your menu image is clear and visible with jpg or png format',
                                       style: context.bodySmall!.copyWith(
                                           //color: const Color.fromRGBO(127, 129, 132, 1),
                                           ),
-                                      textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                      textDirection:
+                                          serviceLocator<LanguageController>()
+                                              .targetTextDirection,
                                       maxLines: 2,
                                       softWrap: true,
                                       overflow: TextOverflow.ellipsis,
@@ -475,7 +548,8 @@ class _UploadMenuImagePageView extends WidgetView<UploadMenuImagePage, _UploadMe
                                     ).translate(),
                                   ],
                                 ),
-                                const AnimatedGap(24, duration: Duration(milliseconds: 500)),
+                                const AnimatedGap(24,
+                                    duration: Duration(milliseconds: 500)),
                                 Flexible(
                                   child: CarouselImages(
                                     //scaleFactor: 0.9,
@@ -498,7 +572,8 @@ class _UploadMenuImagePageView extends WidgetView<UploadMenuImagePage, _UploadMe
                         hasScrollBody: false,
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.stretch,
-                          textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                          textDirection: serviceLocator<LanguageController>()
+                              .targetTextDirection,
                           children: [
                             const Spacer(),
                             Row(
@@ -512,12 +587,16 @@ class _UploadMenuImagePageView extends WidgetView<UploadMenuImagePage, _UploadMe
                                     onPressed: state.onSaveAndNext,
                                     style: ElevatedButton.styleFrom(
                                       //minimumSize: Size(180, 40),
-                                      disabledBackgroundColor: const Color.fromRGBO(255, 219, 208, 1),
+                                      disabledBackgroundColor:
+                                          const Color.fromRGBO(
+                                              255, 219, 208, 1),
                                       disabledForegroundColor: Colors.white,
                                     ),
                                     child: Text(
                                       'Save',
-                                      textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                      textDirection:
+                                          serviceLocator<LanguageController>()
+                                              .targetTextDirection,
                                     ).translate(),
                                   ),
                                 ),

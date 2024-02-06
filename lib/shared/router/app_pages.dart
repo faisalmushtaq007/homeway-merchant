@@ -11,7 +11,8 @@ import 'package:homemakers_merchant/app/features/authentication/presentation/pag
 import 'package:homemakers_merchant/app/features/authentication/presentation/pages/phone_number_verification_page.dart';
 import 'package:homemakers_merchant/app/features/authentication/presentation/pages/privacy_and_policy_view.dart';
 import 'package:homemakers_merchant/app/features/authentication/presentation/pages/terms_and_conditions_view.dart';
-import 'package:homemakers_merchant/app/features/chat/domain/entities/chat_types_entity.dart' as types;
+import 'package:homemakers_merchant/app/features/chat/domain/entities/chat_types_entity.dart'
+    as types;
 import 'package:homemakers_merchant/app/features/chat/index.dart';
 import 'package:homemakers_merchant/app/features/common/index.dart';
 import 'package:homemakers_merchant/app/features/dashboard/index.dart';
@@ -34,8 +35,10 @@ part 'app_routes.dart';
 
 class AppRouter {
   static final rootNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'root');
-  static final shellNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'shell');
-  static final userModelController = serviceLocator<UserModelStorageController>();
+  static final shellNavigatorKey =
+      GlobalKey<NavigatorState>(debugLabel: 'shell');
+  static final userModelController =
+      serviceLocator<UserModelStorageController>();
 
   AppRouter._();
 
@@ -66,11 +69,13 @@ class AppRouter {
       GoRoute(
         path: Routes.AUTH_OTP_VERIFICATION,
         builder: (context, state) {
-          final Map<String, dynamic>? args = state.extra as Map<String, dynamic>?;
+          final Map<String, dynamic>? args =
+              state.extra as Map<String, dynamic>?;
           return OTPVerificationPage(
             phoneNumber: args?['mobileNumber'] as String,
             countryDialCode: args?['countryDialCode'] ?? '' as String,
-            phoneNumberWithoutFormat: args?['phoneNumberWithoutFormat'] as String,
+            phoneNumberWithoutFormat:
+                args?['phoneNumberWithoutFormat'] as String,
             isoCode: args?['isoCode'] as String,
           );
         },
@@ -90,38 +95,52 @@ class AppRouter {
       GoRoute(
         path: Routes.CREATE_BUSINESS_PROFILE_PAGE,
         builder: (context, state) {
-          final Map<String, dynamic>? args = state.extra as Map<String, dynamic>?;
+          final Map<String, dynamic>? args =
+              state.extra as Map<String, dynamic>?;
           return BusinessInformationPage(
-            businessProfileEntity: args?['businessProfileEntity'] as BusinessProfileEntity?,
-            hasEditBusinessProfile: args?['hasEditBusinessProfile'] ?? false as bool,
+            businessProfileEntity:
+                args?['businessProfileEntity'] as BusinessProfileEntity?,
+            hasEditBusinessProfile:
+                args?['hasEditBusinessProfile'] ?? false as bool,
             currentIndex: args?['currentIndex'] ?? -1 as int,
-            selectionUseCase: args?['selectionUseCase'] ?? SelectionUseCase.saveAndNext,
+            selectionUseCase:
+                args?['selectionUseCase'] ?? SelectionUseCase.saveAndNext,
           );
         },
       ),
       GoRoute(
         path: Routes.DOCUMENT_LIST_PAGE,
         builder: (context, state) {
-          final Map<String, dynamic>? args = state.extra as Map<String, dynamic>?;
+          final Map<String, dynamic>? args =
+              state.extra as Map<String, dynamic>?;
           return BusinessDocumentPage(
-            businessDocumentUploadedEntities: args?['businessDocumentUploadedEntities'] ??
-                <BusinessDocumentUploadedEntity>[] as List<BusinessDocumentUploadedEntity>,
-            hasEditBusinessDocument: args?['hasEditBusinessDocument'] ?? false as bool,
+            businessDocumentUploadedEntities:
+                args?['businessDocumentUploadedEntities'] ??
+                    <BusinessDocumentUploadedEntity>[]
+                        as List<BusinessDocumentUploadedEntity>,
+            hasEditBusinessDocument:
+                args?['hasEditBusinessDocument'] ?? false as bool,
             currentIndex: args?['currentIndex'] ?? -1 as int,
-            selectionUseCase: args?['selectionUseCase'] ?? SelectionUseCase.saveAndNext,
+            selectionUseCase:
+                args?['selectionUseCase'] ?? SelectionUseCase.saveAndNext,
           );
         },
       ),
       GoRoute(
         path: Routes.NEW_DOCUMENT_LIST_PAGE,
         builder: (context, state) {
-          final Map<String, dynamic>? args = state.extra as Map<String, dynamic>?;
+          final Map<String, dynamic>? args =
+              state.extra as Map<String, dynamic>?;
           return NewBusinessDocumentPage(
-            businessDocumentEntities: args?['businessDocumentUploadedEntities'] ??
-                <NewBusinessDocumentEntity>[] as List<NewBusinessDocumentEntity>,
-            hasEditBusinessDocument: args?['hasEditBusinessDocument'] ?? false as bool,
+            businessDocumentEntities:
+                args?['businessDocumentUploadedEntities'] ??
+                    <NewBusinessDocumentEntity>[]
+                        as List<NewBusinessDocumentEntity>,
+            hasEditBusinessDocument:
+                args?['hasEditBusinessDocument'] ?? false as bool,
             currentIndex: args?['currentIndex'] ?? -1 as int,
-            selectionUseCase: args?['selectionUseCase'] ?? SelectionUseCase.saveAndNext,
+            selectionUseCase:
+                args?['selectionUseCase'] ?? SelectionUseCase.saveAndNext,
           );
         },
       ),
@@ -131,13 +150,17 @@ class AppRouter {
           String documentType = 'other';
           String selectionUseCase = 'saveAndNext';
           if (state.extra != null) {
-            documentType = jsonDecode(state.extra! as String)['documentType'] ?? 'other';
-            selectionUseCase = jsonDecode(state.extra! as String)['selectionUseCase'] ?? 'saveAndNext';
+            documentType =
+                jsonDecode(state.extra! as String)['documentType'] ?? 'other';
+            selectionUseCase =
+                jsonDecode(state.extra! as String)['selectionUseCase'] ??
+                    'saveAndNext';
             return UploadDocumentPage(
               documentType: DocumentType.values.byName(
                 documentType,
               ),
-              selectionUseCase: SelectionUseCase.values.byName(selectionUseCase),
+              selectionUseCase:
+                  SelectionUseCase.values.byName(selectionUseCase),
             );
           } else {
             return UploadDocumentPage(
@@ -151,10 +174,12 @@ class AppRouter {
       GoRoute(
         path: Routes.ADDRESS_FORM_PAGE,
         builder: (context, state) {
-          final Map<String, dynamic>? args = state.extra as Map<String, dynamic>?;
+          final Map<String, dynamic>? args =
+              state.extra as Map<String, dynamic>?;
           return AddressFormPage(
             addressModel: args?['addressModel'] as AddressModel?,
-            allAddress: args?['allAddress'] ?? <AddressModel>[] as List<AddressModel>,
+            allAddress:
+                args?['allAddress'] ?? <AddressModel>[] as List<AddressModel>,
             currentIndex: args?['currentIndex'] ?? -1 as int,
             hasNewAddress: args?['hasNewAddress'] ?? false as bool,
             latitude: args?['latitude'] ?? 0.0 as double,
@@ -167,12 +192,16 @@ class AppRouter {
       GoRoute(
           path: Routes.BANK_INFORMATION_PAGE,
           builder: (context, state) {
-            final Map<String, dynamic>? args = state.extra as Map<String, dynamic>?;
+            final Map<String, dynamic>? args =
+                state.extra as Map<String, dynamic>?;
             return BankInformationPage(
-              paymentBankEntity: args?['paymentBankEntity'] as PaymentBankEntity?,
-              hasEditBankInformation: args?['hasEditBankInformation'] ?? false as bool,
+              paymentBankEntity:
+                  args?['paymentBankEntity'] as PaymentBankEntity?,
+              hasEditBankInformation:
+                  args?['hasEditBankInformation'] ?? false as bool,
               currentIndex: args?['currentIndex'] ?? -1 as int,
-              selectionUseCase: args?['selectionUseCase'] ?? SelectionUseCase.saveAndNext,
+              selectionUseCase:
+                  args?['selectionUseCase'] ?? SelectionUseCase.saveAndNext,
             );
           }),
       GoRoute(
@@ -186,7 +215,8 @@ class AppRouter {
       GoRoute(
         path: Routes.MAIN_DASHBOARD_PAGE,
         builder: (context, state) {
-          final Map<String, dynamic>? args = state.extra as Map<String, dynamic>?;
+          final Map<String, dynamic>? args =
+              state.extra as Map<String, dynamic>?;
           return MainDashboardPage(
             isMainDrawerPage: args?['isMainDrawerPage'] ?? true,
           );
@@ -195,7 +225,8 @@ class AppRouter {
       GoRoute(
         path: Routes.SAVE_STORE_PAGE,
         builder: (context, state) {
-          final Map<String, dynamic>? args = state.extra as Map<String, dynamic>?;
+          final Map<String, dynamic>? args =
+              state.extra as Map<String, dynamic>?;
           return SaveStorePage(
             storeEntity: args?['storeEntity'] as StoreEntity?,
             haveNewStore: args?['haveNewStore'] ?? true as bool,
@@ -206,9 +237,11 @@ class AppRouter {
       GoRoute(
         path: Routes.ALL_STORES_PAGE,
         builder: (context, state) {
-          final Map<String, dynamic>? args = state.extra as Map<String, dynamic>?;
+          final Map<String, dynamic>? args =
+              state.extra as Map<String, dynamic>?;
           return AllStoresPage(
-            selectItemUseCase: args?['selectItemUseCase'] ?? SelectItemUseCase.none,
+            selectItemUseCase:
+                args?['selectItemUseCase'] ?? SelectItemUseCase.none,
           );
         },
       ),
@@ -224,10 +257,12 @@ class AppRouter {
         path: Routes.PICKUP_LOCATION_FROM_MAP_PAGE,
         // (TODO(prasant):Prasant): Replace and Set object of address model
         builder: (context, state) {
-          final Map<String, dynamic>? args = state.extra as Map<String, dynamic>?;
+          final Map<String, dynamic>? args =
+              state.extra as Map<String, dynamic>?;
           return PickupLocationFromMapPage(
             addressModel: args?['addressEntity'] as AddressModel?,
-            allAddress: args?['addressEntities'] ?? <AddressModel>[] as List<AddressModel>,
+            allAddress: args?['addressEntities'] ??
+                <AddressModel>[] as List<AddressModel>,
             currentIndex: args?['currentIndex'] ?? -1 as int,
             hasNewAddress: args?['haveNewAddress'] ?? true as bool,
           );
@@ -236,29 +271,37 @@ class AppRouter {
       GoRoute(
         path: Routes.CONFIRM_BUSINESS_TYPE_PAGE,
         builder: (context, state) {
-          final Map<String, dynamic>? args = state.extra as Map<String, dynamic>?;
+          final Map<String, dynamic>? args =
+              state.extra as Map<String, dynamic>?;
           return ConfirmBusinessTypePage(
-            businessProfileEntity: args?['businessProfileEntity'] as BusinessProfileEntity?,
-            hasEditBusinessProfile: args?['hasEditBusinessProfile'] ?? false as bool,
+            businessProfileEntity:
+                args?['businessProfileEntity'] as BusinessProfileEntity?,
+            hasEditBusinessProfile:
+                args?['hasEditBusinessProfile'] ?? false as bool,
             currentIndex: args?['currentIndex'] ?? -1 as int,
-            businessTypeEntity: args?['businessTypeEntity'] as BusinessTypeEntity?,
-            selectionUseCase: args?['selectionUseCase'] ?? SelectionUseCase.saveAndNext,
+            businessTypeEntity:
+                args?['businessTypeEntity'] as BusinessTypeEntity?,
+            selectionUseCase:
+                args?['selectionUseCase'] ?? SelectionUseCase.saveAndNext,
           );
         },
       ),
       GoRoute(
         path: Routes.ALL_MENU_PAGE,
         builder: (context, state) {
-          final Map<String, dynamic>? args = state.extra as Map<String, dynamic>?;
+          final Map<String, dynamic>? args =
+              state.extra as Map<String, dynamic>?;
           return AllMenuPage(
-            selectItemUseCase: args?['selectItemUseCase'] ?? SelectItemUseCase.none,
+            selectItemUseCase:
+                args?['selectItemUseCase'] ?? SelectItemUseCase.none,
           );
         },
       ),
       GoRoute(
         path: Routes.SAVE_MENU_PAGE,
         builder: (context, state) {
-          final Map<String, dynamic>? args = state.extra as Map<String, dynamic>?;
+          final Map<String, dynamic>? args =
+              state.extra as Map<String, dynamic>?;
           return SaveMenuPage(
             menuEntity: args?['menuEntity'] as MenuEntity?,
             haveNewMenu: args?['haveNewMenu'] ?? true as bool,
@@ -269,18 +312,21 @@ class AppRouter {
       GoRoute(
         path: Routes.REFORM_SAVE_MENU_PAGE,
         builder: (context, state) {
-          final Map<String, dynamic>? args = state.extra as Map<String, dynamic>?;
+          final Map<String, dynamic>? args =
+              state.extra as Map<String, dynamic>?;
           return ReFormSaveMenuPage(
             menuEntity: args?['menuEntity'] as MenuEntity?,
             haveNewMenu: args?['haveNewMenu'] ?? true as bool,
             currentIndex: args?['currentIndex'] ?? -1 as int,
-            selectionUseCase: args?['selectionUseCase'] ?? SelectionUseCase.saveAndNext,
+            selectionUseCase:
+                args?['selectionUseCase'] ?? SelectionUseCase.saveAndNext,
           );
         },
       ),
       GoRoute(
         path: Routes.NEW_MENU_GREETING_PAGE,
-        builder: (context, state) => NewMenuGreetingPage(menuEntity: state.extra! as MenuEntity),
+        builder: (context, state) =>
+            NewMenuGreetingPage(menuEntity: state.extra! as MenuEntity),
       ),
       GoRoute(
         path: Routes.MENU_DESCRIPTION_PAGE,
@@ -309,9 +355,11 @@ class AppRouter {
       GoRoute(
         path: Routes.MENU_PRICE_PAGE,
         builder: (context, state) {
-          final Map<String, dynamic>? args = state.extra as Map<String, dynamic>?;
+          final Map<String, dynamic>? args =
+              state.extra as Map<String, dynamic>?;
           return ConfirmMenuPricePage(
-            selectionUseCase: args?['selectionUseCase'] ?? SelectionUseCase.saveAndNext,
+            selectionUseCase:
+                args?['selectionUseCase'] ?? SelectionUseCase.saveAndNext,
             menuEntity: args?['menuEntity'] ?? MenuEntity(),
             haveNewMenu: args?['haveNewMenu'] ?? true,
             currentIndex: args?['currentIndex'] ?? -1,
@@ -321,9 +369,11 @@ class AppRouter {
       GoRoute(
         path: Routes.UPLOAD_MENU_IMAGE_PAGE,
         builder: (context, state) {
-          final Map<String, dynamic>? args = state.extra as Map<String, dynamic>?;
+          final Map<String, dynamic>? args =
+              state.extra as Map<String, dynamic>?;
           return UploadMenuImagePage(
-            selectionUseCase: args?['selectionUseCase'] ?? SelectionUseCase.saveAndNext,
+            selectionUseCase:
+                args?['selectionUseCase'] ?? SelectionUseCase.saveAndNext,
             menuEntity: args?['menuEntity'] ?? MenuEntity(),
             haveNewMenu: args?['haveNewMenu'] ?? true,
             currentIndex: args?['currentIndex'] ?? -1,
@@ -333,16 +383,19 @@ class AppRouter {
       GoRoute(
         path: Routes.ALL_ADDONS_PAGE,
         builder: (context, state) {
-          final Map<String, dynamic>? args = state.extra as Map<String, dynamic>?;
+          final Map<String, dynamic>? args =
+              state.extra as Map<String, dynamic>?;
           return MenuAllAddonsPage(
-            selectItemUseCase: args?['selectItemUseCase'] ?? SelectItemUseCase.none,
+            selectItemUseCase:
+                args?['selectItemUseCase'] ?? SelectItemUseCase.none,
           );
         },
       ),
       GoRoute(
         path: Routes.SAVE_ADDONS_PAGE,
         builder: (context, state) {
-          final Map<String, dynamic>? args = state.extra as Map<String, dynamic>?;
+          final Map<String, dynamic>? args =
+              state.extra as Map<String, dynamic>?;
           return SaveAddonsPage(
             addons: args?['addons'] as Addons?,
             haveNewAddons: args?['haveNewAddons'] ?? true as bool,
@@ -356,26 +409,34 @@ class AppRouter {
       ),
       GoRoute(
         path: Routes.NEW_ADDONS_GREETING_PAGE,
-        builder: (context, state) => NewAddonsGreetingPage(addonsEntity: state.extra! as Addons),
+        builder: (context, state) =>
+            NewAddonsGreetingPage(addonsEntity: state.extra! as Addons),
       ),
       GoRoute(
         path: Routes.BIND_MENU_WITH_STORE_PAGE,
         builder: (context, state) {
-          final Map<String, dynamic>? args = state.extra as Map<String, dynamic>?;
+          final Map<String, dynamic>? args =
+              state.extra as Map<String, dynamic>?;
           return BindMenuWithStore(
-            listOfAllMenus: args?['allMenu'] ?? <MenuEntity>[] as List<MenuEntity>,
-            listOfAllSelectedMenus: args?['selectedMenus'] ?? <MenuEntity>[] as List<MenuEntity>,
-            selectItemUseCase: args?['selectItemUseCase'] ?? SelectItemUseCase.none,
+            listOfAllMenus:
+                args?['allMenu'] ?? <MenuEntity>[] as List<MenuEntity>,
+            listOfAllSelectedMenus:
+                args?['selectedMenus'] ?? <MenuEntity>[] as List<MenuEntity>,
+            selectItemUseCase:
+                args?['selectItemUseCase'] ?? SelectItemUseCase.none,
           );
         },
       ),
       GoRoute(
         path: Routes.BIND_MENU_WITH_STORE_GREETING_PAGE,
         builder: (context, state) {
-          final Map<String, dynamic>? args = state.extra as Map<String, dynamic>?;
+          final Map<String, dynamic>? args =
+              state.extra as Map<String, dynamic>?;
           return BindMenuWithStoreGreetingPage(
-            menuEntities: args?['allMenu'] ?? <MenuEntity>[] as List<MenuEntity>,
-            storeEntities: args?['allStore'] ?? <MenuEntity>[] as List<StoreEntity>,
+            menuEntities:
+                args?['allMenu'] ?? <MenuEntity>[] as List<MenuEntity>,
+            storeEntities:
+                args?['allStore'] ?? <MenuEntity>[] as List<StoreEntity>,
             message: args?['message'] ?? '',
             isRemoved: args?['isRemoved'] ?? false,
           );
@@ -384,44 +445,52 @@ class AppRouter {
       GoRoute(
         path: Routes.STORE_PREVIEW_PAGE,
         builder: (context, state) {
-          final Map<String, dynamic>? args = state.extra as Map<String, dynamic>?;
+          final Map<String, dynamic>? args =
+              state.extra as Map<String, dynamic>?;
           return StoreDetailsPage(
             storeEntity: args?['store'] ?? StoreEntity() as StoreEntity,
             index: args?['index'] ?? -1 as int,
-            storeEntities: args?['allStores'] ?? <StoreEntity>[] as List<StoreEntity>,
+            storeEntities:
+                args?['allStores'] ?? <StoreEntity>[] as List<StoreEntity>,
           );
         },
       ),
       GoRoute(
         path: Routes.MENU_PREVIEW_PAGE,
         builder: (context, state) {
-          final Map<String, dynamic>? args = state.extra as Map<String, dynamic>?;
+          final Map<String, dynamic>? args =
+              state.extra as Map<String, dynamic>?;
           return MenuDetailsPage(
             menuEntity: args?['menu'] ?? MenuEntity() as MenuEntity,
             index: args?['index'] ?? -1 as int,
-            menuEntities: args?['allMenus'] ?? <MenuEntity>[] as List<MenuEntity>,
+            menuEntities:
+                args?['allMenus'] ?? <MenuEntity>[] as List<MenuEntity>,
           );
         },
       ),
       GoRoute(
         path: Routes.STORE_DETAILS_PAGE,
         builder: (context, state) {
-          final Map<String, dynamic>? args = state.extra as Map<String, dynamic>?;
+          final Map<String, dynamic>? args =
+              state.extra as Map<String, dynamic>?;
           return StoreDetailsPage(
             storeEntity: args?['store'] ?? StoreEntity() as StoreEntity,
             index: args?['index'] ?? -1 as int,
-            storeEntities: args?['allStores'] ?? <StoreEntity>[] as List<StoreEntity>,
+            storeEntities:
+                args?['allStores'] ?? <StoreEntity>[] as List<StoreEntity>,
           );
         },
       ),
       GoRoute(
         path: Routes.MENU_DETAILS_PAGE,
         builder: (context, state) {
-          final Map<String, dynamic>? args = state.extra as Map<String, dynamic>?;
+          final Map<String, dynamic>? args =
+              state.extra as Map<String, dynamic>?;
           return MenuDetailsPage(
             menuEntity: args?['menu'] ?? MenuEntity() as MenuEntity,
             index: args?['index'] ?? -1 as int,
-            menuEntities: args?['allMenus'] ?? <MenuEntity>[] as List<MenuEntity>,
+            menuEntities:
+                args?['allMenus'] ?? <MenuEntity>[] as List<MenuEntity>,
           );
         },
       ),
@@ -431,19 +500,24 @@ class AppRouter {
       GoRoute(
         path: Routes.ALL_DRIVER_PAGE,
         builder: (context, state) {
-          final Map<String, dynamic>? args = state.extra as Map<String, dynamic>?;
+          final Map<String, dynamic>? args =
+              state.extra as Map<String, dynamic>?;
           return StoreOwnerAllDrivers(
-            selectItemUseCase: args?['selectItemUseCase'] ?? SelectItemUseCase.none,
+            selectItemUseCase:
+                args?['selectItemUseCase'] ?? SelectItemUseCase.none,
           );
         },
       ),
       GoRoute(
         path: Routes.SAVE_DRIVER_PAGE,
         builder: (context, state) {
-          final Map<String, dynamic>? args = state.extra as Map<String, dynamic>?;
+          final Map<String, dynamic>? args =
+              state.extra as Map<String, dynamic>?;
           return SaveDriverPage(
-            storeOwnDeliveryPartnersInfo: args?['storeOwnDeliveryPartnersInfo'] as StoreOwnDeliveryPartnersInfo?,
-            haveStoreOwnNewDeliveryPartnersInfo: args?['haveNewDriver'] ?? true as bool,
+            storeOwnDeliveryPartnersInfo: args?['storeOwnDeliveryPartnersInfo']
+                as StoreOwnDeliveryPartnersInfo?,
+            haveStoreOwnNewDeliveryPartnersInfo:
+                args?['haveNewDriver'] ?? true as bool,
             currentIndex: args?['currentIndex'] ?? -1 as int,
           );
         },
@@ -451,9 +525,12 @@ class AppRouter {
       GoRoute(
         path: Routes.NEW_DRIVER_GREETING_PAGE,
         builder: (context, state) {
-          final Map<String, dynamic>? args = state.extra as Map<String, dynamic>?;
+          final Map<String, dynamic>? args =
+              state.extra as Map<String, dynamic>?;
           return NewDriverGreetingPage(
-            storeOwnDeliveryPartnerEntity: args?['storeOwnDeliveryPartnerEntity'] as StoreOwnDeliveryPartnersInfo,
+            storeOwnDeliveryPartnerEntity:
+                args?['storeOwnDeliveryPartnerEntity']
+                    as StoreOwnDeliveryPartnersInfo,
           );
         },
       ),
@@ -461,22 +538,29 @@ class AppRouter {
       GoRoute(
         path: Routes.BIND_DRIVER_WITH_STORE_PAGE,
         builder: (context, state) {
-          final Map<String, dynamic>? args = state.extra as Map<String, dynamic>?;
+          final Map<String, dynamic>? args =
+              state.extra as Map<String, dynamic>?;
           return BindDriverWithStore(
-            selectItemUseCase: args?['selectItemUseCase'] ?? SelectItemUseCase.none,
-            listOfAllStoreOwnDeliveryPartners: args?['allDriver'] ?? <StoreOwnDeliveryPartnersInfo>[],
-            listOfAllSelectedStoreOwnDeliveryPartners: args?['selectedDriver'] ?? <StoreOwnDeliveryPartnersInfo>[],
+            selectItemUseCase:
+                args?['selectItemUseCase'] ?? SelectItemUseCase.none,
+            listOfAllStoreOwnDeliveryPartners:
+                args?['allDriver'] ?? <StoreOwnDeliveryPartnersInfo>[],
+            listOfAllSelectedStoreOwnDeliveryPartners:
+                args?['selectedDriver'] ?? <StoreOwnDeliveryPartnersInfo>[],
           );
         },
       ),
       GoRoute(
         path: Routes.BIND_DRIVER_WITH_STORE_GREETING_PAGE,
         builder: (context, state) {
-          final Map<String, dynamic>? args = state.extra as Map<String, dynamic>?;
+          final Map<String, dynamic>? args =
+              state.extra as Map<String, dynamic>?;
           return BindDriverWithStoreGreetingPage(
-            storeOwnDeliveryPartnersEntities:
-                args?['allDriver'] ?? <StoreOwnDeliveryPartnersInfo>[] as List<StoreOwnDeliveryPartnersInfo>,
-            storeEntities: args?['allStore'] ?? <MenuEntity>[] as List<StoreEntity>,
+            storeOwnDeliveryPartnersEntities: args?['allDriver'] ??
+                <StoreOwnDeliveryPartnersInfo>[]
+                    as List<StoreOwnDeliveryPartnersInfo>,
+            storeEntities:
+                args?['allStore'] ?? <MenuEntity>[] as List<StoreEntity>,
             message: args?['message'] ?? '',
             isRemoved: args?['isRemoved'] ?? false,
           );
@@ -485,9 +569,11 @@ class AppRouter {
       GoRoute(
         path: Routes.ALL_SAVED_ADDRESS_LIST,
         builder: (context, state) {
-          final Map<String, dynamic>? args = state.extra as Map<String, dynamic>?;
+          final Map<String, dynamic>? args =
+              state.extra as Map<String, dynamic>?;
           return AllSavedAddressPage(
-            selectItemUseCase: args?['selectItemUseCase'] ?? SelectItemUseCase.none,
+            selectItemUseCase:
+                args?['selectItemUseCase'] ?? SelectItemUseCase.none,
           );
         },
       ),
@@ -506,7 +592,8 @@ class AppRouter {
       GoRoute(
         path: Routes.MANAGE_ORDER_PAGE,
         builder: (context, state) {
-          final Map<String, dynamic>? args = state.extra as Map<String, dynamic>?;
+          final Map<String, dynamic>? args =
+              state.extra as Map<String, dynamic>?;
           return ManageOrderPage(
             storeEntity: args?['storeEntity'] as StoreEntity?,
             storeID: args?['storeID'] ?? -1,
@@ -516,7 +603,8 @@ class AppRouter {
       GoRoute(
         path: Routes.ORDER_DETAILS,
         builder: (context, state) {
-          final Map<String, dynamic>? args = state.extra as Map<String, dynamic>?;
+          final Map<String, dynamic>? args =
+              state.extra as Map<String, dynamic>?;
           return OrderDetailPage(
             orderEntity: args?['orderEntity'] as OrderEntity?,
             orderID: args?['orderID'] ?? -1,
@@ -526,42 +614,48 @@ class AppRouter {
       GoRoute(
         path: Routes.MAIN_CATEGORY_PAGE,
         builder: (context, state) {
-          final Map<String, dynamic>? args = state.extra as Map<String, dynamic>?;
+          final Map<String, dynamic>? args =
+              state.extra as Map<String, dynamic>?;
           return const MainCategoryPage();
         },
       ),
       GoRoute(
         path: Routes.WALLET_DASHBOARD_PAGE,
         builder: (context, state) {
-          final Map<String, dynamic>? args = state.extra as Map<String, dynamic>?;
+          final Map<String, dynamic>? args =
+              state.extra as Map<String, dynamic>?;
           return const WalletDashboardPage();
         },
       ),
       GoRoute(
         path: Routes.ALL_TRANSCATIONS_PAGE,
         builder: (context, state) {
-          final Map<String, dynamic>? args = state.extra as Map<String, dynamic>?;
+          final Map<String, dynamic>? args =
+              state.extra as Map<String, dynamic>?;
           return const TransactionsPage();
         },
       ),
       GoRoute(
         path: Routes.WITHDRAWAL_PAGE,
         builder: (context, state) {
-          final Map<String, dynamic>? args = state.extra as Map<String, dynamic>?;
+          final Map<String, dynamic>? args =
+              state.extra as Map<String, dynamic>?;
           return const WithdrawalPage();
         },
       ),
       GoRoute(
         path: Routes.WITHDRAWAL_FORM_PAGE,
         builder: (context, state) {
-          final Map<String, dynamic>? args = state.extra as Map<String, dynamic>?;
+          final Map<String, dynamic>? args =
+              state.extra as Map<String, dynamic>?;
           return const WithdrawalFormPage();
         },
       ),
       GoRoute(
         path: Routes.CHAT_PAGE,
         builder: (context, state) {
-          final Map<String, dynamic>? args = state.extra as Map<String, dynamic>?;
+          final Map<String, dynamic>? args =
+              state.extra as Map<String, dynamic>?;
           return ChatPage(
             room: args?['room'] as types.Room,
           );
@@ -570,44 +664,51 @@ class AppRouter {
       GoRoute(
         path: Routes.ROOM_PAGE,
         builder: (context, state) {
-          final Map<String, dynamic>? args = state.extra as Map<String, dynamic>?;
+          final Map<String, dynamic>? args =
+              state.extra as Map<String, dynamic>?;
           return const RoomsPage();
         },
       ),
       GoRoute(
         path: Routes.CHAT_USER_PAGE,
         builder: (context, state) {
-          final Map<String, dynamic>? args = state.extra as Map<String, dynamic>?;
+          final Map<String, dynamic>? args =
+              state.extra as Map<String, dynamic>?;
           return const UsersPage();
         },
       ),
       GoRoute(
         path: Routes.NEW_MAP_PAGE,
         builder: (context, state) {
-          final Map<String, dynamic>? args = state.extra as Map<String, dynamic>?;
+          final Map<String, dynamic>? args =
+              state.extra as Map<String, dynamic>?;
           return const NewMapPage();
         },
       ),
       GoRoute(
         path: Routes.ORDER_ANALYSIS_PAGE,
         builder: (context, state) {
-          final Map<String, dynamic>? args = state.extra as Map<String, dynamic>?;
+          final Map<String, dynamic>? args =
+              state.extra as Map<String, dynamic>?;
           return const OrderAnalysis();
         },
       ),
       GoRoute(
         path: Routes.PROFILE_SETTING_PAGE,
         builder: (context, state) {
-          final Map<String, dynamic>? args = state.extra as Map<String, dynamic>?;
+          final Map<String, dynamic>? args =
+              state.extra as Map<String, dynamic>?;
           return const ProfileSettingPage();
         },
       ),
       GoRoute(
         path: Routes.CHANGE_PHONE_NUMBER_PAGE,
         builder: (context, state) {
-          final Map<String, dynamic>? args = state.extra as Map<String, dynamic>?;
+          final Map<String, dynamic>? args =
+              state.extra as Map<String, dynamic>?;
           return ChangePhoneNumberPage(
-              changePhoneNumberPurpose: args?['changePhoneNumberPurpose'] ?? ChangePhoneNumberPurpose.profile,
+              changePhoneNumberPurpose: args?['changePhoneNumberPurpose'] ??
+                  ChangePhoneNumberPurpose.profile,
               phoneNumberWithoutDialCode: args?['phoneNumber'] ?? '',
               country: args?['country'] ?? '',
               dialCode: args?['dialCode'] ?? '',
@@ -617,16 +718,27 @@ class AppRouter {
       GoRoute(
         path: Routes.COMMON_OTP_VERIFICATION_PAGE,
         builder: (context, state) {
-          final Map<String, dynamic>? args = state.extra as Map<String, dynamic>?;
+          final Map<String, dynamic>? args =
+              state.extra as Map<String, dynamic>?;
           return CommonOtpVerification(
             userNewEnteredPhoneNumber: args?['newPhoneNumber'] ?? '',
             userExistingEnteredPhoneNumber: args?['existingPhoneNumber'] ?? '',
-            userExistingEnteredPhoneNumberWithoutDialCode: args?['existingPhoneNumberWithoutDialCode'] ?? '',
-            userNewEnteredPhoneNumberWithoutDialCode: args?['newPhoneNumberWithoutDialCode'] ?? '',
+            userExistingEnteredPhoneNumberWithoutDialCode:
+                args?['existingPhoneNumberWithoutDialCode'] ?? '',
+            userNewEnteredPhoneNumberWithoutDialCode:
+                args?['newPhoneNumberWithoutDialCode'] ?? '',
             country: args?['country'] ?? '',
             dialCode: args?['dialCode'] ?? '',
             id: args?['id'] ?? -1,
           );
+        },
+      ),
+      GoRoute(
+        path: Routes.PAYMENT_GATEWAY,
+        builder: (context, state) {
+          final Map<String, dynamic>? args =
+          state.extra as Map<String, dynamic>?;
+          return const PaymentGatewayPage();
         },
       ),
       //

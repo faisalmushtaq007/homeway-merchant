@@ -33,7 +33,7 @@ class SendFirebaseOtpUseCase extends UseCaseIO<SendOtpEntity,
         hasOtpCodeSent = true;
       },
     );
-    if (error!=null) {
+    if (error != null) {
       print(
           'SenOtp VerificationID ${firebaseAuthenticationRepository.verificationID}, ${firebaseAuthenticationRepository.codeSent},');
       final sendOtpFirebaseResponseModel = SendOtpFirebaseResponseModel(

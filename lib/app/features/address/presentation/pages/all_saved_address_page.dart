@@ -55,7 +55,7 @@ class _AllSavedAddressPageController extends State<AllSavedAddressPage> {
             GetAllAddressPagination(
               pageKey: pageKey,
               pageSize: pageSize,
-              searchText: searchText??searchItem,
+              searchText: searchText ?? searchItem,
               filter: filtering ?? filter,
               sorting: sorting ?? sort,
             ),
@@ -116,12 +116,12 @@ class _AllSavedAddressPageController extends State<AllSavedAddressPage> {
 
   Future<void> _updateSearchTerm(String searchTerm) async {
     searchText = searchTerm;
-    if (_pagingController.value
-        .itemList ==
-        null ||
-        _pagingController.value.itemList
-            .isEmptyOrNull) {
-      await _fetchPage(0,searchItem: searchTerm,);
+    if (_pagingController.value.itemList == null ||
+        _pagingController.value.itemList.isEmptyOrNull) {
+      await _fetchPage(
+        0,
+        searchItem: searchTerm,
+      );
     } else {
       _pagingController.refresh();
     }
@@ -327,31 +327,44 @@ class _AllSavedAddressPageView
                                 //
                                 IntrinsicHeight(
                                   child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                    textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    textDirection:
+                                        serviceLocator<LanguageController>()
+                                            .targetTextDirection,
                                     children: [
-                                      Expanded(child:  AppSearchInputSliverWidget(
-                                        key: const Key('all-address-search-field-widget'),
-                                        onChanged: state._updateSearchTerm,
-                                        height: 48,
-                                        hintText: 'Search Address',
-
-                                      ),),
-                                      const AnimatedGap(12, duration: Duration(milliseconds: 500)),
+                                      Expanded(
+                                        child: AppSearchInputSliverWidget(
+                                          key: const Key(
+                                              'all-address-search-field-widget'),
+                                          onChanged: state._updateSearchTerm,
+                                          height: 48,
+                                          hintText: 'Search Address',
+                                        ),
+                                      ),
+                                      const AnimatedGap(12,
+                                          duration:
+                                              Duration(milliseconds: 500)),
                                       SizedBox(
                                         height: 46,
                                         child: OutlinedButton(
                                           onPressed: () {},
                                           style: OutlinedButton.styleFrom(
                                             shape: RoundedRectangleBorder(
-                                              borderRadius: BorderRadiusDirectional.circular(10),
+                                              borderRadius:
+                                                  BorderRadiusDirectional
+                                                      .circular(10),
                                             ),
-                                            side: const BorderSide(color: Color.fromRGBO(238, 238, 238, 1)),
+                                            side: const BorderSide(
+                                                color: Color.fromRGBO(
+                                                    238, 238, 238, 1)),
                                             backgroundColor: Colors.white,
                                           ),
                                           child: Icon(
                                             Icons.filter_list,
-                                            textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                            textDirection: serviceLocator<
+                                                    LanguageController>()
+                                                .targetTextDirection,
                                             color: context.primaryColor,
                                           ),
                                         ),
@@ -359,7 +372,8 @@ class _AllSavedAddressPageView
                                     ],
                                   ),
                                 ),
-                                const AnimatedGap(6, duration: Duration(milliseconds: 500)),
+                                const AnimatedGap(6,
+                                    duration: Duration(milliseconds: 500)),
                                 //
                                 ListTile(
                                   dense: true,
@@ -395,7 +409,7 @@ class _AllSavedAddressPageView
                                                 top: 4,
                                                 bottom: 4),
                                             child: Text(
-                                              '${state._pagingController.value.itemList?.length??0}',
+                                              '${state._pagingController.value.itemList?.length ?? 0}',
                                               textDirection: serviceLocator<
                                                       LanguageController>()
                                                   .targetTextDirection,
@@ -425,14 +439,19 @@ class _AllSavedAddressPageView
                           ),
                           Expanded(
                             child: state.widgetState.maybeWhen(
-                              empty: (context, child, message, data) => const NoItemAvailableWidget(
+                              empty: (context, child, message, data) =>
+                                  const NoItemAvailableWidget(
                                 key: Key('all-address-empty-widget'),
-                                textMessage: 'No address available or added by you',
+                                textMessage:
+                                    'No address available or added by you',
                               ),
-                              loading: (context, child, message, isLoading)=>const DataLoadingWidget(
+                              loading: (context, child, message, isLoading) =>
+                                  const DataLoadingWidget(
                                 key: Key('all-menu-loading-widget'),
                               ),
-                              processing: (context, child, message, isLoading) => const DataLoadingWidget(
+                              processing:
+                                  (context, child, message, isLoading) =>
+                                      const DataLoadingWidget(
                                 key: Key('all-menu-processing-widget'),
                               ),
                               allData: (context, child, message, data) {
@@ -486,13 +505,15 @@ class _AllSavedAddressPageView
                               none: () {
                                 return const NoItemAvailableWidget(
                                   key: Key('all-address-none-widget'),
-                                  textMessage: 'No address available or added by you',
+                                  textMessage:
+                                      'No address available or added by you',
                                 );
                               },
                               orElse: () {
                                 return const NoItemAvailableWidget(
                                   key: Key('all-menu-else-widget'),
-                                  textMessage: 'No address available or added by you',
+                                  textMessage:
+                                      'No address available or added by you',
                                 );
                               },
                             ),

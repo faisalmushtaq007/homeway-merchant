@@ -16,7 +16,8 @@ final class JsonDecodeUtil {
     try {
       return jsonDecode(jsonString);
     } catch (e) {
-      Logger().e('JSON Decode Error ⛔', error: 'There was a problem during the JSON decoding process.');
+      Logger().e('JSON Decode Error ⛔',
+          error: 'There was a problem during the JSON decoding process.');
       return null;
     }
   }
@@ -29,7 +30,8 @@ final class JsonDecodeUtil {
         jsonString,
       );
     } catch (e) {
-      Logger().e('JSON Decode Error ⛔', error: 'There was a problem during the JSON decoding process.');
+      Logger().e('JSON Decode Error ⛔',
+          error: 'There was a problem during the JSON decoding process.');
       return null;
     }
   }

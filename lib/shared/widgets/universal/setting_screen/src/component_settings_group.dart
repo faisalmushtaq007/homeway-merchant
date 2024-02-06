@@ -9,12 +9,14 @@ import 'package:flutter/material.dart';
 /// This component group the Settings items (BabsComponentSettingsItem)
 /// All one BabsComponentSettingsGroup have a title and the developper can improve the design.
 class SettingsGroup extends StatelessWidget {
-
-  const SettingsGroup(
-      {super.key, this.settingsGroupTitle,
-      this.settingsGroupTitleStyle,
-      required this.items,
-      this.iconItemSize = 25,this.margin,});
+  const SettingsGroup({
+    super.key,
+    this.settingsGroupTitle,
+    this.settingsGroupTitleStyle,
+    required this.items,
+    this.iconItemSize = 25,
+    this.margin,
+  });
   final String? settingsGroupTitle;
   final TextStyle? settingsGroupTitleStyle;
   final List<SettingsItem> items;
@@ -30,10 +32,11 @@ class SettingsGroup extends StatelessWidget {
     return Directionality(
       textDirection: serviceLocator<LanguageController>().targetTextDirection,
       child: Container(
-        margin: margin??const EdgeInsetsDirectional.only(bottom: 20),
+        margin: margin ?? const EdgeInsetsDirectional.only(bottom: 20),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          textDirection: serviceLocator<LanguageController>().targetTextDirection,
+          textDirection:
+              serviceLocator<LanguageController>().targetTextDirection,
           children: [
             // The title
             (settingsGroupTitle != null)
@@ -42,7 +45,8 @@ class SettingsGroup extends StatelessWidget {
                     child: Text(
                       settingsGroupTitle!,
                       style: (settingsGroupTitleStyle == null)
-                          ? const TextStyle(fontSize: 25, fontWeight: FontWeight.bold)
+                          ? const TextStyle(
+                              fontSize: 25, fontWeight: FontWeight.bold)
                           : settingsGroupTitleStyle,
                       softWrap: true,
                       overflow: TextOverflow.ellipsis,

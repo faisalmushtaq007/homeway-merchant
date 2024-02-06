@@ -44,15 +44,16 @@ class _WeeklyOrderAnalysisController extends State<WeeklyOrderAnalysis> {
   Widget build(BuildContext context) =>
       BlocBuilder<OrderAnalysisBloc, OrderAnalysisState>(
         builder: (context, orderAnalysisState) {
-          if(orderAnalysisState is WeeklyOverAllOrderAnalysisState){
-            overAllAnalysisData=orderAnalysisState.overAllAnalysisData;
+          if (orderAnalysisState is WeeklyOverAllOrderAnalysisState) {
+            overAllAnalysisData = orderAnalysisState.overAllAnalysisData;
           }
           return _WeeklyOrderAnalysisView(this);
         },
       );
 }
 
-class _WeeklyOrderAnalysisView extends WidgetView<WeeklyOrderAnalysis, _WeeklyOrderAnalysisController> {
+class _WeeklyOrderAnalysisView
+    extends WidgetView<WeeklyOrderAnalysis, _WeeklyOrderAnalysisController> {
   const _WeeklyOrderAnalysisView(super.state);
 
   @override

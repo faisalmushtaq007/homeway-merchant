@@ -352,8 +352,8 @@ class MenuBloc extends Bloc<MenuEvent, MenuState> {
           menuStateStatus: event.menuStateStatus,
         ),
       );
-      await Future.delayed(const Duration(milliseconds: 300),(){});
-      if(event.menuFormStage==MenuFormStage.form1){
+      await Future.delayed(const Duration(milliseconds: 300), () {});
+      if (event.menuFormStage == MenuFormStage.form1) {
         emit(
           NavigateToMenuPricePage(
             menuEntity: event.menuEntity.copyWith(),
@@ -363,7 +363,7 @@ class MenuBloc extends Bloc<MenuEvent, MenuState> {
             menuStateStatus: event.menuStateStatus,
           ),
         );
-      }else if(event.menuFormStage==MenuFormStage.form2){
+      } else if (event.menuFormStage == MenuFormStage.form2) {
         emit(
           NavigateToMenuImagePage(
             menuEntity: event.menuEntity.copyWith(),
@@ -373,9 +373,7 @@ class MenuBloc extends Bloc<MenuEvent, MenuState> {
             menuStateStatus: event.menuStateStatus,
           ),
         );
-      }else if(event.menuFormStage==MenuFormStage.form3){
-
-      }
+      } else if (event.menuFormStage == MenuFormStage.form3) {}
     } catch (e) {
       emit(
         PushMenuEntityDataState(
@@ -1200,7 +1198,8 @@ class MenuBloc extends Bloc<MenuEvent, MenuState> {
   FutureOr<void> _getAllAddonsPagination(
       GetAllAddonsPagination event, Emitter<MenuState> emit) async {
     try {
-      appLog.d('Get all addons bloc ${event.pageKey}, ${event.pageSize}, ${event.searchText}');
+      appLog.d(
+          'Get all addons bloc ${event.pageKey}, ${event.pageSize}, ${event.searchText}');
       emit(GetAllLoadingAddonsPaginationState(
           isLoading: true,
           message: 'Please wait while we are fetching all addons...'));

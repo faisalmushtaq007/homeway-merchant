@@ -228,10 +228,15 @@ class GetAllAddons extends MenuEvent {
   bool get cacheHash => false;
 
   @override
-  List<Object?> get hashParameters => [pageKey, pageSize, searchItem,endTimeStamp,
-    filter,
-    sorting,
-    startTimeStamp,];
+  List<Object?> get hashParameters => [
+        pageKey,
+        pageSize,
+        searchItem,
+        endTimeStamp,
+        filter,
+        sorting,
+        startTimeStamp,
+      ];
 }
 
 class SelectAddons extends MenuEvent {

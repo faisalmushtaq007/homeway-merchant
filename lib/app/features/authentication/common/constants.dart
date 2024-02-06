@@ -1,5 +1,6 @@
 class AuthenticationConstants {
-  static const String getUserProfile = '/getUserProfile';
-  static const String sendOtp = '/api/otp/send';
-  static const String verifyOtp = '/api/otp/verify';
+  //merchant/api/v1/identity
+  static const String getUserProfile = 'identity/getUserProfile';
+  static const String sendOtp = 'identity/sendotp';
+  static const String verifyOtp = 'identity/verifyotp';
 }

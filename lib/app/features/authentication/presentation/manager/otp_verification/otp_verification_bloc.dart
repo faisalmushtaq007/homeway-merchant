@@ -42,6 +42,7 @@ class OtpVerificationBloc
   FutureOr<void> _sendOTP(
       SendOtp event, Emitter<OtpVerificationState> emit) async {
     try {
+      // Processing state
       emit(
         SendOtpProcessingState(
           sendOtpEntity: event.sendOtpEntity,
@@ -49,9 +50,9 @@ class OtpVerificationBloc
         ),
       );
       if (!event.sendOtpEntity.mobile.isEmptyOrNull) {
-        // Request send otp use case
-        final ResultState<SendOtpFirebaseResponseModel> resultState =
-            await sendFirebaseOtpUseCase(event.sendOtpEntity);
+        // Request send otp use case,
+        final ResultState<SendOtpResponseModel> resultState =
+            await sendOtpUseCase(event.sendOtpEntity);
 
         emit(
           SendOtpProcessingState(
@@ -129,7 +130,7 @@ class OtpVerificationBloc
   FutureOr<void> _verifyOtp(
       VerifyOtp event, Emitter<OtpVerificationState> emit) async {
     try {
-      VerifyOtpFirebaseResponseModel? verifyOtpResponseModel;
+      VerifyOtpResponseModel? verifyOtpResponseModel;
       emit(
         VerifyOtpProcessingState(
           verifyOtpEntity: event.verifyOtpEntity,
@@ -139,8 +140,8 @@ class OtpVerificationBloc
       if (!event.verifyOtpEntity.mobile.isEmptyOrNull &&
           event.verifyOtpEntity.otp != null) {
         // Verify otp use case
-        final ResultState<VerifyOtpFirebaseResponseModel> resultState =
-            await verifyFirebaseOtpUseCase(event.verifyOtpEntity);
+        final ResultState<VerifyOtpResponseModel> resultState =
+            await verifyOtpUseCase(event.verifyOtpEntity);
 
         emit(
           VerifyOtpProcessingState(
@@ -165,8 +166,7 @@ class OtpVerificationBloc
                 .d('Wait for processing, uploading and fetching current user');
             AppUserEntity saveUserEntity = AppUserEntity();
             // Firebase token
-            final firebaseToken =
-                await verifyOtpResponseModel?.firebaseUserData?.getIdToken();
+
             final saveUserEntityResult =
                 await serviceLocator<SaveAllAppUserUseCase>()([
               AppUserEntity(
@@ -174,8 +174,8 @@ class OtpVerificationBloc
                 country_dial_code: event.verifyOtpEntity.country_dial_code,
                 phoneNumber: event.verifyOtpEntity.phoneNumberWithFormat,
                 hasCurrentUser: true,
-                uid: verifyOtpResponseModel?.firebaseUserId ?? '',
-                access_token: firebaseToken ?? '',
+                uid: verifyOtpResponseModel?.uid ?? '',
+                access_token: verifyOtpResponseModel?.access_token ?? '',
                 currentUserStage: 0,
                 phoneNumberWithoutDialCode:
                     event.verifyOtpEntity.phoneNumberWithoutFormat,

@@ -1,7 +1,6 @@
 part of 'local_sembast.dart';
 
 class _SembastManager {
-
   _SembastManager._init();
   final String dbName = 'fireball.db';
   final StoreRef store = stringMapStoreFactory.store('fireball');
@@ -14,12 +13,15 @@ class _SembastManager {
   }
 
   Future<String> dbPath() async {
-    final path = await customPath.createPathProviderAdapter().applicationDirectoryPath();
+    final path =
+        await customPath.createPathProviderAdapter().applicationDirectoryPath();
     return '$path/$dbName';
   }
 
   Future<Database> openDb() async {
-    final db = kIsWeb ? databaseFactoryWeb.openDatabase(dbName) : databaseFactoryIo.openDatabase(await dbPath());
+    final db = kIsWeb
+        ? databaseFactoryWeb.openDatabase(dbName)
+        : databaseFactoryIo.openDatabase(await dbPath());
     return db;
   }
 

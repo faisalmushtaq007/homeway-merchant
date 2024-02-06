@@ -155,9 +155,7 @@ class _DriverCardState extends State<DriverCard> {
                 );
                 await Future.delayed(const Duration(milliseconds: 500), () {});
                 widget.refreshDriverList();
-                setState(() {
-
-                });
+                setState(() {});
                 //serviceLocator<AppUserEntity>().drivers.removeAt(currentIndex);
               }
               return;
@@ -178,9 +176,7 @@ class _DriverCardState extends State<DriverCard> {
               children: [
                 Text(
                   title,
-                  style: context.labelLarge!.copyWith(
-
-                  ),
+                  style: context.labelLarge!.copyWith(),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   softWrap: true,
@@ -210,7 +206,8 @@ class _DriverCardState extends State<DriverCard> {
           image: (widget.storeOwnDeliveryPartnerEntity.imageEntity != null &&
                   widget.storeOwnDeliveryPartnerEntity.imageEntity!.imagePath
                       .isNotEmpty)
-              ? widget.storeOwnDeliveryPartnerEntity.imageEntity?.imagePath ?? ''
+              ? widget.storeOwnDeliveryPartnerEntity.imageEntity?.imagePath ??
+                  ''
               : (widget.storeOwnDeliveryPartnerEntity.hasOnline)
                   ? 'assets/svg/online_driver.svg'
                   : 'assets/svg/offline_driver.svg',
@@ -221,11 +218,12 @@ class _DriverCardState extends State<DriverCard> {
           // alignment of image
           //alignment: Alignment.center,
           // indicates where image will be loaded from, types are [network, asset,file]
-          imageType: (widget.storeOwnDeliveryPartnerEntity.imageEntity != null &&
-                  widget.storeOwnDeliveryPartnerEntity.imageEntity!.imagePath
-                      .isNotEmpty)
-              ? ImageType.network
-              : ImageType.text,
+          imageType:
+              (widget.storeOwnDeliveryPartnerEntity.imageEntity != null &&
+                      widget.storeOwnDeliveryPartnerEntity.imageEntity!
+                          .imagePath.isNotEmpty)
+                  ? ImageType.network
+                  : ImageType.text,
           // indicates what shape you would like to be with image [rectangle, oval,circle or none]
           imageShape: ImageShape.rectangle,
           // image default box fit
@@ -246,7 +244,7 @@ class _DriverCardState extends State<DriverCard> {
             fontSize: 16,
           ),
           placeholderBackgroundColor:
-          context.colorScheme.primary.withOpacity(0.5),
+              context.colorScheme.primary.withOpacity(0.5),
         ),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadiusDirectional.circular(10),
@@ -257,7 +255,8 @@ class _DriverCardState extends State<DriverCard> {
             Text(
               widget.storeOwnDeliveryPartnerEntity.driverName,
               style: context.titleMedium!.copyWith(fontWeight: FontWeight.w500),
-              textDirection: serviceLocator<LanguageController>().targetTextDirection,
+              textDirection:
+                  serviceLocator<LanguageController>().targetTextDirection,
               maxLines: 2,
               softWrap: true,
               overflow: TextOverflow.ellipsis,
@@ -269,9 +268,12 @@ class _DriverCardState extends State<DriverCard> {
             Wrap(
               children: [
                 Text(
-                  '${widget.storeOwnDeliveryPartnerEntity.vehicleInfo?.vehicleType} | ${widget.storeOwnDeliveryPartnerEntity.vehicleInfo?.vehicleNumber}' ?? '',
-                  style:context.labelMedium!.copyWith(fontWeight: FontWeight.w400),
-                  textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                  '${widget.storeOwnDeliveryPartnerEntity.vehicleInfo?.vehicleType} | ${widget.storeOwnDeliveryPartnerEntity.vehicleInfo?.vehicleNumber}' ??
+                      '',
+                  style: context.labelMedium!
+                      .copyWith(fontWeight: FontWeight.w400),
+                  textDirection:
+                      serviceLocator<LanguageController>().targetTextDirection,
                   maxLines: 2,
                   softWrap: true,
                   overflow: TextOverflow.ellipsis,

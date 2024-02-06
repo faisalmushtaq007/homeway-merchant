@@ -134,7 +134,7 @@ class OrderEntity extends INetworkModel<OrderEntity> with EquatableMixin {
       ];
 }
 
-class Payment extends Equatable{
+class Payment extends Equatable {
   const Payment({
     this.mode = '',
     this.amount = 0.0,
@@ -186,10 +186,20 @@ class Payment extends Equatable{
       };
 
   @override
-  List<Object?> get props => [mode,amount,paymentID,currency,deliveryAmount,discountAmount,serviceAmount,tax,paymentDateTime,];
+  List<Object?> get props => [
+        mode,
+        amount,
+        paymentID,
+        currency,
+        deliveryAmount,
+        discountAmount,
+        serviceAmount,
+        tax,
+        paymentDateTime,
+      ];
 }
 
-class Store extends Equatable{
+class Store extends Equatable {
   const Store({
     required this.location,
     this.storeName = '',
@@ -229,10 +239,17 @@ class Store extends Equatable{
       };
 
   @override
-  List<Object?> get props => [storeName,location,storeID,menu,orderMenuImage,orderMenuName,];
+  List<Object?> get props => [
+        storeName,
+        location,
+        storeID,
+        menu,
+        orderMenuImage,
+        orderMenuName,
+      ];
 }
 
-class AddressLocation extends Equatable{
+class AddressLocation extends Equatable {
   const AddressLocation({
     this.lng = 0.0,
     this.lat = 0.0,
@@ -253,10 +270,13 @@ class AddressLocation extends Equatable{
       };
 
   @override
-  List<Object?> get props => [lng,lat,];
+  List<Object?> get props => [
+        lng,
+        lat,
+      ];
 }
 
-class Menu extends Equatable{
+class Menu extends Equatable {
   const Menu({
     this.quantity = 1,
     this.unit = '',
@@ -341,27 +361,27 @@ class Menu extends Equatable{
 
   @override
   List<Object?> get props => [
-    quantity,
-    unit ,
-    numberOfServingPerson ,
-    addons ,
-    instruction ,
-    menuID ,
-    menuName ,
-    menuImage ,
-    tasteLevel ,
-    tasteType ,
-    menuCategory ,
-    menuSubCategory ,
-    orderPortion,
-    price ,
-    discountPrice ,
-    currency ,
-    isInstantMenu ,
-  ];
+        quantity,
+        unit,
+        numberOfServingPerson,
+        addons,
+        instruction,
+        menuID,
+        menuName,
+        menuImage,
+        tasteLevel,
+        tasteType,
+        menuCategory,
+        menuSubCategory,
+        orderPortion,
+        price,
+        discountPrice,
+        currency,
+        isInstantMenu,
+      ];
 }
 
-class OrderPortion extends Equatable{
+class OrderPortion extends Equatable {
   const OrderPortion({
     this.portionSize = 0.0,
     this.portionUnit = '',
@@ -385,10 +405,10 @@ class OrderPortion extends Equatable{
   }
 
   @override
-  List<Object?> get props => [portionSize,portionUnit];
+  List<Object?> get props => [portionSize, portionUnit];
 }
 
-class Addon extends Equatable{
+class Addon extends Equatable {
   const Addon({
     this.addonsImage = '',
     this.quantity = 1,
@@ -435,18 +455,18 @@ class Addon extends Equatable{
 
   @override
   List<Object?> get props => [
-    addonsImage,
-    quantity,
-    addonsName,
-    addonsId ,
-    orderPortion,
-    price ,
-    discountPrice ,
-    currency,
-  ];
+        addonsImage,
+        quantity,
+        addonsName,
+        addonsId,
+        orderPortion,
+        price,
+        discountPrice,
+        currency,
+      ];
 }
 
-class UserInfo extends Equatable{
+class UserInfo extends Equatable {
   const UserInfo({
     required this.deliveryAddress,
     this.lng = 0.0,
@@ -489,17 +509,17 @@ class UserInfo extends Equatable{
 
   @override
   List<Object?> get props => [
-    deliveryAddress,
-    lng,
-    contactNumber,
-    userName,
-    userId ,
-    lat ,
-    completeAddress ,
-  ];
+        deliveryAddress,
+        lng,
+        contactNumber,
+        userName,
+        userId,
+        lat,
+        completeAddress,
+      ];
 }
 
-class DeliveryAddress extends Equatable{
+class DeliveryAddress extends Equatable {
   const DeliveryAddress({
     this.contactPerson = '',
     this.lng = 0.0,
@@ -533,10 +553,10 @@ class DeliveryAddress extends Equatable{
 
   @override
   List<Object?> get props => [
-    contactPerson,
-    lng,
-    contactNumber,
-    lat,
-    completeAddress,
-  ];
+        contactPerson,
+        lng,
+        contactNumber,
+        lat,
+        completeAddress,
+      ];
 }

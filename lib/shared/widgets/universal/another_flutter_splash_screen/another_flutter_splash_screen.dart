@@ -1,4 +1,3 @@
-
 import 'enums/splash_type_enum.dart';
 import 'splashs/fade_In_splash.dart';
 import 'splashs/gif_splash.dart';
@@ -317,7 +316,8 @@ class _FlutterSplashScreenState extends State<FlutterSplashScreen> {
       try {
         widget.onEnd?.call();
         Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (context) => widget.defaultNextScreen ?? Container()),
+          MaterialPageRoute(
+              builder: (context) => widget.defaultNextScreen ?? Container()),
         );
       } catch (e) {
         print(e);

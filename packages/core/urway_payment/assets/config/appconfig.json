@@ -1,0 +1,6 @@
+{
+"merchantKey":"37d83ea7898f1643267af547222f585ae718ed4f4516c380542df1cf595c81f0",
+"terminalId": "kilotech",
+"terminalPass": "kilo@5121",
+"requestUrl":"https://payments-dev.urway-tech.com/URWAYPGService/transaction/jsonProcess/JSONrequest"
+}

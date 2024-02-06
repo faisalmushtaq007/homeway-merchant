@@ -1,7 +1,8 @@
 part of 'package:homemakers_merchant/app/features/menu/index.dart';
 
 class MenuComponentWidget extends StatefulWidget {
-  const MenuComponentWidget({required this.menuEntity, this.height = 180, super.key});
+  const MenuComponentWidget(
+      {required this.menuEntity, this.height = 180, super.key});
 
   final MenuEntity menuEntity;
   final double height;
@@ -60,12 +61,15 @@ class _MenuComponentWidgetState extends State<MenuComponentWidget> {
     menuMaxPreparationTime = '';
     selectedCategory = [];
     // Initialize
-    menuAvailableFoodTypes = List.from(widget.menuEntity.storeAvailableFoodTypes.toList());
-    menuAvailableFoodPreparationType = List.from(widget.menuEntity.storeAvailableFoodPreparationType.toList());
+    menuAvailableFoodTypes =
+        List.from(widget.menuEntity.storeAvailableFoodTypes.toList());
+    menuAvailableFoodPreparationType =
+        List.from(widget.menuEntity.storeAvailableFoodPreparationType.toList());
     tasteType = widget.menuEntity.tasteType;
     listOfAddons = List.from(widget.menuEntity.addons.toList());
     addonsEntities = List.from(widget.menuEntity.addons.toList());
-    menuAvailableInDays = List.from(widget.menuEntity.menuAvailableInDays.toList());
+    menuAvailableInDays =
+        List.from(widget.menuEntity.menuAvailableInDays.toList());
     hasCustomPortion = widget.menuEntity.hasCustomPortion;
     customPortions = List.from(widget.menuEntity.customPortions.toList());
     menuPortions = List.from(widget.menuEntity.menuPortions.toList());
@@ -102,7 +106,8 @@ class _MenuComponentWidgetState extends State<MenuComponentWidget> {
           Icons.restaurant_menu,
           color: context.colorScheme.primary,
           size: iconSize,
-          textDirection: serviceLocator<LanguageController>().targetTextDirection,
+          textDirection:
+              serviceLocator<LanguageController>().targetTextDirection,
         ),
         data: [],
         secondaryData: [],
@@ -223,16 +228,19 @@ class _MenuComponentWidgetState extends State<MenuComponentWidget> {
                       child: Padding(
                         padding: EdgeInsetsDirectional.zero,
                         child: Column(
-                          textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                          textDirection: serviceLocator<LanguageController>()
+                              .targetTextDirection,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            const AnimatedGap(6, duration: Duration(milliseconds: 200)),
+                            const AnimatedGap(6,
+                                duration: Duration(milliseconds: 200)),
                             Center(
                               child: CircleAvatar(
                                 backgroundColor: Colors.white,
                                 radius: 24,
-                                child: Center(child: menuComponents[index].icon),
+                                child:
+                                    Center(child: menuComponents[index].icon),
                               ),
                             ),
                             const AnimatedGap(
@@ -244,14 +252,17 @@ class _MenuComponentWidgetState extends State<MenuComponentWidget> {
                             Center(
                               child: Text(
                                 menuComponents[index].title,
-                                textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                                textDirection:
+                                    serviceLocator<LanguageController>()
+                                        .targetTextDirection,
                                 style: context.labelMedium!.copyWith(
                                   fontWeight: FontWeight.w600,
                                   fontSize: 15,
                                 ),
                               ).translate(),
                             ),
-                            const AnimatedGap(4, duration: Duration(milliseconds: 200)),
+                            const AnimatedGap(4,
+                                duration: Duration(milliseconds: 200)),
                             Flexible(
                               child: loadWidgets(context, index).maybeWhen(
                                 orElse: () {
@@ -453,12 +464,14 @@ class WrapAndMoreWidget extends StatelessWidget {
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisSize: MainAxisSize.min,
-                  textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                  textDirection:
+                      serviceLocator<LanguageController>().targetTextDirection,
                   children: [
                     Icon(
                       Icons.check,
                       color: Color.fromRGBO(69, 201, 125, 1),
-                      textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                      textDirection: serviceLocator<LanguageController>()
+                          .targetTextDirection,
                       size: 18,
                     ),
                     const AnimatedGap(6, duration: Duration(milliseconds: 200)),
@@ -479,7 +492,8 @@ class WrapAndMoreWidget extends StatelessWidget {
                         children: [
                           Text(
                             menuTypes[index],
-                            textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                            textDirection: serviceLocator<LanguageController>()
+                                .targetTextDirection,
                             softWrap: true,
                             overflow: TextOverflow.ellipsis,
                             maxLines: 2,

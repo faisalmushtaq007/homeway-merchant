@@ -29,7 +29,8 @@ class _StoreOwnerAllDriversController extends State<StoreOwnerAllDrivers> {
   String? searchText;
   String? sorting;
   String? filtering;
-  late final PagingController<int, StoreOwnDeliveryPartnersInfo> _pagingController;
+  late final PagingController<int, StoreOwnDeliveryPartnersInfo>
+      _pagingController;
 
   @override
   void initState() {
@@ -39,7 +40,8 @@ class _StoreOwnerAllDriversController extends State<StoreOwnerAllDrivers> {
     listOfAllSelectedDrivers = [];
     listOfAllSelectedDrivers.clear();
     _refreshAddressList();
-    widgetState = WidgetState<StoreOwnDeliveryPartnersInfo>.loading(context: context);
+    widgetState =
+        WidgetState<StoreOwnDeliveryPartnersInfo>.loading(context: context);
     scrollController = ScrollController();
     innerScrollController = ScrollController();
     super.initState();
@@ -48,23 +50,23 @@ class _StoreOwnerAllDriversController extends State<StoreOwnerAllDrivers> {
 
   Future<void> _fetchPage(int pageKey,
       {int pageSize = 10,
-        String? searchItem,
-        String? filter,
-        String? sort}) async {
+      String? searchItem,
+      String? filter,
+      String? sort}) async {
     /*if (pageKey == 0) {
       _pagingController.itemList = [];
     }*/
     int sectionNumber = pageKey ~/ pageSize;
     try {
       context.read<StoreBloc>().add(
-        GetAllDriversPagination(
-          pageKey: pageKey,
-          pageSize: pageSize,
-          searchText: searchText??searchItem,
-          filter: filtering ?? filter,
-          sorting: sorting ?? sort,
-        ),
-      );
+            GetAllDriversPagination(
+              pageKey: pageKey,
+              pageSize: pageSize,
+              searchText: searchText ?? searchItem,
+              filter: filtering ?? filter,
+              sorting: sorting ?? sort,
+            ),
+          );
       appLog.i('Fetch Store');
       return;
     } catch (error) {
@@ -102,17 +104,16 @@ class _StoreOwnerAllDriversController extends State<StoreOwnerAllDrivers> {
 
   Future<void> _updateSearchTerm(String searchTerm) async {
     searchText = searchTerm;
-    if (_pagingController.value
-        .itemList ==
-        null ||
-        _pagingController.value.itemList
-            .isEmptyOrNull) {
-      await _fetchPage(0, searchItem: searchTerm,);
+    if (_pagingController.value.itemList == null ||
+        _pagingController.value.itemList.isEmptyOrNull) {
+      await _fetchPage(
+        0,
+        searchItem: searchTerm,
+      );
     } else {
       _pagingController.refresh();
     }
   }
-
 
   @override
   void setState(VoidCallback fn) {
@@ -139,7 +140,7 @@ class _StoreOwnerAllDriversController extends State<StoreOwnerAllDrivers> {
     listOfAllSelectedDrivers.clear();
     innerScrollController.dispose();
     scrollController.dispose();
-    
+
     super.dispose();
   }
 
@@ -183,17 +184,12 @@ class _StoreOwnerAllDriversController extends State<StoreOwnerAllDrivers> {
                   return;
                 }
                 //context.read<AddressBloc>().add(const GetAllAddress());
-                if (_pagingController.value
-                    .itemList ==
-                    null ||
-                    _pagingController.value.itemList
-                        .isEmptyOrNull) {
-                  appLog.d(
-                      'state._pagingController.value.itemList null');
+                if (_pagingController.value.itemList == null ||
+                    _pagingController.value.itemList.isEmptyOrNull) {
+                  appLog.d('state._pagingController.value.itemList null');
                   await _fetchPage(0);
                 } else {
-                  appLog.d(
-                      'state._pagingController.value.itemList not null');
+                  appLog.d('state._pagingController.value.itemList not null');
                   _pagingController.refresh();
                 }
                 return;
@@ -211,17 +207,17 @@ class _StoreOwnerAllDriversController extends State<StoreOwnerAllDrivers> {
                   final isLastPage =
                       storeState.driverEntities.length < pageSize;
                   if (isLastPage) {
-                    _pagingController.appendLastPage(
-                        storeState.driverEntities.toList());
+                    _pagingController
+                        .appendLastPage(storeState.driverEntities.toList());
                   } else {
-                    final nextPageKey = storeState.pageKey +
-                        storeState.driverEntities.length;
+                    final nextPageKey =
+                        storeState.pageKey + storeState.driverEntities.length;
                     //final nextPageKey = addressState.pageKey + 1;
                     _pagingController.appendPage(
-                        storeState.driverEntities.toList(),
-                        nextPageKey);
+                        storeState.driverEntities.toList(), nextPageKey);
                   }
-                  widgetState = WidgetState<StoreOwnDeliveryPartnersInfo>.allData(
+                  widgetState =
+                      WidgetState<StoreOwnDeliveryPartnersInfo>.allData(
                     context: context,
                     data: _pagingController.value.itemList ?? [],
                   );
@@ -264,7 +260,8 @@ class _StoreOwnerAllDriversController extends State<StoreOwnerAllDrivers> {
               }
             case GetAllProcessingDriversPaginationState():
               {
-                widgetState = WidgetState<StoreOwnDeliveryPartnersInfo>.processing(
+                widgetState =
+                    WidgetState<StoreOwnDeliveryPartnersInfo>.processing(
                   context: context,
                   message: storeState.message,
                 );
@@ -469,14 +466,15 @@ class _StoreOwnerAllDriversView
                             textDirection: serviceLocator<LanguageController>()
                                 .targetTextDirection,
                             children: [
-                              Expanded(child:  AppSearchInputSliverWidget(
-                                key: const Key('all-drivers-search-field-widget'),
-                                onChanged: state._updateSearchTerm,
-                                height: 48,
-                                hintText: 'Search Store',
-
-                              ),),
-
+                              Expanded(
+                                child: AppSearchInputSliverWidget(
+                                  key: const Key(
+                                      'all-drivers-search-field-widget'),
+                                  onChanged: state._updateSearchTerm,
+                                  height: 48,
+                                  hintText: 'Search Store',
+                                ),
+                              ),
                               const AnimatedGap(12,
                                   duration: Duration(milliseconds: 500)),
                               SizedBox(
@@ -544,7 +542,7 @@ class _StoreOwnerAllDriversView
                                         top: 4,
                                         bottom: 4),
                                     child: Text(
-                                      '${state._pagingController.value.itemList?.length??0}',
+                                      '${state._pagingController.value.itemList?.length ?? 0}',
                                       textDirection:
                                           serviceLocator<LanguageController>()
                                               .targetTextDirection,
@@ -602,25 +600,26 @@ class _StoreOwnerAllDriversView
                     ),
                     secondChild: const Offstage(),
                     duration: const Duration(milliseconds: 500),
-                    crossFadeState: (state._pagingController.value.itemList?.isNotNullOrEmpty??state.listOfAllDrivers.isNotEmpty)
+                    crossFadeState: (state._pagingController.value.itemList
+                                ?.isNotNullOrEmpty ??
+                            state.listOfAllDrivers.isNotEmpty)
                         ? CrossFadeState.showFirst
                         : CrossFadeState.showSecond,
                   ),
                   Expanded(
                     flex: 2,
                     child: state.widgetState.maybeWhen(
-                      empty: (context, child, message, data) =>const NoItemAvailableWidget(
+                      empty: (context, child, message, data) =>
+                          const NoItemAvailableWidget(
                         key: Key('all-driver-empty-widget'),
                         textMessage: 'No driver available or added by you',
                       ),
-                      loading:
-                          (context, child, message, isLoading) {
+                      loading: (context, child, message, isLoading) {
                         return const DataLoadingWidget(
                           key: Key('all-driver-loading-widget'),
                         );
                       },
-                      processing:
-                          (context, child, message, isLoading) {
+                      processing: (context, child, message, isLoading) {
                         return const DataLoadingWidget(
                           key: Key('all-driver-processing-widget'),
                         );
@@ -637,7 +636,6 @@ class _StoreOwnerAllDriversView
                           textMessage: 'No driver available or added by you',
                         );
                       },
-
                       allData: (context, child, message, data) {
                         return CustomScrollView(
                           controller: state.innerScrollController,
@@ -646,36 +644,35 @@ class _StoreOwnerAllDriversView
                               key: const Key(
                                   'driver-list-pagedSliverList-widget'),
                               pagingController: state._pagingController,
-                              builderDelegate:
-                              PagedChildBuilderDelegate<
+                              builderDelegate: PagedChildBuilderDelegate<
                                   StoreOwnDeliveryPartnersInfo>(
                                 animateTransitions: true,
                                 itemBuilder: (context, item, index) =>
                                     DriverCard(
-                                      key: ValueKey(index),
-                                      storeOwnDeliveryPartnerEntity: item,
-                                      listOfAllStoreOwnDeliveryPartnerEntities:
+                                  key: ValueKey(index),
+                                  storeOwnDeliveryPartnerEntity: item,
+                                  listOfAllStoreOwnDeliveryPartnerEntities:
                                       state.listOfAllDrivers.toList(),
-                                      currentIndex: index,
-                                      onSelectionChanged: (List<
+                                  currentIndex: index,
+                                  onSelectionChanged: (List<
                                           StoreOwnDeliveryPartnersInfo>
                                       listOfAllStoreOwnDeliveryPartnerEntities) {
-                                        state.onSelectionChanged(
-                                            listOfAllStoreOwnDeliveryPartnerEntities
-                                                .toList());
-                                      },
-                                      listOfAllSelectedStoreOwnDeliveryPartnerEntities:
+                                    state.onSelectionChanged(
+                                        listOfAllStoreOwnDeliveryPartnerEntities
+                                            .toList());
+                                  },
+                                  listOfAllSelectedStoreOwnDeliveryPartnerEntities:
                                       state.listOfAllSelectedDrivers.toList(),
-                                      refreshDriverList: () {
-                                        return state._updateSearchTerm(state.searchText??'');
-                                      },
-                                    ),
+                                  refreshDriverList: () {
+                                    return state._updateSearchTerm(
+                                        state.searchText ?? '');
+                                  },
+                                ),
                               ),
                             ),
                           ],
                         );
                       },
-
                     ),
                   ),
                   Row(
@@ -695,9 +692,8 @@ class _StoreOwnerAllDriversView
                               return;
                             }
                             //context.read<AddressBloc>().add(const GetAllAddress());
-                            if (state._pagingController.value
-                                .itemList ==
-                                null ||
+                            if (state._pagingController.value.itemList ==
+                                    null ||
                                 state._pagingController.value.itemList
                                     .isEmptyOrNull) {
                               appLog.d(

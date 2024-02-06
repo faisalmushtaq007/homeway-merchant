@@ -27,7 +27,8 @@ class SetAddonsPriceWidget extends StatefulWidget {
 }
 
 class _SetAddonsPriceWidgetState extends State<SetAddonsPriceWidget> {
-  final TextEditingController maximumRetailPriceOfMenuTextEditingController = TextEditingController(text: '00.00');
+  final TextEditingController maximumRetailPriceOfMenuTextEditingController =
+      TextEditingController(text: '00.00');
   String portionName = '';
   String addonsQuantityAndUnit = '';
   String sellingMaxRetailPrice = '00.00';
@@ -41,9 +42,12 @@ class _SetAddonsPriceWidgetState extends State<SetAddonsPriceWidget> {
     sellingMaxRetailPrice = '00.00';
     super.initState();
     portionName = widget.addons.title ?? '';
-    addonsQuantityAndUnit = '${widget.addons.quantity ?? ''} ${widget.addons.unit ?? ''}';
-    maximumRetailPriceOfMenuTextEditingController.text = widget.addons.defaultPrice.toString() ?? '00.00';
-    sellingMaxRetailPrice = maximumRetailPriceOfMenuTextEditingController.value.text.trim();
+    addonsQuantityAndUnit =
+        '${widget.addons.quantity ?? ''} ${widget.addons.unit ?? ''}';
+    maximumRetailPriceOfMenuTextEditingController.text =
+        widget.addons.defaultPrice.toString() ?? '00.00';
+    sellingMaxRetailPrice =
+        maximumRetailPriceOfMenuTextEditingController.value.text.trim();
   }
 
   @override
@@ -73,10 +77,12 @@ class _SetAddonsPriceWidgetState extends State<SetAddonsPriceWidget> {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.stretch,
-            textDirection: serviceLocator<LanguageController>().targetTextDirection,
+            textDirection:
+                serviceLocator<LanguageController>().targetTextDirection,
             children: [
               Wrap(
-                textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                textDirection:
+                    serviceLocator<LanguageController>().targetTextDirection,
                 alignment: WrapAlignment.start,
                 crossAxisAlignment: WrapCrossAlignment.center,
                 runSpacing: 5,
@@ -88,7 +94,8 @@ class _SetAddonsPriceWidgetState extends State<SetAddonsPriceWidget> {
                       fontWeight: FontWeight.w600,
                       color: const Color.fromRGBO(42, 45, 50, 1),
                     ),
-                    textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                    textDirection: serviceLocator<LanguageController>()
+                        .targetTextDirection,
                   ).translate(),
                   Card(
                     color: const Color.fromRGBO(188, 235, 208, 1.0),
@@ -111,7 +118,8 @@ class _SetAddonsPriceWidgetState extends State<SetAddonsPriceWidget> {
                           fontWeight: FontWeight.w600,
                           color: Color.fromRGBO(42, 45, 50, 1.0),
                         ),
-                        textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                        textDirection: serviceLocator<LanguageController>()
+                            .targetTextDirection,
                       ).translate(),
                     ),
                   ),
@@ -137,14 +145,16 @@ class _SetAddonsPriceWidgetState extends State<SetAddonsPriceWidget> {
               const AnimatedGap(12, duration: Duration(milliseconds: 500)),
               AppTextFieldWidget(
                 controller: maximumRetailPriceOfMenuTextEditingController,
-                textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                textDirection:
+                    serviceLocator<LanguageController>().targetTextDirection,
                 textInputAction: TextInputAction.done,
                 inputFormatters: [
                   FilteringTextInputFormatter.allow(
                     RegExp(r'^(\d+)?\.?\d{0,2}'),
                   ),
                 ],
-                keyboardType: const TextInputType.numberWithOptions(decimal: true),
+                keyboardType:
+                    const TextInputType.numberWithOptions(decimal: true),
                 decoration: InputDecoration(
                   labelText: 'Price',
                   hintText: '00.00',
@@ -186,11 +196,13 @@ class _SetAddonsPriceWidgetState extends State<SetAddonsPriceWidget> {
   void setAddonsMaxRetailPriceFunction(BuildContext context, String newValue) {
     debugPrint('Addons setMaxRetailPriceFunction ${newValue}');
     widget.addons.defaultPrice = double.tryParse(newValue) ?? 0.0;
-    widget.listOfAddons[widget.currentIndex].defaultPrice = double.tryParse(newValue) ?? 0.0;
-    serviceLocator<MenuEntity>().addons[widget.currentIndex].defaultPrice = double.tryParse(
-          maximumRetailPriceOfMenuTextEditingController.value.text.trim(),
-        ) ??
-        0.0;
+    widget.listOfAddons[widget.currentIndex].defaultPrice =
+        double.tryParse(newValue) ?? 0.0;
+    serviceLocator<MenuEntity>().addons[widget.currentIndex].defaultPrice =
+        double.tryParse(
+              maximumRetailPriceOfMenuTextEditingController.value.text.trim(),
+            ) ??
+            0.0;
     context.read<MenuBloc>().add(
           PushMenuEntityData(
             menuEntity: serviceLocator<MenuEntity>(),
@@ -200,14 +212,17 @@ class _SetAddonsPriceWidgetState extends State<SetAddonsPriceWidget> {
         );
   }
 
-  void setCacheMenuAddonsMaxRetailPriceFunction(BuildContext context, String newValue) {
+  void setCacheMenuAddonsMaxRetailPriceFunction(
+      BuildContext context, String newValue) {
     debugPrint('Addons setMaxRetailPriceFunction ${newValue}');
     widget.addons.defaultPrice = double.tryParse(newValue) ?? 0.0;
-    widget.listOfAddons[widget.currentIndex].defaultPrice = double.tryParse(newValue) ?? 0.0;
-    widget.menuEntity.addons[widget.currentIndex].defaultPrice = double.tryParse(
-          maximumRetailPriceOfMenuTextEditingController.value.text.trim(),
-        ) ??
-        0.0;
+    widget.listOfAddons[widget.currentIndex].defaultPrice =
+        double.tryParse(newValue) ?? 0.0;
+    widget.menuEntity.addons[widget.currentIndex].defaultPrice =
+        double.tryParse(
+              maximumRetailPriceOfMenuTextEditingController.value.text.trim(),
+            ) ??
+            0.0;
     widget.menuEntityChanged!(widget.menuEntity.copyWith());
     //setState(() { });
   }

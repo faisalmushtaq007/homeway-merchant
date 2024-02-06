@@ -7,7 +7,8 @@ class SaveAllStoreUseCase
   });
   final StoreRepository storeRepository;
   @override
-  Future<DataSourceState<List<StoreEntity>>> call(List<StoreEntity> input) async {
+  Future<DataSourceState<List<StoreEntity>>> call(
+      List<StoreEntity> input) async {
     return await storeRepository.saveAllStore(
       stores: input,
       hasUpdateAll: false,

@@ -283,7 +283,8 @@ class _OTPVerificationPageState extends State<OTPVerificationPage> {
                       extra: {
                         'businessProfileEntity': BusinessProfileEntity(
                           businessPhoneNumber:
-                              otpVerificationState.appUserEntity?.phoneNumber??'',
+                              otpVerificationState.appUserEntity?.phoneNumber ??
+                                  '',
                           countryDialCode: otpVerificationState
                                   .appUserEntity?.country_dial_code ??
                               '+966',
@@ -306,7 +307,8 @@ class _OTPVerificationPageState extends State<OTPVerificationPage> {
                       extra: {
                         'businessProfileEntity': BusinessProfileEntity(
                           businessPhoneNumber:
-                              otpVerificationState.appUserEntity?.phoneNumber??'',
+                              otpVerificationState.appUserEntity?.phoneNumber ??
+                                  '',
                           countryDialCode: otpVerificationState
                                   .appUserEntity?.country_dial_code ??
                               '+966',
@@ -328,7 +330,15 @@ class _OTPVerificationPageState extends State<OTPVerificationPage> {
                 },
                 child: BlocBuilder<OtpVerificationBloc, OtpVerificationState>(
                   bloc: context.read<OtpVerificationBloc>(),
-                  buildWhen: (previous, current) => previous != current,
+                  buildWhen: (previous, current) => switch (current) {
+                    VerifyOtpState() ||
+                    SendOtpState() ||
+                    VerifyOtpProcessingState() ||
+                    SendOtpProcessingState() ||
+                    OtpTimerState() =>
+                      true,
+                    _ => false,
+                  },
                   builder: (context, otpVerificationState) {
                     switch (otpVerificationState) {
                       case VerifyOtpState():
@@ -357,9 +367,6 @@ class _OTPVerificationPageState extends State<OTPVerificationPage> {
                         {
                           break;
                         }
-                      case _:
-                        appLog.d(
-                            'Default case: bloc builder PhoneNumberVerificationBloc page');
                     }
 
                     return Form(
@@ -556,11 +563,13 @@ class _OTPVerificationPageState extends State<OTPVerificationPage> {
                                                         .phoneNumberWithoutFormat,
                                                     country_dial_code:
                                                         widget.countryDialCode,
-                                                    otp: otpController.value.text
+                                                    otp: otpController
+                                                        .value.text
                                                         .trim(),
                                                     // Todo(prasant): Check password and db property from backend developer
                                                     db: '',
-                                                    password:otpController.value.text
+                                                    password: otpController
+                                                        .value.text
                                                         .trim(),
                                                     isoCode: widget.isoCode,
                                                     phoneNumberWithFormat:

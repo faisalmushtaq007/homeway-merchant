@@ -70,8 +70,8 @@ class StoreOwnDeliveryPartnersLocalDbRepository<
       final value = await _driver.record(uniqueId.value).get(await _db);
       if (value != null) {
         await _driver.record(uniqueId.value).delete(
-          await _db,
-        );
+              await _db,
+            );
         return true;
       }
       return false;
@@ -125,7 +125,8 @@ class StoreOwnDeliveryPartnersLocalDbRepository<
               entity.toMap(),
             );
         if (result != null) {
-          return StoreOwnDeliveryPartnersInfo.fromMap(result).copyWith(driverID: result['driverID']);
+          return StoreOwnDeliveryPartnersInfo.fromMap(result)
+              .copyWith(driverID: result['driverID']);
         } else {
           return upsert(id: uniqueId, entity: entity);
         }
@@ -149,7 +150,8 @@ class StoreOwnDeliveryPartnersLocalDbRepository<
       final result = await _driver
           .record(key)
           .put(await _db, entity.toMap(), merge: (value != null) || false);
-      return StoreOwnDeliveryPartnersInfo.fromMap(result).copyWith(driverID: result['driverID']);
+      return StoreOwnDeliveryPartnersInfo.fromMap(result)
+          .copyWith(driverID: result['driverID']);
     });
     return result;
   }
@@ -213,9 +215,12 @@ class StoreOwnDeliveryPartnersLocalDbRepository<
             filter.isNotNull ||
             sorting.isNotNull &&
                 (startTimeStamp.isNotNull || endTimeStamp.isNotNull)) {
-          var regExp = RegExp('^${searchText?.toLowerCase() ?? ''}\$', caseSensitive: false);
-          var filterRegExp = RegExp('^${filter?.toLowerCase() ?? ''}\$', caseSensitive: false);
-          var sortingRegExp = RegExp('^${sorting?.toLowerCase() ?? ''}\$', caseSensitive: false);
+          var regExp = RegExp('^${searchText?.toLowerCase() ?? ''}\$',
+              caseSensitive: false);
+          var filterRegExp =
+              RegExp('^${filter?.toLowerCase() ?? ''}\$', caseSensitive: false);
+          var sortingRegExp = RegExp('^${sorting?.toLowerCase() ?? ''}\$',
+              caseSensitive: false);
           finder = Finder(
             limit: pageSize,
             offset: pageKey,
@@ -264,9 +269,12 @@ class StoreOwnDeliveryPartnersLocalDbRepository<
         else if (searchText.isNotNull ||
             filter.isNotNull ||
             sorting.isNotNull) {
-          var regExp = RegExp('^${searchText?.toLowerCase() ?? ''}\$', caseSensitive: false);
-          var filterRegExp = RegExp('^${filter?.toLowerCase() ?? ''}\$', caseSensitive: false);
-          var sortingRegExp = RegExp('^${sorting?.toLowerCase() ?? ''}\$', caseSensitive: false);
+          var regExp = RegExp('^${searchText?.toLowerCase() ?? ''}\$',
+              caseSensitive: false);
+          var filterRegExp =
+              RegExp('^${filter?.toLowerCase() ?? ''}\$', caseSensitive: false);
+          var sortingRegExp = RegExp('^${sorting?.toLowerCase() ?? ''}\$',
+              caseSensitive: false);
           finder = Finder(
             limit: pageSize,
             offset: pageKey,

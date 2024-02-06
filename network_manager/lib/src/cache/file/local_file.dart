@@ -1,4 +1,5 @@
-import 'package:network_manager/src/cache/file/local_file_io.dart' if (dart.library.html) 'local_file_web.dart' as adapter;
+import 'package:network_manager/src/cache/file/local_file_io.dart'
+    if (dart.library.html) 'local_file_web.dart' as adapter;
 import 'package:network_manager/src/interface/IFileManager.dart';
 
 class LocalFile extends IFileManager {
@@ -10,7 +11,8 @@ class LocalFile extends IFileManager {
   }
 
   @override
-  Future<bool> writeUserRequestDataWithTime(String key, String model, Duration? time) async {
+  Future<bool> writeUserRequestDataWithTime(
+      String key, String model, Duration? time) async {
     return _customManager.writeUserRequestDataWithTime(key, model, time);
   }
 

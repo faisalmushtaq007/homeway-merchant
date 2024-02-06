@@ -54,7 +54,7 @@ class _AddonsCardState extends State<AddonsCard> {
             Text(
               '${addonsEntity.quantity} ${addonsEntity.unit} | ${addonsEntity.defaultPrice} ${addonsEntity.currency}',
               maxLines: 2,
-              style:context.labelMedium!.copyWith(fontWeight: FontWeight.w400),
+              style: context.labelMedium!.copyWith(fontWeight: FontWeight.w400),
               overflow: TextOverflow.ellipsis,
               softWrap: true,
             ).translate(),

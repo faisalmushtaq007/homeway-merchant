@@ -7,9 +7,9 @@ import '../src/settings_screen_utils.dart';
 import 'package:flutter/material.dart';
 
 class SettingsItem extends StatelessWidget {
-
   const SettingsItem(
-      {super.key, required this.icons,
+      {super.key,
+      required this.icons,
       this.iconStyle,
       required this.title,
       this.titleStyle,
@@ -20,7 +20,8 @@ class SettingsItem extends StatelessWidget {
       this.onTap,
       this.titleMaxLine,
       this.subtitleMaxLine,
-      this.overflow = TextOverflow.ellipsis,this.hasDense});
+      this.overflow = TextOverflow.ellipsis,
+      this.hasDense});
   final IconData icons;
   final IconStyle? iconStyle;
   final String title;
@@ -48,14 +49,16 @@ class SettingsItem extends StatelessWidget {
               ? Container(
                   decoration: BoxDecoration(
                     color: iconStyle!.backgroundColor,
-                    borderRadius: BorderRadius.circular(iconStyle!.borderRadius!),
+                    borderRadius:
+                        BorderRadius.circular(iconStyle!.borderRadius!),
                   ),
                   padding: const EdgeInsetsDirectional.all(5),
                   child: Icon(
                     icons,
                     size: SettingsScreenUtils.settingsGroupIconSize,
                     color: iconStyle!.iconsColor,
-                    textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                    textDirection: serviceLocator<LanguageController>()
+                        .targetTextDirection,
                   ),
                 )
               : Padding(
@@ -63,7 +66,8 @@ class SettingsItem extends StatelessWidget {
                   child: Icon(
                     icons,
                     size: SettingsScreenUtils.settingsGroupIconSize,
-                    textDirection: serviceLocator<LanguageController>().targetTextDirection,
+                    textDirection: serviceLocator<LanguageController>()
+                        .targetTextDirection,
                   ),
                 ),
           title: Text(
@@ -72,20 +76,29 @@ class SettingsItem extends StatelessWidget {
             maxLines: titleMaxLine,
             overflow: titleMaxLine != null ? overflow : null,
             softWrap: true,
-            textDirection: serviceLocator<LanguageController>().targetTextDirection,
+            textDirection:
+                serviceLocator<LanguageController>().targetTextDirection,
           ).translate(),
           subtitle: (subtitle != null)
               ? Text(
                   subtitle!,
-                  style: subtitleStyle ?? Theme.of(context).textTheme.bodyMedium!,
+                  style:
+                      subtitleStyle ?? Theme.of(context).textTheme.bodyMedium!,
                   maxLines: subtitleMaxLine,
                   overflow:
                       subtitleMaxLine != null ? TextOverflow.ellipsis : null,
-            textDirection: serviceLocator<LanguageController>().targetTextDirection,
-            softWrap: true,
+                  textDirection:
+                      serviceLocator<LanguageController>().targetTextDirection,
+                  softWrap: true,
                 ).translate()
               : null,
-          trailing: (trailing != null) ? trailing :  Icon(Icons.navigate_next,textDirection: serviceLocator<LanguageController>().targetTextDirection,),
+          trailing: (trailing != null)
+              ? trailing
+              : Icon(
+                  Icons.navigate_next,
+                  textDirection:
+                      serviceLocator<LanguageController>().targetTextDirection,
+                ),
         ),
       ),
     );

@@ -5,16 +5,17 @@ class CommonOtpVerificationContext<T extends Object> {
 
   late ICommonOtpVerification<T> commonOtpVerificationImplement;
 
-  void init({required String existingPhoneNumber, required String newPhoneNumber}){
+  void init(
+      {required String existingPhoneNumber, required String newPhoneNumber}) {
     commonOtpVerificationImplement.init(existingPhoneNumber, newPhoneNumber);
   }
 
-  Future<void> verifyOtpPhoneNumber(T bloc) async{
+  Future<void> verifyOtpPhoneNumber(T bloc) async {
     await commonOtpVerificationImplement.verifyOtpPhoneNumber(bloc);
     return;
   }
 
-  Future<void> resendOtpPhoneNumber(T bloc) async{
+  Future<void> resendOtpPhoneNumber(T bloc) async {
     await commonOtpVerificationImplement.resendOtpPhoneNumber(bloc);
     return;
   }

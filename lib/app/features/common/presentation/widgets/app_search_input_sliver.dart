@@ -6,11 +6,12 @@ class AppSearchInputSliverWidget extends StatefulWidget {
     this.onChanged,
     this.debounceTime,
     this.isEnabled = true,
-    this.height=48,
-    this.margin=EdgeInsetsDirectional.zero,
-    this.padding=EdgeInsetsDirectional.zero,
-    this.hintText='Search',
-    this.contentPadding=const EdgeInsetsDirectional.symmetric(horizontal: 0,vertical: 12),
+    this.height = 48,
+    this.margin = EdgeInsetsDirectional.zero,
+    this.padding = EdgeInsetsDirectional.zero,
+    this.hintText = 'Search',
+    this.contentPadding =
+        const EdgeInsetsDirectional.symmetric(horizontal: 0, vertical: 12),
   });
   final ValueChanged<String>? onChanged;
   final Duration? debounceTime;

@@ -78,9 +78,9 @@ class UserBusinessDocumentLocalDbRepository<T extends NewBusinessDocumentEntity>
           await _businessDocument.record(uniqueId.value).get(await _db);
       if (value != null) {
         int? count = await _businessDocument.record(uniqueId.value).delete(
-          await _db,
-        );
-        if (count!=null && count >= 0) {
+              await _db,
+            );
+        if (count != null && count >= 0) {
           return true;
         } else {
           return false;
@@ -152,7 +152,8 @@ class UserBusinessDocumentLocalDbRepository<T extends NewBusinessDocumentEntity>
               entity.toMap(),
             );
         if (result != null) {
-          return NewBusinessDocumentEntity.fromMap(result).copyWith(documentID: result['documentID']);
+          return NewBusinessDocumentEntity.fromMap(result)
+              .copyWith(documentID: result['documentID']);
         } else {
           return upsert(id: uniqueId, entity: entity);
         }
@@ -183,7 +184,8 @@ class UserBusinessDocumentLocalDbRepository<T extends NewBusinessDocumentEntity>
       final result = await _businessDocument
           .record(key)
           .put(await _db, entity.toMap(), merge: (value != null) || false);
-      return NewBusinessDocumentEntity.fromMap(result).copyWith(documentID: result['documentID']);
+      return NewBusinessDocumentEntity.fromMap(result)
+          .copyWith(documentID: result['documentID']);
     });
     return result;
   }
@@ -222,12 +224,18 @@ class UserBusinessDocumentLocalDbRepository<T extends NewBusinessDocumentEntity>
         );
         // If
         if ((searchText.isNotNull ||
-            filter.isNotNull ||
-            sorting.isNotNull && (searchText!.isNotEmpty || filter!.isNotEmpty || sorting!.isNotEmpty)) &&
+                filter.isNotNull ||
+                sorting.isNotNull &&
+                    (searchText!.isNotEmpty ||
+                        filter!.isNotEmpty ||
+                        sorting!.isNotEmpty)) &&
             (startTimeStamp.isNotNull || endTimeStamp.isNotNull)) {
-          var regExp = RegExp('^${searchText?.toLowerCase() ?? ''}\$', caseSensitive: false);
-          var filterRegExp = RegExp('^${filter?.toLowerCase() ?? ''}\$', caseSensitive: false);
-          var sortingRegExp = RegExp('^${sorting?.toLowerCase() ?? ''}\$', caseSensitive: false);
+          var regExp = RegExp('^${searchText?.toLowerCase() ?? ''}\$',
+              caseSensitive: false);
+          var filterRegExp =
+              RegExp('^${filter?.toLowerCase() ?? ''}\$', caseSensitive: false);
+          var sortingRegExp = RegExp('^${sorting?.toLowerCase() ?? ''}\$',
+              caseSensitive: false);
           finder = Finder(
             limit: pageSize,
             offset: pageKey,
@@ -257,41 +265,48 @@ class UserBusinessDocumentLocalDbRepository<T extends NewBusinessDocumentEntity>
         // Else If
         else if (searchText.isNotNull ||
             filter.isNotNull ||
-            sorting.isNotNull && (searchText!.isNotEmpty || filter!.isNotEmpty || sorting!.isNotEmpty)) {
+            sorting.isNotNull &&
+                (searchText!.isNotEmpty ||
+                    filter!.isNotEmpty ||
+                    sorting!.isNotEmpty)) {
           if (searchText!.isEmpty) {
             finder = Finder(
               limit: pageSize,
               offset: pageKey,
             );
           } else {
-          var regExp = RegExp('^${searchText?.toLowerCase() ?? ''}\$', caseSensitive: false);
-          var filterRegExp = RegExp('^${filter?.toLowerCase() ?? ''}\$', caseSensitive: false);
-          var sortingRegExp = RegExp('^${sorting?.toLowerCase() ?? ''}\$', caseSensitive: false);
-          finder = Finder(
-            limit: pageSize,
-            offset: pageKey,
-            filter: Filter.and(
-              [
-                Filter.or([
-                  Filter.matchesRegExp(
-                    'documentIDNumber',
-                    regExp,
-                    anyInList: true,
-                  ),
-                  Filter.matchesRegExp(
-                    'documentType',
-                    regExp,
-                    anyInList: true,
-                  ),
-                  Filter.matchesRegExp(
-                    'documentType',
-                    filterRegExp,
-                    anyInList: true,
-                  ),
-                ]),
-              ],
-            ),
-          );}
+            var regExp = RegExp('^${searchText?.toLowerCase() ?? ''}\$',
+                caseSensitive: false);
+            var filterRegExp = RegExp('^${filter?.toLowerCase() ?? ''}\$',
+                caseSensitive: false);
+            var sortingRegExp = RegExp('^${sorting?.toLowerCase() ?? ''}\$',
+                caseSensitive: false);
+            finder = Finder(
+              limit: pageSize,
+              offset: pageKey,
+              filter: Filter.and(
+                [
+                  Filter.or([
+                    Filter.matchesRegExp(
+                      'documentIDNumber',
+                      regExp,
+                      anyInList: true,
+                    ),
+                    Filter.matchesRegExp(
+                      'documentType',
+                      regExp,
+                      anyInList: true,
+                    ),
+                    Filter.matchesRegExp(
+                      'documentType',
+                      filterRegExp,
+                      anyInList: true,
+                    ),
+                  ]),
+                ],
+              ),
+            );
+          }
         }
         // Else
         else {

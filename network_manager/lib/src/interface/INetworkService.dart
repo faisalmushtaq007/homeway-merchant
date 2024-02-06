@@ -27,14 +27,17 @@ abstract class INetworkManager<E extends INetworkModel<E>?> {
   /// The `removeAllCache()` method is used to remove all cached data from the network manager. This can be useful when you
   /// want to clear the cache and fetch fresh data from the server.
   Future<bool> removeAllCache();
+
   /// The `Interceptors get dioInterceptors;` is a getter method that returns the interceptors used by the Dio HTTP client.
   /// Interceptors are functions that can be registered to intercept and modify HTTP requests or responses before they are
   /// sent or received.
   Interceptors get dioInterceptors;
+
   /// The `downloadFileSimple` method is used to download a file from a specified `path` using a simple HTTP GET request. It
   /// returns a `Future<Response<List<int>?>>` which represents the response received from the server. The response contains
   /// the downloaded file as a list of integers.
-  Future<Response<List<int>?>> downloadFileSimple(String path, ProgressCallback? callback);
+  Future<Response<List<int>?>> downloadFileSimple(
+      String path, ProgressCallback? callback);
 
   /// The `downloadFile` method is used to download a file from a specified `path` using an HTTP request. It returns a
   /// `Future<Response<List<int>?>>` which represents the response received from the server. The response contains the
@@ -51,7 +54,8 @@ abstract class INetworkManager<E extends INetworkModel<E>?> {
   /// The `uploadFile` method is used to upload a file to a specified `path` using an HTTP request. It takes the `path` of
   /// the file to be uploaded and a `FormData` object containing the file data as parameters. Additionally, it can also
   /// accept an optional `headers` parameter to include any custom headers in the request.
-  Future<Response<T>> uploadFile<T>(String path, FormData data, {Map<String, dynamic>? headers});
+  Future<Response<T>> uploadFile<T>(String path, FormData data,
+      {Map<String, dynamic>? headers});
 
   /// The `addBaseHeader` method is used to add a base header to the network manager. It takes a `MapEntry<String, String>`
   /// as a parameter, where the key represents the header name and the value represents the header value. This method allows

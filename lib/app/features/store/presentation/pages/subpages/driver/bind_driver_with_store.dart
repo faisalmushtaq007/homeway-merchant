@@ -69,10 +69,12 @@ class _BindDriverWithStoreController extends State<BindDriverWithStore> {
 
   void initLoadSelectedDrivers() {
     listOfAllStoreOwnDeliveryPartners = List<StoreOwnDeliveryPartnersInfo>.from(
-        widget.listOfAllStoreOwnDeliveryPartners.toList(),);
+      widget.listOfAllStoreOwnDeliveryPartners.toList(),
+    );
     listOfAllSelectedStoreOwnDeliveryPartners =
         List<StoreOwnDeliveryPartnersInfo>.from(
-            widget.listOfAllSelectedStoreOwnDeliveryPartners.toList(),);
+      widget.listOfAllSelectedStoreOwnDeliveryPartners.toList(),
+    );
     setState(() {});
   }
 
@@ -115,25 +117,27 @@ class _BindDriverWithStoreController extends State<BindDriverWithStore> {
     setState(() {});
   }
 
-  Future<void> _fetchPage(int pageKey,
-      {int pageSize = 10,
-        String? searchItem,
-        String? filter,
-        String? sort,}) async {
+  Future<void> _fetchPage(
+    int pageKey, {
+    int pageSize = 10,
+    String? searchItem,
+    String? filter,
+    String? sort,
+  }) async {
     /*if (pageKey == 0) {
       _pagingController.itemList = [];
     }*/
     int sectionNumber = pageKey ~/ pageSize;
     try {
       context.read<StoreBloc>().add(
-        GetAllStoresPagination(
-          pageKey: pageKey,
-          pageSize: pageSize,
-          searchText: searchText??searchItem,
-          filter: filtering ?? filter,
-          sorting: sorting ?? sort,
-        ),
-      );
+            GetAllStoresPagination(
+              pageKey: pageKey,
+              pageSize: pageSize,
+              searchText: searchText ?? searchItem,
+              filter: filtering ?? filter,
+              sorting: sorting ?? sort,
+            ),
+          );
       appLog.i('Fetch Store');
       return;
     } catch (error) {
@@ -171,12 +175,12 @@ class _BindDriverWithStoreController extends State<BindDriverWithStore> {
 
   Future<void> _updateSearchTerm(String searchTerm) async {
     searchText = searchTerm;
-    if (_pagingController.value
-        .itemList ==
-        null ||
-        _pagingController.value.itemList
-            .isEmptyOrNull) {
-      await _fetchPage(0, searchItem: searchTerm,);
+    if (_pagingController.value.itemList == null ||
+        _pagingController.value.itemList.isEmptyOrNull) {
+      await _fetchPage(
+        0,
+        searchItem: searchTerm,
+      );
     } else {
       _pagingController.refresh();
     }
@@ -202,7 +206,6 @@ class _BindDriverWithStoreController extends State<BindDriverWithStore> {
                       'allStore': state.listOfSelectedStoreEntities.toList(),
                     },
                   );
-
                 }
                 return;
               }
@@ -228,18 +231,19 @@ class _BindDriverWithStoreController extends State<BindDriverWithStore> {
             case GetAllStorePaginationState():
               {
                 try {
-                  final isLastPage =
-                      state.storeEntities.length < pageSize;
+                  final isLastPage = state.storeEntities.length < pageSize;
                   if (isLastPage) {
                     _pagingController.appendLastPage(
-                        state.storeEntities.toList(),);
+                      state.storeEntities.toList(),
+                    );
                   } else {
-                    final nextPageKey = state.pageKey +
-                        state.storeEntities.length;
+                    final nextPageKey =
+                        state.pageKey + state.storeEntities.length;
                     //final nextPageKey = addressState.pageKey + 1;
                     _pagingController.appendPage(
-                        state.storeEntities.toList(),
-                        nextPageKey,);
+                      state.storeEntities.toList(),
+                      nextPageKey,
+                    );
                   }
                   widgetState = WidgetState<StoreEntity>.allData(
                     context: context,
@@ -361,7 +365,10 @@ class _BindDriverWithStoreView
             ],
           ),
           floatingActionButton: AnimatedOpacity(
-            opacity: (state.listOfAllSelectedStoreOwnDeliveryPartners.isEmpty && state.listOfAllSelectedStores.isEmpty) ? 0.0 : 1.0,
+            opacity: (state.listOfAllSelectedStoreOwnDeliveryPartners.isEmpty &&
+                    state.listOfAllSelectedStores.isEmpty)
+                ? 0.0
+                : 1.0,
             duration: const Duration(milliseconds: 500),
             child: Padding(
               padding: const EdgeInsetsDirectional.only(bottom: 70),
@@ -370,8 +377,8 @@ class _BindDriverWithStoreView
                 onPressed: () async {
                   return;
                 },
-                child:  Text(
-                 '${state.listOfAllSelectedStores.length}',
+                child: Text(
+                  '${state.listOfAllSelectedStores.length}',
                 ),
               ),
             ),
@@ -395,9 +402,10 @@ class _BindDriverWithStoreView
                     minHeight: media.size.height,
                   ),
                   padding: EdgeInsetsDirectional.only(
-                      top: topPadding,
-                      start: margins * 2.5,
-                      end: margins * 2.5,),
+                    top: topPadding,
+                    start: margins * 2.5,
+                    end: margins * 2.5,
+                  ),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     mainAxisSize: MainAxisSize.min,
@@ -413,8 +421,10 @@ class _BindDriverWithStoreView
                           textDirection: serviceLocator<LanguageController>()
                               .targetTextDirection,
                           children: [
-                            const AnimatedGap(6,
-                                duration: Duration(milliseconds: 100),),
+                            const AnimatedGap(
+                              6,
+                              duration: Duration(milliseconds: 100),
+                            ),
                             IntrinsicHeight(
                               child: Row(
                                 mainAxisAlignment:
@@ -423,15 +433,19 @@ class _BindDriverWithStoreView
                                     serviceLocator<LanguageController>()
                                         .targetTextDirection,
                                 children: [
-                                  Expanded(child:  AppSearchInputSliverWidget(
-                                    key: const Key('bind-driver-all-store-search-field-widget'),
-                                    onChanged: state._updateSearchTerm,
-                                    height: 48,
-                                    hintText: 'Search Store',
-
-                                  ),),
-                                  const AnimatedGap(12,
-                                      duration: Duration(milliseconds: 500),),
+                                  Expanded(
+                                    child: AppSearchInputSliverWidget(
+                                      key: const Key(
+                                          'bind-driver-all-store-search-field-widget'),
+                                      onChanged: state._updateSearchTerm,
+                                      height: 48,
+                                      hintText: 'Search Store',
+                                    ),
+                                  ),
+                                  const AnimatedGap(
+                                    12,
+                                    duration: Duration(milliseconds: 500),
+                                  ),
                                   SizedBox(
                                     height: 46,
                                     child: OutlinedButton(
@@ -440,11 +454,17 @@ class _BindDriverWithStoreView
                                         shape: RoundedRectangleBorder(
                                           borderRadius:
                                               BorderRadiusDirectional.circular(
-                                                  10,),
+                                            10,
+                                          ),
                                         ),
                                         side: const BorderSide(
-                                            color: Color.fromRGBO(
-                                                238, 238, 238, 1,),),
+                                          color: Color.fromRGBO(
+                                            238,
+                                            238,
+                                            238,
+                                            1,
+                                          ),
+                                        ),
                                         backgroundColor: Colors.white,
                                       ),
                                       child: Icon(
@@ -459,8 +479,10 @@ class _BindDriverWithStoreView
                                 ],
                               ),
                             ),
-                            const AnimatedGap(6,
-                                duration: Duration(milliseconds: 100),),
+                            const AnimatedGap(
+                              6,
+                              duration: Duration(milliseconds: 100),
+                            ),
                             CheckboxListTile(
                               value: state.haveSelectAllStores,
                               onChanged: (value) {
@@ -468,10 +490,13 @@ class _BindDriverWithStoreView
                               },
                               tristate: true,
                               visualDensity: const VisualDensity(
-                                  horizontal: -4, vertical: -4,),
+                                horizontal: -4,
+                                vertical: -4,
+                              ),
                               contentPadding:
                                   const EdgeInsetsDirectional.symmetric(
-                                      horizontal: 0,),
+                                horizontal: 0,
+                              ),
                               //dense: true,
                               title: IntrinsicHeight(
                                 child: Row(
@@ -485,31 +510,37 @@ class _BindDriverWithStoreView
                                           serviceLocator<LanguageController>()
                                               .targetTextDirection,
                                     ),
-                                    const AnimatedGap(3,
-                                        duration: Duration(milliseconds: 100),),
+                                    const AnimatedGap(
+                                      3,
+                                      duration: Duration(milliseconds: 100),
+                                    ),
                                     Card(
                                       shape: RoundedRectangleBorder(
                                         borderRadius:
                                             BorderRadiusDirectional.circular(
-                                                20,),
+                                          20,
+                                        ),
                                       ),
                                       child: Padding(
                                         padding:
                                             const EdgeInsetsDirectional.only(
-                                                start: 12.0,
-                                                end: 12,
-                                                top: 4,
-                                                bottom: 4,),
+                                          start: 12.0,
+                                          end: 12,
+                                          top: 4,
+                                          bottom: 4,
+                                        ),
                                         child: Text(
-                                          '${state._pagingController.value.itemList?.length??0}',
+                                          '${state._pagingController.value.itemList?.length ?? 0}',
                                           textDirection: serviceLocator<
                                                   LanguageController>()
                                               .targetTextDirection,
                                         ),
                                       ),
                                     ),
-                                    const AnimatedGap(12,
-                                        duration: Duration(milliseconds: 100),),
+                                    const AnimatedGap(
+                                      12,
+                                      duration: Duration(milliseconds: 100),
+                                    ),
                                     const Spacer(flex: 2),
                                     Text(
                                       'Select All',
@@ -521,8 +552,10 @@ class _BindDriverWithStoreView
                                 ),
                               ),
                             ),
-                            const AnimatedGap(12,
-                                duration: Duration(milliseconds: 100),),
+                            const AnimatedGap(
+                              12,
+                              duration: Duration(milliseconds: 100),
+                            ),
                             Text(
                               'Select Store',
                               style: context.titleMedium!.copyWith(
@@ -532,8 +565,10 @@ class _BindDriverWithStoreView
                                   serviceLocator<LanguageController>()
                                       .targetTextDirection,
                             ),
-                            const AnimatedGap(12,
-                                duration: Duration(milliseconds: 100),),
+                            const AnimatedGap(
+                              12,
+                              duration: Duration(milliseconds: 100),
+                            ),
                             Text(
                               'For your Driver',
                               style: context.labelMedium!.copyWith(
@@ -548,41 +583,50 @@ class _BindDriverWithStoreView
                         ),
                         secondChild: const Offstage(),
                         duration: const Duration(milliseconds: 500),
-                        crossFadeState: (state._pagingController.value.itemList.isNotNullOrEmpty)
+                        crossFadeState: (state._pagingController.value.itemList
+                                .isNotNullOrEmpty)
                             ? CrossFadeState.showFirst
                             : CrossFadeState.showSecond,
                       ),
-                      const AnimatedGap(12,
-                          duration: Duration(milliseconds: 300),),
+                      const AnimatedGap(
+                        12,
+                        duration: Duration(milliseconds: 300),
+                      ),
                       Expanded(
                         flex: 2,
                         child: state.widgetState.maybeWhen(
-                          empty: (context, child, message, data) =>const NoItemAvailableWidget(
-                            key: Key('get-all-bind-drivers-with-store-empty-widget'),
+                          empty: (context, child, message, data) =>
+                              const NoItemAvailableWidget(
+                            key: Key(
+                                'get-all-bind-drivers-with-store-empty-widget'),
                             textMessage: 'No stores available or added by you',
                           ),
-                          loading:
-                              (context, child, message, isLoading) {
+                          loading: (context, child, message, isLoading) {
                             return const DataLoadingWidget(
-                              key: Key('get-all-bind-drivers-with-store-loading-widget'),
+                              key: Key(
+                                  'get-all-bind-drivers-with-store-loading-widget'),
                             );
                           },
-                          processing:
-                              (context, child, message, isLoading) {
+                          processing: (context, child, message, isLoading) {
                             return const DataLoadingWidget(
-                              key: Key('get-all-bind-drivers-with-store-processing-widget'),
+                              key: Key(
+                                  'get-all-bind-drivers-with-store-processing-widget'),
                             );
                           },
                           none: () {
                             return const NoItemAvailableWidget(
-                              key: Key('get-all-bind-drivers-with-store-none-widget'),
-                              textMessage: 'No stores available or added by you',
+                              key: Key(
+                                  'get-all-bind-drivers-with-store-none-widget'),
+                              textMessage:
+                                  'No stores available or added by you',
                             );
                           },
                           orElse: () {
                             return const NoItemAvailableWidget(
-                              key: Key('get-all-bind-drivers-with-store-else-widget'),
-                              textMessage: 'No stores available or added by you',
+                              key: Key(
+                                  'get-all-bind-drivers-with-store-else-widget'),
+                              textMessage:
+                                  'No stores available or added by you',
                             );
                           },
                           allData: (context, child, message, data) {
@@ -591,30 +635,35 @@ class _BindDriverWithStoreView
                               slivers: [
                                 PagedSliverList<int, StoreEntity>(
                                   key: const Key(
-                                      'store-list-pagedSliverList-widget',),
+                                    'store-list-pagedSliverList-widget',
+                                  ),
                                   pagingController: state._pagingController,
                                   builderDelegate:
-                                  PagedChildBuilderDelegate<
-                                      StoreEntity>(
+                                      PagedChildBuilderDelegate<StoreEntity>(
                                     animateTransitions: true,
                                     itemBuilder: (context, item, index) =>
                                         BindStoreCardWidget(
-                                          key: ValueKey(index),
-                                          currentIndex: index,
-                                          onSelectionChanged: (List<StoreEntity>
-                                          listOfAllStoreEntities,) {
-                                            state.onSelectionChanged(
-                                                listOfAllStoreEntities.toList(),);
-                                          },
-                                          listOfAllSelectedStoreEntities:
-                                          state.listOfAllSelectedStores.toList(),
-                                          listOfAllStoreEntities:
+                                      key: ValueKey(index),
+                                      currentIndex: index,
+                                      onSelectionChanged: (
+                                        List<StoreEntity>
+                                            listOfAllStoreEntities,
+                                      ) {
+                                        state.onSelectionChanged(
+                                          listOfAllStoreEntities.toList(),
+                                        );
+                                      },
+                                      listOfAllSelectedStoreEntities: state
+                                          .listOfAllSelectedStores
+                                          .toList(),
+                                      listOfAllStoreEntities:
                                           state.listOfAllStores.toList(),
-                                          storeEntity: state.listOfAllStores[index],
-                                          refreshStoreList: () {
-                                            return state._updateSearchTerm(state.searchText??'');
-                                          },
-                                        ),
+                                      storeEntity: state.listOfAllStores[index],
+                                      refreshStoreList: () {
+                                        return state._updateSearchTerm(
+                                            state.searchText ?? '');
+                                      },
+                                    ),
                                   ),
                                 ),
                               ],
@@ -622,8 +671,10 @@ class _BindDriverWithStoreView
                           },
                         ),
                       ),
-                      const AnimatedGap(12,
-                          duration: Duration(milliseconds: 500),),
+                      const AnimatedGap(
+                        12,
+                        duration: Duration(milliseconds: 500),
+                      ),
                       Row(
                         textDirection: serviceLocator<LanguageController>()
                             .targetTextDirection,
@@ -661,7 +712,8 @@ class _BindDriverWithStoreView
                               child: Text(
                                 'Remove',
                                 style: const TextStyle(
-                                    color: Color.fromRGBO(42, 45, 50, 1),),
+                                  color: Color.fromRGBO(42, 45, 50, 1),
+                                ),
                                 textDirection:
                                     serviceLocator<LanguageController>()
                                         .targetTextDirection,

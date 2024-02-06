@@ -18,7 +18,7 @@ class SendOtpFirebaseResponseModel {
   StackTrace? stackTrace;
 
   Map<String, dynamic> toMap() => <String, dynamic>{
-        'verificationId': this.verificationId??'',
+        'verificationId': this.verificationId ?? '',
         'hasOtpCodeSent': this.hasOtpCodeSent,
         'errorMessage': this.errorMessage ?? '',
       };

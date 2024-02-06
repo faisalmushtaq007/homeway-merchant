@@ -1,0 +1,38 @@
+name: urway_payment
+description: UrWay Payment Service
+version: 0.1.0+1
+publish_to: none
+
+environment:
+  sdk: ">=3.0.0 <4.0.0"
+  flutter: ">=3.10.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  http: ^1.2.0
+  permission_handler:
+    git:
+      url: 'https://github.com/prasant10050/flutter-permission-handler.git'
+      ref: master
+      path: permission_handler
+
+  convert: ^3.1.1
+  crypto: ^3.0.3
+  connectivity_plus: ^5.0.2
+  email_validator: ^2.1.17
+  device_info_plus: ^9.1.2
+  dart_ipify: ^1.1.1
+  apple_pay_flutter: ^1.0.1
+  package_info_plus: ^5.0.1
+  webview_flutter_plus: ^0.4.4
+  webview_flutter_android: ^3.14.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  mocktail: ^1.0.0
+  very_good_analysis: ^5.1.0
+
+assets:
+  - assets/config/

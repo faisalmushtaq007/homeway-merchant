@@ -36,14 +36,14 @@ class BusinessProfileBloc
       SaveBusinessProfile event, Emitter<BusinessProfileState> emit) async {
     /*try {*/
     DataSourceState<BusinessProfileEntity> result;
-    int currentStage=event.hasSaveBusinessType ? 2 : 1;
+    int currentStage = event.hasSaveBusinessType ? 2 : 1;
     if (event.hasEditBusinessProfile || event.hasSaveBusinessType) {
-      currentStage=serviceLocator<AppUserEntity>().currentUserStage;
+      currentStage = serviceLocator<AppUserEntity>().currentUserStage;
       result = await serviceLocator<EditBusinessProfileUseCase>()(
           id: event.businessProfileEntity.businessProfileID,
           input: event.businessProfileEntity);
     } else {
-      currentStage=event.hasSaveBusinessType ? 2 : 1;
+      currentStage = event.hasSaveBusinessType ? 2 : 1;
       result = await serviceLocator<SaveBusinessProfileUseCase>()(
           event.businessProfileEntity);
     }

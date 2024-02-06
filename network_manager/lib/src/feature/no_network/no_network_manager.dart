@@ -7,7 +7,6 @@ import 'package:network_manager/src/utility/padding/page_padding.dart';
 import 'package:network_manager/src/utility/widget/border/top_rectangle_border.dart';
 
 class NoNetworkManager {
-
   NoNetworkManager(
       {required this.context,
       required this.onRetry,

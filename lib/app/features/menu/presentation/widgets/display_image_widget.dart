@@ -35,7 +35,7 @@ class DisplayImage extends StatelessWidget {
     this.top,
     this.end,
     this.circularRadius = 36,
-    this.innerCircularRadius=32,
+    this.innerCircularRadius = 32,
     this.borderRadius = 20,
     this.bottom,
     this.backgroundColor,
@@ -77,7 +77,7 @@ class DisplayImage extends StatelessWidget {
         },
         child: CircleAvatar(
           radius: circularRadius,
-          backgroundColor: backgroundColor??Colors.white,
+          backgroundColor: backgroundColor ?? Colors.white,
           child: CircleAvatar(
             backgroundColor: const Color.fromRGBO(238, 238, 238, 1),
             radius: innerCircularRadius,

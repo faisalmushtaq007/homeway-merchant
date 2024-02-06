@@ -222,12 +222,16 @@ class $AssetsImageGen {
 class $AssetsLottieGen {
   const $AssetsLottieGen();
 
+  /// File path: assets/lottie/initial_screen_loader.json
+  LottieGenImage get initialScreenLoader =>
+      const LottieGenImage('assets/lottie/initial_screen_loader.json');
+
   /// File path: assets/lottie/success_check_mark.json
   LottieGenImage get successCheckMark =>
       const LottieGenImage('assets/lottie/success_check_mark.json');
 
   /// List of all assets
-  List<LottieGenImage> get values => [successCheckMark];
+  List<LottieGenImage> get values => [initialScreenLoader, successCheckMark];
 }
 
 class $AssetsSvgGen {
@@ -239,6 +243,9 @@ class $AssetsSvgGen {
   /// File path: assets/svg/applogodark.svg
   SvgGenImage get applogodark =>
       const SvgGenImage('assets/svg/applogodark.svg');
+
+  /// File path: assets/svg/brunch.svg
+  SvgGenImage get brunch => const SvgGenImage('assets/svg/brunch.svg');
 
   /// File path: assets/svg/category.svg
   SvgGenImage get category => const SvgGenImage('assets/svg/category.svg');
@@ -285,6 +292,9 @@ class $AssetsSvgGen {
   /// File path: assets/svg/mail.svg
   SvgGenImage get mail => const SvgGenImage('assets/svg/mail.svg');
 
+  /// File path: assets/svg/meal.svg
+  SvgGenImage get meal => const SvgGenImage('assets/svg/meal.svg');
+
   /// File path: assets/svg/offline_driver.svg
   SvgGenImage get offlineDriver =>
       const SvgGenImage('assets/svg/offline_driver.svg');
@@ -295,6 +305,12 @@ class $AssetsSvgGen {
   /// File path: assets/svg/online_driver.svg
   SvgGenImage get onlineDriver =>
       const SvgGenImage('assets/svg/online_driver.svg');
+
+  /// File path: assets/svg/packing.svg
+  SvgGenImage get packing => const SvgGenImage('assets/svg/packing.svg');
+
+  /// File path: assets/svg/portion.svg
+  SvgGenImage get portion => const SvgGenImage('assets/svg/portion.svg');
 
   /// File path: assets/svg/rating_star.svg
   SvgGenImage get ratingStar => const SvgGenImage('assets/svg/rating_star.svg');
@@ -321,6 +337,15 @@ class $AssetsSvgGen {
   SvgGenImage get subCategory =>
       const SvgGenImage('assets/svg/sub_category.svg');
 
+  /// File path: assets/svg/take_away.svg
+  SvgGenImage get takeAway => const SvgGenImage('assets/svg/take_away.svg');
+
+  /// File path: assets/svg/taste_level.svg
+  SvgGenImage get tasteLevel => const SvgGenImage('assets/svg/taste_level.svg');
+
+  /// File path: assets/svg/taste_type.svg
+  SvgGenImage get tasteType => const SvgGenImage('assets/svg/taste_type.svg');
+
   /// File path: assets/svg/unknown.svg
   SvgGenImage get unknown => const SvgGenImage('assets/svg/unknown.svg');
 
@@ -334,6 +359,7 @@ class $AssetsSvgGen {
   List<SvgGenImage> get values => [
         applogo,
         applogodark,
+        brunch,
         category,
         certificate,
         certificate1,
@@ -346,9 +372,12 @@ class $AssetsSvgGen {
         homeChefType,
         idCard,
         mail,
+        meal,
         offlineDriver,
         onTheWay,
         onlineDriver,
+        packing,
+        portion,
         ratingStar,
         receive,
         restaurantType,
@@ -356,6 +385,9 @@ class $AssetsSvgGen {
         sorryImageNotAvailable,
         splashbackground,
         subCategory,
+        takeAway,
+        tasteLevel,
+        tasteType,
         unknown,
         userAvatar,
         userLogo
@@ -397,7 +429,7 @@ class Assets {
   static const $GoogleFontsGen googleFonts = $GoogleFontsGen();
 
   /// List of all assets
-  List<String> get values => [
+  static List<String> get values => [
         dummyTackingData,
         dummyTodayOrderAnalysis,
         dummyTodaySalesAnalysis,

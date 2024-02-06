@@ -104,7 +104,8 @@ class WeeklyOrderAnalysisState extends OrderAnalysisState {
 
 class WeeklyOverAllOrderAnalysisState extends OrderAnalysisState {
   const WeeklyOverAllOrderAnalysisState(
-      {this.analysisBy = AnalysisBy.todayOrder, this.overAllAnalysisData=const WeeklyAnalysisOverAllData()});
+      {this.analysisBy = AnalysisBy.todayOrder,
+      this.overAllAnalysisData = const WeeklyAnalysisOverAllData()});
 
   final AnalysisBy analysisBy;
   final WeeklyAnalysisOverAllData overAllAnalysisData;

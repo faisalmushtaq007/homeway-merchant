@@ -40,26 +40,26 @@ class _MenuAllAddonsPageController extends State<MenuAllAddonsPage> {
     innerScrollController = ScrollController();
     super.initState();
   }
-  
+
   Future<void> _fetchPage(int pageKey,
       {int pageSize = 10,
-        String? searchItem,
-        String? filter,
-        String? sort}) async {
+      String? searchItem,
+      String? filter,
+      String? sort}) async {
     /*if (pageKey == 0) {
       _pagingController.itemList = [];
     }*/
     int sectionNumber = pageKey ~/ pageSize;
     try {
       context.read<MenuBloc>().add(
-        GetAllAddonsPagination(
-          pageKey: pageKey,
-          pageSize: pageSize,
-          searchText: searchText??searchItem,
-          filter: filtering ?? filter,
-          sorting: sorting ?? sort,
-        ),
-      );
+            GetAllAddonsPagination(
+              pageKey: pageKey,
+              pageSize: pageSize,
+              searchText: searchText ?? searchItem,
+              filter: filtering ?? filter,
+              sorting: sorting ?? sort,
+            ),
+          );
       appLog.i('Fetch Addons');
       return;
     } catch (error) {
@@ -107,7 +107,7 @@ class _MenuAllAddonsPageController extends State<MenuAllAddonsPage> {
     _pagingController.removeStatusListener((status) {});
     _pagingController.dispose();
     scrollController.dispose();
-    
+
     _menuAvailableAddons = [];
     _selectedAddons = [];
     innerScrollController.dispose();
@@ -122,17 +122,15 @@ class _MenuAllAddonsPageController extends State<MenuAllAddonsPage> {
   Future<void> _updateSearchTerm(String searchTerm) async {
     appLog.d('_updateSearchTerm ${searchTerm} ');
     searchText = searchTerm;
-    if (_pagingController.value
-        .itemList ==
-        null ||
-        _pagingController.value.itemList
-            .isEmptyOrNull) {
-      appLog.d(
-          'state._pagingController.value.itemList null');
-      await _fetchPage(0,searchItem: searchTerm,);
+    if (_pagingController.value.itemList == null ||
+        _pagingController.value.itemList.isEmptyOrNull) {
+      appLog.d('state._pagingController.value.itemList null');
+      await _fetchPage(
+        0,
+        searchItem: searchTerm,
+      );
     } else {
-      appLog.d(
-          'state._pagingController.value.itemList not null');
+      appLog.d('state._pagingController.value.itemList not null');
       _pagingController.refresh();
     }
     //_pagingController.refresh();
@@ -143,30 +141,28 @@ class _MenuAllAddonsPageController extends State<MenuAllAddonsPage> {
         key: const Key('get-all-addons-bloclistener-widget'),
         bloc: context.read<MenuBloc>(),
         listener: (context, menuState) {
-          switch(menuState){
-            case PopToMenuPageState():{
-              if (context.canPop()) {
-                Navigator.of(context).pop(menuState.addonsEntity.toList());
+          switch (menuState) {
+            case PopToMenuPageState():
+              {
+                if (context.canPop()) {
+                  Navigator.of(context).pop(menuState.addonsEntity.toList());
+                }
               }
-            }
-            case GetAllAddonsState():{
-              
-            }
-            case GetAllAddonsPaginationState() :
+            case GetAllAddonsState():
+              {}
+            case GetAllAddonsPaginationState():
               {
                 try {
-                  final isLastPage =
-                      menuState.addonsEntities.length < pageSize;
+                  final isLastPage = menuState.addonsEntities.length < pageSize;
                   if (isLastPage) {
-                    _pagingController.appendLastPage(
-                        menuState.addonsEntities.toList());
+                    _pagingController
+                        .appendLastPage(menuState.addonsEntities.toList());
                   } else {
-                    final nextPageKey = menuState.pageKey +
-                        menuState.addonsEntities.length;
+                    final nextPageKey =
+                        menuState.pageKey + menuState.addonsEntities.length;
                     //final nextPageKey = addressState.pageKey + 1;
                     _pagingController.appendPage(
-                        menuState.addonsEntities.toList(),
-                        nextPageKey);
+                        menuState.addonsEntities.toList(), nextPageKey);
                   }
                   widgetState = WidgetState<Addons>.allData(
                     context: context,
@@ -400,7 +396,6 @@ class _MenuAllAddonsPageView
                                   serviceLocator<LanguageController>()
                                       .targetTextDirection,
                               children: [
-
                                 const AnimatedGap(6,
                                     duration: Duration(milliseconds: 500)),
                                 IntrinsicHeight(
@@ -413,14 +408,15 @@ class _MenuAllAddonsPageView
                                     crossAxisAlignment:
                                         CrossAxisAlignment.center,
                                     children: [
-                                      Expanded(child:  AppSearchInputSliverWidget(
-                                        key: const Key('addons-search-field-widget'),
-                                        onChanged: state._updateSearchTerm,
-                                        height: 48,
-                                        hintText: 'Search Addons',
-
-                                      ),),
-
+                                      Expanded(
+                                        child: AppSearchInputSliverWidget(
+                                          key: const Key(
+                                              'addons-search-field-widget'),
+                                          onChanged: state._updateSearchTerm,
+                                          height: 48,
+                                          hintText: 'Search Addons',
+                                        ),
+                                      ),
                                       const AnimatedGap(12,
                                           duration:
                                               Duration(milliseconds: 500)),
@@ -487,7 +483,7 @@ class _MenuAllAddonsPageView
                                                 top: 4,
                                                 bottom: 4),
                                             child: Text(
-                                              '${state._pagingController.value.itemList?.length??0}',
+                                              '${state._pagingController.value.itemList?.length ?? 0}',
                                               textDirection: serviceLocator<
                                                       LanguageController>()
                                                   .targetTextDirection,
@@ -511,26 +507,25 @@ class _MenuAllAddonsPageView
                             ),
                             secondChild: const Offstage(),
                             duration: const Duration(milliseconds: 500),
-                            crossFadeState:
-                                (state._pagingController.value.itemList.isNotNullOrEmpty)
-                                    ? CrossFadeState.showFirst
-                                    : CrossFadeState.showSecond,
+                            crossFadeState: (state._pagingController.value
+                                    .itemList.isNotNullOrEmpty)
+                                ? CrossFadeState.showFirst
+                                : CrossFadeState.showSecond,
                           ),
                           Expanded(
                             child: state.widgetState.maybeWhen(
                               empty: (context, child, message, data) =>
-                              const NoItemAvailableWidget(
+                                  const NoItemAvailableWidget(
                                 key: Key('addons-empty-widget'),
-                                textMessage: 'No addons available or added by you',
+                                textMessage:
+                                    'No addons available or added by you',
                               ),
-                              loading:
-                                  (context, child, message, isLoading) {
+                              loading: (context, child, message, isLoading) {
                                 return const DataLoadingWidget(
                                   key: Key('addons-loading-widget'),
                                 );
                               },
-                              processing:
-                                  (context, child, message, isLoading) {
+                              processing: (context, child, message, isLoading) {
                                 return const DataLoadingWidget(
                                   key: Key('addons-processing-widget'),
                                 );
@@ -542,41 +537,41 @@ class _MenuAllAddonsPageView
                                     PagedSliverList<int, Addons>(
                                       pagingController: state._pagingController,
                                       builderDelegate:
-                                      PagedChildBuilderDelegate<Addons>(
-                                          animateTransitions: true,
-                                          itemBuilder: (context,
-                                              notificationResult, index) {
-                                            return AddonsCard(
-                                              key: ValueKey(index),
-                                              addonsEntity:
-                                              notificationResult,
-                                              onChangedAddons: (value) {
-                                                //state._selectedAddons = List<StoreAvailableFoodPreparationType>.from(value);
-                                                context
-                                                    .read<MenuBloc>()
-                                                    .add(
-                                                  SelectAddons(
-                                                    index: index,
-                                                    addonsID:
-                                                    notificationResult
-                                                        .addonsID,
-                                                    addonsEntity:
-                                                    notificationResult,
-                                                    addonsEntities: state
-                                                        ._menuAvailableAddons
-                                                        .toList(),
-                                                    selectedAddonsEntities:
-                                                    state
-                                                        ._selectedAddons
-                                                        .toList(),
-                                                  ),
+                                          PagedChildBuilderDelegate<Addons>(
+                                              animateTransitions: true,
+                                              itemBuilder: (context,
+                                                  notificationResult, index) {
+                                                return AddonsCard(
+                                                  key: ValueKey(index),
+                                                  addonsEntity:
+                                                      notificationResult,
+                                                  onChangedAddons: (value) {
+                                                    //state._selectedAddons = List<StoreAvailableFoodPreparationType>.from(value);
+                                                    context
+                                                        .read<MenuBloc>()
+                                                        .add(
+                                                          SelectAddons(
+                                                            index: index,
+                                                            addonsID:
+                                                                notificationResult
+                                                                    .addonsID,
+                                                            addonsEntity:
+                                                                notificationResult,
+                                                            addonsEntities: state
+                                                                ._menuAvailableAddons
+                                                                .toList(),
+                                                            selectedAddonsEntities:
+                                                                state
+                                                                    ._selectedAddons
+                                                                    .toList(),
+                                                          ),
+                                                        );
+                                                  },
+                                                  selectedAllAddons: state
+                                                      ._selectedAddons
+                                                      .toList(),
                                                 );
-                                              },
-                                              selectedAllAddons: state
-                                                  ._selectedAddons
-                                                  .toList(),
-                                            );
-                                          }),
+                                              }),
                                     ),
                                   ],
                                 );
@@ -584,13 +579,15 @@ class _MenuAllAddonsPageView
                               none: () {
                                 return const NoItemAvailableWidget(
                                   key: Key('addons-none-widget'),
-                                  textMessage: 'No addons available or added by you',
+                                  textMessage:
+                                      'No addons available or added by you',
                                 );
                               },
                               orElse: () {
                                 return const NoItemAvailableWidget(
                                   key: Key('addons-else-widget'),
-                                  textMessage: 'No addons available or added by you',
+                                  textMessage:
+                                      'No addons available or added by you',
                                 );
                               },
                             ),
@@ -617,8 +614,8 @@ class _MenuAllAddonsPageView
                                       return;
                                     }
                                     if (state._pagingController.value
-                                        .itemList ==
-                                        null ||
+                                                .itemList ==
+                                            null ||
                                         state._pagingController.value.itemList
                                             .isEmptyOrNull) {
                                       appLog.d(
@@ -656,5 +653,3 @@ class _MenuAllAddonsPageView
     );
   }
 }
-
-

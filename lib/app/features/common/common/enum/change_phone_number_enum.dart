@@ -1,4 +1,5 @@
 part of 'package:homemakers_merchant/app/features/common/index.dart';
+
 enum ChangePhoneNumberPurpose {
   profile(message: 'Profile'),
   store(message: 'Store'),

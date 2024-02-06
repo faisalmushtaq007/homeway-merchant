@@ -55,8 +55,7 @@ class _WithdrawalFormPageView
             actions: [
               IconButton(
                 onPressed: () async {
-                  final notification =
-                      await context.push(Routes.NOTIFICATIONS);
+                  final notification = await context.push(Routes.NOTIFICATIONS);
                   return;
                 },
                 icon: Badge(

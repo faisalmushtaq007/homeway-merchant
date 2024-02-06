@@ -73,7 +73,7 @@ class PhoneNumberVerificationBloc
   FutureOr<void> _verifyPhoneNumber(
       VerifyPhoneNumber event, Emitter<PhoneNumberVerificationState> emit) {
     // Handle api call and otp sent request
-    
+
     emit(
       PhoneNumberVerificationState.success(
         phoneController: event.phoneController,

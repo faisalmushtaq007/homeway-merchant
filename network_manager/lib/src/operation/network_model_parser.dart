@@ -56,7 +56,8 @@ extension _CoreServiceExtension on NetworkManager {
       if (responseBody is List) {
         return responseBody
             .map(
-              (data) => model.fromJson(data is Map<String, dynamic> ? data : {}),
+              (data) =>
+                  model.fromJson(data is Map<String, dynamic> ? data : {}),
             )
             .cast<T>()
             .toList() as R;
@@ -77,14 +78,17 @@ extension _CoreServiceExtension on NetworkManager {
           isEnabled: isEnableLogger ?? false,
           data: 'Be careful your data $responseBody, I could not parse it',
         );
+
         /// Throwing exception if the response body is not a List or a Map<String, dynamic>.
         throw Exception(
-            'Response body is not a List or a Map<String, dynamic>',);
+          'Response body is not a List or a Map<String, dynamic>',
+        );
       }
     } catch (e) {
       CustomLogger(
         isEnabled: isEnableLogger ?? false,
-        data: 'Parse Error: $e - response body: $responseBody T model: $T , R model: $R ',
+        data:
+            'Parse Error: $e - response body: $responseBody T model: $T , R model: $R ',
       );
     }
     return null;

@@ -75,7 +75,8 @@ abstract interface class StoreRepository {
     required AppUserEntity destination,
   });
 
-  Future<DataSourceState<List<StoreOwnDeliveryPartnersInfo>>> getAllDriverPagination({
+  Future<DataSourceState<List<StoreOwnDeliveryPartnersInfo>>>
+      getAllDriverPagination({
     int pageKey = 0,
     int pageSize = 10,
     String? searchText,

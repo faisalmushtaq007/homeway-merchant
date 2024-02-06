@@ -47,7 +47,7 @@ class _PhoneNumberVerificationPageState
   AsyncBtnStatesController phoneNumberVerificationButtonController =
       AsyncBtnStatesController();
   String userEnteredPhoneNumber = '';
-  PhoneController phoneController = PhoneController(null);
+  PhoneController phoneController = PhoneController();
   PhoneNumberVerification phoneNumberVerification =
       PhoneNumberVerification.none;
   Widget? suffixIcon;
@@ -99,7 +99,7 @@ class _PhoneNumberVerificationPageState
         '+${phoneNumbers?.countryCode} ${phoneNumbers?.getFormattedNsn().trim()}';
     String countryDialCode = '+${phoneNumbers?.countryCode ?? '+966'}';
     String country = phoneNumbers?.isoCode.name ?? 'SA';
-    final result = getValidator(isAllowEmpty: false);
+    final result = getValidator(context: context, isAllowEmpty: false);
     phoneValidation = result?.call(phoneNumber);
 
     if (phoneValidation != null && phoneValidation!.isNotEmpty) {
@@ -150,18 +150,20 @@ class _PhoneNumberVerificationPageState
     //setState(() {});
   }
 
-  PhoneNumberInputValidator? getValidator({bool isAllowEmpty = false}) {
+  PhoneNumberInputValidator? getValidator(
+      {required BuildContext context, bool isAllowEmpty = false}) {
     List<PhoneNumberInputValidator> validators = [];
     if (!isAllowEmpty) {
       validators.add(
-        PhoneValidator.required(errorText: "Phone number can't be empty"),
+        PhoneValidator.required(context,
+            errorText: "Phone number can't be empty"),
       );
     }
 
     if (mobileOnly) {
-      validators.add(PhoneValidator.validMobile(allowEmpty: isAllowEmpty));
+      validators.add(PhoneValidator.validMobile(context));
     } else {
-      validators.add(PhoneValidator.valid(allowEmpty: isAllowEmpty));
+      validators.add(PhoneValidator.valid(context));
     }
     //update();
     return validators.isNotEmpty ? PhoneValidator.compose(validators) : null;

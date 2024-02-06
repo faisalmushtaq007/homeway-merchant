@@ -26,6 +26,7 @@ import 'package:homemakers_merchant/shared/widgets/app/page_body.dart';
 import 'package:homemakers_merchant/shared/widgets/app/wave_container.dart';
 import 'package:homemakers_merchant/shared/widgets/universal/animate_do/animate_do.dart';
 import 'package:homemakers_merchant/shared/widgets/universal/animated_gap/gap.dart';
+import 'package:homemakers_merchant/shared/widgets/universal/async_builder/src/async_builder.dart';
 import 'package:homemakers_merchant/shared/widgets/universal/constrained_scrollable_views/constrained_scrollable_views.dart';
 import 'package:homemakers_merchant/shared/widgets/universal/digonal_decoration/src/matrix_decoration.dart';
 import 'package:homemakers_merchant/shared/widgets/universal/double_tap_exit/double_tap_to_exit.dart';
@@ -37,6 +38,8 @@ import 'package:homemakers_merchant/utils/app_log.dart';
 import 'package:homemakers_merchant/utils/image_type.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:moment_dart/moment_dart.dart' as moment;
+import 'package:urway_payment/urway_payment.dart';
+
 
 part 'package:homemakers_merchant/app/features/payment/data/common/dummy_transcation_data.dart';
 part 'package:homemakers_merchant/app/features/payment/data/common/conversion.dart';
@@ -53,3 +56,4 @@ part 'package:homemakers_merchant/app/features/payment/presentation/widgets/wall
 part 'package:homemakers_merchant/app/features/payment/presentation/widgets/wallet/wallet_menu_widget.dart';
 part 'package:homemakers_merchant/app/features/payment/presentation/widgets/wallet/wallet_user_info_widget.dart';
 part 'package:homemakers_merchant/app/features/payment/presentation/widgets/wallet/withdrawal_save_info_widget.dart';
+part 'package:homemakers_merchant/app/features/payment/presentation/pages/gateway/payment_gateway_page.dart';
