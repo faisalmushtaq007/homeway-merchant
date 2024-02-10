@@ -30,6 +30,8 @@ import 'package:homemakers_merchant/app/features/setting/index.dart';
 import 'package:homemakers_merchant/app/features/store/index.dart';
 import 'package:homemakers_merchant/bootup/injection_container.dart';
 import 'package:homemakers_merchant/core/common/enum/generic_enum.dart';
+import 'package:homemakers_merchant/utils/app_log.dart';
+import 'package:logger/logger.dart';
 
 part 'app_routes.dart';
 
@@ -48,6 +50,7 @@ class AppRouter {
     debugLogDiagnostics: true,
     initialLocation: INITIAL,
     navigatorKey: rootNavigatorKey,
+    observers: <NavigatorObserver>[AppNavigationObserver()],
     routes: [
       GoRoute(
         path: Routes.INITIAL_SPLASH_PAGE,
@@ -72,11 +75,10 @@ class AppRouter {
           final Map<String, dynamic>? args =
               state.extra as Map<String, dynamic>?;
           return OTPVerificationPage(
-            phoneNumber: args?['mobileNumber'] as String,
+            phoneNumber: args?['phoneNumber'] as String,
             countryDialCode: args?['countryDialCode'] ?? '' as String,
-            phoneNumberWithoutFormat:
-                args?['phoneNumberWithoutFormat'] as String,
-            isoCode: args?['isoCode'] as String,
+            phoneNumberWithFormat:
+                args?['phoneNumberWithFormat'] as String,
           );
         },
       ),
@@ -743,7 +745,54 @@ class AppRouter {
       ),
       //
     ],
+    restorationScopeId: 'merchant_router',
+    onException: (_, GoRouterState state, GoRouter router) {
+      //router.go('/404', extra: state.uri.toString());
+    },
   );
 
   static GoRouter get router => _router;
+}
+
+/// The Navigator observer.
+class AppNavigationObserver extends NavigatorObserver {
+  /// Creates a [AppNavigationObserver].
+  AppNavigationObserver() {
+    //log.onRecord.listen((LogRecord e) => debugPrint('$e'));
+  }
+
+  /// The logged message.
+  final Logger log = appLog;//Logger('AppNavigationObserver');
+
+
+  @override
+  void didPush(Route<dynamic> route, Route<dynamic>? previousRoute) =>
+      log.i('didPush: ${route.str}, previousRoute= ${previousRoute?.str}');
+
+  @override
+  void didPop(Route<dynamic> route, Route<dynamic>? previousRoute) =>
+      log.i('didPop: ${route.str}, previousRoute= ${previousRoute?.str}');
+
+  @override
+  void didRemove(Route<dynamic> route, Route<dynamic>? previousRoute) =>
+      log.i('didRemove: ${route.str}, previousRoute= ${previousRoute?.str}');
+
+  @override
+  void didReplace({Route<dynamic>? newRoute, Route<dynamic>? oldRoute}) =>
+      log.i('didReplace: new= ${newRoute?.str}, old= ${oldRoute?.str}');
+
+  @override
+  void didStartUserGesture(
+      Route<dynamic> route,
+      Route<dynamic>? previousRoute,
+      ) =>
+      log.i('didStartUserGesture: ${route.str}, '
+          'previousRoute= ${previousRoute?.str}');
+
+  @override
+  void didStopUserGesture() => log.i('didStopUserGesture');
+}
+
+extension on Route<dynamic> {
+  String get str => 'route(${settings.name}: ${settings.arguments})';
 }

@@ -23,9 +23,6 @@ class OtpVerificationBloc
   OtpVerificationBloc({
     required this.sendOtpUseCase,
     required this.verifyOtpUseCase,
-    required this.firebaseAuthentication,
-    required this.sendFirebaseOtpUseCase,
-    required this.verifyFirebaseOtpUseCase,
   }) : super(OtpVerificationInitial()) {
     on<SendOtp>(_sendOTP);
     on<VerifyOtp>(_verifyOtp);
@@ -34,10 +31,6 @@ class OtpVerificationBloc
 
   final SendOtpUseCase sendOtpUseCase;
   final VerifyOtpUseCase verifyOtpUseCase;
-
-  final SendFirebaseOtpUseCase sendFirebaseOtpUseCase;
-  final VerifyFirebaseOtpUseCase verifyFirebaseOtpUseCase;
-  final FirebaseAuthenticationRepository firebaseAuthentication;
 
   FutureOr<void> _sendOTP(
       SendOtp event, Emitter<OtpVerificationState> emit) async {
@@ -170,7 +163,6 @@ class OtpVerificationBloc
             final saveUserEntityResult =
                 await serviceLocator<SaveAllAppUserUseCase>()([
               AppUserEntity(
-                isoCode: event.verifyOtpEntity.isoCode,
                 country_dial_code: event.verifyOtpEntity.country_dial_code,
                 phoneNumber: event.verifyOtpEntity.phoneNumberWithFormat,
                 hasCurrentUser: true,
@@ -246,7 +238,6 @@ class OtpVerificationBloc
             final saveUserEntityResult =
                 await serviceLocator<SaveAllAppUserUseCase>()([
               AppUserEntity(
-                isoCode: event.verifyOtpEntity.isoCode,
                 country_dial_code: event.verifyOtpEntity.country_dial_code,
                 phoneNumber: event.verifyOtpEntity.phoneNumberWithFormat,
                 hasCurrentUser: true,

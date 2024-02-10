@@ -198,10 +198,10 @@ class _PhoneNumberFieldWidgetState extends State<PhoneNumberFieldWidget> {
             context.read<PhoneNumberVerificationBloc>().add(
                   ValidatePhoneNumber(
                     phoneNumber:
-                        '+${phoneController.value?.countryCode} ${phoneController.value?.getFormattedNsn().trim()}',
+                        '+${phoneController.value.countryCode} ${phoneController.value.formatNsn(isoCode: phoneController.value.isoCode).trim()}',
                     countryDialCode:
-                        '+${phoneController.value?.countryCode ?? '+966'}',
-                    country: phoneController.value?.isoCode.name ?? 'SA',
+                        '+${phoneController.value.countryCode ?? '+966'}',
+                    country: phoneController.value.isoCode.name ?? 'SA',
                     phoneValidation: phoneValidation,
                     phoneNumberInputValidator: phoneNumberInputValidator,
                     enteredPhoneNumber: phoneNumber,
@@ -214,10 +214,10 @@ class _PhoneNumberFieldWidgetState extends State<PhoneNumberFieldWidget> {
             context.read<PhoneNumberVerificationBloc>().add(
                   PhoneNumberChanged(
                     phoneNumber:
-                        '+${controller?.value?.countryCode} ${controller?.value?.getFormattedNsn().trim()}',
+                        '+${controller?.value.countryCode} ${controller?.value.formatNsn(isoCode: controller.value.isoCode).trim()}',
                     countryDialCode:
-                        '+${controller?.value?.countryCode ?? '+966'}',
-                    country: controller?.value?.isoCode.name ?? 'SA',
+                        '+${controller?.value.countryCode ?? '+966'}',
+                    country: controller?.value.isoCode.name ?? 'SA',
                     enteredPhoneNumber: phoneNumber,
                     phoneController: controller!,
                   ),

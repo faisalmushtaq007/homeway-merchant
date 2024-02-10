@@ -172,14 +172,19 @@ class GlobalApp {
   /// default one. The default Flutter one is too dense imo.
   static VisualDensity get visualDensity =>
       FlexColorScheme.comfortablePlatformDensity;
-  static int developmentPort = 8069;
-  static int productionPort = 8069;
-  static String developmentBaseUrl = 'http://15.184.169.237';
-  static String productionPortBaseUrl = 'http://15.184.169.237';
-  static String developmentUrl =
-      '${GlobalApp.developmentBaseUrl}:${GlobalApp.developmentPort}';
-  static String productionUrl =
-      '${GlobalApp.productionPortBaseUrl}:${GlobalApp.productionPort}';
+  static const int developmentPort = 5000;
+  static const int productionPort = 8069;
+  static const String developmentBaseUrl = 'http://15.184.169.237';
+  static const String productionPortBaseUrl = 'http://15.184.169.237';
+  static const String baseApiPath = 'merchant/api/';
+  static const String apiVersion = 'v1';
+
+  //merchant/api/v1
+  static const String merchantApiPath = '${GlobalApp.baseApiPath}/${GlobalApp.apiVersion}';
+  static const String developmentUrl =
+      '${GlobalApp.developmentBaseUrl}:${GlobalApp.developmentPort}/${GlobalApp.merchantApiPath}';
+  static const String productionUrl =
+      '${GlobalApp.productionPortBaseUrl}:${GlobalApp.productionPort}/${GlobalApp.merchantApiPath}';
 
   static const String userModelKey = 'userModelKey';
   static AppUserEntity defaultUserModel = serviceLocator<AppUserEntity>();
@@ -256,6 +261,6 @@ class GlobalApp {
     DocumentPickerSource.folder,
     DocumentPickerSource.none,
   ];
-  static const String merchantApiPath = ' /merchant/api/v1/';
+
 
 }

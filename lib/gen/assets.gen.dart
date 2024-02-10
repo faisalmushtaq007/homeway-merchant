@@ -98,6 +98,16 @@ class $GoogleFontsGen {
       ];
 }
 
+class $AssetsConfigGen {
+  const $AssetsConfigGen();
+
+  /// File path: assets/config/appconfig.json
+  String get appconfig => 'assets/config/appconfig.json';
+
+  /// List of all assets
+  List<String> get values => [appconfig];
+}
+
 class $AssetsImageGen {
   const $AssetsImageGen();
 
@@ -413,6 +423,7 @@ class $AssetsSvgFlagsGen {
 class Assets {
   Assets._();
 
+  static const $AssetsConfigGen config = $AssetsConfigGen();
   static const String dummyTackingData = 'assets/dummy_tacking_data.json';
   static const String dummyTodayOrderAnalysis =
       'assets/dummy_today_order_analysis.json';

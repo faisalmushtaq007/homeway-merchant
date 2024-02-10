@@ -2,3 +2,4 @@
 // shared across different parts of the application.
 export 'app_lifecycle_manager.dart';
 export 'auto_direction.dart';
+export 'base_injector.dart';

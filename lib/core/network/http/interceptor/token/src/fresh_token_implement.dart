@@ -102,6 +102,8 @@ class FreshTokenInterceptor<T> extends Interceptor with FreshTokenMixin<T> {
     final headers = currentToken != null
         ? _tokenHeader(currentToken)
         : const <String, String>{};
+    // Add correlationID to each request
+    options.headers.addAll({'correlationId':correlationId});
     options.headers.addAll(headers);
     handler.next(options);
   }

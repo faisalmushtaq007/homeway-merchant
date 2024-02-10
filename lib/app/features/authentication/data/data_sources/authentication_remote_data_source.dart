@@ -10,13 +10,13 @@ class AuthenticationRemoteDataSource extends AuthenticationDataSource {
     try {
       const String apiPath = AuthenticationConstants.getUserProfile;
       final response =
-          await client.send<BaseResponseModel<AppUserEntity>, AppUserEntity>(
+          await client.send<BaseResponseModel, BaseResponseModel>(
         apiPath,
-        parseModel: BaseResponseModel<AppUserEntity>(),
+        parseModel: BaseResponseModel(),
         method: RequestType.GET,
       );
       if (response.data != null) {
-        return ApiResultState<AppUserEntity>.success(data: response.data!);
+        return ApiResultState<AppUserEntity>.success(data: response.data!.data as AppUserEntity);
       } else {
         return ApiResultState<AppUserEntity>.failure(
           reason: GetApiException()
@@ -38,23 +38,26 @@ class AuthenticationRemoteDataSource extends AuthenticationDataSource {
 
   @override
   Future<ApiResultState<SendOtpResponseModel>> sendPhoneAuthenticationOTP({
-    required BaseRequestModel<SendOtpEntity> sendOtpEntity,
+    required SendOtpEntity sendOtpEntity,
   }) async {
-    try {
+
+   try {
       const String apiPath = AuthenticationConstants.sendOtp;
       final response = await client
-          .send<BaseResponseModel<SendOtpResponseModel>, SendOtpResponseModel>(
+          .send<BaseResponseModel, BaseResponseModel>(
         apiPath,
-        parseModel: BaseResponseModel<SendOtpResponseModel>(),
+        parseModel: BaseResponseModel(),
         method: RequestType.POST,
-        data: sendOtpEntity.toJson((value) => value.toJson()),
+        data: sendOtpEntity.toJson(),
       );
+      appLog.d('Response ${response.data?.toJson()}');
       final result=response.data;
       if (result != null) {
         return ApiResultState<SendOtpResponseModel>.success(
-          data: result,
+          data: SendOtpResponseModel.fromJson(result.data as Map<String,dynamic>),
         );
-      } else {
+      }
+      else {
         return ApiResultState<SendOtpResponseModel>.failure(
           reason: GetApiException()
               .handleApiFailure(response.error?.model)
@@ -75,21 +78,21 @@ class AuthenticationRemoteDataSource extends AuthenticationDataSource {
 
   @override
   Future<ApiResultState<VerifyOtpResponseModel>> verifyPhoneAuthenticationOTP({
-    required BaseRequestModel<VerifyOtpEntity> verifyOtpEntity,
+    required VerifyOtpEntity verifyOtpEntity,
   }) async {
     try {
       const String apiPath = AuthenticationConstants.verifyOtp;
       final response = await client.send<
-          BaseResponseModel<VerifyOtpResponseModel>, VerifyOtpResponseModel>(
+          BaseResponseModel, BaseResponseModel>(
         apiPath,
-        parseModel: BaseResponseModel<VerifyOtpResponseModel>(),
+        parseModel: BaseResponseModel(),
         method: RequestType.POST,
-        data: verifyOtpEntity.toJson((value) => value.toJson()),
+        data: verifyOtpEntity.toVerifyOtp(),
       );
       final result=response.data;
       if (result != null) {
         return ApiResultState<VerifyOtpResponseModel>.success(
-          data: result,
+          data: result.data as VerifyOtpResponseModel,
         );
       } else {
         return ApiResultState<VerifyOtpResponseModel>.failure(

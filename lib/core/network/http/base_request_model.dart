@@ -2,7 +2,7 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'base_request_model.g.dart';
 
-@JsonSerializable(explicitToJson: true)
+@JsonSerializable(explicitToJson: true,genericArgumentFactories: true)
 class BaseRequestModel<T> {
   BaseRequestModel({
     this.correlationId,

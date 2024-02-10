@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:homemakers_merchant/app/features/authentication/common/constants.dart';
 import 'package:homemakers_merchant/app/features/profile/index.dart';
+import 'package:homemakers_merchant/base/app_base.dart';
 import 'package:homemakers_merchant/base/base_usecase.dart';
 import 'package:homemakers_merchant/bootup/injection_container.dart';
 import 'package:homemakers_merchant/core/extensions/global_extensions/src/object.dart';
@@ -20,6 +21,9 @@ import 'package:homeway_firebase/homeway_firebase.dart';
 import 'package:network_manager/network_manager.dart';
 import 'package:sembast/timestamp.dart';
 import 'package:firebase_core/firebase_core.dart';
+
+import 'presentation/manager/otp_verification/otp_verification_bloc.dart';
+import 'presentation/manager/phone_number_verification_bloc.dart';
 
 // Data
 part 'package:homemakers_merchant/app/features/authentication/data/data_sources/authentication_data_source.dart';

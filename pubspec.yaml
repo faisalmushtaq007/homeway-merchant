@@ -85,7 +85,7 @@ dependencies:
   geolocator: ^9.0.2
   get_it: ^7.6.4
   get_it_mixin: ^4.2.0
-  go_router: ^10.1.2
+  go_router: ^13.1.0
   google_fonts: ^6.1.0
   google_maps_flutter: ^2.5.3
 #  google_ml_kit: ^0.16.2
@@ -119,7 +119,7 @@ dependencies:
     git:
       url: 'https://github.com/prasant10050/logger.git'
       ref: master
-  lottie: ^2.5.0
+  lottie: ^3.0.0
   moment_dart:
     git:
       url: 'https://github.com/prasant10050/moment_dart.git'
@@ -176,6 +176,7 @@ dependencies:
     git:
       url: 'https://github.com/prasant10050/timelines.git'
       ref: main
+  toastification: ^1.0.0
   transparent_image: ^2.0.1
   url_launcher: ^6.1.12
   urway_payment:
@@ -198,7 +199,7 @@ dev_dependencies:
       path: packages/runner
   flutter_test:
     sdk: flutter
-  freezed: ^2.4.2
+  freezed: ^2.4.7
   #go_router_builder: ^2.3.0
   hive_generator: ^2.0.1
   json_serializable: ^6.7.1

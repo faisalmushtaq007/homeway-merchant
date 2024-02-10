@@ -1,58 +1,79 @@
+import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
+
 import 'package:network_manager/network_manager.dart';
 
 part 'base_response_model.g.dart';
 
-@JsonSerializable(explicitToJson: true)
-class BaseResponseModel<T extends INetworkModel<T>>
-    extends INetworkModel<BaseResponseModel<T>> {
+@JsonSerializable(
+  explicitToJson: true,
+  genericArgumentFactories: true,
+)
+class BaseResponseModel extends INetworkModel<BaseResponseModel>
+    with EquatableMixin {
   BaseResponseModel({
-    this.message,
     this.data,
-    this.result,
     this.success,
-    this.remaining_attempts,
     this.correlationId,
   });
-  factory BaseResponseModel.fromJson(
-    Map<String, dynamic> json,
-    T Function(Object? json) fromJsonT,
-  ) =>
-      _$BaseResponseModelFromJson(json, fromJsonT);
 
-  final String? message;
-  @JsonKey(name: 'data')
-  final T? data;
-  @JsonKey(name: 'result')
-  final T? result;
+  @JsonKey(
+    name: 'data',
+  )
+  final dynamic data;
   @JsonKey(
     name: 'success',
-    defaultValue: true,
+    defaultValue: 0,
   )
-  final bool? success;
-  @JsonKey(
-    name: 'remaining_attempts',
-    defaultValue: 5,
-  )
-  final int? remaining_attempts;
+  final int? success;
   @JsonKey(name: 'correlationId')
   final String? correlationId;
 
-  @override
-  BaseResponseModel<T> fromJson(Map<String, dynamic> json) {
-    return BaseResponseModel<T>.fromJson(
-      json,
-      (json) => json as T,
+/*  factory BaseResponseModel.fromMap(
+    Map<String, dynamic> json,
+  ) {
+    return BaseResponseModel(
+      data: json['data'] as dynamic,
+      success: json['success'],
+      correlationId: json['correlationId'],
     );
+  }*/
+
+  factory BaseResponseModel.fromMap(
+      Map<String, dynamic> json,
+      ) =>
+      _$BaseResponseModelFromJson(json,);
+
+
+  @override
+  BaseResponseModel fromJson(Map<String, dynamic> json) {
+    return BaseResponseModel.fromMap(json);
   }
 
-  Map<String, dynamic> toMap(
-    Object Function(T value) toJsonT,
-  ) =>
-      _$BaseResponseModelToJson(this, toJsonT);
+  @override
+  List<Object?> get props => [correlationId, data, success];
+
+  @override
+  bool? get stringify => true;
+
+/*  Map<String, dynamic> toMap() => <String, dynamic>{
+        'data': this.data,
+        'success': this.success,
+        'correlationId': this.correlationId,
+      };
 
   @override
   Map<String, dynamic>? toJson() {
-    return BaseResponseModel<T>().toMap((value) => value);
+    return toMap();
+  }*/
+
+  Map<String, dynamic> toMap(
+
+      ) =>
+      _$BaseResponseModelToJson(this);
+
+  @override
+  Map<String, dynamic>? toJson() {
+    return toMap();
   }
 }

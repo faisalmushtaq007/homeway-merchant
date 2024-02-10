@@ -3,6 +3,8 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:bloc_concurrency/bloc_concurrency.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:homemakers_merchant/app/features/authentication/index.dart';
+import 'package:homemakers_merchant/shared/states/result_state.dart';
 import 'package:homemakers_merchant/shared/widgets/universal/async_button/async_button.dart';
 import 'package:homemakers_merchant/shared/widgets/universal/phone_number_text_field/phone_form_field_bloc.dart';
 import 'package:homemakers_merchant/utils/app_log.dart';
@@ -21,7 +23,7 @@ class PhoneNumberVerificationBloc
     extends Bloc<PhoneNumberVerificationEvent, PhoneNumberVerificationState> {
   PhoneNumberVerificationBloc({
     required this.phoneFormFieldBloc,
-    required this.firebaseAuthentication,
+    required this.sendOtpUseCase,
   }) : super(const PhoneNumberVerificationState.initial()) {
     on<PhoneNumberChanged>(
       _phoneNumberChangedEvent,
@@ -38,7 +40,7 @@ class PhoneNumberVerificationBloc
   }
 
   final PhoneFormFieldBloc phoneFormFieldBloc;
-  final FirebaseAuthenticationRepository firebaseAuthentication;
+  final SendOtpUseCase sendOtpUseCase;
 
   FutureOr<void> _initialize(
       _Started event, Emitter<PhoneNumberVerificationState> emit) {}
@@ -70,19 +72,76 @@ class PhoneNumberVerificationBloc
     ));
   }
 
-  FutureOr<void> _verifyPhoneNumber(
-      VerifyPhoneNumber event, Emitter<PhoneNumberVerificationState> emit) {
+  Future<FutureOr<void>> _verifyPhoneNumber(VerifyPhoneNumber event,
+      Emitter<PhoneNumberVerificationState> emit) async {
     // Handle api call and otp sent request
+    try {
+      // Processing state
+      emit(
+        PhoneNumberVerificationState.processing(),
+      );
+      await Future.delayed(const Duration(seconds: 2),() {
 
-    emit(
-      PhoneNumberVerificationState.success(
-        phoneController: event.phoneController,
-        countryDialCode: event.countryDialCode,
-        userEnteredPhoneNumber: event.userEnteredPhoneNumber,
-        country: event.country,
-        phoneNumber: event.phoneNumber,
-        isoCode: event.isoCode,
-      ),
-    );
+      },);
+      if (event.userEnteredPhoneNumber.isNotEmpty) {
+        final sendOtpEntity = SendOtpEntity(
+          mobile: event.userEnteredPhoneNumber,
+          phoneNumberWithFormat: event.phoneNumberWithFormat,
+          country_dial_code: event.countryDialCode,
+        );
+        // Request send otp use case,
+        final ResultState<SendOtpResponseModel> resultState =
+            await sendOtpUseCase(sendOtpEntity);
+
+        resultState.maybeMap(
+          success: (data) async {
+            emit(
+              PhoneNumberVerificationState.valid(
+                phoneNumberVerification: PhoneNumberVerification.valid,
+              ),
+            );
+
+            emit(
+              PhoneNumberVerificationState.success(
+                countryDialCode: event.countryDialCode,
+                userEnteredPhoneNumber: event.userEnteredPhoneNumber,
+                phoneNumberWithFormat: event.phoneNumberWithFormat,
+                phoneNumberVerification: PhoneNumberVerification.otpSent
+              ),
+            );
+          },
+          error: (value) {
+            emit(
+              PhoneNumberVerificationState.error(
+                reason: value.reason,
+                phoneNumberVerification: PhoneNumberVerification.error,
+              ),
+            );
+          },
+          orElse: () {
+            emit(
+              PhoneNumberVerificationState.invalid(
+                reason: 'Something went wrong, please try again.',
+                phoneNumberVerification: PhoneNumberVerification.invalid,
+              ),
+            );
+          },
+        );
+      } else {
+        emit(
+          PhoneNumberVerificationState.invalid(
+            reason: 'Mobile number is invalid',
+            phoneNumberVerification: PhoneNumberVerification.invalid,
+          ),
+        );
+      }
+    } catch (e, s) {
+      emit(
+        PhoneNumberVerificationState.error(
+          reason: e.toString(),
+          phoneNumberVerification: PhoneNumberVerification.error,
+        ),
+      );
+    }
   }
 }

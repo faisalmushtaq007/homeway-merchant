@@ -36,20 +36,10 @@ class SendOtpEntity extends INetworkModel<SendOtpEntity> {
   }
 
   Map<String, dynamic> toMap() => <String, dynamic>{
-        'mobile': mobile,
-        'country_dial_code': country_dial_code,
-        'user_type': user_type,
-        'isoCode': isoCode,
-        'db': db,
-        'phoneNumberWithoutFormat': phoneNumberWithoutFormat,
-        'phoneNumberWithFormat': phoneNumberWithFormat,
-        'phone_number': phoneNumberWithoutFormat,
-      };
-
-  Map<String, dynamic> toTwilio() => <String, dynamic>{
         'phone_number': mobile,
       };
 
+
   @override
-  Map<String, dynamic> toJson() => toTwilio();
+  Map<String, dynamic> toJson() => toMap();
 }

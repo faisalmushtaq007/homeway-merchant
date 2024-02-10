@@ -45,6 +45,7 @@ import 'package:homemakers_merchant/utils/multi/multi_listenable_buillder.dart';
 import 'package:phone_form_field/phone_form_field.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 import 'package:syncfusion_localizations/syncfusion_localizations.dart';
+import 'package:toastification/toastification.dart';
 
 class App extends StatefulWidget with GetItStatefulWidgetMixin {
   App({required this.themeController, super.key});
@@ -267,7 +268,18 @@ class _AppState extends State<App> with GetItStateMixin {
                             textDirection: serviceLocator<LanguageController>()
                                 .targetTextDirection,
                             child: ResponsiveBreakpoints.builder(
-                              child: OneContext().builder(context, child),
+                              child: Builder(builder: (context) {
+                                final widget = ToastificationConfigProvider(
+                                  config: ToastificationConfig(
+                                    alignment: Alignment.bottomCenter,
+                                    itemWidth: 440,
+                                    animationDuration:
+                                        Duration(milliseconds: 500),
+                                  ),
+                                  child: child!,
+                                );
+                                return OneContext().builder(context, widget);
+                              }),
                               breakpoints: [
                                 const Breakpoint(
                                   start: 0,

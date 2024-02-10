@@ -18,10 +18,7 @@ class PhoneNumberVerificationEvent with _$PhoneNumberVerificationEvent {
   const factory PhoneNumberVerificationEvent.verifyPhoneNumber({
     required String userEnteredPhoneNumber,
     @Default('+966') String countryDialCode,
-    required String country,
-    required PhoneController phoneController,
-    required PhoneNumber phoneNumber,
-    @Default('SA') String isoCode,
+    required String phoneNumberWithFormat,
   }) = VerifyPhoneNumber;
 
   const factory PhoneNumberVerificationEvent.validatePhoneNumber({

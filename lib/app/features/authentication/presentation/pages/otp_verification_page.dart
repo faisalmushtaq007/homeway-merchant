@@ -36,14 +36,12 @@ class OTPVerificationPage extends StatefulWidget {
     required this.phoneNumber,
     super.key,
     this.countryDialCode = '+966',
-    required this.phoneNumberWithoutFormat,
-    this.isoCode = 'SA',
+    required this.phoneNumberWithFormat,
   });
 
   final String phoneNumber;
   final String countryDialCode;
-  final String phoneNumberWithoutFormat;
-  final String isoCode;
+  final String phoneNumberWithFormat;
 
   @override
   _OTPVerificationPageState createState() => _OTPVerificationPageState();
@@ -72,19 +70,7 @@ class _OTPVerificationPageState extends State<OTPVerificationPage> {
   void initState() {
     super.initState();
     scrollController = ScrollController();
-    context.read<OtpVerificationBloc>().add(
-          SendOtp(
-            sendOtpEntity: SendOtpEntity(
-              user_type: 'merchant',
-              mobile: widget.phoneNumberWithoutFormat,
-              country_dial_code: widget.countryDialCode,
-              isoCode: widget.isoCode,
-              phoneNumberWithFormat: widget.phoneNumber,
-              phoneNumberWithoutFormat: widget.phoneNumberWithoutFormat,
-            ),
-            otpVerificationStatus: OtpVerificationStatus.otpSent,
-          ),
-        );
+
     // Start the countdown timer
     startCountdown();
   }
@@ -134,12 +120,9 @@ class _OTPVerificationPageState extends State<OTPVerificationPage> {
     context.read<OtpVerificationBloc>().add(
           SendOtp(
             sendOtpEntity: SendOtpEntity(
-              user_type: 'merchant',
-              mobile: widget.phoneNumberWithoutFormat,
+              mobile: widget.phoneNumber,
               country_dial_code: widget.countryDialCode,
-              isoCode: widget.isoCode,
               phoneNumberWithFormat: widget.phoneNumber,
-              phoneNumberWithoutFormat: widget.phoneNumberWithoutFormat,
             ),
             otpVerificationStatus: OtpVerificationStatus.otpReSent,
           ),
@@ -558,24 +541,15 @@ class _OTPVerificationPageState extends State<OTPVerificationPage> {
                                                 VerifyOtp(
                                                   verifyOtpEntity:
                                                       VerifyOtpEntity(
-                                                    user_type: 'merchant',
-                                                    mobile: widget
-                                                        .phoneNumberWithoutFormat,
+                                                    mobile: widget.phoneNumber,
                                                     country_dial_code:
                                                         widget.countryDialCode,
                                                     otp: otpController
                                                         .value.text
                                                         .trim(),
                                                     // Todo(prasant): Check password and db property from backend developer
-                                                    db: '',
-                                                    password: otpController
-                                                        .value.text
-                                                        .trim(),
-                                                    isoCode: widget.isoCode,
                                                     phoneNumberWithFormat:
-                                                        widget.phoneNumber,
-                                                    phoneNumberWithoutFormat: widget
-                                                        .phoneNumberWithoutFormat,
+                                                        widget.phoneNumberWithFormat,
                                                   ),
                                                   otpVerificationStatus:
                                                       OtpVerificationStatus

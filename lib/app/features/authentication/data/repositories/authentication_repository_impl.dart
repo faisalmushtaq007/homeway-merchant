@@ -13,7 +13,7 @@ class AuthenticationRepositoryImplement implements AuthenticationRepository {
   Future<ResultState<SendOtpResponseModel>> sendPhoneAuthenticationOtp(
       SendOtpEntity sendOtpEntity) async {
     final response = await remoteDataSource.sendPhoneAuthenticationOTP(
-      sendOtpEntity: BaseRequestModel<SendOtpEntity>(data: sendOtpEntity),
+      sendOtpEntity: sendOtpEntity,
     );
     return response.when(
       success: (data) {
@@ -34,7 +34,7 @@ class AuthenticationRepositoryImplement implements AuthenticationRepository {
   Future<ResultState<VerifyOtpResponseModel>> verifyPhoneAuthenticationOtp(
       VerifyOtpEntity verifyOtpEntity) async {
     final response = await remoteDataSource.verifyPhoneAuthenticationOTP(
-      verifyOtpEntity: BaseRequestModel<VerifyOtpEntity>(data: verifyOtpEntity),
+      verifyOtpEntity: verifyOtpEntity,
     );
     return response.when(
       success: (data) {

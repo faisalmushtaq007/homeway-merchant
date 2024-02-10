@@ -23,6 +23,7 @@ import 'package:homemakers_merchant/shared/widgets/universal/async_button/async_
 import 'package:homemakers_merchant/shared/widgets/universal/constrained_scrollable_views/constrained_scrollable_views.dart';
 import 'package:homemakers_merchant/shared/widgets/universal/phone_number_text_field/phonenumber_form_field_widget.dart';
 import 'package:phone_form_field/phone_form_field.dart';
+import 'package:toastification/toastification.dart';
 
 class PhoneNumberVerificationPage extends StatefulWidget {
   const PhoneNumberVerificationPage({super.key});
@@ -47,12 +48,12 @@ class _PhoneNumberVerificationPageState
   AsyncBtnStatesController phoneNumberVerificationButtonController =
       AsyncBtnStatesController();
   String userEnteredPhoneNumber = '';
-  PhoneController phoneController = PhoneController();
+
+  String phoneNumberWithFormat = '';
   PhoneNumberVerification phoneNumberVerification =
       PhoneNumberVerification.none;
   Widget? suffixIcon;
   PhoneNumber? phoneNumber;
-  late PhoneController phoneNumberController;
   ValueNotifier<PhoneNumberVerification> valueNotifierPhoneNumberVerification =
       ValueNotifier<PhoneNumberVerification>(
     PhoneNumberVerification.none,
@@ -96,9 +97,9 @@ class _PhoneNumberVerificationPageState
   ) {
     phoneNumber = phoneNumbers;
     userEnteredPhoneNumber =
-        '+${phoneNumbers?.countryCode} ${phoneNumbers?.getFormattedNsn().trim()}';
-    String countryDialCode = '+${phoneNumbers?.countryCode ?? '+966'}';
-    String country = phoneNumbers?.isoCode.name ?? 'SA';
+        '+${phoneNumbers?.countryCode}${phoneNumbers?.nsn.trim()}';
+    phoneNumberWithFormat =
+        '+${phoneNumbers?.countryCode} ${phoneNumbers?.formatNsn(isoCode: phoneNumbers.isoCode).trim()}';
     final result = getValidator(context: context, isAllowEmpty: false);
     phoneValidation = result?.call(phoneNumber);
 
@@ -108,43 +109,15 @@ class _PhoneNumberVerificationPageState
     } else {
       if (phoneValidation == null &&
           phoneNumbers != null &&
-          phoneNumbers.getFormattedNsn().trim().isNotEmpty) {
+          phoneNumbers
+              .formatNsn(isoCode: phoneNumbers.isoCode)
+              .trim()
+              .isNotEmpty) {
         valueNotifierPhoneNumberVerification.value =
             PhoneNumberVerification.valid;
       } else {
         valueNotifierPhoneNumberVerification.value =
             PhoneNumberVerification.none;
-      }
-    }
-    //setState(() {});
-  }
-
-  void phoneNumberValidationChanged(
-    String? value,
-    PhoneNumber? phoneNumbers,
-    PhoneController phoneNumberControllers,
-  ) {
-    phoneValidation = value;
-    phoneNumber = phoneNumbers;
-    userEnteredPhoneNumber =
-        '+${phoneNumbers?.countryCode} ${phoneNumbers?.getFormattedNsn().trim()}';
-    phoneNumberController = phoneNumberControllers;
-    if (phoneValidation != null && phoneValidation!.isNotEmpty) {
-      phoneNumberVerification = PhoneNumberVerification.invalid;
-      valueNotifierPhoneNumberVerification.value =
-          PhoneNumberVerification.invalid;
-    } else {
-      if (phoneValidation == null &&
-          phoneNumberControllers.value != null &&
-          phoneNumberControllers.value!.getFormattedNsn().trim().isNotEmpty) {
-        phoneNumberVerification = PhoneNumberVerification.valid;
-        valueNotifierPhoneNumberVerification.value =
-            PhoneNumberVerification.valid;
-      } else {
-        phoneNumberVerification = PhoneNumberVerification.none;
-        valueNotifierPhoneNumberVerification.value =
-            PhoneNumberVerification.none;
-        phoneNumberVerificationButtonController.update(AsyncBtnState.idle);
       }
     }
     //setState(() {});
@@ -153,12 +126,6 @@ class _PhoneNumberVerificationPageState
   PhoneNumberInputValidator? getValidator(
       {required BuildContext context, bool isAllowEmpty = false}) {
     List<PhoneNumberInputValidator> validators = [];
-    if (!isAllowEmpty) {
-      validators.add(
-        PhoneValidator.required(context,
-            errorText: "Phone number can't be empty"),
-      );
-    }
 
     if (mobileOnly) {
       validators.add(PhoneValidator.validMobile(context));
@@ -193,25 +160,53 @@ class _PhoneNumberVerificationPageState
           bloc: context.read<PhoneNumberVerificationBloc>(),
           listenWhen: (previous, current) => previous != current,
           listener: (context, state) {
-            state.maybeWhen(
-              orElse: () {},
-              success: (
-                phoneNumberVerification,
-                userEnteredPhoneNumber,
-                countryDialCode,
-                country,
-                phoneController,
-                phoneNumber,
-                isoCode,
-                asyncBtnState,
-              ) {
-                context.push(
+             state.mapOrNull(
+              processing: (value) {
+                return toastification.show(
+                  context: context,
+                  title: 'Please wait while we are sending otp',
+                  style: ToastificationStyle.flatColored,
+                  type: ToastificationType.info,
+                  autoCloseDuration: const Duration(seconds: 2),
+                );
+              },
+              valid: (value) {
+                return toastification.show(
+                  context: context,
+                  title: 'OTP sent',
+                  style: ToastificationStyle.flatColored,
+                  type: ToastificationType.success,
+                  showProgressBar: false,
+                  autoCloseDuration: const Duration(seconds: 2),
+                );
+              },
+              error: (value) {
+                return toastification.show(
+                  context: context,
+                  title: '${value.reason}',
+                  style: ToastificationStyle.flatColored,
+                  type: ToastificationType.error,
+                  showProgressBar: false,
+                  autoCloseDuration: const Duration(seconds: 3),
+                );
+              },
+              invalid: (value) {
+                return toastification.show(
+                  context: context,
+                  title: '${value.reason}',
+                  style: ToastificationStyle.flatColored,
+                  type: ToastificationType.error,
+                  showProgressBar: false,
+                  autoCloseDuration: const Duration(seconds: 3),
+                );
+              },
+              success: (s) {
+                return context.push(
                   Routes.AUTH_OTP_VERIFICATION,
                   extra: {
-                    'mobileNumber': userEnteredPhoneNumber,
-                    'countryDialCode': countryDialCode,
-                    'phoneNumberWithoutFormat': phoneNumber.nsn,
-                    'isoCode': isoCode,
+                    'phoneNumber': s.userEnteredPhoneNumber,
+                    'countryDialCode': s.countryDialCode,
+                    'phoneNumberWithFormat': s.phoneNumberWithFormat,
                   },
                 ).whenComplete(() {});
               },
@@ -257,73 +252,82 @@ class _PhoneNumberVerificationPageState
                       ),
                       height: context.height,
                       width: double.infinity,
-                      child: ScrollableColumn(
-                        mainAxisSize: MainAxisSize.min,
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: [
-                          const AnimatedGap(8,
-                              duration: Duration(milliseconds: 500)),
-                          Wrap(
-                            textDirection: serviceLocator<LanguageController>()
-                                .targetTextDirection,
+                      child: BlocBuilder<PhoneNumberVerificationBloc,
+                          PhoneNumberVerificationState>(
+                        bloc: context.read<PhoneNumberVerificationBloc>(),
+                        buildWhen: (previous, current) => previous!=current,
+                        builder: (context, state) {
+                          return ScrollableColumn(
+                            mainAxisSize: MainAxisSize.min,
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
                             children: [
-                              Text(
-                                'Hi,',
+                              const AnimatedGap(8,
+                                  duration: Duration(milliseconds: 500)),
+                              Wrap(
                                 textDirection:
                                     serviceLocator<LanguageController>()
                                         .targetTextDirection,
-                                style: context.headlineLarge!.copyWith(
-                                  fontWeight: FontWeight.bold,
-                                  height: 0.9,
-                                  fontSize: 45,
-                                  color: Color.fromRGBO(255, 125, 113, 1),
-                                ),
-                              ).translate(),
-                            ],
-                          ),
-                          const AnimatedGap(12,
-                              duration: Duration(milliseconds: 500)),
-                          Wrap(
-                            textDirection: serviceLocator<LanguageController>()
-                                .targetTextDirection,
-                            children: [
-                              Text(
-                                'Create better together.',
+                                children: [
+                                  Text(
+                                    'Hi,',
+                                    textDirection:
+                                        serviceLocator<LanguageController>()
+                                            .targetTextDirection,
+                                    style: context.headlineLarge!.copyWith(
+                                      fontWeight: FontWeight.bold,
+                                      height: 0.9,
+                                      fontSize: 45,
+                                      color: Color.fromRGBO(255, 125, 113, 1),
+                                    ),
+                                  ).translate(),
+                                ],
+                              ),
+                              const AnimatedGap(12,
+                                  duration: Duration(milliseconds: 500)),
+                              Wrap(
                                 textDirection:
                                     serviceLocator<LanguageController>()
                                         .targetTextDirection,
-                                style: GoogleFonts.raleway(
-                                  textStyle: context.headlineMedium!.copyWith(
-                                    fontWeight: FontWeight.bold,
-                                    height: 0.9,
-                                  ),
-                                ),
-                              ).translate(),
-                            ],
-                          ),
-                          const AnimatedGap(4,
-                              duration: Duration(milliseconds: 500)),
-                          Wrap(
-                            textDirection: serviceLocator<LanguageController>()
-                                .targetTextDirection,
-                            children: [
-                              Text(
-                                'Join with us',
+                                children: [
+                                  Text(
+                                    'Create better together.',
+                                    textDirection:
+                                        serviceLocator<LanguageController>()
+                                            .targetTextDirection,
+                                    style: GoogleFonts.raleway(
+                                      textStyle:
+                                          context.headlineMedium!.copyWith(
+                                        fontWeight: FontWeight.bold,
+                                        height: 0.9,
+                                      ),
+                                    ),
+                                  ).translate(),
+                                ],
+                              ),
+                              const AnimatedGap(4,
+                                  duration: Duration(milliseconds: 500)),
+                              Wrap(
                                 textDirection:
                                     serviceLocator<LanguageController>()
                                         .targetTextDirection,
-                                style: context.bodyMedium!.copyWith(
-                                  fontSize: 18,
-                                  fontStyle: FontStyle.normal,
-                                ),
-                              ).translate(),
-                            ],
-                          ),
-                          const AnimatedGap(36,
-                              duration: Duration(milliseconds: 500)),
+                                children: [
+                                  Text(
+                                    'Join with us',
+                                    textDirection:
+                                        serviceLocator<LanguageController>()
+                                            .targetTextDirection,
+                                    style: context.bodyMedium!.copyWith(
+                                      fontSize: 18,
+                                      fontStyle: FontStyle.normal,
+                                    ),
+                                  ).translate(),
+                                ],
+                              ),
+                              const AnimatedGap(36,
+                                  duration: Duration(milliseconds: 500)),
 
-                          /* SizedBox(
+                              /* SizedBox(
                                 child: Wrap(
                                   alignment: WrapAlignment.start,
                                   crossAxisAlignment: WrapCrossAlignment.center,
@@ -337,100 +341,106 @@ class _PhoneNumberVerificationPageState
                                 ),
                               ),
                               const AnimatedGap(6, duration: Duration(milliseconds: 500)),*/
-                          Row(
-                            textDirection: serviceLocator<LanguageController>()
-                                .targetTextDirection,
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Expanded(
-                                child: Directionality(
-                                  textDirection:
-                                      serviceLocator<LanguageController>()
-                                          .targetTextDirection,
-                                  child: PhoneNumberFieldWidget(
-                                    key: const Key('user-phone-number-widget'),
-                                    isCountryChipPersistent: false,
-                                    outlineBorder: true,
-                                    shouldFormat: true,
-                                    useRtl: false,
-                                    withLabel: true,
-                                    decoration: InputDecoration(
-                                      labelText: 'Mobile number',
-                                      //alignLabelWithHint: true,
-                                      hintText: 'Enter your mobile number',
-                                      errorText: phoneValidation,
-                                      //suffixIcon: const PhoneNumberValidationIconWidget(),
-                                      isDense: true,
-                                    ),
-                                    isAllowEmpty: false,
-                                    autofocus: false,
-                                    style: context.bodyLarge,
-                                    showFlagInInput: false,
-                                    countryCodeStyle: context.bodyLarge,
-                                    onPhoneNumberChanged: onPhoneNumberChanged,
-                                    //phoneNumberValidationChanged: phoneNumberValidationChanged,
-                                    haveStateManagement: false,
-                                    keyboardType:
-                                        const TextInputType.numberWithOptions(),
-                                    textInputAction: TextInputAction.done,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                          const AnimatedGap(14,
-                              duration: Duration(milliseconds: 400)),
-                          Wrap(
-                            textDirection: serviceLocator<LanguageController>()
-                                .targetTextDirection,
-                            children: [
-                              Text(
-                                'A 6 digit OTP code will be sent via SMS to verify your mobile number',
-                                style: context.labelMedium!.copyWith(
-                                  color: Color.fromRGBO(127, 129, 132, 1),
-                                ),
+                              Row(
                                 textDirection:
                                     serviceLocator<LanguageController>()
                                         .targetTextDirection,
-                              ).translate(),
-                            ],
-                          ),
-                          const AnimatedGap(26,
-                              duration: Duration(milliseconds: 400)),
-                          //const Spacer(),
-                          SizedBox(
-                            width: context.width,
-                            child:
-                                ValueListenableBuilder<PhoneNumberVerification>(
-                              valueListenable:
-                                  valueNotifierPhoneNumberVerification,
-                              builder: (context, value, child) {
-                                return ElevatedButton(
-                                  key: const Key(
-                                      'phone-number_verification-button-key'),
-                                  style: ElevatedButton.styleFrom(
-                                    disabledBackgroundColor:
-                                        Color.fromRGBO(255, 219, 208, 1),
-                                    disabledForegroundColor: Colors.white,
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Expanded(
+                                    child: Directionality(
+                                      textDirection:
+                                          serviceLocator<LanguageController>()
+                                              .targetTextDirection,
+                                      child: PhoneNumberFieldWidget(
+                                        key: const Key(
+                                            'user-phone-number-widget'),
+                                        isCountryChipPersistent: false,
+                                        outlineBorder: true,
+                                        shouldFormat: true,
+                                        useRtl: false,
+                                        withLabel: true,
+                                        decoration: InputDecoration(
+                                          labelText: 'Mobile number',
+                                          //alignLabelWithHint: true,
+                                          hintText: 'Enter your mobile number',
+                                          errorText: phoneValidation,
+                                          //suffixIcon: const PhoneNumberValidationIconWidget(),
+                                          isDense: true,
+                                        ),
+                                        isAllowEmpty: false,
+                                        autofocus: false,
+                                        style: context.bodyLarge,
+                                        showFlagInInput: false,
+                                        countryCodeStyle: context.bodyLarge,
+                                        onPhoneNumberChanged:
+                                            onPhoneNumberChanged,
+                                        //phoneNumberValidationChanged: phoneNumberValidationChanged,
+                                        haveStateManagement: false,
+                                        keyboardType: const TextInputType
+                                            .numberWithOptions(),
+                                        textInputAction: TextInputAction.done,
+                                      ),
+                                    ),
                                   ),
-                                  onPressed:
-                                      (value == PhoneNumberVerification.valid)
-                                          ? verifyPhoneNumber
-                                          : null,
-                                  child: Text(
-                                    'Get OTP',
+                                ],
+                              ),
+                              const AnimatedGap(14,
+                                  duration: Duration(milliseconds: 400)),
+                              Wrap(
+                                textDirection:
+                                    serviceLocator<LanguageController>()
+                                        .targetTextDirection,
+                                children: [
+                                  Text(
+                                    'A 6 digit OTP code will be sent via SMS to verify your mobile number',
+                                    style: context.labelMedium!.copyWith(
+                                      color: Color.fromRGBO(127, 129, 132, 1),
+                                    ),
                                     textDirection:
                                         serviceLocator<LanguageController>()
                                             .targetTextDirection,
                                   ).translate(),
-                                );
-                              },
-                            ),
-                          ),
-                          const AnimatedGap(26,
-                              duration: Duration(milliseconds: 500)),
-                          const TermsConditionStatementWidget(),
-                        ],
+                                ],
+                              ),
+                              const AnimatedGap(26,
+                                  duration: Duration(milliseconds: 400)),
+                              //const Spacer(),
+                              SizedBox(
+                                width: context.width,
+                                child: ValueListenableBuilder<
+                                    PhoneNumberVerification>(
+                                  valueListenable:
+                                      valueNotifierPhoneNumberVerification,
+                                  builder: (context, value, child) {
+                                    return ElevatedButton(
+                                      key: const Key(
+                                          'phone-number_verification-button-key'),
+                                      style: ElevatedButton.styleFrom(
+                                        disabledBackgroundColor:
+                                            Color.fromRGBO(255, 219, 208, 1),
+                                        disabledForegroundColor: Colors.white,
+                                      ),
+                                      onPressed: (value ==
+                                              PhoneNumberVerification.valid)
+                                          ? verifyPhoneNumber
+                                          : null,
+                                      child: Text(
+                                        'Get OTP',
+                                        textDirection:
+                                            serviceLocator<LanguageController>()
+                                                .targetTextDirection,
+                                      ).translate(),
+                                    );
+                                  },
+                                ),
+                              ),
+                              const AnimatedGap(26,
+                                  duration: Duration(milliseconds: 500)),
+                              const TermsConditionStatementWidget(),
+                            ],
+                          );
+                        },
                       ),
                     ),
                   ),
@@ -448,12 +458,9 @@ class _PhoneNumberVerificationPageState
       requestOTPFormKey.currentState?.save();
       context.read<PhoneNumberVerificationBloc>().add(
             VerifyPhoneNumber(
-              phoneNumber: phoneNumber!,
-              countryDialCode: phoneController.value?.countryCode ?? '+966',
-              country: phoneController.value?.isoCode.name ?? 'SA',
-              phoneController: phoneController,
+              countryDialCode: phoneNumber?.countryCode ?? '+966',
               userEnteredPhoneNumber: userEnteredPhoneNumber,
-              isoCode: phoneController.value?.isoCode.name ?? 'SA',
+              phoneNumberWithFormat: phoneNumberWithFormat,
             ),
           );
       return;

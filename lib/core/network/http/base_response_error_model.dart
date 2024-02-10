@@ -3,7 +3,7 @@ import 'package:network_manager/network_manager.dart';
 
 part 'base_response_error_model.g.dart';
 
-@JsonSerializable(explicitToJson: true)
+@JsonSerializable(explicitToJson: true,genericArgumentFactories: true)
 class BaseResponseErrorModel extends INetworkModel<BaseResponseErrorModel> {
   BaseResponseErrorModel({
     this.status,

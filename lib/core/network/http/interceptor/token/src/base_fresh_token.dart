@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
+import 'package:uuid/uuid.dart';
 
 /// An Exception that should be thrown when overriding `refreshToken` if the
 /// refresh fails and should result in a force-logout.
@@ -198,4 +199,9 @@ mixin FreshTokenMixin<T> {
     _token = token;
     _controller.add(_authenticationStatus);
   }
+
+  String get correlationId{
+    return Uuid().v4();
+  }
+
 }

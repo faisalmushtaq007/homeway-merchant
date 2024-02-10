@@ -59,7 +59,8 @@ Future<void> setupGetIt() async {
   _setupGetIt();
   _setUpModel();
   await _setUpAppSetting();
-  _setUpService();
+  _setUpNetworkService();
+  _setUpRestAPIService();
   _setUpRepository();
   _setUpUseCases();
   _setUpStateManagement();
@@ -199,10 +200,13 @@ Future<void> _setUpAppSetting() async {
   );
 }
 
-void _setUpService() {
+void _setUpNetworkService() {
   serviceLocator
       .registerSingleton<ConnectivityService>(ConnectivityService())
       .initConnectivityService();
+}
+
+void _setUpRestAPIService() {
   serviceLocator
     ..registerSingleton<FreshTokenInterceptor<OAuth2Token>>(
       FreshTokenInterceptor.oAuth2(
@@ -216,10 +220,10 @@ void _setUpService() {
       ),
     )
     ..registerFactory<INetworkManager<BaseResponseErrorModel>>(
-      () => NetworkManager<BaseResponseErrorModel>(
+          () => NetworkManager<BaseResponseErrorModel>(
         isEnableLogger: true,
         options: BaseOptions(
-          baseUrl: GlobalApp.developmentUrl+GlobalApp.merchantApiPath,
+          baseUrl: GlobalApp.developmentUrl,
         ),
         //This is optional.
         errorModel: BaseResponseErrorModel(),
@@ -233,35 +237,44 @@ void _setUpService() {
       ),
     )
     ..registerFactory<INetworkManager<BaseResponseErrorModel>>(
-        () => NetworkManager<BaseResponseErrorModel>(
-              isEnableLogger: true,
-              options: BaseOptions(
-                baseUrl: 'http://localhost:3000',
-              ),
-              //This is optional.
-              errorModel: BaseResponseErrorModel(),
-              /*errorModelFromData: (data) {
+          () => NetworkManager<BaseResponseErrorModel>(
+        isEnableLogger: true,
+        options: BaseOptions(
+          baseUrl: GlobalApp.productionUrl,
+        ),
+        //This is optional.
+        errorModel: BaseResponseErrorModel(),
+        /*errorModelFromData: (data) {
 
         },*/
-              fileManager: LocalSembast(),
-              additionalInterceptors: [
-                serviceLocator<FreshTokenInterceptor<OAuth2Token>>(),
-              ],
-            ),
-        instanceName: 'localhost');
+        fileManager: LocalSembast(),
+        additionalInterceptors: [
+          serviceLocator<FreshTokenInterceptor<OAuth2Token>>(),
+        ],
+      ),
+      instanceName: 'production',
+    )
+    ..registerFactory<INetworkManager<BaseResponseErrorModel>>(
+          () => NetworkManager<BaseResponseErrorModel>(
+        isEnableLogger: true,
+        options: BaseOptions(
+          baseUrl: 'http://localhost:3000',
+        ),
+        //This is optional.
+        errorModel: BaseResponseErrorModel(),
+        /*errorModelFromData: (data) {
+
+        },*/
+        fileManager: LocalSembast(),
+        additionalInterceptors: [
+          serviceLocator<FreshTokenInterceptor<OAuth2Token>>(),
+        ],
+      ),
+      instanceName: 'localhost',
+    );
 }
 
 void _setUpUseCases() {
-  serviceLocator.registerLazySingleton<SendOtpUseCase>(
-    () => SendOtpUseCase(
-      authenticationRepository: serviceLocator(),
-    ),
-  );
-  serviceLocator.registerLazySingleton<VerifyOtpUseCase>(
-    () => VerifyOtpUseCase(
-      authenticationRepository: serviceLocator(),
-    ),
-  );
   // Store
   serviceLocator.registerLazySingleton<SaveStoreUseCase>(
     () => SaveStoreUseCase(
@@ -859,13 +872,7 @@ void _setUpRepository() {
   // Category
   serviceLocator.registerSingleton<CategoryLocalDbRepository<Category>>(
       CategoryLocalDbRepository<Category>());
-  serviceLocator.registerSingleton<AuthenticationDataSource>(
-      AuthenticationRemoteDataSource());
-  serviceLocator.registerSingleton<AuthenticationRepository>(
-    AuthenticationRepositoryImplement(
-        remoteDataSource: serviceLocator(),
-        userLocalDbRepository: serviceLocator()),
-  );
+
   // Store
   serviceLocator.registerSingleton<StoreDataSource>(StoreRemoteDataSource());
   // Store and Driver local data source
@@ -1123,27 +1130,6 @@ void _setUpStateManagement() {
   serviceLocator.registerFactory<ConnectivityBloc>(ConnectivityBloc.new);
   serviceLocator.registerFactory<PhoneFormFieldBloc>(PhoneFormFieldBloc.new);
 
-  // PhoneNumberVerificationBloc
-  serviceLocator.registerFactory<PhoneNumberVerificationBloc>(
-    () => PhoneNumberVerificationBloc(
-      phoneFormFieldBloc: serviceLocator(),
-      firebaseAuthentication:
-          serviceLocator<FirebaseAuthenticationRepository>(),
-    ),
-  );
-
-  // OtpVerificationBloc
-  serviceLocator.registerFactory<OtpVerificationBloc>(
-    () => OtpVerificationBloc(
-      sendOtpUseCase: serviceLocator(),
-      verifyOtpUseCase: serviceLocator(),
-      firebaseAuthentication:
-          serviceLocator<FirebaseAuthenticationRepository>(),
-      sendFirebaseOtpUseCase: serviceLocator<SendFirebaseOtpUseCase>(),
-      verifyFirebaseOtpUseCase: serviceLocator<VerifyFirebaseOtpUseCase>(),
-    ),
-  );
-
   // PermissionBloc
   serviceLocator.registerFactory<PermissionBloc>(PermissionBloc.new);
   // Document Bloc
@@ -1181,5 +1167,5 @@ void _setupFirebase() {
 }
 
 void _registerAuthenticationFeature() {
-  AuthenticationInjector.register();
+  AuthenticationInjector().register();
 }

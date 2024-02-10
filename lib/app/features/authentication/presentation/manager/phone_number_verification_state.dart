@@ -12,14 +12,11 @@ class PhoneNumberVerificationState with _$PhoneNumberVerificationState {
     PhoneNumberVerification phoneNumberVerification,
     required String userEnteredPhoneNumber,
     @Default('+966') String countryDialCode,
-    required String country,
-    required PhoneController phoneController,
-    required PhoneNumber phoneNumber,
-    @Default('SA') String isoCode,
     @Default(
       AsyncBtnState.success,
     )
     AsyncBtnState asyncBtnState,
+    required String phoneNumberWithFormat,
   }) = PhoneNumberVerificationSuccessState;
 
   const factory PhoneNumberVerificationState.error({
@@ -35,7 +32,10 @@ class PhoneNumberVerificationState with _$PhoneNumberVerificationState {
   const factory PhoneNumberVerificationState.loading() =
       PhoneNumberVerificationLoadingState;
 
-  const factory PhoneNumberVerificationState.processing() =
+  const factory PhoneNumberVerificationState.processing({
+    @Default(PhoneNumberVerification.processing)
+    PhoneNumberVerification phoneNumberVerification,
+  }) =
       PhoneNumberVerificationProcessingState;
 
   const factory PhoneNumberVerificationState.valid({

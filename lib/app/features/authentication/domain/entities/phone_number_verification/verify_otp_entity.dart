@@ -3,12 +3,9 @@ part of 'package:homemakers_merchant/app/features/authentication/index.dart';
 class VerifyOtpEntity extends INetworkModel<VerifyOtpEntity> {
   VerifyOtpEntity({
     required this.mobile,
-    required this.user_type,
+    this.user_type='merchant',
     this.country_dial_code = '+966',
     required this.otp,
-    this.db = 'odoo16home',
-    required this.password,
-    this.isoCode = 'SA',
     this.phoneNumberWithoutFormat = '',
     this.phoneNumberWithFormat = '',
     this.verificationId = '',
@@ -16,26 +13,20 @@ class VerifyOtpEntity extends INetworkModel<VerifyOtpEntity> {
 
   factory VerifyOtpEntity.fromJson(Map<String, dynamic> json) =>
       VerifyOtpEntity(
-        mobile: json['mobile'] ?? '' as String,
-        user_type: json['user_type'] ?? 'merchant' as String,
-        country_dial_code: json['country_dial_code'] ?? '' as String,
-        otp: json['otp'] ?? '' as String,
-        password: json['password'] ?? '' as String,
-        db: json['db'] ?? 'odoo16home' as String,
-        isoCode: json['isoCode'] as String,
+        mobile: json['mobile'] ?? '',
+        user_type: json['user_type'] ?? 'merchant',
+        country_dial_code: json['country_dial_code'] ?? '',
+        otp: json['otp'] ?? '',
         phoneNumberWithoutFormat:
-            json['phoneNumberWithoutFormat'] ?? '' as String,
-        phoneNumberWithFormat: json['phoneNumberWithFormat'] ?? '' as String,
+            json['phoneNumberWithoutFormat'] ?? '',
+        phoneNumberWithFormat: json['phoneNumberWithFormat'] ?? '',
         verificationId: json['verificationId'],
       );
 
   String mobile;
   String country_dial_code;
   String otp;
-  String password;
-  String db;
   String user_type;
-  String isoCode;
   String phoneNumberWithFormat;
   String phoneNumberWithoutFormat;
   String verificationId;
@@ -49,18 +40,14 @@ class VerifyOtpEntity extends INetworkModel<VerifyOtpEntity> {
         'mobile': mobile,
         'country_dial_code': country_dial_code,
         'otp': otp,
-        //'password': password,
-        'db': db,
         'user_type': user_type,
-        'isoCode': isoCode,
-        'verificationId': verificationId,
       };
 
-  Map<String, dynamic> toTwilio() => <String, dynamic>{
+  Map<String, dynamic> toVerifyOtp() => <String, dynamic>{
         'phone_number': mobile,
         'otp': otp,
       };
 
   @override
-  Map<String, dynamic> toJson() => toTwilio();
+  Map<String, dynamic> toJson() => toVerifyOtp();
 }

@@ -2,10 +2,10 @@ part of 'package:homemakers_merchant/app/features/authentication/index.dart';
 
 abstract class AuthenticationDataSource {
   Future<ApiResultState<SendOtpResponseModel>> sendPhoneAuthenticationOTP(
-      {required BaseRequestModel<SendOtpEntity> sendOtpEntity});
+      {required SendOtpEntity sendOtpEntity});
 
   Future<ApiResultState<VerifyOtpResponseModel>> verifyPhoneAuthenticationOTP(
-      {required BaseRequestModel<VerifyOtpEntity> verifyOtpEntity});
+      {required VerifyOtpEntity verifyOtpEntity});
 
   Future<ApiResultState<AppUserEntity>> getUserProfile({String userID = ''});
 

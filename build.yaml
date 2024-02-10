@@ -23,10 +23,16 @@ targets:
           explicit_to_json: true
           field_rename: none
           generic_argument_factories: true
+          create_factory: true
+          create_field_map: true
+          create_per_field_to_json: true
       freezed:
         options:
           generic_argument_factories: true
           explicit_to_json: true
+          create_factory: true
+          create_field_map: true
+          create_per_field_to_json: true
           generate_for:
             exclude:
               - test
