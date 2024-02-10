@@ -1,7 +1,7 @@
 part of 'package:homemakers_merchant/app/features/notification/index.dart';
 
 class NotificationRemoteDataSource implements NotificationDataSource {
-  final client = serviceLocator<INetworkManager<BaseResponseErrorModel>>();
+  final client = serviceLocator<INetworkManager<BaseApiResponseErrorModel>>();
   @override
   Future<ApiResultState<bool>> deleteAllNotification() {
     // TODO: implement deleteAllNotification

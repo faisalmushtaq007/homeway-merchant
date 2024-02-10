@@ -1,7 +1,7 @@
 part of 'package:homemakers_merchant/app/features/order/index.dart';
 
 class OrderRemoteDataSource implements OrderDataSource {
-  final client = serviceLocator<INetworkManager<BaseResponseErrorModel>>();
+  final client = serviceLocator<INetworkManager<BaseApiResponseErrorModel>>();
 
   @override
   Future<ApiResultState<bool>> deleteAllOrder() {

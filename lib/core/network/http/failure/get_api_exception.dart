@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:homemakers_merchant/core/constants/global_app_constants.dart';
+import 'package:homemakers_merchant/core/network/http/base_api_response_error_model.dart';
 import 'package:homemakers_merchant/core/network/http/base_response_error_model.dart';
 import 'package:homemakers_merchant/core/network/http/failure/network_exception.dart';
 import 'package:network_manager/network_manager.dart';
@@ -119,12 +120,17 @@ mixin class ExceptionMixins {
     );
   }
 
-  BaseResponseErrorModel handleApiFailure(BaseResponseErrorModel? responseModel,
-      {String? defaultMessage}) {
+  BaseResponseErrorModel handleApiFailure(BaseApiResponseErrorModel? responseModel,
+      {String? defaultMessage,int? statusCode}) {
     if (responseModel != null &&
-        responseModel.error != null &&
-        responseModel.error!.model != null) {
-      return responseModel.error?.model as BaseResponseErrorModel;
+        responseModel.error != null) {
+      return BaseResponseErrorModel(
+        message: responseModel.error?.message,
+        status: responseModel.error?.code,
+        error: responseModel.error,
+        code: statusCode??0,
+      );
+      //return responseModel.error as BaseResponseErrorModel;
     } else {
       return BaseResponseErrorModel(
         code: 0,

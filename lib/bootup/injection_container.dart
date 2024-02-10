@@ -37,6 +37,7 @@ import 'package:homemakers_merchant/core/constants/global_app_constants.dart';
 import 'package:homemakers_merchant/core/interface/storage_interface.dart';
 import 'package:homemakers_merchant/core/keys/app_key.dart';
 import 'package:homemakers_merchant/core/local/database/app_database.dart';
+import 'package:homemakers_merchant/core/network/http/base_api_response_error_model.dart';
 import 'package:homemakers_merchant/core/network/http/base_response_error_model.dart';
 import 'package:homemakers_merchant/core/network/http/interceptor/token/fresh_token_interceptor.dart';
 import 'package:homemakers_merchant/core/service/connectivity_bloc/connectivity_bloc.dart';
@@ -219,14 +220,14 @@ void _setUpRestAPIService() {
         },
       ),
     )
-    ..registerFactory<INetworkManager<BaseResponseErrorModel>>(
-          () => NetworkManager<BaseResponseErrorModel>(
+    ..registerFactory<INetworkManager<BaseApiResponseErrorModel>>(
+          () => NetworkManager<BaseApiResponseErrorModel>(
         isEnableLogger: true,
         options: BaseOptions(
           baseUrl: GlobalApp.developmentUrl,
         ),
         //This is optional.
-        errorModel: BaseResponseErrorModel(),
+        errorModel: BaseApiResponseErrorModel(),
         /*errorModelFromData: (data) {
 
         },*/
@@ -236,14 +237,14 @@ void _setUpRestAPIService() {
         ],
       ),
     )
-    ..registerFactory<INetworkManager<BaseResponseErrorModel>>(
-          () => NetworkManager<BaseResponseErrorModel>(
+    ..registerFactory<INetworkManager<BaseApiResponseErrorModel>>(
+          () => NetworkManager<BaseApiResponseErrorModel>(
         isEnableLogger: true,
         options: BaseOptions(
           baseUrl: GlobalApp.productionUrl,
         ),
         //This is optional.
-        errorModel: BaseResponseErrorModel(),
+        errorModel: BaseApiResponseErrorModel(),
         /*errorModelFromData: (data) {
 
         },*/
@@ -254,14 +255,14 @@ void _setUpRestAPIService() {
       ),
       instanceName: 'production',
     )
-    ..registerFactory<INetworkManager<BaseResponseErrorModel>>(
-          () => NetworkManager<BaseResponseErrorModel>(
+    ..registerFactory<INetworkManager<BaseApiResponseErrorModel>>(
+          () => NetworkManager<BaseApiResponseErrorModel>(
         isEnableLogger: true,
         options: BaseOptions(
           baseUrl: 'http://localhost:3000',
         ),
         //This is optional.
-        errorModel: BaseResponseErrorModel(),
+        errorModel: BaseApiResponseErrorModel(),
         /*errorModelFromData: (data) {
 
         },*/

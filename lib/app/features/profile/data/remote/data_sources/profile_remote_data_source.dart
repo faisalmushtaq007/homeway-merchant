@@ -1,7 +1,7 @@
 part of 'package:homemakers_merchant/app/features/profile/index.dart';
 
 class ProfileRemoteDataSource implements ProfileDataSource {
-  final client = serviceLocator<INetworkManager<BaseResponseErrorModel>>();
+  final client = serviceLocator<INetworkManager<BaseApiResponseErrorModel>>();
   @override
   Future<ApiResultState<bool>> deleteAllBusinessDocument(
       {AppUserEntity? appUserEntity}) {

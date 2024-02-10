@@ -1,7 +1,7 @@
 part of 'package:homemakers_merchant/app/features/menu/index.dart';
 
 class MenuRemoteDataSource implements MenuDataSource {
-  final client = serviceLocator<INetworkManager<BaseResponseErrorModel>>();
+  final client = serviceLocator<INetworkManager<BaseApiResponseErrorModel>>();
 
   @override
   Future<ApiResultState<bool>> deleteAllMenu() {

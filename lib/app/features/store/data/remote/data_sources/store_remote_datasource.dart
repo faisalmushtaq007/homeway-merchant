@@ -1,7 +1,7 @@
 part of 'package:homemakers_merchant/app/features/store/index.dart';
 
 class StoreRemoteDataSource implements StoreDataSource {
-  final client = serviceLocator<INetworkManager<BaseResponseErrorModel>>();
+  final client = serviceLocator<INetworkManager<BaseApiResponseErrorModel>>();
 
   @override
   Future<ApiResultState<bool>> deleteAllStore() {

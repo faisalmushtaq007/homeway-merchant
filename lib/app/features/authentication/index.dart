@@ -7,6 +7,7 @@ import 'package:homemakers_merchant/bootup/injection_container.dart';
 import 'package:homemakers_merchant/core/extensions/global_extensions/src/object.dart';
 import 'package:homemakers_merchant/core/local/database/base/identifiable.dart';
 import 'package:homemakers_merchant/core/local/database/base/repository_failure.dart';
+import 'package:homemakers_merchant/core/network/http/base_api_response_error_model.dart';
 import 'package:homemakers_merchant/core/network/http/base_request_model.dart';
 import 'package:homemakers_merchant/core/network/http/base_response_error_model.dart';
 import 'package:homemakers_merchant/core/network/http/base_response_model.dart';

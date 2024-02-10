@@ -1,66 +1,40 @@
 part of 'package:homemakers_merchant/app/features/authentication/index.dart';
 
 class AuthenticationRemoteDataSource extends AuthenticationDataSource {
-  final client = serviceLocator<INetworkManager<BaseResponseErrorModel>>();
+  final client = serviceLocator<INetworkManager<BaseApiResponseErrorModel>>();
 
   @override
   Future<ApiResultState<AppUserEntity>> getUserProfile({
     String userID = '',
   }) async {
-    try {
-      const String apiPath = AuthenticationConstants.getUserProfile;
-      final response =
-          await client.send<BaseResponseModel, BaseResponseModel>(
-        apiPath,
-        parseModel: BaseResponseModel(),
-        method: RequestType.GET,
-      );
-      if (response.data != null) {
-        return ApiResultState<AppUserEntity>.success(data: response.data!.data as AppUserEntity);
-      } else {
-        return ApiResultState<AppUserEntity>.failure(
-          reason: GetApiException()
-              .handleApiFailure(response.error?.model)
-              .message
-              .toString(),
-        );
-      }
-    } on Exception catch (e, s) {
-      return ApiResultState<AppUserEntity>.failure(
-        reason:
-            GetApiException().handleHttpApiException(e).message ?? e.toString(),
-        stackTrace: s,
-        //exception: GetApiException().handleHttpApiException(e),
-        error: e,
-      );
-    }
+    throw UnimplementedError();
   }
 
   @override
   Future<ApiResultState<SendOtpResponseModel>> sendPhoneAuthenticationOTP({
     required SendOtpEntity sendOtpEntity,
   }) async {
-
-   try {
-      const String apiPath = AuthenticationConstants.sendOtp;
-      final response = await client
-          .send<BaseResponseModel, BaseResponseModel>(
-        apiPath,
+    try {
+      final response = await client.send<BaseResponseModel, BaseResponseModel>(
+        AuthenticationConstants.sendOtp,
         parseModel: BaseResponseModel(),
         method: RequestType.POST,
         data: sendOtpEntity.toJson(),
       );
-      appLog.d('Response ${response.data?.toJson()}');
-      final result=response.data;
-      if (result != null) {
+
+      final result = response.data;
+      if (result != null && result != Null) {
         return ApiResultState<SendOtpResponseModel>.success(
-          data: SendOtpResponseModel.fromJson(result.data as Map<String,dynamic>),
+          data: SendOtpResponseModel.fromJson(response.data?.data),
         );
-      }
-      else {
+      } else {
+        final error = response.error;
         return ApiResultState<SendOtpResponseModel>.failure(
           reason: GetApiException()
-              .handleApiFailure(response.error?.model)
+              .handleApiFailure(
+                error?.model,
+                statusCode: error?.statusCode,
+              )
               .message
               .toString(),
         );
@@ -82,22 +56,24 @@ class AuthenticationRemoteDataSource extends AuthenticationDataSource {
   }) async {
     try {
       const String apiPath = AuthenticationConstants.verifyOtp;
-      final response = await client.send<
-          BaseResponseModel, BaseResponseModel>(
+      final response = await client.send<BaseResponseModel, BaseResponseModel>(
         apiPath,
         parseModel: BaseResponseModel(),
         method: RequestType.POST,
         data: verifyOtpEntity.toVerifyOtp(),
       );
-      final result=response.data;
+      final result = response.data;
       if (result != null) {
         return ApiResultState<VerifyOtpResponseModel>.success(
-          data: result.data as VerifyOtpResponseModel,
+          data: VerifyOtpResponseModel.fromJson(response.data?.data),
         );
       } else {
         return ApiResultState<VerifyOtpResponseModel>.failure(
           reason: GetApiException()
-              .handleApiFailure(response.error?.model)
+              .handleApiFailure(
+                response.error?.model,
+                statusCode: response.error?.statusCode,
+              )
               .message
               .toString(),
         );

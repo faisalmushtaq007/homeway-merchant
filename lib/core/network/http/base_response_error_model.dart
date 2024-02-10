@@ -21,6 +21,7 @@ class BaseResponseErrorModel extends INetworkModel<BaseResponseErrorModel> {
   final dynamic error;
   final int? code;
 
+
   @override
   BaseResponseErrorModel fromJson(Map<String, dynamic> json) {
     return BaseResponseErrorModel.fromJson(
@@ -32,3 +33,4 @@ class BaseResponseErrorModel extends INetworkModel<BaseResponseErrorModel> {
   @override
   Map<String, dynamic> toJson() => toMap();
 }
+

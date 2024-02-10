@@ -11,6 +11,7 @@ analyzer:
     non_constant_default_value: false
     const_with_non_constant_argument: false
     valid_regexps: false
+    return_of_invalid_type: false
 
 linter:
   rules:
@@ -28,3 +29,4 @@ linter:
     const_with_non_constant_argument: false
     const_with_non_const: false
     directives_ordering:
+    return_of_invalid_type: false

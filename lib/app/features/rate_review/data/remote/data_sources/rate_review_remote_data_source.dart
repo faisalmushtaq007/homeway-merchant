@@ -1,7 +1,7 @@
 part of 'package:homemakers_merchant/app/features/rate_review/index.dart';
 
 class RateAndReviewRemoteDataSource implements RateAndReviewDataSource {
-  final client = serviceLocator<INetworkManager<BaseResponseErrorModel>>();
+  final client = serviceLocator<INetworkManager<BaseApiResponseErrorModel>>();
   @override
   Future<ApiResultState<bool>> deleteAllRateAndReview() {
     // TODO: implement deleteAllRateAndReview
