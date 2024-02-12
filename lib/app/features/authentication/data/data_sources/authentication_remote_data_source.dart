@@ -1,7 +1,7 @@
 part of 'package:homemakers_merchant/app/features/authentication/index.dart';
 
 class AuthenticationRemoteDataSource extends AuthenticationDataSource {
-  final client = serviceLocator<INetworkManager<BaseApiResponseErrorModel>>();
+  final client = serviceLocator<IRestApiManager>();
 
   @override
   Future<ApiResultState<AppUserEntity>> getUserProfile({
@@ -15,9 +15,8 @@ class AuthenticationRemoteDataSource extends AuthenticationDataSource {
     required SendOtpEntity sendOtpEntity,
   }) async {
     try {
-      final response = await client.send<BaseResponseModel, BaseResponseModel>(
+      final response = await client.send(
         AuthenticationConstants.sendOtp,
-        parseModel: BaseResponseModel(),
         method: RequestType.POST,
         data: sendOtpEntity.toJson(),
       );
@@ -55,10 +54,8 @@ class AuthenticationRemoteDataSource extends AuthenticationDataSource {
     required VerifyOtpEntity verifyOtpEntity,
   }) async {
     try {
-      const String apiPath = AuthenticationConstants.verifyOtp;
-      final response = await client.send<BaseResponseModel, BaseResponseModel>(
-        apiPath,
-        parseModel: BaseResponseModel(),
+      final response = await client.send(
+        AuthenticationConstants.verifyOtp,
         method: RequestType.POST,
         data: verifyOtpEntity.toVerifyOtp(),
       );
@@ -76,6 +73,7 @@ class AuthenticationRemoteDataSource extends AuthenticationDataSource {
               )
               .message
               .toString(),
+          error: response.error,
         );
       }
     } on Exception catch (e, s) {

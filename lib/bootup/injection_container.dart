@@ -42,6 +42,8 @@ import 'package:homemakers_merchant/core/network/http/base_response_error_model.
 import 'package:homemakers_merchant/core/network/http/interceptor/token/fresh_token_interceptor.dart';
 import 'package:homemakers_merchant/core/service/connectivity_bloc/connectivity_bloc.dart';
 import 'package:homemakers_merchant/core/service/connectivity_bloc/src/connectivity_bloc/connectivity_service.dart';
+import 'package:homemakers_merchant/core/service/restApiClient/IRestApiManager.dart';
+import 'package:homemakers_merchant/core/service/restApiClient/respiApiClient.dart';
 import 'package:homemakers_merchant/shared/widgets/universal/phone_number_text_field/phone_form_field_bloc.dart';
 import 'package:homemakers_merchant/shared/widgets/universal/wrap_and_more/src/wrap_and_more_controller.dart';
 import 'package:homemakers_merchant/theme/theme_controller.dart';
@@ -221,7 +223,7 @@ void _setUpRestAPIService() {
       ),
     )
     ..registerFactory<INetworkManager<BaseApiResponseErrorModel>>(
-          () => NetworkManager<BaseApiResponseErrorModel>(
+      () => NetworkManager<BaseApiResponseErrorModel>(
         isEnableLogger: true,
         options: BaseOptions(
           baseUrl: GlobalApp.developmentUrl,
@@ -238,7 +240,7 @@ void _setUpRestAPIService() {
       ),
     )
     ..registerFactory<INetworkManager<BaseApiResponseErrorModel>>(
-          () => NetworkManager<BaseApiResponseErrorModel>(
+      () => NetworkManager<BaseApiResponseErrorModel>(
         isEnableLogger: true,
         options: BaseOptions(
           baseUrl: GlobalApp.productionUrl,
@@ -253,10 +255,10 @@ void _setUpRestAPIService() {
           serviceLocator<FreshTokenInterceptor<OAuth2Token>>(),
         ],
       ),
-      instanceName: 'production',
+      instanceName: GlobalApp.productionInstanceName,
     )
     ..registerFactory<INetworkManager<BaseApiResponseErrorModel>>(
-          () => NetworkManager<BaseApiResponseErrorModel>(
+      () => NetworkManager<BaseApiResponseErrorModel>(
         isEnableLogger: true,
         options: BaseOptions(
           baseUrl: 'http://localhost:3000',
@@ -271,7 +273,28 @@ void _setUpRestAPIService() {
           serviceLocator<FreshTokenInterceptor<OAuth2Token>>(),
         ],
       ),
-      instanceName: 'localhost',
+      instanceName: GlobalApp.localhostInstanceName,
+    );
+  // Own RestAPI Manager or Client
+  serviceLocator
+    ..registerFactory<IRestApiManager>(
+      () => RestApiClient(
+        client: serviceLocator<INetworkManager<BaseApiResponseErrorModel>>(),
+      ),
+    )
+    ..registerFactory<IRestApiManager>(
+      () => RestApiClient(
+        client: serviceLocator<INetworkManager<BaseApiResponseErrorModel>>(
+          instanceName: GlobalApp.productionInstanceName,
+        ),
+      ),
+    )
+    ..registerFactory<IRestApiManager>(
+      () => RestApiClient(
+        client: serviceLocator<INetworkManager<BaseApiResponseErrorModel>>(
+          instanceName: GlobalApp.localhostInstanceName,
+        ),
+      ),
     );
 }
 

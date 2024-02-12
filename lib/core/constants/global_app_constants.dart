@@ -180,7 +180,8 @@ class GlobalApp {
   static const String apiVersion = 'v1';
 
   //merchant/api/v1
-  static const String merchantApiPath = '${GlobalApp.baseApiPath}/${GlobalApp.apiVersion}';
+  static const String merchantApiPath =
+      '${GlobalApp.baseApiPath}/${GlobalApp.apiVersion}';
   static const String developmentUrl =
       '${GlobalApp.developmentBaseUrl}:${GlobalApp.developmentPort}/${GlobalApp.merchantApiPath}';
   static const String productionUrl =
@@ -262,5 +263,8 @@ class GlobalApp {
     DocumentPickerSource.none,
   ];
 
-
+  static final String productionInstanceName = 'production';
+  static final String developmentInstanceName = 'development';
+  static final String localhostInstanceName = 'localhost';
+  static final String stagingInstanceName = 'staging';
 }

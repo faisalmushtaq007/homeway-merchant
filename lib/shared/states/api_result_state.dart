@@ -12,5 +12,5 @@ class ApiResultState<T> with _$ApiResultState<T> {
       {required String reason,
       Object? error,
       NetworkException? exception,
-      StackTrace? stackTrace}) = ApiFailure<T>;
+      StackTrace? stackTrace,}) = ApiFailure<T>;
 }

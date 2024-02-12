@@ -130,8 +130,8 @@ class OtpVerificationBloc
           otpVerificationStatus: OtpVerificationStatus.processing,
         ),
       );
-      if (!event.verifyOtpEntity.mobile.isEmptyOrNull &&
-          event.verifyOtpEntity.otp != null) {
+      if (event.verifyOtpEntity.mobile.isNotEmpty &&
+          event.verifyOtpEntity.otp.isNotEmpty) {
         // Verify otp use case
         final ResultState<VerifyOtpResponseModel> resultState =
             await verifyOtpUseCase(event.verifyOtpEntity);

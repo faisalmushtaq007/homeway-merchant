@@ -317,7 +317,7 @@ class _OTPVerificationPageState extends State<OTPVerificationPage> {
                     VerifyOtpState() ||
                     SendOtpState() ||
                     VerifyOtpProcessingState() ||
-                    SendOtpProcessingState() ||
+                    SendOtpProcessingState() || VerifyOtpFailedState()||
                     OtpTimerState() =>
                       true,
                     _ => false,
@@ -330,9 +330,14 @@ class _OTPVerificationPageState extends State<OTPVerificationPage> {
                               OtpVerificationStatus.otpVerified) {
                             // Reset the OTP text field
                             otpController.clear();
+                            otpErrorText=null;
                           }
                           break;
                         }
+                      case VerifyOtpFailedState():{
+                        otpErrorText=otpVerificationState.message;
+                        break;
+                      }
                       case SendOtpState():
                         {
                           break;
@@ -405,7 +410,7 @@ class _OTPVerificationPageState extends State<OTPVerificationPage> {
                                 crossAxisAlignment: WrapCrossAlignment.center,
                                 children: [
                                   Text(
-                                    "We've sent an OTP code to ${widget.phoneNumber}",
+                                    "We've sent an OTP code to ${widget.phoneNumberWithFormat}",
                                     style:
                                         Theme.of(context).textTheme.labelLarge,
                                     textDirection:
@@ -517,52 +522,28 @@ class _OTPVerificationPageState extends State<OTPVerificationPage> {
                                           .validate()) {
                                         appLog.d('OTP Validate');
                                         verifyOTPFormKey.currentState?.save();
-                                        if (otpController.value.text ==
-                                            '123456') {
-                                          // OTP is valid
-                                          otpErrorText = null;
 
-                                          setState(() {});
-                                          await Future.delayed(
-                                              const Duration(milliseconds: 500),
-                                              () {});
-                                          if (!mounted) {
-                                            return;
-                                          }
-                                          serviceLocator<AppUserEntity>()
-                                              .phoneNumber = widget.phoneNumber;
-                                          serviceLocator<AppUserEntity>()
-                                                  .currentProfileStatus =
-                                              CurrentProfileStatus
-                                                  .phoneNumberVerified;
-                                          context
-                                              .read<OtpVerificationBloc>()
-                                              .add(
-                                                VerifyOtp(
-                                                  verifyOtpEntity:
-                                                      VerifyOtpEntity(
-                                                    mobile: widget.phoneNumber,
-                                                    country_dial_code:
-                                                        widget.countryDialCode,
-                                                    otp: otpController
-                                                        .value.text
-                                                        .trim(),
-                                                    // Todo(prasant): Check password and db property from backend developer
-                                                    phoneNumberWithFormat:
-                                                        widget.phoneNumberWithFormat,
-                                                  ),
-                                                  otpVerificationStatus:
-                                                      OtpVerificationStatus
-                                                          .otpSent,
+                                        // OTP is valid
+                                        otpErrorText = null;
+
+                                        context.read<OtpVerificationBloc>().add(
+                                              VerifyOtp(
+                                                verifyOtpEntity:
+                                                    VerifyOtpEntity(
+                                                  mobile: widget.phoneNumber,
+                                                  country_dial_code:
+                                                      widget.countryDialCode,
+                                                  otp: otpController.value.text
+                                                      .trim(),
+                                                  phoneNumberWithFormat: widget
+                                                      .phoneNumberWithFormat,
                                                 ),
-                                              );
-                                        } else {
-                                          setState(() {
-                                            otpErrorText = 'OTP is invalid';
-                                          });
-                                        }
+                                                otpVerificationStatus:
+                                                    OtpVerificationStatus
+                                                        .otpSent,
+                                              ),
+                                            );
                                       }
-                                      //context.read<PhoneNumberVerificationBloc>().add(VerifyPhoneNumber(),);
                                       return;
                                     },
                                     child: Text(
