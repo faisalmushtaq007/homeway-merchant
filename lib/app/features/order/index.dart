@@ -35,6 +35,7 @@ import 'package:homemakers_merchant/core/local/database/base/tryCatch.dart';
 import 'package:homemakers_merchant/core/network/http/base_api_response_error_model.dart';
 import 'package:homemakers_merchant/core/network/http/base_response_error_model.dart';
 import 'package:homemakers_merchant/core/service/connectivity_bloc/src/connectivity_bloc/connectivity_service.dart';
+import 'package:homemakers_merchant/core/service/restApiClient/IRestApiManager.dart';
 import 'package:homemakers_merchant/shared/router/app_pages.dart';
 import 'package:homemakers_merchant/shared/states/api_result_state.dart';
 import 'package:homemakers_merchant/shared/states/data_source_state.dart';

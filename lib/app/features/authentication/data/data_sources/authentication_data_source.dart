@@ -52,4 +52,8 @@ abstract class AuthenticationDataSource {
     Timestamp? startTime,
     Timestamp? endTime,
   });
+
+  Future<ApiResultState<AuthenticationStatusModel>> getCurrentUserStatus();
+
+  Future<ApiResultState<String>> getRefreshToken();
 }

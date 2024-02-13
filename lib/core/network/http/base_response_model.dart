@@ -15,7 +15,7 @@ part 'base_response_model.g.dart';
 )
 class BaseResponseModel extends INetworkModel<BaseResponseModel>
     with EquatableMixin {
-  BaseResponseModel({
+  const BaseResponseModel({
     this.data,
     this.success,
     this.correlationId,

@@ -437,4 +437,42 @@ extension StringWordCapitalize on String {
   String dot() {
     return snake().replaceAll('_', '.');
   }
+
+  /// Checks if the `String` is Blank (null, empty or only white spaces).
+  bool get isBlank => this.trim().isEmpty;
+
+  /// Checks if the `String` is not blank (null, empty or only white spaces).
+  bool get isNotBlank => isBlank == false;
+
+  /// Appends a [suffix] to the `String`.
+  ///
+  /// ### Example
+  ///
+  /// ```dart
+  /// String foo = 'hello';
+  /// String newFoo = foo1.append(' world'); // returns 'hello world'
+  /// ```
+  String append(String suffix) {
+    if (this.isBlank) {
+      return suffix;
+    }
+
+    return this + suffix;
+  }
+
+  /// Prepends a [prefix] to the `String`.
+  ///
+  /// ### Example
+  ///
+  /// ```dart
+  /// String foo = 'world';
+  /// String newFoo = foo1.prepend('hello '); // returns 'hello world'
+  /// ```
+  String prepend(String prefix) {
+    if (this.isBlank) {
+      return prefix;
+    }
+
+    return prefix + this;
+  }
 }

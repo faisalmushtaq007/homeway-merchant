@@ -1,7 +1,7 @@
 part of 'package:homemakers_merchant/app/features/store/index.dart';
 
 class StoreRemoteDataSource implements StoreDataSource {
-  final client = serviceLocator<INetworkManager<BaseApiResponseErrorModel>>();
+  final client = serviceLocator<IRestApiManager>();
 
   @override
   Future<ApiResultState<bool>> deleteAllStore() {
@@ -11,36 +11,189 @@ class StoreRemoteDataSource implements StoreDataSource {
 
   @override
   Future<ApiResultState<bool>> deleteStore(
-      {StoreEntity? storeEntity, required int storeID}) {
-    // TODO(prasant): implement deleteStore
-    throw UnimplementedError();
+      {StoreEntity? storeEntity, required int storeID}) async {
+    try {
+      final response = await client.send(
+        GlobalApp.businessCollection,
+        method: RequestType.PUT,
+      );
+
+      final result = response.data;
+      if (result != null && result != Null) {
+        return ApiResultState<BusinessProfileEntity>.success(
+          data: BusinessProfileEntity.fromMap(response.data?.data),
+        );
+      } else {
+        final error = response.error;
+        return ApiResultState<BusinessProfileEntity>.failure(
+          reason: GetApiException()
+              .handleApiFailure(
+                error?.model,
+                statusCode: error?.statusCode,
+              )
+              .message
+              .toString(),
+        );
+      }
+    } on Exception catch (e, s) {
+      return ApiResultState<BusinessProfileEntity>.failure(
+        reason:
+            GetApiException().handleHttpApiException(e).message ?? e.toString(),
+        stackTrace: s,
+        //exception: GetApiException().handleHttpApiException(e),
+        error: e,
+      );
+    }
   }
 
   @override
   Future<ApiResultState<StoreEntity>> editStore(
-      {required StoreEntity storeEntity}) {
-    // TODO(prasant): implement editStore
-    throw UnimplementedError();
+      {required StoreEntity storeEntity}) async {
+    try {
+      final response = await client.send(
+        GlobalApp.storeCollection,
+        method: RequestType.PUT,
+      );
+
+      final result = response.data;
+      if (result != null && result != Null) {
+        return ApiResultState<StoreEntity>.success(
+          data: BusinessProfileEntity.fromMap(response.data?.data),
+        );
+      } else {
+        final error = response.error;
+        return ApiResultState<StoreEntity>.failure(
+          reason: GetApiException()
+              .handleApiFailure(
+                error?.model,
+                statusCode: error?.statusCode,
+              )
+              .message
+              .toString(),
+        );
+      }
+    } on Exception catch (e, s) {
+      return ApiResultState<StoreEntity>.failure(
+        reason:
+            GetApiException().handleHttpApiException(e).message ?? e.toString(),
+        stackTrace: s,
+        //exception: GetApiException().handleHttpApiException(e),
+        error: e,
+      );
+    }
   }
 
   @override
-  Future<ApiResultState<List<StoreEntity>>> getAllStore() {
-    // TODO(prasant): implement getAllStore
-    throw UnimplementedError();
+  Future<ApiResultState<List<StoreEntity>>> getAllStore() async {
+    try {
+      final response = await client.send(
+        GlobalApp.storeCollection,
+        method: RequestType.GET,
+      );
+
+      final result = response.data;
+      if (result != null && result != Null) {
+        return ApiResultState<List<StoreEntity>>.success(
+          data: response.data?.data
+              .map((e) => StoreEntity.fromMap(e as Map))
+              .toList()
+              .cast<StoreEntity>(),
+        );
+      } else {
+        final error = response.error;
+        return ApiResultState<List<StoreEntity>>.failure(
+          reason: GetApiException()
+              .handleApiFailure(
+                error?.model,
+                statusCode: error?.statusCode,
+              )
+              .message
+              .toString(),
+        );
+      }
+    } on Exception catch (e, s) {
+      return ApiResultState<List<StoreEntity>>.failure(
+        reason:
+            GetApiException().handleHttpApiException(e).message ?? e.toString(),
+        stackTrace: s,
+        //exception: GetApiException().handleHttpApiException(e),
+        error: e,
+      );
+    }
   }
 
   @override
   Future<ApiResultState<StoreEntity>> getStore(
-      {StoreEntity? storeEntity, required int storeID}) {
-    // TODO(prasant): implement getStore
-    throw UnimplementedError();
+      {StoreEntity? storeEntity, required int storeID}) async {
+    try {
+      final response = await client.send(
+        GlobalApp.storeCollection,
+        method: RequestType.GET,
+      );
+
+      final result = response.data;
+      if (result != null && result != Null) {
+        return ApiResultState<StoreEntity>.success(
+          data: StoreEntity.fromMap(response.data?.data),
+        );
+      } else {
+        final error = response.error;
+        return ApiResultState<StoreEntity>.failure(
+          reason: GetApiException()
+              .handleApiFailure(
+                error?.model,
+                statusCode: error?.statusCode,
+              )
+              .message
+              .toString(),
+        );
+      }
+    } on Exception catch (e, s) {
+      return ApiResultState<StoreEntity>.failure(
+        reason:
+            GetApiException().handleHttpApiException(e).message ?? e.toString(),
+        stackTrace: s,
+        //exception: GetApiException().handleHttpApiException(e),
+        error: e,
+      );
+    }
   }
 
   @override
   Future<ApiResultState<StoreEntity>> saveStore(
-      {required StoreEntity storeEntity}) {
-    // TODO(prasant): implement saveStore
-    throw UnimplementedError();
+      {required StoreEntity storeEntity}) async {
+    try {
+      final response = await client.send(
+        GlobalApp.storeCollection,
+        method: RequestType.POST,
+      );
+
+      final result = response.data;
+      if (result != null && result != Null) {
+        return ApiResultState<StoreEntity>.success(
+          data: StoreEntity.fromMap(response.data?.data),
+        );
+      } else {
+        final error = response.error;
+        return ApiResultState<StoreEntity>.failure(
+          reason: GetApiException()
+              .handleApiFailure(
+                error?.model,
+                statusCode: error?.statusCode,
+              )
+              .message
+              .toString(),
+        );
+      }
+    } on Exception catch (e, s) {
+      return ApiResultState<StoreEntity>.failure(
+        reason:
+            GetApiException().handleHttpApiException(e).message ?? e.toString(),
+        stackTrace: s,
+        //exception: GetApiException().handleHttpApiException(e),
+        error: e,
+      );
+    }
   }
 
   @override

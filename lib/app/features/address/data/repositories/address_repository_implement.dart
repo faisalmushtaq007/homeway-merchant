@@ -78,7 +78,7 @@ class AddressRepositoryImplement implements UserAddressRepository {
     try {
       final connectivity =
           serviceLocator<ConnectivityService>().getCurrentInternetStatus();
-      if (connectivity.$2 == InternetConnectivityState.internet) {
+      if (connectivity.$2 != InternetConnectivityState.internet) {
         // Local DB
         // Save to local
         final Either<RepositoryBaseFailure, bool> result =

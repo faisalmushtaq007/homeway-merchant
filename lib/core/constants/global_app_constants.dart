@@ -173,19 +173,31 @@ class GlobalApp {
   static VisualDensity get visualDensity =>
       FlexColorScheme.comfortablePlatformDensity;
   static const int developmentPort = 5000;
-  static const int productionPort = 8069;
-  static const String developmentBaseUrl = 'http://15.184.169.237';
-  static const String productionPortBaseUrl = 'http://15.184.169.237';
+  static const int productionPort = 5000;
+  static const String developmentBaseUrl = '15.184.169.237';
+  static const String productionBaseUrl = '15.184.169.237';
   static const String baseApiPath = 'merchant/api/';
   static const String apiVersion = 'v1';
 
   //merchant/api/v1
-  static const String merchantApiPath =
-      '${GlobalApp.baseApiPath}/${GlobalApp.apiVersion}';
-  static const String developmentUrl =
-      '${GlobalApp.developmentBaseUrl}:${GlobalApp.developmentPort}/${GlobalApp.merchantApiPath}';
-  static const String productionUrl =
-      '${GlobalApp.productionPortBaseUrl}:${GlobalApp.productionPort}/${GlobalApp.merchantApiPath}';
+  static String merchantApiPath =
+      [GlobalApp.baseApiPath, GlobalApp.apiVersion].join('/').toString();
+
+  // Development URL
+  static String developmentUrl = Uri(
+    scheme: 'http',
+    host: developmentBaseUrl,
+    port: developmentPort,
+    path: merchantApiPath,
+  ).toString();
+
+  // Development URL
+  static String productionUrl = Uri(
+    scheme: 'https',
+    host: productionBaseUrl,
+    port: productionPort,
+    path: merchantApiPath,
+  ).toString();
 
   static const String userModelKey = 'userModelKey';
   static AppUserEntity defaultUserModel = serviceLocator<AppUserEntity>();
@@ -262,9 +274,16 @@ class GlobalApp {
     DocumentPickerSource.folder,
     DocumentPickerSource.none,
   ];
-
   static final String productionInstanceName = 'production';
   static final String developmentInstanceName = 'development';
   static final String localhostInstanceName = 'localhost';
   static final String stagingInstanceName = 'staging';
+  static final String addressCollection = '/address';
+  static final String storeCollection = '/store';
+  static final String menuCollection = '/menu';
+  static final String driverCollection = '/driver';
+  static final String businessCollection = '/business';
+  static final String profileCollection = '/profile';
+  static final String addonsCollection = '/addons';
+  static final String userTypeCollection = '/usertype';
 }

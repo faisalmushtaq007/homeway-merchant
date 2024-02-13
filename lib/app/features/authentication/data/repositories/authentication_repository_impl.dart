@@ -646,4 +646,59 @@ class AuthenticationRepositoryImplement implements AuthenticationRepository {
       );
     }
   }
+
+  @override
+  Future<DataSourceState<AuthenticationStatusModel>> getCurrentUserStatus() async{
+    try {
+      final connectivity =
+      serviceLocator<ConnectivityService>().getCurrentInternetStatus();
+      if (connectivity.$2 != InternetConnectivityState.internet) {
+        // Local DB
+        appLog.d('Get current user status local error');
+        return DataSourceState<AuthenticationStatusModel>.error(
+          reason: 'Not implemented',
+          dataSourceFailure: DataSourceFailure.local,
+        );
+      }
+      else {
+        // Remote
+        // Save to server
+        final ApiResultState<AppUserEntity?> result =
+            await remoteDataSource.getCurrentUserStatus();
+        // Return result
+        return result.when(
+          success: (data) {
+            appLog.d('Get current user status to remote');
+            return DataSourceState<AuthenticationStatusModel>.remote(
+              data: data,
+            );
+          },
+          failure: (reason, error, exception, stackTrace) {
+            appLog.d('Get current user status remote error $reason');
+            return DataSourceState<AuthenticationStatusModel>.error(
+              reason: reason,
+              dataSourceFailure: DataSourceFailure.remote,
+              stackTrace: stackTrace,
+              error: error,
+              networkException: exception,
+            );
+          },
+        );
+      }
+    } catch (e, s) {
+      appLog.d('Get current appUser exception $e');
+      return DataSourceState<AppUserEntity>.error(
+        reason: e.toString(),
+        dataSourceFailure: DataSourceFailure.local,
+        stackTrace: s,
+        error: e,
+        exception: e as Exception,
+      );
+    }
+  }
+
+  @override
+  Future<DataSourceState<String>> getRefreshToken() async{
+    throw UnimplementedError();
+  }
 }

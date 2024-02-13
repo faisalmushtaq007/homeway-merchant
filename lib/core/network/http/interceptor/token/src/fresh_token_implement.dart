@@ -119,14 +119,14 @@ class FreshTokenInterceptor<T> extends Interceptor with FreshTokenMixin<T> {
     try {
       final refreshResponse = await _tryRefresh(response);
       handler.resolve(refreshResponse);
-    } on DioError catch (error) {
+    } on DioException catch (error) {
       handler.reject(error);
     }
   }
 
   @override
   Future<dynamic> onError(
-    DioError err,
+      DioException err,
     ErrorInterceptorHandler handler,
   ) async {
     final response = err.response;
@@ -139,7 +139,7 @@ class FreshTokenInterceptor<T> extends Interceptor with FreshTokenMixin<T> {
     try {
       final refreshResponse = await _tryRefresh(response);
       handler.resolve(refreshResponse);
-    } on DioError catch (error) {
+    } on DioException catch (error) {
       handler.next(error);
     }
   }
@@ -150,7 +150,7 @@ class FreshTokenInterceptor<T> extends Interceptor with FreshTokenMixin<T> {
       refreshedToken = await _refreshToken(await token, _httpClient);
     } on RevokeTokenException catch (error) {
       await clearToken();
-      throw DioError(
+      throw DioException(
         requestOptions: response.requestOptions,
         error: error,
         response: response,

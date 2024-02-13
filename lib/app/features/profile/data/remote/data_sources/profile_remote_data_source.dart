@@ -1,7 +1,7 @@
 part of 'package:homemakers_merchant/app/features/profile/index.dart';
 
 class ProfileRemoteDataSource implements ProfileDataSource {
-  final client = serviceLocator<INetworkManager<BaseApiResponseErrorModel>>();
+  final client = serviceLocator<IRestApiManager>();
   @override
   Future<ApiResultState<bool>> deleteAllBusinessDocument(
       {AppUserEntity? appUserEntity}) {
@@ -88,9 +88,39 @@ class ProfileRemoteDataSource implements ProfileDataSource {
     required BusinessProfileEntity businessProfileEntity,
     required int businessProfileID,
     AppUserEntity? appUserEntity,
-  }) {
-    // TODO(prasant): implement editBusinessProfile
-    throw UnimplementedError();
+  }) async {
+    try {
+      final response = await client.send(
+        GlobalApp.businessCollection,
+        method: RequestType.PUT,
+      );
+
+      final result = response.data;
+      if (result != null && result != Null) {
+        return ApiResultState<BusinessProfileEntity>.success(
+          data: BusinessProfileEntity.fromMap(response.data?.data),
+        );
+      } else {
+        final error = response.error;
+        return ApiResultState<BusinessProfileEntity>.failure(
+          reason: GetApiException()
+              .handleApiFailure(
+            error?.model,
+            statusCode: error?.statusCode,
+          )
+              .message
+              .toString(),
+        );
+      }
+    } on Exception catch (e, s) {
+      return ApiResultState<BusinessProfileEntity>.failure(
+        reason:
+        GetApiException().handleHttpApiException(e).message ?? e.toString(),
+        stackTrace: s,
+        //exception: GetApiException().handleHttpApiException(e),
+        error: e,
+      );
+    }
   }
 
   @override
@@ -162,9 +192,39 @@ class ProfileRemoteDataSource implements ProfileDataSource {
     required int businessProfileID,
     AppUserEntity? appUserEntity,
     BusinessProfileEntity? businessProfileEntity,
-  }) {
-    // TODO(prasant): implement getBusinessProfile
-    throw UnimplementedError();
+  }) async {
+    try {
+      final response = await client.send(
+        GlobalApp.businessCollection,
+        method: RequestType.GET,
+      );
+
+      final result = response.data;
+      if (result != null && result != Null) {
+        return ApiResultState<BusinessProfileEntity>.success(
+          data: BusinessProfileEntity.fromMap(response.data?.data),
+        );
+      } else {
+        final error = response.error;
+        return ApiResultState<BusinessProfileEntity>.failure(
+          reason: GetApiException()
+              .handleApiFailure(
+            error?.model,
+            statusCode: error?.statusCode,
+          )
+              .message
+              .toString(),
+        );
+      }
+    } on Exception catch (e, s) {
+      return ApiResultState<BusinessProfileEntity>.failure(
+        reason:
+        GetApiException().handleHttpApiException(e).message ?? e.toString(),
+        stackTrace: s,
+        //exception: GetApiException().handleHttpApiException(e),
+        error: e,
+      );
+    }
   }
 
   @override
@@ -200,9 +260,39 @@ class ProfileRemoteDataSource implements ProfileDataSource {
   @override
   Future<ApiResultState<BusinessProfileEntity>> saveBusinessProfile(
       {required BusinessProfileEntity businessProfileEntity,
-      AppUserEntity? appUserEntity}) {
-    // TODO(prasant): implement saveBusinessProfile
-    throw UnimplementedError();
+      AppUserEntity? appUserEntity}) async {
+    try {
+      final response = await client.send(
+        GlobalApp.businessCollection,
+        method: RequestType.POST,
+      );
+
+      final result = response.data;
+      if (result != null && result != Null) {
+        return ApiResultState<BusinessProfileEntity>.success(
+          data: BusinessProfileEntity.fromMap(response.data?.data),
+        );
+      } else {
+        final error = response.error;
+        return ApiResultState<BusinessProfileEntity>.failure(
+          reason: GetApiException()
+              .handleApiFailure(
+            error?.model,
+            statusCode: error?.statusCode,
+          )
+              .message
+              .toString(),
+        );
+      }
+    } on Exception catch (e, s) {
+      return ApiResultState<BusinessProfileEntity>.failure(
+        reason:
+        GetApiException().handleHttpApiException(e).message ?? e.toString(),
+        stackTrace: s,
+        //exception: GetApiException().handleHttpApiException(e),
+        error: e,
+      );
+    }
   }
 
   @override

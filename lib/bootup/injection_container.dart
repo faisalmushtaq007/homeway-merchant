@@ -220,6 +220,7 @@ void _setUpRestAPIService() {
             refreshToken: 'initial_refresh_token',
           );
         },
+
       ),
     )
     ..registerFactory<INetworkManager<BaseApiResponseErrorModel>>(
@@ -238,6 +239,7 @@ void _setUpRestAPIService() {
           serviceLocator<FreshTokenInterceptor<OAuth2Token>>(),
         ],
       ),
+      instanceName: GlobalApp.developmentInstanceName,
     )
     ..registerFactory<INetworkManager<BaseApiResponseErrorModel>>(
       () => NetworkManager<BaseApiResponseErrorModel>(
@@ -256,8 +258,8 @@ void _setUpRestAPIService() {
         ],
       ),
       instanceName: GlobalApp.productionInstanceName,
-    )
-    ..registerFactory<INetworkManager<BaseApiResponseErrorModel>>(
+    );
+  /*..registerFactory<INetworkManager<BaseApiResponseErrorModel>>(
       () => NetworkManager<BaseApiResponseErrorModel>(
         isEnableLogger: true,
         options: BaseOptions(
@@ -265,21 +267,23 @@ void _setUpRestAPIService() {
         ),
         //This is optional.
         errorModel: BaseApiResponseErrorModel(),
-        /*errorModelFromData: (data) {
+        */ /*errorModelFromData: (data) {
 
-        },*/
+        },*/ /*
         fileManager: LocalSembast(),
         additionalInterceptors: [
           serviceLocator<FreshTokenInterceptor<OAuth2Token>>(),
         ],
       ),
       instanceName: GlobalApp.localhostInstanceName,
-    );
+    );*/
   // Own RestAPI Manager or Client
   serviceLocator
     ..registerFactory<IRestApiManager>(
       () => RestApiClient(
-        client: serviceLocator<INetworkManager<BaseApiResponseErrorModel>>(),
+        client: serviceLocator<INetworkManager<BaseApiResponseErrorModel>>(
+          instanceName: GlobalApp.developmentInstanceName,
+        ),
       ),
     )
     ..registerFactory<IRestApiManager>(
@@ -288,14 +292,15 @@ void _setUpRestAPIService() {
           instanceName: GlobalApp.productionInstanceName,
         ),
       ),
-    )
-    ..registerFactory<IRestApiManager>(
+      instanceName: GlobalApp.productionInstanceName,
+    );
+  /* ..registerFactory<IRestApiManager>(
       () => RestApiClient(
         client: serviceLocator<INetworkManager<BaseApiResponseErrorModel>>(
           instanceName: GlobalApp.localhostInstanceName,
         ),
       ),
-    );
+    );*/
 }
 
 void _setUpUseCases() {

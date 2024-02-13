@@ -203,5 +203,4 @@ mixin FreshTokenMixin<T> {
   String get correlationId{
     return Uuid().v4();
   }
-
 }

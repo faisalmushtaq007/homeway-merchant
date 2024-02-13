@@ -16,7 +16,7 @@ class BaseApiResponseErrorModel
   @JsonKey(name: "success")
   final int? success;
 
-  BaseApiResponseErrorModel({
+  const BaseApiResponseErrorModel({
     this.correlationId,
     this.error,
     this.success,

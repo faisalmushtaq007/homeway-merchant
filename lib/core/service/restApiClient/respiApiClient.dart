@@ -1,18 +1,12 @@
-import 'package:dio/src/cancel_token.dart';
-import 'package:dio/src/dio_mixin.dart';
-import 'package:dio/src/form_data.dart';
-import 'package:dio/src/options.dart';
-import 'package:dio/src/response.dart';
-import 'package:homemakers_merchant/bootup/injection_container.dart';
 import 'package:homemakers_merchant/core/network/http/base_api_response_error_model.dart';
 import 'package:homemakers_merchant/core/network/http/base_response_model.dart';
 import 'package:homemakers_merchant/core/service/restApiClient/IRestApiManager.dart';
 import 'package:network_manager/network_manager.dart';
-import 'package:network_manager/src/interface/IResponseModel.dart';
-import 'package:network_manager/src/model/enum/request_type.dart';
+import 'package:dio/dio.dart' as dio;
 
 class RestApiClient implements IRestApiManager {
   const RestApiClient({required this.client});
+
   final INetworkManager<BaseApiResponseErrorModel> client;
 
   @override
@@ -29,18 +23,24 @@ class RestApiClient implements IRestApiManager {
   Interceptors get dioInterceptors => client.dioInterceptors;
 
   @override
-  Future<Response<List<int>?>> downloadFile(
+  Future<dio.Response<List<int>?>> downloadFile(
           String path, ProgressCallback? callback,
-          {RequestType? method, Options? options, data}) async=>
-      await client.downloadFile;
+          {RequestType? method, Options? options, data}) async =>
+      await client.downloadFile(
+        path,
+        callback,
+        data: data,
+        method: method,
+        options: options,
+      );
 
   @override
-  Future<Response<List<int>?>> downloadFileSimple(
-          String path, ProgressCallback? callback) async=>
-      await client.downloadFileSimple;
+  Future<dio.Response<List<int>?>> downloadFileSimple(
+          String path, ProgressCallback? callback) async =>
+      await client.downloadFileSimple(path, callback);
 
   @override
-  Future<bool> removeAllCache() async=> await client.removeAllCache;
+  Future<bool> removeAllCache() async=> await client.removeAllCache();
 
   @override
   void removeHeader(String key) => client.removeHeader;
@@ -48,7 +48,7 @@ class RestApiClient implements IRestApiManager {
   @override
   Future<IResponseModel<BaseResponseModel?, BaseApiResponseErrorModel?>> send(
       String path,
-      {BaseResponseModel parseModel = BaseResponseModel(),
+      {BaseResponseModel parseModel = const BaseResponseModel(),
       required RequestType method,
       String? urlSuffix,
       Map<String, dynamic>? queryParameters,
@@ -71,10 +71,17 @@ class RestApiClient implements IRestApiManager {
   @override
   Future<BaseResponseModel?> sendPrimitive(String path,
           {Map<String, dynamic>? headers}) async =>
-      await client.sendPrimitive<BaseResponseModel>(path);
+      await client.sendPrimitive<BaseResponseModel>(
+        path,
+        headers: headers,
+      );
 
   @override
-  Future<Response<BaseResponseModel>> uploadFile(String path, FormData data,
+  Future<dio.Response<BaseResponseModel>> uploadFile(String path, FormData data,
           {Map<String, dynamic>? headers}) async =>
-      await client.uploadFile<BaseResponseModel>(path, data);
+      await client.uploadFile<BaseResponseModel>(
+        path,
+        data,
+        headers: headers,
+      );
 }

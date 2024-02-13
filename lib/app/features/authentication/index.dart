@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:homemakers_merchant/app/features/authentication/common/constants.dart';
+import 'package:homemakers_merchant/app/features/authentication/data/models/status/authentication_status_model.dart';
 import 'package:homemakers_merchant/app/features/profile/index.dart';
 import 'package:homemakers_merchant/base/app_base.dart';
 import 'package:homemakers_merchant/base/base_usecase.dart';

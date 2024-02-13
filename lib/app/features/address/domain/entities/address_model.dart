@@ -119,6 +119,14 @@ class AddressModel extends INetworkModel<AddressModel> {
       isDefault: isDefault ?? this.isDefault,
     );
   }
+
+  static List<AddressModel> fromJsonList(List<dynamic> json) {
+    return json.map((e) => AddressModel.fromJson(e as Map)).toList().cast<AddressModel>();
+  }
+  static List<Map<String, dynamic>> toJsonList(List<AddressModel> list) {
+    return list.map((e) => e.toJson()).toList();
+  }
+
 }
 
 class AddressBean extends INetworkModel<AddressBean> {
@@ -377,5 +385,12 @@ class AddressBean extends INetworkModel<AddressBean> {
       addressType: addressType ?? this.addressType,
       displayAddressName: displayAddressName ?? this.displayAddressName,
     );
+  }
+
+  static List<AddressBean> fromJsonList(List<dynamic> json) {
+    return json.map((e) => AddressBean.fromJson(e as Map)).toList().cast<AddressBean>();
+  }
+  static List<Map<String, dynamic>> toJsonList(List<AddressBean> list) {
+    return list.map((e) => e.toJson()).toList();
   }
 }

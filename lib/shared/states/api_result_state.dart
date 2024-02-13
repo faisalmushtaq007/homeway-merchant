@@ -8,9 +8,10 @@ part 'api_result_state.freezed.dart';
 class ApiResultState<T> with _$ApiResultState<T> {
   const factory ApiResultState.success({required T data}) = ApiSuccess<T>;
 
-  const factory ApiResultState.failure(
-      {required String reason,
-      Object? error,
-      NetworkException? exception,
-      StackTrace? stackTrace,}) = ApiFailure<T>;
+  const factory ApiResultState.failure({
+    required String reason,
+    Object? error,
+    NetworkException? exception,
+    StackTrace? stackTrace,
+  }) = ApiFailure<T>;
 }

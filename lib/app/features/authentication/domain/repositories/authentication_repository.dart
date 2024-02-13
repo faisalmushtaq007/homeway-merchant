@@ -50,4 +50,8 @@ abstract interface class AuthenticationRepository {
     required List<AppUserEntity> appUsers,
     bool hasUpdateAll = false,
   });
+
+  Future<DataSourceState<AuthenticationStatusModel>> getCurrentUserStatus();
+
+  Future<DataSourceState<String>> getRefreshToken();
 }

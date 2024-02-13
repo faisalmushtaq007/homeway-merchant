@@ -77,8 +77,7 @@ class AppRouter {
           return OTPVerificationPage(
             phoneNumber: args?['phoneNumber'] as String,
             countryDialCode: args?['countryDialCode'] ?? '' as String,
-            phoneNumberWithFormat:
-                args?['phoneNumberWithFormat'] as String,
+            phoneNumberWithFormat: args?['phoneNumberWithFormat'] as String,
           );
         },
       ),
@@ -739,7 +738,7 @@ class AppRouter {
         path: Routes.PAYMENT_GATEWAY,
         builder: (context, state) {
           final Map<String, dynamic>? args =
-          state.extra as Map<String, dynamic>?;
+              state.extra as Map<String, dynamic>?;
           return const PaymentGatewayPage();
         },
       ),
@@ -748,6 +747,23 @@ class AppRouter {
     restorationScopeId: 'merchant_router',
     onException: (_, GoRouterState state, GoRouter router) {
       //router.go('/404', extra: state.uri.toString());
+    },
+    redirect: (context, state) async {
+      if (serviceLocator<AppUserEntity>().currentUserStage != 0 &&
+          serviceLocator<AppUserEntity>().access_token.isNotEmpty &&
+          serviceLocator<AppUserEntity>().uid.isNotEmpty) {
+        return Routes.AUTH_PHONE_NUMBER_VERIFICATION;
+      }
+      if (state.matchedLocation == Routes.AUTH_PHONE_NUMBER_VERIFICATION ||
+          state.matchedLocation == Routes.AUTH_OTP_VERIFICATION) {
+        if (serviceLocator<AppUserEntity>().currentUserStage == 6) {
+          return Routes.PRIMARY_DASHBOARD_PAGE;
+        } else {
+          return Routes.MAIN_DASHBOARD_PAGE;
+        }
+      }
+      // no need to redirect at all
+      return null;
     },
   );
 
@@ -762,8 +778,7 @@ class AppNavigationObserver extends NavigatorObserver {
   }
 
   /// The logged message.
-  final Logger log = appLog;//Logger('AppNavigationObserver');
-
+  final Logger log = appLog; //Logger('AppNavigationObserver');
 
   @override
   void didPush(Route<dynamic> route, Route<dynamic>? previousRoute) =>
@@ -783,9 +798,9 @@ class AppNavigationObserver extends NavigatorObserver {
 
   @override
   void didStartUserGesture(
-      Route<dynamic> route,
-      Route<dynamic>? previousRoute,
-      ) =>
+    Route<dynamic> route,
+    Route<dynamic>? previousRoute,
+  ) =>
       log.i('didStartUserGesture: ${route.str}, '
           'previousRoute= ${previousRoute?.str}');
 
