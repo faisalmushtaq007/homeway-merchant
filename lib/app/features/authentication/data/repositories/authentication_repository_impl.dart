@@ -430,7 +430,7 @@ class AuthenticationRepositoryImplement implements AuthenticationRepository {
     try {
       final connectivity =
           serviceLocator<ConnectivityService>().getCurrentInternetStatus();
-      if (connectivity.$2 == InternetConnectivityState.internet) {
+      if (connectivity.$2 != InternetConnectivityState.internet) {
         // Local DB
         // Save to local
         final Either<RepositoryBaseFailure, AppUserEntity?> result =
@@ -663,7 +663,7 @@ class AuthenticationRepositoryImplement implements AuthenticationRepository {
       else {
         // Remote
         // Save to server
-        final ApiResultState<AppUserEntity?> result =
+        final ApiResultState<AuthenticationStatusModel> result =
             await remoteDataSource.getCurrentUserStatus();
         // Return result
         return result.when(
@@ -687,7 +687,7 @@ class AuthenticationRepositoryImplement implements AuthenticationRepository {
       }
     } catch (e, s) {
       appLog.d('Get current appUser exception $e');
-      return DataSourceState<AppUserEntity>.error(
+      return DataSourceState<AuthenticationStatusModel>.error(
         reason: e.toString(),
         dataSourceFailure: DataSourceFailure.local,
         stackTrace: s,

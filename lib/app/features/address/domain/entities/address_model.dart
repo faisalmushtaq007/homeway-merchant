@@ -121,10 +121,10 @@ class AddressModel extends INetworkModel<AddressModel> {
   }
 
   static List<AddressModel> fromJsonList(List<dynamic> json) {
-    return json.map((e) => AddressModel.fromJson(e as Map)).toList().cast<AddressModel>();
+    return json.map((e) => AddressModel.fromJson(e as Map<String,dynamic>)).toList().cast<AddressModel>();
   }
   static List<Map<String, dynamic>> toJsonList(List<AddressModel> list) {
-    return list.map((e) => e.toJson()).toList();
+    return list.map((e) => e.toJson()).toList().cast<Map<String, dynamic>>();;
   }
 
 }
@@ -388,9 +388,9 @@ class AddressBean extends INetworkModel<AddressBean> {
   }
 
   static List<AddressBean> fromJsonList(List<dynamic> json) {
-    return json.map((e) => AddressBean.fromJson(e as Map)).toList().cast<AddressBean>();
+    return json.map((e) => AddressBean.fromJson(e as Map<String,dynamic>)).toList().cast<AddressBean>();
   }
   static List<Map<String, dynamic>> toJsonList(List<AddressBean> list) {
-    return list.map((e) => e.toJson()).toList();
+    return list.map((e) => e.toJson()).toList().cast<Map<String,dynamic>>();
   }
 }

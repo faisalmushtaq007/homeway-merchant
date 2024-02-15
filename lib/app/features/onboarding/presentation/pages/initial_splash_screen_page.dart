@@ -2,6 +2,7 @@ part of 'package:homemakers_merchant/app/features/onboarding/index.dart';
 
 class InitialSplashScreenPage extends StatefulWidget {
   const InitialSplashScreenPage({super.key});
+
   @override
   _InitialSplashScreenPageController createState() =>
       _InitialSplashScreenPageController();
@@ -21,44 +22,90 @@ class _InitialSplashScreenPageController
     AppUserEntity cacheUserEntity =
         serviceLocator<UserModelStorageController>().userModel;
     if (cacheUserEntity.userID == -1) {
-      //
-      final getCurrentUserResult =
-          await serviceLocator<GetAllAppUserPaginationUseCase>()(
-        pageSize: 10,
-        pageKey: 0,
-        entity: AppUserEntity(
-          hasCurrentUser: true,
-        ),
-      );
-      //
-      await getCurrentUserResult.when(
-        remote: (data, meta) {
-          if (data.isNotNullOrEmpty) {
-            serviceLocator<AppUserEntity>().updateEntity(data!.last);
-            appLog.d('Remote User Info ${data!.last.toMap()}');
-          }
-        },
-        localDb: (data, meta) {
-          if (data.isNotNullOrEmpty) {
-            serviceLocator<AppUserEntity>().updateEntity(data!.last);
+      // Return to splash
+      return Routes.SPLASH;
+    } else {
+      // Get User Status
+      final getCurrentUserStatus =
+          await serviceLocator<GetUserStatusUseCase>()();
 
-            appLog.d('Local User Info ${data!.last.toMap()}');
-          }
+      return await getCurrentUserStatus.maybeWhen(
+        orElse: () {
+          return navigateToSpecificPageByUserStage(
+            stage: serviceLocator<UserModelStorageController>()
+                .userModel
+                .currentUserStage,
+            hasCurrentUserLoggedIn: cacheUserEntity.hasCurrentUser,
+          );
+        },
+        remote: (authStatusModel, meta) async {
+          // Get user profile
+          final getUserProfileData =
+              await serviceLocator<GetCurrentAppUserUseCase>()();
+          //
+          return await getUserProfileData.maybeWhen(
+            orElse: () {
+              return navigateToSpecificPageByUserStage(
+                stage: serviceLocator<UserModelStorageController>()
+                    .userModel
+                    .currentUserStage,
+                hasCurrentUserLoggedIn: cacheUserEntity.hasCurrentUser,
+              );
+            },
+            remote: (data, meta) {
+              final remoteUserEntity = data;
+              remoteUserEntity?.copyWith(
+                hasCurrentUser: true,
+                currentUserStage: authStatusModel?.status,
+                userID: authStatusModel?.uid,
+              );
+              serviceLocator<AppUserEntity>().updateEntity(remoteUserEntity);
+
+              return navigateToSpecificPageByUserStage(
+                stage: serviceLocator<UserModelStorageController>()
+                    .userModel
+                    .currentUserStage,
+              );
+            },
+            error: (dataSourceFailure, reason, error, networkException,
+                stackTrace, exception, extra) {
+              appLog.d('GetCurrentAppUserUseCase Error $reason');
+
+              return navigateToSpecificPageByUserStage(
+                stage: serviceLocator<UserModelStorageController>()
+                    .userModel
+                    .currentUserStage,
+                hasCurrentUserLoggedIn: cacheUserEntity.hasCurrentUser,
+              );
+            },
+          );
         },
         error: (dataSourceFailure, reason, error, networkException, stackTrace,
             exception, extra) {
-          appLog.d('Error $reason');
+          appLog.d('GetUserStatusUseCase Error $reason');
+
+          return navigateToSpecificPageByUserStage(
+            stage: serviceLocator<UserModelStorageController>()
+                .userModel
+                .currentUserStage,
+            hasCurrentUserLoggedIn: cacheUserEntity.hasCurrentUser,
+          );
         },
       );
-      cacheUserEntity = serviceLocator<AppUserEntity>();
     }
-    bool hasCurrentUserLoggedIn = cacheUserEntity.hasCurrentUser;
-    appLog.d(
-        'Current Status ${hasCurrentUserLoggedIn}, ${cacheUserEntity.currentUserStage}');
-    isCurrentUserLoggedIn = hasCurrentUserLoggedIn;
+  }
+
+  String navigateToSpecificPageByUserStage({
+    required int stage,
+    bool hasCurrentUserLoggedIn = true,
+  }) {
     if (hasCurrentUserLoggedIn) {
-      final int index = cacheUserEntity.currentUserStage + 1;
+      final int index = stage + 1;
       switch (index) {
+        case 0:
+          {
+            routeName = Routes.AUTH_PHONE_NUMBER_VERIFICATION;
+          }
         case 1:
           {
             routeName = Routes.CREATE_BUSINESS_PROFILE_PAGE;
@@ -79,9 +126,13 @@ class _InitialSplashScreenPageController
           {
             routeName = Routes.PRIMARY_DASHBOARD_PAGE;
           }
-        case _:
+        case 6:
           {
             routeName = Routes.MAIN_DASHBOARD_PAGE;
+          }
+        case _:
+          {
+            routeName = Routes.AUTH_PHONE_NUMBER_VERIFICATION;
           }
       }
       return routeName;
@@ -97,6 +148,7 @@ class _InitialSplashScreenPageController
 class _InitialSplashScreenPageView extends WidgetView<InitialSplashScreenPage,
     _InitialSplashScreenPageController> {
   const _InitialSplashScreenPageView(super.state);
+
   @override
   Widget build(BuildContext context) {
     return FlutterSplashScreen(

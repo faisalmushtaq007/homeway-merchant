@@ -20,12 +20,13 @@ class StoreRemoteDataSource implements StoreDataSource {
 
       final result = response.data;
       if (result != null && result != Null) {
-        return ApiResultState<BusinessProfileEntity>.success(
-          data: BusinessProfileEntity.fromMap(response.data?.data),
+        // Todo(prasant): please check the response format and pass the right value to UI
+        return ApiResultState<bool>.success(
+          data: response.data?.data['hasDeleted'] as bool,
         );
       } else {
         final error = response.error;
-        return ApiResultState<BusinessProfileEntity>.failure(
+        return ApiResultState<bool>.failure(
           reason: GetApiException()
               .handleApiFailure(
                 error?.model,
@@ -36,7 +37,7 @@ class StoreRemoteDataSource implements StoreDataSource {
         );
       }
     } on Exception catch (e, s) {
-      return ApiResultState<BusinessProfileEntity>.failure(
+      return ApiResultState<bool>.failure(
         reason:
             GetApiException().handleHttpApiException(e).message ?? e.toString(),
         stackTrace: s,
@@ -58,7 +59,7 @@ class StoreRemoteDataSource implements StoreDataSource {
       final result = response.data;
       if (result != null && result != Null) {
         return ApiResultState<StoreEntity>.success(
-          data: BusinessProfileEntity.fromMap(response.data?.data),
+          data: StoreEntity.fromMap(response.data?.data),
         );
       } else {
         final error = response.error;
@@ -95,7 +96,7 @@ class StoreRemoteDataSource implements StoreDataSource {
       if (result != null && result != Null) {
         return ApiResultState<List<StoreEntity>>.success(
           data: response.data?.data
-              .map((e) => StoreEntity.fromMap(e as Map))
+              .map((e) => StoreEntity.fromMap(e as Map<String,dynamic>))
               .toList()
               .cast<StoreEntity>(),
         );

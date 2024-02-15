@@ -13,6 +13,16 @@ class AuthenticationInjector extends BaseInjector {
         authenticationRepository: serviceLocator(),
       ),
     );
+    serviceLocator.registerLazySingleton<GetUserStatusUseCase>(
+          () => GetUserStatusUseCase(
+        authenticationRepository: serviceLocator(),
+      ),
+    );
+    serviceLocator.registerLazySingleton<GetRefreshTokenUseCase>(
+          () => GetRefreshTokenUseCase(
+        authenticationRepository: serviceLocator(),
+      ),
+    );
   }
 
   @override
