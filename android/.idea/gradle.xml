@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="GradleMigrationSettings" migrationVersion="1" />
+  <component name="GradleSettings">
+    <option name="linkedExternalProjectsSettings">
+      <GradleProjectSettings>
+        <option name="testRunner" value="GRADLE" />
+        <option name="distributionType" value="DEFAULT_WRAPPED" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="gradleJvm" value="jbr-17" />
+        <option name="modules">
+          <set>
+            <option value="$USER_HOME$/.pub-cache/git/file_saver-7df1b1436865d057e2409e1838c0f421049d6fc7/android" />
+            <option value="$USER_HOME$/.pub-cache/git/image_crop-c137971605ea4808a2dfaee00a693f5da6249a79/android" />
+            <option value="$USER_HOME$/.pub-cache/hosted/pub.dev/app_links-3.5.0/android" />
+            <option value="$USER_HOME$/.pub-cache/hosted/pub.dev/app_settings-5.1.1/android" />
+            <option value="$USER_HOME$/.pub-cache/hosted/pub.dev/cloud_firestore-4.14.0/android" />
+            <option value="$USER_HOME$/.pub-cache/hosted/pub.dev/connectivity_plus-5.0.2/android" />
+            <option value="$USER_HOME$/.pub-cache/hosted/pub.dev/device_info_plus-9.1.1/android" />
+            <option value="$USER_HOME$/.pub-cache/hosted/pub.dev/file_picker-5.5.0/android" />
+            <option value="$USER_HOME$/.pub-cache/hosted/pub.dev/file_selector_android-0.5.0+7/android" />
+            <option value="$USER_HOME$/.pub-cache/hosted/pub.dev/firebase_analytics-10.8.0/android" />
+            <option value="$USER_HOME$/.pub-cache/hosted/pub.dev/firebase_auth-4.16.0/android" />
+            <option value="$USER_HOME$/.pub-cache/hosted/pub.dev/firebase_core-2.24.2/android" />
+            <option value="$USER_HOME$/.pub-cache/hosted/pub.dev/firebase_database-10.4.0/android" />
+            <option value="$USER_HOME$/.pub-cache/hosted/pub.dev/firebase_messaging-14.7.10/android" />
+            <option value="$USER_HOME$/.pub-cache/hosted/pub.dev/firebase_remote_config-4.3.8/android" />
+            <option value="$USER_HOME$/.pub-cache/hosted/pub.dev/firebase_storage-11.6.0/android" />
+            <option value="$USER_HOME$/.pub-cache/hosted/pub.dev/flutter_background_executor-1.0.0/android" />
+            <option value="$USER_HOME$/.pub-cache/hosted/pub.dev/flutter_displaymode-0.6.0/android" />
+            <option value="$USER_HOME$/.pub-cache/hosted/pub.dev/flutter_libphonenumber_android-1.0.1/android" />
+            <option value="$USER_HOME$/.pub-cache/hosted/pub.dev/flutter_native_splash-2.3.9/android" />
+            <option value="$USER_HOME$/.pub-cache/hosted/pub.dev/flutter_plugin_android_lifecycle-2.0.17/android" />
+            <option value="$USER_HOME$/.pub-cache/hosted/pub.dev/flutter_secure_storage-8.1.0/android" />
+            <option value="$USER_HOME$/.pub-cache/hosted/pub.dev/geocoding_android-2.1.2/android" />
+            <option value="$USER_HOME$/.pub-cache/hosted/pub.dev/geolocator_android-4.3.1/android" />
+            <option value="$USER_HOME$/.pub-cache/hosted/pub.dev/google_maps_flutter_android-2.6.2/android" />
+            <option value="$USER_HOME$/.pub-cache/hosted/pub.dev/google_mlkit_commons-0.5.0/android" />
+            <option value="$USER_HOME$/.pub-cache/hosted/pub.dev/google_mlkit_language_id-0.8.0/android" />
+            <option value="$USER_HOME$/.pub-cache/hosted/pub.dev/google_mlkit_text_recognition-0.10.0/android" />
+            <option value="$USER_HOME$/.pub-cache/hosted/pub.dev/google_mlkit_translation-0.8.0/android" />
+            <option value="$USER_HOME$/.pub-cache/hosted/pub.dev/google_sign_in_android-6.1.21/android" />
+            <option value="$USER_HOME$/.pub-cache/hosted/pub.dev/image_picker_android-0.8.9+3/android" />
+            <option value="$USER_HOME$/.pub-cache/hosted/pub.dev/location-5.0.3/android" />
+            <option value="$USER_HOME$/.pub-cache/hosted/pub.dev/open_file-3.3.2/android" />
+            <option value="$USER_HOME$/.pub-cache/hosted/pub.dev/open_settings_plus-0.1.0/android" />
+            <option value="$USER_HOME$/.pub-cache/hosted/pub.dev/path_provider_android-2.2.2/android" />
+            <option value="$USER_HOME$/.pub-cache/hosted/pub.dev/permission_handler_android-10.3.6/android" />
+            <option value="$USER_HOME$/.pub-cache/hosted/pub.dev/saver_gallery-2.0.1/android" />
+            <option value="$USER_HOME$/.pub-cache/hosted/pub.dev/shared_preferences_android-2.2.1/android" />
+            <option value="$USER_HOME$/.pub-cache/hosted/pub.dev/smart_auth-1.1.1/android" />
+            <option value="$USER_HOME$/.pub-cache/hosted/pub.dev/sqflite-2.3.0/android" />
+            <option value="$USER_HOME$/.pub-cache/hosted/pub.dev/url_launcher_android-6.2.2/android" />
+            <option value="$PROJECT_DIR$" />
+            <option value="$PROJECT_DIR$/app" />
+          </set>
+        </option>
+      </GradleProjectSettings>
+    </option>
+  </component>
+</project>
